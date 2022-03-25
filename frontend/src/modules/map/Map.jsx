@@ -17,6 +17,7 @@ import {
   UnorderedListOutlined,
 } from "@ant-design/icons";
 import { PatternLines } from "@vx/pattern";
+import classNames from "classnames";
 import { topicNames, tTypes } from "../../utils/misc";
 import { curr } from "./utils";
 
@@ -24,6 +25,7 @@ import "./map-styles.scss";
 import { useHistory } from "react-router-dom";
 import { isEmpty } from "lodash";
 import { UIStore } from "../../store";
+import VerticalLegend from "./VerticalLegend";
 const geoUrl = "/unep-gpml.topo.json";
 const lineBoundaries = "/new_country_line_boundaries.geojson";
 const colorRange = ["#bbedda", "#a7e1cb", "#92d5bd", "#7dcaaf", "#67bea1"];
@@ -260,6 +262,7 @@ const Maps = ({
   isDisplayedList,
   isFilteredCountry,
   multiCountryCountries,
+  useVerticalLegend = false,
 }) => {
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -425,14 +428,29 @@ const Maps = ({
                 />
               </Tooltip>
             </div>
-            <div className="legend-wrapper">
+            <div
+              className={classNames("legend-wrapper", {
+                vertical: useVerticalLegend,
+              })}
+            >
               {isShownLegend && (
-                <Legend
-                  data={colorScale.thresholds()}
-                  setFilterColor={setFilterColor}
-                  selected={filterColor}
-                  isDisplayedList={isDisplayedList}
-                />
+                <>
+                  {useVerticalLegend ? (
+                    <VerticalLegend
+                      data={colorScale.thresholds().sort((a, b) => b - a)}
+                      setFilterColor={setFilterColor}
+                      selected={filterColor}
+                      isDisplayedList={isDisplayedList}
+                    />
+                  ) : (
+                    <Legend
+                      data={colorScale.thresholds()}
+                      setFilterColor={setFilterColor}
+                      selected={filterColor}
+                      isDisplayedList={isDisplayedList}
+                    />
+                  )}
+                </>
               )}
               <Tooltip
                 placement="bottom"
