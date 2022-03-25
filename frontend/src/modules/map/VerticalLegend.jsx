@@ -4,7 +4,7 @@ import { colorRange, higlightColor } from "./config";
 
 const { Text } = Typography;
 
-const VerticalLegend = ({ data, setFilterColor, selected }) => {
+const VerticalLegend = ({ data, setFilterColor, selected, title }) => {
   data = Array.from(new Set(data.map((x) => Math.floor(x))));
   data = data.filter((x) => x !== 0);
   const range = data.map((x, i) => (
@@ -31,9 +31,7 @@ const VerticalLegend = ({ data, setFilterColor, selected }) => {
   if (data.length) {
     return (
       <Card style={{ width: 300 }}>
-        <div className="title">
-          <Text strong>Number of GPML Resources</Text>
-        </div>
+        <div className="title">{title && <Text strong>{title}</Text>}</div>
         <div
           style={{
             background: `linear-gradient(180deg, rgba(103,190,161,1) 10%, rgba(255,255,255,1) 90%)`,
