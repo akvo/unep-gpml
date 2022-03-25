@@ -868,6 +868,12 @@ const DetailsView = ({
               >
                 <div className="list geo-coverage">
                   <List itemLayout="horizontal">
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={<Avatar src={TransnationalImage} />}
+                        title={data?.geoCoverageType}
+                      />
+                    </List.Item>
                     {data?.geoCoverageType !== "sub-national" && (
                       <>
                         {data?.geoCoverageValues &&
@@ -889,12 +895,6 @@ const DetailsView = ({
                           )}
                       </>
                     )}
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={TransnationalImage} />}
-                        title={data?.geoCoverageType}
-                      />
-                    </List.Item>
                     {data?.geoCoverageType === "sub-national" && (
                       <>
                         {data?.geoCoverageValues &&
