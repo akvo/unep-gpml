@@ -185,8 +185,46 @@
     display: flex;
     align-items: center;
     flex-direction: row;
-
     align-self: flex-end;
+    &.vertical {
+      align-items: normal;
+      .title {
+        display: flex;
+        justify-content: start;
+        margin-bottom: 1em;
+        line-height: 1.3em;
+      }
+      .ant-typography {
+        font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial,
+          sans-serif;
+      }
+      .legend {
+        width: 20px;
+        height: 22px;
+        padding: 0 8px;
+        margin-right: 8px;
+        cursor: pointer;
+        &.label {
+          width: 80px;
+          .ant-typography {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            &::before {
+              right: 100%;
+              display: block;
+              content: "";
+              width: 0;
+              height: 0;
+              border-style: solid;
+              border-width: 3px 4px 3px 0;
+              border-color: transparent rgba(50, 50, 50, 0.8) transparent
+                transparent;
+            }
+          }
+        }
+      }
+    }
   }
 
   .legends,
