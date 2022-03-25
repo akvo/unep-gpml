@@ -66,7 +66,7 @@ const CapacityBuilding = () => {
     <Row id="capacity-building">
       <Col span={24} className="ui-header">
         <div className="ui-container">
-          <div style={{ display: "flex", height: 75 }}>
+          <div>
             <div style={{ margin: "auto 0" }}>
               <Title level={3}>
                 <span className="text-green">
