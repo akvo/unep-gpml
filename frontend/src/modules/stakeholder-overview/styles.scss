@@ -44,6 +44,8 @@
     .filter-tag {
       .ant-space {
         flex-wrap: wrap;
+        max-height: 33px;
+        overflow-y: auto;
         gap: 8px;
       }
       .ant-space-item {
@@ -57,7 +59,7 @@
         justify-content: space-between;
         color: #ffffff;
         font-weight: 700;
-        padding: 5px 11px 5px 11px;
+        padding: 4px 11px 4px 11px;
         border: 2px solid #ffffff;
         border-radius: 17.5px;
         background-color: transparent;
@@ -760,6 +762,10 @@
       }
 
       .multiselection-filter {
+        .ant-select-selection-overflow {
+          height: 29px;
+          overflow-y: auto;
+        }
         .ant-select-selection-item-content {
           font-style: italic;
           overflow: visible;

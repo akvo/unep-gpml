@@ -59,6 +59,8 @@
       .ant-space {
         flex-wrap: wrap;
         gap: 8px;
+        max-height: 33px;
+        overflow-y: auto;
         .ant-space-item {
           margin-right: 0 !important;
         }
@@ -71,7 +73,7 @@
 
         color: #ffffff;
         font-weight: 700;
-        padding: 5px 11px 5px 11px;
+        padding: 4px 11px 4px 11px;
         border: 2px solid #ffffff;
         border-radius: 17.5px;
         background-color: transparent;
@@ -130,8 +132,8 @@
           color: #ffffff;
           background-color: $green05;
           border: 0;
-          height: 30px;
-          width: 30px;
+          height: 27px;
+          width: 27px;
           &:hover {
             background-color: $green01;
             color: $blue10;
@@ -407,6 +409,11 @@
         align-self: center;
       }
 
+      .multiselection-filter .ant-select-selection-overflow {
+        height: 29px;
+        overflow-y: auto;
+      }
+
       .multiple-filter-title {
         margin-bottom: 0;
       }
@@ -557,6 +564,10 @@
           border: 1px solid #d7e6ee;
           border-radius: 3px;
           background-color: #fff;
+          .ant-select-selection-overflow {
+            height: 29px;
+            overflow-y: auto;
+          }
 
           .ant-select {
             width: 100%;

@@ -345,13 +345,23 @@
   padding: 0 10px;
   position: relative;
 
-  .tooltip-note {
-    font-size: 12px;
+  th {
+    font-size: 11px;
   }
 
   .tooltip-counts {
-    display: flex;
-    align-items: center;
+    display: block;
+    color: #005c93;
+    text-align: right;
+  }
+
+  .tooltip-topic {
+    margin-right: 10px;
+    color: #7db0cb;
+  }
+
+  .tooltip-note {
+    font-size: 12px;
   }
 
   .transnational-count {
@@ -363,8 +373,11 @@
     font-weight: 600;
     color: #005c93;
     max-width: 170px;
-    width: 170px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
     white-space: pre-wrap;
+    text-align: center;
   }
 
   h4 {
@@ -376,9 +389,9 @@
     white-space: pre-wrap;
   }
 
-  li {
-    display: flex;
-    max-width: 170px;
+  tr {
+    // display: flex;
+    // max-width: 170px;
 
     &:not(:last-child) {
       border-bottom: 1px solid #e7f1f7;
