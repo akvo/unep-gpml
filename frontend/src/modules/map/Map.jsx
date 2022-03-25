@@ -320,6 +320,10 @@ const Maps = ({
       });
     }
   };
+  const legendTitle =
+    path === KNOWLEDGE_LIBRARY
+      ? "Number of GPML Resources"
+      : "Number of Stakeholders";
 
   useEffect(() => {
     setCountryToSelect(isFilteredCountry.map((x) => Number(x)));
@@ -441,6 +445,7 @@ const Maps = ({
                       setFilterColor={setFilterColor}
                       selected={filterColor}
                       isDisplayedList={isDisplayedList}
+                      title={legendTitle}
                     />
                   ) : (
                     <Legend
