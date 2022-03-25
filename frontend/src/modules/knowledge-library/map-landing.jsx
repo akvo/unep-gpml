@@ -98,6 +98,7 @@ const MapLanding = ({
                 )
             : []
         }
+        useVerticalLegend
       />
     </>
   );
