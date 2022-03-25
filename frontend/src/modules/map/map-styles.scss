@@ -344,9 +344,11 @@
 .map-tooltip {
   padding: 0 10px;
   position: relative;
-  .tooltip-count-wrapper {
-    width: 60px;
+
+  th {
+    font-size: 11px;
   }
+
   .tooltip-counts {
     display: block;
     color: #005c93;
@@ -371,8 +373,11 @@
     font-weight: 600;
     color: #005c93;
     max-width: 170px;
-    width: 170px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
     white-space: pre-wrap;
+    text-align: center;
   }
 
   h4 {
