@@ -762,6 +762,10 @@
       }
 
       .multiselection-filter {
+        .ant-select-selection-overflow {
+          height: 29px;
+          overflow-y: auto;
+        }
         .ant-select-selection-item-content {
           font-style: italic;
           overflow: visible;
