@@ -447,9 +447,7 @@
 (defn- get-detail
   [conn table-name id]
   (let [{:keys [json] :as result}
-        (if (some #{table-name} ["organisation" "stakeholder"])
-          (db.detail/get-entity-details conn {:entity-type table-name :id id})
-          (db.detail/get-topic-details conn {:topic-type table-name :topic-id id}))]
+        (db.detail/get-topic-details conn {:topic-type table-name :topic-id id})]
     (-> result
         (dissoc :json)
         (merge json))))
