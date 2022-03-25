@@ -36,7 +36,7 @@ const VerticalLegend = ({ data, setFilterColor, selected }) => {
         </div>
         <div
           style={{
-            background: `linear-gradient(180deg, rgba(103,190,161,1) 60%, rgba(255,255,255,1) 95%)`,
+            background: `linear-gradient(180deg, rgba(103,190,161,1) 0%, rgba(255,255,255,1) 95%)`,
             width: 20,
             minHeight: 132,
             float: "left",
