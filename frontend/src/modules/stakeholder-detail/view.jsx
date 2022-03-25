@@ -103,7 +103,11 @@ const SharePanel = ({
   const canEdit = () =>
     isAuthenticated &&
     profile.reviewStatus === "APPROVED" &&
-    parseInt(profile.id) === parseInt(params.id);
+    (profile.role === "ADMIN" ||
+      profile.id === params.createdBy ||
+      data.owners.includes(profile.id)) &&
+    (params.type !== "project" ||
+      (params.type === "project" && params.id > 10000));
 
   const handleChangeRelation = (relationType) => {
     let association = relation ? [...relation.association] : [];
