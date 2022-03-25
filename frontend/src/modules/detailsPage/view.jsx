@@ -317,16 +317,23 @@ const renderBannerSection = (
                 borderRadius: "none",
               }}
             >
-              <p
-                dangerouslySetInnerHTML={{
-                  __html: showLess
-                    ? `${data.summary.slice(0, 400)}...`
-                    : data.summary,
-                }}
-              ></p>
-              <a className="view-more" onClick={() => setShowLess(!showLess)}>
-                Read {showLess ? "More" : "Less"}
-              </a>
+              {data.summary.length < 400 ? (
+                <p>{data?.summary}</p>
+              ) : (
+                <>
+                  <p>
+                    {showLess
+                      ? `${data.summary.slice(0, 400)}...`
+                      : data.summary}
+                  </p>
+                  <a
+                    className="view-more"
+                    onClick={() => setShowLess(!showLess)}
+                  >
+                    Read {showLess ? "More" : "Less"}
+                  </a>
+                </>
+              )}
             </CardComponent>
             <SharePanel
               data={data}
