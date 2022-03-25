@@ -58,6 +58,7 @@ const MapView = ({ multiCountryCountries, updateQuery, isFilteredCountry }) => {
               )
           : []
       }
+      useVerticalLegend
     />
   );
 };
