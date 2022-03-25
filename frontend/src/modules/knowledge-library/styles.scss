@@ -409,6 +409,11 @@
         align-self: center;
       }
 
+      .multiselection-filter .ant-select-selection-overflow {
+        height: 29px;
+        overflow-y: auto;
+      }
+
       .multiple-filter-title {
         margin-bottom: 0;
       }
@@ -559,6 +564,10 @@
           border: 1px solid #d7e6ee;
           border-radius: 3px;
           background-color: #fff;
+          .ant-select-selection-overflow {
+            height: 29px;
+            overflow-y: auto;
+          }
 
           .ant-select {
             width: 100%;
