@@ -244,7 +244,7 @@
 
     .ant-drawer-content-wrapper {
       box-shadow: none;
-      // height: 700px;
+      height: 700px;
       max-width: 500px;
       width: 100% !important;
 
@@ -626,7 +626,7 @@
   .resource-list-container {
     position: absolute;
     z-index: 3;
-    // height: 700px;
+    height: 700px;
     width: 100%;
     max-width: 300px;
   }
@@ -726,6 +726,7 @@
     gap: 5px;
     height: 436px;
     align-items: center;
+    padding-bottom: 60px;
 
     .resource-item-wrapper {
       width: 100%;
@@ -817,7 +818,9 @@
   .page {
     padding: 2rem 0 1rem 10px;
     text-align: center;
-    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background-color: #ffffff;
     .result-number,
     .ant-pagination-item a {
       font-weight: 700;
@@ -889,7 +892,77 @@
         width: 25px;
       }
       .selection-arrow {
-        width: 15px;
+        width: 20px;
+      }
+    }
+    .resource-main-container {
+      .ant-page-header {
+        padding: 2px 24px;
+      }
+      .resource-list {
+        gap: 5px;
+        padding-bottom: 60px;
+        .resource-item-wrapper {
+          .ant-card-body {
+            padding-top: 5px;
+            padding-bottom: 5px;
+          }
+          .item-body {
+            margin-top: 0px;
+          }
+          .item-footer {
+            margin-top: 5px;
+          }
+        }
+      }
+    }
+    .ui-header {
+      .sort-btn {
+        svg {
+          width: 25px;
+        }
+      }
+      .ant-btn-icon-only {
+        min-width: 25px;
+        min-height: 25px;
+        height: 25px;
+      }
+      .search-box {
+        .ant-input-affix-wrapper {
+          button {
+            width: 25px;
+            height: 25px;
+          }
+        }
+      }
+    }
+    .site-drawer-render-in-current-wrapper {
+      .ant-drawer-body {
+        padding: 10px;
+      }
+      .ant-drawer-content-wrapper {
+        .filter-title,
+        .favorites-checkbox {
+          margin-bottom: 5px;
+        }
+        .resources-card-filter {
+          padding-top: 5px !important;
+          padding-bottom: 5px !important;
+        }
+        .resource-type-card {
+          height: 100px;
+          .ant-card-body {
+            .ant-space {
+              gap: 1px;
+            }
+          }
+          .ant-space-item {
+            svg {
+              width: 40px;
+              height: 40px;
+            }
+          }
+        }
       }
     }
   }

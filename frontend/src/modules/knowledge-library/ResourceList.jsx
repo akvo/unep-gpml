@@ -94,7 +94,7 @@ const ResourceList = ({
 
   return (
     <Row>
-      <Col span={24}>
+      {/* <Col span={24}>
         <PageHeader
           className="resource-list-header"
           ghost={false}
@@ -139,7 +139,7 @@ const ResourceList = ({
             )
           }
         />
-      </Col>
+      </Col> */}
       <Col
         span={24}
         className="resource-list"
