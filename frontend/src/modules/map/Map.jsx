@@ -125,13 +125,13 @@ const ToolTipContent = ({ data, geo, path, query }) => {
             <tr>
               <th>Resource</th>
               <th>National</th>
-              {totalTransnational() > 0 && <th>Transnational</th>}
+              <th style={{ paddingLeft: "10px" }}>Transnational</th>
             </tr>
           ) : (
             <tr>
               <th>Type</th>
-              <th>Member of GPML</th>
-              {totalTransnational() > 0 && <th>Transnational</th>}
+              <th>Member</th>
+              <th style={{ paddingLeft: "10px" }}>Non-member</th>
             </tr>
           )}
         </thead>
@@ -165,7 +165,17 @@ const ToolTipContent = ({ data, geo, path, query }) => {
               }
             };
 
-            return dataToDisplayPerPath() && query?.topic.length === 0 ? (
+            const queryTopic = () => {
+              if (path === KNOWLEDGE_LIBRARY) {
+                return query?.topic;
+              }
+
+              if (path === STAKEHOLDER_OVERVIEW) {
+                return query?.networkType || [];
+              }
+            };
+
+            return dataToDisplayPerPath() && queryTopic().length === 0 ? (
               <tr key={topic}>
                 <td className="tooltip-topic">{topicNames(topic)}</td>
                 <td className="tooltip-count-wrapper">
@@ -173,16 +183,15 @@ const ToolTipContent = ({ data, geo, path, query }) => {
                     {dataToDisplay()?.[topic] ? dataToDisplay()?.[topic] : 0}
                   </b>
                 </td>
-                {totalTransnational() > 0 && (
-                  <td className="tooltip-count-wrapper">
-                    <b className="tooltip-counts">
-                      {transnationalData()?.[topic]}
-                    </b>
-                  </td>
-                )}
+
+                <td className="tooltip-count-wrapper">
+                  <b className="tooltip-counts">
+                    {transnationalData()?.[topic]}
+                  </b>
+                </td>
               </tr>
             ) : (
-              query?.topic.includes(tooltipChecker()) && (
+              queryTopic().includes(tooltipChecker()) && (
                 <tr key={topic}>
                   <td className="tooltip-topic">{topicNames(topic)}</td>
                   <td className="tooltip-count-wrapper">
@@ -190,13 +199,12 @@ const ToolTipContent = ({ data, geo, path, query }) => {
                       {dataToDisplay()?.[topic] ? dataToDisplay()?.[topic] : 0}
                     </b>
                   </td>
-                  {totalTransnational() > 0 && (
-                    <td className="tooltip-count-wrapper">
-                      <b className="tooltip-counts">
-                        {transnationalData()?.[topic]}
-                      </b>
-                    </td>
-                  )}
+
+                  <td className="tooltip-count-wrapper">
+                    <b className="tooltip-counts">
+                      {transnationalData()?.[topic]}
+                    </b>
+                  </td>
                 </tr>
               )
             );
