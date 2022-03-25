@@ -60,18 +60,18 @@ const Header = ({
                       />
                     }
                   />
-
-                  <Button className="sort-btn" onClick={sortPeople}>
-                    <SortIcon />{" "}
-                    <span>
-                      Sort By:
-                      {isAscending || isAscending === null ? (
-                        <b style={{ paddingLeft: "1em" }}>A&gt;Z</b>
-                      ) : (
-                        <b style={{ paddingLeft: "1em" }}>Z&gt;A</b>
-                      )}
-                    </span>
-                  </Button>
+                  {view === "card" && (
+                    <Button className="sort-btn" onClick={sortPeople}>
+                      <SortIcon
+                        style={{
+                          transform:
+                            isAscending || isAscending === null
+                              ? "initial"
+                              : "rotate(180deg)",
+                        }}
+                      />
+                    </Button>
+                  )}
                 </Space>
               </Col>
               {filterTagValue.length > 0 && (
