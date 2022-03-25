@@ -925,7 +925,10 @@ const DetailsView = ({
               </CardComponent>
 
               <CardComponent
-                title="Connections"
+                title={`Connections (${
+                  data?.entityConnections.length +
+                  data?.stakeholderConnections.length
+                })`}
                 style={{
                   marginBottom: "30px",
                 }}

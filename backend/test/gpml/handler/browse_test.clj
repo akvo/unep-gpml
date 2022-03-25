@@ -98,56 +98,6 @@
                                            :association "user"
                                            :remarks nil})]
 
-    (testing "Simple query WITHOUT LOGIN"
-      (let [resp (handler (mock/request :get "/"))
-            body (-> resp :body)
-            results (:results body)
-            counts (:counts body)
-            tech-count (first counts)]
-        (is (= limit (count results)))
-        (is (= 1 (count counts)))
-        (is (= (:topic tech-count) "technology"))
-        (is (> (:count tech-count) limit))))
-
-    (testing "Simple query WITH login"
-      (let [request (-> (mock/request :get "/")
-                        (assoc
-                         :approved? true
-                         :user sth))
-            resp (handler request)
-            body(-> resp :body)
-            results (:results body)
-            counts (:counts body)]
-        (is (= limit (count results)))
-        (is (= 1 (count counts)))
-        (is (= #{"technology"} (set (map :topic counts))))))
-
-    (testing "Query stakeholders WITHOUT LOGIN"
-      (let [request (-> (mock/request :get "/")
-                        (assoc
-                         :parameters {:query {:topic "technology"}}))
-            resp (handler request)
-            body (-> resp :body)
-            results (:results body)
-            counts (:counts body)]
-        (is (= limit (count results)))
-        (is (= 1 (count counts)))
-        (is (= (-> counts first :topic) "technology"))))
-
-    (testing "Query stakeholders as approved and logged-in user"
-      (let [request (-> (mock/request :get "/")
-                        (assoc
-                         :approved? true
-                         :user sth
-                         :parameters {:query {:topic "technology"}}))
-            resp (handler request)
-            body (-> resp :body)
-            results (:results body)
-            counts (:counts body)]
-        (is (= limit (count results)))
-        (is (= 1 (count counts)))
-        (is (= #{"technology"} (set (map :topic counts))))))
-
     (testing "Query for favorites WITHOUT LOGIN"
       (let [request (-> (mock/request :get "/")
                         (assoc
