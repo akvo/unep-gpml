@@ -205,7 +205,7 @@
         margin-right: 8px;
         cursor: pointer;
         &.label {
-          width: 80px;
+          width: 140px;
           .ant-typography {
             display: flex;
             gap: 8px;
@@ -223,6 +223,9 @@
             }
           }
         }
+      }
+      .ant-card-body {
+        padding: 24px !important;
       }
     }
   }
