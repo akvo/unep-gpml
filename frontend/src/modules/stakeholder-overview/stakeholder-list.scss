@@ -135,6 +135,7 @@
       border-radius: 50%;
       background-color: #ffff;
       margin-right: 10px;
+      margin-left: 10px;
     }
 
     .resource-item-image {
@@ -142,6 +143,8 @@
     }
     .badge-wrapper {
       color: $yellow;
+      position: absolute;
+      left: 4px;
       svg {
         width: 30px;
         height: 30px;
@@ -149,6 +152,7 @@
     }
     .resource-item-wrapper {
       width: 100%;
+      position: relative;
 
       .resource-item {
         width: 100%;

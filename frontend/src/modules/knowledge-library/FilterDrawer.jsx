@@ -374,7 +374,7 @@ const FilterDrawer = ({
             updateQuery={updateQuery}
           />
 
-          <MultipleSelectFilter
+          {/* <MultipleSelectFilter
             title="Entities"
             options={
               isLoaded()
@@ -387,7 +387,7 @@ const FilterDrawer = ({
             flag="entity"
             query={query}
             updateQuery={updateQuery}
-          />
+          /> */}
 
           <MultipleSelectFilter
             title="Representative group"
