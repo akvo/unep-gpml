@@ -173,14 +173,13 @@ const ResourceList = ({
             showSizeChanger={false}
             onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
           />
-          {!loading && (
-            <div className="result-number">
-              {totalItems > pageSize + filters?.offset
-                ? pageSize + Number(filters?.offset)
-                : itemCount}{" "}
-              of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
-            </div>
-          )}
+
+          <div className="result-number" style={{ opacity: loading && "0" }}>
+            {totalItems > pageSize + filters?.offset
+              ? pageSize + Number(filters?.offset)
+              : itemCount}{" "}
+            of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
+          </div>
         </div>
       )}
     </Row>
