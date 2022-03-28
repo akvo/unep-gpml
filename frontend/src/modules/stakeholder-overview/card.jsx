@@ -123,14 +123,17 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                 </li>
                 <li className="list-item">
                   <span className={country?.name && "location"}>
-                    {country?.name}
+                    <TrimText text={country?.name} max={15} />
                   </span>
                 </li>
                 <li className="list-item">
                   {profile?.type === "stakeholder"
                     ? profile?.affiliation && (
                         <span className="entity-name">
-                          {profile?.affiliation?.name}
+                          <TrimText
+                            text={profile?.affiliation?.name}
+                            max={15}
+                          />
                         </span>
                       )
                     : profile?.representativeGroupCivilSociety && (
