@@ -10,7 +10,9 @@ const MapView = ({ multiCountryCountries, updateQuery, isFilteredCountry }) => {
     landing: s.landing,
     countries: s.countries,
   }));
+
   const query = useQuery();
+
   const box = document.getElementsByClassName("stakeholder-overview");
   const isLoaded = () => !isEmpty(landing?.map);
   const [multiCountry, setMultiCountry] = useState(null);
@@ -38,6 +40,7 @@ const MapView = ({ multiCountryCountries, updateQuery, isFilteredCountry }) => {
   return (
     <Maps
       box={box}
+      query={query}
       clickEvents={clickCountry}
       listVisible={[]}
       isDisplayedList={[]}
@@ -58,6 +61,7 @@ const MapView = ({ multiCountryCountries, updateQuery, isFilteredCountry }) => {
               )
           : []
       }
+      useVerticalLegend
     />
   );
 };

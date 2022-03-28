@@ -315,9 +315,11 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
       if (key === "representativeGroup") {
         const representativeGroups = representativeGroup.find(
-          (x) => x == value
+          (x) => x?.code?.toLowerCase() == value?.toLowerCase()
         );
-        return representativeGroups;
+        return value.toLowerCase() === "other"
+          ? "Other"
+          : representativeGroups?.name;
       }
 
       if (key === "seeking") {
@@ -404,14 +406,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
           <LeftSidebar isValidUser={isValidUser} active={2} sidebar={sidebar}>
             <Col lg={24} xs={24} order={2}>
               {view === "card" ? (
-                <div
-                  style={{
-                    minHeight:
-                      viewportWidth < 1360 &&
-                      results.length === pageSize &&
-                      "1138.17px",
-                  }}
-                >
+                <div>
                   {/* Suggested profiles */}
                   {isValidUser && !isEmpty(suggestedProfiles) && (
                     <Col className="card-container green">

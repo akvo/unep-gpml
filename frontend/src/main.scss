@@ -8,6 +8,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+  body {
+    zoom: 90%;
+  }
+}
+
 body,
 button,
 a,
@@ -627,6 +633,12 @@ footer {
     }
   }
 }
+
+// .ant-select-item-option-active:not(.ant-select-item-option-disabled),
+// .ant-dropdown-menu-item:hover {
+//   background-color: #ffb800 !important;
+//   color: #fff !important;
+// }
 
 /* User Warning Modal */
 

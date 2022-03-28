@@ -6,6 +6,7 @@
     position: absolute;
     top: 0;
     width: 100%;
+    height: 700px;
     max-width: 300px;
     z-index: 999;
     background-color: rgba(237, 242, 247, 0.3);
@@ -30,6 +31,7 @@
   }
 
   .resource-list-header {
+    padding: 2px 24px;
     justify-content: unset;
     box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);
     z-index: 999;
@@ -100,8 +102,11 @@
   }
 
   .page {
-    padding: 2rem 0 1rem 10px !important;
+    width: 100%;
+    max-width: 100%;
+    padding: 2rem 0 4rem 10px !important;
     text-align: center;
+    background: #fff;
     .ant-pagination-item {
       margin-bottom: 2px;
     }
@@ -111,13 +116,45 @@
     padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    height: 480px;
+    gap: 5px;
     align-items: center;
     width: 100%;
+    max-height: 45em;
+    padding-bottom: 60px;
 
+    .item-body {
+      display: flex;
+    }
+
+    .resource-image-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 60px;
+      max-width: 60px;
+      overflow: hidden;
+      border-radius: 50%;
+      background-color: #ffff;
+      margin-right: 10px;
+      margin-left: 10px;
+    }
+
+    .resource-item-image {
+      width: 60px;
+    }
+    .badge-wrapper {
+      color: $yellow;
+      position: absolute;
+      left: 4px;
+      svg {
+        width: 30px;
+        height: 30px;
+      }
+    }
     .resource-item-wrapper {
       width: 100%;
+      position: relative;
 
       .resource-item {
         width: 100%;
@@ -125,7 +162,7 @@
         box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
         text-align: left;
         color: $black;
-        padding: 10px 24px 10px 24px;
+        padding: 5px 24px 5px 24px;
 
         .topic {
           color: $green05;
@@ -143,6 +180,15 @@
           }
         }
       }
+    }
+  }
+
+  @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+    .page {
+      padding: 1rem 0 1rem 10px !important;
+      position: absolute;
+      bottom: 0;
+      background-color: #fff;
     }
   }
 }

@@ -29,7 +29,7 @@ import { ReactComponent as CapacityBuildingIcon } from "../../images/knowledge-l
 import { ReactComponent as ActionSelectedIcon } from "../../images/knowledge-library/action-selected.svg";
 import { ReactComponent as EventFlexibleIcon } from "../../images/knowledge-library/event-flexible.svg";
 import { ReactComponent as InitiativeIcon } from "../../images/knowledge-library/initiative.svg";
-import { ReactComponent as FinancingIcon } from "../../images/knowledge-library/financing.svg";
+import { ReactComponent as FinancingIcon } from "../../images/knowledge-library/financing-2.svg";
 import { ReactComponent as PolicyIcon } from "../../images/knowledge-library/policy.svg";
 import { ReactComponent as TechnicalIcon } from "../../images/knowledge-library/technical.svg";
 import { ReactComponent as TechnologyIcon } from "../../images/knowledge-library/technology.svg";
@@ -52,6 +52,7 @@ const FilterDrawer = ({
     geoCoverageTypeOptions,
     representativeGroup,
     mainContentType,
+    organisations,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     nav: s.nav,
@@ -61,6 +62,7 @@ const FilterDrawer = ({
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     mainContentType: s.mainContentType,
     representativeGroup: s.representativeGroup,
+    organisations: s.organisations,
   }));
   const { isAuthenticated } = useAuth0();
 
@@ -70,13 +72,16 @@ const FilterDrawer = ({
     !isEmpty(transnationalOptions) &&
     !isEmpty(geoCoverageTypeOptions) &&
     !isEmpty(mainContentType) &&
-    !isEmpty(representativeGroup);
+    !isEmpty(representativeGroup) &&
+    !isEmpty(organisations);
 
-  const mainContentOptions = isLoaded()
+  const filteredMainContentOptions = isLoaded()
     ? mainContentType
         .filter((content) => {
           const resourceName = (name) => {
-            if (name === "event_flexible") {
+            if (name === "initiative") {
+              return "project";
+            } else if (name === "event_flexible") {
               return "event";
             } else if (name === "financing") {
               return "financing_resource";
@@ -92,6 +97,14 @@ const FilterDrawer = ({
         })
         .sort((a, b) => a?.code.localeCompare(b?.code))
     : [];
+
+  const mainContentOption = () => {
+    if (query?.topic.length > 0) {
+      return filteredMainContentOptions;
+    } else if (query?.topic.length === 0) {
+      return mainContentType;
+    }
+  };
 
   const topicIcons = (topic) => {
     if (topic === "project") {
@@ -189,12 +202,17 @@ const FilterDrawer = ({
 
   // populate options for representative group options
   const representativeOpts = isLoaded()
-    ? representativeGroup?.map((x) => ({ label: x?.name, value: x?.code }))
+    ? [...representativeGroup, { code: "other", name: "Other" }].map((x) => ({
+        label: x?.name,
+        value: x?.code,
+      }))
     : [];
 
   return (
     <div className="site-drawer-render-in-current-wrapper">
       <Drawer
+        tabIndex=""
+        tabindex=""
         title="Choose your filters below"
         placement="left"
         visible={filterVisible}
@@ -232,7 +250,7 @@ const FilterDrawer = ({
                   countData?.find((it) => it.topic === topic)?.count || 0;
 
                 return (
-                  <Col span={6} key={type}>
+                  <Col span={6} key={type} className="resource-card-wrapper">
                     <Card
                       onClick={() => handleChangeResourceType("topic", topic)}
                       className={classNames("resource-type-card", {
@@ -251,34 +269,34 @@ const FilterDrawer = ({
             </Row>
           </Col>
           {/* Sub-content type */}
-          {query?.topic?.length > 0 && (
-            <MultipleSelectFilter
-              title="Sub-content type"
-              options={
-                isLoaded()
-                  ? mainContentOptions.map((content) => ({
-                      label: content?.name,
-                      options: content?.childs
-                        .map((child, i) => ({
-                          label: child?.title,
-                          value: child?.title,
-                          key: `${i}-${content.name}`,
-                        }))
-                        .sort((a, b) =>
-                          a?.label?.trim().localeCompare(b?.label?.trim())
-                        ),
-                    }))
-                  : []
-              }
-              value={query?.subContentType || []}
-              flag="subContentType"
-              query={query}
-              updateQuery={updateQuery}
-            />
-          )}
+
+          <MultipleSelectFilter
+            title="Sub-content type"
+            options={
+              isLoaded()
+                ? mainContentOption().map((content) => ({
+                    label: content?.name,
+                    options: content?.childs
+                      .map((child, i) => ({
+                        label: child?.title,
+                        value: child?.title,
+                        key: `${i}-${content.name}`,
+                      }))
+                      .sort((a, b) =>
+                        a?.label?.trim().localeCompare(b?.label?.trim())
+                      ),
+                  }))
+                : []
+            }
+            value={query?.subContentType || []}
+            flag="subContentType"
+            query={query}
+            updateQuery={updateQuery}
+          />
+
           {/* My Bookmarks */}
           {isAuthenticated && (
-            <Col span={24}>
+            <Col span={24} style={{ paddingTop: 5, paddingBottom: 5 }}>
               <Space align="middle">
                 <Checkbox
                   className="favorites-checkbox"
@@ -293,7 +311,7 @@ const FilterDrawer = ({
             </Col>
           )}
           {/* Location */}
-          <Col span={24}>
+          <Col span={24} style={{ paddingTop: 5, paddingBottom: 5 }}>
             <Space align="middle">
               <div className="filter-title">Location</div>
               {!isEmpty(query?.country) ? (
@@ -355,18 +373,30 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
+
+          {/* <MultipleSelectFilter
+            title="Entities"
+            options={
+              isLoaded()
+                ? organisations
+                    ?.map((x) => ({ value: x.id, label: x.name }))
+                    .filter((organisation) => organisation?.value > -1)
+                : []
+            }
+            value={query?.entity?.map((x) => parseInt(x)) || []}
+            flag="entity"
+            query={query}
+            updateQuery={updateQuery}
+          /> */}
+
           <MultipleSelectFilter
             title="Representative group"
             options={
               isLoaded()
-                ? representativeOpts
-                    ?.sort((repG1, repG2) =>
-                      repG1?.label?.localeCompare(repG2?.label)
-                    )
-                    .map((x) => ({
-                      value: x?.value,
-                      label: x.label,
-                    }))
+                ? representativeOpts.map((x) => ({
+                    value: x?.value,
+                    label: x.label,
+                  }))
                 : []
             }
             value={query?.representativeGroup || []}
@@ -375,7 +405,11 @@ const FilterDrawer = ({
             updateQuery={updateQuery}
           />
           {/* Date Filter */}
-          <Col span={24} className="date-picker-container">
+          <Col
+            span={24}
+            className="date-picker-container"
+            style={{ paddingTop: 5, paddingBottom: 5 }}
+          >
             <Row type="flex" style={{ width: "100%" }} gutter={[10, 10]}>
               {/* Start date */}
               <DatePickerFilter

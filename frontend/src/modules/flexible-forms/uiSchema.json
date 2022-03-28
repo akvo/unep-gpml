@@ -20,10 +20,6 @@
         "ui:order": ["title", "summary", "url"]
       },
       "S4_G2": {
-        "S4_G2_23": {
-          "ui:widget": "select",
-          "ui:showSearch": true
-        },
         "geoCoverageType": {
           "ui:widget": "radio"
         },
@@ -53,7 +49,6 @@
           "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
-          "S4_G2_23",
           "geoCoverageType",
           "S4_G2_24.3",
           "S4_G2_24.4",
@@ -404,11 +399,6 @@
         "ui:order": ["title", "summary", "url"]
       },
       "S4_G2": {
-        "country": {
-          "ui:placeholder": "Choose the resource country",
-          "ui:widget": "select",
-          "ui:showSearch": true
-        },
         "geoCoverageType": {
           "ui:widget": "radio"
         },
@@ -438,7 +428,6 @@
           "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
-          "country",
           "geoCoverageType",
           "geoCoverageValueTransnational",
           "geoCoverageCountries",
@@ -638,11 +627,6 @@
         "ui:order": ["title", "summary", "url"]
       },
       "S4_G2": {
-        "country": {
-          "ui:placeholder": "Choose the resource country",
-          "ui:widget": "select",
-          "ui:showSearch": true
-        },
         "geoCoverageType": {
           "ui:widget": "radio"
         },
@@ -672,7 +656,6 @@
           "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
-          "country",
           "geoCoverageType",
           "geoCoverageValueTransnational",
           "geoCoverageCountries",
@@ -908,11 +891,6 @@
         "ui:order": ["title", "summary", "url"]
       },
       "S4_G2": {
-        "country": {
-          "ui:placeholder": "Choose the resource country",
-          "ui:widget": "select",
-          "ui:showSearch": true
-        },
         "geoCoverageType": {
           "ui:widget": "radio"
         },
@@ -942,7 +920,6 @@
           "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
-          "country",
           "geoCoverageType",
           "geoCoverageValueTransnational",
           "geoCoverageCountries",
@@ -1147,11 +1124,6 @@
         "ui:order": ["title", "summary", "url"]
       },
       "S4_G2": {
-        "country": {
-          "ui:placeholder": "Choose the resource country",
-          "ui:widget": "select",
-          "ui:showSearch": true
-        },
         "geoCoverageType": {
           "ui:widget": "radio"
         },
@@ -1181,7 +1153,6 @@
           "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
-          "country",
           "geoCoverageType",
           "geoCoverageValueTransnational",
           "geoCoverageCountries",
@@ -1369,11 +1340,6 @@
         "ui:order": ["title", "summary", "url"]
       },
       "S4_G2": {
-        "country": {
-          "ui:placeholder": "Choose the resource country",
-          "ui:widget": "select",
-          "ui:showSearch": true
-        },
         "geoCoverageType": {
           "ui:widget": "radio"
         },
@@ -1403,7 +1369,6 @@
           "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
-          "country",
           "geoCoverageType",
           "geoCoverageValueTransnational",
           "geoCoverageCountries",
@@ -1515,7 +1480,14 @@
       },
       "eventType": {
         "ui:placeholder": "Choose event type",
-        "ui:widget": "select"
+        "ui:widget": "select",
+        "ui:span": 12
+      },
+      "recording": {
+        "ui:addOnBefore": "https://",
+        "ui:widget": "URLWidget",
+        "ui:placeholder": "Url",
+        "ui:span": 12
       }
     }
   },
@@ -1596,11 +1568,6 @@
         "ui:order": ["title", "summary", "url"]
       },
       "S4_G2": {
-        "country": {
-          "ui:placeholder": "Choose the resource country",
-          "ui:widget": "select",
-          "ui:showSearch": true
-        },
         "geoCoverageType": {
           "ui:widget": "radio"
         },
@@ -1630,7 +1597,6 @@
           "ui:placeholder": "City, State, Territory..."
         },
         "ui:order": [
-          "country",
           "geoCoverageType",
           "geoCoverageValueTransnational",
           "geoCoverageCountries",

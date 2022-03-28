@@ -25,13 +25,13 @@ const Header = ({
         <img src={DownArrow} className="selection-arrow" alt="down-arrow" />
       </button>
       <span className="label text-white">{`${view} view`}</span>
-      {view?.toLowerCase().includes("card") ? (
-        <img src={TooltipOutlined} alt="tooltip-icon" />
-      ) : (
-        <img src={GlobeOutlined} alt="globe-icon" />
-      )}
+      <img src={GlobeOutlined} alt="globe-icon" />
     </div>
   );
+
+  const filterTagValue = renderFilterTag()
+    .flat()
+    .filter((item) => item);
 
   return (
     <Col span={24} className="ui-header">
@@ -60,11 +60,25 @@ const Header = ({
                       />
                     }
                   />
+                  {view === "card" && (
+                    <Button className="sort-btn" onClick={sortPeople}>
+                      <SortIcon
+                        style={{
+                          transform:
+                            isAscending || isAscending === null
+                              ? "initial"
+                              : "rotate(180deg)",
+                        }}
+                      />
+                    </Button>
+                  )}
                 </Space>
               </Col>
-              <Col lg={19} md={17} sm={15} className="filter-tag">
-                <Space direction="horizontal">{renderFilterTag()}</Space>
-              </Col>
+              {filterTagValue.length > 0 && (
+                <Col lg={19} md={17} sm={15} className="filter-tag">
+                  <Space direction="horizontal">{renderFilterTag()}</Space>
+                </Col>
+              )}
             </Row>
           </Col>
           {/* Map/Topic view dropdown */}
@@ -78,20 +92,6 @@ const Header = ({
               <Select.Option value="card">Card View </Select.Option>
             </Select>
           </Col>
-          {view === "card" && (
-            <Button className="sort-btn" onClick={sortPeople}>
-              <SortIcon />{" "}
-              <span>
-                Sort By:
-                <br />{" "}
-                {isAscending || isAscending === null ? (
-                  <b>A&gt;Z</b>
-                ) : (
-                  <b>Z&gt;A</b>
-                )}
-              </span>
-            </Button>
-          )}
         </Row>
       </div>
     </Col>

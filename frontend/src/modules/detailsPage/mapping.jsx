@@ -213,12 +213,6 @@ const detailPolicy = [
 
 const detailProject = [
   {
-    key: "organisation",
-    name: "Organisation",
-    value: "join",
-    type: "array",
-  },
-  {
     key: "funds",
     name: "Amount Invested",
     value: "funds",

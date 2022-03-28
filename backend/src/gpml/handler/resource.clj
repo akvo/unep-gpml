@@ -13,7 +13,8 @@
             [gpml.pg-util :as pg-util]
             [gpml.util :as util]
             [integrant.core :as ig]
-            [ring.util.response :as resp]))
+            [ring.util.response :as resp]
+            [gpml.db.tag :as db.tag]))
 
 (defn expand-entity-associations
   [entity-connections resource-id]
@@ -34,6 +35,22 @@
           :stakeholder (:stakeholder connection)
           :association (:role connection)
           :remarks nil})))
+
+(defn add-tags [conn mailjet-config tags resource-id]
+  (let [tag-ids (map #(:id %) tags)]
+    (if-not (some nil? tag-ids)
+      (db.resource/add-resource-tags conn {:tags (map #(vector resource-id %) tag-ids)})
+      (let [tag-category (:id (db.tag/tag-category-by-category-name conn {:category "general"}))
+            new-tags (filter #(not (contains? % :id)) tags)
+            tags-to-db (map #(vector % tag-category) (vec (map #(:tag %) new-tags)))
+            new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags tags-to-db}))]
+        (db.resource/add-resource-tags conn {:tags (map #(vector resource-id %) (concat (remove nil? tag-ids) new-tag-ids))})
+        (map
+          #(email/notify-admins-pending-approval
+             conn
+             mailjet-config
+             (merge % {:type "tag"}))
+          new-tags)))))
 
 (defn create-resource [conn {:keys [resource_type title publish_year
                                     summary value value_currency
@@ -84,8 +101,7 @@
                                                 :stakeholder-id stakeholder-id
                                                 :roles ["owner"]}))
     (when (not-empty tags)
-      (db.resource/add-resource-tags conn {:tags
-                                           (map #(vector resource-id %) tags)}))
+      (add-tags conn mailjet-config tags resource-id))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections resource-id)]
         (db.favorite/new-organisation-association conn association)))
@@ -191,7 +207,10 @@
              [:role
               [:enum "owner" "resource_editor"]]]]]
           [:tags {:optional true}
-           [:vector {:optional true} integer?]]
+           [:vector {:optional true}
+            [:map {:optional true}
+             [:id {:optional true} pos-int?]
+             [:tag string?]]]]
           auth/owners-schema]
          handler.geo/params-payload)])
 

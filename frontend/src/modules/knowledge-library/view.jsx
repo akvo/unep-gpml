@@ -28,7 +28,9 @@ import IconLibrary from "../../images/capacity-building/ic-knowledge-library.svg
 import IconLearning from "../../images/capacity-building/ic-capacity-building.svg";
 import IconExchange from "../../images/capacity-building/ic-exchange.svg";
 import IconCaseStudies from "../../images/capacity-building/ic-case-studies.svg";
+import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 import { titleCase } from "../../utils/string";
+import { multicountryGroups } from "./multicountry";
 
 const { Option } = Select;
 
@@ -63,6 +65,8 @@ const KnowledgeLibrary = ({
 }) => {
   const [filterVisible, setFilterVisible] = useState(false);
   const [listVisible, setListVisible] = useState(true);
+  const [isAscending, setIsAscending] = useState(null);
+  const [allResults, setAllResults] = useState([]);
   const [view, setView] = useState("map");
 
   const sidebar = [
@@ -92,11 +96,7 @@ const KnowledgeLibrary = ({
         <img src={DownArrow} className="selection-arrow" alt="down-arrow" />
       </button>
       <span className="label text-white">{`${view} view`}</span>
-      {view.toLowerCase().includes("map") ? (
-        <img src={GlobeOutlined} alt="globe-icon" />
-      ) : (
-        <img src={TooltipOutlined} alt="tooltip-icon" />
-      )}
+      <img src={GlobeOutlined} alt="globe-icon" />
     </div>
   );
 
@@ -104,12 +104,14 @@ const KnowledgeLibrary = ({
     tags,
     profile,
     countries,
+    organisations,
     transnationalOptions,
     representativeGroup,
   } = UIStore.useState((s) => ({
     tags: s.tags,
     profile: s.profile,
     countries: s.countries,
+    organisations: s.organisations,
     transnationalOptions: s.transnationalOptions,
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
@@ -204,16 +206,21 @@ const KnowledgeLibrary = ({
         return findCountry?.name;
       }
       if (key === "transnational") {
-        const findTransnational = transnationalOptions.find(
-          (x) => x.id == value
-        );
+        const transnationalGroup = multicountryGroups
+          .map((multicountryGroup) => multicountryGroup.item)
+          .flat();
+
+        const findTransnational = transnationalGroup.find((x) => x.id == value);
         return findTransnational?.name;
       }
+
       if (key === "representativeGroup") {
         const representativeGroups = representativeGroup.find(
           (x) => x?.code?.toLowerCase() == value?.toLowerCase()
         );
-        return representativeGroups?.name;
+        return value.toLowerCase() === "other"
+          ? "Other"
+          : representativeGroups?.name;
       }
       if (key === "startDate") {
         return `Start date ${value}`;
@@ -223,6 +230,12 @@ const KnowledgeLibrary = ({
       }
       if (key === "subContentType") {
         return value;
+      }
+      if (key === "entity") {
+        const findOrganisation = organisations.find(
+          (organisation) => organisation.id == value
+        );
+        return findOrganisation?.name;
       }
     };
     return Object.keys(query).map((key, index) => {
@@ -260,6 +273,55 @@ const KnowledgeLibrary = ({
     });
   };
 
+  const sortResults = () => {
+    if (!isAscending) {
+      const sortAscending = allResults.sort((result1, result2) => {
+        if (result1?.title) {
+          return result1?.title
+            ?.trim()
+            .localeCompare(result2?.title?.trim(), "en", {
+              numeric: true,
+            });
+        } else {
+          return result1?.name
+            ?.trim()
+            .localeCompare(result2?.name?.trim(), "en", {
+              numeric: true,
+            });
+        }
+      });
+      setAllResults(sortAscending);
+    } else {
+      const sortDescending = allResults.sort((result1, result2) => {
+        if (result2?.title) {
+          return result2?.title
+            ?.trim()
+            .localeCompare(result1?.title?.trim(), "en", {
+              numeric: true,
+            });
+        } else {
+          return result2?.name
+            ?.trim()
+            .localeCompare(result1?.name?.trim(), "en", {
+              numeric: true,
+            });
+        }
+      });
+      setAllResults(sortDescending);
+    }
+    setIsAscending(!isAscending);
+  };
+
+  useEffect(() => {
+    setAllResults(
+      [...results].sort((a, b) => Date.parse(b.created) - Date.parse(a.created))
+    );
+  }, [results]);
+
+  const filterTagValue = renderFilterTag()
+    .flat()
+    .filter((item) => item);
+
   return (
     <Row id="knowledge-library">
       {/* Header */}
@@ -290,11 +352,23 @@ const KnowledgeLibrary = ({
                         />
                       }
                     />
+                    <Button className="sort-btn" onClick={sortResults}>
+                      <SortIcon
+                        style={{
+                          transform:
+                            isAscending || isAscending === null
+                              ? "initial"
+                              : "rotate(180deg)",
+                        }}
+                      />
+                    </Button>
                   </Space>
                 </Col>
-                <Col lg={19} md={17} sm={15} className="filter-tag">
-                  <Space direction="horizontal">{renderFilterTag()}</Space>
-                </Col>
+                {filterTagValue.length > 0 && (
+                  <Col lg={19} md={17} sm={15} className="filter-tag">
+                    <Space direction="horizontal">{renderFilterTag()}</Space>
+                  </Col>
+                )}
               </Row>
             </Col>
             {/* Map/Topic view dropdown */}
@@ -357,12 +431,14 @@ const KnowledgeLibrary = ({
                       view,
                       filters,
                       results,
+                      allResults,
                       countData,
                       loading,
                       pageSize,
                       listVisible,
                       updateQuery,
                       setListVisible,
+                      isAscending,
                     }}
                     hideListButtonVisible={view === "map"}
                   />

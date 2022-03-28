@@ -38,7 +38,7 @@ const FilterDrawer = ({
     offering: s.tags.offering,
     countries: s.countries,
     organisations: s.organisations,
-    representativeGroup: s.sectorOptions,
+    representativeGroup: s.representativeGroup,
     transnationalOptions: s.transnationalOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
   }));
@@ -98,14 +98,29 @@ const FilterDrawer = ({
     updateQuery(flag, updateVal);
   };
 
+  const queryToRefresh = Object.fromEntries(
+    Object.entries(query).filter(([key]) => key !== "page" && key !== "q")
+  );
+
+  const queryValues = Object.values(queryToRefresh).flat();
+
   const countryOpts = countries
     .filter((country) => country.description === "Member State")
     .map((it) => ({ value: it.id, label: it.name }))
     .sort((a, b) => a.label.localeCompare(b.label));
 
+  const representativeOpts = isLoaded()
+    ? [...representativeGroup, { code: "other", name: "Other" }].map((x) => ({
+        label: x?.name,
+        value: x?.code,
+      }))
+    : [];
+
   return (
     <div className="site-drawer-render-in-current-wrapper">
       <Drawer
+        tabIndex=""
+        tabindex=""
         title="Choose your filters below"
         placement="left"
         visible={filterVisible}
@@ -139,7 +154,11 @@ const FilterDrawer = ({
             <Row type="flex" gutter={[10, 10]}>
               {networkTypes.map((networkType) => {
                 return (
-                  <Col span={6} key={networkType}>
+                  <Col
+                    span={6}
+                    key={networkType}
+                    className="resource-card-wrapper"
+                  >
                     <Card
                       onClick={() =>
                         handleChangeType("networkType", networkType)
@@ -284,15 +303,32 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
+          {/* Entities */}
+          {/* <MultipleSelectFilter
+            title="Entities"
+            options={
+              isLoaded()
+                ? organisations
+                    ?.map((x) => ({ value: x.id, label: x.name }))
+                    .filter((organisation) => organisation?.value > -1)
+                    .sort((a, b) => a?.label.localeCompare(b?.label))
+                : []
+            }
+            value={query?.affiliation?.map((x) => parseInt(x)) || []}
+            flag="affiliation"
+            query={query}
+            updateQuery={updateQuery}
+          /> */}
 
           {/* Representative group */}
           <MultipleSelectFilter
             title="Representative group"
             options={
               isLoaded()
-                ? representativeGroup
-                    ?.map((x) => ({ value: x, label: x }))
-                    .sort((a, b) => a?.label?.localeCompare(b?.label))
+                ? representativeOpts.map((x) => ({
+                    value: x?.value,
+                    label: x.label,
+                  }))
                 : []
             }
             value={query?.representativeGroup || []}
@@ -303,14 +339,21 @@ const FilterDrawer = ({
 
           <Col className="drawer-button-wrapper">
             <Button
-              className="clear-all-btn"
+              disabled={queryValues.length === 0}
+              className={
+                queryValues.length > 0
+                  ? "clear-all-btn"
+                  : "clear-all-btn disabled"
+              }
               onClick={() => {
-                const paramValueArr = filterQueries.map((query) => ({
-                  param: query,
-                  value: [],
-                }));
-                setFilterCountries([]);
-                updateQuery(null, null, paramValueArr);
+                if (queryValues.length > 0) {
+                  const paramValueArr = filterQueries.map((query) => ({
+                    param: query,
+                    value: [],
+                  }));
+                  setFilterCountries([]);
+                  updateQuery(null, null, paramValueArr);
+                }
               }}
             >
               Clear all

@@ -280,11 +280,12 @@ export const handleGeoCoverageValue = (
       data[geoCoverageValue] = [currentValue[geoCoverageValueTransnational]];
     }
   }
-  if (data[geoCoverageType] === "regional") {
-    data[geoCoverageValue] = currentValue[geoCoverageValueRegional].map((x) =>
-      parseInt(x)
-    );
-  }
+  // if (data[geoCoverageType] === "regional") {
+  //   console.log(currentValue);
+  //   // data[geoCoverageValue] = currentValue[geoCoverageValueRegional].map((x) =>
+  //   //   parseInt(x)
+  //   // );
+  // }
   if (data[geoCoverageType] === "global with elements in specific areas") {
     data[geoCoverageValue] = currentValue[
       geoCoverageValueGlobalSpesific

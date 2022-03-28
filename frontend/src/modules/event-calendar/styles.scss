@@ -185,6 +185,9 @@
           position: absolute;
           bottom: 0;
           margin-bottom: 24px;
+          width: 100%;
+          margin-left: -24px;
+          padding: 0 24px;
         }
       }
       .event-more {
@@ -294,6 +297,15 @@
         background: #fff;
         opacity: 1;
       }
+    }
+  }
+}
+
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+  .event {
+    padding-top: 10px;
+    &.section-container {
+      zoom: 80%;
     }
   }
 }

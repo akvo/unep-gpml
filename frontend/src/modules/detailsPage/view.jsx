@@ -21,6 +21,7 @@ import {
   Input,
   Button,
 } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
 const { Title } = Typography;
 import { UIStore } from "../../store";
 import StickyBox from "react-sticky-box";
@@ -272,6 +273,8 @@ const renderBannerSection = (
   allowBookmark,
   visible,
   handleVisible,
+  showLess,
+  setShowLess,
   relation,
   handleRelationChange
 ) => {
@@ -315,7 +318,23 @@ const renderBannerSection = (
                 borderRadius: "none",
               }}
             >
-              <p>{data.summary}</p>
+              {data.summary.length < 400 ? (
+                <p>{data?.summary}</p>
+              ) : (
+                <>
+                  <p>
+                    {showLess
+                      ? `${data.summary.slice(0, 400)}...`
+                      : data.summary}
+                  </p>
+                  <a
+                    className="view-more"
+                    onClick={() => setShowLess(!showLess)}
+                  >
+                    Read {showLess ? "More" : "Less"}
+                  </a>
+                </>
+              )}
             </CardComponent>
             <SharePanel
               data={data}
@@ -542,13 +561,53 @@ const renderItemValues = (
   );
 };
 
+const renderGeoCoverageCountryGroups = (
+  data,
+  countries,
+  transnationalOptions
+) => {
+  let dataCountries = null;
+  const newArray = [...new Set([...transnationalOptions, ...countries])];
+  dataCountries = data["geoCoverageValues"]?.map((x) => {
+    return {
+      name: newArray.find((it) => it.id === x)?.name,
+      countries: newArray.find((it) => it.id === x)?.countries
+        ? newArray.find((it) => it.id === x)?.countries
+        : [],
+    };
+  });
+  return (
+    <>
+      {dataCountries.map((item, index) => (
+        <span id={index}>
+          {(index ? ", " : " ") + item.name}{" "}
+          {item.countries && item.countries.length > 0 && (
+            <Popover
+              className="popover-multi-country"
+              title={""}
+              content={
+                <ul className="list-country-group">
+                  {item.countries.map((name) => (
+                    <li id={name.id}>{name.name}</li>
+                  ))}
+                </ul>
+              }
+              placement="right"
+              arrowPointAtCenter
+            >
+              <InfoCircleOutlined />
+            </Popover>
+          )}
+        </span>
+      ))}
+    </>
+  );
+};
 const renderCountries = (data, countries, transnationalOptions) => {
   let dataCountries = null;
   const newArray = [...new Set([...transnationalOptions, ...countries])];
-  dataCountries = data["geoCoverageValues"]
-    ?.map((x) => {
-      return newArray.find((it) => it.id === x)?.name;
-    })
+  dataCountries = data["geoCoverageCountries"]
+    ?.map((x) => newArray.find((it) => it.id === x)?.name)
     .join(", ");
   return dataCountries;
 };
@@ -562,6 +621,7 @@ const DetailsView = ({
   const record = useRef(null);
   const document = useRef(null);
   const reviews = useRef(null);
+  const [showLess, setShowLess] = useState(true);
 
   const {
     profile,
@@ -570,6 +630,7 @@ const DetailsView = ({
     regionOptions,
     meaOptions,
     transnationalOptions,
+    icons,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -577,6 +638,7 @@ const DetailsView = ({
     regionOptions: s.regionOptions,
     meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
+    icons: s.icons,
   }));
   const history = useHistory();
   const [data, setData] = useState(null);
@@ -775,6 +837,8 @@ const DetailsView = ({
               allowBookmark,
               visible,
               handleVisible,
+              showLess,
+              setShowLess,
               { ...{ handleRelationChange, relation } }
             )}
           </Row>
@@ -804,25 +868,50 @@ const DetailsView = ({
               >
                 <div className="list geo-coverage">
                   <List itemLayout="horizontal">
-                    {data?.geoCoverageValues &&
-                      data?.geoCoverageValues.length > 0 && (
-                        <List.Item>
-                          <List.Item.Meta
-                            avatar={<Avatar src={LocationImage} />}
-                            title={renderCountries(
-                              data,
-                              countries,
-                              transnationalOptions
-                            )}
-                          />
-                        </List.Item>
-                      )}
                     <List.Item>
                       <List.Item.Meta
                         avatar={<Avatar src={TransnationalImage} />}
                         title={data?.geoCoverageType}
                       />
                     </List.Item>
+                    {data?.geoCoverageType !== "sub-national" && (
+                      <>
+                        {data?.geoCoverageValues &&
+                          data?.geoCoverageValues.length > 0 && (
+                            <List.Item>
+                              <List.Item.Meta
+                                avatar={<Avatar src={LocationImage} />}
+                                title={
+                                  <>
+                                    {renderGeoCoverageCountryGroups(
+                                      data,
+                                      countries,
+                                      transnationalOptions
+                                    )}
+                                  </>
+                                }
+                              />
+                            </List.Item>
+                          )}
+                      </>
+                    )}
+                    {data?.geoCoverageType === "sub-national" && (
+                      <>
+                        {data?.geoCoverageValues &&
+                          data?.geoCoverageValues.length > 0 && (
+                            <List.Item>
+                              <List.Item.Meta
+                                avatar={<Avatar src={LocationImage} />}
+                                title={renderCountries(
+                                  data,
+                                  countries,
+                                  transnationalOptions
+                                )}
+                              />
+                            </List.Item>
+                          )}
+                      </>
+                    )}
                     {data?.subnationalCity && (
                       <List.Item>
                         <List.Item.Meta
@@ -836,33 +925,10 @@ const DetailsView = ({
               </CardComponent>
 
               <CardComponent
-                title="Tags"
-                style={{
-                  marginBottom: "30px",
-                }}
-              >
-                <div className="list tag-list">
-                  <List itemLayout="horizontal">
-                    {data?.tags && (
-                      <List.Item>
-                        <List.Item.Meta
-                          avatar={<Avatar src={TagsImage} />}
-                          title={
-                            <ul>
-                              {data?.tags &&
-                                data?.tags.map((tag) => (
-                                  <li key={tag.tag}>{tag.tag}</li>
-                                ))}
-                            </ul>
-                          }
-                        />
-                      </List.Item>
-                    )}
-                  </List>
-                </div>
-              </CardComponent>
-              <CardComponent
-                title="Connection"
+                title={`Connections (${
+                  data?.entityConnections.length +
+                  data?.stakeholderConnections.length
+                })`}
                 style={{
                   marginBottom: "30px",
                 }}
@@ -986,6 +1052,32 @@ const DetailsView = ({
                   />
                 )}
               </CardComponent>
+              <CardComponent
+                title="Tags"
+                style={{
+                  marginBottom: "30px",
+                }}
+              >
+                <div className="list tag-list">
+                  <List itemLayout="horizontal">
+                    {data?.tags && (
+                      <List.Item>
+                        <List.Item.Meta
+                          avatar={<Avatar src={TagsImage} />}
+                          title={
+                            <ul>
+                              {data?.tags &&
+                                data?.tags.map((tag) => (
+                                  <li key={tag.tag}>{tag.tag}</li>
+                                ))}
+                            </ul>
+                          }
+                        />
+                      </List.Item>
+                    )}
+                  </List>
+                </div>
+              </CardComponent>
               {data?.relatedContent && data?.relatedContent?.length > 0 && (
                 <CardComponent
                   title={`Related content (${
@@ -1000,37 +1092,45 @@ const DetailsView = ({
                     <Row gutter={16} className="related-content">
                       {data?.relatedContent.map((item) => (
                         <Col span={12}>
-                          <Card
-                            title={data?.type ? data.type : ""}
-                            bordered={false}
-                          >
-                            <h4>{item.title}</h4>
-                            {/* <p>{item.description}</p> */}
-                            <div className="bottom-panel">
-                              <div>
-                                <Avatar.Group
-                                  maxCount={2}
-                                  size="large"
-                                  maxStyle={{
-                                    color: "#f56a00",
-                                    backgroundColor: "#fde3cf",
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  {item?.stakeholderConnections?.map(
-                                    (connection, index) => (
-                                      <Avatar src={connection.image} />
-                                    )
-                                  )}
-                                </Avatar.Group>
-                              </div>
-                              <a href={`/${params.type}/${item.id}`}>
-                                <div className="read-more">
-                                  Read More <ArrowRightOutlined />
-                                </div>
-                              </a>
+                          <div className="slider-card">
+                            <div className="image-holder">
+                              <img
+                                src={
+                                  require(`../../images/${icons[params.type]}`)
+                                    .default
+                                }
+                              />
                             </div>
-                          </Card>
+
+                            <div className="description-holder">
+                              <h4>{data?.type ? data.type : ""}</h4>
+                              <h6>{item.title}</h6>
+                              <div className="bottom-panel">
+                                <div>
+                                  <Avatar.Group
+                                    maxCount={2}
+                                    size="large"
+                                    maxStyle={{
+                                      color: "#f56a00",
+                                      backgroundColor: "#fde3cf",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    {item?.stakeholderConnections?.map(
+                                      (connection, index) => (
+                                        <Avatar src={connection.image} />
+                                      )
+                                    )}
+                                  </Avatar.Group>
+                                </div>
+                                <a href={`/${params.type}/${item.id}`}>
+                                  <div className="read-more">
+                                    Read More <ArrowRightOutlined />
+                                  </div>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
                         </Col>
                       ))}
                     </Row>

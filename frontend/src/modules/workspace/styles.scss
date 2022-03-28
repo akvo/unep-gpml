@@ -24,6 +24,7 @@ $bg-green-primary: #10f9b7;
 }
 
 #workspace {
+  background-color: $bg-dark-secondary;
   .paragraph,
   .header-text,
   .plan-content,
@@ -57,7 +58,12 @@ $bg-green-primary: #10f9b7;
   }
 
   .section-download {
+    width: 100%;
+    max-width: 1620px;
+    margin: auto;
+    background-color: #ffff;
     padding: 14px 17px 20.3px 17px;
+
     .card {
       display: flex;
       align-items: center;
@@ -138,8 +144,10 @@ $bg-green-primary: #10f9b7;
       }
 
       img {
-        width: 32px;
-        height: 32px;
+        width: 30px;
+        height: 30px;
+        // width: 32px;
+        // height: 32px;
       }
 
       &.active {
@@ -166,6 +174,8 @@ $bg-green-primary: #10f9b7;
 
   .action-plan {
     width: 100%;
+    max-width: 1620px;
+    margin: auto;
     padding: 14px 10px 17px 8px;
     background-color: $bg-dark-secondary;
     overflow: hidden;

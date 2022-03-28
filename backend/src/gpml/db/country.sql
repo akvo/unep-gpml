@@ -30,3 +30,8 @@ select id from country where iso_code in (:v*:codes) and description = 'Member S
 -- :doc Insert new country
 insert into country (name, iso_code, description)
 values(:name, :iso_code, :description) returning id
+
+-- :name add-country-headquarter :! :1
+-- :doc Add headquarter to a given country
+UPDATE country SET headquarter = :headquarter
+WHERE id = :id

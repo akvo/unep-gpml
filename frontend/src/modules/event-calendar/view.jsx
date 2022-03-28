@@ -128,7 +128,7 @@ const EventCalendar = withRouter(({ history }) => {
           <h2>
             Upcoming Events{" "}
             <span className="see-more-link">
-              <Link to="/browse?topic=event">
+              <Link to="/knowledge-library?topic=event">
                 See all <RightOutlined />
               </Link>
             </span>
@@ -245,6 +245,23 @@ const renderEventContent = (history, event, eventCarousel, onThisDayText) => {
                       Read more <ArrowRightOutlined />
                     </Link>
                   </span>
+                  {x?.recording && (
+                    <span className="read-more">
+                      <a
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open(
+                            x?.recording.includes("https://")
+                              ? x?.recording
+                              : "https://" + x?.recording,
+                            "_blank"
+                          );
+                        }}
+                      >
+                        Event Recording
+                      </a>
+                    </span>
+                  )}
                 </div>
               </Card>
             );

@@ -1,4 +1,8 @@
 @import "../../vars.scss";
+// .ant-select-dropdown,
+// .ant-picker-dropdown {
+//   zoom: 80%;
+// }
 
 .blur {
   filter: blur(13px);
@@ -34,7 +38,7 @@
   // Header
   .ui-header {
     background-color: rgba(0, 91, 112, 0.8);
-    padding: 6px calc(45px - 15px) 9px 38px;
+    padding: 5px calc(45px - 15px) 5px 38px;
 
     .ant-space.ant-space-horizontal.ant-space-align-center
       .ant-select-selector {
@@ -44,6 +48,8 @@
     .filter-tag {
       .ant-space {
         flex-wrap: wrap;
+        max-height: 33px;
+        overflow-y: auto;
         gap: 8px;
       }
       .ant-space-item {
@@ -57,7 +63,7 @@
         justify-content: space-between;
         color: #ffffff;
         font-weight: 700;
-        padding: 5px 11px 5px 11px;
+        padding: 4px 11px 4px 11px;
         border: 2px solid #ffffff;
         border-radius: 17.5px;
         background-color: transparent;
@@ -93,6 +99,7 @@
 
       .filter-icon {
         display: block;
+        width: 27px;
       }
 
       ::placeholder,
@@ -103,13 +110,17 @@
       }
 
       .ant-input-affix-wrapper {
-        padding: 0;
-        max-height: 32px;
-        padding-left: 11px;
+        padding-left: 10px;
+        padding-right: 0px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        overflow: auto;
         button {
           color: #ffffff;
-          background-color: $green05;
+          background-color: #1ca585;
           border: 0;
+          height: 31px;
+          width: 31px;
           &:hover {
             background-color: $green01;
             color: $blue10;
@@ -125,6 +136,7 @@
 
       .ant-select-open .selection-arrow {
         transform: rotate(180deg);
+        margin-top: -2px;
       }
 
       .select-button,
@@ -139,7 +151,6 @@
         padding-right: 0;
         border-radius: 10px;
         border: 0;
-        height: 60px;
 
         .selection-value,
         .ant-select-selection-item {
@@ -161,13 +172,11 @@
           height: 100%;
           align-items: center;
           justify-content: space-between;
-          padding-left: 4px;
           .label::first-letter {
             text-transform: uppercase;
           }
 
           .select-button {
-            height: 53px;
             max-width: 37px;
             border: 0;
             opacity: 0.2;
@@ -183,11 +192,11 @@
 
         .ant-select-selector {
           border: 0;
-          height: 60px;
           background: rgba(255, 255, 255, 0.1);
           border-radius: 10px;
           max-width: 100%;
-          padding-left: 0;
+          padding: 4px 5px;
+          height: auto;
         }
 
         .anticon.anticon-down {
@@ -200,12 +209,13 @@
       border: none;
       display: flex;
       align-items: center;
-      padding-left: 24px;
+      padding-left: 0px;
       color: #ffffff;
       font-weight: 700;
       background-color: transparent;
       svg {
         margin-right: 7px;
+        width: 32px;
         circle,
         path {
           stroke: currentColor;
@@ -233,8 +243,8 @@
     display: flex;
     align-items: center;
     position: absolute;
-    right: 30px;
-    bottom: 0;
+    bottom: -5px;
+    right: 20px;
     overflow: hidden;
     width: 40px;
     height: 40px;
@@ -255,8 +265,8 @@
       display: none;
     }
     .result-number {
-      padding-top: 16px;
-      padding-bottom: 16px;
+      padding-top: 0.8em;
+      padding-bottom: 0.8em;
       max-width: max-content;
       margin: auto;
       font-size: 12px;
@@ -328,10 +338,10 @@
         position: relative;
         border-radius: 50%;
         width: 100%;
-        max-width: 150px;
-        max-height: 150px;
-        min-width: 150px;
-        min-height: 150px;
+        max-width: 9em;
+        max-height: 9em;
+        min-width: 9em;
+        min-height: 9em;
         overflow: hidden;
         margin-right: 16.51px;
         text-align: center;
@@ -354,7 +364,7 @@
         .profile-detail-list {
           .list-item {
             margin-bottom: 11px;
-
+            position: relative;
             .profile-name,
             .location,
             .entity-name {
@@ -364,20 +374,23 @@
 
             .profile-name,
             .entity-name {
-              font-size: 16px;
+              // font-size: 16px;
+              font-size: 0.9em;
             }
 
             .location {
               font-size: 12px;
               display: flex;
               align-items: center;
+              padding-left: 20px;
               &::before {
                 content: " ";
                 display: block;
                 width: 13px;
                 height: 18px;
                 background-image: url("../../images/stakeholder-overview/location-icon.svg");
-                margin-right: 6.43px;
+                position: absolute;
+                left: 0;
               }
             }
 
@@ -431,7 +444,7 @@
       padding: 6px 0 0 8.43px;
       img {
         position: absolute;
-        max-width: 58px;
+        max-width: 3.5em;
       }
     }
 
@@ -446,7 +459,7 @@
       .role-name {
         margin-bottom: 0;
         color: #18162f;
-        font-size: 16px;
+        font-size: 10px;
       }
 
       .role-name {
@@ -494,7 +507,8 @@
 
   // Pagination
   .page {
-    max-width: max-content;
+    // max-width: max-content;
+    text-align: center;
     margin: auto;
     padding-top: calc(38px - 21.47px);
     .result-number,
@@ -605,6 +619,9 @@
         text-transform: uppercase;
       }
       .drawer-card {
+        height: 100px;
+        width: 100%;
+        max-width: 100px;
         background-color: inherit;
       }
     }
@@ -613,13 +630,23 @@
       background-color: unset;
     }
 
+    .ant-drawer-open {
+      .ant-drawer-content {
+        border: 1px solid $blue09;
+      }
+    }
+
     .ant-drawer-content-wrapper {
       box-shadow: none;
       max-width: 500px;
-      width: 100% !important;
+      // width: 100% !important;
 
       .ant-drawer-header {
         background: $blue05;
+      }
+
+      .ant-drawer-body {
+        padding: 10px;
       }
 
       .collection-selector .ant-select-selector {
@@ -630,7 +657,6 @@
       .ant-drawer-content {
         border-bottom-right-radius: 18px;
         box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.25);
-        border: 1px solid $blue09;
       }
 
       .ant-drawer-title,
@@ -745,6 +771,11 @@
       }
 
       .multiselection-filter {
+        position: relative;
+        .ant-select-selection-overflow {
+          height: 29px;
+          overflow-y: auto;
+        }
         .ant-select-selection-item-content {
           font-style: italic;
           overflow: visible;
@@ -752,9 +783,19 @@
       }
 
       .network-card-filter {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
         .ant-col {
           max-width: 100%;
         }
+      }
+
+      .resource-card-wrapper {
+        width: 100%;
+        height: 100px;
+        max-width: 100px !important;
+        margin-right: 15px;
+        margin-bottom: 15px;
       }
 
       .selection-card-type {
@@ -794,9 +835,12 @@
       }
 
       .drawer-card {
+        width: 100px;
+        height: 100px;
+        position: relative;
         color: $grey03;
         font-weight: 700;
-        align-items: flex-end;
+        align-items: center;
         cursor: pointer;
         padding: 4px;
         text-align: center;
@@ -816,12 +860,17 @@
         }
 
         .topic-text {
-          font-size: 10px;
-          line-height: 11px;
+          font-size: 12px;
+          line-height: 14px;
         }
 
         .topic-count {
           font-weight: 700;
+        }
+        .ant-space-item:nth-of-type(3) {
+          position: absolute;
+          top: 5px;
+          left: 5px;
         }
       }
 
@@ -832,8 +881,9 @@
       }
 
       .drawer-button-wrapper {
-        max-width: max-content;
-        margin: auto;
+        width: 100%;
+        display: flex;
+        justify-content: center;
       }
 
       .clear-all-btn {
@@ -845,13 +895,21 @@
         font-weight: 700;
         margin-bottom: 10px;
         border-radius: 20.5px;
+        border: 0;
+        box-shadow: unset;
         span {
           display: block;
         }
-      }
 
-      .clear-all-btn {
-        border: 0;
+        &:hover {
+          box-shadow: 0 0 9px rgba(0, 0, 0, 0.2);
+        }
+
+        &.disabled:disabled {
+          background-color: unset;
+          box-shadow: unset;
+          cursor: not-allowed;
+        }
       }
     }
   }
@@ -866,7 +924,7 @@
 
   .card-wrapper-link {
     width: 100%;
-    max-width: 343px;
+    min-width: 250px;
     margin: auto;
   }
 
@@ -941,6 +999,116 @@
   @media (min-width: 1700px) {
     #title {
       padding-left: 12px;
+    }
+  }
+  @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+    .ant-btn-icon-only {
+      min-width: 25px;
+      min-height: 25px;
+      height: 27px;
+    }
+    .sidebar {
+      .item-sidebar {
+        height: auto;
+        padding: 20px 0;
+        p {
+          margin-bottom: 0px;
+          font-size: 1em;
+        }
+        .item-menu img {
+          width: 30px;
+        }
+        &.active {
+          border-left: 2px solid #07e982;
+        }
+      }
+    }
+    .card-wrapper {
+      grid-template-columns: repeat(4, 1fr);
+      column-gap: 15px;
+      margin-left: 1em !important;
+      margin-right: 1em !important;
+      max-width: fit-content;
+      width: auto;
+    }
+    .ui-header {
+      .ant-select-selector {
+        padding: 2px 5px !important;
+      }
+      .search-box {
+        .ant-input-affix-wrapper {
+          button {
+            width: 25px;
+            height: 25px;
+          }
+        }
+      }
+    }
+    .card-container {
+      padding: 0px 10px 15px 10px;
+      #title {
+        margin-left: 1em !important;
+        font-size: 1.2em;
+        margin-bottom: 0.4em;
+      }
+      .profile-card {
+        .ant-card-body {
+          min-height: auto;
+        }
+        .person-role {
+          padding: 4px 10.5px 4px 10.5px;
+          .seeking-text {
+            font-size: 12px;
+          }
+          .role-name {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+    .profile-card {
+      .profile-icon-container {
+        img {
+          max-width: 40px;
+        }
+      }
+      .profile-details {
+        min-height: auto;
+        padding: 10px 16px 6px 16px;
+        .profile-details-container {
+          .profile-detail-list {
+            .list-item {
+              .profile-name {
+                font-size: 0.9em;
+              }
+            }
+          }
+        }
+        .image-wrapper {
+          min-width: 7em;
+          min-height: 7em;
+          max-width: 7em;
+          max-height: 7em;
+        }
+      }
+    }
+    .all-profiles {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    .ui-header .select-wrapper .view-selection .selection-value {
+      .selection-arrow {
+        width: 15px;
+      }
+      img {
+        width: 25px;
+      }
+    }
+    .ui-header .sort-btn svg {
+      width: 25px;
+    }
+    .ant-drawer-content-wrapper {
+      zoom: 80%;
     }
   }
 }

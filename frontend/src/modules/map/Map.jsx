@@ -13,8 +13,11 @@ import {
   ZoomOutOutlined,
   FullscreenOutlined,
   LoadingOutlined,
+  DoubleRightOutlined,
+  UnorderedListOutlined,
 } from "@ant-design/icons";
 import { PatternLines } from "@vx/pattern";
+import classNames from "classnames";
 import { topicNames, tTypes } from "../../utils/misc";
 import { curr } from "./utils";
 
@@ -22,6 +25,7 @@ import "./map-styles.scss";
 import { useHistory } from "react-router-dom";
 import { isEmpty } from "lodash";
 import { UIStore } from "../../store";
+import VerticalLegend from "./VerticalLegend";
 const geoUrl = "/unep-gpml.topo.json";
 const lineBoundaries = "/new_country_line_boundaries.geojson";
 const colorRange = ["#bbedda", "#a7e1cb", "#92d5bd", "#7dcaaf", "#67bea1"];
@@ -41,7 +45,7 @@ const higlightColor = "#255B87";
 const KNOWLEDGE_LIBRARY = "/knowledge-library";
 const STAKEHOLDER_OVERVIEW = "/stakeholder-overview";
 
-const ToolTipContent = ({ data, geo, path }) => {
+const ToolTipContent = ({ data, geo, path, query }) => {
   const totalTransnational = () => {
     const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
 
@@ -115,48 +119,98 @@ const ToolTipContent = ({ data, geo, path }) => {
       className="map-tooltip"
     >
       <h3>{geo.MAP_LABEL}</h3>
-      <ul>
-        {tTypes.map((topic) => {
-          const dataToDisplayPerPath = () => {
-            if (path === KNOWLEDGE_LIBRARY) {
-              return topic !== "organisation" && topic !== "stakeholder";
-            } else {
-              return (
-                topic !== "project" &&
-                topic !== "policy" &&
-                topic !== "actionPlan" &&
-                topic !== "financingResource" &&
-                topic !== "technicalResource" &&
-                topic !== "technology" &&
-                topic !== "event"
-              );
-            }
-          };
+      <table className="tooltip-table">
+        <thead>
+          {path === KNOWLEDGE_LIBRARY ? (
+            <tr>
+              <th>Resource</th>
+              <th>National</th>
+              <th style={{ paddingLeft: "10px" }}>Transnational</th>
+            </tr>
+          ) : (
+            <tr>
+              <th>Type</th>
+              <th>Member</th>
+              <th style={{ paddingLeft: "10px" }}>Non-member</th>
+            </tr>
+          )}
+        </thead>
+        <tbody>
+          {tTypes.map((topic) => {
+            const dataToDisplayPerPath = () => {
+              if (path === KNOWLEDGE_LIBRARY) {
+                return topic !== "organisation" && topic !== "stakeholder";
+              } else {
+                return (
+                  topic !== "project" &&
+                  topic !== "policy" &&
+                  topic !== "actionPlan" &&
+                  topic !== "financingResource" &&
+                  topic !== "technicalResource" &&
+                  topic !== "technology" &&
+                  topic !== "event"
+                );
+              }
+            };
 
-          return (
-            dataToDisplayPerPath() && (
-              <li key={topic}>
-                <span>{topicNames(topic)}</span>
-                <b className="tooltip-counts">
-                  {dataToDisplay()?.[topic] ? dataToDisplay()?.[topic] : 0}
-                  {transnationalData()?.[topic] > 0 && (
-                    <div
-                      className="transnational-count"
-                      style={{ right: "-5%" }}
-                    >
-                      {" "}
-                      ({transnationalData()?.[topic]})
-                    </div>
-                  )}
-                </b>
-              </li>
-            )
-          );
-        })}
-      </ul>
-      {totalTransnational() > 0 && (
-        <b className="tooltip-note">&#42; Transnational resources in ()</b>
-      )}
+            const tooltipChecker = () => {
+              if (topic === "actionPlan") {
+                return "action_plan";
+              } else if (topic === "technicalResource") {
+                return "technical_resource";
+              } else if (topic === "financingResource") {
+                return "financing_resource";
+              } else {
+                return topic;
+              }
+            };
+
+            const queryTopic = () => {
+              if (path === KNOWLEDGE_LIBRARY) {
+                return query?.topic;
+              }
+
+              if (path === STAKEHOLDER_OVERVIEW) {
+                return query?.networkType || [];
+              }
+            };
+
+            return dataToDisplayPerPath() && queryTopic().length === 0 ? (
+              <tr key={topic}>
+                <td className="tooltip-topic">{topicNames(topic)}</td>
+                <td className="tooltip-count-wrapper">
+                  <b className="tooltip-counts">
+                    {dataToDisplay()?.[topic] ? dataToDisplay()?.[topic] : 0}
+                  </b>
+                </td>
+
+                <td className="tooltip-count-wrapper">
+                  <b className="tooltip-counts">
+                    {transnationalData()?.[topic]}
+                  </b>
+                </td>
+              </tr>
+            ) : (
+              queryTopic().includes(tooltipChecker()) && (
+                <tr key={topic}>
+                  <td className="tooltip-topic">{topicNames(topic)}</td>
+                  <td className="tooltip-count-wrapper">
+                    <b className="tooltip-counts">
+                      {dataToDisplay()?.[topic] ? dataToDisplay()?.[topic] : 0}
+                    </b>
+                  </td>
+
+                  <td className="tooltip-count-wrapper">
+                    <b className="tooltip-counts">
+                      {transnationalData()?.[topic]}
+                    </b>
+                  </td>
+                </tr>
+              )
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };
@@ -243,7 +297,7 @@ const Legend = ({ data, setFilterColor, selected }) => {
       </div>
     );
   }
-  return "";
+  return <div className="no-legend-warning">No legend</div>;
 };
 
 const Maps = ({
@@ -258,6 +312,7 @@ const Maps = ({
   isDisplayedList,
   isFilteredCountry,
   multiCountryCountries,
+  useVerticalLegend = false,
 }) => {
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -268,19 +323,22 @@ const Maps = ({
   const mapMaxZoom = 9.2;
   const mapMinZoom = 1.1500000000000024;
   const [selected, setSelected] = useState(null);
-  // const [selectedTerritory, setSelectedTerritory] = useState([]);
+
   const [filterColor, setFilterColor] = useState(null);
   const [content, setContent] = useState("");
   const [countryToSelect, setCountryToSelect] = useState([]);
+  const [isShownLegend, setIsShownLegend] = useState(false);
 
-  const selectedTerritory =
-    !isEmpty(countries) &&
-    countries
-      .filter((item) => {
-        const selectTerritory = isFilteredCountry?.map((item) => Number(item));
-        return selectTerritory?.includes(item?.id);
-      })
-      .map((country) => country.territory);
+  const selectedTerritory = !isEmpty(countries)
+    ? countries
+        .filter((item) => {
+          const selectTerritory = isFilteredCountry?.map((item) =>
+            Number(item)
+          );
+          return selectTerritory?.includes(item?.id);
+        })
+        .map((country) => country.territory)
+    : [];
 
   const country =
     !isEmpty(countries) &&
@@ -312,6 +370,10 @@ const Maps = ({
       });
     }
   };
+  const legendTitle =
+    path === KNOWLEDGE_LIBRARY
+      ? "Number of GPML Resources"
+      : "Number of Stakeholders";
 
   useEffect(() => {
     setCountryToSelect(isFilteredCountry.map((x) => Number(x)));
@@ -373,58 +435,94 @@ const Maps = ({
           style={{
             overflow: "hidden",
             width: "auto",
-            height: `${mapPos.height}px`,
           }}
         >
-          <Legend
-            data={colorScale.thresholds()}
-            setFilterColor={setFilterColor}
-            selected={filterColor}
-            isDisplayedList={isDisplayedList}
-          />
-          <div
-            className="map-buttons"
-            style={{ left: listVisible ? "10px" : "330px" }}
-          >
-            <Tooltip title="zoom out">
-              <Button
-                type="secondary"
-                icon={<ZoomOutOutlined />}
-                onClick={() => {
-                  position.zoom > mapMinZoom &&
+          <div className="map-a11y">
+            <div
+              className="map-buttons"
+              style={{ left: listVisible ? "10px" : "330px" }}
+            >
+              <Tooltip placement="left" title="zoom out">
+                <Button
+                  type="secondary"
+                  icon={<ZoomOutOutlined />}
+                  onClick={() => {
+                    position.zoom > mapMinZoom &&
+                      setPosition({
+                        ...position,
+                        zoom: position.zoom - 0.3,
+                      });
+                  }}
+                  disabled={position.zoom <= mapMinZoom}
+                />
+              </Tooltip>
+              <Tooltip placement="left" title="zoom in">
+                <Button
+                  disabled={position.zoom >= mapMaxZoom}
+                  type="secondary"
+                  icon={<ZoomInOutlined />}
+                  onClick={() => {
                     setPosition({
                       ...position,
-                      zoom: position.zoom - 0.3,
+                      zoom: position.zoom + 0.3,
                     });
-                }}
-                disabled={position.zoom <= mapMinZoom}
-              />
-            </Tooltip>
-            <Tooltip title="zoom in">
-              <Button
-                disabled={position.zoom >= mapMaxZoom}
-                type="secondary"
-                icon={<ZoomInOutlined />}
-                onClick={() => {
-                  setPosition({
-                    ...position,
-                    zoom: position.zoom + 0.3,
-                  });
-                }}
-              />
-            </Tooltip>
-            <Tooltip title="reset zoom">
-              <Button
-                type="secondary"
-                icon={<FullscreenOutlined />}
-                onClick={() => {
-                  setPosition({
-                    coordinates: [18.297325014768123, 2.4067378816508587],
-                    zoom: mapMinZoom,
-                  });
-                }}
-              />
-            </Tooltip>
+                  }}
+                />
+              </Tooltip>
+              <Tooltip placement="left" title="reset zoom">
+                <Button
+                  type="secondary"
+                  icon={<FullscreenOutlined />}
+                  onClick={() => {
+                    setPosition({
+                      coordinates: [18.297325014768123, 2.4067378816508587],
+                      zoom: mapMinZoom,
+                    });
+                  }}
+                />
+              </Tooltip>
+            </div>
+            <div
+              className={classNames("legend-wrapper", {
+                vertical: useVerticalLegend,
+              })}
+            >
+              {isShownLegend && (
+                <>
+                  {useVerticalLegend ? (
+                    <VerticalLegend
+                      data={colorScale.thresholds().sort((a, b) => b - a)}
+                      setFilterColor={setFilterColor}
+                      selected={filterColor}
+                      isDisplayedList={isDisplayedList}
+                      title={legendTitle}
+                    />
+                  ) : (
+                    <Legend
+                      data={colorScale.thresholds()}
+                      setFilterColor={setFilterColor}
+                      selected={filterColor}
+                      isDisplayedList={isDisplayedList}
+                    />
+                  )}
+                </>
+              )}
+              <Tooltip
+                placement="bottom"
+                title={isShownLegend ? "Hide" : "Show"}
+              >
+                <Button
+                  className="legend-button"
+                  onClick={() => setIsShownLegend(!isShownLegend)}
+                >
+                  {isShownLegend ? (
+                    <DoubleRightOutlined />
+                  ) : (
+                    <UnorderedListOutlined />
+                  )}
+                </Button>
+              </Tooltip>
+            </div>
           </div>
           <ComposableMap
             data-tip=""
@@ -443,8 +541,8 @@ const Maps = ({
               <Geographies key="map-geo" geography={geoUrl}>
                 {({ geographies }) =>
                   geographies.map((geo) => {
-                    const findData = data.find(
-                      (i) => i.countryId === Number(geo.properties.M49Code)
+                    const findData = data?.find(
+                      (i) => i?.countryId === Number(geo.properties.M49Code)
                     );
 
                     const isLake =
@@ -472,7 +570,7 @@ const Maps = ({
                           background={
                             isCountrySelected
                               ? "#255B87"
-                              : geo.properties.MAP_COLOR === selected
+                              : geo.properties.M49Code === selected
                               ? "#84b4cc"
                               : fillColor(
                                   curr(topic, findData?.counts, path)
@@ -545,15 +643,17 @@ const Maps = ({
                               ? "#cecece"
                               : isPattern
                               ? "url(#lines)"
-                              : geo.properties.MAP_COLOR === selected
-                              ? "#84b4cc"
-                              : isCountrySelected
-                              ? "#255B87"
-                              : selectionCondition() ||
-                                selectedTerritory.includes(
-                                  geo.properties.MAP_COLOR
-                                )
-                              ? "#255B87"
+                              : geo.properties.M49Code === selected
+                              ? // : geo.properties.MAP_COLOR === selected
+                                "#84b4cc"
+                              : // : isCountrySelected
+                              // ? "#255B87"
+                              selectionCondition()
+                              ? //  ||
+                                //   selectedTerritory?.includes(
+                                //     geo.properties.MAP_COLOR
+                                //   )
+                                "#255B87"
                               : fillColor(
                                   curr(topic, findData?.counts, path)
                                     ? curr(topic, findData?.counts, path)
@@ -571,7 +671,8 @@ const Maps = ({
                                 !isFilteredCountry.includes(M49Code) &&
                                 !selectionCondition()
                               ) {
-                                setSelected(MAP_COLOR);
+                                setSelected(M49Code);
+                                // setSelected(MAP_COLOR);
                               }
 
                               setContent(
@@ -579,6 +680,7 @@ const Maps = ({
                                   data={findData}
                                   geo={geo.properties}
                                   path={path}
+                                  query={query}
                                 />
                               );
                             }
