@@ -491,7 +491,7 @@
       (if-not (some nil? tag-ids)
         (db.detail/add-resource-related-tags conn {:table (str table "_tag")
                                                    :resource_type table
-                                                   :tags (map #(list id %) tags)})
+                                                   :tags (map #(list id %) tag-ids)})
         (let [tag-category (:id (db.tag/tag-category-by-category-name conn {:category "general"}))
               new-tags (filter #(not (contains? % :id)) tags)
               tags-to-db (map #(vector % tag-category) (vec (map #(:tag %) new-tags)))
