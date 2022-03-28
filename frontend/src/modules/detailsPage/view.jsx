@@ -35,6 +35,7 @@ import TagsImage from "../../images/tags.svg";
 import ViewsImage from "../../images/views.svg";
 import AvatarImage from "../../images/avatar.jpg";
 import EntityImage from "../../images/entity.png";
+import { ReactComponent as Recording } from "../../images/event-recording.svg";
 import {
   DownloadOutlined,
   HeartOutlined,
@@ -218,6 +219,23 @@ const SharePanel = ({
           <h2>Share</h2>
         </div>
       </Popover>
+      {data?.recording && (
+        <div className="sticky-panel-item">
+          <a
+            onClick={() => {
+              window.open(
+                data?.recording.includes("https://")
+                  ? data?.recording
+                  : "https://" + data?.recording,
+                "_blank"
+              );
+            }}
+          >
+            <Recording className="recording-icon" />
+            <h2>Recording</h2>
+          </a>
+        </div>
+      )}
       {canDelete() && (
         <div
           className="sticky-panel-item"

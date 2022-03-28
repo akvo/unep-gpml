@@ -92,7 +92,7 @@
         justify-content: center;
         display: flex;
         flex-direction: column;
-
+        padding: 5px 0px;
         &:first-child {
           background-color: #05f081;
           border-radius: 0px 8px 0px 0px;
@@ -125,6 +125,13 @@
           color: #ffffff;
           margin-bottom: 0px;
           text-transform: uppercase;
+          line-height: 20px;
+        }
+        .recording-icon {
+          width: 40px;
+          path {
+            fill: #fff;
+          }
         }
       }
     }
