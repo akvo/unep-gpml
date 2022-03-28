@@ -224,6 +224,9 @@
 
   .resource-main-container {
     background-color: rgb(37, 91, 135);
+    @media (min-width: 700px) {
+      flex-wrap: nowrap;
+    }
   }
 
   .site-drawer-render-in-current-wrapper {
