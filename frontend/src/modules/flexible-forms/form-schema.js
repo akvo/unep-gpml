@@ -2545,7 +2545,6 @@ export const schema = {
               value: 1,
             },
             required: [
-              "country",
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
