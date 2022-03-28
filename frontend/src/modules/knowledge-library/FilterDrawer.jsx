@@ -29,7 +29,7 @@ import { ReactComponent as CapacityBuildingIcon } from "../../images/knowledge-l
 import { ReactComponent as ActionSelectedIcon } from "../../images/knowledge-library/action-selected.svg";
 import { ReactComponent as EventFlexibleIcon } from "../../images/knowledge-library/event-flexible.svg";
 import { ReactComponent as InitiativeIcon } from "../../images/knowledge-library/initiative.svg";
-import { ReactComponent as FinancingIcon } from "../../images/knowledge-library/financing.svg";
+import { ReactComponent as FinancingIcon } from "../../images/knowledge-library/financing-2.svg";
 import { ReactComponent as PolicyIcon } from "../../images/knowledge-library/policy.svg";
 import { ReactComponent as TechnicalIcon } from "../../images/knowledge-library/technical.svg";
 import { ReactComponent as TechnologyIcon } from "../../images/knowledge-library/technology.svg";
