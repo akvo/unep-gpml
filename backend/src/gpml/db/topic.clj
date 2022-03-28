@@ -14,13 +14,17 @@
 
 (def ^:const generic-cte-opts
   "Common set of options for all CTE generation functions."
-  {:tables ["event" "technology" "policy" "initiative" "resource" "stakeholder" "organisation"]
+  {:tables ["event" "technology" "policy" "initiative" "resource"]
    :search-text-fields {"event" ["title" "description" "remarks"]
                         "technology" ["name"]
                         "policy" ["title" "original_title" "abstract" "remarks"]
                         "initiative" ["q2" "q3"]
-                        "resource" ["title" "summary" "remarks"]
-                        "stakeholder" ["first_name" "last_name" "about"]
+                        "resource" ["title" "summary" "remarks"]}})
+
+(def ^:const generic-entity-cte-opts
+  "Common set of options for entity related CTE generation functions."
+  {:tables ["stakeholder" "organisation"]
+   :search-text-fields {"stakeholder" ["first_name" "last_name" "about"]
                         "organisation" ["name" "program" "contribution" "expertise"]}})
 
 (def ^:const table-rename-mapping
@@ -157,6 +161,7 @@
        e.modified,
        e.reviewed_at,
        e.role,
+       e.job_title,
        e.cv,
        e.reviewed_by,
        e.review_status,
@@ -413,6 +418,17 @@
                                          from-clause lang-query tags-query
                                          geo-coverage-values-query order-by-clause]
 
+                           [select-clause from-clause lang-query tags-query
+                            geo-coverage-values-query order-by-clause])]
+    (str/join " " query-statements)))
+
+(defn build-entity-topic-data-query
+  [entity-name _ _]
+  (let [tags-query (generic-topic-data-tags-query entity-name)
+        geo-coverage-values-query (generic-topic-data-geo-coverage-values-query entity-name)
+        from-clause (generic-topic-data-from-clause entity-name)
+        order-by-clause generic-topic-data-order-by-clause
+        query-statements (case entity-name
                            "stakeholder" [stakeholder-topic-data-select-clause from-clause
                                           tags-query geo-coverage-values-query
                                           stakeholder-topic-data-organisation-query
@@ -420,10 +436,7 @@
 
                            "organisation" [organisation-topic-data-select-clause
                                            from-clause organisation-topic-data-geo-coverage-values-query
-                                           order-by-clause]
-
-                           [select-clause from-clause lang-query tags-query
-                            geo-coverage-values-query order-by-clause])]
+                                           order-by-clause])]
     (str/join " " query-statements)))
 
 (defn build-topic-geo-coverage-query
@@ -491,6 +504,10 @@
   [cte-type params opts]
   (generate-ctes* cte-type build-topic-data-query params opts))
 
+(defmethod generate-ctes :entity_data
+  [_ params opts]
+  (generate-ctes* :data build-entity-topic-data-query params opts))
+
 (defmethod generate-ctes :geo
   [cte-type params opts]
   (generate-ctes* cte-type build-topic-geo-coverage-query params opts))
@@ -534,6 +551,23 @@
        topic-search-text-ctes
        topic-ctes
        topic-cte]))))
+
+(defn generate-entity-topic-query
+  [params opts]
+  (let [topic-data-ctes (generate-ctes :entity_data params opts)
+        topic-geo-coverage-ctes (generate-ctes :geo params opts)
+        topic-search-text-ctes (generate-ctes :search-text params opts)
+        topic-ctes (generate-ctes :topic params opts)
+        topic-cte (generate-topic-cte {} opts)]
+    (str
+      "WITH "
+      (str/join
+        ","
+        [topic-data-ctes
+         topic-geo-coverage-ctes
+         topic-search-text-ctes
+         topic-ctes
+         topic-cte]))))
 
 (defn generate-get-topics
   [params]
