@@ -106,6 +106,7 @@ const KnowledgeLibrary = ({
     countries,
     organisations,
     transnationalOptions,
+    mainContentType,
     representativeGroup,
   } = UIStore.useState((s) => ({
     tags: s.tags,
@@ -115,6 +116,7 @@ const KnowledgeLibrary = ({
     transnationalOptions: s.transnationalOptions,
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
+    mainContentType: s.mainContentType,
     representativeGroup: s.representativeGroup,
   }));
 
@@ -229,7 +231,15 @@ const KnowledgeLibrary = ({
         return `End date ${value}`;
       }
       if (key === "subContentType") {
-        return value;
+        const findSubContentType = mainContentType.find((subContent) =>
+          subContent.childs.find((child) => child.title.includes(value))
+        );
+
+        const label = findSubContentType.childs.find((child) =>
+          child.title.includes(value)
+        );
+
+        return `${label.title} ${findSubContentType.name}`;
       }
       if (key === "entity") {
         const findOrganisation = organisations.find(
