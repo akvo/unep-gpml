@@ -82,6 +82,18 @@
     .section-content {
       padding-left: 16px;
       padding-right: 16px;
+      .resource-col {
+        width: 132px;
+      }
+      .events-col {
+        width: 162px;
+      }
+      .resource-col-fullwidth {
+        width: calc(100% - 132px);
+      }
+      .events-col-fullwidth {
+        width: calc(100% - 162px);
+      }
     }
     .card {
       opacity: 0.9;
@@ -239,14 +251,14 @@
         padding: 5px 24px;
       }
       .card {
-        min-height: 150px;
+        min-height: 187px;
         .title {
           font-size: 1em;
         }
       }
       .thumbnail {
         img {
-          height: 150px;
+          height: 187px;
           object-fit: cover;
           object-position: center;
         }
