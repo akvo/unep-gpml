@@ -24,7 +24,9 @@ import {
   customFormats,
 } from "../../utils/forms";
 import entity from "./entity";
+import stakeholder from "./stakeholder";
 import entityUiSchema from "./entityUiSchema.json";
+import stakeholderUiSchema from "./stakeholderUiSchema.json";
 
 import { UIStore } from "../../store";
 import { withRouter } from "react-router-dom";
@@ -55,8 +57,10 @@ const SignUpForm = withRouter(
       profile,
     } = UIStore.currentState;
     const { status, id } = formEdit.signUp;
-    const { initialSignUpData, signUpData } = entity;
-    const uiSchema = entityUiSchema;
+    const { initialSignUpData, signUpData } = isEntityType
+      ? entity
+      : stakeholder;
+    const uiSchema = isEntityType ? entityUiSchema : stakeholderUiSchema;
     const signUpFormData = signUpData.useState();
     const [dependValue, setDependValue] = useState([]);
     const [editCheck, setEditCheck] = useState(true);
@@ -64,8 +68,6 @@ const SignUpForm = withRouter(
     const handleOnSubmit = ({ formData }) => {
       // # Transform data before sending to endpoint
       let data = {};
-
-      console.log(formData);
 
       transformFormData(data, formData, formSchema.schema.properties, true);
 
@@ -112,8 +114,6 @@ const SignUpForm = withRouter(
           data.org.logo.match(customFormats.url) &&
           delete data.org.logo;
 
-        console.log(data);
-
         delete data.org_name;
         delete data.org_representativeGroup;
         delete data.org_representativeGroupGovernment;
@@ -141,6 +141,12 @@ const SignUpForm = withRouter(
             data.org.geoCoverageCountries = formData.S5.geoCoverageCountries.map(
               (x) => parseInt(x)
             );
+          }
+          if (data.geoCoverageType === "national") {
+            data.org.geoCoverageCountries = formData.S5.geoCoverageCountries.map(
+              (x) => parseInt(x)
+            );
+            delete data.org.geoCoverageValue;
           }
         }
         delete data.geoCoverageType;
@@ -172,8 +178,6 @@ const SignUpForm = withRouter(
           delete data.orgExpertise;
         }
       }
-
-      console.log(data);
 
       if (status === "edit" || params?.id) {
         api

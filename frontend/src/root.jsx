@@ -601,7 +601,7 @@ const Root = () => {
 
           <Route
             exact
-            path="/edit-entity/:id"
+            path="/:type(edit-entity|edit-stakeholder)/:id"
             render={(props) => <EntityFormView {...props} />}
           />
 

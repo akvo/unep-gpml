@@ -1,0 +1,154 @@
+{
+  "S1": {
+    "classNames": "list-group",
+    "title": {
+      "ui:widget": "select",
+      "ui:span": 5,
+      "ui:placeholder": "Title"
+    },
+    "lastName": {
+      "ui:placeholder": "Last name"
+    },
+    "firstName": {
+      "ui:placeholder": "First name"
+    },
+    "email": {
+      "ui:widget": "email",
+      "ui:placeholder": "Email",
+      "ui:disabled": true
+    },
+    "publicEmail": {
+      "ui:widget": "checkbox",
+      "ui:label": null
+    },
+    "linkedIn": {
+      "ui:placeholder": "Your LinkedIn username",
+      "ui:widget": "TextIconWidget",
+      "ui:icon": "linkedin"
+    },
+    "twitter": {
+      "ui:placeholder": "Your twitter username",
+      "ui:widget": "TextIconWidget",
+      "ui:icon": "twitter"
+    },
+    "photo": {
+      "ui:options": { "accept": "image/*" },
+      "ui:widget": "file"
+    },
+    "country": {
+      "ui:widget": "select",
+      "ui:placeholder": "Search country",
+      "ui:showSearch": true
+    },
+    "ui:order": [
+      "title",
+      "lastName",
+      "firstName",
+      "email",
+      "publicEmail",
+      "linkedIn",
+      "twitter",
+      "photo",
+      "country"
+    ]
+  },
+  "S2": {
+    "classNames": "list-group",
+    "privateCitizen": {
+      "ui:widget": "checkbox",
+      "ui:label": null
+    },
+    "orgName": {
+      "ui:placeholder": "Entity name",
+      "ui:showSearch": true,
+      "ui:allowClear": true
+    },
+    "jobTitle": {
+      "ui:placeholder": "Enter Job Title"
+    },
+    "orgDisabled": {
+      "ui:placeholder": "Entity name",
+      "ui:disabled": true
+    },
+    "companyName": {
+      "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity",
+      "ui:showSearch": true,
+      "ui:allowClear": true
+    },
+    "companyDisabled": {
+      "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity",
+      "ui:disabled": true
+    },
+    "newCompanyName": {
+      "ui:placeholder": "Entity name"
+    },
+    "newCompanyHeadquarter": {
+      "ui:widget": "select",
+      "ui:placeholder": "Search Country",
+      "ui:showSearch": true
+    },
+    "geoCoverageType": {
+      "ui:placeholder": "Choose the coverage type",
+      "ui:widget": "select"
+    },
+    "geoCoverageValueTransnational": {
+      "ui:placeholder": "Choose the coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true
+    },
+    "geoCoverageValueNational": {
+      "ui:placeholder": "Choose the coverage",
+      "ui:widget": "select",
+      "ui:showSearch": true,
+      "ui:mode": "multiple"
+    },
+    "newCompanySubnationalAreaOnly": {
+      "ui:placeholder": "Type..."
+    },
+    "ui:order": [
+      "privateCitizen",
+      "orgName",
+      "jobTitle",
+      "orgDisabled",
+      "companyName",
+      "companyDisabled",
+      "newCompanyName",
+      "newCompanyHeadquarter",
+      "geoCoverageType",
+      "geoCoverageValueTransnational",
+      "geoCoverageValueNational",
+      "newCompanySubnationalAreaOnly"
+    ]
+  },
+  "S3": {
+    "classNames": "list-group",
+    "seeking": {
+      "ui:widget": "select",
+      "ui:placeholder": "Search",
+      "ui:mode": "multiple",
+      "ui:showSearch": true
+    },
+    "offering": {
+      "ui:widget": "select",
+      "ui:placeholder": "Search",
+      "ui:mode": "multiple",
+      "ui:showSearch": true
+    },
+    "about": {
+      "ui:placeholder": "",
+      "ui:widget": "textarea",
+      "ui:maxWord": 100
+    },
+    "cv": {
+      "ui:widget": "file",
+      "ui:options": {
+        "accept": ".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf,application/pdf"
+      }
+    },
+    "publicDatabase": {
+      "ui:widget": "checkbox",
+      "ui:label": null
+    },
+    "ui:order": ["seeking", "offering", "about", "tags", "cv", "publicDatabase"]
+  }
+}

@@ -75,15 +75,7 @@ const newGeoCoverageFormat = {
     enum: [],
     depend: {
       id: "geoCoverageType",
-      value: ["transnational"],
-    },
-  },
-  geoCoverageValueNational: {
-    title: "Geo Coverage",
-    enum: [],
-    depend: {
-      id: "geoCoverageType",
-      value: ["national"],
+      value: ["transnational", "national"],
     },
   },
 };

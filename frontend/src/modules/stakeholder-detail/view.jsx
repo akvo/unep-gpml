@@ -128,6 +128,26 @@ const SharePanel = ({
     profile.reviewStatus === "APPROVED" &&
     profile.role === "ADMIN";
 
+  const handleEditBtn = () => {
+    UIStore.update((e) => {
+      e.formEdit = {
+        ...e.formEdit,
+        signUp: {
+          status: "edit",
+          id: params.id,
+        },
+      };
+      e.formStep = {
+        ...e.formStep,
+        stakeholder: 1,
+      };
+    });
+    history.push({
+      pathname: `/edit-stakeholder/${params.id}`,
+      state: { formType: "stakeholder" },
+    });
+  };
+
   return (
     <div className="sticky-panel">
       <div
@@ -145,14 +165,7 @@ const SharePanel = ({
       </div>
 
       {canEdit() && (
-        <div
-          className="sticky-panel-item"
-          onClick={() => {
-            history.push({
-              pathname: `/profile`,
-            });
-          }}
-        >
+        <div className="sticky-panel-item" onClick={() => handleEditBtn()}>
           <Avatar src={EditImage} />
           <h2>Update</h2>
         </div>

@@ -18,6 +18,9 @@ import isEmpty from "lodash/isEmpty";
 import xor from "lodash/xor";
 import api from "../../utils/api";
 import entity from "./entity";
+import stakeholder from "./stakeholder";
+
+import { useLocation } from "react-router-dom";
 
 const { Step } = Steps;
 
@@ -114,6 +117,20 @@ const formDataMapping = [
     group: null,
   },
   {
+    name: "geoCoverageCountries",
+    type: "array",
+    question: "geoCoverageCountries",
+    section: "S5",
+    group: null,
+  },
+  {
+    name: "geoCoverageCountryGroups",
+    type: "array",
+    question: "geoCoverageValueTransnational",
+    section: "S5",
+    group: null,
+  },
+  {
     name: "subnationalArea",
     type: "string",
     question: "orgSubnationalArea",
@@ -123,7 +140,10 @@ const formDataMapping = [
 ];
 
 const EntityEditSignUp = ({ match: { params }, ...props }) => {
-  const isEntityType = true;
+  const location = useLocation();
+  const isEntityType = location.state.formType === "entity" ? true : false;
+  const isStakeholderType = !isEntityType;
+  console.log(isEntityType);
   const {
     tabs,
     getSchema,
@@ -131,7 +151,7 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
     initialSignUpData,
     signUpData,
     loadTabs,
-  } = entity;
+  } = isEntityType ? entity : stakeholder;
 
   const minHeightContainer = innerHeight * 0.8;
   const minHeightCard = innerHeight * 0.75;
@@ -312,12 +332,14 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
           .length === 0 ||
           editId !== dataId)
       ) {
-        api.get(`/organisation/${dataId}`).then((d) => {
-          signUpData.update((e) => {
-            e.data = revertFormData(d.data);
-            e.editId = dataId;
+        api
+          .get(`/${isEntityType ? "organisation" : "stakeholder"}/${dataId}`)
+          .then((d) => {
+            signUpData.update((e) => {
+              e.data = revertFormData(d.data);
+              e.editId = dataId;
+            });
           });
-        });
       }
     }
   }, [status, id, data, editId, params, isLoaded]);
@@ -605,6 +627,7 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
                     >
                       <SignUpForm
                         isEntityType={isEntityType}
+                        isStakeholderType={isStakeholderType}
                         formType={props.formType}
                         btnSubmit={btnSubmit}
                         sending={sending}
