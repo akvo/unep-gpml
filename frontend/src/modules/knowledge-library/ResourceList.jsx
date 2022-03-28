@@ -93,7 +93,7 @@ const ResourceList = ({
   }, []);
 
   return (
-    <Row>
+    <Row style={{ postion: "relative" }}>
       {/* <Col span={24}>
         <PageHeader
           className="resource-list-header"
