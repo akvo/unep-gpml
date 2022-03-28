@@ -424,19 +424,20 @@ const KnowledgeLibrary = ({
                   />
                 </Col>
               )}
-              <Col
-                lg={14}
-                md={15}
-                sm={12}
-                xs={24}
-                align="center"
-                className="render-map-container map-main-wrapper"
-                style={{
-                  background: view === "topic" ? "#255B87" : "#fff",
-                  flex: view === "topic" && "auto",
-                }}
-              >
-                {view === "map" ? (
+
+              {view === "map" ? (
+                <Col
+                  lg={14}
+                  md={15}
+                  sm={12}
+                  xs={24}
+                  align="center"
+                  className="render-map-container map-main-wrapper"
+                  style={{
+                    background: view === "topic" ? "#255B87" : "#fff",
+                    flex: view === "topic" && "auto",
+                  }}
+                >
                   <MapLanding
                     {...{
                       query,
@@ -456,12 +457,24 @@ const KnowledgeLibrary = ({
                     isFilteredCountry={filterCountries}
                     isDisplayedList={listVisible}
                   />
-                ) : (
-                  <>
-                    <TopicView {...{ updateQuery }} />
-                  </>
-                )}
-              </Col>
+                </Col>
+              ) : (
+                <Col
+                  lg={14}
+                  md={15}
+                  sm={12}
+                  xs={24}
+                  align="center"
+                  className="render-map-container "
+                  style={{
+                    background: view === "topic" ? "#255B87" : "#fff",
+                    flex: view === "topic" && "auto",
+                    maxWidth: view === "topic" ? "calc(100% - 300px)" : "",
+                  }}
+                >
+                  <TopicView {...{ updateQuery }} />
+                </Col>
+              )}
             </Row>
           </LeftSidebar>
         </div>
