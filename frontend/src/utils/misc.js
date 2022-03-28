@@ -20,6 +20,7 @@ export const topicTypes = [
   "financingResource",
   "event",
   "technology",
+  "capacityBuilding",
 ];
 
 export const networkTypes = ["organisation", "stakeholder"];
@@ -50,6 +51,7 @@ export const topicNames = (topic) => {
     technology: "Technology",
     organisation: "Entity",
     stakeholder: "Individual",
+    capacityBuilding: "Capacity Building",
   };
   return names[humps.camelize(topic)];
 };
