@@ -333,4 +333,21 @@ $bg-green-primary: #10f9b7;
         bottom;
     }
   }
+
+  @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+    .section-download {
+      .card {
+        padding: 5px 36px 5px 36px;
+      }
+      .download-link {
+        padding: 30px 30px 30px 30px;
+      }
+    }
+    .ant-page-header {
+      padding: 5px 24px;
+    }
+    #appWrapper {
+      zoom: 80%;
+    }
+  }
 }
