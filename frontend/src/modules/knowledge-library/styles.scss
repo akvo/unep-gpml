@@ -467,12 +467,23 @@
         }
       }
 
+      .resource-card-wrapper {
+        height: 100px;
+        width: 100%;
+        max-width: 100px !important;
+        margin-right: 15px;
+        margin-bottom: 15px;
+      }
+
       .resource-type-card {
+        display: flex;
+        align-items: center !important;
+        position: relative;
         color: $grey03;
-        align-items: flex-end;
         cursor: pointer;
         padding: 4px;
-        height: 120px;
+        height: 100px;
+        width: 100px;
         text-align: center;
         border: 1px solid $grey03;
         border-radius: 4px;
@@ -481,6 +492,10 @@
           .ant-space {
             gap: 4px;
 
+            svg {
+              width: 80px;
+              height: 55px;
+            }
             // SVG
             .event-flexible {
               .cls-3 {
@@ -541,12 +556,15 @@
         }
 
         .topic-text {
-          font-size: 10px;
-          line-height: 11px;
+          font-size: 12px;
+          line-height: 14px;
         }
 
         .topic-count {
           font-weight: 700;
+          position: absolute;
+          top: 5px;
+          left: 5px;
         }
       }
 
