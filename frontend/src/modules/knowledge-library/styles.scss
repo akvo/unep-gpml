@@ -513,6 +513,23 @@
               stroke-width: 0;
             }
 
+            .capacity-building {
+              .cls-2,
+              .cls-3,
+              .cls-4 {
+                fill: #fff;
+              }
+
+              .cls-3,
+              .cls-4 {
+                stroke: currentColor;
+              }
+
+              .cls-3 {
+                stroke-width: 4px;
+              }
+            }
+
             .policy .cls-3,
             .initiative .cls-3 {
               fill: none;

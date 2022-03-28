@@ -128,7 +128,7 @@ const FilterDrawer = ({
     if (topic === "technology") {
       return <TechnologyIcon width="53" height="53" />;
     }
-    if (topic === "organisation") {
+    if (topic === "capacityBuilding") {
       return <CapacityBuildingIcon width="53" height="53" />;
     }
   };
