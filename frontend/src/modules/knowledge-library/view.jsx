@@ -239,7 +239,7 @@ const KnowledgeLibrary = ({
           child.title.includes(value)
         );
 
-        return `${label.title} ${findSubContentType.name}`;
+        return `${value} ${findSubContentType.name}`;
       }
       if (key === "entity") {
         const findOrganisation = organisations.find(
