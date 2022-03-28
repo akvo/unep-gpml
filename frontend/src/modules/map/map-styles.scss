@@ -345,6 +345,10 @@
   padding: 0 10px;
   position: relative;
 
+  .entity-type,
+  .tooltip-topic {
+    padding-right: 10px;
+  }
   th {
     font-size: 11px;
   }
@@ -362,10 +366,6 @@
 
   .tooltip-note {
     font-size: 12px;
-  }
-
-  .transnational-count {
-    position: absolute;
   }
 
   h3 {
