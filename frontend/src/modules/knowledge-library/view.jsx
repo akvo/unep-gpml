@@ -405,7 +405,10 @@ const KnowledgeLibrary = ({
             />
           )}
           <LeftSidebar active={1} sidebar={sidebar}>
-            <Row className="resource-main-container">
+            <Row
+              className="resource-main-container"
+              style={{ display: view === "map" ? "block" : "flex" }}
+            >
               {/* Resource Main Content */}
               {listVisible && (
                 <Col

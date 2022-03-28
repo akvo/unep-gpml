@@ -846,6 +846,7 @@
   // Pagination
   .page {
     width: 100%;
+    max-width: 300px;
     padding: 2rem 0 1rem 10px;
     text-align: center;
     position: absolute;
@@ -930,7 +931,6 @@
       height: 100% !important;
     }
     .resource-main-container {
-      display: block;
       .ant-page-header {
         padding: 2px 24px;
       }
