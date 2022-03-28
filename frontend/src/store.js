@@ -680,6 +680,7 @@ const UIStore = new Store({
     event: 1,
     technology: 1,
     entity: 1,
+    stakeholder: 1,
   },
   formEdit: {
     signUp: {

@@ -298,7 +298,10 @@ const StakeholderDetail = ({
         entity: 1,
       };
     });
-    history.push(`/edit-entity/${params.id}`);
+    history.push({
+      pathname: `/edit-entity/${params.id}`,
+      state: { formType: "entity" },
+    });
   };
 
   useEffect(() => {
