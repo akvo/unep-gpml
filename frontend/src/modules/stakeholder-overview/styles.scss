@@ -1,8 +1,4 @@
 @import "../../vars.scss";
-// .ant-select-dropdown,
-// .ant-picker-dropdown {
-//   zoom: 80%;
-// }
 
 .blur {
   filter: blur(13px);
@@ -640,6 +636,10 @@
       box-shadow: none;
       max-width: 500px;
       // width: 100% !important;
+      @-moz-document url-prefix() {
+        min-height: 815px !important;
+        transform: scale(0.8) translate(-63px, -110px);
+      }
 
       .ant-drawer-header {
         background: $blue05;
@@ -1109,6 +1109,11 @@
     }
     .ant-drawer-content-wrapper {
       zoom: 80%;
+
+      @-moz-document url-prefix() {
+        min-height: 804px !important;
+        transform: scale(0.8) translate(-63px, -100px);
+      }
     }
   }
 }
@@ -1116,8 +1121,14 @@
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
   .ant-select-dropdown {
     zoom: 80%;
+    @-moz-document url-prefix() {
+      transform: scale(0.8);
+    }
   }
   .overlay-zoom {
     zoom: 100%;
+    @-moz-document url-prefix() {
+      transform: scale(1);
+    }
   }
 }
