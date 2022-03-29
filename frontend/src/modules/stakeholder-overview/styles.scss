@@ -1112,3 +1112,9 @@
     }
   }
 }
+
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+  .ant-select-dropdown {
+    zoom: 80%;
+  }
+}
