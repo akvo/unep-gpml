@@ -1,6 +1,12 @@
 (ns gpml.handler.detail
   (:require [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
+            [clojure.string :as string]
             [gpml.constants :as constants]
+            [gpml.db.action :as db.action]
+            [gpml.db.action-detail :as db.action-detail]
+            gpml.db.country
+            [gpml.db.country-group :as db.country-group]
             [gpml.db.detail :as db.detail]
             [gpml.db.event :as db.event]
             [gpml.db.favorite :as db.favorite]
@@ -10,24 +16,20 @@
             [gpml.db.project :as db.project]
             [gpml.db.resource :as db.resource]
             [gpml.db.submission :as db.submission]
+            [gpml.db.tag :as db.tag]
             [gpml.db.technology :as db.technology]
             [gpml.db.topic-stakeholder-auth :as db.topic-stakeholder-auth]
+            [gpml.email-util :as email]
             [gpml.handler.image :as handler.image]
+            [gpml.handler.initiative :as handler.initiative]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.organisation :as handler.org]
-            [gpml.handler.initiative :as handler.initiative]
-            [integrant.core :as ig]
-            [medley.core :as medley]
-            [ring.util.response :as resp]
-            [gpml.db.action :as db.action]
-            [gpml.db.action-detail :as db.action-detail]
-            gpml.db.country
-            [gpml.db.country-group :as db.country-group]
             [gpml.handler.util :as util]
             [gpml.model.topic :as model.topic]
-            [clojure.string :as string]
             [gpml.pg-util :as pg-util]
-            [clojure.set :as set]))
+            [integrant.core :as ig]
+            [medley.core :as medley]
+            [ring.util.response :as resp]))
 
 (defn other-or-name [action]
   (when-let [actual-name (or
@@ -447,7 +449,9 @@
 (defn- get-detail
   [conn table-name id]
   (let [{:keys [json] :as result}
-        (db.detail/get-topic-details conn {:topic-type table-name :topic-id id})]
+        (if (some #{table-name} ["organisation" "stakeholder"])
+          (db.detail/get-entity-details conn {:topic-type table-name :topic-id id})
+          (db.detail/get-topic-details conn {:topic-type table-name :topic-id id}))]
     (-> result
         (dissoc :json)
         (merge json))))
@@ -477,19 +481,30 @@
   ;; -- Cannot be empty, for one.
   [:map])
 
-(defn update-resource-tags [conn table id tags]
+(defn update-resource-tags [conn mailjet-config table id tags]
   ;; Delete any existing tags
-  (db.detail/delete-resource-related-data
-   conn
-   {:table (str table "_tag") :resource_type table :id id})
+  (db.detail/delete-resource-related-data conn {:table (str table "_tag") :resource_type table :id id})
 
   ;; Create tags for the resource
-  (when (seq tags)
-    (db.detail/add-resource-related-tags
-     conn
-     {:table (str table "_tag")
-      :resource_type table
-      :tags (map #(list id %) tags)})))
+  (when-not (empty? tags)
+    (let [tag-ids (map #(:id %) tags)]
+      (if-not (some nil? tag-ids)
+        (db.detail/add-resource-related-tags conn {:table (str table "_tag")
+                                                   :resource_type table
+                                                   :tags (map #(list id %) tag-ids)})
+        (let [tag-category (:id (db.tag/tag-category-by-category-name conn {:category "general"}))
+              new-tags (filter #(not (contains? % :id)) tags)
+              tags-to-db (map #(vector % tag-category) (vec (map #(:tag %) new-tags)))
+              new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags tags-to-db}))]
+          (db.detail/add-resource-related-tags conn {:table (str table "_tag")
+                                                     :resource_type table
+                                                     :tags (map #(list id %) new-tag-ids)})
+          (map
+            #(email/notify-admins-pending-approval
+               conn
+               mailjet-config
+               (merge % {:type "tag"}))
+            new-tags))))))
 
 (defn update-resource-language-urls [conn table id urls]
   ;; Delete any existing lanugage URLs
@@ -619,7 +634,7 @@
           (db.favorite/update-stakeholder-association conn association)
           (db.favorite/new-organisation-association conn association))))))
 
-(defn update-resource [conn topic-type id updates]
+(defn update-resource [conn mailjet-config topic-type id updates]
   (let [table (cond
                 (contains? constants/resource-types topic-type) "resource"
                 :else topic-type)
@@ -656,8 +671,7 @@
       (update-resource-image conn (:photo updates) table id))
     (when (contains? updates :logo)
       (update-resource-logo conn (:logo updates) table id))
-    (when-not (empty? tags)
-      (update-resource-tags conn table id tags))
+    (update-resource-tags conn mailjet-config table id tags)
     (update-resource-language-urls conn table id urls)
     (update-resource-geo-coverage-values conn table id updates)
     (when (contains? #{"resource"} table)
@@ -665,7 +679,7 @@
     (update-resource-connections conn (:entity_connections updates) (:individual_connections updates) table id)
     status))
 
-(defn update-initiative [conn id data]
+(defn update-initiative [conn mailjet-config id data]
   (let [params (merge {:id id} data)
         tags (remove nil? (:tags data))
         status (jdbc/with-db-transaction [conn-tx conn]
@@ -677,12 +691,11 @@
                    status))]
     (when (contains? data :qimage)
       (update-initiative-image conn (:qimage data) "initiative" id))
-    (when-not (empty? tags)
-      (update-resource-tags conn "initiative" id tags))
+    (update-resource-tags conn mailjet-config "initiative" id tags)
     (update-resource-connections conn (:entity_connections data) (:individual_connections data) "initiative" id)
     status))
 
-(defmethod ig/init-key ::put [_ {:keys [db]}]
+(defmethod ig/init-key ::put [_ {:keys [db mailjet-config]}]
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
     (let [submission (get-resource-if-allowed (:spec db) path user)
@@ -690,8 +703,8 @@
       (if (some? submission)
         (let [conn (:spec db)
               status (if (= topic-type "project")
-                       (update-initiative conn topic-id body)
-                       (update-resource conn topic-type topic-id body))]
+                       (update-initiative conn mailjet-config topic-id body)
+                       (update-resource conn mailjet-config topic-type topic-id body))]
           (when (and (= status 1) (= review_status "REJECTED"))
             (db.submission/update-submission
              conn

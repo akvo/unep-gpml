@@ -6,17 +6,17 @@ import { titleCase } from "../../utils/string";
 
 export const CapacityCard = ({ category_id, image, title }) => (
   <Row gutter={[8, 8]}>
-    <Col
-      xl={category_id === "events" ? 10 : 8}
-      xs={category_id === "events" ? 12 : 10}
-    >
+    <Col className={category_id === "events" ? "events-col" : "resource-col"}>
       <div className="thumbnail">
         <img src={image} alt={title} />
       </div>
     </Col>
     <Col
-      xl={category_id === "events" ? 14 : 16}
-      xs={category_id === "events" ? 12 : 14}
+      className={
+        category_id === "events"
+          ? "events-col-fullwidth"
+          : "resource-col-fullwidth"
+      }
     >
       <Card
         className={`card bg-color ${category_id}`}
