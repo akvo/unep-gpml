@@ -384,6 +384,7 @@ const KnowledgeLibrary = ({
             {/* Map/Topic view dropdown */}
             <Col lg={2} md={4} sm={6} className="select-wrapper">
               <Select
+                dropdownClassName="overlay-zoom"
                 className="view-selection"
                 value={selectionValue}
                 onChange={(val) => setView(val)}
