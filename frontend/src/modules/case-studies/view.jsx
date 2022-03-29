@@ -68,6 +68,7 @@ const CaseStudies = () => {
           <Row gutter={[8, 16]}>
             <Col lg={6} md={24}>
               <Select
+                dropdownClassName="overlay-zoom"
                 defaultValue={0}
                 onChange={(value) => goTo(value)}
                 suffixIcon={
