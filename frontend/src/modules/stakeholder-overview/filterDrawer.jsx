@@ -393,6 +393,7 @@ const MultipleSelectFilter = ({
       </Space>
       <div>
         <Select
+          dropdownClassName="multiselection-dropdown"
           showSearch
           allowClear
           mode="multiple"
