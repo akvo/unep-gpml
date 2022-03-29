@@ -50,6 +50,8 @@ const FlexibleForm = withRouter(
       formEdit,
       profile,
       selectedMainContentType,
+      mainContentType,
+      languages,
     } = UIStore.currentState;
 
     const { status, id } = formEdit.flexible;
@@ -61,6 +63,28 @@ const FlexibleForm = withRouter(
     const [dependValue, setDependValue] = useState([]);
     const [schema, setSchema] = useState(formSchema.schema);
     const [editCheck, setEditCheck] = useState(true);
+
+    useEffect(() => {
+      if (subContentType) {
+        let obj = mainContentType.find(
+          (o) => o.code === selectedMainContentType
+        );
+        let find = obj?.childs.find((o) => o.title === subContentType).tags;
+        if (find) {
+          initialFormData.update((e) => {
+            e.data = {
+              ...e.data,
+              tagsList: find,
+            };
+          });
+        }
+      }
+    }, [
+      subContentType,
+      mainContentType,
+      selectedMainContentType,
+      initialFormData,
+    ]);
 
     const handleOnSubmit = ({ formData }) => {
       if (mainType === "Policy") {
@@ -106,7 +130,6 @@ const FlexibleForm = withRouter(
       delete data?.S5;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
-      data.country = parseInt(Object.keys(data.country)[0]);
 
       if (data.resourceType === "Financing Resource") {
         if (data.hasOwnProperty("valueCurrency")) {
@@ -156,7 +179,14 @@ const FlexibleForm = withRouter(
 
       data.tags =
         formData.S4.S4_G3.tags &&
-        formData.S4.S4_G3.tags.map((x) => parseInt(x));
+        formData.S4.S4_G3.tags.map((x) => {
+          return {
+            id: parseInt(x),
+            tag: Object.values(tags)
+              .flat()
+              .find((o) => o.id === parseInt(x)).tag,
+          };
+        });
 
       if (data?.publishYear) {
         const publishYear = new Date(data.publishYear);
@@ -311,7 +341,14 @@ const FlexibleForm = withRouter(
 
       data.tags =
         formData.S4.S4_G3.tags &&
-        formData.S4.S4_G3.tags.map((x) => parseInt(x));
+        formData.S4.S4_G3.tags.map((x) => {
+          return {
+            id: parseInt(x),
+            tag: Object.values(tags)
+              .flat()
+              .find((o) => o.id === parseInt(x)).tag,
+          };
+        });
 
       delete data.qtags;
 
@@ -431,7 +468,6 @@ const FlexibleForm = withRouter(
       delete data?.S5;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
-      data.country = parseInt(Object.keys(data.country)[0]);
 
       if (data.geoCoverageType === "transnational") {
         if (
@@ -481,7 +517,14 @@ const FlexibleForm = withRouter(
 
       data.tags =
         formData.S4.S4_G3.tags &&
-        formData.S4.S4_G3.tags.map((x) => parseInt(x));
+        formData.S4.S4_G3.tags.map((x) => {
+          return {
+            id: parseInt(x),
+            tag: Object.values(tags)
+              .flat()
+              .find((o) => o.id === parseInt(x)).tag,
+          };
+        });
 
       if (data.hasOwnProperty("firstPublicationDate")) {
         data.firstPublicationDate = data.firstPublicationDate;
@@ -520,6 +563,16 @@ const FlexibleForm = withRouter(
       if (data?.summary) {
         data.abstract = data?.summary;
         delete data.summary;
+      }
+
+      if (data?.lang) {
+        let find = languages[Object.keys(data.lang)[0]];
+        data.language = {
+          english_name: find.name,
+          native_name: find.native,
+          iso_code: Object.keys(data.lang)[0],
+        };
+        delete data.lang;
       }
 
       if (status === "add" && !params?.id) {
@@ -600,7 +653,6 @@ const FlexibleForm = withRouter(
       delete data?.S5;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
-      data.country = parseInt(Object.keys(data.country)[0]);
 
       if (data.geoCoverageType === "transnational") {
         if (
@@ -650,7 +702,14 @@ const FlexibleForm = withRouter(
 
       data.tags =
         formData.S4.S4_G3.tags &&
-        formData.S4.S4_G3.tags.map((x) => parseInt(x));
+        formData.S4.S4_G3.tags.map((x) => {
+          return {
+            id: parseInt(x),
+            tag: Object.values(tags)
+              .flat()
+              .find((o) => o.id === parseInt(x)).tag,
+          };
+        });
 
       if (data.hasOwnProperty("startDate")) {
         data.startDate = data.startDate;
@@ -763,7 +822,6 @@ const FlexibleForm = withRouter(
       delete data?.S5;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
-      data.country = parseInt(Object.keys(data.country)[0]);
 
       if (data.geoCoverageType === "transnational") {
         if (
@@ -815,7 +873,14 @@ const FlexibleForm = withRouter(
 
       data.tags =
         formData.S4.S4_G3.tags &&
-        formData.S4.S4_G3.tags.map((x) => parseInt(x));
+        formData.S4.S4_G3.tags.map((x) => {
+          return {
+            id: parseInt(x),
+            tag: Object.values(tags)
+              .flat()
+              .find((o) => o.id === parseInt(x)).tag,
+          };
+        });
 
       if (data?.entity) {
         data.entityConnections = data.entity[0].hasOwnProperty("role")

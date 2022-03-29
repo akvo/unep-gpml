@@ -33,7 +33,7 @@
    :remarks nil
    :urls [{:lang "id" :url "https://www.test.org"}]
    :country (-> (:countries data) first :id)
-   :tags [4 5]
+   :tags (:tags data)
    :url "resource url"
    :owners (:owners data)})
 
@@ -92,12 +92,14 @@
       (is (= (dissoc (assoc (new-resource data)
                             :id 10001
                             :value "2000"
+                            :tags (map #(:id %) (:tags data))
                             :created_by 10001) :image :owners)
              (dissoc resource-one :image :owners)))
       (is (= (dissoc (assoc (new-resource data)
                             :id 10002
                             :image "/image/resource/2"
                             :value "2000"
+                            :tags (map #(:id %) (:tags data))
                             :created_by 10001) :image :owners)
              (dissoc resource-two :image)))
       (is (= (:url payload) (:url resource-one))))))

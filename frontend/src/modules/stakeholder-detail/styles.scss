@@ -60,6 +60,10 @@
           font-size: 30px;
           line-height: 45px;
         }
+        .role {
+          font-weight: bold;
+          color: #fff;
+        }
         p {
           display: flex;
           align-items: flex-end;
@@ -397,6 +401,34 @@
         border-radius: 5px;
         color: #255b87;
       }
+    }
+  }
+}
+
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+  #stakeholder-detail {
+    zoom: 85%;
+    .topbar-container {
+      .topbar-wrapper {
+        .topbar-image-holder {
+          padding-left: 20px;
+          img {
+            width: 100px;
+            height: 100px;
+          }
+          .topbar-entity-image-holder {
+            width: 35px;
+            height: 35px;
+            right: 10px;
+            img {
+              height: 35px;
+            }
+          }
+        }
+      }
+    }
+    .info-container {
+      margin-top: 10px;
     }
   }
 }

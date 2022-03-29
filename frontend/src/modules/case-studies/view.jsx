@@ -68,6 +68,7 @@ const CaseStudies = () => {
           <Row gutter={[8, 16]}>
             <Col lg={6} md={24}>
               <Select
+                dropdownClassName="overlay-zoom"
                 defaultValue={0}
                 onChange={(value) => goTo(value)}
                 suffixIcon={
@@ -96,6 +97,7 @@ const CaseStudies = () => {
                 Learn More
               </Button>
               <a
+                target="_blank"
                 href={
                   "https://wedocs.unep.org/bitstream/handle/20.500.11822/38223/Case-studies.pdf?sequence=1&isAllowed=y"
                 }

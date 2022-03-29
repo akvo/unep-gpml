@@ -58,6 +58,10 @@
           object-fit: cover;
         }
       }
+      .view-more {
+        color: #1ca585;
+        font-size: 1.2rem;
+      }
     }
     .short-image {
       min-height: 500px;
@@ -92,7 +96,7 @@
         justify-content: center;
         display: flex;
         flex-direction: column;
-
+        padding: 5px 0px;
         &:first-child {
           background-color: #05f081;
           border-radius: 0px 8px 0px 0px;
@@ -125,6 +129,13 @@
           color: #ffffff;
           margin-bottom: 0px;
           text-transform: uppercase;
+          line-height: 20px;
+        }
+        .recording-icon {
+          width: 40px;
+          path {
+            fill: #fff;
+          }
         }
       }
     }
@@ -206,6 +217,8 @@
       }
     }
     .connection-list {
+      max-height: 300px;
+      overflow-x: auto;
       .ant-list {
         &:first-child {
           border: 1px solid #edf2f7;
@@ -324,14 +337,66 @@
           color: #374a59;
           font-size: 14px;
         }
-        .bottom-panel {
+      }
+
+      .slider-card {
+        display: flex;
+        background: #ffffff;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+        border-radius: 8px;
+        .image-holder {
           display: flex;
+          flex-direction: column;
           align-items: center;
-          justify-content: space-between;
-          margin-top: 10px;
-          .read-more {
-            color: #34a6ff;
-            cursor: pointer;
+          background: rgba(211, 222, 231, 0.2);
+          flex: 0 0 80px;
+          box-sizing: border-box;
+          padding: 20px 0px;
+          justify-content: center;
+          img {
+            width: 60px;
+          }
+        }
+        .description-holder {
+          padding: 15px;
+          width: 100%;
+          h4 {
+            color: #1ca585;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 0px;
+          }
+          h6 {
+            font-size: 14px;
+            color: #18162f;
+            font-weight: normal;
+            margin-bottom: 2px;
+          }
+          p {
+            font-size: 14px;
+            color: #374a59;
+            margin-bottom: 0px;
+            font-weight: normal;
+          }
+          .connection-wrapper {
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .read-more {
+              color: #34a6ff;
+              cursor: pointer;
+            }
+          }
+          .bottom-panel {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+            .read-more {
+              color: #34a6ff;
+              cursor: pointer;
+            }
           }
         }
       }
@@ -370,6 +435,10 @@
   }
 }
 
+.list-country-group {
+  max-height: 300px;
+  overflow-y: auto;
+}
 @media screen and (max-width: 1280px) {
   #details {
     .section-header {
@@ -431,6 +500,65 @@
           }
         }
       }
+    }
+  }
+}
+
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+  #details {
+    zoom: 90%;
+    .section-header {
+      padding: 10px 0px;
+      .header-wrapper {
+        h4 {
+          font-size: 1.5rem;
+        }
+      }
+    }
+    .section-banner {
+      padding: 10px 0px;
+      .ant-row {
+        margin-bottom: 0px !important;
+      }
+      .short-image {
+        min-height: 350px;
+        img {
+          object-fit: fill;
+        }
+      }
+      .banner-wrapper {
+        .long-image {
+          max-height: 350px;
+        }
+      }
+      .sticky-panel {
+        .sticky-panel-item {
+          h2 {
+            font-size: 1rem;
+            line-height: 1.8rem;
+          }
+          span {
+            font-size: 1.6rem;
+          }
+        }
+      }
+    }
+    .section-info {
+      padding: 10px 0px;
+      .tab-wrapper {
+        margin-bottom: 10px !important;
+        padding: 5px 0px;
+        ul li a {
+          font-size: 1.2rem;
+          font-weight: 700;
+        }
+      }
+    }
+    .card-wrapper .ant-card .ant-card-head .ant-card-head-title {
+      font-size: 1.2rem;
+    }
+    .card-wrapper .ant-card {
+      padding: 0px 0px;
     }
   }
 }

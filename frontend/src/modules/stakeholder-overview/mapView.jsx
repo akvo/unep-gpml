@@ -10,11 +10,12 @@ const MapView = ({ multiCountryCountries, updateQuery, isFilteredCountry }) => {
     landing: s.landing,
     countries: s.countries,
   }));
+
   const query = useQuery();
+
   const box = document.getElementsByClassName("stakeholder-overview");
   const isLoaded = () => !isEmpty(landing?.map);
   const [multiCountry, setMultiCountry] = useState(null);
-  const [country, setCountry] = useState(null);
   const clickCountry = (name) => {
     const val = query["country"];
     let updateVal = [];
@@ -39,16 +40,16 @@ const MapView = ({ multiCountryCountries, updateQuery, isFilteredCountry }) => {
   return (
     <Maps
       box={box}
+      query={query}
       clickEvents={clickCountry}
       listVisible={[]}
       isDisplayedList={[]}
-      isFilteredCountry={isFilteredCountry}
       dataToDisplay={[]}
+      isFilteredCountry={isFilteredCountry}
       data={landing?.map || []}
       topic={query?.networkType}
       isLoaded={isLoaded}
       multiCountryCountries={null}
-      country={countries.find((x) => x.id === country)}
       multiCountries={
         multiCountry &&
         !isEmpty(multiCountryCountries) &&
@@ -60,6 +61,7 @@ const MapView = ({ multiCountryCountries, updateQuery, isFilteredCountry }) => {
               )
           : []
       }
+      useVerticalLegend
     />
   );
 };

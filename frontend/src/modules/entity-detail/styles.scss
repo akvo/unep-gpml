@@ -369,6 +369,7 @@
         padding: 20px 0px;
         img {
           max-width: 200px;
+          max-height: 200px;
           object-fit: cover;
           width: 100%;
           border-radius: 50%;
@@ -455,6 +456,31 @@
         border-radius: 5px;
         color: #255b87;
       }
+    }
+  }
+}
+
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+  #entity-detail {
+    zoom: 85%;
+    .topbar-container {
+      .topbar-wrapper {
+        .topbar-title-holder {
+          h1 {
+            font-size: 1.6rem;
+          }
+        }
+        .topbar-image-holder {
+          margin-bottom: -30px;
+          img {
+            width: 100px;
+            height: 100px;
+          }
+        }
+      }
+    }
+    .info-container {
+      margin-top: 40px;
     }
   }
 }

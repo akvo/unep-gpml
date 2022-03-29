@@ -49,7 +49,7 @@ import Topic from "./modules/topics/topic";
 import AboutUs from "./modules/about/about-us";
 import Glossary from "./modules/glossary/glossary";
 import Error from "./modules/error/error";
-import EntityFormView from "./modules/entity/view";
+import EntityFormView from "./modules/entity-edit-signup/view";
 import Workspace from "./modules/workspace/view";
 import EventPage from "./modules/event-page/view";
 import StakeholderDetail from "./modules/stakeholder-detail/view";
@@ -285,6 +285,7 @@ const Root = () => {
       "technology",
       "event",
       "financing_resource",
+      // "capacity_building",
     ];
     if (query?.topic?.length === 0) {
       if (
@@ -311,7 +312,6 @@ const Root = () => {
       })
       .catch((err) => {
         console.error(err);
-        redirectError(err, history);
       });
   };
 
@@ -335,54 +335,6 @@ const Root = () => {
       setFilterCountries(value);
     }
   };
-
-  useEffect(() => {
-    // setFilterCountries if user click from map to browse view
-    query?.country &&
-      query?.country.length > 0 &&
-      setFilterCountries(query.country);
-
-    // Manage filters display
-    !filters && setFilters(query);
-    if (filters) {
-      setFilters({ ...filters, topic: query.topic, tag: query.tag });
-      setFilterCountries(filters.country);
-    }
-
-    setLoading(true);
-    if (isLoading === false && !filters) {
-      setTimeout(getResults(query), 0);
-    }
-
-    if (isLoading === false && filters) {
-      const newParams = new URLSearchParams({
-        ...filters,
-        topic: query.topic,
-        tag: query.tag,
-      });
-      if (history.location.pathname === "/knowledge-library") {
-        history.push(`/knowledge-library?${newParams.toString()}`);
-      }
-      clearTimeout(tmid);
-      tmid = setTimeout(getResults(query), 1000);
-    }
-
-    if (
-      multiCountryCountries.length === 0 &&
-      query?.transnational?.length !== 0 &&
-      history.location.pathname === "/knowledge-library"
-    ) {
-      updateQuery("transnational", []);
-    }
-
-    if (history.location.pathname === "/knowledge-library") {
-      updateQuery("favorites", false);
-    }
-    // NOTE: Since we are using `history` and `location`, the
-    // dependency needs to be []. Ignore the linter warning, because
-    // adding a dependency here on location makes the FE send multiple
-    // requests to the backend.
-  }, [isLoading]); // eslint-disable-line
 
   return (
     <>
@@ -492,9 +444,7 @@ const Root = () => {
           <Route
             exact
             path="/about-us"
-            render={(props) => (
-              <AboutUs {...props} countData={countData} filters={filters} />
-            )}
+            render={(props) => <AboutUs {...props} />}
           />
           <Route
             exact
@@ -519,11 +469,15 @@ const Root = () => {
                   isAuthenticated,
                   loginWithPopup,
                   multiCountryCountries,
+                  isLoading,
+                  setLoading,
 
                   //Functions
+                  getResults,
                   updateQuery,
                   setFilters,
                   setRelations,
+                  setFilterCountries,
                   setMultiCountryCountries,
                   setWarningModalVisible,
                   setStakeholderSignupModalVisible,
@@ -648,7 +602,7 @@ const Root = () => {
 
           <Route
             exact
-            path="/edit-entity/:id"
+            path="/:type(edit-entity|edit-stakeholder)/:id"
             render={(props) => <EntityFormView {...props} />}
           />
 

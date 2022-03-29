@@ -24,6 +24,7 @@ $bg-green-primary: #10f9b7;
 }
 
 #workspace {
+  background-color: $bg-dark-secondary;
   .paragraph,
   .header-text,
   .plan-content,
@@ -57,7 +58,12 @@ $bg-green-primary: #10f9b7;
   }
 
   .section-download {
+    width: 100%;
+    max-width: 1620px;
+    margin: auto;
+    background-color: #ffff;
     padding: 14px 17px 20.3px 17px;
+
     .card {
       display: flex;
       align-items: center;
@@ -137,6 +143,13 @@ $bg-green-primary: #10f9b7;
         }
       }
 
+      img {
+        width: 30px;
+        height: 30px;
+        // width: 32px;
+        // height: 32px;
+      }
+
       &.active {
         background: rgba(5, 240, 129, 0.2);
 
@@ -161,6 +174,8 @@ $bg-green-primary: #10f9b7;
 
   .action-plan {
     width: 100%;
+    max-width: 1620px;
+    margin: auto;
     padding: 14px 10px 17px 8px;
     background-color: $bg-dark-secondary;
     overflow: hidden;
@@ -211,9 +226,9 @@ $bg-green-primary: #10f9b7;
     .plan-list {
       display: flex;
       font-weight: bold;
-
       margin-bottom: 0;
       color: $blue03;
+      overflow-x: auto;
     }
 
     .plan-list-item {
@@ -316,6 +331,28 @@ $bg-green-primary: #10f9b7;
     .section-download .card {
       background: url("../../images/workspace/dark-sea-bg-large.png") no-repeat
         bottom;
+    }
+  }
+
+  @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+    .action-plan {
+      .plan-list-item {
+        padding: 0 20px 0 55px;
+      }
+    }
+    .section-download {
+      .card {
+        padding: 5px 36px 5px 36px;
+      }
+      .download-link {
+        padding: 30px 30px 30px 30px;
+      }
+    }
+    .ant-page-header {
+      padding: 5px 24px;
+    }
+    #appWrapper {
+      zoom: 80%;
     }
   }
 }

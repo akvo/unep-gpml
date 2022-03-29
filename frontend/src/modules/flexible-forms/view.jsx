@@ -7,7 +7,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { Row, Col, Button, Switch, Radio, Popover, Steps } from "antd";
+import { Row, Col, Button, Switch, Radio, Popover, Steps, List } from "antd";
 import {
   LeftOutlined,
   RightOutlined,
@@ -1369,15 +1369,15 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     >
                       <div className="button-wrapper">
                         <h5>Pick the main content type</h5>
-                        {/* <Button
+                        <Button
                           icon={<img src={ExampleIcon} alt="Example button" />}
                           size="large"
                           onClick={() => setDisplayModal(!displayModal)}
                         >
                           SHOW EXAMPLES
-                        </Button> */}
+                        </Button>
                       </div>
-                      <div>
+                      <div className="example-container">
                         <div className={`Modal ${displayModal ? "Show" : ""}`}>
                           <Button
                             icon={
@@ -1389,7 +1389,20 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                           >
                             HIDE EXAMPLES
                           </Button>
+
+                          <List itemLayout="horizontal">
+                            {mainContentType
+                              .find((element) => element.code === mainType)
+                              .examples.map((link, id) => (
+                                <List.Item key={id}>
+                                  <a href={link.link} target="_blank">
+                                    <List.Item.Meta title={link.title} />
+                                  </a>
+                                </List.Item>
+                              ))}
+                          </List>
                         </div>
+
                         <div
                           className={`Overlay ${displayModal ? "Show" : ""}`}
                           onClick={() => setDisplayModal(!displayModal)}

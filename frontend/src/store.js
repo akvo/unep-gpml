@@ -10,6 +10,16 @@ const geoCoverageTypeOptions = [
   // "Global with elements in specific areas",
 ];
 
+const icons = {
+  action_plan: "action.svg",
+  project: "initiative.svg",
+  policy: "policy.svg",
+  technical_resource: "technical.svg",
+  financing_resource: "financing.svg",
+  technology: "technology.svg",
+  event: "event_flexible.svg",
+};
+
 const entityRole = ["Owner", "Implementor", "Partner", "Donor"];
 const individualRole = ["Owner", "Resource Editor"];
 
@@ -50,7 +60,7 @@ const representativeGroup = [
   },
   {
     code: "academia-research",
-    name: "Academia & Research",
+    name: "Academia and Research",
     childs: ["Public Institute", "Privately Owned"],
   },
   {
@@ -64,24 +74,54 @@ const mainContentType = [
   {
     code: "initiative",
     name: "Initiative",
+    examples: [
+      {
+        title: "Sustainable Industrial Zone Development",
+        link: "https://digital.gpmarinelitter.org/project/10031",
+      },
+      {
+        title: "Environmentally Sound Management and Destruction of PCBs",
+        link: "https://digital.gpmarinelitter.org/project/10033",
+      },
+      {
+        title: "Plastic Waste Management",
+        link: "https://digital.gpmarinelitter.org/project/10078",
+      },
+      {
+        title: "Make Lome Plastic Free",
+        link: "https://digital.gpmarinelitter.org/project/10149",
+      },
+      {
+        title: "SB 270: Statewide Bag Ban",
+        link: "https://digital.gpmarinelitter.org/project/10145",
+      },
+      {
+        title: "California Ocean Litter Prevention Strategy",
+        link: "https://digital.gpmarinelitter.org/project/10177",
+      },
+    ],
     childs: [
       {
         title: "Legislation, standards, rules",
+        tags: ["initiatives", "policy", "legislation", "standards"],
         des:
           "Agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments).",
       },
       {
         title: "Working with people",
+        tags: ["initiatives", "working with people", "capacity building"],
         des:
           "Encouraging or enabling others, e.g., education, training, communication, awareness raising, behaviour change programmes",
       },
       {
         title: "Technology and Processes",
+        tags: ["initiatives", "technology and processes"],
         des:
           "New technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning.",
       },
       {
         title: "Monitoring and Analysis",
+        tags: ["initiatives", "monitoring and analysis"],
         des:
           "Collecting evidence around plastic discharge to the ocean/waterways, e.g., monitoring, analysis",
       },
@@ -92,12 +132,53 @@ const mainContentType = [
   {
     code: "action",
     name: "Action Plan",
+    examples: [
+      {
+        title:
+          "PAME, Regional Action Plan on Marine Litter in the Arctic (May 2021)",
+        link: "https://digital.gpmarinelitter.org/action_plan/10017",
+      },
+      {
+        title: "HELCOM Regional action plan on marine litter",
+        link: "https://digital.gpmarinelitter.org/action_plan/122",
+      },
+      {
+        title: "Gulf of Mexico Alliance Regional Action Plan",
+        link: "https://digital.gpmarinelitter.org/action_plan/260",
+      },
+      {
+        title:
+          "ASEAN Regional Action Plan for Combating Marine Debris in the ASEAN Member States (2021 – 2025)",
+        link: "https://digital.gpmarinelitter.org/action_plan/10008",
+      },
+      {
+        title: "COBSEA Regional Action Plan on Marine Litter 2019",
+        link: "https://digital.gpmarinelitter.org/action_plan/196",
+      },
+      {
+        title: "Marine Litter in the Black Sea Region",
+        link: "https://digital.gpmarinelitter.org/action_plan/194",
+      },
+    ],
     childs: [
-      { title: "Global", des: "Worldwide Coverage" },
-      { title: "Transnational", des: "Covers two or more countries" },
-      { title: "National", des: "Covers an entire country" },
+      {
+        title: "Global",
+        tags: ["action Plan", "global"],
+        des: "Worldwide Coverage",
+      },
+      {
+        title: "Transnational",
+        tags: ["action Plan", "transnational"],
+        des: "Covers two or more countries",
+      },
+      {
+        title: "National",
+        tags: ["action Plan", "national"],
+        des: "Covers an entire country",
+      },
       {
         title: "Sub-national",
+        tags: ["action Plan", "sub-national"],
         des: "Covers part of a country e.g, city, or federal state",
       },
     ],
@@ -107,34 +188,67 @@ const mainContentType = [
   {
     code: "policy",
     name: "Policy",
+    examples: [
+      {
+        title: "Environmental Protection and Management Act",
+        link: "https://digital.gpmarinelitter.org/policy/2",
+      },
+      {
+        title: "Navigation Act 2012",
+        link: "https://digital.gpmarinelitter.org/policy/16",
+      },
+      {
+        title: "Waste Prevention and Management Act",
+        link: "https://digital.gpmarinelitter.org/policy/25",
+      },
+      {
+        title:
+          "Law on Waste Management of the Federation of Bosnia and Herzegovina",
+        link: "https://digital.gpmarinelitter.org/policy/28",
+      },
+      {
+        title: "Arctic Waters Pollution Prevention Act",
+        link: "https://digital.gpmarinelitter.org/policy/40",
+      },
+      {
+        title: "Prevention of Pollution of the Sea Order",
+        link: "https://digital.gpmarinelitter.org/policy/32",
+      },
+    ],
     childs: [
       {
         title: "Legislations, Regulations & Standards",
+        tags: ["policy", "legislations, regulations & standards"],
         des:
           "Measures taken by governmental units to influence people by means of formulated rules and directives which mandate receivers act in accordance with what is ordered in these rules or directives.",
       },
       {
         title: "Prohibitive Regulations, Bans & Restrictions",
+        tags: ["policy", "legislations, regulations & standards"],
         des:
           "Rules of an obligatory nature that are negative, disallowing certain phenomena or actions.",
       },
       {
         title: "Strategies & Action Plans",
+        tags: ["policy", "strategies & action plans"],
         des:
           "Decisions designed to create favorable impact on key factors to create a desired outcome.",
       },
       {
         title: "Economic Instruments",
+        tags: ["policy", "economic instruments"],
         des:
           "Incentive measures bring about an intended behaviour or outcome as an alternative to command and control measures - legal codes and prescriptions.",
       },
       {
         title: "Certification, Licensing and Registration",
+        tags: ["policy", "certification, licensing, and registration"],
         des:
           "Process of checking, verifying, and attaining general information about the abilityl to comply with the standard. ",
       },
       {
         title: "Policy Guidance and Information",
+        tags: ["policy", "policy guidance"],
         des:
           "Help and advice provided on a set of ideas or plans that is used as a basis for making decisions, especially in politics, economics, or business.",
       },
@@ -145,38 +259,77 @@ const mainContentType = [
   {
     code: "financing",
     name: "Financing Resource",
+    examples: [
+      {
+        title:
+          "Sustainable Development Bond on Sustainable Use of Oceans and Coastal Areas (“Blue Economy”)",
+        link: "https://digital.gpmarinelitter.org/financing_resource/50",
+      },
+      {
+        title:
+          "Project to tackle marine litter and plastic pollution in Southeast Asia (SEA)",
+        link: "https://digital.gpmarinelitter.org/financing_resource/56",
+      },
+      {
+        title: "Global Partnership on Marine Litter",
+        link: "https://digital.gpmarinelitter.org/financing_resource/58",
+      },
+      {
+        title: "AI for Earth Grant",
+        link: "https://digital.gpmarinelitter.org/financing_resource/71",
+      },
+      {
+        title:
+          "Norwegian Development Programme to Combat Marine Litter and Microplastics",
+        link: "https://digital.gpmarinelitter.org/financing_resource/248",
+      },
+      {
+        title: "Global Plastics Action Partnership (GPAP)",
+        link: "https://digital.gpmarinelitter.org/financing_resource/37",
+      },
+    ],
     childs: [
       {
         title: "Equity Investment",
+        tags: ["financing resources", "equity investment"],
         des: "Money that is invested in a company in the form of shares.",
       },
       {
         title: "Venture Capital",
+        tags: ["financing resources", "venture capital"],
         des:
           "Money that is invested or is available for investment in a new company, especially one that involves risk.",
       },
       {
         title: "Loans",
+        tags: ["financing resources", "loans"],
         des:
           "An amount of money that is borrowed, often from a bank, and has to be paid back, usually with an extra charge for borrowing.",
       },
       {
         title: "Grants",
+        tags: ["financing resources", "grants"],
         des:
           "An amount of money that a government or other institution gives to an individual or to an organization for a particular purpose. ",
       },
       {
         title: "Blended finance",
+        tags: ["financing resources", "blended finance"],
         des:
           "The strategic use of development finance for the mobilisation of additional finance towards sustainable development.",
       },
       {
         title: "Multidonor trust fund",
+        tags: ["financing resources", "multidonor trust fund"],
         des:
           "A type of pooled funding involving multiple UN organisations and designed to receive contributions from donors to support specific national, regional or global results.",
       },
       {
         title: "Sustainable development bonds, green bonds and blue bonds",
+        tags: [
+          "financing resources",
+          "sustainable development bonds, green bonds, and blue bonds",
+        ],
         des:
           "Debt securities issued by private or public entities to finance activities or projects linked to sustainable development, green goals, or ocean goals.",
       },
@@ -187,44 +340,81 @@ const mainContentType = [
   {
     code: "technical",
     name: "Technical Resource",
+    examples: [
+      {
+        title: "Plastic Pollution Calculator",
+        link: "https://digital.gpmarinelitter.org/technical_resource/138",
+      },
+      {
+        title:
+          "Harmonization of Microplastics Monitoring Methodologies in the Ocean",
+        link: "https://digital.gpmarinelitter.org/technical_resource/10007",
+      },
+      {
+        title:
+          "Guidelines For The Monitoring And Assessment Of Plastic Litter In The Ocean",
+        link: "https://digital.gpmarinelitter.org/technical_resource/10024",
+      },
+      {
+        title: "Marine Litter Vital Graphics",
+        link: "https://digital.gpmarinelitter.org/technical_resource/109",
+      },
+      {
+        title:
+          "Study on industry involvement in the integrated approach to financing the sound management of chemicals and waste, prepared by the SAICM Secretariat",
+        link: "https://digital.gpmarinelitter.org/technical_resource/10033",
+      },
+      {
+        title: "Harm caused by Marine Litter",
+        link: "https://digital.gpmarinelitter.org/technical_resource/250",
+      },
+    ],
     childs: [
       {
         title: "Report & Assessment",
+        tags: ["technical resources", "report & assessment"],
         des:
           "A textual document made that present focused, salient content to a specific audience but is not limited to assessment reports, evaluation report, annual report, progress/quadrennial assessment report.",
       },
       {
         title: "Guidance Documents",
+        tags: ["technical resources", "guidance documents"],
         des:
           "A document that gives advice or help on how to do or understand something.",
       },
       {
         title: "Rules of Procedure and Mechanism",
+        tags: ["technical resources", "rules of procedure and mechanism"],
         des:
           "A natural or established process by which something takes place or is brought about.",
       },
       {
         title: "Tools & Toolkits",
+        tags: ["technical resources", "tools & toolkits"],
         des:
           "A resource or set of resources that helps you to do a particular activity.",
       },
       {
         title: "Working Document",
+        tags: ["technical resources", "working document"],
         des:
           "A type of technical report that is a work in progress, a preliminary form of a possible future document.",
       },
       {
         title: "Educational & Outreach resources",
+        tags: ["technical resources", "educational & outreach resources"],
         des:
           "Any resource – including print and non-print materials and online/open-access resources – which supports and enhances, directly or indirectly, learning, teaching and awareness raising.",
       },
       {
         title: "Courses & Trainings",
+        tags: ["technical resources", "courses & trainings"],
         des:
           "Unit of instruction comprising a sequence of educational activities in a particular field or range of related fields of education.",
       },
       {
         title: "Case studies",
+        tags: ["technical resources", "case study"],
         des:
           "Initiatives or projects that can be used as an example to show general principles.",
       },
@@ -235,34 +425,67 @@ const mainContentType = [
   {
     code: "event_flexible",
     name: "Event",
+    examples: [
+      {
+        title: "SEA of Solutions 2021",
+        link: "https://digital.gpmarinelitter.org/event/10028",
+      },
+      {
+        title: "Glasgow Climate Change Conference",
+        link: "https://digital.gpmarinelitter.org/event/28",
+      },
+      {
+        title: "G-STIC Conference Second Edition",
+        link: "https://digital.gpmarinelitter.org/event/33",
+      },
+      {
+        title: "Reef Futures Symposium",
+        link: "https://digital.gpmarinelitter.org/event/30",
+      },
+      {
+        title: "Unleashing marine robots for good",
+        link: "https://digital.gpmarinelitter.org/event/10040",
+      },
+      {
+        title:
+          "Action for the Oceans – Youth leaders raising awareness for the Oceans, together!",
+        link: "https://digital.gpmarinelitter.org/event/36",
+      },
+    ],
     childs: [
       {
         title: "Webinars & Seminars",
+        tags: ["events", "webinars & seminars"],
         des:
           "An online or face-to-face meeting of people to discuss and/or perform practical work in a subject or activity",
       },
       {
         title: "Workshops",
+        tags: ["events", "workshops"],
         des:
           "A meeting of people to discuss and/or perform practical work in a subject or activity",
       },
       {
         title: "Conferences",
+        tags: ["events", "conferences"],
         des:
           "Meetings, often lasting a few days, organized on a particular subject or to bring together people who have a common interest to exchange ideas and discuss issues, especially important public issues. ",
       },
       {
         title: "Challenges & Contests ",
+        tags: ["events", "challenges & contests"],
         des:
           "An activity done by a number of people or organizations, each of which is trying to do better than all of the others",
       },
       {
         title: "Courses & Trainings",
+        tags: ["events", "courses & trainings"],
         des:
           "Unit of instruction comprising a sequence of educational activities in a particular field or range of related fields of education. ",
       },
       {
         title: "Awareness Raising",
+        tags: ["events", "awareness raising"],
         des:
           "Awareness-raising is a process that seeks to inform and educate people about a topic or issue with the intention of influencing their attitudes, behaviours and beliefs towards the achievement of a defined purpose or goal.1 It can mobilize the power of public opinion in support of an issue and thereby influence the political will of decision makers.2 There are multiple awareness-raising strategies, methods and tools that can be used to convey and spread messages, and to gather the support necessary to influence public opinion. ",
       },
@@ -273,34 +496,71 @@ const mainContentType = [
   {
     code: "technology",
     name: "Technology",
+    examples: [
+      {
+        title: "Waste Free Oceans",
+        link: "https://digital.gpmarinelitter.org/technology/56",
+      },
+      {
+        title:
+          "Ellipsis: Machine learning and aerial imagery to identify, map, and track plastic waste",
+        link: "https://digital.gpmarinelitter.org/technology/58",
+      },
+      {
+        title:
+          "Fishing for Litter: Ocean cleaning project that involves fishermen who collect debris during fishing activities",
+        link: "https://digital.gpmarinelitter.org/technology/59",
+      },
+      {
+        title:
+          "Plastic Odyssey: The Expedition Around The World To Fight Against Plastic Pollution",
+        link: "https://digital.gpmarinelitter.org/technology/64",
+      },
+      {
+        title:
+          "SeaChange: Converting ocean plastics to inert, non-toxic glass safe for marine life",
+        link: "https://digital.gpmarinelitter.org/technology/66",
+      },
+      {
+        title:
+          "The 3R Initiative: Credit-based market system to encourage plastic recycling and recovery",
+        link: "https://digital.gpmarinelitter.org/technology/75",
+      },
+    ],
     childs: [
       {
         title: "In market",
+        tags: ["technology", "in market"],
         des:
           "Within the geographical area that the provider offers the service",
       },
       {
         title: "Scale up",
+        tags: ["technology", "scale up"],
         des:
           "Involves obtaining a faster server with more powerful processors and more memory. This solution uses less network hardware, and consumes less power; but ultimately, for many platforms may only provide a short-term fix, especially if continued growth is expected",
       },
       {
         title: "Prototype",
+        tags: ["technology", "prototype"],
         des:
           "s the first complete solution to the original challenge. The first “prototype” is the first time all parts of a solution are tested together. It is the first time that the inter-dependencies of all components can be tested, analyzed, and refined. ",
       },
       {
         title: "Pilot",
+        tags: ["technology", "pilot"],
         des:
           "A solution that is to be tested on a small scale that is seen to be complete in its own right. Piloting can also be seen as the pre-scale phase of a new approach that focuses on quality, validation, time, cost, adverse events, and initial short-term impact.",
       },
       {
         title: "Development",
+        tags: ["technology", "development"],
         des:
           "The systematic use of scientific, technical, economic, and commercial knowledge to meet specific business objectives or requirements.",
       },
       {
         title: "Research",
+        tags: ["technology", "research"],
         des:
           "Creation of new knowledge and/or the use of existing knowledge in a new and creative way to generate new concepts, methodologies and understandings.",
       },
@@ -311,6 +571,34 @@ const mainContentType = [
   {
     code: "capacity_building",
     name: "Capacity Building",
+    examples: [
+      {
+        title: "Our Coast is Dying",
+        link: "https://digital.gpmarinelitter.org/project/10150",
+      },
+      {
+        title: "Massive Open Online Course (MOOC) on Marine Litter",
+        link: "https://digital.gpmarinelitter.org/technical_resource/149",
+      },
+      {
+        title: "Raising Awareness Amongst Students",
+        link: "https://digital.gpmarinelitter.org/project/10151",
+      },
+      {
+        title: "Ocean Innovation Challenge",
+        link: "https://digital.gpmarinelitter.org/project/10063",
+      },
+      {
+        title:
+          "Action for the Oceans – Youth leaders raising awareness for the Oceans, together!",
+        link: "https://digital.gpmarinelitter.org/event/36",
+      },
+      {
+        title:
+          "Preparing a Waste Management Plan - A Methodological Guidance Note",
+        link: "https://digital.gpmarinelitter.org/technical_resource/84",
+      },
+    ],
     childs: [
       {
         title: "Guidance Documents",
@@ -376,6 +664,7 @@ const UIStore = new Store({
   sectorOptions: sectorOptions,
   representativeGroup: representativeGroup,
   mainContentType: mainContentType,
+  icons: icons,
   selectedMainContentType: "initiative",
   landing: null,
   stakeholders: null,
@@ -391,6 +680,7 @@ const UIStore = new Store({
     event: 1,
     technology: 1,
     entity: 1,
+    stakeholder: 1,
   },
   formEdit: {
     signUp: {

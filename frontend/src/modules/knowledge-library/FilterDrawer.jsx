@@ -29,13 +29,15 @@ import { ReactComponent as CapacityBuildingIcon } from "../../images/knowledge-l
 import { ReactComponent as ActionSelectedIcon } from "../../images/knowledge-library/action-selected.svg";
 import { ReactComponent as EventFlexibleIcon } from "../../images/knowledge-library/event-flexible.svg";
 import { ReactComponent as InitiativeIcon } from "../../images/knowledge-library/initiative.svg";
-import { ReactComponent as FinancingIcon } from "../../images/knowledge-library/financing.svg";
+import { ReactComponent as FinancingIcon } from "../../images/knowledge-library/financing-2.svg";
 import { ReactComponent as PolicyIcon } from "../../images/knowledge-library/policy.svg";
 import { ReactComponent as TechnicalIcon } from "../../images/knowledge-library/technical.svg";
 import { ReactComponent as TechnologyIcon } from "../../images/knowledge-library/technology.svg";
+import { titleCase } from "../../utils/string";
 
 const FilterDrawer = ({
   query,
+  countData,
   updateQuery,
   filterVisible,
   setFilterVisible,
@@ -49,15 +51,18 @@ const FilterDrawer = ({
     transnationalOptions,
     geoCoverageTypeOptions,
     representativeGroup,
+    mainContentType,
+    organisations,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     nav: s.nav,
     tags: s.tags,
     countries: s.countries,
     transnationalOptions: s.transnationalOptions,
-    sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
-    representativeGroup: s.sectorOptions,
+    mainContentType: s.mainContentType,
+    representativeGroup: s.representativeGroup,
+    organisations: s.organisations,
   }));
   const { isAuthenticated } = useAuth0();
 
@@ -66,7 +71,40 @@ const FilterDrawer = ({
     !isEmpty(countries) &&
     !isEmpty(transnationalOptions) &&
     !isEmpty(geoCoverageTypeOptions) &&
-    !isEmpty(representativeGroup);
+    !isEmpty(mainContentType) &&
+    !isEmpty(representativeGroup) &&
+    !isEmpty(organisations);
+
+  const filteredMainContentOptions = isLoaded()
+    ? mainContentType
+        .filter((content) => {
+          const resourceName = (name) => {
+            if (name === "initiative") {
+              return "project";
+            } else if (name === "event_flexible") {
+              return "event";
+            } else if (name === "financing") {
+              return "financing_resource";
+            } else if (name === "technical") {
+              return "technical_resource";
+            } else if (name === "action") {
+              return "action_plan";
+            } else {
+              return name;
+            }
+          };
+          return query?.topic.includes(resourceName(content.code));
+        })
+        .sort((a, b) => a?.code.localeCompare(b?.code))
+    : [];
+
+  const mainContentOption = () => {
+    if (query?.topic.length > 0) {
+      return filteredMainContentOptions;
+    } else if (query?.topic.length === 0) {
+      return mainContentType;
+    }
+  };
 
   const topicIcons = (topic) => {
     if (topic === "project") {
@@ -90,7 +128,7 @@ const FilterDrawer = ({
     if (topic === "technology") {
       return <TechnologyIcon width="53" height="53" />;
     }
-    if (topic === "organisation") {
+    if (topic === "capacityBuilding") {
       return <CapacityBuildingIcon width="53" height="53" />;
     }
   };
@@ -112,7 +150,6 @@ const FilterDrawer = ({
 
   const handleChangeLocationTab = (key) => {
     const param = key === "country" ? "transnational" : "country";
-    // updateQuery(param, []);
   };
 
   const handleChangeCountry = (val) => {
@@ -150,24 +187,32 @@ const FilterDrawer = ({
   };
 
   // populate options for tags dropdown
+  const tagsWithoutSpace =
+    isLoaded() &&
+    flatten(values(tags)).map((it) => ({
+      value: it?.tag?.trim(),
+      label: it?.tag?.trim(),
+    }));
+
   const tagOpts = isLoaded()
-    ? flatten(values(tags))
-        ?.map((it) => ({ value: it.tag, label: it.tag }))
+    ? [...new Set(tagsWithoutSpace.map((s) => JSON.stringify(s)))]
+        .map((s) => JSON.parse(s))
         ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
     : [];
 
   // populate options for representative group options
   const representativeOpts = isLoaded()
-    ? flatten(
-        [...representativeGroup]
-          ?.map((x) => x)
-          ?.sort((repG1, repG2) => repG1?.localeCompare(repG2))
-      )
+    ? [...representativeGroup, { code: "other", name: "Other" }].map((x) => ({
+        label: x?.name,
+        value: x?.code,
+      }))
     : [];
 
   return (
     <div className="site-drawer-render-in-current-wrapper">
       <Drawer
+        tabIndex=""
+        tabindex=""
         title="Choose your filters below"
         placement="left"
         visible={filterVisible}
@@ -182,7 +227,7 @@ const FilterDrawer = ({
         {/* Filter content */}
         <Row type="flex" gutter={[0, 24]}>
           {/* Resource type */}
-          <Col span={24}>
+          <Col span={24} className="resources-card-filter">
             <Space align="middle">
               <div className="filter-title">Resources type</div>
               {isEmpty(query?.topic) ? (
@@ -201,12 +246,11 @@ const FilterDrawer = ({
             <Row type="flex" gutter={[10, 10]}>
               {topicTypes.map((type) => {
                 const topic = humps.decamelize(type);
-                const count = nav.resourceCounts?.find((it) =>
-                  it.hasOwnProperty(type)
-                );
+                const count =
+                  countData?.find((it) => it.topic === topic)?.count || 0;
 
                 return (
-                  <Col span={6} key={type}>
+                  <Col span={6} key={type} className="resource-card-wrapper">
                     <Card
                       onClick={() => handleChangeResourceType("topic", topic)}
                       className={classNames("resource-type-card", {
@@ -216,7 +260,7 @@ const FilterDrawer = ({
                       <Space direction="vertical" align="center">
                         {topicIcons(type)}
                         <div className="topic-text">{topicNames(type)}</div>
-                        <div className="topic-count">{count[type]}</div>
+                        <div className="topic-count">{count}</div>
                       </Space>
                     </Card>
                   </Col>
@@ -224,9 +268,35 @@ const FilterDrawer = ({
               })}
             </Row>
           </Col>
+          {/* Sub-content type */}
+
+          <MultipleSelectFilter
+            title="Sub-content type"
+            options={
+              isLoaded()
+                ? mainContentOption().map((content) => ({
+                    label: content?.name,
+                    options: content?.childs
+                      .map((child, i) => ({
+                        label: child?.title,
+                        value: child?.title,
+                        key: `${i}-${content.name}`,
+                      }))
+                      .sort((a, b) =>
+                        a?.label?.trim().localeCompare(b?.label?.trim())
+                      ),
+                  }))
+                : []
+            }
+            value={query?.subContentType || []}
+            flag="subContentType"
+            query={query}
+            updateQuery={updateQuery}
+          />
+
           {/* My Bookmarks */}
           {isAuthenticated && (
-            <Col span={24}>
+            <Col span={24} style={{ paddingTop: 5, paddingBottom: 5 }}>
               <Space align="middle">
                 <Checkbox
                   className="favorites-checkbox"
@@ -241,7 +311,7 @@ const FilterDrawer = ({
             </Col>
           )}
           {/* Location */}
-          <Col span={24}>
+          <Col span={24} style={{ paddingTop: 5, paddingBottom: 5 }}>
             <Space align="middle">
               <div className="filter-title">Location</div>
               {!isEmpty(query?.country) ? (
@@ -276,16 +346,18 @@ const FilterDrawer = ({
             </Space>
             <div className="country-filter-tab-wrapper">
               <CountryTransnationalFilter
+                {...{
+                  multiCountryCountries,
+                  handleChangeCountry,
+                  handleDeselectCountry,
+                  handleChangeMultiCountry,
+                  handleDeselectMultiCountry,
+                }}
                 handleChangeTab={handleChangeLocationTab}
                 country={query?.country?.map((x) => parseInt(x)) || []}
-                handleChangeCountry={handleChangeCountry}
-                handleDeselectCountry={handleDeselectCountry}
                 multiCountry={
                   query?.transnational?.map((x) => parseInt(x)) || []
                 }
-                handleChangeMultiCountry={handleChangeMultiCountry}
-                handleDeselectMultiCountry={handleDeselectMultiCountry}
-                multiCountryCountries={multiCountryCountries}
                 multiCountryLabelCustomIcon={true}
                 countrySelectMode="multiple"
                 multiCountrySelectMode="multiple"
@@ -301,11 +373,30 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
+
+          {/* <MultipleSelectFilter
+            title="Entities"
+            options={
+              isLoaded()
+                ? organisations
+                    ?.map((x) => ({ value: x.id, label: x.name }))
+                    .filter((organisation) => organisation?.value > -1)
+                : []
+            }
+            value={query?.entity?.map((x) => parseInt(x)) || []}
+            flag="entity"
+            query={query}
+            updateQuery={updateQuery}
+          /> */}
+
           <MultipleSelectFilter
             title="Representative group"
             options={
               isLoaded()
-                ? representativeOpts?.map((x) => ({ value: x, label: x }))
+                ? representativeOpts.map((x) => ({
+                    value: x?.value,
+                    label: x.label,
+                  }))
                 : []
             }
             value={query?.representativeGroup || []}
@@ -314,7 +405,11 @@ const FilterDrawer = ({
             updateQuery={updateQuery}
           />
           {/* Date Filter */}
-          <Col span={24} className="date-picker-container">
+          <Col
+            span={24}
+            className="date-picker-container"
+            style={{ paddingTop: 5, paddingBottom: 5 }}
+          >
             <Row type="flex" style={{ width: "100%" }} gutter={[10, 10]}>
               {/* Start date */}
               <DatePickerFilter

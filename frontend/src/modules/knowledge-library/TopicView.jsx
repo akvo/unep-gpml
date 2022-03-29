@@ -1,17 +1,12 @@
-import React, { useState } from "react";
+import { orderBy } from "lodash";
+import React, { useState, useEffect } from "react";
+import api from "../../utils/api";
 
-import Chart from "../../utils/chart";
-import { popularTopics } from "../landing/new-home-static-content";
-import orderBy from "lodash/orderBy";
-
-const sortPopularTopic = orderBy(
-  popularTopics,
-  ["count", "topic"],
-  ["desc", "desc"]
-);
+import TopicChart from "../chart/topicChart";
 
 const TopicView = ({ updateQuery }) => {
-  const defTopic = sortPopularTopic[0]?.topic?.toLocaleLowerCase();
+  const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
+  const defTopic = sortedPopularTopics[0]?.topic?.toLocaleLowerCase();
 
   const [selectedTopic, setSelectedTopic] = useState(defTopic);
 
@@ -19,32 +14,49 @@ const TopicView = ({ updateQuery }) => {
 
   const handlePopularTopicChartClick = (params) => {
     const { name, tag } = params?.data;
-    !isMobileScreen && setSelectedTopic(name.toLowerCase());
+    !isMobileScreen && setSelectedTopic(name?.toLowerCase());
     updateQuery("tag", [tag]);
   };
-  return (
-    <div className="chart-wrapper">
-      <Chart
-        key="popular-topic"
-        title=""
-        type="TREEMAP"
-        height={window?.innerHeight}
-        className="popular-topic-chart"
-        data={sortPopularTopic.map((x) => {
+
+  useEffect(() => {
+    setSelectedTopic(defTopic);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortedPopularTopics]);
+
+  useEffect(() => {
+    api
+      .get(`/tag/topic/popular?limit=13`)
+      .then((resp) => {
+        const data = resp?.data.map((item, i) => {
           return {
-            id: x.id,
-            name: x.topic,
-            value: x.count > 100 ? x.count : x.count + 50,
-            count: x.count,
-            tag: x.tag,
+            id: i,
+            topic: item?.tag,
+            tag: item?.tag,
+            count: item?.count,
           };
-        })}
-        onEvents={{
-          click: (e) => handlePopularTopicChartClick(e),
-        }}
-        selected={selectedTopic}
-      />
-    </div>
+        });
+        const sorted = orderBy(data, ["count", "topic"], ["desc", "desc"]);
+
+        setSortedPopularTopics(sorted);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <TopicChart
+      loadingId="knowledge-library-loading"
+      {...{
+        selectedTopic,
+        setSelectedTopic,
+        isMobileScreen,
+        sortedPopularTopics,
+        handlePopularTopicChartClick,
+      }}
+    />
   );
 };
 

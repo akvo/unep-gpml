@@ -4,6 +4,8 @@ import { Select, Tabs, Popover } from "antd";
 import { DownOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import isEmpty from "lodash/isEmpty";
 import { topicNames, tTypes } from "../../utils/misc";
+import { multicountryGroups } from "./multicountry";
+import { OptGroup } from "rc-select";
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -33,7 +35,9 @@ const CountryTransnationalFilter = ({
 
   const countryOpts = isLoaded()
     ? countries
-        .filter((country) => country.description === "Member State")
+        .filter(
+          (country) => country.description.toLowerCase() === "member state"
+        )
         .map((it) => ({ value: it.id, label: it.name }))
         .sort((a, b) => a.label.localeCompare(b.label))
     : [];
@@ -77,6 +81,7 @@ const CountryTransnationalFilter = ({
         <Select
           showSearch
           allowClear
+          virtual={false}
           mode={multiCountrySelectMode || ""}
           placeholder="Multi-Country"
           optionFilterProp="children"
@@ -101,23 +106,38 @@ const CountryTransnationalFilter = ({
             )
           }
         >
-          {multiCountryOpts.map(({ value, label }) => (
-            <Option key={`${value}-${label}`} value={value} label={label}>
-              <div>
-                {label}{" "}
-                {multiCountryLabelCustomIcon &&
-                  multiCountry.includes(value) && (
-                    <MultiCountryInfo
-                      data={landing}
-                      multiCountryCountries={
-                        multiCountryCountries.find((x) => x.id === value)
-                          ?.countries
-                      }
-                    />
-                  )}
-              </div>
-            </Option>
-          ))}
+          {multicountryGroups
+            .sort((a, b) => a.label.localeCompare(b.label))
+            .map((transnationalGroup) => (
+              <OptGroup
+                key={transnationalGroup.label}
+                label={transnationalGroup.label}
+                isSelectOptGroup={true}
+              >
+                {transnationalGroup.item
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((transnational) => {
+                    return (
+                      <Option key={transnational.id} value={transnational.id}>
+                        <div>
+                          {transnational.name}{" "}
+                          {multiCountryLabelCustomIcon &&
+                            multiCountry.includes(transnational.id) && (
+                              <MultiCountryInfo
+                                data={landing}
+                                multiCountryCountries={
+                                  multiCountryCountries.find(
+                                    (x) => x.id === transnational.id
+                                  )?.countries
+                                }
+                              />
+                            )}
+                        </div>
+                      </Option>
+                    );
+                  })}
+              </OptGroup>
+            ))}
         </Select>
       </TabPane>
     </Tabs>
@@ -126,13 +146,23 @@ const CountryTransnationalFilter = ({
 
 const ResourcesInfo = (data) => {
   const dataToDisplay = {
-    project: data?.data?.project,
-    actionPlan: data?.data?.actionPlan,
-    policy: data?.data?.policy,
-    technicalResource: data?.data?.technicalResource,
-    financingResource: data?.data?.financingResource,
-    event: data?.data?.event,
-    technology: data?.data?.technology,
+    project: data?.data?.counts?.project,
+    actionPlan: data?.data?.counts?.actionPlan,
+    policy: data?.data?.counts?.policy,
+    technicalResource: data?.data?.counts?.technicalResource,
+    financingResource: data?.data?.counts?.financingResource,
+    event: data?.data?.counts?.event,
+    technology: data?.data?.counts?.technology,
+  };
+
+  const transantionalResources = {
+    project: data?.data?.transnationalCounts?.project,
+    actionPlan: data?.data?.transnationalCounts?.actionPlan,
+    policy: data?.data?.transnationalCounts?.policy,
+    technicalResource: data?.data?.transnationalCounts?.technicalResource,
+    financingResource: data?.data?.transnationalCounts?.financingResource,
+    event: data?.data?.transnationalCounts?.event,
+    technology: data?.data?.transnationalCounts?.technology,
   };
 
   return (
@@ -144,6 +174,11 @@ const ResourcesInfo = (data) => {
             <li key={topic}>
               <span>{topicNames(topic)}</span>:{" "}
               <b>{dataToDisplay?.[topic] ? dataToDisplay[topic] : 0}</b>
+              <b>
+                {" "}
+                {transantionalResources?.[topic] > 0 &&
+                  `(${transantionalResources[topic]})`}
+              </b>
             </li>
           )
         );

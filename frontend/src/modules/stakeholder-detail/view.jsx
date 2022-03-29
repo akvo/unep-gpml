@@ -17,6 +17,8 @@ import {
   List,
   Card,
   Pagination,
+  Modal,
+  notification,
 } from "antd";
 import StickyBox from "react-sticky-box";
 import AvatarImage from "../../images/stakeholder/Avatar.png";
@@ -35,6 +37,7 @@ import {
   ArrowRightOutlined,
   LoadingOutlined,
   EditOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import { withRouter, useHistory, Link } from "react-router-dom";
 import api from "../../utils/api";
@@ -92,6 +95,7 @@ const SharePanel = ({
   data,
   params,
   relation,
+  history,
   handleRelationChange,
 }) => {
   const noEditTopics = new Set(["stakeholder"]);
@@ -102,7 +106,7 @@ const SharePanel = ({
     (profile.role === "ADMIN" ||
       profile.id === params.createdBy ||
       data.owners.includes(profile.id)) &&
-    ((params.type !== "project" && !noEditTopics.has(params.type)) ||
+    (params.type !== "project" ||
       (params.type === "project" && params.id > 10000));
 
   const handleChangeRelation = (relationType) => {
@@ -116,6 +120,31 @@ const SharePanel = ({
       topicId: parseInt(params.id),
       association,
       topic: resourceTypeToTopicType(params.type),
+    });
+  };
+
+  const canDelete = () =>
+    isAuthenticated &&
+    profile.reviewStatus === "APPROVED" &&
+    profile.role === "ADMIN";
+
+  const handleEditBtn = () => {
+    UIStore.update((e) => {
+      e.formEdit = {
+        ...e.formEdit,
+        signUp: {
+          status: "edit",
+          id: params.id,
+        },
+      };
+      e.formStep = {
+        ...e.formStep,
+        stakeholder: 1,
+      };
+    });
+    history.push({
+      pathname: `/edit-stakeholder/${params.id}`,
+      state: { formType: "stakeholder" },
     });
   };
 
@@ -136,9 +165,48 @@ const SharePanel = ({
       </div>
 
       {canEdit() && (
-        <div className="sticky-panel-item">
+        <div className="sticky-panel-item" onClick={() => handleEditBtn()}>
           <Avatar src={EditImage} />
           <h2>Update</h2>
+        </div>
+      )}
+
+      {canDelete() && (
+        <div
+          className="sticky-panel-item"
+          onClick={() => {
+            Modal.error({
+              className: "popup-delete",
+              centered: true,
+              closable: true,
+              icon: <DeleteOutlined />,
+              title: "Are you sure you want to delete this entity?",
+              content: "Please be aware this action cannot be undone.",
+              okText: "Delete",
+              okType: "danger",
+              onOk() {
+                return api
+                  .delete(`/detail/${params.type}/${params.id}`)
+                  .then((res) => {
+                    notification.success({
+                      message: "Entity deleted successfully",
+                    });
+                    history.push({
+                      pathname: `/stakeholder-overview`,
+                    });
+                  })
+                  .catch((err) => {
+                    console.error(err);
+                    notification.error({
+                      message: "Oops, something went wrong",
+                    });
+                  });
+              },
+            });
+          }}
+        >
+          <DeleteOutlined />
+          <h2>Delete</h2>
         </div>
       )}
     </div>
@@ -157,6 +225,7 @@ const StakeholderDetail = ({
     regionOptions,
     meaOptions,
     transnationalOptions,
+    icons,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -164,6 +233,7 @@ const StakeholderDetail = ({
     regionOptions: s.regionOptions,
     meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
+    icons: s.icons,
   }));
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const history = useHistory();
@@ -215,7 +285,7 @@ const StakeholderDetail = ({
         })
         .catch((err) => {
           console.error(err);
-          redirectError(err, history);
+          // redirectError(err, history);
         });
     },
     [params, history]
@@ -259,7 +329,7 @@ const StakeholderDetail = ({
         })
         .catch((err) => {
           console.error(err);
-          redirectError(err, history);
+          // redirectError(err, history);
         });
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
@@ -335,6 +405,11 @@ const StakeholderDetail = ({
                   </div>
                   <div className="topbar-title-holder">
                     <h1>{data?.firstName + " " + data?.lastName}</h1>
+                    {data?.jobTitle && (
+                      <p className="role">
+                        {data?.jobTitle} @ {data?.affiliation?.name}
+                      </p>
+                    )}
                     {/* <p>
                       <span>
                         <img src={StakeholderRating} />
@@ -515,6 +590,7 @@ const StakeholderDetail = ({
                     data={data}
                     params={params}
                     relation={relation}
+                    history={history}
                     handleRelationChange={handleRelationChange}
                   />
                 </div>
@@ -537,7 +613,18 @@ const StakeholderDetail = ({
                       <Col xs={6} lg={8}>
                         <div className="slider-card">
                           <div className="image-holder">
-                            <img src={ResourceImage} />
+                            <img
+                              style={{ width: 60 }}
+                              src={
+                                require(`../../images/${
+                                  icons[
+                                    getType(item.type)
+                                      ? getType(item.type)
+                                      : "action_plan"
+                                  ]
+                                }`).default
+                              }
+                            />
                           </div>
                           <div className="description-holder">
                             <div>
@@ -610,7 +697,18 @@ const StakeholderDetail = ({
                       <Col xs={6} lg={8}>
                         <div className="slider-card">
                           <div className="image-holder">
-                            <img src={ResourceImage} />
+                            <img
+                              style={{ width: 60 }}
+                              src={
+                                require(`../../images/${
+                                  icons[
+                                    getType(item.type)
+                                      ? getType(item.type)
+                                      : "action_plan"
+                                  ]
+                                }`).default
+                              }
+                            />
                           </div>
                           <div className="description-holder">
                             <div>

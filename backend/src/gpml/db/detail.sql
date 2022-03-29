@@ -1,9 +1,22 @@
--- :name get-detail :? :1
+-- :name get-topic-details :? :1
 -- :doc Get details about a particular topic
 SELECT json::jsonb,
 COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners
  FROM (
     --~ (#'gpml.db.topic/generate-topic-query {} gpml.db.topic/generic-cte-opts)
+    SELECT * FROM cte_topic
+    ) t
+   left join topic_stakeholder_auth authz ON authz.topic_type::text=t.topic AND authz.topic_id=(t.json->>'id')::int
+ WHERE topic = :topic-type
+   AND (json->>'id')::int = :topic-id
+   GROUP BY json::jsonb;
+
+-- :name get-entity-details :? :1
+-- :doc Get details about a particular stakeholder or organisation
+SELECT json::jsonb,
+COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners
+ FROM (
+    --~ (#'gpml.db.topic/generate-entity-topic-query {} gpml.db.topic/generic-entity-cte-opts)
     SELECT * FROM cte_topic
     ) t
    left join topic_stakeholder_auth authz ON authz.topic_type::text=t.topic AND authz.topic_id=(t.json->>'id')::int

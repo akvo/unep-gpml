@@ -1,10 +1,12 @@
 (ns gpml.handler.technology
   (:require [clojure.java.jdbc :as jdbc]
             [gpml.auth :as auth]
+            [gpml.db.country :as db.country]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
-            [gpml.db.technology :as db.technology]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.technology :as db.technology]
+            [gpml.db.tag :as db.tag]
             [gpml.email-util :as email]
             [gpml.handler.auth :as h.auth]
             [gpml.handler.geo :as handler.geo]
@@ -33,6 +35,22 @@
           :association (:role connection)
           :remarks nil})))
 
+(defn add-tags [conn mailjet-config tags technology-id]
+  (let [tag-ids (map #(:id %) tags)]
+    (if-not (some nil? tag-ids)
+      (db.technology/add-technology-tags conn {:tags (map #(vector technology-id %) tag-ids)})
+      (let [tag-category (:id (db.tag/tag-category-by-category-name conn {:category "general"}))
+            new-tags (filter #(not (contains? % :id)) tags)
+            tags-to-db (map #(vector % tag-category) (vec (map #(:tag %) new-tags)))
+            new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags tags-to-db}))]
+        (db.technology/add-technology-tags conn {:tags (map #(vector technology-id %) (concat (remove nil? tag-ids) new-tag-ids))})
+        (map
+          #(email/notify-admins-pending-approval
+             conn
+             mailjet-config
+             (merge % {:type "tag"}))
+          new-tags)))))
+
 (defn create-technology [conn {:keys [name organisation_type
                                       development_stage specifications_provided
                                       year_founded email country
@@ -40,7 +58,7 @@
                                       geo_coverage_countries geo_coverage_country_groups
                                       geo_coverage_value_subnational_city
                                       tags url urls created_by image owners info_docs
-                                      sub_content_type related_content
+                                      sub_content_type related_content headquarter
                                       logo attachments remarks mailjet-config
                                       entity_connections individual_connections]}]
   (let [data {:name name
@@ -64,6 +82,7 @@
               :owners owners
               :info_docs info_docs
               :sub_content_type sub_content_type
+              :headquarter headquarter
               :related_content (pg-util/->JDBCArray related_content "integer")
               :review_status "SUBMITTED"}
         technology-id (->> data (db.technology/new-technology conn) :id)
@@ -73,6 +92,8 @@
                                                  (map #(when (= (:role %) "owner")
                                                          (:stakeholder %))
                                                    individual_connections)))))]
+    (when headquarter
+      (db.country/add-country-headquarter conn {:id country :headquarter headquarter}))
     (doseq [stakeholder-id owners]
       (h.auth/grant-topic-to-stakeholder! conn {:topic-id technology-id
                                                 :topic-type "technology"
@@ -84,8 +105,7 @@
     (doseq [association (expand-individual-associations individual_connections technology-id)]
       (db.favorite/new-association conn association))
     (when (not-empty tags)
-      (db.technology/add-technology-tags
-        conn {:tags (map #(vector technology-id %) tags)}))
+      (add-tags conn mailjet-config tags technology-id))
     (when (not-empty urls)
       (let [lang-urls (map #(vector technology-id
                                     (->> % :lang
@@ -134,12 +154,16 @@
     [:image {:optional true} string?]
     [:logo {:optional true} string?]
     [:tags {:optional true}
-     [:vector {:optional true} integer?]]
+     [:vector {:optional true}
+      [:map {:optional true}
+       [:id {:optional true} pos-int?]
+       [:tag string?]]]]
     [:url {:optional true} string?]
     [:info_docs {:optional true} string?]
     [:related_content {:optional true}
      [:vector {:optional true} integer?]]
     [:sub_content_type {:optional true} string?]
+    [:headquarter {:optional true} string?]
     [:entity_connections {:optional true}
      [:vector {:optional true}
       [:map

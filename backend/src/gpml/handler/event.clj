@@ -2,6 +2,7 @@
   (:require [clojure.java.jdbc :as jdbc]
             [gpml.auth :as auth]
             [gpml.email-util :as email]
+            [gpml.db.tag :as db.tag]
             [gpml.db.event :as db.event]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
@@ -33,13 +34,30 @@
           :association (:role connection)
           :remarks nil})))
 
+(defn add-tags [conn mailjet-config tags event-id]
+  (let [tag-ids (map #(:id %) tags)]
+    (if-not (some nil? tag-ids)
+      (db.event/add-event-tags conn {:tags (map #(vector event-id %) tag-ids)})
+      (let [tag-category (:id (db.tag/tag-category-by-category-name conn {:category "general"}))
+            new-tags (filter #(not (contains? % :id)) tags)
+            tags-to-db (map #(vector % tag-category) (vec (map #(:tag %) new-tags)))
+            new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags tags-to-db}))]
+        (db.event/add-event-tags conn {:tags (map #(vector event-id %) (concat (remove nil? tag-ids) new-tag-ids))})
+        (map
+          #(email/notify-admins-pending-approval
+             conn
+             mailjet-config
+             (merge % {:type "tag"}))
+          new-tags)))))
+
 (defn create-event [conn {:keys [tags urls title start_date end_date
                                  description remarks geo_coverage_type
                                  country city geo_coverage_value photo
                                  geo_coverage_countries geo_coverage_country_groups
                                  geo_coverage_value_subnational_city
                                  created_by mailjet-config owners url
-                                 info_docs sub_content_type related_content
+                                 info_docs sub_content_type
+                                 recording related_content
                                  entity_connections individual_connections]}]
   (let [data {:title title
               :start_date start_date
@@ -59,6 +77,7 @@
               :created_by created_by
               :info_docs info_docs
               :sub_content_type sub_content_type
+              :recording recording
               :related_content (pg-util/->JDBCArray related_content "integer")}
         event-id (->> data (db.event/new-event conn) :id)
         individual_connections (conj individual_connections {:stakeholder created_by
@@ -68,7 +87,7 @@
                                                          (:stakeholder %))
                                                    individual_connections)))))]
     (when (not-empty tags)
-      (db.event/add-event-tags conn {:tags (map #(vector event-id %) tags)}))
+      (add-tags conn mailjet-config tags event-id))
     (doseq [stakeholder-id owners]
       (h.auth/grant-topic-to-stakeholder! conn {:topic-id event-id
                                                 :topic-type "event"
@@ -142,7 +161,10 @@
        [:url [:string {:min 1}]]]]]
     auth/owners-schema
     [:tags {:optional true}
-     [:vector {:optional true} integer?]]]
+     [:vector {:optional true}
+      [:map {:optional true}
+       [:id {:optional true} pos-int?]
+       [:tag string?]]]]]
    (into handler.geo/params-payload)))
 
 (defmethod ig/init-key :gpml.handler.event/post [_ {:keys [db mailjet-config]}]

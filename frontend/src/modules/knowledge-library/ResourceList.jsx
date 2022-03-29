@@ -25,12 +25,12 @@ import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
 
 // Icons
-import SortIcon from "../../images/knowledge-library/sort-icon.svg";
 import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 
 const ResourceList = ({
   view,
   results = [],
+  allResults,
   countData,
   filters,
   loading,
@@ -40,21 +40,21 @@ const ResourceList = ({
   setListVisible,
 }) => {
   const {
+    tags,
     profile,
     countries,
-    tags,
     transnationalOptions,
     stakeholders,
   } = UIStore.useState((s) => ({
+    tags: s.tags,
     profile: s.profile,
     countries: s.countries,
-    tags: s.tags,
     transnationalOptions: s.transnationalOptions,
     stakeholders: s.stakeholders,
   }));
 
-  const [allResults, setAllResults] = useState([]);
   const [isAscending, setIsAscending] = useState(null);
+  const [didMount, setDidMount] = useState(false);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
 
@@ -87,61 +87,24 @@ const ResourceList = ({
     ? totalItems
     : pageSize;
 
-  const sortResults = () => {
-    if (!isAscending) {
-      const sortAscending = allResults.sort((result1, result2) => {
-        if (result1?.title) {
-          return result1?.title
-            ?.trim()
-            .localeCompare(result2?.title?.trim(), "en", {
-              numeric: true,
-            });
-        } else {
-          return result1?.name
-            ?.trim()
-            .localeCompare(result2?.name?.trim(), "en", {
-              numeric: true,
-            });
-        }
-      });
-      setAllResults(sortAscending);
-    } else {
-      const sortDescending = allResults.sort((result1, result2) => {
-        if (result2?.title) {
-          return result2?.title
-            ?.trim()
-            .localeCompare(result1?.title?.trim(), "en", {
-              numeric: true,
-            });
-        } else {
-          return result2?.name
-            ?.trim()
-            .localeCompare(result1?.name?.trim(), "en", {
-              numeric: true,
-            });
-        }
-      });
-      setAllResults(sortDescending);
-    }
-    setIsAscending(!isAscending);
-  };
-
   useEffect(() => {
-    setAllResults(
-      [...results].sort((a, b) => Date.parse(b.created) - Date.parse(a.created))
-    );
-  }, [results]);
+    setDidMount(true);
+    return () => setDidMount(false);
+  }, []);
 
   return (
-    <Row>
-      <Col span={24}>
+    <Row style={{ postion: "relative" }}>
+      {/* <Col span={24}>
         <PageHeader
           className="resource-list-header"
           ghost={false}
           style={
             view === "map"
               ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
-              : { backgroundColor: "rgba(255, 255, 255, 1)" }
+              : {
+                  backgroundColor: "rgba(255, 255, 255, 1)",
+                  minHeight: "72px",
+                }
           }
           onBack={() => setListVisible(false)}
           backIcon={
@@ -154,83 +117,71 @@ const ResourceList = ({
           title={
             hideListButtonVisible ? (
               <span className="hide-text">Hide List</span>
+            ) : view === "topic" ? (
+              <div style={{ minHeight: "32px", display: "block" }} />
             ) : (
               ""
             )
           }
           const
           subTitle={
-            !loading && (
+            !loading ? (
               <span className="result-number">
                 Showing{" "}
                 {totalItems > pageSize + filters?.offset
                   ? pageSize + Number(filters?.offset)
                   : itemCount}{" "}
-                of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
+                of {totalItems || 0} result
+                {totalItems > 1 ? "s" : ""}
               </span>
+            ) : (
+              <div className="invisible-content" />
             )
           }
-          extra={
-            <Button className="sort-btn" onClick={sortResults}>
-              <img src={SortIcon} alt="sort-icon" />{" "}
-              <span>
-                Sort By:
-                <br />{" "}
-                {isAscending || isAscending === null ? (
-                  <b>A&gt;Z</b>
-                ) : (
-                  <b>Z&gt;A</b>
-                )}
-              </span>
-            </Button>
-          }
         />
-      </Col>
-      <div>
-        <Col
-          span={24}
-          className="resource-list"
-          style={
-            isLoaded() &&
-            !loading &&
-            !isEmpty(allResults) && { overflowY: "auto" }
-          }
-        >
-          {!isLoaded() || loading ? (
-            <h2 className="loading">
-              <LoadingOutlined spin /> Loading
-            </h2>
-          ) : isLoaded() && !loading && !isEmpty(allResults) ? (
-            <ResourceItem
-              view={view}
-              results={allResults}
-              stakeholders={stakeholders}
-            />
-          ) : (
-            <h2 className="loading">There is no data to display</h2>
-          )}
-        </Col>
-        {!isEmpty(allResults) && (
-          <div className="page">
-            <Pagination
-              defaultCurrent={1}
-              current={(filters?.offset || 0) / pageSize + 1}
-              pageSize={pageSize}
-              total={totalItems}
-              showSizeChanger={false}
-              onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
-            />
-            {!loading && (
-              <div className="result-number">
-                {totalItems > pageSize + filters?.offset
-                  ? pageSize + Number(filters?.offset)
-                  : itemCount}{" "}
-                of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
-              </div>
-            )}
-          </div>
+      </Col> */}
+      <Col
+        span={24}
+        className="resource-list"
+        style={
+          isLoaded() &&
+          !loading &&
+          !isEmpty(allResults) && { overflowY: "auto" }
+        }
+      >
+        {!isLoaded() || loading ? (
+          <h2 className="loading">
+            <LoadingOutlined spin /> Loading
+          </h2>
+        ) : isLoaded() && !loading && !isEmpty(allResults) ? (
+          <ResourceItem
+            view={view}
+            results={allResults}
+            stakeholders={stakeholders}
+          />
+        ) : (
+          <h2 className="loading">There is no data to display</h2>
         )}
-      </div>
+      </Col>
+      {!isEmpty(allResults) && (
+        <div className="page">
+          <Pagination
+            defaultCurrent={1}
+            current={(filters?.offset || 0) / pageSize + 1}
+            pageSize={pageSize}
+            total={totalItems}
+            showSizeChanger={false}
+            onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
+          />
+
+          <div className="result-number" style={{ opacity: loading && "0" }}>
+            {totalItems > pageSize + filters?.offset
+              ? pageSize + Number(filters?.offset)
+              : itemCount}{" "}
+            of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
+          </div>
+        </div>
+      )}
     </Row>
   );
 };

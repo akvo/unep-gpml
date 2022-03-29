@@ -10,14 +10,14 @@ import DownArrow from "../../images/knowledge-library/chevron-down.svg";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 
 const Header = ({
+  view,
+  setView,
   isAscending,
   filterVisible,
   setFilterVisible,
   renderFilterTag,
   sortPeople,
   updateQuery,
-  view,
-  setView,
 }) => {
   const selectionValue = (
     <div className="selection-value">
@@ -25,13 +25,13 @@ const Header = ({
         <img src={DownArrow} className="selection-arrow" alt="down-arrow" />
       </button>
       <span className="label text-white">{`${view} view`}</span>
-      {view?.toLowerCase().includes("card") ? (
-        <img src={TooltipOutlined} alt="tooltip-icon" />
-      ) : (
-        <img src={GlobeOutlined} alt="globe-icon" />
-      )}
+      <img src={GlobeOutlined} alt="globe-icon" />
     </div>
   );
+
+  const filterTagValue = renderFilterTag()
+    .flat()
+    .filter((item) => item);
 
   return (
     <Col span={24} className="ui-header">
@@ -60,16 +60,31 @@ const Header = ({
                       />
                     }
                   />
+                  {view === "card" && (
+                    <Button className="sort-btn" onClick={sortPeople}>
+                      <SortIcon
+                        style={{
+                          transform:
+                            isAscending || isAscending === null
+                              ? "initial"
+                              : "rotate(180deg)",
+                        }}
+                      />
+                    </Button>
+                  )}
                 </Space>
               </Col>
-              <Col lg={19} md={17} sm={15} className="filter-tag">
-                <Space direction="horizontal">{renderFilterTag()}</Space>
-              </Col>
+              {filterTagValue.length > 0 && (
+                <Col lg={19} md={17} sm={15} className="filter-tag">
+                  <Space direction="horizontal">{renderFilterTag()}</Space>
+                </Col>
+              )}
             </Row>
           </Col>
           {/* Map/Topic view dropdown */}
           <Col lg={2} md={4} sm={6} className="select-wrapper">
             <Select
+              dropdownClassName="overlay-zoom"
               className="view-selection"
               value={selectionValue}
               onChange={(val) => setView(val)}
@@ -78,20 +93,6 @@ const Header = ({
               <Select.Option value="card">Card View </Select.Option>
             </Select>
           </Col>
-          {view === "card" && (
-            <Button className="sort-btn" onClick={sortPeople}>
-              <SortIcon />{" "}
-              <span>
-                Sort By:
-                <br />{" "}
-                {isAscending || isAscending === null ? (
-                  <b>A&gt;Z</b>
-                ) : (
-                  <b>Z&gt;A</b>
-                )}
-              </span>
-            </Button>
-          )}
         </Row>
       </div>
     </Col>
@@ -101,7 +102,6 @@ const Header = ({
 const Search = withRouter(({ history, updateQuery, setView }) => {
   const [search, setSearch] = useState("");
   const handleSearch = (src) => {
-    setView("card");
     if (src) {
       history.push(`?q=${src.trim()}`);
       updateQuery("q", src.trim());

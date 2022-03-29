@@ -21,6 +21,27 @@
   .section-container {
     padding: 4rem 0;
     overflow: hidden;
+
+    .doc-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      button,
+      img {
+        width: 100%;
+      }
+
+      button {
+        max-width: 247px;
+      }
+
+      img {
+        max-width: 200px;
+        margin: 16px 0 16px 0;
+        cursor: pointer;
+      }
+    }
   }
 
   // Section Issue
@@ -143,6 +164,15 @@
           color: white !important;
           border-color: white !important;
         }
+        @media (min-width: 600px) {
+          flex-wrap: nowrap;
+        }
+        @media (min-width: 750px) {
+          flex-wrap: wrap;
+        }
+        @media (min-width: 1000px) {
+          flex-wrap: nowrap;
+        }
       }
     }
   }
@@ -225,8 +255,8 @@
       text-align: center;
       @media only screen and (max-width: 800px) {
         .ant-image-img {
-          transform: scale(2);
-          margin-top: 10rem;
+          transform: scale(1.5);
+          margin-top: 3rem;
         }
       }
     }
@@ -236,6 +266,34 @@
       .section-history-img-wrapper {
         background-color: #006666 !important;
         display: block;
+      }
+    }
+  }
+
+  @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+    .section-issue-container {
+      padding: 2rem 0;
+      .section-issue-graphic {
+        justify-content: center !important;
+        img {
+          width: 300px;
+        }
+      }
+    }
+    .section-container {
+      padding: 1rem 0;
+      .txt-emphasis {
+        font-size: 1.2rem;
+      }
+    }
+    .section-summary-container {
+      .section-summary-wrapper {
+        .item {
+          padding: 0.5rem 1.5rem;
+          .item-value {
+            font-size: 2rem;
+          }
+        }
       }
     }
   }
