@@ -295,10 +295,15 @@
     }
 
     .profile-card {
+      min-height: 140px;
       .ant-card-body {
         display: flex;
         flex-direction: column;
-
+        .profile-detail-list {
+          li {
+            margin-bottom: 0;
+          }
+        }
         min-height: 250px;
         .person-role {
           max-height: fit-content;
@@ -313,6 +318,7 @@
     height: fit-content;
     max-width: 345px;
     border-radius: 10px;
+    min-height: 140px;
 
     .icons-list {
       display: flex;
@@ -427,8 +433,8 @@
             margin-right: 21.49px;
             .social-media-link {
               display: block;
-              width: 28px;
-              height: 28px;
+              width: 20px;
+              height: 20px;
               background-repeat: no-repeat;
               background-size: contain;
               background-position-y: center;
@@ -988,6 +994,7 @@
   @media (min-width: 1300px) {
     .profile-card {
       max-width: 100%;
+      min-height: 140px;
     }
     .card-wrapper,
     #title {
