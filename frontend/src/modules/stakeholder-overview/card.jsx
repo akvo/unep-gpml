@@ -30,7 +30,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
         <h3>{profile?.type === "organisation" ? "Entity" : "Individual"}</h3>
         <h4
           className="profile-name"
-          style={{ color: "#255b87", fontSize: "16px", fontWeight: "700" }}
+          style={{ color: "#255b87", fontSize: "13px", fontWeight: "700" }}
         >
           {profile.firstName
             ? `${profile?.firstName} ${profile?.lastName}`
