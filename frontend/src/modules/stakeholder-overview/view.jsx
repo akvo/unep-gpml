@@ -388,7 +388,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
             }}
           />
         )}
-         {/* Content */}
+        {/* Content */}
         <Col span={24}>
           <div className="ui-container">
             <FilterDrawer
