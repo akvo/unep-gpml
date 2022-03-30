@@ -30,7 +30,7 @@ const CountryTransnationalFilter = ({
       landing: s.landing,
     })
   );
-  console.log(transnationalOptions);
+
   const isLoaded = () => !isEmpty(countries) && !isEmpty(transnationalOptions);
 
   const countryOpts = isLoaded()
@@ -38,12 +38,6 @@ const CountryTransnationalFilter = ({
         .filter(
           (country) => country.description.toLowerCase() === "member state"
         )
-        .map((it) => ({ value: it.id, label: it.name }))
-        .sort((a, b) => a.label.localeCompare(b.label))
-    : [];
-
-  const multiCountryOpts = isLoaded()
-    ? transnationalOptions
         .map((it) => ({ value: it.id, label: it.name }))
         .sort((a, b) => a.label.localeCompare(b.label))
     : [];
