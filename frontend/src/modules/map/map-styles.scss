@@ -368,6 +368,19 @@
     color: #7db0cb;
   }
 
+  .entity-type {
+    color: #000000;
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+
+  tr {
+    div:not(:last-child) {
+      border-bottom: 1px solid #e7f1f7;
+    }
+  }
+
   .tooltip-note {
     font-size: 12px;
   }
