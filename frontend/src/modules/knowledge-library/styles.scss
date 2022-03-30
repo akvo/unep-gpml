@@ -949,7 +949,13 @@
     .ant-drawer-content-wrapper {
       zoom: 80%;
       height: 100% !important;
+
+      @-moz-document url-prefix() {
+        min-height: 875px !important;
+        transform: scale(0.8) translate(-63px, -110px);
+      }
     }
+
     .resource-main-container {
       .ant-page-header {
         padding: 2px 24px;
@@ -1024,10 +1030,18 @@
 }
 
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
-  .ant-select-dropdown {
+  .multiselection-dropdown,
+  .ant-picker-dropdown {
     zoom: 80%;
+
+    @-moz-document url-prefix() {
+      transform: scale(0.8);
+    }
   }
   .overlay-zoom {
     zoom: 100%;
+    @-moz-document url-prefix() {
+      transform: scale(1);
+    }
   }
 }
