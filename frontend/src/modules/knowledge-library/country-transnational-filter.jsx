@@ -58,6 +58,7 @@ const CountryTransnationalFilter = ({
         <Select
           showSearch
           allowClear
+          dropdownClassName="multiselection-dropdown"
           mode={countrySelectMode || ""}
           placeholder="Countries"
           options={countryOpts}
@@ -79,6 +80,7 @@ const CountryTransnationalFilter = ({
         }`}
       >
         <Select
+          dropdownClassName="multiselection-dropdown"
           showSearch
           allowClear
           virtual={false}
@@ -91,7 +93,7 @@ const CountryTransnationalFilter = ({
           value={multiCountry}
           onChange={handleChangeMultiCountry}
           onDeselect={handleDeselectMultiCountry}
-          dropdownClassName="country-filter-dropdown"
+          dropdownClassName="multiselection-dropdown"
           dropdownMatchSelectWidth={325}
           suffixIcon={
             !multiCountryLabelCustomIcon && multiCountry ? (
