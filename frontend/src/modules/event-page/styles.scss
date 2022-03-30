@@ -1,6 +1,9 @@
 @import "../../vars.scss";
 
 #events {
+  .sidebar-mobile {
+    margin-bottom: 0;
+  }
   .sidebar {
     background-color: $bg-dark-primary;
     .item-sidebar {

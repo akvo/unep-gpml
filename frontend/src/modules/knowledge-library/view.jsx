@@ -401,7 +401,6 @@ const KnowledgeLibrary = ({
       <Col span={24}>
         <div className="ui-container">
           {/* Filter Drawer */}
-          {filterVisible && (
             <FilterDrawer
               {...{
                 query,
@@ -414,7 +413,7 @@ const KnowledgeLibrary = ({
               }}
               updateQuery={(flag, val) => updateQuery(flag, val)}
             />
-          )}
+            
           <LeftSidebar active={1} sidebar={sidebar}>
             <Row
               className="resource-main-container"
