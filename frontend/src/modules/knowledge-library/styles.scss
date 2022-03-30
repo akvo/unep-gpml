@@ -247,6 +247,10 @@
       background-color: unset;
     }
 
+    .ant-drawer-open .ant-drawer-content-wrapper {
+      left: 125px !important;
+    }
+
     .ant-drawer-content-wrapper {
       box-shadow: none;
       height: 700px;
@@ -952,7 +956,7 @@
 
       @-moz-document url-prefix() {
         min-height: 875px !important;
-        transform: scale(0.8) translate(-63px, -110px);
+        transform: scale(0.8) translate(-94px, -110px);
       }
     }
 
