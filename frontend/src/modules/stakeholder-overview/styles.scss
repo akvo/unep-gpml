@@ -630,6 +630,9 @@
     }
 
     .ant-drawer-open {
+      .ant-drawer-content-wrapper {
+        left: 125px !important;
+      }
       .ant-drawer-content {
         border: 1px solid $blue09;
       }
@@ -640,8 +643,8 @@
       max-width: 500px;
       // width: 100% !important;
       @-moz-document url-prefix() {
-        min-height: 815px !important;
-        transform: scale(0.8) translate(-63px, -110px);
+        min-height: 805px !important;
+        transform: scale(0.8) translate(-95px, -101px);
       }
 
       .ant-drawer-header {
