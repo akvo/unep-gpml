@@ -26,6 +26,7 @@ import IconEvent from "../../images/events/event-icon.svg";
 import IconForum from "../../images/events/forum-icon.svg";
 import IconCommunity from "../../images/events/community-icon.svg";
 import StakeholderList from "./stakeholderList";
+import { multicountryGroups } from "../knowledge-library/multicountry";
 
 let tmid;
 
@@ -53,6 +54,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   const viewportWidth = document.documentElement.clientWidth;
 
   const [filterCountries, setFilterCountries] = useState([]);
+  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const { isAuthenticated, isLoading } = useAuth0();
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
@@ -321,7 +323,14 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
           ? "Other"
           : representativeGroups?.name;
       }
+      if (key === "transnational") {
+        const transnationalGroup = multicountryGroups
+          .map((multicountryGroup) => multicountryGroup.item)
+          .flat();
 
+        const findTransnational = transnationalGroup.find((x) => x.id == value);
+        return findTransnational?.name;
+      }
       if (key === "seeking") {
         const findSeeking = seeking.find((seek) => seek?.tag == value);
         return findSeeking?.tag;
@@ -400,6 +409,8 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                 stakeholderCount,
                 GPMLMemberCount,
                 setFilterCountries,
+                multiCountryCountries,
+                setMultiCountryCountries,
               }}
               entities={entityRoleOptions}
             />
@@ -499,6 +510,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                     <MapView
                       updateQuery={updateQuery}
                       isFilteredCountry={filterCountries}
+                      multiCountryCountries={multiCountryCountries}
                     />
                     <StakeholderList
                       {...{

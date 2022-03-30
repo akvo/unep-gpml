@@ -662,23 +662,21 @@ const Maps = ({
                     }
 
                     // To get all countries in a multicountry selection being highlighted
-                    const filterMultiCountry =
-                      path === KNOWLEDGE_LIBRARY &&
-                      multiCountryCountries.filter((item) => {
+                    const filterMultiCountry = multiCountryCountries.filter(
+                      (item) => {
                         const transnationalQuery = query?.transnational?.map(
                           (item) => Number(item)
                         );
                         return transnationalQuery?.includes(item?.id);
-                      });
+                      }
+                    );
 
-                    const multiCountrySelection =
-                      path === KNOWLEDGE_LIBRARY &&
-                      filterMultiCountry.map((transnational) =>
+                    const multiCountrySelection = filterMultiCountry.map(
+                      (transnational) =>
                         transnational?.countries?.map((country) => country?.id)
-                      );
+                    );
 
                     const multiselection =
-                      path === KNOWLEDGE_LIBRARY &&
                       multiCountrySelection.length !== 0 &&
                       multiCountrySelection.flat();
 
@@ -694,12 +692,9 @@ const Maps = ({
                         const countryToFilter = isFilteredCountry.map((it) =>
                           Number(it)
                         );
-
                         return (
                           countryToFilter.includes(mapProps) ||
-                          (path === KNOWLEDGE_LIBRARY &&
-                            multiselection &&
-                            multiselection.includes(mapProps))
+                          (multiselection && multiselection.includes(mapProps))
                         );
                       }
                     };
@@ -722,16 +717,9 @@ const Maps = ({
                               : isPattern
                               ? "url(#lines)"
                               : geo.properties.M49Code === selected
-                              ? // : geo.properties.MAP_COLOR === selected
-                                "#84b4cc"
-                              : // : isCountrySelected
-                              // ? "#255B87"
-                              selectionCondition()
-                              ? //  ||
-                                //   selectedTerritory?.includes(
-                                //     geo.properties.MAP_COLOR
-                                //   )
-                                "#255B87"
+                              ? "#84b4cc"
+                              : selectionCondition()
+                              ? "#255B87"
                               : fillColor(
                                   curr(topic, findData?.counts, path)
                                     ? curr(topic, findData?.counts, path)

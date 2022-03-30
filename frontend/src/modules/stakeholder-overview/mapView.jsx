@@ -49,7 +49,7 @@ const MapView = ({ multiCountryCountries, updateQuery, isFilteredCountry }) => {
       data={landing?.map || []}
       topic={query?.networkType}
       isLoaded={isLoaded}
-      multiCountryCountries={null}
+      multiCountryCountries={multiCountryCountries}
       multiCountries={
         multiCountry &&
         !isEmpty(multiCountryCountries) &&
