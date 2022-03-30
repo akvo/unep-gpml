@@ -6,6 +6,7 @@ import isEmpty from "lodash/isEmpty";
 import { TrimText } from "../../utils/string";
 import { multicountryGroups } from "./multicountry";
 import { OptGroup } from "rc-select";
+import "./transantional-filter-tab.scss";
 
 const { TabPane } = Tabs;
 const { Option } = Select;
