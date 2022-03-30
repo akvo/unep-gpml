@@ -84,8 +84,8 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
             <>
               <tr>
                 <td className="tooltip-topic">Entity</td>
-                <tr>
-                  <th className="entity-type">GPML Members</th>
+                <div>
+                  <b className="entity-type">GPML Members</b>
                   <td className="tooltip-count-wrapper">
                     <b className="tooltip-counts">
                       {dataToDisplay()?.["organisation"]
@@ -93,15 +93,15 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
                         : 0}
                     </b>
                   </td>
-                </tr>
-                <tr>
-                  <th className="entity-type">GPML Non-Members</th>
+                </div>
+                <div>
+                  <b className="entity-type">GPML Non-Members</b>
                   <td className="tooltip-count-wrapper">
                     <b className="tooltip-counts">
                       {transnationalData()?.["organisation"]}
                     </b>
                   </td>
-                </tr>
+                </div>
               </tr>
               <tr>
                 <td className="tooltip-topic">Individuals</td>
@@ -118,8 +118,8 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
               {topicType.includes("organisation") && (
                 <tr>
                   <td className="tooltip-topic">Entity</td>
-                  <tr>
-                    <th className="entity-type">GPML Members</th>
+                  <div>
+                    <b className="entity-type">GPML Members</b>
                     <td className="tooltip-count-wrapper">
                       <b className="tooltip-counts">
                         {dataToDisplay()?.["organisation"]
@@ -127,15 +127,15 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
                           : 0}
                       </b>
                     </td>
-                  </tr>
-                  <tr>
-                    <th className="entity-type">GPML Non-Members</th>
+                  </div>
+                  <div>
+                    <b className="entity-type">GPML Non-Members</b>
                     <td className="tooltip-count-wrapper">
                       <b className="tooltip-counts">
                         {transnationalData()?.["organisation"]}
                       </b>
                     </td>
-                  </tr>
+                  </div>
                 </tr>
               )}
               {topicType.includes("stakeholder") && (

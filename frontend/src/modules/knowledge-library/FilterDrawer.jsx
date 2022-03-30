@@ -148,44 +148,6 @@ const FilterDrawer = ({
     updateQuery(flag, updateVal);
   };
 
-  const handleChangeLocationTab = (key) => {
-    const param = key === "country" ? "transnational" : "country";
-  };
-
-  const handleChangeCountry = (val) => {
-    updateQuery("country", query?.country && val);
-  };
-
-  const handleDeselectCountry = (val) => {
-    updateQuery(
-      "country",
-      query?.country ? query?.country.filter((x) => x != val) : []
-    );
-  };
-
-  const handleChangeMultiCountry = (val) => {
-    updateQuery("transnational", [val]);
-
-    // Fetch transnational countries
-    val.forEach((id) => {
-      const check = multiCountryCountries.find((x) => x.id === id);
-      !check &&
-        api.get(`/country-group/${id}`).then((resp) => {
-          setMultiCountryCountries([
-            ...multiCountryCountries,
-            { id: id, countries: resp.data?.[0]?.countries },
-          ]);
-        });
-    });
-  };
-
-  const handleDeselectMultiCountry = (val) => {
-    updateQuery(
-      "transnational",
-      query?.transnational ? query?.transnational.filter((x) => x != val) : []
-    );
-  };
-
   // populate options for tags dropdown
   const tagsWithoutSpace =
     isLoaded() &&
@@ -346,13 +308,11 @@ const FilterDrawer = ({
             <div className="country-filter-tab-wrapper">
               <CountryTransnationalFilter
                 {...{
+                  query,
+                  updateQuery,
                   multiCountryCountries,
-                  handleChangeCountry,
-                  handleDeselectCountry,
-                  handleChangeMultiCountry,
-                  handleDeselectMultiCountry,
+                  setMultiCountryCountries,
                 }}
-                handleChangeTab={handleChangeLocationTab}
                 country={query?.country?.map((x) => parseInt(x)) || []}
                 multiCountry={
                   query?.transnational?.map((x) => parseInt(x)) || []

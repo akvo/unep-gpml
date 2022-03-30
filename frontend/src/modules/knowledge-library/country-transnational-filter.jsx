@@ -7,22 +7,21 @@ import { TrimText } from "../../utils/string";
 import { multicountryGroups } from "./multicountry";
 import { OptGroup } from "rc-select";
 import "./transantional-filter-tab.scss";
+import api from "../../utils/api";
 
 const { TabPane } = Tabs;
 const { Option } = Select;
 
 const CountryTransnationalFilter = ({
-  handleChangeTab,
+  query,
+  updateQuery,
   country,
-  handleChangeCountry,
-  handleDeselectCountry,
   multiCountry,
-  handleChangeMultiCountry,
-  handleDeselectMultiCountry,
   multiCountryCountries,
   multiCountryLabelCustomIcon,
   countrySelectMode,
   multiCountrySelectMode,
+  setMultiCountryCountries,
 }) => {
   const { countries, transnationalOptions, landing } = UIStore.useState(
     (s) => ({
@@ -43,8 +42,50 @@ const CountryTransnationalFilter = ({
         .sort((a, b) => a.label.localeCompare(b.label))
     : [];
 
+  const handleChangeLocationTab = (key) => {
+    const param = key === "country" ? "transnational" : "country";
+  };
+
+  const handleChangeCountry = (val) => {
+    updateQuery("country", query?.country && val);
+  };
+
+  const handleDeselectCountry = (val) => {
+    updateQuery(
+      "country",
+      query?.country ? query?.country.filter((x) => x != val) : []
+    );
+  };
+
+  const handleChangeMultiCountry = (val) => {
+    updateQuery("transnational", [val]);
+
+    // Fetch transnational countries
+    val.forEach((id) => {
+      const check = multiCountryCountries.find((x) => x.id === id);
+      !check &&
+        api.get(`/country-group/${id}`).then((resp) => {
+          setMultiCountryCountries([
+            ...multiCountryCountries,
+            { id: id, countries: resp.data?.[0]?.countries },
+          ]);
+        });
+    });
+  };
+
+  const handleDeselectMultiCountry = (val) => {
+    updateQuery(
+      "transnational",
+      query?.transnational ? query?.transnational.filter((x) => x != val) : []
+    );
+  };
+
   return (
-    <Tabs type="card" className="country-filter-tab" onChange={handleChangeTab}>
+    <Tabs
+      type="card"
+      className="country-filter-tab"
+      onChange={handleChangeLocationTab}
+    >
       <TabPane
         tab="Countries"
         key="country"
