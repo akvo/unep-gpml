@@ -405,7 +405,7 @@ const Maps = ({
   const [filterColor, setFilterColor] = useState(null);
   const [content, setContent] = useState("");
   const [countryToSelect, setCountryToSelect] = useState([]);
-  const [isShownLegend, setIsShownLegend] = useState(false);
+  const [isShownLegend, setIsShownLegend] = useState(true);
 
   const selectedTerritory = !isEmpty(countries)
     ? countries
