@@ -12,7 +12,11 @@
 
 #knowledge-library {
   position: relative;
-
+  #mainNavigation {
+    @media (min-width: 750px) {
+      display: block;
+    }
+  }
   .sidebar-mobile {
     margin-bottom: 0;
   }
@@ -234,10 +238,17 @@
   }
 
   .site-drawer-render-in-current-wrapper {
+    left: 0 !important;
+    top: 96px !important;
     position: absolute;
-    top: 0;
-    min-width: 100%;
+    min-width: calc(100% - 100px);
     overflow: hidden;
+
+    @media (min-width: 765px) {
+      top: 0 !important;
+      left: 100px !important;
+    }
+
     .ant-tabs-nav-operations {
       position: unset;
       display: none;
@@ -245,10 +256,6 @@
 
     .ant-drawer-mask {
       background-color: unset;
-    }
-
-    .ant-drawer-open .ant-drawer-content-wrapper {
-      left: 125px !important;
     }
 
     .ant-drawer-content-wrapper {
@@ -292,7 +299,7 @@
       .ant-drawer-content {
         border-bottom-right-radius: 18px;
         box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.25);
-        border: 1px solid $blue09;
+        // border: 1px solid $blue09;
       }
 
       .ant-drawer-title,
@@ -956,7 +963,7 @@
 
       @-moz-document url-prefix() {
         min-height: 875px !important;
-        transform: scale(0.8) translate(-94px, -110px);
+        transform: scale(0.8) translate(-62px, -110px);
       }
     }
 

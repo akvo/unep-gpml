@@ -21,6 +21,14 @@
 
 #stakeholder-overview {
   padding: 0;
+  #mainNavigation {
+    @media (min-width: 750px) {
+      display: block;
+    }
+  }
+  .sidebar-mobile {
+    margin-bottom: 0;
+  }
 
   .ant-btn-icon-only {
     width: 100%;
@@ -584,8 +592,16 @@
   }
 
   .site-drawer-render-in-current-wrapper {
-    min-width: 100%;
+    left: 0 !important;
+    top: 100px !important;
+    position: absolute;
+    min-width: calc(100% - 100px);
     overflow: hidden;
+
+    @media (min-width: 765px) {
+      top: 0 !important;
+      left: 100px !important;
+    }
 
     .for-entity svg {
       max-width: 30px;
@@ -625,14 +641,15 @@
     .ant-drawer-mask {
       background-color: unset;
     }
-
+    .ant-drawer-left {
+      left: -5px !important;
+    }
     .ant-drawer-open {
-      .ant-drawer-content-wrapper {
-        left: 125px !important;
-      }
-      .ant-drawer-content {
-        border: 1px solid $blue09;
-      }
+      left: unset !important;
+
+      // .ant-drawer-content {
+      //   border: 1px solid $blue09;
+      // }
     }
 
     .ant-drawer-content-wrapper {
@@ -641,7 +658,7 @@
       // width: 100% !important;
       @-moz-document url-prefix() {
         min-height: 805px !important;
-        transform: scale(0.8) translate(-95px, -101px);
+        transform: scale(0.8) translate(-63px, -101px);
       }
 
       .ant-drawer-header {
