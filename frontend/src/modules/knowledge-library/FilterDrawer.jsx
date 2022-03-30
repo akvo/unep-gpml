@@ -29,7 +29,7 @@ import { ReactComponent as CapacityBuildingIcon } from "../../images/knowledge-l
 import { ReactComponent as ActionSelectedIcon } from "../../images/knowledge-library/action-selected.svg";
 import { ReactComponent as EventFlexibleIcon } from "../../images/knowledge-library/event-flexible.svg";
 import { ReactComponent as InitiativeIcon } from "../../images/knowledge-library/initiative.svg";
-import { ReactComponent as FinancingIcon } from "../../images/knowledge-library/financing.svg";
+import { ReactComponent as FinancingIcon } from "../../images/knowledge-library/financing-2.svg";
 import { ReactComponent as PolicyIcon } from "../../images/knowledge-library/policy.svg";
 import { ReactComponent as TechnicalIcon } from "../../images/knowledge-library/technical.svg";
 import { ReactComponent as TechnologyIcon } from "../../images/knowledge-library/technology.svg";
@@ -75,28 +75,36 @@ const FilterDrawer = ({
     !isEmpty(representativeGroup) &&
     !isEmpty(organisations);
 
-  // const mainContentOptions = isLoaded()
-  //   ? mainContentType
-  //       .filter((content) => {
-  //         const resourceName = (name) => {
-  //           if (name === "initiative") {
-  //             return "project";
-  //           } else if (name === "event_flexible") {
-  //             return "event";
-  //           } else if (name === "financing") {
-  //             return "financing_resource";
-  //           } else if (name === "technical") {
-  //             return "technical_resource";
-  //           } else if (name === "action") {
-  //             return "action_plan";
-  //           } else {
-  //             return name;
-  //           }
-  //         };
-  //         return query?.topic.includes(resourceName(content.code));
-  //       })
-  //       .sort((a, b) => a?.code.localeCompare(b?.code))
-  //   : [];
+  const filteredMainContentOptions = isLoaded()
+    ? mainContentType
+        .filter((content) => {
+          const resourceName = (name) => {
+            if (name === "initiative") {
+              return "project";
+            } else if (name === "event_flexible") {
+              return "event";
+            } else if (name === "financing") {
+              return "financing_resource";
+            } else if (name === "technical") {
+              return "technical_resource";
+            } else if (name === "action") {
+              return "action_plan";
+            } else {
+              return name;
+            }
+          };
+          return query?.topic.includes(resourceName(content.code));
+        })
+        .sort((a, b) => a?.code.localeCompare(b?.code))
+    : [];
+
+  const mainContentOption = () => {
+    if (query?.topic.length > 0) {
+      return filteredMainContentOptions;
+    } else if (query?.topic.length === 0) {
+      return mainContentType;
+    }
+  };
 
   const topicIcons = (topic) => {
     if (topic === "project") {
@@ -120,7 +128,7 @@ const FilterDrawer = ({
     if (topic === "technology") {
       return <TechnologyIcon width="53" height="53" />;
     }
-    if (topic === "organisation") {
+    if (topic === "capacityBuilding") {
       return <CapacityBuildingIcon width="53" height="53" />;
     }
   };
@@ -203,6 +211,8 @@ const FilterDrawer = ({
   return (
     <div className="site-drawer-render-in-current-wrapper">
       <Drawer
+        tabIndex=""
+        tabindex=""
         title="Choose your filters below"
         placement="left"
         visible={filterVisible}
@@ -240,7 +250,7 @@ const FilterDrawer = ({
                   countData?.find((it) => it.topic === topic)?.count || 0;
 
                 return (
-                  <Col span={6} key={type}>
+                  <Col span={6} key={type} className="resource-card-wrapper">
                     <Card
                       onClick={() => handleChangeResourceType("topic", topic)}
                       className={classNames("resource-type-card", {
@@ -264,7 +274,7 @@ const FilterDrawer = ({
             title="Sub-content type"
             options={
               isLoaded()
-                ? mainContentType.map((content) => ({
+                ? mainContentOption().map((content) => ({
                     label: content?.name,
                     options: content?.childs
                       .map((child, i) => ({
@@ -364,7 +374,7 @@ const FilterDrawer = ({
             updateQuery={updateQuery}
           />
 
-          <MultipleSelectFilter
+          {/* <MultipleSelectFilter
             title="Entities"
             options={
               isLoaded()
@@ -377,7 +387,7 @@ const FilterDrawer = ({
             flag="entity"
             query={query}
             updateQuery={updateQuery}
-          />
+          /> */}
 
           <MultipleSelectFilter
             title="Representative group"
@@ -463,6 +473,7 @@ const MultipleSelectFilter = ({
       </Space>
       <div>
         <Select
+          dropdownClassName="multiselection-dropdown"
           showSearch
           allowClear
           mode="multiple"

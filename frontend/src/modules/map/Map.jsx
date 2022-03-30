@@ -17,6 +17,7 @@ import {
   UnorderedListOutlined,
 } from "@ant-design/icons";
 import { PatternLines } from "@vx/pattern";
+import classNames from "classnames";
 import { topicNames, tTypes } from "../../utils/misc";
 import { curr } from "./utils";
 
@@ -24,6 +25,7 @@ import "./map-styles.scss";
 import { useHistory } from "react-router-dom";
 import { isEmpty } from "lodash";
 import { UIStore } from "../../store";
+import VerticalLegend from "./VerticalLegend";
 const geoUrl = "/unep-gpml.topo.json";
 const lineBoundaries = "/new_country_line_boundaries.geojson";
 const colorRange = ["#bbedda", "#a7e1cb", "#92d5bd", "#7dcaaf", "#67bea1"];
@@ -43,7 +45,119 @@ const higlightColor = "#255B87";
 const KNOWLEDGE_LIBRARY = "/knowledge-library";
 const STAKEHOLDER_OVERVIEW = "/stakeholder-overview";
 
-const ToolTipContent = ({ data, geo, path }) => {
+const StakeholderTooltipContent = ({ data, geo, path, query }) => {
+  const dataToDisplay = () => {
+    return {
+      organisation: data?.counts?.organisation,
+      stakeholder: data?.counts?.stakeholder,
+    };
+  };
+
+  const transnationalData = () => {
+    return {
+      organisation: data?.transnationalCounts?.organisation,
+      stakeholder: data?.transnationalCounts?.stakeholder,
+    };
+  };
+
+  const transnationalMaxValue = Math.max
+    .apply(null, Object.values(transnationalData()))
+    .toString();
+
+  const characterLength = transnationalMaxValue?.length;
+  const topicType = query.networkType;
+  return (
+    <div
+      key={`${geo.ISO3CD}-tooltip`}
+      style={{ paddingRight: `${(characterLength || 1) * 9}px` }}
+      className="map-tooltip"
+    >
+      <h3>{geo.MAP_LABEL}</h3>
+      <table className="tooltip-table">
+        <thead>
+          <tr>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          {topicType.length === 0 ? (
+            <>
+              <tr>
+                <td className="tooltip-topic">Entity</td>
+                <tr>
+                  <th className="entity-type">GPML Members</th>
+                  <td className="tooltip-count-wrapper">
+                    <b className="tooltip-counts">
+                      {dataToDisplay()?.["organisation"]
+                        ? dataToDisplay()?.["organisation"]
+                        : 0}
+                    </b>
+                  </td>
+                </tr>
+                <tr>
+                  <th className="entity-type">GPML Non-Members</th>
+                  <td className="tooltip-count-wrapper">
+                    <b className="tooltip-counts">
+                      {transnationalData()?.["organisation"]}
+                    </b>
+                  </td>
+                </tr>
+              </tr>
+              <tr>
+                <td className="tooltip-topic">Individuals</td>
+
+                <td className="tooltip-count-wrapper">
+                  <b className="tooltip-counts">
+                    {dataToDisplay()?.["stakeholder"]}
+                  </b>
+                </td>
+              </tr>
+            </>
+          ) : (
+            <>
+              {topicType.includes("organisation") && (
+                <tr>
+                  <td className="tooltip-topic">Entity</td>
+                  <tr>
+                    <th className="entity-type">GPML Members</th>
+                    <td className="tooltip-count-wrapper">
+                      <b className="tooltip-counts">
+                        {dataToDisplay()?.["organisation"]
+                          ? dataToDisplay()?.["organisation"]
+                          : 0}
+                      </b>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="entity-type">GPML Non-Members</th>
+                    <td className="tooltip-count-wrapper">
+                      <b className="tooltip-counts">
+                        {transnationalData()?.["organisation"]}
+                      </b>
+                    </td>
+                  </tr>
+                </tr>
+              )}
+              {topicType.includes("stakeholder") && (
+                <tr>
+                  <td className="tooltip-topic">Individuals</td>
+
+                  <td className="tooltip-count-wrapper">
+                    <b className="tooltip-counts ">
+                      {dataToDisplay()?.["stakeholder"]}
+                    </b>
+                  </td>
+                </tr>
+              )}
+            </>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
   const totalTransnational = () => {
     const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
 
@@ -67,41 +181,27 @@ const ToolTipContent = ({ data, geo, path }) => {
   };
 
   const dataToDisplay = () => {
-    if (path === KNOWLEDGE_LIBRARY) {
-      return {
-        project: data?.counts?.project,
-        actionPlan: data?.counts?.actionPlan,
-        policy: data?.counts?.policy,
-        technicalResource: data?.counts?.technicalResource,
-        financingResource: data?.counts?.financingResource,
-        event: data?.counts?.event,
-        technology: data?.counts?.technology,
-      };
-    } else {
-      return {
-        organisation: data?.counts?.organisation,
-        stakeholder: data?.counts?.stakeholder,
-      };
-    }
+    return {
+      project: data?.counts?.project,
+      actionPlan: data?.counts?.actionPlan,
+      policy: data?.counts?.policy,
+      technicalResource: data?.counts?.technicalResource,
+      financingResource: data?.counts?.financingResource,
+      event: data?.counts?.event,
+      technology: data?.counts?.technology,
+    };
   };
 
   const transnationalData = () => {
-    if (path === KNOWLEDGE_LIBRARY) {
-      return {
-        project: data?.transnationalCounts?.project,
-        actionPlan: data?.transnationalCounts?.actionPlan,
-        policy: data?.transnationalCounts?.policy,
-        technicalResource: data?.transnationalCounts?.technicalResource,
-        financingResource: data?.transnationalCounts?.financingResource,
-        event: data?.transnationalCounts?.event,
-        technology: data?.transnationalCounts?.technology,
-      };
-    } else {
-      return {
-        organisation: data?.transnationalCounts?.organisation,
-        stakeholder: data?.transnationalCounts?.stakeholder,
-      };
-    }
+    return {
+      project: data?.transnationalCounts?.project,
+      actionPlan: data?.transnationalCounts?.actionPlan,
+      policy: data?.transnationalCounts?.policy,
+      technicalResource: data?.transnationalCounts?.technicalResource,
+      financingResource: data?.transnationalCounts?.financingResource,
+      event: data?.transnationalCounts?.event,
+      technology: data?.transnationalCounts?.technology,
+    };
   };
 
   const transnationalMaxValue = Math.max
@@ -117,48 +217,78 @@ const ToolTipContent = ({ data, geo, path }) => {
       className="map-tooltip"
     >
       <h3>{geo.MAP_LABEL}</h3>
-      <ul>
-        {tTypes.map((topic) => {
-          const dataToDisplayPerPath = () => {
-            if (path === KNOWLEDGE_LIBRARY) {
+      <table className="tooltip-table">
+        <thead>
+          {path === KNOWLEDGE_LIBRARY ? (
+            <tr>
+              <th>Resource</th>
+              <th>National</th>
+              <th style={{ paddingLeft: "10px" }}>Transnational</th>
+            </tr>
+          ) : (
+            <tr>
+              <th>Type</th>
+              <th>Member</th>
+              <th style={{ paddingLeft: "10px" }}>Non-member</th>
+            </tr>
+          )}
+        </thead>
+        <tbody>
+          {tTypes.map((topic) => {
+            const dataToDisplayPerPath = () => {
               return topic !== "organisation" && topic !== "stakeholder";
-            } else {
-              return (
-                topic !== "project" &&
-                topic !== "policy" &&
-                topic !== "actionPlan" &&
-                topic !== "financingResource" &&
-                topic !== "technicalResource" &&
-                topic !== "technology" &&
-                topic !== "event"
-              );
-            }
-          };
+            };
 
-          return (
-            dataToDisplayPerPath() && (
-              <li key={topic}>
-                <span>{topicNames(topic)}</span>
-                <b className="tooltip-counts">
-                  {dataToDisplay()?.[topic] ? dataToDisplay()?.[topic] : 0}
-                  {transnationalData()?.[topic] > 0 && (
-                    <div
-                      className="transnational-count"
-                      style={{ right: "-5%" }}
-                    >
-                      {" "}
-                      ({transnationalData()?.[topic]})
-                    </div>
-                  )}
-                </b>
-              </li>
-            )
-          );
-        })}
-      </ul>
-      {totalTransnational() > 0 && (
-        <b className="tooltip-note">&#42; Transnational resources in ()</b>
-      )}
+            const tooltipChecker = () => {
+              if (topic === "actionPlan") {
+                return "action_plan";
+              } else if (topic === "technicalResource") {
+                return "technical_resource";
+              } else if (topic === "financingResource") {
+                return "financing_resource";
+              } else {
+                return topic;
+              }
+            };
+
+            const queryTopic = query?.topic;
+
+            return dataToDisplayPerPath() && queryTopic.length === 0 ? (
+              <tr key={topic}>
+                <td className="tooltip-topic">{topicNames(topic)}</td>
+                <td className="tooltip-count-wrapper">
+                  <b className="tooltip-counts">
+                    {dataToDisplay()?.[topic] ? dataToDisplay()?.[topic] : 0}
+                  </b>
+                </td>
+
+                <td className="tooltip-count-wrapper">
+                  <b className="tooltip-counts">
+                    {transnationalData()?.[topic]}
+                  </b>
+                </td>
+              </tr>
+            ) : (
+              queryTopic.includes(tooltipChecker()) && (
+                <tr key={topic}>
+                  <td className="tooltip-topic">{topicNames(topic)}</td>
+                  <td className="tooltip-count-wrapper">
+                    <b className="tooltip-counts">
+                      {dataToDisplay()?.[topic] ? dataToDisplay()?.[topic] : 0}
+                    </b>
+                  </td>
+
+                  <td className="tooltip-count-wrapper">
+                    <b className="tooltip-counts">
+                      {transnationalData()?.[topic]}
+                    </b>
+                  </td>
+                </tr>
+              )
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };
@@ -260,6 +390,7 @@ const Maps = ({
   isDisplayedList,
   isFilteredCountry,
   multiCountryCountries,
+  useVerticalLegend = false,
 }) => {
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -317,6 +448,10 @@ const Maps = ({
       });
     }
   };
+  const legendTitle =
+    path === KNOWLEDGE_LIBRARY
+      ? "Number of GPML Resources"
+      : "Number of Stakeholders";
 
   useEffect(() => {
     setCountryToSelect(isFilteredCountry.map((x) => Number(x)));
@@ -425,14 +560,30 @@ const Maps = ({
                 />
               </Tooltip>
             </div>
-            <div className="legend-wrapper">
+            <div
+              className={classNames("legend-wrapper", {
+                vertical: useVerticalLegend,
+              })}
+            >
               {isShownLegend && (
-                <Legend
-                  data={colorScale.thresholds()}
-                  setFilterColor={setFilterColor}
-                  selected={filterColor}
-                  isDisplayedList={isDisplayedList}
-                />
+                <>
+                  {useVerticalLegend ? (
+                    <VerticalLegend
+                      data={colorScale.thresholds().sort((a, b) => b - a)}
+                      setFilterColor={setFilterColor}
+                      selected={filterColor}
+                      isDisplayedList={isDisplayedList}
+                      title={legendTitle}
+                    />
+                  ) : (
+                    <Legend
+                      data={colorScale.thresholds()}
+                      setFilterColor={setFilterColor}
+                      selected={filterColor}
+                      isDisplayedList={isDisplayedList}
+                    />
+                  )}
+                </>
               )}
               <Tooltip
                 placement="bottom"
@@ -497,7 +648,7 @@ const Maps = ({
                           background={
                             isCountrySelected
                               ? "#255B87"
-                              : geo.properties.MAP_COLOR === selected
+                              : geo.properties.M49Code === selected
                               ? "#84b4cc"
                               : fillColor(
                                   curr(topic, findData?.counts, path)
@@ -570,15 +721,17 @@ const Maps = ({
                               ? "#cecece"
                               : isPattern
                               ? "url(#lines)"
-                              : geo.properties.MAP_COLOR === selected
-                              ? "#84b4cc"
-                              : isCountrySelected
-                              ? "#255B87"
-                              : selectionCondition() ||
-                                selectedTerritory?.includes(
-                                  geo.properties.MAP_COLOR
-                                )
-                              ? "#255B87"
+                              : geo.properties.M49Code === selected
+                              ? // : geo.properties.MAP_COLOR === selected
+                                "#84b4cc"
+                              : // : isCountrySelected
+                              // ? "#255B87"
+                              selectionCondition()
+                              ? //  ||
+                                //   selectedTerritory?.includes(
+                                //     geo.properties.MAP_COLOR
+                                //   )
+                                "#255B87"
                               : fillColor(
                                   curr(topic, findData?.counts, path)
                                     ? curr(topic, findData?.counts, path)
@@ -596,16 +749,30 @@ const Maps = ({
                                 !isFilteredCountry.includes(M49Code) &&
                                 !selectionCondition()
                               ) {
-                                setSelected(MAP_COLOR);
+                                setSelected(M49Code);
+                                // setSelected(MAP_COLOR);
                               }
 
-                              setContent(
-                                <ToolTipContent
-                                  data={findData}
-                                  geo={geo.properties}
-                                  path={path}
-                                />
-                              );
+                              if (path === STAKEHOLDER_OVERVIEW) {
+                                setContent(
+                                  <StakeholderTooltipContent
+                                    data={findData}
+                                    geo={geo.properties}
+                                    path={path}
+                                    query={query}
+                                  />
+                                );
+                              }
+                              if (path === KNOWLEDGE_LIBRARY) {
+                                setContent(
+                                  <KnowledgeLibraryToolTipContent
+                                    data={findData}
+                                    geo={geo.properties}
+                                    path={path}
+                                    query={query}
+                                  />
+                                );
+                              }
                             }
                           }}
                           onMouseLeave={() => {

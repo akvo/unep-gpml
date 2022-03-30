@@ -51,6 +51,7 @@ const AboutUs = () => {
       "technology",
       "event",
       "financing_resource",
+      "capacity_building",
     ];
     api
       .get(`/browse?topic=${topic}`)

@@ -30,6 +30,7 @@ import IconExchange from "../../images/capacity-building/ic-exchange.svg";
 import IconCaseStudies from "../../images/capacity-building/ic-case-studies.svg";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 import { titleCase } from "../../utils/string";
+import { multicountryGroups } from "./multicountry";
 
 const { Option } = Select;
 
@@ -105,6 +106,7 @@ const KnowledgeLibrary = ({
     countries,
     organisations,
     transnationalOptions,
+    mainContentType,
     representativeGroup,
   } = UIStore.useState((s) => ({
     tags: s.tags,
@@ -114,6 +116,7 @@ const KnowledgeLibrary = ({
     transnationalOptions: s.transnationalOptions,
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
+    mainContentType: s.mainContentType,
     representativeGroup: s.representativeGroup,
   }));
 
@@ -205,11 +208,14 @@ const KnowledgeLibrary = ({
         return findCountry?.name;
       }
       if (key === "transnational") {
-        const findTransnational = transnationalOptions.find(
-          (x) => x.id == value
-        );
+        const transnationalGroup = multicountryGroups
+          .map((multicountryGroup) => multicountryGroup.item)
+          .flat();
+
+        const findTransnational = transnationalGroup.find((x) => x.id == value);
         return findTransnational?.name;
       }
+
       if (key === "representativeGroup") {
         const representativeGroups = representativeGroup.find(
           (x) => x?.code?.toLowerCase() == value?.toLowerCase()
@@ -225,7 +231,15 @@ const KnowledgeLibrary = ({
         return `End date ${value}`;
       }
       if (key === "subContentType") {
-        return value;
+        const findSubContentType = mainContentType.find((subContent) =>
+          subContent.childs.find((child) => child.title.includes(value))
+        );
+
+        const label = findSubContentType.childs.find((child) =>
+          child.title.includes(value)
+        );
+
+        return `${value} ${findSubContentType.name}`;
       }
       if (key === "entity") {
         const findOrganisation = organisations.find(
@@ -349,15 +363,14 @@ const KnowledgeLibrary = ({
                       }
                     />
                     <Button className="sort-btn" onClick={sortResults}>
-                      <SortIcon />{" "}
-                      <span>
-                        Sort By:{" "}
-                        {isAscending || isAscending === null ? (
-                          <b style={{ paddingLeft: "1em" }}>A&gt;Z</b>
-                        ) : (
-                          <b style={{ paddingLeft: "1em" }}>Z&gt;A</b>
-                        )}
-                      </span>
+                      <SortIcon
+                        style={{
+                          transform:
+                            isAscending || isAscending === null
+                              ? "initial"
+                              : "rotate(180deg)",
+                        }}
+                      />
                     </Button>
                   </Space>
                 </Col>
@@ -371,6 +384,7 @@ const KnowledgeLibrary = ({
             {/* Map/Topic view dropdown */}
             <Col lg={2} md={4} sm={6} className="select-wrapper">
               <Select
+                dropdownClassName="overlay-zoom"
                 className="view-selection"
                 value={selectionValue}
                 onChange={(val) => setView(val)}
@@ -402,7 +416,10 @@ const KnowledgeLibrary = ({
             />
           )}
           <LeftSidebar active={1} sidebar={sidebar}>
-            <Row className="resource-main-container">
+            <Row
+              className="resource-main-container"
+              style={{ display: view === "map" ? "block" : "flex" }}
+            >
               {/* Resource Main Content */}
               {listVisible && (
                 <Col
@@ -441,19 +458,20 @@ const KnowledgeLibrary = ({
                   />
                 </Col>
               )}
-              <Col
-                lg={14}
-                md={15}
-                sm={12}
-                xs={24}
-                align="center"
-                className="render-map-container map-main-wrapper"
-                style={{
-                  background: view === "topic" ? "#255B87" : "#fff",
-                  flex: view === "topic" && "auto",
-                }}
-              >
-                {view === "map" ? (
+
+              {view === "map" ? (
+                <Col
+                  lg={14}
+                  md={15}
+                  sm={12}
+                  xs={24}
+                  align="center"
+                  className="render-map-container map-main-wrapper"
+                  style={{
+                    background: view === "topic" ? "#255B87" : "#fff",
+                    flex: view === "topic" && "auto",
+                  }}
+                >
                   <MapLanding
                     {...{
                       query,
@@ -473,12 +491,24 @@ const KnowledgeLibrary = ({
                     isFilteredCountry={filterCountries}
                     isDisplayedList={listVisible}
                   />
-                ) : (
-                  <>
-                    <TopicView {...{ updateQuery }} />
-                  </>
-                )}
-              </Col>
+                </Col>
+              ) : (
+                <Col
+                  lg={14}
+                  md={15}
+                  sm={12}
+                  xs={24}
+                  align="center"
+                  className="render-map-container "
+                  style={{
+                    background: view === "topic" ? "#255B87" : "#fff",
+                    flex: view === "topic" && "auto",
+                    maxWidth: view === "topic" ? "calc(100% - 300px)" : "",
+                  }}
+                >
+                  <TopicView {...{ updateQuery }} />
+                </Col>
+              )}
             </Row>
           </LeftSidebar>
         </div>

@@ -62,15 +62,14 @@ const Header = ({
                   />
                   {view === "card" && (
                     <Button className="sort-btn" onClick={sortPeople}>
-                      <SortIcon />{" "}
-                      <span>
-                        Sort By:
-                        {isAscending || isAscending === null ? (
-                          <b style={{ paddingLeft: "1em" }}>A&gt;Z</b>
-                        ) : (
-                          <b style={{ paddingLeft: "1em" }}>Z&gt;A</b>
-                        )}
-                      </span>
+                      <SortIcon
+                        style={{
+                          transform:
+                            isAscending || isAscending === null
+                              ? "initial"
+                              : "rotate(180deg)",
+                        }}
+                      />
                     </Button>
                   )}
                 </Space>
@@ -85,6 +84,7 @@ const Header = ({
           {/* Map/Topic view dropdown */}
           <Col lg={2} md={4} sm={6} className="select-wrapper">
             <Select
+              dropdownClassName="overlay-zoom"
               className="view-selection"
               value={selectionValue}
               onChange={(val) => setView(val)}

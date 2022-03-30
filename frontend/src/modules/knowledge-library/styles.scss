@@ -19,6 +19,11 @@
 
   .ant-btn-icon-only {
     width: 100%;
+    max-width: 35px;
+    max-height: 35px;
+    min-width: 25px;
+    min-height: 25px;
+    height: 27px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -54,6 +59,8 @@
       .ant-space {
         flex-wrap: wrap;
         gap: 8px;
+        max-height: 33px;
+        overflow-y: auto;
         .ant-space-item {
           margin-right: 0 !important;
         }
@@ -66,7 +73,7 @@
 
         color: #ffffff;
         font-weight: 700;
-        padding: 5px 11px 5px 11px;
+        padding: 4px 11px 4px 11px;
         border: 2px solid #ffffff;
         border-radius: 17.5px;
         background-color: transparent;
@@ -105,7 +112,7 @@
 
       .filter-icon {
         display: block;
-        width: 30px;
+        width: 27px;
       }
 
       ::placeholder,
@@ -125,8 +132,8 @@
           color: #ffffff;
           background-color: $green05;
           border: 0;
-          height: 30px;
-          width: 30px;
+          height: 27px;
+          width: 27px;
           &:hover {
             background-color: $green01;
             color: $blue10;
@@ -142,7 +149,6 @@
 
       .ant-select-open .selection-arrow {
         transform: rotate(180deg);
-        margin-top: -2px;
       }
 
       .select-button,
@@ -210,24 +216,6 @@
         }
       }
     }
-
-    .sort-btn {
-      border: none;
-      display: flex;
-      align-items: center;
-      padding-left: 0px;
-      color: #ffffff;
-      font-weight: 700;
-      background-color: transparent;
-      svg {
-        margin-right: 7px;
-        width: 32px;
-        circle,
-        path {
-          stroke: currentColor;
-        }
-      }
-    }
   }
 
   span.ant-input-affix-wrapper.input-src {
@@ -236,6 +224,9 @@
 
   .resource-main-container {
     background-color: rgb(37, 91, 135);
+    @media (min-width: 700px) {
+      flex-wrap: nowrap;
+    }
   }
 
   .site-drawer-render-in-current-wrapper {
@@ -258,12 +249,10 @@
 
     .ant-drawer-content-wrapper {
       box-shadow: none;
-      // height: 700px;
+      height: 700px;
       max-width: 500px;
       width: 100% !important;
-      @media (min-width: 3000px) {
-        height: unset;
-      }
+
       .ant-drawer-header {
         background: $blue05;
       }
@@ -324,7 +313,6 @@
       .multiselection-filter .ant-select-selection-placeholder {
         font-size: 16px;
         color: $grey04;
-        padding-left: calc(44px - 9px);
       }
 
       .date-picker-container .ant-picker ::placeholder,
@@ -424,6 +412,11 @@
         align-self: center;
       }
 
+      .multiselection-filter .ant-select-selection-overflow {
+        height: 29px;
+        overflow-y: auto;
+      }
+
       .multiple-filter-title {
         margin-bottom: 0;
       }
@@ -477,12 +470,23 @@
         }
       }
 
+      .resource-card-wrapper {
+        height: 100px;
+        width: 100%;
+        max-width: 100px !important;
+        margin-right: 15px;
+        margin-bottom: 15px;
+      }
+
       .resource-type-card {
+        display: flex;
+        align-items: center !important;
+        position: relative;
         color: $grey03;
-        align-items: flex-end;
         cursor: pointer;
         padding: 4px;
-        height: 120px;
+        height: 100px;
+        width: 100px;
         text-align: center;
         border: 1px solid $grey03;
         border-radius: 4px;
@@ -491,6 +495,10 @@
           .ant-space {
             gap: 4px;
 
+            svg {
+              width: 80px;
+              height: 55px;
+            }
             // SVG
             .event-flexible {
               .cls-3 {
@@ -503,6 +511,23 @@
             .policy .cls-1,
             .technology .cls-4 {
               stroke-width: 0;
+            }
+
+            .capacity-building {
+              .cls-2,
+              .cls-3,
+              .cls-4 {
+                fill: #fff;
+              }
+
+              .cls-3,
+              .cls-4 {
+                stroke: currentColor;
+              }
+
+              .cls-3 {
+                stroke-width: 4px;
+              }
             }
 
             .policy .cls-3,
@@ -551,12 +576,15 @@
         }
 
         .topic-text {
-          font-size: 10px;
-          line-height: 11px;
+          font-size: 12px;
+          line-height: 14px;
         }
 
         .topic-count {
           font-weight: 700;
+          position: absolute;
+          top: 5px;
+          left: 5px;
         }
       }
 
@@ -574,6 +602,10 @@
           border: 1px solid #d7e6ee;
           border-radius: 3px;
           background-color: #fff;
+          .ant-select-selection-overflow {
+            height: 29px;
+            overflow-y: auto;
+          }
 
           .ant-select {
             width: 100%;
@@ -583,6 +615,10 @@
 
         .country-filter-tab {
           margin-bottom: 1.5rem;
+          .ant-select-item.ant-select-item-group {
+            color: rgba(0, 0, 0, 0.45);
+          }
+
           .country-filter-tab-pane {
             padding: 0.5rem 1rem;
           }
@@ -639,12 +675,9 @@
   .resource-list-container {
     position: absolute;
     z-index: 3;
-    // height: 700px;
+    height: 700px;
     width: 100%;
     max-width: 300px;
-    @media (min-width: 3000px) {
-      height: unset;
-    }
   }
 
   .resource-list-header.show-list {
@@ -654,6 +687,7 @@
   }
 
   .resource-list-header {
+    padding: 2px 24px;
     justify-content: unset;
     box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);
     z-index: 999;
@@ -738,12 +772,11 @@
     padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    max-height: 45em;
+    gap: 5px;
+    height: 700px;
     align-items: center;
-    @media (min-width: 3000px) {
-      height: unset;
-    }
+    padding-bottom: 120px;
+
     .resource-item-wrapper {
       width: 100%;
 
@@ -755,8 +788,8 @@
         color: $black;
 
         .ant-card-body {
-          padding-top: 10px;
-          padding-bottom: 10px;
+          padding-top: 5px;
+          padding-bottom: 5px;
         }
 
         .topic {
@@ -792,7 +825,7 @@
           }
         }
         .item-footer {
-          margin-top: 14px;
+          margin-top: 5px;
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -832,9 +865,13 @@
 
   // Pagination
   .page {
+    width: 100%;
+    max-width: 300px;
     padding: 2rem 0 1rem 10px;
     text-align: center;
-    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background-color: #ffffff;
     .result-number,
     .ant-pagination-item a {
       font-weight: 700;
@@ -909,12 +946,23 @@
         width: 20px;
       }
     }
+    .ant-drawer-content-wrapper {
+      zoom: 80%;
+      height: 100% !important;
+
+      @-moz-document url-prefix() {
+        min-height: 875px !important;
+        transform: scale(0.8) translate(-63px, -110px);
+      }
+    }
+
     .resource-main-container {
       .ant-page-header {
         padding: 2px 24px;
       }
       .resource-list {
         gap: 5px;
+        padding-bottom: 120px;
         .resource-item-wrapper {
           .ant-card-body {
             padding-top: 5px;
@@ -977,6 +1025,23 @@
           }
         }
       }
+    }
+  }
+}
+
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+  .multiselection-dropdown,
+  .ant-picker-dropdown {
+    zoom: 80%;
+
+    @-moz-document url-prefix() {
+      transform: scale(0.8);
+    }
+  }
+  .overlay-zoom {
+    zoom: 100%;
+    @-moz-document url-prefix() {
+      transform: scale(1);
     }
   }
 }

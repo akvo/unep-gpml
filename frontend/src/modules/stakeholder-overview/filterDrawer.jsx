@@ -119,6 +119,8 @@ const FilterDrawer = ({
   return (
     <div className="site-drawer-render-in-current-wrapper">
       <Drawer
+        tabIndex=""
+        tabindex=""
         title="Choose your filters below"
         placement="left"
         visible={filterVisible}
@@ -152,7 +154,11 @@ const FilterDrawer = ({
             <Row type="flex" gutter={[10, 10]}>
               {networkTypes.map((networkType) => {
                 return (
-                  <Col span={6} key={networkType}>
+                  <Col
+                    span={6}
+                    key={networkType}
+                    className="resource-card-wrapper"
+                  >
                     <Card
                       onClick={() =>
                         handleChangeType("networkType", networkType)
@@ -298,7 +304,7 @@ const FilterDrawer = ({
             updateQuery={updateQuery}
           />
           {/* Entities */}
-          <MultipleSelectFilter
+          {/* <MultipleSelectFilter
             title="Entities"
             options={
               isLoaded()
@@ -312,7 +318,7 @@ const FilterDrawer = ({
             flag="affiliation"
             query={query}
             updateQuery={updateQuery}
-          />
+          /> */}
 
           {/* Representative group */}
           <MultipleSelectFilter
@@ -387,6 +393,7 @@ const MultipleSelectFilter = ({
       </Space>
       <div>
         <Select
+          dropdownClassName="multiselection-dropdown"
           showSearch
           allowClear
           mode="multiple"

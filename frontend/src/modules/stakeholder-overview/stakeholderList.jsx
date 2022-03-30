@@ -28,118 +28,110 @@ const StakeholderList = ({
   const [listVisible, setListVisible] = useState(true);
 
   return (
-    <Row className="stakeholder-list ">
-      <Col span={24}>
-        {!listVisible ? (
-          <div className="map-overlay">
+    <div className="stakeholder-list ">
+      <Row>
+        {/* <Col span={24}>
+          {!listVisible ? (
+            <div className="map-overlay">
+              <PageHeader
+                className="resource-list-header show-list"
+                ghost={false}
+                backIcon={
+                  <img
+                    src={HideIcon}
+                    className="hide-icon show"
+                    alt="show-icon"
+                  />
+                }
+                onBack={() => setListVisible(true)}
+                title="Show List"
+              />
+            </div>
+          ) : (
             <PageHeader
-              className="resource-list-header show-list"
+              className="resource-list-header"
               ghost={false}
+              style={
+                view === "map"
+                  ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
+                  : { backgroundColor: "rgba(255, 255, 255, 1)" }
+              }
+              onBack={() => setListVisible(false)}
               backIcon={
                 <img
                   src={HideIcon}
-                  className="hide-icon show"
-                  alt="show-icon"
+                  className="hide-icon hide"
+                  alt="hide-icon"
                 />
               }
-              onBack={() => setListVisible(true)}
-              title="Show List"
+              title={<span className="hide-text">Hide List</span>}
+              subTitle={
+                !loading && (
+                  <span className="result-number">
+                    Showing{" "}
+                    {resultCount > pageSize + Number(filters?.page)
+                      ? resultCounts
+                      : itemCount}{" "}
+                    of {resultCount || 0} result
+                    {resultCount > 1 ? "s" : ""}
+                  </span>
+                )
+              }
             />
-          </div>
-        ) : (
-          <PageHeader
-            className="resource-list-header"
-            ghost={false}
-            style={
-              view === "map"
-                ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
-                : { backgroundColor: "rgba(255, 255, 255, 1)" }
-            }
-            onBack={() => setListVisible(false)}
-            backIcon={
-              <img src={HideIcon} className="hide-icon hide" alt="hide-icon" />
-            }
-            title={<span className="hide-text">Hide List</span>}
-            subTitle={
-              !loading && (
-                <span className="result-number">
-                  Showing{" "}
+          )}
+        </Col> */}
+        {listVisible && (
+          <div style={{ width: "100%" }}>
+            <Col
+              span={24}
+              className="resource-list"
+              style={
+                isLoaded() &&
+                !loading &&
+                !isEmpty(results) && { overflowY: "auto" }
+              }
+            >
+              {!isLoaded() || loading ? (
+                <h2 className="loading">
+                  <LoadingOutlined spin /> Loading
+                </h2>
+              ) : isLoaded() && !loading && !isEmpty(results) ? (
+                <ResourceItem view={view} results={results} />
+              ) : (
+                <h2 className="loading">There is no data to display</h2>
+              )}
+            </Col>
+            {!isEmpty(results) && (
+              <div className="page">
+                <Pagination
+                  defaultCurrent={1}
+                  current={
+                    1 + (query?.page.length !== 0 ? Number(query?.page[0]) : 0)
+                  }
+                  pageSize={pageSize}
+                  total={resultCount}
+                  showSizeChanger={false}
+                  onChange={(n) => {
+                    updateQuery("page", n - 1);
+                  }}
+                />
+
+                <div
+                  className="result-number"
+                  style={{ opacity: loading && "0" }}
+                >
                   {resultCount > pageSize + Number(filters?.page)
                     ? resultCounts
                     : itemCount}{" "}
                   of {resultCount || 0} result
                   {resultCount > 1 ? "s" : ""}
-                </span>
-              )
-            }
-            extra={
-              <Button className="sort-btn" onClick={sortPeople}>
-                <img src={SortIcon} alt="sort-icon" />{" "}
-                <span>
-                  Sort By:
-                  <br />{" "}
-                  {isAscending || isAscending === null ? (
-                    <b>A&gt;Z</b>
-                  ) : (
-                    <b>Z&gt;A</b>
-                  )}
-                </span>
-              </Button>
-            }
-          />
-        )}
-      </Col>
-      {listVisible && (
-        <div style={{ width: "100%" }}>
-          <Col
-            span={24}
-            className="resource-list"
-            style={
-              isLoaded() &&
-              !loading &&
-              !isEmpty(results) && { overflowY: "auto" }
-            }
-          >
-            {!isLoaded() || loading ? (
-              <h2 className="loading">
-                <LoadingOutlined spin /> Loading
-              </h2>
-            ) : isLoaded() && !loading && !isEmpty(results) ? (
-              <ResourceItem view={view} results={results} />
-            ) : (
-              <h2 className="loading">There is no data to display</h2>
-            )}
-          </Col>
-          {!isEmpty(results) && (
-            <div className="page">
-              <Pagination
-                defaultCurrent={1}
-                current={
-                  1 + (query?.page.length !== 0 ? Number(query?.page[0]) : 0)
-                }
-                pageSize={pageSize}
-                total={resultCount}
-                showSizeChanger={false}
-                onChange={(n) => {
-                  updateQuery("page", n - 1);
-                }}
-              />
-
-              <div
-                className="result-number"
-                style={{ opacity: loading && "0" }}
-              >
-                {resultCount > pageSize + Number(filters?.page)
-                  ? resultCounts
-                  : itemCount}{" "}
-                of {resultCount || 0} result
-                {resultCount > 1 ? "s" : ""}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-      )}
-    </Row>
+            )}
+          </div>
+        )}
+      </Row>
+    </div>
   );
 };
 
@@ -163,6 +155,11 @@ const ResourceItem = ({ results, view }) => {
           }
         >
           <div className="item-body">
+            <div className="badge-wrapper">
+              {result.type === "organisation" && result.isMember && (
+                <GPMLIcon />
+              )}
+            </div>
             <div className="resource-image-wrapper">
               <img
                 className="resource-item-image"
@@ -171,20 +168,17 @@ const ResourceItem = ({ results, view }) => {
               />
             </div>
             <div className="resource-details">
-              <b className="title">{stakeholderName}</b>
+              <b className="title">
+                <TrimText text={stakeholderName} max={30} />
+              </b>
               <div>
                 {result?.type === "stakeholder"
                   ? result?.affiliation && (
                       <span className="entity-name">
-                        {result?.affiliation?.name}
+                        <TrimText text={result?.affiliation?.name} max={30} />
                       </span>
                     )
                   : ""}
-              </div>
-              <div className="badge-wrapper">
-                {result.type === "organisation" && result.isMember && (
-                  <GPMLIcon />
-                )}
               </div>
             </div>
           </div>

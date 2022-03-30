@@ -285,6 +285,7 @@ const Root = () => {
       "technology",
       "event",
       "financing_resource",
+      // "capacity_building",
     ];
     if (query?.topic?.length === 0) {
       if (

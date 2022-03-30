@@ -5,7 +5,7 @@
   .thumbnail {
     img {
       width: 100%;
-      height: 200px;
+      height: 187px;
       object-fit: cover;
       object-position: 50% 0;
       border-radius: 10px;
@@ -82,13 +82,25 @@
     .section-content {
       padding-left: 16px;
       padding-right: 16px;
+      .resource-col {
+        width: 132px;
+      }
+      .events-col {
+        width: 162px;
+      }
+      .resource-col-fullwidth {
+        width: calc(100% - 132px);
+      }
+      .events-col-fullwidth {
+        width: calc(100% - 162px);
+      }
     }
     .card {
       opacity: 0.9;
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
       border-radius: 10px;
       color: #fff;
-      min-height: 200px;
+      min-height: 187px;
       .title {
         font-family: Open Sans;
         font-style: normal;
@@ -199,6 +211,59 @@
   }
   #bodyContent {
     background-color: #edf2f7 !important;
+  }
+  .ui-header {
+    padding: 10px 16px 10px 16px;
+    h3.ant-typography {
+      margin-bottom: 0px;
+    }
+  }
+  @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+    .ui-header {
+      padding: 10px 16px 10px 16px;
+      h3.ant-typography {
+        margin-bottom: 0px;
+        font-size: 1.2em;
+      }
+    }
+    .pm_event_banner {
+      .event_details {
+        h2.ant-typography {
+          font-size: 1.2em;
+        }
+        h1.ant-typography {
+          font-size: 1.2em;
+        }
+      }
+      .banner_info {
+        .banner_img {
+          height: 200px;
+          img {
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+      }
+    }
+    .capacity-section {
+      min-height: auto;
+      .ant-page-header {
+        padding: 5px 24px;
+      }
+      .card {
+        min-height: 187px;
+        .title {
+          font-size: 1em;
+        }
+      }
+      .thumbnail {
+        img {
+          height: 187px;
+          object-fit: cover;
+          object-position: center;
+        }
+      }
+    }
   }
 }
 /* (320x480) iPhone (Original, 3G, 3GS) */

@@ -21,7 +21,7 @@
   position: relative;
   overflow: hidden;
   background-color: #eaf6fd;
-
+  width: 100%;
   .legend-button {
     display: flex;
     place-items: center;
@@ -43,7 +43,7 @@
   }
 
   .landing-container.map-container > div {
-    // height: 700px !important;
+    height: 700px !important;
     width: auto;
     display: flex;
     flex-direction: column-reverse;
@@ -185,8 +185,49 @@
     display: flex;
     align-items: center;
     flex-direction: row;
-
     align-self: flex-end;
+    &.vertical {
+      align-items: normal;
+      .title {
+        display: flex;
+        justify-content: start;
+        margin-bottom: 1em;
+        line-height: 1.3em;
+      }
+      .ant-typography {
+        font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial,
+          sans-serif;
+      }
+      .legend {
+        width: 20px;
+        height: 22px;
+        padding: 0 8px;
+        margin-right: 8px;
+        cursor: pointer;
+        &.label {
+          width: 140px;
+          .ant-typography {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            &::before {
+              right: 100%;
+              display: block;
+              content: "";
+              width: 0;
+              height: 0;
+              border-style: solid;
+              border-width: 3px 4px 3px 0;
+              border-color: transparent rgba(50, 50, 50, 0.8) transparent
+                transparent;
+            }
+          }
+        }
+      }
+      .ant-card-body {
+        padding: 24px !important;
+      }
+    }
   }
 
   .legends,
@@ -304,17 +345,27 @@
   padding: 0 10px;
   position: relative;
 
-  .tooltip-note {
-    font-size: 12px;
+  .entity-type,
+  .tooltip-topic {
+    padding-right: 10px;
+  }
+  th {
+    font-size: 11px;
   }
 
   .tooltip-counts {
-    display: flex;
-    align-items: center;
+    display: block;
+    color: #005c93;
+    text-align: right;
   }
 
-  .transnational-count {
-    position: absolute;
+  .tooltip-topic {
+    margin-right: 10px;
+    color: #7db0cb;
+  }
+
+  .tooltip-note {
+    font-size: 12px;
   }
 
   h3 {
@@ -322,8 +373,11 @@
     font-weight: 600;
     color: #005c93;
     max-width: 170px;
-    width: 170px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
     white-space: pre-wrap;
+    text-align: center;
   }
 
   h4 {
@@ -335,9 +389,9 @@
     white-space: pre-wrap;
   }
 
-  li {
-    display: flex;
-    max-width: 170px;
+  tr {
+    // display: flex;
+    // max-width: 170px;
 
     &:not(:last-child) {
       border-bottom: 1px solid #e7f1f7;
@@ -364,7 +418,7 @@
 // css for multi-country dropdown
 .country-filter-dropdown {
   .ant-select-item-group {
-    color: #036799;
+    // color: #036799;
     font-weight: 600;
   }
 }
