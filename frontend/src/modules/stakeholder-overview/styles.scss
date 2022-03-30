@@ -102,7 +102,14 @@
 
     // Search input
     .search-box {
-      max-width: fit-content;
+      width: 100%;
+      max-width: 360px;
+      .ant-space-item:nth-of-type(1) {
+        width: 100%;
+      }
+      .ant-space-align-center {
+        width: 100%;
+      }
 
       .filter-icon {
         display: block;
