@@ -26,6 +26,9 @@
     width: 100%;
     max-width: 35px;
     max-height: 35px;
+    min-width: 25px;
+    min-height: 25px;
+    height: 27px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -115,8 +118,8 @@
           color: #ffffff;
           background-color: #1ca585;
           border: 0;
-          height: 31px;
-          width: 31px;
+          height: 27px;
+          width: 27px;
           &:hover {
             background-color: $green01;
             color: $blue10;
@@ -211,7 +214,7 @@
       background-color: transparent;
       svg {
         margin-right: 7px;
-        width: 32px;
+        width: 27px;
         circle,
         path {
           stroke: currentColor;
@@ -1105,7 +1108,8 @@
       }
     }
     .ui-header .sort-btn svg {
-      width: 25px;
+      width: 27px;
+      height: 27px;
     }
     .ant-drawer-content-wrapper {
       zoom: 80%;
