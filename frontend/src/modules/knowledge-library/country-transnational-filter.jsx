@@ -3,7 +3,7 @@ import React from "react";
 import { Select, Tabs, Popover } from "antd";
 import { DownOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import isEmpty from "lodash/isEmpty";
-import { topicNames, tTypes } from "../../utils/misc";
+import { TrimText } from "../../utils/string";
 import { multicountryGroups } from "./multicountry";
 import { OptGroup } from "rc-select";
 
@@ -30,7 +30,7 @@ const CountryTransnationalFilter = ({
       landing: s.landing,
     })
   );
-
+  console.log(transnationalOptions);
   const isLoaded = () => !isEmpty(countries) && !isEmpty(transnationalOptions);
 
   const countryOpts = isLoaded()
@@ -121,19 +121,20 @@ const CountryTransnationalFilter = ({
                   .map((transnational) => {
                     return (
                       <Option key={transnational.id} value={transnational.id}>
-                        <div>
-                          {transnational.name}{" "}
-                          {multiCountryLabelCustomIcon &&
-                            multiCountry.includes(transnational.id) && (
-                              <MultiCountryInfo
-                                data={landing}
-                                multiCountryCountries={
-                                  multiCountryCountries.find(
-                                    (x) => x.id === transnational.id
-                                  )?.countries
-                                }
-                              />
-                            )}
+                        <div className="dropdown-content">
+                          <TrimText
+                            className="dropdown-text"
+                            text={transnational.name}
+                            max={25}
+                          />{" "}
+                          <MultiCountryInfo
+                            data={landing}
+                            multiCountryCountries={
+                              transnationalOptions.find(
+                                (x) => x.id === transnational.id
+                              )?.countries
+                            }
+                          />
                         </div>
                       </Option>
                     );
@@ -146,50 +147,7 @@ const CountryTransnationalFilter = ({
   );
 };
 
-const ResourcesInfo = (data) => {
-  const dataToDisplay = {
-    project: data?.data?.counts?.project,
-    actionPlan: data?.data?.counts?.actionPlan,
-    policy: data?.data?.counts?.policy,
-    technicalResource: data?.data?.counts?.technicalResource,
-    financingResource: data?.data?.counts?.financingResource,
-    event: data?.data?.counts?.event,
-    technology: data?.data?.counts?.technology,
-  };
-
-  const transantionalResources = {
-    project: data?.data?.transnationalCounts?.project,
-    actionPlan: data?.data?.transnationalCounts?.actionPlan,
-    policy: data?.data?.transnationalCounts?.policy,
-    technicalResource: data?.data?.transnationalCounts?.technicalResource,
-    financingResource: data?.data?.transnationalCounts?.financingResource,
-    event: data?.data?.transnationalCounts?.event,
-    technology: data?.data?.transnationalCounts?.technology,
-  };
-
-  return (
-    <ul className="info-resources">
-      {tTypes.map((topic) => {
-        return (
-          topic !== "organisation" &&
-          topic !== "stakeholder" && (
-            <li key={topic}>
-              <span>{topicNames(topic)}</span>:{" "}
-              <b>{dataToDisplay?.[topic] ? dataToDisplay[topic] : 0}</b>
-              <b>
-                {" "}
-                {transantionalResources?.[topic] > 0 &&
-                  `(${transantionalResources[topic]})`}
-              </b>
-            </li>
-          )
-        );
-      })}
-    </ul>
-  );
-};
-
-const MultiCountryInfo = ({ multiCountryCountries, data }) => {
+const MultiCountryInfo = ({ data, multiCountryCountries }) => {
   const renderContent = () => {
     return (
       <div className="popover-content-wrapper">
@@ -202,8 +160,7 @@ const MultiCountryInfo = ({ multiCountryCountries, data }) => {
                 key={`popover-${name}-${id}`}
                 className="popover-content-item"
               >
-                <b>{name}</b>
-                <ResourcesInfo data={curr} />
+                {name}
               </div>
             );
           })}

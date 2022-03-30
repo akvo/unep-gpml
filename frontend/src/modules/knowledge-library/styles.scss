@@ -5,6 +5,13 @@
     top: 990px !important;
   }
 }
+.dropdown-content {
+  display: flex;
+  align-items: center;
+  & > div {
+    margin-right: 10px;
+  }
+}
 
 .info-resources {
   padding-left: 20px;
@@ -623,6 +630,9 @@
           border: 1px solid #d7e6ee;
           border-radius: 3px;
           background-color: #fff;
+          .popover-multi-country {
+            cursor: pointer;
+          }
           .ant-select-selection-overflow {
             height: 29px;
             overflow-y: auto;
@@ -636,6 +646,7 @@
 
         .country-filter-tab {
           margin-bottom: 1.5rem;
+
           .ant-select-item.ant-select-item-group {
             color: rgba(0, 0, 0, 0.45);
           }
