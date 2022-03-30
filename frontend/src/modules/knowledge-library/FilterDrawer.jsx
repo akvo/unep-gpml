@@ -220,7 +220,6 @@ const FilterDrawer = ({
         onClose={() => setFilterVisible(false)}
         closeIcon={<CloseCircleOutlined className="drawer-close-icon" />}
         style={{ position: "absolute" }}
-        width={500}
         height="100%"
         autoFocus={false}
       >

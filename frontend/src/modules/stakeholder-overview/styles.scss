@@ -28,6 +28,9 @@
   }
   .sidebar-mobile {
     margin-bottom: 0;
+    @media (min-width: 750px) {
+      display: none;
+    }
   }
 
   .ant-btn-icon-only {
@@ -604,7 +607,7 @@
     min-width: calc(100% - 100px);
     overflow: hidden;
 
-    @media (min-width: 765px) {
+    @media (min-width: 750px) {
       top: 0 !important;
       left: 100px !important;
     }
@@ -661,7 +664,7 @@
     .ant-drawer-content-wrapper {
       box-shadow: none;
       max-width: 500px;
-      // width: 100% !important;
+      width: 100% !important;
       @-moz-document url-prefix() {
         min-height: 805px !important;
         transform: scale(0.8) translate(-63px, -101px);

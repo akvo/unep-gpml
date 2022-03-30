@@ -19,6 +19,9 @@
   }
   .sidebar-mobile {
     margin-bottom: 0;
+    @media (min-width: 750px) {
+      display: none;
+    }
   }
 
   .ant-btn-icon-only {
@@ -244,7 +247,7 @@
     min-width: calc(100% - 100px);
     overflow: hidden;
 
-    @media (min-width: 765px) {
+    @media (min-width: 750px) {
       top: 0 !important;
       left: 100px !important;
     }
