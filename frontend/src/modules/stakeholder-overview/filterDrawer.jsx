@@ -14,6 +14,8 @@ import { ReactComponent as AgreementIcon } from "../../images/stakeholder-overvi
 import { ReactComponent as GPMLLogo } from "../../images/stakeholder-overview/gpml-logo.svg";
 import { ReactComponent as CommunityIcon } from "../../images/stakeholder-overview/community-outlined.svg";
 import { ReactComponent as UnionIcon } from "../../images/stakeholder-overview/union-outlined.svg";
+import CountryTransnationalFilter from "../knowledge-library/country-transnational-filter";
+import api from "../../utils/api";
 
 const FilterDrawer = ({
   query,
@@ -24,6 +26,8 @@ const FilterDrawer = ({
   stakeholderCount,
   GPMLMemberCount,
   setFilterCountries,
+  multiCountryCountries,
+  setMultiCountryCountries,
 }) => {
   const {
     seeking,
@@ -82,6 +86,7 @@ const FilterDrawer = ({
     "offering",
     "affiliation",
     "isMember",
+    "transnational",
   ];
 
   const handleChangeType = (flag, type) => {
@@ -115,6 +120,44 @@ const FilterDrawer = ({
         value: x?.code,
       }))
     : [];
+
+  const handleChangeLocationTab = (key) => {
+    const param = key === "country" ? "transnational" : "country";
+  };
+
+  const handleChangeCountry = (val) => {
+    updateQuery("country", query?.country && val);
+  };
+
+  const handleDeselectCountry = (val) => {
+    updateQuery(
+      "country",
+      query?.country ? query?.country.filter((x) => x != val) : []
+    );
+  };
+
+  const handleChangeMultiCountry = (val) => {
+    updateQuery("transnational", [val]);
+
+    // Fetch transnational countries
+    val.forEach((id) => {
+      const check = multiCountryCountries.find((x) => x.id === id);
+      !check &&
+        api.get(`/country-group/${id}`).then((resp) => {
+          setMultiCountryCountries([
+            ...multiCountryCountries,
+            { id: id, countries: resp.data?.[0]?.countries },
+          ]);
+        });
+    });
+  };
+
+  const handleDeselectMultiCountry = (val) => {
+    updateQuery(
+      "transnational",
+      query?.transnational ? query?.transnational.filter((x) => x != val) : []
+    );
+  };
 
   return (
     <div className="site-drawer-render-in-current-wrapper">
@@ -247,7 +290,60 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
-
+          {/* Location */}
+          <Col span={24} style={{ paddingTop: 5, paddingBottom: 5 }}>
+            <Space align="middle">
+              <div className="filter-title">Location</div>
+              {!isEmpty(query?.country) ? (
+                <Tag
+                  className="clear-selection"
+                  closable
+                  onClick={() => {
+                    updateQuery("country", []);
+                  }}
+                  onClose={() => updateQuery("country", [])}
+                >
+                  Clear Country Selection
+                </Tag>
+              ) : (
+                ""
+              )}
+              {!isEmpty(query?.transnational) ? (
+                <Tag
+                  className="clear-selection"
+                  closable
+                  onClick={() => {
+                    updateQuery("transnational", []);
+                    setMultiCountryCountries([]);
+                  }}
+                  onClose={() => updateQuery("transnational", [])}
+                >
+                  Clear Multi-Country Selection
+                </Tag>
+              ) : (
+                ""
+              )}
+            </Space>
+            <div className="country-filter-tab-wrapper">
+              <CountryTransnationalFilter
+                {...{
+                  multiCountryCountries,
+                  handleChangeCountry,
+                  handleDeselectCountry,
+                  handleChangeMultiCountry,
+                  handleDeselectMultiCountry,
+                }}
+                handleChangeTab={handleChangeLocationTab}
+                country={query?.country?.map((x) => parseInt(x)) || []}
+                multiCountry={
+                  query?.transnational?.map((x) => parseInt(x)) || []
+                }
+                multiCountryLabelCustomIcon={true}
+                countrySelectMode="multiple"
+                multiCountrySelectMode="multiple"
+              />
+            </div>
+          </Col>
           {/*Geo-coverage*/}
           <MultipleSelectFilter
             title="Geo-coverage"
@@ -266,14 +362,14 @@ const FilterDrawer = ({
           />
 
           {/* Location */}
-          <MultipleSelectFilter
+          {/* <MultipleSelectFilter
             title="Location"
             options={countryOpts}
             value={query?.country?.map((x) => parseInt(x)) || []}
             flag="country"
             query={query}
             updateQuery={updateQuery}
-          />
+          /> */}
 
           {/*Expertise to offer*/}
           <MultipleSelectFilter
