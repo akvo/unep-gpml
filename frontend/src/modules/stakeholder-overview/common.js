@@ -6,6 +6,7 @@ const useQuery = () => {
     country: [],
     networkType: [],
     tag: [],
+    transnational: [],
     isMember: "",
     q: "",
     page: [],
