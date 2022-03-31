@@ -498,15 +498,16 @@
         }
       }
 
-      .ant-row {
-        justify-content: space-between;
-      }
+      // .ant-row {
+      //   justify-content: space-between;
+      // }
 
       .resource-card-wrapper {
         height: 100px;
         width: 100%;
         max-width: 100px !important;
-        margin-bottom: 15px;
+        margin-bottom: 17px;
+        margin-right: 17px;
       }
 
       .resource-type-card {
@@ -906,8 +907,8 @@
       height: 100% !important;
 
       @-moz-document url-prefix() {
-        min-height: 875px !important;
-        transform: scale(0.8) translate(-62px, -110px);
+        min-height: 1003px !important;
+        transform: scale(0.7) translate(-107px, -220px);
       }
     }
 
