@@ -1236,6 +1236,7 @@ export const schema = {
               geoCoverageValueTransnational: {
                 title: "GEO COVERAGE (Transnational)",
                 enum: [],
+                countries: [],
                 depend: {
                   id: "geoCoverageType",
                   value: ["transnational"],

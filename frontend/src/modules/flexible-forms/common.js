@@ -126,6 +126,9 @@ const getSchema = ({
     prop.S4.properties.S4_G2.properties[
       "S4_G2_24.3"
     ].enumNames = transnationalOptions?.map((x) => x.name);
+    prop.S4.properties.S4_G2.properties[
+      "S4_G2_24.3"
+    ].countries = transnationalOptions;
 
     prop.S4.properties.S4_G2.properties[
       "S4_G2_24.4"
@@ -179,6 +182,9 @@ const getSchema = ({
     prop.S4.properties.S4_G2.properties[
       "geoCoverageValueTransnational"
     ].enumNames = transnationalOptions?.map((x) => x.name);
+    prop.S4.properties.S4_G2.properties[
+      "geoCoverageValueTransnational"
+    ].countries = transnationalOptions;
 
     prop.S4.properties.S4_G2.properties[
       "geoCoverageCountries"
