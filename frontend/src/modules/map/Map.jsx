@@ -483,7 +483,16 @@ const Maps = ({
       };
 
       const [min, max] = acc;
-      return [min, values() > max ? values() : max === 2 ? max + 0.5 : max];
+      return [
+        min,
+        values() > max
+          ? values()
+          : max === 2
+          ? max + 0.5
+          : max === 3
+          ? max + 0.75
+          : max,
+      ];
     },
     [0, 0]
   );
