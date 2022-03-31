@@ -483,11 +483,11 @@ const Maps = ({
       };
 
       const [min, max] = acc;
-      return [min, values() > max ? values() : max];
+      return [min, values() > max ? values() : max === 2 ? max + 0.5 : max];
     },
     [0, 0]
   );
-
+  console.log(domain);
   const colorScale = scaleQuantize().domain(domain).range(colorRange);
 
   const fillColor = (v) => {
