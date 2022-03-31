@@ -135,23 +135,42 @@
     .item-body {
       display: flex;
     }
+    .resource-images-extra-wrapper {
+      position: relative;
+      .list-affiliation-image-wrapper {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        bottom: -5px;
+        right: 5px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #fff;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+        img {
+          width: 100%;
+          max-width: 30px;
+          max-height: 30px;
+        }
+      }
+    }
 
     .resource-image-wrapper {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 100%;
+      width: 60px;
       height: 60px;
-      max-width: 60px;
       overflow: hidden;
       border-radius: 50%;
       background-color: #ffff;
       margin-right: 10px;
-      margin-left: 10px;
     }
 
     .resource-item-image {
-      width: 100%;
       max-width: 60px;
     }
     .badge-wrapper {
@@ -173,7 +192,7 @@
         box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
         text-align: left;
         color: $black;
-        padding: 5px 5px 5px 5px;
+        padding: 5px 5px 10px 5px;
 
         .topic {
           color: $green05;
