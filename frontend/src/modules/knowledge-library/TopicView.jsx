@@ -48,6 +48,7 @@ const TopicView = ({ updateQuery }) => {
 
   return (
     <TopicChart
+      wrapperHeight={"10%"}
       loadingId="knowledge-library-loading"
       {...{
         selectedTopic,
