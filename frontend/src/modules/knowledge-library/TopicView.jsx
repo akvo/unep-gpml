@@ -25,7 +25,7 @@ const TopicView = ({ updateQuery }) => {
 
   useEffect(() => {
     api
-      .get(`/tag/topic/popular?limit=13`)
+      .get(`/tag/topic/popular?limit=6`)
       .then((resp) => {
         const data = resp?.data.map((item, i) => {
           return {

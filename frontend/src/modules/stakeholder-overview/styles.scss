@@ -106,7 +106,7 @@
     // Search input
     .search-box {
       width: 100%;
-      max-width: 360px;
+      max-width: 400px;
       .ant-space-item:nth-of-type(1) {
         width: 100%;
       }
@@ -261,7 +261,7 @@
     align-items: center;
     position: absolute;
     bottom: -5px;
-    right: 20px;
+    right: 5px;
     overflow: hidden;
     width: 40px;
     height: 40px;
@@ -676,8 +676,8 @@
       max-width: 500px;
       width: 100% !important;
       @-moz-document url-prefix() {
-        min-height: 805px !important;
-        transform: scale(0.8) translate(-63px, -101px);
+        min-height: 999px !important;
+        transform: scale(0.7) translate(-107px, -215px);
       }
 
       .ant-drawer-header {
@@ -1152,8 +1152,8 @@
       zoom: 80%;
 
       @-moz-document url-prefix() {
-        min-height: 804px !important;
-        transform: scale(0.8) translate(-63px, -100px);
+        min-height: 1003px !important;
+        transform: scale(0.7) translate(-107px, -220px);
       }
     }
   }
