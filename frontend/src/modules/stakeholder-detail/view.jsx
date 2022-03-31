@@ -398,7 +398,7 @@ const StakeholderDetail = ({
                         src={
                           data?.affiliation?.logo
                             ? data?.affiliation?.logo
-                            : `https://ui-avatars.com/api/?background=0D8ABC&size=480&name=${data?.affiliation?.name}`
+                            : `https://ui-avatars.com/api/?background=0D8ABC&color=ffffff&size=480&name=${data?.affiliation?.name}`
                         }
                       />
                     </div>

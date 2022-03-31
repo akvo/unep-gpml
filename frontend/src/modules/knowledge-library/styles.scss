@@ -130,8 +130,8 @@
         padding-bottom: 0px;
         overflow: auto;
         button {
-          color: #ffffff;
-          background-color: $green05;
+          color: $blue10;
+          background-color: $green01;
           border: 0;
           height: 27px;
           width: 27px;
@@ -471,11 +471,14 @@
         }
       }
 
+      .ant-row {
+        justify-content: space-between;
+      }
+
       .resource-card-wrapper {
         height: 100px;
         width: 100%;
         max-width: 100px !important;
-        margin-right: 15px;
         margin-bottom: 15px;
       }
 
