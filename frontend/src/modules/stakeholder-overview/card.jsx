@@ -68,7 +68,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                   src={
                     profile.picture
                       ? profile.picture
-                      : `https://ui-avatars.com/api/?size=480&name=${profile?.name}`
+                      : `https://ui-avatars.com/api/?background=0D8ABC&size=480&name=${profile?.name}`
                   }
                   alt={profile?.name}
                 />
@@ -81,26 +81,26 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                     src={
                       profile?.picture
                         ? profile?.picture
-                        : `https://ui-avatars.com/api/?size=480&name=${profile?.firstName}`
+                        : `https://ui-avatars.com/api/?background=0D8ABC&size=480&name=${profile?.firstName}`
                     }
                     alt={`${profile.firstName} ${profile.lastName}`}
                   />
+                  {profile?.affiliation &&
+                    profile?.affiliation?.length !== 0 &&
+                    profileType !== "suggested-profiles" && (
+                      <div className="affiliation-image-wrapper">
+                        <img
+                          className="affiliation-image"
+                          src={
+                            profile?.affiliation?.logo
+                              ? profile?.affiliation?.logo
+                              : `https://ui-avatars.com/api/?background=0D8ABC&color=ffffff&size=480&name=${profile?.affiliation?.name}`
+                          }
+                          alt={profile?.affiliation?.name}
+                        />
+                      </div>
+                    )}
                 </div>
-                {profile?.affiliation &&
-                  profile?.affiliation?.length !== 0 &&
-                  profileType !== "suggested-profiles" && (
-                    <div className="affiliation-image-wrapper">
-                      <img
-                        className="affiliation-image"
-                        src={
-                          profile?.affiliation?.logo
-                            ? profile?.affiliation?.logo
-                            : `https://ui-avatars.com/api/?size=480&name=${profile?.affiliation?.name}`
-                        }
-                        alt={profile?.affiliation?.name}
-                      />
-                    </div>
-                  )}
               </div>
             )}
             <div className="profile-details-container">
