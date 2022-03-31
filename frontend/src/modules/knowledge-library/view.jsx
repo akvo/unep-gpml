@@ -232,14 +232,10 @@ const KnowledgeLibrary = ({
       }
       if (key === "subContentType") {
         const findSubContentType = mainContentType.find((subContent) =>
-          subContent.childs.find((child) => child.title.includes(value))
+          subContent.childs.find((child) => child?.title?.includes(value))
         );
 
-        const label = findSubContentType.childs.find((child) =>
-          child.title.includes(value)
-        );
-
-        return `${value} ${findSubContentType.name}`;
+        return `${value} ${findSubContentType?.name}`;
       }
       if (key === "entity") {
         const findOrganisation = organisations.find(
@@ -401,20 +397,19 @@ const KnowledgeLibrary = ({
       <Col span={24}>
         <div className="ui-container">
           {/* Filter Drawer */}
-          {filterVisible && (
-            <FilterDrawer
-              {...{
-                query,
-                countData,
-                filters,
-                filterVisible,
-                setFilterVisible,
-                multiCountryCountries,
-                setMultiCountryCountries,
-              }}
-              updateQuery={(flag, val) => updateQuery(flag, val)}
-            />
-          )}
+          <FilterDrawer
+            {...{
+              query,
+              countData,
+              filters,
+              filterVisible,
+              setFilterVisible,
+              multiCountryCountries,
+              setMultiCountryCountries,
+            }}
+            updateQuery={(flag, val) => updateQuery(flag, val)}
+          />
+
           <LeftSidebar active={1} sidebar={sidebar}>
             <Row
               className="resource-main-container"
