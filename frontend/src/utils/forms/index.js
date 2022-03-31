@@ -1,6 +1,7 @@
 import Auth0Widget from "./form-auth0";
 import FileWidget from "./form-file";
 import SelectWidget from "./form-select";
+import SelectGeoWidget from "./form-select-geo";
 import CheckboxesWidget from "./form-checkboxes";
 import RadioWidget from "./form-radio";
 import URLWidget from "./form-url";
@@ -21,6 +22,7 @@ const widgets = {
   Auth0Widget: Auth0Widget,
   FileWidget: FileWidget,
   SelectWidget: SelectWidget,
+  SelectGeoWidget: SelectGeoWidget,
   CheckboxesWidget: CheckboxesWidget,
   RadioWidget: RadioWidget,
   URLWidget: URLWidget,
