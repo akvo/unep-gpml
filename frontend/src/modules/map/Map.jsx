@@ -448,6 +448,7 @@ const Maps = ({
     (acc, curr) => {
       const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
 
+      // Get properties based on filter
       const values = () => {
         const properties = topic.map(snakeToCamel);
 
@@ -496,7 +497,7 @@ const Maps = ({
     },
     [0, 0]
   );
-  console.log(domain);
+
   const colorScale = scaleQuantize().domain(domain).range(colorRange);
 
   const fillColor = (v) => {
