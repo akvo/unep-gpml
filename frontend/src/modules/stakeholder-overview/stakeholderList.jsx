@@ -160,12 +160,27 @@ const ResourceItem = ({ results, view }) => {
                 <GPMLIcon />
               )}
             </div> */}
-            <div className="resource-image-wrapper">
-              <img
-                className="resource-item-image"
-                src={result?.logo || result?.picture}
-                alt=""
-              />
+            <div className="resource-images-extra-wrapper">
+              <div className="resource-image-wrapper">
+                <img
+                  className="resource-item-image"
+                  src={result?.logo || result?.picture}
+                  alt=""
+                />
+              </div>
+              {result?.affiliation && result?.affiliation?.length !== 0 && (
+                <div className="list-affiliation-image-wrapper">
+                  <img
+                    className="affiliation-image"
+                    src={
+                      result?.affiliation?.logo
+                        ? result?.affiliation?.logo
+                        : `https://ui-avatars.com/api/?background=0D8ABC&color=ffffff&size=480&name=${result?.affiliation?.name}`
+                    }
+                    alt={result?.affiliation?.name}
+                  />
+                </div>
+              )}
             </div>
             <div className="resource-details">
               <b className="title">
