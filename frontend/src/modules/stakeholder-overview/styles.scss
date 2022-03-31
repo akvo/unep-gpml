@@ -341,7 +341,6 @@
         max-height: 9em;
         min-width: 9em;
         min-height: 9em;
-        overflow: hidden;
         margin-right: 16.51px;
         text-align: center;
       }
@@ -353,6 +352,7 @@
       .profile-image {
         max-width: 150px;
         object-fit: cover;
+        border-radius: 50%;
       }
 
       .profile-details-container {
