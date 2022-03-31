@@ -73,113 +73,99 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
       className="map-tooltip"
     >
       <h3>{geo.MAP_LABEL}</h3>
-      <table className="tooltip-table">
-        <thead>
-          <tr>
-            <th>Type</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div className="tooltip-table">
+        <div className="table-head">
+          <div>
+            <b className="stakeholder-type">Type</b>
+          </div>
+        </div>
+        <div>
           {topicType.length === 0 ? (
             <>
-              <tr>
-                <td className="tooltip-topic">Entity</td>
+              <div className="table-row">
+                <div className="tooltip-topic">Entity</div>
                 <div>
-                  <b className="entity-type">GPML Members</b>
-                  <td className="tooltip-count-wrapper">
-                    <b className="tooltip-counts">
-                      {dataToDisplay()?.["organisation"]
-                        ? dataToDisplay()?.["organisation"]
-                        : 0}
-                    </b>
-                  </td>
-                </div>
-                <div>
-                  <b className="entity-type">GPML Non-Members</b>
-                  <td className="tooltip-count-wrapper">
-                    <b className="tooltip-counts">
-                      {transnationalData()?.["organisation"]}
-                    </b>
-                  </td>
-                </div>
-              </tr>
-              <tr>
-                <td className="tooltip-topic">Individuals</td>
-
-                <td className="tooltip-count-wrapper">
-                  <b className="tooltip-counts">
-                    {dataToDisplay()?.["stakeholder"]}
-                  </b>
-                </td>
-              </tr>
-            </>
-          ) : (
-            <>
-              {topicType.includes("organisation") && (
-                <tr>
-                  <td className="tooltip-topic">Entity</td>
-                  <div>
+                  <div className="entity-row">
                     <b className="entity-type">GPML Members</b>
-                    <td className="tooltip-count-wrapper">
+                    <div className="tooltip-count-wrapper">
                       <b className="tooltip-counts">
                         {dataToDisplay()?.["organisation"]
                           ? dataToDisplay()?.["organisation"]
                           : 0}
                       </b>
-                    </td>
+                    </div>
                   </div>
-                  <div>
+                  <div className="entity-row">
                     <b className="entity-type">GPML Non-Members</b>
-                    <td className="tooltip-count-wrapper">
+                    <div className="tooltip-count-wrapper">
                       <b className="tooltip-counts">
-                        {transnationalData()?.["organisation"]}
+                        {transnationalData()?.["organisation"]
+                          ? transnationalData()?.["organisation"]
+                          : 0}
                       </b>
-                    </td>
+                    </div>
                   </div>
-                </tr>
+                </div>
+              </div>
+              <div className="table-row">
+                <div className="tooltip-topic">Individuals</div>
+
+                <div className="tooltip-count-wrapper">
+                  <b className="tooltip-counts">
+                    {dataToDisplay()?.["stakeholder"]}
+                  </b>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              {topicType.includes("organisation") && (
+                <div className="table-row">
+                  <div className="tooltip-topic">Entity</div>
+                  <div>
+                    <div className="entity-row">
+                      <b className="entity-type">GPML Members</b>
+                      <div className="tooltip-count-wrapper">
+                        <b className="tooltip-counts">
+                          {dataToDisplay()?.["organisation"]
+                            ? dataToDisplay()?.["organisation"]
+                            : 0}
+                        </b>
+                      </div>
+                    </div>
+                    <div className="entity-row">
+                      <b className="entity-type">GPML Non-Members</b>
+                      <div className="tooltip-count-wrapper">
+                        <b className="tooltip-counts">
+                          {transnationalData()?.["organisation"]
+                            ? transnationalData()?.["organisation"]
+                            : 0}
+                        </b>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               )}
               {topicType.includes("stakeholder") && (
-                <tr>
-                  <td className="tooltip-topic">Individuals</td>
+                <div className="table-row">
+                  <div className="tooltip-topic">Individuals</div>
 
-                  <td className="tooltip-count-wrapper">
-                    <b className="tooltip-counts ">
+                  <div className="tooltip-count-wrapper">
+                    <b className="tooltip-counts">
                       {dataToDisplay()?.["stakeholder"]}
                     </b>
-                  </td>
-                </tr>
+                  </div>
+                </div>
               )}
             </>
           )}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 };
 
 const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
-  const totalTransnational = () => {
-    const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
-
-    if (path === KNOWLEDGE_LIBRARY) {
-      return sumValues({
-        project: data?.transnationalCounts?.project,
-        actionPlan: data?.transnationalCounts?.actionPlan,
-        policy: data?.transnationalCounts?.policy,
-        technicalResource: data?.transnationalCounts?.technicalResource,
-        financingResource: data?.transnationalCounts?.financingResource,
-        event: data?.transnationalCounts?.event,
-        technology: data?.transnationalCounts?.technology,
-      });
-    }
-    if (path === STAKEHOLDER_OVERVIEW) {
-      return sumValues({
-        organisation: data?.transnationalCounts?.organisation,
-        stakeholder: data?.transnationalCounts?.stakeholder,
-      });
-    }
-  };
-
   const dataToDisplay = () => {
     return {
       project: data?.counts?.project,
@@ -219,19 +205,11 @@ const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
       <h3>{geo.MAP_LABEL}</h3>
       <table className="tooltip-table">
         <thead>
-          {path === KNOWLEDGE_LIBRARY ? (
-            <tr>
-              <th>Resource</th>
-              <th>National</th>
-              <th style={{ paddingLeft: "10px" }}>Transnational</th>
-            </tr>
-          ) : (
-            <tr>
-              <th>Type</th>
-              <th>Member</th>
-              <th style={{ paddingLeft: "10px" }}>Non-member</th>
-            </tr>
-          )}
+          <tr>
+            <th>Resource</th>
+            <th>National</th>
+            <th style={{ paddingLeft: "10px" }}>Transnational</th>
+          </tr>
         </thead>
         <tbody>
           {tTypes.map((topic) => {
@@ -264,7 +242,9 @@ const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
 
                 <td className="tooltip-count-wrapper">
                   <b className="tooltip-counts">
-                    {transnationalData()?.[topic]}
+                    {transnationalData()?.[topic]
+                      ? transnationalData()?.[topic]
+                      : 0}
                   </b>
                 </td>
               </tr>
@@ -280,7 +260,9 @@ const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
 
                   <td className="tooltip-count-wrapper">
                     <b className="tooltip-counts">
-                      {transnationalData()?.[topic]}
+                      {transnationalData()?.[topic]
+                        ? transnationalData()?.[topic]
+                        : 0}
                     </b>
                   </td>
                 </tr>

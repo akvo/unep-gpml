@@ -353,12 +353,33 @@
   .tooltip-topic {
     padding-right: 10px;
   }
-  th {
+
+  th,
+  .stakeholder-type {
     font-size: 11px;
+  }
+  .tooltip-counts,
+  .entity-type {
+    display: block;
+  }
+
+  .table-row,
+  .entity-row {
+    display: flex;
+  }
+
+  .table-row {
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .entity-row:not(:last-of-type),
+  .table-row:not(:last-of-type),
+  tr div:not(:last-child) {
+    border-bottom: 1px solid #e7f1f7;
   }
 
   .tooltip-counts {
-    display: block;
     color: #005c93;
     text-align: right;
   }
@@ -370,15 +391,8 @@
 
   .entity-type {
     color: #000000;
-    display: block;
     width: 100%;
     text-align: left;
-  }
-
-  tr {
-    div:not(:last-child) {
-      border-bottom: 1px solid #e7f1f7;
-    }
   }
 
   .tooltip-note {
@@ -407,9 +421,6 @@
   }
 
   tr {
-    // display: flex;
-    // max-width: 170px;
-
     &:not(:last-child) {
       border-bottom: 1px solid #e7f1f7;
       padding-bottom: 3px;
