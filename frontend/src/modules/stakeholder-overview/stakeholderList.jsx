@@ -169,7 +169,7 @@ const ResourceItem = ({ results, view }) => {
             </div>
             <div className="resource-details">
               <b className="title">
-                <TrimText text={stakeholderName} max={30} />
+                <TrimText text={stakeholderName} max={35} />
               </b>
               <div>
                 {result?.type === "stakeholder"
