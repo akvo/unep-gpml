@@ -150,8 +150,8 @@
       position: absolute;
       left: 4px;
       svg {
-        width: 30px;
-        height: 30px;
+        width: 25px;
+        height: 25px;
       }
     }
     .resource-item-wrapper {
@@ -164,7 +164,7 @@
         box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
         text-align: left;
         color: $black;
-        padding: 5px 24px 5px 5px;
+        padding: 5px 24px 5px 24px;
 
         .topic {
           color: $green05;
