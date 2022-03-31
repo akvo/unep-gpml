@@ -28,6 +28,7 @@ const VerticalLegend = ({ data, setFilterColor, selected, title }) => {
       }}
     />
   ));
+
   if (data.length) {
     return (
       <Card style={{ width: 300 }}>
@@ -36,7 +37,7 @@ const VerticalLegend = ({ data, setFilterColor, selected, title }) => {
           style={{
             background: `linear-gradient(180deg, rgba(103,190,161,1) 10%, rgba(255,255,255,1) 90%)`,
             width: 20,
-            minHeight: 132,
+            // minHeight: 132,
             float: "left",
           }}
         >

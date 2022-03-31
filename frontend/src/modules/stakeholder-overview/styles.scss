@@ -9,7 +9,7 @@
   h3,
   h4 {
     color: #255b87;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 700;
   }
 
@@ -21,6 +21,17 @@
 
 #stakeholder-overview {
   padding: 0;
+  #mainNavigation {
+    @media (min-width: 750px) {
+      display: block;
+    }
+  }
+  .sidebar-mobile {
+    margin-bottom: 0;
+    @media (min-width: 750px) {
+      display: none;
+    }
+  }
 
   .ant-btn-icon-only {
     width: 100%;
@@ -94,7 +105,14 @@
 
     // Search input
     .search-box {
-      max-width: fit-content;
+      width: 100%;
+      max-width: 360px;
+      .ant-space-item:nth-of-type(1) {
+        width: 100%;
+      }
+      .ant-space-align-center {
+        width: 100%;
+      }
 
       .filter-icon {
         display: block;
@@ -287,10 +305,15 @@
     }
 
     .profile-card {
+      min-height: 140px;
       .ant-card-body {
         display: flex;
         flex-direction: column;
-
+        .profile-detail-list {
+          li {
+            margin-bottom: 0;
+          }
+        }
         min-height: 250px;
         .person-role {
           max-height: fit-content;
@@ -305,6 +328,7 @@
     height: fit-content;
     max-width: 345px;
     border-radius: 10px;
+    min-height: 140px;
 
     .icons-list {
       display: flex;
@@ -419,8 +443,8 @@
             margin-right: 21.49px;
             .social-media-link {
               display: block;
-              width: 28px;
-              height: 28px;
+              width: 20px;
+              height: 20px;
               background-repeat: no-repeat;
               background-size: contain;
               background-position-y: center;
@@ -587,8 +611,16 @@
   }
 
   .site-drawer-render-in-current-wrapper {
-    min-width: 100%;
+    left: 0 !important;
+    top: 100px !important;
+    position: absolute;
+    min-width: calc(100% - 100px);
     overflow: hidden;
+
+    @media (min-width: 750px) {
+      top: 0 !important;
+      left: 100px !important;
+    }
 
     .for-entity svg {
       max-width: 30px;
@@ -628,20 +660,24 @@
     .ant-drawer-mask {
       background-color: unset;
     }
-
+    .ant-drawer-left {
+      left: -5px !important;
+    }
     .ant-drawer-open {
-      .ant-drawer-content {
-        border: 1px solid $blue09;
-      }
+      left: unset !important;
+
+      // .ant-drawer-content {
+      //   border: 1px solid $blue09;
+      // }
     }
 
     .ant-drawer-content-wrapper {
       box-shadow: none;
       max-width: 500px;
-      // width: 100% !important;
+      width: 100% !important;
       @-moz-document url-prefix() {
-        min-height: 815px !important;
-        transform: scale(0.8) translate(-63px, -110px);
+        min-height: 805px !important;
+        transform: scale(0.8) translate(-63px, -101px);
       }
 
       .ant-drawer-header {
@@ -968,6 +1004,7 @@
   @media (min-width: 1300px) {
     .profile-card {
       max-width: 100%;
+      min-height: 140px;
     }
     .card-wrapper,
     #title {

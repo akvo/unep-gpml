@@ -277,65 +277,6 @@ const Landing = withRouter(
           </div>
         </div>
 
-        {/* Popular Topics */}
-        <div className="popular-topics ui container section-container">
-          <div className="section-title">
-            <h2>
-              Popular Topics
-              <span className="see-more-link">
-                <Link to="/topics">
-                  See all topics <RightOutlined />
-                </Link>
-              </span>
-            </h2>
-          </div>
-          <div className="body">
-            <TopicChart
-              height={675}
-              loadingId="home-loading"
-              {...{
-                selectedTopic,
-                isMobileScreen,
-                sortedPopularTopics,
-                handlePopularTopicChartClick,
-              }}
-            />
-            {!isMobileScreen && (
-              <div className="content">
-                <div className="content-body">
-                  {resources?.items?.map((x, i) => {
-                    const { id, type, title, description, remarks } = x;
-                    const link = `/${humps.decamelize(type)}/${id}`;
-                    return (
-                      <Card
-                        key={`summary-${i}`}
-                        className="item-body"
-                        onClick={() => history.push(link)}
-                      >
-                        <div className="resource-label upper">
-                          {topicNames(humps.camelizeKeys(type))}
-                        </div>
-                        <div className="asset-title">{title || ""}</div>
-                        <div className="body-text">
-                          {TrimText({
-                            text: description || remarks,
-                            max: 250,
-                          })}
-                        </div>
-                        <span className="read-more">
-                          <Link to={link}>
-                            Read more <ArrowRightOutlined />
-                          </Link>
-                        </span>
-                      </Card>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-        <hr />
         {/* Featured Content */}
         <div className="featured-content ui container section-container">
           <div className="section-title">
@@ -471,6 +412,67 @@ const Landing = withRouter(
                   );
                 })}
             </div>
+          </div>
+        </div>
+
+        <hr />
+
+        {/* Popular Topics */}
+        <div className="popular-topics ui container section-container">
+          <div className="section-title">
+            <h2>
+              Popular Topics
+              <span className="see-more-link">
+                <Link to="/topics">
+                  See all topics <RightOutlined />
+                </Link>
+              </span>
+            </h2>
+          </div>
+          <div className="body">
+            <TopicChart
+              height={675}
+              loadingId="home-loading"
+              {...{
+                selectedTopic,
+                isMobileScreen,
+                sortedPopularTopics,
+                handlePopularTopicChartClick,
+              }}
+            />
+            {!isMobileScreen && (
+              <div className="content">
+                <div className="content-body">
+                  {resources?.items?.map((x, i) => {
+                    const { id, type, title, description, remarks } = x;
+                    const link = `/${humps.decamelize(type)}/${id}`;
+                    return (
+                      <Card
+                        key={`summary-${i}`}
+                        className="item-body"
+                        onClick={() => history.push(link)}
+                      >
+                        <div className="resource-label upper">
+                          {topicNames(humps.camelizeKeys(type))}
+                        </div>
+                        <div className="asset-title">{title || ""}</div>
+                        <div className="body-text">
+                          {TrimText({
+                            text: description || remarks,
+                            max: 250,
+                          })}
+                        </div>
+                        <span className="read-more">
+                          <Link to={link}>
+                            Read more <ArrowRightOutlined />
+                          </Link>
+                        </span>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
         {/* Our Community */}

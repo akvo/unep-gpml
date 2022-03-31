@@ -229,14 +229,18 @@
       }
     }
   }
-
+  .legend-wrapper {
+    .ant-card-bordered {
+      margin-right: 5px;
+    }
+  }
   .legends,
   .no-legend-warning {
     line-height: 10px;
     display: flex;
     align-self: center;
     align-items: center;
-    margin-right: 10px;
+    margin-right: 5px;
     background-color: white;
     border: 2px solid #daeaf1;
   }
@@ -349,12 +353,33 @@
   .tooltip-topic {
     padding-right: 10px;
   }
-  th {
+
+  th,
+  .stakeholder-type {
     font-size: 11px;
+  }
+  .tooltip-counts,
+  .entity-type {
+    display: block;
+  }
+
+  .table-row,
+  .entity-row {
+    display: flex;
+  }
+
+  .table-row {
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .entity-row:not(:last-of-type),
+  .table-row:not(:last-of-type),
+  tr div:not(:last-child) {
+    border-bottom: 1px solid #e7f1f7;
   }
 
   .tooltip-counts {
-    display: block;
     color: #005c93;
     text-align: right;
   }
@@ -362,6 +387,12 @@
   .tooltip-topic {
     margin-right: 10px;
     color: #7db0cb;
+  }
+
+  .entity-type {
+    color: #000000;
+    width: 100%;
+    text-align: left;
   }
 
   .tooltip-note {
@@ -390,9 +421,6 @@
   }
 
   tr {
-    // display: flex;
-    // max-width: 170px;
-
     &:not(:last-child) {
       border-bottom: 1px solid #e7f1f7;
       padding-bottom: 3px;
@@ -459,6 +487,7 @@
     list-style-type: disc;
     list-style-position: inside;
     font-size: 13px;
+    margin-bottom: 8px;
   }
 }
 // end of css for multi-country popover
