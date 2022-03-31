@@ -169,13 +169,13 @@ const ResourceItem = ({ results, view }) => {
             </div>
             <div className="resource-details">
               <b className="title">
-                <TrimText text={stakeholderName} max={30} />
+                <TrimText text={stakeholderName} max={64} />
               </b>
               <div>
                 {result?.type === "stakeholder"
                   ? result?.affiliation && (
                       <span className="entity-name">
-                        <TrimText text={result?.affiliation?.name} max={30} />
+                        <TrimText text={result?.affiliation?.name} max={40} />
                       </span>
                     )
                   : ""}
