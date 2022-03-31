@@ -19,7 +19,7 @@ import {
 import { PatternLines } from "@vx/pattern";
 import classNames from "classnames";
 import { topicNames, tTypes } from "../../utils/misc";
-import { curr } from "./utils";
+import { curr, snakeToCamel } from "./utils";
 
 import "./map-styles.scss";
 import { useHistory } from "react-router-dom";
@@ -447,23 +447,38 @@ const Maps = ({
   const domain = data.reduce(
     (acc, curr) => {
       const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
+
       const values = () => {
-        if (path === KNOWLEDGE_LIBRARY) {
-          return sumValues({
-            actionPlan: curr?.counts?.actionPlan,
-            event: curr?.counts?.event,
-            financingResource: curr?.counts?.financingResource,
-            policy: curr?.counts?.policy,
-            project: curr?.counts?.project,
-            technicalResource: curr?.counts?.technicalResource,
-            technology: curr?.counts?.technology,
-          });
-        }
-        if (path === STAKEHOLDER_OVERVIEW) {
-          return sumValues({
-            organisation: curr?.counts?.organisation,
-            stakeholder: curr?.counts?.stakeholder,
-          });
+        const properties = topic.map(snakeToCamel);
+
+        const propsToSum = properties.reduce((acc, currs, index) => {
+          const currProp = properties[index];
+
+          acc[currProp] = curr.counts?.[currProp];
+
+          return acc;
+        }, {});
+
+        if (properties.length > 0) {
+          return sumValues(propsToSum);
+        } else {
+          if (path === "/knowledge-library") {
+            return sumValues({
+              actionPlan: curr?.counts?.actionPlan,
+              event: curr?.counts?.event,
+              financingResource: curr?.counts?.financingResource,
+              policy: curr?.counts?.policy,
+              project: curr?.counts?.project,
+              technicalResource: curr?.counts?.technicalResource,
+              technology: curr?.counts?.technology,
+            });
+          }
+          if (path === "/stakeholder-overview") {
+            return sumValues({
+              stakeholder: curr?.counts?.stakeholder,
+              organisation: curr?.counts?.organisation,
+            });
+          }
         }
       };
 

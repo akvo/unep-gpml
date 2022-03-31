@@ -1,6 +1,6 @@
 const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
 
-const snakeToCamel = (str) =>
+export const snakeToCamel = (str) =>
   str
     .toLowerCase()
     .replace(/([-_][a-z])/g, (group) =>
@@ -14,6 +14,7 @@ export const curr = (topics, findData, path) => {
     const currProp = properties[index];
 
     acc[currProp] = findData?.[currProp];
+
     return acc;
   }, {});
 
