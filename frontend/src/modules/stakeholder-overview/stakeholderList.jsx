@@ -175,7 +175,7 @@ const ResourceItem = ({ results, view }) => {
                 {result?.type === "stakeholder"
                   ? result?.affiliation && (
                       <span className="entity-name">
-                        <TrimText text={result?.affiliation?.name} max={30} />
+                        <TrimText text={result?.affiliation?.name} max={40} />
                       </span>
                     )
                   : ""}
