@@ -633,7 +633,11 @@
     z-index: 3;
     height: 700px;
     width: 100%;
-    max-width: 300px;
+    // max-width: 300px;
+    max-width: 402px;
+    @-moz-document url-prefix() {
+      max-width: 350px !important;
+    }
   }
 
   .resource-list-header.show-list {
@@ -822,12 +826,16 @@
   // Pagination
   .page {
     width: 100%;
-    max-width: 300px;
+    // max-width: 300px;
+    max-width: 402px;
     padding: 2rem 0 1rem 10px;
     text-align: center;
     position: absolute;
     bottom: 0;
     background-color: #ffffff;
+    @-moz-document url-prefix() {
+      max-width: 350px !important;
+    }
     .result-number,
     .ant-pagination-item a {
       font-weight: 700;
