@@ -5,13 +5,17 @@ import { titleCase } from "../../utils/string";
 
 const TopicChart = ({
   height,
+  wrapperHeight,
   loadingId,
   selectedTopic,
   sortedPopularTopics,
   handlePopularTopicChartClick,
 }) => {
   return (
-    <div className="chart-wrapper" style={{ width: "100%", height: "8%" }}>
+    <div
+      className="chart-wrapper"
+      style={{ width: "100%", height: wrapperHeight }}
+    >
       {sortedPopularTopics.length !== 0 ? (
         <Chart
           key="popular-topic"
