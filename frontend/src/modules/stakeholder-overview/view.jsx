@@ -73,7 +73,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
-  const pageSize = 8;
+  const pageSize = 16;
   const { innerWidth } = window;
   const [resultCount, setResultCount] = useState(0);
   const { entityRoleOptions } = UIStore.useState((s) => ({
