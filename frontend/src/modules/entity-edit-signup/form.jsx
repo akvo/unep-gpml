@@ -64,6 +64,11 @@ const SignUpForm = withRouter(
     const signUpFormData = signUpData.useState();
     const [dependValue, setDependValue] = useState([]);
     const [editCheck, setEditCheck] = useState(true);
+    const [schema, setSchema] = useState(formSchema.schema);
+
+    useEffect(() => {
+      setSchema(formSchema.schema);
+    }, [formSchema]);
 
     const handleOnSubmit = ({ formData }) => {
       // # Transform data before sending to endpoint
@@ -135,12 +140,18 @@ const SignUpForm = withRouter(
         if (data.geoCoverageType) {
           data.org.geoCoverageType = data.geoCoverageType;
           data.org.geoCoverageValue = data.geoCoverageValue;
-          data.org.geoCoverageCountries = data.geoCoverageValue;
           if (data.geoCoverageType === "transnational") {
-            data.org.geoCoverageCountryGroups = data.geoCoverageValue;
-            data.org.geoCoverageCountries = formData.S5.geoCoverageCountries.map(
-              (x) => parseInt(x)
-            );
+            if (data.geoCoverageValue && data.geoCoverageValue.length > 0) {
+              data.org.geoCoverageCountryGroups = data.geoCoverageValue;
+            }
+            if (
+              formData.S5.geoCoverageCountries &&
+              formData.S5.geoCoverageCountries.length > 0
+            ) {
+              data.org.geoCoverageCountries = formData.S5.geoCoverageCountries.map(
+                (x) => parseInt(x)
+              );
+            }
           }
           if (data.geoCoverageType === "national") {
             data.org.geoCoverageCountries = formData.S5.geoCoverageCountries.map(
@@ -235,6 +246,49 @@ const SignUpForm = withRouter(
             ...formData,
           };
         });
+
+        let updatedFormDataSchema = {};
+
+        if (
+          formData?.S5.geoCoverageType === "transnational" &&
+          formData?.S5.geoCoverageValueTransnational
+        ) {
+          let result = formSchema.schema.properties.S5.required.filter(
+            (value) => value !== "geoCoverageCountries"
+          );
+          updatedFormDataSchema = {
+            ...formSchema.schema,
+            properties: {
+              ...formSchema.schema.properties,
+              S5: {
+                ...formSchema.schema.properties.S5,
+                required: result,
+              },
+            },
+          };
+        } else if (
+          formData?.S5.geoCoverageType === "transnational" &&
+          formData?.S5.geoCoverageCountries
+        ) {
+          let result = formSchema.schema.properties.S5.required.filter(
+            (value) => value !== "geoCoverageValueTransnational"
+          );
+          updatedFormDataSchema = {
+            ...formSchema.schema,
+            properties: {
+              ...formSchema.schema.properties,
+              S5: {
+                ...formSchema.schema.properties.S5,
+                required: result,
+              },
+            },
+          };
+        } else {
+          updatedFormDataSchema = formSchema.schema;
+        }
+
+        setSchema(updatedFormDataSchema);
+
         // to overide validation
         let dependFields = [];
         let requiredFields = [];
@@ -242,7 +296,7 @@ const SignUpForm = withRouter(
         collectDependSchemaRefactor(
           dependFields,
           formData,
-          formSchema.schema,
+          updatedFormDataSchema,
           requiredFields
         );
         setDependValue(dependFields);
@@ -407,7 +461,7 @@ const SignUpForm = withRouter(
         <>
           <Form
             idPrefix="signUp"
-            schema={formSchema.schema}
+            schema={schema}
             uiSchema={uiSchema}
             formData={signUpFormData.data}
             onChange={(e) => handleFormOnChange(e)}
