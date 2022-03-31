@@ -431,6 +431,7 @@ const Landing = withRouter(
           </div>
           <div className="body">
             <TopicChart
+              wrapperHeight={"8%"}
               height={675}
               loadingId="home-loading"
               {...{
