@@ -155,11 +155,11 @@ const ResourceItem = ({ results, view }) => {
           }
         >
           <div className="item-body">
-            {/* <div className="badge-wrapper">
+            <div className="badge-wrapper">
               {result.type === "organisation" && result.isMember && (
                 <GPMLIcon />
               )}
-            </div> */}
+            </div>
             <div className="resource-image-wrapper">
               <img
                 className="resource-item-image"
@@ -169,7 +169,7 @@ const ResourceItem = ({ results, view }) => {
             </div>
             <div className="resource-details">
               <b className="title">
-                <TrimText text={stakeholderName} max={30} />
+                <TrimText text={stakeholderName} max={35} />
               </b>
               <div>
                 {result?.type === "stakeholder"
