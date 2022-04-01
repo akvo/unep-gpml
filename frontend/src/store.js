@@ -606,7 +606,7 @@ const mainContentType = [
           "A document that gives advice or help on how to do or understand something.",
       },
       {
-        title: "Tools & toolkits",
+        title: "Tools & Toolkits",
         des:
           "A resource or set of resources that helps you to do a particular activity.",
       },
