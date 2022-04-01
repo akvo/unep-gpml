@@ -7,7 +7,7 @@
 
 (def ^:const geo-coverage-entity-tables
   "The list of tables with geo coverage relations."
-  (apply conj topic-tables ["organisation" "stakeholder"]))
+  (apply conj topic-tables ["organisation" "stakeholder" "non_member_organisation"]))
 
 (def resource-types #{"financing_resource" "technical_resource" "action_plan"})
 (def approved-user-topics #{"stakeholder"})
@@ -15,7 +15,7 @@
 (def topics
   (vec
    (sort
-    (apply conj resource-types ["event" "technology" "policy" "project" "stakeholder" "organisation"]))))
+    (apply conj resource-types ["event" "technology" "policy" "project" "stakeholder" "organisation" "non_member_organisation"]))))
 
 (def reviewer-review-status [:PENDING :ACCEPTED :REJECTED])
 

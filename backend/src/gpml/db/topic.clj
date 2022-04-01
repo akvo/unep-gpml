@@ -588,10 +588,48 @@
       (format "LIMIT %s" (or (and (contains? params :limit) (:limit params)) 50))
       (format "OFFSET %s" (or (and (contains? params :offset) (:offset params)) 0))))))
 
+(def params-coming-in
+  {:topic #{"financing_resource"}, :geo-coverage [4],
+   :transnational #{"{:id 111, :name \"South Asia Seas\"}"
+                    "{:id 146, :name \"Stockholm Convention\"}"
+                    "{:id 145, :name \"Rotterdam Convention\"}"
+                    "{:id 2, :name \"Asia and the Pacific\"}"
+                    "{:id 144, :name \"Basel Convention\"}"
+                    "{:id 152, :name \"Least Developed Countries\"}"},
+   :count-only? true})
+
+
+(def filter-normal
+  "\"SELECT DISTINCT ON (t.topic, (COALESCE(t.json->>'start_date', t.json->>'created'))::timestamptz, (t.json->>'id')::int) t.topic, t.geo_coverage, t.json FROM cte_topic t   JOIN LATERAL json_array_elements(json->'geo_coverage_values') j on json->>'geo_coverage_values' != '' WHERE t.json->>'review_status'='APPROVED'   AND topic IN (:v*:topic)   AND (t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:geo-coverage-countries)) \"\n")
+
+(def filter-snippet
+  "SELECT DISTINCT ON (t.topic, (COALESCE(t.json->>'start_date', t.json->>'created'))::timestamptz,
+  (t.json->>'id')::int) t.topic, t.geo_coverage, t.json FROM cte_topic t
+  JOIN LATERAL json_array_elements(json->'geo_coverage_values') j on json->>'geo_coverage_values' != ''
+  WHERE t.json->>'review_status'='APPROVED'
+  AND topic IN (:v*:topic)
+  AND (t.geo_coverage IN (:v*:geo-coverage)
+  OR t.json->>'geo_coverage_type'='transnational'
+  AND t.json->>'geo_coverage_values' != ''
+  AND j.value::varchar IN (:v*:transnational))")
+
+(def no-transnational-filter
+  "SELECT DISTINCT ON (t.topic, (COALESCE(t.json->>'start_date', t.json->>'created'))::timestamptz,
+  (t.json->>'id')::int) t.topic, t.geo_coverage, t.json
+  FROM cte_topic t
+  JOIN LATERAL json_array_elements(json->'geo_coverage_values') j
+  on json->>'geo_coverage_values' != ''
+  WHERE t.json->>'review_status'='APPROVED'
+  AND topic IN (:v*:topic)
+  AND (t.json->>'geo_coverage_values' != ''
+  AND j.value::varchar IN (:v*:geo-coverage-countries)) ")
+
+
 (defn generate-filter-topic-snippet
   [{:keys [favorites user-id topic tag start-date end-date transnational search-text geo-coverage resource-types geo-coverage-countries]}]
   (let [geo-coverage? (seq geo-coverage)
-        geo-coverage-countries? (seq geo-coverage-countries)]
+        geo-coverage-countries? (seq geo-coverage-countries)
+        transnational? (seq transnational)]
     (str/join
       " "
       (list
@@ -619,9 +657,14 @@
         (cond
           (and geo-coverage? geo-coverage-countries?)
           " AND (t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:geo-coverage-countries))"
-          geo-coverage?
+          (and geo-coverage? transnational?)
           " AND (t.geo_coverage IN (:v*:geo-coverage)
-            OR t.json->>'geo_coverage_type'='transnational' AND t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:transnational))"
+            OR t.json->>'geo_coverage_type'='transnational'
+            AND t.json->>'geo_coverage_values' != ''
+            AND j.value::varchar IN (:v*:transnational))"
+          geo-coverage?
+          "AND (t.geo_coverage IN (:v*:geo-coverage)
+           AND t.json->>'geo_coverage_values' != '')"
           geo-coverage-countries?
           " AND (t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:geo-coverage-countries))")
         ;; NOTE: Empty strings in the tags column cause problems with using json_array_elements
