@@ -4,7 +4,7 @@ WITH owned_content AS (
 SELECT
   r.id, r.title, r.type, r.summary,
   json_agg(json_build_object('id', sr.id, 'stakeholder_id', sr.stakeholder, 'role', sr.association, 'stakeholder',
-    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture)) AS stakeholder_connections,
+    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture, 'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', orgr.id, 'entity_id', orgr.organisation, 'role', orgr.association, 'entity', o.name,
     'image', o.logo)) AS entity_connections
   FROM resource r
@@ -24,7 +24,7 @@ UNION ALL
 SELECT
   e.id, e.title, 'Event' AS type, e.description AS summary,
   json_agg(json_build_object('id', se.id, 'stakeholder_id', se.stakeholder, 'role', se.association, 'stakeholder',
-    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture)) AS stakeholder_connections,
+    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', oe.id, 'entity_id', oe.organisation, 'role', oe.association, 'entity', o.name,
     'image', o.logo)) AS entity_connections
   FROM event e
@@ -44,7 +44,7 @@ UNION ALL
 SELECT
   i.id, i.q2::text AS title, 'Initiative' AS type, i.q3::text AS summary,
   json_agg(json_build_object('id', si.id, 'stakeholder_id', si.stakeholder, 'role', si.association, 'stakeholder',
-    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture)) AS stakeholder_connections,
+    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', oi.id, 'entity_id', oi.organisation, 'role', oi.association, 'entity', o.name,
     'image', o.logo)) AS entity_connections
   FROM initiative i
@@ -64,7 +64,7 @@ UNION ALL
 SELECT
   p.id, p.title, 'Policy' AS type, p.abstract AS summary,
   json_agg(json_build_object('id', sp.id, 'stakeholder_id', sp.stakeholder, 'role', sp.association, 'stakeholder',
-    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture)) AS stakeholder_connections,
+    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', op.id, 'entity_id', op.organisation, 'role', op.association, 'entity', o.name,
     'image', o.logo)) AS entity_connections
   FROM policy p
@@ -84,7 +84,7 @@ UNION ALL
 SELECT
   t.id, t.name AS title, 'Technology' AS type, t.remarks AS summary,
   json_agg(json_build_object('id', st.id, 'stakeholder_id', st.stakeholder, 'role', st.association, 'stakeholder',
-    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture)) AS stakeholder_connections,
+    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', ot.id, 'entity_id', ot.organisation, 'role', ot.association, 'entity', o.name,
     'image', o.logo)) AS entity_connections
   FROM technology t
@@ -109,7 +109,7 @@ WITH associated_content AS (
 SELECT
   r.id, r.title, r.type, r.summary, ores.association::text AS association,
   json_agg(json_build_object('id', sr.id, 'stakeholder_id', sr.stakeholder, 'role', sr.association, 'stakeholder',
-    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture)) AS stakeholder_connections,
+    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', orgr.id, 'entity_id', orgr.organisation, 'role', orgr.association, 'entity', o.name,
     'image', o.logo)) AS entity_connections
   FROM resource r
@@ -128,7 +128,7 @@ UNION ALL
 SELECT
   e.id, e.title, 'Event' AS type, e.description AS summary, orge.association::text AS association,
   json_agg(json_build_object('id', se.id, 'stakeholder_id', se.stakeholder, 'role', se.association, 'stakeholder',
-    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture)) AS stakeholder_connections,
+    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', oe.id, 'entity_id', oe.organisation, 'role', oe.association, 'entity', o.name,
     'image', o.logo)) AS entity_connections
   FROM event e
@@ -147,7 +147,7 @@ UNION ALL
 SELECT
   i.id, i.q2::text AS title, 'Initiative' AS type, i.q3::text AS summary, orgi.association::text AS association,
   json_agg(json_build_object('id', si.id, 'stakeholder_id', si.stakeholder, 'role', si.association, 'stakeholder',
-    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture)) AS stakeholder_connections,
+    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', oi.id, 'entity_id', oi.organisation, 'role', oi.association, 'entity', o.name,
     'image', o.logo)) AS entity_connections
   FROM initiative i
@@ -166,7 +166,7 @@ UNION ALL
 SELECT
   p.id, p.title, 'Policy' AS type, p.abstract AS summary, orgp.association::text AS association,
   json_agg(json_build_object('id', sp.id, 'stakeholder_id', sp.stakeholder, 'role', sp.association, 'stakeholder',
-    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture)) AS stakeholder_connections,
+    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', op.id, 'entity_id', op.organisation, 'role', op.association, 'entity', o.name,
     'image', o.logo)) AS entity_connections
   FROM policy p
@@ -185,7 +185,7 @@ UNION ALL
 SELECT
   t.id, t.name AS title, 'Technology' AS type, t.remarks AS summary, orgt.association::text AS association,
   json_agg(json_build_object('id', st.id, 'stakeholder_id', st.stakeholder, 'role', st.association, 'stakeholder',
-    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture)) AS stakeholder_connections,
+    concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', ot.id, 'entity_id', ot.organisation, 'role', ot.association, 'entity', o.name,
     'image', o.logo)) AS entity_connections
   FROM technology t
