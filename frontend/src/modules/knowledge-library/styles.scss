@@ -406,12 +406,17 @@
       .ant-select-clear {
         opacity: 0;
       }
-
+      .date-picker-container {
+        .ant-picker-clear {
+          display: none;
+        }
+      }
       .date-picker-container input,
       .ant-select-selection-item-content {
         font-weight: 700;
         font-size: 16px;
         color: $blue06;
+        font-style: italic;
         .anticon-close-circle {
           opacity: 0;
         }
@@ -450,6 +455,14 @@
       }
 
       .multiselection-filter {
+        .ant-select-selection-search-input {
+          width: 100%;
+          display: block;
+          font-weight: 700;
+          font-size: 16px;
+          color: $blue06;
+          font-style: italic;
+        }
         .ant-select-selection-item-content {
           font-style: italic;
           overflow: visible;

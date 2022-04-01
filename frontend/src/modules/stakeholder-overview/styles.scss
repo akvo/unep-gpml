@@ -727,6 +727,17 @@
         font-weight: 700;
       }
 
+      .multiselection-filter {
+        .ant-select-selection-search-input {
+          width: 100%;
+          display: block;
+          font-weight: 700;
+          font-size: 16px;
+          color: $blue06;
+          font-style: italic;
+        }
+      }
+
       .ant-select-selector {
         background: $grey05;
         border: 0;
