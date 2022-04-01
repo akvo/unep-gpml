@@ -69,7 +69,7 @@ const FlexibleForm = withRouter(
         let obj = mainContentType.find(
           (o) => o.code === selectedMainContentType
         );
-        let find = obj?.childs.find((o) => o.title === subContentType).tags;
+        let find = obj?.childs.find((o) => o.title === subContentType)?.tags;
         if (find) {
           initialFormData.update((e) => {
             e.data = {
