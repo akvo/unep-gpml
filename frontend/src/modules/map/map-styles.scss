@@ -156,6 +156,31 @@
       }
     }
   }
+  // LEGEND
+  .legend-transnational-count {
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    .legend-transnational-title {
+      display: block;
+      color: #036799;
+      margin-top: 10px;
+    }
+  }
+  .legend-separator {
+    display: block;
+    width: 100%;
+  }
+
+  .total-resources {
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .total-resources:not(:last-of-type) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  }
 
   .map-buttons {
     z-index: 999;
@@ -186,11 +211,19 @@
     align-items: center;
     flex-direction: row;
     align-self: flex-end;
+    .card-legend-wrapper {
+      .ant-card-body {
+        display: flex;
+        flex-direction: column;
+        height: 240px;
+        overflow-y: auto;
+      }
+    }
     &.vertical {
       align-items: normal;
       .title {
         display: flex;
-        justify-content: start;
+        justify-content: flex-start;
         margin-bottom: 1em;
         line-height: 1.3em;
       }

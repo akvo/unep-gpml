@@ -42,8 +42,8 @@ const unsettledTerritoryIsoCode = [
 ];
 
 const higlightColor = "#255B87";
-const KNOWLEDGE_LIBRARY = "/knowledge-library";
-const STAKEHOLDER_OVERVIEW = "/stakeholder-overview";
+export const KNOWLEDGE_LIBRARY = "/knowledge-library";
+export const STAKEHOLDER_OVERVIEW = "/stakeholder-overview";
 
 const StakeholderTooltipContent = ({ data, geo, path, query }) => {
   const dataToDisplay = () => {
@@ -584,10 +584,13 @@ const Maps = ({
                   {useVerticalLegend ? (
                     <VerticalLegend
                       data={colorScale.thresholds().sort((a, b) => b - a)}
+                      contents={data}
                       setFilterColor={setFilterColor}
                       selected={filterColor}
                       isDisplayedList={isDisplayedList}
                       title={legendTitle}
+                      path={path}
+                      query={query}
                     />
                   ) : (
                     <Legend
