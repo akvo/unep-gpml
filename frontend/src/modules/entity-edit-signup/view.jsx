@@ -143,7 +143,6 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
   const location = useLocation();
   const isEntityType = location.state.formType === "entity" ? true : false;
   const isStakeholderType = !isEntityType;
-  console.log(isEntityType);
   const {
     tabs,
     getSchema,
@@ -514,8 +513,6 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
     setHighlight(true);
     btnSubmit.current.click();
   };
-
-  console.log(data, "Adasds");
 
   return (
     <div id="add-sign-up">
