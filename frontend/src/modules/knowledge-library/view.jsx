@@ -232,14 +232,10 @@ const KnowledgeLibrary = ({
       }
       if (key === "subContentType") {
         const findSubContentType = mainContentType.find((subContent) =>
-          subContent.childs.find((child) => child.title.includes(value))
+          subContent.childs.find((child) => child?.title?.includes(value))
         );
 
-        const label = findSubContentType.childs.find((child) =>
-          child.title.includes(value)
-        );
-
-        return `${value} ${findSubContentType.name}`;
+        return `${value} ${findSubContentType?.name}`;
       }
       if (key === "entity") {
         const findOrganisation = organisations.find(
@@ -411,6 +407,7 @@ const KnowledgeLibrary = ({
                 setFilterVisible,
                 multiCountryCountries,
                 setMultiCountryCountries,
+                filterTagValue,
               }}
               updateQuery={(flag, val) => updateQuery(flag, val)}
             />

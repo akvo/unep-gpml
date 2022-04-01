@@ -19,7 +19,7 @@ import {
 import { PatternLines } from "@vx/pattern";
 import classNames from "classnames";
 import { topicNames, tTypes } from "../../utils/misc";
-import { curr } from "./utils";
+import { curr, snakeToCamel } from "./utils";
 
 import "./map-styles.scss";
 import { useHistory } from "react-router-dom";
@@ -42,8 +42,8 @@ const unsettledTerritoryIsoCode = [
 ];
 
 const higlightColor = "#255B87";
-const KNOWLEDGE_LIBRARY = "/knowledge-library";
-const STAKEHOLDER_OVERVIEW = "/stakeholder-overview";
+export const KNOWLEDGE_LIBRARY = "/knowledge-library";
+export const STAKEHOLDER_OVERVIEW = "/stakeholder-overview";
 
 const StakeholderTooltipContent = ({ data, geo, path, query }) => {
   const dataToDisplay = () => {
@@ -73,116 +73,102 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
       className="map-tooltip"
     >
       <h3>{geo.MAP_LABEL}</h3>
-      <table className="tooltip-table">
-        <thead>
-          <tr>
-            <th>Type</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div className="tooltip-table">
+        <div className="table-head">
+          <div>
+            <b className="stakeholder-type">Type</b>
+          </div>
+        </div>
+        <div>
           {topicType.length === 0 ? (
             <>
-              <tr>
-                <td className="tooltip-topic">Entity</td>
-                <tr>
-                  <th className="entity-type">GPML Members</th>
-                  <td className="tooltip-count-wrapper">
-                    <b className="tooltip-counts">
-                      {dataToDisplay()?.["organisation"]
-                        ? dataToDisplay()?.["organisation"]
-                        : 0}
-                    </b>
-                  </td>
-                </tr>
-                <tr>
-                  <th className="entity-type">GPML Non-Members</th>
-                  <td className="tooltip-count-wrapper">
-                    <b className="tooltip-counts">
-                      {transnationalData()?.["organisation"]}
-                    </b>
-                  </td>
-                </tr>
-              </tr>
-              <tr>
-                <td className="tooltip-topic">Individuals</td>
-
-                <td className="tooltip-count-wrapper">
-                  <b className="tooltip-counts">
-                    {dataToDisplay()?.["stakeholder"]}
-                  </b>
-                </td>
-              </tr>
-            </>
-          ) : (
-            <>
-              {topicType.includes("organisation") && (
-                <tr>
-                  <td className="tooltip-topic">Entity</td>
-                  <tr>
-                    <th className="entity-type">GPML Members</th>
-                    <td className="tooltip-count-wrapper">
+              <div className="table-row">
+                <div className="tooltip-topic">Entity</div>
+                <div>
+                  <div className="entity-row">
+                    <b className="entity-type">GPML Members</b>
+                    <div className="tooltip-count-wrapper">
                       <b className="tooltip-counts">
                         {dataToDisplay()?.["organisation"]
                           ? dataToDisplay()?.["organisation"]
                           : 0}
                       </b>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th className="entity-type">GPML Non-Members</th>
-                    <td className="tooltip-count-wrapper">
+                    </div>
+                  </div>
+                  <div className="entity-row">
+                    <b className="entity-type">GPML Non-Members</b>
+                    <div className="tooltip-count-wrapper">
                       <b className="tooltip-counts">
-                        {transnationalData()?.["organisation"]}
+                        {transnationalData()?.["organisation"]
+                          ? transnationalData()?.["organisation"]
+                          : 0}
                       </b>
-                    </td>
-                  </tr>
-                </tr>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="table-row">
+                <div className="tooltip-topic">Individuals</div>
+
+                <div className="tooltip-count-wrapper">
+                  <b className="tooltip-counts">
+                    {dataToDisplay()?.["stakeholder"]}
+                  </b>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              {topicType.includes("organisation") && (
+                <div className="table-row">
+                  <div className="tooltip-topic">Entity</div>
+                  <div>
+                    <div className="entity-row">
+                      <b className="entity-type">GPML Members</b>
+                      <div className="tooltip-count-wrapper">
+                        <b className="tooltip-counts">
+                          {dataToDisplay()?.["organisation"]
+                            ? dataToDisplay()?.["organisation"]
+                            : 0}
+                        </b>
+                      </div>
+                    </div>
+                    <div className="entity-row">
+                      <b className="entity-type">GPML Non-Members</b>
+                      <div className="tooltip-count-wrapper">
+                        <b className="tooltip-counts">
+                          {transnationalData()?.["organisation"]
+                            ? transnationalData()?.["organisation"]
+                            : 0}
+                        </b>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               )}
               {topicType.includes("stakeholder") && (
-                <tr>
-                  <td className="tooltip-topic">Individuals</td>
+                <div className="table-row">
+                  <div className="tooltip-topic">Individuals</div>
 
-                  <td className="tooltip-count-wrapper">
-                    <b className="tooltip-counts ">
+                  <div className="tooltip-count-wrapper">
+                    <b className="tooltip-counts">
                       {dataToDisplay()?.["stakeholder"]}
                     </b>
-                  </td>
-                </tr>
+                  </div>
+                </div>
               )}
             </>
           )}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 };
 
 const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
-  const totalTransnational = () => {
-    const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
-
-    if (path === KNOWLEDGE_LIBRARY) {
-      return sumValues({
-        project: data?.transnationalCounts?.project,
-        actionPlan: data?.transnationalCounts?.actionPlan,
-        policy: data?.transnationalCounts?.policy,
-        technicalResource: data?.transnationalCounts?.technicalResource,
-        financingResource: data?.transnationalCounts?.financingResource,
-        event: data?.transnationalCounts?.event,
-        technology: data?.transnationalCounts?.technology,
-      });
-    }
-    if (path === STAKEHOLDER_OVERVIEW) {
-      return sumValues({
-        organisation: data?.transnationalCounts?.organisation,
-        stakeholder: data?.transnationalCounts?.stakeholder,
-      });
-    }
-  };
-
   const dataToDisplay = () => {
     return {
-      project: data?.counts?.project,
+      project: (data?.counts?.project || 0) + (data?.counts?.initiative || 0),
       actionPlan: data?.counts?.actionPlan,
       policy: data?.counts?.policy,
       technicalResource: data?.counts?.technicalResource,
@@ -194,7 +180,9 @@ const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
 
   const transnationalData = () => {
     return {
-      project: data?.transnationalCounts?.project,
+      project:
+        (data?.transnationalCounts?.project || 0) +
+        (data?.transnationalCounts?.initiative || 0),
       actionPlan: data?.transnationalCounts?.actionPlan,
       policy: data?.transnationalCounts?.policy,
       technicalResource: data?.transnationalCounts?.technicalResource,
@@ -219,19 +207,11 @@ const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
       <h3>{geo.MAP_LABEL}</h3>
       <table className="tooltip-table">
         <thead>
-          {path === KNOWLEDGE_LIBRARY ? (
-            <tr>
-              <th>Resource</th>
-              <th>National</th>
-              <th style={{ paddingLeft: "10px" }}>Transnational</th>
-            </tr>
-          ) : (
-            <tr>
-              <th>Type</th>
-              <th>Member</th>
-              <th style={{ paddingLeft: "10px" }}>Non-member</th>
-            </tr>
-          )}
+          <tr>
+            <th>Resource</th>
+            <th>National</th>
+            <th style={{ paddingLeft: "10px" }}>Transnational</th>
+          </tr>
         </thead>
         <tbody>
           {tTypes.map((topic) => {
@@ -264,7 +244,9 @@ const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
 
                 <td className="tooltip-count-wrapper">
                   <b className="tooltip-counts">
-                    {transnationalData()?.[topic]}
+                    {transnationalData()?.[topic]
+                      ? transnationalData()?.[topic]
+                      : 0}
                   </b>
                 </td>
               </tr>
@@ -280,7 +262,9 @@ const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
 
                   <td className="tooltip-count-wrapper">
                     <b className="tooltip-counts">
-                      {transnationalData()?.[topic]}
+                      {transnationalData()?.[topic]
+                        ? transnationalData()?.[topic]
+                        : 0}
                     </b>
                   </td>
                 </tr>
@@ -405,7 +389,7 @@ const Maps = ({
   const [filterColor, setFilterColor] = useState(null);
   const [content, setContent] = useState("");
   const [countryToSelect, setCountryToSelect] = useState([]);
-  const [isShownLegend, setIsShownLegend] = useState(false);
+  const [isShownLegend, setIsShownLegend] = useState(true);
 
   const selectedTerritory = !isEmpty(countries)
     ? countries
@@ -465,28 +449,58 @@ const Maps = ({
   const domain = data.reduce(
     (acc, curr) => {
       const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b);
+
+      // Get properties based on filter
       const values = () => {
-        if (path === KNOWLEDGE_LIBRARY) {
-          return sumValues({
-            actionPlan: curr?.counts?.actionPlan,
-            event: curr?.counts?.event,
-            financingResource: curr?.counts?.financingResource,
-            policy: curr?.counts?.policy,
-            project: curr?.counts?.project,
-            technicalResource: curr?.counts?.technicalResource,
-            technology: curr?.counts?.technology,
-          });
-        }
-        if (path === STAKEHOLDER_OVERVIEW) {
-          return sumValues({
-            organisation: curr?.counts?.organisation,
-            stakeholder: curr?.counts?.stakeholder,
-          });
+        const properties = topic.map(snakeToCamel);
+
+        const propsToSum = properties.reduce((acc, currs, index) => {
+          const currProp = properties[index];
+
+          acc[currProp] = curr.counts?.[currProp];
+
+          if (currProp === "project") {
+            return { ...acc, initiative: curr.counts?.["initiative"] || 0 };
+          } else {
+            return acc;
+          }
+        }, {});
+
+        if (properties.length > 0) {
+          return sumValues(propsToSum);
+        } else {
+          if (path === "/knowledge-library") {
+            return sumValues({
+              actionPlan: curr?.counts?.actionPlan,
+              event: curr?.counts?.event,
+              financingResource: curr?.counts?.financingResource,
+              policy: curr?.counts?.policy,
+              project: curr?.counts?.project,
+              technicalResource: curr?.counts?.technicalResource,
+              technology: curr?.counts?.technology,
+              initiative: curr?.counts?.initiative || 0,
+            });
+          }
+          if (path === "/stakeholder-overview") {
+            return sumValues({
+              stakeholder: curr?.counts?.stakeholder,
+              organisation: curr?.counts?.organisation,
+            });
+          }
         }
       };
 
       const [min, max] = acc;
-      return [min, values() > max ? values() : max];
+      return [
+        min,
+        values() > max
+          ? values()
+          : max === 2 || max === 1
+          ? max + 0.5
+          : max === 3
+          ? max + 0.75
+          : max,
+      ];
     },
     [0, 0]
   );
@@ -570,10 +584,13 @@ const Maps = ({
                   {useVerticalLegend ? (
                     <VerticalLegend
                       data={colorScale.thresholds().sort((a, b) => b - a)}
+                      contents={data}
                       setFilterColor={setFilterColor}
                       selected={filterColor}
                       isDisplayedList={isDisplayedList}
                       title={legendTitle}
+                      path={path}
+                      query={query}
                     />
                   ) : (
                     <Legend
@@ -662,23 +679,21 @@ const Maps = ({
                     }
 
                     // To get all countries in a multicountry selection being highlighted
-                    const filterMultiCountry =
-                      path === KNOWLEDGE_LIBRARY &&
-                      multiCountryCountries.filter((item) => {
+                    const filterMultiCountry = multiCountryCountries.filter(
+                      (item) => {
                         const transnationalQuery = query?.transnational?.map(
                           (item) => Number(item)
                         );
                         return transnationalQuery?.includes(item?.id);
-                      });
+                      }
+                    );
 
-                    const multiCountrySelection =
-                      path === KNOWLEDGE_LIBRARY &&
-                      filterMultiCountry.map((transnational) =>
+                    const multiCountrySelection = filterMultiCountry.map(
+                      (transnational) =>
                         transnational?.countries?.map((country) => country?.id)
-                      );
+                    );
 
                     const multiselection =
-                      path === KNOWLEDGE_LIBRARY &&
                       multiCountrySelection.length !== 0 &&
                       multiCountrySelection.flat();
 
@@ -694,12 +709,9 @@ const Maps = ({
                         const countryToFilter = isFilteredCountry.map((it) =>
                           Number(it)
                         );
-
                         return (
                           countryToFilter.includes(mapProps) ||
-                          (path === KNOWLEDGE_LIBRARY &&
-                            multiselection &&
-                            multiselection.includes(mapProps))
+                          (multiselection && multiselection.includes(mapProps))
                         );
                       }
                     };
@@ -722,16 +734,9 @@ const Maps = ({
                               : isPattern
                               ? "url(#lines)"
                               : geo.properties.M49Code === selected
-                              ? // : geo.properties.MAP_COLOR === selected
-                                "#84b4cc"
-                              : // : isCountrySelected
-                              // ? "#255B87"
-                              selectionCondition()
-                              ? //  ||
-                                //   selectedTerritory?.includes(
-                                //     geo.properties.MAP_COLOR
-                                //   )
-                                "#255B87"
+                              ? "#84b4cc"
+                              : selectionCondition()
+                              ? "#255B87"
                               : fillColor(
                                   curr(topic, findData?.counts, path)
                                     ? curr(topic, findData?.counts, path)

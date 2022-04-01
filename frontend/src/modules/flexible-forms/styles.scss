@@ -255,6 +255,16 @@
             background-color: transparent;
           }
         }
+        .ant-select-item-option-content {
+          span {
+            padding-left: 5px;
+          }
+        }
+        .ant-select-selection-item-content {
+          span {
+            padding-left: 5px;
+          }
+        }
         .custom-radio {
           height: auto;
           margin-bottom: 20px;

@@ -1,8 +1,4 @@
 @import "../../vars.scss";
-// .ant-select-dropdown,
-// .ant-picker-dropdown {
-//   zoom: 80%;
-// }
 
 .blur {
   filter: blur(13px);
@@ -13,7 +9,7 @@
   h3,
   h4 {
     color: #255b87;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 700;
   }
 
@@ -25,11 +21,25 @@
 
 #stakeholder-overview {
   padding: 0;
+  #mainNavigation {
+    @media (min-width: 750px) {
+      display: block;
+    }
+  }
+  .sidebar-mobile {
+    margin-bottom: 0;
+    @media (min-width: 750px) {
+      display: none;
+    }
+  }
 
   .ant-btn-icon-only {
     width: 100%;
     max-width: 35px;
     max-height: 35px;
+    min-width: 25px;
+    min-height: 25px;
+    height: 27px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -95,7 +105,14 @@
 
     // Search input
     .search-box {
-      max-width: fit-content;
+      width: 100%;
+      max-width: 478px;
+      .ant-space-item:nth-of-type(1) {
+        width: 100%;
+      }
+      .ant-space-align-center {
+        width: 100%;
+      }
 
       .filter-icon {
         display: block;
@@ -116,11 +133,11 @@
         padding-bottom: 0px;
         overflow: auto;
         button {
-          color: #ffffff;
-          background-color: #1ca585;
+          color: $blue10;
+          background-color: $green01;
           border: 0;
-          height: 31px;
-          width: 31px;
+          height: 27px;
+          width: 27px;
           &:hover {
             background-color: $green01;
             color: $blue10;
@@ -215,7 +232,7 @@
       background-color: transparent;
       svg {
         margin-right: 7px;
-        width: 32px;
+        width: 27px;
         circle,
         path {
           stroke: currentColor;
@@ -244,7 +261,7 @@
     align-items: center;
     position: absolute;
     bottom: -5px;
-    right: 20px;
+    right: 5px;
     overflow: hidden;
     width: 40px;
     height: 40px;
@@ -288,10 +305,15 @@
     }
 
     .profile-card {
+      min-height: 140px;
       .ant-card-body {
         display: flex;
         flex-direction: column;
-
+        .profile-detail-list {
+          li {
+            margin-bottom: 0;
+          }
+        }
         min-height: 250px;
         .person-role {
           max-height: fit-content;
@@ -306,6 +328,7 @@
     height: fit-content;
     max-width: 345px;
     border-radius: 10px;
+    min-height: 140px;
 
     .icons-list {
       display: flex;
@@ -341,19 +364,21 @@
         max-width: 9em;
         max-height: 9em;
         min-width: 9em;
-        min-height: 9em;
-        overflow: hidden;
+        height: 9em;
         margin-right: 16.51px;
         text-align: center;
       }
 
       .organisation-image {
         border: 1px solid;
+        overflow: hidden;
       }
 
       .profile-image {
         max-width: 150px;
         object-fit: cover;
+        border-radius: 50%;
+        height: 100%;
       }
 
       .profile-details-container {
@@ -420,8 +445,8 @@
             margin-right: 21.49px;
             .social-media-link {
               display: block;
-              width: 28px;
-              height: 28px;
+              width: 20px;
+              height: 20px;
               background-repeat: no-repeat;
               background-size: contain;
               background-position-y: center;
@@ -588,8 +613,16 @@
   }
 
   .site-drawer-render-in-current-wrapper {
-    min-width: 100%;
+    left: 0 !important;
+    top: 100px !important;
+    position: absolute;
+    min-width: calc(100% - 100px);
     overflow: hidden;
+
+    @media (min-width: 750px) {
+      top: 0 !important;
+      left: 100px !important;
+    }
 
     .for-entity svg {
       max-width: 30px;
@@ -629,20 +662,39 @@
     .ant-drawer-mask {
       background-color: unset;
     }
-
+    .ant-drawer-left {
+      left: -5px !important;
+    }
     .ant-drawer-open {
-      .ant-drawer-content {
-        border: 1px solid $blue09;
-      }
+      left: unset !important;
+
+      // .ant-drawer-content {
+      //   border: 1px solid $blue09;
+      // }
     }
 
     .ant-drawer-content-wrapper {
       box-shadow: none;
       max-width: 500px;
-      // width: 100% !important;
+      width: 100% !important;
+      @-moz-document url-prefix() {
+        min-height: 999px !important;
+        transform: scale(0.7) translate(-107px, -215px);
+      }
 
       .ant-drawer-header {
         background: $blue05;
+        .apply-button {
+          color: #ffffff;
+          padding: 4px 11px 4px 11px;
+          border: 2px solid #ffffff;
+          border-radius: 17.5px;
+          background-color: transparent;
+          margin-right: 0;
+          font-size: 14px;
+          font-weight: 700;
+          height: auto;
+        }
       }
 
       .ant-drawer-body {
@@ -686,6 +738,17 @@
       .multiselection-filter .ant-select-selection-placeholder {
         font-style: italic;
         font-weight: 700;
+      }
+
+      .multiselection-filter {
+        .ant-select-selection-search-input {
+          width: 100%;
+          display: block;
+          font-weight: 700;
+          font-size: 16px;
+          color: $blue06;
+          font-style: italic;
+        }
       }
 
       .ant-select-selector {
@@ -932,7 +995,7 @@
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     column-gap: 34px;
-    row-gap: 34px;
+    row-gap: 10px;
     max-width: fit-content;
     margin: auto;
   }
@@ -965,6 +1028,7 @@
   @media (min-width: 1300px) {
     .profile-card {
       max-width: 100%;
+      min-height: 140px;
     }
     .card-wrapper,
     #title {
@@ -1086,7 +1150,7 @@
         }
         .image-wrapper {
           min-width: 7em;
-          min-height: 7em;
+          height: 7em;
           max-width: 7em;
           max-height: 7em;
         }
@@ -1105,19 +1169,31 @@
       }
     }
     .ui-header .sort-btn svg {
-      width: 25px;
+      width: 27px;
+      height: 27px;
     }
     .ant-drawer-content-wrapper {
       zoom: 80%;
+
+      @-moz-document url-prefix() {
+        min-height: 1003px !important;
+        transform: scale(0.7) translate(-107px, -220px);
+      }
     }
   }
 }
 
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
-  .ant-select-dropdown {
+  .multiselection-dropdown {
     zoom: 80%;
+    @-moz-document url-prefix() {
+      transform: scale(0.8);
+    }
   }
   .overlay-zoom {
     zoom: 100%;
+    @-moz-document url-prefix() {
+      transform: scale(1);
+    }
   }
 }

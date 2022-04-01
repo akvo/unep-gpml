@@ -439,6 +439,23 @@
                                            order-by-clause])]
     (str/join " " query-statements)))
 
+(defn build-entity-topic-data-query
+  [entity-name _ _]
+  (let [tags-query (generic-topic-data-tags-query entity-name)
+        geo-coverage-values-query (generic-topic-data-geo-coverage-values-query entity-name)
+        from-clause (generic-topic-data-from-clause entity-name)
+        order-by-clause generic-topic-data-order-by-clause
+        query-statements (case entity-name
+                           "stakeholder" [stakeholder-topic-data-select-clause from-clause
+                                          tags-query geo-coverage-values-query
+                                          stakeholder-topic-data-organisation-query
+                                          order-by-clause]
+
+                           "organisation" [organisation-topic-data-select-clause
+                                           from-clause organisation-topic-data-geo-coverage-values-query
+                                           order-by-clause])]
+    (str/join " " query-statements)))
+
 (defn build-topic-geo-coverage-query
   "Generates SQL statements for querying geo coverage information
   for every content table.
@@ -569,6 +586,23 @@
          topic-ctes
          topic-cte]))))
 
+(defn generate-entity-topic-query
+  [params opts]
+  (let [topic-data-ctes (generate-ctes :entity_data params opts)
+        topic-geo-coverage-ctes (generate-ctes :geo params opts)
+        topic-search-text-ctes (generate-ctes :search-text params opts)
+        topic-ctes (generate-ctes :topic params opts)
+        topic-cte (generate-topic-cte {} opts)]
+    (str
+      "WITH "
+      (str/join
+        ","
+        [topic-data-ctes
+         topic-geo-coverage-ctes
+         topic-search-text-ctes
+         topic-ctes
+         topic-cte]))))
+
 (defn generate-get-topics
   [params]
   (if (:count-only? params)
@@ -588,42 +622,13 @@
       (format "LIMIT %s" (or (and (contains? params :limit) (:limit params)) 50))
       (format "OFFSET %s" (or (and (contains? params :offset) (:offset params)) 0))))))
 
-(def params-coming-in
-  {:topic #{"financing_resource"}, :geo-coverage [4],
-   :transnational #{"{:id 111, :name \"South Asia Seas\"}"
-                    "{:id 146, :name \"Stockholm Convention\"}"
-                    "{:id 145, :name \"Rotterdam Convention\"}"
-                    "{:id 2, :name \"Asia and the Pacific\"}"
-                    "{:id 144, :name \"Basel Convention\"}"
-                    "{:id 152, :name \"Least Developed Countries\"}"},
-   :count-only? true})
-
-
-(def filter-normal
-  "\"SELECT DISTINCT ON (t.topic, (COALESCE(t.json->>'start_date', t.json->>'created'))::timestamptz, (t.json->>'id')::int) t.topic, t.geo_coverage, t.json FROM cte_topic t   JOIN LATERAL json_array_elements(json->'geo_coverage_values') j on json->>'geo_coverage_values' != '' WHERE t.json->>'review_status'='APPROVED'   AND topic IN (:v*:topic)   AND (t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:geo-coverage-countries)) \"\n")
-
-(def filter-snippet
-  "SELECT DISTINCT ON (t.topic, (COALESCE(t.json->>'start_date', t.json->>'created'))::timestamptz,
-  (t.json->>'id')::int) t.topic, t.geo_coverage, t.json FROM cte_topic t
-  JOIN LATERAL json_array_elements(json->'geo_coverage_values') j on json->>'geo_coverage_values' != ''
-  WHERE t.json->>'review_status'='APPROVED'
-  AND topic IN (:v*:topic)
-  AND (t.geo_coverage IN (:v*:geo-coverage)
-  OR t.json->>'geo_coverage_type'='transnational'
-  AND t.json->>'geo_coverage_values' != ''
-  AND j.value::varchar IN (:v*:transnational))")
-
-(def no-transnational-filter
-  "SELECT DISTINCT ON (t.topic, (COALESCE(t.json->>'start_date', t.json->>'created'))::timestamptz,
-  (t.json->>'id')::int) t.topic, t.geo_coverage, t.json
-  FROM cte_topic t
-  JOIN LATERAL json_array_elements(json->'geo_coverage_values') j
-  on json->>'geo_coverage_values' != ''
-  WHERE t.json->>'review_status'='APPROVED'
-  AND topic IN (:v*:topic)
-  AND (t.json->>'geo_coverage_values' != ''
-  AND j.value::varchar IN (:v*:geo-coverage-countries)) ")
-
+(defn- geo-coverage-values-generic-cond
+  [geo-coverage-value-param]
+  (format
+   "(SELECT COUNT(*)
+     FROM json_array_elements_text((CASE WHEN (json->>'geo_coverage_values' = '') IS NOT FALSE THEN '[]'::JSON
+                                         ELSE (json->>'geo_coverage_values')::JSON END))
+     WHERE value::TEXT IN (:v*:%s)) > 0" geo-coverage-value-param))
 
 (defn generate-filter-topic-snippet
   [{:keys [favorites user-id topic tag start-date end-date transnational search-text geo-coverage resource-types geo-coverage-countries]}]

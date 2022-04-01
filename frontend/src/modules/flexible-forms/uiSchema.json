@@ -25,7 +25,7 @@
         },
         "S4_G2_24.3": {
           "ui:placeholder": "Geo-coverage",
-          "ui:widget": "select",
+          "ui:widget": "SelectGeoWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple"
         },
@@ -404,7 +404,7 @@
         },
         "geoCoverageValueTransnational": {
           "ui:placeholder": "Geo-coverage",
-          "ui:widget": "select",
+          "ui:widget": "SelectGeoWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple"
         },
@@ -632,7 +632,7 @@
         },
         "geoCoverageValueTransnational": {
           "ui:placeholder": "Geo-coverage",
-          "ui:widget": "select",
+          "ui:widget": "SelectGeoWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple"
         },
@@ -896,7 +896,7 @@
         },
         "geoCoverageValueTransnational": {
           "ui:placeholder": "Geo-coverage",
-          "ui:widget": "select",
+          "ui:widget": "SelectGeoWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple"
         },
@@ -1129,7 +1129,7 @@
         },
         "geoCoverageValueTransnational": {
           "ui:placeholder": "Geo-coverage",
-          "ui:widget": "select",
+          "ui:widget": "SelectGeoWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple"
         },
@@ -1345,7 +1345,7 @@
         },
         "geoCoverageValueTransnational": {
           "ui:placeholder": "Geo-coverage",
-          "ui:widget": "select",
+          "ui:widget": "SelectGeoWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple"
         },
@@ -1573,7 +1573,7 @@
         },
         "geoCoverageValueTransnational": {
           "ui:placeholder": "Geo-coverage",
-          "ui:widget": "select",
+          "ui:widget": "SelectGeoWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple"
         },
