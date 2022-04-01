@@ -205,8 +205,12 @@ const ResourceItem = ({ results, view, stakeholders }) => {
       result.remarks ||
       "";
     const linkTo = `/${type}/${id}`;
-    const stakeholdersConnectionList = result?.stakeholderConnections;
-    const stakeholderCount = result?.stakeholderConnections?.length;
+    const stakeholdersConnectionList = result?.stakeholderConnections.filter(
+      (x) => x.stakeholderRole !== "ADMIN" || x.role === "interested in"
+    );
+    const stakeholderCount = result?.stakeholderConnections.filter(
+      (x) => x.stakeholderRole !== "ADMIN" || x.role === "interested in"
+    )?.length;
 
     const getStakeholderCount = () => {
       if (stakeholderCount > 3) {
