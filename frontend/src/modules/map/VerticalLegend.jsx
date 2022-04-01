@@ -340,15 +340,12 @@ const VerticalLegend = ({
   const transnationalResources = () => {
     return ResourceCountPerTransnationalGroup.map((transnationalGroup) => {
       return (
-        <>
-          <div
-            className="legend-transnational-count"
-            key={transnationalGroup?.group}
-          >
+        <div key={transnationalGroup?.group}>
+          <div className="legend-transnational-count">
             <strong className="legend-transnational-title">
               {transnationalGroup?.group}
             </strong>
-            <>
+            <div>
               {[...tTypes, "capacityBuilding"]
                 .filter(
                   (topic) => topic !== "organisation" && topic !== "stakeholder"
@@ -392,9 +389,9 @@ const VerticalLegend = ({
                     )
                   );
                 })}
-            </>
+            </div>
           </div>
-        </>
+        </div>
       );
     });
   };
