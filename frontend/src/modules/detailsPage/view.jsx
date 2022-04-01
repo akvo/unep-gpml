@@ -945,7 +945,11 @@ const DetailsView = ({
               <CardComponent
                 title={`Connections (${
                   data?.entityConnections.length +
-                  data?.stakeholderConnections.length
+                  data?.stakeholderConnections.filter(
+                    (x) =>
+                      x.stakeholderRole !== "ADMIN" ||
+                      x.role === "interested in"
+                  )?.length
                 })`}
                 style={{
                   marginBottom: "30px",
@@ -978,21 +982,31 @@ const DetailsView = ({
                       ))}
                     </List>
                   )}
-                  {data?.stakeholderConnections.length > 0 && (
+                  {data?.stakeholderConnections.filter(
+                    (x) =>
+                      x.stakeholderRole !== "ADMIN" ||
+                      x.role === "interested in"
+                  )?.length > 0 && (
                     <List itemLayout="horizontal">
-                      {data?.stakeholderConnections.map((item) => (
-                        <List.Item>
-                          <List.Item.Meta
-                            avatar={<Avatar src={item.image} />}
-                            title={
-                              <Link to={`/stakeholder/${item.stakeholderId}`}>
-                                {item.stakeholder}
-                              </Link>
-                            }
-                            description={item.role}
-                          />
-                        </List.Item>
-                      ))}
+                      {data?.stakeholderConnections
+                        .filter(
+                          (x) =>
+                            x.stakeholderRole !== "ADMIN" ||
+                            x.role === "interested in"
+                        )
+                        .map((item) => (
+                          <List.Item>
+                            <List.Item.Meta
+                              avatar={<Avatar src={item.image} />}
+                              title={
+                                <Link to={`/stakeholder/${item.stakeholderId}`}>
+                                  {item.stakeholder}
+                                </Link>
+                              }
+                              description={item.role}
+                            />
+                          </List.Item>
+                        ))}
                     </List>
                   )}
                   {/* <List itemLayout="horizontal">
