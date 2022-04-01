@@ -256,6 +256,18 @@
 
       .ant-drawer-header {
         background: $blue05;
+
+        .apply-button {
+          color: #ffffff;
+          padding: 4px 11px 4px 11px;
+          border: 2px solid #ffffff;
+          border-radius: 17.5px;
+          background-color: transparent;
+          margin-right: 0;
+          font-size: 14px;
+          font-weight: 700;
+          height: auto;
+        }
       }
 
       .favorites-checkbox {

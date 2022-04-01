@@ -411,6 +411,7 @@ const KnowledgeLibrary = ({
                 setFilterVisible,
                 multiCountryCountries,
                 setMultiCountryCountries,
+                filterTagValue,
               }}
               updateQuery={(flag, val) => updateQuery(flag, val)}
             />

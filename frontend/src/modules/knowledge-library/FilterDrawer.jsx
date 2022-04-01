@@ -43,6 +43,7 @@ const FilterDrawer = ({
   setFilterVisible,
   multiCountryCountries,
   setMultiCountryCountries,
+  filterTagValue,
 }) => {
   const {
     nav,
@@ -218,7 +219,15 @@ const FilterDrawer = ({
         visible={filterVisible}
         getContainer={false}
         onClose={() => setFilterVisible(false)}
-        closeIcon={<CloseCircleOutlined className="drawer-close-icon" />}
+        closeIcon={
+          <>
+            {filterTagValue.length > 0 ? (
+              <span className="apply-button">Apply</span>
+            ) : (
+              <CloseCircleOutlined className="drawer-close-icon" />
+            )}
+          </>
+        }
         style={{ position: "absolute" }}
         width={500}
         height="100%"
