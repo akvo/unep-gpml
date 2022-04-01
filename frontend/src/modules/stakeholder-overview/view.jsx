@@ -399,6 +399,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
               stakeholderCount,
               GPMLMemberCount,
               setFilterCountries,
+              renderFilterTag,
             }}
             entities={entityRoleOptions}
           />
