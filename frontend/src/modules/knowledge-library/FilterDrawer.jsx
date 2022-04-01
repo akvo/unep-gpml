@@ -65,7 +65,7 @@ const FilterDrawer = ({
     organisations: s.organisations,
   }));
   const { isAuthenticated } = useAuth0();
-
+  const [capacityBuildingCount, setCapacityBuildingCount] = useState(0);
   const isLoaded = () =>
     !isEmpty(tags) &&
     !isEmpty(countries) &&
@@ -170,6 +170,25 @@ const FilterDrawer = ({
       }))
     : [];
 
+  useEffect(() => {
+    return api
+      .get(`/browse?tag=capacity+building`)
+      .then((resp) => {
+        const data = resp?.data?.counts.filter(
+          (item) => item?.topic !== "gpml_member_entities"
+        );
+        const capacityBuildingCounts = data.reduce(
+          (acc, val) => acc + val?.count,
+          0
+        );
+
+        setCapacityBuildingCount(capacityBuildingCounts || 0);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   return (
     <div className="site-drawer-render-in-current-wrapper">
       <Drawer
@@ -191,7 +210,8 @@ const FilterDrawer = ({
           <Col span={24} className="resources-card-filter">
             <Space align="middle">
               <div className="filter-title">Resources type</div>
-              {isEmpty(query?.topic) ? (
+              {isEmpty(query?.topic) ||
+              query.tag.includes("capacity building") ? (
                 <Tag className="resource-type">All (default)</Tag>
               ) : (
                 <Tag
@@ -227,6 +247,28 @@ const FilterDrawer = ({
                   </Col>
                 );
               })}
+              <Col
+                span={6}
+                key={"capacityBuilding"}
+                className="resource-card-wrapper"
+              >
+                <Card
+                  onClick={() =>
+                    handleChangeResourceType("tag", "capacity building")
+                  }
+                  className={classNames("resource-type-card", {
+                    active: query?.tag?.includes("capacity building"),
+                  })}
+                >
+                  <Space direction="vertical" align="center">
+                    {topicIcons("capacityBuilding")}
+                    <div className="topic-text">
+                      {topicNames("capacityBuilding")}
+                    </div>
+                    <div className="topic-count">{capacityBuildingCount}</div>
+                  </Space>
+                </Card>
+              </Col>
             </Row>
           </Col>
           {/* Sub-content type */}
