@@ -83,6 +83,7 @@
 (def ^:const ^:private initiative-topic-data-select-clause
   "SELECT
        e.id,
+       'Initiative' AS type,
        NULL::text AS uuid,
        NULL::text AS phase,
        e.q36 AS funds,
@@ -111,6 +112,7 @@
 (def ^:const ^:private policy-topic-data-select-clause
   "SELECT
        e.abstract AS summary,
+       'Policy' AS type,
        e.*,
        geo.geo_coverage_values,
        geo.geo_coverage_country_groups,
@@ -121,6 +123,7 @@
 (def ^:const ^:private event-topic-data-select-clause
   "SELECT
        e.description AS summary,
+       'Event' AS type,
        e.*,
        geo.geo_coverage_values,
        geo.geo_coverage_country_groups,
@@ -131,6 +134,7 @@
 (def ^:const ^:private technology-topic-data-select-clause
   "SELECT
        e.name AS title,
+       'Technology' AS type,
        e.remarks AS summary,
        e.*,
        geo.geo_coverage_values,
