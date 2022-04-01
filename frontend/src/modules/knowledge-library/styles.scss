@@ -124,7 +124,12 @@
     // Search input
     .search-box {
       width: 100%;
-      max-width: 400px;
+      max-width: 478px;
+
+      @-moz-document url-prefix() {
+        max-width: 427px;
+      }
+
       .ant-space-item:nth-of-type(1) {
         width: 100%;
       }
