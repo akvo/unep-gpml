@@ -11,7 +11,7 @@ stakeholder_association AS (
         sr.association::text AS association,
         sr.remarks,
         json_agg(json_build_object('id', sr.id, 'stakeholder_id', sr.stakeholder, 'role', sr.association, 'stakeholder',
-        concat_ws(' ', s.first_name, s.last_name), 'image', s.picture)) AS stakeholder_connections,
+        concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
         json_agg(json_build_object('id', orgr.id, 'entity_id', orgr.organisation, 'role', orgr.association, 'entity',
         o.name, 'image', o.logo))
         AS entity_connections
@@ -31,7 +31,7 @@ stakeholder_association AS (
         se.association::text AS association,
         se.remarks,
         json_agg(json_build_object('id', se.id, 'stakeholder_id', se.stakeholder, 'role', se.association, 'stakeholder',
-        concat_ws(' ', s.first_name, s.last_name), 'image', s.picture)) AS stakeholder_connections,
+        concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
         json_agg(json_build_object('id', oe.id, 'entity_id', oe.organisation, 'role', oe.association, 'entity', o.name,
         'image', o.logo)) AS
         entity_connections
@@ -50,7 +50,7 @@ stakeholder_association AS (
         st.association::text AS association,
         st.remarks,
         json_agg(json_build_object('id', st.id, 'stakeholder_id', st.stakeholder, 'role', st.association, 'stakeholder',
-        concat_ws(' ', s.first_name, s.last_name), 'image', s.picture)) AS stakeholder_connections,
+        concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
         json_agg(json_build_object('id', ot.id, 'entity_id', ot.organisation, 'role', ot.association, 'entity', o.name,
         'image', o.logo)) AS
         entity_connections
@@ -69,7 +69,7 @@ stakeholder_association AS (
         sp.association::text AS association,
         sp.remarks,
         json_agg(json_build_object('id', sp.id, 'stakeholder_id', sp.stakeholder, 'role', sp.association, 'stakeholder',
-        concat_ws(' ', s.first_name, s.last_name), 'image', s.picture)) AS stakeholder_connections,
+        concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
         json_agg(json_build_object('id', op.id, 'entity_id', op.organisation, 'role', op.association, 'entity', o.name,
         'image', o.logo)) AS
         entity_connections
@@ -88,7 +88,7 @@ stakeholder_association AS (
         si.association::text AS association,
         si.remarks,
         json_agg(json_build_object('id', si.id, 'stakeholder_id', si.stakeholder, 'role', si.association, 'stakeholder',
-        concat_ws(' ', s.first_name, s.last_name), 'image', s.picture)) AS stakeholder_connections,
+        concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
         json_agg(json_build_object('id', oi.id, 'entity_id', oi.organisation, 'role', oi.association, 'entity', o.name,
         'image', o.logo)) AS
         entity_connections
