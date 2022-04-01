@@ -8,7 +8,6 @@
             [gpml.db.event :as db.event]
             [gpml.db.topic :as db.topic]
             [gpml.fixtures :as fixtures]
-            [gpml.seeder.main :as seeder]
             [integrant.core :as ig]))
 
 (use-fixtures :each fixtures/with-test-system)

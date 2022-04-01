@@ -87,8 +87,7 @@
     [:int {:min 0}]]])
 
 (defn api-params->opts
-  [db
-   {:keys [q country tag networkType affiliation representativeGroup geoCoverageType limit page transnational]
+  [{:keys [q country tag networkType affiliation representativeGroup geoCoverageType limit page transnational]
     :or {limit default-api-limit
          page 0}}]
   (cond-> {}
@@ -132,7 +131,7 @@
 (defn get-community-members
   [db query-params]
   (let [conn (:spec db)
-        opts (api-params->opts db query-params)
+        opts (api-params->opts query-params)
         modified-filters (if (get-in opts [:filters :transnational])
                            (let [country-group-countries (flatten
                                                            (conj
