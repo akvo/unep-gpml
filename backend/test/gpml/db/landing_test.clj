@@ -8,7 +8,6 @@
             [gpml.db.event :as db.event]
             [gpml.db.topic :as db.topic]
             [gpml.fixtures :as fixtures]
-            [gpml.seeder.main :as seeder]
             [integrant.core :as ig]))
 
 (use-fixtures :each fixtures/with-test-system)
@@ -75,9 +74,9 @@
                                      :counts
                                      :financing_resource))]
       (are [expected country-id] (= expected (valid? country-id))
-        2 (-> (db.country/country-by-code conn {:name "ESP"}) :id)
-        2 (-> (db.country/country-by-code conn {:name "IND"}) :id)
-        3 (-> (db.country/country-by-code conn {:name "IDN"}) :id)
+        1 (-> (db.country/country-by-code conn {:name "ESP"}) :id)
+        1 (-> (db.country/country-by-code conn {:name "IND"}) :id)
+        2 (-> (db.country/country-by-code conn {:name "IDN"}) :id)
         1 (-> (db.country/country-by-code conn {:name "KEN"}) :id)
         0 (-> (db.country/country-by-code conn {:name "NLD"}) :id)))))
 
@@ -135,19 +134,21 @@
 (deftest landing-counts
   (let [db-key :duct.database.sql/hikaricp
         system (ig/init fixtures/*system* [db-key])
-        db (-> system db-key :spec)]
-    (seeder/seed db {:country? true :resource? true})
+        conn (-> system db-key :spec)
+        _ (add-resource-data conn)
+        landing (db.landing/map-counts-include-all-countries conn)]
     (testing "Landing counts match browse results"
-      (let [counts (db.landing/map-counts db)
-            country-id 4
-            transnationals (set (map str (get-country-group-ids db country-id)))
-            browse (db.topic/get-topics db {:topic #{"financing_resource"}
-                                            :geo-coverage [country-id]
-                                            :transnational transnationals
-                                            :count-only? true})]
-        (is (= (->> counts
-                    (filter #(= country-id (:id %)))
-                    first
-                    :counts
-                    :financing_resource)
+      (let [country-id 4
+            transnationals (->> (get-country-group-ids conn country-id)
+                             (map (comp str :id))
+                             set)
+            landing-counts-by-country (filter #(= country-id (:country_id %)) landing)
+            browse (db.topic/get-topics conn {:topic #{"financing_resource"}
+                                              :geo-coverage [country-id]
+                                              :transnational transnationals
+                                              :count-only? true
+                                              :limit 8
+                                              :offset 0})]
+        (is (= (+ (get-in (first landing-counts-by-country) [:counts :financing_resource])
+                 (get-in (first landing-counts-by-country) [:transnational_counts :financing_resource]))
               (:count (first browse))))))))

@@ -47,4 +47,4 @@ WITH community_members AS (
         s.id,
         a.*
 )
---~(gpml.db.community/get-community-members-query-and-filters params)
+--~ (#'gpml.db.community/get-community-members-query-and-filters params)

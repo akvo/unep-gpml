@@ -20,6 +20,7 @@ export const topicTypes = [
   "financingResource",
   "event",
   "technology",
+  "capacityBuilding",
 ];
 
 export const networkTypes = ["organisation", "stakeholder"];
