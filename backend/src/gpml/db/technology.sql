@@ -169,7 +169,8 @@ select ot.id, ot.association as role, org.id as entity_id, org.name as entity, o
 
 -- :name stakeholder-connections-by-id
 -- :doc Get stakeholder connections by id
-select st.id, st.association as role, s.id as stakeholder_id, concat_ws(' ', s.first_name, s.last_name) as stakeholder, s.picture as image
+select st.id, st.association as role, s.id as stakeholder_id, concat_ws(' ', s.first_name, s.last_name) as stakeholder,
+ s.picture as image, s.role as stakeholder_role
   from stakeholder_technology st
   left join stakeholder s
   on st.stakeholder = s.id
