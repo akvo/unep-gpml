@@ -415,7 +415,7 @@ const StakeholderDetail = ({
                       <List.Item.Meta
                         avatar={<Avatar src={LocationImage} />}
                         title={
-                          countries.find((it) => it.id === data?.country).name
+                          countries.find((it) => it.id === data?.country)?.name
                         }
                       />
                     </List.Item>
