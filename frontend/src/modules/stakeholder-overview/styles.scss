@@ -347,12 +347,15 @@
 
       .organisation-image {
         border: 1px solid;
+        overflow: hidden;
       }
 
       .profile-image {
         max-width: 150px;
         object-fit: cover;
         border-radius: 50%;
+        height: 9em;
+        width: 9em;
       }
 
       .profile-details-container {
