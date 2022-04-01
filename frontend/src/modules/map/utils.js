@@ -15,7 +15,11 @@ export const curr = (topics, findData, path) => {
 
     acc[currProp] = findData?.[currProp];
 
-    return acc;
+    if (currProp === "project") {
+      return { ...acc, initiative: findData?.["initiative"] || 0 };
+    } else {
+      return acc;
+    }
   }, {});
 
   if (properties.length) {
@@ -30,6 +34,7 @@ export const curr = (topics, findData, path) => {
         project: findData?.project,
         technicalResource: findData?.technicalResource,
         technology: findData?.technology,
+        initiative: findData?.initiative || 0,
       });
     }
     if (path === "/stakeholder-overview") {

@@ -168,7 +168,7 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
 const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
   const dataToDisplay = () => {
     return {
-      project: data?.counts?.project,
+      project: (data?.counts?.project || 0) + (data?.counts?.initiative || 0),
       actionPlan: data?.counts?.actionPlan,
       policy: data?.counts?.policy,
       technicalResource: data?.counts?.technicalResource,
@@ -180,7 +180,9 @@ const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
 
   const transnationalData = () => {
     return {
-      project: data?.transnationalCounts?.project,
+      project:
+        (data?.transnationalCounts?.project || 0) +
+        (data?.transnationalCounts?.initiative || 0),
       actionPlan: data?.transnationalCounts?.actionPlan,
       policy: data?.transnationalCounts?.policy,
       technicalResource: data?.transnationalCounts?.technicalResource,
@@ -457,7 +459,11 @@ const Maps = ({
 
           acc[currProp] = curr.counts?.[currProp];
 
-          return acc;
+          if (currProp === "project") {
+            return { ...acc, initiative: curr.counts?.["initiative"] || 0 };
+          } else {
+            return acc;
+          }
         }, {});
 
         if (properties.length > 0) {
@@ -472,6 +478,7 @@ const Maps = ({
               project: curr?.counts?.project,
               technicalResource: curr?.counts?.technicalResource,
               technology: curr?.counts?.technology,
+              initiative: curr?.counts?.initiative || 0,
             });
           }
           if (path === "/stakeholder-overview") {
@@ -488,7 +495,7 @@ const Maps = ({
         min,
         values() > max
           ? values()
-          : max === 2
+          : max === 2 || max === 1
           ? max + 0.5
           : max === 3
           ? max + 0.75
