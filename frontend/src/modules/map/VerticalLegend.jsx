@@ -1,11 +1,9 @@
 import React from "react";
 import { Card, Typography } from "antd";
 import { colorRange, higlightColor } from "./config";
-import { curr } from "./utils";
 import { topicNames, tTypes } from "../../utils/misc";
-import { KNOWLEDGE_LIBRARY } from "./Map";
+import { KNOWLEDGE_LIBRARY, STAKEHOLDER_OVERVIEW } from "./Map";
 import { multicountryGroups } from "../knowledge-library/multicountry";
-import Item from "antd/lib/list/Item";
 
 const { Text } = Typography;
 
@@ -18,7 +16,8 @@ const VerticalLegend = ({
   path,
   query,
 }) => {
-  // console.log(multicountryGroups);
+  const entityQuery = query.networkType;
+  const topicQuery = query.topic;
 
   const ResourceCountPerTransnationalGroup = multicountryGroups.map(
     (transnationalGroup) => {
@@ -113,21 +112,230 @@ const VerticalLegend = ({
     }
   ).nationalCount;
 
-  const stakeholderCounts = contents.reduce(
+  const stakeholderTotalCounts = contents.reduce(
     (acc, currVal) => {
-      acc.stakeholderCounts = {
-        ...acc.stakeholderCounts,
-        stakeholder:
-          acc.stakeholderCounts.stakeholder + currVal.counts.stakeholder,
+      acc = {
+        ...acc,
+        individual: acc.individual + currVal.counts.stakeholder,
+        entity: {
+          member: acc.entity.member + currVal.counts.organisation,
+          nonMember:
+            acc.entity.nonMember + currVal.transnationalCounts.organisation,
+        },
       };
       return acc;
     },
     {
-      stakeholderCounts: {
-        stakeholder: 0,
+      individual: 0,
+      entity: {
+        member: 0,
+        nonMember: 0,
       },
     }
   );
+
+  const stakeholderPerTransnationalGroup = multicountryGroups.map(
+    (transnationalGroup) => {
+      const countryIds = transnationalGroup.item
+        .map((transnational) =>
+          transnational.countries.map((country) => country.id)
+        )
+        .flat();
+
+      const resources = contents.filter((content) =>
+        countryIds.includes(content.countryId)
+      );
+
+      const totalTransantionalStakeholderCount = resources.reduce(
+        (acc, currVal) => {
+          acc = {
+            ...acc,
+            individual: acc.individual + currVal.counts.stakeholder,
+            entity: {
+              member: acc.entity.member + currVal.counts.organisation,
+              nonMember:
+                acc.entity.nonMember + currVal.transnationalCounts.organisation,
+            },
+          };
+          return acc;
+        },
+        {
+          individual: 0,
+          entity: {
+            member: 0,
+            nonMember: 0,
+          },
+        }
+      );
+
+      return {
+        group: transnationalGroup.label,
+        stakeholderPerCountry: totalTransantionalStakeholderCount,
+      };
+    }
+  );
+
+  const stakeholderCounts = () => {
+    return entityQuery.length === 0 ? (
+      <div>
+        <div>
+          <b className="legend-stakeholder-title">Type</b>
+
+          <div className="legend-stakeholder-wrapper">
+            <div className="legend-stakeholder-type">
+              <div className="type">Entity</div>
+              <div className="entities">
+                <div className="entity-breakdown">
+                  <b>Member of GPML</b>
+                  <b>{stakeholderTotalCounts.entity.member}</b>
+                </div>
+                <div className="entity-breakdown">
+                  <b>Non-member </b>
+                  <b>
+                    <b>{stakeholderTotalCounts.entity.nonMember}</b>
+                  </b>
+                </div>
+              </div>
+            </div>
+
+            <div className="legend-stakeholder-type individual">
+              <div className="type">Individual</div>
+              <b>{stakeholderTotalCounts.individual}</b>
+            </div>
+          </div>
+        </div>
+      </div>
+    ) : (
+      <div>
+        <div>
+          <b className="legend-stakeholder-title">Type</b>
+          <div className="legend-stakeholder-wrapper">
+            {entityQuery.includes("organisation") && (
+              <div className="legend-stakeholder-type">
+                <div className="type">Entity</div>
+                <div className="entities">
+                  <div className="entity-breakdown">
+                    <b>Member of GPML</b>
+                    <b>{stakeholderTotalCounts.entity.member}</b>
+                  </div>
+                  <div className="entity-breakdown">
+                    <b>Non-member </b>
+                    <b>
+                      <b>{stakeholderTotalCounts.entity.nonMember}</b>
+                    </b>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {entityQuery.includes("stakeholder") && (
+              <div className="legend-stakeholder-type individual">
+                <div className="type">Individual</div>
+                <b>{stakeholderTotalCounts.individual}</b>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const stakeholderCountsPerTransnationalGroup = () => {
+    return stakeholderPerTransnationalGroup.map((transnationalGroup) => {
+      return (
+        <div key={transnationalGroup?.group}>
+          <div className="legend-transnational-count">
+            <strong className="legend-transnational-title">
+              {transnationalGroup?.group}
+            </strong>
+            <div>
+              {entityQuery.length === 0 ? (
+                <div>
+                  <b className="legend-stakeholder-title">Type</b>
+
+                  <div className="legend-stakeholder-wrapper">
+                    <div className="legend-stakeholder-type">
+                      <div className="type">Entity</div>
+                      <div className="entities">
+                        <div className="entity-breakdown">
+                          <b>Member of GPML</b>
+                          <b>
+                            {
+                              transnationalGroup.stakeholderPerCountry.entity
+                                .member
+                            }
+                          </b>
+                        </div>
+                        <div className="entity-breakdown">
+                          <b>Non-member </b>
+                          <b>
+                            <b>
+                              {
+                                transnationalGroup.stakeholderPerCountry.entity
+                                  .nonMember
+                              }
+                            </b>
+                          </b>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="legend-stakeholder-type individual">
+                      <div className="type">Individual</div>
+                      <b>
+                        {transnationalGroup.stakeholderPerCountry.individual}
+                      </b>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <b className="legend-stakeholder-title">Type</b>
+
+                  {entityQuery.includes("organisation") && (
+                    <div className="legend-stakeholder-type">
+                      <div className="type">Entity</div>
+                      <div className="entities">
+                        <div className="entity-breakdown">
+                          <b>Member of GPML</b>
+                          <b>
+                            {
+                              transnationalGroup.stakeholderPerCountry.entity
+                                .member
+                            }
+                          </b>
+                        </div>
+                        <div className="entity-breakdown">
+                          <b>Non-member </b>
+                          <b>
+                            <b>
+                              {
+                                transnationalGroup.stakeholderPerCountry.entity
+                                  .nonMember
+                              }
+                            </b>
+                          </b>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {entityQuery.includes("stakeholder") && (
+                    <div className="legend-stakeholder-type individual">
+                      <div className="type">Individual</div>
+                      <b>
+                        {transnationalGroup.stakeholderPerCountry.individual}
+                      </b>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    });
+  };
 
   const transnationalResources = () => {
     return ResourceCountPerTransnationalGroup.map((transnationalGroup) => {
@@ -158,7 +366,7 @@ const VerticalLegend = ({
                     }
                   };
 
-                  return query.topic.length === 0 ? (
+                  return topicQuery.length === 0 ? (
                     <div key={topic} className="total-resources">
                       <div>{topicNames(topic)}</div>
                       <div>
@@ -170,7 +378,7 @@ const VerticalLegend = ({
                       </div>
                     </div>
                   ) : (
-                    query.topic.includes(topicChecker()) && (
+                    topicQuery.includes(topicChecker()) && (
                       <div key={topic} className="total-resources">
                         <div>{topicNames(topic)}</div>
                         <div>
@@ -207,7 +415,7 @@ const VerticalLegend = ({
           }
         };
 
-        return query.topic.length === 0 ? (
+        return topicQuery.length === 0 ? (
           <div key={topic} className="total-resources">
             <div>{topicNames(topic)}</div>
             <div>
@@ -219,7 +427,7 @@ const VerticalLegend = ({
             </div>
           </div>
         ) : (
-          query.topic.includes(topicChecker()) && (
+          topicQuery.includes(topicChecker()) && (
             <div key={topic} className="total-resources">
               <div>{topicNames(topic)}</div>
               <div>
@@ -335,15 +543,33 @@ const VerticalLegend = ({
         {path === KNOWLEDGE_LIBRARY && (
           <>
             <div className="total-resources-wrapper">
-              <strong>Total resources</strong>
+              <strong className="legend-heading">Total resources</strong>
               {totalResourcesContent()}
             </div>
 
             <hr className="legend-separator" />
 
             <div className="total-resources-wrapper">
-              <strong>Total resources per transnational group</strong>
+              <strong className="legend-heading">
+                Total resources per transnational group
+              </strong>
               {transnationalResources()}
+            </div>
+          </>
+        )}
+        {path === STAKEHOLDER_OVERVIEW && (
+          <>
+            <div className="total-resources-wrapper">
+              <strong className="legend-heading">Total stakeholders</strong>
+              {stakeholderCounts()}
+            </div>
+
+            <hr className="legend-separator" />
+            <div className="total-resources-wrapper">
+              <strong className="legend-heading">
+                Total stakeholders per transnational group
+              </strong>
+              {stakeholderCountsPerTransnationalGroup()}
             </div>
           </>
         )}

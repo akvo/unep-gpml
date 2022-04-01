@@ -156,7 +156,7 @@
       }
     }
   }
-  // LEGEND
+  // LEGEND CONTENT
   .legend-transnational-count {
     text-align: left;
     margin-top: 10px;
@@ -180,6 +180,38 @@
 
   .total-resources:not(:last-of-type) {
     border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  }
+
+  .legend-heading {
+    display: block;
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  .legend-stakeholder-type {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-right: 10px;
+    &:not(:last-of-type) {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    }
+    .type {
+      margin-right: 10px;
+    }
+    .entities {
+      width: 100%;
+      .entity-breakdown {
+        display: flex;
+        justify-content: space-between;
+      }
+      .entity-breakdown:not(:last-of-type) {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+  .legend-stakeholder-type.individual {
+    justify-content: space-between;
   }
 
   .map-buttons {
