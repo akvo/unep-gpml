@@ -340,7 +340,7 @@
         max-width: 9em;
         max-height: 9em;
         min-width: 9em;
-        min-height: 9em;
+        height: 9em;
         margin-right: 16.51px;
         text-align: center;
       }
@@ -354,8 +354,7 @@
         max-width: 150px;
         object-fit: cover;
         border-radius: 50%;
-        height: 9em;
-        width: 9em;
+        height: 100%;
       }
 
       .profile-details-container {
@@ -1103,7 +1102,7 @@
         }
         .image-wrapper {
           min-width: 7em;
-          min-height: 7em;
+          height: 7em;
           max-width: 7em;
           max-height: 7em;
         }
