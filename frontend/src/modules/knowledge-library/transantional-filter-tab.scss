@@ -39,6 +39,11 @@
   .ant-select-item.ant-select-item-group {
     color: rgba(0, 0, 0, 0.45);
   }
+  .ant-select-selection-search-input {
+    font-weight: 700;
+    font-size: 16px;
+    color: $blue06;
+  }
 
   .country-filter-tab-pane {
     padding: 0.5rem 1rem;
