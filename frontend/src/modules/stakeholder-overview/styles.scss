@@ -106,7 +106,7 @@
     // Search input
     .search-box {
       width: 100%;
-      max-width: 400px;
+      max-width: 478px;
       .ant-space-item:nth-of-type(1) {
         width: 100%;
       }
@@ -738,6 +738,17 @@
       .multiselection-filter .ant-select-selection-placeholder {
         font-style: italic;
         font-weight: 700;
+      }
+
+      .multiselection-filter {
+        .ant-select-selection-search-input {
+          width: 100%;
+          display: block;
+          font-weight: 700;
+          font-size: 16px;
+          color: $blue06;
+          font-style: italic;
+        }
       }
 
       .ant-select-selector {
