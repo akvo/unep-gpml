@@ -411,6 +411,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                 setFilterCountries,
                 multiCountryCountries,
                 setMultiCountryCountries,
+                renderFilterTag,
               }}
               entities={entityRoleOptions}
             />
