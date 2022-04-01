@@ -397,19 +397,21 @@ const KnowledgeLibrary = ({
       <Col span={24}>
         <div className="ui-container">
           {/* Filter Drawer */}
-          <FilterDrawer
-            {...{
-              query,
-              countData,
-              filters,
-              filterVisible,
-              setFilterVisible,
-              multiCountryCountries,
-              setMultiCountryCountries,
-            }}
-            updateQuery={(flag, val) => updateQuery(flag, val)}
-          />
-
+          {filterVisible && (
+            <FilterDrawer
+              {...{
+                query,
+                countData,
+                filters,
+                filterVisible,
+                setFilterVisible,
+                multiCountryCountries,
+                setMultiCountryCountries,
+                filterTagValue,
+              }}
+              updateQuery={(flag, val) => updateQuery(flag, val)}
+            />
+          )}
           <LeftSidebar active={1} sidebar={sidebar}>
             <Row
               className="resource-main-container"
