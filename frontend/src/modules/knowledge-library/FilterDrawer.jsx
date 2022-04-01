@@ -204,7 +204,7 @@ const FilterDrawer = ({
                 </Tag>
               )}
             </Space>
-            <Row type="flex" gutter={[10, 10]}>
+            <Row type="flex" gutter={[10, 10]} justify="space-between">
               {topicTypes.map((type) => {
                 const topic = humps.decamelize(type);
                 const count =
