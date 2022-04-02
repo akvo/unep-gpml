@@ -176,7 +176,7 @@ const VerticalLegend = ({
               {transnationalGroup?.groupLabel}
             </strong>
             <div>
-              {[...tTypes, "capacityBuilding"]
+              {tTypes
                 .filter(
                   (topic) => topic !== "organisation" && topic !== "stakeholder"
                 )
@@ -232,7 +232,7 @@ const VerticalLegend = ({
                         {transantional.label}
                       </b>
                       <div>
-                        {[...tTypes, "capacityBuilding"]
+                        {tTypes
                           .filter(
                             (topic) =>
                               topic !== "organisation" &&
@@ -289,7 +289,7 @@ const VerticalLegend = ({
   };
 
   const totalResourcesContent = () =>
-    [...tTypes, "capacityBuilding"]
+    tTypes
       .filter((topic) => topic !== "organisation" && topic !== "stakeholder")
       .map((topic) => {
         const topicChecker = () => {
