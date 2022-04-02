@@ -19,6 +19,7 @@ const VerticalLegend = ({
   const entityQuery = query.networkType;
   const topicQuery = query.topic;
 
+  // RESOURCES TOTAL COUNTS
   const ResourceCountPerTransnationalGroup = multicountryGroups.map(
     (transnationalGroup) => {
       const countryIds = transnationalGroup.item
@@ -26,6 +27,59 @@ const VerticalLegend = ({
           transnational.countries.map((country) => country.id)
         )
         .flat();
+
+      const transnationalResources = transnationalGroup.item.map(
+        (transantional) => {
+          const countryIdsPerTransnational = transantional.countries.map(
+            (country) => country.id
+          );
+
+          const resourcesPerTransnational = contents
+            .filter((content) =>
+              countryIdsPerTransnational.includes(content.countryId)
+            )
+            .map((content) => content.transnationalCounts);
+
+          const result = resourcesPerTransnational.reduce(
+            (acc, currVal) => {
+              acc = {
+                ...acc,
+                actionPlan: acc.actionPlan + currVal.actionPlan,
+                event: acc.event + currVal.event,
+                financingResource:
+                  acc.financingResource + currVal.financingResource,
+
+                policy: acc.policy + currVal.policy,
+                project:
+                  acc.project +
+                  currVal.project +
+                  ((acc.initiative || 0) + (currVal.initiative || 0)),
+                technicalResource:
+                  acc.technicalResource + currVal.technicalResource,
+                technology: acc.technology + currVal.technology,
+                capacityBuilding:
+                  (acc.capacityBuilding || 0) + (currVal.capacityBuilding || 0),
+              };
+              return acc;
+            },
+            {
+              actionPlan: 0,
+              event: 0,
+              financingResource: 0,
+              project: 0,
+              technicalResource: 0,
+              technology: 0,
+              policy: 0,
+              capacityBuilding: 0,
+            }
+          );
+
+          return {
+            label: transantional.name,
+            totalResources: result,
+          };
+        }
+      );
 
       const resources = contents
         .filter((content) => countryIds.includes(content.countryId))
@@ -66,8 +120,9 @@ const VerticalLegend = ({
       );
 
       return {
-        group: transnationalGroup.label,
+        groupLabel: transnationalGroup.label,
         resourcePerCountry: totalTransantionalResourceCount,
+        transnational: transnationalResources,
       };
     }
   );
@@ -112,6 +167,166 @@ const VerticalLegend = ({
     }
   ).nationalCount;
 
+  const transnationalResources = () => {
+    return ResourceCountPerTransnationalGroup.map((transnationalGroup) => {
+      return (
+        <div key={transnationalGroup?.groupLabel}>
+          <div className="legend-transnational-count">
+            <strong className="legend-transnational-title">
+              {transnationalGroup?.groupLabel}
+            </strong>
+            <div>
+              {[...tTypes, "capacityBuilding"]
+                .filter(
+                  (topic) => topic !== "organisation" && topic !== "stakeholder"
+                )
+                .map((topic) => {
+                  const topicChecker = () => {
+                    if (topic === "actionPlan") {
+                      return "action_plan";
+                    } else if (topic === "technicalResource") {
+                      return "technical_resource";
+                    } else if (topic === "financingResource") {
+                      return "financing_resource";
+                    } else {
+                      return topic;
+                    }
+                  };
+
+                  return topicQuery.length === 0 ? (
+                    <div key={topic} className="total-resources">
+                      <div>{topicNames(topic)}</div>
+                      <div>
+                        <b>
+                          {transnationalGroup.resourcePerCountry?.[topic]
+                            ? transnationalGroup.resourcePerCountry?.[topic]
+                            : 0}
+                        </b>
+                      </div>
+                    </div>
+                  ) : (
+                    topicQuery.includes(topicChecker()) && (
+                      <div key={topic} className="total-resources">
+                        <div>{topicNames(topic)}</div>
+                        <div>
+                          <b>
+                            {transnationalGroup.resourcePerCountry?.[topic]
+                              ? transnationalGroup.resourcePerCountry?.[topic]
+                              : 0}
+                          </b>
+                        </div>
+                      </div>
+                    )
+                  );
+                })}
+            </div>
+
+            {/* Total resources per transnational */}
+            <div className="total-per-transnational">
+              {transnationalGroup.transnational.map((transantional) => {
+                return (
+                  <div key={transantional.label}>
+                    <b className="transnational-name">{transantional.label}</b>
+                    <div>
+                      {[...tTypes, "capacityBuilding"]
+                        .filter(
+                          (topic) =>
+                            topic !== "organisation" && topic !== "stakeholder"
+                        )
+                        .map((topic) => {
+                          const topicChecker = () => {
+                            if (topic === "actionPlan") {
+                              return "action_plan";
+                            } else if (topic === "technicalResource") {
+                              return "technical_resource";
+                            } else if (topic === "financingResource") {
+                              return "financing_resource";
+                            } else {
+                              return topic;
+                            }
+                          };
+
+                          return topicQuery.length === 0 ? (
+                            <div key={topic} className="total-resources">
+                              <div>{topicNames(topic)}</div>
+                              <div>
+                                <b>
+                                  {transantional.totalResources?.[topic]
+                                    ? transantional.totalResources?.[topic]
+                                    : 0}
+                                </b>
+                              </div>
+                            </div>
+                          ) : (
+                            topicQuery.includes(topicChecker()) && (
+                              <div key={topic} className="total-resources">
+                                <div>{topicNames(topic)}</div>
+                                <div>
+                                  <b>
+                                    {transantional.totalResources?.[topic]
+                                      ? transantional.totalResources?.[topic]
+                                      : 0}
+                                  </b>
+                                </div>
+                              </div>
+                            )
+                          );
+                        })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      );
+    });
+  };
+
+  const totalResourcesContent = () =>
+    [...tTypes, "capacityBuilding"]
+      .filter((topic) => topic !== "organisation" && topic !== "stakeholder")
+      .map((topic) => {
+        const topicChecker = () => {
+          if (topic === "actionPlan") {
+            return "action_plan";
+          } else if (topic === "technicalResource") {
+            return "technical_resource";
+          } else if (topic === "financingResource") {
+            return "financing_resource";
+          } else {
+            return topic;
+          }
+        };
+
+        return topicQuery.length === 0 ? (
+          <div key={topic} className="total-resources">
+            <div>{topicNames(topic)}</div>
+            <div>
+              <b>
+                {totalNationalResourceCount?.[topic]
+                  ? totalNationalResourceCount?.[topic]
+                  : 0}
+              </b>
+            </div>
+          </div>
+        ) : (
+          topicQuery.includes(topicChecker()) && (
+            <div key={topic} className="total-resources">
+              <div>{topicNames(topic)}</div>
+              <div>
+                <b>
+                  {totalNationalResourceCount?.[topic]
+                    ? totalNationalResourceCount?.[topic]
+                    : 0}
+                </b>
+              </div>
+            </div>
+          )
+        );
+      });
+
+  // STAKEHOLDER TOTAL COUNTS
   const stakeholderTotalCounts = contents.reduce(
     (acc, currVal) => {
       acc = {
@@ -336,108 +551,6 @@ const VerticalLegend = ({
       );
     });
   };
-
-  const transnationalResources = () => {
-    return ResourceCountPerTransnationalGroup.map((transnationalGroup) => {
-      return (
-        <div key={transnationalGroup?.group}>
-          <div className="legend-transnational-count">
-            <strong className="legend-transnational-title">
-              {transnationalGroup?.group}
-            </strong>
-            <div>
-              {[...tTypes, "capacityBuilding"]
-                .filter(
-                  (topic) => topic !== "organisation" && topic !== "stakeholder"
-                )
-                .map((topic) => {
-                  const topicChecker = () => {
-                    if (topic === "actionPlan") {
-                      return "action_plan";
-                    } else if (topic === "technicalResource") {
-                      return "technical_resource";
-                    } else if (topic === "financingResource") {
-                      return "financing_resource";
-                    } else {
-                      return topic;
-                    }
-                  };
-
-                  return topicQuery.length === 0 ? (
-                    <div key={topic} className="total-resources">
-                      <div>{topicNames(topic)}</div>
-                      <div>
-                        <b>
-                          {transnationalGroup.resourcePerCountry?.[topic]
-                            ? transnationalGroup.resourcePerCountry?.[topic]
-                            : 0}
-                        </b>
-                      </div>
-                    </div>
-                  ) : (
-                    topicQuery.includes(topicChecker()) && (
-                      <div key={topic} className="total-resources">
-                        <div>{topicNames(topic)}</div>
-                        <div>
-                          <b>
-                            {transnationalGroup.resourcePerCountry?.[topic]
-                              ? transnationalGroup.resourcePerCountry?.[topic]
-                              : 0}
-                          </b>
-                        </div>
-                      </div>
-                    )
-                  );
-                })}
-            </div>
-          </div>
-        </div>
-      );
-    });
-  };
-
-  const totalResourcesContent = () =>
-    [...tTypes, "capacityBuilding"]
-      .filter((topic) => topic !== "organisation" && topic !== "stakeholder")
-      .map((topic) => {
-        const topicChecker = () => {
-          if (topic === "actionPlan") {
-            return "action_plan";
-          } else if (topic === "technicalResource") {
-            return "technical_resource";
-          } else if (topic === "financingResource") {
-            return "financing_resource";
-          } else {
-            return topic;
-          }
-        };
-
-        return topicQuery.length === 0 ? (
-          <div key={topic} className="total-resources">
-            <div>{topicNames(topic)}</div>
-            <div>
-              <b>
-                {totalNationalResourceCount?.[topic]
-                  ? totalNationalResourceCount?.[topic]
-                  : 0}
-              </b>
-            </div>
-          </div>
-        ) : (
-          topicQuery.includes(topicChecker()) && (
-            <div key={topic} className="total-resources">
-              <div>{topicNames(topic)}</div>
-              <div>
-                <b>
-                  {totalNationalResourceCount?.[topic]
-                    ? totalNationalResourceCount?.[topic]
-                    : 0}
-                </b>
-              </div>
-            </div>
-          )
-        );
-      });
 
   data = Array.from(new Set(data.map((x) => Math.floor(x))));
   data = data.filter((x) => x !== 0);
