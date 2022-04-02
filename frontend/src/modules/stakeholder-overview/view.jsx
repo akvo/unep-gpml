@@ -60,6 +60,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   const hasProfile = profile?.reviewStatus;
   const isValidUser = isAuthenticated && isApprovedUser && hasProfile;
   const [filterVisible, setFilterVisible] = useState(false);
+  const [scroll, setScroll] = useState(true);
   const query = useQuery();
   const [view, setView] = useState("card");
   const [loading, setLoading] = useState(true);
@@ -250,6 +251,18 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValidUser]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const position = window.pageYOffset;
+      if (!isValidUser && position > 50) {
+        setScroll(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  });
+
   const updateQuery = (param, value, paramValueArr) => {
     const topScroll = window.innerWidth < 640 ? 996 : 207;
     window.scrollTo({
@@ -381,8 +394,10 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
   return (
     <div id="stakeholder-overview" className="stakeholder-overview">
-      {!isValidUser && <UnathenticatedPage loginWithPopup={loginWithPopup} />}
-      <div className={isValidUser ? "" : "blur"}>
+      {!isValidUser && !scroll && (
+        <UnathenticatedPage loginWithPopup={loginWithPopup} />
+      )}
+      <div className={!isValidUser && !scroll ? "blur" : ""}>
         {isValidUser && (
           <Header
             {...{
