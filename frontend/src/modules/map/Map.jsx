@@ -50,6 +50,7 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
     return {
       organisation: data?.counts?.organisation,
       stakeholder: data?.counts?.stakeholder,
+      nonMemberOrganisation: data?.counts?.nonMemberOrganisation,
     };
   };
 
@@ -57,6 +58,7 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
     return {
       organisation: data?.transnationalCounts?.organisation,
       stakeholder: data?.transnationalCounts?.stakeholder,
+      nonMemberOrganisation: data?.transnationalCounts?.nonMemberOrganisation,
     };
   };
 
@@ -99,8 +101,8 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
                     <b className="entity-type">GPML Non-Members</b>
                     <div className="tooltip-count-wrapper">
                       <b className="tooltip-counts">
-                        {transnationalData()?.["organisation"]
-                          ? transnationalData()?.["organisation"]
+                        {transnationalData()?.["nonMemberOrganisation"]
+                          ? transnationalData()?.["nonMemberOrganisation"]
                           : 0}
                       </b>
                     </div>
@@ -137,8 +139,8 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
                       <b className="entity-type">GPML Non-Members</b>
                       <div className="tooltip-count-wrapper">
                         <b className="tooltip-counts">
-                          {transnationalData()?.["organisation"]
-                            ? transnationalData()?.["organisation"]
+                          {transnationalData()?.["nonMemberOrganisation"]
+                            ? transnationalData()?.["nonMemberOrganisation"]
                             : 0}
                         </b>
                       </div>
