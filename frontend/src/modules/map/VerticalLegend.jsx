@@ -331,11 +331,11 @@ const VerticalLegend = ({
     (acc, currVal) => {
       acc = {
         ...acc,
-        individual: acc.individual + currVal.counts.stakeholder,
+        individual: acc.individual + Number(currVal.counts.stakeholder),
         entity: {
-          member: acc.entity.member + currVal.counts.organisation,
+          member: acc.entity.member + Number(currVal.counts.organisation),
           nonMember:
-            acc.entity.nonMember + currVal.transnationalCounts.organisation,
+            acc.entity.nonMember + Number(currVal.counts.nonMemberOrganisation),
         },
       };
       return acc;
@@ -357,19 +357,59 @@ const VerticalLegend = ({
         )
         .flat();
 
-      const resources = contents.filter((content) =>
-        countryIds.includes(content.countryId)
+      const stakeholders = contents
+        .filter((content) => countryIds.includes(content.countryId))
+        .map((content) => content.transnationalCounts);
+
+      const transnationalStakeholders = transnationalGroup.item.map(
+        (transantional) => {
+          const countryIdsPerTransnational = transantional.countries.map(
+            (country) => country.id
+          );
+
+          const stakeholdersPerTransnational = contents
+            .filter((content) =>
+              countryIdsPerTransnational.includes(content.countryId)
+            )
+            .map((content) => content.transnationalCounts);
+
+          const result = stakeholdersPerTransnational.reduce(
+            (acc, currVal) => {
+              acc = {
+                ...acc,
+                individual: acc.individual + currVal.stakeholder || 0,
+                entity: {
+                  member: acc.entity.member + currVal.organisation,
+                  nonMember:
+                    acc.entity.nonMember + currVal.nonMemberOrganisation,
+                },
+              };
+              return acc;
+            },
+            {
+              individual: 0,
+              entity: {
+                member: 0,
+                nonMember: 0,
+              },
+            }
+          );
+
+          return {
+            label: transantional.name,
+            totalStakeholders: result,
+          };
+        }
       );
 
-      const totalTransantionalStakeholderCount = resources.reduce(
+      const totalTransantionalStakeholderCount = stakeholders.reduce(
         (acc, currVal) => {
           acc = {
             ...acc,
-            individual: acc.individual + currVal.counts.stakeholder,
+            individual: acc.individual + currVal.stakeholder,
             entity: {
-              member: acc.entity.member + currVal.counts.organisation,
-              nonMember:
-                acc.entity.nonMember + currVal.transnationalCounts.organisation,
+              member: acc.entity.member + currVal.organisation,
+              nonMember: acc.entity.nonMember + currVal.nonMemberOrganisation,
             },
           };
           return acc;
@@ -384,12 +424,16 @@ const VerticalLegend = ({
       );
 
       return {
-        group: transnationalGroup.label,
+        groupLabel: transnationalGroup.label,
         stakeholderPerCountry: totalTransantionalStakeholderCount,
+        transnational: transnationalStakeholders,
       };
     }
   );
-
+  console.log(
+    "stakeholderPerTransnationalGroup::::::",
+    stakeholderPerTransnationalGroup
+  );
   const stakeholderCounts = () => {
     return entityQuery.length === 0 ? (
       <div>
@@ -458,10 +502,10 @@ const VerticalLegend = ({
   const stakeholderCountsPerTransnationalGroup = () => {
     return stakeholderPerTransnationalGroup.map((transnationalGroup) => {
       return (
-        <div key={transnationalGroup?.group}>
+        <div key={transnationalGroup?.groupLabel}>
           <div className="legend-transnational-count">
             <strong className="legend-transnational-title">
-              {transnationalGroup?.group}
+              {transnationalGroup?.groupLabel}
             </strong>
             <div>
               {entityQuery.length === 0 ? (
@@ -545,6 +589,98 @@ const VerticalLegend = ({
                   )}
                 </div>
               )}
+            </div>
+            <div>
+              {transnationalGroup.transnational.map((transnational) => {
+                return (
+                  <div className="total-per-transnational">
+                    <b className="transnational-name">{transnational.label}</b>
+                    <div>
+                      {entityQuery.length === 0 ? (
+                        <div>
+                          <b className="legend-stakeholder-title">Type</b>
+
+                          <div className="legend-stakeholder-wrapper">
+                            <div className="legend-stakeholder-type">
+                              <div className="type">Entity</div>
+                              <div className="entities">
+                                <div className="entity-breakdown">
+                                  <b>Member of GPML</b>
+                                  <b>
+                                    {
+                                      transnational.totalStakeholders.entity
+                                        .member
+                                    }
+                                  </b>
+                                </div>
+                                <div className="entity-breakdown">
+                                  <b>Non-member </b>
+                                  <b>
+                                    <b>
+                                      {
+                                        transnational.totalStakeholders.entity
+                                          .nonMember
+                                      }
+                                    </b>
+                                  </b>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="legend-stakeholder-type individual">
+                              <div className="type">Individual</div>
+                              <b>
+                                {transnational.totalStakeholders.individual}
+                              </b>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <b className="legend-stakeholder-title">Type</b>
+
+                          {entityQuery.includes("organisation") && (
+                            <div className="legend-stakeholder-type">
+                              <div className="type">Entity</div>
+                              <div className="entities">
+                                <div className="entity-breakdown">
+                                  <b>Member of GPML</b>
+                                  <b>
+                                    {
+                                      transnational.totalStakeholders.entity
+                                        .member
+                                    }
+                                  </b>
+                                </div>
+                                <div className="entity-breakdown">
+                                  <b>Non-member </b>
+                                  <b>
+                                    <b>
+                                      {
+                                        transnational.totalStakeholders.entity
+                                          .nonMember
+                                      }
+                                    </b>
+                                  </b>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {entityQuery.includes("stakeholder") && (
+                            <div className="legend-stakeholder-type individual">
+                              <div className="type">Individual</div>
+                              <b>
+                                {transnational.totalStakeholders.individual}
+                              </b>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
