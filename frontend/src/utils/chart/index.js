@@ -58,7 +58,8 @@ const Chart = ({
     <ReactECharts
       className={className}
       option={option}
-      style={{ height: height - 50, width: "100%" }}
+      style={{ height: height, width: "100%" }}
+      // style={{ height: height - 50, width: "100%" }}
       onEvents={onEvents}
     />
   );

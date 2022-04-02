@@ -157,6 +157,14 @@
     }
   }
   // LEGEND CONTENT
+  .total-per-transnational {
+    margin-top: 30px;
+    .transnational-name {
+      display: block;
+      margin-top: 30px;
+      color: gray;
+    }
+  }
   .legend-transnational-count {
     text-align: left;
     margin-top: 10px;
@@ -170,6 +178,7 @@
   .legend-separator {
     display: block;
     width: 100%;
+    margin-top: 30px;
   }
 
   .total-resources {

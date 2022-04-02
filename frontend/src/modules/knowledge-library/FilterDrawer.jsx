@@ -67,6 +67,7 @@ const FilterDrawer = ({
   }));
   const { isAuthenticated } = useAuth0();
   const [capacityBuildingCount, setCapacityBuildingCount] = useState(0);
+  const [deleteCapacityBuilding, setDeleteCapacityBuilding] = useState([]);
   const isLoaded = () =>
     !isEmpty(tags) &&
     !isEmpty(countries) &&
@@ -190,6 +191,11 @@ const FilterDrawer = ({
       });
   }, []);
 
+  useEffect(() => {
+    updateQuery("tag", deleteCapacityBuilding);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deleteCapacityBuilding]);
+
   return (
     <div className="site-drawer-render-in-current-wrapper">
       <Drawer
@@ -219,15 +225,27 @@ const FilterDrawer = ({
           <Col span={24} className="resources-card-filter">
             <Space align="middle">
               <div className="filter-title">Resources type</div>
-              {isEmpty(query?.topic) ||
-              query.tag.includes("capacity building") ? (
+              {isEmpty(query?.topic) &&
+              !query.tag.includes("capacity building") ? (
                 <Tag className="resource-type">All (default)</Tag>
               ) : (
                 <Tag
                   className="clear-selection"
                   closable={true}
-                  onClick={() => updateQuery("topic", [])}
-                  onClose={() => updateQuery("topic", [])}
+                  onClick={() => {
+                    const removeCapacityBuilding = query.tag.filter(
+                      (tag) => tag.toLowerCase() !== "capacity building"
+                    );
+                    updateQuery("topic", []);
+                    setDeleteCapacityBuilding(removeCapacityBuilding);
+                  }}
+                  onClose={() => {
+                    const removeCapacityBuilding = query.tag.filter(
+                      (tag) => tag.toLowerCase() !== "capacity building"
+                    );
+                    updateQuery("topic", []);
+                    setDeleteCapacityBuilding(removeCapacityBuilding);
+                  }}
                 >
                   Clear selection
                 </Tag>

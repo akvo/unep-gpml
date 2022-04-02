@@ -508,10 +508,11 @@ const Landing = withRouter(
                   key="popular-topic"
                   title=""
                   type="TREEMAP"
-                  height={675}
+                  // height={675}
+                  height={800}
                   className="popular-topic-chart"
                   data={sortPopularTopic
-                    .filter((tag) => tag.count > 0)
+                    // .filter((tag) => tag.count > 0)
                     .map((x) => {
                       return {
                         id: x.id,
@@ -551,7 +552,7 @@ const Landing = withRouter(
                   {sortPopularTopic.length !== 0 &&
                     sortPopularTopic
                       .find((x) => x?.topic.toLowerCase() === selectedTopic)
-                      ?.items.slice(0, 3)
+                      ?.items.slice(0, 4)
                       ?.map((x, i) => {
                         const { id, type, title, description, remarks } = x;
                         const link = `/${humps.decamelize(type)}/${id}`;
