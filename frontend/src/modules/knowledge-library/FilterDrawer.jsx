@@ -68,6 +68,7 @@ const FilterDrawer = ({
   const { isAuthenticated } = useAuth0();
   const [capacityBuildingCount, setCapacityBuildingCount] = useState(0);
   const [deleteCapacityBuilding, setDeleteCapacityBuilding] = useState([]);
+  const [isClearFilter, setIsClearFilter] = useState(false);
   const isLoaded = () =>
     !isEmpty(tags) &&
     !isEmpty(countries) &&
@@ -192,7 +193,9 @@ const FilterDrawer = ({
   }, []);
 
   useEffect(() => {
-    updateQuery("tag", deleteCapacityBuilding);
+    if (isClearFilter) {
+      updateQuery("tag", deleteCapacityBuilding);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deleteCapacityBuilding]);
 
@@ -233,6 +236,7 @@ const FilterDrawer = ({
                   className="clear-selection"
                   closable={true}
                   onClick={() => {
+                    setIsClearFilter(true);
                     const removeCapacityBuilding = query.tag.filter(
                       (tag) => tag.toLowerCase() !== "capacity building"
                     );
@@ -240,6 +244,7 @@ const FilterDrawer = ({
                     setDeleteCapacityBuilding(removeCapacityBuilding);
                   }}
                   onClose={() => {
+                    setIsClearFilter(true);
                     const removeCapacityBuilding = query.tag.filter(
                       (tag) => tag.toLowerCase() !== "capacity building"
                     );
