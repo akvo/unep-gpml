@@ -497,7 +497,7 @@
     background-color: $bg-dark-primary;
     .item-sidebar {
       width: 100%;
-      height: 118px;
+      height: 100px !important;
 
       p {
         margin-top: 10px;
