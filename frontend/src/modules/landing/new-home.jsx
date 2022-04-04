@@ -512,7 +512,7 @@ const Landing = withRouter(
                   height={800}
                   className="popular-topic-chart"
                   data={sortPopularTopic
-                    // .filter((tag) => tag.count > 0)
+                    .filter((tag) => tag.count > 0)
                     .map((x) => {
                       return {
                         id: x.id,
