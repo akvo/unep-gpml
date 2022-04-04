@@ -67,7 +67,10 @@ const FilterDrawer = ({
   }));
   const { isAuthenticated } = useAuth0();
   const [capacityBuildingCount, setCapacityBuildingCount] = useState(0);
-  const [deleteCapacityBuilding, setDeleteCapacityBuilding] = useState([]);
+  const [
+    tagsExcludingCapacityBuilding,
+    setTagsExcludingCapacityBuilding,
+  ] = useState([]);
   const [isClearFilter, setIsClearFilter] = useState(false);
   const isLoaded = () =>
     !isEmpty(tags) &&
@@ -194,10 +197,19 @@ const FilterDrawer = ({
 
   useEffect(() => {
     if (isClearFilter) {
-      updateQuery("tag", deleteCapacityBuilding);
+      updateQuery("tag", tagsExcludingCapacityBuilding);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deleteCapacityBuilding]);
+  }, [tagsExcludingCapacityBuilding]);
+
+  const clearTopicFilter = () => {
+    setIsClearFilter(true);
+    const removeCapacityBuilding = query.tag.filter(
+      (tag) => tag.toLowerCase() !== "capacity building"
+    );
+    updateQuery("topic", []);
+    setTagsExcludingCapacityBuilding(removeCapacityBuilding);
+  };
 
   return (
     <div className="site-drawer-render-in-current-wrapper">
@@ -235,22 +247,8 @@ const FilterDrawer = ({
                 <Tag
                   className="clear-selection"
                   closable={true}
-                  onClick={() => {
-                    setIsClearFilter(true);
-                    const removeCapacityBuilding = query.tag.filter(
-                      (tag) => tag.toLowerCase() !== "capacity building"
-                    );
-                    updateQuery("topic", []);
-                    setDeleteCapacityBuilding(removeCapacityBuilding);
-                  }}
-                  onClose={() => {
-                    setIsClearFilter(true);
-                    const removeCapacityBuilding = query.tag.filter(
-                      (tag) => tag.toLowerCase() !== "capacity building"
-                    );
-                    updateQuery("topic", []);
-                    setDeleteCapacityBuilding(removeCapacityBuilding);
-                  }}
+                  onClick={clearTopicFilter}
+                  onClose={clearTopicFilter}
                 >
                   Clear selection
                 </Tag>
@@ -308,8 +306,8 @@ const FilterDrawer = ({
               </Col>
             </Row>
           </Col>
-          {/* Sub-content type */}
 
+          {/* Sub-content type */}
           <MultipleSelectFilter
             title="Sub-content type"
             options={
