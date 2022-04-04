@@ -24,7 +24,6 @@ const FilterDrawer = ({
   filterVisible,
   setFilterVisible,
   stakeholderCount,
-  GPMLMemberCount,
   setFilterCountries,
   multiCountryCountries,
   setMultiCountryCountries,
@@ -239,7 +238,7 @@ const FilterDrawer = ({
                           {entityIcon(name)}
                           <div className="topic-text">{entityName(name)}</div>
                           <div className="topic-text topic-counts">
-                            {GPMLMemberCount}
+                            {stakeholderCount.GPMLMemberCount}
                           </div>
                         </Space>
                       </Card>

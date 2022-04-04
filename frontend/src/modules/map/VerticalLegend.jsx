@@ -15,12 +15,14 @@ const VerticalLegend = ({
   contents,
   path,
   query,
+  countData,
+  stakeholderCount,
 }) => {
   const entityQuery = query.networkType;
   const topicQuery = query.topic;
 
   // RESOURCES TOTAL COUNTS
-  const ResourceCountPerTransnationalGroup = multicountryGroups.map(
+  const ResourcesCountPerTransnationalGroups = multicountryGroups.map(
     (transnationalGroup) => {
       const countryIds = transnationalGroup.item
         .map((transnational) =>
@@ -127,48 +129,18 @@ const VerticalLegend = ({
     }
   );
 
-  const totalNationalResourceCount = contents.reduce(
-    (acc, currVal) => {
-      acc.nationalCount = {
-        ...acc.nationalCount,
-        actionPlan: acc.nationalCount.actionPlan + currVal.counts.actionPlan,
-        event: acc.nationalCount.event + currVal.counts.event,
-        financingResource:
-          acc.nationalCount.financingResource +
-          currVal.counts.financingResource,
+  const totalResourceCount =
+    path === KNOWLEDGE_LIBRARY &&
+    countData.filter(
+      (data) =>
+        data.topic !== "stakeholder" &&
+        data.topic !== "organisation" &&
+        data.topic !== "gpml_member_entities" &&
+        data.topic !== "non_member_organisation"
+    );
 
-        policy: acc.nationalCount.policy + currVal.counts.policy,
-        project:
-          acc.nationalCount.project +
-          currVal.counts.project +
-          ((acc.nationalCount.initiative || 0) +
-            (currVal.counts.initiative || 0)),
-        technicalResource:
-          acc.nationalCount.technicalResource +
-          currVal.counts.technicalResource,
-        technology: acc.nationalCount.technology + currVal.counts.technology,
-        capacityBuilding:
-          (acc.nationalCount.capacityBuilding || 0) +
-          (currVal.counts.capacityBuilding || 0),
-      };
-      return acc;
-    },
-    {
-      nationalCount: {
-        actionPlan: 0,
-        event: 0,
-        financingResource: 0,
-        project: 0,
-        technicalResource: 0,
-        technology: 0,
-        policy: 0,
-        capacityBuilding: 0,
-      },
-    }
-  ).nationalCount;
-
-  const transnationalResources = () => {
-    return ResourceCountPerTransnationalGroup.map((transnationalGroup) => {
+  const transnationalResourcesContent = () => {
+    return ResourcesCountPerTransnationalGroups.map((transnationalGroup) => {
       return (
         <div key={transnationalGroup?.groupLabel}>
           <div className="legend-transnational-count">
@@ -303,16 +275,15 @@ const VerticalLegend = ({
             return topic;
           }
         };
+        const findTopic = totalResourceCount.find(
+          (data) => data.topic === topicChecker()
+        );
 
         return topicQuery.length === 0 ? (
           <div key={topic} className="total-resources">
             <div>{topicNames(topic)}</div>
             <div>
-              <b>
-                {totalNationalResourceCount?.[topic]
-                  ? totalNationalResourceCount?.[topic]
-                  : 0}
-              </b>
+              <b>{findTopic?.count ? findTopic?.count : 0}</b>
             </div>
           </div>
         ) : (
@@ -320,11 +291,7 @@ const VerticalLegend = ({
             <div key={topic} className="total-resources">
               <div>{topicNames(topic)}</div>
               <div>
-                <b>
-                  {totalNationalResourceCount?.[topic]
-                    ? totalNationalResourceCount?.[topic]
-                    : 0}
-                </b>
+                <b>{findTopic?.count ? findTopic?.count : 0}</b>
               </div>
             </div>
           )
@@ -333,27 +300,27 @@ const VerticalLegend = ({
 
   // STAKEHOLDER TOTAL COUNTS
 
-  const stakeholderTotalCounts = contents.reduce(
-    (acc, currVal) => {
-      acc = {
-        ...acc,
-        individual: acc.individual + Number(currVal.counts.stakeholder),
-        entity: {
-          member: acc.entity.member + Number(currVal.counts.organisation),
+  const stakeholderTotalCounts =
+    path === STAKEHOLDER_OVERVIEW &&
+    contents.reduce(
+      (acc, currVal) => {
+        acc = {
+          ...acc,
+
           nonMember:
-            acc.entity.nonMember + Number(currVal.counts.nonMemberOrganisation),
-        },
-      };
-      return acc;
-    },
-    {
-      individual: 0,
-      entity: {
-        member: 0,
-        nonMember: 0,
+            acc.nonMember + Number(currVal.counts.nonMemberOrganisation),
+        };
+        return {
+          ...acc,
+          individual: stakeholderCount.individual,
+          member: stakeholderCount.GPMLMemberCount,
+        };
       },
-    }
-  );
+      {
+        individual: 0,
+        nonMember: 0,
+      }
+    );
 
   const stakeholderPerTransnationalGroup = multicountryGroups.map(
     (transnationalGroup) => {
@@ -439,7 +406,7 @@ const VerticalLegend = ({
     }
   );
 
-  const stakeholderCounts = () => {
+  const stakeholderCountsContent = () => {
     return entityQuery.length === 0 ? (
       <div>
         <div>
@@ -451,12 +418,12 @@ const VerticalLegend = ({
               <div className="entities">
                 <div className="entity-breakdown">
                   <b>Member of GPML</b>
-                  <b>{stakeholderTotalCounts.entity.member}</b>
+                  <b>{stakeholderTotalCounts.member}</b>
                 </div>
                 <div className="entity-breakdown">
                   <b>Non-member </b>
                   <b>
-                    <b>{stakeholderTotalCounts.entity.nonMember}</b>
+                    <b>{stakeholderTotalCounts.nonMember}</b>
                   </b>
                 </div>
               </div>
@@ -480,12 +447,12 @@ const VerticalLegend = ({
                 <div className="entities">
                   <div className="entity-breakdown">
                     <b>Member of GPML</b>
-                    <b>{stakeholderTotalCounts.entity.member}</b>
+                    <b>{stakeholderTotalCounts.member}</b>
                   </div>
                   <div className="entity-breakdown">
                     <b>Non-member </b>
                     <b>
-                      <b>{stakeholderTotalCounts.entity.nonMember}</b>
+                      <b>{stakeholderTotalCounts.nonMember}</b>
                     </b>
                   </div>
                 </div>
@@ -504,7 +471,7 @@ const VerticalLegend = ({
     );
   };
 
-  const stakeholderCountsPerTransnationalGroup = () => {
+  const stakeholderPerTransnationalGroupContent = () => {
     return stakeholderPerTransnationalGroup.map((transnationalGroup) => {
       return (
         <div key={transnationalGroup?.groupLabel}>
@@ -811,7 +778,7 @@ const VerticalLegend = ({
               <strong className="legend-heading">
                 Total resources per transnational group
               </strong>
-              {transnationalResources()}
+              {transnationalResourcesContent()}
             </div>
           </>
         )}
@@ -819,7 +786,7 @@ const VerticalLegend = ({
           <>
             <div className="total-resources-wrapper">
               <strong className="legend-heading">Total stakeholders</strong>
-              {stakeholderCounts()}
+              {stakeholderCountsContent()}
             </div>
 
             <hr className="legend-separator" />
@@ -827,7 +794,7 @@ const VerticalLegend = ({
               <strong className="legend-heading">
                 Total stakeholders per transnational group
               </strong>
-              {stakeholderCountsPerTransnationalGroup()}
+              {stakeholderPerTransnationalGroupContent()}
             </div>
           </>
         )}

@@ -6,8 +6,8 @@ import LeftSidebar from "../left-sidebar/LeftSidebar";
 import ActionPlan from "./ActionPlan";
 
 // Icons
-import IconHome from "../../images/workspace/home-icon.svg";
-import IconAdmin from "../../images/workspace/admin-icon.svg";
+import { ReactComponent as IconHome } from "../../images/workspace/home-icon.svg";
+import { ReactComponent as IconAdmin } from "../../images/workspace/admin-icon.svg";
 import DownloadPdf from "../../images/workspace/download-pdf.svg";
 
 const Workspace = ({ profile }) => {
@@ -17,12 +17,12 @@ const Workspace = ({ profile }) => {
     `${profile.firstName} ${profile.lastName}`;
 
   const sidebar = [
-    { id: 1, title: "Home", url: "/workspace", icon: IconHome },
+    { id: 1, title: "Home", url: "/workspace", icon: <IconHome /> },
     {
       id: 4,
       title: "Admin",
       url: profile.role !== "USER" ? "/profile/admin-section" : "",
-      icon: IconAdmin,
+      icon: <IconAdmin />,
     },
   ];
 

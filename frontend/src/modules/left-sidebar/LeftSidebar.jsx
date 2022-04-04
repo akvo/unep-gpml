@@ -24,7 +24,8 @@ const LeftSidebar = ({ children, active = 1, sidebar }) => {
                   className="item-menu"
                   onClick={() => setActiveMenu(s?.id)}
                 >
-                  <img src={s?.icon} alt={s?.title} />
+                  {/* <img src={s?.icon} alt={s?.title} /> */}
+                  {s.icon}
                   <p>{s?.title}</p>
                 </Link>
               ) : s.title.toLowerCase() === "forums" ? (
@@ -33,12 +34,14 @@ const LeftSidebar = ({ children, active = 1, sidebar }) => {
                   className="item-menu"
                   onClick={() => setActiveMenu(s?.id)}
                 >
-                  <img src={s?.icon} alt={s?.title} />
+                  {/* <img src={s?.icon} alt={s?.title} /> */}
+                  {s.icon}
                   <p>{s?.title}</p>
                 </a>
               ) : (
                 <div className="item-menu disabled">
-                  <img src={s?.icon} alt={s?.title} />
+                  {/* <img src={s?.icon} alt={s?.title} /> */}
+                  {s.icon}
                   <p>{s?.title}</p>
                 </div>
               )}
@@ -63,12 +66,12 @@ const LeftSidebar = ({ children, active = 1, sidebar }) => {
                       className="item-menu"
                       onClick={() => setActiveMenu(s?.id)}
                     >
-                      <img src={s?.icon} alt={s?.title} />
+                      {s?.icon}
                       <p>{s?.title}</p>
                     </Link>
                   ) : (
                     <div className="ant-col ant-col-8 item-menu disabled">
-                      <img src={s?.icon} alt={s?.title} />
+                      {s?.icon}
                       <p>{s?.title}</p>
                     </div>
                   )}

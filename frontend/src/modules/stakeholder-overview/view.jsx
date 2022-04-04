@@ -22,9 +22,9 @@ import FilterDrawer from "./filterDrawer";
 import MapView from "./mapView";
 
 // Icons
-import IconEvent from "../../images/events/event-icon.svg";
-import IconForum from "../../images/events/forum-icon.svg";
-import IconCommunity from "../../images/events/community-icon.svg";
+import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg";
+import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
+import { ReactComponent as IconCommunity } from "../../images/events/community-icon.svg";
 import StakeholderList from "./stakeholderList";
 import { multicountryGroups } from "../knowledge-library/multicountry";
 
@@ -70,6 +70,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   const [stakeholderCount, setStakeholderCount] = useState({
     individual: 0,
     entity: 0,
+    GPMLMemberCount: 0,
   });
 
   const [isAscending, setIsAscending] = useState(null);
@@ -93,14 +94,14 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     results.length + ((filters?.page && pageSize * filters?.page) || 0);
 
   const sidebar = [
-    { id: 1, title: "Events", url: "/events", icon: IconEvent },
+    { id: 1, title: "Events", url: "/events", icon: <IconEvent /> },
     {
       id: 2,
       title: "Community",
       url: "/stakeholder-overview",
-      icon: IconCommunity,
+      icon: <IconCommunity />,
     },
-    { id: 3, title: "Forums", url: null, icon: IconForum },
+    { id: 3, title: "Forums", url: null, icon: <IconForum /> },
   ];
 
   const sortPeople = () => {
@@ -174,14 +175,16 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         const stakeholderType = resp?.data?.counts?.find(
           (count) => count?.networkType === "stakeholder"
         );
-        setStakeholderCount({
-          individual: stakeholderType?.count || 0,
-          entity: organisationType?.count || 0,
-        });
+
         const GPMLMemberCounts = resp?.data?.counts?.find(
           (count) => count?.networkType === "gpml_member_entities"
         );
         setGPMLMemberCount(GPMLMemberCounts.count);
+        setStakeholderCount({
+          individual: stakeholderType?.count || 0,
+          entity: organisationType?.count || 0,
+          GPMLMemberCount: GPMLMemberCounts?.count || 0,
+        });
 
         setResults(
           [...result]
@@ -428,7 +431,6 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                 filterVisible,
                 setFilterVisible,
                 stakeholderCount,
-                GPMLMemberCount,
                 setFilterCountries,
                 multiCountryCountries,
                 setMultiCountryCountries,
@@ -533,6 +535,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                       updateQuery={updateQuery}
                       isFilteredCountry={filterCountries}
                       multiCountryCountries={multiCountryCountries}
+                      stakeholderCount={stakeholderCount}
                     />
                     <StakeholderList
                       {...{
