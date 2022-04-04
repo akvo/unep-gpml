@@ -83,7 +83,7 @@ const MapLanding = ({
           isDisplayedList,
           listVisible,
           multiCountryCountries,
-          countData
+          countData,
         }}
         data={landing?.map || []}
         clickEvents={clickCountry}

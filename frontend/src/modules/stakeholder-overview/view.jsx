@@ -70,6 +70,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   const [stakeholderCount, setStakeholderCount] = useState({
     individual: 0,
     entity: 0,
+    GPMLMemberCount: 0,
   });
 
   const [isAscending, setIsAscending] = useState(null);
@@ -174,14 +175,16 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         const stakeholderType = resp?.data?.counts?.find(
           (count) => count?.networkType === "stakeholder"
         );
-        setStakeholderCount({
-          individual: stakeholderType?.count || 0,
-          entity: organisationType?.count || 0,
-        });
+
         const GPMLMemberCounts = resp?.data?.counts?.find(
           (count) => count?.networkType === "gpml_member_entities"
         );
         setGPMLMemberCount(GPMLMemberCounts.count);
+        setStakeholderCount({
+          individual: stakeholderType?.count || 0,
+          entity: organisationType?.count || 0,
+          GPMLMemberCount: GPMLMemberCounts?.count || 0,
+        });
 
         setResults(
           [...result]
@@ -428,7 +431,6 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                 filterVisible,
                 setFilterVisible,
                 stakeholderCount,
-                GPMLMemberCount,
                 setFilterCountries,
                 multiCountryCountries,
                 setMultiCountryCountries,
@@ -533,6 +535,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                       updateQuery={updateQuery}
                       isFilteredCountry={filterCountries}
                       multiCountryCountries={multiCountryCountries}
+                      stakeholderCount={stakeholderCount}
                     />
                     <StakeholderList
                       {...{

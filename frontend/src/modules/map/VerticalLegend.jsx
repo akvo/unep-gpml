@@ -16,6 +16,7 @@ const VerticalLegend = ({
   path,
   query,
   countData,
+  stakeholderCount,
 }) => {
   const entityQuery = query.networkType;
   const topicQuery = query.topic;
@@ -128,14 +129,16 @@ const VerticalLegend = ({
     }
   );
 
-  const totalResourceCount = countData.filter(
-    (data) =>
-      data.topic !== "stakeholder" &&
-      data.topic !== "organisation" &&
-      data.topic !== "gpml_member_entities" &&
-      data.topic !== "non_member_organisation"
-  );
-  console.log("totalResourceCount::::::", totalResourceCount);
+  const totalResourceCount =
+    path === KNOWLEDGE_LIBRARY &&
+    countData.filter(
+      (data) =>
+        data.topic !== "stakeholder" &&
+        data.topic !== "organisation" &&
+        data.topic !== "gpml_member_entities" &&
+        data.topic !== "non_member_organisation"
+    );
+
   const transnationalResourcesContent = () => {
     return ResourcesCountPerTransnationalGroups.map((transnationalGroup) => {
       return (
@@ -297,27 +300,27 @@ const VerticalLegend = ({
 
   // STAKEHOLDER TOTAL COUNTS
 
-  const stakeholderTotalCounts = contents.reduce(
-    (acc, currVal) => {
-      acc = {
-        ...acc,
-        individual: acc.individual + Number(currVal.counts.stakeholder),
-        entity: {
-          member: acc.entity.member + Number(currVal.counts.organisation),
+  const stakeholderTotalCounts =
+    path === STAKEHOLDER_OVERVIEW &&
+    contents.reduce(
+      (acc, currVal) => {
+        acc = {
+          ...acc,
+
           nonMember:
-            acc.entity.nonMember + Number(currVal.counts.nonMemberOrganisation),
-        },
-      };
-      return acc;
-    },
-    {
-      individual: 0,
-      entity: {
-        member: 0,
-        nonMember: 0,
+            acc.nonMember + Number(currVal.counts.nonMemberOrganisation),
+        };
+        return {
+          ...acc,
+          individual: stakeholderCount.individual,
+          member: stakeholderCount.GPMLMemberCount,
+        };
       },
-    }
-  );
+      {
+        individual: 0,
+        nonMember: 0,
+      }
+    );
 
   const stakeholderPerTransnationalGroup = multicountryGroups.map(
     (transnationalGroup) => {
@@ -415,12 +418,12 @@ const VerticalLegend = ({
               <div className="entities">
                 <div className="entity-breakdown">
                   <b>Member of GPML</b>
-                  <b>{stakeholderTotalCounts.entity.member}</b>
+                  <b>{stakeholderTotalCounts.member}</b>
                 </div>
                 <div className="entity-breakdown">
                   <b>Non-member </b>
                   <b>
-                    <b>{stakeholderTotalCounts.entity.nonMember}</b>
+                    <b>{stakeholderTotalCounts.nonMember}</b>
                   </b>
                 </div>
               </div>
@@ -444,12 +447,12 @@ const VerticalLegend = ({
                 <div className="entities">
                   <div className="entity-breakdown">
                     <b>Member of GPML</b>
-                    <b>{stakeholderTotalCounts.entity.member}</b>
+                    <b>{stakeholderTotalCounts.member}</b>
                   </div>
                   <div className="entity-breakdown">
                     <b>Non-member </b>
                     <b>
-                      <b>{stakeholderTotalCounts.entity.nonMember}</b>
+                      <b>{stakeholderTotalCounts.nonMember}</b>
                     </b>
                   </div>
                 </div>

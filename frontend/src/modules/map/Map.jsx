@@ -372,6 +372,7 @@ const Maps = ({
   isLoaded,
   clickEvents,
   countData,
+  stakeholderCount,
   multiCountries,
   listVisible,
   isDisplayedList,
@@ -595,6 +596,7 @@ const Maps = ({
                       path={path}
                       query={query}
                       countData={countData}
+                      stakeholderCount={stakeholderCount}
                     />
                   ) : (
                     <Legend
