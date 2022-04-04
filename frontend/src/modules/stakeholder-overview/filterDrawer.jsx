@@ -205,12 +205,12 @@ const FilterDrawer = ({
           {/* For entities */}
           <Col span={24} className="specificity-card">
             <Space align="middle">
-              {!isEmpty(query?.entity) && (
+              {!isEmpty(query?.isMember) && (
                 <Tag
                   className="clear-selection"
                   closable={true}
-                  onClose={() => updateQuery("entity", [])}
-                  onClick={() => updateQuery("entity", [])}
+                  onClose={() => updateQuery("isMember", "")}
+                  onClick={() => updateQuery("isMember", "")}
                 >
                   Clear selection
                 </Tag>
@@ -383,7 +383,7 @@ const FilterDrawer = ({
                 : []
             }
             value={query?.affiliation?.map((x) => parseInt(x)) || []}
-            flag="affiliation"
+            flag="entity"
             query={query}
             updateQuery={updateQuery}
           />
