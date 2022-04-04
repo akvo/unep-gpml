@@ -20,7 +20,7 @@ const VerticalLegend = ({
   const topicQuery = query.topic;
 
   // RESOURCES TOTAL COUNTS
-  const ResourceCountPerTransnationalGroup = multicountryGroups.map(
+  const ResourcesCountPerTransnationalGroups = multicountryGroups.map(
     (transnationalGroup) => {
       const countryIds = transnationalGroup.item
         .map((transnational) =>
@@ -167,8 +167,8 @@ const VerticalLegend = ({
     }
   ).nationalCount;
 
-  const transnationalResources = () => {
-    return ResourceCountPerTransnationalGroup.map((transnationalGroup) => {
+  const transnationalResourcesContent = () => {
+    return ResourcesCountPerTransnationalGroups.map((transnationalGroup) => {
       return (
         <div key={transnationalGroup?.groupLabel}>
           <div className="legend-transnational-count">
@@ -439,7 +439,7 @@ const VerticalLegend = ({
     }
   );
 
-  const stakeholderCounts = () => {
+  const stakeholderCountsContent = () => {
     return entityQuery.length === 0 ? (
       <div>
         <div>
@@ -504,7 +504,7 @@ const VerticalLegend = ({
     );
   };
 
-  const stakeholderCountsPerTransnationalGroup = () => {
+  const stakeholderPerTransnationalGroupContent = () => {
     return stakeholderPerTransnationalGroup.map((transnationalGroup) => {
       return (
         <div key={transnationalGroup?.groupLabel}>
@@ -811,7 +811,7 @@ const VerticalLegend = ({
               <strong className="legend-heading">
                 Total resources per transnational group
               </strong>
-              {transnationalResources()}
+              {transnationalResourcesContent()}
             </div>
           </>
         )}
@@ -819,7 +819,7 @@ const VerticalLegend = ({
           <>
             <div className="total-resources-wrapper">
               <strong className="legend-heading">Total stakeholders</strong>
-              {stakeholderCounts()}
+              {stakeholderCountsContent()}
             </div>
 
             <hr className="legend-separator" />
@@ -827,7 +827,7 @@ const VerticalLegend = ({
               <strong className="legend-heading">
                 Total stakeholders per transnational group
               </strong>
-              {stakeholderCountsPerTransnationalGroup()}
+              {stakeholderPerTransnationalGroupContent()}
             </div>
           </>
         )}
