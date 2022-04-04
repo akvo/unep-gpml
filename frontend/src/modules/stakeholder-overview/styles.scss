@@ -497,8 +497,6 @@
     background-color: $bg-dark-primary;
     .item-sidebar {
       width: 100%;
-      height: 118px;
-
       p {
         margin-top: 10px;
         text-transform: uppercase;
@@ -508,10 +506,9 @@
       }
 
       .item-menu {
-        opacity: 0.5;
         img {
-          height: unset;
-          width: unset;
+          height: 30px;
+          width: 30px;
         }
       }
 
