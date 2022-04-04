@@ -175,9 +175,9 @@ h4 {
     border-color: $green01;
     border-radius: 50px;
     &:hover {
-      border-color: #079e90;
-      color: #00ff7f;
-      background: #079e90;
+      border-color: rgba(255, 184, 0, 0.65);
+      color: #fff;
+      background: rgba(255, 184, 0, 0.65);
     }
     &.black {
       color: #fff;
@@ -205,9 +205,9 @@ h4 {
       border-color: #fff;
     }
     &:hover {
-      border-color: #079e90;
-      color: #00ff7f;
-      background: #079e90;
+      border-color: rgba(255, 184, 0, 0.65);
+      color: #fff;
+      background: rgba(255, 184, 0, 0.65);
     }
     &.black {
       color: $black;
@@ -306,7 +306,7 @@ h4 {
         color: #fff;
         font-weight: 500;
         &:hover {
-          color: #4dffa5;
+          color: #fff;
         }
       }
     }
@@ -329,9 +329,9 @@ h4 {
       border: none;
     }
     &:hover {
-      color: #4dffa5;
-      background: rgba(77, 255, 165, 0.1);
-      border-radius: 5px 5px 0px 0px;
+      color: #fff;
+      background: rgba(255, 184, 0, 0.65);
+      // border-radius: 5px 5px 0px 0px;
     }
   }
 
