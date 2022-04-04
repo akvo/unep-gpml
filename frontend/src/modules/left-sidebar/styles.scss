@@ -69,7 +69,14 @@ ul.sidebar-mobile {
     width: 100%;
     display: flex;
     cursor: pointer;
+    opacity: 0.5;
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    .case-study-svg {
+      fill: $bg-dark-primary;
+    }
+    a {
+      color: #fff;
+    }
     p {
       margin-top: 10px;
       margin-bottom: 0;
@@ -81,6 +88,10 @@ ul.sidebar-mobile {
     &.active {
       background: rgba(5, 240, 129, 0.2);
       border-left: 2px solid #07e982;
+      opacity: 1;
+      .case-study-svg {
+        fill: #017974;
+      }
     }
     .item-menu {
       display: flex;
@@ -95,7 +106,7 @@ ul.sidebar-mobile {
         opacity: 0.5;
         cursor: no-drop;
       }
-      img {
+      svg {
         width: 30px;
       }
     }
@@ -254,7 +265,7 @@ ul.sidebar-mobile {
           margin-bottom: 0px;
           font-size: 1em !important;
         }
-        .item-menu img {
+        .item-menu svg {
           width: 30px !important;
         }
         &.active {
