@@ -15,6 +15,7 @@ const VerticalLegend = ({
   contents,
   path,
   query,
+  countData,
 }) => {
   const entityQuery = query.networkType;
   const topicQuery = query.topic;
@@ -127,46 +128,14 @@ const VerticalLegend = ({
     }
   );
 
-  const totalNationalResourceCount = contents.reduce(
-    (acc, currVal) => {
-      acc.nationalCount = {
-        ...acc.nationalCount,
-        actionPlan: acc.nationalCount.actionPlan + currVal.counts.actionPlan,
-        event: acc.nationalCount.event + currVal.counts.event,
-        financingResource:
-          acc.nationalCount.financingResource +
-          currVal.counts.financingResource,
-
-        policy: acc.nationalCount.policy + currVal.counts.policy,
-        project:
-          acc.nationalCount.project +
-          currVal.counts.project +
-          ((acc.nationalCount.initiative || 0) +
-            (currVal.counts.initiative || 0)),
-        technicalResource:
-          acc.nationalCount.technicalResource +
-          currVal.counts.technicalResource,
-        technology: acc.nationalCount.technology + currVal.counts.technology,
-        capacityBuilding:
-          (acc.nationalCount.capacityBuilding || 0) +
-          (currVal.counts.capacityBuilding || 0),
-      };
-      return acc;
-    },
-    {
-      nationalCount: {
-        actionPlan: 0,
-        event: 0,
-        financingResource: 0,
-        project: 0,
-        technicalResource: 0,
-        technology: 0,
-        policy: 0,
-        capacityBuilding: 0,
-      },
-    }
-  ).nationalCount;
-
+  const totalResourceCount = countData.filter(
+    (data) =>
+      data.topic !== "stakeholder" &&
+      data.topic !== "organisation" &&
+      data.topic !== "gpml_member_entities" &&
+      data.topic !== "non_member_organisation"
+  );
+  console.log("totalResourceCount::::::", totalResourceCount);
   const transnationalResourcesContent = () => {
     return ResourcesCountPerTransnationalGroups.map((transnationalGroup) => {
       return (
@@ -303,16 +272,15 @@ const VerticalLegend = ({
             return topic;
           }
         };
+        const findTopic = totalResourceCount.find(
+          (data) => data.topic === topicChecker()
+        );
 
         return topicQuery.length === 0 ? (
           <div key={topic} className="total-resources">
             <div>{topicNames(topic)}</div>
             <div>
-              <b>
-                {totalNationalResourceCount?.[topic]
-                  ? totalNationalResourceCount?.[topic]
-                  : 0}
-              </b>
+              <b>{findTopic?.count ? findTopic?.count : 0}</b>
             </div>
           </div>
         ) : (
@@ -320,11 +288,7 @@ const VerticalLegend = ({
             <div key={topic} className="total-resources">
               <div>{topicNames(topic)}</div>
               <div>
-                <b>
-                  {totalNationalResourceCount?.[topic]
-                    ? totalNationalResourceCount?.[topic]
-                    : 0}
-                </b>
+                <b>{findTopic?.count ? findTopic?.count : 0}</b>
               </div>
             </div>
           )
