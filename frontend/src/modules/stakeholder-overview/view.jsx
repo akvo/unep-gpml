@@ -352,6 +352,12 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         const findOffering = offering.find((offer) => offer?.tag == value);
         return findOffering?.tag;
       }
+      if (key === "entity") {
+        const findOrganisation = organisations.find(
+          (organisation) => organisation.id == value
+        );
+        return findOrganisation?.name;
+      }
     };
     return Object.keys(query).map((key, index) => {
       // don't render if key is limit and offset
