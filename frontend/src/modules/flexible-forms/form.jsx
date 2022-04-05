@@ -394,8 +394,11 @@ const FlexibleForm = withRouter(
 
       if (data.q24.hasOwnProperty("sub-national")) {
         data.q24_2 = [data.qgeoCoverageValueSubnational];
+        data.q24_subnational_city = data.qgeoCoverageValueSubnationalCity;
         delete data.qgeoCoverageValueSubnational;
         delete data.qgeoCoverageValueSubnationalCity;
+        delete data.q24_4;
+        delete data.q24_2;
       }
 
       if (data?.qrelated) {
