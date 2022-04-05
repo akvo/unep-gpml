@@ -1,5 +1,13 @@
 @import "../../vars.scss";
 
+.popover-multi-country {
+  cursor: pointer;
+  border-radius: 50%;
+  &:hover {
+    background-color: $yellow-highlight !important;
+  }
+}
+
 .country-info-popover {
   zoom: 64% !important;
   .popover-content-item {
@@ -30,9 +38,7 @@
   border: 1px solid #d7e6ee;
   border-radius: 3px;
   background-color: #fff;
-  .popover-multi-country {
-    cursor: pointer;
-  }
+
   .ant-select-selection-overflow {
     height: 29px;
     overflow-y: auto;
