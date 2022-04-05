@@ -1036,9 +1036,8 @@
   .multiselection-dropdown,
   .ant-picker-dropdown {
     zoom: 80%;
-
     @-moz-document url-prefix() {
-      transform: scale(0.8);
+      transform: scale(0.7);
     }
   }
   .overlay-zoom {
