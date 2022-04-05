@@ -178,6 +178,7 @@ const SharePanel = ({
         overlayStyle={{
           width: "22vw",
         }}
+        overlayClassName="popover-multi-country"
         content={
           <Input.Group compact>
             <Input
