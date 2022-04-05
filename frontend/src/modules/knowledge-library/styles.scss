@@ -5,6 +5,13 @@
     top: 990px !important;
   }
 }
+.dropdown-content {
+  display: flex;
+  align-items: center;
+  & > div {
+    margin-right: 10px;
+  }
+}
 
 .info-resources {
   padding-left: 20px;
@@ -12,9 +19,16 @@
 
 #knowledge-library {
   position: relative;
-
+  #mainNavigation {
+    @media (min-width: 750px) {
+      display: block;
+    }
+  }
   .sidebar-mobile {
     margin-bottom: 0;
+    @media (min-width: 750px) {
+      display: none;
+    }
   }
 
   .ant-btn-icon-only {
@@ -46,13 +60,19 @@
       color: #ffffff;
       font-weight: 700;
       background-color: transparent;
+
       svg {
         width: 27px;
         height: 27px;
         margin-right: 7px;
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
       }
       b {
         padding-left: 1em;
+      }
+      &:hover > svg {
+        fill: $yellow-highlight;
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
       }
     }
 
@@ -109,7 +129,19 @@
 
     // Search input
     .search-box {
-      max-width: fit-content;
+      width: 100%;
+      max-width: 478px;
+
+      @-moz-document url-prefix() {
+        max-width: 427px;
+      }
+
+      .ant-space-item:nth-of-type(1) {
+        width: 100%;
+      }
+      .ant-space-align-center {
+        width: 100%;
+      }
 
       .filter-icon {
         display: block;
@@ -157,6 +189,7 @@
       .view-selection .selection-arrow {
         -webkit-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
         transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+        width: 15px;
       }
 
       .view-selection {
@@ -235,10 +268,17 @@
   }
 
   .site-drawer-render-in-current-wrapper {
+    left: 0 !important;
+    top: 96px !important;
     position: absolute;
-    top: 0;
-    min-width: 100%;
+    min-width: calc(100% - 100px);
     overflow: hidden;
+
+    @media (min-width: 750px) {
+      top: 0 !important;
+      left: 100px !important;
+    }
+
     .ant-tabs-nav-operations {
       position: unset;
       display: none;
@@ -301,7 +341,7 @@
       .ant-drawer-content {
         border-bottom-right-radius: 18px;
         box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.25);
-        border: 1px solid $blue09;
+        // border: 1px solid $blue09;
       }
 
       .ant-drawer-title,
@@ -322,7 +362,6 @@
 
       .ant-select-selection-placeholder,
       .date-picker-container .ant-picker ::placeholder,
-      .country-filter-tab .ant-select-selection-placeholder,
       .multiselection-filter .ant-select-selection-placeholder {
         font-size: 16px;
         color: $grey04;
@@ -391,12 +430,17 @@
       .ant-select-clear {
         opacity: 0;
       }
-
+      .date-picker-container {
+        .ant-picker-clear {
+          display: none;
+        }
+      }
       .date-picker-container input,
       .ant-select-selection-item-content {
         font-weight: 700;
         font-size: 16px;
         color: $blue06;
+        font-style: italic;
         .anticon-close-circle {
           opacity: 0;
         }
@@ -435,6 +479,14 @@
       }
 
       .multiselection-filter {
+        .ant-select-selection-search-input {
+          width: 100%;
+          display: block;
+          font-weight: 700;
+          font-size: 16px;
+          color: $blue06;
+          font-style: italic;
+        }
         .ant-select-selection-item-content {
           font-style: italic;
           overflow: visible;
@@ -483,15 +535,15 @@
         }
       }
 
-      .ant-row {
-        justify-content: space-between;
-      }
+      // .ant-row {
+      //   justify-content: space-between;
+      // }
 
       .resource-card-wrapper {
         height: 100px;
         width: 100%;
         max-width: 100px !important;
-        margin-bottom: 15px;
+        margin-bottom: 17px;
       }
 
       .resource-type-card {
@@ -609,82 +661,6 @@
         border-color: $blue06;
         font-weight: 600;
       }
-
-      .country-filter-tab-wrapper {
-        .ant-select-selection-placeholder {
-          padding-left: 30px;
-        }
-        .country-filter-tab {
-          border: 1px solid #d7e6ee;
-          border-radius: 3px;
-          background-color: #fff;
-          .ant-select-selection-overflow {
-            height: 29px;
-            overflow-y: auto;
-          }
-
-          .ant-select {
-            width: 100%;
-            margin-bottom: 10px;
-          }
-        }
-
-        .country-filter-tab {
-          margin-bottom: 1.5rem;
-          .ant-select-item.ant-select-item-group {
-            color: rgba(0, 0, 0, 0.45);
-          }
-
-          .country-filter-tab-pane {
-            padding: 0.5rem 1rem;
-          }
-          .ant-tabs-nav-list {
-            width: 100%;
-            align-items: center;
-            justify-content: space-evenly;
-          }
-          .ant-tabs-tab:not(:last-of-type) {
-            margin-right: 0 !important;
-          }
-          .ant-tabs-tab {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 50%;
-            border-radius: 0;
-            border: none;
-            background: #dae9f1;
-
-            div {
-              color: #000000;
-              font-size: 16px;
-            }
-          }
-          .ant-tabs-tab-active {
-            background: #fff;
-            .ant-tabs-tab-btn {
-              font-weight: normal;
-            }
-          }
-          .ant-tabs-tab-btn {
-            color: $blue07;
-          }
-          .ant-tabs-nav::before,
-          .ant-tabs-nav .ant-tabs-nav-wrap::before,
-          .ant-tabs-nav .ant-tabs-nav-wrap::after {
-            content: none !important;
-          }
-          // css for select suffix
-          .multi-country-info {
-            .ant-select-arrow {
-              right: 28px;
-              font-size: 14px;
-              top: 48%;
-              color: $blue07;
-            }
-          }
-        }
-      }
     }
   }
 
@@ -693,7 +669,11 @@
     z-index: 3;
     height: 700px;
     width: 100%;
-    max-width: 300px;
+    // max-width: 300px;
+    max-width: 402px;
+    @-moz-document url-prefix() {
+      max-width: 350px !important;
+    }
   }
 
   .resource-list-header.show-list {
@@ -796,7 +776,7 @@
     .resource-item-wrapper {
       width: 100%;
       &:hover {
-        background: rgba(255, 184, 0, 0.65);
+        background: $yellow-highlight;
         border-radius: 8px;
       }
       .resource-item {
@@ -807,8 +787,7 @@
         color: $black;
 
         .ant-card-body {
-          padding-top: 5px;
-          padding-bottom: 5px;
+          padding: 5px !important;
         }
 
         .topic {
@@ -885,12 +864,16 @@
   // Pagination
   .page {
     width: 100%;
-    max-width: 300px;
+    // max-width: 300px;
+    max-width: 402px;
     padding: 2rem 0 1rem 10px;
     text-align: center;
     position: absolute;
     bottom: 0;
     background-color: #ffffff;
+    @-moz-document url-prefix() {
+      max-width: 350px !important;
+    }
     .result-number,
     .ant-pagination-item a {
       font-weight: 700;
@@ -970,8 +953,8 @@
       height: 100% !important;
 
       @-moz-document url-prefix() {
-        min-height: 875px !important;
-        transform: scale(0.8) translate(-63px, -110px);
+        min-height: 1003px !important;
+        transform: scale(0.7) translate(-107px, -220px);
       }
     }
 
@@ -1053,9 +1036,8 @@
   .multiselection-dropdown,
   .ant-picker-dropdown {
     zoom: 80%;
-
     @-moz-document url-prefix() {
-      transform: scale(0.8);
+      transform: scale(0.7);
     }
   }
   .overlay-zoom {

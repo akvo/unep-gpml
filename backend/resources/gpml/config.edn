@@ -199,13 +199,28 @@
                                                  :parameters #ig/ref :gpml.handler.stakeholder/get-params
                                                  :handler #ig/ref :gpml.handler.stakeholder/get}}]
                                          ["/:id"
-                                          {:patch {:middleware [#ig/ref :gpml.auth/auth-required
-                                                                #ig/ref :gpml.auth/approved-user
-                                                                #ig/ref :gpml.auth/admin-required-middleware]
-                                                   :summary "Edit stakeholder's data"
-                                                   :swagger {:tags ["stakeholder"]}
-                                                   :parameters #ig/ref :gpml.handler.stakeholder/patch-params
-                                                   :handler #ig/ref :gpml.handler.stakeholder/patch}}
+                                          [""
+                                           {:get {:middleware [#ig/ref :gpml.auth/auth-required
+                                                               #ig/ref :gpml.auth/approved-user
+                                                               #ig/ref :gpml.auth/admin-required-middleware]
+                                                  :summary "Get a stakeholder by id"
+                                                  :swagger {:tags ["stakeholder"]}
+                                                  :parameters {:path [:map [:id int?]]}
+                                                  :handler #ig/ref :gpml.handler.stakeholder/get-by-id}
+                                            :put {:middleware [#ig/ref :gpml.auth/auth-required
+                                                               #ig/ref :gpml.auth/approved-user
+                                                               #ig/ref :gpml.auth/admin-required-middleware]
+                                                  :summary "Edit stakeholder's data"
+                                                  :swagger {:tags ["stakeholder"]}
+                                                  :parameters #ig/ref :gpml.handler.stakeholder/put-by-admin-params
+                                                  :handler #ig/ref :gpml.handler.stakeholder/put-by-admin}
+                                            :patch {:middleware [#ig/ref :gpml.auth/auth-required
+                                                                 #ig/ref :gpml.auth/approved-user
+                                                                 #ig/ref :gpml.auth/admin-required-middleware]
+                                                    :summary "Edit stakeholder's data"
+                                                    :swagger {:tags ["stakeholder"]}
+                                                    :parameters #ig/ref :gpml.handler.stakeholder/patch-params
+                                                    :handler #ig/ref :gpml.handler.stakeholder/patch}}]
                                           ["/associated-topics"
                                            {:get {:middleware [#ig/ref :gpml.auth/auth-required
                                                                #ig/ref :gpml.auth/approved-user]
@@ -425,9 +440,7 @@
                                                  :handler #ig/ref :gpml.handler.activity/get-recent}}]]
                                         ["/community"
                                          {:get {:summary "Browse community members"
-                                                :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                             #ig/ref :gpml.auth/auth-required
-                                                             #ig/ref :gpml.auth/approved-user]
+                                                :middleware [#ig/ref :gpml.auth/auth-middleware]
                                                 :swagger {:tags ["community"]}
                                                 :parameters {:query #ig/ref :gpml.handler.community/get-params}
                                                 :handler #ig/ref :gpml.handler.community/get}}]]]
@@ -509,10 +522,13 @@
   :gpml.handler.stakeholder/patch-params {}
   :gpml.handler.stakeholder/profile {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder/get-by-id {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder/post {:db #ig/ref :gpml.db/spec
                                   :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.stakeholder/post-params {}
   :gpml.handler.stakeholder/put {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder/put-by-admin {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder/put-by-admin-params {}
   :gpml.handler.stakeholder-association/get-associated-topics {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder-association/get-associated-topics-params {}
 

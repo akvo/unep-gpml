@@ -83,6 +83,7 @@
 (def ^:const ^:private initiative-topic-data-select-clause
   "SELECT
        e.id,
+       'Initiative' AS type,
        NULL::text AS uuid,
        NULL::text AS phase,
        e.q36 AS funds,
@@ -111,6 +112,7 @@
 (def ^:const ^:private policy-topic-data-select-clause
   "SELECT
        e.abstract AS summary,
+       'Policy' AS type,
        e.*,
        geo.geo_coverage_values,
        geo.geo_coverage_country_groups,
@@ -121,6 +123,7 @@
 (def ^:const ^:private event-topic-data-select-clause
   "SELECT
        e.description AS summary,
+       'Event' AS type,
        e.*,
        geo.geo_coverage_values,
        geo.geo_coverage_country_groups,
@@ -131,6 +134,7 @@
 (def ^:const ^:private technology-topic-data-select-clause
   "SELECT
        e.name AS title,
+       'Technology' AS type,
        e.remarks AS summary,
        e.*,
        geo.geo_coverage_values,
@@ -591,7 +595,8 @@
 (defn generate-filter-topic-snippet
   [{:keys [favorites user-id topic tag start-date end-date transnational search-text geo-coverage resource-types geo-coverage-countries]}]
   (let [geo-coverage? (seq geo-coverage)
-        geo-coverage-countries? (seq geo-coverage-countries)]
+        geo-coverage-countries? (seq geo-coverage-countries)
+        transnational? (seq transnational)]
     (str/join
       " "
       (list
@@ -619,9 +624,14 @@
         (cond
           (and geo-coverage? geo-coverage-countries?)
           " AND (t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:geo-coverage-countries))"
-          geo-coverage?
+          (and geo-coverage? transnational?)
           " AND (t.geo_coverage IN (:v*:geo-coverage)
-            OR t.json->>'geo_coverage_type'='transnational' AND t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:transnational))"
+            OR t.json->>'geo_coverage_type'='transnational'
+            AND t.json->>'geo_coverage_values' != ''
+            AND j.value::varchar IN (:v*:transnational))"
+          geo-coverage?
+          "AND (t.geo_coverage IN (:v*:geo-coverage)
+           AND t.json->>'geo_coverage_values' != '')"
           geo-coverage-countries?
           " AND (t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:geo-coverage-countries))")
         ;; NOTE: Empty strings in the tags column cause problems with using json_array_elements

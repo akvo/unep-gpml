@@ -60,18 +60,17 @@ const Header = ({
                       />
                     }
                   />
-                  {view === "card" && (
-                    <Button className="sort-btn" onClick={sortPeople}>
-                      <SortIcon
-                        style={{
-                          transform:
-                            isAscending || isAscending === null
-                              ? "initial"
-                              : "rotate(180deg)",
-                        }}
-                      />
-                    </Button>
-                  )}
+
+                  <Button className="sort-btn" onClick={sortPeople}>
+                    <SortIcon
+                      style={{
+                        transform:
+                          isAscending || isAscending === null
+                            ? "initial"
+                            : "rotate(180deg)",
+                      }}
+                    />
+                  </Button>
                 </Space>
               </Col>
               {filterTagValue.length > 0 && (

@@ -8,7 +8,7 @@
 (defn get-community-members-query-and-filters
   [params]
   (let [{:keys [count-only? limit page filters]} params
-        {:keys [search-text network-type affiliation geo-coverage-type country tag representative-group]} filters
+        {:keys [search-text network-type affiliation geo-coverage-type transnational country tag representative-group]} filters
         pagination (when (and (not count-only?)
                               limit page)
                      (format "LIMIT %d OFFSET %d" limit (* limit page)))
@@ -27,6 +27,9 @@
 
                      (seq country)
                      (str " AND country IN (:v*:filters.country)")
+
+                     (seq transnational)
+                     (str " OR geo_coverage_type = 'transnational'")
 
                      (seq representative-group)
                      (str " AND representative_group IN (:v*:filters.representative-group)")

@@ -24,10 +24,10 @@ import values from "lodash/values";
 import MapLanding from "./map-landing";
 import TopicView from "./TopicView";
 
-import IconLibrary from "../../images/capacity-building/ic-knowledge-library.svg";
-import IconLearning from "../../images/capacity-building/ic-capacity-building.svg";
-import IconExchange from "../../images/capacity-building/ic-exchange.svg";
-import IconCaseStudies from "../../images/capacity-building/ic-case-studies.svg";
+import { ReactComponent as IconLibrary } from "../../images/capacity-building/ic-knowledge-library.svg";
+import { ReactComponent as IconLearning } from "../../images/capacity-building/ic-capacity-building.svg";
+import { ReactComponent as IconExchange } from "../../images/capacity-building/ic-exchange.svg";
+import { ReactComponent as IconCaseStudies } from "../../images/capacity-building/ic-case-studies.svg";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 import { titleCase } from "../../utils/string";
 import { multicountryGroups } from "./multicountry";
@@ -74,19 +74,19 @@ const KnowledgeLibrary = ({
       id: 1,
       title: "LIBRARY",
       url: "/knowledge-library",
-      icon: IconLibrary,
+      icon: <IconLibrary />,
     },
     {
       id: 2,
       title: "LEARNING",
       url: "/capacity-building",
-      icon: IconLearning,
+      icon: <IconLearning />,
     },
     {
       id: 4,
       title: "Case studies",
       url: "/case-studies",
-      icon: IconCaseStudies,
+      icon: <IconCaseStudies />,
     },
   ];
 
@@ -232,14 +232,10 @@ const KnowledgeLibrary = ({
       }
       if (key === "subContentType") {
         const findSubContentType = mainContentType.find((subContent) =>
-          subContent.childs.find((child) => child.title.includes(value))
+          subContent.childs.find((child) => child?.title?.includes(value))
         );
 
-        const label = findSubContentType.childs.find((child) =>
-          child.title.includes(value)
-        );
-
-        return `${value} ${findSubContentType.name}`;
+        return `${value} ${findSubContentType?.name}`;
       }
       if (key === "entity") {
         const findOrganisation = organisations.find(

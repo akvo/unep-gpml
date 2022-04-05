@@ -64,12 +64,20 @@ ul.sidebar-mobile {
   background-color: $bg-dark-primary;
   li.item-sidebar {
     width: 100%;
-    height: auto;
+    height: 100px;
     padding: 20px 0;
     width: 100%;
     display: flex;
     cursor: pointer;
+    opacity: 0.5;
+    justify-content: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    .case-study-svg {
+      fill: $bg-dark-primary;
+    }
+    a {
+      color: #fff;
+    }
     p {
       margin-top: 10px;
       margin-bottom: 0;
@@ -81,10 +89,21 @@ ul.sidebar-mobile {
     &.active {
       background: rgba(5, 240, 129, 0.2);
       border-left: 2px solid #07e982;
+      opacity: 1;
+      .case-study-svg {
+        fill: #017974;
+      }
+      &:hover {
+        background: rgba(5, 240, 129, 0.2);
+      }
     }
     &:hover {
-      background: rgba(255, 184, 0, 0.65);
+      background: $yellow-highlight;
+      .case-study-svg {
+        fill: $yellow-highlight;
+      }
     }
+
     .item-menu {
       display: flex;
       flex-direction: column;
@@ -98,7 +117,7 @@ ul.sidebar-mobile {
         opacity: 0.5;
         cursor: no-drop;
       }
-      img {
+      svg {
         width: 30px;
       }
     }
@@ -138,7 +157,7 @@ ul.sidebar-mobile {
     display: none;
   }
 }
-@media only screen and (max-width: 475px) {
+@media only screen and (max-width: 465px) {
   html {
     font-size: 13px;
   }
@@ -207,7 +226,7 @@ ul.sidebar-mobile {
   }
 }
 
-@media only screen and (min-width: 768px) and (max-width: 991px) {
+@media only screen and (min-width: 765px) and (max-width: 991px) {
   html {
     font-size: 14px;
   }
@@ -257,7 +276,7 @@ ul.sidebar-mobile {
           margin-bottom: 0px;
           font-size: 1em !important;
         }
-        .item-menu img {
+        .item-menu svg {
           width: 30px !important;
         }
         &.active {

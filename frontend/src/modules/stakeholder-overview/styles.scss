@@ -9,7 +9,7 @@
   h3,
   h4 {
     color: #255b87;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 700;
   }
 
@@ -22,6 +22,26 @@
 #stakeholder-overview {
   padding: 0;
   position: relative;
+
+  #stakeholder-item {
+    background-color: rgba(255, 255, 255, 0.3);
+    &:hover {
+      background-color: $yellow-highlight;
+    }
+  }
+
+  #mainNavigation {
+    @media (min-width: 750px) {
+      display: block;
+    }
+  }
+  .sidebar-mobile {
+    margin-bottom: 0;
+    @media (min-width: 750px) {
+      display: none;
+    }
+  }
+
   .ant-btn-icon-only {
     width: 100%;
     max-width: 35px;
@@ -94,7 +114,14 @@
 
     // Search input
     .search-box {
-      max-width: fit-content;
+      width: 100%;
+      max-width: 478px;
+      .ant-space-item:nth-of-type(1) {
+        width: 100%;
+      }
+      .ant-space-align-center {
+        width: 100%;
+      }
 
       .filter-icon {
         display: block;
@@ -215,10 +242,15 @@
       svg {
         margin-right: 7px;
         width: 27px;
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
         circle,
         path {
           stroke: currentColor;
         }
+      }
+      &:hover > svg {
+        fill: $yellow-highlight;
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
       }
     }
   }
@@ -243,7 +275,7 @@
     align-items: center;
     position: absolute;
     bottom: -5px;
-    right: 20px;
+    right: 5px;
     overflow: hidden;
     width: 40px;
     height: 40px;
@@ -287,10 +319,15 @@
     }
 
     .profile-card {
+      min-height: 120px;
       .ant-card-body {
         display: flex;
         flex-direction: column;
-
+        .profile-detail-list {
+          li {
+            margin-bottom: 0;
+          }
+        }
         min-height: 250px;
         .person-role {
           max-height: fit-content;
@@ -305,6 +342,7 @@
     height: fit-content;
     max-width: 345px;
     border-radius: 10px;
+    min-height: 140px;
 
     .icons-list {
       display: flex;
@@ -421,8 +459,8 @@
             margin-right: 21.49px;
             .social-media-link {
               display: block;
-              width: 28px;
-              height: 28px;
+              width: 20px;
+              height: 20px;
               background-repeat: no-repeat;
               background-size: contain;
               background-position-y: center;
@@ -472,6 +510,7 @@
     background-color: $bg-dark-primary;
     .item-sidebar {
       width: 100%;
+      height: 100px !important;
       p {
         margin-top: 10px;
         text-transform: uppercase;
@@ -571,7 +610,6 @@
   }
 
   // Drawer
-
   .ant-row.body-wrapper {
     position: relative;
   }
@@ -586,8 +624,16 @@
   }
 
   .site-drawer-render-in-current-wrapper {
-    min-width: 100%;
+    left: 0 !important;
+    top: 100px !important;
+    position: absolute;
+    min-width: calc(100% - 100px);
     overflow: hidden;
+
+    @media (min-width: 750px) {
+      top: 0 !important;
+      left: 100px !important;
+    }
 
     .for-entity svg {
       max-width: 30px;
@@ -627,20 +673,24 @@
     .ant-drawer-mask {
       background-color: unset;
     }
-
+    .ant-drawer-left {
+      left: -5px !important;
+    }
     .ant-drawer-open {
-      .ant-drawer-content {
-        border: 1px solid $blue09;
-      }
+      left: unset !important;
+
+      // .ant-drawer-content {
+      //   border: 1px solid $blue09;
+      // }
     }
 
     .ant-drawer-content-wrapper {
       box-shadow: none;
       max-width: 500px;
-      // width: 100% !important;
+      width: 100% !important;
       @-moz-document url-prefix() {
-        min-height: 815px !important;
-        transform: scale(0.8) translate(-63px, -110px);
+        min-height: 999px !important;
+        transform: scale(0.7) translate(-107px, -215px);
       }
 
       .ant-drawer-header {
@@ -699,6 +749,17 @@
       .multiselection-filter .ant-select-selection-placeholder {
         font-style: italic;
         font-weight: 700;
+      }
+
+      .multiselection-filter {
+        .ant-select-selection-search-input {
+          width: 100%;
+          display: block;
+          font-weight: 700;
+          font-size: 16px;
+          color: $blue06;
+          font-style: italic;
+        }
       }
 
       .ant-select-selector {
@@ -978,6 +1039,7 @@
   @media (min-width: 1300px) {
     .profile-card {
       max-width: 100%;
+      min-height: 140px;
     }
     .card-wrapper,
     #title {
@@ -1125,8 +1187,8 @@
       zoom: 80%;
 
       @-moz-document url-prefix() {
-        min-height: 804px !important;
-        transform: scale(0.8) translate(-63px, -100px);
+        min-height: 1003px !important;
+        transform: scale(0.7) translate(-107px, -220px);
       }
     }
   }
@@ -1136,7 +1198,7 @@
   .multiselection-dropdown {
     zoom: 80%;
     @-moz-document url-prefix() {
-      transform: scale(0.8);
+      transform: scale(0.7);
     }
   }
   .overlay-zoom {

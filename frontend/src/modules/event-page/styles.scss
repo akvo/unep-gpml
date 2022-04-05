@@ -1,14 +1,16 @@
 @import "../../vars.scss";
 
 #events {
+  .sidebar-mobile {
+    margin-bottom: 0;
+  }
   .sidebar {
     background-color: $bg-dark-primary;
     .item-sidebar {
       height: auto;
       padding: 20px 0;
       width: 100%;
-      // width: 100%;
-      // height: 118px;
+      height: 100px !important;
 
       p {
         margin-top: 10px;

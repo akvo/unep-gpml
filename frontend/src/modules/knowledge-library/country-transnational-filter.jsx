@@ -3,25 +3,25 @@ import React from "react";
 import { Select, Tabs, Popover } from "antd";
 import { DownOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import isEmpty from "lodash/isEmpty";
-import { topicNames, tTypes } from "../../utils/misc";
+import { TrimText } from "../../utils/string";
 import { multicountryGroups } from "./multicountry";
 import { OptGroup } from "rc-select";
+import "./transantional-filter-tab.scss";
+import api from "../../utils/api";
 
 const { TabPane } = Tabs;
 const { Option } = Select;
 
 const CountryTransnationalFilter = ({
-  handleChangeTab,
+  query,
+  updateQuery,
   country,
-  handleChangeCountry,
-  handleDeselectCountry,
   multiCountry,
-  handleChangeMultiCountry,
-  handleDeselectMultiCountry,
   multiCountryCountries,
   multiCountryLabelCustomIcon,
   countrySelectMode,
   multiCountrySelectMode,
+  setMultiCountryCountries,
 }) => {
   const { countries, transnationalOptions, landing } = UIStore.useState(
     (s) => ({
@@ -42,14 +42,50 @@ const CountryTransnationalFilter = ({
         .sort((a, b) => a.label.localeCompare(b.label))
     : [];
 
-  const multiCountryOpts = isLoaded()
-    ? transnationalOptions
-        .map((it) => ({ value: it.id, label: it.name }))
-        .sort((a, b) => a.label.localeCompare(b.label))
-    : [];
+  const handleChangeLocationTab = (key) => {
+    const param = key === "country" ? "transnational" : "country";
+  };
+
+  const handleChangeCountry = (val) => {
+    updateQuery("country", query?.country && val);
+  };
+
+  const handleDeselectCountry = (val) => {
+    updateQuery(
+      "country",
+      query?.country ? query?.country.filter((x) => x != val) : []
+    );
+  };
+
+  const handleChangeMultiCountry = (val) => {
+    updateQuery("transnational", [val]);
+
+    // Fetch transnational countries
+    val.forEach((id) => {
+      const check = multiCountryCountries.find((x) => x.id === id);
+      !check &&
+        api.get(`/country-group/${id}`).then((resp) => {
+          setMultiCountryCountries([
+            ...multiCountryCountries,
+            { id: id, countries: resp.data?.[0]?.countries },
+          ]);
+        });
+    });
+  };
+
+  const handleDeselectMultiCountry = (val) => {
+    updateQuery(
+      "transnational",
+      query?.transnational ? query?.transnational.filter((x) => x != val) : []
+    );
+  };
 
   return (
-    <Tabs type="card" className="country-filter-tab" onChange={handleChangeTab}>
+    <Tabs
+      type="card"
+      className="country-filter-tab"
+      onChange={handleChangeLocationTab}
+    >
       <TabPane
         tab="Countries"
         key="country"
@@ -58,6 +94,7 @@ const CountryTransnationalFilter = ({
         <Select
           showSearch
           allowClear
+          dropdownClassName="multiselection-dropdown"
           mode={countrySelectMode || ""}
           placeholder="Countries"
           options={countryOpts}
@@ -79,6 +116,7 @@ const CountryTransnationalFilter = ({
         }`}
       >
         <Select
+          dropdownClassName="multiselection-dropdown"
           showSearch
           allowClear
           virtual={false}
@@ -91,7 +129,7 @@ const CountryTransnationalFilter = ({
           value={multiCountry}
           onChange={handleChangeMultiCountry}
           onDeselect={handleDeselectMultiCountry}
-          dropdownClassName="country-filter-dropdown"
+          dropdownClassName="multiselection-dropdown"
           dropdownMatchSelectWidth={325}
           suffixIcon={
             !multiCountryLabelCustomIcon && multiCountry ? (
@@ -119,19 +157,20 @@ const CountryTransnationalFilter = ({
                   .map((transnational) => {
                     return (
                       <Option key={transnational.id} value={transnational.id}>
-                        <div>
-                          {transnational.name}{" "}
-                          {multiCountryLabelCustomIcon &&
-                            multiCountry.includes(transnational.id) && (
-                              <MultiCountryInfo
-                                data={landing}
-                                multiCountryCountries={
-                                  multiCountryCountries.find(
-                                    (x) => x.id === transnational.id
-                                  )?.countries
-                                }
-                              />
-                            )}
+                        <div className="dropdown-content">
+                          <TrimText
+                            className="dropdown-text"
+                            text={transnational.name}
+                            max={25}
+                          />{" "}
+                          <MultiCountryInfo
+                            data={landing}
+                            multiCountryCountries={
+                              transnationalOptions.find(
+                                (x) => x.id === transnational.id
+                              )?.countries
+                            }
+                          />
                         </div>
                       </Option>
                     );
@@ -144,50 +183,7 @@ const CountryTransnationalFilter = ({
   );
 };
 
-const ResourcesInfo = (data) => {
-  const dataToDisplay = {
-    project: data?.data?.counts?.project,
-    actionPlan: data?.data?.counts?.actionPlan,
-    policy: data?.data?.counts?.policy,
-    technicalResource: data?.data?.counts?.technicalResource,
-    financingResource: data?.data?.counts?.financingResource,
-    event: data?.data?.counts?.event,
-    technology: data?.data?.counts?.technology,
-  };
-
-  const transantionalResources = {
-    project: data?.data?.transnationalCounts?.project,
-    actionPlan: data?.data?.transnationalCounts?.actionPlan,
-    policy: data?.data?.transnationalCounts?.policy,
-    technicalResource: data?.data?.transnationalCounts?.technicalResource,
-    financingResource: data?.data?.transnationalCounts?.financingResource,
-    event: data?.data?.transnationalCounts?.event,
-    technology: data?.data?.transnationalCounts?.technology,
-  };
-
-  return (
-    <ul className="info-resources">
-      {tTypes.map((topic) => {
-        return (
-          topic !== "organisation" &&
-          topic !== "stakeholder" && (
-            <li key={topic}>
-              <span>{topicNames(topic)}</span>:{" "}
-              <b>{dataToDisplay?.[topic] ? dataToDisplay[topic] : 0}</b>
-              <b>
-                {" "}
-                {transantionalResources?.[topic] > 0 &&
-                  `(${transantionalResources[topic]})`}
-              </b>
-            </li>
-          )
-        );
-      })}
-    </ul>
-  );
-};
-
-const MultiCountryInfo = ({ multiCountryCountries, data }) => {
+const MultiCountryInfo = ({ data, multiCountryCountries }) => {
   const renderContent = () => {
     return (
       <div className="popover-content-wrapper">
@@ -200,8 +196,7 @@ const MultiCountryInfo = ({ multiCountryCountries, data }) => {
                 key={`popover-${name}-${id}`}
                 className="popover-content-item"
               >
-                <b>{name}</b>
-                <ResourcesInfo data={curr} />
+                {name}
               </div>
             );
           })}
@@ -214,6 +209,7 @@ const MultiCountryInfo = ({ multiCountryCountries, data }) => {
   }
   return (
     <Popover
+      overlayClassName="country-info-popover"
       className="popover-multi-country"
       title={""}
       content={renderContent}
