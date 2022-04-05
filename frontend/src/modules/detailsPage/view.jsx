@@ -601,7 +601,7 @@ const renderGeoCoverageCountryGroups = (
           {(index ? ", " : " ") + item.name}{" "}
           {item.countries && item.countries.length > 0 && (
             <Popover
-              className="popover-multi-country"
+              overlayClassName="popover-multi-country"
               title={""}
               content={
                 <ul className="list-country-group">
