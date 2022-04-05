@@ -443,6 +443,7 @@
 .list-country-group {
   max-height: 300px;
   overflow-y: auto;
+  list-style-type: disc;
 }
 .popover-multi-country {
   zoom: 80%;
@@ -573,5 +574,8 @@
     .card-wrapper .ant-card {
       padding: 0px 0px;
     }
+  }
+  .popover-multi-country {
+    zoom: 80%;
   }
 }
