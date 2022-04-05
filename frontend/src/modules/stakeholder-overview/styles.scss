@@ -234,10 +234,15 @@
       svg {
         margin-right: 7px;
         width: 27px;
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
         circle,
         path {
           stroke: currentColor;
         }
+      }
+      &:hover > svg {
+        fill: rgba(255, 184, 0, 0.65);
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
       }
     }
   }
