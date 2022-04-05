@@ -402,6 +402,8 @@ const FlexibleForm = withRouter(
         data.related_content = data?.qrelated.map((x) => parseInt(x));
         delete data.qrelated;
       }
+      delete data.tagsList;
+      delete data.qtagsList;
 
       if (status === "add" && !params?.id) {
         api
