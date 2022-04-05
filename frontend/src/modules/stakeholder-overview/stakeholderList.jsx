@@ -146,14 +146,7 @@ const ResourceItem = ({ results, view }) => {
 
     return (
       <Link className="resource-item-wrapper" key={`${type}-${id}`} to={linkTo}>
-        <Card
-          className="resource-item"
-          style={
-            view === "map"
-              ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
-              : { backgroundColor: "rgba(255, 255, 255, 1)" }
-          }
-        >
+        <Card className="resource-item" id="stakeholder-item">
           <div className="item-body">
             {/* <div className="badge-wrapper">
               {result.type === "organisation" && result.isMember && (

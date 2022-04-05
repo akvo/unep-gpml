@@ -22,6 +22,14 @@
 #stakeholder-overview {
   padding: 0;
   position: relative;
+
+  #stakeholder-item {
+    background-color: rgba(255, 255, 255, 0.3);
+    &:hover {
+      background-color: $yellow-highlight;
+    }
+  }
+
   #mainNavigation {
     @media (min-width: 750px) {
       display: block;
@@ -234,10 +242,15 @@
       svg {
         margin-right: 7px;
         width: 27px;
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
         circle,
         path {
           stroke: currentColor;
         }
+      }
+      &:hover > svg {
+        fill: $yellow-highlight;
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
       }
     }
   }
@@ -497,6 +510,7 @@
     background-color: $bg-dark-primary;
     .item-sidebar {
       width: 100%;
+      height: 100px !important;
       p {
         margin-top: 10px;
         text-transform: uppercase;
@@ -596,7 +610,6 @@
   }
 
   // Drawer
-
   .ant-row.body-wrapper {
     position: relative;
   }
@@ -1185,7 +1198,7 @@
   .multiselection-dropdown {
     zoom: 80%;
     @-moz-document url-prefix() {
-      transform: scale(0.8);
+      transform: scale(0.7);
     }
   }
   .overlay-zoom {
