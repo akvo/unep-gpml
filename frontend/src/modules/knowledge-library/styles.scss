@@ -60,13 +60,19 @@
       color: #ffffff;
       font-weight: 700;
       background-color: transparent;
+
       svg {
         width: 27px;
         height: 27px;
         margin-right: 7px;
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
       }
       b {
         padding-left: 1em;
+      }
+      &:hover > svg {
+        fill: rgba(255, 184, 0, 0.65);
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
       }
     }
 
