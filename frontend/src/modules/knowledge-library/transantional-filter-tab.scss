@@ -1,5 +1,12 @@
 @import "../../vars.scss";
 
+.country-info-popover {
+  zoom: 80%;
+  @-moz-document url-prefix() {
+    transform: scale(0.8);
+  }
+}
+
 .country-filter-tab-wrapper {
   width: 100%;
   .ant-select-selection-placeholder {
