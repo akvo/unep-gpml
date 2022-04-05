@@ -71,7 +71,7 @@
         padding-left: 1em;
       }
       &:hover > svg {
-        fill: rgba(255, 184, 0, 0.65);
+        fill: $yellow-highlight;
         transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
       }
     }
@@ -776,7 +776,7 @@
     .resource-item-wrapper {
       width: 100%;
       &:hover {
-        background: rgba(255, 184, 0, 0.65);
+        background: $yellow-highlight;
         border-radius: 8px;
       }
       .resource-item {
