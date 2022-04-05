@@ -27,6 +27,11 @@ WHERE 1=1
 --~ (when (seq (:roles params)) "AND role = ANY(ARRAY[:v*:roles]::stakeholder_role[])")
 --~ (when (:email-like params) "AND email LIKE :v:email-like")
 
+-- :name get-stakeholder-by-id :? :1
+-- :doc Get stakeholder by id
+SELECT * FROM stakeholder
+WHERE id = :id;
+
 -- :name stakeholder-by-id :? :1
 -- :doc Get stakeholder by id
 select
