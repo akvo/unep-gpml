@@ -431,7 +431,7 @@ const KnowledgeLibrary = ({
                         }
                       : {
                           backgroundColor: "rgba(237, 242, 247, 1)",
-                          position: "unset",
+                          position: "relative",
                         }
                   }
                   className="resource-list-container"
