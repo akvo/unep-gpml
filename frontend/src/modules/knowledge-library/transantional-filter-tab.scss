@@ -1,7 +1,10 @@
 @import "../../vars.scss";
 
 .country-info-popover {
-  zoom: 80%;
+  zoom: 64% !important;
+  .popover-content-item {
+    font-size: 18px !important;
+  }
   @-moz-document url-prefix() {
     transform: scale(0.8);
   }
