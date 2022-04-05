@@ -672,7 +672,7 @@ const Maps = ({
                             isCountrySelected
                               ? "#255B87"
                               : geo.properties.M49Code === selected
-                              ? "#84b4cc"
+                              ? "rgba(255, 184, 0, 0.65)"
                               : fillColor(
                                   curr(topic, findData?.counts, path)
                                     ? curr(topic, findData?.counts, path)
@@ -740,7 +740,7 @@ const Maps = ({
                               : isPattern
                               ? "url(#lines)"
                               : geo.properties.M49Code === selected
-                              ? "#84b4cc"
+                              ? "rgba(255, 184, 0, 0.65)"
                               : selectionCondition()
                               ? "#255B87"
                               : fillColor(
