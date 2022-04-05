@@ -209,6 +209,7 @@ const MultiCountryInfo = ({ data, multiCountryCountries }) => {
   }
   return (
     <Popover
+      overlayClassName="country-info-popover"
       className="popover-multi-country"
       title={""}
       content={renderContent}

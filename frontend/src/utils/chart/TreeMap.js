@@ -86,7 +86,7 @@ const TreeMap = (data, extra, selected) => {
         nodeClick: false,
         colorMappingBy: "index",
         breadcrumb: false,
-        squareRatio: 0.5 * (0.5 + Math.sqrt(3)),
+        squareRatio: 0.5 * (0.5 + Math.sqrt(2)),
         itemStyle: {
           borderColor: "#255B87",
           borderWidth: 4,
