@@ -503,7 +503,7 @@ const KnowledgeLibrary = ({
                     maxWidth: view === "topic" ? "calc(100% - 300px)" : "",
                   }}
                 >
-                  <TopicView {...{ updateQuery }} />
+                  <TopicView {...{ updateQuery, query }} />
                 </Col>
               )}
             </Row>
