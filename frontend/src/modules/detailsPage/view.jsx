@@ -178,6 +178,7 @@ const SharePanel = ({
         overlayStyle={{
           width: "22vw",
         }}
+        overlayClassName="popover-multi-country"
         content={
           <Input.Group compact>
             <Input
@@ -601,7 +602,7 @@ const renderGeoCoverageCountryGroups = (
           {(index ? ", " : " ") + item.name}{" "}
           {item.countries && item.countries.length > 0 && (
             <Popover
-              className="popover-multi-country"
+              overlayClassName="popover-multi-country"
               title={""}
               content={
                 <ul className="list-country-group">
