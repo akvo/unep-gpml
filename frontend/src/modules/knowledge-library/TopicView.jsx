@@ -25,7 +25,7 @@ const TopicView = ({ updateQuery, query }) => {
     !isMobileScreen && setSelectedTopic(name?.toLowerCase());
     updateQuery("tag", [tag]);
   };
-  console.log("selectedTopic::::::", selectedTopic);
+
   useEffect(() => {
     const savedTopic = popularTags.filter((item) => {
       if (query.tag.includes(item)) {
@@ -91,6 +91,7 @@ const TopicView = ({ updateQuery, query }) => {
       );
       setSortPopularTopic(sortedPopularTopics);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // useEffect(() => {
