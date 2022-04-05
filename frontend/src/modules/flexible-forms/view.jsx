@@ -358,6 +358,20 @@ const formDataMapping = [
     question: "S4_G2_24.4",
   },
   {
+    name: "q24_2",
+    group: "S4_G2",
+    type: "option",
+    section: "S4",
+    question: "geoCoverageValueSubnational",
+  },
+  {
+    name: "q24_subnational_city",
+    group: "S4_G2",
+    type: "string",
+    section: "S4",
+    question: "geoCoverageValueSubnationalCity",
+  },
+  {
     name: "q24_4",
     group: "S4_G2",
     type: "option",
@@ -396,6 +410,14 @@ const formDataMapping = [
     key: "stakeholder_connections",
     name: "stakeholder_connections",
     question: "individual",
+    type: "array",
+    section: "S4",
+    group: "S4_G5",
+  },
+  {
+    key: "entity_connections",
+    name: "entity_connections",
+    question: "entity",
     type: "array",
     section: "S4",
     group: "S4_G5",
@@ -548,7 +570,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       res = Object.keys(value)[0];
       // case for geocoveragetype
       if (name === "q24") {
-        res = Object.values(value)?.[0]?.toLowerCase();
+        res =
+          Object.values(value)?.[0] === "Subnational"
+            ? "sub-national"
+            : Object.values(value)?.[0]?.toLowerCase();
       }
       res = isNaN(Number(res)) ? res : Number(res);
       // case for currency code
