@@ -92,7 +92,7 @@
            title first_name role
            non_member_organisation
            last_name idp_usernames
-           linked_in cv twitter
+           linked_in cv twitter email
            affiliation job_title representation
            country geo_coverage_type
            reviewed_at reviewed_by review_status
@@ -106,6 +106,7 @@
    :job_title job_title
    :first_name first_name
    :last_name last_name
+   :email email
    :idp_usernames idp_usernames
    :linked_in linked_in
    :twitter twitter
