@@ -368,7 +368,6 @@ const Maps = ({
   box,
   query,
   data,
-  topic,
   isLoaded,
   clickEvents,
   countData,
@@ -691,18 +690,8 @@ const Maps = ({
                               : geo.properties.M49Code === selected
                               ? "rgba(255, 184, 0, 0.65)"
                               : fillColor(
-                                  curr(
-                                    topic,
-                                    findData?.counts,
-                                    path,
-                                    existingData
-                                  )
-                                    ? curr(
-                                        topic,
-                                        findData?.counts,
-                                        path,
-                                        existingData
-                                      )
+                                  curr(findData?.counts, path, existingData)
+                                    ? curr(findData?.counts, path, existingData)
                                     : 0
                                 )
                           }
@@ -771,18 +760,8 @@ const Maps = ({
                               : selectionCondition()
                               ? "#255B87"
                               : fillColor(
-                                  curr(
-                                    topic,
-                                    findData?.counts,
-                                    path,
-                                    existingData
-                                  )
-                                    ? curr(
-                                        topic,
-                                        findData?.counts,
-                                        path,
-                                        existingData
-                                      )
+                                  curr(findData?.counts, path, existingData)
+                                    ? curr(findData?.counts, path, existingData)
                                     : 0
                                 )
                           }

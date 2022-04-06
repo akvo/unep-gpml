@@ -7,7 +7,7 @@ export const snakeToCamel = (str) =>
       group.toUpperCase().replace("-", "").replace("_", "")
     );
 
-export const curr = (topics, findData, path, existingData) => {
+export const curr = (findData, path, existingData) => {
   const properties = existingData.map(snakeToCamel);
 
   const propsToSum = properties.reduce((acc, curr, index) => {
