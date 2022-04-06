@@ -415,6 +415,11 @@
     }
     .topbar-container {
       .topbar-wrapper {
+        .topbar-title-holder {
+          h1 {
+            font-size: 1.6rem;
+          }
+        }
         .topbar-image-holder {
           padding-left: 20px;
           img {
@@ -436,6 +441,13 @@
       margin-top: 40px;
       .card-wrapper {
         .ant-card {
+          .ant-card-head-wrapper {
+            .ant-card-head-title {
+              span {
+                font-size: 1rem !important;
+              }
+            }
+          }
           .ant-card-head {
             .ant-card-head-title {
               font-size: 1.4rem;
