@@ -244,9 +244,11 @@ const ResourceItem = ({ results, view, stakeholders }) => {
         >
           <div className="topic">{topicNames(type)}</div>
           <div className="item-body">
-            <div className="title">{title}</div>
+            <div className="title">
+              <TrimText text={title} max={45} />
+            </div>
             <div className="description">
-              <TrimText text={description} max={125} />
+              <TrimText text={description} max={45} />
             </div>
           </div>
           <div className="item-footer">
