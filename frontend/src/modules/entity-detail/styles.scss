@@ -463,7 +463,7 @@
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
   #entity-detail {
     .ui.container {
-      zoom: 80%;
+      zoom: 75%;
       width: 1560px;
       margin-left: auto !important;
       margin-right: auto !important;
@@ -486,6 +486,42 @@
     }
     .info-container {
       margin-top: 40px;
+      .card-wrapper {
+        .ant-card {
+          .ant-card-head {
+            .ant-card-head-title {
+              font-size: 1.4rem;
+            }
+          }
+          .ant-card-body {
+            p {
+              font-size: 1.4rem;
+            }
+            .list {
+              .ant-list-item {
+                .ant-list-item-meta {
+                  h4 {
+                    font-size: 1.4rem;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .slider-card {
+        .description-holder {
+          h4 {
+            font-size: 1.4rem;
+          }
+          h6 {
+            font-size: 1.4rem;
+          }
+          .connection-wrapper .read-more {
+            font-size: 1.4rem;
+          }
+        }
+      }
     }
   }
 }
