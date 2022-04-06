@@ -80,6 +80,10 @@ const CountryTransnationalFilter = ({
     );
   };
 
+  const countryInfoData = multicountryGroups
+    .map((transnationalGroup) => transnationalGroup.item)
+    .flat();
+
   return (
     <Tabs
       type="card"
@@ -166,7 +170,7 @@ const CountryTransnationalFilter = ({
                           <MultiCountryInfo
                             data={landing}
                             multiCountryCountries={
-                              transnationalOptions.find(
+                              countryInfoData.find(
                                 (x) => x.id === transnational.id
                               )?.countries
                             }

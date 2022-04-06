@@ -892,42 +892,12 @@ export const multicountryGroups = [
             name: "Uruguay",
             id: 858,
           },
-          {
-            name: "Austria",
-            id: 40,
-          },
+
           {
             name: "Belgium",
             id: 56,
           },
-          {
-            name: "Bulgaria",
-            id: 100,
-          },
-          {
-            name: "Croatia",
-            id: 191,
-          },
-          {
-            name: "Cyprus",
-            id: 196,
-          },
-          {
-            name: "Czechia",
-            id: 203,
-          },
-          {
-            name: "Denmark",
-            id: 208,
-          },
-          {
-            name: "Estonia",
-            id: 233,
-          },
-          {
-            name: "Finland",
-            id: 246,
-          },
+
           {
             name: "France",
             id: 250,
@@ -936,38 +906,12 @@ export const multicountryGroups = [
             name: "Germany",
             id: 276,
           },
-          {
-            name: "Greece",
-            id: 300,
-          },
-          {
-            name: "Hungary",
-            id: 348,
-          },
-          {
-            name: "Ireland",
-            id: 372,
-          },
+
           {
             name: "Italy",
             id: 380,
           },
-          {
-            name: "Latvia",
-            id: 428,
-          },
-          {
-            name: "Lithuania",
-            id: 440,
-          },
-          {
-            name: "Luxembourg",
-            id: 442,
-          },
-          {
-            name: "Malta",
-            id: 470,
-          },
+
           {
             name: "Netherlands",
             id: 528,
@@ -977,28 +921,16 @@ export const multicountryGroups = [
             id: 616,
           },
           {
-            name: "Portugal",
-            id: 620,
-          },
-          {
-            name: "Romania",
-            id: 642,
-          },
-          {
-            name: "Slovakia",
-            id: 703,
-          },
-          {
-            name: "Slovenia",
-            id: 705,
-          },
-          {
             name: "Spain",
             id: 724,
           },
           {
             name: "Sweden",
             id: 752,
+          },
+          {
+            name: "European Union",
+            id: 155,
           },
         ],
       },
@@ -1050,30 +982,7 @@ export const multicountryGroups = [
             name: "Russian Federation",
             id: 643,
           },
-          {
-            name: "Austria",
-            id: 40,
-          },
-          {
-            name: "Belgium",
-            id: 56,
-          },
-          {
-            name: "Bulgaria",
-            id: 100,
-          },
-          {
-            name: "Croatia",
-            id: 191,
-          },
-          {
-            name: "Cyprus",
-            id: 196,
-          },
-          {
-            name: "Czechia",
-            id: 203,
-          },
+
           {
             name: "Denmark",
             id: 208,
@@ -1086,30 +995,12 @@ export const multicountryGroups = [
             name: "Finland",
             id: 246,
           },
-          {
-            name: "France",
-            id: 250,
-          },
+
           {
             name: "Germany",
             id: 276,
           },
-          {
-            name: "Greece",
-            id: 300,
-          },
-          {
-            name: "Hungary",
-            id: 348,
-          },
-          {
-            name: "Ireland",
-            id: 372,
-          },
-          {
-            name: "Italy",
-            id: 380,
-          },
+
           {
             name: "Latvia",
             id: 428,
@@ -1119,44 +1010,12 @@ export const multicountryGroups = [
             id: 440,
           },
           {
-            name: "Luxembourg",
-            id: 442,
-          },
-          {
-            name: "Malta",
-            id: 470,
-          },
-          {
-            name: "Netherlands",
-            id: 528,
-          },
-          {
-            name: "Poland",
-            id: 616,
-          },
-          {
-            name: "Portugal",
-            id: 620,
-          },
-          {
-            name: "Romania",
-            id: 642,
-          },
-          {
-            name: "Slovakia",
-            id: 703,
-          },
-          {
-            name: "Slovenia",
-            id: 705,
-          },
-          {
-            name: "Spain",
-            id: 724,
-          },
-          {
             name: "Sweden",
             id: 752,
+          },
+          {
+            name: "European Union",
+            id: 155,
           },
         ],
       },
@@ -1366,18 +1225,6 @@ export const multicountryGroups = [
             id: 792,
           },
           {
-            name: "Austria",
-            id: 40,
-          },
-          {
-            name: "Belgium",
-            id: 56,
-          },
-          {
-            name: "Bulgaria",
-            id: 100,
-          },
-          {
             name: "Croatia",
             id: 191,
           },
@@ -1386,81 +1233,25 @@ export const multicountryGroups = [
             id: 196,
           },
           {
-            name: "Czechia",
-            id: 203,
-          },
-          {
-            name: "Denmark",
-            id: 208,
-          },
-          {
-            name: "Estonia",
-            id: 233,
-          },
-          {
-            name: "Finland",
-            id: 246,
-          },
-          {
             name: "France",
             id: 250,
           },
-          {
-            name: "Germany",
-            id: 276,
-          },
+
           {
             name: "Greece",
             id: 300,
           },
-          {
-            name: "Hungary",
-            id: 348,
-          },
-          {
-            name: "Ireland",
-            id: 372,
-          },
+
           {
             name: "Italy",
             id: 380,
           },
-          {
-            name: "Latvia",
-            id: 428,
-          },
-          {
-            name: "Lithuania",
-            id: 440,
-          },
-          {
-            name: "Luxembourg",
-            id: 442,
-          },
+
           {
             name: "Malta",
             id: 470,
           },
-          {
-            name: "Netherlands",
-            id: 528,
-          },
-          {
-            name: "Poland",
-            id: 616,
-          },
-          {
-            name: "Portugal",
-            id: 620,
-          },
-          {
-            name: "Romania",
-            id: 642,
-          },
-          {
-            name: "Slovakia",
-            id: 703,
-          },
+
           {
             name: "Slovenia",
             id: 705,
@@ -1470,8 +1261,8 @@ export const multicountryGroups = [
             id: 724,
           },
           {
-            name: "Sweden",
-            id: 752,
+            name: "European Union",
+            id: 155,
           },
         ],
       },
@@ -1496,38 +1287,17 @@ export const multicountryGroups = [
             name: "United Kingdom of Great Britain & Northern Ireland",
             id: 826,
           },
-          {
-            name: "Austria",
-            id: 40,
-          },
+
           {
             name: "Belgium",
             id: 56,
           },
-          {
-            name: "Bulgaria",
-            id: 100,
-          },
-          {
-            name: "Croatia",
-            id: 191,
-          },
-          {
-            name: "Cyprus",
-            id: 196,
-          },
-          {
-            name: "Czechia",
-            id: 203,
-          },
+
           {
             name: "Denmark",
             id: 208,
           },
-          {
-            name: "Estonia",
-            id: 233,
-          },
+
           {
             name: "Finland",
             id: 246,
@@ -1540,62 +1310,27 @@ export const multicountryGroups = [
             name: "Germany",
             id: 276,
           },
-          {
-            name: "Greece",
-            id: 300,
-          },
-          {
-            name: "Hungary",
-            id: 348,
-          },
+
           {
             name: "Ireland",
             id: 372,
           },
-          {
-            name: "Italy",
-            id: 380,
-          },
-          {
-            name: "Latvia",
-            id: 428,
-          },
-          {
-            name: "Lithuania",
-            id: 440,
-          },
+
           {
             name: "Luxembourg",
             id: 442,
           },
-          {
-            name: "Malta",
-            id: 470,
-          },
+
           {
             name: "Netherlands",
             id: 528,
           },
-          {
-            name: "Poland",
-            id: 616,
-          },
+
           {
             name: "Portugal",
             id: 620,
           },
-          {
-            name: "Romania",
-            id: 642,
-          },
-          {
-            name: "Slovakia",
-            id: 703,
-          },
-          {
-            name: "Slovenia",
-            id: 705,
-          },
+
           {
             name: "Spain",
             id: 724,
@@ -1603,6 +1338,10 @@ export const multicountryGroups = [
           {
             name: "Sweden",
             id: 752,
+          },
+          {
+            name: "European Union",
+            id: 155,
           },
         ],
       },
@@ -2876,6 +2615,10 @@ export const multicountryGroups = [
             name: "Zimbabwe",
             id: 716,
           },
+          {
+            name: "European Union",
+            id: 155,
+          },
         ],
       },
       {
@@ -3550,6 +3293,10 @@ export const multicountryGroups = [
           {
             name: "Zimbabwe",
             id: 716,
+          },
+          {
+            name: "European Union",
+            id: 155,
           },
         ],
       },
@@ -4317,6 +4064,10 @@ export const multicountryGroups = [
           {
             name: "Zimbabwe",
             id: 716,
+          },
+          {
+            name: "European Union",
+            id: 155,
           },
         ],
       },
@@ -5112,6 +4863,10 @@ export const multicountryGroups = [
           {
             name: "Zimbabwe",
             id: 716,
+          },
+          {
+            name: "European Union",
+            id: 155,
           },
         ],
       },
@@ -6639,6 +6394,10 @@ export const multicountryGroups = [
             name: "Zimbabwe",
             id: 716,
           },
+          {
+            name: "European Union",
+            id: 155,
+          },
         ],
       },
       {
@@ -7438,6 +7197,10 @@ export const multicountryGroups = [
             name: "Zimbabwe",
             id: 716,
           },
+          {
+            name: "European Union",
+            id: 155,
+          },
         ],
       },
     ],
@@ -7849,45 +7612,10 @@ export const multicountryGroups = [
         type: "transnational",
         countries: [
           {
-            name: "Austria",
-            id: 40,
-          },
-          {
-            name: "Belgium",
-            id: 56,
-          },
-          {
-            name: "Bulgaria",
-            id: 100,
-          },
-          {
             name: "Canada",
             id: 124,
           },
-          {
-            name: "Croatia",
-            id: 191,
-          },
-          {
-            name: "Cyprus",
-            id: 196,
-          },
-          {
-            name: "Czechia",
-            id: 203,
-          },
-          {
-            name: "Denmark",
-            id: 208,
-          },
-          {
-            name: "Estonia",
-            id: 233,
-          },
-          {
-            name: "Finland",
-            id: 246,
-          },
+
           {
             name: "France",
             id: 250,
@@ -7896,18 +7624,7 @@ export const multicountryGroups = [
             name: "Germany",
             id: 276,
           },
-          {
-            name: "Greece",
-            id: 300,
-          },
-          {
-            name: "Hungary",
-            id: 348,
-          },
-          {
-            name: "Ireland",
-            id: 372,
-          },
+
           {
             name: "Italy",
             id: 380,
@@ -7916,54 +7633,7 @@ export const multicountryGroups = [
             name: "Japan",
             id: 392,
           },
-          {
-            name: "Latvia",
-            id: 428,
-          },
-          {
-            name: "Lithuania",
-            id: 440,
-          },
-          {
-            name: "Luxembourg",
-            id: 442,
-          },
-          {
-            name: "Malta",
-            id: 470,
-          },
-          {
-            name: "Netherlands",
-            id: 528,
-          },
-          {
-            name: "Poland",
-            id: 616,
-          },
-          {
-            name: "Portugal",
-            id: 620,
-          },
-          {
-            name: "Romania",
-            id: 642,
-          },
-          {
-            name: "Slovakia",
-            id: 703,
-          },
-          {
-            name: "Slovenia",
-            id: 705,
-          },
-          {
-            name: "Spain",
-            id: 724,
-          },
-          {
-            name: "Sweden",
-            id: 752,
-          },
+
           {
             name: "United Kingdom of Great Britain & Northern Ireland",
             id: 826,
@@ -7971,6 +7641,10 @@ export const multicountryGroups = [
           {
             name: "United States of America",
             id: 840,
+          },
+          {
+            name: "European Union",
+            id: 155,
           },
         ],
       },
@@ -7987,22 +7661,12 @@ export const multicountryGroups = [
             name: "Australia",
             id: 36,
           },
-          {
-            name: "Austria",
-            id: 40,
-          },
-          {
-            name: "Belgium",
-            id: 56,
-          },
+
           {
             name: "Brazil",
             id: 76,
           },
-          {
-            name: "Bulgaria",
-            id: 100,
-          },
+
           {
             name: "Canada",
             id: 124,
@@ -8011,30 +7675,7 @@ export const multicountryGroups = [
             name: "China",
             id: 156,
           },
-          {
-            name: "Croatia",
-            id: 191,
-          },
-          {
-            name: "Cyprus",
-            id: 196,
-          },
-          {
-            name: "Czechia",
-            id: 203,
-          },
-          {
-            name: "Denmark",
-            id: 208,
-          },
-          {
-            name: "Estonia",
-            id: 233,
-          },
-          {
-            name: "Finland",
-            id: 246,
-          },
+
           {
             name: "France",
             id: 250,
@@ -8043,14 +7684,7 @@ export const multicountryGroups = [
             name: "Germany",
             id: 276,
           },
-          {
-            name: "Greece",
-            id: 300,
-          },
-          {
-            name: "Hungary",
-            id: 348,
-          },
+
           {
             name: "India",
             id: 356,
@@ -8059,10 +7693,7 @@ export const multicountryGroups = [
             name: "Indonesia",
             id: 360,
           },
-          {
-            name: "Ireland",
-            id: 372,
-          },
+
           {
             name: "Italy",
             id: 380,
@@ -8071,46 +7702,17 @@ export const multicountryGroups = [
             name: "Japan",
             id: 392,
           },
-          {
-            name: "Latvia",
-            id: 428,
-          },
-          {
-            name: "Lithuania",
-            id: 440,
-          },
-          {
-            name: "Luxembourg",
-            id: 442,
-          },
-          {
-            name: "Malta",
-            id: 470,
-          },
+
           {
             name: "Mexico",
             id: 484,
           },
-          {
-            name: "Netherlands",
-            id: 528,
-          },
-          {
-            name: "Poland",
-            id: 616,
-          },
-          {
-            name: "Portugal",
-            id: 620,
-          },
+
           {
             name: "Republic of Korea",
             id: 410,
           },
-          {
-            name: "Romania",
-            id: 642,
-          },
+
           {
             name: "Russian Federation",
             id: 643,
@@ -8119,26 +7721,12 @@ export const multicountryGroups = [
             name: "Saudi Arabia",
             id: 682,
           },
-          {
-            name: "Slovakia",
-            id: 703,
-          },
-          {
-            name: "Slovenia",
-            id: 705,
-          },
+
           {
             name: "South Africa",
             id: 710,
           },
-          {
-            name: "Spain",
-            id: 724,
-          },
-          {
-            name: "Sweden",
-            id: 752,
-          },
+
           {
             name: "Turkey",
             id: 792,
@@ -8150,6 +7738,10 @@ export const multicountryGroups = [
           {
             name: "United States of America",
             id: 840,
+          },
+          {
+            name: "European Union",
+            id: 155,
           },
         ],
       },
