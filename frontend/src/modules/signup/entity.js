@@ -123,12 +123,12 @@ const getSchema = (
   //   (x) => x.name
   // );
   // geocoverage national options
-  prop.S5.properties["geoCoverageValueNational"].enum = countries?.map((x) =>
-    String(x.id)
-  );
-  prop.S5.properties["geoCoverageValueNational"].enumNames = countries?.map(
-    (x) => x.name
-  );
+  // prop.S5.properties["geoCoverageValueNational"].enum = countries?.map((x) =>
+  //   String(x.id)
+  // );
+  // prop.S5.properties["geoCoverageValueNational"].enumNames = countries?.map(
+  //   (x) => x.name
+  // );
   // geocoverage sub-national options
   // prop.S5.properties["geoCoverageValueSubNational"].enum = countries?.map(
   //   (x) => x.id
