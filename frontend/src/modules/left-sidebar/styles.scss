@@ -86,6 +86,14 @@ ul.sidebar-mobile {
       font-size: 12px;
       color: #fff;
     }
+
+    &:hover {
+      background: $yellow-highlight;
+      .case-study-svg {
+        fill: $yellow-highlight;
+      }
+    }
+
     &.active {
       background: rgba(5, 240, 129, 0.2);
       border-left: 2px solid #07e982;
@@ -95,12 +103,6 @@ ul.sidebar-mobile {
       }
       &:hover {
         background: rgba(5, 240, 129, 0.2);
-      }
-    }
-    &:hover {
-      background: $yellow-highlight;
-      .case-study-svg {
-        fill: $yellow-highlight;
       }
     }
 

@@ -14,13 +14,10 @@ const VerticalLegend = ({
   title,
   contents,
   path,
-  query,
   countData,
   stakeholderCount,
+  existingData,
 }) => {
-  const stakeholderQuery = query.networkType;
-  const topicQuery = query.topic;
-
   // RESOURCES TOTAL COUNTS
   const ResourcesCountPerTransnationalGroups = multicountryGroups.map(
     (transnationalGroup) => {
@@ -165,7 +162,7 @@ const VerticalLegend = ({
                     }
                   };
 
-                  return topicQuery.length === 0 ? (
+                  return existingData.length === 0 ? (
                     <div key={topic} className="total-resources">
                       <div>{topicNames(topic)}</div>
                       <div>
@@ -177,7 +174,7 @@ const VerticalLegend = ({
                       </div>
                     </div>
                   ) : (
-                    topicQuery.includes(topicChecker()) && (
+                    existingData.includes(topicChecker()) && (
                       <div key={topic} className="total-resources">
                         <div>{topicNames(topic)}</div>
                         <div>
@@ -223,7 +220,7 @@ const VerticalLegend = ({
                               }
                             };
 
-                            return topicQuery.length === 0 ? (
+                            return existingData.length === 0 ? (
                               <div key={topic} className="total-resources">
                                 <div>{topicNames(topic)}</div>
                                 <div>
@@ -235,7 +232,7 @@ const VerticalLegend = ({
                                 </div>
                               </div>
                             ) : (
-                              topicQuery.includes(topicChecker()) && (
+                              existingData.includes(topicChecker()) && (
                                 <div key={topic} className="total-resources">
                                   <div>{topicNames(topic)}</div>
                                   <div>
@@ -279,7 +276,7 @@ const VerticalLegend = ({
           (data) => data.topic === topicChecker()
         );
 
-        return topicQuery.length === 0 ? (
+        return existingData.length === 0 ? (
           <div key={topic} className="total-resources">
             <div>{topicNames(topic)}</div>
             <div>
@@ -287,7 +284,7 @@ const VerticalLegend = ({
             </div>
           </div>
         ) : (
-          topicQuery.includes(topicChecker()) && (
+          existingData.includes(topicChecker()) && (
             <div key={topic} className="total-resources">
               <div>{topicNames(topic)}</div>
               <div>
@@ -390,7 +387,7 @@ const VerticalLegend = ({
   );
 
   const stakeholderCountsContent = () => {
-    return stakeholderQuery.length === 0 ? (
+    return existingData.length === 0 ? (
       <div>
         <div>
           <b className="legend-stakeholder-title">Type</b>
@@ -424,7 +421,7 @@ const VerticalLegend = ({
         <div>
           <b className="legend-stakeholder-title">Type</b>
           <div className="legend-stakeholder-wrapper">
-            {stakeholderQuery.includes("organisation") && (
+            {existingData.includes("organisation") && (
               <div className="legend-stakeholder-type">
                 <div className="type">Entity</div>
                 <div className="entities">
@@ -442,7 +439,7 @@ const VerticalLegend = ({
               </div>
             )}
 
-            {stakeholderQuery.includes("stakeholder") && (
+            {existingData.includes("stakeholder") && (
               <div className="legend-stakeholder-type individual">
                 <div className="type">Individual</div>
                 <b>{stakeholderTotalCounts.individual}</b>
@@ -702,10 +699,9 @@ const VerticalLegend = ({
               <strong className="legend-heading">Total stakeholders</strong>
               {stakeholderCountsContent()}
             </div>
-            {stakeholderQuery.includes("organisation")
+            {existingData.includes("organisation")
               ? entityPerTransnationalContent()
-              : stakeholderQuery.length === 0 &&
-                entityPerTransnationalContent()}
+              : existingData.length === 0 && entityPerTransnationalContent()}
           </>
         )}
       </Card>
