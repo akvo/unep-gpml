@@ -5,12 +5,20 @@ import api from "../../utils/api";
 import Chart from "../../utils/chart";
 // import TopicChart from "../chart/topicChart";
 
-const TopicView = ({ updateQuery }) => {
+const TopicView = ({ updateQuery, query }) => {
   const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
   const [sortPopularTopic, setSortPopularTopic] = useState([]);
   const defTopic = sortPopularTopic[0]?.topic?.toLocaleLowerCase();
-  const [selectedTopic, setSelectedTopic] = useState(defTopic);
+  const [selectedTopic, setSelectedTopic] = useState(null);
   const isMobileScreen = innerWidth <= 991;
+  const popularTags = [
+    "plastics",
+    "waste management",
+    "marine litter",
+    "capacity building",
+    "product by design",
+    "source to sea",
+  ];
 
   const handlePopularTopicChartClick = (params) => {
     const { name, tag } = params?.data;
@@ -19,20 +27,20 @@ const TopicView = ({ updateQuery }) => {
   };
 
   useEffect(() => {
-    setSelectedTopic(defTopic);
+    const savedTopic = popularTags.filter((item) => {
+      if (query.tag.includes(item)) {
+        return item;
+      }
+    });
+    if (!selectedTopic && savedTopic.length === 0) {
+      setSelectedTopic(defTopic);
+    } else {
+      setSelectedTopic(savedTopic[0]);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortPopularTopic]);
 
   useEffect(() => {
-    const popularTags = [
-      "plastics",
-      "waste management",
-      "marine litter",
-      "capacity building",
-      "product by design",
-      "source to sea",
-    ];
-
     const tagsFetch = popularTags.map((tag, i) => {
       const topicName = () => {
         if (tag === "plastics") {
@@ -83,6 +91,7 @@ const TopicView = ({ updateQuery }) => {
       );
       setSortPopularTopic(sortedPopularTopics);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // useEffect(() => {
