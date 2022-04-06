@@ -199,30 +199,32 @@ const KnowledgeLibrary = ({
         return topicNames(value);
       }
       if (key === "tag") {
-        const findTag = flatten(values(tags)).find((x) => x.id == value);
+        const selectedTag = flatten(values(tags)).find((x) => x.id == value);
 
-        return findTag ? titleCase(findTag?.tag) : titleCase(value);
+        return selectedTag ? titleCase(selectedTag?.tag) : titleCase(value);
       }
       if (key === "country") {
-        const findCountry = countries.find((x) => x.id == value);
-        return findCountry?.name;
+        const selectedCountry = countries.find((x) => x.id == value);
+        return selectedCountry?.name;
       }
       if (key === "transnational") {
         const transnationalGroup = multicountryGroups
           .map((multicountryGroup) => multicountryGroup.item)
           .flat();
 
-        const findTransnational = transnationalGroup.find((x) => x.id == value);
-        return findTransnational?.name;
+        const selectedTransnational = transnationalGroup.find(
+          (x) => x.id == value
+        );
+        return selectedTransnational?.name;
       }
 
       if (key === "representativeGroup") {
-        const representativeGroups = representativeGroup.find(
+        const selectedRepresentativeGroups = representativeGroup.find(
           (x) => x?.code?.toLowerCase() == value?.toLowerCase()
         );
         return value.toLowerCase() === "other"
           ? "Other"
-          : representativeGroups?.name;
+          : selectedRepresentativeGroups?.name;
       }
       if (key === "startDate") {
         return `Start date ${value}`;
@@ -231,17 +233,17 @@ const KnowledgeLibrary = ({
         return `End date ${value}`;
       }
       if (key === "subContentType") {
-        const findSubContentType = mainContentType.find((subContent) =>
+        const selectedSubContentType = mainContentType.find((subContent) =>
           subContent.childs.find((child) => child?.title?.includes(value))
         );
 
-        return `${value} ${findSubContentType?.name}`;
+        return `${value} ${selectedSubContentType?.name}`;
       }
       if (key === "entity") {
-        const findOrganisation = organisations.find(
+        const selectedOrganisation = organisations.find(
           (organisation) => organisation.id == value
         );
-        return findOrganisation?.name;
+        return selectedOrganisation?.name;
       }
     };
     return Object.keys(query).map((key, index) => {

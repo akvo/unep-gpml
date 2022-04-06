@@ -27,6 +27,7 @@ import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg"
 import { ReactComponent as IconCommunity } from "../../images/events/community-icon.svg";
 import StakeholderList from "./stakeholderList";
 import { multicountryGroups } from "../knowledge-library/multicountry";
+import { titleCase } from "../../utils/string";
 
 let tmid;
 
@@ -43,7 +44,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
-    representativeGroup: s.sectorOptions,
+    representativeGroup: s.representativeGroup,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     stakeholders: s.stakeholders,
     organisations: s.organisations,
@@ -72,6 +73,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     entity: 0,
     GPMLMemberCount: 0,
     nonMemberOrganisation: 0,
+    existingStakeholder: [],
   });
 
   const [isAscending, setIsAscending] = useState(null);
@@ -184,12 +186,17 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         const GPMLMemberCounts = resp?.data?.counts?.find(
           (count) => count?.networkType === "gpml_member_entities"
         );
-
+        const existingStakeholder = resp?.data?.counts.filter(
+          (item) =>
+            item?.networkType === "organisation" ||
+            item?.networkType === "stakeholder"
+        );
         setStakeholderCount({
           individual: stakeholderType?.count || 0,
           entity: organisationType?.count || 0,
           GPMLMemberCount: GPMLMemberCounts?.count || 0,
           nonMemberOrganisation: nonMemberOrganisation || 0,
+          existingStakeholder: existingStakeholder,
         });
 
         setResults(
@@ -310,10 +317,10 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   const renderFilterTag = () => {
     const renderName = (key, value) => {
       if (key === "affiliation") {
-        const findOrganisation = organisations.find(
+        const selectedOrganisation = organisations.find(
           (organisation) => organisation?.id == value
         );
-        return findOrganisation?.name;
+        return selectedOrganisation?.name;
       }
       if (key === "isMember") {
         const name = humps.decamelize("Owner");
@@ -325,47 +332,49 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       }
 
       if (key === "country") {
-        const findCountry = countries.find((x) => x.id == value);
-        return findCountry?.name;
+        const selectedCountry = countries.find((x) => x.id == value);
+        return selectedCountry?.name;
       }
 
       if (key === "geoCoverageType") {
-        const findGeoCoverage = geoCoverageTypeOptions?.find((x) => ({
+        const selectedGeoCoverage = geoCoverageTypeOptions?.find((x) => ({
           value: x,
           label: x,
         }));
-        return findGeoCoverage;
+        return selectedGeoCoverage;
       }
 
       if (key === "representativeGroup") {
-        const representativeGroups = representativeGroup.find(
+        const selectedRepresentativeGroups = representativeGroup.find(
           (x) => x?.code?.toLowerCase() == value?.toLowerCase()
         );
         return value.toLowerCase() === "other"
           ? "Other"
-          : representativeGroups?.name;
+          : selectedRepresentativeGroups?.name;
       }
       if (key === "transnational") {
         const transnationalGroup = multicountryGroups
           .map((multicountryGroup) => multicountryGroup.item)
           .flat();
 
-        const findTransnational = transnationalGroup.find((x) => x.id == value);
-        return findTransnational?.name;
+        const selectedTransnational = transnationalGroup.find(
+          (x) => x.id == value
+        );
+        return selectedTransnational?.name;
       }
       if (key === "seeking") {
-        const findSeeking = seeking.find((seek) => seek?.tag == value);
-        return findSeeking?.tag;
+        const selectedSeeking = seeking.find((seek) => seek?.tag == value);
+        return selectedSeeking?.tag;
       }
       if (key === "offering") {
-        const findOffering = offering.find((offer) => offer?.tag == value);
-        return findOffering?.tag;
+        const selectedOffering = offering.find((offer) => offer?.tag == value);
+        return selectedOffering?.tag;
       }
       if (key === "entity") {
-        const findOrganisation = organisations.find(
+        const selectedOrganisation = organisations.find(
           (organisation) => organisation.id == value
         );
-        return findOrganisation?.name;
+        return selectedOrganisation?.name;
       }
     };
     return Object.keys(query).map((key, index) => {

@@ -87,7 +87,6 @@ const MapLanding = ({
         }}
         data={landing?.map || []}
         clickEvents={clickCountry}
-        topic={query?.topic}
         isLoaded={isLoaded}
         multiCountries={
           multiCountry &&
