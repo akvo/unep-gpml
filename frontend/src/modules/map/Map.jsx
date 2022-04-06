@@ -395,6 +395,19 @@ const Maps = ({
   const [countryToSelect, setCountryToSelect] = useState([]);
   const [isShownLegend, setIsShownLegend] = useState(true);
 
+  const resourceCount =
+    path === KNOWLEDGE_LIBRARY &&
+    countData.filter((data) => data.topic !== "gpml_member_entities");
+  const existingStakeholder =
+    path === STAKEHOLDER_OVERVIEW &&
+    stakeholderCount.existingStakeholder.map((data) => data?.networkType);
+
+  const existingResource =
+    path === KNOWLEDGE_LIBRARY ? resourceCount.map((data) => data.topic) : [];
+  const existingData =
+    path === KNOWLEDGE_LIBRARY ? existingResource : existingStakeholder;
+
+  // console.log('existingData::::::',existingData);
   const selectedTerritory = !isEmpty(countries)
     ? countries
         .filter((item) => {
@@ -586,18 +599,22 @@ const Maps = ({
               {isShownLegend && (
                 <>
                   {useVerticalLegend ? (
-                    <VerticalLegend
-                      data={colorScale.thresholds().sort((a, b) => b - a)}
-                      contents={data}
-                      setFilterColor={setFilterColor}
-                      selected={filterColor}
-                      isDisplayedList={isDisplayedList}
-                      title={legendTitle}
-                      path={path}
-                      query={query}
-                      countData={countData}
-                      stakeholderCount={stakeholderCount}
-                    />
+                    existingData.length !== 0 ? (
+                      <VerticalLegend
+                        data={colorScale.thresholds().sort((a, b) => b - a)}
+                        contents={data}
+                        setFilterColor={setFilterColor}
+                        selected={filterColor}
+                        isDisplayedList={isDisplayedList}
+                        title={legendTitle}
+                        path={path}
+                        query={query}
+                        countData={countData}
+                        stakeholderCount={stakeholderCount}
+                      />
+                    ) : (
+                      <div className="no-legend-warning">No legend</div>
+                    )
                   ) : (
                     <Legend
                       data={colorScale.thresholds()}
@@ -674,8 +691,18 @@ const Maps = ({
                               : geo.properties.M49Code === selected
                               ? "rgba(255, 184, 0, 0.65)"
                               : fillColor(
-                                  curr(topic, findData?.counts, path)
-                                    ? curr(topic, findData?.counts, path)
+                                  curr(
+                                    topic,
+                                    findData?.counts,
+                                    path,
+                                    existingData
+                                  )
+                                    ? curr(
+                                        topic,
+                                        findData?.counts,
+                                        path,
+                                        existingData
+                                      )
                                     : 0
                                 )
                           }
@@ -744,8 +771,18 @@ const Maps = ({
                               : selectionCondition()
                               ? "#255B87"
                               : fillColor(
-                                  curr(topic, findData?.counts, path)
-                                    ? curr(topic, findData?.counts, path)
+                                  curr(
+                                    topic,
+                                    findData?.counts,
+                                    path,
+                                    existingData
+                                  )
+                                    ? curr(
+                                        topic,
+                                        findData?.counts,
+                                        path,
+                                        existingData
+                                      )
                                     : 0
                                 )
                           }
