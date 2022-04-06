@@ -71,7 +71,7 @@ import {
 
 const CardComponent = ({ title, style, children, getRef }) => {
   return (
-    <div className="card-wrapper" style={style} ref={getRef}>
+    <div className={`card-wrapper mb-10`} ref={getRef}>
       <Card title={title} bordered={false} style={style}>
         {children}
       </Card>
@@ -879,12 +879,7 @@ const DetailsView = ({
                 </List>
               </div> */}
 
-              <CardComponent
-                title="Location and Geo-coverage"
-                style={{
-                  marginBottom: "30px",
-                }}
-              >
+              <CardComponent title="Location and Geo-coverage">
                 <div className="list geo-coverage">
                   <List itemLayout="horizontal">
                     <List.Item>
@@ -952,9 +947,6 @@ const DetailsView = ({
                       x.role === "interested in"
                   )?.length
                 })`}
-                style={{
-                  marginBottom: "30px",
-                }}
               >
                 <div className="list connection-list">
                   {data?.entityConnections.length > 0 && (
@@ -1037,23 +1029,12 @@ const DetailsView = ({
               {data.type !== "Technical Resource" &&
                 data.type !== "Policy" &&
                 data.type !== "Action Plan" && (
-                  <CardComponent
-                    title="Description"
-                    style={{
-                      marginBottom: "30px",
-                    }}
-                  >
+                  <CardComponent title="Description">
                     <p className="summary">{data?.summary}</p>
                   </CardComponent>
                 )}
 
-              <CardComponent
-                title="Record"
-                style={{
-                  marginBottom: "30px",
-                }}
-                getRef={record}
-              >
+              <CardComponent title="Record" getRef={record}>
                 <div className="record-table">
                   {countries &&
                     renderDetails(
@@ -1071,13 +1052,7 @@ const DetailsView = ({
                     )}
                 </div>
               </CardComponent>
-              <CardComponent
-                title="Documents and info"
-                style={{
-                  marginBottom: "30px",
-                }}
-                getRef={document}
-              >
+              <CardComponent title="Documents and info" getRef={document}>
                 {data?.infoDocs && (
                   <div
                     className="list documents-list"
@@ -1085,12 +1060,7 @@ const DetailsView = ({
                   />
                 )}
               </CardComponent>
-              <CardComponent
-                title="Tags"
-                style={{
-                  marginBottom: "30px",
-                }}
-              >
+              <CardComponent title="Tags">
                 <div className="list tag-list">
                   <List itemLayout="horizontal">
                     {data?.tags && (
@@ -1116,9 +1086,6 @@ const DetailsView = ({
                   title={`Related content (${
                     data?.relatedContent && data?.relatedContent.length
                   })`}
-                  style={{
-                    marginBottom: "30px",
-                  }}
                   getRef={relatedContent}
                 >
                   {data?.relatedContent.length > 0 && (
