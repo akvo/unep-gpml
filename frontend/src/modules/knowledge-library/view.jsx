@@ -431,7 +431,7 @@ const KnowledgeLibrary = ({
                         }
                       : {
                           backgroundColor: "rgba(237, 242, 247, 1)",
-                          position: "unset",
+                          position: "relative",
                         }
                   }
                   className="resource-list-container"
@@ -503,7 +503,7 @@ const KnowledgeLibrary = ({
                     maxWidth: view === "topic" ? "calc(100% - 300px)" : "",
                   }}
                 >
-                  <TopicView {...{ updateQuery }} />
+                  <TopicView {...{ updateQuery, query }} />
                 </Col>
               )}
             </Row>

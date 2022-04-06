@@ -66,11 +66,12 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
-  const [GPMLMemberCount, setGPMLMemberCount] = useState(0);
+  const [nonMemberOrganisation, setNonMemberOrganisation] = useState(0);
   const [stakeholderCount, setStakeholderCount] = useState({
     individual: 0,
     entity: 0,
     GPMLMemberCount: 0,
+    nonMemberOrganisation: 0,
   });
 
   const [isAscending, setIsAscending] = useState(null);
@@ -162,6 +163,10 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
 
+    api
+      .get(`/non-member-organisation`)
+      .then((resp) => setNonMemberOrganisation(resp?.data.length));
+
     const url = `/community?${String(searchParms)}`;
     api
       .get(url)
@@ -179,11 +184,12 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         const GPMLMemberCounts = resp?.data?.counts?.find(
           (count) => count?.networkType === "gpml_member_entities"
         );
-        setGPMLMemberCount(GPMLMemberCounts.count);
+
         setStakeholderCount({
           individual: stakeholderType?.count || 0,
           entity: organisationType?.count || 0,
           GPMLMemberCount: GPMLMemberCounts?.count || 0,
+          nonMemberOrganisation: nonMemberOrganisation || 0,
         });
 
         setResults(
