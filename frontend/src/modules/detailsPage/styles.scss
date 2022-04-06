@@ -561,6 +561,21 @@
           font-weight: 700;
         }
       }
+      .related-content {
+        .slider-card {
+          .description-holder {
+            h4 {
+              font-size: 1.4rem;
+            }
+            h6 {
+              font-size: 1.4rem;
+            }
+            .bottom-panel .read-more {
+              font-size: 1.4rem;
+            }
+          }
+        }
+      }
     }
     .card-wrapper {
       &.mb-10 {
@@ -591,6 +606,11 @@
     }
   }
   .popover-multi-country {
-    zoom: 80%;
+    zoom: 75%;
+    .list-country-group {
+      li {
+        font-size: 1.2rem;
+      }
+    }
   }
 }
