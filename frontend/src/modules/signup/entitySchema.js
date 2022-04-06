@@ -223,7 +223,6 @@ export const schema = {
         "geoCoverageType",
         "geoCoverageValueTransnational",
         "geoCoverageCountries",
-        "geoCoverageValueNational",
         "publicDatabase",
       ],
       properties: {
