@@ -319,7 +319,7 @@ const AdminSection = ({
   const changeRole = (stakeholder, role, listOpts, setListOpts) => {
     setLoading(stakeholder.id);
     api
-      .patch(`/stakeholder/${stakeholder.id}/associated-topics`, { role })
+      .patch(`/stakeholder/${stakeholder.id}`, { role })
       .then((resp) => {
         notification.success({ message: "User role changed" });
         // FIXME: Add error handling in case the PATCH fails!
