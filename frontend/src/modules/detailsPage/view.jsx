@@ -86,23 +86,42 @@ const TabComponent = ({
   relatedRef,
   recordRef,
   documentRef,
+  tagRef,
+  descriptionRef,
+  data,
 }) => {
   return (
     <div className="tab-wrapper" style={style}>
       <ul>
+        {data.type !== "Technical Resource" &&
+          data.type !== "Policy" &&
+          data.type !== "Action Plan" && (
+            <li>
+              <a onClick={() => descriptionRef.current.scrollIntoView()}>
+                Description
+              </a>
+            </li>
+          )}
         <li>
           <a onClick={() => recordRef.current.scrollIntoView()}>Record</a>
         </li>
+        {data?.infoDocs && (
+          <li>
+            <a onClick={() => documentRef.current.scrollIntoView()}>
+              Documents And Info
+            </a>
+          </li>
+        )}
         <li>
-          <a onClick={() => documentRef.current.scrollIntoView()}>
-            Documents And Info
-          </a>
+          <a onClick={() => tagRef.current.scrollIntoView()}>Tags</a>
         </li>
-        <li>
-          <a onClick={() => relatedRef.current.scrollIntoView()}>
-            Related Content
-          </a>
-        </li>
+        {data?.relatedContent && data?.relatedContent?.length > 0 && (
+          <li>
+            <a onClick={() => relatedRef.current.scrollIntoView()}>
+              Related Content
+            </a>
+          </li>
+        )}
         {/* <li>
           <a href="#">Comments</a>
         </li> */}
@@ -639,6 +658,8 @@ const DetailsView = ({
   const relatedContent = useRef(null);
   const record = useRef(null);
   const document = useRef(null);
+  const tag = useRef(null);
+  const description = useRef(null);
   const reviews = useRef(null);
   const [showLess, setShowLess] = useState(true);
 
@@ -1033,11 +1054,14 @@ const DetailsView = ({
                 relatedRef={relatedContent}
                 recordRef={record}
                 documentRef={document}
+                tagRef={tag}
+                descriptionRef={description}
+                data={data}
               />
               {data.type !== "Technical Resource" &&
                 data.type !== "Policy" &&
                 data.type !== "Action Plan" && (
-                  <CardComponent title="Description">
+                  <CardComponent title="Description" getRef={description}>
                     <p className="summary">{data?.summary}</p>
                   </CardComponent>
                 )}
@@ -1071,7 +1095,7 @@ const DetailsView = ({
                 </CardComponent>
               )}
               {data?.tags && data?.tags.length > 0 && (
-                <CardComponent title="Tags">
+                <CardComponent title="Tags" getRef={tag}>
                   <div className="list tag-list">
                     <List itemLayout="horizontal">
                       {data?.tags && (
