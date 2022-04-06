@@ -28,6 +28,11 @@
     justify-content: center;
     width: 35px;
     height: 32px;
+    &:hover {
+      background-color: $yellow-highlight;
+      color: rgba(0, 0, 0, 0.85);
+      border: #d9d9d9 solid 1px;
+    }
   }
 
   #map-loader {
@@ -235,6 +240,11 @@
       height: 32px;
       margin-right: 0;
       margin-left: 0;
+      &:hover {
+        background-color: $yellow-highlight;
+        color: rgba(0, 0, 0, 0.85);
+        border: 1px solid #d9d9d9;
+      }
     }
   }
 

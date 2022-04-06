@@ -350,7 +350,12 @@
         font-weight: 400;
         font-size: 16px;
       }
-
+      .drawer-close-icon {
+        border-radius: 50%;
+        &:hover {
+          background-color: $yellow-highlight;
+        }
+      }
       .ant-space-item {
         margin-bottom: 0 !important;
       }

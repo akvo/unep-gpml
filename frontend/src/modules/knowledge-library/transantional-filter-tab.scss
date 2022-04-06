@@ -1,9 +1,21 @@
 @import "../../vars.scss";
 
+.popover-multi-country {
+  cursor: pointer;
+  border-radius: 50%;
+  &:hover {
+    background-color: $yellow-highlight !important;
+  }
+}
+
 .country-info-popover {
-  zoom: 80%;
+  zoom: 64% !important;
+  .popover-content-item {
+    font-size: 18px !important;
+  }
   @-moz-document url-prefix() {
-    transform: scale(0.8);
+    transform: scale(0.7);
+    font-size: 13px !important;
   }
 }
 
@@ -26,9 +38,7 @@
   border: 1px solid #d7e6ee;
   border-radius: 3px;
   background-color: #fff;
-  .popover-multi-country {
-    cursor: pointer;
-  }
+
   .ant-select-selection-overflow {
     height: 29px;
     overflow-y: auto;
