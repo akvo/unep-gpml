@@ -93,6 +93,9 @@ $bg-green-primary: #10f9b7;
       background-color: rgba(53, 121, 152, 0.7);
       border-radius: 22px;
       padding: 63px 30px 78px 30px;
+      &:hover {
+        background-color: $yellow-highlight;
+      }
 
       .download-text {
         font-weight: 700;
@@ -132,6 +135,13 @@ $bg-green-primary: #10f9b7;
 
       &:last-child,
       &.active.disabled {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      &:last-child:hover {
+        background-color: $yellow-highlight;
+      }
+
+      &.active.disabled:hover {
         background-color: rgba(255, 255, 255, 0.1);
       }
 
@@ -229,6 +239,8 @@ $bg-green-primary: #10f9b7;
       margin-bottom: 0;
       color: $blue03;
       overflow-x: auto;
+      border-radius: 10px 10px 0 10px;
+      background: white;
     }
 
     .plan-list-item {
@@ -243,7 +255,12 @@ $bg-green-primary: #10f9b7;
       border-right: 1px solid #ffffff;
       padding: 0 0 0 57.5px;
       cursor: pointer;
-
+      &:hover {
+        background-color: $yellow-highlight;
+        &::after {
+          border-left: 30px solid $yellow-highlight;
+        }
+      }
       &::after,
       &::before {
         content: " ";
