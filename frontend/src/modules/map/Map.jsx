@@ -469,7 +469,7 @@ const Maps = ({
 
       // Get properties based on filter
       const values = () => {
-        const properties = topic.map(snakeToCamel);
+        const properties = existingData.map(snakeToCamel);
 
         const propsToSum = properties.reduce((acc, currs, index) => {
           const currProp = properties[index];
@@ -608,7 +608,7 @@ const Maps = ({
                         isDisplayedList={isDisplayedList}
                         title={legendTitle}
                         path={path}
-                        query={query}
+                        existingData={existingData}
                         countData={countData}
                         stakeholderCount={stakeholderCount}
                       />
