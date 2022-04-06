@@ -56,7 +56,7 @@ export const multicountryGroups = [
             id: 178,
           },
           {
-            name: "C魌e d'Ivoire",
+            name: "C么te d'Ivoire",
             id: 384,
           },
           {
@@ -1656,7 +1656,7 @@ export const multicountryGroups = [
             id: 132,
           },
           {
-            name: "C魌e d'Ivoire",
+            name: "C么te d'Ivoire",
             id: 384,
           },
           {
@@ -2020,7 +2020,7 @@ export const multicountryGroups = [
             id: 188,
           },
           {
-            name: "C魌e d'Ivoire",
+            name: "C么te d'Ivoire",
             id: 384,
           },
           {
@@ -2755,7 +2755,7 @@ export const multicountryGroups = [
             id: 188,
           },
           {
-            name: "C魌e d'Ivoire",
+            name: "C么te d'Ivoire",
             id: 384,
           },
           {
@@ -3462,7 +3462,7 @@ export const multicountryGroups = [
             id: 188,
           },
           {
-            name: "C魌e d'Ivoire",
+            name: "C么te d'Ivoire",
             id: 384,
           },
           {
@@ -4241,7 +4241,7 @@ export const multicountryGroups = [
             id: 188,
           },
           {
-            name: "C魌e d'Ivoire",
+            name: "C么te d'Ivoire",
             id: 384,
           },
           {
@@ -5036,7 +5036,7 @@ export const multicountryGroups = [
             id: 188,
           },
           {
-            name: "C魌e d'Ivoire",
+            name: "C么te d'Ivoire",
             id: 384,
           },
           {
@@ -5775,7 +5775,7 @@ export const multicountryGroups = [
             id: 188,
           },
           {
-            name: "C魌e d'Ivoire",
+            name: "C么te d'Ivoire",
             id: 384,
           },
           {
@@ -6570,7 +6570,7 @@ export const multicountryGroups = [
             id: 188,
           },
           {
-            name: "C魌e d'Ivoire",
+            name: "C么te d'Ivoire",
             id: 384,
           },
           {
@@ -8204,7 +8204,7 @@ export const multicountryGroups = [
             id: 192,
           },
           {
-            name: "Cura鏰o (Neth.)",
+            name: "Cura莽ao (Neth.)",
             id: 531,
           },
           {
@@ -8586,7 +8586,7 @@ export const multicountryGroups = [
             id: 188,
           },
           {
-            name: "C魌e d'Ivoire",
+            name: "C么te d'Ivoire",
             id: 384,
           },
           {
