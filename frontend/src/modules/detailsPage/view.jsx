@@ -356,13 +356,13 @@ const renderBannerSection = (
                 borderRadius: "none",
               }}
             >
-              {data.summary.length < 400 ? (
+              {data?.summary && data?.summary?.length < 400 ? (
                 <p>{data?.summary}</p>
               ) : (
                 <>
                   <p>
                     {showLess
-                      ? `${data.summary.slice(0, 400)}...`
+                      ? `${data.summary && data.summary.slice(0, 400)}...`
                       : data.summary}
                   </p>
                   <a
