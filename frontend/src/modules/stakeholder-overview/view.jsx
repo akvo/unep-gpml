@@ -72,6 +72,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     entity: 0,
     GPMLMemberCount: 0,
     nonMemberOrganisation: 0,
+    existingStakeholder: [],
   });
 
   const [isAscending, setIsAscending] = useState(null);
@@ -184,12 +185,17 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         const GPMLMemberCounts = resp?.data?.counts?.find(
           (count) => count?.networkType === "gpml_member_entities"
         );
-
+        const existingStakeholder = resp?.data?.counts.filter(
+          (item) =>
+            item?.networkType === "organisation" ||
+            item?.networkType === "stakeholder"
+        );
         setStakeholderCount({
           individual: stakeholderType?.count || 0,
           entity: organisationType?.count || 0,
           GPMLMemberCount: GPMLMemberCounts?.count || 0,
           nonMemberOrganisation: nonMemberOrganisation || 0,
+          existingStakeholder: existingStakeholder,
         });
 
         setResults(
