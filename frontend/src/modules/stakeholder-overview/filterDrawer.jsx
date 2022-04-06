@@ -381,7 +381,7 @@ const FilterDrawer = ({
                     .sort((a, b) => a?.label.localeCompare(b?.label))
                 : []
             }
-            value={query?.affiliation?.map((x) => parseInt(x)) || []}
+            value={query?.entity?.map((x) => parseInt(x)) || []}
             flag="entity"
             query={query}
             updateQuery={updateQuery}
