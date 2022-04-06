@@ -159,6 +159,13 @@ const formDataMapping = [
     group: null,
   },
   {
+    name: "email",
+    type: "string",
+    question: "email",
+    section: "S1",
+    group: null,
+  },
+  {
     name: "linkedIn",
     type: "string",
     question: "linkedIn",
