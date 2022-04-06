@@ -299,28 +299,11 @@ const VerticalLegend = ({
       });
 
   // STAKEHOLDER TOTAL COUNTS
-
-  const stakeholderTotalCounts =
-    path === STAKEHOLDER_OVERVIEW &&
-    contents.reduce(
-      (acc, currVal) => {
-        acc = {
-          ...acc,
-
-          nonMember:
-            acc.nonMember + Number(currVal.counts.nonMemberOrganisation),
-        };
-        return {
-          ...acc,
-          individual: stakeholderCount.individual,
-          member: stakeholderCount.GPMLMemberCount,
-        };
-      },
-      {
-        individual: 0,
-        nonMember: 0,
-      }
-    );
+  const stakeholderTotalCounts = path === STAKEHOLDER_OVERVIEW && {
+    individual: stakeholderCount.individual,
+    member: stakeholderCount.GPMLMemberCount,
+    nonMember: stakeholderCount.nonMemberOrganisation,
+  };
 
   const stakeholderPerTransnationalGroup = multicountryGroups.map(
     (transnationalGroup) => {
