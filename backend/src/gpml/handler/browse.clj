@@ -88,20 +88,25 @@
                                :type "string"
                                :allowEmptyValue true}}
     string?]
+   [:entity {:optional true
+             :swagger {:description "Comma separated list of entity IDs"
+                       :type "string"
+                       :allowEmptyValue true}}
+    string?]
    [:limit {:optional true
             :swagger {:description "Limit the number of entries per page"
                       :type "int"
                       :allowEmptyValue true}}
     [:int {:min 0 :max 100}]]
    [:offset {:optional true
-             :swagger{:description "Number of items to skip when fetching entries"
-                      :type "int"
-                      :allowEmptyValue true}}
+             :swagger {:description "Number of items to skip when fetching entries"
+                       :type "int"
+                       :allowEmptyValue true}}
     [:int {:min 0}]]])
 
 (defn get-db-filter
   [{:keys [limit offset startDate endDate user-id favorites country transnational
-           topic tag affiliation representativeGroup subContentType q]}]
+           topic tag affiliation representativeGroup subContentType entity q]}]
   (cond-> {}
     offset
     (assoc :offset offset)
@@ -139,6 +144,9 @@
 
     (seq subContentType)
     (assoc :sub-content-type (set (str/split subContentType #",")))
+
+    (seq entity)
+    (assoc :entity (set (map #(Integer/parseInt %) (str/split entity #","))))
 
     (seq q)
     (assoc :search-text (->> (str/trim q)
