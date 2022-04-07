@@ -360,17 +360,21 @@ const renderBannerSection = (
                 <p>{data?.summary}</p>
               ) : (
                 <>
-                  <p>
-                    {showLess
-                      ? `${data.summary && data.summary.slice(0, 400)}...`
-                      : data.summary}
-                  </p>
-                  <a
-                    className="view-more"
-                    onClick={() => setShowLess(!showLess)}
-                  >
-                    Read {showLess ? "More" : "Less"}
-                  </a>
+                  {data?.summary && (
+                    <>
+                      <p>
+                        {showLess
+                          ? `${data.summary && data.summary.slice(0, 400)}...`
+                          : data.summary}
+                      </p>
+                      <a
+                        className="view-more"
+                        onClick={() => setShowLess(!showLess)}
+                      >
+                        Read {showLess ? "More" : "Less"}
+                      </a>
+                    </>
+                  )}
                 </>
               )}
             </CardComponent>
