@@ -11,6 +11,11 @@ submission AS (
     WHERE is_member = true
 --~ (when (:review_status params) " AND review_status = :review_status::review_status ")
     UNION
+    SELECT id, 'organisation' AS type, 'non_member_organisation' AS topic, name as title, id as created_by, created, 'USER' as role, review_status, logo as image
+    FROM organisation
+    WHERE is_member = false
+--~ (when (:review_status params) " AND review_status = :review_status::review_status ")
+    UNION
     SELECT id, 'tag' AS type, 'tag' AS topic, tag as title, NULL as created_by, NULL as created, NULL as role, review_status, NULL as image
     FROM tag
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
@@ -53,6 +58,7 @@ data AS (
     LEFT JOIN reviewers r on s.id=r.id and s.type=r.type
     WHERE 1=1
 --~ (when (= "entities" (:only params)) " AND  s.type IN ( 'organisation') ")
+--~ (when (= "non-member-entities" (:only params)) " AND  s.type IN ( 'organisation') AND s.topic IN ('non_member_organisation')")
 --~ (when (= "stakeholders" (:only params)) " AND  s.type IN ('stakeholder') ")
 --~ (when (= "tags" (:only params)) " AND  s.type IN ('tag') ")
 --~ (when (= "resources" (:only params)) " AND  s.type NOT IN ('stakeholder', 'organisation') ")
@@ -67,6 +73,7 @@ SELECT json_build_object(
     SELECT COUNT(*) FROM submission
     WHERE 1=1
 --~ (when (= "entities" (:only params)) " AND type IN ('organisation') ")
+--~ (when (= "non-member-entities" (:only params)) " AND  type IN ( 'organisation') AND topic IN ('non_member_organisation')")
 --~ (when (= "stakeholders" (:only params)) " AND type IN ('stakeholder') ")
 --~ (when (= "resources" (:only params)) " AND type NOT IN ('stakeholder', 'organisation') ")
 --~ (when (:title params) (str " AND title ILIKE '%" (:title params) "%' ") )
@@ -76,6 +83,7 @@ SELECT json_build_object(
     SELECT COUNT(*) FROM submission
     WHERE 1=1
 --~ (when (= "entities" (:only params)) " AND type IN ( 'organisation') ")
+--~ (when (= "non-member-entities" (:only params)) " AND  type IN ( 'organisation') AND topic IN ('non_member_organisation')")
 --~ (when (= "stakeholders" (:only params)) " AND type IN ('stakeholder') ")
 --~ (when (= "resources" (:only params)) " AND type NOT IN ('stakeholder', 'organisation') ")
 --~ (when (:title params) (str " AND title ILIKE '%" (:title params) "%' ") )
