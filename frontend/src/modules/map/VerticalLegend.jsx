@@ -462,33 +462,71 @@ const VerticalLegend = ({
                   {transnationalGroup?.groupLabel}
                 </strong>
                 <div>
-                  <div>
-                    <b className="legend-stakeholder-title">Type</b>
+                  {existingData.length === 0 ? (
+                    <div>
+                      <b className="legend-stakeholder-title">Type</b>
 
-                    <div className="legend-stakeholder-wrapper">
-                      <div className="legend-stakeholder-type">
-                        <div className="type">Entity</div>
-                        <div className="entities">
-                          <div className="entity-breakdown">
-                            {/* <b>Member of GPML</b> */}
-                            <b>
-                              {transnationalGroup.stakeholderPerCountry.entity
-                                .member +
-                                transnationalGroup.stakeholderPerCountry.entity
-                                  .nonMember}
-                            </b>
+                      <div className="legend-stakeholder-wrapper">
+                        <div className="legend-stakeholder-type">
+                          <div className="type">Entity</div>
+                          <div className="entities">
+                            <div className="entity-breakdown">
+                              <b>
+                                {transnationalGroup.stakeholderPerCountry.entity
+                                  .member +
+                                  transnationalGroup.stakeholderPerCountry
+                                    .entity.nonMember}
+                              </b>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="legend-stakeholder-type individual">
-                        <div className="type">Individual</div>
-                        <b>
-                          {transnationalGroup.stakeholderPerCountry.individual}
-                        </b>
+                        <div className="legend-stakeholder-type individual">
+                          <div className="type">Individual</div>
+                          <b>
+                            {
+                              transnationalGroup.stakeholderPerCountry
+                                .individual
+                            }
+                          </b>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div>
+                      <b className="legend-stakeholder-title">Type</b>
+
+                      <div className="legend-stakeholder-wrapper">
+                        {existingData.includes("organisation") && (
+                          <div className="legend-stakeholder-type">
+                            <div className="type">Entity</div>
+                            <div className="entities">
+                              <div className="entity-breakdown">
+                                <b>
+                                  {transnationalGroup.stakeholderPerCountry
+                                    .entity.member +
+                                    transnationalGroup.stakeholderPerCountry
+                                      .entity.nonMember}
+                                </b>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {existingData.includes("stakeholder") && (
+                          <div className="legend-stakeholder-type individual">
+                            <div className="type">Individual</div>
+                            <b>
+                              {
+                                transnationalGroup.stakeholderPerCountry
+                                  .individual
+                              }
+                            </b>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </>
             )}
@@ -497,7 +535,7 @@ const VerticalLegend = ({
               {transnationalGroup.transnational
                 .sort((a, b) => a.label.localeCompare(b.label))
                 .map((transnational) => {
-                  return (
+                  return existingData.length === 0 ? (
                     <div
                       key={transnational.label}
                       className="total-per-transnational"
@@ -530,6 +568,46 @@ const VerticalLegend = ({
                                 {transnational.totalStakeholders.individual}
                               </b>
                             </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      key={transnational.label}
+                      className="total-per-transnational"
+                    >
+                      <b className="transnational-name">
+                        {transnational.label}
+                      </b>
+                      <div>
+                        <div>
+                          <b className="legend-stakeholder-title">Type</b>
+
+                          <div className="legend-stakeholder-wrapper">
+                            {existingData.includes("organisation") && (
+                              <div className="legend-stakeholder-type">
+                                <div className="type">Entity</div>
+                                <div className="entities">
+                                  <div className="entity-breakdown">
+                                    <b>
+                                      {transnational.totalStakeholders.entity
+                                        .member +
+                                        transnational.totalStakeholders.entity
+                                          .nonMember}
+                                    </b>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                            {existingData.includes("stakeholder") && (
+                              <div className="legend-stakeholder-type individual">
+                                <div className="type">Individual</div>
+                                <b>
+                                  {transnational.totalStakeholders.individual}
+                                </b>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
