@@ -8,7 +8,8 @@ submission AS (
     UNION
     SELECT id, 'organisation' AS type, 'organisation' AS topic, name as title, id as created_by, created, 'USER' as role, review_status, logo as image
     FROM organisation
---~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
+    WHERE is_member = true
+--~ (when (:review_status params) " AND review_status = :review_status::review_status ")
     UNION
     SELECT id, 'tag' AS type, 'tag' AS topic, tag as title, NULL as created_by, NULL as created, NULL as role, review_status, NULL as image
     FROM tag
