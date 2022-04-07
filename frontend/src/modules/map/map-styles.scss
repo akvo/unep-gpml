@@ -217,7 +217,8 @@
       width: 100%;
       .entity-breakdown {
         display: flex;
-        justify-content: space-between;
+        width: 100%;
+        justify-content: right;
       }
       .entity-breakdown:not(:last-of-type) {
         border-bottom: 1px solid rgba(0, 0, 0, 0.5);
