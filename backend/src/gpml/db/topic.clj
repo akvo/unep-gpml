@@ -641,11 +641,11 @@
      WHERE value::TEXT IN (:v*:%s)) > 0" geo-coverage-value-param))
 
 (defn generate-filter-topic-snippet
-  [{:keys [favorites user-id topic tag start-date end-date
+  [{:keys [favorites user-id topic tag start-date end-date transnational
            search-text geo-coverage resource-types geo-coverage-countries
            representative-group sub-content-type affiliation
            entity]}]
-  (let [geo-coverage? (seq geo-coverage)
+  (let [geo-coverage? (and (seq geo-coverage) (seq transnational))
         geo-coverage-countries? (seq geo-coverage-countries)]
     (str/join
      " "
