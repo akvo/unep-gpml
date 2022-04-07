@@ -8,7 +8,11 @@ select id, name from organisation where is_member=true order by id
 
 -- :name all-non-members :? :*
 -- :doc Get all non member organisations
-select id, name from organisation where is_member=false order by id
+select id, name
+from organisation
+where is_member=false
+and review_status='APPROVED'
+order by id
 
 
 -- :name organisation-by-id :? :1
