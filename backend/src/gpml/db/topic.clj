@@ -270,7 +270,7 @@
   `entity`."
   [entity-name where-cond]
   (apply format
-   "SELECT
+         "SELECT
         e.id,
         COALESCE(cgc.country, egc.country) AS geo_coverage
     FROM
@@ -287,11 +287,11 @@
         %s e
     WHERE
         %s"
-   (concat
-    (repeat 3 entity-name)
-    [where-cond
-     entity-name
-     where-cond])))
+         (concat
+          (repeat 3 entity-name)
+          [where-cond
+           entity-name
+           where-cond])))
 
 ;;======================= Search Text queries =================================
 (def ^:const ^:private organisation-topic-search-text-where-cond
@@ -300,7 +300,7 @@
 (defn generic-topic-search-text-query
   [tsvector-str entity-name where-cond]
   (format
-    "SELECT
+   "SELECT
         id,
         to_tsvector('english'::regconfig, %s) AS search_text
      FROM
@@ -308,9 +308,9 @@
      %s
      ORDER BY
          created"
-    tsvector-str
-    entity-name
-    where-cond))
+   tsvector-str
+   entity-name
+   where-cond))
 
 (defn generic-topic-search-text-field-query
   [entity-name search-text-field]
@@ -328,7 +328,7 @@
   "Generic query to generate topics."
   [topic-name-query entity-name]
   (apply format
-   "SELECT
+         "SELECT
         %s AS topic,
         geo.geo_coverage,
         st.search_text,
@@ -337,7 +337,7 @@
         cte_%s_data d
         LEFT JOIN cte_%s_geo geo ON d.id = geo.id
         LEFT JOIN cte_%s_search_text st ON d.id = st.id"
-   (concat [topic-name-query] (repeat 3 entity-name))))
+         (concat [topic-name-query] (repeat 3 entity-name))))
 
 (defn generic-topic-name-query
   [topic-name]
@@ -564,14 +564,14 @@
         topic-ctes (generate-ctes :topic params opts)
         topic-cte (generate-topic-cte {} opts)]
     (str
-      "WITH "
-      (str/join
-        ","
-        [topic-data-ctes
-         topic-geo-coverage-ctes
-         topic-search-text-ctes
-         topic-ctes
-         topic-cte]))))
+     "WITH "
+     (str/join
+      ","
+      [topic-data-ctes
+       topic-geo-coverage-ctes
+       topic-search-text-ctes
+       topic-ctes
+       topic-cte]))))
 
 (defn generate-get-topics
   [params]
@@ -592,47 +592,60 @@
       (format "LIMIT %s" (or (and (contains? params :limit) (:limit params)) 50))
       (format "OFFSET %s" (or (and (contains? params :offset) (:offset params)) 0))))))
 
+(defn- geo-coverage-values-generic-cond
+  [geo-coverage-value-param]
+  (format
+   "(SELECT COUNT(*)
+     FROM json_array_elements_text((CASE WHEN (json->>'geo_coverage_values' = '') IS NOT FALSE THEN '[]'::JSON
+                                         ELSE (json->>'geo_coverage_values')::JSON END))
+     WHERE value::TEXT IN (:v*:%s)) > 0" geo-coverage-value-param))
+
 (defn generate-filter-topic-snippet
-  [{:keys [favorites user-id topic tag start-date end-date transnational search-text geo-coverage resource-types geo-coverage-countries]}]
+  [{:keys [favorites user-id topic tag start-date end-date transnational
+           search-text geo-coverage resource-types geo-coverage-countries
+           representative-group sub-content-type affiliation]}]
   (let [geo-coverage? (seq geo-coverage)
-        geo-coverage-countries? (seq geo-coverage-countries)
-        transnational? (seq transnational)]
+        geo-coverage-countries? (seq geo-coverage-countries)]
     (str/join
-      " "
-      (list
-        "SELECT DISTINCT ON (t.topic, (COALESCE(t.json->>'start_date', t.json->>'created'))::timestamptz, (t.json->>'id')::int) t.topic, t.geo_coverage, t.json FROM cte_topic t"
-        (when (and favorites user-id resource-types)
-          "JOIN v_stakeholder_association a ON a.stakeholder = :user-id AND a.id = (t.json->>'id')::int AND (a.topic = t.topic OR (a.topic = 'resource' AND t.topic IN (:v*:resource-types)))")
-        (when (seq tag)
-          "JOIN json_array_elements(t.json->'tags') tags ON true JOIN json_each_text(tags) tag ON LOWER(tag.value) = ANY(ARRAY[:v*:tag]::varchar[])")
-        (when (seq transnational)
-          "JOIN LATERAL json_array_elements(json->'geo_coverage_values') j on json->>'geo_coverage_values' != ''")
-        "WHERE t.json->>'review_status'='APPROVED'"
-        (when (seq search-text) " AND t.search_text @@ to_tsquery(:search-text)")
-        (when (seq topic)
-          " AND topic IN (:v*:topic)")
-        (when (and (= (count topic) 1)
-                (= (first topic) "event"))
-          (cond
-            (and (seq start-date) (seq end-date))
-            " AND (TO_DATE(json->>'start_date', 'YYYY-MM-DD'), (TO_DATE(json->>'end_date', 'YYYY-MM-DD'))) OVERLAPS
-                (:start-date::date, :end-date::date)"
-            (seq start-date)
-            " AND TO_DATE(json->>'start_date', 'YYYY-MM-DD') >= :start-date::date"
-            (seq end-date)
-            " AND TO_DATE(json->>'end_date', 'YYYY-MM-DD') <= :end-date::date"))
+     " "
+     (list
+      "SELECT DISTINCT ON (t.topic, (COALESCE(t.json->>'start_date', t.json->>'created'))::timestamptz, (t.json->>'id')::int) t.topic, t.geo_coverage, t.json FROM cte_topic t"
+      (when (and favorites user-id resource-types)
+        "JOIN v_stakeholder_association a ON a.stakeholder = :user-id AND a.id = (t.json->>'id')::int AND (a.topic = t.topic OR (a.topic = 'resource' AND t.topic IN (:v*:resource-types)))")
+      (when (seq tag)
+        "JOIN json_array_elements(t.json->'tags') tags ON true JOIN json_each_text(tags) tag ON LOWER(tag.value) = ANY(ARRAY[:v*:tag]::varchar[])")
+      (when (seq transnational)
+        "JOIN LATERAL json_array_elements(json->'geo_coverage_values') j on json->>'geo_coverage_values' != ''")
+      "WHERE t.json->>'review_status'='APPROVED'"
+      (when (seq search-text) " AND t.search_text @@ to_tsquery(:search-text)")
+      (when (seq topic)
+        " AND topic IN (:v*:topic)")
+      (when (seq affiliation)
+        " AND (t.json->'affiliation'->>'id')::int IN (:v*:affiliation)")
+      (when (seq representative-group)
+        " AND (t.json->>'type' IN (:v*:representative-group) OR t.json->>'representation' IN (:v*:representative-group))")
+      (when (seq sub-content-type)
+        " AND t.json->>'sub_content_type' IS NOT NULL AND t.json->>'sub_content_type' IN (:v*:sub-content-type)")
+      (when (and (= (count topic) 1)
+                 (= (first topic) "event"))
         (cond
-          (and geo-coverage? geo-coverage-countries?)
-          " AND (t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:geo-coverage-countries))"
-          (and geo-coverage? transnational?)
-          " AND (t.geo_coverage IN (:v*:geo-coverage)
-            OR t.json->>'geo_coverage_type'='transnational'
-            AND t.json->>'geo_coverage_values' != ''
-            AND j.value::varchar IN (:v*:transnational))"
-          geo-coverage?
-          "AND (t.geo_coverage IN (:v*:geo-coverage)
-           AND t.json->>'geo_coverage_values' != '')"
-          geo-coverage-countries?
-          " AND (t.json->>'geo_coverage_values' != '' AND j.value::varchar IN (:v*:geo-coverage-countries))")
-        ;; NOTE: Empty strings in the tags column cause problems with using json_array_elements
-        (when (seq tag) " AND t.json->>'tags' <> ''")))))
+          (and (seq start-date) (seq end-date))
+          " AND (TO_DATE(json->>'start_date', 'YYYY-MM-DD'), (TO_DATE(json->>'end_date', 'YYYY-MM-DD'))) OVERLAPS
+                (:start-date::date, :end-date::date)"
+          (seq start-date)
+          " AND TO_DATE(json->>'start_date', 'YYYY-MM-DD') >= :start-date::date"
+          (seq end-date)
+          " AND TO_DATE(json->>'end_date', 'YYYY-MM-DD') <= :end-date::date"))
+      (cond
+        (and geo-coverage? geo-coverage-countries?)
+        (str " AND " (geo-coverage-values-generic-cond "geo-coverage-countries"))
+
+        geo-coverage?
+        (str " AND (t.geo_coverage IN (:v*:geo-coverage)
+                 OR t.json->>'geo_coverage_type'='transnational'
+                 AND " (geo-coverage-values-generic-cond "transnational") ")")
+
+        geo-coverage-countries?
+        (str " AND " (geo-coverage-values-generic-cond "geo-coverage-countries")))
+      ;; NOTE: Empty strings in the tags column cause problems with using json_array_elements
+      (when (seq tag) " AND t.json->>'tags' <> ''")))))
