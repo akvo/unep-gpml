@@ -337,10 +337,10 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       }
 
       if (key === "geoCoverageType") {
-        const selectedGeoCoverage = geoCoverageTypeOptions?.find((x) => ({
-          value: x,
-          label: x,
-        }));
+        const selectedGeoCoverage = geoCoverageTypeOptions?.find(
+          (x) => x.toLowerCase() === value.toLowerCase()
+        );
+
         return selectedGeoCoverage;
       }
 
