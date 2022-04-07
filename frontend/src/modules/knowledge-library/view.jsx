@@ -24,10 +24,10 @@ import values from "lodash/values";
 import MapLanding from "./map-landing";
 import TopicView from "./TopicView";
 
-import IconLibrary from "../../images/capacity-building/ic-knowledge-library.svg";
-import IconLearning from "../../images/capacity-building/ic-capacity-building.svg";
-import IconExchange from "../../images/capacity-building/ic-exchange.svg";
-import IconCaseStudies from "../../images/capacity-building/ic-case-studies.svg";
+import { ReactComponent as IconLibrary } from "../../images/capacity-building/ic-knowledge-library.svg";
+import { ReactComponent as IconLearning } from "../../images/capacity-building/ic-capacity-building.svg";
+import { ReactComponent as IconExchange } from "../../images/capacity-building/ic-exchange.svg";
+import { ReactComponent as IconCaseStudies } from "../../images/capacity-building/ic-case-studies.svg";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 import { titleCase } from "../../utils/string";
 import { multicountryGroups } from "./multicountry";
@@ -74,19 +74,19 @@ const KnowledgeLibrary = ({
       id: 1,
       title: "LIBRARY",
       url: "/knowledge-library",
-      icon: IconLibrary,
+      icon: <IconLibrary />,
     },
     {
       id: 2,
       title: "LEARNING",
       url: "/capacity-building",
-      icon: IconLearning,
+      icon: <IconLearning />,
     },
     {
       id: 4,
       title: "Case studies",
       url: "/case-studies",
-      icon: IconCaseStudies,
+      icon: <IconCaseStudies />,
     },
   ];
 
@@ -199,30 +199,32 @@ const KnowledgeLibrary = ({
         return topicNames(value);
       }
       if (key === "tag") {
-        const findTag = flatten(values(tags)).find((x) => x.id == value);
+        const selectedTag = flatten(values(tags)).find((x) => x.id == value);
 
-        return findTag ? titleCase(findTag?.tag) : titleCase(value);
+        return selectedTag ? titleCase(selectedTag?.tag) : titleCase(value);
       }
       if (key === "country") {
-        const findCountry = countries.find((x) => x.id == value);
-        return findCountry?.name;
+        const selectedCountry = countries.find((x) => x.id == value);
+        return selectedCountry?.name;
       }
       if (key === "transnational") {
         const transnationalGroup = multicountryGroups
           .map((multicountryGroup) => multicountryGroup.item)
           .flat();
 
-        const findTransnational = transnationalGroup.find((x) => x.id == value);
-        return findTransnational?.name;
+        const selectedTransnational = transnationalGroup.find(
+          (x) => x.id == value
+        );
+        return selectedTransnational?.name;
       }
 
       if (key === "representativeGroup") {
-        const representativeGroups = representativeGroup.find(
+        const selectedRepresentativeGroups = representativeGroup.find(
           (x) => x?.code?.toLowerCase() == value?.toLowerCase()
         );
         return value.toLowerCase() === "other"
           ? "Other"
-          : representativeGroups?.name;
+          : selectedRepresentativeGroups?.name;
       }
       if (key === "startDate") {
         return `Start date ${value}`;
@@ -231,21 +233,17 @@ const KnowledgeLibrary = ({
         return `End date ${value}`;
       }
       if (key === "subContentType") {
-        const findSubContentType = mainContentType.find((subContent) =>
-          subContent.childs.find((child) => child.title.includes(value))
+        const selectedSubContentType = mainContentType.find((subContent) =>
+          subContent.childs.find((child) => child?.title?.includes(value))
         );
 
-        const label = findSubContentType.childs.find((child) =>
-          child.title.includes(value)
-        );
-
-        return `${value} ${findSubContentType.name}`;
+        return `${value} ${selectedSubContentType?.name}`;
       }
       if (key === "entity") {
-        const findOrganisation = organisations.find(
+        const selectedOrganisation = organisations.find(
           (organisation) => organisation.id == value
         );
-        return findOrganisation?.name;
+        return selectedOrganisation?.name;
       }
     };
     return Object.keys(query).map((key, index) => {
@@ -411,6 +409,7 @@ const KnowledgeLibrary = ({
                 setFilterVisible,
                 multiCountryCountries,
                 setMultiCountryCountries,
+                filterTagValue,
               }}
               updateQuery={(flag, val) => updateQuery(flag, val)}
             />
@@ -434,7 +433,7 @@ const KnowledgeLibrary = ({
                         }
                       : {
                           backgroundColor: "rgba(237, 242, 247, 1)",
-                          position: "unset",
+                          position: "relative",
                         }
                   }
                   className="resource-list-container"
@@ -506,7 +505,7 @@ const KnowledgeLibrary = ({
                     maxWidth: view === "topic" ? "calc(100% - 300px)" : "",
                   }}
                 >
-                  <TopicView {...{ updateQuery }} />
+                  <TopicView {...{ updateQuery, query }} />
                 </Col>
               )}
             </Row>

@@ -92,7 +92,7 @@
            title first_name role
            non_member_organisation
            last_name idp_usernames
-           linked_in cv twitter
+           linked_in cv twitter email
            affiliation job_title representation
            country geo_coverage_type
            reviewed_at reviewed_by review_status
@@ -106,6 +106,7 @@
    :job_title job_title
    :first_name first_name
    :last_name last_name
+   :email email
    :idp_usernames idp_usernames
    :linked_in linked_in
    :twitter twitter
@@ -127,6 +128,31 @@
    :reviewed_by reviewed_by
    :review_status review_status
    :public_email public_email})
+
+(defn create-new-profile [db new-profile body-params org]
+  (cond-> new-profile
+    (:photo body-params)
+    (assoc :picture
+           (cond
+             (re-find #"^\/image|^http" (:photo body-params))
+             (:photo body-params)
+             (re-find #"^data:" (:photo body-params))
+             (handler.image/assoc-image db (:photo body-params) "profile")))
+    (= (:photo body-params) nil)
+    (assoc :picture nil)
+    (:cv body-params)
+    (assoc :cv
+           (if (re-find #"^\/cv" (:cv body-params))
+             (:cv body-params)
+             (assoc-cv db (:cv body-params))))
+    (= (:cv body-params) nil)
+    (assoc :cv nil)
+    (and (:id org) (not= -1 (:id org)))
+    (assoc :affiliation (:id org))
+    (= -1 (:id org))
+    (assoc :affiliation (if (= -1 (:id org))
+                          (handler.org/create db org)
+                          (:id org)))))
 
 (defn pending-profiles-response [conn auth0-config]
   (let [profiles (db.stakeholder/pending-approval conn)
@@ -153,6 +179,38 @@
     (if (-> profile :org :is_member)
       (assoc profile :affiliation (-> profile :org :id) :non_member_organisation nil)
       (assoc profile :non_member_organisation (-> profile :org :id) :affiliation nil))))
+
+(defn update-stakeholder [db {:keys [id] :as body-params} old-profile]
+  (let [tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
+        org (:org body-params)
+        new-profile (merge (dissoc old-profile :non_member_organisation)
+                      (if (:non_member_organisation body-params)
+                        (-> body-params (assoc :affiliation (:non_member_organisation body-params)) (dissoc :non_member_organisation))
+                        body-params))
+        profile (create-new-profile db new-profile body-params org)]
+    (db.stakeholder/update-stakeholder db profile)
+    (db.stakeholder/delete-stakeholder-geo db body-params)
+    (db.stakeholder/delete-stakeholder-tags db body-params)
+    (when (and (some? (:photo old-profile))
+            (not= (:photo old-profile) (:picture profile))
+            (not= "http" (re-find #"^http" (:photo old-profile))))
+      (let [photo-url (str/split (:photo old-profile) #"\/image\/profile\/")]
+        (when (= 2 (count photo-url))
+          (let [old-pic (-> photo-url second Integer/parseInt)]
+            (db.stakeholder/delete-stakeholder-image-by-id db {:id old-pic})))))
+    (when (and (some? (:cv old-profile))
+            (not= (:cv old-profile) (:cv profile)))
+      (let [old-cv (-> (str/split (:cv old-profile) #"/cv/profile/") second Integer/parseInt)]
+        (db.stakeholder/delete-stakeholder-cv-by-id db {:id old-cv})))
+    (when (not-empty tags)
+      (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector id %) tags)}))
+    (if (or (some? (:geo_coverage_country_groups body-params))
+          (some? (:geo_coverage_countries body-params)))
+      (let [geo-data (handler.geo/get-geo-vector-v2 id body-params)]
+        (db.stakeholder/add-stakeholder-geo db {:geo geo-data}))
+      (when (some? (:geo_coverage_value body-params))
+        (let [geo-data (handler.geo/get-geo-vector id body-params)]
+          (db.stakeholder/add-stakeholder-geo db {:geo geo-data}))))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/profile [_ {:keys [db]}]
   (fn [{:keys [jwt-claims]}]
@@ -215,60 +273,8 @@
 (defmethod ig/init-key :gpml.handler.stakeholder/put [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
     (jdbc/with-db-transaction [tx (:spec db)]
-      (let [id (:id body-params)
-            tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
-            org (:org body-params)
-            old-profile (db.stakeholder/stakeholder-by-email tx jwt-claims)
-            new-profile (merge  (dissoc old-profile :non_member_organisation)
-                                (if (:non_member_organisation body-params)
-                                  (-> body-params (assoc :affiliation (:non_member_organisation body-params)) (dissoc :non_member_organisation))
-                                  body-params) )
-            profile (cond-> new-profile
-                      (:photo body-params)
-                      (assoc :picture
-                             (cond
-                               (re-find #"^\/image|^http" (:photo body-params))
-                               (:photo body-params)
-                               (re-find #"^data:" (:photo body-params))
-                               (handler.image/assoc-image tx (:photo body-params) "profile")))
-                      (= (:photo body-params) nil)
-                      (assoc :picture nil)
-                      (:cv body-params)
-                      (assoc :cv
-                             (if (re-find #"^\/cv" (:cv body-params))
-                               (:cv body-params)
-                               (assoc-cv tx (:cv body-params))))
-                      (= (:cv body-params) nil)
-                      (assoc :cv nil)
-                      (and (:id org) (not= -1 (:id org)))
-                      (assoc :affiliation (:id org))
-                      (= -1 (:id org))
-                      (assoc :affiliation (if (= -1 (:id org))
-                                            (handler.org/create tx org)
-                                            (:id org))))]
-        (db.stakeholder/update-stakeholder tx profile)
-        (db.stakeholder/delete-stakeholder-geo tx body-params)
-        (db.stakeholder/delete-stakeholder-tags tx body-params)
-        (when (and (some? (:photo old-profile))
-                   (not= (:photo old-profile) (:picture profile))
-                   (not= "http" (re-find #"^http" (:photo old-profile))))
-          (let [photo-url (str/split (:photo old-profile) #"\/image\/profile\/")]
-            (when (= 2 (count photo-url))
-              (let [old-pic (-> photo-url second Integer/parseInt)]
-                (db.stakeholder/delete-stakeholder-image-by-id tx {:id old-pic})))))
-        (when (and (some? (:cv old-profile))
-                   (not= (:cv old-profile) (:cv profile)))
-          (let [old-cv (-> (str/split (:cv old-profile) #"/cv/profile/") second Integer/parseInt)]
-            (db.stakeholder/delete-stakeholder-cv-by-id tx {:id old-cv})))
-        (when (not-empty tags)
-          (db.stakeholder/add-stakeholder-tags tx {:tags (map #(vector id %) tags)}))
-        (if (or (some? (:geo_coverage_country_groups body-params))
-                (some? (:geo_coverage_countries body-params)))
-          (let [geo-data (handler.geo/get-geo-vector-v2 id body-params)]
-            (db.stakeholder/add-stakeholder-geo tx {:geo geo-data}))
-          (when (some? (:geo_coverage_value body-params))
-            (let [geo-data (handler.geo/get-geo-vector id body-params)]
-              (db.stakeholder/add-stakeholder-geo tx {:geo geo-data}))))
+      (let [old-profile (db.stakeholder/stakeholder-by-email tx jwt-claims)]
+        (update-stakeholder tx body-params old-profile)
         (resp/status 204)))))
 
 (def ^:const suggested-profiles-per-page 5)
@@ -396,3 +402,39 @@
   {:path [:map [:id int?]]
    :body [:map [:role
                 (apply conj [:enum] (->> constants/user-roles (map name)))]]})
+
+(defmethod ig/init-key ::get-by-id [_ {:keys [db]}]
+  (fn [{{:keys [path]} :parameters}]
+    (let [stakeholder (db.stakeholder/get-stakeholder-by-id (:spec db) path)]
+      (resp/response
+        (get-stakeholder-profile db stakeholder)))))
+
+(defmethod ig/init-key ::put-by-admin [_ {:keys [db]}]
+  (fn [{{:keys [path body]} :parameters}]
+    (jdbc/with-db-transaction [tx (:spec db)]
+      (let [old-profile (db.stakeholder/stakeholder-by-id tx path)]
+        (update-stakeholder tx (assoc body :id (:id path)) old-profile)
+        (resp/status 204)))))
+
+(defmethod ig/init-key ::put-by-admin-params [_ _]
+  {:path [:map [:id int?]]
+   :body [:map
+          [:id {:optional true} int?]
+          [:title {:optional true} string?]
+          [:first_name {:optional true} string?]
+          [:last_name {:optional true} string?]
+          [:linked_in {:optional true} string?]
+          [:twitter {:optional true} string?]
+          [:photo {:optional true} string?]
+          [:cv {:optional true} string?]
+          [:about {:optional true} string?]
+          [:country {:optional true} int?]
+          [:public_email {:optional true} boolean?]
+          [:non-org {:optional true} int?]
+          [:geo_coverage_type {:optional true} map?]
+          [:seeking {:optional true}
+           [:vector int?]]
+          [:offering {:optional true}
+           [:vector int?]]
+          [:new_org {:optional true} new-org-schema]
+          [:org {:optional true} org-schema]]})

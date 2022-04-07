@@ -134,12 +134,24 @@ const SignUpForm = withRouter(
           if (data.geoCoverageType) {
             data.org.geoCoverageType = data.geoCoverageType;
             data.org.geoCoverageValue = data.geoCoverageValue;
-            data.org.geoCoverageCountries = data.geoCoverageValue;
             if (data.geoCoverageType === "transnational") {
-              data.org.geoCoverageCountryGroups = data.geoCoverageValue;
+              if (data.geoCoverageValue && data.geoCoverageValue.length > 0) {
+                data.org.geoCoverageCountryGroups = data.geoCoverageValue;
+              }
+              if (
+                formData.S5.geoCoverageCountries &&
+                formData.S5.geoCoverageCountries.length > 0
+              ) {
+                data.org.geoCoverageCountries = formData.S5.geoCoverageCountries.map(
+                  (x) => parseInt(x)
+                );
+              }
+            }
+            if (data.geoCoverageType === "national") {
               data.org.geoCoverageCountries = formData.S5.geoCoverageCountries.map(
                 (x) => parseInt(x)
               );
+              delete data.org.geoCoverageValue;
             }
           }
           delete data.geoCoverageType;

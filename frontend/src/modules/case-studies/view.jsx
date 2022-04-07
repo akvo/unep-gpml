@@ -11,10 +11,10 @@ import SlideNext from "../../images/capacity-building/slide-next.svg";
 import DropdownIcon from "../../images/case-studies/ic_dropdown.svg";
 import { titleCase } from "../../utils/string";
 
-import IconLibrary from "../../images/capacity-building/ic-knowledge-library.svg";
-import IconLearning from "../../images/capacity-building/ic-capacity-building.svg";
-import IconExchange from "../../images/capacity-building/ic-exchange.svg";
-import IconCaseStudies from "../../images/capacity-building/ic-case-studies.svg";
+import { ReactComponent as IconLibrary } from "../../images/capacity-building/ic-knowledge-library.svg";
+import { ReactComponent as IconLearning } from "../../images/capacity-building/ic-capacity-building.svg";
+import { ReactComponent as IconExchange } from "../../images/capacity-building/ic-exchange.svg";
+import { ReactComponent as IconCaseStudies } from "../../images/capacity-building/ic-case-studies.svg";
 
 const { Header, Content } = Layout;
 
@@ -27,19 +27,19 @@ const CaseStudies = () => {
       id: 1,
       title: "LIBRARY",
       url: "/knowledge-library",
-      icon: IconLibrary,
+      icon: <IconLibrary />,
     },
     {
       id: 2,
       title: "LEARNING",
       url: "/capacity-building",
-      icon: IconLearning,
+      icon: <IconLearning />,
     },
     {
       id: 4,
       title: "Case studies",
       url: "/case-studies",
-      icon: IconCaseStudies,
+      icon: <IconCaseStudies />,
     },
   ];
 

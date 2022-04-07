@@ -10,6 +10,7 @@ import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 
 const MapLanding = ({
   query,
+  countData,
   multiCountryCountries,
   listVisible,
   isDisplayedList,
@@ -82,10 +83,10 @@ const MapLanding = ({
           isDisplayedList,
           listVisible,
           multiCountryCountries,
+          countData,
         }}
         data={landing?.map || []}
         clickEvents={clickCountry}
-        topic={query?.topic}
         isLoaded={isLoaded}
         multiCountries={
           multiCountry &&

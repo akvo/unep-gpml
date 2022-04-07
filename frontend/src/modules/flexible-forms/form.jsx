@@ -69,7 +69,7 @@ const FlexibleForm = withRouter(
         let obj = mainContentType.find(
           (o) => o.code === selectedMainContentType
         );
-        let find = obj?.childs.find((o) => o.title === subContentType).tags;
+        let find = obj?.childs.find((o) => o.title === subContentType)?.tags;
         if (find) {
           initialFormData.update((e) => {
             e.data = {
@@ -394,14 +394,19 @@ const FlexibleForm = withRouter(
 
       if (data.q24.hasOwnProperty("sub-national")) {
         data.q24_2 = [data.qgeoCoverageValueSubnational];
+        data.q24_subnational_city = data.qgeoCoverageValueSubnationalCity;
         delete data.qgeoCoverageValueSubnational;
         delete data.qgeoCoverageValueSubnationalCity;
+        delete data.q24_4;
+        delete data.q24_3;
       }
 
       if (data?.qrelated) {
         data.related_content = data?.qrelated.map((x) => parseInt(x));
         delete data.qrelated;
       }
+      delete data.tagsList;
+      delete data.qtagsList;
 
       if (status === "add" && !params?.id) {
         api

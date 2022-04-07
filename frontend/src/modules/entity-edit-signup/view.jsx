@@ -137,13 +137,117 @@ const formDataMapping = [
     section: "S5",
     group: null,
   },
+  {
+    name: "title",
+    type: "string",
+    question: "title",
+    section: "S1",
+    group: null,
+  },
+  {
+    name: "lastName",
+    type: "string",
+    question: "lastName",
+    section: "S1",
+    group: null,
+  },
+  {
+    name: "firstName",
+    type: "string",
+    question: "firstName",
+    section: "S1",
+    group: null,
+  },
+  {
+    name: "email",
+    type: "string",
+    question: "email",
+    section: "S1",
+    group: null,
+  },
+  {
+    name: "linkedIn",
+    type: "string",
+    question: "linkedIn",
+    section: "S1",
+    group: null,
+  },
+  {
+    name: "twitter",
+    type: "string",
+    question: "twitter",
+    section: "S1",
+    group: null,
+  },
+  {
+    name: "publicEmail",
+    type: "boolean",
+    question: "publicEmail",
+    section: "S1",
+    group: null,
+  },
+  {
+    name: "picture",
+    type: "image",
+    question: "photo",
+    section: "S1",
+    group: null,
+  },
+  {
+    name: "country",
+    type: "integer",
+    question: "country",
+    section: "S1",
+    group: null,
+  },
+  {
+    name: "affiliation",
+    type: "integer",
+    question: "orgName",
+    section: "S2",
+    group: null,
+  },
+  {
+    name: "jobTitle",
+    type: "string",
+    question: "jobTitle",
+    section: "S2",
+    group: null,
+  },
+  {
+    name: "seeking",
+    type: "array",
+    question: "seeking",
+    section: "S3",
+    group: null,
+  },
+  {
+    name: "offering",
+    type: "array",
+    question: "offering",
+    section: "S3",
+    group: null,
+  },
+  {
+    name: "about",
+    type: "string",
+    question: "about",
+    section: "S3",
+    group: null,
+  },
+  {
+    name: "cv",
+    type: "image",
+    question: "cv",
+    section: "S3",
+    group: null,
+  },
 ];
 
 const EntityEditSignUp = ({ match: { params }, ...props }) => {
   const location = useLocation();
   const isEntityType = location.state.formType === "entity" ? true : false;
   const isStakeholderType = !isEntityType;
-  console.log(isEntityType);
   const {
     tabs,
     getSchema,
@@ -326,20 +430,34 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
     const dataId = Number(params?.id || id);
     if (isLoaded()) {
       setFormSchema(getSchema(storeData, hideEntityPersonalDetail));
-      if (
-        (status === "edit" || dataId) &&
-        (xor(Object.keys(data?.S3), Object.keys(initialSignUpData?.S3))
-          .length === 0 ||
-          editId !== dataId)
-      ) {
-        api
-          .get(`/${isEntityType ? "organisation" : "stakeholder"}/${dataId}`)
-          .then((d) => {
+      if (isEntityType) {
+        if (
+          (status === "edit" || dataId) &&
+          (xor(Object.keys(data?.S3), Object.keys(initialSignUpData?.S3))
+            .length === 0 ||
+            editId !== dataId)
+        ) {
+          api.get(`/organisation/${dataId}`).then((d) => {
             signUpData.update((e) => {
               e.data = revertFormData(d.data);
               e.editId = dataId;
             });
           });
+        }
+      } else {
+        if (
+          (status === "edit" || dataId) &&
+          (xor(Object.keys(data?.S1), Object.keys(initialSignUpData?.S1))
+            .length === 0 ||
+            editId !== dataId)
+        ) {
+          api.get(`/stakeholder/${dataId}`).then((d) => {
+            signUpData.update((e) => {
+              e.data = revertFormData(d.data);
+              e.editId = dataId;
+            });
+          });
+        }
       }
     }
   }, [status, id, data, editId, params, isLoaded]);
@@ -514,8 +632,6 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
     setHighlight(true);
     btnSubmit.current.click();
   };
-
-  console.log(data, "Adasds");
 
   return (
     <div id="add-sign-up">

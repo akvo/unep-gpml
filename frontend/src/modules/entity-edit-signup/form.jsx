@@ -64,6 +64,11 @@ const SignUpForm = withRouter(
     const signUpFormData = signUpData.useState();
     const [dependValue, setDependValue] = useState([]);
     const [editCheck, setEditCheck] = useState(true);
+    const [schema, setSchema] = useState(formSchema.schema);
+
+    useEffect(() => {
+      setSchema(formSchema.schema);
+    }, [formSchema]);
 
     const handleOnSubmit = ({ formData }) => {
       // # Transform data before sending to endpoint
@@ -135,12 +140,18 @@ const SignUpForm = withRouter(
         if (data.geoCoverageType) {
           data.org.geoCoverageType = data.geoCoverageType;
           data.org.geoCoverageValue = data.geoCoverageValue;
-          data.org.geoCoverageCountries = data.geoCoverageValue;
           if (data.geoCoverageType === "transnational") {
-            data.org.geoCoverageCountryGroups = data.geoCoverageValue;
-            data.org.geoCoverageCountries = formData.S5.geoCoverageCountries.map(
-              (x) => parseInt(x)
-            );
+            if (data.geoCoverageValue && data.geoCoverageValue.length > 0) {
+              data.org.geoCoverageCountryGroups = data.geoCoverageValue;
+            }
+            if (
+              formData.S5.geoCoverageCountries &&
+              formData.S5.geoCoverageCountries.length > 0
+            ) {
+              data.org.geoCoverageCountries = formData.S5.geoCoverageCountries.map(
+                (x) => parseInt(x)
+              );
+            }
           }
           if (data.geoCoverageType === "national") {
             data.org.geoCoverageCountries = formData.S5.geoCoverageCountries.map(
@@ -177,11 +188,74 @@ const SignUpForm = withRouter(
           data.org.expertise = data.orgExpertise.map((x) => Number(x));
           delete data.orgExpertise;
         }
+      } else {
+        data.org = {};
+        feedCountry(data, formData, "S1");
+        feedSeeking(data, formData);
+        data.title = formData.S1.title;
+        feedOffering(data, formData);
+        if (data.companyName?.[formData["S2"].companyName]) {
+          data.nonMemberOrganisation = formData["S2"].companyName;
+          delete data.org;
+        }
+        delete data.companyName;
+        if (data.orgName) {
+          data.org.id = formData.S2.orgName;
+        }
+        if (data.privateCitizen) {
+          delete data.privateCitizen;
+          delete data.org;
+        }
+        data.representation = "";
+        if (formData.S2["newCompanyName"]) {
+          let data2 = handleGeoCoverageValue(
+            cloneDeep(formData.S2),
+            formData.S2,
+            countries
+          );
+          data2.name = data2.newCompanyName;
+          data2.country = data2.newCompanyHeadquarter;
+          data2.subnationalAreaOnly = data2.newCompanySubnationalAreaOnly;
+          delete data2.newCompanySubnationalAreaOnly;
+          delete data2.newCompanyName;
+          delete data2.newCompanyHeadquarter;
+          delete data2.companyName;
+          delete data2.privateCitizen;
+          data.new_org = data2;
+          delete data.geoCoverageType;
+          delete data.geoCoverageValue;
+          delete data.newCompanyHeadquarter;
+          delete data.newCompanySubnationalAreaOnly;
+          delete data.newCompanyName;
+          delete data.geoCoverageValueTransnational;
+        }
+      }
+
+      if (hideEntityPersonalDetail) {
+        delete data.title;
+        // get personal details data from profile
+        // filter null value
+        let filteredProfile = {};
+        Object.keys(profile).forEach((key) => {
+          if (profile[key]) {
+            filteredProfile = {
+              ...filteredProfile,
+              [key]: profile[key],
+            };
+          }
+        });
+        // add filtered profile to data payload
+        data = { ...filteredProfile, ...data };
       }
 
       if (status === "edit" || params?.id) {
         api
-          .put(`/organisation/${id || params?.id}`, data.org)
+          .put(
+            `/${isEntityType ? "organisation" : "stakeholder"}/${
+              id || params?.id
+            }`,
+            isEntityType ? data.org : data
+          )
           .then(() => {
             notification.success({ message: "Update success" });
             UIStore.update((e) => {
@@ -196,7 +270,11 @@ const SignUpForm = withRouter(
               e.data = initialSignUpData;
             });
             setDisabledBtn({ disabled: true, type: "default" });
-            history.push(`/organisation/${id || params?.id}`);
+            history.push(
+              `/${isEntityType ? "organisation" : "stakeholder"}/${
+                id || params?.id
+              }`
+            );
           })
           .catch(() => {
             notification.error({ message: "An error occured" });
@@ -235,6 +313,49 @@ const SignUpForm = withRouter(
             ...formData,
           };
         });
+
+        let updatedFormDataSchema = {};
+
+        if (
+          formData?.S5?.geoCoverageType === "transnational" &&
+          formData?.S5?.geoCoverageValueTransnational
+        ) {
+          let result = formSchema.schema.properties.S5.required.filter(
+            (value) => value !== "geoCoverageCountries"
+          );
+          updatedFormDataSchema = {
+            ...formSchema.schema,
+            properties: {
+              ...formSchema.schema.properties,
+              S5: {
+                ...formSchema.schema.properties.S5,
+                required: result,
+              },
+            },
+          };
+        } else if (
+          formData?.S5?.geoCoverageType === "transnational" &&
+          formData?.S5?.geoCoverageCountries
+        ) {
+          let result = formSchema.schema.properties.S5.required.filter(
+            (value) => value !== "geoCoverageValueTransnational"
+          );
+          updatedFormDataSchema = {
+            ...formSchema.schema,
+            properties: {
+              ...formSchema.schema.properties,
+              S5: {
+                ...formSchema.schema.properties.S5,
+                required: result,
+              },
+            },
+          };
+        } else {
+          updatedFormDataSchema = formSchema.schema;
+        }
+
+        setSchema(updatedFormDataSchema);
+
         // to overide validation
         let dependFields = [];
         let requiredFields = [];
@@ -242,7 +363,7 @@ const SignUpForm = withRouter(
         collectDependSchemaRefactor(
           dependFields,
           formData,
-          formSchema.schema,
+          updatedFormDataSchema,
           requiredFields
         );
         setDependValue(dependFields);
@@ -293,31 +414,48 @@ const SignUpForm = withRouter(
         });
         signUpData.update((e) => {
           let formSections = null;
-          formSections = {
-            S1: {
-              ...e.data.S1,
-              required: groupRequiredFields["S1"].required,
-            },
-            S3: {
-              ...e.data.S3,
-              required: groupRequiredFields["S3"].required,
-            },
-            S4: {
-              ...e.data.S4,
-              required: groupRequiredFields["S4"].required,
-            },
-            S5: {
-              ...e.data.S5,
-              required: groupRequiredFields["S5"].required,
-            },
-          };
-          // add S2- Personal Details here
-          if (!hideEntityPersonalDetail) {
+          if (isEntityType) {
             formSections = {
-              ...formSections,
+              S1: {
+                ...e.data.S1,
+                required: groupRequiredFields["S1"].required,
+              },
+              S3: {
+                ...e.data.S3,
+                required: groupRequiredFields["S3"].required,
+              },
+              S4: {
+                ...e.data.S4,
+                required: groupRequiredFields["S4"].required,
+              },
+              S5: {
+                ...e.data.S5,
+                required: groupRequiredFields["S5"].required,
+              },
+            };
+            // add S2- Personal Details here
+            if (!hideEntityPersonalDetail) {
+              formSections = {
+                ...formSections,
+                S2: {
+                  ...e.data.S2,
+                  required: groupRequiredFields["S2"].required,
+                },
+              };
+            }
+          } else {
+            formSections = {
+              S1: {
+                ...e.data.S1,
+                required: groupRequiredFields["S1"].required,
+              },
               S2: {
                 ...e.data.S2,
                 required: groupRequiredFields["S2"].required,
+              },
+              S3: {
+                ...e.data.S3,
+                required: groupRequiredFields["S3"].required,
               },
             };
           }
@@ -347,9 +485,12 @@ const SignUpForm = withRouter(
       if (
         (res.length > 0 &&
           (status === "edit" || params?.id) &&
-          signUpFormData.data?.S3["org.logo"] &&
-          signUpFormData.data?.S3["org.logo"].match(customFormats.url)) ||
-        !signUpFormData.data?.S3["org.logo"]
+          (signUpFormData.data?.S3["org.logo"] ||
+            signUpFormData.data?.S1["photo"]) &&
+          (signUpFormData.data?.S3["org.logo"].match(customFormats.url) ||
+            signUpFormData.data?.S1["photo"].match(customFormats.url))) ||
+        !signUpFormData.data?.S3["org.logo"] ||
+        !signUpFormData.data?.S1["photo"]
       ) {
         res = res.filter(
           (x) => x?.params && x.params?.format && x.params.format !== "data-url"
@@ -385,7 +526,8 @@ const SignUpForm = withRouter(
       if (
         (status === "edit" || params?.id) &&
         editCheck &&
-        signUpFormData.data?.["S3"]?.["org.name"]
+        (signUpFormData.data?.["S3"]?.["org.name"] ||
+          signUpFormData.data?.["S1"]?.["title"])
       ) {
         handleFormOnChange({
           formData: signUpFormData.data,
@@ -407,7 +549,7 @@ const SignUpForm = withRouter(
         <>
           <Form
             idPrefix="signUp"
-            schema={formSchema.schema}
+            schema={schema}
             uiSchema={uiSchema}
             formData={signUpFormData.data}
             onChange={(e) => handleFormOnChange(e)}

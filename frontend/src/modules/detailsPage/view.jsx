@@ -71,7 +71,7 @@ import {
 
 const CardComponent = ({ title, style, children, getRef }) => {
   return (
-    <div className="card-wrapper" style={style} ref={getRef}>
+    <div className={`card-wrapper mb-10`} ref={getRef}>
       <Card title={title} bordered={false} style={style}>
         {children}
       </Card>
@@ -86,23 +86,42 @@ const TabComponent = ({
   relatedRef,
   recordRef,
   documentRef,
+  tagRef,
+  descriptionRef,
+  data,
 }) => {
   return (
     <div className="tab-wrapper" style={style}>
       <ul>
+        {data.type !== "Technical Resource" &&
+          data.type !== "Policy" &&
+          data.type !== "Action Plan" && (
+            <li>
+              <a onClick={() => descriptionRef.current.scrollIntoView()}>
+                Description
+              </a>
+            </li>
+          )}
         <li>
           <a onClick={() => recordRef.current.scrollIntoView()}>Record</a>
         </li>
+        {data?.infoDocs && (
+          <li>
+            <a onClick={() => documentRef.current.scrollIntoView()}>
+              Documents And Info
+            </a>
+          </li>
+        )}
         <li>
-          <a onClick={() => documentRef.current.scrollIntoView()}>
-            Documents And Info
-          </a>
+          <a onClick={() => tagRef.current.scrollIntoView()}>Tags</a>
         </li>
-        <li>
-          <a onClick={() => relatedRef.current.scrollIntoView()}>
-            Related Content
-          </a>
-        </li>
+        {data?.relatedContent && data?.relatedContent?.length > 0 && (
+          <li>
+            <a onClick={() => relatedRef.current.scrollIntoView()}>
+              Related Content
+            </a>
+          </li>
+        )}
         {/* <li>
           <a href="#">Comments</a>
         </li> */}
@@ -178,6 +197,7 @@ const SharePanel = ({
         overlayStyle={{
           width: "22vw",
         }}
+        overlayClassName="popover-multi-country"
         content={
           <Input.Group compact>
             <Input
@@ -336,13 +356,13 @@ const renderBannerSection = (
                 borderRadius: "none",
               }}
             >
-              {data.summary.length < 400 ? (
+              {data?.summary && data?.summary?.length < 400 ? (
                 <p>{data?.summary}</p>
               ) : (
                 <>
                   <p>
                     {showLess
-                      ? `${data.summary.slice(0, 400)}...`
+                      ? `${data.summary && data.summary.slice(0, 400)}...`
                       : data.summary}
                   </p>
                   <a
@@ -601,7 +621,7 @@ const renderGeoCoverageCountryGroups = (
           {(index ? ", " : " ") + item.name}{" "}
           {item.countries && item.countries.length > 0 && (
             <Popover
-              className="popover-multi-country"
+              overlayClassName="popover-multi-country"
               title={""}
               content={
                 <ul className="list-country-group">
@@ -638,6 +658,8 @@ const DetailsView = ({
   const relatedContent = useRef(null);
   const record = useRef(null);
   const document = useRef(null);
+  const tag = useRef(null);
+  const description = useRef(null);
   const reviews = useRef(null);
   const [showLess, setShowLess] = useState(true);
 
@@ -878,12 +900,7 @@ const DetailsView = ({
                 </List>
               </div> */}
 
-              <CardComponent
-                title="Location and Geo-coverage"
-                style={{
-                  marginBottom: "30px",
-                }}
-              >
+              <CardComponent title="Location and Geo-coverage">
                 <div className="list geo-coverage">
                   <List itemLayout="horizontal">
                     <List.Item>
@@ -941,75 +958,79 @@ const DetailsView = ({
                   </List>
                 </div>
               </CardComponent>
-
-              <CardComponent
-                title={`Connections (${
-                  data?.entityConnections.length +
-                  data?.stakeholderConnections.filter(
-                    (x) =>
-                      x.stakeholderRole !== "ADMIN" ||
-                      x.role === "interested in"
-                  )?.length
-                })`}
-                style={{
-                  marginBottom: "30px",
-                }}
-              >
-                <div className="list connection-list">
-                  {data?.entityConnections.length > 0 && (
-                    <List itemLayout="horizontal">
-                      {data?.entityConnections.map((item) => (
-                        <List.Item>
-                          <List.Item.Meta
-                            avatar={
-                              <Avatar
-                                src={
-                                  item?.image
-                                    ? item.image
-                                    : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
-                                }
-                              />
-                            }
-                            title={
-                              <Link to={`/organisation/${item.entityId}`}>
-                                {item.entity}
-                              </Link>
-                            }
-                            description={"Entity"}
-                          />{" "}
-                          {/* <div className="see-more-button">See More</div> */}
-                        </List.Item>
-                      ))}
-                    </List>
-                  )}
-                  {data?.stakeholderConnections.filter(
-                    (x) =>
-                      x.stakeholderRole !== "ADMIN" ||
-                      x.role === "interested in"
-                  )?.length > 0 && (
-                    <List itemLayout="horizontal">
-                      {data?.stakeholderConnections
-                        .filter(
-                          (x) =>
-                            x.stakeholderRole !== "ADMIN" ||
-                            x.role === "interested in"
-                        )
-                        .map((item) => (
+              {data?.entityConnections.length +
+                data?.stakeholderConnections.filter(
+                  (x) =>
+                    x.stakeholderRole !== "ADMIN" || x.role === "interested in"
+                )?.length >
+                0 && (
+                <CardComponent
+                  title={`Connections (${
+                    data?.entityConnections.length +
+                    data?.stakeholderConnections.filter(
+                      (x) =>
+                        x.stakeholderRole !== "ADMIN" ||
+                        x.role === "interested in"
+                    )?.length
+                  })`}
+                >
+                  <div className="list connection-list">
+                    {data?.entityConnections.length > 0 && (
+                      <List itemLayout="horizontal">
+                        {data?.entityConnections.map((item) => (
                           <List.Item>
                             <List.Item.Meta
-                              avatar={<Avatar src={item.image} />}
+                              avatar={
+                                <Avatar
+                                  src={
+                                    item?.image
+                                      ? item.image
+                                      : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
+                                  }
+                                />
+                              }
                               title={
-                                <Link to={`/stakeholder/${item.stakeholderId}`}>
-                                  {item.stakeholder}
+                                <Link to={`/organisation/${item.entityId}`}>
+                                  {item.entity}
                                 </Link>
                               }
-                              description={item.role}
-                            />
+                              description={"Entity"}
+                            />{" "}
+                            {/* <div className="see-more-button">See More</div> */}
                           </List.Item>
                         ))}
-                    </List>
-                  )}
-                  {/* <List itemLayout="horizontal">
+                      </List>
+                    )}
+                    {data?.stakeholderConnections.filter(
+                      (x) =>
+                        x.stakeholderRole !== "ADMIN" ||
+                        x.role === "interested in"
+                    )?.length > 0 && (
+                      <List itemLayout="horizontal">
+                        {data?.stakeholderConnections
+                          .filter(
+                            (x) =>
+                              x.stakeholderRole !== "ADMIN" ||
+                              x.role === "interested in"
+                          )
+                          .map((item) => (
+                            <List.Item>
+                              <List.Item.Meta
+                                avatar={<Avatar src={item.image} />}
+                                title={
+                                  <Link
+                                    to={`/stakeholder/${item.stakeholderId}`}
+                                  >
+                                    {item.stakeholder}
+                                  </Link>
+                                }
+                                description={item.role}
+                              />
+                            </List.Item>
+                          ))}
+                      </List>
+                    )}
+                    {/* <List itemLayout="horizontal">
                     <List.Item>
                       <List.Item.Meta
                         avatar={
@@ -1021,8 +1042,9 @@ const DetailsView = ({
                       />
                     </List.Item>
                   </List> */}
-                </div>
-              </CardComponent>
+                  </div>
+                </CardComponent>
+              )}
             </Col>
             <Col xs={18} lg={18}>
               <TabComponent
@@ -1032,27 +1054,19 @@ const DetailsView = ({
                 relatedRef={relatedContent}
                 recordRef={record}
                 documentRef={document}
+                tagRef={tag}
+                descriptionRef={description}
+                data={data}
               />
               {data.type !== "Technical Resource" &&
                 data.type !== "Policy" &&
                 data.type !== "Action Plan" && (
-                  <CardComponent
-                    title="Description"
-                    style={{
-                      marginBottom: "30px",
-                    }}
-                  >
+                  <CardComponent title="Description" getRef={description}>
                     <p className="summary">{data?.summary}</p>
                   </CardComponent>
                 )}
 
-              <CardComponent
-                title="Record"
-                style={{
-                  marginBottom: "30px",
-                }}
-                getRef={record}
-              >
+              <CardComponent title="Record" getRef={record}>
                 <div className="record-table">
                   {countries &&
                     renderDetails(
@@ -1070,54 +1084,44 @@ const DetailsView = ({
                     )}
                 </div>
               </CardComponent>
-              <CardComponent
-                title="Documents and info"
-                style={{
-                  marginBottom: "30px",
-                }}
-                getRef={document}
-              >
-                {data?.infoDocs && (
-                  <div
-                    className="list documents-list"
-                    dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
-                  />
-                )}
-              </CardComponent>
-              <CardComponent
-                title="Tags"
-                style={{
-                  marginBottom: "30px",
-                }}
-              >
-                <div className="list tag-list">
-                  <List itemLayout="horizontal">
-                    {data?.tags && (
-                      <List.Item>
-                        <List.Item.Meta
-                          avatar={<Avatar src={TagsImage} />}
-                          title={
-                            <ul>
-                              {data?.tags &&
-                                data?.tags.map((tag) => (
-                                  <li key={tag.tag}>{tag.tag}</li>
-                                ))}
-                            </ul>
-                          }
-                        />
-                      </List.Item>
-                    )}
-                  </List>
-                </div>
-              </CardComponent>
+              {data?.infoDocs && (
+                <CardComponent title="Documents and info" getRef={document}>
+                  {data?.infoDocs && (
+                    <div
+                      className="list documents-list"
+                      dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
+                    />
+                  )}
+                </CardComponent>
+              )}
+              {data?.tags && data?.tags.length > 0 && (
+                <CardComponent title="Tags" getRef={tag}>
+                  <div className="list tag-list">
+                    <List itemLayout="horizontal">
+                      {data?.tags && (
+                        <List.Item>
+                          <List.Item.Meta
+                            avatar={<Avatar src={TagsImage} />}
+                            title={
+                              <ul>
+                                {data?.tags &&
+                                  data?.tags.map((tag) => (
+                                    <li key={tag.tag}>{tag.tag}</li>
+                                  ))}
+                              </ul>
+                            }
+                          />
+                        </List.Item>
+                      )}
+                    </List>
+                  </div>
+                </CardComponent>
+              )}
               {data?.relatedContent && data?.relatedContent?.length > 0 && (
                 <CardComponent
                   title={`Related content (${
                     data?.relatedContent && data?.relatedContent.length
                   })`}
-                  style={{
-                    marginBottom: "30px",
-                  }}
                   getRef={relatedContent}
                 >
                   {data?.relatedContent.length > 0 && (

@@ -6,6 +6,7 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  width: 100% !important;
 }
 
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
@@ -175,9 +176,9 @@ h4 {
     border-color: $green01;
     border-radius: 50px;
     &:hover {
-      border-color: #079e90;
-      color: #00ff7f;
-      background: #079e90;
+      border-color: $yellow-highlight;
+      color: #fff;
+      background: $yellow-highlight;
     }
     &.black {
       color: #fff;
@@ -205,9 +206,9 @@ h4 {
       border-color: #fff;
     }
     &:hover {
-      border-color: #079e90;
-      color: #00ff7f;
-      background: #079e90;
+      border-color: $yellow-highlight;
+      color: #fff;
+      background: $yellow-highlight;
     }
     &.black {
       color: $black;
@@ -306,7 +307,7 @@ h4 {
         color: #fff;
         font-weight: 500;
         &:hover {
-          color: #4dffa5;
+          color: #fff;
         }
       }
     }
@@ -329,9 +330,9 @@ h4 {
       border: none;
     }
     &:hover {
-      color: #4dffa5;
-      background: rgba(77, 255, 165, 0.1);
-      border-radius: 5px 5px 0px 0px;
+      color: #fff;
+      background: $yellow-highlight;
+      // border-radius: 5px 5px 0px 0px;
     }
   }
 

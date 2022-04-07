@@ -22,10 +22,12 @@ import FilterDrawer from "./filterDrawer";
 import MapView from "./mapView";
 
 // Icons
-import IconEvent from "../../images/events/event-icon.svg";
-import IconForum from "../../images/events/forum-icon.svg";
-import IconCommunity from "../../images/events/community-icon.svg";
+import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg";
+import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
+import { ReactComponent as IconCommunity } from "../../images/events/community-icon.svg";
 import StakeholderList from "./stakeholderList";
+import { multicountryGroups } from "../knowledge-library/multicountry";
+import { titleCase } from "../../utils/string";
 
 let tmid;
 
@@ -42,7 +44,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
-    representativeGroup: s.sectorOptions,
+    representativeGroup: s.representativeGroup,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     stakeholders: s.stakeholders,
     organisations: s.organisations,
@@ -53,25 +55,30 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   const viewportWidth = document.documentElement.clientWidth;
 
   const [filterCountries, setFilterCountries] = useState([]);
+  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const { isAuthenticated, isLoading } = useAuth0();
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
   const isValidUser = isAuthenticated && isApprovedUser && hasProfile;
   const [filterVisible, setFilterVisible] = useState(false);
+  const [scroll, setScroll] = useState(true);
   const query = useQuery();
   const [view, setView] = useState("card");
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
-  const [GPMLMemberCount, setGPMLMemberCount] = useState(0);
+  const [nonMemberOrganisation, setNonMemberOrganisation] = useState(0);
   const [stakeholderCount, setStakeholderCount] = useState({
     individual: 0,
     entity: 0,
+    GPMLMemberCount: 0,
+    nonMemberOrganisation: 0,
+    existingStakeholder: [],
   });
 
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
-  const pageSize = 8;
+  const pageSize = 16;
   const { innerWidth } = window;
   const [resultCount, setResultCount] = useState(0);
   const { entityRoleOptions } = UIStore.useState((s) => ({
@@ -90,14 +97,14 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     results.length + ((filters?.page && pageSize * filters?.page) || 0);
 
   const sidebar = [
-    { id: 1, title: "Events", url: "/events", icon: IconEvent },
+    { id: 1, title: "Events", url: "/events", icon: <IconEvent /> },
     {
       id: 2,
       title: "Community",
       url: "/stakeholder-overview",
-      icon: IconCommunity,
+      icon: <IconCommunity />,
     },
-    { id: 3, title: "Forums", url: null, icon: IconForum },
+    { id: 3, title: "Forums", url: null, icon: <IconForum /> },
   ];
 
   const sortPeople = () => {
@@ -158,6 +165,10 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
 
+    api
+      .get(`/non-member-organisation`)
+      .then((resp) => setNonMemberOrganisation(resp?.data.length));
+
     const url = `/community?${String(searchParms)}`;
     api
       .get(url)
@@ -171,14 +182,22 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         const stakeholderType = resp?.data?.counts?.find(
           (count) => count?.networkType === "stakeholder"
         );
-        setStakeholderCount({
-          individual: stakeholderType?.count || 0,
-          entity: organisationType?.count || 0,
-        });
+
         const GPMLMemberCounts = resp?.data?.counts?.find(
           (count) => count?.networkType === "gpml_member_entities"
         );
-        setGPMLMemberCount(GPMLMemberCounts.count);
+        const existingStakeholder = resp?.data?.counts.filter(
+          (item) =>
+            item?.networkType === "organisation" ||
+            item?.networkType === "stakeholder"
+        );
+        setStakeholderCount({
+          individual: stakeholderType?.count || 0,
+          entity: organisationType?.count || 0,
+          GPMLMemberCount: GPMLMemberCounts?.count || 0,
+          nonMemberOrganisation: nonMemberOrganisation || 0,
+          existingStakeholder: existingStakeholder,
+        });
 
         setResults(
           [...result]
@@ -248,6 +267,18 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValidUser]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const position = window.pageYOffset;
+      if (!isValidUser && position > 50) {
+        setScroll(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  });
+
   const updateQuery = (param, value, paramValueArr) => {
     const topScroll = window.innerWidth < 640 ? 996 : 207;
     window.scrollTo({
@@ -286,10 +317,10 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   const renderFilterTag = () => {
     const renderName = (key, value) => {
       if (key === "affiliation") {
-        const findOrganisation = organisations.find(
+        const selectedOrganisation = organisations.find(
           (organisation) => organisation?.id == value
         );
-        return findOrganisation?.name;
+        return selectedOrganisation?.name;
       }
       if (key === "isMember") {
         const name = humps.decamelize("Owner");
@@ -301,34 +332,49 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       }
 
       if (key === "country") {
-        const findCountry = countries.find((x) => x.id == value);
-        return findCountry?.name;
+        const selectedCountry = countries.find((x) => x.id == value);
+        return selectedCountry?.name;
       }
 
       if (key === "geoCoverageType") {
-        const findGeoCoverage = geoCoverageTypeOptions?.find((x) => ({
+        const selectedGeoCoverage = geoCoverageTypeOptions?.find((x) => ({
           value: x,
           label: x,
         }));
-        return findGeoCoverage;
+        return selectedGeoCoverage;
       }
 
       if (key === "representativeGroup") {
-        const representativeGroups = representativeGroup.find(
+        const selectedRepresentativeGroups = representativeGroup.find(
           (x) => x?.code?.toLowerCase() == value?.toLowerCase()
         );
         return value.toLowerCase() === "other"
           ? "Other"
-          : representativeGroups?.name;
+          : selectedRepresentativeGroups?.name;
       }
+      if (key === "transnational") {
+        const transnationalGroup = multicountryGroups
+          .map((multicountryGroup) => multicountryGroup.item)
+          .flat();
 
+        const selectedTransnational = transnationalGroup.find(
+          (x) => x.id == value
+        );
+        return selectedTransnational?.name;
+      }
       if (key === "seeking") {
-        const findSeeking = seeking.find((seek) => seek?.tag == value);
-        return findSeeking?.tag;
+        const selectedSeeking = seeking.find((seek) => seek?.tag == value);
+        return selectedSeeking?.tag;
       }
       if (key === "offering") {
-        const findOffering = offering.find((offer) => offer?.tag == value);
-        return findOffering?.tag;
+        const selectedOffering = offering.find((offer) => offer?.tag == value);
+        return selectedOffering?.tag;
+      }
+      if (key === "entity") {
+        const selectedOrganisation = organisations.find(
+          (organisation) => organisation.id == value
+        );
+        return selectedOrganisation?.name;
       }
     };
     return Object.keys(query).map((key, index) => {
@@ -372,8 +418,10 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
   return (
     <div id="stakeholder-overview" className="stakeholder-overview">
-      {!isValidUser && <UnathenticatedPage loginWithPopup={loginWithPopup} />}
-      <div className={isValidUser ? "" : "blur"}>
+      {!isValidUser && !scroll && (
+        <UnathenticatedPage loginWithPopup={loginWithPopup} />
+      )}
+      <div className={!isValidUser && !scroll ? "blur" : ""}>
         {isValidUser && (
           <Header
             {...{
@@ -388,134 +436,145 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
             }}
           />
         )}
-        <Row type="flex" className="body-wrapper">
-          {/* Filter Drawer */}
-          <FilterDrawer
-            {...{
-              query,
-              updateQuery,
-              filterVisible,
-              setFilterVisible,
-              stakeholderCount,
-              GPMLMemberCount,
-              setFilterCountries,
-            }}
-            entities={entityRoleOptions}
-          />
+        {/* Content */}
+        <Col span={24}>
+          <div className="ui-container">
+            <FilterDrawer
+              {...{
+                query,
+                updateQuery,
+                filterVisible,
+                setFilterVisible,
+                stakeholderCount,
+                setFilterCountries,
+                multiCountryCountries,
+                setMultiCountryCountries,
+                renderFilterTag,
+              }}
+              entities={entityRoleOptions}
+            />
 
-          <LeftSidebar isValidUser={isValidUser} active={2} sidebar={sidebar}>
-            <Col lg={24} xs={24} order={2}>
-              {view === "card" ? (
-                <div>
-                  {/* Suggested profiles */}
-                  {isValidUser && !isEmpty(suggestedProfiles) && (
-                    <Col className="card-container green">
-                      <h3 id="title" className="title text-white ui container">
-                        Suggested profiles
-                      </h3>
+            <LeftSidebar isValidUser={isValidUser} active={2} sidebar={sidebar}>
+              <Col lg={24} xs={24} order={2}>
+                {view === "card" ? (
+                  <div>
+                    {/* Suggested profiles */}
+                    {isValidUser && !isEmpty(suggestedProfiles) && (
+                      <Col className="card-container green">
+                        <h3
+                          id="title"
+                          className="title text-white ui container"
+                        >
+                          Suggested profiles
+                        </h3>
 
-                      {isEmpty(suggestedProfiles) ? (
+                        {isEmpty(suggestedProfiles) ? (
+                          <h2 className="loading" id="stakeholder-loading">
+                            <LoadingOutlined spin /> Loading
+                          </h2>
+                        ) : !isEmpty(suggestedProfiles) ? (
+                          <div className="card-wrapper ui container">
+                            {suggestedProfiles.length > 0 &&
+                              suggestedProfiles
+                                .slice(0, 4)
+                                .map((profile) => (
+                                  <ProfileCard
+                                    key={profile?.id}
+                                    profile={profile}
+                                    isValidUser={isValidUser}
+                                    profileType="suggested-profiles"
+                                  />
+                                ))}
+                          </div>
+                        ) : (
+                          <h2 className="loading">
+                            There is no data to display
+                          </h2>
+                        )}
+                      </Col>
+                    )}
+                    {/* All profiles */}
+                    <Col className="all-profiles">
+                      {!isLoaded() || loading ? (
                         <h2 className="loading" id="stakeholder-loading">
                           <LoadingOutlined spin /> Loading
                         </h2>
-                      ) : !isEmpty(suggestedProfiles) ? (
-                        <div className="card-wrapper ui container">
-                          {suggestedProfiles.length > 0 &&
-                            suggestedProfiles
-                              .slice(0, 4)
-                              .map((profile) => (
-                                <ProfileCard
-                                  key={profile?.id}
-                                  profile={profile}
-                                  isValidUser={isValidUser}
-                                  profileType="suggested-profiles"
-                                />
-                              ))}
-                        </div>
+                      ) : isLoaded() && !loading && !isEmpty(results) ? (
+                        <>
+                          <div className="result-number">
+                            {resultCount > pageSize + Number(filters?.page)
+                              ? resultCounts
+                              : itemCount}{" "}
+                            of {resultCount || 0} result
+                            {resultCount > 1 ? "s" : ""}
+                          </div>
+                          <div className="card-wrapper ui container">
+                            {results.map((profile) => (
+                              <ProfileCard
+                                key={profile?.id}
+                                profile={profile}
+                                isValidUser={isValidUser}
+                                profileType="all-profiles"
+                              />
+                            ))}
+                          </div>
+                        </>
                       ) : (
                         <h2 className="loading">There is no data to display</h2>
                       )}
+                      {/* Pagination */}
+                      <div className="page">
+                        {!isEmpty(results) && isValidUser && (
+                          <Pagination
+                            defaultCurrent={1}
+                            current={
+                              1 +
+                              (query?.page.length !== 0
+                                ? Number(query?.page[0])
+                                : 0)
+                            }
+                            pageSize={pageSize}
+                            total={resultCount}
+                            showSizeChanger={false}
+                            onChange={(n) => {
+                              updateQuery("page", n - 1);
+                            }}
+                          />
+                        )}
+                      </div>
                     </Col>
-                  )}
-                  {/* All profiles */}
-                  <Col className="all-profiles">
-                    {!isLoaded() || loading ? (
-                      <h2 className="loading" id="stakeholder-loading">
-                        <LoadingOutlined spin /> Loading
-                      </h2>
-                    ) : isLoaded() && !loading && !isEmpty(results) ? (
-                      <>
-                        <div className="result-number">
-                          {resultCount > pageSize + Number(filters?.page)
-                            ? resultCounts
-                            : itemCount}{" "}
-                          of {resultCount || 0} result
-                          {resultCount > 1 ? "s" : ""}
-                        </div>
-                        <div className="card-wrapper ui container">
-                          {results.map((profile) => (
-                            <ProfileCard
-                              key={profile?.id}
-                              profile={profile}
-                              isValidUser={isValidUser}
-                              profileType="all-profiles"
-                            />
-                          ))}
-                        </div>
-                      </>
-                    ) : (
-                      <h2 className="loading">There is no data to display</h2>
-                    )}
-                    {/* Pagination */}
-                    <div className="page">
-                      {!isEmpty(results) && isValidUser && (
-                        <Pagination
-                          defaultCurrent={1}
-                          current={
-                            1 +
-                            (query?.page.length !== 0
-                              ? Number(query?.page[0])
-                              : 0)
-                          }
-                          pageSize={pageSize}
-                          total={resultCount}
-                          showSizeChanger={false}
-                          onChange={(n) => {
-                            updateQuery("page", n - 1);
-                          }}
-                        />
-                      )}
-                    </div>
-                  </Col>
-                </div>
-              ) : (
-                <div className="stakeholder-map-wrapper">
-                  <MapView
-                    updateQuery={updateQuery}
-                    isFilteredCountry={filterCountries}
-                  />
-                  <StakeholderList
-                    {...{
-                      view,
-                      results,
-                      isAscending,
-                      sortPeople,
-                      pageSize,
-                      filters,
-                      itemCount,
-                      loading,
-                      updateQuery,
-                      isLoaded,
-                      resultCount,
-                      resultCounts,
-                      query,
-                    }}
-                  />
-                </div>
-              )}
-            </Col>
-          </LeftSidebar>
-        </Row>
+                  </div>
+                ) : (
+                  <div className="stakeholder-map-wrapper">
+                    <MapView
+                      updateQuery={updateQuery}
+                      isFilteredCountry={filterCountries}
+                      multiCountryCountries={multiCountryCountries}
+                      stakeholderCount={stakeholderCount}
+                    />
+                    <StakeholderList
+                      {...{
+                        view,
+                        results,
+                        isAscending,
+                        sortPeople,
+                        pageSize,
+                        filters,
+                        itemCount,
+                        loading,
+                        updateQuery,
+                        isLoaded,
+                        resultCount,
+                        resultCounts,
+                        query,
+                      }}
+                    />
+                  </div>
+                )}
+              </Col>
+            </LeftSidebar>
+          </div>
+        </Col>
       </div>
     </div>
   );

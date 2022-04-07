@@ -43,6 +43,7 @@ const FilterDrawer = ({
   setFilterVisible,
   multiCountryCountries,
   setMultiCountryCountries,
+  filterTagValue,
 }) => {
   const {
     nav,
@@ -65,7 +66,12 @@ const FilterDrawer = ({
     organisations: s.organisations,
   }));
   const { isAuthenticated } = useAuth0();
-
+  const [capacityBuildingCount, setCapacityBuildingCount] = useState(0);
+  const [
+    tagsExcludingCapacityBuilding,
+    setTagsExcludingCapacityBuilding,
+  ] = useState([]);
+  const [isClearFilter, setIsClearFilter] = useState(false);
   const isLoaded = () =>
     !isEmpty(tags) &&
     !isEmpty(countries) &&
@@ -148,44 +154,6 @@ const FilterDrawer = ({
     updateQuery(flag, updateVal);
   };
 
-  const handleChangeLocationTab = (key) => {
-    const param = key === "country" ? "transnational" : "country";
-  };
-
-  const handleChangeCountry = (val) => {
-    updateQuery("country", query?.country && val);
-  };
-
-  const handleDeselectCountry = (val) => {
-    updateQuery(
-      "country",
-      query?.country ? query?.country.filter((x) => x != val) : []
-    );
-  };
-
-  const handleChangeMultiCountry = (val) => {
-    updateQuery("transnational", [val]);
-
-    // Fetch transnational countries
-    val.forEach((id) => {
-      const check = multiCountryCountries.find((x) => x.id === id);
-      !check &&
-        api.get(`/country-group/${id}`).then((resp) => {
-          setMultiCountryCountries([
-            ...multiCountryCountries,
-            { id: id, countries: resp.data?.[0]?.countries },
-          ]);
-        });
-    });
-  };
-
-  const handleDeselectMultiCountry = (val) => {
-    updateQuery(
-      "transnational",
-      query?.transnational ? query?.transnational.filter((x) => x != val) : []
-    );
-  };
-
   // populate options for tags dropdown
   const tagsWithoutSpace =
     isLoaded() &&
@@ -208,6 +176,41 @@ const FilterDrawer = ({
       }))
     : [];
 
+  useEffect(() => {
+    return api
+      .get(`/browse?tag=capacity+building`)
+      .then((resp) => {
+        const data = resp?.data?.counts.filter(
+          (item) => item?.topic !== "gpml_member_entities"
+        );
+        const capacityBuildingCounts = data.reduce(
+          (acc, val) => acc + val?.count,
+          0
+        );
+
+        setCapacityBuildingCount(capacityBuildingCounts || 0);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (isClearFilter) {
+      updateQuery("tag", tagsExcludingCapacityBuilding);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tagsExcludingCapacityBuilding]);
+
+  const clearTopicFilter = () => {
+    setIsClearFilter(true);
+    const removeCapacityBuilding = query.tag.filter(
+      (tag) => tag.toLowerCase() !== "capacity building"
+    );
+    updateQuery("topic", []);
+    setTagsExcludingCapacityBuilding(removeCapacityBuilding);
+  };
+
   return (
     <div className="site-drawer-render-in-current-wrapper">
       <Drawer
@@ -218,9 +221,16 @@ const FilterDrawer = ({
         visible={filterVisible}
         getContainer={false}
         onClose={() => setFilterVisible(false)}
-        closeIcon={<CloseCircleOutlined className="drawer-close-icon" />}
+        closeIcon={
+          <>
+            {filterTagValue.length > 0 ? (
+              <span className="apply-button">Apply</span>
+            ) : (
+              <CloseCircleOutlined className="drawer-close-icon" />
+            )}
+          </>
+        }
         style={{ position: "absolute" }}
-        width={500}
         height="100%"
         autoFocus={false}
       >
@@ -230,20 +240,26 @@ const FilterDrawer = ({
           <Col span={24} className="resources-card-filter">
             <Space align="middle">
               <div className="filter-title">Resources type</div>
-              {isEmpty(query?.topic) ? (
+              {isEmpty(query?.topic) &&
+              !query.tag.includes("capacity building") ? (
                 <Tag className="resource-type">All (default)</Tag>
               ) : (
                 <Tag
                   className="clear-selection"
                   closable={true}
-                  onClick={() => updateQuery("topic", [])}
-                  onClose={() => updateQuery("topic", [])}
+                  onClick={clearTopicFilter}
+                  onClose={clearTopicFilter}
                 >
                   Clear selection
                 </Tag>
               )}
             </Space>
-            <Row type="flex" gutter={[10, 10]}>
+            <Row
+              type="flex"
+              gutter={[10, 10]}
+              justify="space-between"
+              style={{ width: "100%" }}
+            >
               {topicTypes.map((type) => {
                 const topic = humps.decamelize(type);
                 const count =
@@ -266,10 +282,32 @@ const FilterDrawer = ({
                   </Col>
                 );
               })}
+              <Col
+                span={6}
+                key={"capacityBuilding"}
+                className="resource-card-wrapper"
+              >
+                <Card
+                  onClick={() =>
+                    handleChangeResourceType("tag", "capacity building")
+                  }
+                  className={classNames("resource-type-card", {
+                    active: query?.tag?.includes("capacity building"),
+                  })}
+                >
+                  <Space direction="vertical" align="center">
+                    {topicIcons("capacityBuilding")}
+                    <div className="topic-text">
+                      {topicNames("capacityBuilding")}
+                    </div>
+                    <div className="topic-count">{capacityBuildingCount}</div>
+                  </Space>
+                </Card>
+              </Col>
             </Row>
           </Col>
-          {/* Sub-content type */}
 
+          {/* Sub-content type */}
           <MultipleSelectFilter
             title="Sub-content type"
             options={
@@ -347,13 +385,11 @@ const FilterDrawer = ({
             <div className="country-filter-tab-wrapper">
               <CountryTransnationalFilter
                 {...{
+                  query,
+                  updateQuery,
                   multiCountryCountries,
-                  handleChangeCountry,
-                  handleDeselectCountry,
-                  handleChangeMultiCountry,
-                  handleDeselectMultiCountry,
+                  setMultiCountryCountries,
                 }}
-                handleChangeTab={handleChangeLocationTab}
                 country={query?.country?.map((x) => parseInt(x)) || []}
                 multiCountry={
                   query?.transnational?.map((x) => parseInt(x)) || []
@@ -374,7 +410,7 @@ const FilterDrawer = ({
             updateQuery={updateQuery}
           />
 
-          {/* <MultipleSelectFilter
+          <MultipleSelectFilter
             title="Entities"
             options={
               isLoaded()
@@ -387,7 +423,7 @@ const FilterDrawer = ({
             flag="entity"
             query={query}
             updateQuery={updateQuery}
-          /> */}
+          />
 
           <MultipleSelectFilter
             title="Representative group"

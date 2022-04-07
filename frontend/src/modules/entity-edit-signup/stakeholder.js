@@ -21,6 +21,7 @@ const initialSignUpData = {
   S3: {
     steps: 0,
     required: {},
+    publicDatabase: true,
   },
 };
 const signUpData = new Store({
@@ -42,7 +43,7 @@ const getSchema = ({
   profile,
 }) => {
   const prop = cloneDeep(schema.properties);
-  prop.S1.properties.email.default = profile.email;
+  // prop.S1.properties.email.default = profile.email;
 
   // // country options
   prop.S1.properties["country"].enum = countries?.map((x) => x.id);

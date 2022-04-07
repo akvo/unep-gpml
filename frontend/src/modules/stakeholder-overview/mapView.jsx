@@ -5,7 +5,12 @@ import { isEmpty } from "lodash";
 import api from "../../utils/api";
 import Maps from "../map/Map";
 
-const MapView = ({ multiCountryCountries, updateQuery, isFilteredCountry }) => {
+const MapView = ({
+  multiCountryCountries,
+  updateQuery,
+  isFilteredCountry,
+  stakeholderCount,
+}) => {
   const { landing, countries } = UIStore.useState((s) => ({
     landing: s.landing,
     countries: s.countries,
@@ -42,14 +47,14 @@ const MapView = ({ multiCountryCountries, updateQuery, isFilteredCountry }) => {
       box={box}
       query={query}
       clickEvents={clickCountry}
+      stakeholderCount={stakeholderCount}
       listVisible={[]}
       isDisplayedList={[]}
       dataToDisplay={[]}
       isFilteredCountry={isFilteredCountry}
       data={landing?.map || []}
-      topic={query?.networkType}
       isLoaded={isLoaded}
-      multiCountryCountries={null}
+      multiCountryCountries={multiCountryCountries}
       multiCountries={
         multiCountry &&
         !isEmpty(multiCountryCountries) &&
