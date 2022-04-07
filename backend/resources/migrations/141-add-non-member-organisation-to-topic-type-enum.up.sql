@@ -1,0 +1,1 @@
+ALTER TYPE topic_type ADD VALUE 'non_member_organisation';
