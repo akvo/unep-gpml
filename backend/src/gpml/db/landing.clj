@@ -61,7 +61,7 @@
              LEFT JOIN %s_geo_coverage egc ON e.id = egc.%s
              LEFT JOIN country_group_country cgc ON cgc.country_group = egc.country_group
          WHERE
-              e.review_status = 'APPROVED' %s
+              e.review_status = 'APPROVED' AND (egc.country IS NOT NULL or cgc.country IS NOT NULL) %s
          GROUP BY
               entity,
               geo_coverage"
