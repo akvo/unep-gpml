@@ -141,54 +141,63 @@ const VerticalLegend = ({
       return (
         <div key={transnationalGroup?.groupLabel}>
           <div className="legend-transnational-count">
-            <strong className="legend-transnational-title">
-              {transnationalGroup?.groupLabel}
-            </strong>
-            <div>
-              {tTypes
-                .filter(
-                  (topic) => topic !== "organisation" && topic !== "stakeholder"
-                )
-                .map((topic) => {
-                  const topicChecker = () => {
-                    if (topic === "actionPlan") {
-                      return "action_plan";
-                    } else if (topic === "technicalResource") {
-                      return "technical_resource";
-                    } else if (topic === "financingResource") {
-                      return "financing_resource";
-                    } else {
-                      return topic;
-                    }
-                  };
-
-                  return existingData.length === 0 ? (
-                    <div key={topic} className="total-resources">
-                      <div>{topicNames(topic)}</div>
-                      <div>
-                        <b>
-                          {transnationalGroup.resourcePerCountry?.[topic]
-                            ? transnationalGroup.resourcePerCountry?.[topic]
-                            : 0}
-                        </b>
-                      </div>
-                    </div>
-                  ) : (
-                    existingData.includes(topicChecker()) && (
-                      <div key={topic} className="total-resources">
-                        <div>{topicNames(topic)}</div>
-                        <div>
-                          <b>
-                            {transnationalGroup.resourcePerCountry?.[topic]
-                              ? transnationalGroup.resourcePerCountry?.[topic]
-                              : 0}
-                          </b>
-                        </div>
-                      </div>
+            {transnationalGroup?.groupLabel.toLowerCase() ===
+              "regional seas" && (
+              <>
+                {" "}
+                <strong className="legend-transnational-title">
+                  {transnationalGroup?.groupLabel}
+                </strong>
+                <div>
+                  {tTypes
+                    .filter(
+                      (topic) =>
+                        topic !== "organisation" && topic !== "stakeholder"
                     )
-                  );
-                })}
-            </div>
+                    .map((topic) => {
+                      const topicChecker = () => {
+                        if (topic === "actionPlan") {
+                          return "action_plan";
+                        } else if (topic === "technicalResource") {
+                          return "technical_resource";
+                        } else if (topic === "financingResource") {
+                          return "financing_resource";
+                        } else {
+                          return topic;
+                        }
+                      };
+
+                      return existingData.length === 0 ? (
+                        <div key={topic} className="total-resources">
+                          <div>{topicNames(topic)}</div>
+                          <div>
+                            <b>
+                              {transnationalGroup.resourcePerCountry?.[topic]
+                                ? transnationalGroup.resourcePerCountry?.[topic]
+                                : 0}
+                            </b>
+                          </div>
+                        </div>
+                      ) : (
+                        existingData.includes(topicChecker()) && (
+                          <div key={topic} className="total-resources">
+                            <div>{topicNames(topic)}</div>
+                            <div>
+                              <b>
+                                {transnationalGroup.resourcePerCountry?.[topic]
+                                  ? transnationalGroup.resourcePerCountry?.[
+                                      topic
+                                    ]
+                                  : 0}
+                              </b>
+                            </div>
+                          </div>
+                        )
+                      );
+                    })}
+                </div>
+              </>
+            )}
 
             {/* Total resources per transnational */}
             <div className="total-per-transnational">
@@ -298,8 +307,8 @@ const VerticalLegend = ({
   // STAKEHOLDER TOTAL COUNTS
   const stakeholderTotalCounts = path === STAKEHOLDER_OVERVIEW && {
     individual: stakeholderCount.individual,
-    member: stakeholderCount.GPMLMemberCount,
-    nonMember: stakeholderCount.nonMemberOrganisation,
+    entity:
+      stakeholderCount.GPMLMemberCount + stakeholderCount.nonMemberOrganisation,
   };
 
   const stakeholderPerTransnationalGroup = multicountryGroups.map(
@@ -397,13 +406,8 @@ const VerticalLegend = ({
               <div className="type">Entity</div>
               <div className="entities">
                 <div className="entity-breakdown">
-                  <b>Member of GPML</b>
-                  <b>{stakeholderTotalCounts.member}</b>
-                </div>
-                <div className="entity-breakdown">
-                  <b>Non-member </b>
                   <b>
-                    <b>{stakeholderTotalCounts.nonMember}</b>
+                    <b>{stakeholderTotalCounts.entity}</b>
                   </b>
                 </div>
               </div>
@@ -426,13 +430,8 @@ const VerticalLegend = ({
                 <div className="type">Entity</div>
                 <div className="entities">
                   <div className="entity-breakdown">
-                    <b>Member of GPML</b>
-                    <b>{stakeholderTotalCounts.member}</b>
-                  </div>
-                  <div className="entity-breakdown">
-                    <b>Non-member </b>
                     <b>
-                      <b>{stakeholderTotalCounts.nonMember}</b>
+                      <b>{stakeholderTotalCounts.entity}</b>
                     </b>
                   </div>
                 </div>
@@ -456,49 +455,44 @@ const VerticalLegend = ({
       return (
         <div key={transnationalGroup?.groupLabel}>
           <div className="legend-transnational-count">
-            <strong className="legend-transnational-title">
-              {transnationalGroup?.groupLabel}
-            </strong>
-            <div>
-              <div>
-                <b className="legend-stakeholder-title">Type</b>
+            {transnationalGroup?.groupLabel.toLowerCase() ===
+              "regional seas" && (
+              <>
+                <strong className="legend-transnational-title">
+                  {transnationalGroup?.groupLabel}
+                </strong>
+                <div>
+                  <div>
+                    <b className="legend-stakeholder-title">Type</b>
 
-                <div className="legend-stakeholder-wrapper">
-                  <div className="legend-stakeholder-type">
-                    <div className="type">Entity</div>
-                    <div className="entities">
-                      <div className="entity-breakdown">
-                        <b>Member of GPML</b>
-                        <b>
-                          {
-                            transnationalGroup.stakeholderPerCountry.entity
-                              .member
-                          }
-                        </b>
+                    <div className="legend-stakeholder-wrapper">
+                      <div className="legend-stakeholder-type">
+                        <div className="type">Entity</div>
+                        <div className="entities">
+                          <div className="entity-breakdown">
+                            {/* <b>Member of GPML</b> */}
+                            <b>
+                              {transnationalGroup.stakeholderPerCountry.entity
+                                .member +
+                                transnationalGroup.stakeholderPerCountry.entity
+                                  .nonMember}
+                            </b>
+                          </div>
+                        </div>
                       </div>
-                      <div className="entity-breakdown">
-                        <b>Non-member </b>
+
+                      <div className="legend-stakeholder-type individual">
+                        <div className="type">Individual</div>
                         <b>
-                          <b>
-                            {
-                              transnationalGroup.stakeholderPerCountry.entity
-                                .nonMember
-                            }
-                          </b>
+                          {transnationalGroup.stakeholderPerCountry.individual}
                         </b>
                       </div>
                     </div>
                   </div>
-
-                  {/* <div className="legend-stakeholder-type individual">
-                      <div className="type">Individual</div>
-                      <b>
-                        {transnationalGroup.stakeholderPerCountry.individual}
-                      </b>
-                    </div> */}
                 </div>
-              </div>
-            </div>
+              </>
+            )}
+
             <div>
               {transnationalGroup.transnational
                 .sort((a, b) => a.label.localeCompare(b.label))
@@ -520,37 +514,22 @@ const VerticalLegend = ({
                               <div className="type">Entity</div>
                               <div className="entities">
                                 <div className="entity-breakdown">
-                                  <b>Member of GPML</b>
                                   <b>
-                                    {
+                                    {transnational.totalStakeholders.entity
+                                      .member +
                                       transnational.totalStakeholders.entity
-                                        .member
-                                    }
+                                        .nonMember}
                                   </b>
                                 </div>
-                                {transnational.totalStakeholders.entity
-                                  .nonMember > 0 && (
-                                  <div className="entity-breakdown">
-                                    <b>Non-member </b>
-                                    <b>
-                                      <b>
-                                        {
-                                          transnational.totalStakeholders.entity
-                                            .nonMember
-                                        }
-                                      </b>
-                                    </b>
-                                  </div>
-                                )}
                               </div>
                             </div>
 
-                            {/* <div className="legend-stakeholder-type individual">
-                                <div className="type">Individual</div>
-                                <b>
-                                  {transnational.totalStakeholders.individual}
-                                </b>
-                              </div> */}
+                            <div className="legend-stakeholder-type individual">
+                              <div className="type">Individual</div>
+                              <b>
+                                {transnational.totalStakeholders.individual}
+                              </b>
+                            </div>
                           </div>
                         </div>
                       </div>
