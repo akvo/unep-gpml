@@ -43,6 +43,40 @@
         renamed-tables (set (map #(get table-rename-mapping %) tables-to-rename))]
     (concat renamed-tables (remove #(some #{%} tables-to-rename) tables))))
 
+;;======================= Entity connections ==========================
+(defn generic-topic-entity-connections-query
+  [entity-name]
+  (apply format
+         "LEFT JOIN (
+        SELECT
+            e.id,
+            json_agg(json_build_object('id', oe.id,
+                                       'entity_id', org.id,
+                                       'entity', org.name,
+                                       'role', oe.association,
+                                       'image', org.logo,
+                                       'representative_group', (
+                        CASE WHEN representative_group_government IS NOT NULL THEN
+                            'government'
+                        WHEN representative_group_private_sector IS NOT NULL THEN
+                            'private-sector'
+                        WHEN representative_group_academia_research IS NOT NULL THEN
+                            'academia-research'
+                        WHEN representative_group_civil_society IS NOT NULL THEN
+                            'civil-society'
+                        WHEN representative_group_other IS NOT NULL THEN
+                            'other'
+                        ELSE
+                            NULL
+                        END))) FILTER (WHERE oe.id IS NOT NULL) AS entity_connections
+        FROM
+            %s e
+            JOIN organisation_%s oe ON e.id = oe.%s
+            JOIN organisation org ON oe.organisation = org.id
+        GROUP BY
+            e.id) ec ON ec.id = e.id"
+         (repeat 3 entity-name)))
+
 ;;======================= Data queries =================================
 (def ^:const ^:private organisation-topic-data-geo-coverage-values-query
   "LEFT JOIN (
@@ -78,7 +112,8 @@
        geo.geo_coverage_country_groups,
        geo.geo_coverage_countries,
        lang.languages,
-       tag.tags")
+       tag.tags,
+       ec.entity_connections")
 
 (def ^:const ^:private initiative-topic-data-select-clause
   "SELECT
@@ -107,7 +142,8 @@
        tag.tags,
        geo.geo_coverage_values,
        geo.geo_coverage_country_groups,
-       geo.geo_coverage_countries")
+       geo.geo_coverage_countries,
+       ec.entity_connections")
 
 (def ^:const ^:private policy-topic-data-select-clause
   "SELECT
@@ -118,7 +154,8 @@
        geo.geo_coverage_country_groups,
        geo.geo_coverage_countries,
        lang.languages,
-       tag.tags")
+       tag.tags,
+       ec.entity_connections")
 
 (def ^:const ^:private event-topic-data-select-clause
   "SELECT
@@ -129,7 +166,8 @@
        geo.geo_coverage_country_groups,
        geo.geo_coverage_countries,
        lang.languages,
-       tag.tags")
+       tag.tags,
+       ec.entity_connections")
 
 (def ^:const ^:private technology-topic-data-select-clause
   "SELECT
@@ -141,7 +179,8 @@
        geo.geo_coverage_country_groups,
        geo.geo_coverage_countries,
        lang.languages,
-       tag.tags")
+       tag.tags,
+       ec.entity_connections")
 
 (def ^:const ^:private stakeholder-topic-data-select-clause
   "SELECT
@@ -397,32 +436,33 @@
   (let [lang-query (generic-topic-data-languages-query entity-name)
         tags-query (generic-topic-data-tags-query entity-name)
         geo-coverage-values-query (generic-topic-data-geo-coverage-values-query entity-name)
+        entity-connections-query (generic-topic-entity-connections-query entity-name)
         select-clause generic-topic-data-select-clause
         from-clause (generic-topic-data-from-clause entity-name)
         order-by-clause generic-topic-data-order-by-clause
         query-statements (case entity-name
                            "resource" [select-clause (str ", " resource-topic-data-organisations-field)
-                                       from-clause lang-query tags-query
+                                       from-clause lang-query tags-query entity-connections-query
                                        geo-coverage-values-query resource-topic-data-organisations-query
                                        order-by-clause]
 
                            "initiative" [initiative-topic-data-select-clause
-                                         from-clause initiative-topic-data-tags-query
+                                         from-clause initiative-topic-data-tags-query entity-connections-query
                                          geo-coverage-values-query order-by-clause]
 
                            "policy" [policy-topic-data-select-clause
-                                     from-clause lang-query tags-query
+                                     from-clause lang-query tags-query entity-connections-query
                                      geo-coverage-values-query order-by-clause]
 
                            "event" [event-topic-data-select-clause
-                                    from-clause lang-query tags-query
+                                    from-clause lang-query tags-query entity-connections-query
                                     geo-coverage-values-query order-by-clause]
 
                            "technology" [technology-topic-data-select-clause
-                                         from-clause lang-query tags-query
+                                         from-clause lang-query tags-query entity-connections-query
                                          geo-coverage-values-query order-by-clause]
 
-                           [select-clause from-clause lang-query tags-query
+                           [select-clause from-clause lang-query tags-query entity-connections-query
                             geo-coverage-values-query order-by-clause])]
     (str/join " " query-statements)))
 
@@ -601,9 +641,10 @@
      WHERE value::TEXT IN (:v*:%s)) > 0" geo-coverage-value-param))
 
 (defn generate-filter-topic-snippet
-  [{:keys [favorites user-id topic tag start-date end-date transnational
+  [{:keys [favorites user-id topic tag start-date end-date
            search-text geo-coverage resource-types geo-coverage-countries
-           representative-group sub-content-type affiliation]}]
+           representative-group sub-content-type affiliation
+           entity]}]
   (let [geo-coverage? (seq geo-coverage)
         geo-coverage-countries? (seq geo-coverage-countries)]
     (str/join
@@ -614,16 +655,18 @@
         "JOIN v_stakeholder_association a ON a.stakeholder = :user-id AND a.id = (t.json->>'id')::int AND (a.topic = t.topic OR (a.topic = 'resource' AND t.topic IN (:v*:resource-types)))")
       (when (seq tag)
         "JOIN json_array_elements(t.json->'tags') tags ON true JOIN json_each_text(tags) tag ON LOWER(tag.value) = ANY(ARRAY[:v*:tag]::varchar[])")
-      (when (seq transnational)
-        "JOIN LATERAL json_array_elements(json->'geo_coverage_values') j on json->>'geo_coverage_values' != ''")
+      (when (or (seq entity) (seq representative-group))
+        "JOIN json_to_recordset(t.json->'entity_connections') AS ecs(id int, entity_id int, entity text, role text, representative_group text, image text) ON t.json->>'entity_connections' IS NOT NULL")
       "WHERE t.json->>'review_status'='APPROVED'"
       (when (seq search-text) " AND t.search_text @@ to_tsquery(:search-text)")
       (when (seq topic)
         " AND topic IN (:v*:topic)")
       (when (seq affiliation)
         " AND (t.json->'affiliation'->>'id')::int IN (:v*:affiliation)")
+      (when (seq entity)
+        " AND ecs.entity_id IN (:v*:entity)")
       (when (seq representative-group)
-        " AND (t.json->>'type' IN (:v*:representative-group) OR t.json->>'representation' IN (:v*:representative-group))")
+        " AND ecs.representative_group IN (:v*:representative-group)")
       (when (seq sub-content-type)
         " AND t.json->>'sub_content_type' IS NOT NULL AND t.json->>'sub_content_type' IN (:v*:sub-content-type)")
       (when (and (= (count topic) 1)
