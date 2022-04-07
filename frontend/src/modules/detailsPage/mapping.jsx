@@ -264,13 +264,6 @@ const detailProject = [
     value: "join",
     type: "array",
   },
-  {
-    key: "activityOwner",
-    name: "Initiative Owner",
-    value: "custom",
-    customValue: "topLevel",
-    type: "haveChild",
-  },
   // {
   //   key: "activityOwner",
   //   name: "Entity Type",
