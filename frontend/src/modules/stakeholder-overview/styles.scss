@@ -148,8 +148,8 @@
           height: 27px;
           width: 27px;
           &:hover {
-            background-color: $green01;
-            color: $blue10;
+            background: $yellow-highlight;
+            color: #fff;
           }
         }
       }
@@ -223,6 +223,10 @@
           max-width: 100%;
           padding: 4px 5px;
           height: auto;
+          &:hover {
+            background: $yellow-highlight;
+            color: #fff;
+          }
         }
 
         .anticon.anticon-down {
@@ -760,10 +764,10 @@
         .ant-select-selection-search-input {
           width: 100%;
           display: block;
-          font-weight: 700;
-          font-size: 16px;
-          color: $blue06;
-          font-style: italic;
+          // font-weight: 700;
+          // font-size: 16px;
+          // color: $blue06;
+          // font-style: italic;
         }
       }
 
