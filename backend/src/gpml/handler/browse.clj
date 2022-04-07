@@ -88,20 +88,25 @@
                                :type "string"
                                :allowEmptyValue true}}
     string?]
+   [:entity {:optional true
+             :swagger {:description "Comma separated list of entity IDs"
+                       :type "string"
+                       :allowEmptyValue true}}
+    string?]
    [:limit {:optional true
             :swagger {:description "Limit the number of entries per page"
                       :type "int"
                       :allowEmptyValue true}}
     [:int {:min 0 :max 100}]]
    [:offset {:optional true
-             :swagger{:description "Number of items to skip when fetching entries"
-                      :type "int"
-                      :allowEmptyValue true}}
+             :swagger {:description "Number of items to skip when fetching entries"
+                       :type "int"
+                       :allowEmptyValue true}}
     [:int {:min 0}]]])
 
 (defn get-db-filter
   [{:keys [limit offset startDate endDate user-id favorites country transnational
-           topic tag affiliation representativeGroup subContentType q]}]
+           topic tag affiliation representativeGroup subContentType entity q]}]
   (cond-> {}
     offset
     (assoc :offset offset)
@@ -140,6 +145,9 @@
     (seq subContentType)
     (assoc :sub-content-type (set (str/split subContentType #",")))
 
+    (seq entity)
+    (assoc :entity (set (map #(Integer/parseInt %) (str/split entity #","))))
+
     (seq q)
     (assoc :search-text (->> (str/trim q)
                              (re-seq #"\w+")
@@ -149,63 +157,58 @@
   (case type
     (or "technical_resource" "financing_resource" "action_plan")
     (merge result
-      {:entity_connections (db.resource/entity-connections-by-id db (select-keys result [:id]))
-       :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys result [:id]))})
+           {:stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys result [:id]))})
 
     "event"
     (merge result
-      {:entity_connections (db.event/entity-connections-by-id db (select-keys result [:id]))
-       :stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys result [:id]))})
+           {:stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys result [:id]))})
 
     "project"
     (merge result
-      {:entity_connections (db.initiative/entity-connections-by-id db (select-keys result [:id]))
-       :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys result [:id]))})
+           {:stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys result [:id]))})
 
     "policy"
     (merge result
-      {:entity_connections (db.policy/entity-connections-by-id db (select-keys result [:id]))
-       :stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys result [:id]))})
+           {:stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys result [:id]))})
 
     "technology"
     (merge result
-      {:entity_connections (db.technology/entity-connections-by-id db (select-keys result [:id]))
-       :stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys result [:id]))})
+           {:stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys result [:id]))})
 
     result))
 
 (defn browse-response [query db approved? admin]
   (let [{:keys [geo-coverage transnational] :as modified-filters} (->> query
-                                                                    (get-db-filter)
-                                                                    (merge {:approved approved?
-                                                                            :admin admin}))
+                                                                       (get-db-filter)
+                                                                       (merge {:approved approved?
+                                                                               :admin admin}))
         modified-filters (cond
                            (and (seq geo-coverage) (seq transnational))
                            (let [country-group-countries (flatten
-                                                           (conj
-                                                             (map #(db.country-group/get-country-group-countries
-                                                                     db {:id (Integer/parseInt %)})
-                                                               (:transnational modified-filters))))
+                                                          (conj
+                                                           (map #(db.country-group/get-country-group-countries
+                                                                  db {:id (Integer/parseInt %)})
+                                                                (:transnational modified-filters))))
                                  geo-coverage-countries (map (comp str :id) country-group-countries)
                                  geo-coverage (map str geo-coverage)
                                  transnational (->> (db.country-group/get-country-groups-by-country db {:id (first (:geo-coverage modified-filters))})
-                                                     (map (comp str :id))
-                                                     set)]
+                                                    (map (comp str :id))
+                                                    set)]
                              (assoc modified-filters :geo-coverage-countries (set (concat geo-coverage-countries geo-coverage))
-                                                     :transnational transnational))
+                                    :transnational transnational))
 
                            (seq geo-coverage)
                            (let [transnational (->> (db.country-group/get-country-groups-by-country db {:id (first (:geo-coverage modified-filters))})
-                                                 (map (comp str :id))
-                                                 set)]
+                                                    (map (comp str :id))
+                                                    set)]
                              (assoc modified-filters :transnational transnational))
 
                            (seq transnational)
                            (let [country-group-countries (flatten
-                                                           (conj
-                                                             (map #(db.country-group/get-country-group-countries
-                                                                     db {:id (Integer/parseInt %)})
-                                                               (:transnational modified-filters))))
+                                                          (conj
+                                                           (map #(db.country-group/get-country-group-countries
+                                                                  db {:id (Integer/parseInt %)})
+                                                                (:transnational modified-filters))))
                                  geo-coverage-countries (map (comp str :id) country-group-countries)]
                              (assoc modified-filters :geo-coverage-countries (set geo-coverage-countries)))
 
