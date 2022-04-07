@@ -133,7 +133,6 @@ const CountryTransnationalFilter = ({
           value={multiCountry}
           onChange={handleChangeMultiCountry}
           onDeselect={handleDeselectMultiCountry}
-          dropdownClassName="multiselection-dropdown"
           dropdownMatchSelectWidth={325}
           suffixIcon={
             !multiCountryLabelCustomIcon && multiCountry ? (
