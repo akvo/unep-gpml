@@ -645,7 +645,8 @@
            search-text geo-coverage resource-types geo-coverage-countries
            representative-group sub-content-type affiliation
            entity]}]
-  (let [geo-coverage? (and (seq geo-coverage) (seq transnational))
+  (let [geo-coverage? (seq geo-coverage)
+        transnational? (seq transnational)
         geo-coverage-countries? (seq geo-coverage-countries)]
     (str/join
      " "
@@ -683,10 +684,13 @@
         (and geo-coverage? geo-coverage-countries?)
         (str " AND " (geo-coverage-values-generic-cond "geo-coverage-countries"))
 
-        geo-coverage?
+        (and geo-coverage? transnational?)
         (str " AND (t.geo_coverage IN (:v*:geo-coverage)
                  OR t.json->>'geo_coverage_type'='transnational'
                  AND " (geo-coverage-values-generic-cond "transnational") ")")
+
+        geo-coverage?
+        " AND t.geo_coverage IN (:v*:geo-coverage)"
 
         geo-coverage-countries?
         (str " AND " (geo-coverage-values-generic-cond "geo-coverage-countries")))
