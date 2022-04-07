@@ -466,18 +466,21 @@ const StakeholderDetail = ({
                     }}
                   >
                     <p>{data?.program}</p>
-                    <div className="exta-info">
-                      <div className="exta-info-head-title">
-                        Area of expertise
-                      </div>
-                      {/* <List>
+
+                    {data?.expertise && Array.isArray(data?.expertise) && (
+                      <div className="exta-info">
+                        <div className="exta-info-head-title">
+                          Area of expertise
+                        </div>
+                        {/* <List>
                         {["Plastic", "Pollution"].map((str) => (
                           <List.Item>
                             <Typography.Text>{str}</Typography.Text>
                           </List.Item>
                         ))}
                       </List> */}
-                    </div>
+                      </div>
+                    )}
                   </CardComponent>
                   <SharePanel
                     profile={profile}

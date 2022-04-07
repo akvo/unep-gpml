@@ -398,7 +398,7 @@ const FlexibleForm = withRouter(
         delete data.qgeoCoverageValueSubnational;
         delete data.qgeoCoverageValueSubnationalCity;
         delete data.q24_4;
-        delete data.q24_2;
+        delete data.q24_3;
       }
 
       if (data?.qrelated) {

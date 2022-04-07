@@ -10,7 +10,9 @@ import {
   Tooltip,
   Input,
   Tabs,
+  Typography,
 } from "antd";
+const { Title } = Typography;
 import React from "react";
 import { useEffect, useState } from "react";
 import api from "../../utils/api";
@@ -268,6 +270,7 @@ const AdminSection = ({
   stakeholdersData,
   setStakeholdersData,
   entitiesData,
+  nonMemberEntitiesData,
   setEntitiesData,
 }) => {
   const profile = UIStore.useState((s) => s.profile);
@@ -297,6 +300,14 @@ const AdminSection = ({
     reviewStatus: "SUBMITTED",
     data: entitiesData,
     type: "entities",
+    current: 1,
+    size: 10,
+  });
+  const [nonMemberEantitiesListOpts, setNonMemberEantitiesListOpts] = useState({
+    titleFilter: null,
+    reviewStatus: "SUBMITTED",
+    data: nonMemberEntitiesData,
+    type: "non-member-entities",
     current: 1,
     size: 10,
   });
@@ -527,7 +538,7 @@ const AdminSection = ({
     </Button>
   );
 
-  const renderList = (listOpts, setListOpts) => {
+  const renderList = (listOpts, setListOpts, title) => {
     const itemList = listOpts.data || [];
 
     const onChangePage = (current, pageSize) => {
@@ -676,6 +687,9 @@ const AdminSection = ({
 
     return (
       <div key="new-approval" className="approval">
+        {title && (
+          <Title className="tab-label" level={4}>{`${title} Entities`}</Title>
+        )}
         <div>
           <b>Total:</b> {itemList.count || 0}
         </div>
@@ -805,7 +819,14 @@ const AdminSection = ({
           {renderList(stakeholdersListOpts, setStakeholdersListOpts)}
         </TabPane>
         <TabPane tab="Entities" key="entities" className="profile-tab-pane">
-          {renderList(entitiesListOpts, setEntitiesListOpts)}
+          <>
+            {renderList(entitiesListOpts, setEntitiesListOpts, "Member")}
+            {renderList(
+              nonMemberEantitiesListOpts,
+              setNonMemberEantitiesListOpts,
+              "Non-Member"
+            )}
+          </>
         </TabPane>
         <TabPane tab="Resources" key="resources" className="profile-tab-pane">
           {renderList(resourcesListOpts, setResourcesListOpts)}

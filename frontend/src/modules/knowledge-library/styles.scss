@@ -243,6 +243,10 @@
           max-width: 100%;
           padding: 4px 5px;
           height: auto;
+          &:hover {
+            background: $yellow-highlight;
+            color: #fff;
+          }
         }
 
         .anticon.anticon-down {
