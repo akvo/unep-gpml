@@ -155,6 +155,13 @@ const ProfileView = ({ relations }) => {
     count: 0,
     pages: 0,
   });
+  const [nonMemberEntitiesData, setNonMemberEntitiesData] = useState({
+    stakeholders: [],
+    limit: 10,
+    page: 1,
+    count: 0,
+    pages: 0,
+  });
   useEffect(() => {
     UIStore.update((e) => {
       e.disclaimer = null;
@@ -195,6 +202,16 @@ const ProfileView = ({ relations }) => {
           "SUBMITTED"
         );
         setEntitiesData(data);
+      })();
+      (async () => {
+        const { page, limit } = resourcesData;
+        const data = await fetchSubmissionData(
+          page,
+          limit,
+          "non-member-entities",
+          "SUBMITTED"
+        );
+        setNonMemberEntitiesData(data);
       })();
     }
     if (reviewerRoles.has(profile?.role)) {
@@ -452,7 +469,9 @@ const ProfileView = ({ relations }) => {
                         resourcesData={resourcesData}
                         setResourcesData={setResourcesData}
                         entitiesData={entitiesData}
+                        nonMemberEntitiesData={nonMemberEntitiesData}
                         setEntitiesData={setEntitiesData}
+                        setNonMemberEntitiesData={setNonMemberEntitiesData}
                       />
                     )}
                   </Route>
