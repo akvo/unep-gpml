@@ -9,22 +9,6 @@
 
 (hugsql/def-db-fns "gpml/db/landing.sql")
 
-;; (defn- stakeholder-count-by-geo-coverage-query
-;;   [geo-coverage geo-coverage-type]
-;;   (str
-;;    "SELECT
-;;      'stakeholder' AS entity, country AS geo_coverage, "
-;;    (if (= geo-coverage-type :transnational)
-;;      "0 AS entity_count "
-;;      "COUNT(country) AS entity_count ")
-;;    "FROM
-;;     stakeholder s
-;;     LEFT JOIN stakeholder_
-;;     WHERE
-;;     review_status = 'APPROVED'
-;;     GROUP BY
-;;     entity, geo_coverage"))
-
 (defn- non-member-organisation-count-by-geo-coverage-query
   [geo-coverage geo-coverage-type]
   (str
