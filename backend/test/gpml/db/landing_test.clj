@@ -38,9 +38,9 @@
   (db.country-group/new-country-group conn {:name "Asia" :type "region"})
   (db.country-group/new-country-group conn {:name "Europe" :type "region"})
   (jdbc/insert-multi! conn :country_group_country
-    [{:country_group 1 :country 2}
-     {:country_group 1 :country 3}
-     {:country_group 2 :country 1}]))
+                      [{:country_group 1 :country 2}
+                       {:country_group 1 :country 3}
+                       {:country_group 2 :country 1}]))
 
 (defn add-resource-data [conn]
   (add-country-data conn)
@@ -50,7 +50,7 @@
   (db.resource/new-resource conn (make-resource "Resource 4" "global"))
   (db.resource/new-resource conn (make-resource "Resource 5" "national"))
   (jdbc/insert-multi! conn :resource_geo_coverage
-                      [ ;; Resource 1
+                      [;; Resource 1
                        {:resource 10001 :country 1}
                        {:resource 10001 :country 2}
                        {:resource 10001 :country 3}
@@ -69,10 +69,10 @@
           _ (add-resource-data conn)
           landing (db.landing/map-counts-include-all-countries conn)
           valid? (fn [country-id] (->> landing
-                                     (filter #(= country-id (:country_id %)))
-                                     first
-                                     :counts
-                                     :financing_resource))]
+                                       (filter #(= country-id (:country_id %)))
+                                       first
+                                       :counts
+                                       :financing_resource))]
       (are [expected country-id] (= expected (valid? country-id))
         1 (-> (db.country/country-by-code conn {:name "ESP"}) :id)
         1 (-> (db.country/country-by-code conn {:name "IND"}) :id)
@@ -124,9 +124,9 @@
 
 (defn org [& org-data]
   (apply merge
-    {:name (str "org" (fixtures/uuid))
-     :review_status "SUBMITTED"}
-    org-data))
+         {:name (str "org" (fixtures/uuid))
+          :review_status "SUBMITTED"}
+         org-data))
 
 (defn get-country-group-ids [db country-id]
   (db.country-group/get-country-groups-by-country db {:id country-id}))
@@ -140,8 +140,8 @@
     (testing "Landing counts match browse results"
       (let [country-id 4
             transnationals (->> (get-country-group-ids conn country-id)
-                             (map (comp str :id))
-                             set)
+                                (map (comp str :id))
+                                set)
             landing-counts-by-country (filter #(= country-id (:country_id %)) landing)
             browse (db.topic/get-topics conn {:topic #{"financing_resource"}
                                               :geo-coverage [country-id]
@@ -150,5 +150,5 @@
                                               :limit 8
                                               :offset 0})]
         (is (= (+ (get-in (first landing-counts-by-country) [:counts :financing_resource])
-                 (get-in (first landing-counts-by-country) [:transnational_counts :financing_resource]))
-              (:count (first browse))))))))
+                  (get-in (first landing-counts-by-country) [:transnational_counts :financing_resource]))
+               (:count (first browse))))))))

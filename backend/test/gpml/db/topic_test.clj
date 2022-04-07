@@ -111,7 +111,8 @@
       (is (str/includes? snippet "JOIN json_array_elements(t.json->'tags')"))))
 
   (testing "Testing filter-topic snippet with geo-coverage"
-    (let [params {:geo-coverage "global"}
+    (let [params {:geo-coverage [724]
+                  :transnational [151]}
           snippet (str/trim (db.topic/generate-filter-topic-snippet params))]
       (is (str/starts-with? snippet "SELECT DISTINCT ON"))
       (is (str/includes? snippet "AND (t.geo_coverage"))
