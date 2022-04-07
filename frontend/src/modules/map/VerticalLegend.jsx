@@ -476,26 +476,27 @@ const VerticalLegend = ({
                           }
                         </b>
                       </div>
-                      <div className="entity-breakdown">
-                        <b>Non-member </b>
-                        <b>
+                      {transnationalGroup?.groupLabel.toLowerCase() !==
+                        "regional seas" && (
+                        <div className="entity-breakdown">
+                          <b>Non-member </b>
                           <b>
-                            {
-                              transnationalGroup.stakeholderPerCountry.entity
-                                .nonMember
-                            }
+                            <b>
+                              {
+                                transnationalGroup.stakeholderPerCountry.entity
+                                  .nonMember
+                              }
+                            </b>
                           </b>
-                        </b>
-                      </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
-                  {/* <div className="legend-stakeholder-type individual">
-                      <div className="type">Individual</div>
-                      <b>
-                        {transnationalGroup.stakeholderPerCountry.individual}
-                      </b>
-                    </div> */}
+                  <div className="legend-stakeholder-type individual">
+                    <div className="type">Individual</div>
+                    <b>{transnationalGroup.stakeholderPerCountry.individual}</b>
+                  </div>
                 </div>
               </div>
             </div>
@@ -528,29 +529,27 @@ const VerticalLegend = ({
                                     }
                                   </b>
                                 </div>
-                                {transnational.totalStakeholders.entity
-                                  .nonMember > 0 && (
-                                  <div className="entity-breakdown">
-                                    <b>Non-member </b>
+
+                                <div className="entity-breakdown">
+                                  <b>Non-member </b>
+                                  <b>
                                     <b>
-                                      <b>
-                                        {
-                                          transnational.totalStakeholders.entity
-                                            .nonMember
-                                        }
-                                      </b>
+                                      {
+                                        transnational.totalStakeholders.entity
+                                          .nonMember
+                                      }
                                     </b>
-                                  </div>
-                                )}
+                                  </b>
+                                </div>
                               </div>
                             </div>
 
-                            {/* <div className="legend-stakeholder-type individual">
-                                <div className="type">Individual</div>
-                                <b>
-                                  {transnational.totalStakeholders.individual}
-                                </b>
-                              </div> */}
+                            <div className="legend-stakeholder-type individual">
+                              <div className="type">Individual</div>
+                              <b>
+                                {transnational.totalStakeholders.individual}
+                              </b>
+                            </div>
                           </div>
                         </div>
                       </div>
