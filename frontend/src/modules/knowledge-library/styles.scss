@@ -908,7 +908,8 @@
 
         line-height: 31px;
         border-radius: 5px;
-        background: $blue12;
+        // background: $blue12;
+        background-color: #255b87;
       }
     }
 
@@ -923,6 +924,7 @@
       border: none;
       a {
         background: rgba(24, 22, 47, 0.26);
+        color: #255b87;
       }
     }
     .ant-pagination-next {
