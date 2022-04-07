@@ -178,6 +178,8 @@ const ModalAddEntity = ({ visible, close }) => {
       delete data.geoCoverageValueTransnational;
     }
 
+    data.reviewStatus = "APPROVED";
+
     delete data.geoCoverageValue;
 
     setSending(true);
