@@ -615,7 +615,7 @@
             .policy {
               .cls-2 {
                 fill: currentColor;
-                stroke-width: 2px;
+                stroke-width: 0.25px;
               }
               .cls-3 {
                 fill: none;
@@ -642,6 +642,10 @@
               .cls-2 {
                 stroke-width: 0;
               }
+            }
+
+            .financing-resource {
+              stroke-width: 0.25px;
             }
           }
         }
