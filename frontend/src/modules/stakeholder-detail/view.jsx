@@ -28,6 +28,9 @@ import EntityImage from "../../images/entity.png";
 import FollowImage from "../../images/stakeholder/follow.png";
 import ResourceImage from "../../images/stakeholder/resource.png";
 import EditImage from "../../images/stakeholder/edit.png";
+import { ReactComponent as TrashIcon } from "../../images/resource-detail/trash-icn.svg";
+import { ReactComponent as EditIcon } from "../../images/resource-detail/edit-icn.svg";
+import { ReactComponent as FollowIcon } from "../../images/resource-detail/follow-icn.svg";
 import {
   LinkedinOutlined,
   TwitterOutlined,
@@ -154,7 +157,7 @@ const SharePanel = ({
         className="sticky-panel-item"
         onClick={() => handleChangeRelation("interested in")}
       >
-        <Avatar src={FollowImage} />
+        <FollowIcon className="svg-icon" />
         {relation &&
         relation.association &&
         relation.association.indexOf("interested in") !== -1 ? (
@@ -166,7 +169,7 @@ const SharePanel = ({
 
       {canEdit() && (
         <div className="sticky-panel-item" onClick={() => handleEditBtn()}>
-          <Avatar src={EditImage} />
+          <EditIcon className="edit-icon" />
           <h2>Update</h2>
         </div>
       )}
@@ -205,7 +208,7 @@ const SharePanel = ({
             });
           }}
         >
-          <DeleteOutlined />
+          <TrashIcon className="svg-icon" />
           <h2>Delete</h2>
         </div>
       )}

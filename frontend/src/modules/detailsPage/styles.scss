@@ -143,6 +143,17 @@
           path {
             fill: #fff;
           }
+          &.view-icon {
+            path {
+              fill: #255b87;
+            }
+          }
+        }
+        .edit-icon {
+          width: 50px;
+          path {
+            fill: #fff;
+          }
         }
       }
     }
