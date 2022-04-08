@@ -86,6 +86,7 @@ const MapLanding = ({
           countData,
         }}
         data={landing?.map || []}
+        countryGroupCounts={landing?.countryGroupCounts || []}
         clickEvents={clickCountry}
         isLoaded={isLoaded}
         multiCountries={

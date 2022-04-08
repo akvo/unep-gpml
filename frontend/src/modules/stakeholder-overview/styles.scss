@@ -572,6 +572,7 @@
       a {
         width: 100%;
         height: 100%;
+        font-weight: 400;
         color: #ffffff;
 
         line-height: 31px;
@@ -592,7 +593,8 @@
     .ant-pagination-item-active {
       border: none;
       a {
-        background: rgba(24, 22, 47, 0.26);
+        // background: rgba(24, 22, 47, 0.26);
+        background-color: rgba(37, 91, 135, 0.1);
         color: #255b87;
       }
     }
@@ -600,6 +602,7 @@
       background-image: url("../../images/knowledge-library/chevron-right.svg");
       background-repeat: no-repeat;
       background-position: center;
+      background-size: 8px;
       svg {
         display: none;
       }

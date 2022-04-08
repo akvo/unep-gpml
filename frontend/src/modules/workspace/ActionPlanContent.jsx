@@ -96,7 +96,10 @@ const plans = [
         <ul>
           <li>
             Guidance on implementation actions can be found in various{" "}
-            <a href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y">
+            <a
+              target="_blank"
+              href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y"
+            >
               Guidance Documents
             </a>
             . The <Link to="/case-studies">Belize and PAME case study</Link>{" "}
