@@ -65,13 +65,13 @@ const detailActionPlan = [
     key: "validFrom",
     name: "Valid From",
     value: "validFrom",
-    type: "string",
+    type: "date",
   },
   {
     key: "validTo",
     name: "Valid Until",
     value: "validTo",
-    type: "string",
+    type: "date",
   },
 ];
 
@@ -87,13 +87,13 @@ const detailFinancingResource = [
     key: "validFrom",
     name: "Valid From",
     value: "validFrom",
-    type: "string",
+    type: "date",
   },
   {
     key: "validTo",
     name: "Valid Until",
     value: "validTo",
-    type: "string",
+    type: "date",
   },
   {
     key: "publishYear",
