@@ -153,7 +153,7 @@ organisation_countries AS (
             organisation_geo_coverage o
         LEFT JOIN organisation org ON o.organisation = org.id
     WHERE
-        org.review_status = 'APPROVED'
+        org.review_status = 'APPROVED' AND is_member IS TRUE
 )
     SELECT
         c.id
@@ -170,6 +170,50 @@ organisation_countries AS (
         approved_orgs o
     WHERE
         o.country IS NOT NULL
+),
+non_member_organisation_countries AS (
+    WITH approved_orgs AS (
+        SELECT
+            o.organisation,
+            o.country,
+            o.country_group
+        FROM
+            organisation_geo_coverage o
+        LEFT JOIN organisation org ON o.organisation = org.id
+        WHERE
+            org.review_status = 'APPROVED'
+            AND org.is_member IS FALSE
+),
+    country_counts AS (
+        SELECT
+            o.organisation AS id,
+            COUNT(c.id) AS country_count
+        FROM
+           approved_orgs o,
+           country_group_country cgc
+        JOIN country c ON cgc.country = c.id
+        WHERE
+           o.country_group = cgc.country_group
+        GROUP BY
+           o.organisation
+        UNION
+        SELECT
+           o.organisation AS id,
+           COUNT(o.country) AS country_count
+        FROM
+           approved_orgs o
+        WHERE
+           o.country IS NOT NULL
+        GROUP BY
+           o.organisation
+)
+    SELECT
+        id,
+        SUM(country_count) AS country_count
+    FROM
+        country_counts
+    GROUP BY
+        id
 ),
 country_counts AS (
     SELECT
@@ -275,6 +319,7 @@ totals AS (
         organisation
     WHERE
         review_status = 'APPROVED'
+        AND is_member IS TRUE
     UNION
     SELECT
         COUNT(*) AS total,
@@ -286,11 +331,20 @@ totals AS (
     review_status = 'APPROVED'
 )
 SELECT
-    t.total AS count,
     t.data AS resource_type,
-    c.country AS country_count
+    CAST(c.country AS INT) AS country_count,
+    t.total AS count
 FROM
     totals t
     JOIN country_counts c ON t.data = c.data
-ORDER BY
-    o;
+UNION
+SELECT
+    'non_member_organisation' AS resource_type,
+    CAST(nmoc.country_count AS INT),
+    COUNT(o.*) AS count
+FROM
+    organisation o
+    JOIN non_member_organisation_countries nmoc ON nmoc.id = o.id
+WHERE
+    o.is_member IS FALSE
+GROUP BY resource_type, nmoc.country_count;

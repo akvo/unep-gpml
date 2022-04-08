@@ -191,14 +191,16 @@
                                                                 (:transnational modified-filters))))
                                  geo-coverage-countries (map (comp str :id) country-group-countries)
                                  geo-coverage (map str geo-coverage)
-                                 transnational (->> (db.country-group/get-country-groups-by-country db {:id (first (:geo-coverage modified-filters))})
+                                 transnational (->> (map #(db.country-group/get-country-groups-by-country db {:id %}) (:geo-coverage modified-filters))
+                                                    (apply concat)
                                                     (map (comp str :id))
                                                     set)]
                              (assoc modified-filters :geo-coverage-countries (set (concat geo-coverage-countries geo-coverage))
                                     :transnational transnational))
 
                            (seq geo-coverage)
-                           (let [transnational (->> (db.country-group/get-country-groups-by-country db {:id (first (:geo-coverage modified-filters))})
+                           (let [transnational (->> (map #(db.country-group/get-country-groups-by-country db {:id %}) (:geo-coverage modified-filters))
+                                                    (apply concat)
                                                     (map (comp str :id))
                                                     set)]
                              (assoc modified-filters :transnational transnational))
