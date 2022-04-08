@@ -70,7 +70,8 @@
                                           {:get {:summary "Get the list of submissions"
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters {:query [:map
-                                                                      [:only {:optional true} [:enum "resources" "stakeholders" "tags" "entities"]]
+                                                                      [:only {:optional true}
+                                                                       [:enum "resources" "stakeholders" "tags" "entities" "non-member-entities"]]
                                                                       [:review_status
                                                                        {:optional true #_#_:default "SUBMITTED"}
                                                                        [:enum "SUBMITTED" "APPROVED" "REJECTED"]]

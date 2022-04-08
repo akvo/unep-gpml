@@ -148,8 +148,8 @@
           height: 27px;
           width: 27px;
           &:hover {
-            background-color: $green01;
-            color: $blue10;
+            background: $yellow-highlight;
+            color: #fff;
           }
         }
       }
@@ -223,6 +223,10 @@
           max-width: 100%;
           padding: 4px 5px;
           height: auto;
+          &:hover {
+            background: $yellow-highlight;
+            color: #fff;
+          }
         }
 
         .anticon.anticon-down {
@@ -572,12 +576,14 @@
 
         line-height: 31px;
         border-radius: 5px;
-        background: $blue12;
+        // background: $blue12;
+        background-color: #255b87;
       }
     }
 
     .ant-pagination-item-ellipsis {
-      color: $blue12;
+      // color: $blue12;
+      color: #255b87;
       font-weight: 700;
       margin-left: calc(10px - 2px);
       margin-right: 10px;
@@ -587,6 +593,7 @@
       border: none;
       a {
         background: rgba(24, 22, 47, 0.26);
+        color: #255b87;
       }
     }
     .ant-pagination-next {
@@ -760,10 +767,10 @@
         .ant-select-selection-search-input {
           width: 100%;
           display: block;
-          font-weight: 700;
-          font-size: 16px;
-          color: $blue06;
-          font-style: italic;
+          // font-weight: 700;
+          // font-size: 16px;
+          // color: $blue06;
+          // font-style: italic;
         }
       }
 

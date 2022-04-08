@@ -217,7 +217,8 @@
       width: 100%;
       .entity-breakdown {
         display: flex;
-        justify-content: space-between;
+        width: 100%;
+        justify-content: right;
       }
       .entity-breakdown:not(:last-of-type) {
         border-bottom: 1px solid rgba(0, 0, 0, 0.5);
@@ -277,6 +278,7 @@
         justify-content: flex-start;
         margin-bottom: 1em;
         line-height: 1.3em;
+        place-content: center;
       }
       .ant-typography {
         font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial,

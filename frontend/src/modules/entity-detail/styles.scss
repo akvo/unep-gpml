@@ -110,6 +110,9 @@
               }
               .ant-list-item-meta {
                 align-items: center;
+                .ant-list-item-meta-content {
+                  word-break: break-all;
+                }
                 .ant-avatar {
                   width: 55px;
                   height: 55px;

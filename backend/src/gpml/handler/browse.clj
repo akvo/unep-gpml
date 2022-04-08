@@ -88,6 +88,11 @@
                                :type "string"
                                :allowEmptyValue true}}
     string?]
+   [:entity {:optional true
+             :swagger {:description "Comma separated list of entity IDs"
+                       :type "string"
+                       :allowEmptyValue true}}
+    string?]
    [:limit {:optional true
             :swagger {:description "Limit the number of entries per page"
                       :type "int"
@@ -101,7 +106,7 @@
 
 (defn get-db-filter
   [{:keys [limit offset startDate endDate user-id favorites country transnational
-           topic tag affiliation representativeGroup subContentType q]}]
+           topic tag affiliation representativeGroup subContentType entity q]}]
   (cond-> {}
     offset
     (assoc :offset offset)
@@ -140,6 +145,9 @@
     (seq subContentType)
     (assoc :sub-content-type (set (str/split subContentType #",")))
 
+    (seq entity)
+    (assoc :entity (set (map #(Integer/parseInt %) (str/split entity #","))))
+
     (seq q)
     (assoc :search-text (->> (str/trim q)
                              (re-seq #"\w+")
@@ -149,28 +157,23 @@
   (case type
     (or "technical_resource" "financing_resource" "action_plan")
     (merge result
-           {:entity_connections (db.resource/entity-connections-by-id db (select-keys result [:id]))
-            :stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys result [:id]))})
+           {:stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys result [:id]))})
 
     "event"
     (merge result
-           {:entity_connections (db.event/entity-connections-by-id db (select-keys result [:id]))
-            :stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys result [:id]))})
+           {:stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys result [:id]))})
 
     "project"
     (merge result
-           {:entity_connections (db.initiative/entity-connections-by-id db (select-keys result [:id]))
-            :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys result [:id]))})
+           {:stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys result [:id]))})
 
     "policy"
     (merge result
-           {:entity_connections (db.policy/entity-connections-by-id db (select-keys result [:id]))
-            :stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys result [:id]))})
+           {:stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys result [:id]))})
 
     "technology"
     (merge result
-           {:entity_connections (db.technology/entity-connections-by-id db (select-keys result [:id]))
-            :stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys result [:id]))})
+           {:stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys result [:id]))})
 
     result))
 

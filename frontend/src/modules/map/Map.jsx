@@ -448,10 +448,7 @@ const Maps = ({
       });
     }
   };
-  const legendTitle =
-    path === KNOWLEDGE_LIBRARY
-      ? "Number of GPML Resources"
-      : "Number of Stakeholders";
+  const legendTitle = "Total";
 
   useEffect(() => {
     setCountryToSelect(isFilteredCountry.map((x) => Number(x)));
