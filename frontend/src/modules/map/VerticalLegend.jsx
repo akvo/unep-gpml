@@ -463,7 +463,7 @@ const VerticalLegend = ({
         <hr className="legend-separator" />
         <div className="total-resources-wrapper">
           <strong className="legend-heading">
-            Total stakeholders per transnational group
+            Total stakeholders per transnational
           </strong>
           {entityPerTransnationalGroupContent()}
         </div>
@@ -584,7 +584,7 @@ const VerticalLegend = ({
 
             <div className="total-resources-wrapper">
               <strong className="legend-heading">
-                Total resources per transnational group
+                Total resources per transnational
               </strong>
               {transnationalResourcesContent()}
             </div>
