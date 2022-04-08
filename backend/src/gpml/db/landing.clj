@@ -9,66 +9,45 @@
 
 (hugsql/def-db-fns "gpml/db/landing.sql")
 
-;; (defn- stakeholder-count-by-geo-coverage-query
-;;   [geo-coverage geo-coverage-type]
-;;   (str
-;;    "SELECT
-;;      'stakeholder' AS entity, country AS geo_coverage, "
-;;    (if (= geo-coverage-type :transnational)
-;;      "0 AS entity_count "
-;;      "COUNT(country) AS entity_count ")
-;;    "FROM
-;;     stakeholder s
-;;     LEFT JOIN stakeholder_
-;;     WHERE
-;;     review_status = 'APPROVED'
-;;     GROUP BY
-;;     entity, geo_coverage"))
-
-(defn- non-member-organisation-count-by-geo-coverage-query
-  [geo-coverage geo-coverage-type]
-  (str
-   "SELECT
-     'non_member_organisation' AS entity,"
-   (if (= geo-coverage :country-group)
-     "cgc.country_group AS geo_coverage,"
-     "COALESCE(egc.country, cgc.country) AS geo_coverage,")
-   (if (= geo-coverage-type :transnational)
-     " COUNT(cgc.country_group) AS entity_count"
-     " COUNT(COALESCE(egc.country, cgc.country)) AS entity_count")
-   " FROM organisation e
-      LEFT JOIN organisation_geo_coverage egc ON e.id = egc.organisation
-      LEFT JOIN country_group_country cgc ON cgc.country_group = egc.country_group
-     WHERE
-     e.review_status = 'APPROVED' AND e.is_member = false "
-   (if (= geo-coverage-type :transnational)
-     "AND e.geo_coverage_type = 'transnational'"
-     "AND e.geo_coverage_type <> 'transnational'")
-   " GROUP BY entity, geo_coverage"))
-
 (defn- entity-count-by-geo-coverage-query
   [entity-name geo-coverage geo-coverage-type]
   (let [entity-col (if (= entity-name "resource")
                      "REPLACE(LOWER(e.type), ' ', '_')"
                      (str "'" entity-name "'"))
+        entity-name-from-clause (if (= entity-name "non_member_organisation")
+                                  "organisation"
+                                  entity-name)
         entity-count-col (if (= geo-coverage-type :transnational)
                            "COUNT(cgc.country_group) AS entity_count"
                            "COUNT(COALESCE(egc.country, cgc.country)) AS entity_count")
         geo-coverage-col (if (= geo-coverage :country-group)
                            "cgc.country_group"
                            "COALESCE(egc.country, cgc.country)")
-        where-cond (if (= geo-coverage-type :transnational)
-                     (if (= entity-name "initiative")
-                       "AND e.q24->>'transnational'::text = 'Transnational'"
-                       "AND e.geo_coverage_type = 'transnational'")
-                     (if (= entity-name "initiative")
-                       "AND e.q24->>'transnational'::text IS NULL"
-                       "AND e.geo_coverage_type <> 'transnational'"))]
-    (if (= entity-name "non_member_organisation")
-      (non-member-organisation-count-by-geo-coverage-query geo-coverage geo-coverage-type)
-      (apply
-       format
-       "SELECT
+        where-cond (cond-> ""
+                     (and (= geo-coverage-type :transnational)
+                          (= entity-name "initiative"))
+                     (str " AND e.q24->>'transnational'::text = 'Transnational'")
+
+                     (and (= geo-coverage-type :transnational)
+                          (not= entity-name "initiative"))
+                     (str " AND e.geo_coverage_type = 'transnational'")
+
+                     (and (= entity-name "initiative")
+                          (not= geo-coverage-type :transnational))
+                     (str " AND e.q24->>'transnational'::text IS NULL")
+
+                     (and (not= entity-name "initiative")
+                          (not= geo-coverage-type :transnational))
+                     (str " AND e.geo_coverage_type <> 'transnational'")
+
+                     (= entity-name "non_member_organisation")
+                     (str " AND is_member IS FALSE")
+
+                     (= entity-name "organisation")
+                     (str " AND is_member IS TRUE"))]
+    (apply
+     format
+     "SELECT
              %s AS entity,
              %s AS geo_coverage,
              %s
@@ -77,11 +56,13 @@
              LEFT JOIN %s_geo_coverage egc ON e.id = egc.%s
              LEFT JOIN country_group_country cgc ON cgc.country_group = egc.country_group
          WHERE
-              e.review_status = 'APPROVED' %s
+              e.review_status = 'APPROVED' AND (egc.country IS NOT NULL or cgc.country IS NOT NULL) %s
          GROUP BY
               entity,
               geo_coverage"
-       (flatten [entity-col geo-coverage-col entity-count-col (repeat 3 entity-name) where-cond])))))
+     (flatten [entity-col geo-coverage-col
+               entity-count-col
+               (repeat 3 entity-name-from-clause) where-cond]))))
 
 (defn generate-entity-count-by-geo-coverage-query-cte
   [{:keys [cte-name geo-coverage geo-coverage-type]} _opts]
