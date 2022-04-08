@@ -17,6 +17,7 @@ const VerticalLegend = ({
   countData,
   stakeholderCount,
   existingData,
+  countryGroupCounts,
 }) => {
   // RESOURCES TOTAL COUNTS
   const ResourcesCountPerTransnationalGroups = multicountryGroups.map(
@@ -70,11 +71,13 @@ const VerticalLegend = ({
               technology: 0,
               policy: 0,
               capacityBuilding: 0,
+              id: 0,
             }
           );
 
           return {
             label: transantional.name,
+            id: transantional.id,
             totalResources: result,
           };
         }
@@ -166,6 +169,9 @@ const VerticalLegend = ({
                       return topic;
                     }
                   };
+
+                  const resource = transantional;
+                  // console.log('countryGroupCount::::::',resource);
 
                   return existingData.length === 0 ? (
                     <div key={topic} className="total-resources">
@@ -292,12 +298,13 @@ const VerticalLegend = ({
 
           return {
             label: transantional.name,
+            id: transantional.id,
             totalStakeholders: result,
           };
         }
       );
 
-      const totalTransantionalStakeholderCount = stakeholders.reduce(
+      const totalTransnationalStakeholderCount = stakeholders.reduce(
         (acc, currVal) => {
           acc = {
             ...acc,
@@ -321,7 +328,7 @@ const VerticalLegend = ({
 
       return {
         groupLabel: transnationalGroup.label,
-        stakeholderPerCountry: totalTransantionalStakeholderCount,
+        stakeholderPerCountry: totalTransnationalStakeholderCount,
         transnational: transnationalStakeholders,
       };
     }
@@ -390,6 +397,10 @@ const VerticalLegend = ({
     return stakeholderPerTransnationalList
       .sort((a, b) => a.label.localeCompare(b.label))
       .map((transnational) => {
+        const data = countryGroupCounts.find(
+          (item) => item?.id === transnational?.id
+        );
+
         return existingData.length === 0 ? (
           <div key={transnational.label} className="legend-transnational-count">
             <strong className="legend-transnational-title">
@@ -405,8 +416,8 @@ const VerticalLegend = ({
                     <div className="entities">
                       <div className="entity-breakdown">
                         <b>
-                          {transnational.totalStakeholders.entity.member +
-                            transnational.totalStakeholders.entity.nonMember}
+                          {(data?.counts?.organisation || 0) +
+                            (data?.counts?.nonMemberOrganisation || 0)}
                         </b>
                       </div>
                     </div>
@@ -414,7 +425,7 @@ const VerticalLegend = ({
 
                   <div className="legend-stakeholder-type individual">
                     <div className="type">Individual</div>
-                    <b>{transnational.totalStakeholders.individual}</b>
+                    <b>{data?.counts?.individual || 0}</b>
                   </div>
                 </div>
               </div>
@@ -436,8 +447,8 @@ const VerticalLegend = ({
                       <div className="entities">
                         <div className="entity-breakdown">
                           <b>
-                            {transnational.totalStakeholders.entity.member +
-                              transnational.totalStakeholders.entity.nonMember}
+                            {(data?.counts?.organisation || 0) +
+                              (data?.counts?.nonMemberOrganisation || 0)}
                           </b>
                         </div>
                       </div>
@@ -446,7 +457,7 @@ const VerticalLegend = ({
                   {existingData.includes("stakeholder") && (
                     <div className="legend-stakeholder-type individual">
                       <div className="type">Individual</div>
-                      <b>{transnational.totalStakeholders.individual}</b>
+                      <b>{data?.counts?.individual || 0}</b>
                     </div>
                   )}
                 </div>
