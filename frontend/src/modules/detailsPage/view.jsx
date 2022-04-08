@@ -36,6 +36,11 @@ import ViewsImage from "../../images/views.svg";
 import AvatarImage from "../../images/avatar.jpg";
 import EntityImage from "../../images/entity.png";
 import { ReactComponent as Recording } from "../../images/event-recording.svg";
+import { ReactComponent as ViewIcon } from "../../images/resource-detail/view-icn.svg";
+import { ReactComponent as EditIcon } from "../../images/resource-detail/edit-icn.svg";
+import { ReactComponent as ShareIcon } from "../../images/resource-detail/share-icn.svg";
+import { ReactComponent as TrashIcon } from "../../images/resource-detail/trash-icn.svg";
+import { ReactComponent as BookMarkIcon } from "../../images/resource-detail/bookmark-icn.svg";
 import {
   DownloadOutlined,
   HeartOutlined,
@@ -175,7 +180,7 @@ const SharePanel = ({
           }`}
           target="_blank"
         >
-          <EyeOutlined />
+          <ViewIcon className="recording-icon view-icon" />
           <h2>View</h2>
         </a>
       </div>
@@ -187,9 +192,9 @@ const SharePanel = ({
         {relation &&
         relation.association &&
         relation.association.indexOf("interested in") !== -1 ? (
-          <HeartFilled />
+          <BookMarkIcon className="recording-icon bookmark-filled" />
         ) : (
-          <HeartOutlined />
+          <BookMarkIcon className="recording-icon" />
         )}
         <h2>Bookmark</h2>
       </div>
@@ -235,7 +240,7 @@ const SharePanel = ({
         placement="left"
       >
         <div className="sticky-panel-item" onClick={handleVisibleChange}>
-          <ShareAltOutlined />
+          <ShareIcon className="recording-icon" />
           <h2>Share</h2>
         </div>
       </Popover>
@@ -287,13 +292,13 @@ const SharePanel = ({
             });
           }}
         >
-          <DeleteOutlined />
+          <TrashIcon className="recording-icon" />
           <h2>Delete</h2>
         </div>
       )}
       {canEdit() && (
         <div className="sticky-panel-item" onClick={() => handleEditBtn()}>
-          <EditOutlined />
+          <EditIcon className="edit-icon" />
           <h2>Update</h2>
         </div>
       )}
