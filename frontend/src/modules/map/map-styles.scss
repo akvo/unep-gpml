@@ -198,7 +198,7 @@
 
   .legend-heading {
     display: block;
-    text-align: center;
+    text-align: left;
     margin-top: 30px;
   }
 
@@ -278,7 +278,6 @@
         justify-content: flex-start;
         margin-bottom: 1em;
         line-height: 1.3em;
-        place-content: center;
       }
       .ant-typography {
         font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial,
