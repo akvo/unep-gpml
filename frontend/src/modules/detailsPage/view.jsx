@@ -526,7 +526,7 @@ const renderItemValues = (
             : `${amount} - ${remarks}`
           : currency
           ? `${currency} ${currencyFormat(amount)}`
-          : `${currencyFormat(amount)}`);
+          : `${amount}`);
 
       return (
         <Fragment key={`${params.type}-${name}`}>
