@@ -526,7 +526,7 @@ const renderItemValues = (
             : `${amount} - ${remarks}`
           : currency
           ? `${currency} ${currencyFormat(amount)}`
-          : `${currencyFormat(amount)}`);
+          : `${amount}`);
 
       return (
         <Fragment key={`${params.type}-${name}`}>
@@ -557,7 +557,12 @@ const renderItemValues = (
                   currencyFormat(data[value])}
                 {value === key &&
                   type === "date" &&
+                  data[key] !== "Ongoing" &&
                   moment(data[key]).format("DD MMM YYYY")}
+                {value === key &&
+                  type === "date" &&
+                  data[key] === "Ongoing" &&
+                  data[key]}
                 {value === key &&
                   type === "array" &&
                   data[key].map((x) => x.name).join(", ")}
