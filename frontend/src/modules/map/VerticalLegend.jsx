@@ -17,6 +17,7 @@ const VerticalLegend = ({
   countData,
   stakeholderCount,
   existingData,
+  countryGroupCounts,
 }) => {
   // RESOURCES TOTAL COUNTS
   const ResourcesCountPerTransnationalGroups = multicountryGroups.map(
@@ -70,11 +71,13 @@ const VerticalLegend = ({
               technology: 0,
               policy: 0,
               capacityBuilding: 0,
+              id: 0,
             }
           );
 
           return {
             label: transantional.name,
+            id: transantional.id,
             totalResources: result,
           };
         }
@@ -143,11 +146,15 @@ const VerticalLegend = ({
   const transnationalResourcesContent = () =>
     resourcesPerTransnationalList
       .sort((a, b) => a.label.localeCompare(b.label))
-      .map((transantional) => {
+      .map((transnational) => {
+        const data = countryGroupCounts.find(
+          (item) => item?.id === transnational?.id
+        );
+
         return (
-          <div key={transantional.label} className="legend-transnational-count">
+          <div key={transnational.label} className="legend-transnational-count">
             <strong className="legend-transnational-title">
-              {transantional?.label}
+              {transnational?.label}
             </strong>
             <div>
               {tTypes
@@ -171,11 +178,7 @@ const VerticalLegend = ({
                     <div key={topic} className="total-resources">
                       <div>{topicNames(topic)}</div>
                       <div>
-                        <b>
-                          {transantional.resourcePerCountry?.[topic]
-                            ? transantional.resourcePerCountry?.[topic]
-                            : 0}
-                        </b>
+                        <b>{data?.counts?.[topic] || 0}</b>
                       </div>
                     </div>
                   ) : (
@@ -183,11 +186,7 @@ const VerticalLegend = ({
                       <div key={topic} className="total-resources">
                         <div>{topicNames(topic)}</div>
                         <div>
-                          <b>
-                            {transantional.resourcePerCountry?.[topic]
-                              ? transantional.resourcePerCountry?.[topic]
-                              : 0}
-                          </b>
+                          <b>{data?.counts?.[topic] || 0}</b>
                         </div>
                       </div>
                     )
@@ -292,12 +291,13 @@ const VerticalLegend = ({
 
           return {
             label: transantional.name,
+            id: transantional.id,
             totalStakeholders: result,
           };
         }
       );
 
-      const totalTransantionalStakeholderCount = stakeholders.reduce(
+      const totalTransnationalStakeholderCount = stakeholders.reduce(
         (acc, currVal) => {
           acc = {
             ...acc,
@@ -321,7 +321,7 @@ const VerticalLegend = ({
 
       return {
         groupLabel: transnationalGroup.label,
-        stakeholderPerCountry: totalTransantionalStakeholderCount,
+        stakeholderPerCountry: totalTransnationalStakeholderCount,
         transnational: transnationalStakeholders,
       };
     }
@@ -390,6 +390,10 @@ const VerticalLegend = ({
     return stakeholderPerTransnationalList
       .sort((a, b) => a.label.localeCompare(b.label))
       .map((transnational) => {
+        const data = countryGroupCounts.find(
+          (item) => item?.id === transnational?.id
+        );
+
         return existingData.length === 0 ? (
           <div key={transnational.label} className="legend-transnational-count">
             <strong className="legend-transnational-title">
@@ -405,8 +409,8 @@ const VerticalLegend = ({
                     <div className="entities">
                       <div className="entity-breakdown">
                         <b>
-                          {transnational.totalStakeholders.entity.member +
-                            transnational.totalStakeholders.entity.nonMember}
+                          {(data?.counts?.organisation || 0) +
+                            (data?.counts?.nonMemberOrganisation || 0)}
                         </b>
                       </div>
                     </div>
@@ -414,7 +418,7 @@ const VerticalLegend = ({
 
                   <div className="legend-stakeholder-type individual">
                     <div className="type">Individual</div>
-                    <b>{transnational.totalStakeholders.individual}</b>
+                    <b>{data?.counts?.individual || 0}</b>
                   </div>
                 </div>
               </div>
@@ -436,8 +440,8 @@ const VerticalLegend = ({
                       <div className="entities">
                         <div className="entity-breakdown">
                           <b>
-                            {transnational.totalStakeholders.entity.member +
-                              transnational.totalStakeholders.entity.nonMember}
+                            {(data?.counts?.organisation || 0) +
+                              (data?.counts?.nonMemberOrganisation || 0)}
                           </b>
                         </div>
                       </div>
@@ -446,7 +450,7 @@ const VerticalLegend = ({
                   {existingData.includes("stakeholder") && (
                     <div className="legend-stakeholder-type individual">
                       <div className="type">Individual</div>
-                      <b>{transnational.totalStakeholders.individual}</b>
+                      <b>{data?.counts?.individual || 0}</b>
                     </div>
                   )}
                 </div>
@@ -463,7 +467,7 @@ const VerticalLegend = ({
         <hr className="legend-separator" />
         <div className="total-resources-wrapper">
           <strong className="legend-heading">
-            Total stakeholders per transnational group
+            Total stakeholders per transnational
           </strong>
           {entityPerTransnationalGroupContent()}
         </div>
@@ -498,11 +502,7 @@ const VerticalLegend = ({
   if (data.length) {
     return (
       <Card className="card-legend-wrapper" style={{ width: 300 }}>
-        <div
-          style={{
-            placeSelf: "center",
-          }}
-        >
+        <div>
           <div className="title">{title && <Text strong>{title}</Text>}</div>
           <div
             style={{
@@ -584,7 +584,7 @@ const VerticalLegend = ({
 
             <div className="total-resources-wrapper">
               <strong className="legend-heading">
-                Total resources per transnational group
+                Total resources per transnational
               </strong>
               {transnationalResourcesContent()}
             </div>

@@ -615,7 +615,7 @@
             .policy {
               .cls-2 {
                 fill: currentColor;
-                stroke-width: 2px;
+                stroke-width: 0.25px;
               }
               .cls-3 {
                 fill: none;
@@ -642,6 +642,10 @@
               .cls-2 {
                 stroke-width: 0;
               }
+            }
+
+            .financing-resource {
+              stroke-width: 0.25px;
             }
           }
         }
@@ -902,6 +906,7 @@
       margin-bottom: 2px;
       border-radius: 5px;
       a {
+        font-weight: 400;
         width: 100%;
         height: 100%;
         color: #ffffff;
@@ -924,7 +929,8 @@
     .ant-pagination-item-active {
       border: none;
       a {
-        background: rgba(24, 22, 47, 0.26);
+        // background: rgba(24, 22, 47, 0.26);
+        background-color: rgba(37, 91, 135, 0.1);
         color: #255b87;
       }
     }
@@ -932,6 +938,7 @@
       background-image: url("../../images/knowledge-library/chevron-right.svg");
       background-repeat: no-repeat;
       background-position: center;
+      background-size: 8px;
       svg {
         display: none;
       }

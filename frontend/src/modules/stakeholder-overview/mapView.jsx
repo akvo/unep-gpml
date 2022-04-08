@@ -53,6 +53,7 @@ const MapView = ({
       dataToDisplay={[]}
       isFilteredCountry={isFilteredCountry}
       data={landing?.map || []}
+      countryGroupCounts={landing?.countryGroupCounts || []}
       isLoaded={isLoaded}
       multiCountryCountries={multiCountryCountries}
       multiCountries={
