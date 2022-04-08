@@ -74,6 +74,8 @@ import {
   relationsByTopicType,
 } from "../../utils/misc";
 
+const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
+
 const CardComponent = ({ title, style, children, getRef }) => {
   return (
     <div className={`card-wrapper mb-10`} ref={getRef}>
@@ -523,8 +525,8 @@ const renderItemValues = (
             ? `${currency} ${amount} - ${remarks}`
             : `${amount} - ${remarks}`
           : currency
-          ? `${currency} ${amount}`
-          : `${amount}`);
+          ? `${currency} ${currencyFormat(amount)}`
+          : `${currencyFormat(amount)}`);
 
       return (
         <Fragment key={`${params.type}-${name}`}>
@@ -547,6 +549,12 @@ const renderItemValues = (
                     type === "number" ||
                     type === "object") &&
                   (data[value].name || data[value])}
+                {currencyObject && data[currencyObject.name]
+                  ? `${data[currencyObject.name]?.[0]?.name?.toUpperCase()} `
+                  : ""}
+                {value === key &&
+                  type === "currency" &&
+                  currencyFormat(data[value])}
                 {value === key &&
                   type === "date" &&
                   moment(data[key]).format("DD MMM YYYY")}
