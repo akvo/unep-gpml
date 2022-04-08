@@ -146,11 +146,15 @@ const VerticalLegend = ({
   const transnationalResourcesContent = () =>
     resourcesPerTransnationalList
       .sort((a, b) => a.label.localeCompare(b.label))
-      .map((transantional) => {
+      .map((transnational) => {
+        const data = countryGroupCounts.find(
+          (item) => item?.id === transnational?.id
+        );
+
         return (
-          <div key={transantional.label} className="legend-transnational-count">
+          <div key={transnational.label} className="legend-transnational-count">
             <strong className="legend-transnational-title">
-              {transantional?.label}
+              {transnational?.label}
             </strong>
             <div>
               {tTypes
@@ -170,18 +174,11 @@ const VerticalLegend = ({
                     }
                   };
 
-                  const resource = transantional;
-                  // console.log('countryGroupCount::::::',resource);
-
                   return existingData.length === 0 ? (
                     <div key={topic} className="total-resources">
                       <div>{topicNames(topic)}</div>
                       <div>
-                        <b>
-                          {transantional.resourcePerCountry?.[topic]
-                            ? transantional.resourcePerCountry?.[topic]
-                            : 0}
-                        </b>
+                        <b>{data?.counts?.[topic] || 0}</b>
                       </div>
                     </div>
                   ) : (
@@ -189,11 +186,7 @@ const VerticalLegend = ({
                       <div key={topic} className="total-resources">
                         <div>{topicNames(topic)}</div>
                         <div>
-                          <b>
-                            {transantional.resourcePerCountry?.[topic]
-                              ? transantional.resourcePerCountry?.[topic]
-                              : 0}
-                          </b>
+                          <b>{data?.counts?.[topic] || 0}</b>
                         </div>
                       </div>
                     )

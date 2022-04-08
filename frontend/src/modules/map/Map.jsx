@@ -378,6 +378,7 @@ const Maps = ({
   isFilteredCountry,
   multiCountryCountries,
   useVerticalLegend = false,
+  countryGroupCounts,
 }) => {
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -606,6 +607,7 @@ const Maps = ({
                         path={path}
                         existingData={existingData}
                         countData={countData}
+                        countryGroupCounts={countryGroupCounts}
                         stakeholderCount={stakeholderCount}
                       />
                     ) : (
