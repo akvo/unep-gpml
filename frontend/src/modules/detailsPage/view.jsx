@@ -15,8 +15,6 @@ import {
   List,
   Avatar,
   notification,
-  Dropdown,
-  Checkbox,
   Popover,
   Input,
   Button,
@@ -24,50 +22,36 @@ import {
 import { InfoCircleOutlined } from "@ant-design/icons";
 const { Title } = Typography;
 import { UIStore } from "../../store";
-import StickyBox from "react-sticky-box";
 import ActionGreen from "../../images/action-green.png";
 import LeftImage from "../../images/sea-dark.jpg";
 import LocationImage from "../../images/location.svg";
 import TransnationalImage from "../../images/transnational.svg";
 import CityImage from "../../images/city-icn.svg";
-import LanguageImage from "../../images/language.svg";
 import TagsImage from "../../images/tags.svg";
-import ViewsImage from "../../images/views.svg";
-import AvatarImage from "../../images/avatar.jpg";
-import EntityImage from "../../images/entity.png";
 import { ReactComponent as Recording } from "../../images/event-recording.svg";
+import { ReactComponent as ViewIcon } from "../../images/resource-detail/view-icn.svg";
+import { ReactComponent as EditIcon } from "../../images/resource-detail/edit-icn.svg";
+import { ReactComponent as ShareIcon } from "../../images/resource-detail/share-icn.svg";
+import { ReactComponent as TrashIcon } from "../../images/resource-detail/trash-icn.svg";
+import { ReactComponent as BookMarkIcon } from "../../images/resource-detail/bookmark-icn.svg";
 import {
-  DownloadOutlined,
-  HeartOutlined,
-  ShareAltOutlined,
   DeleteOutlined,
-  EditOutlined,
-  UserOutlined,
   ArrowRightOutlined,
   LoadingOutlined,
-  EyeOutlined,
-  HeartFilled,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { withRouter, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import uniqBy from "lodash/uniqBy";
 import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import api from "../../utils/api";
 import imageNotFound from "../../images/image-not-found.png";
-import {
-  typeOfActionKeys,
-  detailMaps,
-  infoMaps,
-  descriptionMaps,
-} from "./mapping";
+import { detailMaps } from "./mapping";
 import moment from "moment";
-import {
-  topicNames,
-  resourceTypeToTopicType,
-  relationsByTopicType,
-} from "../../utils/misc";
+import { topicNames, resourceTypeToTopicType } from "../../utils/misc";
+
+const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
 const CardComponent = ({ title, style, children, getRef }) => {
   return (
@@ -175,7 +159,7 @@ const SharePanel = ({
           }`}
           target="_blank"
         >
-          <EyeOutlined />
+          <ViewIcon className="recording-icon view-icon" />
           <h2>View</h2>
         </a>
       </div>
@@ -187,9 +171,9 @@ const SharePanel = ({
         {relation &&
         relation.association &&
         relation.association.indexOf("interested in") !== -1 ? (
-          <HeartFilled />
+          <BookMarkIcon className="recording-icon bookmark-filled" />
         ) : (
-          <HeartOutlined />
+          <BookMarkIcon className="recording-icon" />
         )}
         <h2>Bookmark</h2>
       </div>
@@ -235,7 +219,7 @@ const SharePanel = ({
         placement="left"
       >
         <div className="sticky-panel-item" onClick={handleVisibleChange}>
-          <ShareAltOutlined />
+          <ShareIcon className="recording-icon" />
           <h2>Share</h2>
         </div>
       </Popover>
@@ -287,13 +271,13 @@ const SharePanel = ({
             });
           }}
         >
-          <DeleteOutlined />
+          <TrashIcon className="recording-icon" />
           <h2>Delete</h2>
         </div>
       )}
       {canEdit() && (
         <div className="sticky-panel-item" onClick={() => handleEditBtn()}>
-          <EditOutlined />
+          <EditIcon className="edit-icon" />
           <h2>Update</h2>
         </div>
       )}
@@ -340,10 +324,21 @@ const renderBannerSection = (
       <>
         <Col xs={6} lg={6}>
           <div className="short-image">
-            <img
-              src={data.image ? data.image : imageNotFound}
-              className="resource-image"
-            />
+            <a
+              href={`${
+                data?.url && data?.url.includes("https://")
+                  ? data?.url
+                  : data.languages
+                  ? data?.languages[0].url
+                  : "https://" + data?.url
+              }`}
+              target="_blank"
+            >
+              <img
+                src={data.image ? data.image : imageNotFound}
+                className="resource-image"
+              />
+            </a>
           </div>
         </Col>
         <Col xs={18} lg={18} style={{ display: "flex" }}>
@@ -400,16 +395,27 @@ const renderBannerSection = (
         <Col xs={6} lg={24}>
           <div className="banner-wrapper">
             <div className="long-image">
-              <img
-                src={
-                  data.image
-                    ? data.image
-                    : data.qimage
-                    ? data.qimage
-                    : imageNotFound
-                }
-                className="resource-image"
-              />
+              <a
+                href={`${
+                  data?.url && data?.url.includes("https://")
+                    ? data?.url
+                    : data.languages
+                    ? data?.languages[0].url
+                    : "https://" + data?.url
+                }`}
+                target="_blank"
+              >
+                <img
+                  src={
+                    data.image
+                      ? data.image
+                      : data.qimage
+                      ? data.qimage
+                      : imageNotFound
+                  }
+                  className="resource-image"
+                />
+              </a>
             </div>
             <SharePanel
               data={data}
@@ -518,7 +524,7 @@ const renderItemValues = (
             ? `${currency} ${amount} - ${remarks}`
             : `${amount} - ${remarks}`
           : currency
-          ? `${currency} ${amount}`
+          ? `${currency} ${currencyFormat(amount)}`
           : `${amount}`);
 
       return (
@@ -542,9 +548,20 @@ const renderItemValues = (
                     type === "number" ||
                     type === "object") &&
                   (data[value].name || data[value])}
+                {currencyObject && data[currencyObject.name]
+                  ? `${data[currencyObject.name]?.[0]?.name?.toUpperCase()} `
+                  : ""}
+                {value === key &&
+                  type === "currency" &&
+                  currencyFormat(data[value])}
                 {value === key &&
                   type === "date" &&
+                  data[key] !== "Ongoing" &&
                   moment(data[key]).format("DD MMM YYYY")}
+                {value === key &&
+                  type === "date" &&
+                  data[key] === "Ongoing" &&
+                  data[key]}
                 {value === key &&
                   type === "array" &&
                   data[key].map((x) => x.name).join(", ")}
