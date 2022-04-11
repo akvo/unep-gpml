@@ -387,9 +387,15 @@ const FlexibleForm = withRouter(
         data.q24_2 = data.q24_4;
         data.q24_4 = data.q24_3;
         data.q24_3 = null;
+        delete data.qgeoCoverageValueSubnational;
+        delete data.qgeoCoverageValueSubnationalCity;
       }
       if (data.q24.hasOwnProperty("national")) {
         data.q24_2 = [data.q24_2];
+        delete data.qgeoCoverageValueSubnational;
+        delete data.qgeoCoverageValueSubnationalCity;
+        delete data.q24_4;
+        delete data.q24_3;
       }
 
       if (data.q24.hasOwnProperty("sub-national")) {
