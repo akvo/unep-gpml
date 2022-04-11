@@ -62,7 +62,12 @@ const Header = ({
                     }
                   />
 
-                  <Button className="sort-btn" onClick={sortPeople}>
+                  <Button
+                    className="sort-btn"
+                    onClick={() => {
+                      sortPeople(!isAscending);
+                    }}
+                  >
                     <SortIcon
                       style={{
                         transform:
