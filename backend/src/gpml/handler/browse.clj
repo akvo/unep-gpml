@@ -13,6 +13,9 @@
             [ring.util.response :as resp]))
 
 (def ^:const topic-re (util.regex/comma-separated-enums-re topics))
+(def ^:const order-by-fields ["title" "description" "id"])
+(def ^:const default-limit 50)
+(def ^:const default-offset 0)
 
 (def query-params
   [:map
@@ -93,6 +96,11 @@
                        :type "string"
                        :allowEmptyValue true}}
     string?]
+   [:orderBy {:optional true
+              :swagger {:description "One of the following properties to order the list of results: title, description, id"
+                        :type "string"
+                        :allowEmptyValue true}}
+    (apply vector :enum order-by-fields)]
    [:limit {:optional true
             :swagger {:description "Limit the number of entries per page"
                       :type "int"
@@ -106,7 +114,9 @@
 
 (defn get-db-filter
   [{:keys [limit offset startDate endDate user-id favorites country transnational
-           topic tag affiliation representativeGroup subContentType entity q]}]
+           topic tag affiliation representativeGroup subContentType entity orderBy q]
+    :or {limit default-limit
+         offset default-offset}}]
   (cond-> {}
     offset
     (assoc :offset offset)
@@ -147,6 +157,9 @@
 
     (seq entity)
     (assoc :entity (set (map #(Integer/parseInt %) (str/split entity #","))))
+
+    (seq orderBy)
+    (assoc :order-by orderBy)
 
     (seq q)
     (assoc :search-text (->> (str/trim q)
