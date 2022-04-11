@@ -148,6 +148,13 @@ const ProfileView = ({ relations }) => {
     count: 0,
     pages: 0,
   });
+  const [tagsData, setTagsData] = useState({
+    stakeholders: [],
+    limit: 10,
+    page: 1,
+    count: 0,
+    pages: 0,
+  });
   const [entitiesData, setEntitiesData] = useState({
     stakeholders: [],
     limit: 10,
@@ -192,6 +199,16 @@ const ProfileView = ({ relations }) => {
           "SUBMITTED"
         );
         setResourcesData(data);
+      })();
+      (async () => {
+        const { page, limit } = resourcesData;
+        const data = await fetchSubmissionData(
+          page,
+          limit,
+          "tags",
+          "SUBMITTED"
+        );
+        setTagsData(data);
       })();
       (async () => {
         const { page, limit } = resourcesData;
