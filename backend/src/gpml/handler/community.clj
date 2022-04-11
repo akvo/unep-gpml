@@ -11,6 +11,7 @@
 (def ^:const geo-coverage-types-re (util.regex/comma-separated-enums-re geo-coverage-types))
 (def ^:const network-types-re (util.regex/comma-separated-enums-re community-network-types))
 (def ^:const default-api-limit 8)
+(def ^:const order-by-fields ["name"])
 
 (def get-community-members-query-params
   [:map
@@ -79,15 +80,26 @@
                :type "string"
                :allowEmptyValue true}}
     string?]
+   [:orderBy {:optional true
+              :swagger {:description "One of the following properties to order the list of results: name"
+                        :type "string"
+                        :allowEmptyValue true}}
+    (apply vector :enum order-by-fields)]
+   [:descending {:optional true
+                 :swagger {:description "Order results in descending order: true or false"
+                           :type "boolean"
+                           :allowEmptyValue true}}
+    [:boolean]]
    [:page
     {:optional true
-     :swagger{:description "Retrieve entries for a given page number"
-              :type "int"
-              :allowEmptyValue true}}
+     :swagger {:description "Retrieve entries for a given page number"
+               :type "int"
+               :allowEmptyValue true}}
     [:int {:min 0}]]])
 
 (defn api-params->opts
-  [{:keys [q country tag networkType affiliation representativeGroup geoCoverageType limit page transnational]
+  [{:keys [q country tag networkType affiliation representativeGroup geoCoverageType
+           limit page transnational orderBy descending]
     :or {limit default-api-limit
          page 0}}]
   (cond-> {}
@@ -114,14 +126,19 @@
 
     (seq transnational)
     (assoc-in [:filters :transnational] (->> (set (str/split transnational #","))
-                                          (map #(Integer/parseInt %))))
-
+                                             (map #(Integer/parseInt %))))
 
     (seq networkType)
     (assoc-in [:filters :network-type] (set (str/split networkType #",")))
 
     (seq tag)
     (assoc-in [:filters :tag] (set (str/split tag #",")))
+
+    (seq orderBy)
+    (assoc :order-by orderBy)
+
+    (not (nil? descending))
+    (assoc :descending descending)
 
     (seq q)
     (assoc-in [:filters :search-text] (->> (str/trim q)
@@ -134,14 +151,14 @@
         opts (api-params->opts query-params)
         modified-filters (if (get-in opts [:filters :transnational])
                            (let [country-group-countries (flatten
-                                                           (conj
-                                                             (map #(db.country-group/get-country-group-countries
-                                                                     conn {:id %})
-                                                               (get-in opts [:filters :transnational]))))
+                                                          (conj
+                                                           (map #(db.country-group/get-country-group-countries
+                                                                  conn {:id %})
+                                                                (get-in opts [:filters :transnational]))))
                                  geo-coverage-countries (map :id country-group-countries)]
                              (assoc-in opts [:filters :country] (concat
-                                                                  (get-in opts [:filters :country])
-                                                                  (set geo-coverage-countries))))
+                                                                 (get-in opts [:filters :country])
+                                                                 (set geo-coverage-countries))))
                            opts)]
     {:results (db.community/get-community-members conn modified-filters)
      :counts (db.community/get-community-members conn (assoc modified-filters :count-only? true))}))
