@@ -52,6 +52,7 @@ const Header = ({
                     onClick={() => setFilterVisible(!filterVisible)}
                     type="ghost"
                     shape="circle"
+                    className="filter-icon-button"
                     icon={
                       <img
                         src={FilterIcon}
