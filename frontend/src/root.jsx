@@ -277,7 +277,7 @@ const Root = () => {
   const getResults = (query, isSorted) => {
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
-    searchParms.set("orderBy", "title");
+
     const topic = [
       "action_plan",
       "project",

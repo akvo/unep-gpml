@@ -65,7 +65,7 @@ const KnowledgeLibrary = ({
 }) => {
   const [filterVisible, setFilterVisible] = useState(false);
   const [listVisible, setListVisible] = useState(true);
-  const [isAscending, setIsAscending] = useState(false);
+  const [isAscending, setIsAscending] = useState(null);
   const [allResults, setAllResults] = useState([]);
   const [view, setView] = useState("map");
 
@@ -285,9 +285,9 @@ const KnowledgeLibrary = ({
 
   const sortResults = (ascending) => {
     if (!ascending) {
-      updateQuery("descending", "false");
-    } else {
       updateQuery("descending", "true");
+    } else {
+      updateQuery("descending", "false");
     }
     setIsAscending(ascending);
   };
@@ -297,6 +297,13 @@ const KnowledgeLibrary = ({
       [...results].sort((a, b) => Date.parse(b.created) - Date.parse(a.created))
     );
   }, [results]);
+
+  useEffect(() => {
+    if (isAscending !== false && isAscending === true) {
+      updateQuery("orderBy", "title");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAscending]);
 
   const filterTagValue = renderFilterTag()
     .flat()
@@ -339,9 +346,10 @@ const KnowledgeLibrary = ({
                     >
                       <SortIcon
                         style={{
-                          transform: !isAscending
-                            ? "initial"
-                            : "rotate(180deg)",
+                          transform:
+                            isAscending || isAscending === null
+                              ? "initial"
+                              : "rotate(180deg)",
                         }}
                       />
                     </Button>
