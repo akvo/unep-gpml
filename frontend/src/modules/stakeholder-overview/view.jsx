@@ -131,22 +131,6 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     } else {
       updateQuery("descending", "false");
     }
-    // const sortByName = results.sort((a, b) => {
-    //   if (!isAscending) {
-    //     if (a?.firstName) {
-    //       return a?.firstName?.trim().localeCompare(b?.firstName?.trim());
-    //     } else {
-    //       return a?.name?.trim().localeCompare(b?.name?.trim());
-    //     }
-    //   } else {
-    //     if (b?.firstName) {
-    //       return b?.firstName?.trim().localeCompare(a?.firstName?.trim());
-    //     } else {
-    //       return b?.name?.trim().localeCompare(a?.name?.trim());
-    //     }
-    //   }
-    // });
-    // setResults(sortByName);
     setIsAscending(ascending);
   };
 
