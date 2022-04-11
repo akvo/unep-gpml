@@ -614,8 +614,8 @@
        topic-cte]))))
 
 (defn generate-get-topics
-  [params]
-  (if (:count-only? params)
+  [{:keys [count-only? order-by limit offset]}]
+  (if count-only?
     "SELECT topic, COUNT(*) FROM cte_results GROUP BY topic
      UNION ALL
      SELECT 'gpml_member_entities' AS topic, COUNT(*)
@@ -625,12 +625,16 @@
     (str/join
      " "
      (list
-      "SELECT * FROM cte_results
-       ORDER BY
+      "SELECT * FROM cte_results"
+      (if (seq order-by)
+        (format "ORDER BY json->>'%s'" order-by)
+        "ORDER BY
        (COALESCE(json->>'start_date', json->>'created'))::timestamptz DESC,
-       (json->>'id')::int DESC"
-      (format "LIMIT %s" (or (and (contains? params :limit) (:limit params)) 50))
-      (format "OFFSET %s" (or (and (contains? params :offset) (:offset params)) 0))))))
+       (json->>'id')::int DESC")
+      (when limit
+        "LIMIT :limit")
+      (when offset
+        "OFFSET :offset")))))
 
 (defn- geo-coverage-values-generic-cond
   [geo-coverage-value-param]
