@@ -719,6 +719,9 @@
           font-size: 14px;
           font-weight: 700;
           height: auto;
+          &:hover {
+            background-color: $yellow-highlight;
+          }
         }
       }
 
