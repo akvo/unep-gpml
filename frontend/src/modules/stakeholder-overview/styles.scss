@@ -112,6 +112,11 @@
       flex-grow: 1;
     }
 
+    .result-box:hover {
+      background-color: $yellow-highlight;
+      opacity: 1;
+    }
+
     // Search input
     .search-box {
       width: 100%;
@@ -923,6 +928,9 @@
         border-radius: 20px;
         margin-bottom: 8px;
         cursor: pointer;
+        &:hover {
+          background-color: $yellow-highlight;
+        }
         .anticon-close {
           color: $blue04;
           font-weight: 700;
