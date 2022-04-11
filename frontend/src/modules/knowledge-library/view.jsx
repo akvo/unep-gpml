@@ -65,7 +65,7 @@ const KnowledgeLibrary = ({
 }) => {
   const [filterVisible, setFilterVisible] = useState(false);
   const [listVisible, setListVisible] = useState(true);
-  const [isAscending, setIsAscending] = useState(null);
+  const [isAscending, setIsAscending] = useState(false);
   const [allResults, setAllResults] = useState([]);
   const [view, setView] = useState("map");
 
@@ -252,7 +252,9 @@ const KnowledgeLibrary = ({
         key === "limit" ||
         key === "offset" ||
         key === "q" ||
-        key === "favorites"
+        key === "favorites" ||
+        key === "descending" ||
+        key === "orderBy"
       ) {
         return;
       }
@@ -281,43 +283,13 @@ const KnowledgeLibrary = ({
     });
   };
 
-  const sortResults = () => {
-    if (!isAscending) {
-      const sortAscending = allResults.sort((result1, result2) => {
-        if (result1?.title) {
-          return result1?.title
-            ?.trim()
-            .localeCompare(result2?.title?.trim(), "en", {
-              numeric: true,
-            });
-        } else {
-          return result1?.name
-            ?.trim()
-            .localeCompare(result2?.name?.trim(), "en", {
-              numeric: true,
-            });
-        }
-      });
-      setAllResults(sortAscending);
+  const sortResults = (ascending) => {
+    if (!ascending) {
+      updateQuery("descending", "false");
     } else {
-      const sortDescending = allResults.sort((result1, result2) => {
-        if (result2?.title) {
-          return result2?.title
-            ?.trim()
-            .localeCompare(result1?.title?.trim(), "en", {
-              numeric: true,
-            });
-        } else {
-          return result2?.name
-            ?.trim()
-            .localeCompare(result1?.name?.trim(), "en", {
-              numeric: true,
-            });
-        }
-      });
-      setAllResults(sortDescending);
+      updateQuery("descending", "true");
     }
-    setIsAscending(!isAscending);
+    setIsAscending(ascending);
   };
 
   useEffect(() => {
@@ -361,13 +333,15 @@ const KnowledgeLibrary = ({
                         />
                       }
                     />
-                    <Button className="sort-btn" onClick={sortResults}>
+                    <Button
+                      className="sort-btn"
+                      onClick={() => sortResults(!isAscending)}
+                    >
                       <SortIcon
                         style={{
-                          transform:
-                            isAscending || isAscending === null
-                              ? "initial"
-                              : "rotate(180deg)",
+                          transform: !isAscending
+                            ? "initial"
+                            : "rotate(180deg)",
                         }}
                       />
                     </Button>
