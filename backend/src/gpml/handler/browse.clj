@@ -101,6 +101,11 @@
                         :type "string"
                         :allowEmptyValue true}}
     (apply vector :enum order-by-fields)]
+   [:descending {:optional true
+                 :swagger {:description "Order results in descending order: true or false"
+                           :type "boolean"
+                           :allowEmptyValue true}}
+    [:boolean]]
    [:limit {:optional true
             :swagger {:description "Limit the number of entries per page"
                       :type "int"
@@ -114,7 +119,7 @@
 
 (defn get-db-filter
   [{:keys [limit offset startDate endDate user-id favorites country transnational
-           topic tag affiliation representativeGroup subContentType entity orderBy q]
+           topic tag affiliation representativeGroup subContentType entity orderBy descending q]
     :or {limit default-limit
          offset default-offset}}]
   (cond-> {}
@@ -160,6 +165,9 @@
 
     (seq orderBy)
     (assoc :order-by orderBy)
+
+    (not (nil? descending))
+    (assoc :descending descending)
 
     (seq q)
     (assoc :search-text (->> (str/trim q)
