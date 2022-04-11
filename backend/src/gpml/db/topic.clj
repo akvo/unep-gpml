@@ -614,7 +614,7 @@
        topic-cte]))))
 
 (defn generate-get-topics
-  [{:keys [count-only? order-by limit offset]}]
+  [{:keys [count-only? order-by limit offset descending]}]
   (if count-only?
     "SELECT topic, COUNT(*) FROM cte_results GROUP BY topic
      UNION ALL
@@ -630,7 +630,9 @@
         (format "ORDER BY json->>'%s'" order-by)
         "ORDER BY
        (COALESCE(json->>'start_date', json->>'created'))::timestamptz DESC,
-       (json->>'id')::int DESC")
+       (json->>'id')::int")
+      (when descending
+        "DESC")
       (when limit
         "LIMIT :limit")
       (when offset
