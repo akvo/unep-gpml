@@ -365,6 +365,13 @@ const formDataMapping = [
     question: "geoCoverageValueSubnational",
   },
   {
+    name: "q24_2",
+    group: "S4_G2",
+    type: "option",
+    section: "S4",
+    question: "S4_G2_24.2",
+  },
+  {
     name: "q24_subnational_city",
     group: "S4_G2",
     type: "string",
@@ -413,6 +420,14 @@ const formDataMapping = [
     type: "array",
     section: "S4",
     group: "S4_G5",
+  },
+  {
+    key: "info_docs",
+    name: "info_docs",
+    type: "string",
+    section: "S4",
+    group: "S4_G6",
+    question: "info",
   },
   {
     key: "entity_connections",
@@ -586,7 +601,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       res = value ? value.map((x) => x.id) : "";
     }
 
-    if (name === "infoDocs") {
+    if (name === "infoDocs" || name === "info_docs") {
       res = value ? value : "";
     }
 
