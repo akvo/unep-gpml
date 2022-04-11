@@ -61,7 +61,7 @@ data AS (
 --~ (when (= "non-member-entities" (:only params)) " AND  s.type IN ( 'organisation') AND s.topic IN ('non_member_organisation')")
 --~ (when (= "stakeholders" (:only params)) " AND  s.type IN ('stakeholder') ")
 --~ (when (= "tags" (:only params)) " AND  s.type IN ('tag') ")
---~ (when (= "resources" (:only params)) " AND  s.type NOT IN ('stakeholder', 'organisation') ")
+--~ (when (= "resources" (:only params)) " AND  s.type NOT IN ('stakeholder', 'organisation', 'tag') ")
 --~ (when (:title params) (str " AND s.title ILIKE '%" (:title params) "%' ") )
     ORDER BY s.created
     LIMIT :limit
