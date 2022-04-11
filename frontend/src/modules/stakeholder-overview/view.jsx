@@ -107,9 +107,9 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     { id: 3, title: "Forums", url: null, icon: <IconForum /> },
   ];
 
-  const sortPeople = () => {
+  const sortPeople = (ascending) => {
     const sortSuggestedProfiles = suggestedProfiles.sort((a, b) => {
-      if (!isAscending) {
+      if (ascending) {
         if (a?.firstName) {
           return a?.firstName?.trim().localeCompare(b?.firstName?.trim());
         } else {
@@ -126,23 +126,28 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
     setSuggestedProfiles(sortSuggestedProfiles);
 
-    const sortByName = results.sort((a, b) => {
-      if (!isAscending) {
-        if (a?.firstName) {
-          return a?.firstName?.trim().localeCompare(b?.firstName?.trim());
-        } else {
-          return a?.name?.trim().localeCompare(b?.name?.trim());
-        }
-      } else {
-        if (b?.firstName) {
-          return b?.firstName?.trim().localeCompare(a?.firstName?.trim());
-        } else {
-          return b?.name?.trim().localeCompare(a?.name?.trim());
-        }
-      }
-    });
-    setResults(sortByName);
-    setIsAscending(!isAscending);
+    if (!ascending) {
+      updateQuery("descending", "true");
+    } else {
+      updateQuery("descending", "false");
+    }
+    // const sortByName = results.sort((a, b) => {
+    //   if (!isAscending) {
+    //     if (a?.firstName) {
+    //       return a?.firstName?.trim().localeCompare(b?.firstName?.trim());
+    //     } else {
+    //       return a?.name?.trim().localeCompare(b?.name?.trim());
+    //     }
+    //   } else {
+    //     if (b?.firstName) {
+    //       return b?.firstName?.trim().localeCompare(a?.firstName?.trim());
+    //     } else {
+    //       return b?.name?.trim().localeCompare(a?.name?.trim());
+    //     }
+    //   }
+    // });
+    // setResults(sortByName);
+    setIsAscending(ascending);
   };
 
   const getSuggestedProfiles = () => {
@@ -313,6 +318,13 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     }
   };
 
+  useEffect(() => {
+    if (isAscending !== false && isAscending === true) {
+      updateQuery("orderBy", "name");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAscending]);
+
   // Here is the function to render filter tag
   const renderFilterTag = () => {
     const renderName = (key, value) => {
@@ -383,7 +395,9 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         key === "limit" ||
         key === "page" ||
         key === "q" ||
-        key === "favorites"
+        key === "favorites" ||
+        key === "descending" ||
+        key === "orderBy"
       ) {
         return;
       }

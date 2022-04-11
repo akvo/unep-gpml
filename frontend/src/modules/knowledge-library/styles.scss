@@ -52,6 +52,10 @@
       padding-left: 0;
     }
 
+    .filter-icon-button {
+      border: none;
+    }
+
     .sort-btn {
       border: none;
       display: flex;
@@ -115,6 +119,10 @@
 
     .result-box {
       cursor: pointer;
+      &:hover {
+        background-color: $yellow-highlight;
+        opacity: 1;
+      }
     }
 
     .ant-row.ant-row-space-between.ant-row-middle {
@@ -311,6 +319,9 @@
           font-size: 14px;
           font-weight: 700;
           height: auto;
+          &:hover {
+            background-color: $yellow-highlight;
+          }
         }
       }
 
@@ -531,6 +542,9 @@
         border-radius: 20px;
         margin-bottom: 8px;
         cursor: pointer;
+        &:hover {
+          background-color: $yellow-highlight;
+        }
         .anticon-close {
           color: $blue04;
           font-weight: 700;
