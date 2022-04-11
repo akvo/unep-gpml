@@ -73,6 +73,7 @@
   .ant-tabs-tab:not(:last-of-type) {
     margin-right: 0 !important;
   }
+
   .ant-tabs-tab {
     display: flex;
     justify-content: center;
@@ -80,7 +81,10 @@
     width: 50%;
     border-radius: 0;
     border: none;
-    background: #dae9f1;
+    background-color: #dae9f1;
+    &:hover {
+      background-color: $yellow-highlight !important;
+    }
 
     div {
       color: #000000;
@@ -88,7 +92,10 @@
     }
   }
   .ant-tabs-tab-active {
-    background: #fff;
+    background-color: #fff;
+    &:hover {
+      background-color: #fff !important;
+    }
     .ant-tabs-tab-btn {
       font-weight: normal;
     }

@@ -89,6 +89,7 @@ ul.sidebar-mobile {
 
     &:hover {
       background: $yellow-highlight;
+      opacity: 1;
       .case-study-svg {
         fill: $yellow-highlight;
       }

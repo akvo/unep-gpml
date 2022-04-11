@@ -274,9 +274,10 @@ const Root = () => {
   const [countData, setCountData] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
 
-  const getResults = (query) => {
+  const getResults = (query, isSorted) => {
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
+
     const topic = [
       "action_plan",
       "project",

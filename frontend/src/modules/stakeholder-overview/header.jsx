@@ -52,6 +52,7 @@ const Header = ({
                     onClick={() => setFilterVisible(!filterVisible)}
                     type="ghost"
                     shape="circle"
+                    className="filter-icon-button"
                     icon={
                       <img
                         src={FilterIcon}
@@ -61,7 +62,12 @@ const Header = ({
                     }
                   />
 
-                  <Button className="sort-btn" onClick={sortPeople}>
+                  <Button
+                    className="sort-btn"
+                    onClick={() => {
+                      sortPeople(!isAscending);
+                    }}
+                  >
                     <SortIcon
                       style={{
                         transform:
