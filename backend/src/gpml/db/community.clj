@@ -57,4 +57,4 @@
                %s
                %s
                %s
-               %s;" (or tags-join "") where-cond order-by (or pagination "")))))
+               %s;" (or tags-join "") where-cond (or order-by "") (or pagination "")))))
