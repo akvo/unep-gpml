@@ -252,7 +252,9 @@ const KnowledgeLibrary = ({
         key === "limit" ||
         key === "offset" ||
         key === "q" ||
-        key === "favorites"
+        key === "favorites" ||
+        key === "descending" ||
+        key === "orderBy"
       ) {
         return;
       }
@@ -281,43 +283,13 @@ const KnowledgeLibrary = ({
     });
   };
 
-  const sortResults = () => {
-    if (!isAscending) {
-      const sortAscending = allResults.sort((result1, result2) => {
-        if (result1?.title) {
-          return result1?.title
-            ?.trim()
-            .localeCompare(result2?.title?.trim(), "en", {
-              numeric: true,
-            });
-        } else {
-          return result1?.name
-            ?.trim()
-            .localeCompare(result2?.name?.trim(), "en", {
-              numeric: true,
-            });
-        }
-      });
-      setAllResults(sortAscending);
+  const sortResults = (ascending) => {
+    if (!ascending) {
+      updateQuery("descending", "true");
     } else {
-      const sortDescending = allResults.sort((result1, result2) => {
-        if (result2?.title) {
-          return result2?.title
-            ?.trim()
-            .localeCompare(result1?.title?.trim(), "en", {
-              numeric: true,
-            });
-        } else {
-          return result2?.name
-            ?.trim()
-            .localeCompare(result1?.name?.trim(), "en", {
-              numeric: true,
-            });
-        }
-      });
-      setAllResults(sortDescending);
+      updateQuery("descending", "false");
     }
-    setIsAscending(!isAscending);
+    setIsAscending(ascending);
   };
 
   useEffect(() => {
@@ -325,6 +297,13 @@ const KnowledgeLibrary = ({
       [...results].sort((a, b) => Date.parse(b.created) - Date.parse(a.created))
     );
   }, [results]);
+
+  useEffect(() => {
+    if (isAscending !== false && isAscending === true) {
+      updateQuery("orderBy", "title");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAscending]);
 
   const filterTagValue = renderFilterTag()
     .flat()
@@ -352,6 +331,7 @@ const KnowledgeLibrary = ({
                       onClick={() => setFilterVisible(!filterVisible)}
                       type="ghost"
                       shape="circle"
+                      className="filter-icon-button"
                       icon={
                         <img
                           src={FilterIcon}
@@ -360,7 +340,10 @@ const KnowledgeLibrary = ({
                         />
                       }
                     />
-                    <Button className="sort-btn" onClick={sortResults}>
+                    <Button
+                      className="sort-btn"
+                      onClick={() => sortResults(!isAscending)}
+                    >
                       <SortIcon
                         style={{
                           transform:

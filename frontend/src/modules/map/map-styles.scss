@@ -429,13 +429,20 @@
     height: unset;
   }
 }
+.map-tooltip-wrapper {
+  zoom: 110%;
+  padding: 8px 16px !important;
+}
 
 .map-tooltip {
-  padding: 0 10px;
+  padding: 0 5px;
   position: relative;
 
   .entity-type,
   .tooltip-topic {
+    padding-right: 5px;
+  }
+  .entity-type {
     padding-right: 10px;
   }
 
@@ -485,10 +492,10 @@
   }
 
   h3 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     color: #005c93;
-    max-width: 170px;
+    max-width: 150px;
     width: 100%;
     margin-left: auto;
     margin-right: auto;

@@ -643,7 +643,7 @@ const Maps = ({
           <ComposableMap
             data-tip=""
             projection="geoEquirectangular"
-            style={{ height: "auto" }}
+            style={{ height: "auto", zoom: "112%" }}
           >
             <ZoomableGroup
               minZoom={mapMinZoom}
@@ -858,7 +858,7 @@ const Maps = ({
               </Geographies>
             </ZoomableGroup>
           </ComposableMap>
-          <ReactTooltip type="light" className="opaque">
+          <ReactTooltip type="light" className="opaque map-tooltip-wrapper">
             {content}
           </ReactTooltip>
         </div>
