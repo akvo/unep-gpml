@@ -119,6 +119,10 @@
 
     .result-box {
       cursor: pointer;
+      &:hover {
+        background-color: $yellow-highlight;
+        opacity: 1;
+      }
     }
 
     .ant-row.ant-row-space-between.ant-row-middle {
