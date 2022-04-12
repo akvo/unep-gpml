@@ -156,6 +156,7 @@
                           (mapv (fn [{:keys [resource_type count country_count]}]
                                   {(keyword resource_type) count :countries country_count})))]
     (resp/response {:map (db.landing/map-counts-include-all-countries conn modified-opts)
+                    :country_group_counts (db.landing/get-map-counts-by-country-group conn)
                     :summary summary-data})))
 
 (defmethod ig/init-key :gpml.handler.landing/get [_ {:keys [db]}]

@@ -5,73 +5,43 @@
             [gpml.db.country :as db.country]
             [gpml.pg-util]))
 
-(declare map-counts summary)
+(declare map-counts map-counts-by-country-group summary)
 
 (hugsql/def-db-fns "gpml/db/landing.sql")
 
-(defn- entity-count-by-geo-coverage-query
-  [entity-name geo-coverage geo-coverage-type]
-  (let [entity-col (if (= entity-name "resource")
-                     "REPLACE(LOWER(e.type), ' ', '_')"
-                     (str "'" entity-name "'"))
-        entity-name-from-clause (if (= entity-name "non_member_organisation")
+(defn- entity-count-by-country-group-query
+  [entity-name]
+  (let [entity-name-from-clause (if (= entity-name "non_member_organisation")
                                   "organisation"
                                   entity-name)
-        entity-count-col (if (= geo-coverage-type :transnational)
-                           "COUNT(cgc.country_group) AS entity_count"
-                           "COUNT(COALESCE(egc.country, cgc.country)) AS entity_count")
-        geo-coverage-col (if (= geo-coverage :country-group)
-                           "cgc.country_group"
-                           "COALESCE(egc.country, cgc.country)")
         where-cond (cond-> ""
-                     (and (= geo-coverage-type :transnational)
-                          (= entity-name "initiative"))
-                     (str " AND e.q24->>'transnational'::text = 'Transnational'")
-
-                     (and (= geo-coverage-type :transnational)
-                          (not= entity-name "initiative"))
-                     (str " AND e.geo_coverage_type = 'transnational'")
-
-                     (and (= entity-name "initiative")
-                          (not= geo-coverage-type :transnational))
-                     (str " AND e.q24->>'transnational'::text IS NULL")
-
-                     (and (not= entity-name "initiative")
-                          (not= geo-coverage-type :transnational))
-                     (str " AND e.geo_coverage_type <> 'transnational'")
-
                      (= entity-name "non_member_organisation")
-                     (str " AND is_member IS FALSE")
+                     (str " AND e.is_member IS FALSE")
 
                      (= entity-name "organisation")
-                     (str " AND is_member IS TRUE"))]
+                     (str " AND e.is_member IS TRUE"))]
     (apply
      format
      "SELECT
-             %s AS entity,
-             %s AS geo_coverage,
-             %s
-         FROM
-             %s e
-             LEFT JOIN %s_geo_coverage egc ON e.id = egc.%s
-             LEFT JOIN country_group_country cgc ON cgc.country_group = egc.country_group
-         WHERE
-              e.review_status = 'APPROVED' AND (egc.country IS NOT NULL or cgc.country IS NOT NULL) %s
-         GROUP BY
-              entity,
-              geo_coverage"
-     (flatten [entity-col geo-coverage-col
-               entity-count-col
-               (repeat 3 entity-name-from-clause) where-cond]))))
+         '%s' AS entity,
+         country_group AS geo_coverage,
+         COUNT(e.*)
+     FROM
+         %s e
+     JOIN
+         %s_geo_coverage egc ON e.id = egc.%s
+     WHERE egc.country_group IS NOT NULL %s
+     GROUP BY entity, geo_coverage"
+     (flatten [entity-name (repeat 3 entity-name-from-clause) where-cond]))))
 
-(defn generate-entity-count-by-geo-coverage-query-cte
-  [{:keys [cte-name geo-coverage geo-coverage-type]} _opts]
+(defn generate-entity-count-by-country-group-query-cte
+  [{:keys [cte-name]} _opts]
   (str
    "WITH "
    cte-name
    " AS ("
    (reduce (fn [acc entity]
-             (let [query (entity-count-by-geo-coverage-query entity geo-coverage geo-coverage-type)]
+             (let [query (entity-count-by-country-group-query entity)]
                (if (seq acc)
                  (str acc " UNION ALL " query)
                  query)))
@@ -85,6 +55,19 @@
                  (assoc-in [:counts (keyword %)] 0)
                  (assoc-in [:transnational_counts (keyword %)] 0)))
        (apply merge-with into)))
+
+(defn get-map-counts-by-country-group
+  "Get the entities count (i.e., Policy, Resource, Event, Organisation,
+  Stakeholder, etc.) by country group (Europe, African States, etc.)."
+  [conn]
+  (let [counts (map-counts-by-country-group conn {})
+        default-count-values (->> constants/topics
+                                  (map #(assoc-in {} [:counts (keyword %)] 0))
+                                  (apply merge-with into))]
+    (reduce (fn [acc counts]
+              (conj acc (merge-with into default-count-values counts)))
+            []
+            counts)))
 
 (defn map-counts-explicit
   "Get the entities count (i.e., Policy, Resource, Event, Organisation,

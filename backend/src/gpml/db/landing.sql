@@ -1,5 +1,5 @@
--- :name map-counts
--- :doc Gets the resource count per country.
+-- :name map-counts :? :*
+-- :doc Gets the entity count per country.
 -- :require [gpml.db.topic]
 /*~ (if (= (:entity-group params) :topic)
 (#'gpml.db.topic/generate-topic-query {} gpml.db.topic/generic-cte-opts)
@@ -18,6 +18,14 @@ country_counts AS (
 SELECT geo_coverage AS id, json_object_agg(COALESCE(topic, 'project'), topic_count)
 --~ (str " AS " (:count-name params))
 FROM country_counts
+GROUP BY geo_coverage;
+
+-- :name map-counts-by-country-group :? :*
+-- :doc Get the entity count per country group.
+-- :require [gpml.db.landing]
+--~(#'gpml.db.landing/generate-entity-count-by-country-group-query-cte {:cte-name "country_group_counts"} {})
+SELECT geo_coverage AS country_group_id, json_object_agg(entity, count) AS counts
+FROM country_group_counts
 GROUP BY geo_coverage;
 
 -- :name summary
