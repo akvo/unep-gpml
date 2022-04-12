@@ -5,6 +5,9 @@
             [gpml.db.country :as db.country]
             [gpml.pg-util]))
 
+(def ^:const ^:private non-transnational-geo-coverage-types ["regional" "national" "sub-national"])
+(def ^:const ^:private transnational-geo-coverage-types ["transnational"])
+
 (declare map-counts map-counts-by-country-group summary)
 
 (hugsql/def-db-fns "gpml/db/landing.sql")
@@ -74,10 +77,10 @@
   Stakeholder, etc.) by country. The result of this
   counting is grouped by countries."
   [conn opts]
-  (let [counts (map-counts conn (merge opts {:geo-coverage-types ["regional" "national" "sub-national"]
+  (let [counts (map-counts conn (merge opts {:geo-coverage-types non-transnational-geo-coverage-types
                                              :count-name "counts"
                                              :distinct-on-geo-coverage? true}))
-        transnational-counts-by-country (map-counts conn (merge opts {:geo-coverage-types ["transnational"]
+        transnational-counts-by-country (map-counts conn (merge opts {:geo-coverage-types transnational-geo-coverage-types
                                                                       :count-name "transnational_counts"
                                                                       :distinct-on-geo-coverage? true}))]
     (reduce
