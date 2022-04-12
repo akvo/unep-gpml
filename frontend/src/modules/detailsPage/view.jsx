@@ -336,20 +336,16 @@ const renderBannerSection = (
               target="_blank"
             >
               <img
-                src={data.image ? data.image : imageNotFound}
+                src={
+                  data.image
+                    ? data.image
+                    : require(`../../images/resource-detail/${
+                        placeholder[params.type]
+                      }`).default
+                }
                 className="resource-image"
               />
             </a>
-            <img
-              src={
-                data.image
-                  ? data.image
-                  : require(`../../images/resource-detail/${
-                      placeholder[params.type]
-                    }`).default
-              }
-              className="resource-image"
-            />
           </div>
         </Col>
         <Col xs={18} lg={18} style={{ display: "flex" }}>
@@ -422,23 +418,13 @@ const renderBannerSection = (
                       ? data.image
                       : data.qimage
                       ? data.qimage
-                      : imageNotFound
+                      : require(`../../images/resource-detail/${
+                          placeholder[params.type]
+                        }`).default
                   }
                   className="resource-image"
                 />
               </a>
-              <img
-                src={
-                  data.image
-                    ? data.image
-                    : data.qimage
-                    ? data.qimage
-                    : require(`../../images/resource-detail/${
-                        placeholder[params.type]
-                      }`).default
-                }
-                className="resource-image"
-              />
             </div>
             <SharePanel
               data={data}
