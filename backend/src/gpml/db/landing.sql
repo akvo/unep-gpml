@@ -6,13 +6,23 @@
 (#'gpml.db.topic/generate-entity-topic-query {} gpml.db.topic/generic-entity-cte-opts))
 ~*/
 ,
-cte_results AS (
+filtered_entities AS (
 --~ (#'gpml.db.topic/generate-filter-topic-snippet params)
 ),
 country_counts AS (
   SELECT geo_coverage, topic, COUNT(topic) AS topic_count
-  FROM cte_results
+  FROM filtered_entities
   WHERE geo_coverage IS NOT NULL
+  GROUP BY geo_coverage, topic
+  UNION
+  SELECT geo_coverage, 'organisation' AS topic, COUNT(topic)
+  FROM filtered_entities
+  WHERE geo_coverage IS NOT NULL AND topic = 'organisation' AND (json->>'is_member')::BOOLEAN IS TRUE
+  GROUP BY geo_coverage, topic
+  UNION ALL
+  SELECT geo_coverage, 'non_member_organisation' AS topic, COUNT(topic)
+  FROM filtered_entities
+  WHERE geo_coverage IS NOT NULL AND topic = 'organisation' AND (json->>'is_member')::BOOLEAN IS FALSE
   GROUP BY geo_coverage, topic
 )
 SELECT geo_coverage AS id, json_object_agg(COALESCE(topic, 'project'), topic_count)
