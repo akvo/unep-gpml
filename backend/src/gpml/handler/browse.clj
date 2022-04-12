@@ -125,7 +125,7 @@
 
     (seq country)
     (assoc :geo-coverage (->> (set (str/split country #","))
-                              (map read-string)))
+                              (map #(Integer/parseInt %))))
 
     (seq transnational)
     (assoc :transnational (set (map str (str/split transnational #","))))
