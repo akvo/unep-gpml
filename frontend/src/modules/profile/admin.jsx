@@ -272,6 +272,7 @@ const AdminSection = ({
   entitiesData,
   nonMemberEntitiesData,
   setEntitiesData,
+  tagsData,
 }) => {
   const profile = UIStore.useState((s) => s.profile);
   const [modalRejectVisible, setModalRejectVisible] = useState(false);
@@ -316,6 +317,14 @@ const AdminSection = ({
     reviewStatus: "SUBMITTED",
     data: resourcesData,
     type: "resources",
+    current: 1,
+    size: 10,
+  });
+  const [tagsListOpts, setTagsListOpts] = useState({
+    titleFilter: null,
+    reviewStatus: "SUBMITTED",
+    data: tagsData,
+    type: "tags",
     current: 1,
     size: 10,
   });
@@ -687,9 +696,7 @@ const AdminSection = ({
 
     return (
       <div key="new-approval" className="approval">
-        {title && (
-          <Title className="tab-label" level={4}>{`${title} Entities`}</Title>
-        )}
+        {title && <Title className="tab-label" level={4}>{`${title}`}</Title>}
         <div>
           <b>Total:</b> {itemList.count || 0}
         </div>
@@ -820,16 +827,21 @@ const AdminSection = ({
         </TabPane>
         <TabPane tab="Entities" key="entities" className="profile-tab-pane">
           <>
-            {renderList(entitiesListOpts, setEntitiesListOpts, "Member")}
+            {renderList(
+              entitiesListOpts,
+              setEntitiesListOpts,
+              "Member Entities"
+            )}
             {renderList(
               nonMemberEantitiesListOpts,
               setNonMemberEantitiesListOpts,
-              "Non-Member"
+              "Non-Member Entities"
             )}
           </>
         </TabPane>
         <TabPane tab="Resources" key="resources" className="profile-tab-pane">
-          {renderList(resourcesListOpts, setResourcesListOpts)}
+          {renderList(resourcesListOpts, setResourcesListOpts, "Resources")}
+          {renderList(tagsListOpts, setTagsListOpts, "Tags")}
         </TabPane>
       </Tabs>
 

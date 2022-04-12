@@ -297,6 +297,7 @@ const renderBannerSection = (
   handleVisible,
   showLess,
   setShowLess,
+  placeholder,
   relation,
   handleRelationChange
 ) => {
@@ -335,7 +336,13 @@ const renderBannerSection = (
               target="_blank"
             >
               <img
-                src={data.image ? data.image : imageNotFound}
+                src={
+                  data.image
+                    ? data.image
+                    : require(`../../images/resource-detail/${
+                        placeholder[params.type]
+                      }`).default
+                }
                 className="resource-image"
               />
             </a>
@@ -411,7 +418,9 @@ const renderBannerSection = (
                       ? data.image
                       : data.qimage
                       ? data.qimage
-                      : imageNotFound
+                      : require(`../../images/resource-detail/${
+                          placeholder[params.type]
+                        }`).default
                   }
                   className="resource-image"
                 />
@@ -692,6 +701,7 @@ const DetailsView = ({
     meaOptions,
     transnationalOptions,
     icons,
+    placeholder,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -700,6 +710,7 @@ const DetailsView = ({
     meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
     icons: s.icons,
+    placeholder: s.placeholder,
   }));
   const history = useHistory();
   const [data, setData] = useState(null);
@@ -900,6 +911,7 @@ const DetailsView = ({
               handleVisible,
               showLess,
               setShowLess,
+              placeholder,
               { ...{ handleRelationChange, relation } }
             )}
           </Row>

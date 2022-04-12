@@ -20,6 +20,16 @@ const icons = {
   event: "event_flexible.svg",
 };
 
+const placeholder = {
+  action_plan: "action.png",
+  project: "initiative.png",
+  policy: "policy.png",
+  technical_resource: "technical.png",
+  financing_resource: "financing.png",
+  technology: "technology.png",
+  event: "event_flexible.png",
+};
+
 const entityRole = ["Owner", "Implementor", "Partner", "Donor"];
 const individualRole = ["Owner", "Resource Editor"];
 
@@ -665,6 +675,7 @@ const UIStore = new Store({
   representativeGroup: representativeGroup,
   mainContentType: mainContentType,
   icons: icons,
+  placeholder: placeholder,
   selectedMainContentType: "initiative",
   landing: null,
   stakeholders: null,
