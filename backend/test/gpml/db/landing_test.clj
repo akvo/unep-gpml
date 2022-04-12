@@ -67,7 +67,7 @@
           system (ig/init fixtures/*system* [db-key])
           conn (-> system db-key :spec)
           _ (add-resource-data conn)
-          landing (db.landing/map-counts-include-all-countries conn)
+          landing (db.landing/map-counts-include-all-countries conn {:entity-group :topic})
           valid? (fn [country-id] (->> landing
                                        (filter #(= country-id (:country_id %)))
                                        first
@@ -136,7 +136,7 @@
         system (ig/init fixtures/*system* [db-key])
         conn (-> system db-key :spec)
         _ (add-resource-data conn)
-        landing (db.landing/map-counts-include-all-countries conn)]
+        landing (db.landing/map-counts-include-all-countries conn {:entity-group :topic})]
     (testing "Landing counts match browse results"
       (let [country-id 4
             transnationals (->> (get-country-group-ids conn country-id)
