@@ -81,6 +81,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     existingStakeholder: [],
   });
 
+  const [landingQuery, setLandingQuery] = useState("");
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
   const pageSize = 16;
@@ -314,6 +315,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     setFilters(newQuery);
     const newParams = new URLSearchParams(newQuery);
     history.push(`/stakeholder-overview?${newParams.toString()}`);
+    setLandingQuery(newParams.toString());
     clearTimeout(tmid);
     tmid = setTimeout(getResults(newQuery), 1000);
     if (param === "country") {
@@ -360,7 +362,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       }
 
       if (key === "representativeGroup") {
-        const selectedRepresentativeGroups = representativeGroup.find(
+        const selectedRepresentativeGroups = representativeGroup?.find(
           (x) => x?.code?.toLowerCase() == value?.toLowerCase()
         );
         return value.toLowerCase() === "other"
@@ -369,24 +371,24 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       }
       if (key === "transnational") {
         const transnationalGroup = multicountryGroups
-          .map((multicountryGroup) => multicountryGroup.item)
+          ?.map((multicountryGroup) => multicountryGroup.item)
           .flat();
 
-        const selectedTransnational = transnationalGroup.find(
+        const selectedTransnational = transnationalGroup?.find(
           (x) => x.id == value
         );
         return selectedTransnational?.name;
       }
       if (key === "seeking") {
-        const selectedSeeking = seeking.find((seek) => seek?.tag == value);
+        const selectedSeeking = seeking?.find((seek) => seek?.tag == value);
         return selectedSeeking?.tag;
       }
       if (key === "offering") {
-        const selectedOffering = offering.find((offer) => offer?.tag == value);
+        const selectedOffering = offering?.find((offer) => offer?.tag == value);
         return selectedOffering?.tag;
       }
       if (key === "entity") {
-        const selectedOrganisation = organisations.find(
+        const selectedOrganisation = organisations?.find(
           (organisation) => organisation.id == value
         );
         return selectedOrganisation?.name;
@@ -570,6 +572,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                   <div className="stakeholder-map-wrapper">
                     <MapView
                       updateQuery={updateQuery}
+                      landingQuery={landingQuery}
                       isFilteredCountry={filterCountries}
                       multiCountryCountries={multiCountryCountries}
                       stakeholderCount={stakeholderCount}
