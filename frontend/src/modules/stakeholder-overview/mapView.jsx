@@ -10,6 +10,7 @@ const MapView = ({
   updateQuery,
   isFilteredCountry,
   stakeholderCount,
+  landingQuery,
 }) => {
   const { landing, countries } = UIStore.useState((s) => ({
     landing: s.landing,
@@ -35,12 +36,12 @@ const MapView = ({
   };
 
   useEffect(() => {
-    api.get("/landing").then((resp) => {
+    api.get(`/landing?entityGroup=community&${landingQuery}`).then((resp) => {
       UIStore.update((e) => {
         e.landing = resp.data;
       });
     });
-  }, []);
+  }, [landingQuery]);
 
   return (
     <Maps
