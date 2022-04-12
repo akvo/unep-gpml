@@ -78,10 +78,10 @@
   counting is grouped by countries."
   [conn opts]
   (let [counts (map-counts conn (merge opts {:count-name "counts"
-                                             :distinct-on-geo-coverage? true}
+                                             :distinct-on-geo-coverage? false}
                                        (when (= :topic (:entity-group opts))
                                          {:geo-coverage-types non-transnational-geo-coverage-types
-                                          :distinct-on-geo-coverage? false})))
+                                          :distinct-on-geo-coverage? true})))
         transnational-counts-by-country (map-counts conn (merge opts {:geo-coverage-types transnational-geo-coverage-types
                                                                       :count-name "transnational_counts"
                                                                       :distinct-on-geo-coverage? true}))]
