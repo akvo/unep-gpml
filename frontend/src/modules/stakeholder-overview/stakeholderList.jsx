@@ -13,8 +13,6 @@ import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 const StakeholderList = ({
   view,
   results,
-  isAscending,
-  sortPeople,
   pageSize,
   filters,
   itemCount,
@@ -179,7 +177,7 @@ const ResourceItem = ({ results, view }) => {
               <b className="title">
                 <TrimText text={stakeholderName} max={64} />
               </b>
-              <div>
+              {/* <div>
                 {result?.type === "stakeholder"
                   ? result?.affiliation && (
                       <span className="entity-name">
@@ -187,7 +185,7 @@ const ResourceItem = ({ results, view }) => {
                       </span>
                     )
                   : ""}
-              </div>
+              </div> */}
             </div>
           </div>
         </Card>

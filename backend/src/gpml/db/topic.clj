@@ -332,6 +332,14 @@
            entity-name
            where-cond])))
 
+(defn generic-entity-geo-coverage-query
+  [entity-name]
+  (format
+   "SELECT e.id, c.id AS geo_coverage
+    FROM %s e
+    LEFT JOIN country c ON e.country = c.id"
+   entity-name))
+
 ;;======================= Search Text queries =================================
 (def ^:const ^:private organisation-topic-search-text-where-cond
   "WHERE (organisation.review_status = 'APPROVED'::public.review_status)")
@@ -493,7 +501,9 @@
   (let [where-cond (if (= entity-name "initiative")
                      initiative-topic-geo-coverage-where-cond
                      generic-topic-geo-coverage-where-cond)]
-    (generic-topic-geo-coverage-query entity-name where-cond)))
+    (if (some #{entity-name} ["organisation" "stakeholder"])
+      (generic-entity-geo-coverage-query entity-name)
+      (generic-topic-geo-coverage-query entity-name where-cond))))
 
 (defn build-topic-search-text-query
   "Generates SQL statements for querying searchable text from every
@@ -650,14 +660,17 @@
   [{:keys [favorites user-id topic tag start-date end-date transnational
            search-text geo-coverage resource-types geo-coverage-countries
            representative-group sub-content-type affiliation
-           entity]}]
+           entity distinct-on-geo-coverage? geo-coverage-types]
+    :or {distinct-on-geo-coverage? false}}]
   (let [geo-coverage? (seq geo-coverage)
         transnational? (seq transnational)
         geo-coverage-countries? (seq geo-coverage-countries)]
     (str/join
      " "
      (list
-      "SELECT DISTINCT ON (t.topic, (COALESCE(t.json->>'start_date', t.json->>'created'))::timestamptz, (t.json->>'id')::int) t.topic, t.geo_coverage, t.json FROM cte_topic t"
+      (if distinct-on-geo-coverage?
+        "SELECT DISTINCT ON (geo_coverage, json->>'id') t.topic, t.geo_coverage, t.json FROM cte_topic t"
+        "SELECT DISTINCT ON (t.topic, (COALESCE(t.json->>'start_date', t.json->>'created'))::timestamptz, (t.json->>'id')::int) t.topic, t.geo_coverage, t.json FROM cte_topic t")
       (when (and favorites user-id resource-types)
         "JOIN v_stakeholder_association a ON a.stakeholder = :user-id AND a.id = (t.json->>'id')::int AND (a.topic = t.topic OR (a.topic = 'resource' AND t.topic IN (:v*:resource-types)))")
       (when (seq tag)
@@ -666,6 +679,8 @@
         "JOIN json_to_recordset(t.json->'entity_connections') AS ecs(id int, entity_id int, entity text, role text, representative_group text, image text) ON t.json->>'entity_connections' IS NOT NULL")
       "WHERE t.json->>'review_status'='APPROVED'"
       (when (seq search-text) " AND t.search_text @@ to_tsquery(:search-text)")
+      (when (seq geo-coverage-types)
+        " AND json->>'geo_coverage_type' IN (:v*:geo-coverage-types)")
       (when (seq topic)
         " AND topic IN (:v*:topic)")
       (when (seq affiliation)
