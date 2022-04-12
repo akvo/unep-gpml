@@ -13,8 +13,6 @@ import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 const StakeholderList = ({
   view,
   results,
-  isAscending,
-  sortPeople,
   pageSize,
   filters,
   itemCount,
