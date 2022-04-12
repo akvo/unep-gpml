@@ -233,6 +233,7 @@
                                          [""
                                           {:get {:summary "End-point for the landing page"
                                                  :swagger {:tags ["landing"]}
+                                                 :parameters {:query #ig/ref :gpml.handler.landing/get-query-params}
                                                  :handler #ig/ref :gpml.handler.landing/get}}]]
                                         ["/nav"
                                          [""
@@ -493,6 +494,7 @@
   :gpml.handler.review/review-status-params {}
 
   :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.landing/get-query-params {}
   :gpml.handler.nav/get {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.event/post {:db #ig/ref :duct.database/sql
