@@ -22,6 +22,7 @@ import FilterDrawer from "./filterDrawer";
 import MapView from "./mapView";
 
 // Icons
+import topicViewIcon from "../../images/knowledge-library/topic-view-icon.svg";
 import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg";
 import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
 import { ReactComponent as IconCommunity } from "../../images/events/community-icon.svg";
@@ -117,7 +118,11 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         <img src={DownArrow} className="selection-arrow" alt="down-arrow" />
       </button>
       <span className="label text-white">{`${view} view`}</span>
-      <img src={GlobeOutlined} alt="globe-icon" />
+      {view === "map" ? (
+        <img src={GlobeOutlined} alt="globe-icon" />
+      ) : (
+        <img src={topicViewIcon} alt="globe-icon" />
+      )}
     </div>
   );
 
