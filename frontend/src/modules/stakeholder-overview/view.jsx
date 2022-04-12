@@ -17,17 +17,21 @@ import UnathenticatedPage from "./unathenticatedPage";
 // Components
 import LeftSidebar from "../left-sidebar/LeftSidebar";
 import ProfileCard from "./card";
-import Header from "./header";
+import Header from "../knowledge-library/header";
 import FilterDrawer from "./filterDrawer";
 import MapView from "./mapView";
 
 // Icons
+import topicViewIcon from "../../images/knowledge-library/topic-view-icon.svg";
 import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg";
 import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
 import { ReactComponent as IconCommunity } from "../../images/events/community-icon.svg";
 import StakeholderList from "./stakeholderList";
 import { multicountryGroups } from "../knowledge-library/multicountry";
 import { titleCase } from "../../utils/string";
+import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
+import TooltipOutlined from "../../images/knowledge-library/tooltip-outlined.svg";
+import DownArrow from "../../images/knowledge-library/chevron-down.svg";
 
 let tmid;
 
@@ -52,6 +56,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     offering: s.tags.offering,
     stakeholders: s.stakeholders?.stakeholders,
   }));
+
   const viewportWidth = document.documentElement.clientWidth;
 
   const [filterCountries, setFilterCountries] = useState([]);
@@ -107,7 +112,21 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     { id: 3, title: "Forums", url: null, icon: <IconForum /> },
   ];
 
-  const sortPeople = (ascending) => {
+  const selectionValue = (
+    <div className="selection-value">
+      <button className="select-button">
+        <img src={DownArrow} className="selection-arrow" alt="down-arrow" />
+      </button>
+      <span className="label text-white">{`${view} view`}</span>
+      {view === "map" ? (
+        <img src={GlobeOutlined} alt="globe-icon" />
+      ) : (
+        <img src={topicViewIcon} alt="globe-icon" />
+      )}
+    </div>
+  );
+
+  const sortResults = (ascending) => {
     const sortSuggestedProfiles = suggestedProfiles.sort((a, b) => {
       if (ascending) {
         if (a?.firstName) {
@@ -414,6 +433,10 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   const isLoaded = () =>
     Boolean(!isEmpty(stakeholders) && !isEmpty(organisations));
 
+  const filterTagValue = renderFilterTag()
+    .flat()
+    .filter((item) => item);
+
   return (
     <div id="stakeholder-overview" className="stakeholder-overview">
       {!isValidUser && !scroll && (
@@ -423,14 +446,15 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         {isValidUser && (
           <Header
             {...{
-              view,
               setView,
+              sortResults,
               filterVisible,
               setFilterVisible,
               isAscending,
-              sortPeople,
               renderFilterTag,
               updateQuery,
+              selectionValue,
+              filterTagValue,
             }}
           />
         )}
@@ -554,8 +578,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                       {...{
                         view,
                         results,
-                        isAscending,
-                        sortPeople,
+                        sortResults,
                         pageSize,
                         filters,
                         itemCount,
