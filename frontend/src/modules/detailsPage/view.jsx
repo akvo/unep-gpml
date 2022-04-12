@@ -297,6 +297,7 @@ const renderBannerSection = (
   handleVisible,
   showLess,
   setShowLess,
+  placeholder,
   relation,
   handleRelationChange
 ) => {
@@ -339,6 +340,16 @@ const renderBannerSection = (
                 className="resource-image"
               />
             </a>
+            <img
+              src={
+                data.image
+                  ? data.image
+                  : require(`../../images/resource-detail/${
+                      placeholder[params.type]
+                    }`).default
+              }
+              className="resource-image"
+            />
           </div>
         </Col>
         <Col xs={18} lg={18} style={{ display: "flex" }}>
@@ -416,6 +427,18 @@ const renderBannerSection = (
                   className="resource-image"
                 />
               </a>
+              <img
+                src={
+                  data.image
+                    ? data.image
+                    : data.qimage
+                    ? data.qimage
+                    : require(`../../images/resource-detail/${
+                        placeholder[params.type]
+                      }`).default
+                }
+                className="resource-image"
+              />
             </div>
             <SharePanel
               data={data}
@@ -692,6 +715,7 @@ const DetailsView = ({
     meaOptions,
     transnationalOptions,
     icons,
+    placeholder,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -700,6 +724,7 @@ const DetailsView = ({
     meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
     icons: s.icons,
+    placeholder: s.placeholder,
   }));
   const history = useHistory();
   const [data, setData] = useState(null);
@@ -900,6 +925,7 @@ const DetailsView = ({
               handleVisible,
               showLess,
               setShowLess,
+              placeholder,
               { ...{ handleRelationChange, relation } }
             )}
           </Row>
