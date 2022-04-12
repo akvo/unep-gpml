@@ -14,7 +14,7 @@ country_counts AS (
   FROM filtered_entities
   WHERE geo_coverage IS NOT NULL
   GROUP BY geo_coverage, topic
-  UNION
+  UNION ALL
   SELECT geo_coverage, 'organisation' AS topic, COUNT(topic)
   FROM filtered_entities
   WHERE geo_coverage IS NOT NULL AND topic = 'organisation' AND (json->>'is_member')::BOOLEAN IS TRUE
