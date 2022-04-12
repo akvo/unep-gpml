@@ -332,6 +332,14 @@
            entity-name
            where-cond])))
 
+(defn generic-entity-geo-coverage-query
+  [entity-name]
+  (format
+   "SELECT e.id, c.id AS geo_coverage
+    FROM %s e
+    LEFT JOIN country c ON e.country = c.id"
+   entity-name))
+
 ;;======================= Search Text queries =================================
 (def ^:const ^:private organisation-topic-search-text-where-cond
   "WHERE (organisation.review_status = 'APPROVED'::public.review_status)")
@@ -493,7 +501,9 @@
   (let [where-cond (if (= entity-name "initiative")
                      initiative-topic-geo-coverage-where-cond
                      generic-topic-geo-coverage-where-cond)]
-    (generic-topic-geo-coverage-query entity-name where-cond)))
+    (if (some #{entity-name} ["organisation" "stakeholder"])
+      (generic-entity-geo-coverage-query entity-name)
+      (generic-topic-geo-coverage-query entity-name where-cond))))
 
 (defn build-topic-search-text-query
   "Generates SQL statements for querying searchable text from every
