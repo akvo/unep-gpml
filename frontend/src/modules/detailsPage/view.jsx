@@ -24,17 +24,12 @@ import {
 import { InfoCircleOutlined } from "@ant-design/icons";
 const { Title } = Typography;
 import { UIStore } from "../../store";
-import StickyBox from "react-sticky-box";
 import ActionGreen from "../../images/action-green.png";
 import LeftImage from "../../images/sea-dark.jpg";
 import LocationImage from "../../images/location.svg";
 import TransnationalImage from "../../images/transnational.svg";
 import CityImage from "../../images/city-icn.svg";
-import LanguageImage from "../../images/language.svg";
 import TagsImage from "../../images/tags.svg";
-import ViewsImage from "../../images/views.svg";
-import AvatarImage from "../../images/avatar.jpg";
-import EntityImage from "../../images/entity.png";
 import { ReactComponent as Recording } from "../../images/event-recording.svg";
 import { ReactComponent as ViewIcon } from "../../images/resource-detail/view-icn.svg";
 import { ReactComponent as EditIcon } from "../../images/resource-detail/edit-icn.svg";
@@ -42,16 +37,9 @@ import { ReactComponent as ShareIcon } from "../../images/resource-detail/share-
 import { ReactComponent as TrashIcon } from "../../images/resource-detail/trash-icn.svg";
 import { ReactComponent as BookMarkIcon } from "../../images/resource-detail/bookmark-icn.svg";
 import {
-  DownloadOutlined,
-  HeartOutlined,
-  ShareAltOutlined,
   DeleteOutlined,
-  EditOutlined,
-  UserOutlined,
   ArrowRightOutlined,
   LoadingOutlined,
-  EyeOutlined,
-  HeartFilled,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -320,6 +308,7 @@ const renderBannerSection = (
   handleVisible,
   showLess,
   setShowLess,
+  placeholder,
   relation,
   handleRelationChange
 ) => {
@@ -348,7 +337,13 @@ const renderBannerSection = (
         <Col xs={6} lg={6}>
           <div className="short-image">
             <img
-              src={data.image ? data.image : imageNotFound}
+              src={
+                data.image
+                  ? data.image
+                  : require(`../../images/resource-detail/${
+                      placeholder[params.type]
+                    }`).default
+              }
               className="resource-image"
             />
           </div>
@@ -413,7 +408,9 @@ const renderBannerSection = (
                     ? data.image
                     : data.qimage
                     ? data.qimage
-                    : imageNotFound
+                    : require(`../../images/resource-detail/${
+                        placeholder[params.type]
+                      }`).default
                 }
                 className="resource-image"
               />
@@ -693,6 +690,7 @@ const DetailsView = ({
     meaOptions,
     transnationalOptions,
     icons,
+    placeholder,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -701,6 +699,7 @@ const DetailsView = ({
     meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
     icons: s.icons,
+    placeholder: s.placeholder,
   }));
   const history = useHistory();
   const [data, setData] = useState(null);
@@ -901,6 +900,7 @@ const DetailsView = ({
               handleVisible,
               showLess,
               setShowLess,
+              placeholder,
               { ...{ handleRelationChange, relation } }
             )}
           </Row>
