@@ -21,6 +21,7 @@ import values from "lodash/values";
 import MapLanding from "./map-landing";
 import TopicView from "./TopicView";
 
+import topicViewIcon from "../../images/knowledge-library/topic-view-icon.svg";
 import { ReactComponent as IconLibrary } from "../../images/capacity-building/ic-knowledge-library.svg";
 import { ReactComponent as IconLearning } from "../../images/capacity-building/ic-capacity-building.svg";
 import { ReactComponent as IconExchange } from "../../images/capacity-building/ic-exchange.svg";
@@ -94,7 +95,11 @@ const KnowledgeLibrary = ({
         <img src={DownArrow} className="selection-arrow" alt="down-arrow" />
       </button>
       <span className="label text-white">{`${view} view`}</span>
-      <img src={GlobeOutlined} alt="globe-icon" />
+      {view === "map" ? (
+        <img src={GlobeOutlined} alt="globe-icon" />
+      ) : (
+        <img src={topicViewIcon} alt="globe-icon" />
+      )}
     </div>
   );
 
