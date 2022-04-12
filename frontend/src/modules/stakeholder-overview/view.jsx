@@ -120,9 +120,9 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       </button>
       <span className="label text-white">{`${view} view`}</span>
       {view === "map" ? (
-        <img src={GlobeOutlined} alt="globe-icon" />
+        <img src={GlobeOutlined} alt="globe-icon" className="filter-img" />
       ) : (
-        <img src={topicViewIcon} alt="globe-icon" />
+        <img src={topicViewIcon} alt="globe-icon" className="filter-img" />
       )}
     </div>
   );
