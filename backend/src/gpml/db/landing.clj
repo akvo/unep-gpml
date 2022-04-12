@@ -5,7 +5,7 @@
             [gpml.db.country :as db.country]
             [gpml.pg-util]))
 
-(declare map-counts summary map-transnational-counts-by-country entities-count-by-country-group)
+(declare map-counts summary)
 
 (hugsql/def-db-fns "gpml/db/landing.sql")
 
@@ -86,49 +86,32 @@
                  (assoc-in [:transnational_counts (keyword %)] 0)))
        (apply merge-with into)))
 
-(defn get-entities-count-by-country-group
-  "Get the entities count (i.e., Policy, Resource, Event, Organisation,
-  Stakeholder, etc.) by country group. The result of this
-  counting is grouped by country group."
-  [conn]
-  (let [counts (entities-count-by-country-group conn)
-        default-count-values (->> constants/topics
-                                  (map #(assoc-in {} [:counts (keyword %)] 0))
-                                  (apply merge-with into))]
-    (reduce (fn [acc counts]
-              (conj acc (merge-with into default-count-values counts)))
-            []
-            counts)))
-
 (defn map-counts-explicit
   "Get the entities count (i.e., Policy, Resource, Event, Organisation,
   Stakeholder, etc.) by country. The result of this
-  counting is grouped by transnational groups."
-  [conn]
-  (let [map-counts (map-counts conn)
-        transnational-counts-by-country (map-transnational-counts-by-country conn)]
+  counting is grouped by countries."
+  [conn opts]
+  (let [counts (map-counts conn (merge opts {:geo-coverage-types ["regional" "national" "sub-national"]
+                                             :count-name "counts"
+                                             :distinct-on-geo-coverage? true}))
+        transnational-counts-by-country (map-counts conn (merge opts {:geo-coverage-types ["transnational"]
+                                                                      :count-name "transnational_counts"
+                                                                      :distinct-on-geo-coverage? true}))]
     (reduce
      (fn [acc [_ counts]]
        (conj acc (merge-with into topic-counts (apply merge counts))))
      []
-     (group-by :id (concat map-counts transnational-counts-by-country)))))
+     (group-by :id (concat counts transnational-counts-by-country)))))
 
 (defn remap-counts
   [x]
   (assoc (dissoc x :id) :country_id (:id x)))
 
 (defn map-counts-include-all-countries
-  [conn]
-  (let [counts (map-counts-explicit conn)
+  [conn opts]
+  (let [counts (map-counts-explicit conn opts)
         included-countries (->> counts (map :id) set)
         all-countries (->> (db.country/all-countries conn) (map :id) set)
         missing-countries (remove nil? (set/difference all-countries included-countries))
         missing-counts (map #(merge {:id %} topic-counts) missing-countries)]
     (map remap-counts (concat counts missing-counts))))
-
-(comment
-
-  (require 'dev)
-  (def db (dev/db-conn))
-
-  (map-counts-include-all-countries db))
