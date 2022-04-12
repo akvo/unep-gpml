@@ -489,6 +489,8 @@ const ProfileView = ({ relations }) => {
                         nonMemberEntitiesData={nonMemberEntitiesData}
                         setEntitiesData={setEntitiesData}
                         setNonMemberEntitiesData={setNonMemberEntitiesData}
+                        tagsData={tagsData}
+                        setTagsData={setTagsData}
                       />
                     )}
                   </Route>
