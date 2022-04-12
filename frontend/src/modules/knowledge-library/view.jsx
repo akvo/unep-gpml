@@ -51,6 +51,7 @@ const KnowledgeLibrary = ({
   multiCountryCountries,
   isLoading,
   setLoading,
+  landingQuery,
 
   //Functions
   getResults,
@@ -420,6 +421,7 @@ const KnowledgeLibrary = ({
                       multiCountryCountries,
                       setMultiCountryCountries,
                       setListVisible,
+                      landingQuery
                     }}
                     isFilteredCountry={filterCountries}
                     isDisplayedList={listVisible}
