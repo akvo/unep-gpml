@@ -521,8 +521,8 @@ const renderItemValues = (
         type === "currency" &&
         (remarks
           ? currency
-            ? `${currency} ${amount} - ${remarks}`
-            : `${amount} - ${remarks}`
+            ? `${currency} ${currencyFormat(amount)} - ${remarks}`
+            : `${currencyFormat(amount)} - ${remarks}`
           : currency
           ? `${currency} ${currencyFormat(amount)}`
           : `${amount}`);
