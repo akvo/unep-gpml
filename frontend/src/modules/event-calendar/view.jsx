@@ -25,6 +25,7 @@ import { TrimText } from "../../utils/string";
 import api from "../../utils/api";
 
 const EventCalendar = withRouter(({ history }) => {
+  const path = history.location.pathname;
   const dateNow = moment().format("YYYY/MM/DD");
   const [event, setEvent] = useState([]);
   const [data, setData] = useState(null);
@@ -155,7 +156,12 @@ const EventCalendar = withRouter(({ history }) => {
               fullscreen={true}
               onPanelChange={handleOnDateSelected}
               onSelect={handleOnDateSelected}
-              headerRender={(e) => calendarHeader(e)}
+              headerRender={(e) =>
+                calendarHeader({
+                  ...e,
+                  isShownAddButton: path === "/events" ? true : false,
+                })
+              }
               dateCellRender={dateCellRender}
             />
           </div>
@@ -271,7 +277,7 @@ const renderEventContent = (history, event, eventCarousel, onThisDayText) => {
   );
 };
 
-const calendarHeader = ({ value, onChange }) => {
+const calendarHeader = ({ value, onChange, isShownAddButton }) => {
   const start = 0;
   const end = 12;
   const monthOptions = [];
@@ -305,6 +311,12 @@ const calendarHeader = ({ value, onChange }) => {
   return (
     <div style={{ padding: 8 }}>
       <Row gutter={8} justify="end">
+        {isShownAddButton && (
+          <Link to="/add-event">
+            <Button className="event-add-button">Add event</Button>
+          </Link>
+        )}
+
         <Col>
           <Select
             showSearch={true}
