@@ -52,6 +52,11 @@ spec:
             secretKeyRef:
               name: unep-gpml
               key: oidc-audience
+        - name: OIDC_AUDIENCE_CKAN
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: oidc-audience-ckan
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
