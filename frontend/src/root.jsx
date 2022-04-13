@@ -314,6 +314,7 @@ const Root = () => {
       .catch((err) => {
         console.error(err);
       });
+    setLandingQuery(String(searchParms));
   };
 
   const updateQuery = (param, value) => {
@@ -329,6 +330,8 @@ const Root = () => {
     }
     setFilters(newQuery);
     const newParams = new URLSearchParams(newQuery);
+
+    console.log(newParams, "newParams", newParams.toString());
     history.push(`/knowledge-library?${newParams.toString()}`);
     setLandingQuery(newParams.toString());
 
