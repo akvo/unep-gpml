@@ -63,7 +63,7 @@ const getType = (type) => {
     case "Event":
       t = "event";
       break;
-    case "initiative":
+    case "Initiative":
       t = "project";
       break;
     case "Policy":
