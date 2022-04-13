@@ -80,6 +80,12 @@
                :type "string"
                :allowEmptyValue true}}
     string?]
+   [:entity
+    {:optional true
+     :swagger {:description "Comma separated list of entity ids (i.e., organisation ids)"
+               :type "string"
+               :allowEmptyValue true}}
+    string?]
    [:orderBy {:optional true
               :swagger {:description "One of the following properties to order the list of results: name"
                         :type "string"
@@ -99,7 +105,7 @@
 
 (defn api-params->opts
   [{:keys [q country tag networkType affiliation representativeGroup geoCoverageType
-           limit page transnational orderBy descending]
+           limit page transnational orderBy descending entity]
     :or {limit default-api-limit
          page 0}}]
   (cond-> {}
@@ -133,6 +139,9 @@
 
     (seq tag)
     (assoc-in [:filters :tag] (set (str/split tag #",")))
+
+    (seq entity)
+    (assoc-in [:filters :entity] (map #(Integer/parseInt %) (str/split entity #",")))
 
     (seq orderBy)
     (assoc :order-by orderBy)
