@@ -1,7 +1,9 @@
 (ns gpml.handler.tag
-  (:require [gpml.db.tag :as db.tag]
-            [integrant.core :as ig]
-            [ring.util.response :as resp]))
+  (:require
+   [clojure.string :as str]
+   [gpml.db.tag :as db.tag]
+   [integrant.core :as ig]
+   [ring.util.response :as resp]))
 
 (def ^:const offerings-seekings
   "Mapping between offerings and seekings."
@@ -51,15 +53,31 @@
   [_ _]
   {:query
    [:map
+    [:tags
+     {:optional true
+      :swagger {:description "A comma separated list of tag names."
+                :type "string"
+                :allowEmptyValue true}}
+     string?]
     [:limit
      {:optional true
-      :default 5
+      :default 20
       :swagger {:description "Limit the number of popular topic tags results"
                 :type "int"
                 :allowEmptyValue true}}
      pos-int?]]})
 
+(defn- api-opts->opts
+  [{:keys [limit tags]}]
+  (cond-> {}
+    limit
+    (assoc :limit limit)
+
+    (seq tags)
+    (assoc-in [:filters :tags] (str/split tags #","))))
+
 (defmethod ig/init-key ::get-popular-topics-tags
   [_ {:keys [db]}]
-  (fn [{{{:keys [limit]} :query} :parameters}]
-    (resp/response (db.tag/get-popular-topics-tags (:spec db) {:limit limit}))))
+  (fn [{{:keys [query]} :parameters}]
+    (resp/response (db.tag/get-popular-topics-tags (:spec db)
+                                                   (api-opts->opts query)))))
