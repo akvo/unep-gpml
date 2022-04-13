@@ -126,7 +126,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                     <TrimText text={country?.name} max={15} />
                   </span>
                 </li>
-                <li className="list-item">
+                {/* <li className="list-item">
                   {profile?.type === "stakeholder"
                     ? profile?.affiliation && (
                         <span className="entity-name">
@@ -141,7 +141,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                           {profile?.representativeGroupCivilSociety}
                         </span>
                       )}
-                </li>
+                </li> */}
               </ul>
               {/* <ul className="icons-list">
               {profile?.isMember && (
