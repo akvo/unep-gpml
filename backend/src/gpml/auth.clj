@@ -1,7 +1,7 @@
 (ns gpml.auth
-  (:require [integrant.core :as ig]
-            [malli.core :as malli]
-            [gpml.db.stakeholder :as db.stakeholder])
+  (:require [gpml.db.stakeholder :as db.stakeholder]
+            [integrant.core :as ig]
+            [malli.core :as malli])
   (:import [com.auth0.jwk JwkProvider JwkProviderBuilder]
            [com.auth0.jwt JWT]
            [com.auth0.jwt.impl JsonNodeClaim]
