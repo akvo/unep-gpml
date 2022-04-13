@@ -238,8 +238,7 @@ const VerticalLegend = ({
   // STAKEHOLDER TOTAL COUNTS
   const stakeholderTotalCounts = path === STAKEHOLDER_OVERVIEW && {
     individual: stakeholderCount.individual,
-    entity:
-      stakeholderCount.GPMLMemberCount + stakeholderCount.nonMemberOrganisation,
+    entity: stakeholderCount.entity,
   };
 
   const stakeholderPerTransnationalGroup = multicountryGroups.map(
