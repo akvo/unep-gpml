@@ -331,7 +331,6 @@ const Root = () => {
     setFilters(newQuery);
     const newParams = new URLSearchParams(newQuery);
 
-    console.log(newParams, "newParams", newParams.toString());
     history.push(`/knowledge-library?${newParams.toString()}`);
     setLandingQuery(newParams.toString());
 
