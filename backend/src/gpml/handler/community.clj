@@ -160,14 +160,13 @@
         opts (api-params->opts query-params)
         modified-filters (if (get-in opts [:filters :transnational])
                            (let [country-group-countries (flatten
-                                                          (conj
-                                                           (map #(db.country-group/get-country-group-countries
-                                                                  conn {:id %})
-                                                                (get-in opts [:filters :transnational]))))
+                                                          (map #(db.country-group/get-country-group-countries
+                                                                 conn {:id %})
+                                                               (get-in opts [:filters :transnational])))
                                  geo-coverage-countries (map :id country-group-countries)]
-                             (assoc-in opts [:filters :country] (concat
-                                                                 (get-in opts [:filters :country])
-                                                                 (set geo-coverage-countries))))
+                             (assoc-in opts [:filters :country] (set (concat
+                                                                      (get-in opts [:filters :country])
+                                                                      geo-coverage-countries))))
                            opts)]
     {:results (db.community/get-community-members conn modified-filters)
      :counts (db.community/get-community-members conn (assoc modified-filters :count-only? true))}))
