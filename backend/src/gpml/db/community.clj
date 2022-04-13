@@ -9,7 +9,7 @@
   [params]
   (let [{:keys [count-only? limit page filters order-by descending]} params
         {:keys [search-text network-type affiliation geo-coverage-type transnational
-                country tag representative-group]} filters
+                country tag representative-group entity]} filters
         pagination (when (and (not count-only?)
                               limit page)
                      (format "LIMIT %d OFFSET %d" limit (* limit page)))
@@ -34,13 +34,16 @@
                      (str " AND country IN (:v*:filters.country)")
 
                      (seq transnational)
-                     (str " OR geo_coverage_type = 'transnational'")
+                     (str " AND (SELECT COUNT(*) FROM json_array_elements_text(geo_coverage_values) WHERE value::INT IN (:v*:filters.country)) > 0")
 
                      (seq representative-group)
                      (str " AND representative_group IN (:v*:filters.representative-group)")
 
                      (seq network-type)
-                     (str " AND type IN (:v*:filters.network-type)"))]
+                     (str " AND type IN (:v*:filters.network-type)")
+
+                     (seq entity)
+                     (str " AND id IN (:v*:filters.entity)"))]
 
     (if (:count-only? params)
       (format "SELECT cm.type AS network_type, COUNT(cm.*)
