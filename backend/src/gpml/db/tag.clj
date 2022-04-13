@@ -17,12 +17,12 @@
 
 (defn- generic-topic-tag-count-query
   [entity-name]
-  (apply format "SELECT t.tag, COUNT(*) AS count
+  (apply format "SELECT t.id, t.tag, COUNT(*) AS count
                  FROM %s e
                  JOIN %s_tag et ON et.%s = e.id
                  JOIN tag t ON t.id = et.tag
                  WHERE e.review_status = 'APPROVED'
-                 GROUP BY t.tag"
+                 GROUP BY t.id, t.tag"
          (repeat 3 entity-name)))
 
 (defn generate-popular-topics-tags-count-cte

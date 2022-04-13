@@ -45,11 +45,18 @@ order by tg.category, t.tag
 -- :doc Get popular topics tags and their count based on the number of times they are used.
 -- :require [gpml.db.tag]
 --~(#'gpml.db.tag/generate-popular-topics-tags-count-cte {} {})
+,
+popular_topics_tags_filtered AS (
+SELECT *
+FROM popular_topics_tags_count
+WHERE 1=1
+--~(when (seq (get-in params [:filters :tags])) " AND tag IN (:v*:filters.tags)")
+)
 SELECT
     tag,
     CAST(SUM(count) AS integer) AS count
 FROM
-    popular_topics_tags_count
+    popular_topics_tags_filtered
 GROUP BY
     tag
 ORDER BY
