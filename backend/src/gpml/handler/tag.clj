@@ -55,7 +55,7 @@
    [:map
     [:tags
      {:optional true
-      :swagger {:description "A comma separated list of tags IDs."
+      :swagger {:description "A comma separated list of tag names."
                 :type "string"
                 :allowEmptyValue true}}
      string?]
