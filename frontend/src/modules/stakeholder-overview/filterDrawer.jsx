@@ -256,7 +256,11 @@ const FilterDrawer = ({
               isLoaded()
                 ? organisations
                     ?.map((x) => ({ value: x.id, label: x.name }))
-                    .filter((organisation) => organisation?.value > -1)
+                    .filter(
+                      (organisation) =>
+                        organisation?.value > -1 ||
+                        organisation?.label?.length === 0
+                    )
                 : []
             }
             value={query?.affiliation?.map((x) => parseInt(x)) || []}
@@ -377,7 +381,11 @@ const FilterDrawer = ({
               isLoaded()
                 ? organisations
                     ?.map((x) => ({ value: x.id, label: x.name }))
-                    .filter((organisation) => organisation?.value > -1)
+                    .filter(
+                      (organisation) =>
+                        organisation?.value > -1 ||
+                        organisation?.label?.length === 0
+                    )
                     .sort((a, b) => a?.label.localeCompare(b?.label))
                 : []
             }
