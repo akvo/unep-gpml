@@ -416,7 +416,11 @@ const FilterDrawer = ({
               isLoaded()
                 ? organisations
                     ?.map((x) => ({ value: x.id, label: x.name }))
-                    .filter((organisation) => organisation?.value > -1)
+                    .filter(
+                      (organisation) =>
+                        organisation?.value > -1 ||
+                        organisation?.label?.length === 0
+                    )
                 : []
             }
             value={query?.entity?.map((x) => parseInt(x)) || []}
