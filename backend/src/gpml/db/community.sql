@@ -2,7 +2,8 @@
 /* :require [clojure.string :as s]
             [gpml.db.community]
 */
-WITH community_members AS (
+WITH
+community_members AS (
     SELECT
         o.id,
         o.name,
@@ -16,11 +17,14 @@ WITH community_members AS (
         json_agg(json_build_object(COALESCE(t.id, 0), t.tag)) AS tags,
         o.review_status,
         to_tsvector('english'::regconfig, COALESCE(o.name, '') || ' ' || COALESCE(o.program, '') || ' ' || COALESCE(o.contribution, '') || ' ' || COALESCE(o.expertise, '')) AS search_text,
-        o.is_member
+        o.is_member,
+        json_agg(COALESCE(ogc.country, cgc.country)) AS geo_coverage_values
     FROM
         organisation o
         LEFT JOIN organisation_tag ot ON o.id = ot.organisation
         LEFT JOIN tag t ON ot.tag = t.id
+        LEFT JOIN organisation_geo_coverage ogc ON o.id = ogc.organisation
+        LEFT JOIN country_group_country cgc ON ogc.country_group = cgc.country_group
     GROUP BY
         o.id
     UNION ALL
@@ -37,7 +41,8 @@ WITH community_members AS (
         json_agg(json_build_object(COALESCE(t.id, 0), t.tag)) AS tags,
         s.review_status,
         to_tsvector('english'::regconfig, COALESCE(s.first_name, '') || ' ' || COALESCE(s.last_name, '') || ' ' || COALESCE(s.about, '')) AS search_text,
-        NULL as is_member
+        NULL as is_member,
+        array_to_json(array[s.country]) as geo_coverage_values
     FROM
         stakeholder s
         LEFT JOIN organisation a ON s.affiliation = a.id

@@ -80,6 +80,12 @@
                :type "string"
                :allowEmptyValue true}}
     string?]
+   [:entity
+    {:optional true
+     :swagger {:description "Comma separated list of entity ids (i.e., organisation ids)"
+               :type "string"
+               :allowEmptyValue true}}
+    string?]
    [:orderBy {:optional true
               :swagger {:description "One of the following properties to order the list of results: name"
                         :type "string"
@@ -99,7 +105,7 @@
 
 (defn api-params->opts
   [{:keys [q country tag networkType affiliation representativeGroup geoCoverageType
-           limit page transnational orderBy descending]
+           limit page transnational orderBy descending entity]
     :or {limit default-api-limit
          page 0}}]
   (cond-> {}
@@ -134,6 +140,9 @@
     (seq tag)
     (assoc-in [:filters :tag] (set (str/split tag #",")))
 
+    (seq entity)
+    (assoc-in [:filters :entity] (map #(Integer/parseInt %) (str/split entity #",")))
+
     (seq orderBy)
     (assoc :order-by orderBy)
 
@@ -151,14 +160,13 @@
         opts (api-params->opts query-params)
         modified-filters (if (get-in opts [:filters :transnational])
                            (let [country-group-countries (flatten
-                                                          (conj
-                                                           (map #(db.country-group/get-country-group-countries
-                                                                  conn {:id %})
-                                                                (get-in opts [:filters :transnational]))))
+                                                          (map #(db.country-group/get-country-group-countries
+                                                                 conn {:id %})
+                                                               (get-in opts [:filters :transnational])))
                                  geo-coverage-countries (map :id country-group-countries)]
-                             (assoc-in opts [:filters :country] (concat
-                                                                 (get-in opts [:filters :country])
-                                                                 (set geo-coverage-countries))))
+                             (assoc-in opts [:filters :country] (set (concat
+                                                                      (get-in opts [:filters :country])
+                                                                      geo-coverage-countries))))
                            opts)]
     {:results (db.community/get-community-members conn modified-filters)
      :counts (db.community/get-community-members conn (assoc modified-filters :count-only? true))}))
