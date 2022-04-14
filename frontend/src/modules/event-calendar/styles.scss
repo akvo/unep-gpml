@@ -133,8 +133,7 @@
         border-radius: 50%;
       }
       .month-select,
-      .year-select,
-      .event-add-button {
+      .year-select {
         min-width: 123px;
         border-radius: 5px;
       }
@@ -143,17 +142,20 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        display: inline-block;
+        min-height: 32px;
         span {
           line-height: 10px;
           font-size: 18px;
         }
         &:hover {
           background-color: $yellow-highlight;
+          color: #fff;
+          border-color: $yellow-highlight;
         }
       }
 
-      .ant-select-selector,
-      .event-add-button {
+      .ant-select-selector {
         background-color: rgba(255, 255, 255, 0.2);
         border-radius: 5px;
         border: 1px solid white;
