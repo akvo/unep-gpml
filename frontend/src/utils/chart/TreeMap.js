@@ -16,7 +16,7 @@ const TreeMap = (data, extra, selected) => {
   let rich = {
     name: {
       ...fontFamily,
-      lineHeight: 15,
+      lineHeight: 13,
       fontSize: 12,
       fontWeight: "bold",
     },
@@ -28,8 +28,9 @@ const TreeMap = (data, extra, selected) => {
       opacity: 0.95,
       padding: 10,
       borderRadius: 50,
-      width: 15,
-      height: 15,
+      width: 12,
+      height: 12,
+      lineHeight: 13,
     },
   };
   data = !data ? [] : data;
@@ -87,11 +88,11 @@ const TreeMap = (data, extra, selected) => {
         colorMappingBy: "index",
         breadcrumb: false,
         squareRatio: 0.5,
-        // squareRatio: 0.5 * (0.5 + Math.sqrt(2)),
+        // squareRatio: 0.5 * (0.5 + Math.sqrt(5)),
         itemStyle: {
           borderColor: "#255B87",
-          borderWidth: 4,
-          gapWidth: 4,
+          borderWidth: 2,
+          gapWidth: 1,
         },
         label: {
           formatter: function (params) {
@@ -114,7 +115,7 @@ const TreeMap = (data, extra, selected) => {
           position: "inside",
           align: "center",
           verticalAlign: "middle",
-          padding: [18, 0],
+          padding: [10, 0],
         },
       },
     ],

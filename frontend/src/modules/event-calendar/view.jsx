@@ -313,7 +313,9 @@ const calendarHeader = ({ value, onChange, isShownAddButton }) => {
       <Row gutter={8} justify="end">
         {isShownAddButton && (
           <Link to="/add-event">
-            <Button className="event-add-button">Add event</Button>
+            <Button type="primary" className="event-add-button">
+              Add Event
+            </Button>
           </Link>
         )}
 
