@@ -144,7 +144,7 @@
         margin-bottom: 8px;
       }
 
-      @media (min-width: 600px) {
+      @media (min-width: 400px) {
         .day-select {
           display: none;
         }
@@ -334,7 +334,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 400px) {
   .event {
     .item-body {
       .asset-title {
