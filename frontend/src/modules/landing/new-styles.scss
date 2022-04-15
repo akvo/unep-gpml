@@ -145,6 +145,12 @@
     }
   }
 
+  @media (min-width: 601px) {
+    .topic-bar-wrapper {
+      display: none;
+    }
+  }
+
   .popular-topics {
     .body {
       display: flex;
