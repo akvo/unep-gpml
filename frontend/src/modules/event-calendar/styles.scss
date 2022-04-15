@@ -1,5 +1,9 @@
 @import "../../vars.scss";
 
+.event-overlay-zoom {
+  zoom: 80% !important;
+}
+
 .event {
   padding-top: 50px;
   padding-bottom: 40px;

@@ -323,6 +323,7 @@ const calendarHeader = ({ value, onChange, isShownAddButton }) => {
           <Select
             showSearch={true}
             dropdownMatchSelectWidth={false}
+            dropdownClassName="event-overlay-zoom"
             className="year-select"
             onChange={(newYear) => {
               const now = value.clone().year(newYear);
@@ -336,6 +337,7 @@ const calendarHeader = ({ value, onChange, isShownAddButton }) => {
         <Col>
           <Select
             dropdownMatchSelectWidth={false}
+            dropdownClassName="event-overlay-zoom"
             className="month-select"
             onChange={(selectedMonth) => {
               const newValue = value.clone();
