@@ -16,6 +16,7 @@
     background-color: #036799;
     color: #ffffff;
   }
+
   .landing-banner {
     padding: 3rem 0px;
     background: url("../../images/landing-banner.png");
@@ -24,6 +25,22 @@
     background-position-x: right;
     background-repeat: no-repeat;
     background-size: 70%;
+
+    @media (max-width: 650px) {
+      background-size: cover !important;
+      background-position-x: 70% !important;
+      h1 {
+        line-height: 40px !important;
+      }
+      div.body-text {
+        line-height: 32px !important;
+      }
+      h1,
+      div.body-text {
+        max-width: 100% !important;
+      }
+    }
+
     @media only screen and (max-width: 800px) {
       background-size: 120%;
     }
@@ -36,6 +53,7 @@
       color: white;
       max-width: 70%;
     }
+
     @media only screen and (max-width: 800px) {
       h1 {
         font-size: 2.5rem !important;
