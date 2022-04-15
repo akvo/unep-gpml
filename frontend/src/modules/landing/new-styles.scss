@@ -120,6 +120,7 @@
         }
       }
     }
+
     .popular-topics {
       .chart-wrapper {
         display: none !important;
@@ -285,6 +286,44 @@
           width: 100%;
           min-height: calc(96% + 2%);
         }
+      }
+    }
+  }
+
+  .content-left-mobile {
+    display: none;
+  }
+
+  @media (max-width: 400px) {
+    .content-left-desktop {
+      display: none !important;
+    }
+    .content-left-mobile {
+      display: block;
+      margin-bottom: 16px;
+      .ant-card-body {
+        padding: 20px !important;
+      }
+
+      .item,
+      .feature-content-carousel-item,
+      .ant-card-body {
+        width: 300px !important;
+      }
+
+      .react-multi-carousel-list {
+        overflow: hidden !important;
+      }
+
+      .feature-content-carousel-item {
+        margin-right: 2px;
+      }
+
+      .feature-content li {
+        display: flex;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 2px;
       }
     }
   }
