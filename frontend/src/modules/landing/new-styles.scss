@@ -314,6 +314,9 @@
           margin-right: 0.85rem;
           border-radius: 10px;
           min-height: 23rem;
+          @media (max-width: 400px) {
+            width: 300px !important;
+          }
           .type-wrapper {
             padding: 20px 20px 0px 20px;
             display: flex;
