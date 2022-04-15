@@ -462,10 +462,12 @@ const Landing = withRouter(
                   onClick={(e) => handlePopularTopicBarClick(e)}
                   style={{
                     backgroundColor:
-                      x?.topic.toLocaleLowerCase() === selectedTopic ? "#FFB800" : "#039B78",
+                      x?.topic.toLocaleLowerCase() === selectedTopic
+                        ? "#FFB800"
+                        : "#039B78",
                   }}
                 >
-                  <span className='bar-count'>{x?.count}</span>
+                  <span className="bar-count">{x?.count}</span>
                   <div>{titleCase(x?.topic)}</div>
                 </button>
               );

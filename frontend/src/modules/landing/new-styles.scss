@@ -125,6 +125,24 @@
         display: none !important;
       }
     }
+
+    .our-community .react-multi-carousel-dot-list {
+      justify-content: start;
+    }
+    .event .item-meta {
+      align-items: center !important;
+    }
+    .item-meta .mark {
+      display: flex !important;
+      place-self: center !important;
+      margin-left: 10px !important;
+    }
+    .event .body {
+      flex-direction: column-reverse;
+    }
+    .ant-picker-panel {
+      display: none;
+    }
   }
 
   .popular-topics {

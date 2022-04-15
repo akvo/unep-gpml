@@ -308,6 +308,24 @@ const calendarHeader = ({ value, onChange, isShownAddButton }) => {
       </Select.Option>
     );
   }
+
+  function daysInMonth(month, year) {
+    return new Date(year, month, 0).getDate();
+  }
+
+  const daysInSelectedMonth = daysInMonth(month + 1, year);
+
+  const day = value.date();
+
+  const days = [];
+  for (let i = 1; i < daysInSelectedMonth + 1; i += 1) {
+    days.push(
+      <Select.Option key={i} value={i} className="day-item">
+        {i}
+      </Select.Option>
+    );
+  }
+
   return (
     <div style={{ padding: 8 }}>
       <Row gutter={8} justify="end">
@@ -317,6 +335,23 @@ const calendarHeader = ({ value, onChange, isShownAddButton }) => {
               Add Event
             </Button>
           </Link>
+        )}
+        {!isShownAddButton && (
+          <Col>
+            <Select
+              showSearch={true}
+              dropdownMatchSelectWidth={false}
+              dropdownClassName="event-overlay-zoom"
+              className="day-select"
+              onChange={(newDay) => {
+                const now = value.clone().date(newDay);
+                onChange(now);
+              }}
+              value={String(day)}
+            >
+              {days}
+            </Select>
+          </Col>
         )}
 
         <Col>

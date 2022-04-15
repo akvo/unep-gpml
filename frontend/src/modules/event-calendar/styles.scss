@@ -137,9 +137,16 @@
         border-radius: 50%;
       }
       .month-select,
-      .year-select {
+      .year-select,
+      .day-select {
         min-width: 123px;
         border-radius: 5px;
+      }
+
+      @media (min-width: 600px) {
+        .day-select {
+          display: none;
+        }
       }
 
       .event-add-button {
