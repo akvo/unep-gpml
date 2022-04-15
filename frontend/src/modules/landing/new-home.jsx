@@ -21,7 +21,7 @@ import {
   ourCommunity,
   benefit,
 } from "./new-home-static-content";
-import { TrimText } from "../../utils/string";
+import { titleCase, TrimText } from "../../utils/string";
 import orderBy from "lodash/orderBy";
 import humps from "humps";
 import { topicNames } from "../../utils/misc";
@@ -146,12 +146,18 @@ const Landing = withRouter(
 
     const handlePopularTopicChartClick = (params) => {
       const { name, tag } = params?.data;
+      console.log("params::::::", params);
 
       if (!isMobileScreen) {
-        setSelectedTopic(name?.toLowerCase());
+        setSelectedTopic(name?.toLocaleLowerCase());
       } else {
         isMobileScreen && history.push(`/knowledge-library?tag=${tag}`);
       }
+    };
+
+    const handlePopularTopicBarClick = (e) => {
+      const name = e.currentTarget.value;
+      setSelectedTopic(name.toLowerCase());
     };
 
     const handleOurCommunityProfileClick = () => {
@@ -446,6 +452,27 @@ const Landing = withRouter(
               </span>
             </h2>
           </div>
+          <div className="topic-bar-wrapper">
+            {sortedPopularTopics.map((x) => {
+              return (
+                <button
+                  className="topic-bar"
+                  key={x?.id}
+                  value={x?.topic}
+                  onClick={(e) => handlePopularTopicBarClick(e)}
+                  style={{
+                    backgroundColor:
+                      x?.topic.toLocaleLowerCase() === selectedTopic
+                        ? "#FFB800"
+                        : "#039B78",
+                  }}
+                >
+                  <span className="bar-count">{x?.count}</span>
+                  <div>{titleCase(x?.topic)}</div>
+                </button>
+              );
+            })}
+          </div>
           <div className="body">
             <TopicChart
               wrapperHeight={"8%"}
@@ -458,70 +485,70 @@ const Landing = withRouter(
                 handlePopularTopicChartClick,
               }}
             />
-            {!isMobileScreen && (
-              <div className="content">
-                <div className="content-body">
-                  {sortPopularTopic.length !== 0 &&
-                    sortPopularTopic
-                      .find((x) => x?.topic.toLowerCase() === selectedTopic)
-                      ?.items.slice(0, 3)
-                      ?.map((x, i) => {
-                        const { id, type, title, description, remarks } = x;
-                        const link = `/${humps.decamelize(type)}/${id}`;
-                        return (
-                          <Card
-                            key={`summary-${i}`}
-                            className="item-body"
-                            onClick={() => history.push(link)}
-                          >
-                            <div className="resource-label upper">
-                              {topicNames(humps.camelizeKeys(type))}
-                            </div>
-                            <div className="asset-title">{title || ""}</div>
-                            <div className="body-text">
-                              {TrimText({
-                                text: description || remarks,
-                                max: 250,
-                              })}
-                            </div>
-                            <span className="read-more">
-                              <Link to={link}>
-                                Read more <ArrowRightOutlined />
-                              </Link>
-                            </span>
-                          </Card>
-                        );
-                      })}
-                  {resources?.items?.map((x, i) => {
-                    const { id, type, title, description, remarks } = x;
-                    const link = `/${humps.decamelize(type)}/${id}`;
-                    return (
-                      <Card
-                        key={`summary-${i}`}
-                        className="item-body"
-                        onClick={() => history.push(link)}
-                      >
-                        <div className="resource-label upper">
-                          {topicNames(humps.camelizeKeys(type))}
-                        </div>
-                        <div className="asset-title">{title || ""}</div>
-                        <div className="body-text">
-                          {TrimText({
-                            text: description || remarks,
-                            max: 250,
-                          })}
-                        </div>
-                        <span className="read-more">
-                          <Link to={link}>
-                            Read more <ArrowRightOutlined />
-                          </Link>
-                        </span>
-                      </Card>
-                    );
-                  })}
-                </div>
+            {/* {!isMobileScreen && ( */}
+            <div className="content">
+              <div className="content-body">
+                {sortPopularTopic.length !== 0 &&
+                  sortPopularTopic
+                    .find((x) => x?.topic.toLowerCase() === selectedTopic)
+                    ?.items.slice(0, 3)
+                    ?.map((x, i) => {
+                      const { id, type, title, description, remarks } = x;
+                      const link = `/${humps.decamelize(type)}/${id}`;
+                      return (
+                        <Card
+                          key={`summary-${i}`}
+                          className="item-body"
+                          onClick={() => history.push(link)}
+                        >
+                          <div className="resource-label upper">
+                            {topicNames(humps.camelizeKeys(type))}
+                          </div>
+                          <div className="asset-title">{title || ""}</div>
+                          <div className="body-text">
+                            {TrimText({
+                              text: description || remarks,
+                              max: 250,
+                            })}
+                          </div>
+                          <span className="read-more">
+                            <Link to={link}>
+                              Read more <ArrowRightOutlined />
+                            </Link>
+                          </span>
+                        </Card>
+                      );
+                    })}
+                {resources?.items?.map((x, i) => {
+                  const { id, type, title, description, remarks } = x;
+                  const link = `/${humps.decamelize(type)}/${id}`;
+                  return (
+                    <Card
+                      key={`summary-${i}`}
+                      className="item-body"
+                      onClick={() => history.push(link)}
+                    >
+                      <div className="resource-label upper">
+                        {topicNames(humps.camelizeKeys(type))}
+                      </div>
+                      <div className="asset-title">{title || ""}</div>
+                      <div className="body-text">
+                        {TrimText({
+                          text: description || remarks,
+                          max: 250,
+                        })}
+                      </div>
+                      <span className="read-more">
+                        <Link to={link}>
+                          Read more <ArrowRightOutlined />
+                        </Link>
+                      </span>
+                    </Card>
+                  );
+                })}
               </div>
-            )}
+            </div>
+            {/* )} */}
           </div>
         </div>
         {/* Our Community */}
