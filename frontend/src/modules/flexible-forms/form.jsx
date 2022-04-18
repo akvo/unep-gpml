@@ -764,6 +764,10 @@ const FlexibleForm = withRouter(
         data?.image &&
           data?.image.match(customFormats.url) &&
           delete data.image;
+
+        if (formData?.S4["S4_G4"].image === "") {
+          data.image = "";
+        }
       }
 
       if (status === "add" && !params?.id) {
@@ -979,6 +983,17 @@ const FlexibleForm = withRouter(
 
     const handleFormOnChange = useCallback(
       ({ formData, schema }) => {
+        if (status === "add" && !params?.id) {
+          formData?.S4.S4_G4?.image === "" && delete formData?.S4.S4_G4?.image;
+        }
+        if (
+          (status === "edit" || params?.id) &&
+          (formData?.S4.S4_G4?.image || formData?.S4.S4_G4?.image === "")
+        ) {
+          formData.S4.S4_G4.image =
+            formData?.S4.S4_G4?.image !== "" ? formData?.S4.S4_G4?.image : "";
+        }
+
         initialFormData.update((e) => {
           e.data = {
             ...e.data,
@@ -1149,7 +1164,21 @@ const FlexibleForm = withRouter(
         let index = dependValue.indexOf(x);
         index !== -1 && dependValue.splice(index, 1);
       });
-      const res = overideValidation(errors, dependValue);
+      let res = overideValidation(errors, dependValue);
+
+      // overiding image validation when edit
+      if (
+        (res.length > 0 &&
+          (status === "edit" || params?.id) &&
+          flexibleFormData?.data?.S4["S4_G4"].image &&
+          flexibleFormData?.data?.S4["S4_G4"].image.match(customFormats.url)) ||
+        !flexibleFormData?.data?.S4["S4_G4"].image
+      ) {
+        res = res.filter(
+          (x) => x?.params && x.params?.format && x.params.format !== "data-url"
+        );
+      }
+
       res.length === 0 && setHighlight(false);
       if (res.length > 0) {
         const descriptionList = res.map((r, index) => {
