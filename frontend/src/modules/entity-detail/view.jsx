@@ -421,12 +421,20 @@ const StakeholderDetail = ({
                         }
                       />
                     </List.Item>
-                    <List.Item className="location">
-                      <List.Item.Meta
-                        avatar={<Avatar src={TransnationalImage} />}
-                        title={data?.geoCoverageType}
-                      />
-                    </List.Item>
+                    {data?.geoCoverageType && (
+                      <List.Item className="location">
+                        <List.Item.Meta
+                          avatar={<Avatar src={TransnationalImage} />}
+                          title={
+                            <>
+                              <span style={{ textTransform: "capitalize" }}>
+                                {data?.geoCoverageType}
+                              </span>
+                            </>
+                          }
+                        />
+                      </List.Item>
+                    )}
                   </List>
                 </div>
               </CardComponent>
