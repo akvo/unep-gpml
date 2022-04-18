@@ -330,7 +330,12 @@ const calendarHeader = ({ value, onChange, isShownAddButton }) => {
     <div style={{ padding: 8 }}>
       <Row gutter={8} justify="end">
         {isShownAddButton && (
-          <Link to="/add-event">
+          <Link
+            to={{
+              pathname: "/flexible-forms",
+              state: { type: "event_flexible", label: "Event" },
+            }}
+          >
             <Button type="primary" className="event-add-button">
               Add Event
             </Button>
