@@ -518,8 +518,12 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
   const [capacityBuilding, setCapacityBuilding] = useState(false);
-  const [mainType, setMainType] = useState("initiative");
-  const [label, setLabel] = useState("Initiative");
+  const [mainType, setMainType] = useState(
+    state?.state?.type ? state?.state?.type : "initiative"
+  );
+  const [label, setLabel] = useState(
+    state?.state?.label ? state?.state?.label : "Initiative"
+  );
   const [subType, setSubType] = useState("");
   const [subContentType, setSubContentType] = useState([]);
   const [disabledBtn, setDisabledBtn] = useState({
@@ -746,6 +750,12 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     });
     return formData;
   };
+
+  useEffect(() => {
+    if (state?.state?.type) {
+      handleOnTabChange("S3");
+    }
+  }, [state]);
 
   useEffect(() => {
     if (status === "edit") {
