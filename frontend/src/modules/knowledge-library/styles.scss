@@ -19,6 +19,9 @@
 
 #knowledge-library {
   position: relative;
+  @media (max-width: 400px) {
+    overflow: hidden;
+  }
   #mainNavigation {
     @media (min-width: 750px) {
       display: block;
@@ -897,6 +900,10 @@
             }
           }
         }
+      }
+
+      @media (max-width: 400px) {
+        width: 100%;
       }
     }
   }
