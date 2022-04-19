@@ -171,9 +171,9 @@ const SharePanel = ({
         {relation &&
         relation.association &&
         relation.association.indexOf("interested in") !== -1 ? (
-          <BookMarkIcon className="recording-icon bookmark-filled" />
+          <BookMarkIcon className="bookmark-icon bookmark-filled" />
         ) : (
-          <BookMarkIcon className="recording-icon" />
+          <BookMarkIcon className="bookmark-icon" />
         )}
         <h2>Bookmark</h2>
       </div>
