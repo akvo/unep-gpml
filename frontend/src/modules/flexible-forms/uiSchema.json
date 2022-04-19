@@ -9,7 +9,7 @@
         "summary": {
           "ui:placeholder": "Description",
           "ui:widget": "textarea",
-          "ui:maxLength": 400,
+          "ui:maxLength": 1000,
           "ui:showCount": true
         },
         "url": {
@@ -388,7 +388,7 @@
         "summary": {
           "ui:placeholder": "Description",
           "ui:widget": "textarea",
-          "ui:maxLength": 400,
+          "ui:maxLength": 1000,
           "ui:showCount": true
         },
         "url": {
@@ -616,7 +616,7 @@
         "summary": {
           "ui:placeholder": "Description",
           "ui:widget": "textarea",
-          "ui:maxLength": 400,
+          "ui:maxLength": 1000,
           "ui:showCount": true
         },
         "url": {
@@ -880,7 +880,7 @@
         "summary": {
           "ui:placeholder": "Description",
           "ui:widget": "textarea",
-          "ui:maxLength": 400,
+          "ui:maxLength": 1000,
           "ui:showCount": true
         },
         "url": {
@@ -1113,7 +1113,7 @@
         "summary": {
           "ui:placeholder": "Description",
           "ui:widget": "textarea",
-          "ui:maxLength": 400,
+          "ui:maxLength": 1000,
           "ui:showCount": true
         },
         "url": {
@@ -1329,7 +1329,7 @@
         "summary": {
           "ui:placeholder": "Description",
           "ui:widget": "textarea",
-          "ui:maxLength": 400,
+          "ui:maxLength": 1000,
           "ui:showCount": true
         },
         "url": {
@@ -1557,7 +1557,7 @@
         "summary": {
           "ui:placeholder": "Description",
           "ui:widget": "textarea",
-          "ui:maxLength": 400,
+          "ui:maxLength": 1000,
           "ui:showCount": true
         },
         "url": {
