@@ -4,7 +4,7 @@ import { SearchOutlined } from "@ant-design/icons";
 
 import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
 import TooltipOutlined from "../../images/knowledge-library/tooltip-outlined.svg";
-import DownArrow from "../../images/knowledge-library/chevron-down.svg";
+import { ReactComponent as DownArrow } from "../../images/knowledge-library/chevron-down.svg";
 
 import "./styles.scss";
 import { UIStore } from "../../store";
@@ -93,7 +93,9 @@ const KnowledgeLibrary = ({
   const selectionValue = (
     <div className="selection-value">
       <button className="select-button">
-        <img src={DownArrow} className="selection-arrow" alt="down-arrow" />
+        <div className="selection-arrow">
+          <DownArrow />
+        </div>
       </button>
       <span className="label text-white">{`${view} view`}</span>
       {view === "map" ? (
