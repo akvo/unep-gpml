@@ -358,27 +358,7 @@ const renderBannerSection = (
                 borderRadius: "none",
               }}
             >
-              {data?.summary && data?.summary?.length < 400 ? (
-                <p>{data?.summary}</p>
-              ) : (
-                <>
-                  {data?.summary && (
-                    <>
-                      <p>
-                        {showLess
-                          ? `${data.summary && data.summary.slice(0, 400)}...`
-                          : data.summary}
-                      </p>
-                      <a
-                        className="view-more"
-                        onClick={() => setShowLess(!showLess)}
-                      >
-                        Read {showLess ? "More" : "Less"}
-                      </a>
-                    </>
-                  )}
-                </>
-              )}
+              {data?.summary}
             </CardComponent>
             <SharePanel
               data={data}
