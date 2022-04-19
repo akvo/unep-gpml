@@ -356,7 +356,7 @@ const KnowledgeLibrary = ({
                   ? "resource-main-container"
                   : `resource-main-container topic-main-container`
               }
-              style={{ display: view === "map" ? "block" : "flex" }}
+              // style={{ display: view === "map" ? "block" : "flex" }}
             >
               {/* Resource Main Content */}
               {listVisible && (

@@ -48,11 +48,17 @@
   }
 
   .resource-main-container {
+    display: block;
     background-color: rgb(37, 91, 135);
     @media (min-width: 700px) {
       flex-wrap: nowrap;
     }
   }
+
+  .topic-main-container {
+    display: flex;
+  }
+
   @media (max-width: 400px) {
     .topic-main-container {
       background-color: #d3dee7;
@@ -486,10 +492,9 @@
       max-width: 350px !important;
     }
     @media (max-width: 400px) {
+      position: unset;
       max-width: 100%;
-    }
-    @media (max-width: 400px) {
-      background-color: #d3dee7;
+      background-color: #fff;
     }
   }
 
@@ -836,6 +841,7 @@
         }
       }
       @media (max-width: 400px) {
+        display: flex;
         flex-direction: column-reverse;
         .resource-list {
           padding-left: 20px;
