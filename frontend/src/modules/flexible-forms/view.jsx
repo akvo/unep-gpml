@@ -526,12 +526,8 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
   const [capacityBuilding, setCapacityBuilding] = useState(false);
-  const [mainType, setMainType] = useState(
-    state?.state?.type ? state?.state?.type : "initiative"
-  );
-  const [label, setLabel] = useState(
-    state?.state?.label ? state?.state?.label : "Initiative"
-  );
+  const [mainType, setMainType] = useState("initiative");
+  const [label, setLabel] = useState("Initiative");
   const [subType, setSubType] = useState("");
   const [subContentType, setSubContentType] = useState([]);
   const [disabledBtn, setDisabledBtn] = useState({
@@ -585,6 +581,13 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       getResourceByType(mainType);
     }
   }, [mainType, isLoaded]);
+
+  useEffect(() => {
+    if (state?.state?.type && status !== "edit") {
+      setMainType(state?.state?.type);
+      setLabel(state?.state?.label);
+    }
+  }, [state]);
 
   const getRevertValue = (type, value, name) => {
     let res = value;
