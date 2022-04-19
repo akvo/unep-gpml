@@ -50,14 +50,6 @@
     border-radius: 30px;
   }
 
-  .resource-main-container {
-    display: block;
-    background-color: rgb(37, 91, 135);
-    @media (min-width: 700px) {
-      flex-wrap: nowrap;
-    }
-  }
-
   .topic-main-container {
     display: flex;
   }
@@ -823,35 +815,43 @@
       }
     }
 
-    .resource-main-container {
-      .ant-page-header {
-        padding: 2px 24px;
-      }
-      .resource-list {
-        gap: 5px;
-        padding-bottom: 120px;
-        .resource-item-wrapper {
-          .ant-card-body {
-            padding-top: 5px;
-            padding-bottom: 5px;
-          }
-          .item-body {
-            margin-top: 0px;
-          }
-          .item-footer {
-            margin-top: 5px;
-          }
-        }
-      }
-      @media (max-width: 400px) {
-        display: flex;
-        flex-direction: column-reverse;
-        .resource-list {
-          padding-left: 20px;
-          padding-right: 20px;
-        }
-      }
-    }
+    // .resource-main-container {
+    //   display: block;
+    //   background-color: rgb(37, 91, 135);
+    //   .ant-page-header {
+    //     padding: 2px 24px;
+    //   }
+    //   .resource-list {
+    //     gap: 5px;
+    //     padding-bottom: 120px;
+    //     .resource-item-wrapper {
+    //       .ant-card-body {
+    //         padding-top: 5px;
+    //         padding-bottom: 5px;
+    //       }
+    //       .item-body {
+    //         margin-top: 0px;
+    //       }
+    //       .item-footer {
+    //         margin-top: 5px;
+    //       }
+    //     }
+    //   }
+    //   @media (max-width: 400px) {
+    //     display: flex !important;
+    //     flex-direction: column !important;
+    //     flex-direction: column-reverse !important;
+    //     .resource-list {
+    //       padding-left: 20px;
+    //       padding-right: 20px;
+    //     }
+    //   }
+
+    //   @media (min-width: 700px) {
+    //     flex-wrap: nowrap;
+    //   }
+    // }
+
     .ui-header {
       .sort-btn {
         svg {
@@ -922,5 +922,42 @@
     @-moz-document url-prefix() {
       transform: scale(1);
     }
+  }
+}
+
+.resource-main-container {
+  display: block;
+  background-color: rgb(37, 91, 135);
+  .ant-page-header {
+    padding: 2px 24px;
+  }
+  .resource-list {
+    gap: 5px;
+    padding-bottom: 120px;
+    .resource-item-wrapper {
+      .ant-card-body {
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+      .item-body {
+        margin-top: 0px;
+      }
+      .item-footer {
+        margin-top: 5px;
+      }
+    }
+  }
+  @media (max-width: 400px) {
+    display: flex !important;
+    flex-direction: column !important;
+    flex-direction: column-reverse !important;
+    .resource-list {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+
+  @media (min-width: 700px) {
+    flex-wrap: nowrap;
   }
 }

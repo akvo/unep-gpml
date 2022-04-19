@@ -358,7 +358,6 @@ const KnowledgeLibrary = ({
                   ? "resource-main-container"
                   : `resource-main-container topic-main-container`
               }
-              // style={{ display: view === "map" ? "block" : "flex" }}
             >
               {/* Resource Main Content */}
               {listVisible && (
@@ -367,16 +366,6 @@ const KnowledgeLibrary = ({
                   md={9}
                   sm={12}
                   xs={24}
-                  // style={
-                  //   view === "map"
-                  //     ? {
-                  //         backgroundColor: "rgba(237, 242, 247, 0.3)",
-                  //       }
-                  //     : {
-                  //         backgroundColor: "rgba(237, 242, 247, 1)",
-                  //         position: "relative",
-                  //       }
-                  // }
                   className={
                     view === "map"
                       ? "resource-list-container"
