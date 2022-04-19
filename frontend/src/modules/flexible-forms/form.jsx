@@ -269,6 +269,10 @@ const FlexibleForm = withRouter(
         data?.image &&
           data?.image.match(customFormats.url) &&
           delete data.image;
+
+        if (formData?.S4["S4_G4"].image === "") {
+          data.image = "";
+        }
       }
 
       if (status === "add" && !params?.id) {
@@ -413,6 +417,20 @@ const FlexibleForm = withRouter(
       }
       delete data.tagsList;
       delete data.qtagsList;
+
+      if (status === "add" && !params?.id) {
+        data?.qimage && data?.qimage === "" && delete data.qimage;
+      }
+
+      if (status === "edit" || params?.id) {
+        data?.qimage &&
+          data?.qimage.match(customFormats.url) &&
+          delete data.qimage;
+
+        if (formData?.S4["S4_G4"].image === "") {
+          data.qimage = "";
+        }
+      }
 
       if (status === "add" && !params?.id) {
         api
@@ -594,6 +612,10 @@ const FlexibleForm = withRouter(
         data?.image &&
           data?.image.match(customFormats.url) &&
           delete data.image;
+
+        if (formData?.S4["S4_G4"].image === "") {
+          data.image = "";
+        }
       }
 
       if (status === "add" && !params?.id) {
@@ -934,6 +956,10 @@ const FlexibleForm = withRouter(
         data?.image &&
           data?.image.match(customFormats.url) &&
           delete data.image;
+
+        if (formData?.S4["S4_G4"].image === "") {
+          data.image = "";
+        }
       }
 
       if (status === "add" && !params?.id) {
