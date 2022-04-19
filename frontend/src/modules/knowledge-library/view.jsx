@@ -351,7 +351,11 @@ const KnowledgeLibrary = ({
 
           <LeftSidebar active={1} sidebar={sidebar}>
             <Row
-              className="resource-main-container"
+              className={
+                view === "map"
+                  ? "resource-main-container"
+                  : `resource-main-container topic-main-container`
+              }
               style={{ display: view === "map" ? "block" : "flex" }}
             >
               {/* Resource Main Content */}
@@ -361,17 +365,21 @@ const KnowledgeLibrary = ({
                   md={9}
                   sm={12}
                   xs={24}
-                  style={
+                  // style={
+                  //   view === "map"
+                  //     ? {
+                  //         backgroundColor: "rgba(237, 242, 247, 0.3)",
+                  //       }
+                  //     : {
+                  //         backgroundColor: "rgba(237, 242, 247, 1)",
+                  //         position: "relative",
+                  //       }
+                  // }
+                  className={
                     view === "map"
-                      ? {
-                          backgroundColor: "rgba(237, 242, 247, 0.3)",
-                        }
-                      : {
-                          backgroundColor: "rgba(237, 242, 247, 1)",
-                          position: "relative",
-                        }
+                      ? "resource-list-container"
+                      : `resource-list-container topic-view-resource`
                   }
-                  className="resource-list-container"
                 >
                   {/* Resource List */}
                   <ResourceList
@@ -434,12 +442,11 @@ const KnowledgeLibrary = ({
                   sm={12}
                   xs={24}
                   align="center"
-                  className="render-map-container "
-                  style={{
-                    background: view === "topic" ? "#255B87" : "#fff",
-                    flex: view === "topic" && "auto",
-                    maxWidth: view === "topic" ? "calc(100% - 300px)" : "",
-                  }}
+                  className={
+                    view === "topic"
+                      ? `render-map-container topic-view`
+                      : `render-map-container`
+                  }
                 >
                   <TopicView {...{ updateQuery, query }} />
                 </Col>
