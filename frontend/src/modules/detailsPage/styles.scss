@@ -45,6 +45,8 @@
       border-radius: 10px;
       width: 100%;
       justify-content: space-between;
+      max-height: 500px;
+      overflow: auto;
       .ant-card-head {
         padding: 0 40px !important;
       }
@@ -597,6 +599,7 @@
           padding: 14px 10px;
           p {
             font-size: 1.4rem;
+            margin-bottom: 0px;
           }
           .ant-list-item-meta-title {
             font-size: 1.4rem;
