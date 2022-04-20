@@ -423,6 +423,7 @@
           [:title {:optional true} string?]
           [:first_name {:optional true} string?]
           [:last_name {:optional true} string?]
+          [:job_title {:optional true} string?]
           [:linked_in {:optional true} string?]
           [:twitter {:optional true} string?]
           [:photo {:optional true} string?]
