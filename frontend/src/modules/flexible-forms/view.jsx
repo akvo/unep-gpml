@@ -670,7 +670,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
 
     if (type === "integer") {
-      res = value !== "Not  Specified" ? parseInt(value) : value;
+      res =
+        value !== "Not  Specified" && value !== "Not Specified"
+          ? parseInt(value)
+          : value;
     }
 
     if (name === "implementingMea") {
