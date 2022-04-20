@@ -19,9 +19,13 @@
 
 #knowledge-library {
   position: relative;
-  @media (max-width: 400px) {
+  @media (max-width: 950px) {
+    overflow: hidden;
+
+    position: relative;
     overflow: hidden;
   }
+
   #mainNavigation {
     @media (min-width: 750px) {
       display: block;
@@ -62,10 +66,17 @@
   .site-drawer-render-in-current-wrapper {
     height: 100%;
   }
+  @media (max-width: 510px) {
+    .site-drawer-render-in-current-wrapper {
+      @-moz-document url-prefix() {
+        width: 100%;
+      }
+    }
+  }
 
   .site-drawer-render-in-current-wrapper {
     left: 0 !important;
-    top: 96px !important;
+    top: 100px !important;
     position: absolute;
     min-width: calc(100% - 100px);
     overflow: hidden;
@@ -484,9 +495,9 @@
     // max-width: 300px;
     max-width: 402px;
     @-moz-document url-prefix() {
-      max-width: 350px !important;
+      max-width: 350px;
     }
-    @media (max-width: 400px) {
+    @media (max-width: 950px) {
       position: unset;
       max-width: 100%;
       background-color: #fff;
@@ -664,7 +675,7 @@
       }
     }
 
-    @media (max-width: 400px) {
+    @media (max-width: 950px) {
       height: unset;
       overflow-y: visible;
     }
@@ -768,6 +779,13 @@
       border: none;
       background-color: transparent;
     }
+    @media (max-width: 950px) {
+      text-align: left;
+      max-width: 100%;
+      .result-number {
+        text-align: left;
+      }
+    }
   }
 
   .echarts-for-react.popular-topic-chart {
@@ -793,6 +811,17 @@
     }
     .chart-wrapper {
       display: none;
+    }
+  }
+
+  @media (min-width: 401px) and (max-width: 950px) {
+    .topic-view {
+      max-width: 100%;
+      background-color: #255b87;
+    }
+    .chart-wrapper {
+      width: 100vw;
+      display: block;
     }
   }
 
@@ -902,7 +931,57 @@
         }
       }
 
-      @media (max-width: 400px) {
+      // Firefox styles
+      @media (max-width: 510px) {
+        .ant-drawer-content-wrapper {
+          @-moz-document url-prefix() {
+            transform: unset !important;
+          }
+        }
+      }
+
+      @media (min-width: 511px) and (max-width: 715px) {
+        .ant-drawer-content-wrapper {
+          @-moz-document url-prefix() {
+            transform: scale(0.7) translate(-107px, -250px);
+          }
+        }
+      }
+
+      @media (min-width: 716px) and (max-width: 735px) {
+        .ant-drawer-content-wrapper {
+          @-moz-document url-prefix() {
+            transform: scale(0.7) translate(-107px, -241px);
+          }
+        }
+      }
+
+      @media (min-width: 733px) and (max-width: 748px) {
+        .ant-drawer-content-wrapper {
+          @-moz-document url-prefix() {
+            transform: scale(0.7) translate(-107px, -230px);
+          }
+        }
+      }
+
+      @media (min-width: 947px) and (max-width: 750px) {
+        .ant-drawer-content-wrapper {
+          @-moz-document url-prefix() {
+            transform: scale(0.7) translate(-107px, -251px);
+          }
+        }
+      }
+
+      // @media (max-width: 950px) {
+      //   width: 100%;
+      //   .ant-drawer-content-wrapper {
+      //     @-moz-document url-prefix() {
+      //       transform: scale(0.7) translate(-107px, -237px);
+      //     }
+      //   }
+      // }
+
+      @media (min-width: 401px) and (max-width: 950px) {
         width: 100%;
       }
     }
@@ -947,13 +1026,27 @@
       }
     }
   }
-  @media (max-width: 400px) {
+  @media (max-width: 950px) {
     display: flex !important;
     flex-direction: column !important;
     flex-direction: column-reverse !important;
     .resource-list {
       padding-left: 20px;
       padding-right: 20px;
+    }
+  }
+
+  @media (min-width: 450px) and (max-width: 730px) {
+    .resource-list {
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+  }
+
+  @media (min-width: 731px) and (max-width: 950px) {
+    .resource-list {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
     }
   }
 

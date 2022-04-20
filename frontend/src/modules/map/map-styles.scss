@@ -54,7 +54,7 @@
     flex-direction: column-reverse;
     align-content: center;
     padding-bottom: 13px;
-    @media (max-width: 400px) {
+    @media (max-width: 950px) {
       height: 494px !important;
       flex-direction: unset;
     }
