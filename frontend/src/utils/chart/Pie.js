@@ -132,7 +132,7 @@ const Pie = (data, extra, Doughnut = false) => {
       x:
         labels.includes("Pending") || labels.includes("Achieved")
           ? "center"
-          : "right",
+          : "left",
       y: "top",
     },
     ...Color,
