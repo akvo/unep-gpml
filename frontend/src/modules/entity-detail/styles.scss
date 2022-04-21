@@ -355,6 +355,9 @@
     .description-holder {
       padding: 15px;
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       h4 {
         color: #1ca585;
         font-size: 14px;
