@@ -497,17 +497,19 @@ const VerticalLegend = ({
 
   const transnationalStakeholders =
     path === STAKEHOLDER_OVERVIEW &&
-    stakeholderPerTransnationalList.map((data) => {
-      return {
-        id: data.label,
-        name: data.label,
-        title: data.label,
-        count:
-          data.totalStakeholders.individual +
-          data.totalStakeholders.entity.member +
-          data.totalStakeholders.entity.nonMember,
-      };
-    });
+    stakeholderPerTransnationalList
+      .map((data) => {
+        return {
+          id: data.label,
+          name: data.label,
+          title: data.label,
+          count:
+            data.totalStakeholders.individual +
+            data.totalStakeholders.entity.member +
+            data.totalStakeholders.entity.nonMember,
+        };
+      })
+      .sort((a, b) => a.title.localeCompare(b.title));
 
   data = Array.from(new Set(data.map((x) => Math.floor(x))));
   data = data.filter((x) => x !== 0);
