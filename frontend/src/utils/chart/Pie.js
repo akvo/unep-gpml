@@ -46,6 +46,7 @@ const Pie = (data, extra, Doughnut = false) => {
       trigger: "item",
       formatter: "{b}",
       padding: 5,
+      position: 'top',
       backgroundColor: "#f2f2f2",
       textStyle: {
         ...textStyle,
