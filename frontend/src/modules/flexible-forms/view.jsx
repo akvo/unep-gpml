@@ -239,6 +239,14 @@ const formDataMapping = [
     question: "image",
   },
   {
+    key: "qimage",
+    name: "qimage",
+    type: "image",
+    section: "S4",
+    group: "S4_G4",
+    question: "image",
+  },
+  {
     key: "originalTitle",
     name: "originalTitle",
     group: null,
@@ -574,6 +582,13 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
   }, [mainType, isLoaded]);
 
+  useEffect(() => {
+    if (state?.state?.type && status !== "edit") {
+      setMainType(state?.state?.type);
+      setLabel(state?.state?.label);
+    }
+  }, [state]);
+
   const getRevertValue = (type, value, name) => {
     let res = value;
     const isObject = typeof value === "object";
@@ -662,7 +677,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
 
     if (type === "integer") {
-      res = value !== "Not  Specified" ? parseInt(value) : value;
+      res =
+        value !== "Not  Specified" && value !== "Not Specified"
+          ? parseInt(value)
+          : value;
     }
 
     if (name === "implementingMea") {
@@ -746,6 +764,12 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     });
     return formData;
   };
+
+  useEffect(() => {
+    if (state?.state?.type) {
+      handleOnTabChange("S3");
+    }
+  }, [state]);
 
   useEffect(() => {
     if (status === "edit") {

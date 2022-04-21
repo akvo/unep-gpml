@@ -53,6 +53,7 @@ import uniqBy from "lodash/uniqBy";
 import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
+import { TrimText } from "../../utils/string";
 
 const getType = (type) => {
   let t = "";
@@ -63,7 +64,7 @@ const getType = (type) => {
     case "Event":
       t = "event";
       break;
-    case "initiative":
+    case "Initiative":
       t = "project";
       break;
     case "Policy":
@@ -632,10 +633,12 @@ const StakeholderDetail = ({
                           <div className="description-holder">
                             <div>
                               <h4>{item.type}</h4>
-                              <h6>{item.title}</h6>
+                              {item.title && (
+                                <TrimText text={item.title} max={30} />
+                              )}
                             </div>
-                            {item.stakeholderConnections &&
-                              item.stakeholderConnections.length > 0 && (
+                            {item.entityConnections &&
+                              item.entityConnections.length > 0 && (
                                 <div className="connection-wrapper">
                                   <Avatar.Group
                                     maxCount={2}
@@ -647,12 +650,12 @@ const StakeholderDetail = ({
                                       cursor: "pointer",
                                     }}
                                   >
-                                    {item.stakeholderConnections.map((item) => (
+                                    {item.entityConnections.map((item) => (
                                       <Avatar
                                         src={
                                           item?.image
                                             ? item.image
-                                            : `https://ui-avatars.com/api/?size=480&name=${item.stakeholder}`
+                                            : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
                                         }
                                       />
                                     ))}
@@ -718,8 +721,8 @@ const StakeholderDetail = ({
                               <h4>{item.type}</h4>
                               <h6>{item.title}</h6>
                             </div>
-                            {item.stakeholderConnections &&
-                              item.stakeholderConnections.length > 0 && (
+                            {item.entityConnections &&
+                              item.entityConnections.length > 0 && (
                                 <div className="connection-wrapper">
                                   <Avatar.Group
                                     maxCount={2}
@@ -731,12 +734,12 @@ const StakeholderDetail = ({
                                       cursor: "pointer",
                                     }}
                                   >
-                                    {item.stakeholderConnections.map((item) => (
+                                    {item.entityConnections.map((item) => (
                                       <Avatar
                                         src={
                                           item?.image
                                             ? item.image
-                                            : `https://ui-avatars.com/api/?size=480&name=${item.stakeholder}`
+                                            : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
                                         }
                                       />
                                     ))}

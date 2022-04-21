@@ -18,6 +18,7 @@ const MapLanding = ({
   updateQuery,
   setToggleButton,
   setListVisible,
+  landingQuery,
 }) => {
   const { countries, landing, transnationalOptions } = UIStore.useState(
     (s) => ({
@@ -53,12 +54,12 @@ const MapLanding = ({
   };
 
   useEffect(() => {
-    api.get("/landing").then((resp) => {
+    api.get(`/landing?entityGroup=topic&${landingQuery}`).then((resp) => {
       UIStore.update((e) => {
         e.landing = resp.data;
       });
     });
-  }, []);
+  }, [landingQuery]);
 
   return (
     <>

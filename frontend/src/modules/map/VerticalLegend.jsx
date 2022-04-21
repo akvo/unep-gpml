@@ -4,6 +4,7 @@ import { colorRange, higlightColor } from "./config";
 import { topicNames, tTypes } from "../../utils/misc";
 import { KNOWLEDGE_LIBRARY, STAKEHOLDER_OVERVIEW } from "./Map";
 import { multicountryGroups } from "../knowledge-library/multicountry";
+import PieChart from "../chart/pieChart";
 
 const { Text } = Typography;
 
@@ -148,7 +149,7 @@ const VerticalLegend = ({
       .sort((a, b) => a.label.localeCompare(b.label))
       .map((transnational) => {
         const data = countryGroupCounts.find(
-          (item) => item?.id === transnational?.id
+          (item) => item?.countryGroupId === transnational?.id
         );
 
         return (
@@ -238,12 +239,15 @@ const VerticalLegend = ({
   // STAKEHOLDER TOTAL COUNTS
   const stakeholderTotalCounts = path === STAKEHOLDER_OVERVIEW && {
     individual: stakeholderCount.individual,
-    entity:
-      stakeholderCount.GPMLMemberCount + stakeholderCount.nonMemberOrganisation,
+    entity: stakeholderCount.entity,
   };
 
-  const stakeholderPerTransnationalGroup = multicountryGroups.map(
-    (transnationalGroup) => {
+  const stakeholderPerTransnationalGroup = multicountryGroups
+    .filter(
+      (item) =>
+        item.label.toLowerCase() === "un regional groups of member states"
+    )
+    .map((transnationalGroup) => {
       const countryIds = transnationalGroup.item
         .map((transnational) =>
           transnational.countries.map((country) => country.id)
@@ -324,8 +328,7 @@ const VerticalLegend = ({
         stakeholderPerCountry: totalTransnationalStakeholderCount,
         transnational: transnationalStakeholders,
       };
-    }
-  );
+    });
 
   const stakeholderCountsContent = () => {
     return existingData.length === 0 ? (
@@ -391,7 +394,7 @@ const VerticalLegend = ({
       .sort((a, b) => a.label.localeCompare(b.label))
       .map((transnational) => {
         const data = countryGroupCounts.find(
-          (item) => item?.id === transnational?.id
+          (item) => item?.countryGroupId === transnational?.id
         );
 
         return existingData.length === 0 ? (
@@ -475,6 +478,40 @@ const VerticalLegend = ({
     );
   };
 
+  // Percentage of the stakeholder on each UN regional groups of member states
+  const stakeholderPerUNGroup = stakeholderPerTransnationalGroup
+    .map((item) => item.transnational)
+    .flat();
+
+  const test = stakeholderPerTransnationalList
+    .sort((a, b) => a.label.localeCompare(b.label))
+    .map((transnational) => {
+      const data = countryGroupCounts.find(
+        (item) => item?.countryGroupId === transnational?.id
+      );
+      return data;
+    });
+
+  const transnationalStakeholders =
+    path === STAKEHOLDER_OVERVIEW &&
+    stakeholderPerUNGroup
+      .map((transnational) => {
+        const data = countryGroupCounts.find(
+          (item) => item?.countryGroupId === transnational?.id
+        );
+
+        return {
+          id: transnational.label,
+          name: transnational.label,
+          title: transnational.label,
+          count:
+            (data?.counts?.stakeholder || 0) +
+              (data?.counts?.organisation || 0) +
+              (data?.counts?.nonMemberOrganisation || 0) || 0,
+        };
+      })
+      .sort((a, b) => a.title.localeCompare(b.title));
+
   data = Array.from(new Set(data.map((x) => Math.floor(x))));
   data = data.filter((x) => x !== 0);
   const range = data.map((x, i) => (
@@ -502,7 +539,7 @@ const VerticalLegend = ({
   if (data.length) {
     return (
       <Card className="card-legend-wrapper" style={{ width: 300 }}>
-        <div>
+        <div className="legend-content-wrapper">
           <div className="title">{title && <Text strong>{title}</Text>}</div>
           <div
             style={{
@@ -576,7 +613,9 @@ const VerticalLegend = ({
         {path === KNOWLEDGE_LIBRARY && (
           <>
             <div className="total-resources-wrapper">
-              <strong className="legend-heading">Total resources</strong>
+              <strong className="legend-heading">
+                Total resources per country
+              </strong>
               {totalResourcesContent()}
             </div>
 
@@ -596,6 +635,15 @@ const VerticalLegend = ({
               <strong className="legend-heading">Total stakeholders</strong>
               {stakeholderCountsContent()}
             </div>
+            {existingData.includes("organisation") && (
+              <>
+                <strong className="legend-heading pie-chart-header">
+                  UN Regional Groups of Member States
+                </strong>
+                <PieChart data={transnationalStakeholders} />
+              </>
+            )}
+
             {existingData.includes("organisation")
               ? entityPerTransnationalContent()
               : existingData.length === 0 && entityPerTransnationalContent()}

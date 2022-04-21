@@ -25,6 +25,7 @@ import { TrimText } from "../../utils/string";
 import api from "../../utils/api";
 
 const EventCalendar = withRouter(({ history }) => {
+  const path = history.location.pathname;
   const dateNow = moment().format("YYYY/MM/DD");
   const [event, setEvent] = useState([]);
   const [data, setData] = useState(null);
@@ -155,7 +156,12 @@ const EventCalendar = withRouter(({ history }) => {
               fullscreen={true}
               onPanelChange={handleOnDateSelected}
               onSelect={handleOnDateSelected}
-              headerRender={(e) => calendarHeader(e)}
+              headerRender={(e) =>
+                calendarHeader({
+                  ...e,
+                  isShownAddButton: path === "/events" ? true : false,
+                })
+              }
               dateCellRender={dateCellRender}
             />
           </div>
@@ -271,7 +277,7 @@ const renderEventContent = (history, event, eventCarousel, onThisDayText) => {
   );
 };
 
-const calendarHeader = ({ value, onChange }) => {
+const calendarHeader = ({ value, onChange, isShownAddButton }) => {
   const start = 0;
   const end = 12;
   const monthOptions = [];
@@ -302,13 +308,62 @@ const calendarHeader = ({ value, onChange }) => {
       </Select.Option>
     );
   }
+
+  function daysInMonth(month, year) {
+    return new Date(year, month, 0).getDate();
+  }
+
+  const daysInSelectedMonth = daysInMonth(month + 1, year);
+
+  const day = value.date();
+
+  const days = [];
+  for (let i = 1; i < daysInSelectedMonth + 1; i += 1) {
+    days.push(
+      <Select.Option key={i} value={i} className="day-item">
+        {i}
+      </Select.Option>
+    );
+  }
+
   return (
     <div style={{ padding: 8 }}>
       <Row gutter={8} justify="end">
+        {isShownAddButton && (
+          <Link
+            to={{
+              pathname: "/flexible-forms",
+              state: { type: "event_flexible", label: "Event" },
+            }}
+          >
+            <Button type="primary" className="event-add-button">
+              Add Event
+            </Button>
+          </Link>
+        )}
+        {!isShownAddButton && (
+          <Col>
+            <Select
+              showSearch={true}
+              dropdownMatchSelectWidth={false}
+              dropdownClassName="event-overlay-zoom"
+              className="day-select"
+              onChange={(newDay) => {
+                const now = value.clone().date(newDay);
+                onChange(now);
+              }}
+              value={String(day)}
+            >
+              {days}
+            </Select>
+          </Col>
+        )}
+
         <Col>
           <Select
             showSearch={true}
             dropdownMatchSelectWidth={false}
+            dropdownClassName="event-overlay-zoom"
             className="year-select"
             onChange={(newYear) => {
               const now = value.clone().year(newYear);
@@ -322,6 +377,7 @@ const calendarHeader = ({ value, onChange }) => {
         <Col>
           <Select
             dropdownMatchSelectWidth={false}
+            dropdownClassName="event-overlay-zoom"
             className="month-select"
             onChange={(selectedMonth) => {
               const newValue = value.clone();

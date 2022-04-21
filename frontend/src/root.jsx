@@ -273,7 +273,7 @@ const Root = () => {
   const pageSize = 8;
   const [countData, setCountData] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
-
+  const [landingQuery, setLandingQuery] = useState("");
   const getResults = (query, isSorted) => {
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
@@ -314,6 +314,7 @@ const Root = () => {
       .catch((err) => {
         console.error(err);
       });
+    setLandingQuery(String(searchParms));
   };
 
   const updateQuery = (param, value) => {
@@ -329,7 +330,10 @@ const Root = () => {
     }
     setFilters(newQuery);
     const newParams = new URLSearchParams(newQuery);
+
     history.push(`/knowledge-library?${newParams.toString()}`);
+    setLandingQuery(newParams.toString());
+
     clearTimeout(tmid);
     tmid = setTimeout(getResults(newQuery), 1000);
     if (param === "country") {
@@ -472,6 +476,7 @@ const Root = () => {
                   multiCountryCountries,
                   isLoading,
                   setLoading,
+                  landingQuery,
 
                   //Functions
                   getResults,

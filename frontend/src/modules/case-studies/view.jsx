@@ -8,7 +8,7 @@ import CaseStudy from "./CaseStudy";
 import LeftSidebar from "../left-sidebar/LeftSidebar";
 import SlidePrev from "../../images/capacity-building/slide-prev.svg";
 import SlideNext from "../../images/capacity-building/slide-next.svg";
-import DropdownIcon from "../../images/case-studies/ic_dropdown.svg";
+import { ReactComponent as DropdownIcon } from "../../images/case-studies/ic_dropdown.svg";
 import { titleCase } from "../../utils/string";
 
 import { ReactComponent as IconLibrary } from "../../images/capacity-building/ic-knowledge-library.svg";
@@ -69,10 +69,12 @@ const CaseStudies = () => {
             <Col lg={6} md={24}>
               <Select
                 dropdownClassName="overlay-zoom"
+                className="case-study-dropdown"
                 defaultValue={0}
                 onChange={(value) => goTo(value)}
                 suffixIcon={
-                  <img src={DropdownIcon} style={{ width: 30, height: 30 }} />
+                  <DropdownIcon />
+                  // <img src={DropdownIcon} style={{ width: 30, height: 30 }} />
                 }
                 virtual={false}
                 size="large"
@@ -90,7 +92,7 @@ const CaseStudies = () => {
                 href={datastudies[indexSlide].platform_link || "#"}
                 type="link"
                 shape="round"
-                className="green-border"
+                className="green-border case-study-learn-btn"
                 target="_blank"
                 rel="noopener noreferrer"
               >

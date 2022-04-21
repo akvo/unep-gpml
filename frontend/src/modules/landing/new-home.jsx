@@ -21,15 +21,14 @@ import {
   ourCommunity,
   benefit,
 } from "./new-home-static-content";
-import Chart from "../../utils/chart";
-import { TrimText } from "../../utils/string";
+import { titleCase, TrimText } from "../../utils/string";
 import orderBy from "lodash/orderBy";
 import humps from "humps";
 import { topicNames } from "../../utils/misc";
 import sortBy from "lodash/sortBy";
 import api from "../../utils/api";
 
-// import TopicChart from "../chart/topicChart";
+import TopicChart from "../chart/topicChart";
 import EventCalendar from "../event-calendar/view";
 
 const cardSvg = [
@@ -127,7 +126,6 @@ const Landing = withRouter(
     setFilterMenu,
   }) => {
     const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
-
     const [selectedTopic, setSelectedTopic] = useState(null);
 
     const dateNow = moment().format("YYYY/MM/DD");
@@ -148,12 +146,18 @@ const Landing = withRouter(
 
     const handlePopularTopicChartClick = (params) => {
       const { name, tag } = params?.data;
+      console.log("params::::::", params);
 
       if (!isMobileScreen) {
-        setSelectedTopic(name?.toLowerCase());
+        setSelectedTopic(name?.toLocaleLowerCase());
       } else {
         isMobileScreen && history.push(`/knowledge-library?tag=${tag}`);
       }
+    };
+
+    const handlePopularTopicBarClick = (e) => {
+      const name = e.currentTarget.value;
+      setSelectedTopic(name.toLowerCase());
     };
 
     const handleOurCommunityProfileClick = () => {
@@ -166,25 +170,25 @@ const Landing = withRouter(
       return setWarningModalVisible(true);
     };
 
-    // const getResources = async () => {
-    //   selectedTopic &&
-    //     (await api.get(`/browse?tag=${selectedTopic}&limit=3`).then((resp) => {
-    //       const data = resp?.data;
+    const getResources = async () => {
+      selectedTopic &&
+        (await api.get(`/browse?tag=${selectedTopic}&limit=3`).then((resp) => {
+          const data = resp?.data;
 
-    //       setResources({
-    //         items: data?.results,
-    //         summary: data?.counts.filter(
-    //           (count) => count.topic !== "gpml_member_entities"
-    //         ),
-    //       });
-    //     }));
-    // };
+          setResources({
+            items: data?.results,
+            summary: data?.counts.filter(
+              (count) => count.topic !== "gpml_member_entities"
+            ),
+          });
+        }));
+    };
 
-    // useEffect(() => {
-    //   getResources();
+    useEffect(() => {
+      getResources();
 
-    //   // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [selectedTopic]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedTopic]);
 
     const generateEvent = useCallback(
       (filterDate, searchNextEvent = false) => {
@@ -213,6 +217,11 @@ const Landing = withRouter(
     }, []);
 
     useEffect(() => {
+      setSelectedTopic(defTopic);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sortPopularTopic]);
+
+    useEffect(() => {
       const popularTags = [
         "plastics",
         "waste management",
@@ -222,90 +231,32 @@ const Landing = withRouter(
         "source to sea",
       ];
 
-      const tagsFetch = popularTags.map((tag, i) => {
-        const topicName = () => {
-          if (tag === "plastics") {
-            return "Plastics";
-          }
-          if (tag === "waste management") {
-            return "Waste Management";
-          }
-          if (tag === "marine litter") {
-            return "Marine Litter";
-          }
-
-          if (tag === "capacity building") {
-            return "Capacity Building";
-          }
-          if (tag === "product by design") {
-            return "Product by Design";
-          }
-
-          if (tag === "source to sea") {
-            return "Source to Sea";
-          }
-        };
-        return api
-          .get(`/browse?tag=${tag}`)
-          .then((resp) => ({
-            id: i,
-            items: resp?.data?.results,
-            topic: topicName(),
-            tag,
-            count: resp?.data?.counts
-              .filter((count) => count.topic !== "gpml_member_entities")
-              .reduce((curr, val) => curr + val?.count || 0, 0),
-            summary: resp.data.counts.filter(
-              (count) => count.topic !== "gpml_member_entities"
-            ),
-          }))
-          .catch((err) => {
-            console.error(err);
+      api
+        .get(`/tag/topic/popular?tags=${popularTags}`)
+        .then((resp) => {
+          const data = resp?.data.map((item, i) => {
+            return {
+              id: i,
+              topic: item?.tag,
+              tag: item?.tag,
+              count: item?.count,
+            };
           });
-      });
 
-      const tagResults = Promise.all(tagsFetch).then((results) => {
-        const sortedPopularTopics = orderBy(
-          results,
-          ["count", "topic"],
-          ["desc", "desc"]
-        );
-        setSortPopularTopic(sortedPopularTopics);
-      });
-    }, []);
+          const sorted = orderBy(data, ["count", "topic"], ["desc", "desc"]);
 
-    useEffect(() => {
-      setSelectedTopic(defTopic);
+          setSortedPopularTopics(sorted);
+
+          const defaultTopic = sorted[0]?.topic?.toLocaleLowerCase();
+
+          setSelectedTopic(defaultTopic);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sortPopularTopic]);
-
-    // useEffect(() => {
-    //   api
-    //     .get(`/tag/topic/popular?limit=6`)
-    //     .then((resp) => {
-    //       const data = resp?.data.map((item, i) => {
-    //         return {
-    //           id: i,
-    //           topic: item?.tag,
-    //           tag: item?.tag,
-    //           count: item?.count,
-    //         };
-    //       });
-
-    //       const sorted = orderBy(data, ["count", "topic"], ["desc", "desc"]);
-
-    //       setSortedPopularTopics(sorted);
-
-    //       const defaultTopic = sorted[0]?.topic?.toLocaleLowerCase();
-
-    //       setSelectedTopic(defaultTopic);
-    //     })
-    //     .catch((err) => {
-    //       console.error(err);
-    //     });
-
-    //   // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, []);
+    }, []);
 
     // Note: this will fix the warning on the console
 
@@ -362,64 +313,24 @@ const Landing = withRouter(
             </h2>
           </div>
           <div className="body">
-            <div className="content-left">
-              {featuredContents
-                .filter((x) => x.id !== 196)
-                .map((x, i) => {
-                  const { id, image, type, title, description, bookmark } = x;
-                  const link = `/${humps.decamelize(type)}/${id}`;
-                  return (
-                    <Card
-                      key={`fc-${i}`}
-                      className="item"
-                      onClick={() => history.push(link)}
-                    >
-                      <div className="item-header">
-                        <span className="resource-label upper">
-                          {topicNames(humps.camelizeKeys(type))}
-                        </span>
-                        <span className="mark">
-                          <RiseOutlined />
-                          Trending
-                        </span>
-                      </div>
-                      <div className="item-body">
-                        <div className="asset-title">{title}</div>
-                        <div className="body-text">
-                          {TrimText({ text: description, max: 100 })}
-                        </div>
-                      </div>
-                      <div className="item-footer">
-                        <Avatar.Group
-                          maxCount={3}
-                          maxStyle={{
-                            color: "#f56a00",
-                            backgroundColor: "#fde3cf",
-                          }}
-                        >
-                          {bookmark.map((b, i) => (
-                            <Tooltip
-                              key={`avatar-${i}`}
-                              title={b.name}
-                              placement="top"
-                            >
-                              <Avatar
-                                style={{ backgroundColor: "#FFB800" }}
-                                icon={<UserOutlined />}
-                              />
-                            </Tooltip>
-                          ))}
-                        </Avatar.Group>
-                        <span className="read-more">
-                          <Link to={link}>
-                            Read more <ArrowRightOutlined />
-                          </Link>
-                        </span>
-                      </div>
-                    </Card>
-                  );
-                })}
+            <div className="content-left content-left-desktop">
+              <FeaturedContent {...{ history }} />
             </div>
+            <div className="content-left-mobile">
+              <Carousel
+                centerMode={true}
+                responsive={responsive}
+                containerClass="feature-content"
+                itemClass="feature-content-carousel-item"
+                showDots={false}
+                renderDotsOutside={true}
+                removeArrowOnDeviceType={["tablet", "mobile"]}
+              >
+                <FeaturedContent {...{ history }} />
+              </Carousel>
+            </div>
+            {/* Mobile slider */}
+
             <div className="content-right">
               {featuredContents
                 .filter((x) => x.id === 196)
@@ -501,43 +412,31 @@ const Landing = withRouter(
               </span>
             </h2>
           </div>
-          <div className="body">
-            <div className="chart-wrapper">
-              {sortPopularTopic.length !== 0 ? (
-                <Chart
-                  key="popular-topic"
-                  title=""
-                  type="TREEMAP"
-                  // height={675}
-                  height={750}
-                  className="popular-topic-chart"
-                  data={sortPopularTopic
-                    .filter((tag) => tag.count > 0)
-                    .map((x) => {
-                      return {
-                        id: x.id,
-                        name: x.topic,
-                        value: x.count > 100 ? x.count : x.count + 50,
-                        count: x.count,
-                        tag: x.tag,
-                      };
-                    })}
-                  onEvents={{
-                    click: (e) => handlePopularTopicChartClick(e),
+          <div className="topic-bar-wrapper">
+            {sortedPopularTopics.map((x) => {
+              return (
+                <button
+                  className="topic-bar"
+                  key={x?.id}
+                  value={x?.topic}
+                  onClick={(e) => handlePopularTopicBarClick(e)}
+                  style={{
+                    backgroundColor:
+                      x?.topic.toLocaleLowerCase() === selectedTopic
+                        ? "#FFB800"
+                        : "#039B78",
                   }}
-                  selected={selectedTopic}
-                />
-              ) : (
-                <div id={"home-loading"}>
-                  <div className="loading">
-                    <LoadingOutlined spin /> Loading
-                  </div>
-                </div>
-              )}
-            </div>
-            {/* <TopicChart
+                >
+                  <span className="bar-count">{x?.count}</span>
+                  <div>{titleCase(x?.topic)}</div>
+                </button>
+              );
+            })}
+          </div>
+          <div className="body">
+            <TopicChart
               wrapperHeight={"8%"}
-              height={675}
+              height={750}
               loadingId="home-loading"
               {...{
                 selectedTopic,
@@ -545,71 +444,71 @@ const Landing = withRouter(
                 sortedPopularTopics,
                 handlePopularTopicChartClick,
               }}
-            /> */}
-            {!isMobileScreen && (
-              <div className="content">
-                <div className="content-body">
-                  {sortPopularTopic.length !== 0 &&
-                    sortPopularTopic
-                      .find((x) => x?.topic.toLowerCase() === selectedTopic)
-                      ?.items.slice(0, 3)
-                      ?.map((x, i) => {
-                        const { id, type, title, description, remarks } = x;
-                        const link = `/${humps.decamelize(type)}/${id}`;
-                        return (
-                          <Card
-                            key={`summary-${i}`}
-                            className="item-body"
-                            onClick={() => history.push(link)}
-                          >
-                            <div className="resource-label upper">
-                              {topicNames(humps.camelizeKeys(type))}
-                            </div>
-                            <div className="asset-title">{title || ""}</div>
-                            <div className="body-text">
-                              {TrimText({
-                                text: description || remarks,
-                                max: 250,
-                              })}
-                            </div>
-                            <span className="read-more">
-                              <Link to={link}>
-                                Read more <ArrowRightOutlined />
-                              </Link>
-                            </span>
-                          </Card>
-                        );
-                      })}
-                  {/* {resources?.items?.map((x, i) => {
-                    const { id, type, title, description, remarks } = x;
-                    const link = `/${humps.decamelize(type)}/${id}`;
-                    return (
-                      <Card
-                        key={`summary-${i}`}
-                        className="item-body"
-                        onClick={() => history.push(link)}
-                      >
-                        <div className="resource-label upper">
-                          {topicNames(humps.camelizeKeys(type))}
-                        </div>
-                        <div className="asset-title">{title || ""}</div>
-                        <div className="body-text">
-                          {TrimText({
-                            text: description || remarks,
-                            max: 250,
-                          })}
-                        </div>
-                        <span className="read-more">
-                          <Link to={link}>
-                            Read more <ArrowRightOutlined />
-                          </Link>
-                        </span>
-                      </Card>
-                    );
-                  })} */}
-                </div>
+            />
+            {/* {!isMobileScreen && ( */}
+            <div className="content">
+              <div className="content-body">
+                {sortPopularTopic.length !== 0 &&
+                  sortPopularTopic
+                    .find((x) => x?.topic.toLowerCase() === selectedTopic)
+                    ?.items.slice(0, 3)
+                    ?.map((x, i) => {
+                      const { id, type, title, description, remarks } = x;
+                      const link = `/${humps.decamelize(type)}/${id}`;
+                      return (
+                        <Card
+                          key={`summary-${i}`}
+                          className="item-body"
+                          onClick={() => history.push(link)}
+                        >
+                          <div className="resource-label upper">
+                            {topicNames(humps.camelizeKeys(type))}
+                          </div>
+                          <div className="asset-title">{title || ""}</div>
+                          <div className="body-text">
+                            {TrimText({
+                              text: description || remarks,
+                              max: 250,
+                            })}
+                          </div>
+                          <span className="read-more">
+                            <Link to={link}>
+                              Read more <ArrowRightOutlined />
+                            </Link>
+                          </span>
+                        </Card>
+                      );
+                    })}
+                {resources?.items?.map((x, i) => {
+                  const { id, type, title, description, remarks } = x;
+                  const link = `/${humps.decamelize(type)}/${id}`;
+                  return (
+                    <Card
+                      key={`summary-${i}`}
+                      className="item-body"
+                      onClick={() => history.push(link)}
+                    >
+                      <div className="resource-label upper">
+                        {topicNames(humps.camelizeKeys(type))}
+                      </div>
+                      <div className="asset-title">{title || ""}</div>
+                      <div className="body-text">
+                        {TrimText({
+                          text: description || remarks,
+                          max: 250,
+                        })}
+                      </div>
+                      <span className="read-more">
+                        <Link to={link}>
+                          Read more <ArrowRightOutlined />
+                        </Link>
+                      </span>
+                    </Card>
+                  );
+                })}
               </div>
-            )}
+            </div>
+            {/* )} */}
           </div>
         </div>
         {/* Our Community */}
@@ -759,5 +658,60 @@ const JoinGPMLButton = withRouter(({ history, loginWithPopup }) => {
     </Button>
   );
 });
+
+const FeaturedContent = ({ history }) => {
+  return featuredContents
+    .filter((x) => x.id !== 196)
+    .map((x, i) => {
+      const { id, image, type, title, description, bookmark } = x;
+      const link = `/${humps.decamelize(type)}/${id}`;
+      return (
+        <Card
+          key={`fc-${i}`}
+          className="item"
+          onClick={() => history.push(link)}
+        >
+          <div className="item-header">
+            <span className="resource-label upper">
+              {topicNames(humps.camelizeKeys(type))}
+            </span>
+            <span className="mark">
+              <RiseOutlined />
+              Trending
+            </span>
+          </div>
+          <div className="item-body">
+            <div className="asset-title">{title}</div>
+            <div className="body-text">
+              {TrimText({ text: description, max: 100 })}
+            </div>
+          </div>
+          <div className="item-footer">
+            <Avatar.Group
+              maxCount={3}
+              maxStyle={{
+                color: "#f56a00",
+                backgroundColor: "#fde3cf",
+              }}
+            >
+              {bookmark.map((b, i) => (
+                <Tooltip key={`avatar-${i}`} title={b.name} placement="top">
+                  <Avatar
+                    style={{ backgroundColor: "#FFB800" }}
+                    icon={<UserOutlined />}
+                  />
+                </Tooltip>
+              ))}
+            </Avatar.Group>
+            <span className="read-more">
+              <Link to={link}>
+                Read more <ArrowRightOutlined />
+              </Link>
+            </span>
+          </div>
+        </Card>
+      );
+    });
+};
 
 export { Landing, JoinGPMLButton };

@@ -57,7 +57,7 @@ data AS (
     LEFT JOIN authz a on s.id=a.id and s.type=a.type
     LEFT JOIN reviewers r on s.id=r.id and s.type=r.type
     WHERE 1=1
---~ (when (= "entities" (:only params)) " AND  s.type IN ( 'organisation') ")
+--~ (when (= "entities" (:only params)) " AND  s.type IN ( 'organisation') AND s.topic IN ('organisation')")
 --~ (when (= "non-member-entities" (:only params)) " AND  s.type IN ( 'organisation') AND s.topic IN ('non_member_organisation')")
 --~ (when (= "stakeholders" (:only params)) " AND  s.type IN ('stakeholder') ")
 --~ (when (= "tags" (:only params)) " AND  s.type IN ('tag') ")
@@ -72,20 +72,20 @@ SELECT json_build_object(
     'count', (
     SELECT COUNT(*) FROM submission
     WHERE 1=1
---~ (when (= "entities" (:only params)) " AND type IN ('organisation') ")
+--~ (when (= "entities" (:only params)) " AND type IN ('organisation') AND topic IN ('organisation')")
 --~ (when (= "non-member-entities" (:only params)) " AND  type IN ( 'organisation') AND topic IN ('non_member_organisation')")
 --~ (when (= "stakeholders" (:only params)) " AND type IN ('stakeholder') ")
---~ (when (= "resources" (:only params)) " AND type NOT IN ('stakeholder', 'organisation') ")
+--~ (when (= "resources" (:only params)) " AND type NOT IN ('stakeholder', 'organisation', 'tag') ")
 --~ (when (:title params) (str " AND title ILIKE '%" (:title params) "%' ") )
     ),
     'page', :page,
     'pages', (
     SELECT COUNT(*) FROM submission
     WHERE 1=1
---~ (when (= "entities" (:only params)) " AND type IN ( 'organisation') ")
+--~ (when (= "entities" (:only params)) " AND type IN ( 'organisation') AND topic IN ('organisation')")
 --~ (when (= "non-member-entities" (:only params)) " AND  type IN ( 'organisation') AND topic IN ('non_member_organisation')")
 --~ (when (= "stakeholders" (:only params)) " AND type IN ('stakeholder') ")
---~ (when (= "resources" (:only params)) " AND type NOT IN ('stakeholder', 'organisation') ")
+--~ (when (= "resources" (:only params)) " AND type NOT IN ('stakeholder', 'organisation', 'tag') ")
 --~ (when (:title params) (str " AND title ILIKE '%" (:title params) "%' ") )
     ) / :limit,
     'limit', :limit) as result;

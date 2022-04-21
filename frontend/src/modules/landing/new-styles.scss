@@ -16,6 +16,7 @@
     background-color: #036799;
     color: #ffffff;
   }
+
   .landing-banner {
     padding: 3rem 0px;
     background: url("../../images/landing-banner.png");
@@ -24,6 +25,22 @@
     background-position-x: right;
     background-repeat: no-repeat;
     background-size: 70%;
+
+    @media (max-width: 400px) {
+      background-size: cover !important;
+      background-position-x: 70% !important;
+      h1 {
+        line-height: 40px !important;
+      }
+      div.body-text {
+        line-height: 32px !important;
+      }
+      h1,
+      div.body-text {
+        max-width: 100% !important;
+      }
+    }
+
     @media only screen and (max-width: 800px) {
       background-size: 120%;
     }
@@ -36,6 +53,7 @@
       color: white;
       max-width: 70%;
     }
+
     @media only screen and (max-width: 800px) {
       h1 {
         font-size: 2.5rem !important;
@@ -68,12 +86,79 @@
       color: $blue02;
     }
   }
+
+  .topic-bar-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    .topic-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      border: none;
+      font-weight: 700;
+      padding: 8px;
+      margin: 0 10px 10px 0;
+      cursor: pointer;
+      .bar-count {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  @media (max-width: 400px) {
+    .content {
+      .content-body {
+        padding: 0 0 !important;
+        .item-body {
+          &:hover {
+            border-color: #fff !important;
+          }
+          .ant-card-body {
+            padding: 14px 0 14px 0 !important;
+          }
+        }
+      }
+    }
+
+    .popular-topics {
+      .chart-wrapper {
+        display: none !important;
+      }
+    }
+
+    .our-community .react-multi-carousel-dot-list {
+      justify-content: start;
+    }
+    .event .item-meta {
+      align-items: center !important;
+    }
+    .item-meta .mark {
+      display: flex !important;
+      place-self: center !important;
+      margin-left: 10px !important;
+    }
+    .event .body {
+      flex-direction: column-reverse;
+    }
+    .ant-picker-panel {
+      display: none;
+    }
+  }
+
+  @media (min-width: 401px) {
+    .topic-bar-wrapper {
+      display: none;
+    }
+  }
+
   .popular-topics {
     .body {
       display: flex;
       justify-content: space-between;
       border: 1px solid rgb(255, 255, 255);
-      .chart-wrapper {
+
+      .topic-bar .chart-wrapper {
         width: 50%;
       }
       .content {
@@ -205,6 +290,44 @@
     }
   }
 
+  .content-left-mobile {
+    display: none;
+  }
+
+  @media (max-width: 400px) {
+    .content-left-desktop {
+      display: none !important;
+    }
+    .content-left-mobile {
+      display: block;
+      margin-bottom: 16px;
+      .ant-card-body {
+        padding: 20px !important;
+      }
+
+      .item,
+      .feature-content-carousel-item,
+      .ant-card-body {
+        width: 300px !important;
+      }
+
+      .react-multi-carousel-list {
+        overflow: hidden !important;
+      }
+
+      .feature-content-carousel-item {
+        margin-right: 2px;
+      }
+
+      .feature-content li {
+        display: flex;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 2px;
+      }
+    }
+  }
+
   .our-community {
     background: linear-gradient(
         0deg,
@@ -230,6 +353,9 @@
           margin-right: 0.85rem;
           border-radius: 10px;
           min-height: 23rem;
+          @media (max-width: 400px) {
+            width: 300px !important;
+          }
           .type-wrapper {
             padding: 20px 20px 0px 20px;
             display: flex;

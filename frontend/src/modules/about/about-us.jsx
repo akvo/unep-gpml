@@ -42,7 +42,22 @@ const AboutUs = () => {
     0
   );
 
-  useEffect(() => {
+  const getEntityCount = () => {
+    api
+      .get(`/community`)
+      .then((resp) => {
+        const entity = resp?.data?.counts.filter(
+          (item) => item?.networkType === "organisation"
+        );
+
+        setEntityCount(entity[0].count || 0);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const getResourceCount = () => {
     const topic = [
       "action_plan",
       "project",
@@ -51,7 +66,6 @@ const AboutUs = () => {
       "technology",
       "event",
       "financing_resource",
-      // "capacity_building",
     ];
     api
       .get(`/browse?topic=${topic}`)
@@ -59,16 +73,17 @@ const AboutUs = () => {
         const data = resp?.data?.counts.filter(
           (item) => item?.topic !== "gpml_member_entities"
         );
-        const GPMLMember = resp?.data?.counts.filter(
-          (item) => item?.topic === "gpml_member_entities"
-        );
         setResourcesCount(data);
-        setEntityCount(GPMLMember[0].count || 0);
+        // setEntityCount(GPMLMember[0].count || 0);
       })
       .catch((err) => {
         console.error(err);
       });
+  };
 
+  useEffect(() => {
+    getEntityCount();
+    getResourceCount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

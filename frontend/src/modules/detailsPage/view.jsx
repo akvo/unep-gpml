@@ -171,9 +171,9 @@ const SharePanel = ({
         {relation &&
         relation.association &&
         relation.association.indexOf("interested in") !== -1 ? (
-          <BookMarkIcon className="recording-icon bookmark-filled" />
+          <BookMarkIcon className="bookmark-icon bookmark-filled" />
         ) : (
-          <BookMarkIcon className="recording-icon" />
+          <BookMarkIcon className="bookmark-icon" />
         )}
         <h2>Bookmark</h2>
       </div>
@@ -297,6 +297,7 @@ const renderBannerSection = (
   handleVisible,
   showLess,
   setShowLess,
+  placeholder,
   relation,
   handleRelationChange
 ) => {
@@ -335,7 +336,13 @@ const renderBannerSection = (
               target="_blank"
             >
               <img
-                src={data.image ? data.image : imageNotFound}
+                src={
+                  data.image
+                    ? data.image
+                    : require(`../../images/resource-detail/${
+                        placeholder[params.type]
+                      }`).default
+                }
                 className="resource-image"
               />
             </a>
@@ -351,27 +358,7 @@ const renderBannerSection = (
                 borderRadius: "none",
               }}
             >
-              {data?.summary && data?.summary?.length < 400 ? (
-                <p>{data?.summary}</p>
-              ) : (
-                <>
-                  {data?.summary && (
-                    <>
-                      <p>
-                        {showLess
-                          ? `${data.summary && data.summary.slice(0, 400)}...`
-                          : data.summary}
-                      </p>
-                      <a
-                        className="view-more"
-                        onClick={() => setShowLess(!showLess)}
-                      >
-                        Read {showLess ? "More" : "Less"}
-                      </a>
-                    </>
-                  )}
-                </>
-              )}
+              {data?.summary}
             </CardComponent>
             <SharePanel
               data={data}
@@ -411,7 +398,9 @@ const renderBannerSection = (
                       ? data.image
                       : data.qimage
                       ? data.qimage
-                      : imageNotFound
+                      : require(`../../images/resource-detail/${
+                          placeholder[params.type]
+                        }`).default
                   }
                   className="resource-image"
                 />
@@ -521,8 +510,8 @@ const renderItemValues = (
         type === "currency" &&
         (remarks
           ? currency
-            ? `${currency} ${amount} - ${remarks}`
-            : `${amount} - ${remarks}`
+            ? `${currency} ${currencyFormat(amount)} - ${remarks}`
+            : `${currencyFormat(amount)} - ${remarks}`
           : currency
           ? `${currency} ${currencyFormat(amount)}`
           : `${amount}`);
@@ -692,6 +681,7 @@ const DetailsView = ({
     meaOptions,
     transnationalOptions,
     icons,
+    placeholder,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -700,6 +690,7 @@ const DetailsView = ({
     meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
     icons: s.icons,
+    placeholder: s.placeholder,
   }));
   const history = useHistory();
   const [data, setData] = useState(null);
@@ -900,6 +891,7 @@ const DetailsView = ({
               handleVisible,
               showLess,
               setShowLess,
+              placeholder,
               { ...{ handleRelationChange, relation } }
             )}
           </Row>
@@ -1173,7 +1165,7 @@ const DetailsView = ({
                                       cursor: "pointer",
                                     }}
                                   >
-                                    {item?.stakeholderConnections?.map(
+                                    {item?.entityConnections?.map(
                                       (connection, index) => (
                                         <Avatar src={connection.image} />
                                       )

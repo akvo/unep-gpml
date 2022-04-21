@@ -45,6 +45,8 @@
       border-radius: 10px;
       width: 100%;
       justify-content: space-between;
+      max-height: 500px;
+      overflow: auto;
       .ant-card-head {
         padding: 0 40px !important;
       }
@@ -148,6 +150,12 @@
               fill: #255b87;
             }
           }
+        }
+        .bookmark-icon {
+          width: 34px;
+        }
+        .bookmark-filled {
+          fill: #fff;
         }
         .edit-icon {
           width: 50px;
@@ -365,6 +373,7 @@
         background: #ffffff;
         box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
         border-radius: 8px;
+        height: 100%;
         .image-holder {
           display: flex;
           flex-direction: column;
@@ -597,6 +606,7 @@
           padding: 14px 10px;
           p {
             font-size: 1.4rem;
+            margin-bottom: 0px;
           }
           .ant-list-item-meta-title {
             font-size: 1.4rem;

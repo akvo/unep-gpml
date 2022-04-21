@@ -560,6 +560,11 @@
       (db.policy/add-language-to-policy conn {:id policy-id
                                               :language (:id (db.language/insert-new-language conn language))}))))
 
+(defn -update-blank-resource-picture [conn image-type resource-id image-key]
+  (db.detail/update-resource-table
+    conn
+    {:table image-type :id resource-id :updates {image-key ""}}))
+
 (defn -update-resource-picture [conn image image-type resource-id logo?]
   (let [url (handler.image/assoc-image conn image image-type)
         image-key (if logo? :logo :image)]
@@ -569,7 +574,9 @@
        {:table image-type :id resource-id :updates {image-key url}}))))
 
 (defn update-resource-image [conn image image-type resource-id]
-  (-update-resource-picture conn image image-type resource-id false))
+  (if (empty? image)
+    (-update-blank-resource-picture conn image-type resource-id :image)
+    (-update-resource-picture conn image image-type resource-id false)))
 
 (defn -update-initiative-picture [conn image image-type initiative-id]
   (let [url (handler.image/assoc-image conn image image-type)]
@@ -579,10 +586,14 @@
        {:table image-type :id initiative-id :updates {:qimage url}}))))
 
 (defn update-initiative-image [conn image image-type initiative-id]
-  (-update-initiative-picture conn image image-type initiative-id))
+  (if (empty? image)
+    (-update-blank-resource-picture conn image-type initiative-id :qimage)
+    (-update-initiative-picture conn image image-type initiative-id)))
 
 (defn update-resource-logo [conn image image-type resource-id]
-  (-update-resource-picture conn image image-type resource-id true))
+  (if (empty? image)
+    (-update-blank-resource-picture conn image-type resource-id :logo)
+    (-update-resource-picture conn image image-type resource-id true)))
 
 (defn expand-associations
   [connections stakeholder-type topic topic-id]

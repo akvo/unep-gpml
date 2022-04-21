@@ -196,6 +196,7 @@
                                         ["/stakeholder" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
                                           {:get {:summary "List Stakeholders"
+                                                 :middleware [#ig/ref :gpml.auth/auth-middleware-ckan]
                                                  :swagger {:tags ["stakeholder"]}
                                                  :parameters #ig/ref :gpml.handler.stakeholder/get-params
                                                  :handler #ig/ref :gpml.handler.stakeholder/get}}]
@@ -233,6 +234,7 @@
                                          [""
                                           {:get {:summary "End-point for the landing page"
                                                  :swagger {:tags ["landing"]}
+                                                 :parameters {:query #ig/ref :gpml.handler.landing/get-query-params}
                                                  :handler #ig/ref :gpml.handler.landing/get}}]]
                                         ["/nav"
                                          [""
@@ -493,6 +495,7 @@
   :gpml.handler.review/review-status-params {}
 
   :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.landing/get-query-params {}
   :gpml.handler.nav/get {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.event/post {:db #ig/ref :duct.database/sql
@@ -598,6 +601,10 @@
   :gpml.auth/auth-middleware {:issuer #duct/env "OIDC_ISSUER"
                               :audience #duct/env "OIDC_AUDIENCE"
                               :db #ig/ref :duct.database/sql}
+
+  :gpml.auth/auth-middleware-ckan {:issuer #duct/env "OIDC_ISSUER"
+                                   :audience #duct/env "OIDC_AUDIENCE_CKAN"
+                                   :db #ig/ref :duct.database/sql}
   :gpml.auth/auth-required {}
   :gpml.auth/approved-user {:db #ig/ref :duct.database/sql}
   :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}

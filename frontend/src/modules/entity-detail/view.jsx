@@ -49,6 +49,7 @@ import uniqBy from "lodash/uniqBy";
 import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
+import { TrimText } from "../../utils/string";
 
 const getType = (type) => {
   let t = "";
@@ -59,7 +60,7 @@ const getType = (type) => {
     case "Event":
       t = "event";
       break;
-    case "initiative":
+    case "Initiative":
       t = "project";
       break;
     case "Policy":
@@ -204,6 +205,7 @@ const StakeholderDetail = ({
     regionOptions,
     meaOptions,
     transnationalOptions,
+    icons,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -211,6 +213,7 @@ const StakeholderDetail = ({
     regionOptions: s.regionOptions,
     meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
+    icons: s.icons,
   }));
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const history = useHistory();
@@ -421,12 +424,20 @@ const StakeholderDetail = ({
                         }
                       />
                     </List.Item>
-                    <List.Item className="location">
-                      <List.Item.Meta
-                        avatar={<Avatar src={TransnationalImage} />}
-                        title={data?.geoCoverageType}
-                      />
-                    </List.Item>
+                    {data?.geoCoverageType && (
+                      <List.Item className="location">
+                        <List.Item.Meta
+                          avatar={<Avatar src={TransnationalImage} />}
+                          title={
+                            <>
+                              <span style={{ textTransform: "capitalize" }}>
+                                {data?.geoCoverageType}
+                              </span>
+                            </>
+                          }
+                        />
+                      </List.Item>
+                    )}
                   </List>
                 </div>
               </CardComponent>
@@ -514,15 +525,28 @@ const StakeholderDetail = ({
                       <Col xs={6} lg={8} key={item.id}>
                         <div className="slider-card">
                           <div className="image-holder">
-                            <img src={ResourceImage} />
+                            <img
+                              style={{ width: 60 }}
+                              src={
+                                require(`../../images/${
+                                  icons[
+                                    getType(item.type)
+                                      ? getType(item.type)
+                                      : "action_plan"
+                                  ]
+                                }`).default
+                              }
+                            />
                           </div>
                           <div className="description-holder">
                             <div>
                               <h4>{item.type}</h4>
-                              <h6>{item.title}</h6>
+                              {item.title && (
+                                <TrimText text={item.title} max={30} />
+                              )}
                             </div>
-                            {item.stakeholderConnections &&
-                              item.stakeholderConnections.length > 0 && (
+                            {item.entityConnections &&
+                              item.entityConnections.length > 0 && (
                                 <div className="connection-wrapper">
                                   <Avatar.Group
                                     maxCount={2}
@@ -534,12 +558,12 @@ const StakeholderDetail = ({
                                       cursor: "pointer",
                                     }}
                                   >
-                                    {item.stakeholderConnections.map((item) => (
+                                    {item.entityConnections.map((item) => (
                                       <Avatar
                                         src={
                                           item?.image
                                             ? item.image
-                                            : `https://ui-avatars.com/api/?size=480&name=${item.stakeholder}`
+                                            : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
                                         }
                                       />
                                     ))}
