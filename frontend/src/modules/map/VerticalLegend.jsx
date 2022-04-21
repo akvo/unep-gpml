@@ -527,7 +527,7 @@ const VerticalLegend = ({
   if (data.length) {
     return (
       <Card className="card-legend-wrapper" style={{ width: 300 }}>
-        <div>
+        <div className="legend-content-wrapper">
           <div className="title">{title && <Text strong>{title}</Text>}</div>
           <div
             style={{
@@ -623,7 +623,7 @@ const VerticalLegend = ({
               <strong className="legend-heading">Total stakeholders</strong>
               {stakeholderCountsContent()}
             </div>
-            <strong className="legend-heading">
+            <strong className="legend-heading pie-chart-header">
               UN Regional Groups of Member States
             </strong>
             <PieChart data={transnationalStakeholders} />
