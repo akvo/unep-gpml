@@ -18,6 +18,7 @@ community_members AS (
         o.review_status,
         to_tsvector('english'::regconfig, COALESCE(o.name, '') || ' ' || COALESCE(o.program, '') || ' ' || COALESCE(o.contribution, '') || ' ' || COALESCE(o.expertise, '')) AS search_text,
         o.is_member,
+        NULL AS job_title,
         json_agg(COALESCE(ogc.country, cgc.country)) AS geo_coverage_values
     FROM
         organisation o
@@ -42,6 +43,7 @@ community_members AS (
         s.review_status,
         to_tsvector('english'::regconfig, COALESCE(s.first_name, '') || ' ' || COALESCE(s.last_name, '') || ' ' || COALESCE(s.about, '')) AS search_text,
         NULL as is_member,
+        s.job_title,
         array_to_json(array[s.country]) as geo_coverage_values
     FROM
         stakeholder s
