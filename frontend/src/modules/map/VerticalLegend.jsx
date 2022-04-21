@@ -149,7 +149,7 @@ const VerticalLegend = ({
       .sort((a, b) => a.label.localeCompare(b.label))
       .map((transnational) => {
         const data = countryGroupCounts.find(
-          (item) => item?.id === transnational?.id
+          (item) => item?.countryGroupId === transnational?.id
         );
 
         return (
@@ -391,7 +391,7 @@ const VerticalLegend = ({
       .sort((a, b) => a.label.localeCompare(b.label))
       .map((transnational) => {
         const data = countryGroupCounts.find(
-          (item) => item?.id === transnational?.id
+          (item) => item?.countryGroupId === transnational?.id
         );
 
         return existingData.length === 0 ? (
