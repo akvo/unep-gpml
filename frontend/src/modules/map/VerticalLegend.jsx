@@ -242,8 +242,12 @@ const VerticalLegend = ({
     entity: stakeholderCount.entity,
   };
 
-  const stakeholderPerTransnationalGroup = multicountryGroups.map(
-    (transnationalGroup) => {
+  const stakeholderPerTransnationalGroup = multicountryGroups
+    .filter(
+      (item) =>
+        item.label.toLowerCase() === "un regional groups of member states"
+    )
+    .map((transnationalGroup) => {
       const countryIds = transnationalGroup.item
         .map((transnational) =>
           transnational.countries.map((country) => country.id)
@@ -324,8 +328,7 @@ const VerticalLegend = ({
         stakeholderPerCountry: totalTransnationalStakeholderCount,
         transnational: transnationalStakeholders,
       };
-    }
-  );
+    });
 
   const stakeholderCountsContent = () => {
     return existingData.length === 0 ? (
@@ -383,10 +386,6 @@ const VerticalLegend = ({
   };
 
   const stakeholderPerTransnationalList = stakeholderPerTransnationalGroup
-    .filter(
-      (item) =>
-        item.groupLabel.toLowerCase() === "un regional groups of member states"
-    )
     .map((item) => item.transnational)
     .flat();
 
@@ -481,25 +480,34 @@ const VerticalLegend = ({
 
   // Percentage of the stakeholder on each UN regional groups of member states
   const stakeholderPerUNGroup = stakeholderPerTransnationalGroup
-    .filter(
-      (item) =>
-        item.groupLabel.toLowerCase() === "un regional groups of member states"
-    )
     .map((item) => item.transnational)
     .flat();
+
+  const test = stakeholderPerTransnationalList
+    .sort((a, b) => a.label.localeCompare(b.label))
+    .map((transnational) => {
+      const data = countryGroupCounts.find(
+        (item) => item?.countryGroupId === transnational?.id
+      );
+      return data;
+    });
 
   const transnationalStakeholders =
     path === STAKEHOLDER_OVERVIEW &&
     stakeholderPerUNGroup
-      .map((data) => {
+      .map((transnational) => {
+        const data = countryGroupCounts.find(
+          (item) => item?.countryGroupId === transnational?.id
+        );
+
         return {
-          id: data.label,
-          name: data.label,
-          title: data.label,
+          id: transnational.label,
+          name: transnational.label,
+          title: transnational.label,
           count:
-            data.totalStakeholders.individual +
-            data.totalStakeholders.entity.member +
-            data.totalStakeholders.entity.nonMember,
+            (data?.counts?.stakeholder || 0) +
+              (data?.counts?.organisation || 0) +
+              (data?.counts?.nonMemberOrganisation || 0) || 0,
         };
       })
       .sort((a, b) => a.title.localeCompare(b.title));
