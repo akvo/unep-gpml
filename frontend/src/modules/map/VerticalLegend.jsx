@@ -476,28 +476,17 @@ const VerticalLegend = ({
   };
 
   // Percentage of the stakeholder on each UN regional groups of member states
-  const totalTransnationalStakeholder =
-    path === STAKEHOLDER_OVERVIEW &&
-    stakeholderPerTransnationalGroup
-      .map(
-        (data) =>
-          data.stakeholderPerCountry.individual +
-          data.stakeholderPerCountry.entity.member +
-          data.stakeholderPerCountry.entity.nonMember
-      )
-      .reduce((acc, val) => acc + val, 0);
-
-  const totalStakeholder =
-    path === STAKEHOLDER_OVERVIEW &&
-    stakeholderCount.entity + stakeholderCount.individual;
-
-  const transnationalPercentage =
-    path === STAKEHOLDER_OVERVIEW &&
-    ((totalTransnationalStakeholder / totalStakeholder) * 100).toFixed(2);
+  const stakeholderPerUNGroup = stakeholderPerTransnationalGroup
+    .filter(
+      (item) =>
+        item.groupLabel.toLowerCase() === "un regional groups of member states"
+    )
+    .map((item) => item.transnational)
+    .flat();
 
   const transnationalStakeholders =
     path === STAKEHOLDER_OVERVIEW &&
-    stakeholderPerTransnationalList
+    stakeholderPerUNGroup
       .map((data) => {
         return {
           id: data.label,
@@ -612,7 +601,9 @@ const VerticalLegend = ({
         {path === KNOWLEDGE_LIBRARY && (
           <>
             <div className="total-resources-wrapper">
-              <strong className="legend-heading">Total resources</strong>
+              <strong className="legend-heading">
+                Total resources per country
+              </strong>
               {totalResourcesContent()}
             </div>
 
@@ -632,6 +623,9 @@ const VerticalLegend = ({
               <strong className="legend-heading">Total stakeholders</strong>
               {stakeholderCountsContent()}
             </div>
+            <strong className="legend-heading">
+              UN Regional Groups of Member States
+            </strong>
             <PieChart data={transnationalStakeholders} />
             {existingData.includes("organisation")
               ? entityPerTransnationalContent()
