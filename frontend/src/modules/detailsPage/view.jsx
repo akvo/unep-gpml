@@ -142,7 +142,7 @@ const SharePanel = ({
   const handleChangeRelation = (relationType) => {
     let association = relation ? [...relation.association] : [];
     if (!association.includes(relationType)) {
-      association = [...association, relationType];
+      association = [relationType];
     } else {
       association = association.filter((it) => it !== relationType);
     }
