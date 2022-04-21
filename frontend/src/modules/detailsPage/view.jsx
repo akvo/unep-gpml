@@ -1154,7 +1154,7 @@ const DetailsView = ({
                                       cursor: "pointer",
                                     }}
                                   >
-                                    {item?.stakeholderConnections?.map(
+                                    {item?.entityConnections?.map(
                                       (connection, index) => (
                                         <Avatar src={connection.image} />
                                       )
