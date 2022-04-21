@@ -9,7 +9,7 @@ const PieChart = ({ data }) => {
         key="popular-topic"
         title="UN regional groups of member states"
         type="DOUGHNUT"
-        height={750}
+        height={400}
         data={data.map((x) => {
           return {
             id: x?.id,
