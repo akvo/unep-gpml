@@ -28,56 +28,6 @@ const StakeholderList = ({
   return (
     <div className="stakeholder-list ">
       <Row>
-        {/* <Col span={24}>
-          {!listVisible ? (
-            <div className="map-overlay">
-              <PageHeader
-                className="resource-list-header show-list"
-                ghost={false}
-                backIcon={
-                  <img
-                    src={HideIcon}
-                    className="hide-icon show"
-                    alt="show-icon"
-                  />
-                }
-                onBack={() => setListVisible(true)}
-                title="Show List"
-              />
-            </div>
-          ) : (
-            <PageHeader
-              className="resource-list-header"
-              ghost={false}
-              style={
-                view === "map"
-                  ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
-                  : { backgroundColor: "rgba(255, 255, 255, 1)" }
-              }
-              onBack={() => setListVisible(false)}
-              backIcon={
-                <img
-                  src={HideIcon}
-                  className="hide-icon hide"
-                  alt="hide-icon"
-                />
-              }
-              title={<span className="hide-text">Hide List</span>}
-              subTitle={
-                !loading && (
-                  <span className="result-number">
-                    Showing{" "}
-                    {resultCount > pageSize + Number(filters?.page)
-                      ? resultCounts
-                      : itemCount}{" "}
-                    of {resultCount || 0} result
-                    {resultCount > 1 ? "s" : ""}
-                  </span>
-                )
-              }
-            />
-          )}
-        </Col> */}
         {listVisible && (
           <div style={{ width: "100%" }}>
             <Col
@@ -146,11 +96,6 @@ const ResourceItem = ({ results, view }) => {
       <Link className="resource-item-wrapper" key={`${type}-${id}`} to={linkTo}>
         <Card className="resource-item" id="stakeholder-item">
           <div className="item-body">
-            {/* <div className="badge-wrapper">
-              {result.type === "organisation" && result.isMember && (
-                <GPMLIcon />
-              )}
-            </div> */}
             <div className="resource-images-extra-wrapper">
               <div className="resource-image-wrapper">
                 <img
@@ -177,15 +122,15 @@ const ResourceItem = ({ results, view }) => {
               <b className="title">
                 <TrimText text={stakeholderName} max={64} />
               </b>
-              {/* <div>
+              <div>
                 {result?.type === "stakeholder"
-                  ? result?.affiliation && (
+                  ? result?.jobTitle && (
                       <span className="entity-name">
-                        <TrimText text={result?.affiliation?.name} max={40} />
+                        <TrimText text={result?.jobTitle} max={40} />
                       </span>
                     )
                   : ""}
-              </div> */}
+              </div>
             </div>
           </div>
         </Card>
