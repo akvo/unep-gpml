@@ -4,6 +4,7 @@ import { colorRange, higlightColor } from "./config";
 import { topicNames, tTypes } from "../../utils/misc";
 import { KNOWLEDGE_LIBRARY, STAKEHOLDER_OVERVIEW } from "./Map";
 import { multicountryGroups } from "../knowledge-library/multicountry";
+import PieChart from "../chart/pieChart";
 
 const { Text } = Typography;
 
@@ -474,6 +475,40 @@ const VerticalLegend = ({
     );
   };
 
+  // Percentage of the stakeholder on each UN regional groups of member states
+  const totalTransnationalStakeholder =
+    path === STAKEHOLDER_OVERVIEW &&
+    stakeholderPerTransnationalGroup
+      .map(
+        (data) =>
+          data.stakeholderPerCountry.individual +
+          data.stakeholderPerCountry.entity.member +
+          data.stakeholderPerCountry.entity.nonMember
+      )
+      .reduce((acc, val) => acc + val, 0);
+
+  const totalStakeholder =
+    path === STAKEHOLDER_OVERVIEW &&
+    stakeholderCount.entity + stakeholderCount.individual;
+
+  const transnationalPercentage =
+    path === STAKEHOLDER_OVERVIEW &&
+    ((totalTransnationalStakeholder / totalStakeholder) * 100).toFixed(2);
+
+  const transnationalStakeholders =
+    path === STAKEHOLDER_OVERVIEW &&
+    stakeholderPerTransnationalList.map((data) => {
+      return {
+        id: data.label,
+        name: data.label,
+        title: data.label,
+        count:
+          data.totalStakeholders.individual +
+          data.totalStakeholders.entity.member +
+          data.totalStakeholders.entity.nonMember,
+      };
+    });
+
   data = Array.from(new Set(data.map((x) => Math.floor(x))));
   data = data.filter((x) => x !== 0);
   const range = data.map((x, i) => (
@@ -595,6 +630,7 @@ const VerticalLegend = ({
               <strong className="legend-heading">Total stakeholders</strong>
               {stakeholderCountsContent()}
             </div>
+            <PieChart data={transnationalStakeholders} />
             {existingData.includes("organisation")
               ? entityPerTransnationalContent()
               : existingData.length === 0 && entityPerTransnationalContent()}
