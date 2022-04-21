@@ -383,6 +383,10 @@ const VerticalLegend = ({
   };
 
   const stakeholderPerTransnationalList = stakeholderPerTransnationalGroup
+    .filter(
+      (item) =>
+        item.groupLabel.toLowerCase() === "un regional groups of member states"
+    )
     .map((item) => item.transnational)
     .flat();
 
