@@ -627,10 +627,15 @@ const VerticalLegend = ({
               <strong className="legend-heading">Total stakeholders</strong>
               {stakeholderCountsContent()}
             </div>
-            <strong className="legend-heading pie-chart-header">
-              UN Regional Groups of Member States
-            </strong>
-            <PieChart data={transnationalStakeholders} />
+            {existingData.includes("organisation") && (
+              <>
+                <strong className="legend-heading pie-chart-header">
+                  UN Regional Groups of Member States
+                </strong>
+                <PieChart data={transnationalStakeholders} />
+              </>
+            )}
+
             {existingData.includes("organisation")
               ? entityPerTransnationalContent()
               : existingData.length === 0 && entityPerTransnationalContent()}
