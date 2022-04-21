@@ -96,11 +96,11 @@
           initiative? (and (= submission "project") (> (:id path) 10000))
           table-name (cond
                        (contains? constants/resource-types submission)
-                       "v_resource_data"
+                       "resource"
                        initiative?
                        "initiative"
                        :else
-                       (str "v_" submission "_data"))
+                       submission)
           params (conj path {:table-name table-name})
           detail (submission-detail conn params)
           detail (if (= submission "stakeholder")
