@@ -152,7 +152,9 @@
     (= -1 (:id org))
     (assoc :affiliation (if (= -1 (:id org))
                           (handler.org/create db org)
-                          (:id org)))))
+                          (:id org)))
+    (nil? org)
+    (assoc :affiliation nil)))
 
 (defn pending-profiles-response [conn auth0-config]
   (let [profiles (db.stakeholder/pending-approval conn)
