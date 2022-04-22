@@ -26,6 +26,7 @@ insert into resource(
 --~ (when (contains? params :related_content) ", related_content")
 --~ (when (contains? params :capacity_building) ", capacity_building")
 --~ (when (contains? params :subnational_city) ", subnational_city")
+--~ (when (contains? params :document_preview) ", document_preview")
 )
 values(
     :title,
@@ -53,6 +54,7 @@ values(
 --~ (when (contains? params :related_content) ", :related_content")
 --~ (when (contains? params :capacity_building) ", :capacity_building")
 --~ (when (contains? params :subnational_city) ", :subnational_city")
+--~ (when (contains? params :document_preview) ", :document_preview")
 )
 returning id;
 
@@ -99,6 +101,7 @@ select
     remarks,
     url,
     created_by,
+    document_preview,
     (select json_agg(json_build_object('url',rlu.url, 'lang', l.iso_code))
         from resource_language_url rlu
         left join language l on l.id = rlu.language
@@ -130,6 +133,7 @@ select
     value_currency,
     value_remarks,
     remarks,
+    document_preview,
     (select json_build_object('id',o.id,'name',o.name)
         from resource_organisation ro
         left join organisation o on o.id = ro.organisation

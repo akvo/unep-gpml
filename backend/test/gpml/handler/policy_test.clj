@@ -29,6 +29,7 @@
    :url "https://akvo.org"
    :attachments nil
    :remarks nil
+   :document_preview false
    :country (-> (:countries data) first :id)
    :tags (:tags data)})
 
