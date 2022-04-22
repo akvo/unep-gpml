@@ -412,7 +412,7 @@ const StakeholderDetail = ({
       <div className="info-container">
         <div className="ui container">
           <Row gutter={[16, 16]}>
-            <Col xs={6} lg={6}>
+            <Col xs={6} lg={6} className="flex-col">
               <CardComponent title="Basic info">
                 <div className="list ">
                   <List itemLayout="horizontal">
