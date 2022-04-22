@@ -131,7 +131,7 @@ const SharePanel = ({
   const handleChangeRelation = (relationType) => {
     let association = relation ? [...relation.association] : [];
     if (!association.includes(relationType)) {
-      association = [...association, relationType];
+      association = [relationType];
     } else {
       association = association.filter((it) => it !== relationType);
     }
@@ -358,7 +358,7 @@ const renderBannerSection = (
                 borderRadius: "none",
               }}
             >
-              {data?.summary}
+              <p>{data?.summary}</p>
             </CardComponent>
             <SharePanel
               data={data}
@@ -1097,16 +1097,25 @@ const DetailsView = ({
                     )}
                 </div>
               </CardComponent>
-              {data?.infoDocs && (
-                <CardComponent title="Documents and info" getRef={document}>
-                  {data?.infoDocs && (
-                    <div
-                      className="list documents-list"
-                      dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
-                    />
-                  )}
-                </CardComponent>
-              )}
+              {data?.infoDocs ||
+                (data?.url && data?.url?.split(".").pop() === "pdf" && (
+                  <CardComponent title="Documents and info" getRef={document}>
+                    {data?.infoDocs && (
+                      <div
+                        className="list documents-list"
+                        dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
+                      />
+                    )}
+                    <div className="pdf-viewer">
+                      <iframe
+                        style={{ width: "100%", height: "600px" }}
+                        src={data?.url}
+                        type="application/pdf"
+                        title="title"
+                      />
+                    </div>
+                  </CardComponent>
+                ))}
               {data?.tags && data?.tags.length > 0 && (
                 <CardComponent title="Tags" getRef={tag}>
                   <div className="list tag-list">
