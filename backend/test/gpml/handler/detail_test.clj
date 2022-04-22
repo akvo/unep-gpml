@@ -50,6 +50,7 @@
    :attachments nil
    :remarks nil
    :review_status nil
+   :document_preview false
    :image nil})
 
 (def technology-data
@@ -65,6 +66,7 @@
    :email "john@akvo.org"
    :year_founded 2021
    :review_status nil
+   :document_preview false
    :image nil
    :logo nil
    :tags nil})
@@ -78,6 +80,7 @@
    :country nil
    :geo_coverage_type "global"
    :remarks nil
+   :document_preview false
    :review_status nil
    :image nil
    :tags nil})

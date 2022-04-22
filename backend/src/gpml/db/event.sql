@@ -21,6 +21,7 @@ insert into event(
 --~ (when (contains? params :event_type) ", event_type")
 --~ (when (contains? params :recording) ", recording")
 --~ (when (contains? params :subnational_city) ", subnational_city")
+--~ (when (contains? params :document_preview) ", document_preview")
 )
 values(
     :title,
@@ -43,6 +44,7 @@ values(
 --~ (when (contains? params :event_type) ", :event_type")
 --~ (when (contains? params :recording) ", :recording")
 --~ (when (contains? params :subnational_city) ", :subnational_city")
+--~ (when (contains? params :document_preview) ", :document_preview")
 ) RETURNING id;
 
 -- :name add-event-tags :<! :1
@@ -65,7 +67,7 @@ values :t*:geo RETURNING id;
 -- :doc Returns the list of pending events
 select e.*
   from ( select e.id, e.title, e.start_date, e.end_date, e.description, e.image, e.geo_coverage_type,
-                e.remarks, e.created, e.modified, e.city, c.iso_code as country,
+                e.remarks, e.created, e.modified, e.city, e.document_preview, c.iso_code as country,
                 e.languages as urls, e.tags, e.geo_coverage_values, e.review_status, s.email as submitter
                 from v_event_data e
                 left join country c on e.country = c.id

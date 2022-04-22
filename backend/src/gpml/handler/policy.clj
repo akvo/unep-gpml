@@ -58,7 +58,8 @@
                                   geo_coverage_countries geo_coverage_country_groups
                                   geo_coverage_value_subnational_city
                                   tags urls created_by image language
-                                  owners info_docs sub_content_type related_content topics
+                                  owners info_docs sub_content_type
+                                  document_preview related_content topics
                                   attachments remarks mailjet-config
                                   entity_connections individual_connections]}]
   (let [data {:title title
@@ -75,6 +76,7 @@
               :owners owners
               :info_docs info_docs
               :sub_content_type sub_content_type
+              :document_preview document_preview
               :related_content (pg-util/->JDBCArray related_content "integer")
               :topics (pg-util/->JDBCArray topics "text")
               :image (handler.image/assoc-image conn image "policy")
@@ -171,6 +173,7 @@
     [:url {:optional true} string?]
     [:info_docs {:optional true} string?]
     [:sub_content_type {:optional true} string?]
+    [:document_preview {:optional true} boolean?]
     [:related_content {:optional true}
      [:vector {:optional true} integer?]]
     [:topics {:optional true}
