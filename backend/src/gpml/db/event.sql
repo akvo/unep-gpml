@@ -117,7 +117,6 @@ select
     e.recording,
     e.sub_content_type,
     e.review_status,
-    e.document_preview,
     (select json_agg(tag) from event_tag where event = :id) as tags,
     (select json_agg(coalesce(country, country_group))
         from event_geo_coverage where event = :id) as geo_coverage_value,
