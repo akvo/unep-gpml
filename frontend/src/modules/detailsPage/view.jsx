@@ -1086,16 +1086,25 @@ const DetailsView = ({
                     )}
                 </div>
               </CardComponent>
-              {data?.infoDocs && (
-                <CardComponent title="Documents and info" getRef={document}>
-                  {data?.infoDocs && (
-                    <div
-                      className="list documents-list"
-                      dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
-                    />
-                  )}
-                </CardComponent>
-              )}
+              {data?.infoDocs ||
+                (data?.url && data?.url?.split(".").pop() === "pdf" && (
+                  <CardComponent title="Documents and info" getRef={document}>
+                    {data?.infoDocs && (
+                      <div
+                        className="list documents-list"
+                        dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
+                      />
+                    )}
+                    <div className="pdf-viewer">
+                      <iframe
+                        style={{ width: "100%", height: "600px" }}
+                        src={data?.url}
+                        type="application/pdf"
+                        title="title"
+                      />
+                    </div>
+                  </CardComponent>
+                ))}
               {data?.tags && data?.tags.length > 0 && (
                 <CardComponent title="Tags" getRef={tag}>
                   <div className="list tag-list">
