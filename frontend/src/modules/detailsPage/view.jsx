@@ -358,7 +358,7 @@ const renderBannerSection = (
                 borderRadius: "none",
               }}
             >
-              {data?.summary}
+              <p>{data?.summary}</p>
             </CardComponent>
             <SharePanel
               data={data}
