@@ -97,7 +97,7 @@ export const schema = {
               value: "not-filled-in", // companyName not filled in
             },
           },
-          title: "Search for a GPML Member Entity",
+          title: "Search for a Entity",
           enum: [],
         },
         jobTitle: {
@@ -121,7 +121,7 @@ export const schema = {
               value: "filled-in", // companyName filled in
             },
           },
-          title: "Search for a GPML Member Entity",
+          title: "Search for a Entity",
           enum: [],
         },
         // companyName: {
