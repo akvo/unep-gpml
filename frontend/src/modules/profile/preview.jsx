@@ -29,7 +29,7 @@ const findCountries = (
     const values = geoCoverageValues || geoCoverageValue;
     const data =
       geoCoverageType === "regional"
-        ? regionOptions
+        ? []
         : geoCoverageType === "global with elements in specific areas"
         ? meaOptions
         : null;
@@ -38,7 +38,7 @@ const findCountries = (
     }
     return values
       .map((v) => {
-        return data.find((x) => x.id === v).name;
+        return data.find((x) => x.id === v)?.name;
       })
       .join(", ");
   }
@@ -64,11 +64,12 @@ const findCountries = (
     if (values === null || typeof values === "undefined") {
       return "-";
     }
+    const newArray = [...new Set([...transnationalOptions, ...countries])];
     return (
       <div className="scrollable">
         {values
           .map((v) => {
-            return transnationalOptions.find((x) => x.id === v)?.name;
+            return newArray.find((x) => x.id === v)?.name;
           })
           .join(", ")}
       </div>
@@ -263,14 +264,18 @@ export const GeneralPreview = ({ item }) => {
         </li>
         <li>
           <div className="detail-title">Submitted at</div>:
-          <div className="detail-content">
-            {moment(item.createdAt).format("DD MMM YYYY")}
-          </div>
+          <div className="detail-content">{item.created}</div>
         </li>
         <li>
           <div className="detail-title">Submitted by</div>:
           <div className="detail-content">
             <b>{item?.createdByEmail && item.createdByEmail}</b>
+          </div>
+        </li>
+        <li>
+          <div className="detail-title">Published at</div>:
+          <div className="detail-content">
+            {moment(item.reviewedAt).format("DD MMM YYYY")}
           </div>
         </li>
         <li className="has-border">
