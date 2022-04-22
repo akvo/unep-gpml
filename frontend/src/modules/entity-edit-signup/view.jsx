@@ -208,6 +208,13 @@ const formDataMapping = [
     group: null,
   },
   {
+    name: "privateCitizen",
+    type: "boolean",
+    question: "privateCitizen",
+    section: "S2",
+    group: null,
+  },
+  {
     name: "jobTitle",
     type: "string",
     question: "jobTitle",
@@ -452,6 +459,12 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
             editId !== dataId)
         ) {
           api.get(`/stakeholder/${dataId}`).then((d) => {
+            if (!d.data.affiliation) {
+              d.data = {
+                ...d.data,
+                privateCitizen: true,
+              };
+            }
             signUpData.update((e) => {
               e.data = revertFormData(d.data);
               e.editId = dataId;

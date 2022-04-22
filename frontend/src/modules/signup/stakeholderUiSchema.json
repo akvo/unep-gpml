@@ -58,27 +58,19 @@
       "ui:widget": "checkbox",
       "ui:label": null
     },
+    "jobTitle": {
+      "ui:placeholder": "Enter Job Title"
+    },
     "orgName": {
       "ui:placeholder": "Entity name",
       "ui:showSearch": true,
       "ui:allowClear": true
     },
-    "jobTitle": {
-      "ui:placeholder": "Enter Job Title"
-    },
     "orgDisabled": {
       "ui:placeholder": "Entity name",
       "ui:disabled": true
     },
-    "companyName": {
-      "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity",
-      "ui:showSearch": true,
-      "ui:allowClear": true
-    },
-    "companyDisabled": {
-      "ui:placeholder": "Search for your entity. Select 'Other' to create a new Entity",
-      "ui:disabled": true
-    },
+
     "newCompanyName": {
       "ui:placeholder": "Entity name"
     },
@@ -110,8 +102,6 @@
       "orgName",
       "jobTitle",
       "orgDisabled",
-      "companyName",
-      "companyDisabled",
       "newCompanyName",
       "newCompanyHeadquarter",
       "geoCoverageType",
