@@ -4,6 +4,7 @@ import {
   Legend,
   TextStyle,
   backgroundColor,
+  PieChartColor,
 } from "./chart-style.js";
 import sumBy from "lodash/sumBy";
 
@@ -137,7 +138,8 @@ const Pie = (data, extra, Doughnut = false) => {
           : "left",
       y: "top",
     },
-    ...Color,
+    // ...Color,
+    ...PieChartColor,
     ...backgroundColor,
     ...Easing,
     ...extra,
