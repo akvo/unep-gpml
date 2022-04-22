@@ -48,8 +48,14 @@ const getSchema = ({
   prop.S1.properties["country"].enum = countries?.map((x) => x.id);
   prop.S1.properties["country"].enumNames = countries?.map((x) => x.name);
 
-  prop.S2.properties["orgName"].enum = organisations?.map((x) => x.id);
-  prop.S2.properties["orgName"].enumNames = organisations?.map((x) => x.name);
+  prop.S2.properties["orgName"].enum = [
+    ...organisations,
+    ...nonMemberOrganisations,
+  ]?.map((x) => x.id);
+  prop.S2.properties["orgName"].enumNames = [
+    ...organisations,
+    ...nonMemberOrganisations,
+  ]?.map((x) => x.name);
 
   prop.S3.properties["seeking"].enum = tags?.seeking?.map((it) =>
     String(it.id)
@@ -63,12 +69,12 @@ const getSchema = ({
   );
 
   // New Entity S2
-  prop.S2.properties["companyName"].enum = [-1].concat(
-    nonMemberOrganisations.map((x) => x.id)
-  );
-  prop.S2.properties["companyName"].enumNames = ["Other"].concat(
-    nonMemberOrganisations.map((x) => x.name)
-  );
+  // prop.S2.properties["companyName"].enum = [-1].concat(
+  //   nonMemberOrganisations.map((x) => x.id)
+  // );
+  // prop.S2.properties["companyName"].enumNames = ["Other"].concat(
+  //   nonMemberOrganisations.map((x) => x.name)
+  // );
 
   prop.S2.properties["newCompanyHeadquarter"].enum = countries?.map(
     (x) => x.id
