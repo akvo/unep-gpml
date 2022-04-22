@@ -70,7 +70,6 @@
       "ui:placeholder": "Entity name",
       "ui:disabled": true
     },
-
     "newCompanyName": {
       "ui:placeholder": "Entity name"
     },
@@ -99,8 +98,8 @@
     },
     "ui:order": [
       "privateCitizen",
-      "orgName",
       "jobTitle",
+      "orgName",
       "orgDisabled",
       "newCompanyName",
       "newCompanyHeadquarter",
