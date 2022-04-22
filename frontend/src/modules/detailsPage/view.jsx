@@ -131,7 +131,7 @@ const SharePanel = ({
   const handleChangeRelation = (relationType) => {
     let association = relation ? [...relation.association] : [];
     if (!association.includes(relationType)) {
-      association = [...association, relationType];
+      association = [relationType];
     } else {
       association = association.filter((it) => it !== relationType);
     }
@@ -358,7 +358,7 @@ const renderBannerSection = (
                 borderRadius: "none",
               }}
             >
-              {data?.summary}
+              <p>{data?.summary}</p>
             </CardComponent>
             <SharePanel
               data={data}
@@ -857,6 +857,13 @@ const DetailsView = ({
       </div>
     );
   }
+
+  let url =
+    data?.url && data?.url.includes("https://")
+      ? data?.url
+      : data.languages
+      ? data?.languages[0].url
+      : "https://" + data?.url;
 
   return (
     <div id="details">
