@@ -55,6 +55,10 @@ export const Color = {
   ],
 };
 
+export const PieChartColor = {
+  color: ["#FF7F00", "#E41A1C", "#377EB8", "#4DAF4A", "#AB6EB4"],
+};
+
 export const visualMap = {
   left: "right",
   top: "top",
