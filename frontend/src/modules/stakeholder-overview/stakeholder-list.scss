@@ -16,21 +16,45 @@
       max-width: 350px !important;
     }
   }
+
+  @media (min-width: 450px) and (max-width: 730px) {
+    .resource-list {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+  }
+
+  @media (min-width: 731px) and (max-width: 950px) {
+    .resource-list {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+    }
+  }
+
   @media (max-width: 950px) {
     flex-direction: column;
     .stakeholder-list {
+      display: grid;
       overflow-y: visible;
       background-color: #fff;
       position: relative;
       height: unset !important;
+      max-width: unset !important;
     }
-    
+
+    .stakeholder-item {
+      height: 100%;
+    }
+
     .resource-list {
       max-height: unset !important;
     }
 
     .page {
       position: relative !important;
+    }
+    .resource-item-wrapper,
+    .resource-item {
+      height: 100% !important;
     }
   }
   .resource-item-wrapper {
