@@ -705,7 +705,6 @@
   // Pagination
   .page {
     width: 100%;
-    // max-width: 300px;
     max-width: 402px;
     padding: 2rem 0 1rem 10px;
     text-align: center;
@@ -787,6 +786,12 @@
       .result-number {
         text-align: left;
       }
+    }
+  }
+
+  @media (max-width: 950px) {
+    .page {
+      max-width: 100% !important;
     }
   }
 
