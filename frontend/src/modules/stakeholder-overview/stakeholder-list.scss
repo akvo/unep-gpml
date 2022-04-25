@@ -19,6 +19,7 @@
 
   @media (min-width: 450px) and (max-width: 730px) {
     .resource-list {
+      display: grid !important;
       grid-template-columns: repeat(2, 1fr) !important;
     }
   }
