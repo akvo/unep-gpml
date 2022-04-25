@@ -119,6 +119,7 @@
 
     .profile-card {
       min-height: 120px;
+      margin: auto;
       .ant-card-body {
         display: flex;
         flex-direction: column;
@@ -881,6 +882,47 @@
       grid-template-columns: repeat(4, 1fr);
     }
   }
+  @media (max-width: 300px) {
+    .all-profiles {
+      padding-left: 5px !important;
+      padding-right: 5px !important;
+    }
+    .card-container.green {
+      .ant-card-body {
+        min-height: 215px;
+      }
+    }
+    .all-profiles > .card-wrapper,
+    .card-container.green .card-wrapper {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+    .all-profiles > .ui.container,
+    .card-container.green .ui.container {
+      width: 100% !important;
+    }
+  }
+
+  @media (max-width: 541px) {
+    .all-profiles > .ui.container,
+    .card-container.green .ui.container {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+
+  @media (min-width: 542px) and (max-width: 800px) {
+    .all-profiles > .ui.container,
+    .card-container.green .ui.container {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+  }
+
+  @media (min-width: 801px) and (max-width: 1050px) {
+    .all-profiles > .ui.container,
+    .card-container.green .ui.container {
+      grid-template-columns: repeat(3, 1fr) !important;
+    }
+  }
 
   @media (min-width: 1700px) {
     #title {
@@ -953,6 +995,7 @@
       }
     }
     .profile-card {
+      margin: auto;
       .profile-icon-container {
         img {
           max-width: 40px;
