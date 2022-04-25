@@ -397,15 +397,17 @@ const StakeholderDetail = ({
                 <div className="topbar-wrapper">
                   <div className="topbar-image-holder">
                     <img src={data?.picture} />
-                    <div className="topbar-entity-image-holder">
-                      <img
-                        src={
-                          data?.affiliation?.logo
-                            ? data?.affiliation?.logo
-                            : `https://ui-avatars.com/api/?background=0D8ABC&color=ffffff&size=480&name=${data?.affiliation?.name}`
-                        }
-                      />
-                    </div>
+                    {data.affiliation && (
+                      <div className="topbar-entity-image-holder">
+                        <img
+                          src={
+                            data?.affiliation?.logo
+                              ? data?.affiliation?.logo
+                              : `https://ui-avatars.com/api/?background=0D8ABC&color=ffffff&size=480&name=${data?.affiliation?.name}`
+                          }
+                        />
+                      </div>
+                    )}
                   </div>
                   <div className="topbar-title-holder">
                     <h1>{data?.firstName + " " + data?.lastName}</h1>
@@ -430,7 +432,7 @@ const StakeholderDetail = ({
       <div className="info-container">
         <div className="ui container">
           <Row gutter={[16, 16]}>
-            <Col xs={6} lg={6}>
+            <Col xs={6} lg={6} className="flex-col">
               <CardComponent title="Basic info">
                 <div className="list ">
                   <List itemLayout="horizontal">
@@ -442,25 +444,27 @@ const StakeholderDetail = ({
                         }
                       />
                     </List.Item>
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={
-                          <Avatar
-                            src={
-                              data?.affiliation?.logo
-                                ? data?.affiliation?.logo
-                                : `https://ui-avatars.com/api/?size=480&name=${data?.affiliation?.name}`
-                            }
-                          />
-                        }
-                        title={
-                          <Link to={`/organisation/${data?.affiliation?.id}`}>
-                            {data?.affiliation?.name}
-                          </Link>
-                        }
-                        description={"Entity"}
-                      />
-                    </List.Item>
+                    {data?.affiliation && (
+                      <List.Item>
+                        <List.Item.Meta
+                          avatar={
+                            <Avatar
+                              src={
+                                data?.affiliation?.logo
+                                  ? data?.affiliation?.logo
+                                  : `https://ui-avatars.com/api/?size=480&name=${data?.affiliation?.name}`
+                              }
+                            />
+                          }
+                          title={
+                            <Link to={`/organisation/${data?.affiliation?.id}`}>
+                              {data?.affiliation?.name}
+                            </Link>
+                          }
+                          description={"Entity"}
+                        />
+                      </List.Item>
+                    )}
                   </List>
                 </div>
               </CardComponent>

@@ -76,8 +76,8 @@ export const schema = {
       required: [
         "orgName",
         "jobTitle",
-        "companyName",
-        "newCompanyName",
+        // "companyName",
+        // "newCompanyName",
         "newCompanyHeadquarter",
         "geoCoverageType",
         "geoCoverageValueTransnational",
@@ -121,33 +121,33 @@ export const schema = {
               value: "filled-in", // companyName filled in
             },
           },
-          title: "Search for a GPML Member Entity",
+          title: "Search for a Entity",
           enum: [],
         },
-        companyName: {
-          depend: {
-            id: "privateCitizen",
-            value: false,
-            andDepend: {
-              id: "orgName",
-              value: "not-filled-in", // companyName not filled in
-            },
-          },
-          title: "Is your Entity not a GPML Member yet?",
-          enum: [],
-        },
-        companyDisabled: {
-          depend: {
-            id: "privateCitizen",
-            value: true,
-            orDepend: {
-              id: "orgName",
-              value: "filled-in", // companyName filled in
-            },
-          },
-          title: "Is your Entity not a GPML Member yet?",
-          enum: [],
-        },
+        // companyName: {
+        //   depend: {
+        //     id: "privateCitizen",
+        //     value: false,
+        //     andDepend: {
+        //       id: "orgName",
+        //       value: "not-filled-in", // companyName not filled in
+        //     },
+        //   },
+        //   title: "Is your Entity not a GPML Member yet?",
+        //   enum: [],
+        // },
+        // companyDisabled: {
+        //   depend: {
+        //     id: "privateCitizen",
+        //     value: true,
+        //     orDepend: {
+        //       id: "orgName",
+        //       value: "filled-in", // companyName filled in
+        //     },
+        //   },
+        //   title: "Is your Entity not a GPML Member yet?",
+        //   enum: [],
+        // },
         newCompanyName: {
           depend: {
             id: "companyName",

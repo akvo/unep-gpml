@@ -58,7 +58,8 @@
                                       geo_coverage_countries geo_coverage_country_groups
                                       geo_coverage_value_subnational_city
                                       tags url urls created_by image owners info_docs
-                                      sub_content_type related_content headquarter
+                                      sub_content_type related_content
+                                      headquarter document_preview
                                       logo attachments remarks mailjet-config
                                       entity_connections individual_connections]}]
   (let [data {:name name
@@ -83,6 +84,7 @@
               :info_docs info_docs
               :sub_content_type sub_content_type
               :headquarter headquarter
+              :document_preview document_preview
               :related_content (pg-util/->JDBCArray related_content "integer")
               :review_status "SUBMITTED"}
         technology-id (->> data (db.technology/new-technology conn) :id)
@@ -164,6 +166,7 @@
      [:vector {:optional true} integer?]]
     [:sub_content_type {:optional true} string?]
     [:headquarter {:optional true} string?]
+    [:document_preview {:option true} boolean?]
     [:entity_connections {:optional true}
      [:vector {:optional true}
       [:map

@@ -136,6 +136,7 @@
        e.sub_content_type,
        e.related_content,
        e.qimage,
+       e.document_preview,
        btrim((e.q41_1)::text, '\"'::text) AS q41_1_url,
        e.q24_subnational_city,
        NULL::text AS image,

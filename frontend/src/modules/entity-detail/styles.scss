@@ -70,6 +70,15 @@
   }
   .info-container {
     margin-top: 80px;
+    .flex-col {
+      display: flex;
+      flex-direction: column;
+      .card-wrapper {
+        &:last-child {
+          flex: 1;
+        }
+      }
+    }
     .card-wrapper {
       margin-bottom: 20px;
       &:last-child {
@@ -497,6 +506,9 @@
       width: 1560px;
       margin-left: auto !important;
       margin-right: auto !important;
+      @-moz-document url-prefix() {
+        transform: scale(0.95);
+      }
     }
     .topbar-container {
       .topbar-wrapper {

@@ -31,6 +31,7 @@
    :geo_coverage_value (mapv :id (:country_groups data))
    :image image
    :remarks nil
+   :document_preview false
    :urls [{:lang "id" :url "https://www.test.org"}]
    :country (-> (:countries data) first :id)
    :tags (:tags data)
