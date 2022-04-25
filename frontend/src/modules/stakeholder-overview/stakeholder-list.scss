@@ -50,14 +50,17 @@
       max-height: unset !important;
     }
 
-    .page {
+    .page,
+    .result-number {
       position: relative !important;
+      text-align: left !important;
     }
     .resource-item-wrapper,
     .resource-item {
       height: 100% !important;
     }
   }
+
   .resource-item-wrapper {
     width: 100%;
   }
