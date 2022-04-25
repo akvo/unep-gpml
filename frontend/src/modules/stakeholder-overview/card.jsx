@@ -126,30 +126,15 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                     <TrimText text={country?.name} max={15} />
                   </span>
                 </li>
-                {/* <li className="list-item">
-                  {profile?.type === "stakeholder"
-                    ? profile?.affiliation && (
-                        <span className="entity-name">
-                          <TrimText
-                            text={profile?.affiliation?.name}
-                            max={15}
-                          />
-                        </span>
-                      )
-                    : profile?.representativeGroupCivilSociety && (
-                        <span className="organisation-type">
-                          {profile?.representativeGroupCivilSociety}
-                        </span>
-                      )}
-                </li> */}
-              </ul>
-              {/* <ul className="icons-list">
-              {profile?.isMember && (
-                <li>
-                  <GPMLIcon />
+                <li className="list-item">
+                  {profile?.type === "stakeholder" && profile?.jobTitle && (
+                    <span className="entity-name job-title">
+                      <TrimText text={profile?.jobTitle} max={20} />
+                    </span>
+                  )}
                 </li>
-              )}
-            </ul> */}
+              </ul>
+
               <ul className="social-media-list">
                 {profile.linkedIn && (
                   <li className="list-item">

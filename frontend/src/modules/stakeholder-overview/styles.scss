@@ -214,8 +214,11 @@
 
             .profile-name,
             .entity-name {
-              // font-size: 16px;
               font-size: 0.9em;
+            }
+
+            .job-title {
+              font-size: 11px;
             }
 
             .location {
@@ -487,10 +490,6 @@
     }
     .ant-drawer-open {
       left: unset !important;
-
-      // .ant-drawer-content {
-      //   border: 1px solid $blue09;
-      // }
     }
 
     .ant-drawer-content-wrapper {
@@ -572,10 +571,6 @@
         .ant-select-selection-search-input {
           width: 100%;
           display: block;
-          // font-weight: 700;
-          // font-size: 16px;
-          // color: $blue06;
-          // font-style: italic;
         }
       }
 

@@ -4,6 +4,7 @@ import {
   Legend,
   TextStyle,
   backgroundColor,
+  PieChartColor,
 } from "./chart-style.js";
 import sumBy from "lodash/sumBy";
 
@@ -46,6 +47,7 @@ const Pie = (data, extra, Doughnut = false) => {
       trigger: "item",
       formatter: "{b}",
       padding: 5,
+      position: "top",
       backgroundColor: "#f2f2f2",
       textStyle: {
         ...textStyle,
@@ -58,7 +60,8 @@ const Pie = (data, extra, Doughnut = false) => {
         type: "pie",
         right: "center",
         radius: Doughnut ? ["0%", "100%"] : ["50%", "100%"],
-        top: "30px",
+        top: "130px",
+        // top: "30px",
         label: {
           normal: {
             formatter: function (params) {
@@ -132,10 +135,11 @@ const Pie = (data, extra, Doughnut = false) => {
       x:
         labels.includes("Pending") || labels.includes("Achieved")
           ? "center"
-          : "right",
+          : "left",
       y: "top",
     },
-    ...Color,
+    // ...Color,
+    ...PieChartColor,
     ...backgroundColor,
     ...Easing,
     ...extra,

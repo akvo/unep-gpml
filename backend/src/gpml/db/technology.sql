@@ -22,6 +22,7 @@ insert into technology(
 --~ (when (contains? params :related_content) ", related_content")
 --~ (when (contains? params :subnational_city) ", subnational_city")
 --~ (when (contains? params :headquarter) ", headquarter")
+--~ (when (contains? params :document_preview) ", document_preview")
 )
 values(
     :name,
@@ -45,6 +46,7 @@ values(
 --~ (when (contains? params :related_content) ", :related_content")
 --~ (when (contains? params :subnational_city) ", :subnational_city")
 --~ (when (contains? params :headquarter) ", :headquarter")
+--~ (when (contains? params :document_preview) ", :document_preview")
 )
 returning id;
 
@@ -71,6 +73,7 @@ select
     headquarter,
     related_content,
     created_by,
+    document_preview,
     COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners,
     (select json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
         from technology_language_url plu
@@ -106,6 +109,7 @@ select
     sub_content_type,
     subnational_city,
     headquarter,
+    document_preview,
     (select json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
         from technology_language_url plu
         left join language l on l.id = plu.language
@@ -155,6 +159,7 @@ update technology set
 --~ (when (contains? params :sub_content_type) "sub_content_type = :sub_content_type,")
 --~ (when (contains? params :subnational_city) "subnational_city = :subnational_city,")
 --~ (when (contains? params :headquarter) "headquarter = :headquarter,")
+--~ (when (contains? params :document_preview) "document_preview = :document_preview,")
 --~ (when (contains? params :created_by) "created_by = :created_by,")
 modified = now()
 where id = :id;

@@ -14,6 +14,7 @@
   {:resource #{"owner" "reviewer" "user" "interested in" "other"}
    :technology #{"owner" "user" "reviewer" "interested in" "other"}
    :event #{"resource person" "organiser" "participant" "sponsor" "host" "interested in" "other"}
+   :initiative #{"owner" "implementor" "reviewer" "user" "interested in" "other"}
    :project #{"owner" "implementor" "reviewer" "user" "interested in" "other"}
    :policy #{"regulator" "implementor" "reviewer" "interested in" "other"}
    :organisation #{"interested in" "other"}
@@ -57,24 +58,35 @@
       (resp/response (get-favorites (:spec db) stakeholder))
       (resp/bad-request {:message (format "User with email %s does not exist" email)}))))
 
+(defn topic->api-topic [topic]
+  (if (= "project" topic)
+    "initiative"
+    topic))
+
+(defn topic->column-name [topic]
+  (if (= "stakeholder" topic)
+    "other_stakeholder"
+    topic))
+
 (defn expand-associations
   [{:keys [topic topic_id association]}]
   (vec (for [a association]
-         {:topic topic
-          :column_name (or (and (= "stakeholder" topic) "other_stakeholder") topic)
-          :topic_id topic_id
-          :association a})))
+         (let [topic (topic->api-topic topic)
+               column-name (topic->column-name topic)]
+           {:topic topic
+            :column_name column-name
+            :topic_id topic_id
+            :association a}))))
 
 (defmethod ig/init-key ::post [_ {:keys [db]}]
   (fn [{:keys [jwt-claims body-params]}]
     (if-let [stakeholder (get-stakeholder-id (:spec db) (:email jwt-claims))]
       (let [db (:spec db)
             new-topic (assoc body-params :stakeholder stakeholder)
-            attr {:column_name
-                  (if (= (:topic body-params) "stakeholder")
-                    "other_stakeholder"
-                    (:topic body-params))
-                  :topic (str "stakeholder_" (:topic body-params))}
+            topic (topic->api-topic (:topic body-params))
+            column-name (topic->column-name topic)
+            attr {:column_name column-name
+                  :topic (str "stakeholder_" topic)}
             current (merge new-topic attr)
             current (db.favorite/association-by-stakeholder-topic db current)
             delete (first

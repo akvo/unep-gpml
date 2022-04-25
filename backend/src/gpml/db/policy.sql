@@ -25,6 +25,7 @@ insert into policy(
 --~ (when (contains? params :topics) ", topics")
 --~ (when (contains? params :related_content) ", related_content")
 --~ (when (contains? params :subnational_city) ", subnational_city")
+--~ (when (contains? params :document_preview) ", document_preview")
 )
 values(
     :title,
@@ -51,6 +52,7 @@ values(
 --~ (when (contains? params :topics) ", :topics")
 --~ (when (contains? params :related_content) ", :related_content")
 --~ (when (contains? params :subnational_city) ", :subnational_city")
+--~ (when (contains? params :document_preview) ", :document_preview")
 )
 returning id;
 
@@ -75,6 +77,7 @@ select
     url,
     image,
     created_by,
+    document_preview,
     (select json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
         from policy_language_url plu
         left join language l on l.id = plu.language
@@ -106,6 +109,7 @@ select
     remarks,
     url,
     image,
+    document_preview,
     (select json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
         from policy_language_url plu
         left join language l on l.id = plu.language

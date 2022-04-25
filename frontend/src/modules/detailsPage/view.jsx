@@ -131,7 +131,7 @@ const SharePanel = ({
   const handleChangeRelation = (relationType) => {
     let association = relation ? [...relation.association] : [];
     if (!association.includes(relationType)) {
-      association = [...association, relationType];
+      association = [relationType];
     } else {
       association = association.filter((it) => it !== relationType);
     }
@@ -171,9 +171,9 @@ const SharePanel = ({
         {relation &&
         relation.association &&
         relation.association.indexOf("interested in") !== -1 ? (
-          <BookMarkIcon className="recording-icon bookmark-filled" />
+          <BookMarkIcon className="bookmark-icon bookmark-filled" />
         ) : (
-          <BookMarkIcon className="recording-icon" />
+          <BookMarkIcon className="bookmark-icon" />
         )}
         <h2>Bookmark</h2>
       </div>
@@ -358,27 +358,7 @@ const renderBannerSection = (
                 borderRadius: "none",
               }}
             >
-              {data?.summary && data?.summary?.length < 400 ? (
-                <p>{data?.summary}</p>
-              ) : (
-                <>
-                  {data?.summary && (
-                    <>
-                      <p>
-                        {showLess
-                          ? `${data.summary && data.summary.slice(0, 400)}...`
-                          : data.summary}
-                      </p>
-                      <a
-                        className="view-more"
-                        onClick={() => setShowLess(!showLess)}
-                      >
-                        Read {showLess ? "More" : "Less"}
-                      </a>
-                    </>
-                  )}
-                </>
-              )}
+              <p>{data?.summary}</p>
             </CardComponent>
             <SharePanel
               data={data}
@@ -878,6 +858,13 @@ const DetailsView = ({
     );
   }
 
+  let url =
+    data?.url && data?.url.includes("https://")
+      ? data?.url
+      : data.languages
+      ? data?.languages[0].url
+      : "https://" + data?.url;
+
   return (
     <div id="details">
       <div className="section-header">
@@ -1185,7 +1172,7 @@ const DetailsView = ({
                                       cursor: "pointer",
                                     }}
                                   >
-                                    {item?.stakeholderConnections?.map(
+                                    {item?.entityConnections?.map(
                                       (connection, index) => (
                                         <Avatar src={connection.image} />
                                       )

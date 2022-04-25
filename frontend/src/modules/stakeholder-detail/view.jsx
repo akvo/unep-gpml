@@ -53,6 +53,7 @@ import uniqBy from "lodash/uniqBy";
 import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
+import { TrimText } from "../../utils/string";
 
 const getType = (type) => {
   let t = "";
@@ -396,15 +397,17 @@ const StakeholderDetail = ({
                 <div className="topbar-wrapper">
                   <div className="topbar-image-holder">
                     <img src={data?.picture} />
-                    <div className="topbar-entity-image-holder">
-                      <img
-                        src={
-                          data?.affiliation?.logo
-                            ? data?.affiliation?.logo
-                            : `https://ui-avatars.com/api/?background=0D8ABC&color=ffffff&size=480&name=${data?.affiliation?.name}`
-                        }
-                      />
-                    </div>
+                    {data.affiliation && (
+                      <div className="topbar-entity-image-holder">
+                        <img
+                          src={
+                            data?.affiliation?.logo
+                              ? data?.affiliation?.logo
+                              : `https://ui-avatars.com/api/?background=0D8ABC&color=ffffff&size=480&name=${data?.affiliation?.name}`
+                          }
+                        />
+                      </div>
+                    )}
                   </div>
                   <div className="topbar-title-holder">
                     <h1>{data?.firstName + " " + data?.lastName}</h1>
@@ -429,7 +432,7 @@ const StakeholderDetail = ({
       <div className="info-container">
         <div className="ui container">
           <Row gutter={[16, 16]}>
-            <Col xs={6} lg={6}>
+            <Col xs={6} lg={6} className="flex-col">
               <CardComponent title="Basic info">
                 <div className="list ">
                   <List itemLayout="horizontal">
@@ -441,25 +444,27 @@ const StakeholderDetail = ({
                         }
                       />
                     </List.Item>
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={
-                          <Avatar
-                            src={
-                              data?.affiliation?.logo
-                                ? data?.affiliation?.logo
-                                : `https://ui-avatars.com/api/?size=480&name=${data?.affiliation?.name}`
-                            }
-                          />
-                        }
-                        title={
-                          <Link to={`/organisation/${data?.affiliation?.id}`}>
-                            {data?.affiliation?.name}
-                          </Link>
-                        }
-                        description={"Entity"}
-                      />
-                    </List.Item>
+                    {data?.affiliation && (
+                      <List.Item>
+                        <List.Item.Meta
+                          avatar={
+                            <Avatar
+                              src={
+                                data?.affiliation?.logo
+                                  ? data?.affiliation?.logo
+                                  : `https://ui-avatars.com/api/?size=480&name=${data?.affiliation?.name}`
+                              }
+                            />
+                          }
+                          title={
+                            <Link to={`/organisation/${data?.affiliation?.id}`}>
+                              {data?.affiliation?.name}
+                            </Link>
+                          }
+                          description={"Entity"}
+                        />
+                      </List.Item>
+                    )}
                   </List>
                 </div>
               </CardComponent>
@@ -632,10 +637,12 @@ const StakeholderDetail = ({
                           <div className="description-holder">
                             <div>
                               <h4>{item.type}</h4>
-                              <h6>{item.title}</h6>
+                              {item.title && (
+                                <TrimText text={item.title} max={30} />
+                              )}
                             </div>
-                            {item.stakeholderConnections &&
-                              item.stakeholderConnections.length > 0 && (
+                            {item.entityConnections &&
+                              item.entityConnections.length > 0 && (
                                 <div className="connection-wrapper">
                                   <Avatar.Group
                                     maxCount={2}
@@ -647,12 +654,12 @@ const StakeholderDetail = ({
                                       cursor: "pointer",
                                     }}
                                   >
-                                    {item.stakeholderConnections.map((item) => (
+                                    {item.entityConnections.map((item) => (
                                       <Avatar
                                         src={
                                           item?.image
                                             ? item.image
-                                            : `https://ui-avatars.com/api/?size=480&name=${item.stakeholder}`
+                                            : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
                                         }
                                       />
                                     ))}
@@ -718,8 +725,8 @@ const StakeholderDetail = ({
                               <h4>{item.type}</h4>
                               <h6>{item.title}</h6>
                             </div>
-                            {item.stakeholderConnections &&
-                              item.stakeholderConnections.length > 0 && (
+                            {item.entityConnections &&
+                              item.entityConnections.length > 0 && (
                                 <div className="connection-wrapper">
                                   <Avatar.Group
                                     maxCount={2}
@@ -731,12 +738,12 @@ const StakeholderDetail = ({
                                       cursor: "pointer",
                                     }}
                                   >
-                                    {item.stakeholderConnections.map((item) => (
+                                    {item.entityConnections.map((item) => (
                                       <Avatar
                                         src={
                                           item?.image
                                             ? item.image
-                                            : `https://ui-avatars.com/api/?size=480&name=${item.stakeholder}`
+                                            : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
                                         }
                                       />
                                     ))}

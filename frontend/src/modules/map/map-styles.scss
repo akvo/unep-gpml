@@ -167,27 +167,24 @@
   }
   // LEGEND CONTENT
   .total-per-transnational {
-    margin-top: 30px;
+    margin-top: 24px;
     .transnational-name {
       display: block;
-      margin-top: 30px;
+      margin-top: 24px;
       color: gray;
     }
   }
   .legend-transnational-count {
     text-align: left;
-    margin-top: 10px;
-    margin-bottom: 20px;
     .legend-transnational-title {
       display: block;
       color: #036799;
-      margin-top: 10px;
+      margin-top: 24px;
     }
   }
   .legend-separator {
     display: block;
-    width: 100%;
-    margin-top: 30px;
+    width: calc(100% - 50px);
   }
 
   .total-resources {
@@ -203,7 +200,6 @@
   .legend-heading {
     display: block;
     text-align: left;
-    margin-top: 30px;
   }
 
   .legend-stakeholder-type {
@@ -317,7 +313,16 @@
         }
       }
       .ant-card-body {
-        padding: 24px !important;
+        padding: 0 !important;
+        .pie-chart-header {
+          padding-left: 24px;
+          padding-right: 24px;
+          padding-bottom: 20px;
+        }
+        .legend-content-wrapper,
+        .total-resources-wrapper {
+          padding: 24px !important;
+        }
       }
     }
   }
@@ -326,6 +331,11 @@
       margin-right: 5px;
     }
   }
+
+  .pie-wrapper {
+    padding-left: 14px;
+  }
+
   .legends,
   .no-legend-warning {
     line-height: 10px;

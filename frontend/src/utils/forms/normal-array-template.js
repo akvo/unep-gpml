@@ -4,7 +4,12 @@ import Button from "antd/lib/button";
 import Col from "antd/lib/col";
 import Row from "antd/lib/row";
 import { withConfigConsumer } from "antd/lib/config-provider/context";
-import { MinusOutlined, PlusOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  MinusOutlined,
+  PlusOutlined,
+  DeleteOutlined,
+  ArrowUpOutlined,
+} from "@ant-design/icons";
 
 import ArrayFieldTemplateItem from "./array-template-item";
 
@@ -28,6 +33,7 @@ const NormalArrayFieldTemplate = ({
   idSchema,
   items,
   onAddClick,
+  onReorderClick,
   prefixCls,
   readonly,
   // registry,
@@ -78,7 +84,7 @@ const NormalArrayFieldTemplate = ({
                 />
               </Col>
             )}
-            <Collapse defaultActiveKey={["1"]}>
+            <Collapse>
               {items &&
                 items.map((itemProps, index) => {
                   const label = schema?.["description"];
@@ -136,6 +142,15 @@ const NormalArrayFieldTemplate = ({
                                 items[items.length - 1].onDropIndexClick(index)
                               }
                             />
+                            {index !== 0 && (
+                              <ArrowUpOutlined
+                                className="reorder-icon"
+                                onClick={items[items.length - 1].onReorderClick(
+                                  index,
+                                  index - 1
+                                )}
+                              />
+                            )}
                           </div>
                         </>
                       }

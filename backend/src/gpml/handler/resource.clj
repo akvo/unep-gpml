@@ -61,7 +61,7 @@
                                     attachments country urls tags remarks
                                     created_by url mailjet-config owners
                                     info_docs sub_content_type related_content
-                                    first_publication_date latest_amendment_date
+                                    first_publication_date latest_amendment_date document_preview
                                     entity_connections individual_connections]}]
   (let [data {:type resource_type
               :title title
@@ -87,7 +87,8 @@
               :sub_content_type sub_content_type
               :related_content (pg-util/->JDBCArray related_content "integer")
               :first_publication_date first_publication_date
-              :latest_amendment_date latest_amendment_date}
+              :latest_amendment_date latest_amendment_date
+              :document_preview document_preview}
         resource-id (:id (db.resource/new-resource conn data))
         individual_connections (conj individual_connections {:stakeholder created_by
                                                              :role "owner"})
@@ -194,6 +195,7 @@
            [:vector {:optional true} integer?]]
           [:first_publication_date {:optional true} string?]
           [:latest_amendment_date {:optional true} string?]
+          [:document_preview {:optional true} boolean?]
           [:entity_connections {:optional true}
            [:vector {:optional true}
             [:map

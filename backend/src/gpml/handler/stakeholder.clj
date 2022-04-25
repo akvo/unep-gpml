@@ -152,7 +152,9 @@
     (= -1 (:id org))
     (assoc :affiliation (if (= -1 (:id org))
                           (handler.org/create db org)
-                          (:id org)))))
+                          (:id org)))
+    (nil? org)
+    (assoc :affiliation nil)))
 
 (defn pending-profiles-response [conn auth0-config]
   (let [profiles (db.stakeholder/pending-approval conn)
@@ -423,6 +425,7 @@
           [:title {:optional true} string?]
           [:first_name {:optional true} string?]
           [:last_name {:optional true} string?]
+          [:job_title {:optional true} string?]
           [:linked_in {:optional true} string?]
           [:twitter {:optional true} string?]
           [:photo {:optional true} string?]

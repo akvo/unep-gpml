@@ -407,7 +407,6 @@ const Maps = ({
   const existingData =
     path === KNOWLEDGE_LIBRARY ? existingResource : existingStakeholder;
 
-  // console.log('existingData::::::',existingData);
   const selectedTerritory = !isEmpty(countries)
     ? countries
         .filter((item) => {
@@ -459,7 +458,10 @@ const Maps = ({
       });
     }
   };
-  const legendTitle = "Total";
+  const legendTitle =
+    path === KNOWLEDGE_LIBRARY
+      ? "Total resources per country"
+      : "Total stakeholders per country";
 
   useEffect(() => {
     setCountryToSelect(isFilteredCountry.map((x) => Number(x)));
