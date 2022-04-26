@@ -74,10 +74,14 @@ const EventCalendar = withRouter(({ history }) => {
         const endDate = moment(x.endDate).format("YYYY/MM/DD");
         return filterDate >= startDate && filterDate <= endDate;
       });
-      if (!eventNow.length && searchNextEvent) {
+
+      const futureDate = moment("2035/04/01").format("YYYY/MM/DD");
+
+      if (!eventNow.length && searchNextEvent && filterDate <= futureDate) {
         const nextDay = moment(filterDate, "YYYY/MM/DD")
           .add(1, "days")
           .format("YYYY/MM/DD");
+
         generateEvent(nextDay, searchNextEvent);
       }
       if (eventNow.length || !searchNextEvent) {
