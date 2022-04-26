@@ -75,7 +75,9 @@ const EventCalendar = withRouter(({ history }) => {
         return filterDate >= startDate && filterDate <= endDate;
       });
 
-      const futureDate = moment("2035/04/01").format("YYYY/MM/DD");
+      const year = new Date().getFullYear();
+
+      const futureDate = moment(`${year + 5}/04/01`).format("YYYY/MM/DD");
 
       if (!eventNow.length && searchNextEvent && filterDate <= futureDate) {
         const nextDay = moment(filterDate, "YYYY/MM/DD")
