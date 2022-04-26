@@ -363,6 +363,13 @@
     margin-right: 5px;
     background-color: white;
     border: 2px solid #daeaf1;
+    @media (max-width: 719px) {
+      position: absolute;
+      top: 135px;
+      right: -5px;
+      width: 88px;
+      height: 30px !important;
+    }
   }
 
   .no-legend-warning {
