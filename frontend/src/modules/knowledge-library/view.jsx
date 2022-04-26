@@ -340,6 +340,7 @@ const KnowledgeLibrary = ({
           <FilterDrawer
             {...{
               query,
+              view,
               countData,
               filters,
               filterVisible,
