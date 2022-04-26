@@ -538,7 +538,7 @@ const VerticalLegend = ({
 
   if (data.length) {
     return (
-      <Card className="card-legend-wrapper" style={{ width: 300 }}>
+      <Card className="card-legend-wrapper">
         <div className="legend-content-wrapper">
           <div className="title">{title && <Text strong>{title}</Text>}</div>
           <div
