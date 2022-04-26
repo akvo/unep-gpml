@@ -837,7 +837,15 @@
     }
   }
 
-  @media (min-width: 600px) and (max-width: 779px) {
+  @media (min-width: 716px) and (max-width: 748px) {
+    .ant-drawer-content-wrapper {
+      @-moz-document url-prefix() {
+        transform: scale(0.7) translate(-107px, -350px) !important;
+      }
+    }
+  }
+
+  @media (min-width: 600px) and (max-width: 800px) {
     .ant-drawer-content-wrapper {
       @-moz-document url-prefix() {
         transform: scale(0.7) translate(-107px, -352px) !important;
@@ -850,6 +858,14 @@
     }
   }
 
+  @media (min-width: 801px) and (max-width: 809px) {
+    .ant-drawer-content-wrapper {
+      @-moz-document url-prefix() {
+        transform: scale(0.7) translate(-107px, -285px) !important;
+      }
+    }
+  }
+
   @media (min-width: 731px) and (max-width: 779px) {
     .map-view-drawer .ant-drawer-content-wrapper {
       @-moz-document url-prefix() {
@@ -858,18 +874,26 @@
     }
   }
 
-  @media (min-width: 716px) and (max-width: 748px) {
+  @media (min-width: 810px) and (max-width: 1010px) {
     .ant-drawer-content-wrapper {
       @-moz-document url-prefix() {
-        transform: scale(0.7) translate(-107px, -350px) !important;
+        transform: scale(0.7) translate(-107px, -330px) !important;
       }
     }
   }
 
-  @media (min-width: 750px) and (max-width: 1011px) {
+  @media (min-width: 1011px) and (max-width: 1011.9px) {
     .ant-drawer-content-wrapper {
       @-moz-document url-prefix() {
-        transform: scale(0.7) translate(-107px, -330px) !important;
+        transform: scale(0.7) translate(-107px, -275px) !important;
+      }
+    }
+  }
+
+  @media (min-width: 1012px) and (max-width: 1050px) {
+    .ant-drawer-content-wrapper {
+      @-moz-document url-prefix() {
+        transform: scale(0.7) translate(-107px, -266px) !important;
       }
     }
   }
