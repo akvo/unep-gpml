@@ -939,10 +939,40 @@
       }
 
       // Firefox styles
-      @media (max-width: 510px) {
+      @media (max-width: 253px) {
+        .ant-drawer-content-wrapper {
+          width: 100% !important;
+          max-width: 100% !important;
+          @-moz-document url-prefix() {
+            transform: scale(0.7) translate(-40px, -345px) !important;
+          }
+        }
+      }
+
+      @media (min-width: 254px) and (max-width: 345px) {
+        .ant-drawer-content-wrapper {
+          width: 100% !important;
+          max-width: 100% !important;
+          @-moz-document url-prefix() {
+            transform: scale(0.7) translate(-57px, -331px) !important;
+          }
+        }
+      }
+
+      @media (min-width: 345px) and (max-width: 449px) {
+        .ant-drawer-content-wrapper {
+          width: 100% !important;
+          max-width: 100% !important;
+          @-moz-document url-prefix() {
+            transform: scale(0.7) translate(-107px, -326px) !important;
+          }
+        }
+      }
+
+      @media (min-width: 450px) and (max-width: 510px) {
         .ant-drawer-content-wrapper {
           @-moz-document url-prefix() {
-            transform: unset !important;
+            transform: scale(0.7) translate(-107px, -252px) !important;
           }
         }
       }
@@ -950,7 +980,7 @@
       @media (min-width: 511px) and (max-width: 715px) {
         .ant-drawer-content-wrapper {
           @-moz-document url-prefix() {
-            transform: scale(0.7) translate(-107px, -250px);
+            transform: scale(0.7) translate(-107px, -250px) !important;
           }
         }
       }
@@ -958,7 +988,7 @@
       @media (min-width: 716px) and (max-width: 735px) {
         .ant-drawer-content-wrapper {
           @-moz-document url-prefix() {
-            transform: scale(0.7) translate(-107px, -241px);
+            transform: scale(0.7) translate(-107px, -241px) !important;
           }
         }
       }
@@ -966,7 +996,7 @@
       @media (min-width: 733px) and (max-width: 748px) {
         .ant-drawer-content-wrapper {
           @-moz-document url-prefix() {
-            transform: scale(0.7) translate(-107px, -230px);
+            transform: scale(0.7) translate(-107px, -230px) !important;
           }
         }
       }
@@ -974,7 +1004,7 @@
       @media (min-width: 947px) and (max-width: 750px) {
         .ant-drawer-content-wrapper {
           @-moz-document url-prefix() {
-            transform: scale(0.7) translate(-107px, -251px);
+            transform: scale(0.7) translate(-107px, -251px) !important;
           }
         }
       }
