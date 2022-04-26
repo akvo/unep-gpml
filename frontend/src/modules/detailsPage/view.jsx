@@ -155,6 +155,8 @@ const SharePanel = ({
               ? data?.url
               : data.languages
               ? data?.languages[0].url
+              : data?.url.includes("http://")
+              ? data?.url
               : "https://" + data?.url
           }`}
           target="_blank"
@@ -191,6 +193,8 @@ const SharePanel = ({
                   ? data?.url
                   : data.languages
                   ? data?.languages[0].url
+                  : data?.url.includes("http://")
+                  ? data?.url
                   : "https://" + data?.url
               }`}
               disabled
@@ -331,6 +335,8 @@ const renderBannerSection = (
                   ? data?.url
                   : data.languages
                   ? data?.languages[0].url
+                  : data?.url.includes("http://")
+                  ? data?.url
                   : "https://" + data?.url
               }`}
               target="_blank"
@@ -388,6 +394,8 @@ const renderBannerSection = (
                     ? data?.url
                     : data.languages
                     ? data?.languages[0].url
+                    : data?.url.includes("http://")
+                    ? data?.url
                     : "https://" + data?.url
                 }`}
                 target="_blank"
@@ -857,13 +865,6 @@ const DetailsView = ({
       </div>
     );
   }
-
-  let url =
-    data?.url && data?.url.includes("https://")
-      ? data?.url
-      : data.languages
-      ? data?.languages[0].url
-      : "https://" + data?.url;
 
   return (
     <div id="details">
