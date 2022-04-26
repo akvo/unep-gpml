@@ -683,6 +683,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
           : value;
     }
 
+    if (type === "year") {
+      res = String(value);
+    }
+
     if (name === "implementingMea") {
       const mea = meaOptions.find(
         (x) => x.name.toLowerCase() === value.toLowerCase()
