@@ -26,7 +26,7 @@
         font-size: 16px;
         color: #1ca585;
         @-moz-document url-prefix() {
-          font-size: 14px !important;
+          font-size: 12px !important;
         }
       }
       h4 {
@@ -266,6 +266,9 @@
         padding: 24px 10px;
         p {
           font-size: 16px;
+          @-moz-document url-prefix() {
+            font-size: 12px !important;
+          }
         }
       }
     }
@@ -628,9 +631,6 @@
 @media (max-width: 700px) {
   #details {
     .section-banner {
-      .short-image {
-      
-      }
       .ui.container > .ant-row > .ant-col + .ant-col {
         max-width: 100% !important;
       }
@@ -784,6 +784,9 @@
           li {
             a {
               font-size: 16px;
+              @-moz-document url-prefix() {
+                font-size: 12px !important;
+              }
             }
           }
         }
@@ -812,7 +815,7 @@
         h2 {
           font-size: 1.4rem;
           @-moz-document url-prefix() {
-            font-size: 14px !important;
+            font-size: 12px !important;
           }
         }
       }
@@ -855,7 +858,7 @@
       .record-table {
         font-size: 1.4rem;
         @-moz-document url-prefix() {
-          font-size: 14px !important;
+          font-size: 12px !important;
         }
       }
       .tab-wrapper {
@@ -865,7 +868,7 @@
           font-size: 1.4rem;
           font-weight: 700;
           @-moz-document url-prefix() {
-            font-size: 14px !important;
+            font-size: 12px !important;
           }
         }
       }
@@ -885,7 +888,7 @@
               h4,
               h6,
               .bottom-panel .read-more {
-                font-size: 14px !important;
+                font-size: 12px !important;
               }
             }
           }
@@ -906,13 +909,13 @@
             font-size: 1.4rem;
             margin-bottom: 0px;
             @-moz-document url-prefix() {
-              font-size: 14px !important;
+              font-size: 12px !important;
             }
           }
           .ant-list-item-meta-title {
             font-size: 1.4rem;
             @-moz-document url-prefix() {
-              font-size: 14px !important;
+              font-size: 12px !important;
             }
           }
         }
@@ -920,7 +923,7 @@
           .ant-card-head-title {
             font-size: 16px;
             @-moz-document url-prefix() {
-              font-size: 14px !important;
+              font-size: 12px !important;
             }
           }
         }
