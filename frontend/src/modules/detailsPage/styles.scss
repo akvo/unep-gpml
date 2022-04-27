@@ -1,6 +1,12 @@
 @import "../../vars.scss";
 
 #details {
+  @-moz-document url-prefix() {
+    .ant-avatar {
+      width: 26px !important;
+      height: 26px !important;
+    }
+  }
   .section-header {
     background-color: #007090;
     padding: 20px 0px;
@@ -298,6 +304,7 @@
         }
       }
     }
+
     .list {
       .ant-list-item {
         border-bottom: none;
@@ -314,11 +321,8 @@
           .ant-avatar {
             width: 32px;
             height: 32px;
-            @-moz-document url-prefix() {
-              width: 22px !important;
-              height: 22px !important;
-            }
             overflow: initial;
+
             img {
               object-fit: contain;
             }
@@ -354,9 +358,14 @@
           }
         }
       }
+
       .ant-avatar-circle {
         width: 50px !important;
         height: 50px !important;
+        @-moz-document url-prefix() {
+          width: 40px !important;
+          height: 40px !important;
+        }
         img {
           border-radius: 50%;
         }
@@ -426,6 +435,12 @@
     .geo-coverage {
       h4 {
         text-transform: capitalize;
+      }
+      @-moz-document url-prefix() {
+        .ant-avatar-circle {
+          width: 20px !important;
+          height: 20px !important;
+        }
       }
     }
     .related-content {
