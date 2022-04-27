@@ -640,6 +640,9 @@
           }
           h2 {
             font-size: 14px;
+            @-moz-document url-prefix() {
+              font-size: 10px !important;
+            }
           }
         }
       }
