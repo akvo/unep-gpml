@@ -8,6 +8,10 @@
   background-position-y: top;
   @-moz-document url-prefix() {
     padding-bottom: 20px !important;
+    .ant-avatar {
+      width: 25px !important;
+      height: 25px !important;
+    }
   }
   & > .ui.container > .ant-row {
     & > .ant-col:first-child {
@@ -45,10 +49,17 @@
           position: absolute;
           bottom: -5px;
           right: 20px;
+          @-moz-document url-prefix() {
+            width: 45px !important;
+            height: 45px !important;
+          }
           img {
             width: 100%;
             height: 50px;
             border: none;
+            @-moz-document url-prefix() {
+              height: 45px !important;
+            }
           }
         }
         img {
@@ -57,6 +68,11 @@
           object-fit: cover;
           border-radius: 50%;
           border: 4px solid #fff;
+          @-moz-document url-prefix() {
+            width: 70px !important;
+            height: 70px !important;
+            border: 2px solid #fff;
+          }
         }
       }
       .topbar-title-holder {
@@ -66,6 +82,9 @@
         }
         img {
           width: 30px;
+          @-moz-document url-prefix() {
+            width: 20px !important;
+          }
         }
         h1 {
           margin-bottom: 0px;
@@ -131,9 +150,18 @@
           height: 100% !important;
           flex-direction: row !important;
           border-radius: 0px 0px 10px 10px !important;
+          max-height: 90px !important;
           .sticky-panel-item {
             border-bottom: unset !important;
             box-shadow: unset !important;
+            height: 100%;
+            max-height: 80px !important;
+          }
+          @-moz-document url-prefix() {
+            max-height: 60px !important;
+            .sticky-panel-item {
+              max-height: 50px !important;
+            }
           }
           .sticky-panel-item:not(:first-of-type) {
             border-left: 1px solid #094271 !important;
@@ -216,10 +244,17 @@
                 .ant-list-item-meta-content {
                   word-break: break-all;
                 }
+                @-moz-document url-prefix() {
+                  .info-entity-icon {
+                    width: 39px !important;
+                    height: 39px !important;
+                  }
+                }
                 .ant-avatar {
                   width: 55px;
                   height: 55px;
                   overflow: initial;
+
                   img {
                     object-fit: contain;
                     border-radius: 50%;
@@ -293,6 +328,7 @@
           @-moz-document url-prefix() {
             padding: 5px 0px !important;
             margin: 1px !important;
+            flex: 0 0 70px !important;
           }
           .sticky-panel-item {
             border-bottom: 1px solid #094271;
@@ -332,17 +368,24 @@
               color: #ffffff;
               margin-bottom: 0px;
               @-moz-document url-prefix() {
-                font-size: 14px !important;
+                font-size: 12px !important;
+                line-height: 18px;
               }
             }
             .svg-icon {
               width: 40px;
+              @-moz-document url-prefix() {
+                width: 25px !important;
+              }
               path {
                 fill: #fff;
               }
             }
             .edit-icon {
               width: 50px;
+              @-moz-document url-prefix() {
+                width: 35px !important;
+              }
               path {
                 fill: #fff;
               }
@@ -402,6 +445,9 @@
                 left: 10px;
                 top: 50%;
                 transform: translateY(-50%);
+                @-moz-document url-prefix() {
+                  width: 10px;
+                }
               }
             }
           }
@@ -414,7 +460,7 @@
                 font-size: 18px;
                 font-weight: bold;
                 @-moz-document url-prefix() {
-                  font-size: 12px !important;
+                  font-size: 14px !important;
                 }
                 span {
                   font-size: 10px;
@@ -438,6 +484,7 @@
             width: 250px;
             text-align: center;
             @-moz-document url-prefix() {
+              width: 230px !important;
               padding: 5px 0 !important;
               margin: 5px 6px !important;
             }
@@ -459,6 +506,9 @@
                 }
                 img {
                   width: 25px;
+                  @-moz-document url-prefix() {
+                    width: 15px;
+                  }
                 }
               }
             }
@@ -474,6 +524,7 @@
             width: 250px;
             text-align: center;
             @-moz-document url-prefix() {
+              width: 230px !important;
               padding: 5px 0 !important;
               margin: 5px 6px !important;
             }
@@ -501,10 +552,14 @@
       padding: 20px 0px;
       justify-content: center;
       @-moz-document url-prefix() {
+        flex: 0 0 55px !important;
         padding: 10px 0 !important;
       }
       img {
         width: 30px;
+        @-moz-document url-prefix() {
+          width: 40px !important;
+        }
       }
     }
     .description-holder {
@@ -516,13 +571,19 @@
       @-moz-document url-prefix() {
         padding: 7.5px !important;
       }
+
       h4 {
         color: #1ca585;
         font-size: 14px;
         font-weight: bold;
         margin-bottom: 0px;
         @-moz-document url-prefix() {
-          font-size: 12px !important;
+          font-size: 10px !important;
+        }
+      }
+      @-moz-document url-prefix() {
+        h4 + div {
+          font-size: 10px !important;
         }
       }
       h6 {
@@ -531,7 +592,7 @@
         font-weight: normal;
         margin-bottom: 2px;
         @-moz-document url-prefix() {
-          font-size: 12px !important;
+          font-size: 10px !important;
           margin-bottom: 1px;
         }
       }
@@ -541,7 +602,7 @@
         margin-bottom: 0px;
         font-weight: normal;
         @-moz-document url-prefix() {
-          font-size: 12px !important;
+          font-size: 10px !important;
         }
       }
       .connection-wrapper {
@@ -621,7 +682,7 @@
       margin-left: auto !important;
       margin-right: auto !important;
       @-moz-document url-prefix() {
-        transform: scale(0.95);
+        width: 1056px;
       }
     }
     .topbar-container {
@@ -630,7 +691,7 @@
           h1 {
             font-size: 1.6rem;
             @-moz-document url-prefix() {
-              font-size: 16px !important;
+              font-size: 14px !important;
             }
           }
         }
@@ -642,11 +703,23 @@
           img {
             width: 100px;
             height: 100px;
+            @-moz-document url-prefix() {
+              width: 90px;
+              height: 90px;
+            }
           }
           .topbar-entity-image-holder {
             width: 35px;
             height: 35px;
             right: 10px;
+            @-moz-document url-prefix() {
+              width: 25px !important;
+              height: 25px !important;
+              img {
+                height: 25px !important;
+                width: 25px !important;
+              }
+            }
             img {
               height: 35px;
             }
@@ -675,7 +748,7 @@
             .ant-card-head-title {
               font-size: 1.4rem;
               @-moz-document url-prefix() {
-                font-size: 14px !important;
+                font-size: 12px !important;
               }
             }
           }
@@ -683,7 +756,7 @@
             p {
               font-size: 1.4rem;
               @-moz-document url-prefix() {
-                font-size: 14px !important;
+                font-size: 12px !important;
               }
             }
             @media (max-width: 519px) {
@@ -704,7 +777,7 @@
               }
             }
 
-            @media (min-width: 701px) and (max-width: 976px) {
+            @media (min-width: 701px) and (max-width: 1200px) {
               flex-direction: row;
               .ant-col {
                 flex: 0 0 calc(100% / 3) !important;
@@ -718,7 +791,7 @@
                   h4 {
                     font-size: 1.4rem;
                     @-moz-document url-prefix() {
-                      font-size: 14px !important;
+                      font-size: 12px !important;
                     }
                   }
                 }
@@ -742,7 +815,7 @@
             h4,
             h6,
             .connection-wrapper .read-more {
-              font-size: 14px !important;
+              font-size: 12px !important;
             }
           }
         }
@@ -751,7 +824,7 @@
         .ant-typography {
           font-size: 1.4rem;
           @-moz-document url-prefix() {
-            font-size: 14px !important;
+            font-size: 12px !important;
           }
         }
       }

@@ -449,6 +449,7 @@ const StakeholderDetail = ({
                         <List.Item.Meta
                           avatar={
                             <Avatar
+                              className="info-entity-icon"
                               src={
                                 data?.affiliation?.logo
                                   ? data?.affiliation?.logo
