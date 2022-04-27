@@ -6,7 +6,9 @@
   background: #edf2f7;
   background-size: cover;
   background-position-y: top;
-
+  @-moz-document url-prefix() {
+    padding-bottom: 20px !important;
+  }
   & > .ui.container > .ant-row {
     & > .ant-col:first-child {
       * {
@@ -18,6 +20,9 @@
   .topbar-container {
     background-color: #007090;
     padding: 10px 0;
+    @-moz-document url-prefix() {
+      padding: 5px 0 !important;
+    }
     .ui.container {
       color: #fff;
     }
@@ -31,6 +36,9 @@
         background-position: top left;
         background-size: 30%;
         position: relative;
+        @-moz-document url-prefix() {
+          padding-left: 20px !important;
+        }
         .topbar-entity-image-holder {
           width: 50px;
           height: 50px;
@@ -53,6 +61,9 @@
       }
       .topbar-title-holder {
         margin-left: 20px;
+        @-moz-document url-prefix() {
+          margin-left: 10px !important;
+        }
         img {
           width: 30px;
         }
@@ -82,6 +93,9 @@
   }
   .info-container {
     margin-top: 50px;
+    @-moz-document url-prefix() {
+      margin-top: 25px !important;
+    }
     .flex-col {
       display: flex;
       flex-direction: column;
@@ -131,6 +145,9 @@
 
     .card-wrapper {
       margin-bottom: 20px;
+      @-moz-document url-prefix() {
+        margin-bottom: 10px !important;
+      }
       &:last-child {
         margin-bottom: 0px;
       }
@@ -139,10 +156,16 @@
         height: 100%;
         border-radius: 10px;
         box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+        @-moz-document url-prefix() {
+          padding: 5px 0 !important;
+        }
         .ant-card-head {
           border: none;
           min-height: auto;
           padding: 0px 20px;
+          @-moz-document url-prefix() {
+            padding: 0 10px !important;
+          }
           .ant-card-head-title {
             padding-bottom: 0px;
             color: #09689a;
@@ -155,6 +178,9 @@
         }
         .ant-card-body {
           padding: 24px 10px 0px 10px;
+          @-moz-document url-prefix() {
+            padding: 12px 5px 0 5px !important;
+          }
           p {
             font-size: 16px;
             @-moz-document url-prefix() {
@@ -163,11 +189,18 @@
           }
           .list {
             margin-top: -20px;
+            @-moz-document url-prefix() {
+              margin-top: -10px !important;
+            }
             .ant-list-item {
               border-bottom: none;
               display: flex;
               padding-left: 10px;
               padding-right: 10px;
+              @-moz-document url-prefix() {
+                padding-left: 5px !important;
+                padding-right: 5px !important;
+              }
               &.location {
                 span {
                   text-align: center;
@@ -225,10 +258,16 @@
         display: flex;
         justify-content: space-between;
         margin-bottom: 20px;
+        @-moz-document url-prefix() {
+          margin-bottom: 10px !important;
+        }
         height: 100%;
         & > .card-wrapper {
           .ant-card-head-title {
             padding-left: 10px;
+            @-moz-document url-prefix() {
+              padding-left: 5px !important;
+            }
           }
         }
         .card-wrapper {
@@ -236,6 +275,9 @@
         }
         .ant-card-body {
           padding: 24px 10px 0px 10px;
+          @-moz-document url-prefix() {
+            padding: 12px 5px 0 5px !important;
+          }
         }
         .sticky-panel {
           display: flex;
@@ -248,6 +290,10 @@
           box-sizing: border-box;
           border-radius: 0px 10px 10px 0px;
           padding: 10px 0px;
+          @-moz-document url-prefix() {
+            padding: 5px 0px !important;
+            margin: 1px !important;
+          }
           .sticky-panel-item {
             border-bottom: 1px solid #094271;
             box-shadow: 0px 1px 0px #3872a0;
@@ -258,6 +304,9 @@
             display: flex;
             flex-direction: column;
             padding: 10px 0px;
+            @-moz-document url-prefix() {
+              padding: 5px 0px !important;
+            }
             &:hover {
               background-color: $yellow-highlight !important;
               color: #fff;
@@ -302,16 +351,31 @@
         }
         p {
           padding: 0 20px;
+          @-moz-document url-prefix() {
+            padding: 0 10px !important;
+          }
         }
         .exta-info {
           margin-top: 40px;
+          @-moz-document url-prefix() {
+            margin-top: 20px !important;
+          }
           .ant-card-body {
             padding: 0px 10px;
+            @-moz-document url-prefix() {
+              padding: 0 5px !important;
+            }
           }
           .ant-list {
             padding: 0 10px;
+            @-moz-document url-prefix() {
+              padding: 0 5px !important;
+            }
             .ant-spin-container {
               margin-top: 10px;
+              @-moz-document url-prefix() {
+                margin-top: 5px !important;
+              }
             }
             .ant-list-item {
               border-bottom: none;
@@ -323,6 +387,10 @@
               position: relative;
               margin: 0 10px 10px 0;
               text-decoration: none;
+              @-moz-document url-prefix() {
+                padding: 5px 20px 5px 30px !important;
+                margin: 0 5px 5px 0 !important;
+              }
               &::before {
                 background: #fff;
                 border-radius: 10px;
@@ -353,7 +421,7 @@
                   font-weight: normal;
                   color: #1ca585;
                   @-moz-document url-prefix() {
-                    font-size: 8px !important;
+                    font-size: 9px !important;
                   }
                 }
               }
@@ -369,6 +437,10 @@
             cursor: pointer;
             width: 250px;
             text-align: center;
+            @-moz-document url-prefix() {
+              padding: 5px 0 !important;
+              margin: 5px 6px !important;
+            }
             p {
               display: flex;
               align-items: center;
@@ -376,9 +448,15 @@
               padding: 0 10px;
               margin-bottom: 0px;
               justify-content: center;
+              @-moz-document url-prefix() {
+                padding: 0 5px !important;
+              }
               span {
                 margin-right: 10px;
                 line-height: 0px;
+                @-moz-document url-prefix() {
+                  margin-right: 5px !important;
+                }
                 img {
                   width: 25px;
                 }
@@ -395,6 +473,10 @@
             cursor: pointer;
             width: 250px;
             text-align: center;
+            @-moz-document url-prefix() {
+              padding: 5px 0 !important;
+              margin: 5px 6px !important;
+            }
             p {
               margin-bottom: 0px;
             }
@@ -418,6 +500,9 @@
       box-sizing: border-box;
       padding: 20px 0px;
       justify-content: center;
+      @-moz-document url-prefix() {
+        padding: 10px 0 !important;
+      }
       img {
         width: 30px;
       }
@@ -428,6 +513,9 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      @-moz-document url-prefix() {
+        padding: 7.5px !important;
+      }
       h4 {
         color: #1ca585;
         font-size: 14px;
@@ -444,6 +532,7 @@
         margin-bottom: 2px;
         @-moz-document url-prefix() {
           font-size: 12px !important;
+          margin-bottom: 1px;
         }
       }
       p {
@@ -460,6 +549,9 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        @-moz-document url-prefix() {
+          margin-top: 15px !important;
+        }
         .read-more {
           color: #34a6ff;
           cursor: pointer;
@@ -472,6 +564,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    @-moz-document url-prefix() {
+      padding: 5px 0px !important;
+    }
     &.with-notes {
       justify-content: space-between;
       align-items: flex-start;
@@ -488,7 +583,7 @@
         color: #255b87;
         font-size: 0.85rem;
         @-moz-document url-prefix() {
-          font-size: 8px !important;
+          font-size: 9px !important;
         }
       }
     }
@@ -541,6 +636,9 @@
         }
         .topbar-image-holder {
           padding-left: 20px;
+          @-moz-document url-prefix() {
+            padding-left: 10px !important;
+          }
           img {
             width: 100px;
             height: 100px;
@@ -558,6 +656,9 @@
     }
     .info-container {
       margin-top: 40px;
+      @-moz-document url-prefix() {
+        margin-top: 20px !important;
+      }
       .card-wrapper {
         .ant-card {
           .ant-card-head-wrapper {
