@@ -4,6 +4,9 @@
   .section-header {
     background-color: #007090;
     padding: 20px 0px;
+    @-moz-document url-prefix() {
+      padding: 10px 0px !important;
+    }
     width: 100%;
     .header-wrapper {
       display: flex;
@@ -16,6 +19,9 @@
       h2 {
         font-size: 16px;
         color: #1ca585;
+        @-moz-document url-prefix() {
+          font-size: 14px !important;
+        }
       }
       h4 {
         color: #fff;
@@ -23,9 +29,15 @@
         font-weight: 700;
         line-height: 30px;
         text-transform: capitalize;
+        @-moz-document url-prefix() {
+          font-size: 18px !important;
+        }
       }
       img {
         margin-right: 20px;
+        @-moz-document url-prefix() {
+          margin-right: 10px !important;
+        }
       }
     }
   }
@@ -35,6 +47,9 @@
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+    @-moz-document url-prefix() {
+      padding: 10px 0px !important;
+    }
     .resource-image {
       width: 100%;
       border-radius: 10px;
@@ -148,6 +163,9 @@
         span {
           font-size: 30px;
           color: #ffffff;
+          @-moz-document url-prefix() {
+            font-size: 18px !important;
+          }
         }
         h2 {
           font-size: 16px;
@@ -198,28 +216,39 @@
   .card-wrapper {
     &.mb-10 {
       margin-bottom: 30px;
+      @-moz-document url-prefix() {
+        margin-bottom: 15px !important;
+      }
     }
     .summary {
       padding: 0 10px;
+      @-moz-document url-prefix() {
+        padding: 0px 5px !important;
+      }
     }
     .ant-card {
       padding: 10px 0px;
       height: 100%;
       border-radius: 10px;
       box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+
       .ant-card-head {
         border: none;
         min-height: auto;
         padding: 0px 20px;
+        @-moz-document url-prefix() {
+          padding: 0px 10px !important;
+        }
+
         .ant-card-head-title {
           padding-bottom: 0px;
           color: #1ca585;
           font-size: 18px;
           font-weight: bold;
           @-moz-document url-prefix() {
-            font-size: 16px !important;
-            padding-bottom: 14px !important;
-            padding-top: 14px !important;
+            font-size: 14px !important;
+            padding-bottom: 10px !important;
+            padding-top: 10px !important;
           }
         }
       }
@@ -234,10 +263,16 @@
   .section-info {
     background: #edf2f7;
     padding: 30px 0px;
+    @-moz-document url-prefix() {
+      padding: 15px 0px !important;
+    }
     .tab-wrapper {
       background: #007090;
       border-radius: 5px;
       padding: 10px 0px;
+      @-moz-document url-prefix() {
+        padding: 5px 0px !important;
+      }
       ul {
         margin: 0;
         padding: 0;
@@ -256,6 +291,9 @@
             color: #ffffff;
             font-weight: bold;
             font-size: 18px;
+            @-moz-document url-prefix() {
+              font-size: 16px !important;
+            }
           }
         }
       }
@@ -266,11 +304,20 @@
         display: flex;
         padding-left: 10px;
         padding-right: 10px;
+        @-moz-document url-prefix() {
+          padding: 6px 0px !important;
+          padding-left: 5px !important;
+          padding-right: 5px !important;
+        }
         .ant-list-item-meta {
           align-items: center;
           .ant-avatar {
             width: 32px;
             height: 32px;
+            @-moz-document url-prefix() {
+              width: 22px !important;
+              height: 22px !important;
+            }
             overflow: initial;
             img {
               object-fit: contain;
@@ -357,6 +404,10 @@
           position: relative;
           margin: 0 10px 10px 0;
           text-decoration: none;
+          @-moz-document url-prefix() {
+            padding: 2.5px 20px 2.5px 30px !important;
+            margin: 0 5px 5px 0 !important;
+          }
           &::before {
             background: #fff;
             border-radius: 10px;
@@ -381,15 +432,28 @@
       padding: 0px 10px;
       .ant-col {
         margin-bottom: 20px;
+        @-moz-document url-prefix() {
+          margin-bottom: 10px !important;
+        }
       }
       .ant-card-head {
         padding: 0px 15px;
+
         .ant-card-head-title {
           font-size: 14px;
+        }
+        @-moz-document url-prefix() {
+          padding: 0px 7.5px !important;
+          .ant-card-head-title {
+            font-size: 12px;
+          }
         }
       }
       .ant-card-body {
         padding: 0px 15px;
+        @-moz-document url-prefix() {
+          padding: 0px 7.5px !important;
+        }
         h4 {
           font-size: 14px;
           color: #18162f;
@@ -424,29 +488,45 @@
         .description-holder {
           padding: 15px;
           width: 100%;
+          @-moz-document url-prefix() {
+            padding: 7.5px !important;
+          }
           h4 {
             color: #1ca585;
             font-size: 14px;
             font-weight: bold;
             margin-bottom: 0px;
+            @-moz-document url-prefix() {
+              font-size: 12px !important;
+            }
           }
           h6 {
             font-size: 14px;
             color: #18162f;
             font-weight: normal;
             margin-bottom: 2px;
+            @-moz-document url-prefix() {
+              font-size: 12px;
+            }
           }
           p {
             font-size: 14px;
             color: #374a59;
             margin-bottom: 0px;
             font-weight: normal;
+            @-moz-document url-prefix() {
+              font-size: 10px !important;
+            }
           }
           .connection-wrapper {
             margin-top: 30px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            @-moz-document url-prefix() {
+              margin-top: 15px !important;
+            }
+
             .read-more {
               color: #34a6ff;
               cursor: pointer;
@@ -470,6 +550,9 @@
       .record-table-wrapper {
         display: flex;
         padding: 6px 10px;
+        @-moz-document url-prefix() {
+          padding: 3px 5px !important;
+        }
         &:nth-of-type(odd) {
           background: #edf2f7;
         }
@@ -484,6 +567,10 @@
       background: #fff;
       padding: 0px 40px;
       margin-bottom: 30px;
+      @-moz-document url-prefix() {
+        padding: 0px 20px !important;
+        margin-bottom: 15px !important;
+      }
       .ant-list-item-meta {
         align-items: center;
         .ant-avatar {
@@ -552,6 +639,9 @@
 
         .ant-card-head-title {
           padding-bottom: 16px !important;
+          @-moz-document url-prefix() {
+            padding-bottom: 8px !important;
+          }
         }
         .ant-card-body {
           max-height: 350px;
@@ -565,6 +655,7 @@
           flex-direction: row;
           margin: 0;
           max-height: 80px;
+          border-radius: 0px 10px 10px 10px;
           @-moz-document url-prefix() {
             max-height: 70px !important;
           }
@@ -598,11 +689,33 @@
             }
           }
           .sticky-panel-item:first-child {
-            border-radius: 0px 0px 0px 0px;
+            border-radius: 0px 0px 0px 8px;
           }
           .sticky-panel-item:not(:first-of-type) {
             border-left: 1px solid #094271;
           }
+        }
+      }
+    }
+    @media (max-width: 540px) {
+      .section-info > .ui.container > .ant-row {
+        flex-direction: column-reverse;
+        .ant-col {
+          max-width: 100% !important;
+        }
+      }
+    }
+
+    .section-info > .ui.container {
+      @media (min-width: 600px) and (max-width: 700px) {
+        flex-flow: unset !important;
+        .ant-col-xs-6 {
+          flex: 0 0 40% !important;
+          max-width: 40% !important;
+        }
+        .ant-col-xs-18 {
+          flex: 0 0 60% !important;
+          max-width: 60% !important;
         }
       }
     }
@@ -681,6 +794,9 @@
         }
         h2 {
           font-size: 1.4rem;
+          @-moz-document url-prefix() {
+            font-size: 14px !important;
+          }
         }
       }
     }
@@ -714,8 +830,16 @@
     }
     .section-info {
       padding: 10px 0px;
+      @-moz-document url-prefix() {
+        .ant-list-item-meta-avatar {
+          margin-right: 8px !important;
+        }
+      }
       .record-table {
         font-size: 1.4rem;
+        @-moz-document url-prefix() {
+          font-size: 14px !important;
+        }
       }
       .tab-wrapper {
         margin-bottom: 10px !important;
@@ -723,6 +847,9 @@
         ul li a {
           font-size: 1.4rem;
           font-weight: 700;
+          @-moz-document url-prefix() {
+            font-size: 14px !important;
+          }
         }
       }
       .related-content {
@@ -737,6 +864,13 @@
             .bottom-panel .read-more {
               font-size: 1.4rem;
             }
+            @-moz-document url-prefix() {
+              h4,
+              h6,
+              .bottom-panel .read-more {
+                font-size: 14px !important;
+              }
+            }
           }
         }
       }
@@ -748,6 +882,9 @@
       .ant-card {
         .ant-card-body {
           padding: 14px 10px;
+          @-moz-document url-prefix() {
+            padding: 7px 10px !important;
+          }
           p {
             font-size: 1.4rem;
             margin-bottom: 0px;
@@ -757,17 +894,26 @@
           }
           .ant-list-item-meta-title {
             font-size: 1.4rem;
+            @-moz-document url-prefix() {
+              font-size: 14px !important;
+            }
           }
         }
         .ant-card-head {
           .ant-card-head-title {
             font-size: 16px;
+            @-moz-document url-prefix() {
+              font-size: 14px !important;
+            }
           }
         }
       }
     }
     .card-wrapper .ant-card .ant-card-head .ant-card-head-title {
       font-size: 1.4rem;
+      @-moz-document url-prefix() {
+        font-size: 14px !important;
+      }
     }
     .card-wrapper .ant-card {
       padding: 0px 0px;
@@ -781,6 +927,9 @@
     .list-country-group {
       li {
         font-size: 1.2rem;
+        @-moz-document url-prefix() {
+          font-size: 10px !important;
+        }
       }
     }
   }
