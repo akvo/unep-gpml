@@ -712,6 +712,7 @@
           }
           .sticky-panel-item:not(:first-of-type) {
             border-left: 1px solid #094271;
+            box-shadow: -1px 0px 0px 0px #3872a0 !important;
           }
         }
       }
