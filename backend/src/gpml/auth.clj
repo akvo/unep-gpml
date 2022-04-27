@@ -1,11 +1,15 @@
 (ns gpml.auth
-  (:require [gpml.db.stakeholder :as db.stakeholder]
-            [integrant.core :as ig]
-            [malli.core :as malli])
-  (:import [com.auth0.jwk JwkProvider JwkProviderBuilder]
-           [com.auth0.jwt JWT]
-           [com.auth0.jwt.impl JsonNodeClaim]
-           [com.auth0.utils.tokens SignatureVerifier PublicKeyProvider IdTokenVerifier]))
+  (:require
+   [gpml.db.comment :as db.comment]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.util :as util]
+   [integrant.core :as ig]
+   [malli.core :as malli])
+  (:import
+   [com.auth0.jwk JwkProvider JwkProviderBuilder]
+   [com.auth0.jwt JWT]
+   [com.auth0.jwt.impl JsonNodeClaim]
+   [com.auth0.utils.tokens SignatureVerifier PublicKeyProvider IdTokenVerifier]))
 
 (def ^:const ^:private synthetic-ckan-integration-user
   "Ad-hoc user with the required permissions to access certain APIs such
@@ -171,6 +175,18 @@
         (handler (assoc request :reviewer user))
         {:status 403
          :body {:message "Unauthorized"}}))))
+
+(defmethod ig/init-key :gpml.auth/restrict-to-admin-and-comment-author-middleware
+  [_ {:keys [db]}]
+  (fn [handler]
+    (fn [{:keys [user parameters] :as request}]
+      (let [{:keys [path body]} parameters
+            comment (first (db.comment/get-resource-comments (:spec db) {:id (util/uuid (or (:id path) (:id body)))}))]
+        (if (or (some #{(:role user)} ["ADMIN"])
+                (= (:author_id comment) (:id user)))
+          (handler request)
+          {:status 403
+           :body {:message "Unauthorized"}})))))
 
 (def owners-schema
   [:owners {:optional true}
