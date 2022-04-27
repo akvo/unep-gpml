@@ -629,10 +629,7 @@
   #details {
     .section-banner {
       .short-image {
-        @-moz-document url-prefix() {
-          max-height: 430px !important;
-          min-height: 330px !important;
-        }
+      
       }
       .ui.container > .ant-row > .ant-col + .ant-col {
         max-width: 100% !important;

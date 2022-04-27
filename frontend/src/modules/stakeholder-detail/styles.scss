@@ -61,6 +61,9 @@
           color: #ffffff;
           font-size: 30px;
           line-height: 45px;
+          @-moz-document url-prefix() {
+            font-size: 18px !important;
+          }
         }
         .role {
           font-weight: bold;
@@ -87,7 +90,45 @@
           flex: 1;
         }
       }
+      @media (max-width: 700px) {
+        flex: unset !important;
+        .card-wrapper {
+          &:last-child {
+            flex: unset !important;
+          }
+        }
+      }
     }
+
+    @media (max-width: 700px) {
+      & > .ui.container > .ant-row {
+        display: flex;
+        flex-direction: column-reverse !important;
+        flex-flow: column-reverse !important;
+        .ant-col-xs-18,
+        .ant-col-xs-6 {
+          max-width: 100% !important;
+        }
+      }
+      .description-wrapper {
+        display: flex;
+        flex-direction: column;
+        .sticky-panel {
+          height: 100% !important;
+          flex-direction: row !important;
+          border-radius: 0px 0px 10px 10px !important;
+          .sticky-panel-item {
+            border-bottom: unset !important;
+            box-shadow: unset !important;
+          }
+          .sticky-panel-item:not(:first-of-type) {
+            border-left: 1px solid #094271 !important;
+            box-shadow: -1px 0px 0px 0px #3872a0 !important;
+          }
+        }
+      }
+    }
+
     .card-wrapper {
       margin-bottom: 20px;
       &:last-child {
@@ -107,12 +148,18 @@
             color: #09689a;
             font-size: 18px;
             font-weight: bold;
+            @-moz-document url-prefix() {
+              font-size: 16px !important;
+            }
           }
         }
         .ant-card-body {
           padding: 24px 10px 0px 10px;
           p {
             font-size: 16px;
+            @-moz-document url-prefix() {
+              font-size: 14px !important;
+            }
           }
           .list {
             margin-top: -20px;
@@ -149,6 +196,9 @@
                   span {
                     width: 55px;
                     font-size: 35px;
+                    @-moz-document url-prefix() {
+                      font-size: 20px !important;
+                    }
                   }
                   svg {
                     color: #004b7f;
@@ -223,12 +273,18 @@
               font-size: 30px;
               color: #ffffff;
               overflow: initial;
+              @-moz-document url-prefix() {
+                font-size: 18px !important;
+              }
             }
             h2 {
               font-size: 16px;
               font-weight: 400;
               color: #ffffff;
               margin-bottom: 0px;
+              @-moz-document url-prefix() {
+                font-size: 14px !important;
+              }
             }
             .svg-icon {
               width: 40px;
@@ -289,10 +345,16 @@
                 color: #09689a;
                 font-size: 18px;
                 font-weight: bold;
+                @-moz-document url-prefix() {
+                  font-size: 12px !important;
+                }
                 span {
                   font-size: 10px;
                   font-weight: normal;
                   color: #1ca585;
+                  @-moz-document url-prefix() {
+                    font-size: 8px !important;
+                  }
                 }
               }
             }
@@ -371,18 +433,27 @@
         font-size: 14px;
         font-weight: bold;
         margin-bottom: 0px;
+        @-moz-document url-prefix() {
+          font-size: 12px !important;
+        }
       }
       h6 {
         font-size: 14px;
         color: #18162f;
         font-weight: normal;
         margin-bottom: 2px;
+        @-moz-document url-prefix() {
+          font-size: 12px !important;
+        }
       }
       p {
         font-size: 14px;
         color: #374a59;
         margin-bottom: 0px;
         font-weight: normal;
+        @-moz-document url-prefix() {
+          font-size: 12px !important;
+        }
       }
       .connection-wrapper {
         margin-top: 30px;
@@ -416,6 +487,9 @@
       span.anticon {
         color: #255b87;
         font-size: 0.85rem;
+        @-moz-document url-prefix() {
+          font-size: 8px !important;
+        }
       }
     }
     .ant-pagination-item {
@@ -460,6 +534,9 @@
         .topbar-title-holder {
           h1 {
             font-size: 1.6rem;
+            @-moz-document url-prefix() {
+              font-size: 16px !important;
+            }
           }
         }
         .topbar-image-holder {
@@ -487,23 +564,61 @@
             .ant-card-head-title {
               span {
                 font-size: 1rem !important;
+                @-moz-document url-prefix() {
+                  font-size: 10px !important;
+                }
               }
             }
           }
           .ant-card-head {
             .ant-card-head-title {
               font-size: 1.4rem;
+              @-moz-document url-prefix() {
+                font-size: 14px !important;
+              }
             }
           }
           .ant-card-body {
             p {
               font-size: 1.4rem;
+              @-moz-document url-prefix() {
+                font-size: 14px !important;
+              }
             }
+            @media (max-width: 519px) {
+              .ant-row {
+                display: flex;
+                flex-direction: column;
+                .ant-col {
+                  flex: 0 0 100%;
+                  max-width: 100%;
+                }
+              }
+            }
+            @media (min-width: 520px) and (max-width: 700px) {
+              flex-direction: row;
+              .ant-col {
+                flex: 0 0 50% !important;
+                max-width: 50% !important;
+              }
+            }
+
+            @media (min-width: 701px) and (max-width: 976px) {
+              flex-direction: row;
+              .ant-col {
+                flex: 0 0 calc(100% / 3) !important;
+                max-width: calc(100% / 3) !important;
+              }
+            }
+
             .list {
               .ant-list-item {
                 .ant-list-item-meta {
                   h4 {
                     font-size: 1.4rem;
+                    @-moz-document url-prefix() {
+                      font-size: 14px !important;
+                    }
                   }
                 }
               }
@@ -522,11 +637,21 @@
           .connection-wrapper .read-more {
             font-size: 1.4rem;
           }
+          @-moz-document url-prefix() {
+            h4,
+            h6,
+            .connection-wrapper .read-more {
+              font-size: 14px !important;
+            }
+          }
         }
       }
       .exta-info {
         .ant-typography {
           font-size: 1.4rem;
+          @-moz-document url-prefix() {
+            font-size: 14px !important;
+          }
         }
       }
     }
