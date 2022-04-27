@@ -83,12 +83,16 @@
           padding: 14px 20px !important;
         }
       }
+
       .long-image {
-        min-height: 500px;
+        min-height: 400px;
         max-height: 500px;
         padding: 2px;
         width: 100%;
-
+        overflow: hidden;
+        @-moz-document url-prefix() {
+          min-height: 300px !important;
+        }
         img {
           height: 100%;
           object-fit: cover;
@@ -947,5 +951,10 @@
         }
       }
     }
+  }
+
+  .long-image-container {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
   }
 }
