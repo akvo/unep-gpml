@@ -47,17 +47,27 @@
       justify-content: space-between;
       max-height: 500px;
       overflow: auto;
+      @-moz-document url-prefix() {
+        max-height: 351px !important;
+      }
       .ant-card-head {
         padding: 0 40px !important;
+        @-moz-document url-prefix() {
+          padding: 0 20px !important;
+        }
       }
       .ant-card-body {
         padding: 24px 40px !important;
+        @-moz-document url-prefix() {
+          padding: 14px 20px !important;
+        }
       }
       .long-image {
         min-height: 500px;
         max-height: 500px;
         padding: 2px;
         width: 100%;
+
         img {
           height: 100%;
           object-fit: cover;
@@ -74,6 +84,10 @@
       padding: 2px;
       position: relative;
       padding-top: 100%;
+      @-moz-document url-prefix() {
+        min-height: 351px !important;
+        max-height: 351px !important;
+      }
       img {
         height: 100%;
         object-fit: cover;
@@ -91,6 +105,9 @@
       border: 1px solid #d3dee7;
       box-sizing: border-box;
       border-radius: 0px 10px 10px 0px;
+      @-moz-document url-prefix() {
+        flex: 0 0 72px !important;
+      }
       .sticky-panel-item {
         border-bottom: 1px solid #094271;
         box-shadow: 0px 1px 0px #3872a0;
@@ -139,9 +156,15 @@
           margin-bottom: 0px;
           text-transform: uppercase;
           line-height: 20px;
+          @-moz-document url-prefix() {
+            font-size: 12px !important;
+          }
         }
         .recording-icon {
           width: 40px;
+          @-moz-document url-prefix() {
+            width: 30px !important;
+          }
           path {
             fill: #fff;
           }
@@ -153,12 +176,18 @@
         }
         .bookmark-icon {
           width: 34px;
+          @-moz-document url-prefix() {
+            width: 24px !important;
+          }
         }
         .bookmark-filled {
           fill: #fff;
         }
         .edit-icon {
           width: 50px;
+          @-moz-document url-prefix() {
+            width: 40px !important;
+          }
           path {
             fill: #fff;
           }
@@ -187,6 +216,11 @@
           color: #1ca585;
           font-size: 18px;
           font-weight: bold;
+          @-moz-document url-prefix() {
+            font-size: 16px !important;
+            padding-bottom: 14px !important;
+            padding-top: 14px !important;
+          }
         }
       }
       .ant-card-body {
@@ -471,6 +505,110 @@
   list-style-type: disc;
   list-style: inside;
 }
+
+@media (max-width: 540px) {
+  #details {
+    .section-banner {
+      .ui.container > .ant-row > .ant-col {
+        display: none;
+      }
+      .ui.container > .ant-row {
+        flex-direction: column;
+      }
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  #details {
+    .section-banner {
+      .short-image {
+        @-moz-document url-prefix() {
+          max-height: 430px !important;
+          min-height: 330px !important;
+        }
+      }
+      .ui.container > .ant-row > .ant-col + .ant-col {
+        max-width: 100% !important;
+      }
+      .ui.container > .ant-row {
+        @media (min-width: 600px) and (max-width: 700px) {
+          flex-flow: unset !important;
+          .ant-col-xs-6 {
+            flex: 0 0 40%;
+            max-width: 40%;
+          }
+          .ant-col-xs-18 {
+            flex: 0 0 60%;
+            max-width: 60%;
+          }
+        }
+      }
+
+      .banner-wrapper {
+        display: flex;
+        flex-direction: column;
+        overflow: visible !important;
+
+        .ant-card-head-title {
+          padding-bottom: 16px !important;
+        }
+        .ant-card-body {
+          max-height: 350px;
+          overflow-y: auto;
+          @-moz-document url-prefix() {
+            max-height: 219px !important;
+          }
+        }
+        .sticky-panel {
+          display: flex;
+          flex-direction: row;
+          margin: 0;
+          max-height: 80px;
+          @-moz-document url-prefix() {
+            max-height: 70px !important;
+          }
+          .sticky-panel-item {
+            height: 100%;
+
+            border-bottom: unset;
+            h2 {
+              font-size: 10px;
+              @-moz-document url-prefix() {
+                font-size: 10px !important;
+              }
+            }
+            .recording-icon {
+              width: 35px;
+              @-moz-document url-prefix() {
+                width: 25px !important;
+              }
+            }
+            .edit-icon {
+              width: 38px;
+              @-moz-document url-prefix() {
+                width: 28px !important;
+              }
+            }
+            .bookmark-icon {
+              width: 25px;
+              @-moz-document url-prefix() {
+                width: 18px !important;
+              }
+            }
+          }
+          .sticky-panel-item:first-child {
+            border-radius: 0px 0px 0px 0px;
+          }
+          .sticky-panel-item:not(:first-of-type) {
+            border-left: 1px solid #094271;
+          }
+        }
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 1280px) {
   #details {
     .section-header {
@@ -610,6 +748,9 @@
           p {
             font-size: 1.4rem;
             margin-bottom: 0px;
+            @-moz-document url-prefix() {
+              font-size: 14px !important;
+            }
           }
           .ant-list-item-meta-title {
             font-size: 1.4rem;
