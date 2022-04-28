@@ -6,8 +6,6 @@ import "./styles.scss";
 import datastudies from "./json/case-studies.json";
 import CaseStudy from "./CaseStudy";
 import LeftSidebar from "../left-sidebar/LeftSidebar";
-import SlidePrev from "../../images/capacity-building/slide-prev.svg";
-import SlideNext from "../../images/capacity-building/slide-next.svg";
 import { ReactComponent as DropdownIcon } from "../../images/case-studies/ic_dropdown.svg";
 import { titleCase } from "../../utils/string";
 
@@ -157,8 +155,13 @@ const CaseStudies = () => {
               ))}
             </Carousel>
             <div className="carousel-control">
-              <img src={SlidePrev} className="carousel-prev" onClick={prev} />
-              <img src={SlideNext} className="carousel-next" onClick={next} />
+              <button className="carousel-prev" onClick={prev}>
+                <DropdownIcon />
+              </button>
+
+              <button className="carousel-next" onClick={next}>
+                <DropdownIcon />
+              </button>
             </div>
           </LeftSidebar>
         </div>
