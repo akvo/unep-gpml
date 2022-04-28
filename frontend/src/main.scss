@@ -666,6 +666,9 @@ h2.loading {
   span {
     margin-right: 5px;
   }
+  @media (max-width: 950px) {
+    padding-bottom: 400px;
+  }
 }
 
 .fade-in {

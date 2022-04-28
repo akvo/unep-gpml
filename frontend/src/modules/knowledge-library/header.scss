@@ -4,6 +4,13 @@
   background-color: rgba(0, 91, 112, 0.8);
   padding: 5px calc(45px - 15px) 5px 38px;
 
+  .mobile-src {
+    display: none;
+  }
+  .desktop-src {
+    display: block;
+  }
+
   .ant-space.ant-space-horizontal.ant-space-align-center .ant-select-selector {
     padding-left: 0;
   }
@@ -92,12 +99,16 @@
   }
 
   // Search input
+
   .search-box {
     width: 100%;
     max-width: 478px;
 
     @-moz-document url-prefix() {
       max-width: 427px;
+      @media (min-width: 471px) and (max-width: 735px) {
+        max-width: 350px;
+      }
     }
 
     .ant-space-item:nth-of-type(1) {
@@ -137,15 +148,33 @@
         }
       }
     }
+    @media (min-width: 471px) and (max-width: 735px) {
+      max-width: 400px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .search-box-mobile {
+      .ant-space-item:nth-of-type(1) {
+        width: unset;
+      }
+    }
   }
 
   .select-wrapper {
     padding: 0 !important;
     width: 100%;
     max-width: 194px;
-
+    .selection-arrow {
+      margin: auto;
+      display: flex;
+      height: 30px;
+      align-items: center;
+      svg {
+        width: 15px;
+      }
+    }
     .ant-select-open .selection-arrow {
-      width: 15px;
       transform: rotate(180deg);
     }
 
@@ -222,5 +251,46 @@
         display: none;
       }
     }
+    @media (max-width: 500px) {
+      .select-button {
+        border-radius: 4px 0px 0px 4px !important;
+        background-color: #6da0ac !important;
+        opacity: 1 !important;
+      }
+      .ant-select-selector {
+        padding: 0 !important;
+        border-radius: 4px !important;
+        .selection-value {
+          padding-right: 6px;
+        }
+      }
+
+      .selection-arrow svg {
+        width: 12px;
+        path {
+          stroke: #fff;
+          stroke-width: 2px;
+        }
+      }
+
+      max-width: 80px;
+      .label {
+        display: none;
+      }
+    }
+  }
+  @media (max-width: 400px) {
+    .mobile-src {
+      display: block;
+      max-width: fit-content;
+      max-width: -moz-fit-content;
+    }
+    .desktop-src {
+      display: none;
+    }
+  }
+
+  @media (min-width: 400px) and (max-width: 735px) {
+    padding: 5px 16px 5px 16px !important;
   }
 }

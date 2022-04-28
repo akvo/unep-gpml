@@ -1,6 +1,6 @@
 import { UIStore } from "../../store";
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { Checkbox, Row, Col, Card, Steps, Switch, Button } from "antd";
+import { List, Row, Col, Card, Steps, Switch, Button } from "antd";
 import {
   CheckOutlined,
   EditOutlined,
@@ -40,6 +40,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     stakeholders: s.stakeholders?.stakeholders,
     countries: s.countries,
     tags: s.tags,
+    entitySuggestedTags: s.entitySuggestedTags,
     regionOptions: s.regionOptions,
     transnationalOptions: s.transnationalOptions,
     sectorOptions: s.sectorOptions,
@@ -57,6 +58,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     stakeholders,
     countries,
     tags,
+    entitySuggestedTags,
     regionOptions,
     transnationalOptions,
     sectorOptions,
@@ -504,6 +506,24 @@ const SignUp = ({ match: { params }, ...props }) => {
                         hideEntityPersonalDetail={hideEntityPersonalDetail}
                         tabsData={tabsData}
                       />
+                      {getTabStepIndex().tabIndex === 2 && isEntityType && (
+                        <div className="list tag-list">
+                          <h5>Suggested tags</h5>
+                          <List itemLayout="horizontal">
+                            <List.Item>
+                              <List.Item.Meta
+                                title={
+                                  <ul>
+                                    {entitySuggestedTags.map((tag) => (
+                                      <li key={tag}>{tag}</li>
+                                    ))}
+                                  </ul>
+                                }
+                              />
+                            </List.Item>
+                          </List>
+                        </div>
+                      )}
                       <div className="button-row">
                         {!isFirstStep() && (
                           <Button

@@ -95,12 +95,6 @@ const detailFinancingResource = [
     value: "validTo",
     type: "date",
   },
-  {
-    key: "publishYear",
-    name: "Year",
-    value: "publishYear",
-    type: "number",
-  },
 ];
 
 const detailEvent = [

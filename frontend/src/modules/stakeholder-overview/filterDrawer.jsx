@@ -19,6 +19,7 @@ import api from "../../utils/api";
 
 const FilterDrawer = ({
   query,
+  view,
   updateQuery,
   entities,
   filterVisible,
@@ -126,7 +127,11 @@ const FilterDrawer = ({
     .filter((item) => item);
 
   return (
-    <div className="site-drawer-render-in-current-wrapper">
+    <div
+      className={`site-drawer-render-in-current-wrapper ${
+        view?.toLowerCase() === "map" && "map-view-drawer"
+      }`}
+    >
       <Drawer
         tabIndex=""
         tabindex=""

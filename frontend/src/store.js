@@ -43,6 +43,28 @@ const sectorOptions = [
   "Private Citizens",
 ];
 
+const entitySuggestedTags = [
+  "Circularity",
+  "Education",
+  "Awareness",
+  "Awareness-raising",
+  "Monitoring",
+  "Research",
+  "Waste management",
+  "Recycling",
+  "Technology",
+  "Financing",
+  "Project development",
+  "Legislation",
+  "Policy",
+  "Sea-based Sources",
+  "ALDFG",
+  "Microplastics",
+  "Microfibers",
+  "International Cooperation",
+  "Multilateralism",
+];
+
 const organisationType = [
   "Government",
   "Private Sector",
@@ -673,6 +695,7 @@ const UIStore = new Store({
   organisationType: sectorOptions,
   sectorOptions: sectorOptions,
   representativeGroup: representativeGroup,
+  entitySuggestedTags: entitySuggestedTags,
   mainContentType: mainContentType,
   icons: icons,
   placeholder: placeholder,
