@@ -51,7 +51,20 @@ $green-primary: #4dffa5;
   @media (max-width: 510px) {
     .ui-header {
       padding: 5px 25px 5px 25px !important;
-
+      .header-form {
+        .ant-col-md-24 {
+          flex: unset !important;
+          max-width: 100% !important;
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+        }
+        .btn-download {
+          margin-left: 0 !important;
+        }
+        .ant-col-md-24:last-of-type {
+          padding: 0;
+        }
+      }
       .ui-container > .ant-row {
         display: flex;
         align-items: center;
