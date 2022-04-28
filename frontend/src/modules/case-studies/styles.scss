@@ -23,6 +23,59 @@ $green-primary: #4dffa5;
       fill: $yellow-highlight !important;
     }
   }
+  .case-study-desktop-dropdown {
+    display: flex;
+  }
+  .toggle-dropdown,
+  .case-study-mobile-dropdown {
+    display: none;
+  }
+
+  @media (max-width: 510px) {
+    .case-study-desktop-dropdown {
+      display: none;
+    }
+    .case-study-mobile-dropdown {
+      display: block;
+    }
+
+    .ui-header {
+      padding: 5px 25px 5px 25px !important;
+
+      .ui-container > .ant-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 !important;
+      }
+      a {
+        height: 33px !important;
+        .btn-download {
+          width: 100%;
+          max-width: 172px;
+          height: 33px !important;
+        }
+      }
+      .case-study-learn-btn {
+        display: none;
+      }
+    }
+
+    .toggle-dropdown {
+      display: contents;
+      border-radius: 50%;
+      background-color: #05f081;
+      width: 100%;
+      max-width: 28px;
+      border-color: #05f081;
+      & .dropdown-circle {
+        fill: #05f081;
+      }
+      &:hover .dropdown-circle {
+        fill: $yellow-highlight !important;
+      }
+    }
+  }
 
   .ant-select {
     width: 100%;

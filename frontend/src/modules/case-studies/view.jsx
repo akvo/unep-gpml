@@ -19,6 +19,7 @@ import { ReactComponent as IconCaseStudies } from "../../images/capacity-buildin
 const { Header, Content } = Layout;
 
 const CaseStudies = () => {
+  const [isShownDropdown, setIsShownDropdown] = useState(false);
   const [indexSlide, setIndexSlide] = useState(0);
   const caseStudyReff = useRef();
 
@@ -66,27 +67,57 @@ const CaseStudies = () => {
       <Col span={24} className="ui-header">
         <div className="ui-container">
           <Row gutter={[8, 16]}>
-            <Col lg={6} md={24}>
-              <Select
-                dropdownClassName="overlay-zoom"
-                className="case-study-dropdown"
-                defaultValue={0}
-                onChange={(value) => goTo(value)}
-                suffixIcon={
-                  <DropdownIcon />
-                  // <img src={DropdownIcon} style={{ width: 30, height: 30 }} />
-                }
-                virtual={false}
-                size="large"
-                value={indexSlide}
-              >
-                {datastudies.map((c, cx) => (
-                  <Select.Option key={cx} value={cx}>
-                    {titleCase(c.title)}
-                  </Select.Option>
-                ))}
-              </Select>
+            <Col lg={6} md={24} className="case-study-mobile-dropdown">
+              <Col lg={6} md={24}>
+                {!isShownDropdown && (
+                  <Button
+                    className="toggle-dropdown"
+                    onClick={() => setIsShownDropdown(!isShownDropdown)}
+                  >
+                    <DropdownIcon />
+                  </Button>
+                )}
+                {isShownDropdown && (
+                  <Select
+                    dropdownClassName="overlay-zoom"
+                    className="case-study-dropdown"
+                    defaultValue={0}
+                    onChange={(value) => goTo(value)}
+                    suffixIcon={<DropdownIcon />}
+                    virtual={false}
+                    size="large"
+                    value={indexSlide}
+                  >
+                    {datastudies.map((c, cx) => (
+                      <Select.Option key={cx} value={cx}>
+                        {titleCase(c.title)}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                )}
+              </Col>
             </Col>
+            <Col lg={6} md={24} className="case-study-desktop-dropdown">
+              <Col lg={6} md={24}>
+                <Select
+                  dropdownClassName="overlay-zoom"
+                  className="case-study-dropdown"
+                  defaultValue={0}
+                  onChange={(value) => goTo(value)}
+                  suffixIcon={<DropdownIcon />}
+                  virtual={false}
+                  size="large"
+                  value={indexSlide}
+                >
+                  {datastudies.map((c, cx) => (
+                    <Select.Option key={cx} value={cx}>
+                      {titleCase(c.title)}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Col>
+            </Col>
+
             <Col lg={18} md={24} className="text-right">
               <Button
                 href={datastudies[indexSlide].platform_link || "#"}
