@@ -87,25 +87,6 @@
     }
   }
 
-  .topic-bar-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    .topic-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: #fff;
-      border: none;
-      font-weight: 700;
-      padding: 8px;
-      margin: 0 10px 10px 0;
-      cursor: pointer;
-      .bar-count {
-        margin-right: 10px;
-      }
-    }
-  }
-
   @media (max-width: 400px) {
     .content {
       .content-body {

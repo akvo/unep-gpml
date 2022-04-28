@@ -431,12 +431,22 @@ const Maps = ({
     zoom: mapMinZoom,
   });
 
+  const viewport = window.innerWidth;
+
   const [mapPos, setMapPos] = useState({
     left: 0,
     right: 0,
     height: 0,
     width: 0,
   });
+
+  useEffect(() => {
+    viewport <= 400 &&
+      setPosition({
+        coordinates: [19.59386998380555, 14.140313719606274],
+        zoom: 4.010087901870494,
+      });
+  }, [viewport]);
 
   const handleResize = () => {
     if (box.length) {

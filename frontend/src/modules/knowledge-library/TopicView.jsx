@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { orderBy } from "lodash";
 import api from "../../utils/api";
 import TopicChart from "../chart/topicChart";
+import { titleCase } from "../../utils/string";
+import TopicBar from "../chart/topicBar";
 
 const TopicView = ({ updateQuery, query }) => {
   const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
@@ -21,6 +23,12 @@ const TopicView = ({ updateQuery, query }) => {
     const { name, tag } = params?.data;
     !isMobileScreen && setSelectedTopic(name?.toLowerCase());
     updateQuery("tag", [tag]);
+  };
+
+  const handlePopularTopicBarClick = (e) => {
+    const name = e.currentTarget.value;
+    setSelectedTopic(name.toLowerCase());
+    updateQuery("tag", [name]);
   };
 
   useEffect(() => {
@@ -61,17 +69,27 @@ const TopicView = ({ updateQuery, query }) => {
   }, []);
 
   return (
-    <TopicChart
-      wrapperHeight={"10%"}
-      loadingId="knowledge-library-loading"
-      {...{
-        selectedTopic,
-        setSelectedTopic,
-        isMobileScreen,
-        sortedPopularTopics,
-        handlePopularTopicChartClick,
-      }}
-    />
+    <>
+      <TopicChart
+        wrapperHeight={"10%"}
+        loadingId="knowledge-library-loading"
+        {...{
+          selectedTopic,
+          setSelectedTopic,
+          isMobileScreen,
+          sortedPopularTopics,
+          handlePopularTopicChartClick,
+        }}
+      />
+      <TopicBar
+        {...{
+          selectedTopic,
+          setSelectedTopic,
+          sortedPopularTopics,
+          handlePopularTopicBarClick,
+        }}
+      />
+    </>
   );
 };
 

@@ -37,6 +37,7 @@ import { titleCase } from "../../utils/string";
 
 const FilterDrawer = ({
   query,
+  view,
   countData,
   updateQuery,
   filterVisible,
@@ -212,7 +213,11 @@ const FilterDrawer = ({
   };
 
   return (
-    <div className="site-drawer-render-in-current-wrapper">
+    <div
+      className={`site-drawer-render-in-current-wrapper ${
+        view === "topic" && "topic-view-drawer"
+      }`}
+    >
       <Drawer
         tabIndex=""
         tabindex=""
