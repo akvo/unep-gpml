@@ -340,6 +340,44 @@
   .ant-card {
     .ant-card-body {
       padding: 0;
+
+      .tag-list {
+        margin-top: 20px;
+        h5 {
+          font-size: 1em;
+          color: #d3dee7;
+          margin-bottom: 0px;
+        }
+        ul {
+          list-style: none;
+          margin: 0;
+          overflow: hidden;
+          padding: 0;
+          li {
+            background: #d3dee7;
+            border-radius: 23px 5px 5px 23px;
+            color: #255b87;
+            display: inline-block;
+            padding: 5px 20px 5px 30px;
+            position: relative;
+            margin: 0 10px 10px 0;
+            text-decoration: none;
+            cursor: pointer;
+            &::before {
+              background: #fff;
+              border-radius: 10px;
+              box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+              content: "";
+              position: absolute;
+              height: 12px;
+              width: 12px;
+              left: 10px;
+              top: 50%;
+              transform: translateY(-50%);
+            }
+          }
+        }
+      }
     }
 
     border: none;
