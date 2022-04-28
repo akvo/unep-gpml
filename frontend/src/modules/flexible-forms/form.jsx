@@ -181,10 +181,11 @@ const FlexibleForm = withRouter(
         formData.S4.S4_G3.tags &&
         formData.S4.S4_G3.tags.map((x) => {
           return {
-            id: parseInt(x),
-            tag: Object.values(tags)
-              .flat()
-              .find((o) => o.id === parseInt(x)).tag,
+            ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
+            tag:
+              Object.values(tags)
+                .flat()
+                .find((o) => o.id === parseInt(x))?.tag || x,
           };
         });
 
@@ -347,10 +348,11 @@ const FlexibleForm = withRouter(
         formData.S4.S4_G3.tags &&
         formData.S4.S4_G3.tags.map((x) => {
           return {
-            id: parseInt(x),
-            tag: Object.values(tags)
-              .flat()
-              .find((o) => o.id === parseInt(x)).tag,
+            ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
+            tag:
+              Object.values(tags)
+                .flat()
+                .find((o) => o.id === parseInt(x))?.tag || x,
           };
         });
 
@@ -548,10 +550,11 @@ const FlexibleForm = withRouter(
         formData.S4.S4_G3.tags &&
         formData.S4.S4_G3.tags.map((x) => {
           return {
-            id: parseInt(x),
-            tag: Object.values(tags)
-              .flat()
-              .find((o) => o.id === parseInt(x)).tag,
+            ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
+            tag:
+              Object.values(tags)
+                .flat()
+                .find((o) => o.id === parseInt(x))?.tag || x,
           };
         });
 
@@ -737,10 +740,11 @@ const FlexibleForm = withRouter(
         formData.S4.S4_G3.tags &&
         formData.S4.S4_G3.tags.map((x) => {
           return {
-            id: parseInt(x),
-            tag: Object.values(tags)
-              .flat()
-              .find((o) => o.id === parseInt(x)).tag,
+            ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
+            tag:
+              Object.values(tags)
+                .flat()
+                .find((o) => o.id === parseInt(x))?.tag || x,
           };
         });
 
@@ -912,10 +916,11 @@ const FlexibleForm = withRouter(
         formData.S4.S4_G3.tags &&
         formData.S4.S4_G3.tags.map((x) => {
           return {
-            id: parseInt(x),
-            tag: Object.values(tags)
-              .flat()
-              .find((o) => o.id === parseInt(x)).tag,
+            ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
+            tag:
+              Object.values(tags)
+                .flat()
+                .find((o) => o.id === parseInt(x))?.tag || x,
           };
         });
 
