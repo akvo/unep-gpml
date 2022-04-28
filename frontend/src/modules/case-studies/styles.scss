@@ -77,6 +77,63 @@ $green-primary: #4dffa5;
     }
   }
 
+  @media (max-width: 659px) {
+    .case-studies-page > .ant-col:nth-of-type(1) {
+      height: 690px !important;
+    }
+    .carousel-control {
+      .carousel-prev,
+      .carousel-next {
+        top: 405px !important;
+      }
+    }
+  }
+
+  @media (max-width: 764px) {
+    .sidebar-mobile {
+      margin-bottom: 0 !important;
+    }
+    .case-studies-page {
+      .ant-col:nth-of-type(1),
+      .ant-col:nth-of-type(2) {
+        border-bottom: unset !important;
+        border-top: unset !important;
+        border-left: unset !important;
+        border-right: unset !important;
+      }
+    }
+  }
+
+  @media (min-width: 511px) and (max-width: 976px) {
+    #siteWrapper {
+      min-height: unset !important;
+    }
+    .carousel-control {
+      .carousel-prev,
+      .carousel-next {
+        top: 29% !important;
+      }
+    }
+    @media (min-width: 645px) and (max-width: 976px) {
+      .carousel-control {
+        .carousel-prev,
+        .carousel-next {
+          top: 45% !important;
+        }
+      }
+      .case-studies-page {
+        .ant-col-sm-24 {
+          flex: 0 0 50% !important;
+          .content-text {
+            .ant-col {
+              flex: 0 0 100% !important;
+            }
+          }
+        }
+      }
+    }
+  }
+
   .ant-select {
     width: 100%;
     .ant-select-selector {
@@ -226,17 +283,39 @@ $green-primary: #4dffa5;
   margin-left: 1em;
 }
 .carousel-control {
-  img {
+  button {
     position: absolute;
-    top: 35%;
+    top: 43%;
     z-index: 5;
-    width: 43px;
     cursor: pointer;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    width: 35px !important;
+    height: 35px;
+    svg {
+      display: block;
+      width: 20px;
+      .dropdown-circle {
+        fill: none;
+      }
+      path {
+        stroke: #18162f;
+      }
+    }
     &.carousel-next {
-      right: 0;
+      right: 10px;
+      transform: rotate(-90deg);
     }
     &.carousel-prev {
-      left: 0;
+      left: 10px;
+      transform: rotate(360deg);
+    }
+    &:hover {
+      background-color: $yellow-highlight;
+      border-color: $yellow-highlight;
     }
   }
 }
