@@ -188,6 +188,7 @@ $green-primary: #4dffa5;
     }
     .p-4 {
       padding: 4%;
+      padding-top: 56px;
     }
     .content-text {
       .ant-typography {
@@ -290,11 +291,12 @@ $green-primary: #4dffa5;
     cursor: pointer;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.6);
-    border-color: rgba(255, 255, 255, 0.6);
+
     display: flex;
     align-items: center;
     width: 35px !important;
     height: 35px;
+    border: unset;
     svg {
       display: block;
       width: 20px;
@@ -311,11 +313,11 @@ $green-primary: #4dffa5;
     }
     &.carousel-prev {
       left: 10px;
-      transform: rotate(360deg);
+      transform: rotate(90deg);
     }
     &:hover {
       background-color: $yellow-highlight;
-      border-color: $yellow-highlight;
+      border: unset;
     }
   }
 }
@@ -381,6 +383,10 @@ $green-primary: #4dffa5;
         font-weight: 600;
         font-size: 38px;
         line-height: 58px;
+        @media (max-width: 510px) {
+          font-size: 24px;
+          line-height: 38px;
+        }
       }
       .content-text {
         .title {
