@@ -379,9 +379,9 @@ $green-primary: #4dffa5;
     cursor: pointer;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.6);
-
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 35px !important;
     height: 35px;
     border: unset;
