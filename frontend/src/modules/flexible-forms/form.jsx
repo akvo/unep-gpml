@@ -189,6 +189,8 @@ const FlexibleForm = withRouter(
           };
         });
 
+      delete data?.tagsList;
+
       if (data?.publishYear) {
         const publishYear = new Date(data.publishYear);
         data.publishYear = publishYear.getFullYear();
@@ -558,6 +560,8 @@ const FlexibleForm = withRouter(
           };
         });
 
+      delete data.tagsList;
+
       if (data.hasOwnProperty("firstPublicationDate")) {
         data.firstPublicationDate = data.firstPublicationDate;
         data.latestAmendmentDate = data.latestAmendmentDate || "Ongoing";
@@ -748,6 +752,8 @@ const FlexibleForm = withRouter(
           };
         });
 
+      delete data.tagsList;
+
       if (data.hasOwnProperty("startDate")) {
         data.startDate = data.startDate;
       }
@@ -923,6 +929,8 @@ const FlexibleForm = withRouter(
                 .find((o) => o.id === parseInt(x))?.tag || x,
           };
         });
+
+      delete data.tagsList;
 
       if (data?.entity) {
         data.entityConnections = data.entity[0].hasOwnProperty("role")
