@@ -441,7 +441,7 @@ const Maps = ({
   });
 
   useEffect(() => {
-    viewport <= 400 &&
+    viewport <= 511 &&
       setPosition({
         coordinates: [19.59386998380555, 14.140313719606274],
         zoom: 4.010087901870494,
