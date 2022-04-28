@@ -1,9 +1,6 @@
 @import "../../vars.scss";
 
 #details {
-  .ui.container {
-    zoom: 75% !important;
-  }
   @-moz-document url-prefix() {
     .ant-avatar {
       width: 26px !important;

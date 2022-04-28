@@ -440,7 +440,7 @@
         "tags": {
           "ui:widget": "select",
           "ui:showSearch": true,
-          "ui:mode": "multiple",
+          "ui:mode": "tags",
           "ui:placeholder": "Pick at least one tag",
           "ui:options": {
             "ui:showTag": true
