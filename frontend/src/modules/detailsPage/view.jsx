@@ -385,7 +385,7 @@ const renderBannerSection = (
   } else {
     return (
       <>
-        <Col xs={6} lg={24}>
+        <Col xs={6} lg={24} className="long-image-container">
           <div className="banner-wrapper">
             <div className="long-image">
               <a
