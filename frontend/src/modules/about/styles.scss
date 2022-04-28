@@ -255,6 +255,7 @@
       text-align: center;
       @media only screen and (max-width: 800px) {
         .ant-image-img {
+          // max-width: 112%;
           transform: scale(1.5);
           margin-top: 3rem;
         }
