@@ -21,9 +21,9 @@
     }
   }
 
-  .ui.container {
-    zoom: 75% !important;
-  }
+  // .ui.container {
+  //   zoom: 75% !important;
+  // }
 
   .topbar-container {
     background-color: #007090;
@@ -125,6 +125,9 @@
   }
   .info-container {
     margin-top: 50px;
+    .owned-resources-wrapper {
+      margin-bottom: 20px;
+    }
     @-moz-document url-prefix() {
       margin-top: 25px !important;
     }
