@@ -7,42 +7,8 @@ import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-
 import { withRouter, useHistory } from "react-router-dom";
 import { KNOWLEDGE_LIBRARY } from "../map/Map";
 
-const KnowledgeLibrarySearch = withRouter(({ history, updateQuery }) => {
-  const [search, setSearch] = useState("");
-  const handleSearch = (src) => {
-    if (src) {
-      history.push(`?q=${src.trim()}`);
-      updateQuery("q", src.trim());
-    } else {
-      updateQuery("q", "");
-    }
-    setSearch("");
-  };
-
-  return (
-    <div className="src">
-      <Input
-        className="input-src"
-        placeholder="Search resources"
-        value={search}
-        suffix={
-          <Button
-            onClick={() => handleSearch(search)}
-            type="primary"
-            shape="circle"
-            size="small"
-            icon={<SearchOutlined />}
-          />
-        }
-        onPressEnter={(e) => handleSearch(e.target.value)}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-    </div>
-  );
-});
-
-const StakeholderOverviewSearch = withRouter(
-  ({ history, updateQuery, setView }) => {
+const KnowledgeLibrarySearch = withRouter(
+  ({ history, updateQuery, isShownForm, setIsShownForm }) => {
     const [search, setSearch] = useState("");
     const handleSearch = (src) => {
       if (src) {
@@ -52,36 +18,145 @@ const StakeholderOverviewSearch = withRouter(
         updateQuery("q", "");
       }
       setSearch("");
+      setIsShownForm(false);
     };
 
     return (
-      <div className="src">
-        <Input
-          className="input-src"
-          placeholder="Search the community"
-          value={search}
-          suffix={
+      <>
+        <div className="src mobile-src">
+          {!isShownForm && (
             <Button
-              onClick={() => handleSearch(search)}
+              onClick={() => setIsShownForm(!isShownForm)}
               type="primary"
               shape="circle"
               size="small"
               icon={<SearchOutlined />}
             />
-          }
-          onPressEnter={(e) => handleSearch(e.target.value)}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            if (e.target.value.length >= 3) {
-              history.push(`?q=${e.target.value.trim()}`);
-              updateQuery("q", e.target.value.trim());
+          )}
+          {isShownForm && (
+            <Input
+              className="input-src"
+              placeholder="Search resources"
+              value={search}
+              suffix={
+                <Button
+                  onClick={() => handleSearch(search)}
+                  type="primary"
+                  shape="circle"
+                  size="small"
+                  icon={<SearchOutlined />}
+                />
+              }
+              onPressEnter={(e) => handleSearch(e.target.value)}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          )}
+        </div>
+        <div className="src desktop-src">
+          <Input
+            className="input-src"
+            placeholder="Search resources"
+            value={search}
+            suffix={
+              <Button
+                onClick={() => handleSearch(search)}
+                type="primary"
+                shape="circle"
+                size="small"
+                icon={<SearchOutlined />}
+              />
             }
-            if (e.target.value.length === 0) {
-              updateQuery("q", "");
+            onPressEnter={(e) => handleSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+      </>
+    );
+  }
+);
+
+const StakeholderOverviewSearch = withRouter(
+  ({ history, updateQuery, setView, isShownForm, setIsShownForm }) => {
+    const [search, setSearch] = useState("");
+    const handleSearch = (src) => {
+      if (src) {
+        history.push(`?q=${src.trim()}`);
+        updateQuery("q", src.trim());
+      } else {
+        updateQuery("q", "");
+      }
+      setSearch("");
+      setIsShownForm(false);
+    };
+
+    return (
+      <>
+        <div className="src mobile-src">
+          {!isShownForm && (
+            <Button
+              onClick={() => setIsShownForm(!isShownForm)}
+              type="primary"
+              shape="circle"
+              size="small"
+              icon={<SearchOutlined />}
+            />
+          )}
+          {isShownForm && (
+            <Input
+              className="input-src"
+              placeholder="Search the community"
+              value={search}
+              suffix={
+                <Button
+                  onClick={() => handleSearch(search)}
+                  type="primary"
+                  shape="circle"
+                  size="small"
+                  icon={<SearchOutlined />}
+                />
+              }
+              onPressEnter={(e) => handleSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                if (e.target.value.length >= 3) {
+                  history.push(`?q=${e.target.value.trim()}`);
+                  updateQuery("q", e.target.value.trim());
+                }
+                if (e.target.value.length === 0) {
+                  updateQuery("q", "");
+                }
+              }}
+            />
+          )}
+        </div>
+        <div className="src desktop-src">
+          <Input
+            className="input-src"
+            placeholder="Search the community"
+            value={search}
+            suffix={
+              <Button
+                onClick={() => handleSearch(search)}
+                type="primary"
+                shape="circle"
+                size="small"
+                icon={<SearchOutlined />}
+              />
             }
-          }}
-        />
-      </div>
+            onPressEnter={(e) => handleSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              if (e.target.value.length >= 3) {
+                history.push(`?q=${e.target.value.trim()}`);
+                updateQuery("q", e.target.value.trim());
+              }
+              if (e.target.value.length === 0) {
+                updateQuery("q", "");
+              }
+            }}
+          />
+        </div>
+      </>
     );
   }
 );
@@ -99,6 +174,7 @@ const Header = ({
 }) => {
   const history = useHistory();
   const path = history?.location?.pathname;
+  const [isShownForm, setIsShownForm] = useState(false);
   return (
     <Col span={24} className="ui-header">
       <div className="ui-container">
@@ -112,13 +188,24 @@ const Header = ({
           {/* Search input & filtered by list */}
           <Col lg={22} md={20} sm={18}>
             <Row type="flex" justify="space-between" align="middle">
-              <Col lg={5} md={7} sm={9} className="search-box">
+              <Col
+                lg={5}
+                md={7}
+                sm={9}
+                className={
+                  !isShownForm ? `search-box search-box-mobile` : `search-box`
+                }
+              >
                 <Space>
                   {/* <Search updateQuery={updateQuery} /> */}
                   {path === KNOWLEDGE_LIBRARY ? (
-                    <KnowledgeLibrarySearch {...{ updateQuery }} />
+                    <KnowledgeLibrarySearch
+                      {...{ updateQuery, isShownForm, setIsShownForm }}
+                    />
                   ) : (
-                    <StakeholderOverviewSearch {...{ updateQuery }} />
+                    <StakeholderOverviewSearch
+                      {...{ updateQuery, isShownForm, setIsShownForm }}
+                    />
                   )}
                   <Button
                     onClick={() => setFilterVisible(!filterVisible)}

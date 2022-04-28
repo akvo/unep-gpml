@@ -1,6 +1,6 @@
 import { UIStore } from "../../../store";
 
-const { geoCoverageTypeOptions, organisationType } = UIStore.currentState;
+const { geoCoverageTypeOptions, representativeGroup } = UIStore.currentState;
 
 export const schema = {
   title: "",
@@ -25,8 +25,8 @@ export const schema = {
     },
     type: {
       title: "Type of the entity",
-      enum: organisationType,
-      enumNames: organisationType,
+      enum: representativeGroup?.map((x) => x.name),
+      enumNames: representativeGroup?.map((x) => x.name),
     },
     url: {
       title: "Entity URL",

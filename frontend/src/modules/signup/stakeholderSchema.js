@@ -76,7 +76,6 @@ export const schema = {
       required: [
         "orgName",
         "jobTitle",
-        "companyName",
         "newCompanyName",
         "newCompanyHeadquarter",
         "geoCoverageType",
