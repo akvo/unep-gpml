@@ -64,7 +64,7 @@ const CaseStudies = () => {
     <Row id="case-study" ref={caseStudyReff}>
       <Col span={24} className="ui-header">
         <div className="ui-container">
-          <Row gutter={[8, 16]}>
+          <Row gutter={[8, 16]} className="header-form">
             <Col lg={6} md={24} className="case-study-mobile-dropdown">
               <Col lg={6} md={24}>
                 {!isShownDropdown && (
