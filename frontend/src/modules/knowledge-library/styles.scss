@@ -68,9 +68,7 @@
   }
   @media (max-width: 510px) {
     .site-drawer-render-in-current-wrapper {
-      @-moz-document url-prefix() {
-        width: 100%;
-      }
+      width: 100% !important;
     }
   }
 
@@ -100,7 +98,9 @@
       height: 700px;
       max-width: 500px;
       width: 100% !important;
-
+      @media (max-width: 510px) {
+        height: 100% !important;
+      }
       .ant-drawer-header {
         background: $blue05;
 
@@ -351,6 +351,14 @@
         .ant-col {
           max-width: 100%;
         }
+        @media (max-width: 650px) {
+          .ant-row-space-between {
+            justify-content: unset !important;
+            .resource-card-wrapper {
+              margin-right: 5px !important;
+            }
+          }
+        }
       }
 
       // .ant-row {
@@ -362,6 +370,9 @@
         width: 100%;
         max-width: 100px !important;
         margin-bottom: 17px;
+        @media (max-width: 510px) {
+          margin-bottom: 5px;
+        }
       }
 
       .resource-type-card {
@@ -905,6 +916,7 @@
       // Firefox styles
       @media (max-width: 510px) {
         .ant-drawer-content-wrapper {
+          width: 100%;
           @-moz-document url-prefix() {
             width: 100% !important;
             max-width: 100% !important;
