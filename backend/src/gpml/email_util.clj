@@ -8,7 +8,7 @@
 (defn make-message [sender receiver subject text html]
   {:From sender :To [receiver] :Subject subject :TextPart text :HTMLPart html})
 
-(defn get-user-full-name [{:keys [title first_name last_name ]}]
+(defn get-user-full-name [{:keys [title first_name last_name]}]
   (if (nil? title)
     (format "%s %s" first_name last_name)
     (format "%s. %s %s" title first_name last_name)))
@@ -31,6 +31,13 @@ A new %s (%s) is awaiting your approval. Please visit %s/profile to approve or d
 
 - UNEP GPML Digital Platform
 ")
+
+(defn new-resource-comment-text [resource-owner comment-author resource-title app-domain]
+  (format "Dear %s,
+
+%s commented on your resource %s. For more details visit your resource's detail page %s.
+
+- UNEP GPML Digital Platform" resource-owner comment-author resource-title app-domain))
 
 (defn notify-reviewer-pending-review-text [reviewer-name app-domain topic-type topic-title]
   (format "Dear %s,
@@ -100,6 +107,9 @@ again, please visit this URL: %s/edit-%s/%s
 (defn notify-user-invitation-subject [inviter-name]
   (format "%s has invited you to join UNEP GPML Digital Platform" inviter-name))
 
+(defn new-resource-comment-subject [comment-author]
+  (format "%s commented on your resource" comment-author))
+
 (defn notify-admins-pending-approval [db mailjet-config new-item]
   (let [admins (db.stakeholder/get-admins db)
         item-type (:type new-item)
@@ -124,5 +134,4 @@ again, please visit this URL: %s/edit-%s/%s
                 :secret-key (System/getenv "MAILJET_SECRET_KEY")
                 :app-name (System/getenv "APP_NAME")
                 :app-domain (System/getenv "APP_DOMAIN")}]
-    (notify-admins-pending-approval db config {:type "stakeholder" :title "Mr" :first_name "Puneeth" :last_name "Chaganti"}))
-  )
+    (notify-admins-pending-approval db config {:type "stakeholder" :title "Mr" :first_name "Puneeth" :last_name "Chaganti"})))

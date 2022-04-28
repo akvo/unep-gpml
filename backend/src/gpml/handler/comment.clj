@@ -2,6 +2,9 @@
   (:require
    [clojure.string :as str]
    [gpml.db.comment :as db.comment]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.db.stakeholder-association :as db.stakeholder-association]
+   [gpml.email-util :as email]
    [gpml.util :as util]
    [gpml.util.regular-expressions :as util.regex]
    [integrant.core :as ig]
@@ -107,11 +110,41 @@
       (util/replace-in-keys #"_" "-")
       (util/update-if-exists :resource-id #(Integer/parseInt %))))
 
+(defn- send-new-comment-created-notification
+  [{:keys [db mailjet-config]} {:keys [resource-id resource-type author-id]}]
+  (let [resource-type (if (some #{resource-type} ["financing_resource" "action_plan" "technical_resource"])
+                        "resource"
+                        resource-type)
+        stakeholder-resource-association
+        (db.stakeholder-association/get-stakeholder-resource-association (:spec db) {:resource-type resource-type
+                                                                                     :resource-id resource-id
+                                                                                     :association "owner"})]
+    (when (seq stakeholder-resource-association)
+      (let [{:keys [resource]} stakeholder-resource-association
+            comment-author (db.stakeholder/get-stakeholder-by-id (:spec db) {:id author-id})
+            resource-owner (db.stakeholder/get-stakeholder-by-id (:spec db)
+                                                                 {:id (:stakeholder stakeholder-resource-association)})
+            comment-author-full-name (email/get-user-full-name comment-author)
+            resource-owner-full-name (email/get-user-full-name resource-owner)
+            resource-title-or-name (or (:title resource) (:name resource))]
+        (email/send-email mailjet-config
+                          email/unep-sender
+                          (email/new-resource-comment-subject comment-author-full-name)
+                          [{:Name resource-owner-full-name :Email (:email resource-owner)}]
+                          [(email/new-resource-comment-text resource-owner-full-name
+                                                            comment-author-full-name
+                                                            resource-title-or-name
+                                                            (:app-domain mailjet-config))]
+                          [])))))
+
 (defn- create-comment
-  [{:keys [db]} req]
+  [{:keys [db] :as config} req]
   (let [body-params (get-in req [:parameters :body])
-        comment (api-comment->comment body-params)]
-    {:comment (comment->api-comment (db.comment/create-comment (:spec db) comment))}))
+        comment (api-comment->comment body-params)
+        result (comment->api-comment (db.comment/create-comment (:spec db) comment))]
+    (when (seq result)
+      (future (send-new-comment-created-notification config comment)))
+    {:comment result}))
 
 (defn- get-resource-comments
   [{:keys [db]} {{:keys [query]} :parameters :as _req}]

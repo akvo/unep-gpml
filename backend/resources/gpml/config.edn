@@ -596,7 +596,8 @@
   :gpml.handler.auth/new-roles {:conn #ig/ref :gpml.db/spec}
   :gpml.handler.auth/update-roles {:conn #ig/ref :gpml.db/spec}
   :gpml.handler.auth/delete {:conn #ig/ref :gpml.db/spec}
-  :gpml.handler.comment/post {:db #ig/ref :duct.database/sql}
+  :gpml.handler.comment/post {:db #ig/ref :duct.database/sql
+                              :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.comment/post-params {}
   :gpml.handler.comment/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.comment/get-params {}
