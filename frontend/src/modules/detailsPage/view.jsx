@@ -50,6 +50,7 @@ import imageNotFound from "../../images/image-not-found.png";
 import { detailMaps } from "./mapping";
 import moment from "moment";
 import { topicNames, resourceTypeToTopicType } from "../../utils/misc";
+import { multicountryGroups } from "../knowledge-library/multicountry";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 

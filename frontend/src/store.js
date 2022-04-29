@@ -195,22 +195,22 @@ const mainContentType = [
     childs: [
       {
         title: "Global",
-        tags: ["action Plan", "global"],
+        tags: ["action plan", "global"],
         des: "Worldwide Coverage",
       },
       {
         title: "Transnational",
-        tags: ["action Plan", "transnational"],
+        tags: ["action plan", "transnational"],
         des: "Covers two or more countries",
       },
       {
         title: "National",
-        tags: ["action Plan", "national"],
+        tags: ["action plan", "national"],
         des: "Covers an entire country",
       },
       {
         title: "Sub-national",
-        tags: ["action Plan", "sub-national"],
+        tags: ["action plan", "sub-national"],
         des: "Covers part of a country e.g, city, or federal state",
       },
     ],
