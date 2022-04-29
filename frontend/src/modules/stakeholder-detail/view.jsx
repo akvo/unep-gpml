@@ -449,6 +449,7 @@ const StakeholderDetail = ({
                         <List.Item.Meta
                           avatar={
                             <Avatar
+                              className="info-entity-icon"
                               src={
                                 data?.affiliation?.logo
                                   ? data?.affiliation?.logo
@@ -543,7 +544,9 @@ const StakeholderDetail = ({
                       width: "100%",
                     }}
                   >
-                    <p>{data?.about}</p>
+                    <div className="bio">
+                      <p>{data?.about}</p>
+                    </div>
                     <div className="exta-info">
                       <Row gutter={[16, 16]}>
                         <Col xs={12} lg={12}>
@@ -605,7 +608,7 @@ const StakeholderDetail = ({
               </div>
             </Col>
           </Row>
-          <div>
+          <div className="owned-resources-wrapper">
             {ownedResources.length > 0 && (
               <CardComponent
                 title={"Owned resources"}
@@ -691,7 +694,7 @@ const StakeholderDetail = ({
               </CardComponent>
             )}
           </div>
-          <div>
+          <div className="bookmarked-resources-wrapper">
             {bookedResources.length > 0 && (
               <CardComponent
                 title={"Bookmarked resources"}

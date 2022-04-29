@@ -152,7 +152,7 @@
     "orgExpertise": {
       "ui:placeholder": "Search",
       "ui:widget": "select",
-      "ui:mode": "multiple",
+      "ui:mode": "tags",
       "ui:showSearch": true
     },
     "orgContribution": {

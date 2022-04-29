@@ -467,6 +467,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
             <FilterDrawer
               {...{
                 query,
+                view,
                 updateQuery,
                 filterVisible,
                 setFilterVisible,

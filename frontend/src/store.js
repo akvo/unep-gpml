@@ -43,6 +43,28 @@ const sectorOptions = [
   "Private Citizens",
 ];
 
+const entitySuggestedTags = [
+  "Circularity",
+  "Education",
+  "Awareness",
+  "Awareness-raising",
+  "Monitoring",
+  "Research",
+  "Waste management",
+  "Recycling",
+  "Technology",
+  "Financing",
+  "Project development",
+  "Legislation",
+  "Policy",
+  "Sea-based Sources",
+  "ALDFG",
+  "Microplastics",
+  "Microfibers",
+  "International Cooperation",
+  "Multilateralism",
+];
+
 const organisationType = [
   "Government",
   "Private Sector",
@@ -173,22 +195,22 @@ const mainContentType = [
     childs: [
       {
         title: "Global",
-        tags: ["action Plan", "global"],
+        tags: ["action plan", "global"],
         des: "Worldwide Coverage",
       },
       {
         title: "Transnational",
-        tags: ["action Plan", "transnational"],
+        tags: ["action plan", "transnational"],
         des: "Covers two or more countries",
       },
       {
         title: "National",
-        tags: ["action Plan", "national"],
+        tags: ["action plan", "national"],
         des: "Covers an entire country",
       },
       {
         title: "Sub-national",
-        tags: ["action Plan", "sub-national"],
+        tags: ["action plan", "sub-national"],
         des: "Covers part of a country e.g, city, or federal state",
       },
     ],
@@ -673,6 +695,7 @@ const UIStore = new Store({
   organisationType: sectorOptions,
   sectorOptions: sectorOptions,
   representativeGroup: representativeGroup,
+  entitySuggestedTags: entitySuggestedTags,
   mainContentType: mainContentType,
   icons: icons,
   placeholder: placeholder,

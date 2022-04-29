@@ -25,6 +25,8 @@ const StakeholderList = ({
 }) => {
   const [listVisible, setListVisible] = useState(true);
 
+  const viewport = window.innerWidth;
+
   return (
     <div className="stakeholder-list ">
       <Row>
@@ -36,7 +38,8 @@ const StakeholderList = ({
               style={
                 isLoaded() &&
                 !loading &&
-                !isEmpty(results) && { overflowY: "auto" }
+                !isEmpty(results) &&
+                viewport > 950 && { overflowY: "auto" }
               }
             >
               {!isLoaded() || loading ? (

@@ -36,8 +36,6 @@ const getSchema = (
 
   prop.geoCoverageValueRegional.enum = regionOptions?.map((x) => String(x.id));
   prop.geoCoverageValueRegional.enumNames = regionOptions?.map((x) => x.name);
-  prop.geoCoverageValueNational.enum = countries?.map((x, i) => x.id);
-  prop.geoCoverageValueNational.enumNames = countries?.map((x, i) => x.name);
   prop.geoCoverageValueTransnational.enum = transnationalOptions?.map((x, i) =>
     String(x.id)
   );

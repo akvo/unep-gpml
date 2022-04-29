@@ -61,7 +61,7 @@
         "tags": {
           "ui:widget": "select",
           "ui:showSearch": true,
-          "ui:mode": "multiple",
+          "ui:mode": "tags",
           "ui:placeholder": "Pick at least one tag",
           "ui:options": {
             "ui:showTag": true
@@ -440,7 +440,7 @@
         "tags": {
           "ui:widget": "select",
           "ui:showSearch": true,
-          "ui:mode": "multiple",
+          "ui:mode": "tags",
           "ui:placeholder": "Pick at least one tag",
           "ui:options": {
             "ui:showTag": true
@@ -668,7 +668,7 @@
         "tags": {
           "ui:widget": "select",
           "ui:showSearch": true,
-          "ui:mode": "multiple",
+          "ui:mode": "tags",
           "ui:placeholder": "Pick at least one tag",
           "ui:options": {
             "ui:showTag": true
@@ -1009,7 +1009,7 @@
         "related": {
           "ui:widget": "select",
           "ui:showSearch": true,
-          "ui:mode": "multiple",
+          "ui:mode": "tags",
           "ui:placeholder": "Select a resource"
         },
         "ui:order": ["info", "related"]
@@ -1165,7 +1165,7 @@
         "tags": {
           "ui:widget": "select",
           "ui:showSearch": true,
-          "ui:mode": "multiple",
+          "ui:mode": "tags",
           "ui:placeholder": "Pick at least one tag",
           "ui:options": {
             "ui:showTag": true
@@ -1381,7 +1381,7 @@
         "tags": {
           "ui:widget": "select",
           "ui:showSearch": true,
-          "ui:mode": "multiple",
+          "ui:mode": "tags",
           "ui:placeholder": "Pick at least one tag",
           "ui:options": {
             "ui:showTag": true
@@ -1609,7 +1609,7 @@
         "tags": {
           "ui:widget": "select",
           "ui:showSearch": true,
-          "ui:mode": "multiple",
+          "ui:mode": "tags",
           "ui:placeholder": "Pick at least one tag",
           "ui:options": {
             "ui:showTag": true

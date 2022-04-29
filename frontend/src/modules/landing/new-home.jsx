@@ -6,7 +6,6 @@ import {
   ArrowRightOutlined,
   RiseOutlined,
   UserOutlined,
-  LoadingOutlined,
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 
@@ -21,7 +20,7 @@ import {
   ourCommunity,
   benefit,
 } from "./new-home-static-content";
-import { titleCase, TrimText } from "../../utils/string";
+import { TrimText } from "../../utils/string";
 import orderBy from "lodash/orderBy";
 import humps from "humps";
 import { topicNames } from "../../utils/misc";
@@ -30,6 +29,7 @@ import api from "../../utils/api";
 
 import TopicChart from "../chart/topicChart";
 import EventCalendar from "../event-calendar/view";
+import TopicBar from "../chart/topicBar";
 
 const cardSvg = [
   {
@@ -146,7 +146,6 @@ const Landing = withRouter(
 
     const handlePopularTopicChartClick = (params) => {
       const { name, tag } = params?.data;
-      console.log("params::::::", params);
 
       if (!isMobileScreen) {
         setSelectedTopic(name?.toLocaleLowerCase());
@@ -412,27 +411,14 @@ const Landing = withRouter(
               </span>
             </h2>
           </div>
-          <div className="topic-bar-wrapper">
-            {sortedPopularTopics.map((x) => {
-              return (
-                <button
-                  className="topic-bar"
-                  key={x?.id}
-                  value={x?.topic}
-                  onClick={(e) => handlePopularTopicBarClick(e)}
-                  style={{
-                    backgroundColor:
-                      x?.topic.toLocaleLowerCase() === selectedTopic
-                        ? "#FFB800"
-                        : "#039B78",
-                  }}
-                >
-                  <span className="bar-count">{x?.count}</span>
-                  <div>{titleCase(x?.topic)}</div>
-                </button>
-              );
-            })}
-          </div>
+          <TopicBar
+            {...{
+              selectedTopic,
+              setSelectedTopic,
+              sortedPopularTopics,
+              handlePopularTopicBarClick,
+            }}
+          />
           <div className="body">
             <TopicChart
               wrapperHeight={"8%"}

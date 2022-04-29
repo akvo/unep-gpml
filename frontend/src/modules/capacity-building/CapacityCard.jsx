@@ -30,7 +30,7 @@ export const CapacityCard = ({ category_id, image, title }) => (
         >
           {titleCase(title).replace(/(.{40})..+/, "$1....")}
         </span>
-        <span className="see-more">See more</span>
+        <span className="see-more">See more &gt;</span>
       </Card>
     </Col>
   </Row>

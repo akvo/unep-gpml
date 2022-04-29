@@ -1,0 +1,7 @@
+BEGIN;
+--;;
+DROP TABLE comment;
+--;;
+DROP TYPE RESOURCE_TYPE;
+--;;
+COMMIT;

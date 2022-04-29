@@ -1,6 +1,6 @@
 import { UIStore } from "../../../store";
 
-const { geoCoverageTypeOptions, organisationType } = UIStore.currentState;
+const { geoCoverageTypeOptions, representativeGroup } = UIStore.currentState;
 
 export const schema = {
   title: "",
@@ -12,11 +12,9 @@ export const schema = {
     "type",
     "geoCoverageType",
     "geoCoverageValueRegional",
-    "geoCoverageValueNational",
     "geoCoverageValueTransnational",
     "geoCoverageCountries",
     "geoCoverageValueGlobalSpesific",
-    "geoCoverageValueSubNational",
   ],
   properties: {
     name: {
@@ -25,8 +23,8 @@ export const schema = {
     },
     type: {
       title: "Type of the entity",
-      enum: organisationType,
-      enumNames: organisationType,
+      enum: representativeGroup?.map((x) => x.name),
+      enumNames: representativeGroup?.map((x) => x.name),
     },
     url: {
       title: "Entity URL",
@@ -50,14 +48,6 @@ export const schema = {
         value: ["regional"],
       },
     },
-    geoCoverageValueNational: {
-      title: "Geo coverage",
-      enum: [],
-      depend: {
-        id: "geoCoverageType",
-        value: ["national"],
-      },
-    },
     geoCoverageValueTransnational: {
       title: "Geo coverage",
       enum: [],
@@ -67,18 +57,11 @@ export const schema = {
       },
     },
     geoCoverageCountries: {
-      title: "Geo coverage (Countries)",
+      title: "Geo coverage Country",
       enum: [],
       depend: {
         id: "geoCoverageType",
-        value: ["transnational"],
-      },
-    },
-    geoCoverageValueSubNational: {
-      $ref: "#/properties/geoCoverageValueNational",
-      depend: {
-        id: "geoCoverageType",
-        value: ["sub-national"],
+        value: ["transnational", "national"],
       },
     },
     geoCoverageValueGlobalSpesific: {
@@ -121,11 +104,6 @@ export const uiSchema = {
     "ui:showSearch": true,
     "ui:mode": "multiple",
   },
-  geoCoverageValueNational: {
-    "ui:placeholder": "Choose the entity coverage",
-    "ui:widget": "select",
-    "ui:showSearch": true,
-  },
   geoCoverageValueTransnational: {
     "ui:placeholder": "Choose the entity coverage",
     "ui:widget": "select",
@@ -133,7 +111,7 @@ export const uiSchema = {
     "ui:mode": "multiple",
   },
   geoCoverageCountries: {
-    "ui:placeholder": "Choose the transnational country",
+    "ui:placeholder": "Choose country",
     "ui:widget": "select",
     "ui:showSearch": true,
     "ui:mode": "multiple",
