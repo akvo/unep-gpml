@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {
   Fragment,
   useState,
@@ -18,9 +19,12 @@ import {
   Popover,
   Input,
   Button,
+  Form,
+  Comment,
 } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 const { Title } = Typography;
+const { TextArea } = Input;
 import { UIStore } from "../../store";
 import ActionGreen from "../../images/action-green.png";
 import LeftImage from "../../images/sea-dark.jpg";
@@ -51,6 +55,9 @@ import { detailMaps } from "./mapping";
 import moment from "moment";
 import { topicNames, resourceTypeToTopicType } from "../../utils/misc";
 import { multicountryGroups } from "../knowledge-library/multicountry";
+import { Form as FinalForm, FormSpy, Field } from "react-final-form";
+import arrayMutators from "final-form-arrays";
+import { FieldsFromSchema } from "../../utils/form-utils";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
@@ -669,6 +676,79 @@ const renderCountries = (data, countries, transnationalOptions) => {
   return dataCountries;
 };
 
+const CommentList = ({
+  item,
+  showReplyBox,
+  setShowReplyBox,
+  onReply,
+  setComment,
+  profile,
+}) => {
+  return (
+    <Comment
+      key={item.id}
+      actions={
+        profile &&
+        profile.reviewStatus === "APPROVED" && [
+          <>
+            {profile && profile.reviewStatus === "APPROVED" && (
+              <span
+                key="comment-nested-reply-to"
+                onClick={() =>
+                  item.id === showReplyBox
+                    ? setShowReplyBox("")
+                    : setShowReplyBox(item.id)
+                }
+              >
+                Reply to
+              </span>
+            )}
+            {item.id === showReplyBox && (
+              <>
+                <Form.Item>
+                  <TextArea
+                    rows={2}
+                    onChange={(e) => setComment(e.target.value)}
+                  />
+                  <Button
+                    className="comment-reply"
+                    onClick={() => {
+                      setShowReplyBox("");
+                      onReply(item.id, item.title);
+                    }}
+                  >
+                    Reply
+                  </Button>
+                </Form.Item>
+              </>
+            )}
+          </>,
+        ]
+      }
+      author={moment(item?.createdAt).format("DD MMM YYYY")}
+      avatar={<Avatar src={item.authorPicture} alt={"author"} />}
+      content={
+        <>
+          {!item.parentId && <h5>{item.title}</h5>}
+          <p>{item.content}</p>
+        </>
+      }
+    >
+      {item?.children?.map((children) => (
+        <CommentList
+          key={children.id}
+          item={children}
+          showReplyBox={showReplyBox}
+          setShowReplyBox={setShowReplyBox}
+          onReply={onReply}
+          setComment={setComment}
+          profile={profile}
+        />
+      ))}
+    </Comment>
+  );
+};
+
 const DetailsView = ({
   match: { params },
   setStakeholderSignupModalVisible,
@@ -681,6 +761,7 @@ const DetailsView = ({
   const description = useRef(null);
   const reviews = useRef(null);
   const [showLess, setShowLess] = useState(true);
+  const [sending, setSending] = useState(false);
 
   const {
     profile,
@@ -704,9 +785,11 @@ const DetailsView = ({
   const history = useHistory();
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
+  const [comments, setComments] = useState([]);
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [showReplyBox, setShowReplyBox] = useState("");
 
   const relation = relations.find(
     (it) =>
@@ -768,6 +851,7 @@ const DetailsView = ({
         .get(`/detail/${params.type}/${params.id}`)
         .then((d) => {
           setData(d.data);
+          getComment(params.id, params.type);
         })
         .catch((err) => {
           console.error(err);
@@ -784,7 +868,14 @@ const DetailsView = ({
       e.disclaimer = null;
     });
     window.scrollTo({ top: 0 });
-  }, [params, profile, isLoaded, data, history]);
+  }, [profile, isLoaded]);
+
+  const getComment = async (id, type) => {
+    let res = await api.get(`/comment?resource_id=${id}&resource_type=${type}`);
+    if (res && res?.data) {
+      setComments(res.data?.comments);
+    }
+  };
 
   const handleEditBtn = () => {
     let form = null;
@@ -854,6 +945,50 @@ const DetailsView = ({
 
   const handleVisible = () => {
     setVisible(!visible);
+  };
+
+  const defaultFormSchema = {
+    title: { label: "Title", required: true },
+    description: { label: "Description", control: "textarea", required: true },
+  };
+
+  const formRef = useRef();
+  const [formSchema, setFormSchema] = useState(defaultFormSchema);
+  const [comment, setComment] = useState("");
+
+  const onSubmit = (val) => {
+    const data = {
+      author_id: profile.id,
+      resource_id: parseInt(params.id),
+      resource_type: params?.type,
+      ...(val.parent_id && { parent_id: val.parent_id }),
+      title: val.title,
+      content: val.description,
+    };
+
+    setSending(true);
+    api
+      .post("/comment", data)
+      .then((data) => {
+        setSending(false);
+        getComment(params.id, params.type);
+      })
+      .catch(() => {
+        setSending(false);
+        // notification.error({ message: "An error occured" });
+      })
+      .finally(() => {
+        setSending(false);
+      });
+  };
+
+  const onReply = (id, title) => {
+    const val = {
+      parent_id: id,
+      title: title,
+      description: comment,
+    };
+    onSubmit(val);
   };
 
   if (!data) {
@@ -1193,6 +1328,55 @@ const DetailsView = ({
                       ))}
                     </Row>
                   )}
+                </CardComponent>
+              )}
+              {profile && (
+                <CardComponent title="Comments">
+                  <div className="comments-container">
+                    <div className="comment-list-container">
+                      {comments.map((item) => (
+                        <CommentList
+                          item={item}
+                          showReplyBox={showReplyBox}
+                          setShowReplyBox={setShowReplyBox}
+                          onReply={onReply}
+                          setComment={setComment}
+                          profile={profile}
+                        />
+                      ))}
+                    </div>
+                    {profile && profile.reviewStatus === "APPROVED" && (
+                      <Form layout="vertical">
+                        <FinalForm
+                          initialValues={{}}
+                          subscription={{}}
+                          mutators={{ ...arrayMutators }}
+                          onSubmit={onSubmit}
+                          render={({ handleSubmit, form, ...props }) => {
+                            formRef.current = form;
+                            return (
+                              <>
+                                <FieldsFromSchema schema={formSchema} />
+                                <Button
+                                  className="comment-submit"
+                                  size="large"
+                                  loading={sending}
+                                  onClick={() => {
+                                    handleSubmit();
+                                    form.reset();
+                                    form.resetFieldState("title");
+                                    form.resetFieldState("description");
+                                  }}
+                                >
+                                  Submit
+                                </Button>
+                              </>
+                            );
+                          }}
+                        />
+                      </Form>
+                    )}
+                  </div>
                 </CardComponent>
               )}
               {/* <CardComponent
