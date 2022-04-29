@@ -97,7 +97,7 @@
 
 (def ^:const get-resource-comments-response
   [:map
-   [:comments [:vector create-comment-response]]])
+   [:comments [:maybe [:vector create-comment-response]]]])
 
 (def ^:const update-comment-params
   [:map
