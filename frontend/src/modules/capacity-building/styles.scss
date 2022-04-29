@@ -195,16 +195,16 @@
       li {
         width: 17.84px !important;
         button {
-          width: 17.84px !important;
-          height: 17.84px !important;
+          width: 10px !important;
+          height: 10px !important;
           border-radius: 50% !important;
-          border: 3px solid #255b87;
+          border: 3px solid #00aaf1;
           box-sizing: border-box;
           background-color: rgba($color: #fff, $alpha: 0);
         }
         &.slick-active {
           button {
-            background-color: #255b87 !important;
+            background-color: #00aaf1 !important;
           }
         }
       }
