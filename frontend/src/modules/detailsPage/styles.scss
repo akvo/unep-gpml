@@ -605,6 +605,16 @@
       .comment-list-container {
         border-bottom: 1px solid #edf2f7;
         margin-bottom: 20px;
+        .ant-form-item {
+          width: 500px;
+          .comment-reply {
+            margin-top: 10px;
+            border: 1px solid #34a6ff;
+            border-radius: 25px;
+            color: #34a6ff;
+            font-weight: 700;
+          }
+        }
       }
       input {
         background-color: #edf2f7;
