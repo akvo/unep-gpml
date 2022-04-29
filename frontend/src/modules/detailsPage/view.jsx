@@ -687,41 +687,44 @@ const CommentList = ({
   return (
     <Comment
       key={item.id}
-      actions={[
-        <>
-          {profile && profile.reviewStatus === "APPROVED" && (
-            <span
-              key="comment-nested-reply-to"
-              onClick={() =>
-                item.id === showReplyBox
-                  ? setShowReplyBox("")
-                  : setShowReplyBox(item.id)
-              }
-            >
-              Reply to
-            </span>
-          )}
-          {item.id === showReplyBox && (
-            <>
-              <Form.Item>
-                <TextArea
-                  rows={2}
-                  onChange={(e) => setComment(e.target.value)}
-                />
-                <Button
-                  className="comment-reply"
-                  onClick={() => {
-                    setShowReplyBox("");
-                    onReply(item.id, item.title);
-                  }}
-                >
-                  Reply
-                </Button>
-              </Form.Item>
-            </>
-          )}
-        </>,
-      ]}
+      actions={
+        profile &&
+        profile.reviewStatus === "APPROVED" && [
+          <>
+            {profile && profile.reviewStatus === "APPROVED" && (
+              <span
+                key="comment-nested-reply-to"
+                onClick={() =>
+                  item.id === showReplyBox
+                    ? setShowReplyBox("")
+                    : setShowReplyBox(item.id)
+                }
+              >
+                Reply to
+              </span>
+            )}
+            {item.id === showReplyBox && (
+              <>
+                <Form.Item>
+                  <TextArea
+                    rows={2}
+                    onChange={(e) => setComment(e.target.value)}
+                  />
+                  <Button
+                    className="comment-reply"
+                    onClick={() => {
+                      setShowReplyBox("");
+                      onReply(item.id, item.title);
+                    }}
+                  >
+                    Reply
+                  </Button>
+                </Form.Item>
+              </>
+            )}
+          </>,
+        ]
+      }
       author={moment(item?.createdAt).format("DD MMM YYYY")}
       avatar={<Avatar src={item.authorPicture} alt={"author"} />}
       content={
