@@ -1334,16 +1334,18 @@ const DetailsView = ({
                 <CardComponent title="Comments">
                   <div className="comments-container">
                     <div className="comment-list-container">
-                      {comments.map((item) => (
-                        <CommentList
-                          item={item}
-                          showReplyBox={showReplyBox}
-                          setShowReplyBox={setShowReplyBox}
-                          onReply={onReply}
-                          setComment={setComment}
-                          profile={profile}
-                        />
-                      ))}
+                      {comments &&
+                        comments.length > 0 &&
+                        comments?.map((item) => (
+                          <CommentList
+                            item={item}
+                            showReplyBox={showReplyBox}
+                            setShowReplyBox={setShowReplyBox}
+                            onReply={onReply}
+                            setComment={setComment}
+                            profile={profile}
+                          />
+                        ))}
                     </div>
                     {profile && profile.reviewStatus === "APPROVED" && (
                       <Form layout="vertical">
