@@ -25,6 +25,23 @@
               :allowEmptyValue false}}
    [:re util.regex/uuid-regex]])
 
+(def ^:const author-id-param
+  [:author_id
+   {:optional false
+    :swagger {:description "The comment's author ID"
+              :type "integer"
+              :allowEmptyValue false}}
+   [:fn pos-int?]])
+
+(def ^:const parent-id-param
+  [:parent_id
+   {:optional true
+    :swagger {:description "The comment's parent ID if there is any"
+              :type "string"
+              :format "uuid"
+              :allowEmptyValue false}}
+   [:re util.regex/uuid-regex]])
+
 (def ^:const resource-id-param
   [:resource_id
    {:optional false
@@ -59,28 +76,28 @@
 
 (def ^:const create-comment-params
   [:map
-   [:author_id
-    {:optional false
-     :swagger {:description "The comment's author ID"
-               :type "integer"
-               :allowEmptyValue false}}
-    [:fn pos-int?]]
-   [:parent_id
-    {:optional true
-     :swagger {:description "The comment's parent ID if there is any"
-               :type "string"
-               :format "uuid"
-               :allowEmptyValue false}}
-    [:re util.regex/uuid-regex]]
+   author-id-param
+   parent-id-param
    resource-id-param
    resource-type-param
    title-param
    content-param])
 
+(def ^:const create-comment-response
+  (->> create-comment-params
+       rest
+       (cons id-param)
+       (cons :map)
+       vec))
+
 (def ^:const get-resource-comments-params
   [:map
    (assoc resource-id-param 2 [:fn util/str-number?])
    resource-type-param])
+
+(def ^:const get-resource-comments-response
+  [:map
+   [:comments [:vector create-comment-response]]])
 
 (def ^:const update-comment-params
   [:map
@@ -88,9 +105,21 @@
    (assoc-in title-param [1 :optional] true)
    (assoc-in content-param [1 :optional] true)])
 
+(def ^:const update-comment-response
+  [:map
+   [:updated-comments {:swagger {:description "Number of updated comments"
+                                 :type "integer"}}
+    [:int {:min 0}]]])
+
 (def ^:const delete-comment-params
   [:map
    id-param])
+
+(def ^:const delete-comment-response
+  [:map
+   [:deleted-comments {:swagger {:description "Number of deleted comments"
+                                 :type "integer"}}
+    [:int {:min 0}]]])
 
 (defn- api-comment->comment
   [api-comment]
@@ -197,3 +226,15 @@
 
 (defmethod ig/init-key :gpml.handler.comment/delete-params [_ _]
   {:path delete-comment-params})
+
+(defmethod ig/init-key :gpml.handler.comment/post-response [_ _]
+  {200 {:body create-comment-response}})
+
+(defmethod ig/init-key :gpml.handler.comment/get-response [_ _]
+  {200 {:body get-resource-comments-response}})
+
+(defmethod ig/init-key :gpml.handler.comment/put-response [_ _]
+  {200 {:body update-comment-response}})
+
+(defmethod ig/init-key :gpml.handler.comment/delete-response [_ _]
+  {200 {:body delete-comment-response}})
