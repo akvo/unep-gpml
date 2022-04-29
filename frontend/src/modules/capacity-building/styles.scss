@@ -53,15 +53,6 @@
           }
         }
       }
-      @media (min-width: 769px) {
-        height: 622px;
-        .banner_img {
-          height: 622px !important;
-          img {
-            height: 622px !important;
-          }
-        }
-      }
     }
     .event_details {
       position: absolute;
@@ -109,7 +100,7 @@
           font-size: 28px !important;
         }
       }
-      @media (min-width: 769px) {
+      @media (min-width: 769px) and (max-width: 1199px) {
         .ant-typography.label {
           font-size: 16px !important;
           margin-bottom: 20px !important;
