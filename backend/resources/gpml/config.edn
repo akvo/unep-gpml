@@ -447,6 +447,16 @@
                                                 :swagger {:tags ["community"]}
                                                 :parameters {:query #ig/ref :gpml.handler.community/get-params}
                                                 :handler #ig/ref :gpml.handler.community/get}}]
+                                        ["/export" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                 #ig/ref :gpml.auth/auth-required
+                                                                 #ig/ref :gpml.auth/approved-user
+                                                                 #ig/ref :gpml.auth/admin-required-middleware]}
+                                         ["/{export-type}"
+                                          {:get {:summary "Export all individuals"
+                                                 :swagger {:tags ["export"]}
+                                                 :parameters {:path [:map
+                                                                     [:export-type #ig/ref :gpml.handler.export/export-types]]}
+                                                 :handler #ig/ref :gpml.handler.export/get}}]]
                                         ["/comment"
                                          [""
                                           {:post {:summary "Create a comment"
@@ -637,6 +647,9 @@
 
   :gpml.handler.community/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.community/get-params {}
+
+  :gpml.handler.export/export-types {}
+  :gpml.handler.export/get {:db #ig/ref :duct.database/sql}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}

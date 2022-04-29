@@ -2,6 +2,20 @@
 -- :doc Get all organisations
 select id, name from organisation order by id
 
+-- :name all-public-entities :? :*
+-- :doc Get all member organisations
+SELECT * FROM organisation
+WHERE review_status = 'APPROVED'
+AND is_member = true
+ORDER BY id;
+
+-- :name all-public-non-member-entities :? :*
+-- :doc Get all non member organisations
+SELECT * FROM organisation
+WHERE review_status = 'APPROVED'
+AND is_member = false
+ORDER BY id;
+
 -- :name all-members :? :*
 -- :doc Get all member organisations
 select id, name from organisation
