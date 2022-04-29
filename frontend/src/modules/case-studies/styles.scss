@@ -2,21 +2,51 @@
 
 $green-primary: #4dffa5;
 
-.ant-btn-link {
-  &.green-border {
-    border: 2px solid $green-primary;
-    color: $green-primary !important;
-    width: 154px;
-    height: 41px;
-    line-height: 35px;
-    @media (max-width: 768px) {
-      width: 135px !important;
-      height: 33px !important;
-      line-height: 30px !important;
+#case-study {
+  .ui-header {
+    @-moz-document url-prefix() {
+      padding: 4px calc(44px - 14px) 4px 37px;
+      .ant-select-selector {
+        height: 36px;
+      }
+      .ant-select-selection-item {
+        font-size: 14px;
+        line-height: 34px;
+      }
+      .ant-select-arrow {
+        top: 9px !important;
+        right: 22px !important;
+      }
     }
   }
-}
-#case-study {
+  .ant-btn-link {
+    &.green-border {
+      border: 2px solid $green-primary;
+      color: $green-primary !important;
+      width: 154px;
+      height: 41px;
+      line-height: 36px;
+      @-moz-document url-prefix() {
+        width: 139px;
+        height: 37px;
+        line-height: 32px;
+        border: 1px solid $green-primary;
+        span {
+          font-size: 13px;
+        }
+        @media (max-width: 768px) {
+          width: 119px !important;
+          height: 29px !important;
+          line-height: 30px !important;
+        }
+      }
+      @media (max-width: 768px) {
+        width: 135px !important;
+        height: 33px !important;
+        line-height: 30px !important;
+      }
+    }
+  }
   .case-study-learn-btn:hover {
     background-color: $yellow-highlight;
     border-color: $yellow-highlight !important;
@@ -56,6 +86,11 @@ $green-primary: #4dffa5;
   }
 
   @media (max-width: 540px) {
+    .green-border {
+      span {
+        font-size: 12px;
+      }
+    }
     .ui-header {
       padding: 5px 25px 5px 25px !important;
       .header-form {
@@ -65,8 +100,12 @@ $green-primary: #4dffa5;
           padding-left: 0 !important;
           padding-right: 0 !important;
         }
+
         .btn-download {
           margin-left: 0 !important;
+          span {
+            font-size: 12px;
+          }
         }
         .ant-col-md-24:last-of-type {
           padding: 0;
@@ -137,6 +176,10 @@ $green-primary: #4dffa5;
           width: 100%;
           max-width: 160px;
           height: 33px !important;
+          @-moz-document url-prefix() {
+            max-width: 144pxs;
+            height: 30px !important;
+          }
         }
       }
     }
@@ -223,10 +266,12 @@ $green-primary: #4dffa5;
       color: #fff;
       width: 190px;
       height: 50px;
-      // &:hover {
-      //   color: #40a9ff;
-      //   border-color: #40a9ff !important;
-      // }
+
+      @-moz-document url-prefix() {
+        max-width: 172px;
+        height: 46px !important;
+        font-size: 13px;
+      }
       &:hover {
         border-color: $yellow-highlight !important;
         background-color: $yellow-highlight;
@@ -245,6 +290,7 @@ $green-primary: #4dffa5;
       text-transform: capitalize;
       color: #fff !important;
       text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+
       @media (max-width: 540px) {
         font-size: 32px !important;
         line-height: 38px !important;
