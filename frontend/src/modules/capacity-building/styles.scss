@@ -2,6 +2,23 @@
 
 #capacity-building {
   background-color: #edf2f7;
+  .ant-page-header {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    @-moz-document url-prefix() {
+      padding-left: 8px !important;
+      padding-right: 8px !important;
+    }
+  }
+  @media (max-width: 540px) {
+    .ui-header {
+      .ant-typography,
+      .text-green {
+        font-size: 16px !important;
+        line-height: unset !important;
+      }
+    }
+  }
   .thumbnail {
     img {
       width: 100%;
@@ -145,6 +162,7 @@
     .section-content {
       padding-left: 16px;
       padding-right: 16px;
+
       @-moz-document url-prefix() {
         padding-left: 8px;
         padding-right: 8px;
@@ -213,6 +231,9 @@
       color: $green01 !important;
       &:hover {
         background: $yellow-highlight !important;
+      }
+      @-moz-document url-prefix() {
+        line-height: 26px !important;
       }
     }
   }
