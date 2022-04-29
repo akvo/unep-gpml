@@ -110,6 +110,7 @@ const CapacityBuilding = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                           type="ghost"
+                          className="green-border"
                         >
                           See all &gt;
                         </Button>

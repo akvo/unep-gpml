@@ -16,8 +16,10 @@
       }
     }
   }
+
   .ant-page-header-heading-title > span.text-green {
     font-size: 24px;
+    color: $green01;
   }
   .pm_event_banner {
     .banner_info {
@@ -169,10 +171,13 @@
       }
     }
     .ant-btn-ghost {
-      border: 2px solid #fff !important;
+      border: 2px solid $green01 !important;
       box-sizing: border-box;
       border-radius: 60px;
-      color: #fff !important;
+      color: $green01 !important;
+      &:hover {
+        background: $yellow-highlight !important;
+      }
     }
   }
   .ant-card-grid {
