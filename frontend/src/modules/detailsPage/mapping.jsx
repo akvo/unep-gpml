@@ -121,12 +121,6 @@ const detailTechnology = [
     type: "name",
   },
   {
-    key: "headquarters",
-    name: "Headquarters",
-    value: "headquarters",
-    type: "object",
-  },
-  {
     key: "developmentStage",
     name: "Development Stage",
     value: "developmentStage",

@@ -22,12 +22,12 @@
       "ui:label": null
     },
     "linkedIn": {
-      "ui:placeholder": "Your LinkedIn username",
+      "ui:placeholder": "Your LinkedIn Link",
       "ui:widget": "TextIconWidget",
       "ui:icon": "linkedin"
     },
     "twitter": {
-      "ui:placeholder": "Your twitter username",
+      "ui:placeholder": "Your twitter Link",
       "ui:widget": "TextIconWidget",
       "ui:icon": "twitter"
     },

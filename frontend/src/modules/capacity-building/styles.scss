@@ -2,6 +2,27 @@
 
 #capacity-building {
   background-color: #edf2f7;
+  @media (max-width: 1199px) {
+    zoom: 90%;
+  }
+
+  .ant-page-header {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    @-moz-document url-prefix() {
+      padding-left: 8px !important;
+      padding-right: 8px !important;
+    }
+  }
+  @media (max-width: 540px) {
+    .ui-header {
+      .ant-typography,
+      .text-green {
+        font-size: 16px !important;
+        line-height: unset !important;
+      }
+    }
+  }
   .thumbnail {
     img {
       width: 100%;
@@ -16,8 +37,16 @@
       }
     }
   }
+
   .ant-page-header-heading-title > span.text-green {
-    font-size: 24px;
+    font-size: 20px;
+    color: $green01;
+    @-moz-document url-prefix() {
+      font-size: 18px;
+    }
+    @media (max-width: 540px) {
+      font-size: 16px !important;
+    }
   }
   .pm_event_banner {
     .banner_info {
@@ -36,6 +65,21 @@
         img {
           height: 100%;
           object-fit: cover;
+        }
+      }
+      @media (max-width: 540px) {
+        height: 493px;
+        .banner_img {
+          display: none;
+        }
+      }
+      @media (min-width: 541px) and (max-width: 768px) {
+        height: 506px;
+        .banner_img {
+          height: 506px !important;
+          img {
+            height: 506px !important;
+          }
         }
       }
     }
@@ -61,11 +105,47 @@
         &.label {
           font-size: 16px;
           font-weight: 600;
+          @-moz-document url-prefix() {
+            font-size: 14px;
+          }
         }
       }
       h1.ant-typography,
       h2.ant-typography {
         font-weight: 800 !important;
+      }
+      @media (max-width: 540px) {
+        .ant-typography.label {
+          font-size: 12px !important;
+          margin-bottom: 10px !important;
+        }
+        h1.ant-typography {
+          font-size: 24px !important;
+        }
+      }
+      @media (min-width: 541px) and (max-width: 768px) {
+        .ant-typography.label {
+          font-size: 14px !important;
+          margin-bottom: 20px !important;
+        }
+        h1.ant-typography {
+          font-size: 28px !important;
+        }
+      }
+      @media (min-width: 769px) and (max-width: 1199px) {
+        .ant-typography.label {
+          font-size: 16px !important;
+          margin-bottom: 20px !important;
+          @-moz-document url-prefix() {
+            font-size: 14px;
+          }
+        }
+        h1.ant-typography {
+          font-size: 32px !important;
+          @-moz-document url-prefix() {
+            font-size: 30px !important;
+          }
+        }
       }
     }
   }
@@ -86,6 +166,11 @@
     .section-content {
       padding-left: 16px;
       padding-right: 16px;
+
+      @-moz-document url-prefix() {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
       .resource-col {
         width: 132px;
       }
@@ -115,22 +200,46 @@
         &.small {
           font-size: 14px;
         }
+        @-moz-document url-prefix() {
+          .title {
+            font-size: 16px;
+            &.small {
+              font-size: 12px;
+            }
+          }
+        }
+        @media (max-width: 540px) {
+          font-size: 12px !important;
+        }
       }
       .see-more {
         position: absolute;
         bottom: 15px;
         right: 20px;
         font-weight: 600;
+        @media (max-width: 540px) {
+          font-size: 12px !important;
+        }
       }
       .ant-card-body {
         padding: 14px !important;
+        @-moz-document url-prefix() {
+          padding: 7px !important;
+        }
       }
     }
     .ant-btn-ghost {
-      border: 2px solid #fff !important;
+      border: 2px solid $green01 !important;
       box-sizing: border-box;
       border-radius: 60px;
-      color: #fff !important;
+      color: $green01 !important;
+      &:hover {
+        background: $yellow-highlight !important;
+      }
+      @-moz-document url-prefix() {
+        line-height: 26px !important;
+        border: 1px solid $green01 !important;
+      }
     }
   }
   .ant-card-grid {
@@ -180,16 +289,16 @@
       li {
         width: 17.84px !important;
         button {
-          width: 17.84px !important;
-          height: 17.84px !important;
+          width: 10px !important;
+          height: 10px !important;
           border-radius: 50% !important;
-          border: 3px solid #255b87;
+          border: 3px solid #00aaf1;
           box-sizing: border-box;
           background-color: rgba($color: #fff, $alpha: 0);
         }
         &.slick-active {
           button {
-            background-color: #255b87 !important;
+            background-color: #00aaf1 !important;
           }
         }
       }
@@ -199,18 +308,25 @@
     }
   }
   .carousel-control {
-    img {
+    display: block;
+    button {
       position: absolute;
       top: 45%;
       z-index: 5;
       width: 43px;
       cursor: pointer;
+
       &.carousel-next {
-        right: 0;
+        right: 12px;
+        transform: rotate(-90deg);
       }
       &.carousel-prev {
-        left: 0;
+        left: 12px;
+        transform: rotate(90deg);
       }
+    }
+    @media (max-width: 540px) {
+      display: none;
     }
   }
   #bodyContent {
@@ -218,6 +334,9 @@
   }
   .ui-header {
     padding: 10px 16px 10px 16px;
+    @-moz-document url-prefix() {
+      padding: 5px 8px 5px 8px;
+    }
     h3.ant-typography {
       margin-bottom: 0px;
     }
@@ -225,18 +344,30 @@
   @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
     .ui-header {
       padding: 10px 16px 10px 16px;
+      @-moz-document url-prefix() {
+        padding: 5px 8px 5px 8px;
+      }
       h3.ant-typography {
         margin-bottom: 0px;
         font-size: 1.2em;
+        @-moz-document url-prefix() {
+          font-size: 1.1em;
+        }
       }
     }
     .pm_event_banner {
       .event_details {
         h2.ant-typography {
           font-size: 1.2em;
+          @-moz-document url-prefix() {
+            font-size: 1.1em;
+          }
         }
         h1.ant-typography {
           font-size: 1.2em;
+          @-moz-document url-prefix() {
+            font-size: 1.1em;
+          }
         }
       }
       .banner_info {
@@ -253,11 +384,17 @@
       min-height: auto;
       .ant-page-header {
         padding: 5px 24px;
+        @-moz-document url-prefix() {
+          padding: 5px 14px;
+        }
       }
       .card {
         min-height: 187px;
         .title {
           font-size: 1em;
+          @-moz-document url-prefix() {
+            font-size: 0.8em;
+          }
         }
       }
       .thumbnail {
@@ -349,6 +486,9 @@
       .site_title {
         h2.ant-typography {
           font-size: 24px !important;
+          @-moz-document url-prefix() {
+            font-size: 22px;
+          }
         }
       }
     }
@@ -365,9 +505,17 @@
         .title {
           font-size: 22px;
           line-height: 32px;
+          @-moz-document url-prefix() {
+            font-size: 20px;
+            line-height: 30px;
+          }
           &.small {
             font-size: 18px;
             line-height: 30px;
+            @-moz-document url-prefix() {
+              font-size: 18px;
+              line-height: 28px;
+            }
           }
         }
       }
@@ -410,9 +558,17 @@
         .title {
           font-size: 28px;
           line-height: 48px;
+          @-moz-document url-prefix() {
+            font-size: 26px;
+            line-height: 46px;
+          }
           &.small {
             font-size: 22px;
             line-height: 38px;
+            @-moz-document url-prefix() {
+              font-size: 20px;
+              line-height: 36px;
+            }
           }
         }
       }
