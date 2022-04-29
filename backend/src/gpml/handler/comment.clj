@@ -23,7 +23,9 @@
               :type "string"
               :format "uuid"
               :allowEmptyValue false}}
-   [:re util.regex/uuid-regex]])
+   [:or
+    [:re util.regex/uuid-regex]
+    [:fn uuid?]]])
 
 (def ^:const author-id-param
   [:author_id
@@ -40,7 +42,10 @@
               :type "string"
               :format "uuid"
               :allowEmptyValue false}}
-   [:re util.regex/uuid-regex]])
+   [:or
+    [:re util.regex/uuid-regex]
+    [:fn uuid?]
+    [:fn nil?]]])
 
 (def ^:const resource-id-param
   [:resource_id
@@ -74,6 +79,16 @@
               :allowEmptyValue false}}
    [:fn util/non-blank-string?]])
 
+(def ^:const comment-schema
+  [:map
+   id-param
+   author-id-param
+   parent-id-param
+   resource-id-param
+   resource-type-param
+   title-param
+   content-param])
+
 (def ^:const create-comment-params
   [:map
    author-id-param
@@ -84,11 +99,8 @@
    content-param])
 
 (def ^:const create-comment-response
-  (->> create-comment-params
-       rest
-       (cons id-param)
-       (cons :map)
-       vec))
+  [:map
+   [:comment comment-schema]])
 
 (def ^:const get-resource-comments-params
   [:map
@@ -97,7 +109,7 @@
 
 (def ^:const get-resource-comments-response
   [:map
-   [:comments [:maybe [:vector create-comment-response]]]])
+   [:comments [:maybe [:vector comment-schema]]]])
 
 (def ^:const update-comment-params
   [:map
