@@ -468,7 +468,7 @@
                                                   :handler #ig/ref :gpml.handler.comment/post}
                                            :get {:summary "Get comments for a specific resource"
                                                  :swagger {:tags ["comment"] :security [{:id_token []}]}
-                                                 :responses #ig/ref :gpml.handler.comment/get-response
+                                                 ;;:responses #ig/ref :gpml.handler.comment/get-response
                                                  :parameters #ig/ref :gpml.handler.comment/get-params
                                                  :handler #ig/ref :gpml.handler.comment/get}
                                            :put {:summary "Update a comment details"
