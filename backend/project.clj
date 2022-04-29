@@ -40,7 +40,8 @@
                                                         com.google.guava/guava
                                                         cheshire
                                                         medley
-                                                        clj-time]]]
+                                                        clj-time]]
+                 [clojure.java-time "0.3.3"]]
   :plugins [[duct/lein-duct "0.12.1"]]
   :main ^:skip-aot gpml.main
   :resource-paths ["resources" "target/resources"]
