@@ -134,7 +134,7 @@
                         :title :a
                         :content true}]
         (is (not (m/validate sut/update-comment-params parameters)))
-        (is (= 3 (count (:errors (m/explain sut/update-comment-params parameters)))))))))
+        (is (= 4 (count (:errors (m/explain sut/update-comment-params parameters)))))))))
 
 (deftest delete-comment-test
   (let [db (test-util/db-test-conn)
