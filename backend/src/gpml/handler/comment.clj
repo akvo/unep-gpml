@@ -20,7 +20,8 @@
   [:id
    {:optional false
     :swagger {:description "The comment's ID"
-              :type "uuid"
+              :type "string"
+              :format "uuid"
               :allowEmptyValue false}}
    [:re util.regex/uuid-regex]])
 
@@ -67,7 +68,8 @@
    [:parent_id
     {:optional true
      :swagger {:description "The comment's parent ID if there is any"
-               :type "uuid"
+               :type "string"
+               :format "uuid"
                :allowEmptyValue false}}
     [:re util.regex/uuid-regex]]
    resource-id-param
