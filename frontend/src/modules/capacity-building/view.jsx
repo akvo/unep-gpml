@@ -20,8 +20,7 @@ import Banner from "./Banner";
 import capacities from "./json/capacity-building.json";
 import slides from "./json/slider.json";
 
-import SlidePrev from "../../images/capacity-building/slide-prev.svg";
-import SlideNext from "../../images/capacity-building/slide-next.svg";
+import { ReactComponent as DropdownIcon } from "../../images/case-studies/ic_dropdown.svg";
 import LeftSidebar from "../left-sidebar/LeftSidebar";
 import { CapacityCard } from "./CapacityCard";
 
@@ -88,16 +87,13 @@ const CapacityBuilding = () => {
                   ))}
                 </Carousel>
                 <div className="carousel-control">
-                  <img
-                    src={SlidePrev}
-                    className="carousel-prev"
-                    onClick={prev}
-                  />
-                  <img
-                    src={SlideNext}
-                    className="carousel-next"
-                    onClick={next}
-                  />
+                  <button className="carousel-prev" onClick={prev}>
+                    <DropdownIcon />
+                  </button>
+
+                  <button className="carousel-next" onClick={next}>
+                    <DropdownIcon />
+                  </button>
                 </div>
               </Col>
               <Col span={24} style={{ padding: "0 16px", marginTop: 45 }}>

@@ -214,17 +214,20 @@
     }
   }
   .carousel-control {
-    img {
+    button {
       position: absolute;
       top: 45%;
       z-index: 5;
       width: 43px;
       cursor: pointer;
+
       &.carousel-next {
-        right: 0;
+        right: 12px;
+        transform: rotate(-90deg);
       }
       &.carousel-prev {
-        left: 0;
+        left: 12px;
+        transform: rotate(90deg);
       }
     }
   }
