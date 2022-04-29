@@ -303,6 +303,7 @@
     }
   }
   .carousel-control {
+    display: block;
     button {
       position: absolute;
       top: 45%;
@@ -318,6 +319,9 @@
         left: 12px;
         transform: rotate(90deg);
       }
+    }
+    @media (max-width: 540px) {
+      display: none;
     }
   }
   #bodyContent {
