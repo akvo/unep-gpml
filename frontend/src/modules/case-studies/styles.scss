@@ -360,6 +360,13 @@ $green-primary: #4dffa5;
           }
         }
       }
+
+      @media (max-width: 768px) {
+        .avatar {
+          width: 48px;
+          height: 48px;
+        }
+      }
     }
   }
   #siteWrapper {
