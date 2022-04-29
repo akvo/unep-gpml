@@ -82,6 +82,24 @@
       h2.ant-typography {
         font-weight: 800 !important;
       }
+      @media (max-width: 540px) {
+        .ant-typography.label {
+          font-size: 12px !important;
+          margin-bottom: 10px !important;
+        }
+        h1.ant-typography {
+          font-size: 24px !important;
+        }
+      }
+      @media (min-width: 541px) and (max-width: 768px) {
+        .ant-typography.label {
+          font-size: 14px !important;
+          margin-bottom: 20px !important;
+        }
+        h1.ant-typography {
+          font-size: 28px !important;
+        }
+      }
     }
   }
   .photo_credit {
