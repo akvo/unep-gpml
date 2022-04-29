@@ -24,6 +24,7 @@ import {
 } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 const { Title } = Typography;
+const { TextArea } = Input;
 import { UIStore } from "../../store";
 import ActionGreen from "../../images/action-green.png";
 import LeftImage from "../../images/sea-dark.jpg";
@@ -675,6 +676,72 @@ const renderCountries = (data, countries, transnationalOptions) => {
   return dataCountries;
 };
 
+const CommentList = ({
+  item,
+  showReplyBox,
+  setShowReplyBox,
+  onReply,
+  setComment,
+}) => {
+  return (
+    <Comment
+      key={item.id}
+      actions={[
+        <>
+          <span
+            key="comment-nested-reply-to"
+            onClick={() =>
+              item.id === showReplyBox
+                ? setShowReplyBox("")
+                : setShowReplyBox(item.id)
+            }
+          >
+            Reply to
+          </span>
+          {item.id === showReplyBox && (
+            <>
+              <Form.Item>
+                <TextArea
+                  rows={2}
+                  onChange={(e) => setComment(e.target.value)}
+                />
+                <Button
+                  className="comment-reply"
+                  onClick={() => {
+                    setShowReplyBox("");
+                    onReply(item.id, item.title);
+                  }}
+                >
+                  Reply
+                </Button>
+              </Form.Item>
+            </>
+          )}
+        </>,
+      ]}
+      author={moment(item?.createdAt).format("DD MMM YYYY")}
+      avatar={<Avatar src={item.authorPicture} alt={"author"} />}
+      content={
+        <>
+          {!item.parentId && <h5>{item.title}</h5>}
+          <p>{item.content}</p>
+        </>
+      }
+    >
+      {item?.children?.map((children) => (
+        <CommentList
+          key={children.id}
+          item={children}
+          showReplyBox={showReplyBox}
+          setShowReplyBox={setShowReplyBox}
+          onReply={onReply}
+          setComment={setComment}
+        />
+      ))}
+    </Comment>
+  );
+};
+
 const DetailsView = ({
   match: { params },
   setStakeholderSignupModalVisible,
@@ -715,6 +782,7 @@ const DetailsView = ({
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [showReplyBox, setShowReplyBox] = useState("");
 
   const relation = relations.find(
     (it) =>
@@ -879,12 +947,14 @@ const DetailsView = ({
 
   const formRef = useRef();
   const [formSchema, setFormSchema] = useState(defaultFormSchema);
+  const [comment, setComment] = useState("");
 
   const onSubmit = (val) => {
     const data = {
       author_id: profile.id,
       resource_id: parseInt(params.id),
       resource_type: params?.type,
+      ...(val.parent_id && { parent_id: val.parent_id }),
       title: val.title,
       content: val.description,
     };
@@ -903,6 +973,15 @@ const DetailsView = ({
       .finally(() => {
         setSending(false);
       });
+  };
+
+  const onReply = (id, title) => {
+    const val = {
+      parent_id: id,
+      title: title,
+      description: comment,
+    };
+    onSubmit(val);
   };
 
   if (!data) {
@@ -1249,45 +1328,13 @@ const DetailsView = ({
                   <div className="comments-container">
                     <div className="comment-list-container">
                       {comments.map((item) => (
-                        <Comment
-                          actions={[
-                            <span key="comment-nested-reply-to">Reply to</span>,
-                          ]}
-                          author={moment(item?.createdAt).format("DD MMM YYYY")}
-                          avatar={
-                            <Avatar src={item.authorPicture} alt={"author"} />
-                          }
-                          content={
-                            <>
-                              <h5>{item.title}</h5>
-                              <p>{item.content}</p>
-                            </>
-                          }
-                        >
-                          {item?.children?.map((children) => {
-                            <Comment
-                              actions={[
-                                <span key="comment-nested-reply-to">
-                                  Reply to
-                                </span>,
-                              ]}
-                              author={<a>Han Solo</a>}
-                              avatar={
-                                <Avatar
-                                  src="https://joeschmoe.io/api/v1/random"
-                                  alt="Han Solo"
-                                />
-                              }
-                              content={
-                                <p>
-                                  We supply a series of design principles,
-                                  practical patterns and high quality design
-                                  resources (Sketch and Axure).
-                                </p>
-                              }
-                            />;
-                          })}
-                        </Comment>
+                        <CommentList
+                          item={item}
+                          showReplyBox={showReplyBox}
+                          setShowReplyBox={setShowReplyBox}
+                          onReply={onReply}
+                          setComment={setComment}
+                        />
                       ))}
                     </div>
 
