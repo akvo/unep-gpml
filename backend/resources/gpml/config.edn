@@ -453,21 +453,25 @@
                                          [""
                                           {:post {:summary "Create a comment"
                                                   :swagger {:tags ["comment"] :security [{:id_token []}]}
+                                                  :responses #ig/ref :gpml.handler.comment/post-response
                                                   :parameters #ig/ref :gpml.handler.comment/post-params
                                                   :handler #ig/ref :gpml.handler.comment/post}
                                            :get {:summary "Get comments for a specific resource"
                                                  :swagger {:tags ["comment"] :security [{:id_token []}]}
+                                                 :responses #ig/ref :gpml.handler.comment/get-response
                                                  :parameters #ig/ref :gpml.handler.comment/get-params
                                                  :handler #ig/ref :gpml.handler.comment/get}
                                            :put {:summary "Update a comment details"
                                                  :middleware [#ig/ref :gpml.auth/restrict-to-admin-and-comment-author-middleware]
                                                  :swagger {:tags ["comment"] :security [{:id_token []}]}
+                                                 :responses #ig/ref :gpml.handler.comment/put-response
                                                  :parameters #ig/ref :gpml.handler.comment/put-params
                                                  :handler #ig/ref :gpml.handler.comment/put}}]
                                          ["/:id"
                                           {:delete {:summary "Delete a comment"
                                                     :middleware [#ig/ref :gpml.auth/restrict-to-admin-and-comment-author-middleware]
                                                     :swagger {:tags ["comment"] :security [{:id_token []}]}
+                                                    :responses #ig/ref :gpml.handler.comment/delete-response
                                                     :parameters #ig/ref :gpml.handler.comment/delete-params
                                                     :handler #ig/ref :gpml.handler.comment/delete}}]]]]
                               :logger #ig/ref :duct.logger/timbre}
@@ -599,12 +603,16 @@
   :gpml.handler.comment/post {:db #ig/ref :duct.database/sql
                               :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.comment/post-params {}
+  :gpml.handler.comment/post-response {}
   :gpml.handler.comment/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.comment/get-params {}
+  :gpml.handler.comment/get-response {}
   :gpml.handler.comment/put {:db #ig/ref :duct.database/sql}
   :gpml.handler.comment/put-params {}
+  :gpml.handler.comment/put-response {}
   :gpml.handler.comment/delete {:db #ig/ref :duct.database/sql}
   :gpml.handler.comment/delete-params {}
+  :gpml.handler.comment/delete-response {}
   :gpml.handler.detail/topics {}
   :gpml.handler.detail/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.detail/delete {:db #ig/ref :duct.database/sql

@@ -110,7 +110,7 @@ FROM
 )
 --~(if (:count-only? params) "SELECT COUNT(*) FROM associated_topics;" "SELECT * FROM associated_topics LIMIT :limit OFFSET :offset;")
 
--- :name get-stakeholder-resource-association
+-- :name get-stakeholder-resource-association :? :*
 -- :doc Gets the association record of a stakeholder and a resource
 -- :require [gpml.db.stakeholder-association]
 --~(#'gpml.db.stakeholder-association/generate-stakeholder-association-query params)
