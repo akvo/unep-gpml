@@ -116,9 +116,9 @@
                         "resource"
                         resource-type)
         stakeholder-resource-association
-        (db.stakeholder-association/get-stakeholder-resource-association (:spec db) {:resource-type resource-type
-                                                                                     :resource-id resource-id
-                                                                                     :association "owner"})]
+        (first (db.stakeholder-association/get-stakeholder-resource-association (:spec db) {:resource-type resource-type
+                                                                                            :resource-id resource-id
+                                                                                            :association "owner"}))]
     (when (seq stakeholder-resource-association)
       (let [{:keys [resource]} stakeholder-resource-association
             comment-author (db.stakeholder/get-stakeholder-by-id (:spec db) {:id author-id})
