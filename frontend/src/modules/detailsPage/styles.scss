@@ -271,6 +271,12 @@
             font-size: 12px !important;
           }
         }
+        li {
+          font-size: 16px;
+          @-moz-document url-prefix() {
+            font-size: 12px !important;
+          }
+        }
       }
     }
   }
@@ -931,6 +937,13 @@
             padding: 7px 10px !important;
           }
           p {
+            font-size: 1.4rem;
+            margin-bottom: 0px;
+            @-moz-document url-prefix() {
+              font-size: 12px !important;
+            }
+          }
+          li {
             font-size: 1.4rem;
             margin-bottom: 0px;
             @-moz-document url-prefix() {
