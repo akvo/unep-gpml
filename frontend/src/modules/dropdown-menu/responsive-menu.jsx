@@ -28,6 +28,7 @@ const ResponsiveMenu = withRouter(
     const loading = !resources;
     const allResources = sumBy(resources, "count");
     const loadingStakeholders = !stakeholderCounts;
+    const viewport = window.innerWidth;
 
     const handleOnClickNeedAuth = ({ key }) => {
       {
@@ -63,7 +64,7 @@ const ResponsiveMenu = withRouter(
       <Drawer
         title="Menu"
         placement="right"
-        width="300px"
+        width={viewport <= 411 ? "100%" : "300px"}
         className="responsive-menu-wrapper"
         onClose={() => setShowResponsiveMenu(false)}
         visible={showResponsiveMenu}
@@ -74,7 +75,11 @@ const ResponsiveMenu = withRouter(
             About
           </Menu.Item>
           {/* Explore */}
-          <SubMenu key="explore" title="Explore" className="nav-link">
+          <SubMenu
+            key="explore"
+            title="Explore"
+            className="nav-link menu-explore"
+          >
             <Menu.Item
               key="topics"
               className="nav-link"
@@ -109,50 +114,57 @@ const ResponsiveMenu = withRouter(
             </a>
           </Menu.Item>
           {/* Knowledge Exchange */}
-          <SubMenu
-            key="knowledge-exchange"
-            title="Knowledge Exchange"
-            className="nav-link"
-          >
-            <Menu.Item
-              key="knowledge-library"
-              className="nav-link"
-              onClick={() => setFilterMenu([])}
-            >
-              All Resources
-              <Button
-                className="badge-count"
-                size="small"
-                type="ghost"
-                shape="circle"
-                icon={allResources}
-                loading={loading}
-              />
+          {viewport <= 411 && (
+            <Menu.Item key="knowledge-library" className="nav-link">
+              <Link to="/knowledge-library">Knowledge Exchange</Link>
             </Menu.Item>
-            {resources &&
-              resources.map((x, i) => {
-                const { name, count } = x;
-                const topic = humps.decamelize(name);
-                return (
-                  <Menu.Item
-                    key={`/knowledge-library?topic=${topic}`}
-                    className="indent-right nav-link"
-                    disabled={loading}
-                    onClick={() => setFilterMenu([topic])}
-                  >
-                    {topicNames(name)}
-                    <Button
-                      className="badge-count"
-                      size="small"
-                      type="ghost"
-                      shape="circle"
-                      icon={count}
-                      loading={loading}
-                    />
-                  </Menu.Item>
-                );
-              })}
-          </SubMenu>
+          )}
+          {viewport > 411 && (
+            <SubMenu
+              key="knowledge-exchange"
+              title="Knowledge Exchange"
+              className="nav-link"
+            >
+              <Menu.Item
+                key="knowledge-library"
+                className="nav-link"
+                onClick={() => setFilterMenu([])}
+              >
+                All Resources
+                <Button
+                  className="badge-count"
+                  size="small"
+                  type="ghost"
+                  shape="circle"
+                  icon={allResources}
+                  loading={loading}
+                />
+              </Menu.Item>
+              {resources &&
+                resources.map((x, i) => {
+                  const { name, count } = x;
+                  const topic = humps.decamelize(name);
+                  return (
+                    <Menu.Item
+                      key={`/knowledge-library?topic=${topic}`}
+                      className="indent-right nav-link"
+                      disabled={loading}
+                      onClick={() => setFilterMenu([topic])}
+                    >
+                      {topicNames(name)}
+                      <Button
+                        className="badge-count"
+                        size="small"
+                        type="ghost"
+                        shape="circle"
+                        icon={count}
+                        loading={loading}
+                      />
+                    </Menu.Item>
+                  );
+                })}
+            </SubMenu>
+          )}
           {/* Connect Stakeholders */}
           <Menu.Item key="stakeholder-overview" className="nav-link">
             <Link to="/events">Connect Stakeholders</Link>
@@ -210,9 +222,16 @@ const ResponsiveMenu = withRouter(
               <Menu.Item key="join-gpml" className="auth-menu nav-link">
                 Join GPML
               </Menu.Item>
-              <Menu.Item key="sign-in" className="auth-menu nav-link">
-                Sign in
-              </Menu.Item>
+              {viewport > 411 && (
+                <Menu.Item key="sign-in" className="auth-menu nav-link">
+                  Sign in
+                </Menu.Item>
+              )}
+              {viewport <= 411 && (
+                <Menu.Item key="sign-in" className="green-text green-border">
+                  Sign in
+                </Menu.Item>
+              )}
             </>
           )}
           {/* Add Content */}
@@ -221,7 +240,7 @@ const ResponsiveMenu = withRouter(
               <SubMenu
                 key="add-content"
                 title="Add Content"
-                className="auth-menu nav-link"
+                className="auth-menu nav-link menu-add-content"
               >
                 <Menu.Item
                   key="add-initiative"
@@ -386,12 +405,25 @@ const ResponsiveMenu = withRouter(
           {/* Profile & Logout */}
           {isAuthenticated && (
             <>
-              <Menu.Item key="profile" className="auth-menu nav-link">
+              <Menu.Item
+                key="profile"
+                className="auth-menu nav-link menu-profile"
+              >
                 Profile
               </Menu.Item>
-              <Menu.Item key="logout" className="auth-menu nav-link">
-                Logout
-              </Menu.Item>
+              {viewport > 411 && (
+                <Menu.Item key="logout" className="auth-menu nav-link">
+                  Logout
+                </Menu.Item>
+              )}
+              {viewport <= 411 && (
+                <Menu.Item
+                  key="logout"
+                  className="button-logout green-text green-border"
+                >
+                  Logout
+                </Menu.Item>
+              )}
             </>
           )}
         </Menu>

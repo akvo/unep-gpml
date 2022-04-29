@@ -750,6 +750,111 @@ path {
   .auth-menu {
     display: none;
   }
+  @media (max-width: 411px) {
+    .ant-drawer-title {
+      display: none;
+    }
+
+    .ant-drawer-content,
+    .ant-drawer-header,
+    .ant-drawer-body > ul {
+      background-color: $blue02;
+    }
+    .ant-drawer-body {
+      ul {
+        padding: 80px 28px;
+        text-align: center;
+        .menu-add-content,
+        .menu-profile {
+          display: none;
+        }
+
+        li {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fff;
+          border-bottom: 1px solid #ffffff;
+          font-weight: 700;
+          height: 50px;
+
+          &,
+          div {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            margin-top: 0;
+            margin-bottom: 0 !important;
+          }
+          div {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .ant-menu-submenu-arrow {
+              top: 55%;
+              color: #fff;
+              margin-left: 8px;
+            }
+          }
+          div[title="Knowledge Exchange"] {
+            .ant-menu-submenu-arrow {
+              right: 100px;
+            }
+          }
+          div[title="Explore"] {
+            .ant-menu-submenu-arrow {
+              right: 141px;
+            }
+          }
+
+          a {
+            color: #fff;
+          }
+        }
+        .menu-explore {
+          display: block;
+
+          ul[role="menu"] {
+            position: relative;
+            z-index: 9999;
+            padding: 0;
+            max-width: 200px;
+            margin: auto;
+            li[role="menuitem"]:not(:last-child) {
+              border-bottom: 1px solid #00aaf1 !important;
+            }
+            li[role="menuitem"] {
+              padding: 5px 12px !important;
+              color: #2d6796 !important;
+            }
+          }
+        }
+      }
+    }
+
+    .ant-drawer-header {
+      border-bottom: unset;
+      button {
+        color: #fff;
+      }
+    }
+
+    .green-border {
+      height: unset !important;
+      max-width: 80px;
+      margin: auto;
+      border-right: unset;
+      margin-top: 36px !important;
+      border: 1px solid $green01 !important;
+      color: $green01 !important;
+      background-color: transparent !important;
+      border-radius: 30px;
+      font-weight: 700;
+      &:hover {
+        background-color: $yellow-highlight !important;
+      }
+    }
+  }
 }
 /* End of Responsive menu style */
 
