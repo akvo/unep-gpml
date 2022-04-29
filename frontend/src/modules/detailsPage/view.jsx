@@ -682,22 +682,25 @@ const CommentList = ({
   setShowReplyBox,
   onReply,
   setComment,
+  profile,
 }) => {
   return (
     <Comment
       key={item.id}
       actions={[
         <>
-          <span
-            key="comment-nested-reply-to"
-            onClick={() =>
-              item.id === showReplyBox
-                ? setShowReplyBox("")
-                : setShowReplyBox(item.id)
-            }
-          >
-            Reply to
-          </span>
+          {profile && profile.reviewStatus === "APPROVED" && (
+            <span
+              key="comment-nested-reply-to"
+              onClick={() =>
+                item.id === showReplyBox
+                  ? setShowReplyBox("")
+                  : setShowReplyBox(item.id)
+              }
+            >
+              Reply to
+            </span>
+          )}
           {item.id === showReplyBox && (
             <>
               <Form.Item>
@@ -736,6 +739,7 @@ const CommentList = ({
           setShowReplyBox={setShowReplyBox}
           onReply={onReply}
           setComment={setComment}
+          profile={profile}
         />
       ))}
     </Comment>
@@ -1323,7 +1327,7 @@ const DetailsView = ({
                   )}
                 </CardComponent>
               )}
-              {profile && profile.reviewStatus === "APPROVED" && (
+              {profile && (
                 <CardComponent title="Comments">
                   <div className="comments-container">
                     <div className="comment-list-container">
@@ -1334,39 +1338,41 @@ const DetailsView = ({
                           setShowReplyBox={setShowReplyBox}
                           onReply={onReply}
                           setComment={setComment}
+                          profile={profile}
                         />
                       ))}
                     </div>
-
-                    <Form layout="vertical">
-                      <FinalForm
-                        initialValues={{}}
-                        subscription={{}}
-                        mutators={{ ...arrayMutators }}
-                        onSubmit={onSubmit}
-                        render={({ handleSubmit, form, ...props }) => {
-                          formRef.current = form;
-                          return (
-                            <>
-                              <FieldsFromSchema schema={formSchema} />
-                              <Button
-                                className="comment-submit"
-                                size="large"
-                                loading={sending}
-                                onClick={() => {
-                                  handleSubmit();
-                                  form.reset();
-                                  form.resetFieldState("title");
-                                  form.resetFieldState("description");
-                                }}
-                              >
-                                Submit
-                              </Button>
-                            </>
-                          );
-                        }}
-                      />
-                    </Form>
+                    {profile && profile.reviewStatus === "APPROVED" && (
+                      <Form layout="vertical">
+                        <FinalForm
+                          initialValues={{}}
+                          subscription={{}}
+                          mutators={{ ...arrayMutators }}
+                          onSubmit={onSubmit}
+                          render={({ handleSubmit, form, ...props }) => {
+                            formRef.current = form;
+                            return (
+                              <>
+                                <FieldsFromSchema schema={formSchema} />
+                                <Button
+                                  className="comment-submit"
+                                  size="large"
+                                  loading={sending}
+                                  onClick={() => {
+                                    handleSubmit();
+                                    form.reset();
+                                    form.resetFieldState("title");
+                                    form.resetFieldState("description");
+                                  }}
+                                >
+                                  Submit
+                                </Button>
+                              </>
+                            );
+                          }}
+                        />
+                      </Form>
+                    )}
                   </div>
                 </CardComponent>
               )}
