@@ -53,6 +53,15 @@
           }
         }
       }
+      @media (min-width: 769px) {
+        height: 622px;
+        .banner_img {
+          height: 622px !important;
+          img {
+            height: 622px !important;
+          }
+        }
+      }
     }
     .event_details {
       position: absolute;
