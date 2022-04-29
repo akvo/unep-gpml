@@ -20,6 +20,9 @@
   .ant-page-header-heading-title > span.text-green {
     font-size: 20px;
     color: $green01;
+    @-moz-document url-prefix() {
+      font-size: 18px;
+    }
     @media (max-width: 540px) {
       font-size: 16px !important;
     }
@@ -81,6 +84,9 @@
         &.label {
           font-size: 16px;
           font-weight: 600;
+          @-moz-document url-prefix() {
+            font-size: 14px;
+          }
         }
       }
       h1.ant-typography,
@@ -109,9 +115,15 @@
         .ant-typography.label {
           font-size: 16px !important;
           margin-bottom: 20px !important;
+          @-moz-document url-prefix() {
+            font-size: 14px;
+          }
         }
         h1.ant-typography {
           font-size: 32px !important;
+          @-moz-document url-prefix() {
+            font-size: 30px !important;
+          }
         }
       }
     }
@@ -133,6 +145,10 @@
     .section-content {
       padding-left: 16px;
       padding-right: 16px;
+      @-moz-document url-prefix() {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
       .resource-col {
         width: 132px;
       }
@@ -162,6 +178,14 @@
         &.small {
           font-size: 14px;
         }
+        @-moz-document url-prefix() {
+          .title {
+            font-size: 16px;
+            &.small {
+              font-size: 12px;
+            }
+          }
+        }
         @media (max-width: 540px) {
           font-size: 12px !important;
         }
@@ -177,6 +201,9 @@
       }
       .ant-card-body {
         padding: 14px !important;
+        @-moz-document url-prefix() {
+          padding: 7px !important;
+        }
       }
     }
     .ant-btn-ghost {
@@ -277,6 +304,9 @@
   }
   .ui-header {
     padding: 10px 16px 10px 16px;
+    @-moz-document url-prefix() {
+      padding: 5px 8px 5px 8px;
+    }
     h3.ant-typography {
       margin-bottom: 0px;
     }
@@ -284,18 +314,30 @@
   @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
     .ui-header {
       padding: 10px 16px 10px 16px;
+      @-moz-document url-prefix() {
+        padding: 5px 8px 5px 8px;
+      }
       h3.ant-typography {
         margin-bottom: 0px;
         font-size: 1.2em;
+        @-moz-document url-prefix() {
+          font-size: 1.1em;
+        }
       }
     }
     .pm_event_banner {
       .event_details {
         h2.ant-typography {
           font-size: 1.2em;
+          @-moz-document url-prefix() {
+            font-size: 1.1em;
+          }
         }
         h1.ant-typography {
           font-size: 1.2em;
+          @-moz-document url-prefix() {
+            font-size: 1.1em;
+          }
         }
       }
       .banner_info {
@@ -312,11 +354,17 @@
       min-height: auto;
       .ant-page-header {
         padding: 5px 24px;
+        @-moz-document url-prefix() {
+          padding: 5px 14px;
+        }
       }
       .card {
         min-height: 187px;
         .title {
           font-size: 1em;
+          @-moz-document url-prefix() {
+            font-size: 0.8em;
+          }
         }
       }
       .thumbnail {
@@ -408,6 +456,9 @@
       .site_title {
         h2.ant-typography {
           font-size: 24px !important;
+          @-moz-document url-prefix() {
+            font-size: 22px;
+          }
         }
       }
     }
@@ -424,9 +475,17 @@
         .title {
           font-size: 22px;
           line-height: 32px;
+          @-moz-document url-prefix() {
+            font-size: 20px;
+            line-height: 30px;
+          }
           &.small {
             font-size: 18px;
             line-height: 30px;
+            @-moz-document url-prefix() {
+              font-size: 18px;
+              line-height: 28px;
+            }
           }
         }
       }
@@ -469,9 +528,17 @@
         .title {
           font-size: 28px;
           line-height: 48px;
+          @-moz-document url-prefix() {
+            font-size: 26px;
+            line-height: 46px;
+          }
           &.small {
             font-size: 22px;
             line-height: 38px;
+            @-moz-document url-prefix() {
+              font-size: 20px;
+              line-height: 36px;
+            }
           }
         }
       }
