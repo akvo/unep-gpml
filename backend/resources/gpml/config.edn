@@ -448,28 +448,26 @@
                                                 :parameters {:query #ig/ref :gpml.handler.community/get-params}
                                                 :handler #ig/ref :gpml.handler.community/get}}]
                                         ["/comment"
-                                         {}
-                                         [""
-                                          {:post {:summary "Create a comment"
-                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                               #ig/ref :gpml.auth/auth-required]
-                                                  :swagger {:tags ["comment"] :security [{:id_token []}]}
-                                                  :responses #ig/ref :gpml.handler.comment/post-response
-                                                  :parameters #ig/ref :gpml.handler.comment/post-params
-                                                  :handler #ig/ref :gpml.handler.comment/post}
-                                           :get {:summary "Get comments for a specific resource"
-                                                 :swagger {:tags ["comment"] :security [{:id_token []}]}
-                                                 :responses #ig/ref :gpml.handler.comment/get-response
-                                                 :parameters #ig/ref :gpml.handler.comment/get-params
-                                                 :handler #ig/ref :gpml.handler.comment/get}
-                                           :put {:summary "Update a comment details"
+                                         {:post {:summary "Create a comment"
                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                              #ig/ref :gpml.auth/auth-required
-                                                              #ig/ref :gpml.auth/restrict-to-admin-and-comment-author-middleware]
+                                                              #ig/ref :gpml.auth/auth-required]
                                                  :swagger {:tags ["comment"] :security [{:id_token []}]}
-                                                 :responses #ig/ref :gpml.handler.comment/put-response
-                                                 :parameters #ig/ref :gpml.handler.comment/put-params
-                                                 :handler #ig/ref :gpml.handler.comment/put}}]
+                                                 :responses #ig/ref :gpml.handler.comment/post-response
+                                                 :parameters #ig/ref :gpml.handler.comment/post-params
+                                                 :handler #ig/ref :gpml.handler.comment/post}
+                                          :get {:summary "Get comments for a specific resource"
+                                                :swagger {:tags ["comment"] :security [{:id_token []}]}
+                                                :responses #ig/ref :gpml.handler.comment/get-response
+                                                :parameters #ig/ref :gpml.handler.comment/get-params
+                                                :handler #ig/ref :gpml.handler.comment/get}
+                                          :put {:summary "Update a comment details"
+                                                :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                             #ig/ref :gpml.auth/auth-required
+                                                             #ig/ref :gpml.auth/restrict-to-admin-and-comment-author-middleware]
+                                                :swagger {:tags ["comment"] :security [{:id_token []}]}
+                                                :responses #ig/ref :gpml.handler.comment/put-response
+                                                :parameters #ig/ref :gpml.handler.comment/put-params
+                                                :handler #ig/ref :gpml.handler.comment/put}}
                                          ["/:id"
                                           {:delete {:summary "Delete a comment"
                                                     :middleware [#ig/ref :gpml.auth/auth-middleware
