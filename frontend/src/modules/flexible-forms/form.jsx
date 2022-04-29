@@ -69,12 +69,30 @@ const FlexibleForm = withRouter(
         let obj = mainContentType.find(
           (o) => o.code === selectedMainContentType
         );
+        let array = Object.keys(tags)
+          .map((k) => tags[k])
+          .flat();
         let find = obj?.childs.find((o) => o.title === subContentType)?.tags;
         if (find) {
+          let res = array.filter((item) => find.includes(item.tag));
+          let newArray = find;
+          res.map((item) => {
+            if (find.includes(item.tag)) {
+              newArray = newArray.filter((x) => x !== item.tag);
+              newArray = [...newArray, item.id.toString()];
+            }
+          });
           initialFormData.update((e) => {
+            console.log(e.data);
             e.data = {
               ...e.data,
-              tagsList: find,
+              S4: {
+                ...e.data.S4,
+                S4_G3: {
+                  ...e.data.S4.S4_G3,
+                  tags: newArray,
+                },
+              },
             };
           });
         }
@@ -84,6 +102,7 @@ const FlexibleForm = withRouter(
       mainContentType,
       selectedMainContentType,
       initialFormData,
+      tags,
     ]);
 
     const handleOnSubmit = ({ formData }) => {
