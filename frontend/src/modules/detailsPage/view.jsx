@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {
   Fragment,
   useState,
@@ -18,6 +19,8 @@ import {
   Popover,
   Input,
   Button,
+  Form,
+  Comment,
 } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 const { Title } = Typography;
@@ -51,6 +54,9 @@ import { detailMaps } from "./mapping";
 import moment from "moment";
 import { topicNames, resourceTypeToTopicType } from "../../utils/misc";
 import { multicountryGroups } from "../knowledge-library/multicountry";
+import { Form as FinalForm, FormSpy, Field } from "react-final-form";
+import arrayMutators from "final-form-arrays";
+import { FieldsFromSchema } from "../../utils/form-utils";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
@@ -681,6 +687,7 @@ const DetailsView = ({
   const description = useRef(null);
   const reviews = useRef(null);
   const [showLess, setShowLess] = useState(true);
+  const [sending, setSending] = useState(false);
 
   const {
     profile,
@@ -704,6 +711,7 @@ const DetailsView = ({
   const history = useHistory();
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
+  const [comments, setComments] = useState([]);
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -768,6 +776,7 @@ const DetailsView = ({
         .get(`/detail/${params.type}/${params.id}`)
         .then((d) => {
           setData(d.data);
+          getComment(params.id, params.type);
         })
         .catch((err) => {
           console.error(err);
@@ -784,7 +793,14 @@ const DetailsView = ({
       e.disclaimer = null;
     });
     window.scrollTo({ top: 0 });
-  }, [params, profile, isLoaded, data, history]);
+  }, [profile, isLoaded]);
+
+  const getComment = async (id, type) => {
+    let res = await api.get(`/comment?resource_id=${id}&resource_type=${type}`);
+    if (res && res?.data) {
+      setComments(res.data?.comments);
+    }
+  };
 
   const handleEditBtn = () => {
     let form = null;
@@ -854,6 +870,39 @@ const DetailsView = ({
 
   const handleVisible = () => {
     setVisible(!visible);
+  };
+
+  const defaultFormSchema = {
+    title: { label: "Title", required: true },
+    description: { label: "Description", control: "textarea", required: true },
+  };
+
+  const formRef = useRef();
+  const [formSchema, setFormSchema] = useState(defaultFormSchema);
+
+  const onSubmit = (val) => {
+    const data = {
+      author_id: profile.id,
+      resource_id: parseInt(params.id),
+      resource_type: params?.type,
+      title: val.title,
+      content: val.description,
+    };
+
+    setSending(true);
+    api
+      .post("/comment", data)
+      .then((data) => {
+        setSending(false);
+        getComment(params.id, params.type);
+      })
+      .catch(() => {
+        setSending(false);
+        // notification.error({ message: "An error occured" });
+      })
+      .finally(() => {
+        setSending(false);
+      });
   };
 
   if (!data) {
@@ -1193,6 +1242,85 @@ const DetailsView = ({
                       ))}
                     </Row>
                   )}
+                </CardComponent>
+              )}
+              {profile && profile.reviewStatus === "APPROVED" && (
+                <CardComponent title="Comments">
+                  <div className="comments-container">
+                    <div className="comment-list-container">
+                      {comments.map((item) => (
+                        <Comment
+                          actions={[
+                            <span key="comment-nested-reply-to">Reply to</span>,
+                          ]}
+                          author={moment(item?.createdAt).format("DD MMM YYYY")}
+                          avatar={
+                            <Avatar src={item.authorPicture} alt={"author"} />
+                          }
+                          content={
+                            <>
+                              <h5>{item.title}</h5>
+                              <p>{item.content}</p>
+                            </>
+                          }
+                        >
+                          {item?.children?.map((children) => {
+                            <Comment
+                              actions={[
+                                <span key="comment-nested-reply-to">
+                                  Reply to
+                                </span>,
+                              ]}
+                              author={<a>Han Solo</a>}
+                              avatar={
+                                <Avatar
+                                  src="https://joeschmoe.io/api/v1/random"
+                                  alt="Han Solo"
+                                />
+                              }
+                              content={
+                                <p>
+                                  We supply a series of design principles,
+                                  practical patterns and high quality design
+                                  resources (Sketch and Axure).
+                                </p>
+                              }
+                            />;
+                          })}
+                        </Comment>
+                      ))}
+                    </div>
+
+                    <Form layout="vertical">
+                      <FinalForm
+                        initialValues={{}}
+                        subscription={{}}
+                        mutators={{ ...arrayMutators }}
+                        onSubmit={onSubmit}
+                        render={({ handleSubmit, form, ...props }) => {
+                          formRef.current = form;
+                          return (
+                            <>
+                              <FieldsFromSchema schema={formSchema} />
+                              <Button
+                                className="comment-submit"
+                                size="large"
+                                loading={sending}
+                                onClick={() => {
+                                  handleSubmit();
+                                  form.reset();
+                                  form.resetFieldState("title");
+                                  form.resetFieldState("description");
+                                }}
+                              >
+                                Submit
+                              </Button>
+                            </>
+                          );
+                        }}
+                      />
+                    </Form>
+                  </div>
                 </CardComponent>
               )}
               {/* <CardComponent
