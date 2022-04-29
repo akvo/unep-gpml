@@ -31,6 +31,7 @@
                  [io.prometheus/simpleclient_jetty "0.9.0"]
                  [io.prometheus/simpleclient_jetty_jdk8 "0.9.0"]
                  [ring/ring-jetty-adapter "1.8.2"]
+                 [org.clojure/data.csv "1.0.0"]
                  [org.eclipse.jetty/jetty-server "9.4.31.v20200723"]
                  [org.eclipse.jetty/jetty-servlet "9.4.31.v20200723"]
                  [com.zaxxer/HikariCP "3.4.5" :exclusions [org.slf4j/slf4j-api]]

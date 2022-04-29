@@ -2,7 +2,7 @@
 -- :doc Get all stakeholder
 select * from stakeholder order by id;
 
--- :name all-public-stakeholder :? :*
+-- :name all-public-stakeholders :? :*
 -- :doc Get all stakeholder
 select * from stakeholder
 WHERE review_status = 'APPROVED'

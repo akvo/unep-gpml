@@ -166,7 +166,7 @@
      [:vector {:optional true} integer?]]
     [:sub_content_type {:optional true} string?]
     [:headquarter {:optional true} string?]
-    [:document_preview {:option true} boolean?]
+    [:document_preview {:optional true} boolean?]
     [:entity_connections {:optional true}
      [:vector {:optional true}
       [:map

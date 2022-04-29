@@ -8,7 +8,7 @@
 ;; husql/def-db-fns is run.
 ;;
 ;; Lucas Sousa 2022-01-20
-(declare get-topics)
+(declare get-topics get-flat-topics)
 
 (hugsql/def-db-fns "gpml/db/topic.sql")
 
