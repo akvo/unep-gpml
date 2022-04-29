@@ -544,7 +544,9 @@ const StakeholderDetail = ({
                       width: "100%",
                     }}
                   >
-                    <p>{data?.about}</p>
+                    <div className="bio">
+                      <p>{data?.about}</p>
+                    </div>
                     <div className="exta-info">
                       <Row gutter={[16, 16]}>
                         <Col xs={12} lg={12}>
