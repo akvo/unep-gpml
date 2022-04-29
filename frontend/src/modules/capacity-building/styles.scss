@@ -38,6 +38,21 @@
           object-fit: cover;
         }
       }
+      @media (max-width: 540px) {
+        height: 493px;
+        .banner_img {
+          display: none;
+        }
+      }
+      @media (min-width: 541px) and (max-width: 768px) {
+        height: 506px;
+        .banner_img {
+          height: 506px !important;
+          img {
+            height: 506px !important;
+          }
+        }
+      }
     }
     .event_details {
       position: absolute;
