@@ -11,7 +11,7 @@ $green-primary: #4dffa5;
       }
       .ant-select-selection-item {
         font-size: 14px;
-        line-height: 34px;
+        line-height: 30px;
       }
       .ant-select-arrow {
         top: 9px !important;
@@ -44,6 +44,7 @@ $green-primary: #4dffa5;
         width: 135px !important;
         height: 33px !important;
         line-height: 30px !important;
+        border: 1px solid $green-primary;
       }
     }
   }
