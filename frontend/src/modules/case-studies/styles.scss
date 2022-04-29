@@ -307,6 +307,10 @@ $green-primary: #4dffa5;
       line-height: 22px;
       text-transform: capitalize;
       color: $green-primary;
+      @-moz-document url-prefix() {
+        font-size: 16px;
+        line-height: 20px;
+      }
       @media (max-width: 540px) {
         font-size: 16px !important;
       }
@@ -314,6 +318,9 @@ $green-primary: #4dffa5;
     .p-4 {
       padding: 4%;
       padding-top: 56px;
+      @-moz-document url-prefix() {
+        padding-top: 46px;
+      }
     }
     .content-text {
       .ant-typography {
@@ -322,7 +329,7 @@ $green-primary: #4dffa5;
         font-weight: normal;
         text-align: justify;
         color: #fff !important;
-        font-size: 14px !important;
+        font-size: 14px;
         line-height: 18px !important;
         @media (max-width: 540px) {
           font-size: 12px !important;
@@ -352,6 +359,9 @@ $green-primary: #4dffa5;
       position: relative;
       margin: 0 5px 5px 0;
       text-decoration: none;
+      @-moz-document url-prefix() {
+        font-size: 12px;
+      }
       @media (max-width: 540px) {
         font-size: 12px !important;
       }
@@ -447,11 +457,11 @@ $green-primary: #4dffa5;
       }
     }
     &.carousel-next {
-      right: 10px;
+      right: 12px;
       transform: rotate(-90deg);
     }
     &.carousel-prev {
-      left: 10px;
+      left: 12px;
       transform: rotate(90deg);
     }
     &:hover {
@@ -502,6 +512,9 @@ $green-primary: #4dffa5;
         font-weight: 600;
         font-size: 40px;
         line-height: 60px;
+        @-moz-document url-prefix() {
+          font-size: 37px;
+        }
       }
       .content-text {
         .ant-typography {
@@ -534,6 +547,10 @@ $green-primary: #4dffa5;
         font-weight: 600;
         font-size: 38px;
         line-height: 58px;
+        @-moz-document url-prefix() {
+          font-size: 38px;
+          line-height: 50px;
+        }
         @media (max-width: 540px) {
           font-size: 32px !important;
           line-height: 38px !important;
@@ -545,10 +562,16 @@ $green-primary: #4dffa5;
       .content-text {
         .title {
           font-size: 16px;
+          @-moz-document url-prefix() {
+            font-size: 14px;
+          }
         }
         .ant-typography {
           font-size: 14px;
           line-height: 17px;
+          @-moz-document url-prefix() {
+            font-size: 12px;
+          }
         }
         @media (max-width: 540px) {
           .title {
@@ -576,11 +599,19 @@ $green-primary: #4dffa5;
       .title {
         font-size: 20px;
         line-height: 30px;
+        @-moz-document url-prefix() {
+          font-size: 18px;
+          line-height: 38px;
+        }
       }
       .content-text {
         .ant-typography {
           font-size: 16px !important;
           line-height: 20px !important;
+          @-moz-document url-prefix() {
+            font-size: 14px !important;
+            line-height: 18px !important;
+          }
         }
       }
     }
@@ -598,11 +629,19 @@ $green-primary: #4dffa5;
       .title {
         font-size: 22px;
         line-height: 32px;
+        @-moz-document url-prefix() {
+          font-size: 20px;
+          line-height: 18px;
+        }
       }
       .content-text {
         .ant-typography {
           font-size: 16px !important;
           line-height: 22px !important;
+          @-moz-document url-prefix() {
+            font-size: 14px !important;
+            line-height: 20px !important;
+          }
         }
       }
     }
@@ -647,6 +686,10 @@ $green-primary: #4dffa5;
           height: 42px;
           font-size: 18px !important;
           line-height: 38px !important;
+          @-moz-document url-prefix() {
+            font-size: 16px !important;
+            line-height: 36px !important;
+          }
           &::before {
             border-radius: 10px;
             top: 45%;
@@ -684,11 +727,19 @@ $green-primary: #4dffa5;
       .title {
         font-size: 32px !important;
         line-height: 42px !important;
+        @-moz-document url-prefix() {
+          font-size: 30px !important;
+          line-height: 42px !important;
+        }
       }
       .content-text {
         .ant-typography {
           font-size: 24px !important;
           line-height: 32px !important;
+          @-moz-document url-prefix() {
+            font-size: 22px !important;
+            line-height: 30px !important;
+          }
         }
       }
       .tags {
@@ -696,6 +747,11 @@ $green-primary: #4dffa5;
           height: 50px;
           font-size: 22px !important;
           line-height: 50px !important;
+          @-moz-document url-prefix() {
+            height: 40px;
+            font-size: 20px !important;
+            line-height: 48px !important;
+          }
           &::before {
             top: 45%;
           }
