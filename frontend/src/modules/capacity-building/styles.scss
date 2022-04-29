@@ -18,8 +18,11 @@
   }
 
   .ant-page-header-heading-title > span.text-green {
-    font-size: 24px;
+    font-size: 20px;
     color: $green01;
+    @media (max-width: 540px) {
+      font-size: 16px !important;
+    }
   }
   .pm_event_banner {
     .banner_info {
@@ -159,12 +162,18 @@
         &.small {
           font-size: 14px;
         }
+        @media (max-width: 540px) {
+          font-size: 12px !important;
+        }
       }
       .see-more {
         position: absolute;
         bottom: 15px;
         right: 20px;
         font-weight: 600;
+        @media (max-width: 540px) {
+          font-size: 12px !important;
+        }
       }
       .ant-card-body {
         padding: 14px !important;
