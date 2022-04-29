@@ -1,0 +1,6 @@
+BEGIN;
+--;;
+ALTER TABLE comment
+ALTER COLUMN title SET NOT NULL;
+--;;
+COMMIT;

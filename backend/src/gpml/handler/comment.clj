@@ -65,11 +65,11 @@
 
 (def ^:const title-param
   [:title
-   {:optional false
+   {:optional true
     :swagger {:description "The title of the comment"
               :type "string"
               :allowEmptyValue false}}
-   [:fn util/non-blank-string?]])
+   [:maybe [:fn util/non-blank-string?]]])
 
 (def ^:const content-param
   [:content

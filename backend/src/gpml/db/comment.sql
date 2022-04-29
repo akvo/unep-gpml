@@ -12,7 +12,11 @@ NULL,
 :resource-id,
 :resource-type::resource_type,
 :updated-at,
+/*~(if (seq (:title params)) */
 :title,
+/*~*/
+NULL,
+/*~ ) ~*/
 :content);
 
 -- :name update-comment :! :n
