@@ -20,7 +20,8 @@
   [:id
    {:optional false
     :swagger {:description "The comment's ID"
-              :type "uuid"
+              :type "string"
+              :format "uuid"
               :allowEmptyValue false}}
    [:re util.regex/uuid-regex]])
 
@@ -67,7 +68,8 @@
    [:parent_id
     {:optional true
      :swagger {:description "The comment's parent ID if there is any"
-               :type "uuid"
+               :type "string"
+               :format "uuid"
                :allowEmptyValue false}}
     [:re util.regex/uuid-regex]]
    resource-id-param
@@ -116,10 +118,14 @@
                         "resource"
                         resource-type)
         stakeholder-resource-association
-        (db.stakeholder-association/get-stakeholder-resource-association (:spec db) {:resource-type resource-type
-                                                                                     :resource-id resource-id
-                                                                                     :association "owner"})]
-    (when (seq stakeholder-resource-association)
+        (first (db.stakeholder-association/get-stakeholder-resource-association (:spec db) {:resource-type resource-type
+                                                                                            :resource-id resource-id
+                                                                                            :association "owner"}))]
+    (when (and (seq stakeholder-resource-association)
+               ;; NOTE: we don't want to send email notifications if
+               ;; the owner of the resource reply (meaning it's the
+               ;; author of the comment) to a comment on its resource.
+               (not= author-id (:stakeholder stakeholder-resource-association)))
       (let [{:keys [resource]} stakeholder-resource-association
             comment-author (db.stakeholder/get-stakeholder-by-id (:spec db) {:id author-id})
             resource-owner (db.stakeholder/get-stakeholder-by-id (:spec db)
