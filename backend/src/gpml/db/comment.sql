@@ -28,10 +28,15 @@ WHERE id = :id;
 
 -- :name get-resource-comments :? :*
 -- :doc Get all the comments for a resource
-SELECT c.*, s.picture AS author_picture
-FROM comment c
-JOIN stakeholder s ON c.author_id = s.id
-WHERE 1=1
+SELECT
+    c.*,
+    s.picture AS author_picture,
+    concat_ws(' ', s.first_name, s.last_name) AS author_name
+FROM
+    comment c
+    JOIN stakeholder s ON c.author_id = s.id
+WHERE
+    1 = 1
 --~(when (:id params) " AND c.id = :id")
 --~(when (:author-id params) " AND c.author_id = :author-id")
 --~(when (:resource-id params) " AND c.resource_id = :resource-id")
