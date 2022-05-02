@@ -537,14 +537,22 @@
     @media (max-width: 510px) {
       width: 100%;
     }
+
+    @-moz-document url-prefix() {
+      @media (max-width: 749px) {
+        top: 90px !important;
+        left: 0px !important;
+      }
+    }
+
     @media (min-width: 750px) {
       top: 0 !important;
       left: 100px !important;
-    }
-    @-moz-document url-prefix() {
-      & {
-        top: 90px !important;
-        left: 0 !important;
+      @-moz-document url-prefix() {
+        & {
+          top: 0 !important;
+          left: 90px !important;
+        }
       }
     }
 
