@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
-import { Drawer, Menu, Button } from "antd";
+import { Drawer, Menu, Button, Input } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import { topicNames } from "../../utils/misc";
 import humps from "humps";
 import sumBy from "lodash/sumBy";
@@ -12,6 +13,7 @@ const { SubMenu } = Menu;
 const ResponsiveMenu = withRouter(
   ({
     history,
+    updateQuery,
     showResponsiveMenu,
     setShowResponsiveMenu,
     topicsCount,
@@ -25,10 +27,24 @@ const ResponsiveMenu = withRouter(
     setFilterMenu,
     stakeholderCounts,
   }) => {
+    const [isShownForm, setIsShownForm] = useState(false);
+    const [search, setSearch] = useState("");
     const loading = !resources;
     const allResources = sumBy(resources, "count");
     const loadingStakeholders = !stakeholderCounts;
     const viewport = window.innerWidth;
+
+    const handleSearch = (src) => {
+      if (src) {
+        history.push(`?q=${src.trim()}`);
+        updateQuery("q", src.trim());
+      } else {
+        updateQuery("q", "");
+      }
+      setSearch("");
+      setIsShownForm(false);
+      setShowResponsiveMenu(false)
+    };
 
     const handleOnClickNeedAuth = ({ key }) => {
       {
@@ -53,6 +69,8 @@ const ResponsiveMenu = withRouter(
         } else if (key === "data-hub" || key === "stakeholder-overview") {
         } else if (key.includes("knowledge-library")) {
           history.push(`/knowledge-library`);
+        } else if (key.includes("search-button")) {
+          return;
         } else {
           history.push(`/${key}`);
         }
@@ -71,6 +89,40 @@ const ResponsiveMenu = withRouter(
       >
         <Menu onClick={handleOnClickNeedAuth} mode="inline">
           {/* About */}
+          {viewport < 540 && (
+            <li>
+              <div className="src mobile-src">
+                {!isShownForm && (
+                  <Button
+                    onClick={() => setIsShownForm(!isShownForm)}
+                    type="primary"
+                    shape="circle"
+                    size="small"
+                    className="search-button"
+                    icon={<SearchOutlined />}
+                  />
+                )}
+                {isShownForm && (
+                  <Input
+                    className="input-src"
+                    placeholder="Search resources"
+                    value={search}
+                    suffix={
+                      <Button
+                        onClick={() => handleSearch(search)}
+                        type="primary"
+                        shape="circle"
+                        size="small"
+                        icon={<SearchOutlined />}
+                      />
+                    }
+                    onPressEnter={(e) => handleSearch(e.target.value)}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                )}
+              </div>
+            </li>
+          )}
           <Menu.Item key="about-us" className="nav-link">
             About
           </Menu.Item>

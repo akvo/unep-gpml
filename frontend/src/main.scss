@@ -380,6 +380,7 @@ h4 {
       margin-right: 10px;
       .input-src {
         border-radius: 30px;
+        padding-right: 4px;
         input.ant-input {
           color: #1ca585;
           &::placeholder {
@@ -753,6 +754,33 @@ path {
   @media (max-width: 540px) {
     .ant-drawer-title {
       display: none;
+    }
+
+    .search-button {
+      border-radius: 50%;
+      background-color: $green01;
+      border-color: $green01;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      display: block;
+
+      &:hover {
+        background-color: $yellow-highlight;
+        border-color: $yellow-highlight;
+      }
+    }
+
+    span.ant-input-affix-wrapper.input-src {
+      border-radius: 30px;
+      padding-right: 4px;
+      button {
+        background-color: $green02;
+        &:hover {
+          background-color: $yellow-highlight;
+          border-color: $yellow-highlight;
+        }
+      }
     }
 
     .ant-drawer-content,
