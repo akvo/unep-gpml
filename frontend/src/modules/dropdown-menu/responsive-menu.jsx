@@ -64,7 +64,7 @@ const ResponsiveMenu = withRouter(
       <Drawer
         title="Menu"
         placement="right"
-        width={viewport <= 411 ? "100%" : "300px"}
+        width={viewport <= 540 ? "100%" : "300px"}
         className="responsive-menu-wrapper"
         onClose={() => setShowResponsiveMenu(false)}
         visible={showResponsiveMenu}
@@ -114,12 +114,12 @@ const ResponsiveMenu = withRouter(
             </a>
           </Menu.Item>
           {/* Knowledge Exchange */}
-          {viewport <= 411 && (
+          {viewport <= 540 && (
             <Menu.Item key="knowledge-library" className="nav-link">
               <Link to="/knowledge-library">Knowledge Exchange</Link>
             </Menu.Item>
           )}
-          {viewport > 411 && (
+          {viewport > 540 && (
             <SubMenu
               key="knowledge-exchange"
               title="Knowledge Exchange"
@@ -222,12 +222,12 @@ const ResponsiveMenu = withRouter(
               <Menu.Item key="join-gpml" className="auth-menu nav-link">
                 Join GPML
               </Menu.Item>
-              {viewport > 411 && (
+              {viewport > 540 && (
                 <Menu.Item key="sign-in" className="auth-menu nav-link">
                   Sign in
                 </Menu.Item>
               )}
-              {viewport <= 411 && (
+              {viewport <= 540 && (
                 <Menu.Item key="sign-in" className="green-text green-border">
                   Sign in
                 </Menu.Item>
@@ -411,12 +411,12 @@ const ResponsiveMenu = withRouter(
               >
                 Profile
               </Menu.Item>
-              {viewport > 411 && (
+              {viewport > 540 && (
                 <Menu.Item key="logout" className="auth-menu nav-link">
                   Logout
                 </Menu.Item>
               )}
-              {viewport <= 411 && (
+              {viewport <= 540 && (
                 <Menu.Item
                   key="logout"
                   className="button-logout green-text green-border"
