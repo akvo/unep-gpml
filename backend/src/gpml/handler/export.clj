@@ -38,18 +38,18 @@
 (defn export-users [db]
   (let [users (db.stakeholder/all-public-stakeholders db)
         export-users (get-export-values users constants/users-key-map constants/sorted-user-columns)]
-    (create-csv-file export-users)))
+    (:csv-file (create-csv-file export-users))))
 
 (defn export-entities [db]
   (let [entities (db.organisation/all-public-entities db)
         export-entities (get-export-values (map #(dissoc % :is_member) entities) constants/entities-key-map constants/sorted-entity-columns)]
-    (create-csv-file export-entities)))
+    (:csv-file (create-csv-file export-entities))))
 
 (defn export-non-member-entities [db]
   (let [non-member-entities (db.organisation/all-public-non-member-entities db)
         export-entities (get-export-values (map #(dissoc % :is_member) non-member-entities)
                           constants/entities-key-map constants/sorted-entity-columns)]
-    (create-csv-file export-entities)))
+    (:csv-file (create-csv-file export-entities))))
 
 (defn export-topics [db]
   (let [topics (db.topic/get-flat-topics db)
