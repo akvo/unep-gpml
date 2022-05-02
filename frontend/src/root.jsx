@@ -15,8 +15,8 @@ import {
   UserOutlined,
   SearchOutlined,
   CloseCircleOutlined,
-  MenuOutlined,
 } from "@ant-design/icons";
+import MenuOutlined from "./images/menu-outlined.svg";
 import { Landing, JoinGPMLButton } from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
 import Stakeholders from "./modules/stakeholders/view";
@@ -420,8 +420,8 @@ const Root = () => {
               {/* Drawer/ Menu for responsive design */}
               <div className="responsive-menu-trigger">
                 <Button
-                  type="ghost"
-                  icon={<MenuOutlined />}
+                  className="menu-icon"
+                  icon={<img src={MenuOutlined} />}
                   onClick={() => setShowResponsiveMenu(true)}
                 />
               </div>

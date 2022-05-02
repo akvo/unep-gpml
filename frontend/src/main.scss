@@ -709,12 +709,18 @@ path {
   margin-left: 8px;
   display: none;
   align-items: center;
+  .menu-icon {
+    background-color: transparent;
+    border: unset;
+  }
 }
+
 .responsive-menu-wrapper {
   .ant-drawer-body {
     padding: 0;
     padding-right: 0.35rem;
   }
+
   .ant-menu-inline,
   .ant-menu-vertical,
   .ant-menu-vertical-left {
