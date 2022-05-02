@@ -683,6 +683,11 @@ const CommentList = ({
   onReply,
   setComment,
   profile,
+  getComment,
+  params,
+  editComment,
+  setEditComment,
+  onEditComment,
 }) => {
   return (
     <Comment
@@ -692,32 +697,87 @@ const CommentList = ({
         profile.reviewStatus === "APPROVED" && [
           <>
             {profile && profile.reviewStatus === "APPROVED" && (
-              <span
-                key="comment-nested-reply-to"
-                onClick={() =>
-                  item.id === showReplyBox
-                    ? setShowReplyBox("")
-                    : setShowReplyBox(item.id)
-                }
-              >
-                Reply to
-              </span>
+              <>
+                <span
+                  key="comment-nested-reply-to"
+                  onClick={() =>
+                    item.id === showReplyBox
+                      ? setShowReplyBox("")
+                      : setShowReplyBox(item.id)
+                  }
+                >
+                  Reply to
+                </span>
+                {profile.role === "ADMIN" && (
+                  <span
+                    key="comment-nested-delete"
+                    onClick={() => {
+                      Modal.error({
+                        className: "popup-delete",
+                        centered: true,
+                        closable: true,
+                        icon: <DeleteOutlined />,
+                        title: "Are you sure you want to delete this comment?",
+                        content:
+                          "Please be aware this action cannot be undone.",
+                        okText: "Delete",
+                        okType: "danger",
+                        async onOk() {
+                          try {
+                            const res = await api.delete(`/comment/${item.id}`);
+                            notification.success({
+                              message: "Comment deleted successfully",
+                            });
+
+                            getComment(params.id, params.type);
+                          } catch (err) {
+                            console.error(err);
+                            notification.error({
+                              message: "Oops, something went wrong",
+                            });
+                          }
+                        },
+                      });
+                    }}
+                  >
+                    Delete
+                  </span>
+                )}
+                {profile.id === item.authorId && (
+                  <span
+                    key="comment-nested-edit"
+                    onClick={() =>
+                      item.id === editComment
+                        ? setEditComment("")
+                        : setEditComment(item.id)
+                    }
+                  >
+                    Edit
+                  </span>
+                )}
+              </>
             )}
-            {item.id === showReplyBox && (
+            {(item.id === showReplyBox || item.id === editComment) && (
               <>
                 <Form.Item>
                   <TextArea
                     rows={2}
+                    defaultValue={editComment && item.content}
                     onChange={(e) => setComment(e.target.value)}
                   />
                   <Button
                     className="comment-reply"
                     onClick={() => {
-                      setShowReplyBox("");
-                      onReply(item.id, item.title);
+                      if (showReplyBox) {
+                        setShowReplyBox("");
+                        onReply(item.id, item.title);
+                      } else {
+                        setEditComment("");
+                        onEditComment(item.id, item.title);
+                      }
                     }}
                   >
-                    Reply
+                    {editComment ? "Update" : "Reply"}
                   </Button>
                 </Form.Item>
               </>
@@ -743,6 +803,11 @@ const CommentList = ({
           onReply={onReply}
           setComment={setComment}
           profile={profile}
+          getComment={getComment}
+          params={params}
+          editComment={editComment}
+          setEditComment={setEditComment}
+          onEditComment={onEditComment}
         />
       ))}
     </Comment>
@@ -790,6 +855,7 @@ const DetailsView = ({
   const [warningVisible, setWarningVisible] = useState(false);
   const [visible, setVisible] = useState(false);
   const [showReplyBox, setShowReplyBox] = useState("");
+  const [editComment, setEditComment] = useState("");
 
   const relation = relations.find(
     (it) =>
@@ -989,6 +1055,21 @@ const DetailsView = ({
       description: comment,
     };
     onSubmit(val);
+  };
+
+  const onEditComment = (id, title) => {
+    const val = {
+      id: id,
+      title: title,
+      content: comment,
+    };
+    api
+      .put("/comment", val)
+      .then((data) => {
+        getComment(params.id, params.type);
+      })
+      .catch(() => {})
+      .finally(() => {});
   };
 
   if (!data) {
@@ -1344,6 +1425,11 @@ const DetailsView = ({
                             onReply={onReply}
                             setComment={setComment}
                             profile={profile}
+                            getComment={getComment}
+                            params={params}
+                            editComment={editComment}
+                            setEditComment={setEditComment}
+                            onEditComment={onEditComment}
                           />
                         ))}
                     </div>
