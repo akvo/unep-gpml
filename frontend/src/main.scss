@@ -233,9 +233,9 @@ h4 {
       color: $black;
       border-color: $black;
       &:hover {
-        border-color: $black;
+        border-color: $yellow-highlight;
         color: #fff;
-        background: $black;
+        background: $yellow-highlight;
       }
     }
   }

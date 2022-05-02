@@ -106,6 +106,13 @@
 .admin-view {
   min-height: calc(100vh - 420px);
 
+  .export-wrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   .table-wrapper {
     margin-top: 2rem;
     padding-top: 1rem;
