@@ -745,6 +745,7 @@ const Root = () => {
       <ResponsiveMenu
         {...{
           profile,
+          updateQuery,
           setWarningModalVisible,
           isAuthenticated,
           setStakeholderSignupModalVisible,
