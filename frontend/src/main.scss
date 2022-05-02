@@ -533,6 +533,13 @@ footer {
   background-color: #2d6796;
   color: #fff;
   padding: 50px 0 0 0;
+  @-moz-document url-prefix() {
+    padding: 40px 0 0 0;
+  }
+
+  @media (max-width: 1199px) {
+    zoom: 95%;
+  }
 
   a {
     color: #fff;
@@ -545,6 +552,9 @@ footer {
   h4 {
     color: #fff;
     font-size: 1.2rem;
+    @-moz-document url-prefix() {
+      font-size: 1rem;
+    }
   }
 
   .ui.container {
@@ -553,13 +563,18 @@ footer {
       .col {
         width: 33%;
         flex: 1;
+
         nav {
           margin-bottom: 2rem;
+
           ul {
             a,
             span {
               display: block;
-              padding-left: 5px;
+              padding-left: 0 !important;
+              @-moz-document url-prefix() {
+                font-size: 12px;
+              }
             }
             &.list-inside-list {
               list-style-type: circle;
@@ -569,6 +584,14 @@ footer {
               span {
                 display: inline-block;
               }
+            }
+          }
+        }
+        @-moz-document url-prefix() {
+          nav {
+            margin-bottom: 1.8rem;
+            &.list-inside-list {
+              padding-left: 7px;
             }
           }
         }
