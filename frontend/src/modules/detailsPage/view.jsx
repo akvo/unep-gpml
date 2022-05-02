@@ -708,6 +708,18 @@ const CommentList = ({
                 >
                   Reply to
                 </span>
+                {profile.id === item.authorId && (
+                  <span
+                    key="comment-nested-edit"
+                    onClick={() =>
+                      item.id === editComment
+                        ? setEditComment("")
+                        : setEditComment(item.id)
+                    }
+                  >
+                    Edit
+                  </span>
+                )}
                 {profile.role === "ADMIN" && (
                   <span
                     key="comment-nested-delete"
@@ -741,18 +753,6 @@ const CommentList = ({
                     }}
                   >
                     Delete
-                  </span>
-                )}
-                {profile.id === item.authorId && (
-                  <span
-                    key="comment-nested-edit"
-                    onClick={() =>
-                      item.id === editComment
-                        ? setEditComment("")
-                        : setEditComment(item.id)
-                    }
-                  >
-                    Edit
                   </span>
                 )}
               </>
