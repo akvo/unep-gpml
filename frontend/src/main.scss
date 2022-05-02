@@ -82,9 +82,6 @@ h4 {
 .body-text {
   font-size: 1rem;
   line-height: 1.5rem;
-  @-moz-document url-prefix() {
-    font-size: 0.9rem !important;
-  }
 }
 .txt-emphasis {
   font-size: 1.5rem;
@@ -317,6 +314,11 @@ h4 {
     z-index: 3;
     padding: 0;
     // line-height: 75px;
+    @-moz-document url-prefix() {
+      .ant-btn {
+        font-size: 12px;
+      }
+    }
   }
 
   .menu-dropdown-container {
