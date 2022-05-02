@@ -54,17 +54,26 @@ h4 {
 .nav-link {
   font-size: 1rem;
   line-height: 1.9rem;
+  @-moz-document url-prefix() {
+    font-size: 0.9rem !important;
+  }
 }
 
 .see-more-link {
   font-size: 1rem;
   font-weight: bold;
   line-height: 1.25rem;
+  @-moz-document url-prefix() {
+    font-size: 0.9rem !important;
+  }
 }
 
 .resource-label {
   font-size: 1rem;
   font-weight: bold;
+  @-moz-document url-prefix() {
+    font-size: 0.9rem !important;
+  }
   &.upper {
     text-transform: uppercase;
   }
@@ -76,16 +85,23 @@ h4 {
 }
 .txt-emphasis {
   font-size: 1.5rem;
+  @-moz-document url-prefix() {
+    font-size: 1.4rem !important;
+  }
 }
 .asset-title {
   font-size: 1.3rem;
   font-weight: 500;
   line-height: 1.56rem;
+  @-moz-document url-prefix() {
+    font-size: 1.2rem !important;
+  }
 }
 
 .copy-right {
   font-size: 0.85rem;
   line-height: 0.8rem;
+
   @-moz-document url-prefix() {
     font-size: 10px !important;
   }
@@ -298,6 +314,11 @@ h4 {
     z-index: 3;
     padding: 0;
     // line-height: 75px;
+    @-moz-document url-prefix() {
+      .ant-btn {
+        font-size: 14px;
+      }
+    }
   }
 
   .menu-dropdown-container {
@@ -336,6 +357,10 @@ h4 {
       color: #fff;
       background: $yellow-highlight;
       // border-radius: 5px 5px 0px 0px;
+    }
+    @-moz-document url-prefix() {
+      padding: 2px 7.5px;
+      height: 40px;
     }
   }
 
@@ -456,6 +481,14 @@ button.ant-btn.ant-btn-link.ant-dropdown-trigger.menu-btn.nav-link {
   line-height: 0;
   height: 50px;
 }
+.menu-dropdown .ant-btn-link {
+  @-moz-document url-prefix() {
+    span {
+      font-size: 0.9rem !important;
+    }
+  }
+}
+
 .add-dropdown-wrapper,
 .user-btn-dropdown-wrapper,
 .menu-dropdown-wrapper {
