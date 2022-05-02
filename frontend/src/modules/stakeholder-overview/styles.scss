@@ -543,7 +543,8 @@
     }
     @-moz-document url-prefix() {
       & {
-        left: 90px !important;
+        top: 90px !important;
+        left: 0 !important;
       }
     }
 
