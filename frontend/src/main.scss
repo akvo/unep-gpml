@@ -751,7 +751,15 @@ path {
   .auth-menu {
     display: none;
   }
+  .small-screen-menu {
+    display: none;
+  }
+
   @media (max-width: 540px) {
+    .small-screen-menu {
+      display: block;
+    }
+
     .ant-drawer-title {
       display: none;
     }
@@ -850,6 +858,10 @@ path {
           a {
             color: #fff;
           }
+        }
+
+        .big-screen-menu {
+          display: none !important;
         }
 
         .menu-explore {

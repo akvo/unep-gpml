@@ -89,40 +89,40 @@ const ResponsiveMenu = withRouter(
       >
         <Menu onClick={handleOnClickNeedAuth} mode="inline">
           {/* About */}
-          {viewport < 540 && (
-            <li>
-              <div className="src mobile-src">
-                {!isShownForm && (
-                  <Button
-                    onClick={() => setIsShownForm(!isShownForm)}
-                    type="primary"
-                    shape="circle"
-                    size="small"
-                    className="search-button"
-                    icon={<SearchOutlined />}
-                  />
-                )}
-                {isShownForm && (
-                  <Input
-                    className="input-src"
-                    placeholder="Search resources"
-                    value={search}
-                    suffix={
-                      <Button
-                        onClick={() => handleSearch(search)}
-                        type="primary"
-                        shape="circle"
-                        size="small"
-                        icon={<SearchOutlined />}
-                      />
-                    }
-                    onPressEnter={(e) => handleSearch(e.target.value)}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                )}
-              </div>
-            </li>
-          )}
+
+          <li className="small-screen-menu">
+            <div className="src mobile-src">
+              {!isShownForm && (
+                <Button
+                  onClick={() => setIsShownForm(!isShownForm)}
+                  type="primary"
+                  shape="circle"
+                  size="small"
+                  className="search-button"
+                  icon={<SearchOutlined />}
+                />
+              )}
+              {isShownForm && (
+                <Input
+                  className="input-src"
+                  placeholder="Search resources"
+                  value={search}
+                  suffix={
+                    <Button
+                      onClick={() => handleSearch(search)}
+                      type="primary"
+                      shape="circle"
+                      size="small"
+                      icon={<SearchOutlined />}
+                    />
+                  }
+                  onPressEnter={(e) => handleSearch(e.target.value)}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              )}
+            </div>
+          </li>
+
           <Menu.Item key="about-us" className="nav-link">
             About
           </Menu.Item>
@@ -166,57 +166,58 @@ const ResponsiveMenu = withRouter(
             </a>
           </Menu.Item>
           {/* Knowledge Exchange */}
-          {viewport <= 540 && (
-            <Menu.Item key="knowledge-library" className="nav-link">
-              <Link to="/knowledge-library">Knowledge Exchange</Link>
-            </Menu.Item>
-          )}
-          {viewport > 540 && (
-            <SubMenu
-              key="knowledge-exchange"
-              title="Knowledge Exchange"
+          <Menu.Item
+            key="knowledge-library"
+            className="nav-link small-screen-menu"
+          >
+            <Link to="/knowledge-library">Knowledge Exchange</Link>
+          </Menu.Item>
+
+          <SubMenu
+            key="knowledge-exchange"
+            title="Knowledge Exchange"
+            className="nav-link big-screen-menu"
+          >
+            <Menu.Item
+              key="knowledge-library"
               className="nav-link"
+              onClick={() => setFilterMenu([])}
             >
-              <Menu.Item
-                key="knowledge-library"
-                className="nav-link"
-                onClick={() => setFilterMenu([])}
-              >
-                All Resources
-                <Button
-                  className="badge-count"
-                  size="small"
-                  type="ghost"
-                  shape="circle"
-                  icon={allResources}
-                  loading={loading}
-                />
-              </Menu.Item>
-              {resources &&
-                resources.map((x, i) => {
-                  const { name, count } = x;
-                  const topic = humps.decamelize(name);
-                  return (
-                    <Menu.Item
-                      key={`/knowledge-library?topic=${topic}`}
-                      className="indent-right nav-link"
-                      disabled={loading}
-                      onClick={() => setFilterMenu([topic])}
-                    >
-                      {topicNames(name)}
-                      <Button
-                        className="badge-count"
-                        size="small"
-                        type="ghost"
-                        shape="circle"
-                        icon={count}
-                        loading={loading}
-                      />
-                    </Menu.Item>
-                  );
-                })}
-            </SubMenu>
-          )}
+              All Resources
+              <Button
+                className="badge-count"
+                size="small"
+                type="ghost"
+                shape="circle"
+                icon={allResources}
+                loading={loading}
+              />
+            </Menu.Item>
+            {resources &&
+              resources.map((x, i) => {
+                const { name, count } = x;
+                const topic = humps.decamelize(name);
+                return (
+                  <Menu.Item
+                    key={`/knowledge-library?topic=${topic}`}
+                    className="indent-right nav-link"
+                    disabled={loading}
+                    onClick={() => setFilterMenu([topic])}
+                  >
+                    {topicNames(name)}
+                    <Button
+                      className="badge-count"
+                      size="small"
+                      type="ghost"
+                      shape="circle"
+                      icon={count}
+                      loading={loading}
+                    />
+                  </Menu.Item>
+                );
+              })}
+          </SubMenu>
+
           {/* Connect Stakeholders */}
           <Menu.Item key="stakeholder-overview" className="nav-link">
             <Link to="/events">Connect Stakeholders</Link>
@@ -274,179 +275,179 @@ const ResponsiveMenu = withRouter(
               <Menu.Item key="join-gpml" className="auth-menu nav-link">
                 Join GPML
               </Menu.Item>
-              {viewport > 540 && (
-                <Menu.Item key="sign-in" className="auth-menu nav-link">
-                  Sign in
-                </Menu.Item>
-              )}
-              {viewport <= 540 && (
-                <Menu.Item key="sign-in" className="green-text green-border">
-                  Sign in
-                </Menu.Item>
-              )}
+
+              <Menu.Item
+                key="sign-in"
+                className="auth-menu nav-link big-screen-menu"
+              >
+                Sign in
+              </Menu.Item>
+
+              <Menu.Item
+                key="sign-in"
+                className="green-text green-border small-screen-menu"
+              >
+                Sign in
+              </Menu.Item>
             </>
           )}
           {/* Add Content */}
-          {isAuthenticated &&
-            profile?.reviewStatus === "APPROVED" &&
-            viewport > 540 && (
-              <>
-                <SubMenu
-                  key="add-content"
-                  title="Add Content"
-                  className="auth-menu nav-link menu-add-content"
-                >
-                  <Menu.Item
-                    key="add-initiative"
-                    className="nav-link"
-                    onClick={() => {
-                      UIStore.update((e) => {
-                        e.formStep = {
-                          ...e.formStep,
-                          initiative: 1,
-                        };
-                        e.formEdit = {
-                          ...e.formEdit,
-                          initiative: {
-                            status: "add",
-                            id: null,
-                          },
-                        };
-                      });
-                    }}
-                  >
-                    Initiative
-                  </Menu.Item>
-                  <Menu.Item
-                    key="add-action-plan"
-                    className="nav-link"
-                    onClick={() => {
-                      UIStore.update((e) => {
-                        e.formStep = {
-                          ...e.formStep,
-                          actionPlan: 1,
-                        };
-                        e.formEdit = {
-                          ...e.formEdit,
-                          actionPlan: {
-                            status: "add",
-                            id: null,
-                          },
-                        };
-                      });
-                    }}
-                  >
-                    Action Plan
-                  </Menu.Item>
-                  <Menu.Item
-                    key="add-policy"
-                    className="nav-link"
-                    onClick={() => {
-                      UIStore.update((e) => {
-                        e.formStep = {
-                          ...e.formStep,
-                          policy: 1,
-                        };
-                        e.formEdit = {
-                          ...e.formEdit,
-                          policy: {
-                            status: "add",
-                            id: null,
-                          },
-                        };
-                      });
-                    }}
-                  >
-                    Policy
-                  </Menu.Item>
-                  <Menu.Item
-                    key="add-technical-resource"
-                    className="nav-link"
-                    onClick={() => {
-                      UIStore.update((e) => {
-                        e.formStep = {
-                          ...e.formStep,
-                          technicalResource: 1,
-                        };
-                        e.formEdit = {
-                          ...e.formEdit,
-                          technicalResource: {
-                            status: "add",
-                            id: null,
-                          },
-                        };
-                      });
-                    }}
-                  >
-                    Technical Resource
-                  </Menu.Item>
-                  <Menu.Item
-                    key="add-financing-resource"
-                    className="nav-link"
-                    onClick={() => {
-                      UIStore.update((e) => {
-                        e.formStep = {
-                          ...e.formStep,
-                          financingResource: 1,
-                        };
-                        e.formEdit = {
-                          ...e.formEdit,
-                          financingResource: {
-                            status: "add",
-                            id: null,
-                          },
-                        };
-                      });
-                    }}
-                  >
-                    Financing Resource
-                  </Menu.Item>
-                  <Menu.Item
-                    key="add-event"
-                    className="nav-link"
-                    onClick={() => {
-                      UIStore.update((e) => {
-                        e.formStep = {
-                          ...e.formStep,
-                          event: 1,
-                        };
-                        e.formEdit = {
-                          ...e.formEdit,
-                          event: {
-                            status: "add",
-                            id: null,
-                          },
-                        };
-                      });
-                      history.push("/add-event");
-                    }}
-                  >
-                    Event
-                  </Menu.Item>
-                  <Menu.Item
-                    key="add-technology"
-                    className="nav-link"
-                    onClick={() => {
-                      UIStore.update((e) => {
-                        e.formStep = {
-                          ...e.formStep,
-                          technology: 1,
-                        };
-                        e.formEdit = {
-                          ...e.formEdit,
-                          technology: {
-                            status: "add",
-                            id: null,
-                          },
-                        };
-                      });
-                    }}
-                  >
-                    Technology
-                  </Menu.Item>
-                </SubMenu>
-              </>
-            )}
+          {isAuthenticated && profile?.reviewStatus === "APPROVED" && (
+            <SubMenu
+              key="add-content"
+              title="Add Content"
+              className="auth-menu nav-link menu-add-content big-screen-menu"
+            >
+              <Menu.Item
+                key="add-initiative"
+                className="nav-link"
+                onClick={() => {
+                  UIStore.update((e) => {
+                    e.formStep = {
+                      ...e.formStep,
+                      initiative: 1,
+                    };
+                    e.formEdit = {
+                      ...e.formEdit,
+                      initiative: {
+                        status: "add",
+                        id: null,
+                      },
+                    };
+                  });
+                }}
+              >
+                Initiative
+              </Menu.Item>
+              <Menu.Item
+                key="add-action-plan"
+                className="nav-link"
+                onClick={() => {
+                  UIStore.update((e) => {
+                    e.formStep = {
+                      ...e.formStep,
+                      actionPlan: 1,
+                    };
+                    e.formEdit = {
+                      ...e.formEdit,
+                      actionPlan: {
+                        status: "add",
+                        id: null,
+                      },
+                    };
+                  });
+                }}
+              >
+                Action Plan
+              </Menu.Item>
+              <Menu.Item
+                key="add-policy"
+                className="nav-link"
+                onClick={() => {
+                  UIStore.update((e) => {
+                    e.formStep = {
+                      ...e.formStep,
+                      policy: 1,
+                    };
+                    e.formEdit = {
+                      ...e.formEdit,
+                      policy: {
+                        status: "add",
+                        id: null,
+                      },
+                    };
+                  });
+                }}
+              >
+                Policy
+              </Menu.Item>
+              <Menu.Item
+                key="add-technical-resource"
+                className="nav-link"
+                onClick={() => {
+                  UIStore.update((e) => {
+                    e.formStep = {
+                      ...e.formStep,
+                      technicalResource: 1,
+                    };
+                    e.formEdit = {
+                      ...e.formEdit,
+                      technicalResource: {
+                        status: "add",
+                        id: null,
+                      },
+                    };
+                  });
+                }}
+              >
+                Technical Resource
+              </Menu.Item>
+              <Menu.Item
+                key="add-financing-resource"
+                className="nav-link"
+                onClick={() => {
+                  UIStore.update((e) => {
+                    e.formStep = {
+                      ...e.formStep,
+                      financingResource: 1,
+                    };
+                    e.formEdit = {
+                      ...e.formEdit,
+                      financingResource: {
+                        status: "add",
+                        id: null,
+                      },
+                    };
+                  });
+                }}
+              >
+                Financing Resource
+              </Menu.Item>
+              <Menu.Item
+                key="add-event"
+                className="nav-link"
+                onClick={() => {
+                  UIStore.update((e) => {
+                    e.formStep = {
+                      ...e.formStep,
+                      event: 1,
+                    };
+                    e.formEdit = {
+                      ...e.formEdit,
+                      event: {
+                        status: "add",
+                        id: null,
+                      },
+                    };
+                  });
+                  history.push("/add-event");
+                }}
+              >
+                Event
+              </Menu.Item>
+              <Menu.Item
+                key="add-technology"
+                className="nav-link"
+                onClick={() => {
+                  UIStore.update((e) => {
+                    e.formStep = {
+                      ...e.formStep,
+                      technology: 1,
+                    };
+                    e.formEdit = {
+                      ...e.formEdit,
+                      technology: {
+                        status: "add",
+                        id: null,
+                      },
+                    };
+                  });
+                }}
+              >
+                Technology
+              </Menu.Item>
+            </SubMenu>
+          )}
           {/* Add Content Disabled */}
           {isAuthenticated && profile?.reviewStatus !== "APPROVED" && (
             <Menu.Item
@@ -459,28 +460,26 @@ const ResponsiveMenu = withRouter(
           {/* Profile & Logout */}
           {isAuthenticated && (
             <>
-              {viewport > 540 && (
-                <>
-                  <Menu.Item
-                    key="profile"
-                    className="auth-menu nav-link menu-profile"
-                  >
-                    Profile
-                  </Menu.Item>
+              <Menu.Item
+                key="profile"
+                className="auth-menu nav-link menu-profile big-screen-menu"
+              >
+                Profile
+              </Menu.Item>
 
-                  <Menu.Item key="logout" className="auth-menu nav-link">
-                    Logout
-                  </Menu.Item>
-                </>
-              )}
-              {viewport <= 540 && (
-                <Menu.Item
-                  key="logout"
-                  className="button-logout green-text green-border"
-                >
-                  Logout
-                </Menu.Item>
-              )}
+              <Menu.Item
+                key="logout"
+                className="auth-menu nav-link big-screen-menu"
+              >
+                Logout
+              </Menu.Item>
+
+              <Menu.Item
+                key="logout"
+                className="button-logout green-text green-border small-screen-menu"
+              >
+                Logout
+              </Menu.Item>
             </>
           )}
         </Menu>
