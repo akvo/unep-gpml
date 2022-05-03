@@ -702,18 +702,30 @@
     }
     .ant-pagination-item-link {
       background: #fff;
+      @-moz-document url-prefix() {
+        min-width: 20px;
+        height: 20px;
+      }
       span.anticon {
         color: #255b87;
         font-size: 0.85rem;
         @-moz-document url-prefix() {
-          font-size: 9px !important;
+          font-size: 10px !important;
         }
       }
     }
     .ant-pagination-item {
       background: rgba(37, 91, 135, 0.1);
+      @-moz-document url-prefix() {
+        min-width: 23px;
+        height: 23px;
+      }
       a {
         color: #255b87;
+        @-moz-document url-prefix() {
+          font-size: 10px;
+          line-height: 20px;
+        }
       }
     }
     .ant-pagination-item-active {

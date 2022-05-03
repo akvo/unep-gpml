@@ -214,7 +214,7 @@
         .edit-icon {
           width: 50px;
           @-moz-document url-prefix() {
-            width: 40px !important;
+            width: 30px !important;
           }
           path {
             fill: #fff;
@@ -602,17 +602,36 @@
       margin-left: 10px;
       margin-right: 10px;
       border-radius: 8px;
+      @-moz-document url-prefix() {
+        padding: 10px;
+        margin-left: 5px;
+        margin-right: 5px;
+      }
       .comment-list-container {
         border-bottom: 1px solid #edf2f7;
         margin-bottom: 20px;
+        @-moz-document url-prefix() {
+          margin-bottom: 10px;
+        }
         .ant-form-item {
           width: 500px;
+          @-moz-document url-prefix() {
+            input {
+              height: 20px;
+            }
+            textarea {
+              height: 54px;
+            }
+          }
           .comment-reply {
             margin-top: 10px;
             border: 1px solid #34a6ff;
             border-radius: 25px;
             color: #34a6ff;
             font-weight: 700;
+            @-moz-document url-prefix() {
+              margin-top: 5px;
+            }
           }
         }
       }
@@ -629,6 +648,9 @@
       label {
         font-size: 16px;
         font-weight: 400;
+        @-moz-document url-prefix() {
+          font-size: 12px;
+        }
       }
       .comment-submit {
         margin: 0 auto;
@@ -637,6 +659,11 @@
         border-radius: 25px;
         color: #34a6ff;
         font-weight: 700;
+        @-moz-document url-prefix() {
+          font-size: 12px;
+          height: 28px;
+          line-height: 10px;
+        }
       }
       .ant-avatar {
         width: 50px;
@@ -649,9 +676,15 @@
       h5 {
         font-size: 1.2rem;
         margin-bottom: 5px;
+        @-moz-document url-prefix() {
+          font-size: 0.9rem;
+        }
       }
       p {
         font-size: 1rem;
+        @-moz-document url-prefix() {
+          font-size: 0.7rem;
+        }
       }
     }
     .record-table {
@@ -861,7 +894,7 @@
           h2 {
             font-size: 14px;
             @-moz-document url-prefix() {
-              font-size: 12px !important;
+              font-size: 10px !important;
             }
           }
         }
