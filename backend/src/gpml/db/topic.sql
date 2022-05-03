@@ -125,6 +125,7 @@ WITH flat_topic AS (
     NULL AS q35_1,
     NULL AS q1_1_1
   FROM resource
+  --~ (when (:review-status params) "WHERE review_status = (:v:review-status)::review_status")
 UNION ALL
 	SELECT
 		'event'::text AS topic,
@@ -240,6 +241,7 @@ UNION ALL
     NULL AS q35_1,
     NULL AS q1_1_1
 	FROM event
+	--~ (when (:review-status params) "WHERE review_status = (:v:review-status)::review_status")
 UNION ALL
 	SELECT
 		'initiative'::text AS topic,
@@ -355,6 +357,7 @@ UNION ALL
     q35_1::text,
     q1_1_1::text
 	FROM initiative
+	--~ (when (:review-status params) "WHERE review_status = (:v:review-status)::review_status")
 UNION ALL
   SELECT
   	'policy'::text AS topic,
@@ -470,6 +473,7 @@ UNION ALL
     NULL AS q35_1,
     NULL AS q1_1_1
   FROM policy
+  --~ (when (:review-status params) "WHERE review_status = (:v:review-status)::review_status")
 UNION ALL
   SELECT
     'technology'::text AS topic,
@@ -585,5 +589,6 @@ UNION ALL
     NULL AS q35_1,
     NULL AS q1_1_1
   FROM technology
+  --~ (when (:review-status params) "WHERE review_status = (:v:review-status)::review_status")
 )
 SELECT * FROM flat_topic ORDER BY id;

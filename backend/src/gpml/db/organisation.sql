@@ -5,15 +5,15 @@ select id, name from organisation order by id
 -- :name all-public-entities :? :*
 -- :doc Get all member organisations
 SELECT * FROM organisation
-WHERE review_status = 'APPROVED'
-AND is_member = true
+WHERE is_member = true
+--~ (when (:review-status params) "AND review_status = (:v:review-status)::review_status")
 ORDER BY id;
 
 -- :name all-public-non-member-entities :? :*
 -- :doc Get all non member organisations
 SELECT * FROM organisation
-WHERE review_status = 'APPROVED'
-AND is_member = false
+WHERE is_member = false
+--~ (when (:review-status params) "AND review_status = (:v:review-status)::review_status")
 ORDER BY id;
 
 -- :name all-members :? :*
