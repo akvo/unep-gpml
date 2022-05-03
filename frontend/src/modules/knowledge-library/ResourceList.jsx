@@ -94,52 +94,6 @@ const ResourceList = ({
 
   return (
     <Row style={{ postion: "relative" }}>
-      {/* <Col span={24}>
-        <PageHeader
-          className="resource-list-header"
-          ghost={false}
-          style={
-            view === "map"
-              ? { backgroundColor: "rgba(255, 255, 255, 0.3)" }
-              : {
-                  backgroundColor: "rgba(255, 255, 255, 1)",
-                  minHeight: "72px",
-                }
-          }
-          onBack={() => setListVisible(false)}
-          backIcon={
-            hideListButtonVisible ? (
-              <img src={HideIcon} className="hide-icon hide" alt="hide-icon" />
-            ) : (
-              ""
-            )
-          }
-          title={
-            hideListButtonVisible ? (
-              <span className="hide-text">Hide List</span>
-            ) : view === "topic" ? (
-              <div style={{ minHeight: "32px", display: "block" }} />
-            ) : (
-              ""
-            )
-          }
-          const
-          subTitle={
-            !loading ? (
-              <span className="result-number">
-                Showing{" "}
-                {totalItems > pageSize + filters?.offset
-                  ? pageSize + Number(filters?.offset)
-                  : itemCount}{" "}
-                of {totalItems || 0} result
-                {totalItems > 1 ? "s" : ""}
-              </span>
-            ) : (
-              <div className="invisible-content" />
-            )
-          }
-        />
-      </Col> */}
       <Col
         span={24}
         className="resource-list"
