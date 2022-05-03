@@ -7,9 +7,16 @@
 .event {
   padding-top: 50px;
   padding-bottom: 40px;
+  @-moz-document url-prefix() {
+    padding-top: 40px;
+    padding-bottom: 30px;
+  }
   .green {
     h2 {
       color: #4dffa5;
+      @-moz-document url-prefix() {
+        font-size: 1.5rem !important;
+      }
       span.see-more-link a {
         color: #fff;
       }
@@ -40,6 +47,9 @@
         height: 100%;
         font-size: 1.2rem;
         background: transparent;
+        @-moz-document url-prefix() {
+          font-size: 0.9rem;
+        }
       }
       .ant-picker-calendar .ant-picker-panel {
         margin-top: 10px;
@@ -68,6 +78,9 @@
           display: flex;
           justify-content: center;
           align-items: center;
+          @-moz-document url-prefix() {
+            min-height: 5rem;
+          }
         }
         .ant-picker-cell-inner.ant-picker-calendar-date.ant-picker-calendar-date-today {
           background: rgba(46, 66, 119, 0.8);
@@ -144,7 +157,7 @@
         margin-bottom: 8px;
       }
 
-      @media (min-width: 400px) {
+      @media (min-width: 540px) {
         .day-select {
           display: none;
         }
@@ -157,6 +170,9 @@
         span {
           line-height: 10px;
           font-size: 18px;
+          @-moz-document url-prefix() {
+            font-size: 14px;
+          }
         }
         &:hover {
           background-color: $yellow-highlight;
@@ -172,12 +188,22 @@
         color: #2d6796;
         font-weight: 600;
         font-size: 0.94rem;
+        @-moz-document url-prefix() {
+          font-size: 0.5rem;
+        }
       }
       .ant-select-arrow {
         color: #2d6796;
       }
     }
     .content {
+      .ant-card-bordered {
+        .ant-card-body {
+          @-moz-document url-prefix() {
+            padding: 14px;
+          }
+        }
+      }
       .no-event {
         display: flex;
         justify-content: center;
@@ -185,6 +211,9 @@
         height: 100%;
         color: #fff;
         font-size: 1.2rem;
+        @-moz-document url-prefix() {
+          font-size: 0.9rem;
+        }
         .loading {
           padding-bottom: 0;
         }
@@ -193,6 +222,9 @@
         cursor: pointer;
         border-radius: 0 0 10px 10px;
         min-height: 45rem;
+        @-moz-document url-prefix() {
+          min-height: 35.5rem;
+        }
         .item-meta {
           display: flex;
           justify-content: space-between;
@@ -201,10 +233,17 @@
           color: #2d6796;
           font-weight: 500;
           margin-bottom: 10px;
+          @-moz-document url-prefix() {
+            font-size: 0.4rem;
+            margin-bottom: 5px;
+          }
         }
         .item-img {
           height: 18rem;
           object-fit: contain;
+          @-moz-document url-prefix() {
+            height: 14rem;
+          }
         }
         .item-footer {
           display: flex;
@@ -216,6 +255,11 @@
           width: 100%;
           margin-left: -24px;
           padding: 0 24px;
+          @-moz-document url-prefix() {
+            padding: 0 14px;
+            margin-left: -14px;
+            margin-bottom: 14px;
+          }
           @media (max-width: 600px) {
             position: unset !important;
           }
@@ -232,6 +276,9 @@
         align-items: center;
         justify-content: space-between;
         min-height: 3.7rem;
+        @-moz-document url-prefix() {
+          padding: 6px 14px;
+        }
         button {
           color: #fff;
         }
@@ -266,6 +313,9 @@
     color: #4da687;
     &.margin {
       margin: 20px 0;
+      @-moz-document url-prefix() {
+        margin: 10px 0;
+      }
     }
   }
 
@@ -281,6 +331,9 @@
     border: 1px solid #2d6796;
     box-sizing: border-box;
     border-radius: 50px;
+    @-moz-document url-prefix() {
+      font-size: 0.3rem !important;
+    }
     .anticon {
       margin-right: 5px;
     }
@@ -304,6 +357,9 @@
     color: #34a6ff;
     font-size: 0.88rem;
     vertical-align: middle;
+    @-moz-document url-prefix() {
+      font-size: 0.48rem;
+    }
   }
 
   // antd carousel dots
@@ -349,6 +405,9 @@
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
   .event {
     padding-top: 10px;
+    @-moz-document url-prefix() {
+      padding-top: 5px;
+    }
     &.section-container {
       zoom: 80%;
     }
@@ -357,35 +416,63 @@
       .body-text {
         font-size: 1.4rem;
         line-height: 1.6rem;
+        @-moz-document url-prefix() {
+          font-size: 1rem;
+        }
       }
       .asset-title {
         font-weight: 600 !important;
         font-size: 1.4rem;
         margin-bottom: 16px !important;
+        @-moz-document url-prefix() {
+          font-size: 1rem;
+          margin-bottom: 8px !important;
+        }
       }
     }
     .item-footer {
       .read-more {
         font-size: 1.2rem;
+        @-moz-document url-prefix() {
+          font-size: 0.9rem;
+        }
       }
     }
     .item-meta {
       font-size: 1.2rem !important;
+      @-moz-document url-prefix() {
+        font-size: 0.9rem !important;
+      }
       .mark {
         font-size: 1rem !important;
+        @-moz-document url-prefix() {
+          font-size: 0.7 !important;
+        }
       }
     }
     .event-more {
       font-size: 1.2rem !important;
+      @-moz-document url-prefix() {
+        font-size: 0.9rem !important;
+      }
     }
     .see-more-link {
       font-size: 1.2rem !important;
+      @-moz-document url-prefix() {
+        font-size: 0.9rem !important;
+      }
     }
     .ant-picker-calendar-date-value {
       font-size: 1.4rem !important;
+      @-moz-document url-prefix() {
+        font-size: 1.1rem !important;
+      }
     }
     .ant-select-selector {
       font-size: 1.2rem !important;
+      @-moz-document url-prefix() {
+        font-size: 0.9rem !important;
+      }
     }
   }
 }
