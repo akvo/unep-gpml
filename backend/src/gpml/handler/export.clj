@@ -10,9 +10,6 @@
 
 (def export-types ["users" "entities" "non-member-entities" "topics"])
 
-(defmethod ig/init-key ::export-types [_ _]
-  (apply conj [:enum] export-types))
-
 (defn create-csv-file [invoices]
   (let [csv-data (csv/preserve-sort-coll->csv invoices)
         csv-file (csv/create-tmp-file ".csv")]
@@ -35,36 +32,43 @@
         (map #(sort-result-map sorted-export-type-columns %)))
       (map #(sort-result-map sorted-export-type-columns %) exports-to-sort))))
 
-(defn export-users [db]
-  (let [users (db.stakeholder/all-public-stakeholders db)
+(defn export-users [db review-status]
+  (let [users (db.stakeholder/all-public-users db {:review-status review-status})
         export-users (get-export-values users constants/users-key-map constants/sorted-user-columns)]
     (:csv-file (create-csv-file export-users))))
 
-(defn export-entities [db]
-  (let [entities (db.organisation/all-public-entities db)
+(defn export-entities [db review-status]
+  (let [entities (db.organisation/all-public-entities db {:review-status review-status})
         export-entities (get-export-values (map #(dissoc % :is_member) entities) constants/entities-key-map constants/sorted-entity-columns)]
     (:csv-file (create-csv-file export-entities))))
 
-(defn export-non-member-entities [db]
-  (let [non-member-entities (db.organisation/all-public-non-member-entities db)
+(defn export-non-member-entities [db review-status]
+  (let [non-member-entities (db.organisation/all-public-non-member-entities db {:review-status review-status})
         export-entities (get-export-values (map #(dissoc % :is_member) non-member-entities)
                           constants/entities-key-map constants/sorted-entity-columns)]
     (:csv-file (create-csv-file export-entities))))
 
-(defn export-topics [db]
-  (let [topics (db.topic/get-flat-topics db)
+(defn export-topics [db review-status]
+  (let [topics (db.topic/get-flat-topics db {:review-status review-status})
         export-topics (get-export-values topics constants/topics-key-map constants/sorted-topic-columns)]
-    (create-csv-file export-topics)))
+    (:csv-file (create-csv-file export-topics))))
 
-(defn export [db export-type]
+(defn export [db export-type review-status]
   (case export-type
-    "users" (export-users db)
-    "entities" (export-entities db)
-    "non-member-entities" (export-non-member-entities db)
-    "topics" (export-topics db)))
+    "users" (export-users db review-status)
+    "entities" (export-entities db review-status)
+    "non-member-entities" (export-non-member-entities db review-status)
+    "topics" (export-topics db review-status)))
 
 (defmethod ig/init-key :gpml.handler.export/get [_ {:keys [db]}]
-  (fn [{{:keys [path]} :parameters}]
+  (fn [{{:keys [path query]} :parameters}]
     (let [conn (:spec db)
-          export-type (:export-type path)]
-      (resp/response (export conn export-type)))))
+          export-type (:export-type path)
+          review-status (:review_status query)]
+      (resp/response (export conn export-type review-status)))))
+
+(defmethod ig/init-key :gpml.handler.export/get-params [_ _]
+  {:path [:map
+          [:export-type (apply conj [:enum] export-types)]]
+   :query [:map
+           [:review_status {:optional true} [:enum "APPROVED" "REJECTED" "SUBMITTED"]]]} )
