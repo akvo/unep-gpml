@@ -180,6 +180,9 @@
             color: #09689a;
             font-size: 18px;
             font-weight: bold;
+            @-moz-document url-prefix() {
+              font-size: 16px !important;
+            }
           }
         }
         .ant-card-body {
@@ -312,6 +315,9 @@
         }
         .ant-card-body {
           padding: 24px 10px 0px 10px;
+          @-moz-document url-prefix() {
+            padding: 12px 5px 0 5px !important;
+          }
         }
         .sticky-panel {
           display: flex;
@@ -325,7 +331,7 @@
           border-radius: 0px 10px 10px 0px;
           padding: 20px 0px;
           @-moz-document url-prefix() {
-            padding: 10px 0px !important;
+            padding: 5px 0px !important;
             margin: 1px !important;
             flex: 0 0 70px !important;
           }
@@ -437,6 +443,9 @@
           }
           .ant-list {
             padding: 0 10px;
+            @-moz-document url-prefix() {
+              padding: 0 5px !important;
+            }
             .ant-spin-container {
               margin-top: 10px;
               @-moz-document url-prefix() {
@@ -768,12 +777,14 @@
             font-size: 1.6rem;
             @-moz-document url-prefix() {
               font-size: 14px !important;
+              line-height: 20px;
             }
           }
         }
         .topbar-image-holder {
           margin-bottom: -30px;
           @-moz-document url-prefix() {
+            margin-bottom: -25px;
             padding-left: 10px !important;
           }
           img {
@@ -790,7 +801,7 @@
     .info-container {
       margin-top: 40px;
       @-moz-document url-prefix() {
-        margin-top: 20px !important;
+        margin-top: 30px !important;
       }
       .card-wrapper {
         .ant-card {
