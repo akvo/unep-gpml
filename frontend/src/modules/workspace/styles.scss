@@ -14,13 +14,15 @@ $bg-green-primary: #10f9b7;
   font-size: 1rem;
   line-height: 20px;
   color: #4dffa5;
-  // background: rgba(77, 255, 165, 0.1);
   background-color: unset;
   border-radius: 5px;
   border: none;
   cursor: pointer;
   svg {
     font-size: 22px;
+  }
+  @-moz-document url-prefix() {
+    font-size: 0.9rem;
   }
 }
 
