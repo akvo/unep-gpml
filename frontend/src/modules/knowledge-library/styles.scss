@@ -83,8 +83,8 @@
   }
 
   .site-drawer-render-in-current-wrapper {
-    left: 0 !important;
-    top: 90px !important;
+    left: -10px !important;
+    top: 100px !important;
     position: absolute;
     min-width: calc(100% - 100px);
     overflow: hidden;
