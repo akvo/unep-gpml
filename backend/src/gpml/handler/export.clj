@@ -62,9 +62,7 @@
 
 (defmethod ig/init-key :gpml.handler.export/get [_ {:keys [db]}]
   (fn [{{:keys [path query]} :parameters}]
-    (let [_ (prn "path in get of export  " path)
-          _ (prn "query in get of export  " query)
-          conn (:spec db)
+    (let [conn (:spec db)
           export-type (:export-type path)
           review-status (:review_status query)]
       (resp/response (export conn export-type review-status)))))
