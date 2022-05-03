@@ -73,7 +73,7 @@
                                                                       [:only {:optional true}
                                                                        [:enum "resources" "stakeholders" "tags" "entities" "non-member-entities"]]
                                                                       [:review_status
-                                                                       {:optional true #_#_:default "SUBMITTED"}
+                                                                       {:optional true :default "SUBMITTED"}
                                                                        [:enum "SUBMITTED" "APPROVED" "REJECTED"]]
                                                                       [:title {:optional true} string?]
                                                                       [:page {:optional true
@@ -454,8 +454,7 @@
                                          ["/{export-type}"
                                           {:get {:summary "Export all individuals"
                                                  :swagger {:tags ["export"]}
-                                                 :parameters {:path [:map
-                                                                     [:export-type #ig/ref :gpml.handler.export/export-types]]}
+                                                 :parameters #ig/ref :gpml.handler.export/get-params
                                                  :handler #ig/ref :gpml.handler.export/get}}]]
                                         ["/comment"
                                          [""
@@ -648,8 +647,8 @@
   :gpml.handler.community/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.community/get-params {}
 
-  :gpml.handler.export/export-types {}
   :gpml.handler.export/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.export/get-params {}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}

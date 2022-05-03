@@ -1,11 +1,17 @@
 -- :name all-stakeholder :? :*
--- :doc Get all stakeholder
+-- :doc Get all stakeholders
 select * from stakeholder order by id;
 
 -- :name all-public-stakeholders :? :*
--- :doc Get all stakeholder
+-- :doc Get all stakeholders
 select * from stakeholder
 WHERE review_status = 'APPROVED'
+order by id;
+
+-- :name all-public-users :? :*
+-- :doc Get all stakeholders
+select * from stakeholder
+--~ (when (:review-status params) "WHERE review_status = (:v:review-status)::review_status")
 order by id;
 
 -- :name list-stakeholder-paginated :? :*
