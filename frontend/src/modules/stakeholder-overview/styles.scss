@@ -10,7 +10,7 @@
   h4 {
     color: #255b87;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: bold;
   }
 
   h3 {
@@ -110,7 +110,7 @@
       @-moz-document url-prefix() {
         padding-top: 0.4em;
         padding-bottom: 0.4em;
-        font-size: 10px;
+        font-size: 9px;
       }
     }
   }
@@ -247,7 +247,7 @@
             .location,
             .entity-name {
               color: #255b87;
-              font-weight: 700;
+              font-weight: bold;
             }
 
             .profile-name,
@@ -265,7 +265,7 @@
               align-items: center;
               padding-left: 20px;
               @-moz-document url-prefix() {
-                font-size: 10px;
+                font-size: 9px;
               }
               &::before {
                 content: " ";
@@ -283,9 +283,12 @@
             }
 
             .organisation-type {
-              font-weight: 700;
+              font-weight: bold;
               font-size: 12px;
               color: #18162f;
+              @-moz-document url-prefix() {
+                font-size: 9px;
+              }
             }
 
             .badge {
@@ -359,7 +362,7 @@
       }
 
       .role-name {
-        font-weight: 700;
+        font-weight: bold;
         @-moz-document url-prefix() {
           font-weight: bold;
         }
@@ -382,7 +385,7 @@
         color: #fff;
         @-moz-document url-prefix() {
           margin-top: 5px;
-          font-size: 10px;
+          font-size: 9px;
         }
       }
 
@@ -420,7 +423,6 @@
 
   // Pagination
   .page {
-    // max-width: max-content;
     text-align: center;
     margin: auto;
     padding-top: calc(38px - 21.47px);
@@ -432,7 +434,7 @@
       font-weight: bold;
       font-size: 12px;
       @-moz-document url-prefix() {
-        font-size: 10px;
+        font-size: 9px;
       }
     }
 
@@ -495,7 +497,7 @@
       background-position: center;
       background-size: 8px;
       @-moz-document url-prefix() {
-        background-size: 4px;
+        background-size: 6px;
       }
       svg {
         display: none;
@@ -559,7 +561,7 @@
     .for-entity svg {
       max-width: 30px;
       @-moz-document url-prefix() {
-        max-width: 20px;
+        max-width: 25px;
       }
     }
 
@@ -646,10 +648,10 @@
           font-weight: bold;
           height: auto;
           @-moz-document url-prefix() {
-            font-size: 12px;
+            font-size: 10px;
             padding: 2px 5.5px 2px 5.5px;
             border: 1px solid #ffffff;
-            line-height: 13px;
+            line-height: 14px;
           }
           &:hover {
             background-color: $yellow-highlight;
@@ -711,10 +713,14 @@
 
       .multiselection-filter .ant-select-selection-placeholder {
         font-style: italic;
-        font-weight: 700;
+        font-weight: bold;
       }
 
       .multiselection-filter {
+        @-moz-document url-prefix() {
+          padding-top: 5px !important;
+          padding-bottom: 5px !important;
+        }
         .ant-select-selection-search-input {
           width: 100%;
           display: block;
@@ -732,6 +738,9 @@
           url("../../images/knowledge-library/chevron-down-grey.svg");
         background-repeat: no-repeat;
         background-position: calc(15px) center, calc(100% - 14px) center;
+        @-moz-document url-prefix() {
+          background-size: 15px;
+        }
       }
 
       .date-picker-container {
@@ -772,7 +781,7 @@
 
       .date-picker-container input,
       .ant-select-selection-item-content {
-        font-weight: 700;
+        font-weight: bold;
         font-size: 16px;
         color: $blue06;
         @-moz-document url-prefix() {
@@ -857,6 +866,9 @@
           max-width: 73px !important;
           margin-right: 7.5px;
           margin-bottom: 7.5px;
+          svg {
+            width: 26px !important;
+          }
         }
       }
 
@@ -898,7 +910,7 @@
         }
         .anticon-close {
           color: $blue04;
-          font-weight: 700;
+          font-weight: bold;
           padding-right: 3px;
         }
       }
@@ -908,7 +920,7 @@
         height: 100px;
         position: relative;
         color: $grey03;
-        font-weight: 700;
+        font-weight: bold;
         align-items: center;
         cursor: pointer;
         padding: 4px;
@@ -932,7 +944,7 @@
           font-size: 12px;
           text-transform: uppercase;
           @-moz-document url-prefix() {
-            font-size: 10px;
+            font-size: 9px;
           }
         }
 
@@ -940,7 +952,7 @@
           font-size: 12px;
           line-height: 14px;
           @-moz-document url-prefix() {
-            font-size: 10px;
+            font-size: 9px;
           }
         }
 
@@ -972,7 +984,7 @@
         max-width: 292px;
         color: #34a6ff;
         font-size: 16px;
-        font-weight: 700;
+        font-weight: bold;
         margin-bottom: 10px;
         border-radius: 20.5px;
         border: 0;
@@ -1239,13 +1251,13 @@
           .seeking-text {
             font-size: 12px;
             @-moz-document url-prefix() {
-              font-size: 10px;
+              font-size: 9px;
             }
           }
           .role-name {
             font-size: 12px;
             @-moz-document url-prefix() {
-              font-size: 10px;
+              font-size: 9px;
             }
           }
         }
