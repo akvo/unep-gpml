@@ -65,12 +65,21 @@
   }
   .status-none {
     .ant-collapse-arrow {
-      top: 20.005px !important;
+      top: 50% !important;
+      transform: translateY(-50%);
+      padding-top: 0px;
     }
   }
 
   .photo-upload img {
     border-radius: 50%;
+  }
+
+  .status-none {
+    .ant-collapse-header {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   .review-comment-wrapper {
@@ -315,7 +324,7 @@
     }
   }
   .content-status {
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
     margin-left: -24px;
     .status {
       text-transform: uppercase;
