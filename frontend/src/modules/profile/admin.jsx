@@ -286,6 +286,7 @@ const AdminSection = ({
   const [approveLoading, setApproveLoading] = useState({});
   const [loadingAssignReviewer, setLoadingAssignReviewer] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [exportLoading, setExportLoading] = useState(false);
 
   const [tab, setTab] = useState("stakeholders");
   const [stakeholdersListOpts, setStakeholdersListOpts] = useState({
@@ -432,6 +433,39 @@ const AdminSection = ({
     }
   };
 
+  const downloadCSV = async (data, name) => {
+    const blob = new Blob([data], { type: "data:text/csv;charset=utf-8," });
+    const blobURL = window.URL.createObjectURL(blob);
+
+    const anchor = document.createElement("a");
+    anchor.download = name;
+    anchor.href = blobURL;
+    anchor.dataset.downloadurl = [
+      "text/csv",
+      anchor.download,
+      anchor.href,
+    ].join(":");
+    anchor.click();
+
+    setTimeout(() => {
+      URL.revokeObjectURL(blobURL);
+    }, 100);
+  };
+
+  const exportList = (type, status) => {
+    setExportLoading(true);
+    api
+      .get(`/export/${type}?review_status=${status}`)
+      .then((res) => {
+        downloadCSV(res.data, `${type}.csv`);
+        setExportLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setExportLoading(false);
+      });
+  };
+
   const assignReviewer = (item, reviewers, listOpts, setListOpts) => {
     setLoadingAssignReviewer(item);
     const apiCall = isEmpty(item?.reviewers) ? api.post : api.patch;
@@ -547,9 +581,36 @@ const AdminSection = ({
     </Button>
   );
 
+  const ExportButton = ({
+    item,
+    type,
+    className = "",
+    disabled = false,
+    listOpts,
+    setListOpts,
+  }) => (
+    <Button
+      type={type}
+      className={className}
+      disabled={disabled}
+      loading={exportLoading}
+      onClick={() =>
+        exportList(
+          listOpts.type === "stakeholders"
+            ? "users"
+            : listOpts.type === "resources"
+            ? "topics"
+            : listOpts.type,
+          listOpts.reviewStatus
+        )
+      }
+    >
+      Export
+    </Button>
+  );
+
   const renderList = (listOpts, setListOpts, title) => {
     const itemList = listOpts.data || [];
-
     const onChangePage = (current, pageSize) => {
       (async () => {
         const size = pageSize ? pageSize : itemList.limit;
@@ -695,17 +756,24 @@ const AdminSection = ({
     };
 
     return (
-      <div key="new-approval" className="approval">
+      <div key={`new-approval-${title ? title : ""}`} className="approval">
         {title && <Title className="tab-label" level={4}>{`${title}`}</Title>}
         <div>
           <b>Total:</b> {itemList.count || 0}
         </div>
         {(listOpts.reviewStatus || listOpts.title) && (
           <div>
-            <div>
+            <div className="export-wrapper">
               <b>Filtering by:</b>
-              <hr />
+              <div>
+                <ExportButton
+                  type="ghost"
+                  className="black"
+                  listOpts={listOpts}
+                />
+              </div>
             </div>
+            <hr />
             {listOpts.reviewStatus && (
               <div>
                 <b>Review status:</b> {statusDictToHuman[listOpts.reviewStatus]}
