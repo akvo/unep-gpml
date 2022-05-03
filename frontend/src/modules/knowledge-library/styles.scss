@@ -83,8 +83,8 @@
   }
 
   .site-drawer-render-in-current-wrapper {
-    left: 0 !important;
-    top: 90px !important;
+    left: -10px !important;
+    top: 100px !important;
     position: absolute;
     min-width: calc(100% - 100px);
     overflow: hidden;
@@ -143,6 +143,9 @@
             border: 1px solid #ffffff;
             line-height: 14px;
           }
+          @media (max-width: 540px) {
+            font-size: 12px;
+          }
           &:hover {
             background-color: $yellow-highlight;
           }
@@ -179,6 +182,9 @@
           @-moz-document url-prefix() {
             font-size: 12px;
           }
+          @media (max-width: 540px) {
+            font-size: 14px;
+          }
         }
       }
 
@@ -200,6 +206,9 @@
         font-size: 16px;
         @-moz-document url-prefix() {
           font-size: 12px;
+        }
+        @media (max-width: 540px) {
+          font-size: 14px;
         }
       }
       .drawer-close-icon {
@@ -234,6 +243,9 @@
         color: $grey04;
         @-moz-document url-prefix() {
           font-size: 12px;
+        }
+        @media (max-width: 540px) {
+          font-size: 14px;
         }
       }
 
@@ -329,6 +341,9 @@
         @-moz-document url-prefix() {
           font-size: 12px;
         }
+        @media (max-width: 540px) {
+          font-size: 14px;
+        }
         .anticon-close-circle {
           opacity: 0;
         }
@@ -360,6 +375,9 @@
         @-moz-document url-prefix() {
           font-size: 14px;
           margin-bottom: 8px;
+        }
+        @media (max-width: 540px) {
+          font-size: 16px;
         }
       }
 
@@ -410,6 +428,9 @@
         @-moz-document url-prefix() {
           line-height: 20px;
           font-size: 10px;
+        }
+        @media (max-width: 540px) {
+          font-size: 12px;
         }
       }
 
@@ -627,7 +648,6 @@
     width: 100%;
     background-color: rgba(237, 242, 247, 0.3);
     max-width: 402px;
-    // overflow: hidden;
     @-moz-document url-prefix() {
       max-width: 350px;
     }
@@ -752,7 +772,6 @@
     gap: 5px;
     align-items: center;
     padding-bottom: 120px;
-    overflow-y: auto;
     @-moz-document url-prefix() {
       padding: 5px;
       padding-bottom: 110px;
@@ -800,6 +819,9 @@
             @-moz-document url-prefix() {
               font-size: 12px !important;
             }
+            @media (max-width: 540px) {
+              font-size: 12px;
+            }
           }
 
           .description {
@@ -830,6 +852,9 @@
           .read-more {
             font-size: 14px;
             @-moz-document url-prefix() {
+              font-size: 12px;
+            }
+            @media (max-width: 540px) {
               font-size: 12px;
             }
           }

@@ -26,6 +26,7 @@ import topicViewIcon from "../../images/knowledge-library/topic-view-icon.svg";
 import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg";
 import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
 import { ReactComponent as IconCommunity } from "../../images/events/community-icon.svg";
+import { ReactComponent as IconPartner } from "../../images/stakeholder-overview/partner-icon.svg";
 import StakeholderList from "./stakeholderList";
 import { multicountryGroups } from "../knowledge-library/multicountry";
 import { titleCase } from "../../utils/string";
@@ -110,7 +111,9 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       url: "/stakeholder-overview",
       icon: <IconCommunity />,
     },
+
     { id: 3, title: "Forums", url: null, icon: <IconForum /> },
+    { id: 4, title: "Partners", url: null, icon: <IconPartner /> },
   ];
 
   const selectionValue = (

@@ -5,9 +5,6 @@ import { Link } from "react-router-dom";
 import { UIStore } from "../../store";
 import unionIcon from "../../images/stakeholder-overview/union-icon.svg";
 import communityIcon from "../../images/stakeholder-overview/union-2-icon.svg";
-import { ReactComponent as GPMLIcon } from "../../images/stakeholder-overview/gpml-logo.svg";
-import { ReactComponent as MedalIcon } from "../../images/stakeholder-overview/medal-icon.svg";
-import { ReactComponent as AgreementIcon } from "../../images/stakeholder-overview/agreement-icon.svg";
 import { TrimText } from "../../utils/string";
 
 const ProfileCard = ({ profile, isValidUser, profileType }) => {

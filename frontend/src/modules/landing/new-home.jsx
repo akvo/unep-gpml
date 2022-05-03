@@ -316,17 +316,7 @@ const Landing = withRouter(
               <FeaturedContent {...{ history }} />
             </div>
             <div className="content-left-mobile">
-              <Carousel
-                centerMode={true}
-                responsive={responsive}
-                containerClass="feature-content"
-                itemClass="feature-content-carousel-item"
-                showDots={false}
-                renderDotsOutside={true}
-                removeArrowOnDeviceType={["tablet", "mobile"]}
-              >
-                <FeaturedContent {...{ history }} />
-              </Carousel>
+              <FeaturedContentMobile {...{ history }} />
             </div>
             {/* Mobile slider */}
 
@@ -698,6 +688,73 @@ const FeaturedContent = ({ history }) => {
         </Card>
       );
     });
+};
+
+const FeaturedContentMobile = ({ history }) => {
+  return (
+    <Carousel
+      centerMode={true}
+      responsive={responsive}
+      containerClass="feature-content"
+      itemClass="feature-content-carousel-item"
+      showDots={false}
+      renderDotsOutside={true}
+      removeArrowOnDeviceType={["tablet", "mobile"]}
+    >
+      {featuredContents
+        .filter((x) => x.id !== 196)
+        .map((x, i) => {
+          const { id, image, type, title, description, bookmark } = x;
+          const link = `/${humps.decamelize(type)}/${id}`;
+          return (
+            <Card
+              key={`fc-${i}`}
+              className="item"
+              onClick={() => history.push(link)}
+            >
+              <div className="item-header">
+                <span className="resource-label upper">
+                  {topicNames(humps.camelizeKeys(type))}
+                </span>
+                <span className="mark">
+                  <RiseOutlined />
+                  Trending
+                </span>
+              </div>
+              <div className="item-body">
+                <div className="asset-title">{title}</div>
+                <div className="body-text">
+                  {TrimText({ text: description, max: 100 })}
+                </div>
+              </div>
+              <div className="item-footer">
+                <Avatar.Group
+                  maxCount={3}
+                  maxStyle={{
+                    color: "#f56a00",
+                    backgroundColor: "#fde3cf",
+                  }}
+                >
+                  {bookmark.map((b, i) => (
+                    <Tooltip key={`avatar-${i}`} title={b.name} placement="top">
+                      <Avatar
+                        style={{ backgroundColor: "#FFB800" }}
+                        icon={<UserOutlined />}
+                      />
+                    </Tooltip>
+                  ))}
+                </Avatar.Group>
+                <span className="read-more">
+                  <Link to={link}>
+                    Read more <ArrowRightOutlined />
+                  </Link>
+                </span>
+              </div>
+            </Card>
+          );
+        })}
+    </Carousel>
+  );
 };
 
 export { Landing, JoinGPMLButton };
