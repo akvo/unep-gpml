@@ -627,7 +627,6 @@
     width: 100%;
     background-color: rgba(237, 242, 247, 0.3);
     max-width: 402px;
-    // overflow: hidden;
     @-moz-document url-prefix() {
       max-width: 350px;
     }
@@ -752,7 +751,6 @@
     gap: 5px;
     align-items: center;
     padding-bottom: 120px;
-    overflow-y: auto;
     @-moz-document url-prefix() {
       padding: 5px;
       padding-bottom: 110px;
