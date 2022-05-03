@@ -14,8 +14,7 @@
     font-size: 18px !important;
   }
   @-moz-document url-prefix() {
-    transform: scale(0.7);
-    font-size: 13px !important;
+    font-size: 14px !important;
   }
 }
 
@@ -23,6 +22,9 @@
   width: 100%;
   .ant-select-selection-placeholder {
     padding-left: 30px;
+    @-moz-document url-prefix() {
+      padding-left: 25px;
+    }
   }
   .ant-tabs-tab-btn {
     color: #000000 !important;
@@ -32,6 +34,9 @@
 .country-filter-tab .ant-select-selection-placeholder {
   font-size: 16px;
   color: $grey04;
+  @-moz-document url-prefix() {
+    font-size: 12px;
+  }
 }
 
 .country-filter-tab {
@@ -42,28 +47,35 @@
   .ant-select-selection-overflow {
     height: 29px;
     overflow-y: auto;
+    @-moz-document url-prefix() {
+      height: 22px;
+    }
   }
 
   .ant-select {
     width: 100%;
     margin-bottom: 10px;
+    @-moz-document url-prefix() {
+      margin-bottom: 5px;
+    }
   }
 }
 
 .country-filter-tab {
   margin-bottom: 1.5rem;
+  @-moz-document url-prefix() {
+    margin-bottom: 1.1rem;
+  }
 
   .ant-select-item.ant-select-item-group {
     color: rgba(0, 0, 0, 0.45);
   }
-  // .ant-select-selection-search-input {
-  //   font-weight: 700;
-  //   font-size: 16px;
-  //   color: $blue06;
-  // }
 
   .country-filter-tab-pane {
     padding: 0.5rem 1rem;
+    @-moz-document url-prefix() {
+      padding: 0.1rem 0.6rem;
+    }
   }
   .ant-tabs-nav-list {
     width: 100%;
@@ -89,6 +101,9 @@
     div {
       color: #000000;
       font-size: 16px;
+      @-moz-document url-prefix() {
+        font-size: 12px;
+      }
     }
   }
   .ant-tabs-tab-active {
@@ -115,6 +130,9 @@
       font-size: 14px;
       top: 48%;
       color: $blue07;
+      @-moz-document url-prefix() {
+        font-size: 12px;
+      }
     }
   }
 }

@@ -70,7 +70,6 @@
     z-index: 3;
     height: 700px;
     width: 100%;
-    // max-width: 300px;
     max-width: 402px;
     @-moz-document url-prefix() {
       max-width: 350px !important;
@@ -90,6 +89,10 @@
     z-index: 999;
     & span {
       font-size: 12px;
+      @-moz-document url-prefix() {
+        font-size: 10px;
+        padding: 2px 14px;
+      }
     }
 
     .ant-page-header-heading-title,
@@ -115,6 +118,9 @@
 
     .ant-page-header-heading-sub-title {
       margin-right: 33px;
+      @-moz-document url-prefix() {
+        margin-right: 23px;
+      }
     }
 
     .ant-page-header-heading-left {
@@ -131,6 +137,9 @@
 
     .ant-page-header-back {
       margin-right: 10px;
+      @-moz-document url-prefix() {
+        margin-right: 5px;
+      }
     }
 
     .result-number {
@@ -213,10 +222,18 @@
       border-radius: 50%;
       background-color: #ffff;
       margin-right: 10px;
+      @-moz-document url-prefix() {
+        margin-right: 5px;
+        width: 50px;
+        height: 50px;
+      }
     }
 
     .resource-item-image {
       max-width: 60px;
+      @-moz-document url-prefix() {
+        max-width: 50px;
+      }
     }
     .badge-wrapper {
       color: $yellow;
@@ -243,7 +260,10 @@
           color: $green05;
           font-size: 12px;
           text-transform: uppercase;
-          font-weight: 700;
+          font-weight: bold;
+          @-moz-document url-prefix() {
+            font-size: 10px;
+          }
         }
 
         .item-body {
@@ -252,6 +272,9 @@
           .title,
           .read-more {
             font-size: 14px;
+            @-moz-document url-prefix() {
+              font-size: 12px;
+            }
           }
         }
       }
