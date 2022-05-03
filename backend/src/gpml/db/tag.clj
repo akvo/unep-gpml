@@ -11,7 +11,8 @@
          tag-by-category
          tag-category-by-category-name
          all-tags
-         get-popular-topics-tags)
+         get-popular-topics-tags
+         get-tag-categories
 
 (hugsql/def-db-fns "gpml/db/tag.sql")
 

@@ -37,6 +37,15 @@
           category (format "%s%%" topic-type)
           category-tags (db.tag/tag-by-category conn {:category category})]
       (resp/response category-tags))))
+(defn create-tags
+  "Creates N `tags` given a `tag-category`. `tags` are expected to have
+  to have the following structure:
+  - `[{:tag \"some tag\"} . . .]`"
+  [conn tags tag-category]
+  (let [tag-category ((comp :id first) (db.tag/get-tag-categories conn {:filters {:categories [tag-category]}}))
+        new-tags (filter (comp not :id) tags)
+        tags-to-create (map #(vector % tag-category) (map :tag new-tags))]
+    (map :id (db.tag/new-tags conn {:tags tags-to-create}))))
 
 (defn all-tags
   [db]
