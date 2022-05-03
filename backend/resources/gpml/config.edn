@@ -446,7 +446,48 @@
                                                 :middleware [#ig/ref :gpml.auth/auth-middleware]
                                                 :swagger {:tags ["community"]}
                                                 :parameters {:query #ig/ref :gpml.handler.community/get-params}
-                                                :handler #ig/ref :gpml.handler.community/get}}]]]
+                                                :handler #ig/ref :gpml.handler.community/get}}]
+                                        ["/export" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                 #ig/ref :gpml.auth/auth-required
+                                                                 #ig/ref :gpml.auth/approved-user
+                                                                 #ig/ref :gpml.auth/admin-required-middleware]}
+                                         ["/{export-type}"
+                                          {:get {:summary "Export all individuals"
+                                                 :swagger {:tags ["export"]}
+                                                 :parameters {:path [:map
+                                                                     [:export-type #ig/ref :gpml.handler.export/export-types]]}
+                                                 :handler #ig/ref :gpml.handler.export/get}}]]
+                                        ["/comment"
+                                         [""
+                                          {:post {:summary "Create a comment"
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :swagger {:tags ["comment"] :security [{:id_token []}]}
+                                                  :responses #ig/ref :gpml.handler.comment/post-response
+                                                  :parameters #ig/ref :gpml.handler.comment/post-params
+                                                  :handler #ig/ref :gpml.handler.comment/post}
+                                           :get {:summary "Get comments for a specific resource"
+                                                 :swagger {:tags ["comment"] :security [{:id_token []}]}
+                                                 ;;:responses #ig/ref :gpml.handler.comment/get-response
+                                                 :parameters #ig/ref :gpml.handler.comment/get-params
+                                                 :handler #ig/ref :gpml.handler.comment/get}
+                                           :put {:summary "Update a comment details"
+                                                 :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                              #ig/ref :gpml.auth/auth-required
+                                                              #ig/ref :gpml.auth/restrict-to-admin-and-comment-author-middleware]
+                                                 :swagger {:tags ["comment"] :security [{:id_token []}]}
+                                                 :responses #ig/ref :gpml.handler.comment/put-response
+                                                 :parameters #ig/ref :gpml.handler.comment/put-params
+                                                 :handler #ig/ref :gpml.handler.comment/put}}]
+                                         ["/:id"
+                                          {:delete {:summary "Delete a comment"
+                                                    :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                 #ig/ref :gpml.auth/auth-required
+                                                                 #ig/ref :gpml.auth/restrict-to-admin-and-comment-author-middleware]
+                                                    :swagger {:tags ["comment"] :security [{:id_token []}]}
+                                                    :responses #ig/ref :gpml.handler.comment/delete-response
+                                                    :parameters #ig/ref :gpml.handler.comment/delete-params
+                                                    :handler #ig/ref :gpml.handler.comment/delete}}]]]]
                               :logger #ig/ref :duct.logger/timbre}
 
   ;; Consts
@@ -573,6 +614,19 @@
   :gpml.handler.auth/new-roles {:conn #ig/ref :gpml.db/spec}
   :gpml.handler.auth/update-roles {:conn #ig/ref :gpml.db/spec}
   :gpml.handler.auth/delete {:conn #ig/ref :gpml.db/spec}
+  :gpml.handler.comment/post {:db #ig/ref :duct.database/sql
+                              :mailjet-config #ig/ref :gpml.config/mailjet}
+  :gpml.handler.comment/post-params {}
+  :gpml.handler.comment/post-response {}
+  :gpml.handler.comment/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.comment/get-params {}
+  :gpml.handler.comment/get-response {}
+  :gpml.handler.comment/put {:db #ig/ref :duct.database/sql}
+  :gpml.handler.comment/put-params {}
+  :gpml.handler.comment/put-response {}
+  :gpml.handler.comment/delete {:db #ig/ref :duct.database/sql}
+  :gpml.handler.comment/delete-params {}
+  :gpml.handler.comment/delete-response {}
   :gpml.handler.detail/topics {}
   :gpml.handler.detail/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.detail/delete {:db #ig/ref :duct.database/sql
@@ -594,6 +648,9 @@
   :gpml.handler.community/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.community/get-params {}
 
+  :gpml.handler.export/export-types {}
+  :gpml.handler.export/get {:db #ig/ref :duct.database/sql}
+
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}
   :duct.database/sql {:jdbc-url #duct/env "DATABASE_URL"}
@@ -606,6 +663,7 @@
                                    :audience #duct/env "OIDC_AUDIENCE_CKAN"
                                    :db #ig/ref :duct.database/sql}
   :gpml.auth/auth-required {}
+  :gpml.auth/restrict-to-admin-and-comment-author-middleware {:db #ig/ref :duct.database/sql}
   :gpml.auth/approved-user {:db #ig/ref :duct.database/sql}
   :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}
   :gpml.auth/reviewer-required-middleware {:db #ig/ref :duct.database/sql}

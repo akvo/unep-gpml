@@ -271,6 +271,12 @@
             font-size: 12px !important;
           }
         }
+        li {
+          font-size: 16px;
+          @-moz-document url-prefix() {
+            font-size: 12px !important;
+          }
+        }
       }
     }
   }
@@ -587,6 +593,65 @@
             }
           }
         }
+      }
+    }
+    .comments-container {
+      background: #ffffff;
+      box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+      padding: 20px;
+      margin-left: 10px;
+      margin-right: 10px;
+      border-radius: 8px;
+      .comment-list-container {
+        border-bottom: 1px solid #edf2f7;
+        margin-bottom: 20px;
+        .ant-form-item {
+          width: 500px;
+          .comment-reply {
+            margin-top: 10px;
+            border: 1px solid #34a6ff;
+            border-radius: 25px;
+            color: #34a6ff;
+            font-weight: 700;
+          }
+        }
+      }
+      input {
+        background-color: #edf2f7;
+        border-radius: 5px;
+        border: none;
+      }
+      textarea {
+        background-color: #edf2f7;
+        border-radius: 5px;
+        border: none;
+      }
+      label {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      .comment-submit {
+        margin: 0 auto;
+        display: block;
+        border: 1px solid #34a6ff;
+        border-radius: 25px;
+        color: #34a6ff;
+        font-weight: 700;
+      }
+      .ant-avatar {
+        width: 50px;
+        height: 50px;
+      }
+      .ant-comment-avatar img {
+        width: 50px;
+        height: 50px;
+      }
+      h5 {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+      }
+      p {
+        font-size: 1rem;
       }
     }
     .record-table {
@@ -931,6 +996,13 @@
             padding: 7px 10px !important;
           }
           p {
+            font-size: 1.4rem;
+            margin-bottom: 0px;
+            @-moz-document url-prefix() {
+              font-size: 12px !important;
+            }
+          }
+          li {
             font-size: 1.4rem;
             margin-bottom: 0px;
             @-moz-document url-prefix() {

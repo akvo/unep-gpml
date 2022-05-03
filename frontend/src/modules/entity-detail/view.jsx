@@ -509,7 +509,7 @@ const StakeholderDetail = ({
               </div>
             </Col>
           </Row>
-          <div>
+          <div className="owned-resources-wrapper">
             {ownedResources.length > 0 && (
               <CardComponent
                 title={`Content on the platform (${ownedResourcesCount})`}
@@ -606,10 +606,7 @@ const StakeholderDetail = ({
                 }}
               >
                 <div style={{ padding: "0 10px" }} className="individuals">
-                  <Row
-                    gutter={[16, 16]}
-                    style={{ width: "100%", justifyContent: "space-between" }}
-                  >
+                  <Row gutter={[16, 16]} style={{ width: "100%" }}>
                     {bookedResources.map((item) => (
                       <Col xs={6} lg={7} key={item.id}>
                         <div

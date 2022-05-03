@@ -95,12 +95,6 @@ const detailFinancingResource = [
     value: "validTo",
     type: "date",
   },
-  {
-    key: "publishYear",
-    name: "Year",
-    value: "publishYear",
-    type: "number",
-  },
 ];
 
 const detailEvent = [
@@ -125,12 +119,6 @@ const detailTechnology = [
     name: "Organisation Type",
     value: "organisationType",
     type: "name",
-  },
-  {
-    key: "headquarters",
-    name: "Headquarters",
-    value: "headquarters",
-    type: "object",
   },
   {
     key: "developmentStage",

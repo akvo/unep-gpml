@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
-import { Drawer, Menu, Button } from "antd";
+import { Drawer, Menu, Button, Input } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import { topicNames } from "../../utils/misc";
 import humps from "humps";
 import sumBy from "lodash/sumBy";
@@ -12,6 +13,7 @@ const { SubMenu } = Menu;
 const ResponsiveMenu = withRouter(
   ({
     history,
+    updateQuery,
     showResponsiveMenu,
     setShowResponsiveMenu,
     topicsCount,
@@ -25,9 +27,24 @@ const ResponsiveMenu = withRouter(
     setFilterMenu,
     stakeholderCounts,
   }) => {
+    const [isShownForm, setIsShownForm] = useState(false);
+    const [search, setSearch] = useState("");
     const loading = !resources;
     const allResources = sumBy(resources, "count");
     const loadingStakeholders = !stakeholderCounts;
+    const viewport = window.innerWidth;
+
+    const handleSearch = (src) => {
+      if (src) {
+        history.push(`?q=${src.trim()}`);
+        updateQuery("q", src.trim());
+      } else {
+        updateQuery("q", "");
+      }
+      setSearch("");
+      setIsShownForm(false);
+      setShowResponsiveMenu(false);
+    };
 
     const handleOnClickNeedAuth = ({ key }) => {
       {
@@ -52,6 +69,8 @@ const ResponsiveMenu = withRouter(
         } else if (key === "data-hub" || key === "stakeholder-overview") {
         } else if (key.includes("knowledge-library")) {
           history.push(`/knowledge-library`);
+        } else if (key.includes("search-button")) {
+          return;
         } else {
           history.push(`/${key}`);
         }
@@ -63,18 +82,56 @@ const ResponsiveMenu = withRouter(
       <Drawer
         title="Menu"
         placement="right"
-        width="300px"
+        width={viewport <= 540 ? "100%" : "300px"}
         className="responsive-menu-wrapper"
         onClose={() => setShowResponsiveMenu(false)}
         visible={showResponsiveMenu}
       >
         <Menu onClick={handleOnClickNeedAuth} mode="inline">
           {/* About */}
+
+          <li className="small-screen-menu">
+            <div className="src mobile-src">
+              {!isShownForm && (
+                <Button
+                  onClick={() => setIsShownForm(!isShownForm)}
+                  type="primary"
+                  shape="circle"
+                  size="small"
+                  className="search-button"
+                  icon={<SearchOutlined />}
+                />
+              )}
+              {isShownForm && (
+                <Input
+                  className="input-src"
+                  placeholder="Search resources"
+                  value={search}
+                  suffix={
+                    <Button
+                      onClick={() => handleSearch(search)}
+                      type="primary"
+                      shape="circle"
+                      size="small"
+                      icon={<SearchOutlined />}
+                    />
+                  }
+                  onPressEnter={(e) => handleSearch(e.target.value)}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              )}
+            </div>
+          </li>
+
           <Menu.Item key="about-us" className="nav-link">
             About
           </Menu.Item>
           {/* Explore */}
-          <SubMenu key="explore" title="Explore" className="nav-link">
+          <SubMenu
+            key="explore"
+            title="Explore"
+            className="nav-link menu-explore"
+          >
             <Menu.Item
               key="topics"
               className="nav-link"
@@ -109,10 +166,17 @@ const ResponsiveMenu = withRouter(
             </a>
           </Menu.Item>
           {/* Knowledge Exchange */}
+          <Menu.Item
+            key="knowledge-library"
+            className="nav-link small-screen-menu"
+          >
+            <Link to="/knowledge-library">Knowledge Exchange</Link>
+          </Menu.Item>
+
           <SubMenu
             key="knowledge-exchange"
             title="Knowledge Exchange"
-            className="nav-link"
+            className="nav-link big-screen-menu"
           >
             <Menu.Item
               key="knowledge-library"
@@ -153,6 +217,7 @@ const ResponsiveMenu = withRouter(
                 );
               })}
           </SubMenu>
+
           {/* Connect Stakeholders */}
           <Menu.Item key="stakeholder-overview" className="nav-link">
             <Link to="/events">Connect Stakeholders</Link>
@@ -210,169 +275,178 @@ const ResponsiveMenu = withRouter(
               <Menu.Item key="join-gpml" className="auth-menu nav-link">
                 Join GPML
               </Menu.Item>
-              <Menu.Item key="sign-in" className="auth-menu nav-link">
+
+              <Menu.Item
+                key="sign-in"
+                className="auth-menu nav-link big-screen-menu"
+              >
+                Sign in
+              </Menu.Item>
+
+              <Menu.Item
+                key="sign-in"
+                className="green-text green-border small-screen-menu"
+              >
                 Sign in
               </Menu.Item>
             </>
           )}
           {/* Add Content */}
           {isAuthenticated && profile?.reviewStatus === "APPROVED" && (
-            <>
-              <SubMenu
-                key="add-content"
-                title="Add Content"
-                className="auth-menu nav-link"
+            <SubMenu
+              key="add-content"
+              title="Add Content"
+              className="auth-menu nav-link menu-add-content big-screen-menu"
+            >
+              <Menu.Item
+                key="add-initiative"
+                className="nav-link"
+                onClick={() => {
+                  UIStore.update((e) => {
+                    e.formStep = {
+                      ...e.formStep,
+                      initiative: 1,
+                    };
+                    e.formEdit = {
+                      ...e.formEdit,
+                      initiative: {
+                        status: "add",
+                        id: null,
+                      },
+                    };
+                  });
+                }}
               >
-                <Menu.Item
-                  key="add-initiative"
-                  className="nav-link"
-                  onClick={() => {
-                    UIStore.update((e) => {
-                      e.formStep = {
-                        ...e.formStep,
-                        initiative: 1,
-                      };
-                      e.formEdit = {
-                        ...e.formEdit,
-                        initiative: {
-                          status: "add",
-                          id: null,
-                        },
-                      };
-                    });
-                  }}
-                >
-                  Initiative
-                </Menu.Item>
-                <Menu.Item
-                  key="add-action-plan"
-                  className="nav-link"
-                  onClick={() => {
-                    UIStore.update((e) => {
-                      e.formStep = {
-                        ...e.formStep,
-                        actionPlan: 1,
-                      };
-                      e.formEdit = {
-                        ...e.formEdit,
-                        actionPlan: {
-                          status: "add",
-                          id: null,
-                        },
-                      };
-                    });
-                  }}
-                >
-                  Action Plan
-                </Menu.Item>
-                <Menu.Item
-                  key="add-policy"
-                  className="nav-link"
-                  onClick={() => {
-                    UIStore.update((e) => {
-                      e.formStep = {
-                        ...e.formStep,
-                        policy: 1,
-                      };
-                      e.formEdit = {
-                        ...e.formEdit,
-                        policy: {
-                          status: "add",
-                          id: null,
-                        },
-                      };
-                    });
-                  }}
-                >
-                  Policy
-                </Menu.Item>
-                <Menu.Item
-                  key="add-technical-resource"
-                  className="nav-link"
-                  onClick={() => {
-                    UIStore.update((e) => {
-                      e.formStep = {
-                        ...e.formStep,
-                        technicalResource: 1,
-                      };
-                      e.formEdit = {
-                        ...e.formEdit,
-                        technicalResource: {
-                          status: "add",
-                          id: null,
-                        },
-                      };
-                    });
-                  }}
-                >
-                  Technical Resource
-                </Menu.Item>
-                <Menu.Item
-                  key="add-financing-resource"
-                  className="nav-link"
-                  onClick={() => {
-                    UIStore.update((e) => {
-                      e.formStep = {
-                        ...e.formStep,
-                        financingResource: 1,
-                      };
-                      e.formEdit = {
-                        ...e.formEdit,
-                        financingResource: {
-                          status: "add",
-                          id: null,
-                        },
-                      };
-                    });
-                  }}
-                >
-                  Financing Resource
-                </Menu.Item>
-                <Menu.Item
-                  key="add-event"
-                  className="nav-link"
-                  onClick={() => {
-                    UIStore.update((e) => {
-                      e.formStep = {
-                        ...e.formStep,
-                        event: 1,
-                      };
-                      e.formEdit = {
-                        ...e.formEdit,
-                        event: {
-                          status: "add",
-                          id: null,
-                        },
-                      };
-                    });
-                    history.push("/add-event");
-                  }}
-                >
-                  Event
-                </Menu.Item>
-                <Menu.Item
-                  key="add-technology"
-                  className="nav-link"
-                  onClick={() => {
-                    UIStore.update((e) => {
-                      e.formStep = {
-                        ...e.formStep,
-                        technology: 1,
-                      };
-                      e.formEdit = {
-                        ...e.formEdit,
-                        technology: {
-                          status: "add",
-                          id: null,
-                        },
-                      };
-                    });
-                  }}
-                >
-                  Technology
-                </Menu.Item>
-              </SubMenu>
-            </>
+                Initiative
+              </Menu.Item>
+              <Menu.Item
+                key="add-action-plan"
+                className="nav-link"
+                onClick={() => {
+                  UIStore.update((e) => {
+                    e.formStep = {
+                      ...e.formStep,
+                      actionPlan: 1,
+                    };
+                    e.formEdit = {
+                      ...e.formEdit,
+                      actionPlan: {
+                        status: "add",
+                        id: null,
+                      },
+                    };
+                  });
+                }}
+              >
+                Action Plan
+              </Menu.Item>
+              <Menu.Item
+                key="add-policy"
+                className="nav-link"
+                onClick={() => {
+                  UIStore.update((e) => {
+                    e.formStep = {
+                      ...e.formStep,
+                      policy: 1,
+                    };
+                    e.formEdit = {
+                      ...e.formEdit,
+                      policy: {
+                        status: "add",
+                        id: null,
+                      },
+                    };
+                  });
+                }}
+              >
+                Policy
+              </Menu.Item>
+              <Menu.Item
+                key="add-technical-resource"
+                className="nav-link"
+                onClick={() => {
+                  UIStore.update((e) => {
+                    e.formStep = {
+                      ...e.formStep,
+                      technicalResource: 1,
+                    };
+                    e.formEdit = {
+                      ...e.formEdit,
+                      technicalResource: {
+                        status: "add",
+                        id: null,
+                      },
+                    };
+                  });
+                }}
+              >
+                Technical Resource
+              </Menu.Item>
+              <Menu.Item
+                key="add-financing-resource"
+                className="nav-link"
+                onClick={() => {
+                  UIStore.update((e) => {
+                    e.formStep = {
+                      ...e.formStep,
+                      financingResource: 1,
+                    };
+                    e.formEdit = {
+                      ...e.formEdit,
+                      financingResource: {
+                        status: "add",
+                        id: null,
+                      },
+                    };
+                  });
+                }}
+              >
+                Financing Resource
+              </Menu.Item>
+              <Menu.Item
+                key="add-event"
+                className="nav-link"
+                onClick={() => {
+                  UIStore.update((e) => {
+                    e.formStep = {
+                      ...e.formStep,
+                      event: 1,
+                    };
+                    e.formEdit = {
+                      ...e.formEdit,
+                      event: {
+                        status: "add",
+                        id: null,
+                      },
+                    };
+                  });
+                  history.push("/add-event");
+                }}
+              >
+                Event
+              </Menu.Item>
+              <Menu.Item
+                key="add-technology"
+                className="nav-link"
+                onClick={() => {
+                  UIStore.update((e) => {
+                    e.formStep = {
+                      ...e.formStep,
+                      technology: 1,
+                    };
+                    e.formEdit = {
+                      ...e.formEdit,
+                      technology: {
+                        status: "add",
+                        id: null,
+                      },
+                    };
+                  });
+                }}
+              >
+                Technology
+              </Menu.Item>
+            </SubMenu>
           )}
           {/* Add Content Disabled */}
           {isAuthenticated && profile?.reviewStatus !== "APPROVED" && (
@@ -386,10 +460,24 @@ const ResponsiveMenu = withRouter(
           {/* Profile & Logout */}
           {isAuthenticated && (
             <>
-              <Menu.Item key="profile" className="auth-menu nav-link">
+              <Menu.Item
+                key="profile"
+                className="auth-menu nav-link menu-profile big-screen-menu"
+              >
                 Profile
               </Menu.Item>
-              <Menu.Item key="logout" className="auth-menu nav-link">
+
+              <Menu.Item
+                key="logout"
+                className="auth-menu nav-link big-screen-menu"
+              >
+                Logout
+              </Menu.Item>
+
+              <Menu.Item
+                key="logout"
+                className="button-logout green-text green-border small-screen-menu"
+              >
                 Logout
               </Menu.Item>
             </>

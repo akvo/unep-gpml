@@ -841,6 +841,8 @@ const AdminSection = ({
         </TabPane>
         <TabPane tab="Resources" key="resources" className="profile-tab-pane">
           {renderList(resourcesListOpts, setResourcesListOpts, "Resources")}
+        </TabPane>
+        <TabPane tab="Tags" key="tags" className="profile-tab-pane">
           {renderList(tagsListOpts, setTagsListOpts, "Tags")}
         </TabPane>
       </Tabs>
