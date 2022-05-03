@@ -377,6 +377,7 @@
       @-moz-document url-prefix() {
         height: 90px !important;
       }
+
       p {
         margin-top: 10px;
         text-transform: uppercase;
@@ -390,7 +391,8 @@
       }
 
       .item-menu {
-        img {
+        img,
+        .partner-icon {
           height: 30px;
           width: 30px;
           @-moz-document url-prefix() {

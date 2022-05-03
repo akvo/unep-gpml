@@ -24,7 +24,6 @@ const LeftSidebar = ({ children, active = 1, sidebar }) => {
                   className="item-menu"
                   onClick={() => setActiveMenu(s?.id)}
                 >
-                  {/* <img src={s?.icon} alt={s?.title} /> */}
                   {s.icon}
                   <p>{s?.title}</p>
                 </Link>
@@ -34,13 +33,20 @@ const LeftSidebar = ({ children, active = 1, sidebar }) => {
                   className="item-menu"
                   onClick={() => setActiveMenu(s?.id)}
                 >
-                  {/* <img src={s?.icon} alt={s?.title} /> */}
+                  {s.icon}
+                  <p>{s?.title}</p>
+                </a>
+              ) : s.title.toLowerCase() === "partners" ? (
+                <a
+                  href="https://datahub.gpmarinelitter.org/pages/partner"
+                  className="item-menu"
+                  onClick={() => setActiveMenu(s?.id)}
+                >
                   {s.icon}
                   <p>{s?.title}</p>
                 </a>
               ) : (
                 <div className="item-menu disabled">
-                  {/* <img src={s?.icon} alt={s?.title} /> */}
                   {s.icon}
                   <p>{s?.title}</p>
                 </div>
