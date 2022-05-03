@@ -1326,13 +1326,15 @@
   .multiselection-dropdown {
     zoom: 80%;
     @-moz-document url-prefix() {
-      transform: scale(0.7);
+      .ant-select-item-group {
+        font-size: 10px;
+      }
+      .ant-select-item-option-content {
+        font-size: 12px;
+      }
     }
   }
   .overlay-zoom {
     zoom: 100%;
-    @-moz-document url-prefix() {
-      transform: scale(1);
-    }
   }
 }
