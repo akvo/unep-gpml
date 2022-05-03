@@ -452,10 +452,10 @@ const AdminSection = ({
     }, 100);
   };
 
-  const exportList = (type) => {
+  const exportList = (type, status) => {
     setExportLoading(true);
     api
-      .get(`/export/${type}`)
+      .get(`/export/${type}?review_status=${status}`)
       .then((res) => {
         downloadCSV(res.data, `${type}.csv`);
         setExportLoading(false);
@@ -600,7 +600,8 @@ const AdminSection = ({
             ? "users"
             : listOpts.type === "resources"
             ? "topics"
-            : listOpts.type
+            : listOpts.type,
+          listOpts.reviewStatus
         )
       }
     >
@@ -610,7 +611,6 @@ const AdminSection = ({
 
   const renderList = (listOpts, setListOpts, title) => {
     const itemList = listOpts.data || [];
-
     const onChangePage = (current, pageSize) => {
       (async () => {
         const size = pageSize ? pageSize : itemList.limit;
