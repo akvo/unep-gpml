@@ -12,3 +12,11 @@ VALUES :t*:tags RETURNING *;
 -- :name delete-resource-tags :! :n
 -- :doc Delete relation for <resource>_tag.
 DELETE FROM :i:table WHERE :i:resource-col = :resource-id;
+
+-- :name get-resource-tags :? :*
+-- :doc Get resource tags
+SELECT rt.:i:resource-col, t.id, t.tag, tg.category AS tag_category
+FROM :i:table rt
+JOIN tag t ON rt.tag = t.id
+JOIN tag_category tg ON t.tag_category = tg.id
+WHERE rt.:i:resource-col = :resource-id

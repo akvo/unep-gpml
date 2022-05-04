@@ -323,7 +323,11 @@
      {:headquarters (gpml.db.country/country-by-id db {:id headquarters-country})})))
 
 (defmethod extra-details "stakeholder" [_ db stakeholder]
-  (:data (db.detail/get-stakeholder-tags db stakeholder)))
+  (let [stakeholder-tags (db.resource.tag/get-resource-tags db {:table "stakeholder_tag"
+                                                                :resource-col "stakeholder"
+                                                                :resource-id (:id stakeholder)})
+        stakeholder-details (:data (db.detail/get-stakeholder-tags db stakeholder))]
+    (assoc stakeholder-details :tags stakeholder-tags)))
 
 (defn expand-related-resource-content [db resource]
   (let [related_content (db.resource/related-content-by-id db (select-keys resource [:id]))]
