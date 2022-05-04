@@ -369,7 +369,13 @@
     [:geo_coverage_type {:optional true} geo/coverage_type]
     [:country {:optional true} int?]
     [:subnational_area_only {:optional true} string?]
-    [:name {:optional true} string?]]
+    [:name {:optional true} string?]
+    [:tags {:optional true}
+     [:vector {:optional true}
+      [:map {:optional true}
+       [:id {:optional true} pos-int?]
+       [:tag string?]
+       [:tag_category {:optional true} string?]]]]]
    handler.geo/params-payload))
 
 (defmethod ig/init-key ::suggested-profiles-params
