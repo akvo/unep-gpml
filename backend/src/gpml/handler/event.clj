@@ -157,7 +157,7 @@
        [:tag string?]]]]]
    (into handler.geo/params-payload)))
 
-(defmethod ig/init-key :gpml.handler.event/post [_ {:keys [db mailjet-config] :as config}]
+(defmethod ig/init-key :gpml.handler.event/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params] :as req}]
     (jdbc/with-db-transaction [conn (:spec db)]
       (let [result (create-event conn mailjet-config (assoc body-params

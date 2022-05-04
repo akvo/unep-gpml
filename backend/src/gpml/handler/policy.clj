@@ -6,7 +6,6 @@
    [gpml.db.language :as db.language]
    [gpml.db.policy :as db.policy]
    [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.db.tag :as db.tag]
    [gpml.email-util :as email]
    [gpml.handler.auth :as h.auth]
    [gpml.handler.geo :as handler.geo]
@@ -125,7 +124,7 @@
      (merge data {:type "policy"}))
     policy-id))
 
-(defmethod ig/init-key :gpml.handler.policy/post [_ {:keys [db mailjet-config] :as config}]
+(defmethod ig/init-key :gpml.handler.policy/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params] :as req}]
     (jdbc/with-db-transaction [conn (:spec db)]
       (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
