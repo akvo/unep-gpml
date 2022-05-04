@@ -1,18 +1,20 @@
 (ns gpml.handler.policy
-  (:require [clojure.java.jdbc :as jdbc]
-            [gpml.auth :as auth]
-            [gpml.db.favorite :as db.favorite]
-            [gpml.db.language :as db.language]
-            [gpml.db.policy :as db.policy]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.tag :as db.tag]
-            [gpml.email-util :as email]
-            [gpml.handler.auth :as h.auth]
-            [gpml.handler.geo :as handler.geo]
-            [gpml.handler.image :as handler.image]
-            [gpml.pg-util :as pg-util]
-            [integrant.core :as ig]
-            [ring.util.response :as resp]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [gpml.auth :as auth]
+   [gpml.db.favorite :as db.favorite]
+   [gpml.db.language :as db.language]
+   [gpml.db.policy :as db.policy]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.db.tag :as db.tag]
+   [gpml.email-util :as email]
+   [gpml.handler.auth :as h.auth]
+   [gpml.handler.geo :as handler.geo]
+   [gpml.handler.image :as handler.image]
+   [gpml.handler.resource.tag :as handler.resource.tag]
+   [gpml.pg-util :as pg-util]
+   [integrant.core :as ig]
+   [ring.util.response :as resp]))
 
 (defn expand-entity-associations
   [entity-connections resource-id]
@@ -34,34 +36,18 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn add-tags [conn mailjet-config tags policy-id]
-  (let [tag-ids (map #(:id %) tags)]
-    (if-not (some nil? tag-ids)
-      (db.policy/add-policy-tags conn {:tags (map #(vector policy-id %) tag-ids)})
-      (let [tag-category (:id (db.tag/tag-category-by-category-name conn {:category "general"}))
-            new-tags (filter #(not (contains? % :id)) tags)
-            tags-to-db (map #(vector % tag-category) (vec (map #(:tag %) new-tags)))
-            new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags tags-to-db}))]
-        (db.policy/add-policy-tags conn {:tags (map #(vector policy-id %) (concat (remove nil? tag-ids) new-tag-ids))})
-        (map
-          #(email/notify-admins-pending-approval
-            conn
-            mailjet-config
-            (merge % {:type "tag"}))
-          new-tags)))))
-
-(defn create-policy [conn {:keys [title original_title abstract url
-                                  data_source type_of_law record_number
-                                  first_publication_date latest_amendment_date
-                                  status country geo_coverage_type
-                                  geo_coverage_value implementing_mea
-                                  geo_coverage_countries geo_coverage_country_groups
-                                  geo_coverage_value_subnational_city
-                                  tags urls created_by image language
-                                  owners info_docs sub_content_type
-                                  document_preview related_content topics
-                                  attachments remarks mailjet-config
-                                  entity_connections individual_connections]}]
+(defn create-policy [conn mailjet-config
+                     {:keys [title original_title abstract url
+                             data_source type_of_law record_number
+                             first_publication_date latest_amendment_date
+                             status country geo_coverage_type
+                             geo_coverage_value implementing_mea
+                             geo_coverage_countries geo_coverage_country_groups
+                             geo_coverage_value_subnational_city
+                             tags urls created_by image language
+                             owners info_docs sub_content_type
+                             document_preview related_content topics
+                             attachments remarks entity_connections individual_connections]}]
   (let [data {:title title
               :original_title original_title
               :abstract abstract
@@ -94,11 +80,14 @@
         individual_connections (conj individual_connections {:stakeholder created_by
                                                              :role "owner"})
         owners (distinct (remove nil? (flatten (conj owners
-                                                 (map #(when (= (:role %) "owner")
-                                                         (:stakeholder %))
-                                                   individual_connections)))))]
+                                                     (map #(when (= (:role %) "owner")
+                                                             (:stakeholder %))
+                                                          individual_connections)))))]
     (when (not-empty tags)
-      (add-tags conn mailjet-config tags policy-id))
+      (handler.resource.tag/create-resource-tags conn mailjet-config {:tags tags
+                                                                      :tag-category "general"
+                                                                      :resource-name "policy"
+                                                                      :resource-id policy-id}))
     (when (not-empty urls)
       (let [lang-urls (map #(vector policy-id
                                     (->> % :lang
@@ -136,13 +125,12 @@
      (merge data {:type "policy"}))
     policy-id))
 
-(defmethod ig/init-key :gpml.handler.policy/post [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.policy/post [_ {:keys [db mailjet-config] :as config}]
   (fn [{:keys [jwt-claims body-params] :as req}]
     (jdbc/with-db-transaction [conn (:spec db)]
       (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-            policy-id (create-policy conn (assoc body-params
-                                                 :created_by (:id user)
-                                                 :mailjet-config mailjet-config))]
+            policy-id (create-policy conn mailjet-config (assoc body-params
+                                                                :created_by (:id user)))]
         (resp/created (:referrer req) {:message "New policy created" :id policy-id})))))
 
 (def post-params
