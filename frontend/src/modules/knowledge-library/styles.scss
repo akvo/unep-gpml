@@ -68,7 +68,7 @@
     display: flex;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 540px) {
     .topic-main-container {
       background-color: #d3dee7;
     }
@@ -1002,7 +1002,7 @@
     max-width: calc(100% - 300px);
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 540px) {
     .topic-view {
       align-self: center;
       max-width: 90%;
@@ -1018,7 +1018,7 @@
     }
   }
 
-  @media (min-width: 401px) and (max-width: 950px) {
+  @media (min-width: 541px) and (max-width: 950px) {
     .topic-view {
       max-width: 100%;
       background-color: #255b87;
