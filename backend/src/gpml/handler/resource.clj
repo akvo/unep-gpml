@@ -46,11 +46,11 @@
             new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags tags-to-db}))]
         (db.resource/add-resource-tags conn {:tags (map #(vector resource-id %) (concat (remove nil? tag-ids) new-tag-ids))})
         (map
-          #(email/notify-admins-pending-approval
-             conn
-             mailjet-config
-             (merge % {:type "tag"}))
-          new-tags)))))
+         #(email/notify-admins-pending-approval
+           conn
+           mailjet-config
+           (merge % {:type "tag"}))
+         new-tags)))))
 
 (defn create-resource [conn {:keys [resource_type title publish_year
                                     summary value value_currency
@@ -93,9 +93,9 @@
         individual_connections (conj individual_connections {:stakeholder created_by
                                                              :role "owner"})
         owners (distinct (remove nil? (flatten (conj owners
-                                                 (map #(when (= (:role %) "owner")
-                                                         (:stakeholder %))
-                                                   individual_connections)))))]
+                                                     (map #(when (= (:role %) "owner")
+                                                             (:stakeholder %))
+                                                          individual_connections)))))]
     (doseq [stakeholder-id owners]
       (h.auth/grant-topic-to-stakeholder! conn {:topic-id resource-id
                                                 :topic-type "resource"

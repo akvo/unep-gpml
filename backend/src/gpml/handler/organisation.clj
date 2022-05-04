@@ -32,13 +32,12 @@
         (db.organisation/add-geo-coverage conn {:id org-id :geo org-geo})))
     (when (seq (:expertise org))
       (db.organisation/delete-organisation-tags conn org)
-      (db.organisation/add-organisation-tags conn {:tags (map #(vector org-id %) (:expertise org ))}))
+      (db.organisation/add-organisation-tags conn {:tags (map #(vector org-id %) (:expertise org))}))
     org-id))
-
 
 (defmethod ig/init-key :gpml.handler.organisation/get [_ {:keys [db]}]
   (fn [_]
-      (resp/response (db.organisation/all-members (:spec db)))))
+    (resp/response (db.organisation/all-members (:spec db)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/get-id [_ {:keys [db]}]
   (fn [{{:keys [path]} :parameters}]
@@ -75,11 +74,11 @@
 
 (defmethod ig/init-key :gpml.handler.organisation/post-params [_ _]
   (into [:map
-    [:name string?]
-    [:url string?]
-    [:is_member boolean?]
-    [:stakeholder string?]
-    [:country int?]
+         [:name string?]
+         [:url string?]
+         [:is_member boolean?]
+         [:stakeholder string?]
+         [:country int?]
          [:geo_coverage_type geo/coverage_type]]
         handler.geo/params-payload))
 
@@ -90,19 +89,19 @@
 
 (defmethod ig/init-key :gpml.handler.organisation/put-params [_ _]
   (into [:map
-    [:id {:optional true} int?]
-    [:name string?]
-    [:url string?]
-    [:logo {:optional true} string?]
-    [:country int?]
-    [:geo_coverage_type geo/coverage_type]
-    [:type string?]
-    [:representative_group_other [:maybe string?]]
-    [:representative_group_civil_society [:maybe string?]]
-    [:representative_group_private_sector [:maybe string?]]
-    [:representative_group_government [:maybe string?]]
-    [:representative_group_academia_research [:maybe string?]]
-    [:subnational_area {:optional true} [:maybe string?]]
-    [:expertise vector?]
+         [:id {:optional true} int?]
+         [:name string?]
+         [:url string?]
+         [:logo {:optional true} string?]
+         [:country int?]
+         [:geo_coverage_type geo/coverage_type]
+         [:type string?]
+         [:representative_group_other [:maybe string?]]
+         [:representative_group_civil_society [:maybe string?]]
+         [:representative_group_private_sector [:maybe string?]]
+         [:representative_group_government [:maybe string?]]
+         [:representative_group_academia_research [:maybe string?]]
+         [:subnational_area {:optional true} [:maybe string?]]
+         [:expertise vector?]
          [:program string?]]
         handler.geo/params-payload))

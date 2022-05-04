@@ -45,11 +45,11 @@
             new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags tags-to-db}))]
         (db.technology/add-technology-tags conn {:tags (map #(vector technology-id %) (concat (remove nil? tag-ids) new-tag-ids))})
         (map
-          #(email/notify-admins-pending-approval
-             conn
-             mailjet-config
-             (merge % {:type "tag"}))
-          new-tags)))))
+         #(email/notify-admins-pending-approval
+           conn
+           mailjet-config
+           (merge % {:type "tag"}))
+         new-tags)))))
 
 (defn create-technology [conn {:keys [name organisation_type
                                       development_stage specifications_provided
@@ -91,9 +91,9 @@
         individual_connections (conj individual_connections {:stakeholder created_by
                                                              :role "owner"})
         owners (distinct (remove nil? (flatten (conj owners
-                                                 (map #(when (= (:role %) "owner")
-                                                         (:stakeholder %))
-                                                   individual_connections)))))]
+                                                     (map #(when (= (:role %) "owner")
+                                                             (:stakeholder %))
+                                                          individual_connections)))))]
     (when headquarter
       (db.country/add-country-headquarter conn {:id country :headquarter headquarter}))
     (doseq [stakeholder-id owners]
@@ -140,50 +140,50 @@
 
 (def post-params
   (into [:map
-    [:name string?]
-    [:year_founded {:optional true} integer?]
-    [:organisation_type {:optional true}
-     [:enum "Established Company", "Research Lab", "Academic Institution",
-      "Startup", "Non-Profit Org", "Partnerships"]]
-    [:development_stage {:optional true}
-     [:enum "In market", "Scale up", "Prototype", "Pilot"
-      "Development", "Research"]]
-    [:country {:optional true} integer?]
-    [:geo_coverage_type
-     [:enum "global", "regional", "national", "transnational",
-      "sub-national", "global with elements in specific areas"]]
-    [:geo_coverage_value_subnational_city {:optional true} string?]
-    [:image {:optional true} string?]
-    [:logo {:optional true} string?]
-    [:tags {:optional true}
-     [:vector {:optional true}
-      [:map {:optional true}
-       [:id {:optional true} pos-int?]
-       [:tag string?]]]]
-    [:url {:optional true} string?]
-    [:info_docs {:optional true} string?]
-    [:related_content {:optional true}
-     [:vector {:optional true} integer?]]
-    [:sub_content_type {:optional true} string?]
-    [:headquarter {:optional true} string?]
-    [:document_preview {:optional true} boolean?]
-    [:entity_connections {:optional true}
-     [:vector {:optional true}
-      [:map
-       [:entity int?]
-       [:role
-        [:enum "owner" "implementor" "partner" "donor"]]]]]
-    [:individual_connections {:optional true}
-      [:vector {:optional true}
-       [:map
-        [:stakeholder int?]
-        [:role
-         [:enum "owner" "resource_editor"]]]]]
-    [:urls {:optional true}
-     [:vector {:optional true}
-      [:map [:lang string?] [:url [:string {:min 1}]]]]]
-    auth/owners-schema]
-  handler.geo/params-payload))
+         [:name string?]
+         [:year_founded {:optional true} integer?]
+         [:organisation_type {:optional true}
+          [:enum "Established Company", "Research Lab", "Academic Institution",
+           "Startup", "Non-Profit Org", "Partnerships"]]
+         [:development_stage {:optional true}
+          [:enum "In market", "Scale up", "Prototype", "Pilot"
+           "Development", "Research"]]
+         [:country {:optional true} integer?]
+         [:geo_coverage_type
+          [:enum "global", "regional", "national", "transnational",
+           "sub-national", "global with elements in specific areas"]]
+         [:geo_coverage_value_subnational_city {:optional true} string?]
+         [:image {:optional true} string?]
+         [:logo {:optional true} string?]
+         [:tags {:optional true}
+          [:vector {:optional true}
+           [:map {:optional true}
+            [:id {:optional true} pos-int?]
+            [:tag string?]]]]
+         [:url {:optional true} string?]
+         [:info_docs {:optional true} string?]
+         [:related_content {:optional true}
+          [:vector {:optional true} integer?]]
+         [:sub_content_type {:optional true} string?]
+         [:headquarter {:optional true} string?]
+         [:document_preview {:optional true} boolean?]
+         [:entity_connections {:optional true}
+          [:vector {:optional true}
+           [:map
+            [:entity int?]
+            [:role
+             [:enum "owner" "implementor" "partner" "donor"]]]]]
+         [:individual_connections {:optional true}
+          [:vector {:optional true}
+           [:map
+            [:stakeholder int?]
+            [:role
+             [:enum "owner" "resource_editor"]]]]]
+         [:urls {:optional true}
+          [:vector {:optional true}
+           [:map [:lang string?] [:url [:string {:min 1}]]]]]
+         auth/owners-schema]
+        handler.geo/params-payload))
 
 (defmethod ig/init-key :gpml.handler.technology/post-params [_ _]
   post-params)

@@ -72,10 +72,7 @@
 
   ;; run just one test - we assume that the test is already loaded
   #_:clj-kondo/ignore
-  (test #'gpml.handler.landing-test/handler-test)
-
-  ,)
-
+  (test #'gpml.handler.landing-test/handler-test))
 
 (comment
 
@@ -105,6 +102,4 @@
                 :policy? true
                 :resource? true
                 :technology? true
-                :project? true})
-
-  )
+                :project? true}))

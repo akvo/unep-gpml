@@ -22,7 +22,7 @@
     (case (first args)
       "set-admin" (jdbc/execute! {:datasource ds} ["UPDATE stakeholder SET review_status='APPROVED', role='ADMIN' WHERE email=?" (second args)])
       "run-seeder" (time
-                     (seeder/seed
-                       {:datasource ds}
-                       (edn/read-string (second args))))
+                    (seeder/seed
+                     {:datasource ds}
+                     (edn/read-string (second args))))
       "update-country" (time (seeder/updater-country {:datasource ds})))))

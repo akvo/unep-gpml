@@ -76,10 +76,9 @@
         (is (= 200 (:status resp)))
         (let [res body]
           (is (= (:id reviewer) (-> res first :reviewer)))
-          (is (= (:id admin) (-> res first :assigned_by )))
+          (is (= (:id admin) (-> res first :assigned_by)))
           (is (= "stakeholder" (-> res first :topic_type)))
           (is (= (:id user) (-> res first :topic_id))))))))
-
 
 (deftest new-review
   (let [system (ig/init fixtures/*system* [:gpml.handler.review/new-multiple-review])
@@ -246,7 +245,6 @@
         (is (= 5 (count (:reviews body2))))
         (is (= 5 (:count body2)))
         (is (= (map :id reviews2) (->> body2 :reviews (map :id))))))
-
 
     (testing "Testing pagination when listing reviews for a user"
       (let [resp (handler (-> (mock/request :get "/")

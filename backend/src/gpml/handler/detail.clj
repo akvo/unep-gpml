@@ -412,14 +412,14 @@
 
 (defn- common-queries [table path & [geo url tags]]
   (filter some?
-    [(when geo [(format "delete from %s_geo_coverage where %s = ?" table table) (:topic-id path)])
-     (when url [(format "delete from %s_language_url where %s = ?" table table) (:topic-id path)])
-     (when tags [(format "delete from %s_tag where %s = ?" table table) (:topic-id path)])
-     (when (= "organisation" table)
-       ["delete from resource_organisation where organisation=?" (:topic-id path)])
-     (when (= "resource" table)
-       ["delete from resource_organisation where resource=?" (:topic-id path)])
-     [(format "delete from %s where id = ?" table) (:topic-id path)]]))
+          [(when geo [(format "delete from %s_geo_coverage where %s = ?" table table) (:topic-id path)])
+           (when url [(format "delete from %s_language_url where %s = ?" table table) (:topic-id path)])
+           (when tags [(format "delete from %s_tag where %s = ?" table table) (:topic-id path)])
+           (when (= "organisation" table)
+             ["delete from resource_organisation where organisation=?" (:topic-id path)])
+           (when (= "resource" table)
+             ["delete from resource_organisation where resource=?" (:topic-id path)])
+           [(format "delete from %s where id = ?" table) (:topic-id path)]]))
 
 (defmethod ig/init-key ::delete [_ {:keys [db]}]
   (fn [{{:keys [path]} :parameters approved? :approved? user :user}]
@@ -500,11 +500,11 @@
                                                      :resource_type table
                                                      :tags (map #(list id %) new-tag-ids)})
           (map
-            #(email/notify-admins-pending-approval
-               conn
-               mailjet-config
-               (merge % {:type "tag"}))
-            new-tags))))))
+           #(email/notify-admins-pending-approval
+             conn
+             mailjet-config
+             (merge % {:type "tag"}))
+           new-tags))))))
 
 (defn update-resource-language-urls [conn table id urls]
   ;; Delete any existing lanugage URLs
@@ -562,8 +562,8 @@
 
 (defn -update-blank-resource-picture [conn image-type resource-id image-key]
   (db.detail/update-resource-table
-    conn
-    {:table image-type :id resource-id :updates {image-key ""}}))
+   conn
+   {:table image-type :id resource-id :updates {image-key ""}}))
 
 (defn -update-resource-picture [conn image image-type resource-id logo?]
   (let [url (handler.image/assoc-image conn image image-type)

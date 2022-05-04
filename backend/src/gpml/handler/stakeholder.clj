@@ -186,28 +186,28 @@
   (let [tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
         org (:org body-params)
         new-profile (merge (dissoc old-profile :non_member_organisation)
-                      (if (:non_member_organisation body-params)
-                        (-> body-params (assoc :affiliation (:non_member_organisation body-params)) (dissoc :non_member_organisation))
-                        body-params))
+                           (if (:non_member_organisation body-params)
+                             (-> body-params (assoc :affiliation (:non_member_organisation body-params)) (dissoc :non_member_organisation))
+                             body-params))
         profile (create-new-profile db new-profile body-params org)]
     (db.stakeholder/update-stakeholder db profile)
     (db.stakeholder/delete-stakeholder-geo db body-params)
     (db.stakeholder/delete-stakeholder-tags db body-params)
     (when (and (some? (:photo old-profile))
-            (not= (:photo old-profile) (:picture profile))
-            (not= "http" (re-find #"^http" (:photo old-profile))))
+               (not= (:photo old-profile) (:picture profile))
+               (not= "http" (re-find #"^http" (:photo old-profile))))
       (let [photo-url (str/split (:photo old-profile) #"\/image\/profile\/")]
         (when (= 2 (count photo-url))
           (let [old-pic (-> photo-url second Integer/parseInt)]
             (db.stakeholder/delete-stakeholder-image-by-id db {:id old-pic})))))
     (when (and (some? (:cv old-profile))
-            (not= (:cv old-profile) (:cv profile)))
+               (not= (:cv old-profile) (:cv profile)))
       (let [old-cv (-> (str/split (:cv old-profile) #"/cv/profile/") second Integer/parseInt)]
         (db.stakeholder/delete-stakeholder-cv-by-id db {:id old-cv})))
     (when (not-empty tags)
       (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector id %) tags)}))
     (if (or (some? (:geo_coverage_country_groups body-params))
-          (some? (:geo_coverage_countries body-params)))
+            (some? (:geo_coverage_countries body-params)))
       (let [geo-data (handler.geo/get-geo-vector-v2 id body-params)]
         (db.stakeholder/add-stakeholder-geo db {:geo geo-data}))
       (when (some? (:geo_coverage_value body-params))
@@ -409,7 +409,7 @@
   (fn [{{:keys [path]} :parameters}]
     (let [stakeholder (db.stakeholder/get-stakeholder-by-id (:spec db) path)]
       (resp/response
-        (get-stakeholder-profile db stakeholder)))))
+       (get-stakeholder-profile db stakeholder)))))
 
 (defmethod ig/init-key ::put-by-admin [_ {:keys [db]}]
   (fn [{{:keys [path body]} :parameters}]

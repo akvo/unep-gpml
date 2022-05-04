@@ -14,7 +14,6 @@
            [org.eclipse.jetty.server.handler StatisticsHandler]
            [io.prometheus.client.jetty JettyStatisticsCollector QueuedThreadPoolStatisticsCollector]))
 
-
 (defmethod ig/init-key ::collector [_ _]
   (->
    (prometheus/collector-registry)
@@ -93,7 +92,7 @@
 (defn configure-stats [jetty-server collector]
   (let [raw-collector (registry/raw collector)
         stats-handler (doto
-                          (StatisticsHandler.)
+                       (StatisticsHandler.)
                         (.setHandler (.getHandler jetty-server)))]
     (.setHandler jetty-server stats-handler)
     (.register (JettyStatisticsCollector. stats-handler) raw-collector)

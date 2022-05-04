@@ -28,19 +28,19 @@
                      (mapv #(-> % first second) q24_5)
                      :else nil)
         org (if q1_1 (db.organisation/organisation-by-id
-                       conn {:id (-> q1_1 first first name Integer/parseInt)}) nil)]
+                      conn {:id (-> q1_1 first first name Integer/parseInt)}) nil)]
     (merge (select-keys initiative [:created :created_by :created_by_email :creator :modified
                                     :review_status :reviewed_at :reviewed_by])
-      {:organisation org
-       :country (-> q23 first second)
-       :submitted (-> q1 first second)
-       :duration (-> q38 first second)
-       :links q40
-       :geo_coverage_type geo-type
-       :geo_coverage_values geo-values
-       :entities (mapv #(-> % first second) q16)
-       :partners (mapv #(-> % first second) q18)
-       :donors (mapv #(-> % first second) q20)})))
+           {:organisation org
+            :country (-> q23 first second)
+            :submitted (-> q1 first second)
+            :duration (-> q38 first second)
+            :links q40
+            :geo_coverage_type geo-type
+            :geo_coverage_values geo-values
+            :entities (mapv #(-> % first second) q16)
+            :partners (mapv #(-> % first second) q18)
+            :donors (mapv #(-> % first second) q20)})))
 
 (defn pending-profiles-response [data auth0-config]
   (let [verified-emails (set (auth0/list-auth0-verified-emails auth0-config))
@@ -68,7 +68,7 @@
           profiles (filter #(= "profile" (:type %)) (:data submission))
           submission (if (not-empty profiles)
                        (assoc submission :data (pending-profiles-response (:data submission) auth0))
-                        submission)]
+                       submission)]
       (resp/response submission))))
 
 (defmethod ig/init-key :gpml.handler.submission/put [_ {:keys [db mailjet-config]}]

@@ -75,6 +75,4 @@
 
   (with-test-system
     (fn []
-      (prn *system*)))
-
-  )
+      (prn *system*))))
