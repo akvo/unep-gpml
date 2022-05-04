@@ -250,8 +250,7 @@
                                                  {:tags tags
                                                   :tag-category tag-category
                                                   :resource-name "stakeholder"
-                                                  :resource-id stakeholder-id})
-      grouped-tags)))
+                                                  :resource-id stakeholder-id}))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post [_ {:keys [db mailjet-config] :as config}]
   (fn [{:keys [jwt-claims body-params headers]}]
