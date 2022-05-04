@@ -5,6 +5,7 @@
    [gpml.auth0-util :as auth0]
    [gpml.constants :as constants]
    [gpml.db.organisation :as db.organisation]
+   [gpml.db.resource.tag :as db.resource.tag]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.email-util :as email]
    [gpml.geo-util :as geo]
@@ -27,14 +28,16 @@
 (defn- save-stakeholder-tags
   [conn mailjet-config tags stakeholder-id update?]
   (let [grouped-tags (group-by :tag_category tags)]
+    (when update?
+      (db.resource.tag/delete-resource-tags conn {:table "stakeholder_tag"
+                                                  :resource-col "stakeholder"
+                                                  :resource-id stakeholder-id}))
     (doseq [[tag-category tags] grouped-tags
             :let [opts {:tags tags
                         :tag-category tag-category
                         :resource-name "stakeholder"
                         :resource-id stakeholder-id}]]
-      (if update?
-        (handler.resource.tag/update-resource-tags conn mailjet-config opts)
-        (handler.resource.tag/create-resource-tags conn mailjet-config opts)))))
+      (handler.resource.tag/create-resource-tags conn mailjet-config opts))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/get [_ {:keys [db]}]
   (fn [{{{:keys [page limit email-like roles] :as query} :query} :parameters
