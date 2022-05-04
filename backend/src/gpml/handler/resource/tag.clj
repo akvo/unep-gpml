@@ -24,13 +24,16 @@
   "Creates the relation between a resource `resource-name` and tags. If
   some of the tags don't exists they are created."
   [conn mailjet-config {:keys [tags tag-category resource-name resource-id]}]
-  (let [tags-ids (map :id tags)]
+  (let [tags-ids (map :id tags)
+        table (str resource-name "_tag")]
     (if-not (some nil? tags-ids)
       (db.resource.tag/create-resource-tags conn
-                                            {:tags (map (partial vector resource-id) tags-ids)})
+                                            {:table table
+                                             :resource-col resource-name
+                                             :tags (map (partial vector resource-id) tags-ids)})
       (let [new-tags-ids (handler.tag/create-tags conn tags tag-category)
             tags-to-add (map (partial vector resource-id) (concat (remove nil? tags-ids) new-tags-ids))
-            new-tags (db.resource.tag/create-resource-tags conn {:table (str resource-name "_tag")
+            new-tags (db.resource.tag/create-resource-tags conn {:table table
                                                                  :resource-col resource-name
                                                                  :tags tags-to-add})]
         (send-new-tags-admins-pending-approval-notification conn mailjet-config new-tags)))))
