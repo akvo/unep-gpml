@@ -4,14 +4,30 @@ export default {
       data.country = formData[group].country;
     }
   },
-  feedSeeking: (data, formData) => {
+  feedSeeking: (data, formData, tags) => {
     if (data.seeking) {
-      data.seeking = data.seeking.map((x) => Number(x));
+      data.seeking = data.seeking.map((x) => {
+        return {
+          ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
+          tag: Object.values(tags)
+            .flat()
+            .find((o) => o.id === parseInt(x))?.tag,
+          tag_category: "seeking",
+        };
+      });
     }
   },
-  feedOffering: (data, formData) => {
+  feedOffering: (data, formData, tags) => {
     if (data.offering) {
-      data.offering = data.offering.map((x) => Number(x));
+      data.offering = data.offering.map((x) => {
+        return {
+          ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
+          tag: Object.values(tags)
+            .flat()
+            .find((o) => o.id === parseInt(x))?.tag,
+          tag_category: "offering",
+        };
+      });
     }
   },
   feedTitle: (data, formData, group) => {

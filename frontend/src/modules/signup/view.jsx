@@ -506,7 +506,10 @@ const SignUp = ({ match: { params }, ...props }) => {
                         hideEntityPersonalDetail={hideEntityPersonalDetail}
                         tabsData={tabsData}
                       />
-                      {getTabStepIndex().tabIndex === 2 && isEntityType && (
+                      {((getTabStepIndex().tabIndex === 2 &&
+                        isEntityType &&
+                        hasProfile) ||
+                        (getTabStepIndex().tabIndex === 3 && !hasProfile)) && (
                         <div className="list tag-list">
                           <h5>Suggested tags</h5>
                           <List itemLayout="horizontal">
