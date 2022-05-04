@@ -6,7 +6,7 @@ const PieChart = ({ data }) => {
   return (
     <div className="pie-wrapper">
       <Chart
-        key="popular-topic"
+        key="transnational-entities"
         title="UN regional groups of member states"
         type="DOUGHNUT"
         height={350}
