@@ -1,35 +1,37 @@
 (ns gpml.handler.detail
-  (:require [clojure.java.jdbc :as jdbc]
-            [clojure.set :as set]
-            [clojure.string :as string]
-            [gpml.constants :as constants]
-            [gpml.db.action :as db.action]
-            [gpml.db.action-detail :as db.action-detail]
-            gpml.db.country
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.detail :as db.detail]
-            [gpml.db.event :as db.event]
-            [gpml.db.favorite :as db.favorite]
-            [gpml.db.initiative :as db.initiative]
-            [gpml.db.language :as db.language]
-            [gpml.db.policy :as db.policy]
-            [gpml.db.project :as db.project]
-            [gpml.db.resource :as db.resource]
-            [gpml.db.submission :as db.submission]
-            [gpml.db.tag :as db.tag]
-            [gpml.db.technology :as db.technology]
-            [gpml.db.topic-stakeholder-auth :as db.topic-stakeholder-auth]
-            [gpml.email-util :as email]
-            [gpml.handler.image :as handler.image]
-            [gpml.handler.initiative :as handler.initiative]
-            [gpml.handler.geo :as handler.geo]
-            [gpml.handler.organisation :as handler.org]
-            [gpml.handler.util :as util]
-            [gpml.model.topic :as model.topic]
-            [gpml.pg-util :as pg-util]
-            [integrant.core :as ig]
-            [medley.core :as medley]
-            [ring.util.response :as resp]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [clojure.set :as set]
+   [clojure.string :as string]
+   [gpml.constants :as constants]
+   [gpml.db.action :as db.action]
+   [gpml.db.action-detail :as db.action-detail]
+   gpml.db.country
+   [gpml.db.country-group :as db.country-group]
+   [gpml.db.detail :as db.detail]
+   [gpml.db.event :as db.event]
+   [gpml.db.favorite :as db.favorite]
+   [gpml.db.initiative :as db.initiative]
+   [gpml.db.language :as db.language]
+   [gpml.db.policy :as db.policy]
+   [gpml.db.project :as db.project]
+   [gpml.db.resource :as db.resource]
+   [gpml.db.resource.tag :as db.resource.tag]
+   [gpml.db.submission :as db.submission]
+   [gpml.db.tag :as db.tag]
+   [gpml.db.technology :as db.technology]
+   [gpml.db.topic-stakeholder-auth :as db.topic-stakeholder-auth]
+   [gpml.email-util :as email]
+   [gpml.handler.geo :as handler.geo]
+   [gpml.handler.image :as handler.image]
+   [gpml.handler.initiative :as handler.initiative]
+   [gpml.handler.organisation :as handler.org]
+   [gpml.handler.util :as util]
+   [gpml.model.topic :as model.topic]
+   [gpml.pg-util :as pg-util]
+   [integrant.core :as ig]
+   [medley.core :as medley]
+   [ring.util.response :as resp]))
 
 (defn other-or-name [action]
   (when-let [actual-name (or
@@ -323,7 +325,11 @@
      {:headquarters (gpml.db.country/country-by-id db {:id headquarters-country})})))
 
 (defmethod extra-details "stakeholder" [_ db stakeholder]
-  (:data (db.detail/get-stakeholder-tags db stakeholder)))
+  (let [stakeholder-tags (db.resource.tag/get-resource-tags db {:table "stakeholder_tag"
+                                                                :resource-col "stakeholder"
+                                                                :resource-id (:id stakeholder)})
+        stakeholder-details (:data (db.detail/get-stakeholder-tags db stakeholder))]
+    (assoc stakeholder-details :tags stakeholder-tags)))
 
 (defn expand-related-resource-content [db resource]
   (let [related_content (db.resource/related-content-by-id db (select-keys resource [:id]))]
@@ -412,14 +418,14 @@
 
 (defn- common-queries [table path & [geo url tags]]
   (filter some?
-    [(when geo [(format "delete from %s_geo_coverage where %s = ?" table table) (:topic-id path)])
-     (when url [(format "delete from %s_language_url where %s = ?" table table) (:topic-id path)])
-     (when tags [(format "delete from %s_tag where %s = ?" table table) (:topic-id path)])
-     (when (= "organisation" table)
-       ["delete from resource_organisation where organisation=?" (:topic-id path)])
-     (when (= "resource" table)
-       ["delete from resource_organisation where resource=?" (:topic-id path)])
-     [(format "delete from %s where id = ?" table) (:topic-id path)]]))
+          [(when geo [(format "delete from %s_geo_coverage where %s = ?" table table) (:topic-id path)])
+           (when url [(format "delete from %s_language_url where %s = ?" table table) (:topic-id path)])
+           (when tags [(format "delete from %s_tag where %s = ?" table table) (:topic-id path)])
+           (when (= "organisation" table)
+             ["delete from resource_organisation where organisation=?" (:topic-id path)])
+           (when (= "resource" table)
+             ["delete from resource_organisation where resource=?" (:topic-id path)])
+           [(format "delete from %s where id = ?" table) (:topic-id path)]]))
 
 (defmethod ig/init-key ::delete [_ {:keys [db]}]
   (fn [{{:keys [path]} :parameters approved? :approved? user :user}]
@@ -500,11 +506,11 @@
                                                      :resource_type table
                                                      :tags (map #(list id %) new-tag-ids)})
           (map
-            #(email/notify-admins-pending-approval
-               conn
-               mailjet-config
-               (merge % {:type "tag"}))
-            new-tags))))))
+           #(email/notify-admins-pending-approval
+             conn
+             mailjet-config
+             (merge % {:type "tag"}))
+           new-tags))))))
 
 (defn update-resource-language-urls [conn table id urls]
   ;; Delete any existing lanugage URLs
@@ -562,8 +568,8 @@
 
 (defn -update-blank-resource-picture [conn image-type resource-id image-key]
   (db.detail/update-resource-table
-    conn
-    {:table image-type :id resource-id :updates {image-key ""}}))
+   conn
+   {:table image-type :id resource-id :updates {image-key ""}}))
 
 (defn -update-resource-picture [conn image image-type resource-id logo?]
   (let [url (handler.image/assoc-image conn image image-type)
