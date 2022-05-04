@@ -62,3 +62,28 @@ GROUP BY
 ORDER BY
     count DESC
 --~(if (:limit params) "LIMIT :limit;" ";")
+
+-- :name get-tag-categories :? :*
+-- :doc Get tag categories. Optionally applying passed filters
+SELECT
+    *
+FROM
+    tag_category
+--~(when (seq (:filters params)) "WHERE 1=1")
+--~(when (get-in params [:filters :id]) " AND id = :filters.id")
+--~(when (seq (get-in params [:filters :categories])) " AND category IN (:v*:filters.categories)")
+;
+
+-- :name update-tag :! :n
+-- :doc Updates a tag.
+/* :require [clojure.string :as str]
+            [hugsql.parameters :refer [identifier-param-quote]] */
+UPDATE tag
+SET
+/*~
+(str/join ","
+  (for [[field _] (:updates params)]
+    (str (identifier-param-quote (name field) options)
+      " = :updates." (name field))))
+~*/
+WHERE id = :id;
