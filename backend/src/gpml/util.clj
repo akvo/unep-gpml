@@ -3,6 +3,7 @@
    [clojure.string :as str]
    [clojure.walk :as w])
   (:import
+   [java.io File]
    [java.util UUID]))
 
 (defn uuid
@@ -81,3 +82,13 @@
                            direct-children)]
          (assoc current-root :children children))
        current-root))))
+
+(defn create-tmp-file
+  "Creates a temporary file. If no `prefix` and `suffix` is given it
+  will create the file with the default values."
+  ([]
+   (create-tmp-file "gpml_tmp_file_" ""))
+  ([prefix suffix]
+   (try
+     (File/createTempFile prefix suffix)
+     (catch Exception _ nil))))

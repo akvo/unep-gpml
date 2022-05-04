@@ -4,6 +4,7 @@
             [gpml.db.organisation :as db.organisation]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.topic :as db.topic]
+            [gpml.util :as util]
             [gpml.util.csv :as csv]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
@@ -12,7 +13,7 @@
 
 (defn create-csv-file [invoices]
   (let [csv-data (csv/preserve-sort-coll->csv invoices)
-        csv-file (csv/create-tmp-file ".csv")]
+        csv-file (util/create-tmp-file "data_export_" ".csv")]
     (csv/write-to-csv-file csv-file csv-data)
     {:csv-file csv-file}))
 
@@ -20,16 +21,15 @@
   (let [keys->idx (zipmap ordered-keys (range))
         order-fn (fn [x y]
                    (< (keys->idx x)
-                     (keys->idx y)))]
+                      (keys->idx y)))]
     (into (sorted-map-by order-fn) result-map)))
-
 
 (defn get-export-values [export-type export-type-key-map sorted-export-type-columns]
   (let [exports-to-sort (map #(set/rename-keys % export-type-key-map) export-type)]
     (if (empty? exports-to-sort)
       (->>
-        (list (zipmap sorted-export-type-columns (repeat (count sorted-export-type-columns) nil)))
-        (map #(sort-result-map sorted-export-type-columns %)))
+       (list (zipmap sorted-export-type-columns (repeat (count sorted-export-type-columns) nil)))
+       (map #(sort-result-map sorted-export-type-columns %)))
       (map #(sort-result-map sorted-export-type-columns %) exports-to-sort))))
 
 (defn export-users [db review-status]
@@ -45,7 +45,7 @@
 (defn export-non-member-entities [db review-status]
   (let [non-member-entities (db.organisation/all-public-non-member-entities db {:review-status review-status})
         export-entities (get-export-values (map #(dissoc % :is_member) non-member-entities)
-                          constants/entities-key-map constants/sorted-entity-columns)]
+                                           constants/entities-key-map constants/sorted-entity-columns)]
     (:csv-file (create-csv-file export-entities))))
 
 (defn export-topics [db review-status]
@@ -71,4 +71,4 @@
   {:path [:map
           [:export-type (apply conj [:enum] export-types)]]
    :query [:map
-           [:review_status {:optional true} [:enum "APPROVED" "REJECTED" "SUBMITTED"]]]} )
+           [:review_status {:optional true} [:enum "APPROVED" "REJECTED" "SUBMITTED"]]]})
