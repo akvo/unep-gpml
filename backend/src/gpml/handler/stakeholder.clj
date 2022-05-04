@@ -146,7 +146,7 @@
    :review_status review_status
    :public_email public_email})
 
-(defn create-new-profile [db new-profile body-params org]
+(defn create-new-profile [db mailjet-config new-profile body-params org]
   (cond-> new-profile
     (:photo body-params)
     (assoc :picture
@@ -168,7 +168,7 @@
     (assoc :affiliation (:id org))
     (= -1 (:id org))
     (assoc :affiliation (if (= -1 (:id org))
-                          (handler.org/create db org)
+                          (handler.org/create db mailjet-config org)
                           (:id org)))
     (nil? org)
     (assoc :affiliation nil)))
@@ -206,7 +206,7 @@
                            (if (:non_member_organisation body-params)
                              (-> body-params (assoc :affiliation (:non_member_organisation body-params)) (dissoc :non_member_organisation))
                              body-params))
-        profile (create-new-profile db new-profile body-params org)]
+        profile (create-new-profile db mailjet-config new-profile body-params org)]
     (db.stakeholder/update-stakeholder db profile)
     (db.stakeholder/delete-stakeholder-geo db body-params)
     (db.stakeholder/delete-stakeholder-tags db body-params)
@@ -239,7 +239,7 @@
 
 (defn- make-affiliation [db mailjet-config org]
   (if-not (:id org)
-    (let [org-id (handler.org/create db org)]
+    (let [org-id (handler.org/create db mailjet-config org)]
       (email/notify-admins-pending-approval db mailjet-config
                                             {:title (:name org) :type "organisation"})
       (when-let [tag-ids (seq (:expertise org))]
@@ -247,12 +247,14 @@
       org-id)
     (:id org)))
 
-(defn- make-organisation [db org]
+(defn- make-organisation [db mailjet-config org]
   (if-not (:id org)
-    (let [org-id (handler.org/create db (-> (if (:subnational_area_only org)
-                                              (-> org (dissoc :subnational_area_only) (assoc :subnational_area (:subnational_area_only org)))
-                                              org)
-                                            (assoc :is_member false)))]
+    (let [org-id (handler.org/create db mailjet-config (-> (if (:subnational_area_only org)
+                                                             (-> org
+                                                                 (dissoc :subnational_area_only)
+                                                                 (assoc :subnational_area (:subnational_area_only org)))
+                                                             org)
+                                                           (assoc :is_member false)))]
       org-id)
     (:id org)))
 
@@ -269,7 +271,7 @@
                                                                    (let [{:keys [first_name last_name]} (select-keys body-params [:first_name :last_name])]
                                                                      (format "https://ui-avatars.com/api/?size=480&name=%s+%s" first_name last_name))))
                                                (when (:new_org body-params)
-                                                 {:affiliation (make-organisation db (:new_org body-params))})))
+                                                 {:affiliation (make-organisation db mailjet-config (:new_org body-params))})))
           stakeholder-id (if-let [current-stakeholder (db.stakeholder/stakeholder-by-email db {:email (:email profile)})]
                            (let [idp-usernames (vec (-> current-stakeholder :idp_usernames (concat (:idp_usernames profile))))]
                              (db.stakeholder/update-stakeholder db (assoc (select-keys profile [:affiliation])

@@ -10,7 +10,7 @@
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 
-(defn create [conn org]
+(defn create [conn mailjet-config org]
   (let [org-id (:id (db.organisation/new-organisation conn org))
         org-geo2 (handler.geo/get-geo-vector-v2 org-id org)
         org-geo (handler.geo/get-geo-vector org-id org)]
@@ -18,6 +18,13 @@
       (db.organisation/add-geo-coverage conn {:geo org-geo2})
       (when (seq org-geo)
         (db.organisation/add-geo-coverage conn {:geo org-geo})))
+    (when (seq (:tags org))
+      (handler.resource.tag/create-resource-tags conn
+                                                 mailjet-config
+                                                 {:tags (:tags org)
+                                                  :tag-category "general"
+                                                  :resource-name "organisation"
+                                                  :resource-id org-id}))
     org-id))
 
 (defn update-org [conn mailjet-config org]
@@ -60,8 +67,8 @@
                        second-contact-email (:stakeholder body-params)]
                    (if-let [second-contact (db.stakeholder/stakeholder-by-email (:spec db) {:email second-contact-email})]
                      (->> (assoc params :second_contact (:id second-contact))
-                          (create (:spec db)))
-                     (let [org-id (create (:spec db) params)]
+                          (create (:spec db) mailjet-config))
+                     (let [org-id (create (:spec db) mailjet-config params)]
                        (db.invitation/new-invitation (:spec db) {:stakeholder-id (:id first-contact)
                                                                  :organisation-id org-id
                                                                  :email second-contact-email
@@ -74,13 +81,6 @@
                                            (list (email/notify-user-invitation-text full-contact-details (:app-domain mailjet-config) (:name body-params)))
                                            (list nil)))
                        org-id)))]
-      (when-let [tags (seq (:tags body-params))]
-        (handler.resource.tag/create-resource-tags (:spec db)
-                                                   mailjet-config
-                                                   {:tags tags
-                                                    :tag-category "general"
-                                                    :resource-name "organisation"
-                                                    :resource-id org-id}))
       (resp/created referrer (assoc body-params :id org-id)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/post-params [_ _]

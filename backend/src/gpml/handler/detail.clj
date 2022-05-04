@@ -679,7 +679,7 @@
                     (or
                      (:id org)
                      (and (= -1 (:id org))
-                          (handler.org/create conn org))))]
+                          (handler.org/create conn mailjet-config org))))]
     (when (and (contains? updates :language) (= topic-type "policy"))
       (update-policy-language conn (:language updates) id))
     (when (contains? updates :image)
