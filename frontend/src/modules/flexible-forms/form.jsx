@@ -434,6 +434,11 @@ const FlexibleForm = withRouter(
         delete data.q24_3;
       }
 
+      if (data.q24.hasOwnProperty("global")) {
+        delete data.q24_4;
+        delete data.q24_3;
+      }
+
       if (data?.qrelated) {
         data.related_content = data?.qrelated.map((x) => parseInt(x));
         delete data.qrelated;
