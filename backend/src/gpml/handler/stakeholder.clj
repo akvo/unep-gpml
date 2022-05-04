@@ -243,15 +243,15 @@
 
 (defn- create-stakeholder-tags
   [{:keys [db mailjet-config]} tags stakeholder-id]
-  (let [grouped-tags (group-by :tag-category tags)]
-    (map (fn [[tag-category tags]]
-           (handler.resource.tag/create-resource-tags (:spec db)
-                                                      mailjet-config
-                                                      {:tags tags
-                                                       :tag-category tag-category
-                                                       :resource-name "stakeholder"
-                                                       :resource-id stakeholder-id}))
-         grouped-tags)))
+  (let [grouped-tags (group-by :tag_category tags)]
+    (doseq [[tag-category tags] grouped-tags]
+      (handler.resource.tag/create-resource-tags db
+                                                 mailjet-config
+                                                 {:tags tags
+                                                  :tag-category tag-category
+                                                  :resource-name "stakeholder"
+                                                  :resource-id stakeholder-id})
+      grouped-tags)))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post [_ {:keys [db mailjet-config] :as config}]
   (fn [{:keys [jwt-claims body-params headers]}]
@@ -277,13 +277,13 @@
                            (let [new-stakeholder (db.stakeholder/new-stakeholder db profile)]
                              (email/notify-admins-pending-approval db mailjet-config
                                                                    (merge profile {:type "stakeholder"}))
-                             (when-let [tags (seq (:tags body-params))]
-                               (create-stakeholder-tags config tags (:id new-stakeholder)))
                              (:id new-stakeholder)))
           profile        (db.stakeholder/stakeholder-by-id db {:id stakeholder-id})
           res            (-> (merge body-params profile)
                              (dissoc :affiliation :picture :new_org)
                              (assoc :org (db.organisation/organisation-by-id db {:id (:affiliation profile)})))]
+      (when-let [tags (seq (:tags body-params))]
+        (create-stakeholder-tags config tags stakeholder-id))
       (resp/created (:referer headers) res))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/put [_ {:keys [db]}]
