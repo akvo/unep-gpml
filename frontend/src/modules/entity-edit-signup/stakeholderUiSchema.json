@@ -114,13 +114,13 @@
     "seeking": {
       "ui:widget": "select",
       "ui:placeholder": "Search",
-      "ui:mode": "multiple",
+      "ui:mode": "tags",
       "ui:showSearch": true
     },
     "offering": {
       "ui:widget": "select",
       "ui:placeholder": "Search",
-      "ui:mode": "multiple",
+      "ui:mode": "tags",
       "ui:showSearch": true
     },
     "about": {
