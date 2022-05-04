@@ -68,7 +68,7 @@
     display: flex;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 540px) {
     .topic-main-container {
       background-color: #d3dee7;
     }
@@ -656,6 +656,9 @@
       max-width: 100%;
       background-color: #fff;
     }
+    .empty-container {
+      display: flex !important;
+    }
   }
 
   .topic-view-resource {
@@ -776,10 +779,14 @@
       padding: 5px;
       padding-bottom: 110px;
     }
-
+    @media (max-width: 950px) {
+      padding: 10px 24px;
+    }
     .resource-item-wrapper {
       width: 100%;
-      height: 100%;
+      @media (max-width: 950px) {
+        height: 100%;
+      }
       &:hover {
         background: $yellow-highlight;
         border-radius: 8px;
@@ -906,6 +913,10 @@
     @-moz-document url-prefix() {
       max-width: 350px !important;
     }
+    @media (max-width: 950px) {
+      position: unset;
+      padding: 1rem 24px 1rem 24px;
+    }
     .result-number,
     .ant-pagination-item a {
       font-weight: bold;
@@ -1003,10 +1014,10 @@
     max-width: calc(100% - 300px);
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 540px) {
     .topic-view {
       align-self: center;
-      max-width: 90%;
+      max-width: calc(100% - 48px);
       padding-left: 20px;
       padding-right: 20px;
       padding: 10px 10px 0 10px;
@@ -1019,7 +1030,7 @@
     }
   }
 
-  @media (min-width: 401px) and (max-width: 950px) {
+  @media (min-width: 541px) and (max-width: 950px) {
     .topic-view {
       max-width: 100%;
       background-color: #255b87;
@@ -1109,7 +1120,6 @@
         }
       }
 
-      // Firefox styles
       @media (max-width: 510px) {
         .ant-drawer-content-wrapper {
           width: 100%;
