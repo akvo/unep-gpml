@@ -24,6 +24,10 @@
     div {
       margin: 10px;
       font-size: 18px;
+      @-moz-document url-prefix() {
+        font-size: 16px;
+        margin: 5px;
+      }
     }
     a {
       font-weight: 600;
@@ -34,6 +38,12 @@
     margin-bottom: 40px;
     background-color: #046799;
     padding: 15px 0;
+    @-moz-document url-prefix() {
+      margin-bottom: 35px;
+      .ant-btn span {
+        font-size: 14px;
+      }
+    }
 
     .ui.container {
       color: #fff;
@@ -47,22 +57,34 @@
       .form-title {
         display: grid;
         margin-right: 35px;
+        @-moz-document url-prefix() {
+          margin-right: 25px;
+        }
 
         .subtitle {
           color: #22ba9a;
           text-transform: uppercase;
           font-size: 14px;
+          @-moz-document url-prefix() {
+            font-size: 12px;
+          }
         }
 
         .title {
           font-size: 20px;
           font-weight: 500;
+          @-moz-document url-prefix() {
+            font-size: 18px;
+          }
         }
       }
 
       .sign-up-title {
         font-size: 20px;
         font-weight: 400;
+        @-moz-document url-prefix() {
+          font-size: 18px;
+        }
       }
     }
 
@@ -74,6 +96,9 @@
 
       .highlight {
         font-weight: 500;
+        @-moz-document url-prefix() {
+          font-size: 12px;
+        }
       }
     }
 
@@ -101,6 +126,9 @@
     border-radius: 15px 0px 0px 0px;
     margin: 5px 0px 5px 5px;
     padding: 10px;
+    @-moz-document url-prefix() {
+      padding: 5px;
+    }
     label.ant-checkbox-wrapper {
       color: #fff;
       line-height: 2rem;
@@ -147,6 +175,9 @@
           font-size: 1rem;
           color: #fff;
           width: 90%;
+          @-moz-document url-prefix() {
+            font-size: 14px;
+          }
 
           .ant-steps-item-subtitle {
             text-transform: none;
@@ -280,6 +311,9 @@
           font-weight: bold;
           color: #fff;
           opacity: 1;
+          @-moz-document url-prefix() {
+            font-size: 14px;
+          }
 
           .ant-steps-item-subtitle {
             text-transform: none;
@@ -313,6 +347,9 @@
     display: block;
     font-size: 12px;
     margin-left: 0px;
+    @-moz-document url-prefix() {
+      font-size: 10px;
+    }
   }
 
   .ant-menu-vertical > .ant-menu-item {
@@ -328,10 +365,16 @@
       .ant-steps-item-content {
         .ant-steps-item-title {
           font-size: 16px;
+          @-moz-document url-prefix() {
+            font-size: 14px;
+          }
         }
 
         .ant-steps-item-description {
           font-size: 12px;
+          @-moz-document url-prefix() {
+            font-size: 10px;
+          }
         }
       }
     }
@@ -343,10 +386,16 @@
 
       .tag-list {
         margin-top: 20px;
+        @-moz-document url-prefix() {
+          margin-top: 10px;
+        }
         h5 {
           font-size: 1em;
           color: #d3dee7;
           margin-bottom: 0px;
+          @-moz-document url-prefix() {
+            font-size: 0.9em;
+          }
         }
         ul {
           list-style: none;
@@ -363,6 +412,10 @@
             margin: 0 10px 10px 0;
             text-decoration: none;
             cursor: pointer;
+            @-moz-document url-prefix() {
+              margin: 0 5px 5px 0;
+              border-radius: 21px 3px 3px 21px;
+            }
             &::before {
               background: #fff;
               border-radius: 10px;
@@ -476,10 +529,16 @@
       padding: 0;
       font-weight: 500;
       margin-top: 15px;
+      @-moz-document url-prefix() {
+        margin-top: 7.5px;
+      }
 
       > label {
         height: auto !important;
         margin-bottom: 7px;
+        @-moz-document url-prefix() {
+          margin-bottom: 3.5px;
+        }
       }
     }
 
@@ -490,19 +549,32 @@
       padding: 0 15px 15px;
       margin-left: 0px !important;
       margin-right: 0px !important;
+      @-moz-document url-prefix() {
+        margin-top: 7.5px;
+        padding: 0 7.5px 7.5px;
+      }
     }
 
     .ant-row.ant-row-top {
       margin-top: 10px;
+      @-moz-document url-prefix() {
+        margin-top: 5px;
+      }
     }
 
     .array-item {
       border: 1px solid #ccc;
       border-radius: 3px;
       padding: 15px 15px 0;
+      @-moz-document url-prefix() {
+        padding: 7.5px 7.5px 0;
+      }
 
       &:not(:first-child) {
         margin-top: 10px;
+        @-moz-document url-prefix() {
+          margin-top: 5px;
+        }
       }
 
       display: flex;
@@ -514,26 +586,43 @@
       & > div:last-child {
         width: 200px;
         margin-left: 10px;
+        @-moz-document url-prefix() {
+          width: 190px;
+          margin-left: 5px;
+        }
       }
 
       .ant-col {
         .ml-2 {
           margin-left: 10px;
+          @-moz-document url-prefix() {
+            margin-left: 5px;
+          }
         }
       }
     }
 
     .mb-4 {
       margin-bottom: 20px;
+      @-moz-document url-prefix() {
+        margin-bottom: 10px;
+      }
     }
 
     .array-btns {
       margin-bottom: 20px;
       margin-top: 10px;
+      @-moz-document url-prefix() {
+        margin-bottom: 10px;
+        margin-top: 5px;
+      }
     }
 
     .form-group.field.field-object.list-group-item {
       margin-top: 3rem;
+      @-moz-document url-prefix() {
+        margin-top: 2.8rem;
+      }
     }
   }
 
@@ -545,8 +634,17 @@
     width: 100%;
     position: absolute;
     bottom: 0;
+    @-moz-document url-prefix() {
+      margin-top: 5.8rem;
+    }
     button {
       margin: 1rem;
+      @-moz-document url-prefix() {
+        margin: 0.8rem;
+        span {
+          font-size: 12px;
+        }
+      }
     }
   }
 
