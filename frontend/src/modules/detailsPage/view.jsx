@@ -159,11 +159,11 @@ const SharePanel = ({
       <div className="sticky-panel-item">
         <a
           href={`${
-            data?.url && data?.url.includes("https://")
+            data?.url && data?.url?.includes("https://")
               ? data?.url
               : data.languages
               ? data?.languages[0].url
-              : data?.url.includes("http://")
+              : data?.url?.includes("http://")
               ? data?.url
               : "https://" + data?.url
           }`}
@@ -197,11 +197,11 @@ const SharePanel = ({
             <Input
               style={{ width: "calc(100% - 20%)" }}
               defaultValue={`${
-                data?.url && data?.url.includes("https://")
+                data?.url && data?.url?.includes("https://")
                   ? data?.url
                   : data.languages
                   ? data?.languages[0].url
-                  : data?.url.includes("http://")
+                  : data?.url?.includes("http://")
                   ? data?.url
                   : "https://" + data?.url
               }`}
@@ -212,9 +212,9 @@ const SharePanel = ({
               type="primary"
               onClick={() => {
                 navigator.clipboard.writeText(
-                  data?.url && data?.url.includes("https://")
+                  data?.url && data?.url?.includes("https://")
                     ? data?.languages
-                      ? data?.languages[0].url
+                      ? data?.languages[0]?.url
                       : data?.url
                     : "https://" + data?.url
                 );
@@ -339,11 +339,11 @@ const renderBannerSection = (
           <div className="short-image">
             <a
               href={`${
-                data?.url && data?.url.includes("https://")
+                data?.url && data?.url?.includes("https://")
                   ? data?.url
                   : data.languages
                   ? data?.languages[0].url
-                  : data?.url.includes("http://")
+                  : data?.url?.includes("http://")
                   ? data?.url
                   : "https://" + data?.url
               }`}
