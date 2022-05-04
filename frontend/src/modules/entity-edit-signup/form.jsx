@@ -80,120 +80,127 @@ const SignUpForm = withRouter(
 
       setSending(true);
 
-      let data2 = handleGeoCoverageValue(
-        cloneDeep(formData.S5),
-        formData.S5,
-        countries
-      );
+      if (isEntityType) {
+        let data2 = handleGeoCoverageValue(
+          cloneDeep(formData.S5),
+          formData.S5,
+          countries
+        );
 
-      feedCountry(data, formData, "S2");
+        feedCountry(data, formData, "S2");
 
-      if (data2.geoCoverageType) {
-        data.geoCoverageType = data2.geoCoverageType;
-      }
-      if (data2.geoCoverageValue) {
-        data.geoCoverageValue = data2.geoCoverageValue;
-      }
-      feedSeeking(data, formData); // TODO check paths
+        data.title = formData.S2.title;
 
-      feedOffering(data, formData); // TODO check paths
-
-      if (formData.S3["org.name"]) {
-        data.org = {};
-        data.org.name = formData.S3["org.name"];
-        data.org.type = formData.S3["org.representativeGroup"];
-        data.org.representativeGroupGovernment =
-          formData.S3["org.representativeGroupGovernment"] || null;
-        data.org.representativeGroupPrivateSector =
-          formData.S3["org.representativeGroupPrivateSector"] || null;
-        data.org.representativeGroupAcademiaResearch =
-          formData.S3["org.representativeGroupAcademiaResearch"] || null;
-        data.org.representativeGroupCivilSociety =
-          formData.S3["org.representativeGroupCivilSociety"] || null;
-        data.org.representativeGroupOther =
-          formData.S3["org.representativeGroupOther"] || null;
-        data.org.program = formData.S3["org.program"];
-        data.org.url = formData.S3["org.url"];
-        data.org.logo = formData.S3["org.logo"];
-        data.org.logo &&
-          data.org.logo.match(customFormats.url) &&
-          delete data.org.logo;
-
-        delete data.org_name;
-        delete data.org_representativeGroup;
-        delete data.org_representativeGroupGovernment;
-        delete data.org_representativeGroupPrivateSector;
-        delete data.org_representativeGroupAcademiaResearch;
-        delete data.org_representativeGroupCivilSociety;
-        delete data.org_representativeGroupOther;
-        delete data.org_program;
-        delete data.org_url;
-        delete data.org_logo;
-
-        if (data.orgHeadquarter?.[formData.S5.orgHeadquarter]) {
-          data.org.country = formData.S5.orgHeadquarter;
+        if (data2.geoCoverageType) {
+          data.geoCoverageType = data2.geoCoverageType;
         }
-        if (data.orgSubnationalArea) {
-          data.org.subnationalArea = data.orgSubnationalArea;
+        if (data2.geoCoverageValue) {
+          data.geoCoverageValue = data2.geoCoverageValue;
         }
-        delete data.orgSubnationalArea;
-        if (data.geoCoverageType) {
-          data.org.geoCoverageType = data.geoCoverageType;
-          data.org.geoCoverageValue = data.geoCoverageValue;
-          if (data.geoCoverageType === "transnational") {
-            if (data.geoCoverageValue && data.geoCoverageValue.length > 0) {
-              data.org.geoCoverageCountryGroups = data.geoCoverageValue;
+        feedSeeking(data, formData); // TODO check paths
+
+        feedOffering(data, formData); // TODO check paths
+
+        if (formData.S3["org.name"]) {
+          data.org = {};
+          data.org.name = formData.S3["org.name"];
+          data.org.type = formData.S3["org.representativeGroup"];
+          data.org.representativeGroupGovernment =
+            formData.S3["org.representativeGroupGovernment"] || null;
+          data.org.representativeGroupPrivateSector =
+            formData.S3["org.representativeGroupPrivateSector"] || null;
+          data.org.representativeGroupAcademiaResearch =
+            formData.S3["org.representativeGroupAcademiaResearch"] || null;
+          data.org.representativeGroupCivilSociety =
+            formData.S3["org.representativeGroupCivilSociety"] || null;
+          data.org.representativeGroupOther =
+            formData.S3["org.representativeGroupOther"] || null;
+          data.org.program = formData.S3["org.program"];
+          data.org.url = formData.S3["org.url"];
+          data.org.logo = formData.S3["org.logo"];
+          data.org.logo &&
+            data.org.logo.match(customFormats.url) &&
+            delete data.org.logo;
+
+          delete data.org_name;
+          delete data.org_representativeGroup;
+          delete data.org_representativeGroupGovernment;
+          delete data.org_representativeGroupPrivateSector;
+          delete data.org_representativeGroupAcademiaResearch;
+          delete data.org_representativeGroupCivilSociety;
+          delete data.org_representativeGroupOther;
+          delete data.org_program;
+          delete data.org_url;
+          delete data.org_logo;
+
+          if (data.orgHeadquarter?.[formData.S5.orgHeadquarter]) {
+            data.org.country = formData.S5.orgHeadquarter;
+          }
+          if (data.orgSubnationalArea) {
+            data.org.subnationalArea = data.orgSubnationalArea;
+          }
+          delete data.orgSubnationalArea;
+          if (data.geoCoverageType) {
+            data.org.geoCoverageType = data.geoCoverageType;
+            data.org.geoCoverageValue = data.geoCoverageValue;
+            if (data.geoCoverageType === "transnational") {
+              if (data.geoCoverageValue && data.geoCoverageValue.length > 0) {
+                data.org.geoCoverageCountryGroups = data.geoCoverageValue;
+              }
+              if (
+                formData.S5.geoCoverageCountries &&
+                formData.S5.geoCoverageCountries.length > 0
+              ) {
+                data.org.geoCoverageCountries = formData.S5.geoCoverageCountries.map(
+                  (x) => parseInt(x)
+                );
+              }
             }
-            if (
-              formData.S5.geoCoverageCountries &&
-              formData.S5.geoCoverageCountries.length > 0
-            ) {
+            if (data.geoCoverageType === "national") {
               data.org.geoCoverageCountries = formData.S5.geoCoverageCountries.map(
                 (x) => parseInt(x)
               );
+              delete data.org.geoCoverageValue;
             }
           }
-          if (data.geoCoverageType === "national") {
-            data.org.geoCoverageCountries = formData.S5.geoCoverageCountries.map(
-              (x) => parseInt(x)
+          delete data.geoCoverageType;
+          delete data.geoCoverageValue;
+          delete data.orgHeadquarter;
+          delete data.orgName;
+          delete data.orgRepresentative;
+          delete data.orgDescription;
+          delete data.orgUrl;
+          delete data.orgLogo;
+          delete data.geoCoverageValueTransnational;
+          delete data.geoCoverageCountries;
+
+          if (data.registeredStakeholders) {
+            data.org.registeredStakeholders = formData.S5.registeredStakeholders.map(
+              (x) => Number(x)
             );
-            delete data.org.geoCoverageValue;
+            delete data.registeredStakeholders;
           }
-        }
-        delete data.geoCoverageType;
-        delete data.geoCoverageValue;
-        delete data.orgHeadquarter;
-        delete data.orgName;
-        delete data.orgRepresentative;
-        delete data.orgDescription;
-        delete data.orgUrl;
-        delete data.orgLogo;
-        delete data.geoCoverageValueTransnational;
-        delete data.geoCoverageCountries;
+          if (data.otherStakeholders) {
+            data.org.otherStakeholders = data.otherStakeholders;
+            delete data.otherStakeholders;
+          }
+          data.org.authorizeSubmission = data.authorizeSubmission;
+          delete data.authorizeSubmission;
 
-        if (data.registeredStakeholders) {
-          data.org.registeredStakeholders = formData.S5.registeredStakeholders.map(
-            (x) => Number(x)
-          );
-          delete data.registeredStakeholders;
-        }
-        if (data.otherStakeholders) {
-          data.org.otherStakeholders = data.otherStakeholders;
-          delete data.otherStakeholders;
-        }
-        data.org.authorizeSubmission = data.authorizeSubmission;
-        delete data.authorizeSubmission;
-
-        if (data.orgExpertise) {
-          data.org.expertise = data.orgExpertise.map((x) => Number(x));
-          delete data.orgExpertise;
+          if (data.orgExpertise) {
+            data.org.expertise = data.orgExpertise.map((x) => Number(x));
+            delete data.orgExpertise;
+          }
         }
       } else {
         data.org = {};
         feedCountry(data, formData, "S1");
-        feedSeeking(data, formData);
+        feedSeeking(data, formData, tags);
         data.title = formData.S1.title;
-        feedOffering(data, formData);
+        feedOffering(data, formData, tags);
+        data.tags = [...data.seeking, ...data.offering];
+        delete data.seeking;
+        delete data.offering;
         if (data.companyName?.[formData["S2"].companyName]) {
           data.nonMemberOrganisation = formData["S2"].companyName;
           delete data.org;
