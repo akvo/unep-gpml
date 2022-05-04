@@ -765,13 +765,15 @@ const AdminSection = ({
           <div>
             <div className="export-wrapper">
               <b>Filtering by:</b>
-              <div>
-                <ExportButton
-                  type="ghost"
-                  className="black"
-                  listOpts={listOpts}
-                />
-              </div>
+              {title !== "Tags" && (
+                <div>
+                  <ExportButton
+                    type="ghost"
+                    className="black"
+                    listOpts={listOpts}
+                  />
+                </div>
+              )}
             </div>
             <hr />
             {listOpts.reviewStatus && (
