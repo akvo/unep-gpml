@@ -354,6 +354,12 @@
          [:country {:optional true} int?]
          [:expertise {:optional true}
           [:vector {:min 1 :error/message "Need at least one value for expertise"} int?]]
+         [:tags {:optional true}
+          [:vector {:optional true}
+           [:map {:optional true}
+            [:id {:optional true} pos-int?]
+            [:tag string?]
+            [:tag_category {:optional true} string?]]]]
          [:geo_coverage_type {:optional true} geo/coverage_type]]
         handler.geo/params-payload))
 
