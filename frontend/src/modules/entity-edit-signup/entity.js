@@ -98,12 +98,12 @@ const getSchema = (
     "org.representativeGroupCivilSociety"
   ].enum = representativeGroup.find((x) => x.code === "civil-society")?.childs;
 
-  prop.S4.properties["orgExpertise"].enum = tags?.offering?.map((it) =>
-    String(it.id)
-  );
-  prop.S4.properties["orgExpertise"].enumNames = tags?.offering?.map(
-    (it) => it.tag
-  );
+  let array = Object.keys(tags)
+    .map((k) => tags[k])
+    .flat();
+
+  prop.S4.properties["orgExpertise"].enum = array?.map((it) => String(it.id));
+  prop.S4.properties["orgExpertise"].enumNames = array?.map((it) => it.tag);
   prop.S5.properties["orgHeadquarter"].enum = countries?.map((x) => x.id);
 
   prop.S5.properties["orgHeadquarter"].enumNames = countries?.map(
