@@ -54,5 +54,4 @@
       ;; (is (= (-> mails first :receivers) (list {:Name stakeholder, :Email stakeholder})))
       ;; (is (= (-> mails first :subject) "Mr. John Doe has invited you to join UNEP GPML Digital Platform"))
       ;; (is (= (-> mails first :texts first) "Dear user,\n\nMr. John Doe has invited you to join http://localhost as part of entity test10001. Please visit http://localhost/stakeholder-signup and follow instructions to signup.\n\n- UNEP GPML Digital Platform\n"))
-      ))
-  )
+      )))

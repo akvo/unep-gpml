@@ -7,7 +7,6 @@
   [opts]
   (format "var __ENV__ = %s;" (j/write-value-as-string opts)))
 
-
 (defmethod ig/init-key ::get [_ opts]
   (fn [_]
     (-> (make-env opts)

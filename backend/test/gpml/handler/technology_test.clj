@@ -81,7 +81,7 @@
                     :tags (map #(:id %) (:tags data))
                     :owners [(:id user)]
                     :created_by 10001)
-            technology-one))
+             technology-one))
       (is (= (assoc (new-technology data)
                     :id 10002
                     :image nil
@@ -94,4 +94,4 @@
                     :tags (map #(:id %) (:tags data))
                     :owners [(:id user)]
                     :created_by 10001)
-            technology-two)))))
+             technology-two)))))

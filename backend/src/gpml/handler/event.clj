@@ -44,11 +44,11 @@
             new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags tags-to-db}))]
         (db.event/add-event-tags conn {:tags (map #(vector event-id %) (concat (remove nil? tag-ids) new-tag-ids))})
         (map
-          #(email/notify-admins-pending-approval
-             conn
-             mailjet-config
-             (merge % {:type "tag"}))
-          new-tags)))))
+         #(email/notify-admins-pending-approval
+           conn
+           mailjet-config
+           (merge % {:type "tag"}))
+         new-tags)))))
 
 (defn create-event [conn {:keys [tags urls title start_date end_date
                                  description remarks geo_coverage_type
@@ -84,9 +84,9 @@
         individual_connections (conj individual_connections {:stakeholder created_by
                                                              :role "owner"})
         owners (distinct (remove nil? (flatten (conj owners
-                                                 (map #(when (= (:role %) "owner")
-                                                         (:stakeholder %))
-                                                   individual_connections)))))]
+                                                     (map #(when (= (:role %) "owner")
+                                                             (:stakeholder %))
+                                                          individual_connections)))))]
     (when (not-empty tags)
       (add-tags conn mailjet-config tags event-id))
     (doseq [stakeholder-id owners]
@@ -173,9 +173,9 @@
   (fn [{:keys [jwt-claims body-params] :as req}]
     (jdbc/with-db-transaction [conn (:spec db)]
       (let [result (create-event conn (assoc body-params
-                                        :mailjet-config mailjet-config
-                                        :created_by
-                                        (-> (db.stakeholder/stakeholder-by-email conn jwt-claims) :id)))]
+                                             :mailjet-config mailjet-config
+                                             :created_by
+                                             (-> (db.stakeholder/stakeholder-by-email conn jwt-claims) :id)))]
         (resp/created (:referrer req) {:message "New event created" :id (:id result)})))))
 
 (defmethod ig/init-key :gpml.handler.event/post-params [_ _]

@@ -34,10 +34,10 @@
           (db.stakeholder-association/get-stakeholder-associated-topics (:spec db)
                                                                         (merge common-params {:count-only? true}))]
       (resp/response
-        {:associated_topics (map #(merge (:json %)
-                                    (select-keys % [:stakeholder_connections :entity_connections]))
-                              associated-topics)
-         :count (-> associated-topics-count first :count)}))))
+       {:associated_topics (map #(merge (:json %)
+                                        (select-keys % [:stakeholder_connections :entity_connections]))
+                                associated-topics)
+        :count (-> associated-topics-count first :count)}))))
 
 (defmethod ig/init-key ::get-associated-topics-params [_ _]
   {:path [:map [:id pos-int?]]

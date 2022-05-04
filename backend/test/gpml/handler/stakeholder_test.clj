@@ -38,7 +38,7 @@
         _ (new-stakeholder db "admin-submitted@org.com" "A" "S" "ADMIN" "SUBMITTED")
         ;; User
         user-id (new-stakeholder db "user-approved@org.com" "U" "A" "USER" "APPROVED")
-        user(db.stakeholder/stakeholder-by-id db user-id)
+        user (db.stakeholder/stakeholder-by-id db user-id)
         _ (new-stakeholder db "user-submitted@org.com" "U" "S" "USER" "SUBMITTED")]
 
     (testing "Get stakeholders WITHOUT authenticating"
