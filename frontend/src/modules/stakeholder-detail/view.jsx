@@ -550,47 +550,78 @@ const StakeholderDetail = ({
                     <div className="exta-info">
                       <Row gutter={[16, 16]}>
                         <Col xs={12} lg={12}>
-                          {data?.seeking && (
-                            <CardComponent>
-                              <div class="ant-card-head-wrapper">
-                                <div class="ant-card-head-title">
-                                  Seeking{" "}
-                                  <span>
-                                    ({data?.seeking.split(",").length} Keywords)
-                                  </span>
+                          {data?.tags &&
+                            data?.tags?.filter(
+                              (item) => item.tagCategory === "seeking"
+                            ).length > 0 && (
+                              <CardComponent>
+                                <div class="ant-card-head-wrapper">
+                                  <div class="ant-card-head-title">
+                                    Seeking{" "}
+                                    <span>
+                                      (
+                                      {
+                                        data?.tags?.filter(
+                                          (item) =>
+                                            item.tagCategory === "seeking"
+                                        ).length
+                                      }{" "}
+                                      Keywords)
+                                    </span>
+                                  </div>
                                 </div>
-                              </div>
-                              <List>
-                                {data?.seeking.split(",").map((str) => (
-                                  <List.Item>
-                                    <Typography.Text>{str}</Typography.Text>
-                                  </List.Item>
-                                ))}
-                              </List>
-                            </CardComponent>
-                          )}
+                                <List>
+                                  {data?.tags
+                                    ?.filter(
+                                      (item) => item.tagCategory === "seeking"
+                                    )
+                                    ?.map((str) => (
+                                      <List.Item>
+                                        <Typography.Text>
+                                          {str.tag}
+                                        </Typography.Text>
+                                      </List.Item>
+                                    ))}
+                                </List>
+                              </CardComponent>
+                            )}
                         </Col>
                         <Col xs={12} lg={12}>
-                          {data?.offering && (
-                            <CardComponent>
-                              <div class="ant-card-head-wrapper">
-                                <div class="ant-card-head-title">
-                                  Offering{" "}
-                                  <span>
-                                    ({data?.offering.split(",").length}{" "}
-                                    Keywords)
-                                  </span>
+                          {data?.tags &&
+                            data?.tags?.filter(
+                              (item) => item.tagCategory === "offering"
+                            ).length > 0 && (
+                              <CardComponent>
+                                <div class="ant-card-head-wrapper">
+                                  <div class="ant-card-head-title">
+                                    Offering{" "}
+                                    <span>
+                                      (
+                                      {
+                                        data?.tags?.filter(
+                                          (item) =>
+                                            item.tagCategory === "offering"
+                                        ).length
+                                      }{" "}
+                                      Keywords)
+                                    </span>
+                                  </div>
                                 </div>
-                              </div>
-                              <List>
-                                {data?.offering.split(",").map((str) => (
-                                  <List.Item>
-                                    <Typography.Text>{str}</Typography.Text>
-                                  </List.Item>
-                                ))}
-                              </List>
-                            </CardComponent>
-                          )}
+                                <List>
+                                  {data?.tags
+                                    ?.filter(
+                                      (item) => item.tagCategory === "offering"
+                                    )
+                                    ?.map((str) => (
+                                      <List.Item>
+                                        <Typography.Text>
+                                          {str.tag}
+                                        </Typography.Text>
+                                      </List.Item>
+                                    ))}
+                                </List>
+                              </CardComponent>
+                            )}
                         </Col>
                       </Row>
                     </div>
