@@ -2,6 +2,12 @@
 
 #about-us {
   position: relative;
+  @-moz-document url-prefix() {
+    .text-green,
+    .text-blue {
+      font-size: 22.6px;
+    }
+  }
   img {
     max-width: 100%;
   }
@@ -114,6 +120,9 @@
         .item-increment {
           font-size: 1.2rem;
           color: $blue02;
+          @-moz-document url-prefix() {
+            font-size: 14.8px;
+          }
         }
         .item-name {
           text-transform: uppercase;
@@ -123,6 +132,9 @@
           font-size: 3.8rem;
           font-weight: 900;
           color: $blue02;
+          @-moz-document url-prefix() {
+            font-size: 24px;
+          }
         }
       }
     }
@@ -163,6 +175,9 @@
           margin: 0.5rem 1rem;
           color: white !important;
           border-color: white !important;
+          @-moz-document url-prefix() {
+            font-size: 12px;
+          }
         }
         @media (min-width: 600px) {
           flex-wrap: nowrap;
@@ -285,6 +300,9 @@
       padding: 1rem 0;
       .txt-emphasis {
         font-size: 1.2rem;
+        @-moz-document url-prefix() {
+          font-size: 14.8px !important;
+        }
       }
     }
     .section-summary-container {
@@ -293,6 +311,9 @@
           padding: 0.5rem 1.5rem;
           .item-value {
             font-size: 2rem;
+            @-moz-document url-prefix() {
+              font-size: 24px;
+            }
           }
         }
       }
