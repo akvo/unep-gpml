@@ -186,9 +186,12 @@ const SignUpForm = withRouter(
       } else {
         data.org = {};
         feedCountry(data, formData, "S1");
-        feedSeeking(data, formData);
+        feedSeeking(data, formData, tags);
         data.title = formData.S1.title;
-        feedOffering(data, formData);
+        feedOffering(data, formData, tags);
+        data.tags = [...data.seeking, ...data.offering];
+        delete data.seeking;
+        delete data.offering;
         if (data.companyName?.[formData["S2"].companyName]) {
           data.nonMemberOrganisation = formData["S2"].companyName;
           delete data.org;

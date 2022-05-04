@@ -57,16 +57,14 @@ const getSchema = ({
     ...nonMemberOrganisations,
   ]?.map((x) => x.name);
 
-  prop.S3.properties["seeking"].enum = tags?.seeking?.map((it) =>
-    String(it.id)
-  );
-  prop.S3.properties["seeking"].enumNames = tags?.seeking?.map((it) => it.tag);
-  prop.S3.properties["offering"].enum = tags?.offering?.map((it) =>
-    String(it.id)
-  );
-  prop.S3.properties["offering"].enumNames = tags?.offering?.map(
-    (it) => it.tag
-  );
+  let array = Object.keys(tags)
+    .map((k) => tags[k])
+    .flat();
+
+  prop.S3.properties["seeking"].enum = array?.map((it) => String(it.id));
+  prop.S3.properties["seeking"].enumNames = array?.map((it) => it.tag);
+  prop.S3.properties["offering"].enum = array?.map((it) => String(it.id));
+  prop.S3.properties["offering"].enumNames = array?.map((it) => it.tag);
 
   // New Entity S2
   // prop.S2.properties["companyName"].enum = [-1].concat(
