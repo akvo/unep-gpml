@@ -37,3 +37,11 @@
                                                                  :resource-col resource-name
                                                                  :tags tags-to-add})]
         (send-new-tags-admins-pending-approval-notification conn mailjet-config new-tags)))))
+
+(defn update-resource-tags
+  "Updates existing relations between a resource `resource-name` and tags."
+  [conn mailjet-config {:keys [resource-name resource-id] :as opts}]
+  (db.resource.tag/delete-resource-tags conn {:table (str resource-name "_tag")
+                                              :resource-col resource-name
+                                              :resource-id resource-id})
+  (create-resource-tags conn mailjet-config opts))

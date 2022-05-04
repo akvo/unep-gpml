@@ -20,7 +20,7 @@
         (db.organisation/add-geo-coverage conn {:geo org-geo})))
     org-id))
 
-(defn update-org [conn org]
+(defn update-org [conn mailjet-config org]
   (let [org-id (do (db.organisation/update-organisation conn org)
                    (:id org))
         org-geo (handler.geo/get-geo-vector org-id org)
@@ -32,9 +32,11 @@
       (when (seq org-geo)
         (db.organisation/delete-geo-coverage conn org)
         (db.organisation/add-geo-coverage conn {:id org-id :geo org-geo})))
-    (when (seq (:expertise org))
-      (db.organisation/delete-organisation-tags conn org)
-      (db.organisation/add-organisation-tags conn {:tags (map #(vector org-id %) (:expertise org))}))
+    (when (seq (:tags org))
+      (handler.resource.tag/update-resource-tags conn mailjet-config {:tags (:tags org)
+                                                                      :tag-category "general"
+                                                                      :resource-name "organisation"
+                                                                      :resource-id org-id}))
     org-id))
 
 (defmethod ig/init-key :gpml.handler.organisation/get [_ {:keys [db]}]
@@ -97,9 +99,9 @@
             [:tag_category string?]]]]]
         handler.geo/params-payload))
 
-(defmethod ig/init-key :gpml.handler.organisation/put [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.organisation/put [_ {:keys [db mailjet-config]}]
   (fn [{:keys [body-params referrer parameters]}]
-    (let [org-id (update-org db (assoc body-params :id (:id (:path parameters))))]
+    (let [org-id (update-org db mailjet-config (assoc body-params :id (:id (:path parameters))))]
       (resp/created referrer (assoc body-params :id org-id)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/put-params [_ _]
@@ -118,5 +120,11 @@
          [:representative_group_academia_research [:maybe string?]]
          [:subnational_area {:optional true} [:maybe string?]]
          [:expertise vector?]
-         [:program string?]]
+         [:program string?]
+         [:tags {:optional true}
+          [:vector {:optional true}
+           [:map {:optional true}
+            [:id {:optional true} pos-int?]
+            [:tag string?]
+            [:tag_category string?]]]]]
         handler.geo/params-payload))

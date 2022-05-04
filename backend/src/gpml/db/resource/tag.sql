@@ -8,3 +8,7 @@
 -- :doc Creates a relation for <resource>_tag.
 INSERT INTO :i:table (:i:resource-col, tag)
 VALUES :t*:tags RETURNING *;
+
+-- :name delete-resource-tags :! :n
+-- :doc Delete relation for <resource>_tag.
+DELETE FROM :i:table WHERE :i:resource-col = :resource-id;
