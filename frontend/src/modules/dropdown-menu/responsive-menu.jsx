@@ -196,24 +196,27 @@ const ResponsiveMenu = withRouter(
             {resources &&
               resources.map((x, i) => {
                 const { name, count } = x;
+
                 const topic = humps.decamelize(name);
                 return (
-                  <Menu.Item
-                    key={`/knowledge-library?topic=${topic}`}
-                    className="indent-right nav-link"
-                    disabled={loading}
-                    onClick={() => setFilterMenu([topic])}
-                  >
-                    {topicNames(name)}
-                    <Button
-                      className="badge-count"
-                      size="small"
-                      type="ghost"
-                      shape="circle"
-                      icon={count}
-                      loading={loading}
-                    />
-                  </Menu.Item>
+                  topicNames(name).length > 0 && (
+                    <Menu.Item
+                      key={`/knowledge-library?topic=${topic}`}
+                      className="indent-right nav-link"
+                      disabled={loading}
+                      onClick={() => setFilterMenu([topic])}
+                    >
+                      {topicNames(name)}
+                      <Button
+                        className="badge-count"
+                        size="small"
+                        type="ghost"
+                        shape="circle"
+                        icon={count}
+                        loading={loading}
+                      />
+                    </Menu.Item>
+                  )
                 );
               })}
           </SubMenu>
