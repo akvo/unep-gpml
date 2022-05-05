@@ -1,14 +1,16 @@
 (ns gpml.handler.organisation
-  (:require [gpml.db.invitation :as db.invitation]
-            [gpml.db.organisation :as db.organisation]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.email-util :as email]
-            [gpml.geo-util :as geo]
-            [gpml.handler.geo :as handler.geo]
-            [integrant.core :as ig]
-            [ring.util.response :as resp]))
+  (:require
+   [gpml.db.invitation :as db.invitation]
+   [gpml.db.organisation :as db.organisation]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.email-util :as email]
+   [gpml.geo-util :as geo]
+   [gpml.handler.geo :as handler.geo]
+   [gpml.handler.resource.tag :as handler.resource.tag]
+   [integrant.core :as ig]
+   [ring.util.response :as resp]))
 
-(defn create [conn org]
+(defn create [conn mailjet-config org]
   (let [org-id (:id (db.organisation/new-organisation conn org))
         org-geo2 (handler.geo/get-geo-vector-v2 org-id org)
         org-geo (handler.geo/get-geo-vector org-id org)]
@@ -16,9 +18,16 @@
       (db.organisation/add-geo-coverage conn {:geo org-geo2})
       (when (seq org-geo)
         (db.organisation/add-geo-coverage conn {:geo org-geo})))
+    (when (seq (:tags org))
+      (handler.resource.tag/create-resource-tags conn
+                                                 mailjet-config
+                                                 {:tags (:tags org)
+                                                  :tag-category "general"
+                                                  :resource-name "organisation"
+                                                  :resource-id org-id}))
     org-id))
 
-(defn update-org [conn org]
+(defn update-org [conn mailjet-config org]
   (let [org-id (do (db.organisation/update-organisation conn org)
                    (:id org))
         org-geo (handler.geo/get-geo-vector org-id org)
@@ -30,15 +39,16 @@
       (when (seq org-geo)
         (db.organisation/delete-geo-coverage conn org)
         (db.organisation/add-geo-coverage conn {:id org-id :geo org-geo})))
-    (when (seq (:expertise org))
-      (db.organisation/delete-organisation-tags conn org)
-      (db.organisation/add-organisation-tags conn {:tags (map #(vector org-id %) (:expertise org ))}))
+    (when (seq (:tags org))
+      (handler.resource.tag/update-resource-tags conn mailjet-config {:tags (:tags org)
+                                                                      :tag-category "general"
+                                                                      :resource-name "organisation"
+                                                                      :resource-id org-id}))
     org-id))
-
 
 (defmethod ig/init-key :gpml.handler.organisation/get [_ {:keys [db]}]
   (fn [_]
-      (resp/response (db.organisation/all-members (:spec db)))))
+    (resp/response (db.organisation/all-members (:spec db)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/get-id [_ {:keys [db]}]
   (fn [{{:keys [path]} :parameters}]
@@ -57,8 +67,8 @@
                        second-contact-email (:stakeholder body-params)]
                    (if-let [second-contact (db.stakeholder/stakeholder-by-email (:spec db) {:email second-contact-email})]
                      (->> (assoc params :second_contact (:id second-contact))
-                          (create (:spec db)))
-                     (let [org-id (create (:spec db) params)]
+                          (create (:spec db) mailjet-config))
+                     (let [org-id (create (:spec db) mailjet-config params)]
                        (db.invitation/new-invitation (:spec db) {:stakeholder-id (:id first-contact)
                                                                  :organisation-id org-id
                                                                  :email second-contact-email
@@ -75,34 +85,46 @@
 
 (defmethod ig/init-key :gpml.handler.organisation/post-params [_ _]
   (into [:map
-    [:name string?]
-    [:url string?]
-    [:is_member boolean?]
-    [:stakeholder string?]
-    [:country int?]
-         [:geo_coverage_type geo/coverage_type]]
+         [:name string?]
+         [:url string?]
+         [:is_member boolean?]
+         [:stakeholder string?]
+         [:country int?]
+         [:geo_coverage_type geo/coverage_type]
+         [:tags {:optional true}
+          [:vector {:optional true}
+           [:map {:optional true}
+            [:id {:optional true} pos-int?]
+            [:tag string?]
+            [:tag_category string?]]]]]
         handler.geo/params-payload))
 
-(defmethod ig/init-key :gpml.handler.organisation/put [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.organisation/put [_ {:keys [db mailjet-config]}]
   (fn [{:keys [body-params referrer parameters]}]
-    (let [org-id (update-org db (assoc body-params :id (:id (:path parameters))))]
+    (let [org-id (update-org db mailjet-config (assoc body-params :id (:id (:path parameters))))]
       (resp/created referrer (assoc body-params :id org-id)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/put-params [_ _]
   (into [:map
-    [:id {:optional true} int?]
-    [:name string?]
-    [:url string?]
-    [:logo {:optional true} string?]
-    [:country int?]
-    [:geo_coverage_type geo/coverage_type]
-    [:type string?]
-    [:representative_group_other [:maybe string?]]
-    [:representative_group_civil_society [:maybe string?]]
-    [:representative_group_private_sector [:maybe string?]]
-    [:representative_group_government [:maybe string?]]
-    [:representative_group_academia_research [:maybe string?]]
-    [:subnational_area {:optional true} [:maybe string?]]
-    [:expertise vector?]
-         [:program string?]]
+         [:id {:optional true} int?]
+         [:name string?]
+         [:url string?]
+         [:logo {:optional true} string?]
+         [:country int?]
+         [:geo_coverage_type geo/coverage_type]
+         [:type string?]
+         [:representative_group_other [:maybe string?]]
+         [:representative_group_civil_society [:maybe string?]]
+         [:representative_group_private_sector [:maybe string?]]
+         [:representative_group_government [:maybe string?]]
+         [:representative_group_academia_research [:maybe string?]]
+         [:subnational_area {:optional true} [:maybe string?]]
+         [:expertise vector?]
+         [:program string?]
+         [:tags {:optional true}
+          [:vector {:optional true}
+           [:map {:optional true}
+            [:id {:optional true} pos-int?]
+            [:tag string?]
+            [:tag_category string?]]]]]
         handler.geo/params-payload))
