@@ -96,7 +96,9 @@ const ResourceList = ({
     <Row style={{ postion: "relative" }}>
       <Col
         span={24}
-        className="resource-list"
+        className={`resource-list ${
+          !isLoaded() || (loading && "empty-container")
+        }`}
         style={
           isLoaded() &&
           !loading &&

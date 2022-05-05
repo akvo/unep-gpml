@@ -38,8 +38,10 @@ const StakeholderList = ({
               style={
                 isLoaded() &&
                 !loading &&
-                !isEmpty(results) &&
-                viewport > 950 && { overflowY: "auto" }
+                !isEmpty(results) && {
+                  overflowY: "auto",
+                  display: viewport > 950 ? "flex" : "grid",
+                }
               }
             >
               {!isLoaded() || loading ? (

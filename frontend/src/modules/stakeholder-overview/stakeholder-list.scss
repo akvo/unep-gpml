@@ -13,18 +13,23 @@
     @-moz-document url-prefix() {
       max-width: 350px !important;
     }
+    @media (max-width: 540px) {
+      .resource-list {
+        padding: 10px 24px;
+      }
+    }
   }
 
   @media (min-width: 450px) and (max-width: 730px) {
     .resource-list {
-      display: grid !important;
+      display: grid;
       grid-template-columns: repeat(2, 1fr) !important;
     }
   }
 
   @media (min-width: 731px) and (max-width: 950px) {
     .resource-list {
-      display: grid !important;
+      display: grid;
       grid-template-columns: repeat(3, 1fr) !important;
     }
   }
@@ -171,6 +176,9 @@
     bottom: 0;
     .ant-pagination-item {
       margin-bottom: 2px;
+    }
+    @media (max-width: 540px) {
+      padding: 1rem 24px 1rem 24px !important;
     }
   }
 
