@@ -62,9 +62,9 @@ const ResponsiveMenu = withRouter(
             : setStakeholderSignupModalVisible(true);
         } else if (key === "join-gpml") {
           history.push("/signup");
-        } else if (key === "sign-in") {
+        } else if (key === "sign-in" || key === "sign-in-mobile") {
           loginWithPopup();
-        } else if (key === "logout") {
+        } else if (key === "logout" || key === "logout-mobile") {
           logout({ returnTo: window.location.origin });
         } else if (key === "data-hub" || key === "stakeholder-overview") {
         } else if (key.includes("knowledge-library")) {
@@ -287,7 +287,7 @@ const ResponsiveMenu = withRouter(
               </Menu.Item>
 
               <Menu.Item
-                key="sign-in"
+                key="sign-in-mobile"
                 className="green-text green-border small-screen-menu"
               >
                 Sign in
@@ -478,7 +478,7 @@ const ResponsiveMenu = withRouter(
               </Menu.Item>
 
               <Menu.Item
-                key="logout"
+                key="logout-mobile"
                 className="button-logout green-text green-border small-screen-menu"
               >
                 Logout
