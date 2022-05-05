@@ -631,7 +631,10 @@ const renderGeoCoverageCountryGroups = (
   transnationalOptions
 ) => {
   let dataCountries = null;
-  const newArray = [...new Set([...transnationalOptions, ...countries])];
+  const subItems = [].concat(
+    ...multicountryGroups.map(({ item }) => item || [])
+  );
+  const newArray = [...new Set([...subItems, ...countries])];
   dataCountries = data["geoCoverageValues"]?.map((x) => {
     return {
       name: newArray.find((it) => it.id === x)?.name,
