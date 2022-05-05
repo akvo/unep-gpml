@@ -272,6 +272,12 @@
              {:entity_connections (db.initiative/entity-connections-by-id db (select-keys item [:id]))
               :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys item [:id]))}))))
 
+(defmethod extra-details "organisation" [_ db organisation]
+  (let [organisation-tags (db.resource.tag/get-resource-tags db {:table "organisation_tag"
+                                                                 :resource-col "organisation"
+                                                                 :resource-id (:id organisation)})]
+    (assoc organisation :tags organisation-tags)))
+
 (defmethod extra-details "project" [_ db {:keys [related_content] :as project}]
   (merge
    {:entity_connections (db.initiative/entity-connections-by-id db (select-keys project [:id]))
