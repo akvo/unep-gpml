@@ -64,6 +64,7 @@ h4 {
 }
 ul.sidebar,
 ul.sidebar-mobile {
+  color: #fff;
   margin-bottom: 0;
   background-color: $bg-dark-primary;
   li.item-sidebar {
@@ -128,7 +129,7 @@ ul.sidebar-mobile {
         font-size: 0.45rem;
       }
       &.disabled {
-        opacity: 0.5;
+        opacity: 1;
         cursor: no-drop;
       }
       svg {
