@@ -418,7 +418,11 @@ const FlexibleForm = withRouter(
         delete data.qgeoCoverageValueSubnationalCity;
       }
       if (data.q24.hasOwnProperty("national")) {
-        data.q24_2 = [data.q24_2];
+        if (status === "edit" || params?.id) {
+          data.q24_2 = data.q24_2;
+        } else {
+          data.q24_2 = [data.q24_2];
+        }
         delete data.qgeoCoverageValueSubnational;
         delete data.qgeoCoverageValueSubnationalCity;
         delete data.q24_4;
@@ -1191,32 +1195,32 @@ const FlexibleForm = withRouter(
         requiredFilledIn.length === 0 &&
           ((initialFormData?.currentState?.data.S4[
             "S4_G5"
-          ].individual[0].hasOwnProperty("role") &&
+          ].individual[0]?.hasOwnProperty("role") &&
             initialFormData?.currentState?.data.S4[
               "S4_G5"
-            ].individual[0].hasOwnProperty("stakeholder")) ||
+            ].individual[0]?.hasOwnProperty("stakeholder")) ||
             (initialFormData?.currentState?.data.S4[
               "S4_G5"
-            ].entity[0].hasOwnProperty("role") &&
+            ].entity[0]?.hasOwnProperty("role") &&
               initialFormData?.currentState?.data.S4[
                 "S4_G5"
-              ].entity[0].hasOwnProperty("entity"))) === true &&
+              ].entity[0]?.hasOwnProperty("entity"))) === true &&
           setDisabledBtn({ disabled: false, type: "primary" });
         requiredFilledIn.length !== 0 &&
           ((initialFormData?.currentState?.data.S4["S4_G5"].individual.length >
             0 &&
             initialFormData?.currentState?.data.S4[
               "S4_G5"
-            ].individual[0].hasOwnProperty("role") &&
+            ].individual[0]?.hasOwnProperty("role") &&
             initialFormData?.currentState?.data.S4[
               "S4_G5"
-            ].individual[0].hasOwnProperty("stakeholder")) ||
+            ].individual[0]?.hasOwnProperty("stakeholder")) ||
             (initialFormData?.currentState?.data.S4[
               "S4_G5"
-            ].entity[0].hasOwnProperty("role") &&
+            ].entity[0]?.hasOwnProperty("role") &&
               initialFormData?.currentState?.data.S4[
                 "S4_G5"
-              ].entity[0].hasOwnProperty("entity"))) === true &&
+              ].entity[0]?.hasOwnProperty("entity"))) === true &&
           setDisabledBtn({ disabled: true, type: "default" });
       },
       [initialFormData, formSchema, setDisabledBtn]

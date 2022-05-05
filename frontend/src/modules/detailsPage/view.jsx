@@ -672,7 +672,7 @@ const renderGeoCoverageCountryGroups = (
 };
 const renderCountries = (data, countries, transnationalOptions) => {
   let dataCountries = null;
-  const newArray = [...new Set([...transnationalOptions, ...countries])];
+  const newArray = [...new Set([...countries])];
   dataCountries = data["geoCoverageCountries"]
     ?.map((x) => newArray.find((it) => it.id === x)?.name)
     .join(", ");
@@ -1154,28 +1154,30 @@ const DetailsView = ({
                         title={data?.geoCoverageType}
                       />
                     </List.Item>
-                    {data?.geoCoverageType !== "sub-national" && (
-                      <>
-                        {data?.geoCoverageValues &&
-                          data?.geoCoverageValues.length > 0 && (
-                            <List.Item>
-                              <List.Item.Meta
-                                avatar={<Avatar src={LocationImage} />}
-                                title={
-                                  <>
-                                    {renderGeoCoverageCountryGroups(
-                                      data,
-                                      countries,
-                                      transnationalOptions
-                                    )}
-                                  </>
-                                }
-                              />
-                            </List.Item>
-                          )}
-                      </>
-                    )}
-                    {data?.geoCoverageType === "sub-national" && (
+                    {data?.geoCoverageType !== "sub-national" &&
+                      data?.geoCoverageType !== "national" && (
+                        <>
+                          {data?.geoCoverageValues &&
+                            data?.geoCoverageValues.length > 0 && (
+                              <List.Item>
+                                <List.Item.Meta
+                                  avatar={<Avatar src={LocationImage} />}
+                                  title={
+                                    <>
+                                      {renderGeoCoverageCountryGroups(
+                                        data,
+                                        countries,
+                                        transnationalOptions
+                                      )}
+                                    </>
+                                  }
+                                />
+                              </List.Item>
+                            )}
+                        </>
+                      )}
+                    {(data?.geoCoverageType === "sub-national" ||
+                      data?.geoCoverageType === "national") && (
                       <>
                         {data?.geoCoverageValues &&
                           data?.geoCoverageValues.length > 0 && (

@@ -671,7 +671,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
         res = value
           ? moment(value).isValid()
             ? moment(value).format("YYYY-MM-DD")
-            : moment().format("YYYY-MM-DD")
+            : ""
           : "";
       }
     }
@@ -1007,7 +1007,9 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                   (data?.[section]?.S4_G5.individual[0].hasOwnProperty(
                     "role"
                   ) ||
-                    data?.[section]?.S4_G5.entity[0].hasOwnProperty("role")) ? (
+                    data?.[section]?.S4_G5?.entity[0]?.hasOwnProperty(
+                      "role"
+                    )) ? (
                     <CheckOutlined />
                   ) : (
                     <EditOutlined />
@@ -1017,11 +1019,11 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                   right: "0",
                   position: "absolute",
                   color:
-                    data?.[section]?.S4_G5.individual &&
-                    (data?.[section]?.S4_G5.individual[0].hasOwnProperty(
+                    data?.[section]?.S4_G5?.individual &&
+                    (data?.[section]?.S4_G5?.individual[0]?.hasOwnProperty(
                       "role"
                     ) ||
-                      data?.[section]?.S4_G5.entity[0].hasOwnProperty("role"))
+                      data?.[section]?.S4_G5?.entity[0]?.hasOwnProperty("role"))
                       ? "#255B87"
                       : "#fff",
                   borderColor: "#255B87",
@@ -1536,10 +1538,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                           <span>Optional</span>
                         </div>
                       </div>
-                      {subContentType.length > 0 ? (
+                      {subContentType?.length > 0 ? (
                         <div className="sub-content-topics">
                           <div className="ant-row" value={subType}>
-                            {subContentType.map((item, index) => (
+                            {subContentType?.map((item, index) => (
                               <Col
                                 className="gutter-row"
                                 xs={12}
