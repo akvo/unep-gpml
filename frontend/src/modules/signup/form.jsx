@@ -256,6 +256,15 @@ const SignUpForm = withRouter(
             };
           }
         });
+        if (filteredProfile.hasOwnProperty("seeking")) {
+          delete filteredProfile.seeking;
+        }
+        if (filteredProfile.hasOwnProperty("offering")) {
+          delete filteredProfile.offering;
+        }
+        if (filteredProfile.hasOwnProperty("tags")) {
+          delete filteredProfile.tags;
+        }
         // add filtered profile to data payload
         data = { ...filteredProfile, ...data };
       }

@@ -668,7 +668,11 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
             ? ""
             : moment(value).format("YYYY-MM-DD");
       } else {
-        res = value ? moment(value).format("YYYY-MM-DD") : "";
+        res = value
+          ? moment(value).isValid()
+            ? moment(value).format("YYYY-MM-DD")
+            : moment().format("YYYY-MM-DD")
+          : "";
       }
     }
 
@@ -811,7 +815,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
           d.data = {
             ...d.data,
             url:
-              d.data.languages && d.data.languages.length > 0
+              d.data.languages && d.data.languages?.length > 0
                 ? d.data.languages[0].url
                 : d.data.url,
             entityConnections: [...d.data.entityConnections, ...newData],
@@ -842,7 +846,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
 
   useEffect(() => {
     const search = mainContentType.find((element) => element.code === mainType)
-      .childs;
+      ?.childs;
     setSubContentType(search);
   }, [mainContentType, mainType]);
 
@@ -919,7 +923,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
               shape="circle"
               icon={
                 totalRequiredFields === 0 &&
-                data?.S4?.S4_G5.individual.length > 0 &&
+                data?.S4?.S4_G5.individual?.length > 0 &&
                 data?.S4?.S4_G5.individual[0].hasOwnProperty("role") ? (
                   <CheckOutlined />
                 ) : (
@@ -1460,8 +1464,8 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
 
                           <List itemLayout="horizontal">
                             {mainContentType
-                              .find((element) => element.code === mainType)
-                              .examples.map((link, id) => (
+                              ?.find((element) => element.code === mainType)
+                              ?.examples.map((link, id) => (
                                 <List.Item key={id}>
                                   <a href={link.link} target="_blank">
                                     <List.Item.Meta title={link.title} />
