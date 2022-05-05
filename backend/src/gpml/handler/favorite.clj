@@ -90,9 +90,9 @@
             current (merge new-topic attr)
             current (db.favorite/association-by-stakeholder-topic db current)
             delete (first
-                     (dt/diff
-                       (set (map #(:association %) current))
-                       (set (:association body-params))))
+                    (dt/diff
+                     (set (map #(:association %) current))
+                     (set (:association body-params))))
             delete (first delete)]
         (when (some? delete)
           (let [delete (-> (filter #(= (:association %) delete) current)
@@ -103,9 +103,9 @@
         (jdbc/with-db-transaction [conn db]
           (doseq [association (expand-associations body-params)]
             (db.favorite/new-association conn (merge
-                                                {:stakeholder stakeholder
-                                                 :remarks nil}
-                                                association))))
+                                               {:stakeholder stakeholder
+                                                :remarks nil}
+                                               association))))
         (db.activity/create-activity db {:id (util/uuid)
                                          :type "bookmark_resource"
                                          :owner_id stakeholder

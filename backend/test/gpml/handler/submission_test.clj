@@ -77,7 +77,6 @@
       (is (= "tag" (-> resp :body :data last :type)))
       (is (= "justin@org" (-> (filter #(not= "tag" (:type %)) (-> resp :body :data)) last :created_by))))))
 
-
 (deftest handler-get-detail-test
   (testing "Get pending submission detail"
     (let [system (ig/init fixtures/*system* [::submission/get-detail])

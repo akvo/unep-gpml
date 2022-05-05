@@ -73,7 +73,8 @@
                                    [kerodon "0.9.1"]
                                    [djblue/portal "0.8.0"]]
                   :plugins [[jonase/eastwood "0.4.3"]
-                            [lein-eftest "0.5.9"]]
+                            [lein-eftest "0.5.9"]
+                            [lein-cljfmt "0.8.0"]]
                   :eastwood {:config-files ["eastwood_cfg.clj"]}
                   :eftest {:thread-count 4
                            :multithread :vars
