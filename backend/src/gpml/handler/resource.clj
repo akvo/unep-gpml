@@ -1,20 +1,21 @@
 (ns gpml.handler.resource
-  (:require [clojure.java.jdbc :as jdbc]
-            [gpml.auth :as auth]
-            [gpml.db.activity :as db.activity]
-            [gpml.db.favorite :as db.favorite]
-            [gpml.db.language :as db.language]
-            [gpml.db.resource :as db.resource]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.email-util :as email]
-            [gpml.handler.auth :as h.auth]
-            [gpml.handler.geo :as handler.geo]
-            [gpml.handler.image :as handler.image]
-            [gpml.pg-util :as pg-util]
-            [gpml.util :as util]
-            [integrant.core :as ig]
-            [ring.util.response :as resp]
-            [gpml.db.tag :as db.tag]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [gpml.auth :as auth]
+   [gpml.db.activity :as db.activity]
+   [gpml.db.favorite :as db.favorite]
+   [gpml.db.language :as db.language]
+   [gpml.db.resource :as db.resource]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.email-util :as email]
+   [gpml.handler.auth :as h.auth]
+   [gpml.handler.geo :as handler.geo]
+   [gpml.handler.image :as handler.image]
+   [gpml.handler.resource.tag :as handler.resource.tag]
+   [gpml.pg-util :as pg-util]
+   [gpml.util :as util]
+   [integrant.core :as ig]
+   [ring.util.response :as resp]))
 
 (defn expand-entity-associations
   [entity-connections resource-id]
@@ -36,33 +37,17 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn add-tags [conn mailjet-config tags resource-id]
-  (let [tag-ids (map #(:id %) tags)]
-    (if-not (some nil? tag-ids)
-      (db.resource/add-resource-tags conn {:tags (map #(vector resource-id %) tag-ids)})
-      (let [tag-category (:id (db.tag/tag-category-by-category-name conn {:category "general"}))
-            new-tags (filter #(not (contains? % :id)) tags)
-            tags-to-db (map #(vector % tag-category) (vec (map #(:tag %) new-tags)))
-            new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags tags-to-db}))]
-        (db.resource/add-resource-tags conn {:tags (map #(vector resource-id %) (concat (remove nil? tag-ids) new-tag-ids))})
-        (map
-         #(email/notify-admins-pending-approval
-           conn
-           mailjet-config
-           (merge % {:type "tag"}))
-         new-tags)))))
-
-(defn create-resource [conn {:keys [resource_type title publish_year
-                                    summary value value_currency
-                                    value_remarks valid_from valid_to image
-                                    geo_coverage_type geo_coverage_value
-                                    geo_coverage_countries geo_coverage_country_groups
-                                    geo_coverage_value_subnational_city
-                                    attachments country urls tags remarks
-                                    created_by url mailjet-config owners
-                                    info_docs sub_content_type related_content
-                                    first_publication_date latest_amendment_date document_preview
-                                    entity_connections individual_connections]}]
+(defn create-resource [conn mailjet-config
+                       {:keys [resource_type title publish_year
+                               summary value value_currency
+                               value_remarks valid_from valid_to image
+                               geo_coverage_type geo_coverage_value
+                               geo_coverage_countries geo_coverage_country_groups
+                               geo_coverage_value_subnational_city
+                               attachments country urls tags remarks
+                               created_by url owners info_docs sub_content_type related_content
+                               first_publication_date latest_amendment_date document_preview
+                               entity_connections individual_connections]}]
   (let [data {:type resource_type
               :title title
               :publish_year publish_year
@@ -102,7 +87,10 @@
                                                 :stakeholder-id stakeholder-id
                                                 :roles ["owner"]}))
     (when (not-empty tags)
-      (add-tags conn mailjet-config tags resource-id))
+      (handler.resource.tag/create-resource-tags conn mailjet-config {:tags tags
+                                                                      :tag-category "general"
+                                                                      :resource-name "resource"
+                                                                      :resource-id resource-id}))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections resource-id)]
         (db.favorite/new-organisation-association conn association)))
@@ -133,9 +121,8 @@
   (fn [{:keys [jwt-claims body-params] :as req}]
     (jdbc/with-db-transaction [conn (:spec db)]
       (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-            resource-id (create-resource conn (assoc body-params
-                                                     :created_by (:id user)
-                                                     :mailjet-config mailjet-config))
+            resource-id (create-resource conn mailjet-config (assoc body-params
+                                                                    :created_by (:id user)))
             activity {:id (util/uuid)
                       :type "create_resource"
                       :owner_id (:id user)

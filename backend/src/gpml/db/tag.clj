@@ -11,9 +11,11 @@
          tag-by-category
          tag-category-by-category-name
          all-tags
-         get-popular-topics-tags)
+         get-popular-topics-tags
+         get-tag-categories
+         update-tag)
 
-(hugsql/def-db-fns "gpml/db/tag.sql")
+(hugsql/def-db-fns "gpml/db/tag.sql" {:quoting :ansi})
 
 (defn- generic-topic-tag-count-query
   [entity-name]

@@ -398,11 +398,11 @@ const renderBannerSection = (
             <div className="long-image">
               <a
                 href={`${
-                  data?.url && data?.url.includes("https://")
+                  data?.url && data?.url?.includes("https://")
                     ? data?.url
                     : data.languages
                     ? data?.languages[0].url
-                    : data?.url.includes("http://")
+                    : data?.url?.includes("http://")
                     ? data?.url
                     : "https://" + data?.url
                 }`}
