@@ -75,5 +75,5 @@
                     (= image_type "event")
                     (:image (db.event/event-image-by-id (:spec db) {:id id}))
                     :else nil)]
-        (get-content data)
-        (resp/not-found {:message "Image not found"}))))
+      (get-content data)
+      (resp/not-found {:message "Image not found"}))))

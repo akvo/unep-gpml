@@ -7,8 +7,8 @@
 (defn api-organisation-detail-opts->organisation-detail-opts
   [api-organisation-detail-opts]
   (-> api-organisation-detail-opts
-    (util/update-if-exists :page #(Integer/parseInt %))
-    (util/update-if-exists :limit #(Integer/parseInt %))))
+      (util/update-if-exists :page #(Integer/parseInt %))
+      (util/update-if-exists :limit #(Integer/parseInt %))))
 
 (defn- remove-nil-connections [{:keys [stakeholder_connections entity_connections] :as content}]
   (let [empty-stakeholder-connections? (nil? (:id (first stakeholder_connections)))
@@ -16,7 +16,7 @@
     (cond
       (not (and empty-stakeholder-connections? empty-entity-connections?))
       (assoc content :stakeholder_connections (distinct stakeholder_connections)
-                     :entity_connections (distinct entity_connections))
+             :entity_connections (distinct entity_connections))
 
       (and empty-stakeholder-connections? empty-entity-connections?)
       (assoc content :stakeholder_connections nil :entity_connections nil)

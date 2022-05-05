@@ -18,8 +18,7 @@
           _ (db.stakeholder/new-stakeholder-image db {:picture picture})
           resp (handler (-> (mock/request :get "/image")
                             (assoc :parameters {:path {:id 1 :image_type "profile"}}
-                                   :path-params {:id 1}
-                                   )))]
+                                   :path-params {:id 1})))]
       (is (= 200 (:status resp))))))
 
 (deftest handler-image-not-found
@@ -28,7 +27,6 @@
           handler (::image/get system)
           resp (handler (-> (mock/request :get "/image")
                             (assoc :parameters {:path {:id 1 :image_type "profile"}}
-                                   :path-params {:id 1}
-                                   )))]
+                                   :path-params {:id 1})))]
       (is (= 404 (:status resp)))
       (is (= "Image not found" (-> resp :body :message))))))
