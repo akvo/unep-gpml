@@ -38,7 +38,6 @@
    :url "resource url"
    :owners (:owners data)})
 
-
 (defn fake-upload-blob [_ _ _ content-type]
   (is (= content-type "image/png")))
 

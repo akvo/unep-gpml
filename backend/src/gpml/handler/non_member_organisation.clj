@@ -5,4 +5,4 @@
 
 (defmethod ig/init-key :gpml.handler.non-member-organisation/get [_ {:keys [db]}]
   (fn [_]
-      (resp/response (db.organisation/all-non-members (:spec db)))))
+    (resp/response (db.organisation/all-non-members (:spec db)))))

@@ -30,9 +30,9 @@
 
           ;; create new user name Bob
           user_bob (db.stakeholder/new-stakeholder db  (assoc user
-                                                       :email "bob@org"
-                                                       :first_name "Bob"
-                                                       :last_name "Doe"))
+                                                              :email "bob@org"
+                                                              :first_name "Bob"
+                                                              :last_name "Doe"))
           ;; Jane reject Bob
           _ (db.stakeholder/update-stakeholder-status db (assoc user_bob
                                                                 :review_status "REJECTED"
@@ -40,9 +40,9 @@
 
           ;; create new user name Justin
           user_justin (db.stakeholder/new-stakeholder db  (assoc user
-                                                       :email "justin@org"
-                                                       :first_name "Justin"
-                                                       :last_name "Doe"))
+                                                                 :email "justin@org"
+                                                                 :first_name "Justin"
+                                                                 :last_name "Doe"))
           ;; Jane approve justin
           _ (db.stakeholder/update-stakeholder-status db (assoc user_justin
                                                                 :review_status "APPROVED"

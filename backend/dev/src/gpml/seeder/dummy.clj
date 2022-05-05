@@ -31,32 +31,32 @@
   (:id (db.country/country-by-code db {:name code})))
 
 (defn associate-tags [db data category]
-      (mapv (fn [tag]
-              (assoc data :tag (:id tag)))
-            (take 3 (shuffle (db.tag/tag-by-category db {:category category})))))
+  (mapv (fn [tag]
+          (assoc data :tag (:id tag)))
+        (take 3 (shuffle (db.tag/tag-by-category db {:category category})))))
 
 (defn associate-geo [db data names]
-      (mapv (fn [cg]
-              (assoc data
-                     :country_group (:id cg)
-                     :country nil))
-            (db.country-group/country-group-by-names db {:names names})))
+  (mapv (fn [cg]
+          (assoc data
+                 :country_group (:id cg)
+                 :country nil))
+        (db.country-group/country-group-by-names db {:names names})))
 
 (defn associate-url [db data]
   (let [language {:language
-                 (:id (db.language/language-by-name db {:name "English"}))}
+                  (:id (db.language/language-by-name db {:name "English"}))}
         prefix (str (-> data first first (str/replace ":" "")) "-" (-> data first second))]
     (mapv (fn [url] (conj data language
                           {:url (str "https://" prefix "-" url ".com")}))
           ["lorem", "dolor"])))
 
 (defn register-organisation [db]
-  (db.organisation/new-organisation db{:name "Akvo"
-                                       :geo_coverage_type "global"
-                                       :country (get-country-id db "NLD")
-                                       :type "NGO and Major Groups and Stakeholder"
-                                       :url "akvo.org"
-                                       :review_status "APPROVED"}))
+  (db.organisation/new-organisation db {:name "Akvo"
+                                        :geo_coverage_type "global"
+                                        :country (get-country-id db "NLD")
+                                        :type "NGO and Major Groups and Stakeholder"
+                                        :url "akvo.org"
+                                        :review_status "APPROVED"}))
 
 (defn get-org-id [db]
   (let [org (db.organisation/organisation-by-name db {:name "Akvo"})]
@@ -76,45 +76,45 @@
       profile
       (let [me (-> my-name (str/split #" "))
             new-profile (db.stakeholder/new-stakeholder
-                          db (conj (get-account-props db)
-                                   {:email my-email
-                                    :first_name (first me)
-                                    :last_name (last me)
-                                    :country (get-country-id db "NLD")
-                                    :geo_coverage_type "regional"
-                                    :idp_usernames ["auth0|123"]
-                                    :geo_coverage_value
-                                    (map :id
-                                         (db.country-group/country-group-by-names
-                                           db {:names ["Africa" "Europe"]}))}))]
+                         db (conj (get-account-props db)
+                                  {:email my-email
+                                   :first_name (first me)
+                                   :last_name (last me)
+                                   :country (get-country-id db "NLD")
+                                   :geo_coverage_type "regional"
+                                   :idp_usernames ["auth0|123"]
+                                   :geo_coverage_value
+                                   (map :id
+                                        (db.country-group/country-group-by-names
+                                         db {:names ["Africa" "Europe"]}))}))]
         (db.stakeholder/update-stakeholder-role
-          db (assoc new-profile :role role :review_status review-status))
+         db (assoc new-profile :role role :review_status review-status))
         (doseq [tag ["general" "seeking" "offering"]]
           (jdbc/insert-multi!
-            db :stakeholder_tag (associate-tags db {:stakeholder (:id new-profile)} tag)))
+           db :stakeholder_tag (associate-tags db {:stakeholder (:id new-profile)} tag)))
         (jdbc/insert-multi!
-          db :stakeholder_geo_coverage
-          (associate-geo db {:stakeholder (:id new-profile)} ["Africa" "Europe"]))
+         db :stakeholder_geo_coverage
+         (associate-geo db {:stakeholder (:id new-profile)} ["Africa" "Europe"]))
         (db.stakeholder/stakeholder-by-id db new-profile)))))
 
 (defn submit-dummy-event [db my-email my-name]
   (let [profile (get-or-create-profile db my-email my-name "ADMIN" "APPROVED")
         dummies (map-indexed (fn [idx data]
-                       (-> data
-                           (assoc :title (str "Dummy Event - " idx)
-                                  :description lorem
-                                  :start_date "2022-01-01"
-                                  :end_date "2022-01-01"
-                                  :resource_language_url [{:language "English"
-                                                           :url "https://akvo.org"}]
-                                  :review_status "SUBMITTED"
-                                  :created_by (:id profile)
-                                  :geo_coverage_type "regional"
-                                  :city "Yogyakarta"
-                                  :image "https://directory.growasia.org/wp-content/uploads/solution_logos/0.jpg"
-                                  :country (get-country-id db "NLD"))
-                           (dissoc :id :languages :url)))
-                     (seeder/get-data "events"))]
+                               (-> data
+                                   (assoc :title (str "Dummy Event - " idx)
+                                          :description lorem
+                                          :start_date "2022-01-01"
+                                          :end_date "2022-01-01"
+                                          :resource_language_url [{:language "English"
+                                                                   :url "https://akvo.org"}]
+                                          :review_status "SUBMITTED"
+                                          :created_by (:id profile)
+                                          :geo_coverage_type "regional"
+                                          :city "Yogyakarta"
+                                          :image "https://directory.growasia.org/wp-content/uploads/solution_logos/0.jpg"
+                                          :country (get-country-id db "NLD"))
+                                   (dissoc :id :languages :url)))
+                             (seeder/get-data "events"))]
     (if (= 0 (-> (db.event/dummy db) first :count))
       (doseq [data dummies]
         (let [event {:event (:id (db.event/new-event db data))}]
@@ -142,9 +142,7 @@
               :duct.database.sql/hikaricp
               :spec))
 
-
-
-  ;; Create New Account as Admin
+;; Create New Account as Admin
   (get-or-create-profile db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
   ;; Create New Account as Unapproved user
   (get-or-create-profile db "anothertest@akvo.org" "Another Testing" "USER" "SUBMITTED")

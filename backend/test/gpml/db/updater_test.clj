@@ -47,7 +47,7 @@
     ;; empty names in the old map.
     (doseq [country-old countries-old]
       (testing (str (:name country-old) " is available in new map")
-        (let [ ;; countries not available on the new map
+        (let [;; countries not available on the new map
               new-map-deleted ["Ascencion (UK)" "Gough (UK)" "Tristan da Cunha (UK)"]]
           (is (or
                ;; countries which are not available on the new json
@@ -76,7 +76,7 @@
     (seeder/seed-languages db)
     (testing "seed using old ids"
       (seeder/resync-country db {:old? true})
-      (let [ ;; get id from database
+      (let [;; get id from database
             old-id (db.country/country-by-code db {:name "CYP"})
             ;; get the old country.json id
             old-json-id (-> (filter #(= "CYP" (:iso_code %))
@@ -98,8 +98,8 @@
           tn-initiative (db.initiative/initiative-by-id db tn-initiative-id)
           ;; national initiative
           n-initiative-data (seeder/parse-data
-                              (slurp (io/resource "examples/initiative-national.json"))
-                              {:keywords? true})
+                             (slurp (io/resource "examples/initiative-national.json"))
+                             {:keywords? true})
           n-initiative-id (db.initiative/new-initiative db n-initiative-data)
           n-initiative (db.initiative/initiative-by-id db n-initiative-id)]
 
@@ -128,7 +128,7 @@
         (let [new-me (db.stakeholder/stakeholder-by-email db me)]
           (testing "My new country id is changed"
             (is (= "CYP" (:iso_code
-                           (db.country/country-by-id db {:id (:country new-me)}))))))
+                          (db.country/country-by-id db {:id (:country new-me)}))))))
 
         (testing "Transnational Initiative country ID changes correctly"
           (let [new-tn-initiative (db.initiative/initiative-by-id db tn-initiative-id)

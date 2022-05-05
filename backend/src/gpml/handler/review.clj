@@ -125,13 +125,11 @@
   (fn [_]
     (get-reviewers db)))
 
-
 (defmethod ig/init-key ::new-multiple-review [_ {:keys [db mailjet-config]}]
   (fn [{{{:keys [topic-type topic-id]} :path
          {:keys [reviewers]} :body} :parameters
         admin :admin}]
     (new-multiple-review db mailjet-config topic-type topic-id reviewers (:id admin))))
-
 
 (defmethod ig/init-key ::update-review [_ {:keys [db mailjet-config]}]
   (fn [{{{:keys [topic-type topic-id]} :path
