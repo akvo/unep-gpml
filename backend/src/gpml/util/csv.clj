@@ -1,18 +1,7 @@
 (ns gpml.util.csv
   (:require [clojure.data.csv :as csv]
             [clojure.java.io :as io]
-            [clojure.set :as set])
-  (:import [java.util UUID]))
-
-(defn uuid
-  ([] (UUID/randomUUID))
-  ([str-uuid] (UUID/fromString str-uuid)))
-
-(defn create-tmp-file
-  ([]
-   (io/file (str (System/getProperty "java.io.tmpdir") "/" (uuid))))
-  ([ext]
-   (io/file (str (System/getProperty "java.io.tmpdir") "/" (uuid) ext))))
+            [clojure.set :as set]))
 
 (defn write-to-csv-file
   "Write CSV data to a file. Uses the `x-UTF-16LE-BOM` encoding as it is

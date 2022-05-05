@@ -271,7 +271,16 @@
                                          [""
                                           {:get {:summary "List tags grouped by category"
                                                  :swagger {:tags ["tag"]}
-                                                 :handler #ig/ref :gpml.handler.tag/all}}]
+                                                 :handler #ig/ref :gpml.handler.tag/all}
+                                           :put {:summary "Update a tag"
+                                                 :swagger {:tags ["tag"]}
+                                                 :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                              #ig/ref :gpml.auth/auth-required
+                                                              #ig/ref :gpml.auth/approved-user
+                                                              #ig/ref :gpml.auth/admin-required-middleware]
+                                                 :responses #ig/ref :gpml.handler.tag/put-response
+                                                 :parameters #ig/ref :gpml.handler.tag/put-params
+                                                 :handler #ig/ref :gpml.handler.tag/put}}]
                                          ["/:topic-type"
                                           {:get {:summary "List tags by topic type"
                                                  :swagger {:tags ["tag"]}
@@ -570,8 +579,10 @@
   :gpml.handler.stakeholder/post {:db #ig/ref :gpml.db/spec
                                   :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.stakeholder/post-params {}
-  :gpml.handler.stakeholder/put {:db #ig/ref :duct.database/sql}
-  :gpml.handler.stakeholder/put-by-admin {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder/put {:db #ig/ref :duct.database/sql
+                                 :mailjet-config #ig/ref :gpml.config/mailjet}
+  :gpml.handler.stakeholder/put-by-admin {:db #ig/ref :duct.database/sql
+                                          :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.stakeholder/put-by-admin-params {}
   :gpml.handler.stakeholder-association/get-associated-topics {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder-association/get-associated-topics-params {}
@@ -584,6 +595,9 @@
   :gpml.handler.tag/all {:db #ig/ref :duct.database/sql}
   :gpml.handler.tag/get-popular-topics-tags {:db #ig/ref :duct.database/sql}
   :gpml.handler.tag/get-popular-topics-tags-params {}
+  :gpml.handler.tag/put {:db #ig/ref :duct.database/sql}
+  :gpml.handler.tag/put-params {}
+  :gpml.handler.tag/put-response {}
 
   :gpml.handler.non-member-organisation/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.organisation/get {:db #ig/ref :duct.database/sql}

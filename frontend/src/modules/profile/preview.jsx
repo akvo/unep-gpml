@@ -37,7 +37,7 @@ const findCountries = (
       return "-";
     }
     return values
-      .map((v) => {
+      ?.map((v) => {
         return data.find((x) => x.id === v)?.name;
       })
       .join(", ");

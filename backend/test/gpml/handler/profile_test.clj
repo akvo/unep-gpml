@@ -43,26 +43,26 @@
   (:id (db.stakeholder/stakeholder-by-email conn {:email email})))
 
 (defn seed-important-database [db]
-    (let [tag-category (db.tag/new-tag-category db {:category "general"})]
-      {:tags (db.tag/new-tags db {:tags (map #(vector % (:id tag-category)) ["Tag 1" "Tag 2" "Tag 3"])})
-       :org (db.organisation/new-organisation
-              db {:id 1
-                  :name "Akvo"
-                  :url "https://akvo.org"
-                  :geo_coverage_type "regional"
-                  :type "Academia and Research"
-                  :program "Test Program"
-                  :contribution "Test Contribution"
-                  :expertise "Test Expertise"
-                  :review_status "APPROVED"})
-       :countries [(db.country/new-country
-                     db {:name "Indonesia" :iso_code "IND" :description "Member State" :territory "IND"})
-                   (db.country/new-country
-                     db {:name "Spain" :iso_code "SPA" :description "Member State" :territory "SPA"})
-                   (db.country/new-country
-                     db {:name "Canary Island" :iso_code "SPA" :description "territory" :territory "SPA"})]
-       :country_groups (mapv (fn [x] (db.country-group/new-country-group
-                                       db {:type "region" :name x})) ["Asia" "Africa" "Europe"])}))
+  (let [tag-category (db.tag/new-tag-category db {:category "general"})]
+    {:tags (db.tag/new-tags db {:tags (map #(vector % (:id tag-category)) ["Tag 1" "Tag 2" "Tag 3"])})
+     :org (db.organisation/new-organisation
+           db {:id 1
+               :name "Akvo"
+               :url "https://akvo.org"
+               :geo_coverage_type "regional"
+               :type "Academia and Research"
+               :program "Test Program"
+               :contribution "Test Contribution"
+               :expertise "Test Expertise"
+               :review_status "APPROVED"})
+     :countries [(db.country/new-country
+                  db {:name "Indonesia" :iso_code "IND" :description "Member State" :territory "IND"})
+                 (db.country/new-country
+                  db {:name "Spain" :iso_code "SPA" :description "Member State" :territory "SPA"})
+                 (db.country/new-country
+                  db {:name "Canary Island" :iso_code "SPA" :description "territory" :territory "SPA"})]
+     :country_groups (mapv (fn [x] (db.country-group/new-country-group
+                                    db {:type "region" :name x})) ["Asia" "Africa" "Europe"])}))
 
 (deftest handler-post-with-existing-organisation-test
   (testing "New profile is created with existing organisation"
@@ -79,9 +79,9 @@
                             (assoc :jwt-claims {:email "john@org" :picture "test.jpg" :sub "auth0|123"})
                             (assoc :body-params body-params)))]
       (is (= 201 (:status resp)))
-      (is (= "John" (->(:body resp) :first_name)))
-      (is (= "Doe" (->(:body resp) :last_name)))
-      (is (= "SUBMITTED" (->(:body resp) :review_status)))
+      (is (= "John" (-> (:body resp) :first_name)))
+      (is (= "Doe" (-> (:body resp) :last_name)))
+      (is (= "SUBMITTED" (-> (:body resp) :review_status)))
       (is (= {:id 10001
               :email "john@org"
               :about "Lorem Ipsum"
@@ -126,9 +126,9 @@
                             (assoc :jwt-claims {:email "john@org" :picture "test.jpg" :sub "auth0|123"})
                             (assoc :body-params body-params)))]
       (is (= 201 (:status resp)))
-      (is (= "John" (->(:body resp) :first_name)))
-      (is (= "Doe" (->(:body resp) :last_name)))
-      (is (= "SUBMITTED" (->(:body resp) :review_status)))
+      (is (= "John" (-> (:body resp) :first_name)))
+      (is (= "Doe" (-> (:body resp) :last_name)))
+      (is (= "SUBMITTED" (-> (:body resp) :review_status)))
       (is (= {:id 10001
               :email "john@org"
               :about "Lorem Ipsum"
@@ -167,125 +167,125 @@
                             (assoc :jwt-claims {:email "john@org"})
                             (assoc :body-params (dissoc body-params :twitter :linkedin :photo))))]
       (is (= 201 (:status resp)))
-      (is (= "John" (->(:body resp) :first_name)))
-      (is (= "Doe" (->(:body resp) :last_name)))
-      (is (= "SUBMITTED" (->(:body resp) :review_status)))
+      (is (= "John" (-> (:body resp) :first_name)))
+      (is (= "Doe" (-> (:body resp) :last_name)))
+      (is (= "SUBMITTED" (-> (:body resp) :review_status)))
       (testing "New incomplete profile is created"
-        (is (= "https://ui-avatars.com/api/?size=480&name=John+Doe" (->(:body resp) :photo)))
-        (is (= nil (->(:body resp) :linkedin)))
-        (is (= "https://ui-avatars.com/api/?size=480&name=John+Doe" (->(:body resp) :photo)))
-        (is (= nil (->(:body resp) :org)))))))
+        (is (= "https://ui-avatars.com/api/?size=480&name=John+Doe" (-> (:body resp) :photo)))
+        (is (= nil (-> (:body resp) :linkedin)))
+        (is (= "https://ui-avatars.com/api/?size=480&name=John+Doe" (-> (:body resp) :photo)))
+        (is (= nil (-> (:body resp) :org)))))))
 
 (deftest handler-put-test
   (testing "Update profile once its signed up")
-    (let [system (ig/init fixtures/*system* [::stakeholder/put])
-          handler (::stakeholder/put system)
-          db (-> system :duct.database.sql/hikaricp :spec)
-          data (seed-important-database db)
+  (let [system (ig/init fixtures/*system* [::stakeholder/put])
+        handler (::stakeholder/put system)
+        db (-> system :duct.database.sql/hikaricp :spec)
+        data (seed-important-database db)
           ;; John created account with country value Spain and organisation Akvo
-          _ (db.stakeholder/new-stakeholder-cv db {:cv picture})
-          _ (db.stakeholder/new-stakeholder-image db {:picture picture})
-          _ (db.stakeholder/new-stakeholder db  (assoc (new-profile 1)
-                                                       :picture "/image/profile/1"
-                                                       :affiliation (-> data :org :id)
-                                                       :cv "/cv/profile/1"))
+        _ (db.stakeholder/new-stakeholder-cv db {:cv picture})
+        _ (db.stakeholder/new-stakeholder-image db {:picture picture})
+        _ (db.stakeholder/new-stakeholder db  (assoc (new-profile 1)
+                                                     :picture "/image/profile/1"
+                                                     :affiliation (-> data :org :id)
+                                                     :cv "/cv/profile/1"))
           ;; John trying to edit their profile with newly organisation
           ;; Also john want to change his cv and profile picture
-          resp (handler (-> (mock/request :put "/")
-                            (assoc :jwt-claims {:email "john@org"})
-                            (assoc :body-params
-                                     (assoc (new-profile nil)
-                                             :id 10001
-                                             :about "Dolor sit Amet"
-                                             :country (-> (:countries data) second :id)
-                                             :first_name "Mark"
-                                             :org {:id 1 :name "Akvo" :url "https://akvo.org"}
-                                             :job_title "Developer"
-                                             :photo picture
-                                             :cv picture
-                                             :picture nil
-                                             :public_email true))))
-          profile (db.stakeholder/stakeholder-by-id db {:id 10001})
-          old-images (db.stakeholder/stakeholder-image-by-id db {:id 10001})
-          old-cv (db.stakeholder/stakeholder-cv-by-id db {:id 10001})]
+        resp (handler (-> (mock/request :put "/")
+                          (assoc :jwt-claims {:email "john@org"})
+                          (assoc :body-params
+                                 (assoc (new-profile nil)
+                                        :id 10001
+                                        :about "Dolor sit Amet"
+                                        :country (-> (:countries data) second :id)
+                                        :first_name "Mark"
+                                        :org {:id 1 :name "Akvo" :url "https://akvo.org"}
+                                        :job_title "Developer"
+                                        :photo picture
+                                        :cv picture
+                                        :picture nil
+                                        :public_email true))))
+        profile (db.stakeholder/stakeholder-by-id db {:id 10001})
+        old-images (db.stakeholder/stakeholder-image-by-id db {:id 10001})
+        old-cv (db.stakeholder/stakeholder-cv-by-id db {:id 10001})]
       ;; Old images should be deleted
-      (is (= nil old-images))
+    (is (= nil old-images))
       ;; Old cv sould be deleted
-      (is (= nil old-cv))
-      (is (= 204 (:status resp)))
-      (is (= {:id 10001,
-              :email "john@org"
-              :title "Mr"
-              :first_name "Mark"
-              :last_name "Doe"
-              :country (-> (:countries data) second :id)
-              :linked_in "johndoe"
-              :twitter "johndoe"
-              :photo "/image/profile/2"
-              :cv "/cv/profile/2"
-              :representation ""
-              :role "USER"
-              :job_title "Developer"
-              :about "Dolor sit Amet"
-              :affiliation 1
-              :reviewed_at nil
-              :reviewed_by nil
-              :review_status "SUBMITTED"
-              :public_email true
-              :public_database false
-              :idp_usernames ["auth0|123"]}
-             profile))))
+    (is (= nil old-cv))
+    (is (= 204 (:status resp)))
+    (is (= {:id 10001,
+            :email "john@org"
+            :title "Mr"
+            :first_name "Mark"
+            :last_name "Doe"
+            :country (-> (:countries data) second :id)
+            :linked_in "johndoe"
+            :twitter "johndoe"
+            :photo "/image/profile/2"
+            :cv "/cv/profile/2"
+            :representation ""
+            :role "USER"
+            :job_title "Developer"
+            :about "Dolor sit Amet"
+            :affiliation 1
+            :reviewed_at nil
+            :reviewed_by nil
+            :review_status "SUBMITTED"
+            :public_email true
+            :public_database false
+            :idp_usernames ["auth0|123"]}
+           profile))))
 
 (deftest handler-put-test-but-the-pic-is-from-outside
   (testing "Update profile once its signed up")
-    (let [system (ig/init fixtures/*system* [::stakeholder/put])
-          handler (::stakeholder/put system)
-          db (-> system :duct.database.sql/hikaricp :spec)
-          data (seed-important-database db)
+  (let [system (ig/init fixtures/*system* [::stakeholder/put])
+        handler (::stakeholder/put system)
+        db (-> system :duct.database.sql/hikaricp :spec)
+        data (seed-important-database db)
           ;; John created account with country value Indonesia and organisation Akvo
-          _ (db.stakeholder/new-stakeholder db  (assoc (new-profile 1)
-                                                       :picture "https://lh3.googleusercontent.com"
-                                                       :cv nil))
+        _ (db.stakeholder/new-stakeholder db  (assoc (new-profile 1)
+                                                     :picture "https://lh3.googleusercontent.com"
+                                                     :cv nil))
           ;; John trying to edit their profile
-          resp (handler (-> (mock/request :put "/")
-                            (assoc :jwt-claims {:email "john@org"})
-                            (assoc :body-params
-                                     (assoc (new-profile 1)
-                                             :id 10001
-                                             :about "Dolor sit Amet"
-                                             :country (-> (:countries data) second :id)
-                                             :first_name "Mark"
-                                             :org {:id 1 :name "Akvo" :url "https://akvo.org"}
-                                             :job_title "Developer"
-                                             :photo "https://lh3.googleusercontent.com"
-                                             :cv nil
-                                             :picture nil))))
-          profile (db.stakeholder/stakeholder-by-id db {:id 10001})
-          old-images (db.stakeholder/stakeholder-image-by-id db {:id 1})]
-      (is (= nil old-images))
-      (is (= 204 (:status resp)))
-      (is (= {:id 10001,
-              :email "john@org"
-              :title "Mr"
-              :first_name "Mark"
-              :last_name "Doe"
-              :country (-> (:countries data) second :id)
-              :linked_in "johndoe"
-              :twitter "johndoe"
-              :photo "https://lh3.googleusercontent.com"
-              :representation ""
-              :role "USER"
-              :job_title "Developer"
-              :about "Dolor sit Amet"
-              :affiliation 1
-              :reviewed_at nil
-              :reviewed_by nil
-              :cv nil
-              :review_status "SUBMITTED"
-              :public_email false
-              :public_database false
-              :idp_usernames ["auth0|123"]}
-             profile))))
+        resp (handler (-> (mock/request :put "/")
+                          (assoc :jwt-claims {:email "john@org"})
+                          (assoc :body-params
+                                 (assoc (new-profile 1)
+                                        :id 10001
+                                        :about "Dolor sit Amet"
+                                        :country (-> (:countries data) second :id)
+                                        :first_name "Mark"
+                                        :org {:id 1 :name "Akvo" :url "https://akvo.org"}
+                                        :job_title "Developer"
+                                        :photo "https://lh3.googleusercontent.com"
+                                        :cv nil
+                                        :picture nil))))
+        profile (db.stakeholder/stakeholder-by-id db {:id 10001})
+        old-images (db.stakeholder/stakeholder-image-by-id db {:id 1})]
+    (is (= nil old-images))
+    (is (= 204 (:status resp)))
+    (is (= {:id 10001,
+            :email "john@org"
+            :title "Mr"
+            :first_name "Mark"
+            :last_name "Doe"
+            :country (-> (:countries data) second :id)
+            :linked_in "johndoe"
+            :twitter "johndoe"
+            :photo "https://lh3.googleusercontent.com"
+            :representation ""
+            :role "USER"
+            :job_title "Developer"
+            :about "Dolor sit Amet"
+            :affiliation 1
+            :reviewed_at nil
+            :reviewed_by nil
+            :cv nil
+            :review_status "SUBMITTED"
+            :public_email false
+            :public_database false
+            :idp_usernames ["auth0|123"]}
+           profile))))
 
 (deftest handler-get-test-has-profile
   (testing "Profile endpoint returns non empty response"

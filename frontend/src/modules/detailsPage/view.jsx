@@ -398,11 +398,11 @@ const renderBannerSection = (
             <div className="long-image">
               <a
                 href={`${
-                  data?.url && data?.url.includes("https://")
+                  data?.url && data?.url?.includes("https://")
                     ? data?.url
                     : data.languages
                     ? data?.languages[0].url
-                    : data?.url.includes("http://")
+                    : data?.url?.includes("http://")
                     ? data?.url
                     : "https://" + data?.url
                 }`}
@@ -631,7 +631,10 @@ const renderGeoCoverageCountryGroups = (
   transnationalOptions
 ) => {
   let dataCountries = null;
-  const newArray = [...new Set([...transnationalOptions, ...countries])];
+  const subItems = [].concat(
+    ...multicountryGroups.map(({ item }) => item || [])
+  );
+  const newArray = [...new Set([...subItems, ...countries])];
   dataCountries = data["geoCoverageValues"]?.map((x) => {
     return {
       name: newArray.find((it) => it.id === x)?.name,
@@ -937,7 +940,11 @@ const DetailsView = ({
   }, [profile, isLoaded]);
 
   const getComment = async (id, type) => {
-    let res = await api.get(`/comment?resource_id=${id}&resource_type=${type}`);
+    let res = await api.get(
+      `/comment?resource_id=${id}&resource_type=${
+        type === "project" ? "initiative" : type
+      }`
+    );
     if (res && res?.data) {
       setComments(res.data?.comments);
     }

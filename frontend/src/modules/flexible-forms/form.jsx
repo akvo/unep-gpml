@@ -274,7 +274,7 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.info) {
-        data.infoDocs = data.info;
+        data.infoDocs = data.info === "<p><br></p>" ? "" : data.info;
         delete data.info;
       }
 
@@ -430,6 +430,11 @@ const FlexibleForm = withRouter(
         data.q24_subnational_city = data.qgeoCoverageValueSubnationalCity;
         delete data.qgeoCoverageValueSubnational;
         delete data.qgeoCoverageValueSubnationalCity;
+        delete data.q24_4;
+        delete data.q24_3;
+      }
+
+      if (data.q24.hasOwnProperty("global")) {
         delete data.q24_4;
         delete data.q24_3;
       }
@@ -606,7 +611,7 @@ const FlexibleForm = withRouter(
         delete data.individual;
       }
       if (data?.info) {
-        data.infoDocs = data.info;
+        data.infoDocs = data.info === "<p><br></p>" ? "" : data.info;
         delete data.info;
       }
 

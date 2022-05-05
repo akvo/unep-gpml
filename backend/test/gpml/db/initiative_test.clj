@@ -71,8 +71,7 @@
    :q39 1
    :q40 1
    :q41 2
-   :q41_1 "test"
-   })
+   :q41_1 "test"})
 
 (deftest insert-data
   (let [db (test-util/db-test-conn)

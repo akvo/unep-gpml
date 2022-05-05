@@ -11,23 +11,22 @@
 
 (defn- new-stakeholder [db email]
   (db.stakeholder/new-stakeholder
-    db {:picture "https://picsum.photos/200"
-        :cv nil
-        :title "Mr."
-        :first_name "First name"
-        :last_name "Last name"
-        :affiliation nil
-        :email email
-        :linked_in nil
-        :twitter nil
-        :url nil
-        :country (-> (db.country/country-by-code db {:name "IDN"}) :id)
-        :representation "test"
-        :about "Lorem Ipsum"
-        :geo_coverage_type nil
-        :role "USER"
-        :idp_usernames ["auth0|123"]}))
-
+   db {:picture "https://picsum.photos/200"
+       :cv nil
+       :title "Mr."
+       :first_name "First name"
+       :last_name "Last name"
+       :affiliation nil
+       :email email
+       :linked_in nil
+       :twitter nil
+       :url nil
+       :country (-> (db.country/country-by-code db {:name "IDN"}) :id)
+       :representation "test"
+       :about "Lorem Ipsum"
+       :geo_coverage_type nil
+       :role "USER"
+       :idp_usernames ["auth0|123"]}))
 
 (deftest new-relation-test
   (let [db (test-util/db-test-conn)]
