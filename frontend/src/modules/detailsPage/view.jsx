@@ -940,7 +940,11 @@ const DetailsView = ({
   }, [profile, isLoaded]);
 
   const getComment = async (id, type) => {
-    let res = await api.get(`/comment?resource_id=${id}&resource_type=${type}`);
+    let res = await api.get(
+      `/comment?resource_id=${id}&resource_type=${
+        type === "project" ? "initiative" : type
+      }`
+    );
     if (res && res?.data) {
       setComments(res.data?.comments);
     }
