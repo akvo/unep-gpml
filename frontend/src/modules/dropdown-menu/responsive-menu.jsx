@@ -194,31 +194,35 @@ const ResponsiveMenu = withRouter(
               />
             </Menu.Item>
             {resources &&
-              resources.map((x, i) => {
-                const { name, count } = x;
+              resources
+                .filter(
+                  (x) => x?.name?.toLowerCase() !== "nonMemberOrganisation"
+                )
+                .map((x, i) => {
+                  const { name, count } = x;
 
-                const topic = humps.decamelize(name);
-                return (
-                  name && (
-                    <Menu.Item
-                      key={`/knowledge-library?topic=${topic}`}
-                      className="indent-right nav-link"
-                      disabled={loading}
-                      onClick={() => setFilterMenu([topic])}
-                    >
-                      {topicNames(name)}
-                      <Button
-                        className="badge-count"
-                        size="small"
-                        type="ghost"
-                        shape="circle"
-                        icon={count}
-                        loading={loading}
-                      />
-                    </Menu.Item>
-                  )
-                );
-              })}
+                  const topic = humps.decamelize(name);
+                  return (
+                    name && (
+                      <Menu.Item
+                        key={`/knowledge-library?topic=${topic}`}
+                        className="indent-right nav-link"
+                        disabled={loading}
+                        onClick={() => setFilterMenu([topic])}
+                      >
+                        {topicNames(name)}
+                        <Button
+                          className="badge-count"
+                          size="small"
+                          type="ghost"
+                          shape="circle"
+                          icon={count}
+                          loading={loading}
+                        />
+                      </Menu.Item>
+                    )
+                  );
+                })}
           </SubMenu>
 
           {/* Connect Stakeholders */}
