@@ -63,6 +63,29 @@ ORDER BY
     count DESC
 --~(if (:limit params) "LIMIT :limit;" ";")
 
+-- :name get-popular-topics-tags-subset :? :*
+-- :doc Get popular topics tags and their count based on the number of times they are used within a selected popular tag subset.
+-- :require [gpml.db.tag]
+--~(#'gpml.db.tag/generate-popular-topics-tags-subset-cte {} {})
+SELECT *
+FROM popular_topics_tags_subset_cte
+WHERE tag IN (:v*:filters.tags);
+
+-- :name get-more-popular-topics-tags :? :*
+-- :doc Get popular topics tags and their count based on the number of times they are used.
+-- :require [gpml.db.tag]
+--~(#'gpml.db.tag/generate-more-popular-topics-tags-count-cte (dissoc params :limit :offset) (keys (dissoc params :limit :offset)))
+SELECT
+    tag,
+    CAST(SUM(count) AS integer) AS count
+FROM
+    popular_topics_tags_count
+GROUP BY
+    tag
+ORDER BY
+    count DESC
+--~(if (:limit params) "LIMIT :limit;" ";")
+
 -- :name get-tag-categories :? :*
 -- :doc Get tag categories. Optionally applying passed filters
 SELECT
