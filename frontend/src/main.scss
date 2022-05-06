@@ -33,22 +33,34 @@ h1 {
   font-weight: 900;
   letter-spacing: -0.06rem;
   line-height: 4.4rem;
+  @-moz-document url-prefix() {
+    font-size: 2.9rem;
+  }
 }
 
 h2 {
   font-size: 1.9rem;
   font-weight: 600;
   line-height: 2.5rem;
+  @-moz-document url-prefix() {
+    font-size: 1.7rem;
+  }
 }
 
 h3 {
   font-size: 1.3rem;
   font-weight: 600;
   line-height: 1.25rem;
+  @-moz-document url-prefix() {
+    font-size: 1.1rem;
+  }
 }
 
 h4 {
   font-size: 1.4rem;
+  @-moz-document url-prefix() {
+    font-size: 1.2rem;
+  }
 }
 
 .nav-link {
@@ -86,7 +98,7 @@ h4 {
 .txt-emphasis {
   font-size: 1.5rem;
   @-moz-document url-prefix() {
-    font-size: 1.4rem !important;
+    font-size: 1.3rem !important;
   }
 }
 .asset-title {
