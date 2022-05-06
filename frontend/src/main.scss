@@ -805,6 +805,10 @@ path {
 }
 
 .responsive-menu-wrapper {
+  .anticon.anticon-loading.anticon-spin {
+    margin-right: 0 !important;
+  }
+  
   .ant-drawer-body {
     padding: 0;
     padding-right: 0.35rem;
