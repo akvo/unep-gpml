@@ -100,6 +100,9 @@ h4 {
   @-moz-document url-prefix() {
     font-size: 1.3rem !important;
   }
+  @media (max-width: 540px) {
+    font-size: 18px !important;
+  }
 }
 .asset-title {
   font-size: 1.3rem;
@@ -808,7 +811,7 @@ path {
   .anticon.anticon-loading.anticon-spin {
     margin-right: 0 !important;
   }
-  
+
   .ant-drawer-body {
     padding: 0;
     padding-right: 0.35rem;
