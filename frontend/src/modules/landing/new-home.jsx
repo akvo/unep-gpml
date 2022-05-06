@@ -231,7 +231,7 @@ const Landing = withRouter(
       ];
 
       api
-        .get(`/tag/topic/popular?tags=${popularTags}`)
+        .get(`/tag/topic/popular?tags=${popularTags}&limit=6`)
         .then((resp) => {
           const data = resp?.data.map((item, i) => {
             return {
