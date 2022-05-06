@@ -199,7 +199,7 @@ const ResponsiveMenu = withRouter(
 
                 const topic = humps.decamelize(name);
                 return (
-                  topicNames(name).length > 0 && (
+                  name && (
                     <Menu.Item
                       key={`/knowledge-library?topic=${topic}`}
                       className="indent-right nav-link"
