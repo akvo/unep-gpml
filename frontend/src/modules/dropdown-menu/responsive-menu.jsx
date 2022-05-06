@@ -196,7 +196,7 @@ const ResponsiveMenu = withRouter(
             {resources &&
               resources
                 .filter(
-                  (x) => x?.name?.toLowerCase() !== "nonMemberOrganisation"
+                  (x) => x?.name?.toLowerCase() !== "nonmemberorganisation"
                 )
                 .map((x, i) => {
                   const { name, count } = x;
