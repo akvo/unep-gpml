@@ -1,4 +1,4 @@
-@import "../../vars.scss";
+@import "../../../vars.scss";
 
 .event-overlay-zoom {
   zoom: 80% !important;
@@ -28,7 +28,7 @@
       rgba(28, 165, 133, 0.8),
       rgba(28, 165, 133, 0.8)
     ),
-    url("../../images/event.png");
+    url("../../../images/event.png");
   background-repeat: no-repeat;
   background-size: cover;
   .body {

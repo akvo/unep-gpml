@@ -5,7 +5,7 @@ import { DownloadOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import datastudies from "./json/case-studies.json";
 import CaseStudy from "./CaseStudy";
-import LeftSidebar from "../left-sidebar/LeftSidebar";
+import LeftSidebar from "../reusable-components/left-sidebar/LeftSidebar";
 import { ReactComponent as DropdownIcon } from "../../images/case-studies/ic_dropdown.svg";
 import { titleCase } from "../../utils/string";
 
