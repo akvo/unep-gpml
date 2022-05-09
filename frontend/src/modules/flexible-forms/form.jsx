@@ -204,7 +204,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x,
+                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
           };
         });
 
@@ -373,7 +373,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x,
+                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
           };
         });
 
@@ -575,7 +575,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x,
+                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
           };
         });
 
@@ -767,7 +767,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x,
+                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
           };
         });
 
@@ -945,7 +945,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x,
+                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
           };
         });
 

@@ -97,9 +97,13 @@ const SignUpForm = withRouter(
         if (data2.geoCoverageValue) {
           data.geoCoverageValue = data2.geoCoverageValue;
         }
-        feedSeeking(data, formData); // TODO check paths
+        feedSeeking(data, formData, tags); // TODO check paths
 
-        feedOffering(data, formData); // TODO check paths
+        feedOffering(data, formData, tags); // TODO check paths
+
+        if (data.seeking && data.offering) {
+          data.tags = [...data.seeking, ...data.offering];
+        }
 
         if (formData.S3["org.name"]) {
           data.org = {};
@@ -188,8 +192,19 @@ const SignUpForm = withRouter(
           delete data.authorizeSubmission;
 
           if (data.orgExpertise) {
-            data.org.expertise = data.orgExpertise.map((x) => Number(x));
+            data.org.tags = data.orgExpertise.map((x) => {
+              return {
+                ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
+                tag:
+                  Object.values(tags)
+                    .flat()
+                    .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
+
+                ...(isNaN(parseInt(x)) && { tag_category: "general" }),
+              };
+            });
             delete data.orgExpertise;
+            delete data.expertise;
           }
         }
       } else {
