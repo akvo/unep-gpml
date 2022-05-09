@@ -314,12 +314,18 @@ const renderBannerSection = (
   handleRelationChange
 ) => {
   const noEditTopics = new Set(["stakeholder"]);
+
+  const find = data?.stakeholderConnections?.find(
+    (it) => it.stakeholderId === profile.id
+  );
+
   const canEdit = () =>
     isAuthenticated &&
     profile.reviewStatus === "APPROVED" &&
     (profile.role === "ADMIN" ||
       profile.id === params.createdBy ||
-      data.owners.includes(profile.id)) &&
+      data.owners.includes(profile.id) ||
+      find) &&
     ((params.type !== "project" && !noEditTopics.has(params.type)) ||
       (params.type === "project" && params.id > 10000));
 
@@ -593,11 +599,13 @@ const renderItemValues = (
                   type === "array" &&
                   data[key].map((tag) => Object.values(tag)[0]).join(", ")}
                 {key !== "tags" &&
-                  params.type === "project" &&
-                  data[key] &&
-                  value === "join" &&
-                  type === "array" &&
-                  data[key].map((x) => x.name).join(", ")}
+                params.type === "project" &&
+                data[key] &&
+                value === "join" &&
+                type === "array" &&
+                data[key]?.length > 0
+                  ? data[key]?.map((x) => x.name).join(", ")
+                  : delete data[key]}
                 {key !== "tags" &&
                   params.type !== "project" &&
                   data[key] &&
