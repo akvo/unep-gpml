@@ -1,4 +1,4 @@
-@import "../../../../vars.scss";
+@import "../../vars.scss";
 
 .multiselection-filter,
 .country-filter-tab .ant-select-multiple {
@@ -54,8 +54,8 @@
     background: $grey05 !important;
     border: 0 !important;
     border-radius: 5px !important;
-    background-image: url("../../../../images/knowledge-library/search-icon.svg"),
-      url("../../../../images/knowledge-library/chevron-down-grey.svg") !important;
+    background-image: url("../../images/knowledge-library/search-icon.svg"),
+      url("../../images/knowledge-library/chevron-down-grey.svg") !important;
     background-repeat: no-repeat !important;
     background-position: calc(15px) center, calc(100% - 10px) center !important;
     @-moz-document url-prefix() {
@@ -115,8 +115,8 @@
 }
 
 .collection-selector .ant-select-selector {
-  background-image: url("../../../../images/knowledge-library/collection-icon.svg"),
-    url("../../../../images/knowledge-library/chevron-down-grey.svg");
+  background-image: url("../../images/knowledge-library/collection-icon.svg"),
+    url("../../images/knowledge-library/chevron-down-grey.svg");
 }
 
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {

@@ -1,4 +1,3 @@
-import { UIStore } from "../../../store";
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   Button,
@@ -20,9 +19,10 @@ import { Link, withRouter } from "react-router-dom";
 import "./styles.scss";
 import "react-multi-carousel/lib/styles.css";
 import moment from "moment";
-import imageNotFound from "../../../images/image-not-found.png";
-import { TrimText } from "../../../utils/string";
-import api from "../../../utils/api";
+import { UIStore } from "../../store";
+import imageNotFound from "../../images/image-not-found.png";
+import { TrimText } from "../../utils/string";
+import api from "../../utils/api";
 
 const EventCalendar = withRouter(({ history }) => {
   const path = history.location.pathname;

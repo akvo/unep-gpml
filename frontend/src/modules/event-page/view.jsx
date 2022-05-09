@@ -1,8 +1,8 @@
 import React from "react";
 import { Row, Col } from "antd";
 import "./styles.scss";
-import EventCalendar from "../reusable-components/event-calendar/view";
-import LeftSidebar from "../reusable-components/left-sidebar/LeftSidebar";
+import EventCalendar from "../../components/event-calendar/view";
+import LeftSidebar from "../../components/left-sidebar/LeftSidebar";
 // Icons
 import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg";
 import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";

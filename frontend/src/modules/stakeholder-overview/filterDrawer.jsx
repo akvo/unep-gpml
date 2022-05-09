@@ -10,8 +10,8 @@ import { UIStore } from "../../store";
 import api from "../../utils/api";
 import { entityName, networkNames, networkTypes } from "../../utils/misc";
 
-import MultipleSelectFilter from "../reusable-components/Inputs/multiselection-input/MultipleSelectFilter";
-import CountryTransnationalFilter from "../reusable-components/Inputs/multiselection-input/CountryTransnationalFlter";
+import MultipleSelectFilter from "../../components/Select/MultipleSelectFilter";
+import CountryTransnationalFilter from "../../components/Select/CountryTransnationalFlter";
 
 import { ReactComponent as BusinessIcon } from "../../images/stakeholder-overview/business-icon.svg";
 import { ReactComponent as AchievementIcon } from "../../images/stakeholder-overview/medal-icon.svg";

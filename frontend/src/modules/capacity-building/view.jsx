@@ -21,7 +21,7 @@ import capacities from "./json/capacity-building.json";
 import slides from "./json/slider.json";
 
 import { ReactComponent as DropdownIcon } from "../../images/case-studies/ic_dropdown.svg";
-import LeftSidebar from "../reusable-components/left-sidebar/LeftSidebar";
+import LeftSidebar from "../../components/left-sidebar/LeftSidebar";
 import { CapacityCard } from "./CapacityCard";
 
 import { ReactComponent as IconLibrary } from "../../images/capacity-building/ic-knowledge-library.svg";

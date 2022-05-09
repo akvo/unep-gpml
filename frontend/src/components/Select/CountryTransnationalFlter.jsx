@@ -2,12 +2,12 @@ import React from "react";
 import { Select, Tabs, Popover } from "antd";
 import { DownOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import isEmpty from "lodash/isEmpty";
-import { UIStore } from "../../../../store";
-import { TrimText } from "../../../../utils/string";
-import { multicountryGroups } from "../../../knowledge-library/multicountry";
+import { UIStore } from "../../store";
+import { TrimText } from "../../utils/string";
+import { multicountryGroups } from "../../modules/knowledge-library/multicountry";
 import { OptGroup } from "rc-select";
 import "./styles.scss";
-import api from "../../../../utils/api";
+import api from "../../utils/api";
 
 const { TabPane } = Tabs;
 const { Option } = Select;

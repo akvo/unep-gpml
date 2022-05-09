@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col } from "antd";
 import "./styles.scss";
 import Header from "./Header";
-import LeftSidebar from "../reusable-components/left-sidebar/LeftSidebar";
+import LeftSidebar from "../../components/left-sidebar/LeftSidebar";
 import ActionPlan from "./ActionPlan";
 
 // Icons

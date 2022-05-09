@@ -15,7 +15,7 @@ import isEmpty from "lodash/isEmpty";
 import UnathenticatedPage from "./unathenticatedPage";
 
 // Components
-import LeftSidebar from "../reusable-components/left-sidebar/LeftSidebar";
+import LeftSidebar from "../../components/left-sidebar/LeftSidebar";
 import ProfileCard from "./card";
 import Header from "../knowledge-library/header";
 import FilterDrawer from "./filterDrawer";
