@@ -62,7 +62,7 @@ import DataHubDropdownMenu from "./modules/dropdown-menu/data-hub";
 import KnowledgeExchangeDropdownMenu from "./modules/dropdown-menu/knowledge-exchange";
 import ConnectStakeholdersDropdownMenu from "./modules/dropdown-menu/connect-stakeholders";
 import ResponsiveMenu from "./modules/dropdown-menu/responsive-menu";
-import WorkspaceButton from "./modules/dropdown-menu/WorkspaceButton";
+import WorkspaceButton from "./modules/dropdown-menu/workspace-button";
 
 // Discourse Forum
 import DiscourseForum from "./modules/discourse-forum/discourse-forum";
@@ -72,7 +72,7 @@ import FlexibleForms from "./modules/flexible-forms/view";
 import CapacityBuilding from "./modules/capacity-building/view";
 
 // New Details Page
-import NewDetailsView from "./modules/detailsPage/view";
+import NewDetailsView from "./modules/details-page/view";
 import CaseStudies from "./modules/case-studies/view";
 import KnowledgeLibrary from "./modules/knowledge-library/view";
 

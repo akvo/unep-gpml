@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import "./header.scss";
 import { Row, Col, Button, Input, Space, Select } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+
+import "./header.scss";
 import FilterIcon from "../../images/knowledge-library/filter-icon.svg";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 import { withRouter, useHistory } from "react-router-dom";
-import { KNOWLEDGE_LIBRARY } from "../map/Map";
+import { KNOWLEDGE_LIBRARY } from "../map/map";
 
 const KnowledgeLibrarySearch = withRouter(
   ({ history, updateQuery, isShownForm, setIsShownForm }) => {

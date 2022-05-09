@@ -25,8 +25,8 @@ import {
 } from "../../utils/forms";
 import entity from "./entity";
 import stakeholder from "./stakeholder";
-import entityUiSchema from "./entityUiSchema.json";
-import stakeholderUiSchema from "./stakeholderUiSchema.json";
+import entityUiSchema from "./entity-ui-schema.json";
+import stakeholderUiSchema from "./stakeholder-ui-schema.json";
 
 import { UIStore } from "../../store";
 import { withRouter } from "react-router-dom";

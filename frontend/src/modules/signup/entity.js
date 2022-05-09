@@ -1,5 +1,5 @@
 import { Store } from "pullstate";
-import { schema } from "./entitySchema";
+import { schema } from "./entity-schema";
 import cloneDeep from "lodash/cloneDeep";
 
 const initialSignUpData = {

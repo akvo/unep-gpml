@@ -6,7 +6,7 @@ import "./styles.scss";
 import datastudies from "./json/case-studies.json";
 import CaseStudy from "./CaseStudy";
 import LeftSidebar from "../left-sidebar/LeftSidebar";
-import { ReactComponent as DropdownIcon } from "../../images/case-studies/ic_dropdown.svg";
+import { ReactComponent as DropdownIcon } from "../../images/case-studies/ic-dropdown.svg";
 import { titleCase } from "../../utils/string";
 
 import { ReactComponent as IconLibrary } from "../../images/capacity-building/ic-knowledge-library.svg";

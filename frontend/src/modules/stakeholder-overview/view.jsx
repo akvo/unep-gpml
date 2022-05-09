@@ -12,14 +12,14 @@ import api from "../../utils/api";
 import { redirectError } from "../error/error-util";
 import { entityName } from "../../utils/misc";
 import isEmpty from "lodash/isEmpty";
-import UnathenticatedPage from "./unathenticatedPage";
+import UnathenticatedPage from "./unathenticated-page";
 
 // Components
 import LeftSidebar from "../left-sidebar/LeftSidebar";
 import ProfileCard from "./card";
 import Header from "../knowledge-library/header";
-import FilterDrawer from "./filterDrawer";
-import MapView from "./mapView";
+import FilterDrawer from "./filter-drawer";
+import MapView from "./map-view";
 
 // Icons
 import topicViewIcon from "../../images/knowledge-library/topic-view-icon.svg";
