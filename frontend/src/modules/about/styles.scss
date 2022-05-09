@@ -7,6 +7,15 @@
     .text-blue {
       font-size: 22.6px;
     }
+    @media (max-width: 540px) {
+      .ant-btn-ghost span {
+        font-size: 12px !important;
+      }
+      .text-green,
+      .text-blue {
+        font-size: 20px;
+      }
+    }
   }
   img {
     max-width: 100%;
@@ -127,6 +136,9 @@
         .item-name {
           text-transform: uppercase;
           color: $blue02;
+          @media (max-width: 540px) {
+            font-size: 14px;
+          }
         }
         .item-value {
           font-size: 3.8rem;
@@ -134,6 +146,9 @@
           color: $blue02;
           @-moz-document url-prefix() {
             font-size: 24px;
+          }
+          @media (max-width: 540px) {
+            font-size: 47px;
           }
         }
       }
@@ -176,6 +191,9 @@
           color: white !important;
           border-color: white !important;
           @-moz-document url-prefix() {
+            font-size: 12px;
+          }
+          @media (max-width: 540px) {
             font-size: 12px;
           }
         }
