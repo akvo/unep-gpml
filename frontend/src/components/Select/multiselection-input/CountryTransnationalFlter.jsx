@@ -1,13 +1,13 @@
-import { UIStore } from "../../store";
 import React from "react";
 import { Select, Tabs, Popover } from "antd";
 import { DownOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import isEmpty from "lodash/isEmpty";
-import { TrimText } from "../../utils/string";
-import { multicountryGroups } from "./multicountry";
+import { UIStore } from "../../../../store";
+import { TrimText } from "../../../../utils/string";
+import { multicountryGroups } from "../../../knowledge-library/multicountry";
 import { OptGroup } from "rc-select";
-import "./transantional-filter-tab.scss";
-import api from "../../utils/api";
+import "./styles.scss";
+import api from "../../../../utils/api";
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -120,7 +120,7 @@ const CountryTransnationalFilter = ({
         }`}
       >
         <Select
-          dropdownClassName="multiselection-dropdown"
+          dropdownClassName="multiselection-dropdown multiselection-filter"
           showSearch
           allowClear
           virtual={false}
