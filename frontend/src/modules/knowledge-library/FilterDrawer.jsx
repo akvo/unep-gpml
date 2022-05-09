@@ -37,7 +37,6 @@ import { ReactComponent as TechnicalIcon } from "../../images/knowledge-library/
 import { ReactComponent as TechnologyIcon } from "../../images/knowledge-library/technology.svg";
 import { titleCase } from "../../utils/string";
 
-
 const FilterDrawer = ({
   query,
   view,
