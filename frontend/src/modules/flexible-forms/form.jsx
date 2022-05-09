@@ -229,6 +229,12 @@ const FlexibleForm = withRouter(
           data.geoCoverageCountries = data.geoCoverageCountries
             ? data.geoCoverageCountries.map((x) => parseInt(x))
             : [];
+          if (
+            data.geoCoverageValueTransnational &&
+            data.geoCoverageValueTransnational.length === 0
+          ) {
+            delete data.geoCoverageValueTransnational;
+          }
         }
       }
 

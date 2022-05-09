@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import moment from "moment";
 import capitalize from "lodash/capitalize";
 import { Link } from "react-router-dom";
@@ -6,6 +7,9 @@ import { UIStore } from "../../store";
 import imageNotFound from "../../images/image-not-found.png";
 import { languages } from "countries-list";
 import { topicNames, resourceSubTypes } from "../../utils/misc";
+import { Input, Button, notification } from "antd";
+import api from "../../utils/api";
+import { fetchSubmissionData } from "./utils";
 
 const currencyFormat = (cur) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: cur });
@@ -38,7 +42,7 @@ const findCountries = (
     }
     return values
       ?.map((v) => {
-        return data.find((x) => x.id === v)?.name;
+        return data?.find((x) => x.id === v)?.name;
       })
       .join(", ");
   }
@@ -50,7 +54,7 @@ const findCountries = (
     return (
       <div className="scrollable">
         {values(countries)
-          .map((c) => c.name)
+          ?.map((c) => c.name)
           .join(", ")}
       </div>
     );
@@ -275,7 +279,7 @@ export const GeneralPreview = ({ item }) => {
         <li>
           <div className="detail-title">Published at</div>:
           <div className="detail-content">
-            {moment(item.reviewedAt).format("DD MMM YYYY")}
+            {item.reviewedAt && moment(item.reviewedAt).format("DD MMM YYYY")}
           </div>
         </li>
         <li className="has-border">
@@ -328,6 +332,123 @@ export const GeneralPreview = ({ item }) => {
             {(item.tags &&
               item.tags.map((x) => Object.values(x)[0]).join(", ")) ||
               "-"}
+          </div>
+        </li>
+      </ul>
+    </div>
+  );
+};
+
+export const TagPreview = ({ item }) => {
+  const [detail, setDetail] = useState({
+    definition: "",
+    ontologyRefLink: "",
+  });
+  const [edit, setEdit] = useState(false);
+
+  useEffect(() => {
+    setDetail({
+      definition: item.definition ? item.definition : "",
+      ontologyRefLink: item.ontologyRefLink ? item.ontologyRefLink : "",
+    });
+  }, [item]);
+
+  const handleInputChange = (e) => {
+    let newDetail = {
+      ...detail,
+      [e.target.name]: e.target.value,
+    };
+
+    setDetail(newDetail);
+  };
+
+  const updateTag = () => {
+    if (
+      detail.definition !== item.definition ||
+      detail.ontologyRefLink !== item.ontologyRefLink
+    ) {
+      api
+        .put("tag", {
+          id: item.id,
+          definition: detail.definition,
+          ontologyRefLink: detail.ontologyRefLink,
+        })
+        .then((d) => {
+          notification.success({ message: "Tag updated" });
+          setEdit(false);
+          setTimeout(
+            () => item.getPreviewContent([`/submission/tag/${item.id}`], true),
+            1000
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          notification.error({ message: "An error occured" });
+        });
+    } else {
+      setEdit(false);
+    }
+  };
+
+  return (
+    <div className="general-info">
+      <ul>
+        <li className="has-border">
+          <p className="section-title">Tag Details</p>
+        </li>
+        <li>
+          <div className="detail-title">Definition</div>:
+          <div className="detail-content">
+            {!edit ? (
+              <div className="form-wrapper">{item.definition}</div>
+            ) : (
+              <div className="form-wrapper">
+                <Input
+                  name="definition"
+                  defaultValue={item.definition}
+                  placeholder="Enter Definition"
+                  onChange={handleInputChange}
+                />
+              </div>
+            )}
+          </div>
+        </li>
+        <li style={{ marginTop: 10 }}>
+          <div className="detail-title">Ontology Link</div>:
+          <div className="detail-content">
+            {!edit ? (
+              <div className="form-wrapper">{item.ontologyRefLink}</div>
+            ) : (
+              <div className="form-wrapper">
+                <Input
+                  name="ontologyRefLink"
+                  defaultValue={item.ontologyRefLink}
+                  placeholder="Enter Ontology Link"
+                  onChange={handleInputChange}
+                />
+              </div>
+            )}
+          </div>
+        </li>
+        <li style={{ marginTop: 10 }}>
+          <div className="detail-content">
+            {!edit ? (
+              <Button
+                type="ghost"
+                className="black"
+                onClick={() => setEdit(true)}
+              >
+                Edit
+              </Button>
+            ) : (
+              <Button
+                type="ghost"
+                className="black"
+                onClick={() => updateTag()}
+              >
+                Update
+              </Button>
+            )}
           </div>
         </li>
       </ul>
@@ -575,12 +696,14 @@ export const InitiativePreview = ({ item }) => {
   );
 };
 
-export const DetailCollapse = ({ data, item }) => {
+export const DetailCollapse = ({ data, item, getPreviewContent }) => {
   switch (item.type) {
     case "stakeholder":
       return <ProfilePreview item={{ ...data, ...item }} />;
     case "project":
       return <InitiativePreview item={{ ...data, ...item }} />;
+    case "tag":
+      return <TagPreview item={{ ...data, ...item, getPreviewContent }} />;
     default:
       return <GeneralPreview item={{ ...data, ...item }} />;
   }
