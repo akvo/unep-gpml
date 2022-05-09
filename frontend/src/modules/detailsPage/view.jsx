@@ -1165,14 +1165,36 @@ const DetailsView = ({
                     {data?.geoCoverageType !== "sub-national" &&
                       data?.geoCoverageType !== "national" && (
                         <>
-                          {data?.geoCoverageValues &&
-                            data?.geoCoverageValues.length > 0 && (
+                          {data?.geoCoverageCountryGroups &&
+                            data?.geoCoverageCountryGroups.length > 0 && (
                               <List.Item>
                                 <List.Item.Meta
                                   avatar={<Avatar src={LocationImage} />}
                                   title={
                                     <>
                                       {renderGeoCoverageCountryGroups(
+                                        data,
+                                        countries,
+                                        transnationalOptions
+                                      )}
+                                    </>
+                                  }
+                                />
+                              </List.Item>
+                            )}
+                        </>
+                      )}
+                    {data?.geoCoverageType !== "sub-national" &&
+                      data?.geoCoverageType !== "national" && (
+                        <>
+                          {data?.geoCoverageCountries &&
+                            data?.geoCoverageCountries.length > 0 && (
+                              <List.Item>
+                                <List.Item.Meta
+                                  avatar={<Avatar src={LocationImage} />}
+                                  title={
+                                    <>
+                                      {renderCountries(
                                         data,
                                         countries,
                                         transnationalOptions
