@@ -8,7 +8,7 @@ import { ReactComponent as DownArrow } from "../../images/knowledge-library/chev
 
 import "./styles.scss";
 import { UIStore } from "../../store";
-import LeftSidebar from "../left-sidebar/LeftSidebar";
+import LeftSidebar from "../reusable-components/left-sidebar/LeftSidebar";
 import ResourceList from "./ResourceList";
 import FilterDrawer from "./FilterDrawer";
 
