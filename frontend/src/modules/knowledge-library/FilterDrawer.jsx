@@ -18,11 +18,13 @@ import moment from "moment";
 import api from "../../utils/api";
 import { UIStore } from "../../store";
 import { topicTypes, topicNames } from "../../utils/misc";
-import CountryTransnationalFilter from "./country-transnational-filter";
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
 import values from "lodash/values";
 import flatten from "lodash/flatten";
+
+import MultipleSelectFilter from "../multiselection-input/MultipleSelectFilter";
+import CountryTransnationalFilter from "../multiselection-input/CountryTransnationalFlter";
 
 // Import Icons as React component since the color of the icons changes when the card is selected
 import { ReactComponent as CapacityBuildingIcon } from "../../images/knowledge-library/capacity-building.svg";
@@ -34,6 +36,7 @@ import { ReactComponent as PolicyIcon } from "../../images/knowledge-library/pol
 import { ReactComponent as TechnicalIcon } from "../../images/knowledge-library/technical.svg";
 import { ReactComponent as TechnologyIcon } from "../../images/knowledge-library/technology.svg";
 import { titleCase } from "../../utils/string";
+
 
 const FilterDrawer = ({
   query,
@@ -487,58 +490,6 @@ const FilterDrawer = ({
         </Row>
       </Drawer>
     </div>
-  );
-};
-
-const MultipleSelectFilter = ({
-  title,
-  options,
-  value,
-  query,
-  flag,
-  updateQuery,
-  span = 24,
-}) => {
-  return (
-    <Col span={span} className="multiselection-filter">
-      <Space align="middle">
-        <div className="filter-title multiple-filter-title">{title}</div>
-        {!isEmpty(query?.[flag]) ? (
-          <Tag
-            className="clear-selection"
-            closable
-            onClick={() => updateQuery(flag, [])}
-            onClose={() => updateQuery(flag, [])}
-          >
-            Clear Selection
-          </Tag>
-        ) : (
-          ""
-        )}
-      </Space>
-      <div>
-        <Select
-          dropdownClassName="multiselection-dropdown"
-          showSearch
-          allowClear
-          mode="multiple"
-          placeholder="All (default)"
-          options={options}
-          filterOption={(input, option) =>
-            option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }
-          value={value}
-          onChange={(val) => updateQuery(flag, val)}
-          onDeselect={(val) =>
-            updateQuery(
-              flag,
-              query?.[flag]?.filter((x) => x != val)
-            )
-          }
-          virtual={false}
-        />
-      </div>
-    </Col>
   );
 };
 

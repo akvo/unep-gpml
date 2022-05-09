@@ -8,14 +8,16 @@ import { entityName, networkNames, networkTypes } from "../../utils/misc";
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
 
+import api from "../../utils/api";
+import MultipleSelectFilter from "../multiselection-input/MultipleSelectFilter";
+import CountryTransnationalFilter from "../multiselection-input/CountryTransnationalFlter";
+
 import { ReactComponent as BusinessIcon } from "../../images/stakeholder-overview/business-icon.svg";
 import { ReactComponent as AchievementIcon } from "../../images/stakeholder-overview/medal-icon.svg";
 import { ReactComponent as PartnerIcon } from "../../images/stakeholder-overview/partner-icon.svg";
 import { ReactComponent as GPMLLogo } from "../../images/stakeholder-overview/gpml-logo.svg";
 import { ReactComponent as CommunityIcon } from "../../images/stakeholder-overview/community-outlined.svg";
 import { ReactComponent as UnionIcon } from "../../images/stakeholder-overview/union-outlined.svg";
-import CountryTransnationalFilter from "../knowledge-library/country-transnational-filter";
-import api from "../../utils/api";
 
 const FilterDrawer = ({
   query,
@@ -442,58 +444,6 @@ const FilterDrawer = ({
         </Row>
       </Drawer>
     </div>
-  );
-};
-
-const MultipleSelectFilter = ({
-  title,
-  options,
-  value,
-  query,
-  flag,
-  updateQuery,
-  span = 24,
-}) => {
-  return (
-    <Col span={span} className="multiselection-filter">
-      <Space align="middle">
-        <div className="filter-title multiple-filter-title">{title}</div>
-        {!isEmpty(query?.[flag]) ? (
-          <Tag
-            className="clear-selection"
-            closable
-            onClose={() => updateQuery(flag, [])}
-            onClick={() => updateQuery(flag, [])}
-          >
-            Clear Selection
-          </Tag>
-        ) : (
-          ""
-        )}
-      </Space>
-      <div>
-        <Select
-          dropdownClassName="multiselection-dropdown"
-          showSearch
-          allowClear
-          mode="multiple"
-          placeholder="All (default)"
-          options={options}
-          filterOption={(input, option) =>
-            option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }
-          value={value}
-          onChange={(val) => updateQuery(flag, val)}
-          onDeselect={(val) =>
-            updateQuery(
-              flag,
-              query?.[flag]?.filter((x) => x != val)
-            )
-          }
-          virtual={false}
-        />
-      </div>
-    </Col>
   );
 };
 
