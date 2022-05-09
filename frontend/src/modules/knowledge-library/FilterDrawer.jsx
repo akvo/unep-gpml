@@ -12,19 +12,21 @@ import {
 } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
-
 import { useAuth0 } from "@auth0/auth0-react";
 import moment from "moment";
-import api from "../../utils/api";
-import { UIStore } from "../../store";
-import { topicTypes, topicNames } from "../../utils/misc";
+
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
 import values from "lodash/values";
 import flatten from "lodash/flatten";
 
-import MultipleSelectFilter from "../multiselection-input/MultipleSelectFilter";
-import CountryTransnationalFilter from "../multiselection-input/CountryTransnationalFlter";
+import { UIStore } from "../../store";
+import api from "../../utils/api";
+import { topicTypes, topicNames } from "../../utils/misc";
+import { titleCase } from "../../utils/string";
+
+import MultipleSelectFilter from "../reusable-components/Inputs/multiselection-input/MultipleSelectFilter";
+import CountryTransnationalFilter from "../reusable-components/Inputs/multiselection-input/CountryTransnationalFlter";
 
 // Import Icons as React component since the color of the icons changes when the card is selected
 import { ReactComponent as CapacityBuildingIcon } from "../../images/knowledge-library/capacity-building.svg";
@@ -35,7 +37,6 @@ import { ReactComponent as FinancingIcon } from "../../images/knowledge-library/
 import { ReactComponent as PolicyIcon } from "../../images/knowledge-library/policy.svg";
 import { ReactComponent as TechnicalIcon } from "../../images/knowledge-library/technical.svg";
 import { ReactComponent as TechnologyIcon } from "../../images/knowledge-library/technology.svg";
-import { titleCase } from "../../utils/string";
 
 const FilterDrawer = ({
   query,

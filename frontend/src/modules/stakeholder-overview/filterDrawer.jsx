@@ -3,14 +3,15 @@ import { Row, Col, Space, Drawer, Tag, Card, Select, Button } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
-import { UIStore } from "../../store";
-import { entityName, networkNames, networkTypes } from "../../utils/misc";
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
 
+import { UIStore } from "../../store";
 import api from "../../utils/api";
-import MultipleSelectFilter from "../multiselection-input/MultipleSelectFilter";
-import CountryTransnationalFilter from "../multiselection-input/CountryTransnationalFlter";
+import { entityName, networkNames, networkTypes } from "../../utils/misc";
+
+import MultipleSelectFilter from "../reusable-components/Inputs/multiselection-input/MultipleSelectFilter";
+import CountryTransnationalFilter from "../reusable-components/Inputs/multiselection-input/CountryTransnationalFlter";
 
 import { ReactComponent as BusinessIcon } from "../../images/stakeholder-overview/business-icon.svg";
 import { ReactComponent as AchievementIcon } from "../../images/stakeholder-overview/medal-icon.svg";
