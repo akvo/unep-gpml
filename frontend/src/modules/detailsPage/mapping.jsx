@@ -242,13 +242,13 @@ const detailProject = [
   // },
   {
     key: "lifecyclePhase",
-    name: "Lifecycle Phase",
+    name: "Lifecycle Phase:",
     value: "join",
     type: "array",
   },
   {
     key: "sector",
-    name: "Sector",
+    name: "Sector:",
     value: "join",
     type: "array",
   },

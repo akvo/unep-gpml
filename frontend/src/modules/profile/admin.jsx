@@ -420,10 +420,10 @@ const AdminSection = ({
     setModalRejectVisible(true);
   };
 
-  const getPreviewContent = (urls) => {
-    if (urls.length > 0) {
+  const getPreviewContent = (urls, update) => {
+    if (urls.length > 0 || update) {
       urls.forEach((url) => {
-        if (!previewContent[url]) {
+        if (!previewContent[url] || update) {
           api.get(url).then((res) => {
             storePreviewContent({ ...previewContent, [url]: res.data });
           });
@@ -565,6 +565,7 @@ const AdminSection = ({
     };
 
     const RenderRow = ({ item, setListOpts, listOpts }) => {
+      console.log(item);
       const ResourceAvatar = () => (
         <div className="col content">
           <Avatar
@@ -659,38 +660,54 @@ const AdminSection = ({
         </div>
       );
       return (
-        <div className="row">
-          <ResourceAvatar />
-          {item.reviewStatus === "SUBMITTED" && (
-            <ReviewStatus
-              item={item}
-              listOpts={listOpts}
-              setListOpts={setListOpts}
-            />
+        <>
+          {item.type !== "tag" ? (
+            <div className="row">
+              <ResourceAvatar />
+              {item.reviewStatus === "SUBMITTED" && (
+                <ReviewStatus
+                  item={item}
+                  listOpts={listOpts}
+                  setListOpts={setListOpts}
+                />
+              )}
+              {item.reviewStatus === "APPROVED" &&
+                item.type === "stakeholder" && (
+                  <RoleSelect
+                    stakeholder={item}
+                    onChangeRole={changeRole}
+                    loading={loading}
+                    listOpts={listOpts}
+                    setListOpts={setListOpts}
+                  />
+                )}
+              {item.reviewStatus === "APPROVED" &&
+                item.type !== "stakeholder" && (
+                  <OwnerSelect
+                    item={item}
+                    reviewers={reviewers}
+                    setListOpts={setListOpts}
+                    listOpts={listOpts}
+                    resource={item}
+                    onChangeOwner={changeOwner}
+                    loading={loading}
+                  />
+                )}
+              {item.reviewStatus === "SUBMITTED" && (
+                <ResourceSubmittedActions />
+              )}
+              {item.reviewStatus === "APPROVED" && <ResourceApprovedActions />}
+            </div>
+          ) : (
+            <div className="row">
+              <ResourceAvatar />
+              {item.reviewStatus === "SUBMITTED" && (
+                <ResourceSubmittedActions />
+              )}
+              {item.reviewStatus === "APPROVED" && <ResourceApprovedActions />}
+            </div>
           )}
-          {item.reviewStatus === "APPROVED" && item.type === "stakeholder" && (
-            <RoleSelect
-              stakeholder={item}
-              onChangeRole={changeRole}
-              loading={loading}
-              listOpts={listOpts}
-              setListOpts={setListOpts}
-            />
-          )}
-          {item.reviewStatus === "APPROVED" && item.type !== "stakeholder" && (
-            <OwnerSelect
-              item={item}
-              reviewers={reviewers}
-              setListOpts={setListOpts}
-              listOpts={listOpts}
-              resource={item}
-              onChangeOwner={changeOwner}
-              loading={loading}
-            />
-          )}
-          {item.reviewStatus === "SUBMITTED" && <ResourceSubmittedActions />}
-          {item.reviewStatus === "APPROVED" && <ResourceApprovedActions />}
-        </div>
+        </>
       );
     };
 
@@ -775,6 +792,7 @@ const AdminSection = ({
                   <DetailCollapse
                     data={previewContent?.[item.preview] || {}}
                     item={item}
+                    getPreviewContent={getPreviewContent}
                   />
                 </Collapse.Panel>
               ))
@@ -840,10 +858,10 @@ const AdminSection = ({
           </>
         </TabPane>
         <TabPane tab="Resources" key="resources" className="profile-tab-pane">
-          {renderList(resourcesListOpts, setResourcesListOpts, "Resources")}
+          {renderList(resourcesListOpts, setResourcesListOpts)}
         </TabPane>
         <TabPane tab="Tags" key="tags" className="profile-tab-pane">
-          {renderList(tagsListOpts, setTagsListOpts, "Tags")}
+          {renderList(tagsListOpts, setTagsListOpts)}
         </TabPane>
       </Tabs>
 

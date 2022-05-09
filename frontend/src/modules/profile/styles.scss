@@ -442,6 +442,16 @@
           margin-left: 5px;
           flex: 1;
           display: flex;
+          .form-wrapper {
+            display: flex;
+            align-items: center;
+            button {
+              margin-left: 10px;
+              span {
+                width: auto;
+              }
+            }
+          }
         }
 
         p.section-title {
