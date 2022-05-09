@@ -617,9 +617,12 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.individual) {
-        data.individualConnections = data.individual;
+        data.individualConnections = data.individual[0].hasOwnProperty("role")
+          ? data.individual
+          : [];
         delete data.individual;
       }
+
       if (data?.info) {
         data.infoDocs = data.info === "<p><br></p>" ? "" : data.info;
         delete data.info;
