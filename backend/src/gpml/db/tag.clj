@@ -1,5 +1,6 @@
 (ns gpml.db.tag
-  (:require [gpml.constants :as constants]
+  (:require [clojure.string :as str]
+            [gpml.constants :as constants]
             [hugsql.core :as hugsql]))
 
 (declare all-countries
@@ -19,15 +20,18 @@
 
 (hugsql/def-db-fns "gpml/db/tag.sql" {:quoting :ansi})
 
+(defn popular-tags->db-popular-tags [popular-tags]
+  (str "('" (str/join "','" popular-tags) "')"))
+
 (defn- generic-topic-tag-count-query
   [entity-name]
   (apply format "SELECT t.id, t.tag, COUNT(*) AS count
                  FROM %s e
                  JOIN %s_tag et ON et.%s = e.id
                  JOIN tag t ON t.id = et.tag
-                 WHERE e.review_status = 'APPROVED'
+                 WHERE e.review_status = 'APPROVED' AND t.tag IN %s
                  GROUP BY t.id, t.tag"
-         (repeat 3 entity-name)))
+    (flatten [(repeat 3 entity-name) (popular-tags->db-popular-tags constants/popular-tags)])))
 
 (defn generate-popular-topics-tags-count-cte
   "Generates a CTE to get a result set of `tag` and the number of
@@ -54,8 +58,9 @@
                  JOIN %s_tag et ON et.%s = e.id
                  JOIN tag t ON t.id = et.tag
                  WHERE e.review_status = 'APPROVED' AND e.id IN %s
+                 AND t.tag IN %s
                  GROUP BY t.id, t.tag"
-    (flatten [(repeat 3 entity-name) ids])))
+    (flatten [(repeat 3 entity-name) ids (popular-tags->db-popular-tags constants/popular-tags)])))
 
 (defn generate-more-popular-topics-tags-count-cte
   "Generates a CTE to get a result set of `tag` and the number of
