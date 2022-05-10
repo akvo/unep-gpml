@@ -451,8 +451,13 @@ const Landing = withRouter(
                           <div className="asset-title">{title || ""}</div>
                           <div className="body-text">
                             {TrimText({
-                              text:
-                                description || remarks || summary || abstract,
+                              text: description
+                                ? description
+                                : remarks
+                                ? remarks
+                                : summary
+                                ? summary
+                                : abstract,
                               max: 250,
                             })}
                           </div>
