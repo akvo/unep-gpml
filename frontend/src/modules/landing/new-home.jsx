@@ -436,6 +436,7 @@ const Landing = withRouter(
                         description,
                         remarks,
                         summary,
+                        abstract,
                       } = x;
                       const link = `/${humps.decamelize(type)}/${id}`;
                       return (
@@ -450,7 +451,8 @@ const Landing = withRouter(
                           <div className="asset-title">{title || ""}</div>
                           <div className="body-text">
                             {TrimText({
-                              text: description || remarks || summary,
+                              text:
+                                description || remarks || summary || abstract,
                               max: 250,
                             })}
                           </div>
