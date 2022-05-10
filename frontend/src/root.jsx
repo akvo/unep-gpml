@@ -77,7 +77,7 @@ import CaseStudies from "./modules/case-studies/view";
 import KnowledgeLibrary from "./modules/knowledge-library/view";
 
 // Buttons
-import AddContentButton from "./modules/add-content-button/AddContentButton";
+import AddContentButton from "./components/add-content-button/AddContentButton";
 import StakeholderOverview from "./modules/stakeholder-overview/view";
 import Partners from "./modules/partners/view";
 
