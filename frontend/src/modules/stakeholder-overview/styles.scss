@@ -678,11 +678,6 @@
         }
       }
 
-      .collection-selector .ant-select-selector {
-        background-image: url("../../images/knowledge-library/collection-icon.svg"),
-          url("../../images/knowledge-library/chevron-down-grey.svg");
-      }
-
       .ant-drawer-content {
         border-bottom-right-radius: 18px;
         box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.25);
@@ -710,110 +705,6 @@
         margin-bottom: 0 !important;
       }
 
-      .ant-select,
-      .ant-picker {
-        width: 100%;
-      }
-
-      .ant-select-selection-placeholder,
-      .country-filter-tab .ant-select-selection-placeholder,
-      .multiselection-filter .ant-select-selection-placeholder {
-        font-size: 16px;
-        color: $grey04;
-        padding-left: calc(44px - 9px);
-        @-moz-document url-prefix() {
-          font-size: 12px !important;
-          padding-left: calc(33px - 4.5px);
-        }
-        @media (max-width: 540px) {
-          font-size: 14px;
-        }
-      }
-
-      .multiselection-filter .ant-select-selection-placeholder {
-        font-style: italic;
-        font-weight: bold;
-      }
-
-      .multiselection-filter {
-        @-moz-document url-prefix() {
-          padding-top: 5px !important;
-          padding-bottom: 5px !important;
-        }
-        .ant-select-selection-search-input {
-          width: 100%;
-          display: block;
-        }
-      }
-
-      .ant-select-selector {
-        background: $grey05;
-        border: 0;
-        border-radius: 5px;
-      }
-
-      .ant-select-selector {
-        background-image: url("../../images/knowledge-library/search-icon.svg"),
-          url("../../images/knowledge-library/chevron-down-grey.svg");
-        background-repeat: no-repeat;
-        background-position: calc(15px) center, calc(100% - 14px) center;
-        @-moz-document url-prefix() {
-          background-size: 15px;
-        }
-      }
-
-      .date-picker-container {
-        input {
-          font-style: italic;
-        }
-        .ant-row {
-          align-items: flex-end;
-        }
-        .ant-picker-suffix {
-          background-image: url("../../images/knowledge-library/chevron-down-grey.svg");
-          background-position-x: 100%;
-          background-repeat: no-repeat;
-          width: 20px;
-          span {
-            opacity: 0;
-          }
-        }
-      }
-
-      .ant-select-selection-item-remove {
-        display: none;
-      }
-
-      .ant-select-selection-overflow {
-        padding-left: calc(44px - 9px);
-        @-moz-document url-prefix() {
-          padding-left: calc(34px - 4.5px);
-        }
-        .ant-select-selection-item {
-          background-color: transparent;
-        }
-      }
-
-      .ant-select-clear {
-        opacity: 0;
-      }
-
-      .date-picker-container input,
-      .ant-select-selection-item-content {
-        font-weight: bold;
-        font-size: 16px;
-        color: $blue06;
-        @-moz-document url-prefix() {
-          font-size: 12px !important;
-        }
-        @media (max-width: 540px) {
-          font-size: 14px;
-        }
-        .anticon-close-circle {
-          opacity: 0;
-        }
-      }
-
       .ant-drawer-close {
         top: -5px;
         @-moz-document url-prefix() {
@@ -829,42 +720,6 @@
             width: 15px;
             height: 15px;
           }
-        }
-      }
-
-      .filter-title {
-        color: #000;
-        font-size: 18px;
-        font-weight: 500;
-        margin-bottom: 16px;
-        @-moz-document url-prefix() {
-          font-size: 14px !important;
-        }
-        @media (max-width: 540px) {
-          font-size: 16px;
-        }
-      }
-
-      .multiselection-filter .ant-space-item {
-        align-self: center;
-      }
-
-      .multiple-filter-title {
-        margin-bottom: 0;
-      }
-
-      .multiselection-filter {
-        position: relative;
-        .ant-select-selection-overflow {
-          height: 29px;
-          overflow-y: auto;
-          @-moz-document url-prefix() {
-            height: 19px !important;
-          }
-        }
-        .ant-select-selection-item-content {
-          font-style: italic;
-          overflow: visible;
         }
       }
 
@@ -1355,22 +1210,5 @@
     .ant-drawer-content-wrapper {
       zoom: 80%;
     }
-  }
-}
-
-@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
-  .multiselection-dropdown {
-    zoom: 80%;
-    @-moz-document url-prefix() {
-      .ant-select-item-group {
-        font-size: 10px;
-      }
-      .ant-select-item-option-content {
-        font-size: 12px;
-      }
-    }
-  }
-  .overlay-zoom {
-    zoom: 100%;
   }
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col } from "antd";
-import LeftSidebar from "../left-sidebar/LeftSidebar";
+import LeftSidebar from "../../components/left-sidebar/LeftSidebar";
 // Icons
 import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg";
 import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";

@@ -705,6 +705,9 @@
               padding-right: 2.5px;
             }
           }
+          &:hover {
+            background-color: $yellow-highlight;
+          }
         }
         .back-button {
           display: flex;
@@ -727,6 +730,9 @@
             @-moz-document url-prefix() {
               padding-left: 2.5px;
             }
+          }
+          &:hover {
+            background-color: $yellow-highlight;
           }
         }
         .center-content {
