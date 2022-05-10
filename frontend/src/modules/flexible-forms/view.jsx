@@ -894,6 +894,42 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
   }, [initialFormData, isLoaded, profile]);
 
+  useEffect(() => {
+    if (isLoaded()) {
+      if (subType) {
+        let obj = mainContentType.find(
+          (o) => o.code === selectedMainContentType
+        );
+        let array = Object.keys(tags)
+          .map((k) => tags[k])
+          .flat();
+        let find = obj?.childs.find((o) => o.title === subType)?.tags;
+        if (find) {
+          let res = array.filter((item) => find.includes(item.tag));
+          let newArray = find;
+          res.map((item) => {
+            if (find.includes(item.tag)) {
+              newArray = newArray.filter((x) => x !== item.tag);
+              newArray = [...newArray, item.id.toString()];
+            }
+          });
+          initialFormData.update((e) => {
+            e.data = {
+              ...e.data,
+              S4: {
+                ...e.data.S4,
+                S4_G3: {
+                  ...e.data.S4.S4_G3,
+                  tags: newArray,
+                },
+              },
+            };
+          });
+        }
+      }
+    }
+  }, [initialFormData, isLoaded, subType]);
+
   // Todo ask to login if not login
 
   // useEffect(() => {
