@@ -429,7 +429,14 @@ const Landing = withRouter(
                     .find((x) => x?.topic.toLowerCase() === selectedTopic)
                     ?.items.slice(0, 3)
                     ?.map((x, i) => {
-                      const { id, type, title, description, remarks } = x;
+                      const {
+                        id,
+                        type,
+                        title,
+                        description,
+                        remarks,
+                        summary,
+                      } = x;
                       const link = `/${humps.decamelize(type)}/${id}`;
                       return (
                         <Card
@@ -443,7 +450,7 @@ const Landing = withRouter(
                           <div className="asset-title">{title || ""}</div>
                           <div className="body-text">
                             {TrimText({
-                              text: description || remarks,
+                              text: description || remarks || summary,
                               max: 250,
                             })}
                           </div>
