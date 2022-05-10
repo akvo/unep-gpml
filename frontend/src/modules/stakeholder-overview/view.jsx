@@ -113,7 +113,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     },
 
     { id: 3, title: "Forums", url: null, icon: <IconForum /> },
-    { id: 4, title: "Partners", url: null, icon: <IconPartner /> },
+    { id: 4, title: "Partners", url: "/partners", icon: <IconPartner /> },
   ];
 
   const selectionValue = (

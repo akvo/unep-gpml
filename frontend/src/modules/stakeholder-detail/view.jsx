@@ -438,7 +438,7 @@ const StakeholderDetail = ({
                       <List.Item.Meta
                         avatar={<Avatar src={LocationImage} />}
                         title={
-                          countries.find((it) => it.id === data?.country).name
+                          countries.find((it) => it.id === data?.country)?.name
                         }
                       />
                     </List.Item>
@@ -638,7 +638,7 @@ const StakeholderDetail = ({
             </Col>
           </Row>
           <div className="owned-resources-wrapper">
-            {ownedResources.length > 0 && (
+            {ownedResources?.length > 0 && (
               <CardComponent
                 title={"Owned resources"}
                 style={{
@@ -649,7 +649,7 @@ const StakeholderDetail = ({
               >
                 <div style={{ padding: "0 10px" }}>
                   <Row gutter={[16, 16]}>
-                    {ownedResources.map((item) => (
+                    {ownedResources?.map((item) => (
                       <Col xs={6} lg={8}>
                         <div className="slider-card">
                           <div className="image-holder">

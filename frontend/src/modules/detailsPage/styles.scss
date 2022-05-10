@@ -747,6 +747,9 @@
       .ui.container > .ant-row > .ant-col {
         display: none;
       }
+      .long-image-container {
+        display: block !important;
+      }
       .ui.container > .ant-row {
         flex-direction: column;
       }
@@ -1040,6 +1043,7 @@
           }
           li {
             font-size: 1.4rem;
+            margin-bottom: 10px;
             @-moz-document url-prefix() {
               font-size: 12px !important;
             }
