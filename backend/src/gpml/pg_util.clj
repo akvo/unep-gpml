@@ -3,6 +3,22 @@
             [jsonista.core :as j])
   (:import org.postgresql.util.PGobject))
 
+(defn get-sql-state
+  "Gets the SQL state from a SQLException object and returns the keyword
+  representation of the state which are described as error codes in
+  PostgreSQL[1].
+
+  [1] - https://www.postgresql.org/docs/12/errcodes-appendix.html"
+  [sql-exception]
+  (if-let [sql-state (.getSQLState sql-exception)]
+    (case sql-state
+      "23000" :integrity-constraint-violation
+      "23502" :not-null-violation
+      "23503" :foreign-key-violation
+      "23505" :unique-constraint-violation
+      :other-sql-error)
+    :other-sql-error))
+
 (defn- parse-json
   [s]
   (j/read-value s j/keyword-keys-object-mapper))
