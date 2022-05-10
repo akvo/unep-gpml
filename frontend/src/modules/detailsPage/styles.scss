@@ -744,6 +744,9 @@
       .ui.container > .ant-row > .ant-col {
         display: none;
       }
+      .long-image-container {
+        display: block !important;
+      }
       .ui.container > .ant-row {
         flex-direction: column;
       }
