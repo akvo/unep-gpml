@@ -2,7 +2,7 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import "./styles.scss";
 import { Button } from "antd";
-import { ReactComponent as AddIcon } from "../../../images/workspace/add-icon.svg";
+import { ReactComponent as AddIcon } from "../../images/workspace/add-icon.svg";
 
 const AddContentButton = withRouter(({ history }) => {
   const { pathname } = history?.location;
