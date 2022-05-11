@@ -666,7 +666,6 @@
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}
-  :duct.database/sql {:jdbc-url #duct/env "DATABASE_URL"}
 
   :gpml.auth/auth-middleware {:issuer #duct/env "OIDC_ISSUER"
                               :audience #duct/env "OIDC_AUDIENCE"
@@ -688,7 +687,13 @@
 
   :gpml.handler.monitoring/hikaricp
   {:hikari-cp #ig/ref :duct.database.sql/hikaricp
-   :metrics-collector #ig/ref :gpml.handler.monitoring/collector}}
+   :metrics-collector #ig/ref :gpml.handler.monitoring/collector}
+
+  :duct.database.sql/hikaricp
+  {:jdbc-url #duct/env ["DATABASE_URL" Str]
+   :logger nil ;; We don't want log entries for sql sentences (not event ragtime ones!)
+   :minimum-idle 10
+   :maximum-pool-size 25}}
 
  :duct.profile/dev   #duct/include "dev"
  :duct.profile/local #duct/include "local"
