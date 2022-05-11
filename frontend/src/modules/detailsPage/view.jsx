@@ -538,6 +538,14 @@ const renderItemValues = (
           ? `${currency} ${currencyFormat(amount)}`
           : `${amount}`);
 
+      if (
+        (key === "lifecyclePhase" && data[key]?.length === 0) ||
+        (key === "sector" && data[key]?.length === 0) ||
+        (key === "focusArea" && data[key]?.length === 0)
+      ) {
+        return false;
+      }
+
       return (
         <Fragment key={`${params.type}-${name}`}>
           {displayEntry && (
