@@ -51,6 +51,15 @@
         width: 100%;
         align-self: center;
         text-align: center;
+        img,
+        .partner-icon {
+          height: 30px;
+          width: 30px;
+          @-moz-document url-prefix() {
+            height: 27px;
+            width: 27px;
+          }
+        }
         @-moz-document url-prefix() {
           transform: scale(0.9);
         }
