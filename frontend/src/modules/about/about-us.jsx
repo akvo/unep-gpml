@@ -8,7 +8,7 @@ import imageNotFound from "../../images/image-not-found.png";
 import issueGraphics from "./issue-section-content";
 import timelineAndRoadmapGraphic from "../../images/timeline-roadmap-graphic.png";
 import ourCommunity from "../../images/about-our-community.png";
-import DPIcons from "../../images/GPML---DP---icons.png";
+import DPIcons from "../../images/GPML-dp-icons.png";
 import featureComponent from "../../images/feature-component-graphic.png";
 import GpmlHistory from "../../images/GPML-history.png";
 import fullConceptDocImage from "../../images/full-concept-doc.png";

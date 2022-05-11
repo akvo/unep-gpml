@@ -4,7 +4,7 @@ import ArrayFieldTemplate from "../../utils/forms/array-template";
 import FieldTemplate from "../../utils/forms/field-template";
 import widgets from "../../utils/forms";
 import { overideValidation } from "../../utils/forms";
-import uiSchema from "./uiSchema.json";
+import uiSchema from "./ui-schema.json";
 import common from "./common";
 import cloneDeep from "lodash/cloneDeep";
 import { withRouter } from "react-router-dom";

@@ -25,8 +25,8 @@ import api from "../../utils/api";
 import { topicTypes, topicNames } from "../../utils/misc";
 import { titleCase } from "../../utils/string";
 
-import MultipleSelectFilter from "../../components/Select/MultipleSelectFilter";
-import CountryTransnationalFilter from "../../components/Select/CountryTransnationalFlter";
+import MultipleSelectFilter from "../../components/select/multiple-select-filter";
+import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
 
 // Import Icons as React component since the color of the icons changes when the card is selected
 import { ReactComponent as CapacityBuildingIcon } from "../../images/knowledge-library/capacity-building.svg";

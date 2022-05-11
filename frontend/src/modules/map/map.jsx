@@ -18,14 +18,15 @@ import {
 } from "@ant-design/icons";
 import { PatternLines } from "@vx/pattern";
 import classNames from "classnames";
-import { topicNames, tTypes } from "../../utils/misc";
-import { curr, snakeToCamel } from "./utils";
-
-import "./map-styles.scss";
 import { useHistory } from "react-router-dom";
 import { isEmpty } from "lodash";
+
+import { topicNames, tTypes } from "../../utils/misc";
+import { curr, snakeToCamel } from "./utils";
+import "./map-styles.scss";
 import { UIStore } from "../../store";
-import VerticalLegend from "./VerticalLegend";
+import VerticalLegend from "./vertical-legend";
+
 const geoUrl = "/unep-gpml.topo.json";
 const lineBoundaries = "/new_country_line_boundaries.geojson";
 const colorRange = ["#bbedda", "#a7e1cb", "#92d5bd", "#7dcaaf", "#67bea1"];
