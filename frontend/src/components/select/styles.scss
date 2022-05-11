@@ -1,0 +1,273 @@
+@import "../../vars.scss";
+
+.multiselection-filter,
+.country-filter-tab .ant-select-multiple {
+  @-moz-document url-prefix() {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+  }
+
+  .ant-select-multiple {
+    width: 100%;
+  }
+
+  .filter-title {
+    color: #000;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    @-moz-document url-prefix() {
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    @media (max-width: 540px) {
+      font-size: 16px;
+    }
+  }
+  .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
+    margin-top: 30px;
+    top: 990px !important;
+  }
+
+  .ant-select-selection-placeholder,
+  .ant-select-selection-placeholder {
+    font-size: 16px;
+    color: $grey04;
+    @-moz-document url-prefix() {
+      font-size: 12px;
+    }
+    @media (max-width: 540px) {
+      font-size: 14px;
+    }
+  }
+
+  .ant-select-selection-placeholder {
+    font-style: italic;
+    font-weight: 700;
+    padding-left: 30px;
+    @-moz-document url-prefix() {
+      padding-left: 25px;
+    }
+  }
+
+  .ant-select-selector {
+    background: $grey05 !important;
+    border: 0 !important;
+    border-radius: 5px !important;
+    background-image: url("../../images/knowledge-library/search-icon.svg"),
+      url("../../images/knowledge-library/chevron-down-grey.svg") !important;
+    background-repeat: no-repeat !important;
+    background-position: calc(15px) center, calc(100% - 10px) center !important;
+    @-moz-document url-prefix() {
+      background-size: 15px !important;
+    }
+  }
+
+  .ant-space-item {
+    align-self: center;
+  }
+
+  .ant-select-selection-item-remove {
+    display: none;
+  }
+
+  .ant-select-selection-overflow {
+    padding-left: calc(44px - 9px);
+    height: 29px;
+    overflow-y: auto;
+    @-moz-document url-prefix() {
+      height: 22px;
+      padding-left: calc(33px - 4.5px);
+    }
+    .ant-select-selection-item {
+      background-color: transparent;
+      @-moz-document url-prefix() {
+        line-height: 15px;
+      }
+    }
+  }
+
+  .ant-select-clear {
+    opacity: 0;
+  }
+
+  .ant-select-selection-search-input {
+    width: 100%;
+    display: block;
+  }
+
+  .ant-select-selection-item-content {
+    font-weight: 700;
+    font-size: 16px;
+    color: $blue06;
+    font-style: italic;
+    overflow: visible;
+    @-moz-document url-prefix() {
+      font-size: 12px;
+    }
+    @media (max-width: 540px) {
+      font-size: 14px;
+    }
+    .anticon-close-circle {
+      opacity: 0;
+    }
+  }
+}
+
+.collection-selector .ant-select-selector {
+  background-image: url("../../images/knowledge-library/collection-icon.svg"),
+    url("../../images/knowledge-library/chevron-down-grey.svg");
+}
+
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+  .multiselection-dropdown {
+    zoom: 80%;
+    @-moz-document url-prefix() {
+      font-size: 12px;
+      .ant-select-item-group {
+        font-size: 10px;
+      }
+      .ant-select-item-option-content {
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+// Transnational filter tab
+.popover-multi-country {
+  cursor: pointer;
+  border-radius: 50%;
+  &:hover {
+    background-color: $yellow-highlight !important;
+  }
+}
+
+.country-info-popover {
+  zoom: 60% !important;
+  .popover-content-item {
+    font-size: 18px !important;
+  }
+  @-moz-document url-prefix() {
+    font-size: 14px !important;
+  }
+}
+
+.country-filter-tab-wrapper {
+  width: 100%;
+  .ant-select-selection-placeholder {
+    padding-left: 30px;
+    @-moz-document url-prefix() {
+      padding-left: 25px;
+    }
+  }
+
+  .country-filter-tab {
+    border: 1px solid #d7e6ee;
+    border-radius: 3px;
+    background-color: #fff;
+    margin-bottom: 1.5rem;
+    @-moz-document url-prefix() {
+      margin-bottom: 1.1rem;
+    }
+
+    .ant-tabs-tab {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 50%;
+      border-radius: 0;
+      border: none;
+      background-color: #dae9f1;
+      &:hover {
+        background-color: $yellow-highlight !important;
+      }
+
+      div {
+        color: #000000;
+        font-size: 16px;
+        @-moz-document url-prefix() {
+          font-size: 12px;
+        }
+      }
+    }
+
+    .ant-tabs-nav::before,
+    .ant-tabs-nav .ant-tabs-nav-wrap::before,
+    .ant-tabs-nav .ant-tabs-nav-wrap::after {
+      content: none !important;
+    }
+
+    .ant-tabs-nav-list {
+      width: 100%;
+      align-items: center;
+      justify-content: space-evenly;
+
+      .ant-tabs-tab-btn {
+        color: #000000 !important;
+      }
+
+      .ant-tabs-tab-active {
+        background-color: #fff;
+        &:hover {
+          background-color: #fff !important;
+        }
+        .ant-tabs-tab-btn {
+          font-weight: normal;
+          color: $blue07;
+        }
+      }
+    }
+    .ant-tabs-tab:not(:last-of-type) {
+      margin-right: 0 !important;
+    }
+
+    .country-filter-tab-pane {
+      padding: 0.5rem 1rem;
+      @-moz-document url-prefix() {
+        padding: 0.1rem 0.6rem;
+      }
+    }
+
+    .ant-select-item.ant-select-item-group {
+      color: rgba(0, 0, 0, 0.45);
+    }
+
+    .ant-select-selection-placeholder {
+      font-size: 16px;
+      color: $grey04;
+      @-moz-document url-prefix() {
+        font-size: 12px;
+      }
+    }
+
+    .ant-select-selection-overflow {
+      height: 29px;
+      overflow-y: auto;
+      @-moz-document url-prefix() {
+        height: 22px;
+      }
+    }
+
+    .ant-select {
+      width: 100%;
+      margin-bottom: 10px;
+      @-moz-document url-prefix() {
+        margin-bottom: 5px;
+      }
+    }
+
+    // css for select suffix
+    .multi-country-info {
+      .ant-select-arrow {
+        right: 28px;
+        font-size: 14px;
+        top: 48%;
+        color: $blue07;
+        @-moz-document url-prefix() {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}

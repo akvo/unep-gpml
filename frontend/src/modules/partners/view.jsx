@@ -1,7 +1,5 @@
 import React from "react";
 import { Row, Col } from "antd";
-import "./styles.scss";
-import EventCalendar from "../../components/event-calendar/view";
 import LeftSidebar from "../../components/left-sidebar/left-sidebar";
 // Icons
 import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg";
@@ -9,7 +7,7 @@ import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg"
 import { ReactComponent as IconCommunity } from "../../images/events/community-icon.svg";
 import { ReactComponent as IconPartner } from "../../images/stakeholder-overview/partner-icon.svg";
 
-const EventPage = () => {
+function Partners() {
   const sidebar = [
     { id: 1, title: "Events", url: "/events", icon: <IconEvent /> },
     {
@@ -23,16 +21,23 @@ const EventPage = () => {
   ];
 
   return (
-    <div id="events">
+    <div id="partners">
       <Row type="flex" className="body-wrapper">
-        <LeftSidebar active={1} sidebar={sidebar}>
+        <LeftSidebar active={4} sidebar={sidebar}>
           <Col lg={24} xs={24} order={2}>
-            <EventCalendar />
+            <iframe
+              scrolling="auto"
+              frameborder="0"
+              title="Partners"
+              style={{ height: "1300px", width: "100%", marginTop: 20 }}
+              allow="geolocation https://experience.arcgis.com"
+              src="https://experience.arcgis.com/experience/b5602e1dc3eb4cfd8157320f9c8c098f/"
+            ></iframe>
           </Col>
         </LeftSidebar>
       </Row>
     </div>
   );
-};
+}
 
-export default EventPage;
+export default Partners;

@@ -1,10 +1,5 @@
 @import "../../vars.scss";
-.multiselection-filter {
-  .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
-    margin-top: 30px;
-    top: 990px !important;
-  }
-}
+
 .dropdown-content {
   display: flex;
   align-items: center;
@@ -188,15 +183,9 @@
         }
       }
 
-      .collection-selector .ant-select-selector {
-        background-image: url("../../images/knowledge-library/collection-icon.svg"),
-          url("../../images/knowledge-library/chevron-down-grey.svg");
-      }
-
       .ant-drawer-content {
         border-bottom-right-radius: 18px;
         box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.25);
-        // border: 1px solid $blue09;
       }
 
       .ant-drawer-title,
@@ -236,9 +225,7 @@
         width: 100%;
       }
 
-      .ant-select-selection-placeholder,
-      .date-picker-container .ant-picker ::placeholder,
-      .multiselection-filter .ant-select-selection-placeholder {
+      .date-picker-container .ant-picker ::placeholder {
         font-size: 16px;
         color: $grey04;
         @-moz-document url-prefix() {
@@ -249,34 +236,15 @@
         }
       }
 
-      .date-picker-container .ant-picker ::placeholder,
-      .multiselection-filter .ant-select-selection-placeholder {
+      .date-picker-container .ant-picker ::placeholder {
         font-style: italic;
         font-weight: 700;
       }
 
-      .multiselection-filter .ant-select-selection-placeholder {
-        padding-left: 30px;
-        @-moz-document url-prefix() {
-          padding-left: 25px;
-        }
-      }
-
-      .ant-select-selector,
       .date-picker-container .ant-picker {
         background: $grey05;
         border: 0;
         border-radius: 5px;
-      }
-
-      .ant-select-selector {
-        background-image: url("../../images/knowledge-library/search-icon.svg"),
-          url("../../images/knowledge-library/chevron-down-grey.svg");
-        background-repeat: no-repeat;
-        background-position: calc(15px) center, calc(100% - 10px) center;
-        @-moz-document url-prefix() {
-          background-size: 15px;
-        }
       }
 
       .date-picker-container {
@@ -307,33 +275,12 @@
         }
       }
 
-      .ant-select-selection-item-remove {
-        display: none;
-      }
-
-      .ant-select-selection-overflow {
-        padding-left: calc(44px - 9px);
-        @-moz-document url-prefix() {
-          padding-left: calc(33px - 4.5px);
-        }
-        .ant-select-selection-item {
-          background-color: transparent;
-          @-moz-document url-prefix() {
-            line-height: 15px;
-          }
-        }
-      }
-
-      .ant-select-clear {
-        opacity: 0;
-      }
       .date-picker-container {
         .ant-picker-clear {
           display: none;
         }
       }
-      .date-picker-container input,
-      .ant-select-selection-item-content {
+      .date-picker-container input {
         font-weight: 700;
         font-size: 16px;
         color: $blue06;
@@ -381,36 +328,12 @@
         }
       }
 
-      .multiselection-filter .ant-space-item,
       .date-picker-container .ant-space-item {
         align-self: center;
       }
 
-      .multiselection-filter .ant-select-selection-overflow {
-        height: 29px;
-        overflow-y: auto;
-        @-moz-document url-prefix() {
-          height: 22px;
-        }
-      }
-
       .multiple-filter-title {
         margin-bottom: 0;
-      }
-
-      .multiselection-filter {
-        @-moz-document url-prefix() {
-          padding-top: 5px !important;
-          padding-bottom: 5px !important;
-        }
-        .ant-select-selection-search-input {
-          width: 100%;
-          display: block;
-        }
-        .ant-select-selection-item-content {
-          font-style: italic;
-          overflow: visible;
-        }
       }
 
       .resource-type {
@@ -946,13 +869,12 @@
 
         line-height: 31px;
         border-radius: 5px;
-        // background: $blue12;
+
         background-color: #255b87;
       }
     }
 
     .ant-pagination-item-ellipsis {
-      // color: $blue12;
       color: #255b87;
       font-weight: 700;
       margin-left: calc(10px - 2px);
@@ -962,7 +884,6 @@
     .ant-pagination-item-active {
       border: none;
       a {
-        // background: rgba(24, 22, 47, 0.26);
         background-color: rgba(37, 91, 135, 0.1);
         color: #255b87;
       }
@@ -1135,7 +1056,6 @@
 }
 
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
-  .multiselection-dropdown,
   .ant-picker-dropdown {
     zoom: 80%;
     @-moz-document url-prefix() {

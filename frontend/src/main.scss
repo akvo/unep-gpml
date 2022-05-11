@@ -1008,6 +1008,8 @@ path {
       font-weight: 700;
       &:hover {
         background-color: $yellow-highlight !important;
+        color: #fff !important;
+        border: 1px solid $yellow-highlight !important;
       }
     }
     .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {

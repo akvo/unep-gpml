@@ -4,7 +4,7 @@ import ArrayFieldTemplate from "../../utils/forms/array-template";
 import FieldTemplate from "../../utils/forms/field-template";
 import widgets from "../../utils/forms";
 import { overideValidation } from "../../utils/forms";
-import uiSchema from "./uiSchema.json";
+import uiSchema from "./ui-schema.json";
 import common from "./common";
 import cloneDeep from "lodash/cloneDeep";
 import { withRouter } from "react-router-dom";
@@ -63,47 +63,6 @@ const FlexibleForm = withRouter(
     const [dependValue, setDependValue] = useState([]);
     const [schema, setSchema] = useState(formSchema.schema);
     const [editCheck, setEditCheck] = useState(true);
-
-    useEffect(() => {
-      if (subContentType) {
-        let obj = mainContentType.find(
-          (o) => o.code === selectedMainContentType
-        );
-        let array = Object.keys(tags)
-          .map((k) => tags[k])
-          .flat();
-        let find = obj?.childs.find((o) => o.title === subContentType)?.tags;
-        if (find) {
-          let res = array.filter((item) => find.includes(item.tag));
-          let newArray = find;
-          res.map((item) => {
-            if (find.includes(item.tag)) {
-              newArray = newArray.filter((x) => x !== item.tag);
-              newArray = [...newArray, item.id.toString()];
-            }
-          });
-          initialFormData.update((e) => {
-            console.log(e.data);
-            e.data = {
-              ...e.data,
-              S4: {
-                ...e.data.S4,
-                S4_G3: {
-                  ...e.data.S4.S4_G3,
-                  tags: newArray,
-                },
-              },
-            };
-          });
-        }
-      }
-    }, [
-      subContentType,
-      mainContentType,
-      selectedMainContentType,
-      initialFormData,
-      tags,
-    ]);
 
     const handleOnSubmit = ({ formData }) => {
       if (mainType === "Policy") {
@@ -204,7 +163,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x,
+                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
           };
         });
 
@@ -379,7 +338,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x,
+                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
           };
         });
 
@@ -590,7 +549,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x,
+                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
           };
         });
 
@@ -785,7 +744,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x,
+                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
           };
         });
 
@@ -963,7 +922,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x,
+                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
           };
         });
 

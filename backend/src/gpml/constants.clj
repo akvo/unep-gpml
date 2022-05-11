@@ -23,6 +23,8 @@
 
 (def user-roles [:USER :REVIEWER :ADMIN])
 
+(def popular-tags '("plastics" "waste management" "marine litter" "capacity building" "product by design" "source to sea"))
+
 (def gcs-bucket-name "akvo-unep-gpml")
 
 (def ^:const sorted-user-columns

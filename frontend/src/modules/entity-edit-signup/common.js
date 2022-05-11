@@ -9,9 +9,10 @@ export default {
       data.seeking = data.seeking.map((x) => {
         return {
           ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
-          tag: Object.values(tags)
-            .flat()
-            .find((o) => o.id === parseInt(x))?.tag,
+          tag:
+            Object.values(tags)
+              .flat()
+              .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
           tag_category: "seeking",
         };
       });
@@ -22,9 +23,10 @@ export default {
       data.offering = data.offering.map((x) => {
         return {
           ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
-          tag: Object.values(tags)
-            .flat()
-            .find((o) => o.id === parseInt(x))?.tag,
+          tag:
+            Object.values(tags)
+              .flat()
+              .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
           tag_category: "offering",
         };
       });

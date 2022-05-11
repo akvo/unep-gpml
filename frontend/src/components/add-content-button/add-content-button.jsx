@@ -1,28 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import "./styles.scss";
 import { Button } from "antd";
 import { ReactComponent as AddIcon } from "../../images/workspace/add-icon.svg";
 
 const AddContentButton = withRouter(({ history }) => {
-  const [didMount, setDidMount] = useState(false);
-  const pageHistory = history?.location?.pathname;
+  const { pathname } = history?.location;
 
-  const displayButton =
-    pageHistory === "/workspace" ||
-    pageHistory === "/knowledge-library" ||
-    pageHistory === "/events" ||
-    pageHistory === "/case-studies" ||
-    pageHistory === "/capacity-building";
-
-  // Note: this will fix the warning on the console
-  useEffect(() => {
-    setDidMount(true);
-    return () => setDidMount(false);
-  }, []);
+  const shouldDisplayButton =
+    pathname === "/workspace" ||
+    pathname === "/knowledge-library" ||
+    pathname === "/events" ||
+    pathname === "/case-studies" ||
+    pathname === "/capacity-building";
 
   return (
-    displayButton && (
+    shouldDisplayButton && (
       <Link to="/flexible-forms">
         <div className="workspace-button-wrapper">
           <Button className="add-button">

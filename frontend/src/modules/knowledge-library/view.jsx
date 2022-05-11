@@ -15,9 +15,9 @@ import { topicNames } from "../../utils/misc";
 import { multicountryGroups } from "./multicountry";
 import MapLanding from "./map-landing";
 import TopicView from "./topic-view";
-import LeftSidebar from "../left-sidebar/LeftSidebar";
-import ResourceList from "./Resource-list";
-import FilterDrawer from "./Filter-drawer";
+import LeftSidebar from "../../components/left-sidebar/left-sidebar";
+import ResourceList from "./resource-list";
+import FilterDrawer from "./filter-drawer";
 
 import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
 import TooltipOutlined from "../../images/knowledge-library/tooltip-outlined.svg";

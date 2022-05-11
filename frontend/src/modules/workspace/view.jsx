@@ -3,7 +3,7 @@ import { Row, Col } from "antd";
 
 import "./styles.scss";
 import Header from "./header";
-import LeftSidebar from "../left-sidebar/LeftSidebar";
+import LeftSidebar from "../../components/left-sidebar/left-sidebar";
 import ActionPlan from "./action-plan";
 
 // Icons

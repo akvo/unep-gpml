@@ -15,7 +15,7 @@ import isEmpty from "lodash/isEmpty";
 import UnathenticatedPage from "./unathenticated-page";
 
 // Components
-import LeftSidebar from "../left-sidebar/LeftSidebar";
+import LeftSidebar from "../../components/left-sidebar/left-sidebar";
 import ProfileCard from "./card";
 import Header from "../knowledge-library/header";
 import FilterDrawer from "./filter-drawer";
@@ -113,7 +113,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     },
 
     { id: 3, title: "Forums", url: null, icon: <IconForum /> },
-    { id: 4, title: "Partners", url: null, icon: <IconPartner /> },
+    { id: 4, title: "Partners", url: "/partners", icon: <IconPartner /> },
   ];
 
   const selectionValue = (

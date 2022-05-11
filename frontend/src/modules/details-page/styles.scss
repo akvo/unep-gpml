@@ -664,6 +664,9 @@
           height: 28px;
           line-height: 10px;
         }
+        &:hover {
+          background-color: $yellow-highlight;
+        }
       }
       .ant-avatar {
         width: 50px;
@@ -743,6 +746,9 @@
     .section-banner {
       .ui.container > .ant-row > .ant-col {
         display: none;
+      }
+      .long-image-container {
+        display: block !important;
       }
       .ui.container > .ant-row {
         flex-direction: column;
@@ -1037,7 +1043,7 @@
           }
           li {
             font-size: 1.4rem;
-            margin-bottom: 0px;
+            margin-bottom: 10px;
             @-moz-document url-prefix() {
               font-size: 12px !important;
             }
