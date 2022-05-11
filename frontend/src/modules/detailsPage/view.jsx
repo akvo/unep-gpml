@@ -545,6 +545,14 @@ const renderItemValues = (
           ? `${currency} ${currencyFormat(amount)}`
           : `${amount}`);
 
+      if (
+        (key === "lifecyclePhase" && data[key]?.length === 0) ||
+        (key === "sector" && data[key]?.length === 0) ||
+        (key === "focusArea" && data[key]?.length === 0)
+      ) {
+        return false;
+      }
+
       return (
         <Fragment key={`${params.type}-${name}`}>
           {displayEntry && (
@@ -606,13 +614,12 @@ const renderItemValues = (
                   type === "array" &&
                   data[key].map((tag) => Object.values(tag)[0]).join(", ")}
                 {key !== "tags" &&
-                params.type === "project" &&
-                data[key] &&
-                value === "join" &&
-                type === "array" &&
-                data[key]?.length > 0
-                  ? data[key]?.map((x) => x.name).join(", ")
-                  : delete data[key]}
+                  params.type === "project" &&
+                  data[key] &&
+                  value === "join" &&
+                  type === "array" &&
+                  data[key]?.length !== 0 &&
+                  data[key]?.map((x) => x.name).join(", ")}
                 {key !== "tags" &&
                   params.type !== "project" &&
                   data[key] &&
@@ -623,7 +630,7 @@ const renderItemValues = (
                   value === "custom" &&
                   type === "array" &&
                   data[key][customValue] &&
-                  data[key][customValue].map((x) => x.name).join(", ")}
+                  data[key][customValue]?.map((x) => x.name).join(", ")}
                 {params.type !== "project" &&
                   value === "custom" &&
                   type === "array" &&

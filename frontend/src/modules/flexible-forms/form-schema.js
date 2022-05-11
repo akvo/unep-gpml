@@ -231,7 +231,7 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["individual"],
+            required: [],
             properties: {
               entity: {
                 title: "Entity connection",
@@ -1574,7 +1574,7 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["individual"],
+            required: [],
             properties: {
               entity: {
                 title: "Entity connection",
@@ -2292,8 +2292,6 @@ export const schema = {
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
-              // "geoCoverageValueNational",
-              // "geoCoverageValueSubnational",
               "geoCoverageValueSubnationalCity",
             ],
             properties: {
@@ -2324,22 +2322,6 @@ export const schema = {
                   value: ["transnational", "national", "sub-national"],
                 },
               },
-              // geoCoverageValueNational: {
-              //   title: "National",
-              //   enum: [],
-              //   depend: {
-              //     id: "geoCoverageType",
-              //     value: ["national"],
-              //   },
-              // },
-              // geoCoverageValueSubnational: {
-              //   title: "Subnational",
-              //   enum: [],
-              //   depend: {
-              //     id: "geoCoverageType",
-              //     value: ["sub-national"],
-              //   },
-              // },
               geoCoverageValueSubnationalCity: {
                 title: "Subnational Area",
                 type: "string",
@@ -2388,7 +2370,7 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["individual"],
+            required: [],
             properties: {
               entity: {
                 title: "Entity connection",
@@ -2645,7 +2627,7 @@ export const schema = {
               id: "steps",
               value: 4,
             },
-            required: ["individual"],
+            required: [],
             properties: {
               entity: {
                 title: "Entity connection",
