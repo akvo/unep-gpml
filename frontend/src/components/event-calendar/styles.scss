@@ -236,9 +236,14 @@
           color: #2d6796;
           font-weight: 500;
           margin-bottom: 10px;
+          align-items: center;
           @-moz-document url-prefix() {
             font-size: 0.4rem;
             margin-bottom: 5px;
+          }
+          .status {
+            margin-left: 10px;
+            margin-right: 10px;
           }
         }
         .item-img {
