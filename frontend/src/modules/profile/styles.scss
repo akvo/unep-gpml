@@ -755,6 +755,14 @@
     background: #edf2f7 !important;
     border: 1px solid #d3dee7 !important;
     border-radius: 0 !important;
+    @-moz-document url-prefix() {
+      font-size: 14px !important;
+      padding: 1rem 1.8rem !important;
+    }
+    @media (max-width: 540px) {
+      padding: 0.6rem 0.6rem !important;
+      font-size: 14px !important;
+    }
   }
   .ant-tabs-tab-btn {
     color: #036799;
