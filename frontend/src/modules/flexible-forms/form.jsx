@@ -466,6 +466,7 @@ const FlexibleForm = withRouter(
 
       let data = {
         ...formData,
+        subContentType: subContentType,
         ...(capacityBuilding && { capacityBuilding: true }),
       };
 
@@ -657,6 +658,7 @@ const FlexibleForm = withRouter(
 
       let data = {
         ...formData,
+        subContentType: subContentType,
         ...(capacityBuilding && { capacityBuilding: true }),
       };
 
@@ -834,6 +836,7 @@ const FlexibleForm = withRouter(
 
       let data = {
         ...formData,
+        subContentType: subContentType,
       };
 
       transformFormData(data, formData, formSchema.schema.properties, true);

@@ -1,5 +1,11 @@
 export const typeOfActionKeys = [
   {
+    key: "subContentType",
+    name: "Sub Content Type",
+    value: "subContentType",
+    type: "name",
+  },
+  {
     key: "workingWithPeople",
     name: "Working With People",
     value: "children",
@@ -56,6 +62,12 @@ export const typeOfActionKeys = [
 
 const detailActionPlan = [
   {
+    key: "subContentType",
+    name: "Sub Content Type",
+    value: "subContentType",
+    type: "name",
+  },
+  {
     key: "publishYear",
     name: "Year",
     value: "publishYear",
@@ -76,6 +88,12 @@ const detailActionPlan = [
 ];
 
 const detailFinancingResource = [
+  {
+    key: "subContentType",
+    name: "Sub Content Type",
+    value: "subContentType",
+    type: "name",
+  },
   {
     key: "value",
     name: "Amount",
@@ -99,6 +117,12 @@ const detailFinancingResource = [
 
 const detailEvent = [
   {
+    key: "subContentType",
+    name: "Sub Content Type",
+    value: "subContentType",
+    type: "name",
+  },
+  {
     key: "startDate",
     name: "Start Date/End",
     value: "custom",
@@ -114,6 +138,12 @@ const detailEvent = [
 ];
 
 const detailTechnology = [
+  {
+    key: "subContentType",
+    name: "Sub Content Type",
+    value: "subContentType",
+    type: "name",
+  },
   {
     key: "organisationType",
     name: "Organisation Type",
@@ -143,6 +173,12 @@ const detailTechnology = [
 ];
 
 const detailPolicy = [
+  {
+    key: "subContentType",
+    name: "Sub Content Type",
+    value: "subContentType",
+    type: "name",
+  },
   {
     key: "originalTitle",
     name: "Original Title",
@@ -200,6 +236,12 @@ const detailPolicy = [
 ];
 
 const detailProject = [
+  {
+    key: "subContentType",
+    name: "Sub Content Type",
+    value: "subContentType",
+    type: "name",
+  },
   {
     key: "funds",
     name: "Amount Invested",
