@@ -62,6 +62,12 @@ const menuItems = [
     role: adminRoles,
     icon: <SettingOutlined />,
   },
+  {
+    key: "profil-section",
+    name: "Profile Quick Link",
+    role: userRoles,
+    icon: <UserOutlined />,
+  },
 ];
 
 const ProfileView = ({ relations }) => {
@@ -368,21 +374,27 @@ const ProfileView = ({ relations }) => {
           break;
       }
       return (
-        <Menu.Item
-          key={it.key}
-          className="menu-item"
-          icon={
-            <Button
-              type="ghost"
-              className="white"
-              shape="circle"
-              icon={it.icon}
-            />
-          }
-          onClick={() => handleOnClickMenu(it.key)}
-        >
-          {menuText}
-        </Menu.Item>
+        <>
+          <Menu.Item
+            key={it.key}
+            className="menu-item"
+            icon={
+              <Button
+                type="ghost"
+                className="white"
+                shape="circle"
+                icon={it.icon}
+              />
+            }
+            onClick={() =>
+              it.key !== "profil-section"
+                ? handleOnClickMenu(it.key)
+                : history.push(`/stakeholder/${profile.id}`)
+            }
+          >
+            {menuText}
+          </Menu.Item>
+        </>
       );
     });
   };
