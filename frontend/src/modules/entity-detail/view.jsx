@@ -618,7 +618,7 @@ const StakeholderDetail = ({
                           }}
                         >
                           <Row style={{ width: "100%" }}>
-                            <Col xs={6} lg={14}>
+                            <Col className="individual-details" xs={6} lg={14}>
                               <div className="profile-image">
                                 <img
                                   src={
@@ -630,7 +630,7 @@ const StakeholderDetail = ({
                                 />
                               </div>
                             </Col>
-                            <Col xs={6} lg={10}>
+                            <Col className="individual-details" xs={6} lg={10}>
                               <div className="profile-detail">
                                 <h3>{item.name}</h3>
                                 {/* <p>
