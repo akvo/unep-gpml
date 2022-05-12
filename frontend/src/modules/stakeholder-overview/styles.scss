@@ -38,6 +38,13 @@
   }
   .sidebar-mobile {
     margin-bottom: 0;
+    .item-menu img,
+    .item-menu svg {
+      width: 30px;
+      @-moz-document url-prefix() {
+        width: 20px;
+      }
+    }
     @media (min-width: 750px) {
       display: none;
     }
@@ -393,7 +400,7 @@
         color: #fff;
         @-moz-document url-prefix() {
           margin-top: 5px;
-          font-size: 9px;
+          font-size: 11px;
         }
       }
 
@@ -1067,10 +1074,7 @@
           margin-bottom: 0px;
           font-size: 1em;
           @-moz-document url-prefix() {
-            font-size: 0.6rem;
-          }
-          @media (max-width: 540px) {
-            font-size: 0.6em;
+            font-size: 10px;
           }
         }
         .item-menu img {

@@ -776,12 +776,12 @@ const AdminSection = ({
       <div key={`new-approval-${title ? title : ""}`} className="approval">
         {title && <Title className="tab-label" level={4}>{`${title}`}</Title>}
         <div>
-          <b>Total:</b> {itemList.count || 0}
+          <b className="approval-bold-text">Total:</b> {itemList.count || 0}
         </div>
         {(listOpts.reviewStatus || listOpts.title) && (
           <div>
             <div className="export-wrapper">
-              <b>Filtering by:</b>
+              <b className="approval-bold-text">Filtering by:</b>
               {title !== "Tags" && (
                 <div>
                   <ExportButton
@@ -794,13 +794,14 @@ const AdminSection = ({
             </div>
             <hr />
             {listOpts.reviewStatus && (
-              <div>
-                <b>Review status:</b> {statusDictToHuman[listOpts.reviewStatus]}
+              <div className="review-status-wrapper">
+                <b className="approval-bold-text">Review status:</b>{" "}
+                {statusDictToHuman[listOpts.reviewStatus]}
               </div>
             )}
             {listOpts.title && (
               <div>
-                <b>Title:</b> {listOpts.title}
+                <b className="approval-bold-text">Title:</b> {listOpts.title}
               </div>
             )}
           </div>
