@@ -8,7 +8,7 @@
   text-align: center;
   h3,
   h4 {
-    color: #255b87;
+    color: $blue06;
     font-size: 13px;
     font-weight: bold;
   }
@@ -38,6 +38,13 @@
   }
   .sidebar-mobile {
     margin-bottom: 0;
+    .item-menu img,
+    .item-menu svg {
+      width: 30px;
+      @-moz-document url-prefix() {
+        width: 20px;
+      }
+    }
     @media (min-width: 750px) {
       display: none;
     }
@@ -253,7 +260,7 @@
             .profile-name,
             .location,
             .entity-name {
-              color: #255b87;
+              color: $blue06;
               font-weight: bold;
             }
 
@@ -286,7 +293,7 @@
             }
 
             .entity-name {
-              color: #255b87;
+              color: $blue06;
             }
 
             .organisation-type {
@@ -393,7 +400,7 @@
         color: #fff;
         @-moz-document url-prefix() {
           margin-top: 5px;
-          font-size: 9px;
+          font-size: 11px;
         }
       }
 
@@ -470,10 +477,13 @@
         height: 100%;
         font-weight: 400;
         color: #ffffff;
-
         line-height: 31px;
         border-radius: 5px;
-        background-color: #255b87;
+        background-color: $blue06;
+        &:hover {
+          background-color: $yellow-highlight;
+          border-color: $yellow-highlight;
+        }
         @-moz-document url-prefix() {
           line-height: 26px;
         }
@@ -481,8 +491,7 @@
     }
 
     .ant-pagination-item-ellipsis {
-      // color: $blue12;
-      color: #255b87;
+      color: $blue06;
       font-weight: bold;
       margin-left: calc(10px - 2px);
       margin-right: 10px;
@@ -495,9 +504,11 @@
     .ant-pagination-item-active {
       border: none;
       a {
-        // background: rgba(24, 22, 47, 0.26);
         background-color: rgba(37, 91, 135, 0.1);
-        color: #255b87;
+        color: $blue06;
+        &:hover {
+          background-color: rgba(37, 91, 135, 0.1);
+        }
       }
     }
     .ant-pagination-next {
@@ -1067,10 +1078,7 @@
           margin-bottom: 0px;
           font-size: 1em;
           @-moz-document url-prefix() {
-            font-size: 0.6rem;
-          }
-          @media (max-width: 540px) {
-            font-size: 0.6em;
+            font-size: 10px;
           }
         }
         .item-menu img {

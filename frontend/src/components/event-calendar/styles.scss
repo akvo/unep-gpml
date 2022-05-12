@@ -81,6 +81,9 @@
           @-moz-document url-prefix() {
             min-height: 5rem;
           }
+          @media (max-width: 800px) {
+            min-height: 5rem;
+          }
         }
         .ant-picker-cell-inner.ant-picker-calendar-date.ant-picker-calendar-date-today {
           background: rgba(46, 66, 119, 0.8);
@@ -233,9 +236,14 @@
           color: #2d6796;
           font-weight: 500;
           margin-bottom: 10px;
+          align-items: center;
           @-moz-document url-prefix() {
             font-size: 0.4rem;
             margin-bottom: 5px;
+          }
+          .status {
+            margin-left: 10px;
+            margin-right: 10px;
           }
         }
         .item-img {
