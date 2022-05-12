@@ -282,13 +282,14 @@
      :org-id (:id org)}))
 
 (defn- save-stakeholder
-  ([config req]
-   (save-stakeholder config req nil))
+  ([config req org-id]
+   (save-stakeholder config req org-id false))
   ([{:keys [db mailjet-config]}
     {:keys [jwt-claims body-params headers]}
-    new-affiliation]
+    org-id
+    new-org?]
    (let [profile (make-profile (assoc body-params
-                                      :affiliation new-affiliation
+                                      :affiliation org-id
                                       :email (:email jwt-claims)
                                       :idp_usernames [(:sub jwt-claims)]
                                       :cv (or (assoc-cv db (:cv body-params))
@@ -307,21 +308,22 @@
                             (email/notify-admins-pending-approval db mailjet-config
                                                                   (merge profile {:type "stakeholder"}))
                             (:id new-stakeholder)))
-         profile (db.stakeholder/stakeholder-by-id db {:id stakeholder-id})
-         res (-> (merge body-params profile)
-                 (dissoc :affiliation :picture :new_org)
-                 (assoc :org (db.organisation/organisation-by-id db {:id (:affiliation profile)})))]
+         profile (db.stakeholder/stakeholder-by-id db {:id stakeholder-id})]
+     (when new-org?
+       (handler.org/update-org db mailjet-config {:id org-id :created_by stakeholder-id}))
      (when-let [tags (seq (:tags body-params))]
        (save-stakeholder-tags db mailjet-config tags stakeholder-id false))
-     (resp/created (:referer headers) res))))
+     (resp/created (:referer headers) (-> (merge body-params profile)
+                                          (dissoc :affiliation :picture)
+                                          (assoc :org (db.organisation/organisation-by-id db {:id (:affiliation profile)})))))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post [_ {:keys [db mailjet-config] :as config}]
-  (fn [{:keys [body-params] :as req}]
-    (if-not (seq (:org body-params))
-      (save-stakeholder config req)
+  (fn [{{:keys [org] :as body-params} :body-params :as req}]
+    (if (:id org)
+      (save-stakeholder config req (:id org))
       (let [result (make-affiliation db mailjet-config (:org body-params))]
         (if (:success? result)
-          (save-stakeholder config req (:org-id result))
+          (save-stakeholder config req (:org-id result) true)
           (if (= :unique-constraint-violation (:reason result))
             {:status 409
              :headers {"content-type" "application/json"}
@@ -445,7 +447,6 @@
       [:id {:optional true} pos-int?]
       [:tag string?]
       [:tag_category string?]]]]
-   [:new_org {:optional true} new-org-schema]
    [:org {:optional true} org-schema]])
 
 (defmethod ig/init-key ::get-params [_ _]
