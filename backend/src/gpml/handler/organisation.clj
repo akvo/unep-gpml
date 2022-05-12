@@ -106,25 +106,24 @@
 
 (defmethod ig/init-key :gpml.handler.organisation/put-params [_ _]
   (into [:map
-         [:id {:optional true} int?]
-         [:name string?]
-         [:url string?]
+         [:name {:optional true} string?]
+         [:url {:optional true} string?]
          [:logo {:optional true} string?]
-         [:country int?]
-         [:geo_coverage_type geo/coverage_type]
-         [:type string?]
-         [:representative_group_other [:maybe string?]]
-         [:representative_group_civil_society [:maybe string?]]
-         [:representative_group_private_sector [:maybe string?]]
-         [:representative_group_government [:maybe string?]]
-         [:representative_group_academia_research [:maybe string?]]
+         [:country {:optional true} int?]
+         [:geo_coverage_type {:optional true} geo/coverage_type]
+         [:type {:optional true} string?]
+         [:representative_group_other {:optional true} [:maybe string?]]
+         [:representative_group_civil_society {:optional true} [:maybe string?]]
+         [:representative_group_private_sector {:optional true} [:maybe string?]]
+         [:representative_group_government {:optional true} [:maybe string?]]
+         [:representative_group_academia_research {:optional true} [:maybe string?]]
          [:subnational_area {:optional true} [:maybe string?]]
-         [:expertise vector?]
-         [:program string?]
+         [:expertise {:optional true} vector?]
+         [:program {:optional true} string?]
          [:tags {:optional true}
           [:vector {:optional true}
            [:map {:optional true}
             [:id {:optional true} pos-int?]
             [:tag string?]
-            [:tag_category string?]]]]]
+            [:tag_category {:optional true} string?]]]]]
         handler.geo/params-payload))
