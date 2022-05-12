@@ -94,6 +94,9 @@ ul.sidebar-mobile {
       font-weight: bold;
       font-size: 12px;
       color: #fff;
+      @-moz-document url-prefix() {
+        font-size: 11px;
+      }
     }
 
     &:hover {

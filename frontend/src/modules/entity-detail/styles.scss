@@ -76,6 +76,7 @@
           line-height: 45px;
           @-moz-document url-prefix() {
             font-size: 18px !important;
+            line-height: 25px !important;
           }
         }
         p {
@@ -791,8 +792,8 @@
             width: 100px;
             height: 100px;
             @-moz-document url-prefix() {
-              width: 70px;
-              height: 70px;
+              width: 70px !important;
+              height: 70px !important;
             }
           }
         }
