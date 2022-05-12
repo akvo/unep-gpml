@@ -213,8 +213,12 @@ const ModalAddEntity = ({ visible, close }) => {
         close();
         setDisabledBtn({ disabled: true, type: "default" });
       })
-      .catch(() => {
-        notification.error({ message: "An error occured" });
+      .catch((err) => {
+        notification.error({
+          message: err?.response?.data?.reason
+            ? err?.response?.data?.reason
+            : "An error occured",
+        });
       })
       .finally(() => {
         setSending(false);
