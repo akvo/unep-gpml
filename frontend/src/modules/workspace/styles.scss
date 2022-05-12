@@ -1,7 +1,6 @@
 @import "../../vars.scss";
 
 $bg-dark-primary: #005b70;
-$bg-dark-secondary: #255b87;
 $bg-green-primary: #10f9b7;
 
 .btn-workspace {
@@ -32,7 +31,7 @@ $bg-green-primary: #10f9b7;
 }
 
 #workspace {
-  background-color: $bg-dark-secondary;
+  background-color: $blue06;
   .paragraph,
   .header-text,
   .plan-content,
@@ -235,7 +234,7 @@ $bg-green-primary: #10f9b7;
     max-width: 1620px;
     margin: auto;
     padding: 14px 10px 17px 8px;
-    background-color: $bg-dark-secondary;
+    background-color: $blue06;
     overflow: hidden;
     @-moz-document url-prefix() {
       padding: 9px 5px 12px 3px;

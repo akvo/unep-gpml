@@ -587,7 +587,7 @@
     .ant-pagination-item-link {
       background: #fff;
       span.anticon {
-        color: #255b87;
+        color: $blue06;
         font-size: 0.85rem;
         @-moz-document url-prefix() {
           font-size: 11px;
@@ -597,7 +597,7 @@
     .ant-pagination-item {
       background: rgba(37, 91, 135, 0.1);
       a {
-        color: #255b87;
+        color: $blue06;
         &:hover {
           color: #fff;
           background: $yellow-highlight;
@@ -615,14 +615,14 @@
       }
     }
     .ant-pagination-item-ellipsis {
-      color: #255b87;
+      color: $blue06;
     }
     .ant-pagination-options {
       .ant-select-selector {
         background: rgba(37, 91, 135, 0.1);
         border-color: transparent;
         border-radius: 5px;
-        color: #255b87;
+        color: $blue06;
       }
     }
   }

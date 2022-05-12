@@ -8,7 +8,7 @@
   text-align: center;
   h3,
   h4 {
-    color: #255b87;
+    color: $blue06;
     font-size: 13px;
     font-weight: bold;
   }
@@ -260,7 +260,7 @@
             .profile-name,
             .location,
             .entity-name {
-              color: #255b87;
+              color: $blue06;
               font-weight: bold;
             }
 
@@ -293,7 +293,7 @@
             }
 
             .entity-name {
-              color: #255b87;
+              color: $blue06;
             }
 
             .organisation-type {
@@ -479,7 +479,7 @@
         color: #ffffff;
         line-height: 31px;
         border-radius: 5px;
-        background-color: #255b87;
+        background-color: $blue06;
         &:hover {
           background-color: $yellow-highlight;
           border-color: $yellow-highlight;
@@ -491,7 +491,7 @@
     }
 
     .ant-pagination-item-ellipsis {
-      color: #255b87;
+      color: $blue06;
       font-weight: bold;
       margin-left: calc(10px - 2px);
       margin-right: 10px;
@@ -505,7 +505,7 @@
       border: none;
       a {
         background-color: rgba(37, 91, 135, 0.1);
-        color: #255b87;
+        color: $blue06;
         &:hover {
           background-color: rgba(37, 91, 135, 0.1);
         }
