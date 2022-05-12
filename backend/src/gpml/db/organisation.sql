@@ -141,3 +141,16 @@ values :t*:tags RETURNING id;
 -- :name delete-organisation-tags :! :n
 -- :doc remove organisation-tags
 delete from organisation_tag where organisation = :id
+
+-- :name delete-organisation :!
+-- :doc Deletes an organisation
+DELETE FROM organisation WHERE id = :id;
+
+-- :name get-organisations
+-- :doc Gets all organisations. It accepts filters and can be extend to support more
+SELECT * FROM organisation
+WHERE 1=1
+--~(when (get-in params [:filters :id]) " AND :filters.id = id")
+--~(when (get-in params [:filters :name]) " AND LOWER(:filters.name) = LOWER(name)")
+--~(when (true? (get-in params [:filters :is_member])) " AND is_member IS TRUE")
+--~(when (false? (get-in params [:filters :is_member])) " AND is_member IS FALSE")
