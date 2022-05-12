@@ -4,6 +4,8 @@ metadata:
   name: unep-gpml
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
         run: unep-gpml
