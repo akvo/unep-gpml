@@ -15,9 +15,12 @@
    [gpml.handler.resource.tag :as handler.resource.tag]
    [gpml.handler.tag :as handler.tag]
    [gpml.handler.util :as handler.util]
+   [gpml.pg-util :as pg-util]
    [gpml.util :as util]
    [integrant.core :as ig]
-   [ring.util.response :as resp]))
+   [ring.util.response :as resp])
+  (:import
+   [java.sql SQLException]))
 
 (def roles-re (->> constants/user-roles
                    (map name)
@@ -237,59 +240,95 @@
       (resp/response (get-stakeholder-profile db stakeholder))
       (resp/response {}))))
 
-(defn- make-affiliation [db mailjet-config org]
-  (if-not (:id org)
-    (let [org-id (handler.org/create db mailjet-config org)]
-      (email/notify-admins-pending-approval db mailjet-config
-                                            {:title (:name org) :type "organisation"})
-      (when-let [tag-ids (seq (:expertise org))]
-        (db.organisation/add-organisation-tags db {:tags (map #(vector org-id %) tag-ids)}))
-      org-id)
-    (:id org)))
+(defn- make-affiliation*
+  [db mailjet-config org]
+  (let [org-id (handler.org/create db mailjet-config org)]
+    (email/notify-admins-pending-approval db mailjet-config
+                                          {:title (:name org) :type "organisation"})
+    org-id))
 
-(defn- make-organisation [db mailjet-config org]
+(defn- make-affiliation
+  "Creates a new organisation for affiliation. If the organisation
+  with the same name exists and it is a `non_member` organisation we
+  MUST let the new organisation to be created and remove the
+  `non_member`. If the existing organisation is already a `member`
+  then we should return an error letting the caller know that an
+  organisation with the same name exists. "
+  [db mailjet-config org]
   (if-not (:id org)
-    (let [org-id (handler.org/create db mailjet-config (-> (if (:subnational_area_only org)
-                                                             (-> org
-                                                                 (dissoc :subnational_area_only)
-                                                                 (assoc :subnational_area (:subnational_area_only org)))
-                                                             org)
-                                                           (assoc :is_member false)))]
-      org-id)
-    (:id org)))
+    (try
+      {:success? true
+       :org-id (make-affiliation* db mailjet-config org)}
+      (catch Exception e
+        (if (instance? SQLException e)
+          (let [reason (pg-util/get-sql-state e)]
+            (if (= reason :unique-constraint-violation)
+              (if-let [old-org (first (db.organisation/get-organisations db {:filters {:name (:name org)
+                                                                                       :is_member false}}))]
+                (do
+                  (db.organisation/delete-organisation db {:id (:id old-org)})
+                  {:success? true
+                   :org-id (make-affiliation* db mailjet-config org)})
+                {:success? false
+                 :reason reason
+                 :error-details {:message (.getMessage e)}})
+              {:success? false
+               :reason reason
+               :error-details {:message (.getMessage e)}}))
+          {:success? false
+           :reason :could-not-create-org
+           :error-details {:message (.getMessage e)}})))
+    {:success? true
+     :org-id (:id org)}))
 
-(defmethod ig/init-key :gpml.handler.stakeholder/post [_ {:keys [db mailjet-config]}]
-  (fn [{:keys [jwt-claims body-params headers]}]
-    (let [profile        (make-profile (merge  (assoc body-params
-                                                      :affiliation (when (:org body-params)
-                                                                     (make-affiliation db mailjet-config (:org body-params)))
-                                                      :email (:email jwt-claims)
-                                                      :idp_usernames [(:sub jwt-claims)]
-                                                      :cv (or (assoc-cv db (:cv body-params))
-                                                              (:cv body-params))
-                                                      :picture (or (handler.image/assoc-image db (:photo body-params) "profile")
-                                                                   (let [{:keys [first_name last_name]} (select-keys body-params [:first_name :last_name])]
-                                                                     (format "https://ui-avatars.com/api/?size=480&name=%s+%s" first_name last_name))))
-                                               (when (:new_org body-params)
-                                                 {:affiliation (make-organisation db mailjet-config (:new_org body-params))})))
-          stakeholder-id (if-let [current-stakeholder (db.stakeholder/stakeholder-by-email db {:email (:email profile)})]
-                           (let [idp-usernames (vec (-> current-stakeholder :idp_usernames (concat (:idp_usernames profile))))]
-                             (db.stakeholder/update-stakeholder db (assoc (select-keys profile [:affiliation])
-                                                                          :id (:id current-stakeholder)
-                                                                          :idp_usernames idp-usernames
-                                                                          :non_member_organisation nil))
-                             (:id current-stakeholder))
-                           (let [new-stakeholder (db.stakeholder/new-stakeholder db profile)]
-                             (email/notify-admins-pending-approval db mailjet-config
-                                                                   (merge profile {:type "stakeholder"}))
-                             (:id new-stakeholder)))
-          profile        (db.stakeholder/stakeholder-by-id db {:id stakeholder-id})
-          res            (-> (merge body-params profile)
-                             (dissoc :affiliation :picture :new_org)
-                             (assoc :org (db.organisation/organisation-by-id db {:id (:affiliation profile)})))]
-      (when-let [tags (seq (:tags body-params))]
-        (save-stakeholder-tags db mailjet-config tags stakeholder-id false))
-      (resp/created (:referer headers) res))))
+(defn- save-stakeholder
+  ([config req]
+   (save-stakeholder config req nil))
+  ([{:keys [db mailjet-config]}
+    {:keys [jwt-claims body-params headers]}
+    new-affiliation]
+   (let [profile (make-profile (assoc body-params
+                                      :affiliation new-affiliation
+                                      :email (:email jwt-claims)
+                                      :idp_usernames [(:sub jwt-claims)]
+                                      :cv (or (assoc-cv db (:cv body-params))
+                                              (:cv body-params))
+                                      :picture (or (handler.image/assoc-image db (:photo body-params) "profile")
+                                                   (let [{:keys [first_name last_name]} (select-keys body-params [:first_name :last_name])]
+                                                     (format "https://ui-avatars.com/api/?size=480&name=%s+%s" first_name last_name)))))
+         stakeholder-id (if-let [current-stakeholder (db.stakeholder/stakeholder-by-email db {:email (:email profile)})]
+                          (let [idp-usernames (vec (-> current-stakeholder :idp_usernames (concat (:idp_usernames profile))))]
+                            (db.stakeholder/update-stakeholder db (assoc (select-keys profile [:affiliation])
+                                                                         :id (:id current-stakeholder)
+                                                                         :idp_usernames idp-usernames
+                                                                         :non_member_organisation nil))
+                            (:id current-stakeholder))
+                          (let [new-stakeholder (db.stakeholder/new-stakeholder db profile)]
+                            (email/notify-admins-pending-approval db mailjet-config
+                                                                  (merge profile {:type "stakeholder"}))
+                            (:id new-stakeholder)))
+         profile (db.stakeholder/stakeholder-by-id db {:id stakeholder-id})
+         res (-> (merge body-params profile)
+                 (dissoc :affiliation :picture :new_org)
+                 (assoc :org (db.organisation/organisation-by-id db {:id (:affiliation profile)})))]
+     (when-let [tags (seq (:tags body-params))]
+       (save-stakeholder-tags db mailjet-config tags stakeholder-id false))
+     (resp/created (:referer headers) res))))
+
+(defmethod ig/init-key :gpml.handler.stakeholder/post [_ {:keys [db mailjet-config] :as config}]
+  (fn [{:keys [body-params] :as req}]
+    (if-not (seq (:org body-params))
+      (save-stakeholder config req)
+      (let [result (make-affiliation db mailjet-config (:org body-params))]
+        (if (:success? result)
+          (save-stakeholder config req (:org-id result))
+          (if (= :unique-constraint-violation (:reason result))
+            {:status 409
+             :headers {"content-type" "application/json"}
+             :body (assoc result :reason :organisation-name-already-exists)}
+            {:status 500
+             :headers {"content-type" "application/json"}
+             :body result}))))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/put [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params]}]
