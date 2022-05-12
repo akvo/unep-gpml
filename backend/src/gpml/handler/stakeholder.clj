@@ -240,20 +240,41 @@
       (resp/response (get-stakeholder-profile db stakeholder))
       (resp/response {}))))
 
-(defn- make-affiliation [db mailjet-config org]
+(defn- make-affiliation*
+  [db mailjet-config org]
+  (let [org-id (handler.org/create db mailjet-config org)]
+    (email/notify-admins-pending-approval db mailjet-config
+                                          {:title (:name org) :type "organisation"})
+    org-id))
+
+(defn- make-affiliation
+  "Creates a new organisation for affiliation. If the organisation
+  with the same name exists and it is a `non_member` organisation we
+  MUST let the new organisation to be created and remove the
+  `non_member`. If the existing organisation is already a `member`
+  then we should return an error letting the caller know that an
+  organisation with the same name exists. "
+  [db mailjet-config org]
   (if-not (:id org)
     (try
-      (let [org-id (handler.org/create db mailjet-config org)]
-        (email/notify-admins-pending-approval db mailjet-config
-                                              {:title (:name org) :type "organisation"})
-        {:success? true
-         :org-id org-id})
+      {:success? true
+       :org-id (make-affiliation* db mailjet-config org)}
       (catch Exception e
         (if (instance? SQLException e)
           (let [reason (pg-util/get-sql-state e)]
-            {:success? false
-             :reason reason
-             :error-details {:message (.getMessage e)}})
+            (if (= reason :unique-constraint-violation)
+              (if-let [old-org (first (db.organisation/get-organisations db {:filters {:name (:name org)
+                                                                                       :is_member false}}))]
+                (do
+                  (db.organisation/delete-organisation db {:id (:id old-org)})
+                  {:success? true
+                   :org-id (make-affiliation* db mailjet-config org)})
+                {:success? false
+                 :reason reason
+                 :error-details {:message (.getMessage e)}})
+              {:success? false
+               :reason reason
+               :error-details {:message (.getMessage e)}}))
           {:success? false
            :reason :could-not-create-org
            :error-details {:message (.getMessage e)}})))
