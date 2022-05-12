@@ -1,6 +1,7 @@
 (ns gpml.auth
   (:require
    [gpml.db.comment :as db.comment]
+   [gpml.db.organisation :as db.organisation]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.util :as util]
    [integrant.core :as ig]
@@ -156,9 +157,13 @@
         (handler request)
         (if (:email_verified jwt-claims)
           {:status 403
-           :message "User does not exist or is not approved yet"}
+           :headers {"content-type" "unauthorized"}
+           :body {:message "Unauthorized"
+                  :reason "User does not exist or is not approved yet"}}
           {:status 403
-           :message "User must verify the email address"})))))
+           :headers {"content-type" "unauthorized"}
+           :body {:message "Unauthorized"
+                  :reason "User must verify the email address"}})))))
 
 (defmethod ig/init-key :gpml.auth/admin-required-middleware [_ _]
   (fn [handler]
@@ -187,6 +192,20 @@
           (handler request)
           {:status 403
            :body {:message "Unauthorized"}})))))
+
+(defmethod ig/init-key :gpml.auth/restrict-to-organisation-admin-or-owner
+  [_ {:keys [db]}]
+  (fn [handler]
+    (fn [{:keys [user] :as request}]
+      (let [organisation (first (db.organisation/get-organisations (:spec db) {:filters {:created_by (:id user)}}))
+            owner? (= (:id user) (:created_by organisation))]
+        (if (or (= (:role user) "ADMIN")
+                owner?)
+          (handler request)
+          {:status 403
+           :headers {"content-type" "application/json"}
+           :body {:message "Unauthorized"
+                  :reason "User don't have the necessary permissions to edit this organisation."}})))))
 
 (def owners-schema
   [:owners {:optional true}
