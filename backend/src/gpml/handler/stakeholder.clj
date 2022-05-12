@@ -311,6 +311,8 @@
          res (-> (merge body-params profile)
                  (dissoc :affiliation :picture :new_org)
                  (assoc :org (db.organisation/organisation-by-id db {:id (:affiliation profile)})))]
+     (when new-affiliation
+       (handler.org/update-org db mailjet-config {:id new-affiliation :created_by stakeholder-id}))
      (when-let [tags (seq (:tags body-params))]
        (save-stakeholder-tags db mailjet-config tags stakeholder-id false))
      (resp/created (:referer headers) res))))
