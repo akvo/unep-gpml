@@ -38,7 +38,8 @@
   }
   .sidebar-mobile {
     margin-bottom: 0;
-    .item-menu img {
+    .item-menu img,
+    .item-menu svg {
       width: 30px;
       @-moz-document url-prefix() {
         width: 20px;
