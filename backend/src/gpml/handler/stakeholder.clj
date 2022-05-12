@@ -319,8 +319,11 @@
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post [_ {:keys [db mailjet-config] :as config}]
   (fn [{{:keys [org] :as body-params} :body-params :as req}]
-    (if (:id org)
+    (cond
+      (:id org)
       (save-stakeholder config req (:id org))
+
+      (seq org)
       (let [result (make-affiliation db mailjet-config (:org body-params))]
         (if (:success? result)
           (save-stakeholder config req (:org-id result) true)
@@ -330,7 +333,10 @@
              :body (assoc result :reason :organisation-name-already-exists)}
             {:status 500
              :headers {"content-type" "application/json"}
-             :body result}))))))
+             :body result})))
+
+      :else
+      (save-stakeholder config req nil false))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/put [_ {:keys [db mailjet-config]}]
   (fn [{:keys [jwt-claims body-params]}]
