@@ -288,7 +288,6 @@
     {:keys [jwt-claims body-params headers]}
     org-id
     new-org?]
-   (prn new-org?)
    (let [profile (make-profile (assoc body-params
                                       :affiliation org-id
                                       :email (:email jwt-claims)
