@@ -1,3 +1,5 @@
+@import "../../vars.scss";
+
 #profile {
   .loading {
     color: #fff;
@@ -596,12 +598,20 @@
       background: rgba(37, 91, 135, 0.1);
       a {
         color: #255b87;
+        &:hover {
+          color: #fff;
+          background: $yellow-highlight;
+          border-color: $yellow-highlight;
+        }
       }
     }
     .ant-pagination-item-active {
       background: rgba(37, 91, 135, 0.8);
       a {
         color: #fff;
+        &:hover {
+          background: rgba(37, 91, 135, 0.8);
+        }
       }
     }
     .ant-pagination-item-ellipsis {

@@ -866,11 +866,13 @@
         width: 100%;
         height: 100%;
         color: #ffffff;
-
         line-height: 31px;
         border-radius: 5px;
-
         background-color: #255b87;
+        &:hover {
+          background-color: $yellow-highlight;
+          border-color: $yellow-highlight;
+        }
       }
     }
 
@@ -886,6 +888,9 @@
       a {
         background-color: rgba(37, 91, 135, 0.1);
         color: #255b87;
+        &:hover {
+          background-color: rgba(37, 91, 135, 0.1);
+        }
       }
     }
     .ant-pagination-next {
