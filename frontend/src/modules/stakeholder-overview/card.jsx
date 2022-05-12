@@ -80,7 +80,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                         ? profile?.picture
                         : `https://ui-avatars.com/api/?background=0D8ABC&size=480&name=${profile?.firstName}`
                     }
-                    alt={`${profile.firstName} ${profile.lastName}`}
+                    alt={profile?.name}
                   />
                   {profile?.affiliation &&
                     profile?.affiliation?.length !== 0 &&

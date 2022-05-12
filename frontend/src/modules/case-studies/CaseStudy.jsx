@@ -102,7 +102,6 @@ const CaseStudy = ({
                     const findSk = datastakeholders.find((ds) =>
                       sk?.toLowerCase()?.includes(ds?.name?.toLowerCase())
                     );
-                    console.log(findSk);
                     const avatar = findSk
                       ? findSk.image
                       : `https://ui-avatars.com/api/?size=480&name=${sk}`;

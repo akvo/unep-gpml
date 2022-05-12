@@ -97,6 +97,7 @@
           font-size: 1.6rem;
           line-height: 45px;
           @-moz-document url-prefix() {
+            line-height: 25px;
             font-size: 18px !important;
           }
         }
