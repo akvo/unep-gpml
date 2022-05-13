@@ -56,6 +56,10 @@
           object-fit: cover;
           border-radius: 50%;
           border: 4px solid #fff;
+          @-moz-document url-prefix() {
+            width: 100px;
+            height: 100px;
+          }
         }
       }
       .topbar-title-holder {
@@ -76,6 +80,7 @@
           line-height: 45px;
           @-moz-document url-prefix() {
             font-size: 18px !important;
+            line-height: 25px !important;
           }
         }
         p {
@@ -185,6 +190,7 @@
             }
           }
         }
+
         .ant-card-body {
           padding: 24px 10px 0px 10px;
           @media (max-width: 519px) {
@@ -194,6 +200,10 @@
               .ant-col {
                 flex: 0 0 100% !important;
                 max-width: 100% !important;
+              }
+              .individual-details {
+                flex: 0 0 50% !important;
+                max-width: 50% !important;
               }
             }
           }
@@ -209,6 +219,10 @@
             .ant-col {
               flex: 0 0 calc(100% / 3);
               max-width: calc(100% / 3);
+            }
+            .individual-details {
+              flex: 0 0 50% !important;
+              max-width: 50% !important;
             }
           }
 
@@ -323,7 +337,7 @@
           display: flex;
           flex-direction: column;
           align-items: center;
-          background-color: #255b87;
+          background-color: $blue06;
           margin: 2px;
           flex: 0 0 100px;
           border: 1px solid #d3dee7;
@@ -456,7 +470,7 @@
               border-bottom: none;
               background: #d3dee7;
               border-radius: 23px 5px 5px 23px;
-              color: #255b87;
+              color: $blue06;
               display: inline-block;
               padding: 5px 20px 5px 30px;
               position: relative;
@@ -654,18 +668,35 @@
   .individuals {
     .slider-card {
       cursor: pointer;
+      @media (max-width: 540px) {
+        & .ant-row {
+          flex-direction: row !important;
+          .individual-details {
+            max-width: 50% !important;
+          }
+          @-moz-document url-prefix() {
+            height: 130px;
+            overflow: hidden;
+          }
+        }
+      }
       .profile-image {
         position: relative;
         width: 100%;
         overflow: hidden;
         text-align: center;
         padding: 20px 0px;
+
         img {
           max-width: 200px;
           max-height: 200px;
           object-fit: cover;
           width: 100%;
           border-radius: 50%;
+          @-moz-document url-prefix() {
+            max-width: 100px;
+            max-height: 100px;
+          }
         }
         &:before {
           background-image: url("../../images/stakeholder-overview/union-icon.svg");
@@ -681,17 +712,31 @@
       }
       .profile-detail {
         padding: 20px 10px 20px 5px;
+        @media (max-width: 540px) {
+          h5 {
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            @-moz-document url-prefix() {
+              font-size: 12px !important;
+            }
+          }
+        }
         h3 {
-          color: #255b87;
+          color: $blue06;
         }
         h5 {
           font-size: 16px;
-          color: #255b87;
+          color: $blue06;
+          @-moz-document url-prefix() {
+            font-size: 14px;
+          }
         }
         p {
           display: flex;
           align-items: center;
-          color: #255b87;
+          color: $blue06;
           font-weight: bold;
           margin-top: 10px;
           margin-bottom: 10px;
@@ -726,7 +771,7 @@
     .ant-pagination-item-link {
       background: #fff;
       span.anticon {
-        color: #255b87;
+        color: $blue06;
         font-size: 0.85rem;
         @-moz-document url-prefix() {
           font-size: 9px !important;
@@ -736,24 +781,32 @@
     .ant-pagination-item {
       background: rgba(37, 91, 135, 0.1);
       a {
-        color: #255b87;
+        color: $blue06;
+        &:hover {
+          color: #fff;
+          background: $yellow-highlight;
+          border-color: $yellow-highlight;
+        }
       }
     }
     .ant-pagination-item-active {
       background: rgba(37, 91, 135, 0.8);
       a {
         color: #fff;
+        &:hover {
+          background: rgba(37, 91, 135, 0.8);
+        }
       }
     }
     .ant-pagination-item-ellipsis {
-      color: #255b87;
+      color: $blue06;
     }
     .ant-pagination-options {
       .ant-select-selector {
         background: rgba(37, 91, 135, 0.1);
         border-color: transparent;
         border-radius: 5px;
-        color: #255b87;
+        color: $blue06;
       }
     }
   }
@@ -791,8 +844,8 @@
             width: 100px;
             height: 100px;
             @-moz-document url-prefix() {
-              width: 70px;
-              height: 70px;
+              width: 70px !important;
+              height: 70px !important;
             }
           }
         }
@@ -804,6 +857,7 @@
         margin-top: 30px !important;
       }
       .card-wrapper {
+        overflow: hidden;
         .ant-card {
           .ant-card-head {
             .ant-card-head-title {

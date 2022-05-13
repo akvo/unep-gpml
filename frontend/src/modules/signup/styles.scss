@@ -122,7 +122,7 @@
 
   // Represent an entity style
   .represent-checkbox-wrapper {
-    background: #255b87;
+    background: $blue06;
     border-radius: 15px 0px 0px 0px;
     margin: 5px 0px 5px 5px;
     padding: 10px;
@@ -135,7 +135,7 @@
     }
   }
   hr.step-line {
-    border: 1px solid #255b87;
+    border: 1px solid $blue06;
     opacity: 0.75;
     width: 90%;
   }
@@ -144,7 +144,7 @@
     border-color: #cbd0d4;
   }
   .ant-checkbox-checked .ant-checkbox-inner::after {
-    border-color: #255b87;
+    border-color: $blue06;
   }
 
   .ant-menu::before {
@@ -405,7 +405,7 @@
           li {
             background: #d3dee7;
             border-radius: 23px 5px 5px 23px;
-            color: #255b87;
+            color: $blue06;
             display: inline-block;
             padding: 5px 20px 5px 30px;
             position: relative;
