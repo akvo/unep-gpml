@@ -521,7 +521,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const { editId, data } = formData;
   const { status, id } = formEdit.flexible;
   const btnSubmit = useRef();
-  const [alert, setAlert] = useState("");
   const [displayModal, setDisplayModal] = useState(false);
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
@@ -566,21 +565,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     stakeholders,
     representativeGroup,
   ]);
-
-  const getResourceByType = (type) => {
-    const t = getType(type);
-    api.get(`/list/${t}`).then((res) => {
-      UIStore.update((e) => {
-        e.relatedResource = res.data;
-      });
-    });
-  };
-
-  useEffect(() => {
-    if (mainType && isLoaded()) {
-      getResourceByType(mainType);
-    }
-  }, [mainType, isLoaded]);
 
   useEffect(() => {
     if (state?.state?.type && status !== "edit") {
