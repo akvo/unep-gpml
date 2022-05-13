@@ -171,10 +171,8 @@
         justify-content: center;
         align-items: center;
         span {
-          line-height: 10px;
-          font-size: 18px;
           @-moz-document url-prefix() {
-            font-size: 14px;
+            font-size: 14px !important;
           }
         }
         &:hover {
@@ -192,7 +190,7 @@
         font-weight: 600;
         font-size: 0.94rem;
         @-moz-document url-prefix() {
-          font-size: 0.5rem;
+          font-size: 0.89rem;
         }
       }
       .ant-select-arrow {
