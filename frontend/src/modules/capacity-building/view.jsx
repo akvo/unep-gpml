@@ -16,13 +16,13 @@ const { Title } = Typography;
 
 import "./styles.scss";
 
-import Banner from "./Banner";
+import Banner from "./banner";
 import capacities from "./json/capacity-building.json";
 import slides from "./json/slider.json";
 
-import { ReactComponent as DropdownIcon } from "../../images/case-studies/ic_dropdown.svg";
-import LeftSidebar from "../../components/left-sidebar/LeftSidebar";
-import { CapacityCard } from "./CapacityCard";
+import { ReactComponent as DropdownIcon } from "../../images/case-studies/ic-dropdown.svg";
+import LeftSidebar from "../../components/left-sidebar/left-sidebar";
+import { CapacityCard } from "./capacity-card";
 
 import { ReactComponent as IconLibrary } from "../../images/capacity-building/ic-knowledge-library.svg";
 import { ReactComponent as IconLearning } from "../../images/capacity-building/ic-capacity-building.svg";
