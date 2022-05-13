@@ -21,7 +21,7 @@ const TopicView = ({ updateQuery, query }) => {
 
   const handlePopularTopicChartClick = (params) => {
     const { name, tag } = params?.data;
-    !isMobileScreen && setSelectedTopic(name?.toLowerCase());
+    setSelectedTopic(name?.toLowerCase());
     updateQuery("tag", [tag]);
   };
 
@@ -37,27 +37,56 @@ const TopicView = ({ updateQuery, query }) => {
         return item;
       }
     });
-    if (!selectedTopic && savedTopic.length === 0) {
-      setSelectedTopic(defTopic);
-    } else {
-      setSelectedTopic(savedTopic[0]);
-    }
+    // if (!selectedTopic && savedTopic.length === 0) {
+    //   setSelectedTopic(defTopic);
+    // } else {
+    //   setSelectedTopic(savedTopic[0]);
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortedPopularTopics]);
 
   useEffect(() => {
     api
-      .get(`/tag/topic/popular?tags=${popularTags}&limit=6`)
+      .get(
+        `/tag/topic/popular?tags=${
+          !selectedTopic ? popularTags : selectedTopic
+        }&limit=6`
+      )
       .then((resp) => {
+        const topics = [
+          "plastics",
+          "waste management",
+          "marine litter",
+          "capacity building",
+          "product by design",
+          "source to sea",
+        ];
+
         const data = resp?.data.map((item, i) => {
           return {
-            id: i,
+            id: item?.tag,
             topic: item?.tag,
             tag: item?.tag,
             count: item?.count,
           };
         });
-        const sorted = orderBy(data, ["count", "topic"], ["desc", "desc"]);
+        const dataTag = data.map((item) => item?.tag);
+        const nonExistedTopic = topics
+          .filter((item) => !dataTag.includes(item))
+          .map((x) => {
+            return {
+              id: x,
+              topic: x,
+              tag: x,
+              count: 0,
+            };
+          });
+
+        const sorted = orderBy(
+          [...data, ...nonExistedTopic],
+          ["count", "topic"],
+          ["desc", "desc"]
+        );
 
         setSortedPopularTopics(sorted);
       })
@@ -66,7 +95,7 @@ const TopicView = ({ updateQuery, query }) => {
       });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [selectedTopic]);
 
   return (
     <>
