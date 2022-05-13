@@ -3,12 +3,6 @@
 #events {
   .sidebar-mobile {
     margin-bottom: 0;
-    .partner-icon {
-      width: 30px;
-      @-moz-document url-prefix() {
-        width: 40px;
-      }
-    }
   }
   .sidebar {
     background-color: $bg-dark-primary;
@@ -57,15 +51,6 @@
         width: 100%;
         align-self: center;
         text-align: center;
-        img,
-        .partner-icon {
-          height: 30px;
-          width: 30px;
-          @-moz-document url-prefix() {
-            height: 27px;
-            width: 40px;
-          }
-        }
         @-moz-document url-prefix() {
           transform: scale(0.9);
         }
