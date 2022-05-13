@@ -2,6 +2,9 @@
 
 .event-overlay-zoom {
   zoom: 80% !important;
+  @media (max-width: 540px) {
+    zoom: unset !important;
+  }
 }
 
 .event {
@@ -79,6 +82,9 @@
           justify-content: center;
           align-items: center;
           @-moz-document url-prefix() {
+            min-height: 5rem;
+          }
+          @media (max-width: 800px) {
             min-height: 5rem;
           }
         }
@@ -168,10 +174,8 @@
         justify-content: center;
         align-items: center;
         span {
-          line-height: 10px;
-          font-size: 18px;
           @-moz-document url-prefix() {
-            font-size: 14px;
+            font-size: 14px !important;
           }
         }
         &:hover {
@@ -189,7 +193,7 @@
         font-weight: 600;
         font-size: 0.94rem;
         @-moz-document url-prefix() {
-          font-size: 0.5rem;
+          font-size: 0.89rem;
         }
       }
       .ant-select-arrow {
@@ -233,9 +237,14 @@
           color: #2d6796;
           font-weight: 500;
           margin-bottom: 10px;
+          align-items: center;
           @-moz-document url-prefix() {
             font-size: 0.4rem;
             margin-bottom: 5px;
+          }
+          .status {
+            margin-left: 10px;
+            margin-right: 10px;
           }
         }
         .item-img {

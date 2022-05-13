@@ -1,3 +1,5 @@
+@import "../../vars.scss";
+
 #profile {
   .loading {
     color: #fff;
@@ -126,6 +128,29 @@
     align-items: center;
     justify-content: space-between;
   }
+  @-moz-document url-prefix() {
+    .approval-bold-text,
+    .ant-btn {
+      font-size: 12px !important;
+    }
+  }
+  @media (max-width: 540px) {
+    .approval-bold-text,
+    .ant-btn {
+      font-size: 12px !important;
+    }
+  }
+
+  @-moz-document url-prefix() {
+    .review-status-wrapper {
+      font-size: 12px !important;
+    }
+  }
+  @media (max-width: 540px) {
+    .review-status-wrapper {
+      font-size: 12px !important;
+    }
+  }
 
   .table-wrapper {
     margin-top: 2rem;
@@ -137,6 +162,16 @@
     @-moz-document url-prefix() {
       padding-top: 8px;
       margin-top: 22px;
+      .ant-select-selection-item,
+      .row {
+        font-size: 12px !important;
+      }
+    }
+    @media (max-width: 540px) {
+      .ant-select-selection-item,
+      .row {
+        font-size: 12px !important;
+      }
     }
   }
   .tab-label {
@@ -144,6 +179,13 @@
     margin-top: 10px;
     @-moz-document url-prefix() {
       margin-top: 5px;
+      font-size: 18px;
+    }
+    @media (max-width: 800px) {
+      font-size: 18px;
+      @media (max-width: 540px) {
+        font-size: 16px;
+      }
     }
   }
 
@@ -545,7 +587,7 @@
     .ant-pagination-item-link {
       background: #fff;
       span.anticon {
-        color: #255b87;
+        color: $blue06;
         font-size: 0.85rem;
         @-moz-document url-prefix() {
           font-size: 11px;
@@ -555,24 +597,32 @@
     .ant-pagination-item {
       background: rgba(37, 91, 135, 0.1);
       a {
-        color: #255b87;
+        color: $blue06;
+        &:hover {
+          color: #fff;
+          background: $yellow-highlight;
+          border-color: $yellow-highlight;
+        }
       }
     }
     .ant-pagination-item-active {
       background: rgba(37, 91, 135, 0.8);
       a {
         color: #fff;
+        &:hover {
+          background: unset;
+        }
       }
     }
     .ant-pagination-item-ellipsis {
-      color: #255b87;
+      color: $blue06;
     }
     .ant-pagination-options {
       .ant-select-selector {
         background: rgba(37, 91, 135, 0.1);
         border-color: transparent;
         border-radius: 5px;
-        color: #255b87;
+        color: $blue06;
       }
     }
   }
@@ -715,6 +765,14 @@
     background: #edf2f7 !important;
     border: 1px solid #d3dee7 !important;
     border-radius: 0 !important;
+    @-moz-document url-prefix() {
+      font-size: 14px !important;
+      padding: 1rem 1.8rem !important;
+    }
+    @media (max-width: 540px) {
+      padding: 0.6rem 0.6rem !important;
+      font-size: 14px !important;
+    }
   }
   .ant-tabs-tab-btn {
     color: #036799;
