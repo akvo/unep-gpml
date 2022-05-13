@@ -2,6 +2,9 @@
 
 .event-overlay-zoom {
   zoom: 80% !important;
+  @media (max-width: 540px) {
+    zoom: unset !important;
+  }
 }
 
 .event {
