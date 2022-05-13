@@ -709,17 +709,12 @@
   }
   .ant-tabs-tab {
     display: flex;
-    align-items: center;
     width: 50%;
+    align-items: center;
     padding: 1.2rem 1.85rem !important;
-    margin-right: 0 !important;
     background: #edf2f7 !important;
     border: 1px solid #d3dee7 !important;
     border-radius: 0 !important;
-    @-moz-document url-prefix() {
-      font-size: 14px !important;
-      padding: 1rem 1.8rem !important;
-    }
   }
   .ant-tabs-tab-btn {
     color: #036799;

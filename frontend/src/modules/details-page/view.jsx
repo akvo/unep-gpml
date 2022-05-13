@@ -79,8 +79,11 @@ const TabComponent = ({
   recordRef,
   documentRef,
   tagRef,
+  reviewsRef,
   descriptionRef,
   data,
+  recordShow,
+  profile,
 }) => {
   return (
     <div className="tab-wrapper" style={style}>
@@ -94,9 +97,11 @@ const TabComponent = ({
               </a>
             </li>
           )}
-        <li>
-          <a onClick={() => recordRef.current.scrollIntoView()}>Record</a>
-        </li>
+        {recordShow && (
+          <li>
+            <a onClick={() => recordRef.current.scrollIntoView()}>Record</a>
+          </li>
+        )}
         {data?.infoDocs && (
           <li>
             <a onClick={() => documentRef.current.scrollIntoView()}>
@@ -114,9 +119,11 @@ const TabComponent = ({
             </a>
           </li>
         )}
-        {/* <li>
-          <a href="#">Comments</a>
-        </li> */}
+        {profile && profile.reviewStatus === "APPROVED" && (
+          <li>
+            <a onClick={() => reviewsRef.current.scrollIntoView()}>Comments</a>
+          </li>
+        )}
       </ul>
     </div>
   );
@@ -538,6 +545,14 @@ const renderItemValues = (
           ? `${currency} ${currencyFormat(amount)}`
           : `${amount}`);
 
+      if (
+        (key === "lifecyclePhase" && data[key]?.length === 0) ||
+        (key === "sector" && data[key]?.length === 0) ||
+        (key === "focusArea" && data[key]?.length === 0)
+      ) {
+        return false;
+      }
+
       return (
         <Fragment key={`${params.type}-${name}`}>
           {displayEntry && (
@@ -599,13 +614,12 @@ const renderItemValues = (
                   type === "array" &&
                   data[key].map((tag) => Object.values(tag)[0]).join(", ")}
                 {key !== "tags" &&
-                params.type === "project" &&
-                data[key] &&
-                value === "join" &&
-                type === "array" &&
-                data[key]?.length > 0
-                  ? data[key]?.map((x) => x.name).join(", ")
-                  : delete data[key]}
+                  params.type === "project" &&
+                  data[key] &&
+                  value === "join" &&
+                  type === "array" &&
+                  data[key]?.length !== 0 &&
+                  data[key]?.map((x) => x.name).join(", ")}
                 {key !== "tags" &&
                   params.type !== "project" &&
                   data[key] &&
@@ -616,7 +630,7 @@ const renderItemValues = (
                   value === "custom" &&
                   type === "array" &&
                   data[key][customValue] &&
-                  data[key][customValue].map((x) => x.name).join(", ")}
+                  data[key][customValue]?.map((x) => x.name).join(", ")}
                 {params.type !== "project" &&
                   value === "custom" &&
                   type === "array" &&
@@ -1098,6 +1112,21 @@ const DetailsView = ({
     );
   }
 
+  let recordShow =
+    renderDetails(
+      {
+        countries,
+        languages,
+        regionOptions,
+        meaOptions,
+        transnationalOptions,
+      },
+      params,
+      data,
+      profile,
+      countries
+    )?.props?.children !== "There is no data to display";
+
   return (
     <div id="details">
       <div className="section-header">
@@ -1332,8 +1361,11 @@ const DetailsView = ({
                 recordRef={record}
                 documentRef={document}
                 tagRef={tag}
+                reviewsRef={reviews}
                 descriptionRef={description}
                 data={data}
+                recordShow={recordShow}
+                profile={profile}
               />
               {data.type !== "Technical Resource" &&
                 data.type !== "Policy" &&
@@ -1342,25 +1374,26 @@ const DetailsView = ({
                     <p className="summary">{data?.summary}</p>
                   </CardComponent>
                 )}
-
-              <CardComponent title="Record" getRef={record}>
-                <div className="record-table">
-                  {countries &&
-                    renderDetails(
-                      {
-                        countries,
-                        languages,
-                        regionOptions,
-                        meaOptions,
-                        transnationalOptions,
-                      },
-                      params,
-                      data,
-                      profile,
-                      countries
-                    )}
-                </div>
-              </CardComponent>
+              {countries && recordShow && (
+                <CardComponent title="Record" getRef={record}>
+                  <div className="record-table">
+                    {countries &&
+                      renderDetails(
+                        {
+                          countries,
+                          languages,
+                          regionOptions,
+                          meaOptions,
+                          transnationalOptions,
+                        },
+                        params,
+                        data,
+                        profile,
+                        countries
+                      )}
+                  </div>
+                </CardComponent>
+              )}
               {data?.infoDocs && (
                 <CardComponent title="Documents and info" getRef={document}>
                   {data?.infoDocs && (
@@ -1451,7 +1484,7 @@ const DetailsView = ({
                 </CardComponent>
               )}
               {profile && (
-                <CardComponent title="Comments">
+                <CardComponent title="Comments" getRef={reviews}>
                   <div className="comments-container">
                     <div className="comment-list-container">
                       {comments &&

@@ -319,7 +319,8 @@
                                                             :security [{:id_token []}]}
                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
                                                                #ig/ref :gpml.auth/auth-required
-                                                               #ig/ref :gpml.auth/approved-user]
+                                                               #ig/ref :gpml.auth/approved-user
+                                                               #ig/ref :gpml.auth/restrict-to-organisation-admin-or-owner]
                                                   :parameters {:path [:map [:id int?]]
                                                                :body #ig/ref :gpml.handler.organisation/put-params}
                                                   :handler #ig/ref :gpml.handler.organisation/put}}]
@@ -666,7 +667,6 @@
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}
-  :duct.database/sql {:jdbc-url #duct/env "DATABASE_URL"}
 
   :gpml.auth/auth-middleware {:issuer #duct/env "OIDC_ISSUER"
                               :audience #duct/env "OIDC_AUDIENCE"
@@ -677,6 +677,7 @@
                                    :db #ig/ref :duct.database/sql}
   :gpml.auth/auth-required {}
   :gpml.auth/restrict-to-admin-and-comment-author-middleware {:db #ig/ref :duct.database/sql}
+  :gpml.auth/restrict-to-organisation-admin-or-owner {:db #ig/ref :duct.database/sql}
   :gpml.auth/approved-user {:db #ig/ref :duct.database/sql}
   :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}
   :gpml.auth/reviewer-required-middleware {:db #ig/ref :duct.database/sql}
@@ -688,7 +689,13 @@
 
   :gpml.handler.monitoring/hikaricp
   {:hikari-cp #ig/ref :duct.database.sql/hikaricp
-   :metrics-collector #ig/ref :gpml.handler.monitoring/collector}}
+   :metrics-collector #ig/ref :gpml.handler.monitoring/collector}
+
+  :duct.database.sql/hikaricp
+  {:jdbc-url #duct/env ["DATABASE_URL" Str]
+   :logger nil ;; We don't want log entries for sql sentences (not event ragtime ones!)
+   :minimum-idle 10
+   :maximum-pool-size 25}}
 
  :duct.profile/dev   #duct/include "dev"
  :duct.profile/local #duct/include "local"

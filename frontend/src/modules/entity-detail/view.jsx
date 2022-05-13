@@ -101,11 +101,12 @@ const SharePanel = ({
 }) => {
   const noEditTopics = new Set(["stakeholder"]);
 
+  console.log(profile.id === data.createdBy);
   const canEdit = () =>
     isAuthenticated &&
     profile.reviewStatus === "APPROVED" &&
     (profile.role === "ADMIN" ||
-      profile.id === params.createdBy ||
+      profile.id === data.createdBy ||
       data.owners.includes(profile.id)) &&
     ((params.type !== "project" && !noEditTopics.has(params.type)) ||
       (params.type === "project" && params.id > 10000));

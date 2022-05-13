@@ -414,6 +414,14 @@
           display: inline-block;
         }
       }
+      ul {
+        padding-left: 20px;
+        list-style-type: disc;
+      }
+      ol {
+        padding-left: 20px;
+        list-style-type: decimal;
+      }
     }
     .tag-list {
       h4 {
