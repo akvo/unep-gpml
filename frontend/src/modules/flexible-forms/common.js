@@ -77,7 +77,6 @@ const getSchema = ({
   nonMemberOrganisations,
   selectedMainContentType,
   currencies,
-  relatedResource,
 }) => {
   const prop = cloneDeep(schema[selectedMainContentType].properties);
 
@@ -98,17 +97,6 @@ const getSchema = ({
   ].items.properties.stakeholder.enumNames = stakeholders.map(
     (x) => x.firstName + " " + x.lastName
   );
-
-  // Related Resource
-  prop.S4.properties.S4_G6.properties[
-    "related"
-  ].enum = relatedResource.map((x) => String(x.id));
-
-  prop.S4.properties.S4_G6.properties[
-    "related"
-  ].enumNames = relatedResource.map((x) => x.title);
-
-  // Related Resource
 
   if (selectedMainContentType === "initiative") {
     // geocoverage national options
