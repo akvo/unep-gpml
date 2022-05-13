@@ -21,7 +21,7 @@ const TopicView = ({ updateQuery, query }) => {
 
   const handlePopularTopicChartClick = (params) => {
     const { name, tag } = params?.data;
-    !isMobileScreen && setSelectedTopic(name?.toLowerCase());
+    setSelectedTopic(name?.toLowerCase());
     updateQuery("tag", [tag]);
   };
 
