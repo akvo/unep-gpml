@@ -124,7 +124,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background-color: #255b87;
+      background-color: $blue06;
       margin: 2px;
       flex: 0 0 110px;
       border: 1px solid #d3dee7;
@@ -152,10 +152,10 @@
           background-color: #05f081;
           border-radius: 0px 8px 0px 0px;
           span {
-            color: #255b87;
+            color: $blue06;
           }
           h2 {
-            color: #255b87;
+            color: $blue06;
           }
         }
         a {
@@ -198,7 +198,7 @@
           }
           &.view-icon {
             path {
-              fill: #255b87;
+              fill: $blue06;
             }
           }
         }
@@ -438,7 +438,7 @@
         li {
           background: #d3dee7;
           border-radius: 23px 5px 5px 23px;
-          color: #255b87;
+          color: $blue06;
           display: inline-block;
           padding: 5px 20px 5px 30px;
           position: relative;
