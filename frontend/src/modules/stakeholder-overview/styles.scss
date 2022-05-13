@@ -415,6 +415,11 @@
             transform: scale(1.3);
           }
         }
+        .partner-icon {
+          @-moz-document url-prefix() {
+            transform: unset;
+          }
+        }
       }
     }
   }
