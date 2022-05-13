@@ -553,8 +553,8 @@ const StakeholderDetail = ({
                               (item) => item.tagCategory === "seeking"
                             ).length > 0 && (
                               <CardComponent>
-                                <div class="ant-card-head-wrapper">
-                                  <div class="ant-card-head-title">
+                                <div className="ant-card-head-wrapper">
+                                  <div className="ant-card-head-title">
                                     Seeking{" "}
                                     <span>
                                       (
@@ -574,7 +574,7 @@ const StakeholderDetail = ({
                                       (item) => item.tagCategory === "seeking"
                                     )
                                     ?.map((str) => (
-                                      <List.Item>
+                                      <List.Item key={str.tag}>
                                         <Typography.Text>
                                           {str.tag}
                                         </Typography.Text>
@@ -590,8 +590,8 @@ const StakeholderDetail = ({
                               (item) => item.tagCategory === "offering"
                             ).length > 0 && (
                               <CardComponent>
-                                <div class="ant-card-head-wrapper">
-                                  <div class="ant-card-head-title">
+                                <div className="ant-card-head-wrapper">
+                                  <div className="ant-card-head-title">
                                     Offering{" "}
                                     <span>
                                       (
@@ -611,7 +611,7 @@ const StakeholderDetail = ({
                                       (item) => item.tagCategory === "offering"
                                     )
                                     ?.map((str) => (
-                                      <List.Item>
+                                      <List.Item key={str.tag}>
                                         <Typography.Text>
                                           {str.tag}
                                         </Typography.Text>
@@ -737,7 +737,7 @@ const StakeholderDetail = ({
                 <div style={{ padding: "0 10px" }}>
                   <Row gutter={[16, 16]}>
                     {bookedResources.map((item) => (
-                      <Col xs={6} lg={8}>
+                      <Col xs={6} lg={8} key={item?.id}>
                         <div className="slider-card">
                           <div className="image-holder">
                             <img
@@ -773,6 +773,7 @@ const StakeholderDetail = ({
                                   >
                                     {item.entityConnections.map((item) => (
                                       <Avatar
+                                        key={item?.entity}
                                         src={
                                           item?.image
                                             ? item.image
