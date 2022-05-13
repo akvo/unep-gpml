@@ -3,13 +3,14 @@
             [gpml.constants :as constants]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.tag :as db.tag]
             [gpml.db.topic :as db.topic]
             [gpml.util :as util]
             [gpml.util.csv :as csv]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
-(def export-types ["users" "entities" "non-member-entities" "topics"])
+(def export-types ["users" "entities" "non-member-entities" "topics" "tags"])
 
 (defn create-csv-file [invoices]
   (let [csv-data (csv/preserve-sort-coll->csv invoices)
@@ -48,6 +49,11 @@
                                            constants/entities-key-map constants/sorted-entity-columns)]
     (:csv-file (create-csv-file export-entities))))
 
+(defn export-tags [db review-status]
+  (let [tags (db.tag/get-flat-tags db {:review-status review-status})
+        export-tags (get-export-values tags constants/tags-key-map constants/sorted-tag-columns)]
+    (:csv-file (create-csv-file export-tags))))
+
 (defn export-topics [db review-status]
   (let [topics (db.topic/get-flat-topics db {:review-status review-status})
         export-topics (get-export-values topics constants/topics-key-map constants/sorted-topic-columns)]
@@ -58,6 +64,7 @@
     "users" (export-users db review-status)
     "entities" (export-entities db review-status)
     "non-member-entities" (export-non-member-entities db review-status)
+    "tags" (export-tags db review-status)
     "topics" (export-topics db review-status)))
 
 (defmethod ig/init-key :gpml.handler.export/get [_ {:keys [db]}]
