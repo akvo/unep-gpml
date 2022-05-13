@@ -136,10 +136,10 @@
 
 (defn topics-subset->db-topics-subset [topics query]
   (merge
-    query
-    (reduce (fn [acc topic]
-              (merge acc {(:type topic) (str "(" (str/join "," (:ids topic)) ")")}))
-      {} topics)))
+   query
+   (reduce (fn [acc topic]
+             (merge acc {(:type topic) (str "(" (str/join "," (:ids topic)) ")")}))
+           {} topics)))
 
 (defn- popular-tags [db query]
   (if-not (seq (get-in query [:filters :tags]))
