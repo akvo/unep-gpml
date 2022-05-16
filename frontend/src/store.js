@@ -17,7 +17,7 @@ const icons = {
   technical_resource: "technical.svg",
   financing_resource: "financing.svg",
   technology: "technology.svg",
-  event: "event_flexible.svg",
+  event: "event-flexible.svg",
 };
 
 const placeholder = {
@@ -27,7 +27,7 @@ const placeholder = {
   technical_resource: "technical.png",
   financing_resource: "financing.png",
   technology: "technology.png",
-  event: "event_flexible.png",
+  event: "event-flexible.png",
 };
 
 const entityRole = ["Owner", "Implementor", "Partner", "Donor"];
