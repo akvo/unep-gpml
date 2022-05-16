@@ -15,7 +15,7 @@ import {
   checkDependencyAnswer,
   customFormats,
 } from "../../utils/forms";
-import uiSchema from "./uiSchema.json";
+import uiSchema from "./ui-schema.json";
 import { UIStore } from "../../store";
 import { withRouter } from "react-router-dom";
 

@@ -2,7 +2,7 @@ import { UIStore } from "../../store";
 import React, { useState, useEffect } from "react";
 import { PageHeader } from "antd";
 import { withRouter } from "react-router-dom";
-import Maps from "../map/Map";
+import Maps from "../map/map";
 
 import api from "../../utils/api";
 import isEmpty from "lodash/isEmpty";

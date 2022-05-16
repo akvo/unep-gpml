@@ -2,33 +2,32 @@ import React, { useState, useLayoutEffect, useEffect } from "react";
 import { Row, Col, Button, Input, Space, Tag, Select } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 
-import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
-import TooltipOutlined from "../../images/knowledge-library/tooltip-outlined.svg";
-import { ReactComponent as DownArrow } from "../../images/knowledge-library/chevron-down.svg";
+import flatten from "lodash/flatten";
+import values from "lodash/values";
 
 import "./styles.scss";
 import { UIStore } from "../../store";
-import LeftSidebar from "../../components/left-sidebar/LeftSidebar";
-import ResourceList from "./ResourceList";
-import FilterDrawer from "./FilterDrawer";
-
 import api from "../../utils/api";
-
+import { titleCase } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
 import { topicNames } from "../../utils/misc";
-import flatten from "lodash/flatten";
-import values from "lodash/values";
-import MapLanding from "./map-landing";
-import TopicView from "./TopicView";
 
+import { multicountryGroups } from "./multicountry";
+import MapLanding from "./map-landing";
+import TopicView from "./topic-view";
+import LeftSidebar from "../../components/left-sidebar/left-sidebar";
+import ResourceList from "./resource-list";
+import FilterDrawer from "./filter-drawer";
+
+import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
+import TooltipOutlined from "../../images/knowledge-library/tooltip-outlined.svg";
+import { ReactComponent as DownArrow } from "../../images/knowledge-library/chevron-down.svg";
 import topicViewIcon from "../../images/knowledge-library/topic-view-icon.svg";
 import { ReactComponent as IconLibrary } from "../../images/capacity-building/ic-knowledge-library.svg";
 import { ReactComponent as IconLearning } from "../../images/capacity-building/ic-capacity-building.svg";
 import { ReactComponent as IconExchange } from "../../images/capacity-building/ic-exchange.svg";
 import { ReactComponent as IconCaseStudies } from "../../images/capacity-building/ic-case-studies.svg";
 
-import { titleCase } from "../../utils/string";
-import { multicountryGroups } from "./multicountry";
 import Header from "./header";
 
 const { Option } = Select;
