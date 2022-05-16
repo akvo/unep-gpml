@@ -8,7 +8,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   width: 100% !important;
 }
-
+.ant-tabs-nav-operations {
+  display: none !important;
+}
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
   body {
     zoom: 90%;
@@ -519,7 +521,7 @@ button.ant-btn.ant-btn-link.ant-dropdown-trigger.menu-btn.nav-link {
     }
 
     .badge-count {
-      border: 1px solid #255b87;
+      border: 1px solid $blue06;
       color: #2d6796;
       font-size: 0.7rem;
       display: inline-block;

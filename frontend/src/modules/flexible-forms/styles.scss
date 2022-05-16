@@ -147,7 +147,7 @@
       width: 100%;
     }
     .field-label {
-      color: #255b87;
+      color: $blue06;
       font-size: 16px;
       font-weight: 400;
       @-moz-document url-prefix() {
@@ -206,7 +206,7 @@
           }
           .ant-steps-item-title {
             font-size: 14px;
-            color: #255b87;
+            color: $blue06;
             font-weight: 400 !important;
             @-moz-document url-prefix() {
               font-size: 12px;
@@ -240,12 +240,12 @@
           }
         }
         .custom-step-icon {
-          background: #255b87;
-          border-color: #255b87;
+          background: $blue06;
+          border-color: $blue06;
           color: #fff;
         }
         .ant-steps-item-title {
-          color: #255b87;
+          color: $blue06;
         }
         &.current-tabs {
           background: rgba(49, 118, 174, 0.17);
@@ -426,7 +426,7 @@
           justify-content: space-between;
           margin-bottom: 20px;
           h5 {
-            color: #255b87;
+            color: $blue06;
             font-size: 18px;
             font-weight: 400;
             margin-bottom: 0px;
@@ -554,7 +554,7 @@
             align-items: center;
           }
           h5 {
-            color: #255b87;
+            color: $blue06;
             font-size: 18px;
             font-weight: 400;
             margin-bottom: 0px;
@@ -789,7 +789,7 @@
       li {
         background: #d3dee7;
         border-radius: 23px 5px 5px 23px;
-        color: #255b87;
+        color: $blue06;
         display: inline-block;
         padding: 5px 20px 5px 30px;
         position: relative;
