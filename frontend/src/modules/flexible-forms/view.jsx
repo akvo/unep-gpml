@@ -779,6 +779,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
 
       if (state?.state.type === "initiative") {
         api.getRaw(`/initiative/${dataId}`).then((d) => {
+          setSubType(JSON.parse(d?.data).sub_content_type);
           initialFormData.update((e) => {
             e.data = revertFormData(JSON.parse(d.data));
             e.editId = true;
@@ -787,6 +788,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
         });
       } else {
         api.get(`/detail/${state?.state.type}/${dataId}`).then((d) => {
+          setSubType(d?.subContentType);
           let newData = [];
           if (d.data.organisations) {
             newData = d.data.organisations.map((item) => {

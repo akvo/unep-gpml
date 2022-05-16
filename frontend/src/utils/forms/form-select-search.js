@@ -78,9 +78,6 @@ const SelectWidget = ({
       let res = await getSearchResult(value);
       setData(res);
     }
-    if (value.length === 0) {
-      setData([]);
-    }
   };
 
   const debouncedResults = useMemo(() => debounce(handleSearch, 300), []);
