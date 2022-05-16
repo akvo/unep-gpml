@@ -97,7 +97,9 @@ const ResourceList = ({
       <Col
         span={24}
         className={`resource-list ${
-          !isLoaded() || (loading && "empty-container")
+          !isLoaded() ||
+          (loading && "empty-container") ||
+          (allResults.length == 0 && "empty-container")
         }`}
         style={
           isLoaded() &&
@@ -116,7 +118,7 @@ const ResourceList = ({
             stakeholders={stakeholders}
           />
         ) : (
-          <h2 className="loading">There is no data to display</h2>
+          <h2 className="loading ">There is no data to display</h2>
         )}
       </Col>
       {!isEmpty(allResults) && (

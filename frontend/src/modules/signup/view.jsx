@@ -355,6 +355,26 @@ const SignUp = ({ match: { params }, ...props }) => {
     btnSubmit.current.click();
   };
 
+  const selectTags = (tag) => {
+    let array =
+      Object.values(tags)
+        .flat()
+        .find((o) => o.tag === tag.toLowerCase())?.id || tag.toLowerCase();
+
+    signUpData.update((e) => {
+      e.data = {
+        ...e.data,
+        S4: {
+          ...e.data.S4,
+          orgExpertise: [
+            ...(e.data.S4.orgExpertise ? e.data.S4.orgExpertise : []),
+            array,
+          ],
+        },
+      };
+    });
+  };
+
   return (
     <div id="add-sign-up">
       <StickyBox style={{ zIndex: 10 }}>
@@ -518,7 +538,12 @@ const SignUp = ({ match: { params }, ...props }) => {
                                 title={
                                   <ul>
                                     {entitySuggestedTags.map((tag) => (
-                                      <li key={tag}>{tag}</li>
+                                      <li
+                                        key={tag}
+                                        onClick={() => selectTags(tag)}
+                                      >
+                                        {tag}
+                                      </li>
                                     ))}
                                   </ul>
                                 }
