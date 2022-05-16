@@ -163,7 +163,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
+                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
           };
         });
 
@@ -338,7 +338,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
+                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
           };
         });
 
@@ -408,6 +408,9 @@ const FlexibleForm = withRouter(
       if (data.q24.hasOwnProperty("global")) {
         delete data.q24_4;
         delete data.q24_3;
+        delete data.q24_2;
+        delete data.qgeoCoverageValueSubnational;
+        delete data.qgeoCoverageValueSubnationalCity;
       }
 
       if (data?.qrelated) {
@@ -552,7 +555,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
+                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
           };
         });
 
@@ -748,7 +751,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
+                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
           };
         });
 
@@ -929,7 +932,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
+                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
           };
         });
 
