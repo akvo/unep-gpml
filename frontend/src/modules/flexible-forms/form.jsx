@@ -163,7 +163,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
+                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
           };
         });
 
@@ -338,7 +338,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
+                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
           };
         });
 
@@ -360,7 +360,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.qindividual) {
-        data.individual_connections = data.qindividual;
+        data.individual_connections = data.qindividual[0].hasOwnProperty("role")
+          ? data.qindividual
+          : [];
         delete data.qindividual;
       }
 
@@ -384,7 +386,7 @@ const FlexibleForm = withRouter(
       }
       if (data.q24.hasOwnProperty("national")) {
         if (status === "edit" || params?.id) {
-          data.q24_2 = data.q24_2;
+          data.q24_2 = Array.isArray(data.q24_2) ? data.q24_2 : [data.q24_2];
         } else {
           data.q24_2 = [data.q24_2];
         }
@@ -406,6 +408,9 @@ const FlexibleForm = withRouter(
       if (data.q24.hasOwnProperty("global")) {
         delete data.q24_4;
         delete data.q24_3;
+        delete data.q24_2;
+        delete data.qgeoCoverageValueSubnational;
+        delete data.qgeoCoverageValueSubnationalCity;
       }
 
       if (data?.qrelated) {
@@ -550,7 +555,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
+                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
           };
         });
 
@@ -746,7 +751,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
+                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
           };
         });
 
@@ -768,7 +773,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.individual) {
-        data.individualConnections = data.individual;
+        data.individualConnections = data.individual[0].hasOwnProperty("role")
+          ? data.individual
+          : [];
         delete data.individual;
       }
       if (data?.info) {
@@ -925,7 +932,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
+                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
           };
         });
 
