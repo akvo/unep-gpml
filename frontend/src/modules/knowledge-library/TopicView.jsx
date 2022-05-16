@@ -53,15 +53,6 @@ const TopicView = ({ updateQuery, query }) => {
         }&limit=6`
       )
       .then((resp) => {
-        const topics = [
-          "plastics",
-          "waste management",
-          "marine litter",
-          "capacity building",
-          "product by design",
-          "source to sea",
-        ];
-
         const data = resp?.data.map((item, i) => {
           return {
             id: item?.tag,
@@ -71,7 +62,7 @@ const TopicView = ({ updateQuery, query }) => {
           };
         });
         const dataTag = data.map((item) => item?.tag);
-        const nonExistedTopic = topics
+        const nonExistedTopic = popularTags
           .filter((item) => !dataTag.includes(item))
           .map((x) => {
             return {
