@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import classNames from "classnames";
-import plans from "./ActionPlanContent";
+import plans from "./action-plan-content";
 
 const ActionPlan = ({ active = 1 }) => {
   const [activeStep, setActiveStep] = useState(active);
