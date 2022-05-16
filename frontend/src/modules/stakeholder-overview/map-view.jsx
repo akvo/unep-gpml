@@ -3,7 +3,7 @@ import { UIStore } from "../../store";
 import { useQuery } from "./common";
 import { isEmpty } from "lodash";
 import api from "../../utils/api";
-import Maps from "../map/Map";
+import Maps from "../map/map";
 
 const MapView = ({
   multiCountryCountries,
