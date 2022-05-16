@@ -785,6 +785,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
             e.editId = true;
             e.type = "project";
           });
+          setSubType(JSON.parse(d?.data).sub_content_type);
         });
       } else {
         api.get(`/detail/${state?.state.type}/${dataId}`).then((d) => {
@@ -812,6 +813,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
             e.editId = true;
             e.type = state?.state.type;
           });
+          setSubType(d?.subContentType);
         });
       }
     }
@@ -896,7 +898,13 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
           res.map((item) => {
             if (find.includes(item.tag)) {
               newArray = newArray.filter((x) => x !== item.tag);
-              newArray = [...newArray, item.id.toString()];
+              newArray = [
+                ...newArray,
+                item.id,
+                ...(formData?.data?.S4?.S4_G3?.tags
+                  ? formData?.data?.S4?.S4_G3?.tags
+                  : []),
+              ];
             }
           });
           initialFormData.update((e) => {
@@ -906,7 +914,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                 ...e.data.S4,
                 S4_G3: {
                   ...e.data.S4.S4_G3,
-                  tags: newArray,
+                  tags: [...new Set(newArray)],
                 },
               },
             };
