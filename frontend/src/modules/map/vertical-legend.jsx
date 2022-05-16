@@ -2,9 +2,9 @@ import React from "react";
 import { Card, Typography } from "antd";
 import { colorRange, higlightColor } from "./config";
 import { topicNames, tTypes } from "../../utils/misc";
-import { KNOWLEDGE_LIBRARY, STAKEHOLDER_OVERVIEW } from "./Map";
+import { KNOWLEDGE_LIBRARY, STAKEHOLDER_OVERVIEW } from "./map";
 import { multicountryGroups } from "../knowledge-library/multicountry";
-import PieChart from "../chart/pieChart";
+import PieChart from "../chart/pie-chart";
 
 const { Text } = Typography;
 

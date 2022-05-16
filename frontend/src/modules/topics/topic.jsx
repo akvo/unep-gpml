@@ -47,7 +47,7 @@ const Topic = ({ filters, setFilters }) => {
 const renderTopics = (topics) => {
   return topics.map((x) => {
     const { id, tag } = x;
-    const image = TopicImages.find((x) => x.tag === tag).image;
+    const image = TopicImages.find((x) => x.tag === tag)?.image;
 
     return (
       <Col

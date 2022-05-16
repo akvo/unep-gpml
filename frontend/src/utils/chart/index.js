@@ -1,13 +1,13 @@
 import React from "react";
 import { Col, Card } from "antd";
 import ReactECharts from "echarts-for-react";
-import Bar from "./Bar";
-import Pie from "./Pie";
-import BarStack from "./BarStack";
-import BarGroup from "./BarGroup";
-import LineStack from "./LineStack";
-import Line from "./Line";
-import TreeMap from "./TreeMap";
+import Bar from "./bar";
+import Pie from "./pie";
+import BarStack from "./bar-stack";
+import BarGroup from "./bar-group";
+import LineStack from "./line-stack";
+import Line from "./line";
+import TreeMap from "./tree-map";
 import { titleCase } from "../string";
 
 export const generateOptions = ({ type, data }, extra, axis, selected) => {

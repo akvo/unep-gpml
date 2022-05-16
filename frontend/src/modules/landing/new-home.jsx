@@ -27,9 +27,9 @@ import { topicNames } from "../../utils/misc";
 import sortBy from "lodash/sortBy";
 import api from "../../utils/api";
 
-import TopicChart from "../chart/topicChart";
+import TopicChart from "../chart/topic-chart";
 import EventCalendar from "../../components/event-calendar/view";
-import TopicBar from "../chart/topicBar";
+import TopicBar from "../chart/topic-bar";
 
 const cardSvg = [
   {
