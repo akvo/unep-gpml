@@ -360,7 +360,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.qindividual) {
-        data.individual_connections = data.qindividual;
+        data.individual_connections = data.qindividual[0].hasOwnProperty("role")
+          ? data.qindividual
+          : [];
         delete data.qindividual;
       }
 
@@ -768,7 +770,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.individual) {
-        data.individualConnections = data.individual;
+        data.individualConnections = data.individual[0].hasOwnProperty("role")
+          ? data.individual
+          : [];
         delete data.individual;
       }
       if (data?.info) {
