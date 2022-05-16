@@ -1508,10 +1508,14 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                         value={mainType}
                       >
                         {mainContentType.map((item) => {
-                          const img = require(`../../images/${item.code}.svg`)
-                            .default;
-                          const imgSelected = require(`../../images/${item.code}-selected.svg`)
-                            .default;
+                          const img = require(`../../images/${item?.code?.replace(
+                            /_/g,
+                            "-"
+                          )}.svg`).default;
+                          const imgSelected = require(`../../images/${item?.code?.replace(
+                            /_/g,
+                            "-"
+                          )}-selected.svg`).default;
                           return (
                             <Col
                               className="gutter-row"
