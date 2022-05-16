@@ -1,7 +1,6 @@
 @import "../../vars.scss";
 
 $bg-dark-primary: #005b70;
-$bg-dark-secondary: #255b87;
 $bg-green-primary: #10f9b7;
 
 .workspace-button-wrapper {
@@ -29,7 +28,7 @@ $bg-green-primary: #10f9b7;
     box-shadow: 0 2px 4px #000000;
     overflow: hidden;
     .button-text {
-      color: #255b87;
+      color: $blue06;
       padding-left: 33px;
       opacity: 0;
       font-size: 18px;
@@ -54,7 +53,7 @@ $bg-green-primary: #10f9b7;
       border: 3px solid #ffffff;
       box-sizing: border-box;
       border-radius: 90px;
-      color: #255b87;
+      color: $blue06;
       .button-text {
         opacity: 1;
       }
