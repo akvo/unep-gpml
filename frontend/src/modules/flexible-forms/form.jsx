@@ -386,7 +386,7 @@ const FlexibleForm = withRouter(
       }
       if (data.q24.hasOwnProperty("national")) {
         if (status === "edit" || params?.id) {
-          data.q24_2 = data.q24_2;
+          data.q24_2 = Array.isArray(data.q24_2) ? data.q24_2 : [data.q24_2];
         } else {
           data.q24_2 = [data.q24_2];
         }
