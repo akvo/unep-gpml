@@ -553,8 +553,8 @@ const StakeholderDetail = ({
                               (item) => item.tagCategory === "seeking"
                             ).length > 0 && (
                               <CardComponent>
-                                <div class="ant-card-head-wrapper">
-                                  <div class="ant-card-head-title">
+                                <div className="ant-card-head-wrapper">
+                                  <div className="ant-card-head-title">
                                     Seeking{" "}
                                     <span>
                                       (
@@ -574,7 +574,7 @@ const StakeholderDetail = ({
                                       (item) => item.tagCategory === "seeking"
                                     )
                                     ?.map((str) => (
-                                      <List.Item>
+                                      <List.Item key={str.tag}>
                                         <Typography.Text>
                                           {str.tag}
                                         </Typography.Text>
@@ -590,8 +590,8 @@ const StakeholderDetail = ({
                               (item) => item.tagCategory === "offering"
                             ).length > 0 && (
                               <CardComponent>
-                                <div class="ant-card-head-wrapper">
-                                  <div class="ant-card-head-title">
+                                <div className="ant-card-head-wrapper">
+                                  <div className="ant-card-head-title">
                                     Offering{" "}
                                     <span>
                                       (
@@ -611,7 +611,7 @@ const StakeholderDetail = ({
                                       (item) => item.tagCategory === "offering"
                                     )
                                     ?.map((str) => (
-                                      <List.Item>
+                                      <List.Item key={str.tag}>
                                         <Typography.Text>
                                           {str.tag}
                                         </Typography.Text>
@@ -638,90 +638,87 @@ const StakeholderDetail = ({
             </Col>
           </Row>
           <div className="owned-resources-wrapper">
-            {ownedResources?.length > 0 && (
-              <CardComponent
-                title={"Owned resources"}
-                style={{
-                  height: "100%",
-                  boxShadow: "none",
-                  borderRadius: "none",
-                }}
-              >
-                <div style={{ padding: "0 10px" }}>
-                  <Row gutter={[16, 16]}>
-                    {ownedResources?.map((item) => (
-                      <Col xs={6} lg={8}>
-                        <div className="slider-card">
-                          <div className="image-holder">
-                            <img
-                              style={{ width: 60 }}
-                              src={
-                                require(`../../images/${
-                                  icons[
-                                    getType(item.type)
-                                      ? getType(item.type)
-                                      : "action_plan"
-                                  ]
-                                }`).default
-                              }
-                            />
-                          </div>
-                          <div className="description-holder">
-                            <div>
-                              <h4>{item.type}</h4>
-                              {item.title && (
-                                <TrimText text={item.title} max={30} />
-                              )}
-                            </div>
-                            {item.entityConnections &&
-                              item.entityConnections.length > 0 && (
-                                <div className="connection-wrapper">
-                                  <Avatar.Group
-                                    maxCount={2}
-                                    maxPopoverTrigger="click"
-                                    size="large"
-                                    maxStyle={{
-                                      color: "#f56a00",
-                                      backgroundColor: "#fde3cf",
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    {item.entityConnections.map((item) => (
-                                      <Avatar
-                                        src={
-                                          item?.image
-                                            ? item.image
-                                            : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
-                                        }
-                                      />
-                                    ))}
-                                  </Avatar.Group>
-                                  <Link
-                                    to={`/${getType(item.type)}/${item.id}`}
-                                  >
-                                    <div className="read-more">
-                                      Read More <ArrowRightOutlined />
-                                    </div>
-                                  </Link>
-                                </div>
-                              )}
-                          </div>
+            data?.role?.toUpperCase() !== "ADMIN" && (
+            <CardComponent
+              title={"Owned resources"}
+              style={{
+                height: "100%",
+                boxShadow: "none",
+                borderRadius: "none",
+              }}
+            >
+              <div style={{ padding: "0 10px" }}>
+                <Row gutter={[16, 16]}>
+                  {ownedResources?.map((item) => (
+                    <Col xs={6} lg={8}>
+                      <div className="slider-card">
+                        <div className="image-holder">
+                          <img
+                            style={{ width: 60 }}
+                            src={
+                              require(`../../images/${
+                                icons[
+                                  getType(item.type)
+                                    ? getType(item.type)
+                                    : "action_plan"
+                                ]
+                              }`).default
+                            }
+                          />
                         </div>
-                      </Col>
-                    ))}
-                  </Row>
-                  <div className="pagination-wrapper">
-                    <Pagination
-                      defaultCurrent={1}
-                      current={ownedResourcesPage + 1}
-                      pageSize={3}
-                      total={ownedResourcesCount || 0}
-                      onChange={(n, size) => getOwnedResources(n - 1)}
-                    />
-                  </div>
+                        <div className="description-holder">
+                          <div>
+                            <h4>{item.type}</h4>
+                            {item.title && (
+                              <TrimText text={item.title} max={30} />
+                            )}
+                          </div>
+                          {item.entityConnections &&
+                            item.entityConnections.length > 0 && (
+                              <div className="connection-wrapper">
+                                <Avatar.Group
+                                  maxCount={2}
+                                  maxPopoverTrigger="click"
+                                  size="large"
+                                  maxStyle={{
+                                    color: "#f56a00",
+                                    backgroundColor: "#fde3cf",
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  {item.entityConnections.map((item) => (
+                                    <Avatar
+                                      src={
+                                        item?.image
+                                          ? item.image
+                                          : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
+                                      }
+                                    />
+                                  ))}
+                                </Avatar.Group>
+                                <Link to={`/${getType(item.type)}/${item.id}`}>
+                                  <div className="read-more">
+                                    Read More <ArrowRightOutlined />
+                                  </div>
+                                </Link>
+                              </div>
+                            )}
+                        </div>
+                      </div>
+                    </Col>
+                  ))}
+                </Row>
+                <div className="pagination-wrapper">
+                  <Pagination
+                    defaultCurrent={1}
+                    current={ownedResourcesPage + 1}
+                    pageSize={3}
+                    total={ownedResourcesCount || 0}
+                    onChange={(n, size) => getOwnedResources(n - 1)}
+                  />
                 </div>
-              </CardComponent>
-            )}
+              </div>
+            </CardComponent>
           </div>
           <div className="bookmarked-resources-wrapper">
             {bookedResources.length > 0 && (
@@ -736,7 +733,7 @@ const StakeholderDetail = ({
                 <div style={{ padding: "0 10px" }}>
                   <Row gutter={[16, 16]}>
                     {bookedResources.map((item) => (
-                      <Col xs={6} lg={8}>
+                      <Col xs={6} lg={8} key={item?.id}>
                         <div className="slider-card">
                           <div className="image-holder">
                             <img
@@ -772,6 +769,7 @@ const StakeholderDetail = ({
                                   >
                                     {item.entityConnections.map((item) => (
                                       <Avatar
+                                        key={item?.entity}
                                         src={
                                           item?.image
                                             ? item.image
