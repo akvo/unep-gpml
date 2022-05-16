@@ -2,6 +2,12 @@
 -- :doc Get all tags
 select * from tag order by id
 
+-- :name get-flat-tags :? :*
+-- :doc Get all tags
+SELECT * FROM tag
+--~ (when (:review-status params) "WHERE review_status = (:v:review-status)::review_status")
+ORDER BY id;
+
 -- :name tag-by-id :? :1
 -- :doc Get tag by id
 select * from tag where id = :id

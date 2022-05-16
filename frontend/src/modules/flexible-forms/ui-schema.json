@@ -132,10 +132,10 @@
           "ui:widget": "RichWidget"
         },
         "related": {
-          "ui:widget": "select",
+          "ui:widget": "SelectSearchWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Select a resource"
+          "ui:placeholder": "Search a resource"
         },
         "ui:order": ["info", "related"]
       }
@@ -515,10 +515,10 @@
           "ui:widget": "RichWidget"
         },
         "related": {
-          "ui:widget": "select",
+          "ui:widget": "SelectSearchWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Select a resource"
+          "ui:placeholder": "Search a resource"
         },
         "ui:order": ["info", "related"]
       }
@@ -743,10 +743,10 @@
           "ui:widget": "RichWidget"
         },
         "related": {
-          "ui:widget": "select",
+          "ui:widget": "SelectSearchWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Select a resource"
+          "ui:placeholder": "Search a resource"
         },
         "ui:order": ["info", "related"]
       }
@@ -1007,10 +1007,10 @@
           "ui:widget": "RichWidget"
         },
         "related": {
-          "ui:widget": "select",
+          "ui:widget": "SelectSearchWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Select a resource"
+          "ui:placeholder": "Search a resource"
         },
         "ui:order": ["info", "related"]
       }
@@ -1240,10 +1240,10 @@
           "ui:widget": "RichWidget"
         },
         "related": {
-          "ui:widget": "select",
+          "ui:widget": "SelectSearchWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Select a resource"
+          "ui:placeholder": "Search a resource"
         },
         "ui:order": ["info", "related"]
       }
@@ -1456,10 +1456,10 @@
           "ui:widget": "RichWidget"
         },
         "related": {
-          "ui:widget": "select",
+          "ui:widget": "SelectSearchWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Select a resource"
+          "ui:placeholder": "Search a resource"
         },
         "ui:order": ["info", "related"]
       }
@@ -1684,10 +1684,10 @@
           "ui:widget": "RichWidget"
         },
         "related": {
-          "ui:widget": "select",
+          "ui:widget": "SelectSearchWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Select a resource"
+          "ui:placeholder": "Search a resource"
         },
         "ui:order": ["info", "related"]
       }

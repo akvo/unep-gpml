@@ -12,6 +12,7 @@
          tag-by-category
          tag-category-by-category-name
          all-tags
+         get-flat-tags
          get-popular-topics-tags
          get-popular-topics-tags-subset
          get-more-popular-topics-tags
@@ -31,7 +32,7 @@
                  JOIN tag t ON t.id = et.tag
                  WHERE e.review_status = 'APPROVED' AND t.tag IN %s
                  GROUP BY t.id, t.tag"
-    (flatten [(repeat 3 entity-name) (popular-tags->db-popular-tags constants/popular-tags)])))
+         (flatten [(repeat 3 entity-name) (popular-tags->db-popular-tags constants/popular-tags)])))
 
 (defn generate-popular-topics-tags-count-cte
   "Generates a CTE to get a result set of `tag` and the number of
@@ -60,7 +61,7 @@
                  WHERE e.review_status = 'APPROVED' AND e.id IN %s
                  AND t.tag IN %s
                  GROUP BY t.id, t.tag"
-    (flatten [(repeat 3 entity-name) ids (popular-tags->db-popular-tags constants/popular-tags)])))
+         (flatten [(repeat 3 entity-name) ids (popular-tags->db-popular-tags constants/popular-tags)])))
 
 (defn generate-more-popular-topics-tags-count-cte
   "Generates a CTE to get a result set of `tag` and the number of
@@ -70,15 +71,15 @@
   results by tag."
   [_params _opts]
   (str
-    "WITH popular_topics_tags_count AS ("
-    (reduce (fn [acc topic]
-              (let [query (generic-more-topic-tag-count-query topic (get _params topic))]
-                (if (seq acc)
-                  (str acc " UNION ALL " query)
-                  query)))
-      ""
-      _opts)
-    ")"))
+   "WITH popular_topics_tags_count AS ("
+   (reduce (fn [acc topic]
+             (let [query (generic-more-topic-tag-count-query topic (get _params topic))]
+               (if (seq acc)
+                 (str acc " UNION ALL " query)
+                 query)))
+           ""
+           _opts)
+   ")"))
 
 (defn- generic-topic-tag-subset-query
   [entity-name]
@@ -88,21 +89,21 @@
                  JOIN tag t ON t.id = et.tag
                  WHERE e.review_status = 'APPROVED'
                  GROUP BY t.tag"
-    (repeat 4 entity-name)))
+         (repeat 4 entity-name)))
 
 (defn generate-popular-topics-tags-subset-cte
   "Generates a CTE to get a result set the topics where the `tag` appears."
   [_params _opts]
   (str
-    "WITH popular_topics_tags_subset_cte AS ("
-    (reduce (fn [acc topic]
-              (let [query (generic-topic-tag-subset-query topic)]
-                (if (seq acc)
-                  (str acc " UNION ALL " query)
-                  query)))
-      ""
-      constants/topic-tables)
-    ")"))
+   "WITH popular_topics_tags_subset_cte AS ("
+   (reduce (fn [acc topic]
+             (let [query (generic-topic-tag-subset-query topic)]
+               (if (seq acc)
+                 (str acc " UNION ALL " query)
+                 query)))
+           ""
+           constants/topic-tables)
+   ")"))
 
 (comment
   (require 'dev)
