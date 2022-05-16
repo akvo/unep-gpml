@@ -23,17 +23,15 @@ const TopicChart = ({
           type="TREEMAP"
           height={height}
           className="popular-topic-chart"
-          data={sortedPopularTopics
-            .filter((tag) => tag.count > 0)
-            .map((x) => {
-              return {
-                id: x?.id,
-                name: titleCase(x?.topic),
-                value: x?.count > 100 ? x?.count : x?.count + 50,
-                count: x?.count,
-                tag: x?.tag,
-              };
-            })}
+          data={sortedPopularTopics.map((x) => {
+            return {
+              id: x?.id,
+              name: titleCase(x?.topic),
+              value: x?.count > 100 ? x?.count : x?.count + 50,
+              count: x?.count,
+              tag: x?.tag,
+            };
+          })}
           onEvents={{
             click: (e) => handlePopularTopicChartClick(e),
           }}
