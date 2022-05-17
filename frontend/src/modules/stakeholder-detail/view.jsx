@@ -712,6 +712,7 @@ const StakeholderDetail = ({
                   </Row>
                   <div className="pagination-wrapper">
                     <Pagination
+                      showSizeChanger={false}
                       defaultCurrent={1}
                       current={ownedResourcesPage + 1}
                       pageSize={3}
@@ -796,6 +797,7 @@ const StakeholderDetail = ({
                   </Row>
                   <div className="pagination-wrapper">
                     <Pagination
+                      showSizeChanger={false}
                       defaultCurrent={1}
                       current={bookedResourcesPage + 1}
                       pageSize={3}

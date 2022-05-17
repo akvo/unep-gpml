@@ -71,7 +71,7 @@ const SelectWidget = ({
 }) => {
   const { readonlyAsDisabled = true } = formContext;
   const [fetching, setFetching] = useState(false);
-  const handleChange = (nextValue) => onChange(processValue(schema, nextValue));
+  const handleChange = (nextValue) => onChange(nextValue);
   const [data, setData] = useState([]);
   const fetchRef = React.useRef(0);
 
