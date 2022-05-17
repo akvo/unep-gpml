@@ -408,17 +408,6 @@ const Maps = ({
   const existingData =
     path === KNOWLEDGE_LIBRARY ? existingResource : existingStakeholder;
 
-  const selectedTerritory = !isEmpty(countries)
-    ? countries
-        .filter((item) => {
-          const selectTerritory = isFilteredCountry?.map((item) =>
-            Number(item)
-          );
-          return selectTerritory?.includes(item?.id);
-        })
-        .map((country) => country.territory)
-    : [];
-
   const country =
     !isEmpty(countries) &&
     countries.find((x) => {
