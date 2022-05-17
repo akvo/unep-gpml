@@ -25,43 +25,24 @@ import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
 
 // Icons
-import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 
 const ResourceList = ({
   view,
-  results = [],
   allResults,
   countData,
   filters,
   loading,
   pageSize,
   updateQuery,
-  hideListButtonVisible,
-  setListVisible,
 }) => {
-  const {
-    tags,
-    profile,
-    countries,
-    transnationalOptions,
-    stakeholders,
-  } = UIStore.useState((s) => ({
-    tags: s.tags,
+  const { profile, stakeholders } = UIStore.useState((s) => ({
     profile: s.profile,
-    countries: s.countries,
-    transnationalOptions: s.transnationalOptions,
     stakeholders: s.stakeholders,
   }));
 
-  const [isAscending, setIsAscending] = useState(null);
   const [didMount, setDidMount] = useState(false);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
-
-  const isLoaded = () =>
-    Boolean(
-      !isEmpty(countries) && !isEmpty(tags) && !isEmpty(transnationalOptions)
-    );
 
   // Choose topics to count, based on whether user is approved or not,
   // and if any topic filters are active.
@@ -97,21 +78,16 @@ const ResourceList = ({
       <Col
         span={24}
         className={`resource-list ${
-          !isLoaded() ||
           (loading && "empty-container") ||
           (allResults.length == 0 && "empty-container")
         }`}
-        style={
-          isLoaded() &&
-          !loading &&
-          !isEmpty(allResults) && { overflowY: "auto" }
-        }
+        style={!loading && !isEmpty(allResults) && { overflowY: "auto" }}
       >
-        {!isLoaded() || loading ? (
+        {loading ? (
           <h2 className="loading">
             <LoadingOutlined spin /> Loading
           </h2>
-        ) : isLoaded() && !loading && !isEmpty(allResults) ? (
+        ) : !loading && !isEmpty(allResults) ? (
           <ResourceItem
             view={view}
             results={allResults}

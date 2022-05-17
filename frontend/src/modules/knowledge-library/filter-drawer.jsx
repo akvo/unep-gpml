@@ -76,16 +76,8 @@ const FilterDrawer = ({
     setTagsExcludingCapacityBuilding,
   ] = useState([]);
   const [isClearFilter, setIsClearFilter] = useState(false);
-  const isLoaded = () =>
-    !isEmpty(tags) &&
-    !isEmpty(countries) &&
-    !isEmpty(transnationalOptions) &&
-    !isEmpty(geoCoverageTypeOptions) &&
-    !isEmpty(mainContentType) &&
-    !isEmpty(representativeGroup) &&
-    !isEmpty(organisations);
 
-  const filteredMainContentOptions = isLoaded()
+  const filteredMainContentOptions = !isEmpty(mainContentType)
     ? mainContentType
         .filter((content) => {
           const resourceName = (name) => {
@@ -160,20 +152,20 @@ const FilterDrawer = ({
 
   // populate options for tags dropdown
   const tagsWithoutSpace =
-    isLoaded() &&
+    !isEmpty(tags) &&
     flatten(values(tags)).map((it) => ({
       value: it?.tag?.trim(),
       label: it?.tag?.trim(),
     }));
 
-  const tagOpts = isLoaded()
+  const tagOpts = !isEmpty(tags)
     ? [...new Set(tagsWithoutSpace.map((s) => JSON.stringify(s)))]
         .map((s) => JSON.parse(s))
         ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
     : [];
 
   // populate options for representative group options
-  const representativeOpts = isLoaded()
+  const representativeOpts = !isEmpty(representativeGroup)
     ? [...representativeGroup, { code: "other", name: "Other" }].map((x) => ({
         label: x?.name,
         value: x?.code,
@@ -319,7 +311,7 @@ const FilterDrawer = ({
           <MultipleSelectFilter
             title="Sub-content type"
             options={
-              isLoaded()
+              !isEmpty(mainContentType)
                 ? mainContentOption().map((content) => ({
                     label: content?.name,
                     options: content?.childs
@@ -421,7 +413,7 @@ const FilterDrawer = ({
           <MultipleSelectFilter
             title="Entities"
             options={
-              isLoaded()
+              !isEmpty(organisations)
                 ? organisations
                     ?.map((x) => ({ value: x.id, label: x.name }))
                     .filter(
@@ -440,7 +432,7 @@ const FilterDrawer = ({
           <MultipleSelectFilter
             title="Representative group"
             options={
-              isLoaded()
+              !isEmpty(representativeGroup)
                 ? representativeOpts.map((x) => ({
                     value: x?.value,
                     label: x.label,

@@ -379,16 +379,12 @@ const KnowledgeLibrary = ({
                   <ResourceList
                     {...{
                       view,
-                      filters,
-                      results,
                       allResults,
                       countData,
+                      filters,
                       loading,
                       pageSize,
-                      listVisible,
                       updateQuery,
-                      setListVisible,
-                      isAscending,
                     }}
                     hideListButtonVisible={view === "map"}
                   />
