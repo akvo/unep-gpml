@@ -1,41 +1,12 @@
 /* eslint-disable no-else-return */
-import React, { useState, useEffect, useMemo } from "react";
-import { utils } from "@rjsf/core";
+import React, { useState, useEffect, useRef } from "react";
 import { Select, Spin } from "antd";
 import debounce from "lodash.debounce";
 
 import api from "../api";
 
-const { asNumber, guessType } = utils;
-
 const SELECT_STYLE = {
   width: "100%",
-};
-
-const nums = new Set(["number", "integer"]);
-
-const processValue = (schema, value) => {
-  const { type, items } = schema;
-
-  if (value === "") {
-    return undefined;
-  } else if (type === "array" && items && nums.has(items.type)) {
-    return value.map(asNumber);
-  } else if (type === "boolean") {
-    return value === "true";
-  } else if (type === "number") {
-    return asNumber(value);
-  }
-  // If type is undefined, but an enum is present, try and infer the type from
-  // the enum values
-  if (schema.enum) {
-    if (schema.enum.every((x) => guessType(x) === "number")) {
-      return asNumber(value);
-    } else if (schema.enum.every((x) => guessType(x) === "boolean")) {
-      return value === "true";
-    }
-  }
-  return value;
 };
 
 const getSearchResult = async (q) => {
@@ -49,6 +20,14 @@ const getSearchResult = async (q) => {
   } catch (err) {
     return err;
   }
+};
+
+const usePrevious = (value) => {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
 };
 
 const SelectWidget = ({
@@ -70,10 +49,23 @@ const SelectWidget = ({
   value,
 }) => {
   const { readonlyAsDisabled = true } = formContext;
+  const { enumOptions, enumDisabled } = options;
   const [fetching, setFetching] = useState(false);
   const handleChange = (nextValue) => onChange(nextValue);
   const [data, setData] = useState([]);
   const fetchRef = React.useRef(0);
+
+  const prevValue = usePrevious(enumOptions);
+
+  useEffect(() => {
+    if (
+      !prevValue?.filter((item1) =>
+        enumOptions.find((item2) => item1.value === item2.value)
+      )
+    ) {
+      setData(enumOptions.map((elm) => ({ id: elm.value, title: elm.label })));
+    }
+  }, [enumOptions]);
 
   const handleSearch = React.useMemo(() => {
     const loadOptions = async (value) => {
@@ -85,7 +77,7 @@ const SelectWidget = ({
       if (fetchId !== fetchRef.current) {
         return;
       }
-      setData(res);
+      setData((oldArray) => [...res, ...oldArray]);
       setFetching(false);
     };
 

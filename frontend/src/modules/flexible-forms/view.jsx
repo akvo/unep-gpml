@@ -27,6 +27,7 @@ import api from "../../utils/api";
 import { useLocation } from "react-router-dom";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import cloneDeep from "lodash/cloneDeep";
 const { Step } = Steps;
 
 const getType = (type) => {
@@ -605,6 +606,11 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
 
     if (name === "relatedContent") {
+      if (value && value.length > 0) {
+        UIStore.update((e) => {
+          e.relatedResource = value;
+        });
+      }
       res =
         value && value.length > 0 && value[0].id !== null
           ? value.map((x) => x.id)
