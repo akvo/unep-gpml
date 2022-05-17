@@ -8,7 +8,7 @@
 
 (declare get-resources)
 
-(hugsql/def-db-fns "gpml/db/resource/list.sql")
+(hugsql/def-db-fns "gpml/db/resource/list.sql" {:quoting :ansi})
 
 (defn generate-get-resources-query
   []
@@ -17,10 +17,8 @@
               (let [title-column (case table
                                    "technology" "name"
                                    "initiative" "q2->>0"
-                                   "title")
-                    search-text-vector (format "to_tsvector('english'::regconfig, %s)" title-column)]
-                (format "SELECT id, %s AS title, %s AS search_text
+                                   "title")]
+                (format "SELECT id, %s AS title
                          FROM %s"
                         title-column
-                        search-text-vector
                         table)))))
