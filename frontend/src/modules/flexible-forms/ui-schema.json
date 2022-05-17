@@ -135,7 +135,7 @@
           "ui:widget": "SelectSearchWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Search a resource"
+          "ui:placeholder": "Start typing to find a resource"
         },
         "ui:order": ["info", "related"]
       }
@@ -518,7 +518,7 @@
           "ui:widget": "SelectSearchWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Search a resource"
+          "ui:placeholder": "Start typing to find a resource"
         },
         "ui:order": ["info", "related"]
       }
@@ -746,7 +746,7 @@
           "ui:widget": "SelectSearchWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Search a resource"
+          "ui:placeholder": "Start typing to find a resource"
         },
         "ui:order": ["info", "related"]
       }
@@ -1010,7 +1010,7 @@
           "ui:widget": "SelectSearchWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Search a resource"
+          "ui:placeholder": "Start typing to find a resource"
         },
         "ui:order": ["info", "related"]
       }
@@ -1243,7 +1243,7 @@
           "ui:widget": "SelectSearchWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Search a resource"
+          "ui:placeholder": "Start typing to find a resource"
         },
         "ui:order": ["info", "related"]
       }
@@ -1459,7 +1459,7 @@
           "ui:widget": "SelectSearchWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Search a resource"
+          "ui:placeholder": "Start typing to find a resource"
         },
         "ui:order": ["info", "related"]
       }
@@ -1687,7 +1687,7 @@
           "ui:widget": "SelectSearchWidget",
           "ui:showSearch": true,
           "ui:mode": "multiple",
-          "ui:placeholder": "Search a resource"
+          "ui:placeholder": "Start typing to find a resource"
         },
         "ui:order": ["info", "related"]
       }
