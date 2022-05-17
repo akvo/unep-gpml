@@ -6,7 +6,7 @@
    [gpml.constants :as constants]
    [gpml.db.action :as db.action]
    [gpml.db.action-detail :as db.action-detail]
-   gpml.db.country
+   [gpml.db.country]
    [gpml.db.country-group :as db.country-group]
    [gpml.db.detail :as db.detail]
    [gpml.db.event :as db.event]
