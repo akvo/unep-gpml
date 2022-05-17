@@ -119,6 +119,57 @@ spec:
           limits:
             cpu: "1000m"
             memory: "1024Mi"
+      - name: cloud-sql-proxy
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+        # https://cloud.google.com/sql/docs/mysql/connect-kubernetes-engine#run_the_as_a_sidecar
+        # It is recommended to use the latest version of the Cloud SQL proxy
+        # Make sure to update on a regular schedule!
+        image: eu.gcr.io/cloudsql-docker/gce-proxy:1.30.1
+        command:
+          - "/cloud_sql_proxy"
+
+          # By default, the proxy will write all logs to stderr. In some
+          # environments, anything printed to stderr is consider an error. To
+          # disable this behavior and write all logs to stdout (except errors
+          # which will still go to stderr), use:
+          - "-log_debug_stdout"
+
+          # Replace DB_PORT with the port the proxy should listen on
+          # Defaults: MySQL: 3306, Postgres: 5432, SQLServer: 1433
+          - "-instances=$(GOOGLE_PROJECT):$(GOOGLE_SQL_COMPUTE_ZONE):$(GOOGLE_SQL_DB_INSTANCE)=tcp:5432"
+          - "-credential_file=/secrets/cloudsql/credentials.json"
+        securityContext:
+          # The default Cloud SQL proxy image runs as the
+          # "nonroot" user and group (uid: 65532) by default.
+          runAsNonRoot: true
+        # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+        env:
+          - name: GOOGLE_SQL_COMPUTE_ZONE
+            valueFrom:
+              configMapKeyRef:
+                name: unep-gpml
+                key: google-sql-compute-zone
+          - name: GOOGLE_SQL_DB_INSTANCE
+            valueFrom:
+              configMapKeyRef:
+                name: unep-gpml
+                key: google-sql-db-instance
+          - name: GOOGLE_PROJECT
+            valueFrom:
+              configMapKeyRef:
+                name: unep-gpml
+                key: google-project
+        volumeMounts:
+          - name: unep-gpml-secrets
+            mountPath: "/secrets/cloudsql/credentials.json"
+            subPath: "cloud-database-service-account.json"
+            readOnly: true
       volumes:
         - name: unep-gpml-secrets
           secret:
