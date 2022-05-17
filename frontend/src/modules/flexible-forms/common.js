@@ -77,10 +77,18 @@ const getSchema = ({
   nonMemberOrganisations,
   selectedMainContentType,
   currencies,
+  relatedResource,
 }) => {
   const prop = cloneDeep(schema[selectedMainContentType].properties);
 
   let array = [...organisations, ...nonMemberOrganisations];
+
+  prop.S4.properties.S4_G6.properties["related"].enum = relatedResource?.map(
+    (x) => x.id
+  );
+  prop.S4.properties.S4_G6.properties[
+    "related"
+  ].enumNames = relatedResource?.map((x) => x.title);
 
   prop.S4.properties.S4_G5.properties[
     "entity"
