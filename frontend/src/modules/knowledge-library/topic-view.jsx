@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { orderBy } from "lodash";
 import api from "../../utils/api";
-import TopicChart from "../chart/topicChart";
+import TopicChart from "../chart/topic-chart";
 import { titleCase } from "../../utils/string";
-import TopicBar from "../chart/topicBar";
+import TopicBar from "../chart/topic-bar";
 
 const TopicView = ({ updateQuery, query }) => {
   const [sortedPopularTopics, setSortedPopularTopics] = useState([]);

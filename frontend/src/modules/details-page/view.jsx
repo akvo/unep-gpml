@@ -1253,11 +1253,15 @@ const DetailsView = ({
                           )}
                       </>
                     )}
-                    {data?.subnationalCity && (
+                    {(data?.subnationalCity || data?.q24SubnationalCity) && (
                       <List.Item>
                         <List.Item.Meta
                           avatar={<Avatar src={CityImage} />}
-                          title={data?.subnationalCity}
+                          title={
+                            data?.subnationalCity
+                              ? data?.subnationalCity
+                              : data?.q24SubnationalCity
+                          }
                         />
                       </List.Item>
                     )}

@@ -779,14 +779,17 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
 
       if (state?.state.type === "initiative") {
         api.getRaw(`/initiative/${dataId}`).then((d) => {
+          setSubType(JSON.parse(d?.data).sub_content_type);
           initialFormData.update((e) => {
             e.data = revertFormData(JSON.parse(d.data));
             e.editId = true;
             e.type = "project";
           });
+          setSubType(JSON.parse(d?.data).sub_content_type);
         });
       } else {
         api.get(`/detail/${state?.state.type}/${dataId}`).then((d) => {
+          setSubType(d?.subContentType);
           let newData = [];
           if (d.data.organisations) {
             newData = d.data.organisations.map((item) => {
@@ -810,6 +813,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
             e.editId = true;
             e.type = state?.state.type;
           });
+          setSubType(d?.subContentType);
         });
       }
     }
@@ -894,7 +898,13 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
           res.map((item) => {
             if (find.includes(item.tag)) {
               newArray = newArray.filter((x) => x !== item.tag);
-              newArray = [...newArray, item.id.toString()];
+              newArray = [
+                ...newArray,
+                item.id,
+                ...(formData?.data?.S4?.S4_G3?.tags
+                  ? formData?.data?.S4?.S4_G3?.tags
+                  : []),
+              ];
             }
           });
           initialFormData.update((e) => {
@@ -904,7 +914,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                 ...e.data.S4,
                 S4_G3: {
                   ...e.data.S4.S4_G3,
-                  tags: newArray,
+                  tags: [...new Set(newArray)],
                 },
               },
             };
@@ -1508,10 +1518,14 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                         value={mainType}
                       >
                         {mainContentType.map((item) => {
-                          const img = require(`../../images/${item.code}.svg`)
-                            .default;
-                          const imgSelected = require(`../../images/${item.code}-selected.svg`)
-                            .default;
+                          const img = require(`../../images/${item?.code?.replace(
+                            /_/g,
+                            "-"
+                          )}.svg`).default;
+                          const imgSelected = require(`../../images/${item?.code?.replace(
+                            /_/g,
+                            "-"
+                          )}-selected.svg`).default;
                           return (
                             <Col
                               className="gutter-row"
