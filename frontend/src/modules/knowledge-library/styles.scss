@@ -761,13 +761,13 @@
           }
 
           .read-more,
-          .avatar-number {
+          .avatar-count {
             color: $blue04;
           }
 
-          .avatar-number {
+          .avatar-count {
             font-size: 13px;
-            margin-left: 13px;
+            margin-left: 25px;
             @-moz-document url-prefix() {
               font-size: 9.5px;
             }
@@ -776,10 +776,10 @@
         .item-footer {
           margin-top: 5px;
           display: flex;
-          justify-content: space-between;
           align-items: center;
           .read-more {
             font-size: 14px;
+            margin-left: auto;
             @-moz-document url-prefix() {
               font-size: 12px;
             }
@@ -788,10 +788,10 @@
             }
           }
           .read-more,
-          .avatar-number {
+          .avatar-count {
             color: $blue04;
           }
-          .avatar-number {
+          .avatar-count {
             font-weight: 600;
           }
         }

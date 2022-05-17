@@ -315,7 +315,6 @@ const Root = () => {
       .catch((err) => {
         console.error(err);
       });
-    setLandingQuery(String(searchParms));
   };
 
   const updateQuery = (param, value) => {
