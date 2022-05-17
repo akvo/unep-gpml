@@ -113,7 +113,9 @@ const SelectWidget = ({
         dropdownRender={(menu) => <div>{menu}</div>}
         getPopupContainer={getPopupContainer}
         value={value}
-        notFoundContent={fetching ? <Spin size="small" /> : null}
+        notFoundContent={
+          fetching ? <Spin size="small" /> : <div>No Results Found</div>
+        }
       >
         {data &&
           data.map(({ id: optionValue, title: optionLabel }, i) => (
