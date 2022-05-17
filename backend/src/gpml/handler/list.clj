@@ -1,6 +1,5 @@
 (ns gpml.handler.list
   (:require
-   [clojure.string :as str]
    [gpml.db.resource.list :as db.resource.list]
    [integrant.core :as ig]
    [ring.util.response :as resp]))
