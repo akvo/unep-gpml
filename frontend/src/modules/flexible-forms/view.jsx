@@ -813,7 +813,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
             e.editId = true;
             e.type = state?.state.type;
           });
-          setSubType(d?.subContentType);
+          setSubType(d?.data.subContentType);
         });
       }
     }

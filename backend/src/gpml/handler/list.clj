@@ -1,6 +1,5 @@
 (ns gpml.handler.list
   (:require
-   [clojure.string :as str]
    [gpml.db.resource.list :as db.resource.list]
    [integrant.core :as ig]
    [ring.util.response :as resp]))
@@ -15,9 +14,7 @@
     (assoc :limit limit)
 
     (seq q)
-    (assoc-in [:filters :search-text] (->> (str/trim q)
-                                           (re-seq #"\w+")
-                                           (str/join " & ")))))
+    (assoc-in [:filters :search-text] q)))
 
 (defmethod ig/init-key :gpml.handler.list/get
   [_ {:keys [db]}]

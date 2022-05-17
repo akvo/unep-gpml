@@ -1,7 +1,7 @@
 /* eslint-disable no-else-return */
 import React, { useState, useEffect, useMemo } from "react";
 import { utils } from "@rjsf/core";
-import { Select, Divider, Input, List } from "antd";
+import { Select, Spin } from "antd";
 import debounce from "lodash.debounce";
 
 import api from "../api";
@@ -70,37 +70,36 @@ const SelectWidget = ({
   value,
 }) => {
   const { readonlyAsDisabled = true } = formContext;
-  const { enumOptions, enumDisabled } = options;
+  const [fetching, setFetching] = useState(false);
   const handleChange = (nextValue) => onChange(processValue(schema, nextValue));
   const [data, setData] = useState([]);
-  const handleSearch = async (value) => {
-    if (value.length > 3) {
+  const fetchRef = React.useRef(0);
+
+  const handleSearch = React.useMemo(() => {
+    const loadOptions = async (value) => {
+      fetchRef.current += 1;
+      const fetchId = fetchRef.current;
+      setData([]);
+      setFetching(true);
       let res = await getSearchResult(value);
+      if (fetchId !== fetchRef.current) {
+        return;
+      }
       setData(res);
-    }
-  };
-
-  const debouncedResults = useMemo(() => debounce(handleSearch, 300), []);
-
-  useEffect(() => {
-    return () => {
-      debouncedResults.cancel();
+      setFetching(false);
     };
-  });
+
+    return debounce(loadOptions, 300);
+  }, []);
 
   const getPopupContainer = (node) => node.parentNode;
-  const handleBlur = () => onBlur(id, processValue(schema, value));
-  const handleFocus = () => onFocus(id, processValue(schema, value));
 
   return (
     <>
       <Select
         allowClear={uiSchema?.["ui:allowClear"] ? true : false}
         showSearch={uiSchema?.["ui:showSearch"] ? true : false}
-        filterOption={(input, option) =>
-          option?.children?.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
-          option.value === "-1"
-        }
+        filterOption={false}
         autoFocus={autofocus}
         disabled={disabled || (readonlyAsDisabled && readonly)}
         id={id}
@@ -114,7 +113,9 @@ const SelectWidget = ({
         dropdownRender={(menu) => <div>{menu}</div>}
         getPopupContainer={getPopupContainer}
         value={value}
-        notFoundContent={null}
+        notFoundContent={
+          fetching ? <Spin size="small" /> : <div>No Results Found</div>
+        }
       >
         {data &&
           data.map(({ id: optionValue, title: optionLabel }, i) => (
