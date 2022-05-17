@@ -56,15 +56,9 @@ const SelectWidget = ({
   disabled,
   formContext,
   id,
-  // label,
-  multiple,
-  onBlur,
   onChange,
-  onFocus,
-  options,
   placeholder,
   readonly,
-  // required,
   schema,
   uiSchema,
   value,
@@ -73,10 +67,12 @@ const SelectWidget = ({
   const [fetching, setFetching] = useState(false);
   const handleChange = (nextValue) => onChange(processValue(schema, nextValue));
   const [data, setData] = useState([]);
+  const [searchStr, setSearchStr] = useState([]);
   const fetchRef = React.useRef(0);
 
   const handleSearch = React.useMemo(() => {
     const loadOptions = async (value) => {
+      setSearchStr(value);
       fetchRef.current += 1;
       const fetchId = fetchRef.current;
       setData([]);
@@ -113,8 +109,13 @@ const SelectWidget = ({
         dropdownRender={(menu) => <div>{menu}</div>}
         getPopupContainer={getPopupContainer}
         value={value}
+        loading={fetching}
         notFoundContent={
-          fetching ? <Spin size="small" /> : <div>No Results Found</div>
+          fetching ? (
+            <Spin size="small" />
+          ) : searchStr.length === 0 ? null : (
+            <div>No Results Found</div>
+          )
         }
       >
         {data &&
