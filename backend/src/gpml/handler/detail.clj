@@ -18,14 +18,13 @@
    [gpml.db.resource :as db.resource]
    [gpml.db.resource.tag :as db.resource.tag]
    [gpml.db.submission :as db.submission]
-   [gpml.db.tag :as db.tag]
    [gpml.db.technology :as db.technology]
    [gpml.db.topic-stakeholder-auth :as db.topic-stakeholder-auth]
-   [gpml.email-util :as email]
    [gpml.handler.geo :as handler.geo]
    [gpml.handler.image :as handler.image]
    [gpml.handler.initiative :as handler.initiative]
    [gpml.handler.organisation :as handler.org]
+   [gpml.handler.resource.tag :as handler.resource.tag]
    [gpml.handler.util :as util]
    [gpml.model.topic :as model.topic]
    [gpml.pg-util :as pg-util]
@@ -492,30 +491,14 @@
   ;; -- Cannot be empty, for one.
   [:map])
 
-(defn update-resource-tags [conn mailjet-config table id tags]
-  ;; Delete any existing tags
-  (db.detail/delete-resource-related-data conn {:table (str table "_tag") :resource_type table :id id})
-
-  ;; Create tags for the resource
-  (when-not (empty? tags)
-    (let [tag-ids (map #(:id %) tags)]
-      (if-not (some nil? tag-ids)
-        (db.detail/add-resource-related-tags conn {:table (str table "_tag")
-                                                   :resource_type table
-                                                   :tags (map #(list id %) tag-ids)})
-        (let [tag-category (:id (db.tag/tag-category-by-category-name conn {:category "general"}))
-              new-tags (filter #(not (contains? % :id)) tags)
-              tags-to-db (map #(vector % tag-category) (vec (map #(:tag %) new-tags)))
-              new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags tags-to-db}))]
-          (db.detail/add-resource-related-tags conn {:table (str table "_tag")
-                                                     :resource_type table
-                                                     :tags (map #(list id %) new-tag-ids)})
-          (map
-           #(email/notify-admins-pending-approval
-             conn
-             mailjet-config
-             (merge % {:type "tag"}))
-           new-tags))))))
+(defn update-resource-tags
+  "Updates the resource tags and creating new ones if provided. Note
+  that the `tag-category` is `general`."
+  [conn mailjet-config table id tags]
+  (handler.resource.tag/update-resource-tags conn mailjet-config {:tags tags
+                                                                  :resource-name table
+                                                                  :resource-id id
+                                                                  :tag-category "general"}))
 
 (defn update-resource-language-urls [conn table id urls]
   ;; Delete any existing lanugage URLs
@@ -693,7 +676,8 @@
       (update-resource-image conn (:photo updates) table id))
     (when (contains? updates :logo)
       (update-resource-logo conn (:logo updates) table id))
-    (update-resource-tags conn mailjet-config table id tags)
+    (when (seq tags)
+      (update-resource-tags conn mailjet-config table id tags))
     (update-resource-language-urls conn table id urls)
     (update-resource-geo-coverage-values conn table id updates)
     (when (contains? #{"resource"} table)
@@ -713,7 +697,8 @@
                    status))]
     (when (contains? data :qimage)
       (update-initiative-image conn (:qimage data) "initiative" id))
-    (update-resource-tags conn mailjet-config "initiative" id tags)
+    (when (seq tags)
+      (update-resource-tags conn mailjet-config "initiative" id tags))
     (update-resource-connections conn (:entity_connections data) (:individual_connections data) "initiative" id)
     status))
 
