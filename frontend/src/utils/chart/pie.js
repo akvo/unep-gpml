@@ -81,6 +81,9 @@ const Pie = (data, extra, Doughnut = false) => {
             },
           },
           emphasis: {
+            formatter: function (params) {
+              return params?.value;
+            },
             position: "center",
             show: true,
             padding: 5,

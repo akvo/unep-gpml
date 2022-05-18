@@ -10922,6 +10922,11 @@ react@^17.0.1:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
 
+read-more-less-react@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/read-more-less-react/-/read-more-less-react-1.1.3.tgz#fef48d1a7a80e93504f1acb278aad6ac6ab0c7f4"
+  integrity sha512-aMbZxYQnkzg5uwWTqXmmfJsYim3gDTW91sfZzVzoUaLGyDu0J/oDZ5gKMD63kHNUidpFVgQHBUvD54VbtParAA==
+
 read-pkg-up@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/read-pkg-up/-/read-pkg-up-1.0.1.tgz"
