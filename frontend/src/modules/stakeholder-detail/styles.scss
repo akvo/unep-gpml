@@ -432,15 +432,44 @@
             }
           }
         }
-        p {
+        p,
+        .display-text-group {
           padding: 0 20px;
+          font-size: 1.4rem;
           @-moz-document url-prefix() {
             padding: 0 10px !important;
+            font-size: 12px;
           }
         }
-        .bio {
-          max-height: 200px;
-          overflow: auto;
+        .rm-text-container {
+          margin-bottom: 5px;
+        }
+
+        .rm-action-button-container {
+          display: inline;
+          color: #34a6ff;
+          padding: 0 20px;
+
+          .rm-more-button,
+          .rm-less-button {
+            cursor: pointer;
+            background-color: unset;
+            border: unset;
+            font-size: 1.4rem;
+            font-weight: 400;
+            padding: 0;
+
+            @media (max-width: 540px) {
+              font-size: 16px;
+            }
+            @-moz-document url-prefix() {
+              font-size: 14px;
+            }
+          }
+          @-moz-document url-prefix() {
+            padding: 0 10px;
+            font-size: 12px;
+          }
         }
         .exta-info {
           margin-top: 40px;
