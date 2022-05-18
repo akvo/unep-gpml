@@ -58,14 +58,9 @@ const SelectWidget = ({
 }) => {
   const { readonlyAsDisabled = true } = formContext;
   const { enumOptions, enumDisabled } = options;
-  const handleChange = (nextValue) => onChange(processValue(schema, nextValue));
-  const handleBlur = () => onBlur(id, processValue(schema, value));
-  const handleFocus = () => onFocus(id, processValue(schema, value));
-  const getPopupContainer = (node) => node.parentNode;
-  const stringify = (currentValue) =>
-    Array.isArray(currentValue) ? value.map(String) : String(value);
-
-  const showEntity = uiSchema["ui:options"]?.["showEntity"];
+  const handleChange = (value) => {
+    onChange(value);
+  };
 
   return (
     <div className="list tag-list" style={{ marginTop: 10 }}>
@@ -76,7 +71,12 @@ const SelectWidget = ({
             title={
               <ul>
                 {enumOptions.map((tag) => (
-                  <li key={tag.value}>{tag.value}</li>
+                  <li
+                    onClick={() => handleChange(tag.value.toLowerCase())}
+                    key={tag.value}
+                  >
+                    {tag.value}
+                  </li>
                 ))}
               </ul>
             }
