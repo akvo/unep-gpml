@@ -3,32 +3,6 @@
 $bg-dark-primary: #005b70;
 $bg-green-primary: #10f9b7;
 
-.btn-workspace {
-  display: flex;
-  align-items: center;
-  gap: 8.15px;
-  width: 100%;
-  max-width: max-content;
-  font-weight: 700;
-  font-size: 1rem;
-  line-height: 20px;
-  color: #4dffa5;
-  background-color: unset;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  margin-right: 10px;
-  svg {
-    font-size: 22px;
-  }
-  @-moz-document url-prefix() {
-    font-size: 0.9rem;
-  }
-  &:hover {
-    background-color: $yellow-highlight;
-    color: #fff;
-  }
-}
 
 #workspace {
   background-color: $blue06;

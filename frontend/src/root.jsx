@@ -8,6 +8,7 @@ import {
   withRouter,
   useLocation,
   useHistory,
+  NavLink,
 } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Input, Button, Menu, Dropdown, Layout } from "antd";
@@ -23,7 +24,7 @@ import Stakeholders from "./modules/stakeholders/view";
 import AddEvent from "./modules/events/view";
 import SignupView from "./modules/signup/view";
 import LandingSignupView from "./modules/signup-old/view";
-import logo from "./images/GPML-logo-white.png";
+import logo from "./images/gpml.svg";
 // add auth0 logo pop-up
 // eslint-disable-next-line
 import tmpLogo from "./images/GPML-temporary-logo-horiz.jpg";
@@ -56,11 +57,7 @@ import StakeholderDetail from "./modules/stakeholder-detail/view";
 import EntityDetail from "./modules/entity-detail/view";
 
 // Menu dropdown
-import AboutDropdownMenu from "./modules/dropdown-menu/about";
 import ExploreDropdownMenu from "./modules/dropdown-menu/explore";
-import DataHubDropdownMenu from "./modules/dropdown-menu/data-hub";
-import KnowledgeExchangeDropdownMenu from "./modules/dropdown-menu/knowledge-exchange";
-import ConnectStakeholdersDropdownMenu from "./modules/dropdown-menu/connect-stakeholders";
 import ResponsiveMenu from "./modules/dropdown-menu/responsive-menu";
 import WorkspaceButton from "./modules/dropdown-menu/workspace-button";
 
@@ -360,26 +357,31 @@ const Root = () => {
                 <img src={logo} className="logo" alt="GPML" />
               </Link>
             </div>
-            {isAuthenticated && <WorkspaceButton />}
-            <div className="menu-dropdown-container">
-              <AboutDropdownMenu />
-              <ExploreDropdownMenu topicsCount={topicsCount} />
-              <DataHubDropdownMenu />
-              <KnowledgeExchangeDropdownMenu
-                resources={resourceCounts}
-                setFilterMenu={setFilterMenu}
-              />
-              <ConnectStakeholdersDropdownMenu
-                {...{
-                  profile,
-                  setWarningModalVisible,
-                  isAuthenticated,
-                  setStakeholderSignupModalVisible,
-                  loginWithPopup,
-                  stakeholderCounts,
-                  setFilterMenu,
-                }}
-              />
+            <div className="main-menu-items">
+              {isAuthenticated && <WorkspaceButton />}
+              <ul>
+                <li>
+                  <NavLink to="/about-us" className="menu-btn nav-link menu-dropdown" activeClassName="selected">
+                    About
+                  </NavLink>
+                </li>
+                <li><ExploreDropdownMenu topicsCount={topicsCount} /></li>
+                <li>
+                  <a href="https://datahub.gpmarinelitter.org/" className="menu-btn nav-link menu-dropdown">
+                    Data Hub
+                  </a>
+                </li>
+                <li>
+                  <NavLink to="/knowledge-library" className="menu-btn nav-link menu-dropdown" activeClassName="selected">
+                    Knowledge Exchange
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/events" className="menu-btn nav-link" activeClassName="selected">
+                    Connect Stakeholders
+                  </NavLink>
+                </li>
+              </ul>
             </div>
             <Switch>
               <Route path="/browse" />
@@ -765,47 +767,6 @@ const Root = () => {
         stakeholderCounts={stakeholderCounts}
       />
     </>
-  );
-};
-
-const renderDropdownMenu = (
-  tags,
-  landing,
-  profile,
-  setWarningModalVisible,
-  isAuthenticated,
-  setStakeholderSignupModalVisible,
-  loginWithPopup
-) => {
-  const excludeSummary = ["event", "organisation", "stakeholder"];
-  const summary =
-    landing?.summary &&
-    landing.summary
-      .filter((x) => !excludeSummary.includes(Object.keys(x)[0]))
-      .map((x) => {
-        return {
-          name: Object.keys(x)[0],
-          count: x[Object.keys(x)[0]],
-        };
-      });
-  return (
-    <div className="menu-dropdown-container">
-      <AboutDropdownMenu />
-      <ExploreDropdownMenu
-        topicsCount={tags?.topics ? tags.topics.length : 0}
-      />
-      <DataHubDropdownMenu />
-      <KnowledgeExchangeDropdownMenu resources={summary} />
-      <ConnectStakeholdersDropdownMenu
-        {...{
-          profile,
-          setWarningModalVisible,
-          isAuthenticated,
-          setStakeholderSignupModalVisible,
-          loginWithPopup,
-        }}
-      />
-    </div>
   );
 };
 
