@@ -637,7 +637,7 @@ const VerticalLegend = ({
             {existingData.includes("organisation") && (
               <>
                 <strong className="legend-heading pie-chart-header">
-                  UN Regional Groups of Member States
+                  Entities from UN Regional Groups of member States
                 </strong>
                 <PieChart data={transnationalStakeholders} />
               </>
