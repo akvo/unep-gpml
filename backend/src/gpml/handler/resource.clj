@@ -12,6 +12,7 @@
    [gpml.handler.geo :as handler.geo]
    [gpml.handler.image :as handler.image]
    [gpml.handler.resource.tag :as handler.resource.tag]
+   [gpml.handler.util :as api-util]
    [gpml.pg-util :as pg-util]
    [gpml.util :as util]
    [integrant.core :as ig]
@@ -75,12 +76,11 @@
               :latest_amendment_date latest_amendment_date
               :document_preview document_preview}
         resource-id (:id (db.resource/new-resource conn data))
-        individual_connections (conj individual_connections {:stakeholder created_by
-                                                             :role "owner"})
+        api-individual-connections (api-util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
-                                                          individual_connections)))))]
+                                                          api-individual-connections)))))]
     (doseq [stakeholder-id owners]
       (h.auth/grant-topic-to-stakeholder! conn {:topic-id resource-id
                                                 :topic-type "resource"
@@ -94,8 +94,9 @@
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections resource-id)]
         (db.favorite/new-organisation-association conn association)))
-    (doseq [association (expand-individual-associations individual_connections resource-id)]
-      (db.favorite/new-association conn association))
+    (when (not-empty api-individual-connections)
+      (doseq [association (expand-individual-associations api-individual-connections resource-id)]
+        (db.favorite/new-association conn association)))
     (when (not-empty urls)
       (let [lang-urls (map #(vector resource-id
                                     (->> % :lang
