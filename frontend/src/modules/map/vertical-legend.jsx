@@ -625,6 +625,13 @@ const VerticalLegend = ({
           <>
             <div className="total-resources-wrapper">
               <strong className="legend-heading">Total stakeholders</strong>
+              <div className="total-resources total-count">
+                <strong>Total</strong>{" "}
+                <b>
+                  {(stakeholderTotalCounts?.entity || 0) +
+                    (stakeholderTotalCounts?.individual || 0)}
+                </b>
+              </div>
               {stakeholderCountsContent()}
             </div>
             {existingData.includes("organisation") && (
@@ -648,4 +655,3 @@ const VerticalLegend = ({
 };
 
 export default VerticalLegend;
-
