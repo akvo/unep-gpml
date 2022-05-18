@@ -357,20 +357,11 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       }
 
       if (key === "geoCoverageType") {
-        const selectedGeoCoverage = geoCoverageTypeOptions?.find(
-          (x) => x.toLowerCase() === value.toLowerCase()
-        );
-
-        return selectedGeoCoverage;
+        return value.toLowerCase() === "sub-national" ? "Subnational" : value;
       }
 
       if (key === "representativeGroup") {
-        const selectedRepresentativeGroups = representativeGroup?.find(
-          (x) => x?.code?.toLowerCase() == value?.toLowerCase()
-        );
-        return value.toLowerCase() === "other"
-          ? "Other"
-          : selectedRepresentativeGroups?.name;
+        return value;
       }
       if (key === "transnational") {
         const transnationalGroup = multicountryGroups

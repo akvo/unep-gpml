@@ -1,15 +1,16 @@
 import React from "react";
 
-import { Link } from "react-router-dom";
-import { Button } from "antd";
+import { NavLink } from "react-router-dom";
 
 const ConnectStakeholdersDropdownMenu = () => {
   return (
-    <Link to="/events">
-      <Button type="link" className="menu-btn nav-link">
-        Connect Stakeholders
-      </Button>
-    </Link>
+    <NavLink
+      to="/events"
+      className="menu-btn nav-link"
+      activeClassName="selected"
+    >
+      Connect Stakeholders
+    </NavLink>
   );
 };
 

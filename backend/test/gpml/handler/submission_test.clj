@@ -67,14 +67,14 @@
                                                         :limit 10}})))]
       (is (= 200 (:status resp)))
       ;; John and Bob, Exclude Justin
-      ;; Also includes tags created while seeding db
-      (is (= 6 (-> resp :body :count)))
-      (is (= 6 (count (-> resp :body :data))))
+      ;; Doesn't include tags created while seeding db as they're now "APPROVED"
+      (is (= 3 (-> resp :body :count)))
+      (is (= 3 (count (-> resp :body :data))))
       (is (= "stakeholder" (-> resp :body :data first :type)))
       (is (= "/submission/stakeholder/10002" (-> resp :body :data first :preview)))
       (is (= "Mr. Doe Bob" (-> resp :body :data second :title)))
       (is (= "event" (some #{"event"} (map #(:type %) (-> resp :body :data)))))
-      (is (= "tag" (-> resp :body :data last :type)))
+      (is (= "event" (-> resp :body :data last :type)))
       (is (= "justin@org" (-> (filter #(not= "tag" (:type %)) (-> resp :body :data)) last :created_by))))))
 
 (deftest handler-get-detail-test

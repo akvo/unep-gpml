@@ -1344,12 +1344,6 @@
     header.ant-layout-header.nav-header-container {
       width: 100%;
     }
-
-    & > header {
-      .src {
-        width: 50%;
-      }
-    }
   }
 
   footer {
@@ -1810,9 +1804,9 @@
     }
 
     & > header {
-      min-height: 70px;
+      // min-height: 70px;
       .logo {
-        width: 150px;
+        width: 210px;
       }
     }
   }

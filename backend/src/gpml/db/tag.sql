@@ -45,6 +45,7 @@ select * from tag WHERE tag_category in
 select tg.category, t.id, t.tag
  from tag_category tg, tag t
 where tg.id = t.tag_category
+and t.review_status = 'APPROVED'
 order by tg.category, t.tag
 
 -- :name get-popular-topics-tags :? :*

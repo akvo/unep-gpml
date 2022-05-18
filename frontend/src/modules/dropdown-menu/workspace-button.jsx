@@ -1,17 +1,16 @@
 import React from "react";
-import { withRouter } from "react-router";
 import { HomeOutlined } from "@ant-design/icons";
+import { NavLink } from "react-router-dom";
 
-const WorkspaceButton = withRouter(({ history }) => {
-  return (
-    <button
-      className="btn-workspace"
-      onClick={() => history.push("/workspace")}
-    >
-      <HomeOutlined />
-      Workspace
-    </button>
-  );
-});
+const WorkspaceButton = () => (
+  <NavLink
+    to="/workspace"
+    className="btn-workspace menu-btn"
+    activeClassName="selected"
+  >
+    <HomeOutlined />
+    Workspace
+  </NavLink>
+);
 
 export default WorkspaceButton;
