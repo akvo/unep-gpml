@@ -65,6 +65,26 @@ const entitySuggestedTags = [
   "Multilateralism",
 ];
 
+const stakeholderSuggestedTags = [
+  "Waste management",
+  "Ocean and coast",
+  "freshwater",
+  "biota",
+  "chemicals",
+  "microplastics",
+  "Wastewater",
+  "Environmental justice",
+  "Human health",
+  "Gender",
+  "circularity",
+  "Data monitoring",
+  "Citizen science",
+  "Data analysis",
+  "Technology and innovation",
+  "Capacity building",
+  "Financing",
+];
+
 const organisationType = [
   "Government",
   "Private Sector",
@@ -696,6 +716,7 @@ const UIStore = new Store({
   sectorOptions: sectorOptions,
   representativeGroup: representativeGroup,
   entitySuggestedTags: entitySuggestedTags,
+  stakeholderSuggestedTags: stakeholderSuggestedTags,
   mainContentType: mainContentType,
   icons: icons,
   placeholder: placeholder,

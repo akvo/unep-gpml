@@ -40,6 +40,7 @@ const getSchema = ({
   nonMemberOrganisations,
   organisationType,
   profile,
+  stakeholderSuggestedTags,
 }) => {
   const prop = cloneDeep(schema.properties);
   prop.S1.properties.email.default = profile.email;
@@ -57,16 +58,25 @@ const getSchema = ({
     ...nonMemberOrganisations,
   ]?.map((x) => x.name);
 
-  prop.S3.properties["seeking"].enum = tags?.seeking?.map((it) =>
-    String(it.id)
-  );
-  prop.S3.properties["seeking"].enumNames = tags?.seeking?.map((it) => it.tag);
-  prop.S3.properties["offering"].enum = tags?.offering?.map((it) =>
-    String(it.id)
-  );
-  prop.S3.properties["offering"].enumNames = tags?.offering?.map(
-    (it) => it.tag
-  );
+  let array = Object.keys(tags)
+    .map((k) => tags[k])
+    .flat();
+
+  prop.S3.properties["seeking"].enum = array?.map((it) => String(it.id));
+  prop.S3.properties["seeking"].enumNames = array?.map((it) => it.tag);
+
+  prop.S3.properties["seekingSuggestedTags"].enum = stakeholderSuggestedTags;
+  prop.S3.properties[
+    "seekingSuggestedTags"
+  ].enumNames = stakeholderSuggestedTags;
+
+  prop.S3.properties["offeringSuggestedTags"].enum = stakeholderSuggestedTags;
+  prop.S3.properties[
+    "offeringSuggestedTags"
+  ].enumNames = stakeholderSuggestedTags;
+
+  prop.S3.properties["offering"].enum = array?.map((it) => String(it.id));
+  prop.S3.properties["offering"].enumNames = array?.map((it) => it.tag);
 
   // New Entity S2
   // prop.S2.properties["companyName"].enum = [-1].concat(
