@@ -357,7 +357,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       }
 
       if (key === "geoCoverageType") {
-        return value;
+        return value.toLowerCase() === "sub-national" ? "Subnational" : value;
       }
 
       if (key === "representativeGroup") {

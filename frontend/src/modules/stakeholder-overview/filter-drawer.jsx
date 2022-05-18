@@ -327,11 +327,12 @@ const FilterDrawer = ({
             title="Geo-coverage"
             options={
               !isEmpty(geoCoverageTypeOptions)
-                ? [...geoCoverageTypeOptions, "Subnational"]
+                ? [...geoCoverageTypeOptions, "Sub-national"]
                     .sort((a, b) => a.localeCompare(b))
                     ?.map((x) => ({
                       value: x,
-                      label: x,
+                      label:
+                        x?.toLowerCase() === "sub-national" ? "Subnational" : x,
                     }))
                 : []
             }
@@ -340,16 +341,6 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
-
-          {/* Location */}
-          {/* <MultipleSelectFilter
-            title="Location"
-            options={countryOpts}
-            value={query?.country?.map((x) => parseInt(x)) || []}
-            flag="country"
-            query={query}
-            updateQuery={updateQuery}
-          /> */}
 
           {/*Expertise to offer*/}
           <MultipleSelectFilter
