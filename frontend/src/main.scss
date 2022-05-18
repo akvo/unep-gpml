@@ -331,37 +331,37 @@ h4 {
     z-index: 3;
     padding: 0;
     // line-height: 75px;
-    .main-menu-items{
+    .main-menu-items {
       margin-top: 15px;
       display: flex;
-      @media screen and (max-width: 1024px){
+      @media screen and (max-width: 1024px) {
         display: none;
       }
     }
-    ul{
+    ul {
       display: flex;
-      li{
+      li {
         position: relative;
         margin-right: 2px;
-        a.selected{
-
+        a.selected {
         }
-        &:before, &:after{
+        &:before,
+        &:after {
           content: " ";
           height: 40px;
           width: 1px;
           position: absolute;
           top: 11px;
         }
-        &:not(:last-child){
-          &:after{
-            background-color: #255B87;
+        &:not(:last-child) {
+          &:after {
+            background-color: #255b87;
             right: -1px;
           }
         }
         &:not(:first-child) {
           &:before {
-            background-color: #3176AE;
+            background-color: #3176ae;
             left: -1px;
           }
         }
@@ -396,7 +396,7 @@ h4 {
       padding: 2px 7.5px;
       height: 40px;
     }
-    &.selected{
+    &.selected {
       color: rgba(255, 184, 0, 1);
     }
   }
@@ -453,8 +453,8 @@ h4 {
     .ant-row-rtl .logo {
       float: right;
     }
-    .rightside{
-      .ant-btn{
+    .rightside {
+      .ant-btn {
         background: transparent;
         color: rgba(0, 255, 127, 1);
         border: 2px solid rgba(0, 255, 127, 1);
@@ -479,14 +479,14 @@ h4 {
         // margin-top: -2px;
         background-color: rgba(255, 255, 255, 0.5);
         border: none;
-        &.ant-input-affix-wrapper-focused{
+        &.ant-input-affix-wrapper-focused {
           background-color: rgba(255, 255, 255, 1);
           outline: none;
           box-shadow: none;
           // max-width: 190px;
         }
-        .ant-input-suffix{
-          svg{
+        .ant-input-suffix {
+          svg {
             height: 20px;
             width: 20px;
             margin-right: 4px;
@@ -501,9 +501,8 @@ h4 {
           }
         }
       }
-
     }
-    .ant-btn-ghost.ant-btn-circle{
+    .ant-btn-ghost.ant-btn-circle {
       border-width: 2px;
       height: 32px;
       line-height: 21px;
