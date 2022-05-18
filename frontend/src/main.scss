@@ -427,10 +427,8 @@ h4 {
     display: flex;
     align-items: center;
     min-height: 89px;
-    // padding-top: 8px;
     box-sizing: border-box;
     background: rgba(9, 104, 154, 1);
-    // border-bottom: 1px solid #81b2cc;
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
 
     .ui.container {
@@ -455,43 +453,62 @@ h4 {
     .ant-row-rtl .logo {
       float: right;
     }
-
-    .logo {
-      width: 100%;
+    .rightside{
+      .ant-btn{
+        background: transparent;
+        color: rgba(0, 255, 127, 1);
+        border: 2px solid rgba(0, 255, 127, 1);
+        font-size: 16px;
+        font-weight: 700;
+        height: 42px;
+        padding: 0 13px;
+        line-height: 39px;
+      }
     }
 
     .src {
       display: flex;
       align-items: center;
-      width: 16%;
-      margin-left: 10px;
+      margin-left: auto;
       margin-right: 10px;
       .input-src {
         border-radius: 30px;
         padding-right: 4px;
+        max-width: 170px;
+        height: 38px;
+        // margin-top: -2px;
+        background-color: rgba(255, 255, 255, 0.5);
+        border: none;
+        &.ant-input-affix-wrapper-focused{
+          background-color: rgba(255, 255, 255, 1);
+          outline: none;
+          box-shadow: none;
+          // max-width: 190px;
+        }
+        .ant-input-suffix{
+          svg{
+            height: 20px;
+            width: 20px;
+            margin-right: 4px;
+          }
+        }
         input.ant-input {
-          color: #1ca585;
+          font-size: 14px;
+          color: rgba(24, 22, 47, 1);
+          background-color: transparent;
           &::placeholder {
-            color: #1ca585;
-          }
-          &:focus {
-            box-shadow: 0px 10px 10px rgba(46, 213, 115, 0.15);
+            color: rgba(24, 22, 47, 1);
           }
         }
-      }
-      .ant-btn.ant-btn-primary.ant-input-search-button {
-        border-radius: 0;
       }
 
-      &.toggle-icon {
-        justify-content: end;
-        button {
-          width: 32px;
-          height: 32px;
-        }
-      }
     }
-
+    .ant-btn-ghost.ant-btn-circle{
+      border-width: 2px;
+      height: 32px;
+      line-height: 21px;
+      padding: 0;
+    }
     nav {
       margin-left: auto;
       margin-top: 26px;

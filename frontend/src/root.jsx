@@ -772,47 +772,26 @@ const Root = () => {
 
 const Search = withRouter(({ history, updateQuery }) => {
   const [search, setSearch] = useState("");
-  const [isShownForm, setIsShownForm] = useState(false);
 
   const handleSearch = (src) => {
     const path = history.location.pathname;
     if (src) {
-      setIsShownForm(false);
       history.push(`/knowledge-library?q=${src.trim()}`);
       updateQuery("q", src.trim());
     } else {
       updateQuery("q", src.trim());
     }
-    setIsShownForm(!isShownForm);
   };
 
   return (
-    <div className={isShownForm ? "src" : "src toggle-icon"}>
-      {!isShownForm ? (
-        <Button
-          onClick={() => setIsShownForm(!isShownForm)}
-          type="primary"
-          shape="circle"
-          size="small"
-          icon={<SearchOutlined />}
-        />
-      ) : (
-        <Input
-          className="input-src"
-          placeholder="Search"
-          suffix={
-            <Button
-              onClick={() => handleSearch(search)}
-              type="primary"
-              shape="circle"
-              size="small"
-              icon={<SearchOutlined />}
-            />
-          }
-          onPressEnter={(e) => handleSearch(e.target.value)}
-          onSubmit={(e) => setSearch(e.target.value)}
-        />
-      )}
+    <div className="src">
+      <Input
+        className="input-src"
+        placeholder="Search"
+        suffix={<SearchOutlined />}
+        onPressEnter={(e) => handleSearch(e.target.value)}
+        onSubmit={(e) => setSearch(e.target.value)}
+      />
     </div>
   );
 });
@@ -868,7 +847,7 @@ const AddButton = withRouter(
               <JoinGPMLButton loginWithPopup={loginWithPopup} />
             )}
             <Link to="/flexible-forms">
-              <Button type="primary" placement="bottomRight">
+              <Button type="primary">
                 Add Content
               </Button>
             </Link>
