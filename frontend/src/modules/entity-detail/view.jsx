@@ -240,11 +240,7 @@ const StakeholderDetail = ({
   const breadcrumbLink = isConnectStakeholders ? "stakeholders" : "browse";
 
   const isLoaded = useCallback(
-    () =>
-      Boolean(
-        !isEmpty(countries) &&
-          (isConnectStakeholders ? !isEmpty(profile) : true)
-      ),
+    () => Boolean(!isEmpty(countries) && (isConnectStakeholders ? true : true)),
     [countries, profile, isConnectStakeholders]
   );
 
