@@ -20,3 +20,4 @@ FROM :i:table rt
 JOIN tag t ON rt.tag = t.id
 JOIN tag_category tg ON t.tag_category = tg.id
 WHERE rt.:i:resource-col = :resource-id
+AND t.review_status = 'APPROVED';
