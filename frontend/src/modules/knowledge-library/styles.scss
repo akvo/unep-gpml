@@ -78,17 +78,24 @@
   }
 
   .site-drawer-render-in-current-wrapper {
-    left: -10px !important;
+    left: 0px !important;
     top: 100px !important;
     position: absolute;
     min-width: calc(100% - 100px);
     overflow: hidden;
+    @-moz-document url-prefix() {
+      top: 90px !important;
+    }
 
     @media (min-width: 750px) {
       top: 0 !important;
-      left: 90px !important;
+      left: 100px !important;
     }
-
+    @-moz-document url-prefix() {
+      @media (min-width: 750px) {
+        left: 90px !important;
+      }
+    }
     .ant-tabs-nav-operations {
       position: unset;
       display: none;
@@ -98,7 +105,6 @@
       background-color: unset;
     }
     .ant-drawer-left.ant-drawer-open {
-      left: 10px;
       @-moz-document url-prefix() {
         left: 0px;
       }

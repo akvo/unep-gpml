@@ -131,7 +131,10 @@ const KnowledgeLibrary = ({
     UIStore.update((e) => {
       e.disclaimer = "browse";
     });
-    if (profile.reviewStatus === "APPROVED") {
+    if (
+      profile.reviewStatus === "APPROVED" &&
+      query?.favorites?.includes("true")
+    ) {
       setTimeout(() => {
         api.get("/favorite").then((resp) => {
           setRelations(resp.data);
@@ -376,16 +379,12 @@ const KnowledgeLibrary = ({
                   <ResourceList
                     {...{
                       view,
-                      filters,
-                      results,
                       allResults,
                       countData,
+                      filters,
                       loading,
                       pageSize,
-                      listVisible,
                       updateQuery,
-                      setListVisible,
-                      isAscending,
                     }}
                     hideListButtonVisible={view === "map"}
                   />

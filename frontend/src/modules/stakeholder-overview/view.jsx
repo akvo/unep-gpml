@@ -27,7 +27,7 @@ import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg"
 import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
 import { ReactComponent as IconCommunity } from "../../images/events/community-icon.svg";
 import { ReactComponent as IconPartner } from "../../images/stakeholder-overview/partner-icon.svg";
-import StakeholderList from "./stakeholderList";
+import StakeholderList from "./stakeholder-list";
 import { multicountryGroups } from "../knowledge-library/multicountry";
 import { titleCase } from "../../utils/string";
 import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
