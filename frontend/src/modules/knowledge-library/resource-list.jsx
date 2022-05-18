@@ -220,7 +220,7 @@ const ResourceItem = ({ results, view, stakeholders }) => {
                   })}
               </Avatar.Group>
             </Space>
-            <span className="avatar-number">
+            <span className="avatar-count">
               {result?.stakeholderConnections?.length !== 0 &&
                 result?.stakeholderConnections !== null &&
                 getStakeholderCount()}

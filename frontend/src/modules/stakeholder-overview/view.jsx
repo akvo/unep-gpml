@@ -237,7 +237,6 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         }
 
         setLoading(false);
-        setLandingQuery(String(searchParms));
       })
       .catch((err) => {
         console.error(err);

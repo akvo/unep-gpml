@@ -19,6 +19,12 @@ const TopicView = ({ updateQuery, query }) => {
     "source to sea",
   ];
 
+  const savedTopic = popularTags.filter((item) => {
+    if (query.tag.includes(item)) {
+      return item;
+    }
+  });
+
   const handlePopularTopicChartClick = (params) => {
     const { name, tag } = params?.data;
     setSelectedTopic(name?.toLowerCase());
@@ -32,26 +38,16 @@ const TopicView = ({ updateQuery, query }) => {
   };
 
   useEffect(() => {
-    const savedTopic = popularTags.filter((item) => {
-      if (query.tag.includes(item)) {
-        return item;
-      }
-    });
-    // if (!selectedTopic && savedTopic.length === 0) {
-    //   setSelectedTopic(defTopic);
-    // } else {
-    //   setSelectedTopic(savedTopic[0]);
-    // }
+    if (!selectedTopic && savedTopic.length > 0) {
+      setSelectedTopic(defTopic);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortedPopularTopics]);
 
-  useEffect(() => {
+  const getPopularTopics = (url) => {
     api
-      .get(
-        `/tag/topic/popular?tags=${
-          !selectedTopic ? popularTags : selectedTopic
-        }&limit=6`
-      )
+      .get(url)
       .then((resp) => {
         const data = resp?.data.map((item, i) => {
           return {
@@ -84,9 +80,24 @@ const TopicView = ({ updateQuery, query }) => {
       .catch((err) => {
         console.error(err);
       });
+  };
 
+  useEffect(() => {
+    if (selectedTopic || savedTopic.length > 0) {
+      getPopularTopics(
+        `/tag/topic/popular?tags=${selectedTopic || savedTopic}&limit=6`
+      );
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTopic]);
+
+  useEffect(() => {
+    if (savedTopic.length === 0) {
+      getPopularTopics(`/tag/topic/popular`);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
