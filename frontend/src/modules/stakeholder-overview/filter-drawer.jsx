@@ -379,7 +379,7 @@ const FilterDrawer = ({
             updateQuery={updateQuery}
           />
           {/* Entities */}
-          <MultipleSelectFilter
+          {/* <MultipleSelectFilter
             title="Entities"
             options={
               !isEmpty(organisations)
@@ -397,7 +397,7 @@ const FilterDrawer = ({
             flag="entity"
             query={query}
             updateQuery={updateQuery}
-          />
+          /> */}
 
           {/* Representative group */}
           <MultipleSelectFilter

@@ -325,16 +325,12 @@
                                                                :body #ig/ref :gpml.handler.organisation/put-params}
                                                   :handler #ig/ref :gpml.handler.organisation/put}}]
                                           ["/members"
-                                           {:get {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                               #ig/ref :gpml.auth/auth-required]
-                                                  :summary "List all members belonging to a given organisation"
+                                           {:get {:summary "List all members belonging to a given organisation"
                                                   :swagger {:tags ["organisation detail"]}
                                                   :parameters #ig/ref :gpml.handler.organisation-detail/get-members-params
                                                   :handler #ig/ref :gpml.handler.organisation-detail/get-members}}]
                                           ["/content"
-                                           {:get {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                               #ig/ref :gpml.auth/auth-required]
-                                                  :summary "List all content from a given organisation"
+                                           {:get {:summary "List all content from a given organisation"
                                                   :swagger {:tags ["organisation detail"]}
                                                   :parameters #ig/ref :gpml.handler.organisation-detail/get-content-params
                                                   :handler #ig/ref :gpml.handler.organisation-detail/get-content}}]]]
