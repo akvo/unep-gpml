@@ -643,9 +643,9 @@ const VerticalLegend = ({
               </>
             )}
 
-            {existingData.includes("organisation")
+            {/* {existingData.includes("organisation")
               ? entityPerTransnationalContent()
-              : existingData.length === 0 && entityPerTransnationalContent()}
+              : existingData.length === 0 && entityPerTransnationalContent()} */}
           </>
         )}
       </Card>
