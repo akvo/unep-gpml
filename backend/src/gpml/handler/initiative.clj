@@ -8,6 +8,7 @@
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.auth :as h.auth]
             [gpml.handler.image :as handler.image]
+            [gpml.handler.util :as util]
             [gpml.pg-util :as pg-util]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
@@ -72,12 +73,11 @@
                  (assoc :qimage (handler.image/assoc-image conn qimage "initiative")
                         :related_content (pg-util/->JDBCArray related_content "integer")))
         initiative-id (:id (db.initiative/new-initiative conn data))
-        individual_connections (conj individual_connections {:stakeholder created_by
-                                                             :role "owner"})
+        api-individual-connections (util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
-                                                          individual_connections)))))]
+                                                          api-individual-connections)))))]
     (add-geo-initiative conn initiative-id (extract-geo-data data))
     (doseq [stakeholder-id owners]
       (h.auth/grant-topic-to-stakeholder! conn {:topic-id initiative-id
@@ -87,8 +87,9 @@
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections initiative-id)]
         (db.favorite/new-organisation-association conn association)))
-    (doseq [association (expand-individual-associations individual_connections initiative-id)]
-      (db.favorite/new-association conn association))
+    (when (not-empty api-individual-connections)
+      (doseq [association (expand-individual-associations api-individual-connections initiative-id)]
+        (db.favorite/new-association conn association)))
     (when (not-empty tags)
       (add-tags conn mailjet-config tags initiative-id))
     (email/notify-admins-pending-approval
