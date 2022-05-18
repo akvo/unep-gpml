@@ -365,12 +365,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       }
 
       if (key === "representativeGroup") {
-        const selectedRepresentativeGroups = representativeGroup?.find(
-          (x) => x?.code?.toLowerCase() == value?.toLowerCase()
-        );
-        return value.toLowerCase() === "other"
-          ? "Other"
-          : selectedRepresentativeGroups?.name;
+        return value;
       }
       if (key === "transnational") {
         const transnationalGroup = multicountryGroups

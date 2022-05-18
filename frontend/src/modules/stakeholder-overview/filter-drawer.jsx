@@ -121,7 +121,7 @@ const FilterDrawer = ({
   const representativeOpts = isLoaded()
     ? [...representativeGroup, { code: "other", name: "Other" }].map((x) => ({
         label: x?.name,
-        value: x?.code,
+        value: x?.name,
       }))
     : [];
 
