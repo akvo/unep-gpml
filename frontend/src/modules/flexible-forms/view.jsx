@@ -770,7 +770,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   }, [state]);
 
   useEffect(() => {
-    if (status === "edit") {
+    if (status === "edit" || params?.id) {
       const dataId = Number(params?.id || id);
       setMainType(getTypeByResource(state?.state.type).type);
       setLabel(getTypeByResource(state?.state.type).name);
@@ -868,25 +868,25 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     profile,
   ]);
 
-  useEffect(() => {
-    if (isLoaded()) {
-      initialFormData.update((e) => {
-        e.data = {
-          ...e.data,
-          S4: {
-            ...e.data.S4,
-            S4_G5: {
-              ...e.data.S4.S4_G5,
-              individual: [
-                { role: "owner", stakeholder: profile.id },
-                ...e.data.S4.S4_G5.individual,
-              ],
-            },
-          },
-        };
-      });
-    }
-  }, [initialFormData, isLoaded, profile]);
+  // useEffect(() => {
+  //   if (isLoaded()) {
+  //     initialFormData.update((e) => {
+  //       e.data = {
+  //         ...e.data,
+  //         S4: {
+  //           ...e.data.S4,
+  //           S4_G5: {
+  //             ...e.data.S4.S4_G5,
+  //             individual: [
+  //               { role: "owner", stakeholder: profile.id },
+  //               ...e.data.S4.S4_G5.individual,
+  //             ],
+  //           },
+  //         },
+  //       };
+  //     });
+  //   }
+  // }, [initialFormData, isLoaded, profile]);
 
   useEffect(() => {
     if (isLoaded()) {
@@ -959,8 +959,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
               shape="circle"
               icon={
                 totalRequiredFields === 0 &&
-                data?.S4?.S4_G5.individual?.length > 0 &&
-                data?.S4?.S4_G5.individual[0].hasOwnProperty("role") ? (
+                ((data?.S4?.S4_G5.individual?.length > 0 &&
+                  data?.S4?.S4_G5.individual[0].hasOwnProperty("role")) ||
+                  (data?.S4?.S4_G5.entity?.length > 0 &&
+                    data?.S4?.S4_G5.entity[0].hasOwnProperty("role"))) ? (
                   <CheckOutlined />
                 ) : (
                   <EditOutlined />
