@@ -214,7 +214,14 @@
     justify-content: space-between;
     text-align: left;
   }
-
+  .total-count {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    @-moz-document url-prefix() {
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+  }
   .total-resources:not(:last-of-type) {
     border-bottom: 1px solid rgba(0, 0, 0, 0.5);
   }
