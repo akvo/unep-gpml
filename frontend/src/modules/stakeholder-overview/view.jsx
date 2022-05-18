@@ -357,11 +357,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       }
 
       if (key === "geoCoverageType") {
-        const selectedGeoCoverage = geoCoverageTypeOptions?.find(
-          (x) => x.toLowerCase() === value.toLowerCase()
-        );
-
-        return selectedGeoCoverage;
+        return value;
       }
 
       if (key === "representativeGroup") {

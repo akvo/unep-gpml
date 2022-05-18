@@ -333,10 +333,12 @@ const FilterDrawer = ({
             title="Geo-coverage"
             options={
               isLoaded()
-                ? geoCoverageTypeOptions?.map((x) => ({
-                    value: x,
-                    label: x,
-                  }))
+                ? [...geoCoverageTypeOptions, "Subnational"]
+                    .sort((a, b) => a.localeCompare(b))
+                    ?.map((x) => ({
+                      value: x,
+                      label: x,
+                    }))
                 : []
             }
             value={query?.geoCoverageType || []}
