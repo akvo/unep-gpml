@@ -194,7 +194,7 @@
       &:hover {
         background-color: $yellow-highlight;
         .select-button {
-          background-color: $yellow-highlight !important;
+          opacity: 0.5 !important;
         }
       }
 
