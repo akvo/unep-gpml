@@ -90,16 +90,14 @@
     @media (min-width: 750px) {
       top: 0 !important;
       left: 100px !important;
-    }
-
-    & {
       @-moz-document url-prefix() {
-        @media (min-width: 750px) {
+        & {
           top: 0 !important;
           left: 90px !important;
         }
       }
     }
+
     .ant-tabs-nav-operations {
       position: unset;
       display: none;
