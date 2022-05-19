@@ -242,7 +242,7 @@ h4 {
       border-color: #fff;
     }
     &:hover {
-      border-color: $yellow-highlight;
+      border-color: #fff;
       color: #fff;
       background: $yellow-highlight;
     }
@@ -250,7 +250,7 @@ h4 {
       color: $black;
       border-color: $black;
       &:hover {
-        border-color: $yellow-highlight;
+        border-color: #fff;
         color: #fff;
         background: $yellow-highlight;
       }
@@ -394,7 +394,6 @@ h4 {
     }
     @-moz-document url-prefix() {
       padding: 2px 7.5px;
-      height: 40px;
     }
     &.selected {
       color: rgba(255, 184, 0, 1);
@@ -463,6 +462,11 @@ h4 {
         height: 42px;
         padding: 0 13px;
         line-height: 39px;
+        &:hover {
+          background: $yellow-highlight;
+          border-color: #fff;
+          color: #fff;
+        }
       }
     }
 
@@ -864,7 +868,9 @@ path {
   align-items: center;
   .menu-icon {
     background-color: transparent;
-    border: unset;
+    border: unset !important;
+    display: flex;
+    justify-content: center;
   }
 }
 
