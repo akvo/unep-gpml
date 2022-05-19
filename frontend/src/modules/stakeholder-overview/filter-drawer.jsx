@@ -41,6 +41,7 @@ const FilterDrawer = ({
     representativeGroup,
     transnationalOptions,
     geoCoverageTypeOptions,
+    tags,
   } = UIStore.useState((s) => ({
     seeking: s.tags.seeking,
     offering: s.tags.offering,
@@ -49,6 +50,7 @@ const FilterDrawer = ({
     representativeGroup: s.representativeGroup,
     transnationalOptions: s.transnationalOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
+    tags: Object.values(s.tags).flat(),
   }));
 
   const entityIcon = (name) => {
@@ -346,8 +348,8 @@ const FilterDrawer = ({
           <MultipleSelectFilter
             title="What expertises are they offering?"
             options={
-              !isEmpty(offering)
-                ? offering?.map((x) => ({ value: x.tag, label: x.tag }))
+              !isEmpty(tags)
+                ? tags?.map((x) => ({ value: x.tag, label: x.tag }))
                 : []
             }
             value={query?.offering || []}
@@ -360,8 +362,8 @@ const FilterDrawer = ({
           <MultipleSelectFilter
             title="What expertises are they seeking?"
             options={
-              !isEmpty(seeking)
-                ? seeking?.map((x) => ({ value: x.tag, label: x.tag }))
+              !isEmpty(tags)
+                ? tags?.map((x) => ({ value: x.tag, label: x.tag }))
                 : []
             }
             value={query?.seeking || []}
