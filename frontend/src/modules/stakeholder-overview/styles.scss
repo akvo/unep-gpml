@@ -363,16 +363,19 @@
       .role-name {
         margin-bottom: 0;
         color: #18162f;
-        font-size: 10px;
+        font-size: 12px;
         @-moz-document url-prefix() {
-          font-size: 8px;
+          font-size: 10px;
         }
       }
 
       .role-name {
         font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        font-size: 9px;
         @-moz-document url-prefix() {
-          font-weight: bold;
+          font-size: 8spx;
         }
       }
     }
@@ -1140,9 +1143,9 @@
             }
           }
           .role-name {
-            font-size: 12px;
+            font-size: 9px;
             @-moz-document url-prefix() {
-              font-size: 9px;
+              font-size: 8px;
             }
           }
         }
