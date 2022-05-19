@@ -213,6 +213,7 @@ const FlexibleForm = withRouter(
 
       if (data.geoCoverageType === "global") {
         delete data.geoCoverageValueTransnational;
+        delete data.geoCoverageCountries;
       }
 
       if (data?.urls) {
@@ -540,6 +541,7 @@ const FlexibleForm = withRouter(
 
       if (data.geoCoverageType === "global") {
         delete data.geoCoverageValueTransnational;
+        delete data.geoCoverageCountries;
       }
 
       if (data?.urls) {
@@ -735,6 +737,7 @@ const FlexibleForm = withRouter(
 
       if (data.geoCoverageType === "global") {
         delete data.geoCoverageValueTransnational;
+        delete data.geoCoverageCountries;
       }
 
       if (data?.urls) {
@@ -910,6 +913,7 @@ const FlexibleForm = withRouter(
 
       if (data.geoCoverageType === "global") {
         delete data.geoCoverageValueTransnational;
+        delete data.geoCoverageCountries;
       }
 
       if (data?.yearFounded) {
