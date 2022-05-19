@@ -6,7 +6,9 @@
 
 -- :name create-resource-tags :<!
 -- :doc Creates a relation for <resource>_tag.
-INSERT INTO :i:table (:i:resource-col, tag)
+INSERT INTO :i:table (:i:resource-col, tag
+--~(when (= (:table params) "stakeholder_tag") ", tag_relation_category")
+)
 VALUES :t*:tags RETURNING *;
 
 -- :name delete-resource-tags :! :n
@@ -16,6 +18,7 @@ DELETE FROM :i:table WHERE :i:resource-col = :resource-id;
 -- :name get-resource-tags :? :*
 -- :doc Get resource tags
 SELECT rt.:i:resource-col, t.id, t.tag, tg.category AS tag_category
+--~(when (= (:table params) "stakeholder_tag") ", rt.tag_relation_category")
 FROM :i:table rt
 JOIN tag t ON rt.tag = t.id
 JOIN tag_category tg ON t.tag_category = tg.id
