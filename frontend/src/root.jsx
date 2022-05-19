@@ -361,23 +361,40 @@ const Root = () => {
               {isAuthenticated && <WorkspaceButton />}
               <ul>
                 <li>
-                  <NavLink to="/about-us" className="menu-btn nav-link menu-dropdown" activeClassName="selected">
+                  <NavLink
+                    to="/about-us"
+                    className="menu-btn nav-link menu-dropdown"
+                    activeClassName="selected"
+                  >
                     About
                   </NavLink>
                 </li>
-                <li><ExploreDropdownMenu topicsCount={topicsCount} /></li>
                 <li>
-                  <a href="https://datahub.gpmarinelitter.org/" className="menu-btn nav-link menu-dropdown">
+                  <ExploreDropdownMenu topicsCount={topicsCount} />
+                </li>
+                <li>
+                  <a
+                    href="https://datahub.gpmarinelitter.org/"
+                    className="menu-btn nav-link menu-dropdown"
+                  >
                     Data Hub
                   </a>
                 </li>
                 <li>
-                  <NavLink to="/knowledge-library" className="menu-btn nav-link menu-dropdown" activeClassName="selected">
+                  <NavLink
+                    to="/knowledge-library"
+                    className="menu-btn nav-link menu-dropdown"
+                    activeClassName="selected"
+                  >
                     Knowledge Exchange
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/events" className="menu-btn nav-link" activeClassName="selected">
+                  <NavLink
+                    to="/events"
+                    className="menu-btn nav-link"
+                    activeClassName="selected"
+                  >
                     Connect Stakeholders
                   </NavLink>
                 </li>
@@ -847,9 +864,7 @@ const AddButton = withRouter(
               <JoinGPMLButton loginWithPopup={loginWithPopup} />
             )}
             <Link to="/flexible-forms">
-              <Button type="primary">
-                Add Content
-              </Button>
+              <Button type="primary">Add Content</Button>
             </Link>
           </>
         );
