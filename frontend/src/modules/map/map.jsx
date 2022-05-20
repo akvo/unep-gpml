@@ -51,6 +51,7 @@ const StakeholderTooltipContent = ({
   geo,
   path,
   existingStakeholders,
+  query,
 }) => {
   const dataToDisplay = () => {
     return {
@@ -74,6 +75,11 @@ const StakeholderTooltipContent = ({
 
   const characterLength = transnationalMaxValue?.length;
 
+  const stakeholderToDisplay =
+    existingStakeholders?.length > 0
+      ? existingStakeholders
+      : query?.networkType;
+
   return (
     <div
       key={`${geo.ISO3CD}-tooltip`}
@@ -88,7 +94,7 @@ const StakeholderTooltipContent = ({
           </div>
         </div>
         <div>
-          {existingStakeholders.length === 0 ? (
+          {stakeholderToDisplay.length === 0 ? (
             <>
               <div className="table-row">
                 <div className="tooltip-topic">Entity</div>
@@ -127,7 +133,7 @@ const StakeholderTooltipContent = ({
             </>
           ) : (
             <>
-              {existingStakeholders.includes("organisation") && (
+              {stakeholderToDisplay.includes("organisation") && (
                 <div className="table-row">
                   <div className="tooltip-topic">Entity</div>
                   <div>
@@ -154,7 +160,7 @@ const StakeholderTooltipContent = ({
                   </div>
                 </div>
               )}
-              {existingStakeholders.includes("stakeholder") && (
+              {stakeholderToDisplay.includes("stakeholder") && (
                 <div className="table-row">
                   <div className="tooltip-topic">Individuals</div>
 
@@ -178,6 +184,7 @@ const KnowledgeLibraryToolTipContent = ({
   geo,
   path,
   existingResources,
+  query,
 }) => {
   const dataToDisplay = () => {
     return {
@@ -210,6 +217,9 @@ const KnowledgeLibraryToolTipContent = ({
     .toString();
 
   const characterLength = transnationalMaxValue?.length;
+
+  const resourceToShow =
+    existingResources?.length > 0 ? existingResources : query?.topic;
 
   return (
     <div
@@ -244,7 +254,7 @@ const KnowledgeLibraryToolTipContent = ({
               }
             };
 
-            return dataToDisplayPerPath() && existingResources.length === 0 ? (
+            return dataToDisplayPerPath() && resourceToShow.length === 0 ? (
               <tr key={topic}>
                 <td className="tooltip-topic">{topicNames(topic)}</td>
                 <td className="tooltip-count-wrapper">
@@ -262,7 +272,7 @@ const KnowledgeLibraryToolTipContent = ({
                 </td>
               </tr>
             ) : (
-              existingResources.includes(tooltipChecker()) && (
+              resourceToShow.includes(tooltipChecker()) && (
                 <tr key={topic}>
                   <td className="tooltip-topic">{topicNames(topic)}</td>
                   <td className="tooltip-count-wrapper">
@@ -796,6 +806,7 @@ const Maps = ({
                                     geo={geo.properties}
                                     path={path}
                                     existingStakeholders={existingStakeholders}
+                                    query={query}
                                   />
                                 );
                               }
@@ -806,6 +817,7 @@ const Maps = ({
                                     geo={geo.properties}
                                     path={path}
                                     existingResources={existingResources}
+                                    query={query}
                                   />
                                 );
                               }
