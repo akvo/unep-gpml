@@ -41,6 +41,7 @@ const FilterDrawer = ({
     representativeGroup,
     transnationalOptions,
     geoCoverageTypeOptions,
+    tags,
   } = UIStore.useState((s) => ({
     seeking: s.tags.seeking,
     offering: s.tags.offering,
@@ -49,13 +50,8 @@ const FilterDrawer = ({
     representativeGroup: s.representativeGroup,
     transnationalOptions: s.transnationalOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
+    tags: Object.values(s.tags).flat(),
   }));
-
-  const isLoaded = () =>
-    !isEmpty(countries) &&
-    !isEmpty(transnationalOptions) &&
-    !isEmpty(geoCoverageTypeOptions) &&
-    !isEmpty(representativeGroup);
 
   const entityIcon = (name) => {
     if (name.toLowerCase() === "owner") {
@@ -118,10 +114,10 @@ const FilterDrawer = ({
     .map((it) => ({ value: it.id, label: it.name }))
     .sort((a, b) => a.label.localeCompare(b.label));
 
-  const representativeOpts = isLoaded()
+  const representativeOpts = !isEmpty(representativeGroup)
     ? [...representativeGroup, { code: "other", name: "Other" }].map((x) => ({
         label: x?.name,
-        value: x?.code,
+        value: x?.name,
       }))
     : [];
 
@@ -261,7 +257,7 @@ const FilterDrawer = ({
           <MultipleSelectFilter
             title="Affiliation"
             options={
-              isLoaded()
+              !isEmpty(organisations)
                 ? organisations
                     ?.map((x) => ({ value: x.id, label: x.name }))
                     .filter(
@@ -332,11 +328,14 @@ const FilterDrawer = ({
           <MultipleSelectFilter
             title="Geo-coverage"
             options={
-              isLoaded()
-                ? geoCoverageTypeOptions?.map((x) => ({
-                    value: x,
-                    label: x,
-                  }))
+              !isEmpty(geoCoverageTypeOptions)
+                ? [...geoCoverageTypeOptions, "Sub-national"]
+                    .sort((a, b) => a.localeCompare(b))
+                    ?.map((x) => ({
+                      value: x,
+                      label:
+                        x?.toLowerCase() === "sub-national" ? "Subnational" : x,
+                    }))
                 : []
             }
             value={query?.geoCoverageType || []}
@@ -345,22 +344,12 @@ const FilterDrawer = ({
             updateQuery={updateQuery}
           />
 
-          {/* Location */}
-          {/* <MultipleSelectFilter
-            title="Location"
-            options={countryOpts}
-            value={query?.country?.map((x) => parseInt(x)) || []}
-            flag="country"
-            query={query}
-            updateQuery={updateQuery}
-          /> */}
-
           {/*Expertise to offer*/}
           <MultipleSelectFilter
             title="What expertises are they offering?"
             options={
-              isLoaded()
-                ? offering?.map((x) => ({ value: x.tag, label: x.tag }))
+              !isEmpty(tags)
+                ? tags?.map((x) => ({ value: x.tag, label: x.tag }))
                 : []
             }
             value={query?.offering || []}
@@ -373,8 +362,8 @@ const FilterDrawer = ({
           <MultipleSelectFilter
             title="What expertises are they seeking?"
             options={
-              isLoaded()
-                ? seeking?.map((x) => ({ value: x.tag, label: x.tag }))
+              !isEmpty(tags)
+                ? tags?.map((x) => ({ value: x.tag, label: x.tag }))
                 : []
             }
             value={query?.seeking || []}
@@ -383,10 +372,10 @@ const FilterDrawer = ({
             updateQuery={updateQuery}
           />
           {/* Entities */}
-          <MultipleSelectFilter
+          {/* <MultipleSelectFilter
             title="Entities"
             options={
-              isLoaded()
+              !isEmpty(organisations)
                 ? organisations
                     ?.map((x) => ({ value: x.id, label: x.name }))
                     .filter(
@@ -401,13 +390,13 @@ const FilterDrawer = ({
             flag="entity"
             query={query}
             updateQuery={updateQuery}
-          />
+          /> */}
 
           {/* Representative group */}
           <MultipleSelectFilter
             title="Representative group"
             options={
-              isLoaded()
+              !isEmpty(representativeGroup)
                 ? representativeOpts.map((x) => ({
                     value: x?.value,
                     label: x.label,

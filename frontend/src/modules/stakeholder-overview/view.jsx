@@ -46,6 +46,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     organisations,
     seeking,
     offering,
+    tags,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -56,6 +57,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     seeking: s.tags.seeking,
     offering: s.tags.offering,
     stakeholders: s.stakeholders?.stakeholders,
+    tags: Object.values(s.tags).flat(),
   }));
 
   const viewportWidth = document.documentElement.clientWidth;
@@ -357,20 +359,11 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       }
 
       if (key === "geoCoverageType") {
-        const selectedGeoCoverage = geoCoverageTypeOptions?.find(
-          (x) => x.toLowerCase() === value.toLowerCase()
-        );
-
-        return selectedGeoCoverage;
+        return value.toLowerCase() === "sub-national" ? "Subnational" : value;
       }
 
       if (key === "representativeGroup") {
-        const selectedRepresentativeGroups = representativeGroup?.find(
-          (x) => x?.code?.toLowerCase() == value?.toLowerCase()
-        );
-        return value.toLowerCase() === "other"
-          ? "Other"
-          : selectedRepresentativeGroups?.name;
+        return value;
       }
       if (key === "transnational") {
         const transnationalGroup = multicountryGroups
@@ -383,11 +376,11 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         return selectedTransnational?.name;
       }
       if (key === "seeking") {
-        const selectedSeeking = seeking?.find((seek) => seek?.tag == value);
+        const selectedSeeking = tags?.find((seek) => seek?.tag == value);
         return selectedSeeking?.tag;
       }
       if (key === "offering") {
-        const selectedOffering = offering?.find((offer) => offer?.tag == value);
+        const selectedOffering = tags?.find((offer) => offer?.tag == value);
         return selectedOffering?.tag;
       }
       if (key === "entity") {

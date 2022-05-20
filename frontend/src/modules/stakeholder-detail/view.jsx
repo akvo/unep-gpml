@@ -21,6 +21,8 @@ import {
   notification,
 } from "antd";
 import StickyBox from "react-sticky-box";
+import ReadMoreReact from "read-more-less-react";
+import "read-more-less-react/dist/index.css";
 import AvatarImage from "../../images/stakeholder/Avatar.png";
 import StakeholderRating from "../../images/stakeholder/stakeholder-rating.png";
 import LocationImage from "../../images/location.svg";
@@ -543,7 +545,12 @@ const StakeholderDetail = ({
                     }}
                   >
                     <div className="bio">
-                      <p>{data?.about}</p>
+                      <ReadMoreReact
+                        text={data?.about}
+                        lines={5}
+                        readMoreText="Read more"
+                        readLessText="Read less"
+                      />
                     </div>
                     <div className="exta-info">
                       <Row gutter={[16, 16]}>

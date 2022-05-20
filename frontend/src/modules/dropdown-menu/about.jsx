@@ -1,17 +1,17 @@
 import React from "react";
-import { withRouter } from "react-router";
 import { Button } from "antd";
+import { NavLink } from "react-router-dom";
 
-const AboutDropdownMenu = withRouter(({ history }) => {
+const AboutDropdownMenu = () => {
   return (
-    <Button
-      type="link"
+    <NavLink
+      to="/about-us"
       className="menu-btn nav-link menu-dropdown"
-      onClick={() => history.push("/about-us")}
+      activeClassName="selected"
     >
       About
-    </Button>
+    </NavLink>
   );
-});
+};
 
 export default AboutDropdownMenu;

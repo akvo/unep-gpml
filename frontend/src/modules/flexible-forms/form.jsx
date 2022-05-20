@@ -213,6 +213,7 @@ const FlexibleForm = withRouter(
 
       if (data.geoCoverageType === "global") {
         delete data.geoCoverageValueTransnational;
+        delete data.geoCoverageCountries;
       }
 
       if (data?.urls) {
@@ -397,7 +398,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data.q24.hasOwnProperty("sub-national")) {
-        data.q24_2 = data.qgeoCoverageValueSubnational;
+        data.q24_2 = Array.isArray(data.qgeoCoverageValueSubnational)
+          ? data.qgeoCoverageValueSubnational
+          : [data.qgeoCoverageValueSubnational];
         data.q24_subnational_city = data.qgeoCoverageValueSubnationalCity;
         delete data.qgeoCoverageValueSubnational;
         delete data.qgeoCoverageValueSubnationalCity;
@@ -536,6 +539,11 @@ const FlexibleForm = withRouter(
         ];
 
         delete data.geoCoverageValueSubnational;
+      }
+
+      if (data.geoCoverageType === "global") {
+        delete data.geoCoverageValueTransnational;
+        delete data.geoCoverageCountries;
       }
 
       if (data?.urls) {
@@ -724,14 +732,14 @@ const FlexibleForm = withRouter(
         data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
           parseInt(x)
         );
-      }
-
-      if (data.geoCoverageType === "sub-national") {
-        data.geoCoverageCountries = [
-          parseInt(Object.keys(data.geoCoverageValueSubnational)[0]),
-        ];
 
         delete data.geoCoverageValueSubnational;
+        delete data.geoCoverageValueTransnational;
+      }
+
+      if (data.geoCoverageType === "global") {
+        delete data.geoCoverageValueTransnational;
+        delete data.geoCoverageCountries;
       }
 
       if (data?.urls) {
@@ -903,6 +911,11 @@ const FlexibleForm = withRouter(
         data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
           parseInt(x)
         );
+      }
+
+      if (data.geoCoverageType === "global") {
+        delete data.geoCoverageValueTransnational;
+        delete data.geoCoverageCountries;
       }
 
       if (data?.yearFounded) {
