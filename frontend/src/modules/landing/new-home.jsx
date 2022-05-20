@@ -221,17 +221,8 @@ const Landing = withRouter(
     }, [sortPopularTopic]);
 
     useEffect(() => {
-      const popularTags = [
-        "plastics",
-        "waste management",
-        "marine litter",
-        "capacity building",
-        "product by design",
-        "source to sea",
-      ];
-
       api
-        .get(`/tag/topic/popular?tags=${popularTags}&limit=6`)
+        .get(`/tag/topic/popular?&limit=6`)
         .then((resp) => {
           const data = resp?.data.map((item, i) => {
             return {

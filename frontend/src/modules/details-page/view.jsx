@@ -1324,7 +1324,7 @@ const DetailsView = ({
                               x.role === "interested in"
                           )
                           .map((item) => (
-                            <List.Item>
+                            <List.Item key={item?.id}>
                               <List.Item.Meta
                                 avatar={<Avatar src={item.image} />}
                                 title={

@@ -7,9 +7,7 @@ import TopicBar from "../chart/topic-bar";
 
 const TopicView = ({ updateQuery, query }) => {
   const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
-  const defTopic = sortedPopularTopics[0]?.topic?.toLocaleLowerCase();
   const [selectedTopic, setSelectedTopic] = useState(null);
-  const isMobileScreen = innerWidth <= 991;
   const popularTags = [
     "plastics",
     "waste management",
@@ -39,11 +37,16 @@ const TopicView = ({ updateQuery, query }) => {
 
   useEffect(() => {
     if (!selectedTopic && savedTopic.length > 0) {
-      setSelectedTopic(defTopic);
+      setSelectedTopic(savedTopic[0]);
+    }
+
+    // Reset selection when the filter is clear
+    if (savedTopic.length === 0 && selectedTopic) {
+      setSelectedTopic(null);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortedPopularTopics]);
+  }, [savedTopic]);
 
   const getPopularTopics = (url) => {
     api
@@ -82,22 +85,16 @@ const TopicView = ({ updateQuery, query }) => {
       });
   };
 
+  // Apply when there is a selected topic
   useEffect(() => {
-    if (selectedTopic || savedTopic.length > 0) {
-      getPopularTopics(
-        `/tag/topic/popular?tags=${selectedTopic || savedTopic}&limit=6`
-      );
+    if (selectedTopic && savedTopic.length > 0) {
+      getPopularTopics(`/tag/topic/popular?tags=${selectedTopic}&limit=6`);
+    } else {
+      !selectedTopic && getPopularTopics(`/tag/topic/popular`);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTopic]);
-
-  useEffect(() => {
-    if (savedTopic.length === 0) {
-      getPopularTopics(`/tag/topic/popular`);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <>
@@ -107,7 +104,6 @@ const TopicView = ({ updateQuery, query }) => {
         {...{
           selectedTopic,
           setSelectedTopic,
-          isMobileScreen,
           sortedPopularTopics,
           handlePopularTopicChartClick,
         }}
