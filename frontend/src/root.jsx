@@ -272,10 +272,9 @@ const Root = () => {
   const [countData, setCountData] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const [landingQuery, setLandingQuery] = useState("");
-  const getResults = (query, isSorted) => {
+  const getResults = (query) => {
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
-
     const topic = [
       "action_plan",
       "project",
@@ -284,7 +283,6 @@ const Root = () => {
       "technology",
       "event",
       "financing_resource",
-      // "capacity_building",
     ];
     if (query?.topic?.length === 0) {
       if (
@@ -332,7 +330,9 @@ const Root = () => {
     setLandingQuery(newParams.toString());
 
     clearTimeout(tmid);
+
     tmid = setTimeout(getResults(newQuery), 1000);
+
     if (param === "country") {
       setFilterCountries(value);
     }
