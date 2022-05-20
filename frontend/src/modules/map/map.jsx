@@ -49,7 +49,6 @@ export const STAKEHOLDER_OVERVIEW = "/stakeholder-overview";
 const StakeholderTooltipContent = ({
   data,
   geo,
-  path,
   existingStakeholders,
   query,
 }) => {
@@ -182,7 +181,6 @@ const StakeholderTooltipContent = ({
 const KnowledgeLibraryToolTipContent = ({
   data,
   geo,
-  path,
   existingResources,
   query,
 }) => {
@@ -804,7 +802,6 @@ const Maps = ({
                                   <StakeholderTooltipContent
                                     data={findData}
                                     geo={geo.properties}
-                                    path={path}
                                     existingStakeholders={existingStakeholders}
                                     query={query}
                                   />
@@ -815,7 +812,6 @@ const Maps = ({
                                   <KnowledgeLibraryToolTipContent
                                     data={findData}
                                     geo={geo.properties}
-                                    path={path}
                                     existingResources={existingResources}
                                     query={query}
                                   />
