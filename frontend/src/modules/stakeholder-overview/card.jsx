@@ -162,9 +162,13 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
 
           <div className="person-role">
             <p className="seeking-text">Seeking:</p>
-            <p className="role-name">
-              {findSeeking && findSeeking.length !== 0 && findSeeking[0].tag}
-            </p>
+            <ul className="role-name">
+              {findSeeking &&
+                findSeeking.length !== 0 &&
+                findSeeking
+                  .slice(0, 3)
+                  .map((seeking) => <li>{seeking?.tag}</li>)}
+            </ul>
           </div>
         </Card>
       </Link>

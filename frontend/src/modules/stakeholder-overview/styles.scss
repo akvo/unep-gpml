@@ -363,16 +363,24 @@
       .role-name {
         margin-bottom: 0;
         color: #18162f;
-        font-size: 10px;
+        font-size: 12px;
         @-moz-document url-prefix() {
-          font-size: 8px;
+          font-size: 12px;
         }
       }
 
       .role-name {
         font-weight: bold;
+        display: flex;
+        font-size: 9px;
         @-moz-document url-prefix() {
-          font-weight: bold;
+          font-size: 8px;
+        }
+        li {
+          margin-right: 10px;
+          @-moz-document url-prefix() {
+            margin-right: 8px;
+          }
         }
       }
     }
@@ -1136,11 +1144,11 @@
           .seeking-text {
             font-size: 12px;
             @-moz-document url-prefix() {
-              font-size: 9px;
+              font-size: 10px;
             }
           }
           .role-name {
-            font-size: 12px;
+            font-size: 9px;
             @-moz-document url-prefix() {
               font-size: 9px;
             }
