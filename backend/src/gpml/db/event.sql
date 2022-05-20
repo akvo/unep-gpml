@@ -172,3 +172,4 @@ select t.id, t.tag from event_tag et
   left join tag t
   on et.tag = t.id
   where et.event = :id
+  and t.review_status='APPROVED';

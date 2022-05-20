@@ -199,3 +199,4 @@ select t.id, t.tag from technology_tag tt
   left join tag t
   on tt.tag = t.id
   where tt.technology = :id
+  and t.review_staus='APPROVED';
