@@ -46,7 +46,12 @@ const higlightColor = "#255B87";
 export const KNOWLEDGE_LIBRARY = "/knowledge-library";
 export const STAKEHOLDER_OVERVIEW = "/stakeholder-overview";
 
-const StakeholderTooltipContent = ({ data, geo, path, query }) => {
+const StakeholderTooltipContent = ({
+  data,
+  geo,
+  path,
+  existingStakeholders,
+}) => {
   const dataToDisplay = () => {
     return {
       organisation: data?.counts?.organisation,
@@ -68,7 +73,7 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
     .toString();
 
   const characterLength = transnationalMaxValue?.length;
-  const topicType = query.networkType;
+
   return (
     <div
       key={`${geo.ISO3CD}-tooltip`}
@@ -83,7 +88,7 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
           </div>
         </div>
         <div>
-          {topicType.length === 0 ? (
+          {existingStakeholders.length === 0 ? (
             <>
               <div className="table-row">
                 <div className="tooltip-topic">Entity</div>
@@ -122,7 +127,7 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
             </>
           ) : (
             <>
-              {topicType.includes("organisation") && (
+              {existingStakeholders.includes("organisation") && (
                 <div className="table-row">
                   <div className="tooltip-topic">Entity</div>
                   <div>
@@ -149,7 +154,7 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
                   </div>
                 </div>
               )}
-              {topicType.includes("stakeholder") && (
+              {existingStakeholders.includes("stakeholder") && (
                 <div className="table-row">
                   <div className="tooltip-topic">Individuals</div>
 
@@ -168,7 +173,12 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
   );
 };
 
-const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
+const KnowledgeLibraryToolTipContent = ({
+  data,
+  geo,
+  path,
+  existingResources,
+}) => {
   const dataToDisplay = () => {
     return {
       project: (data?.counts?.project || 0) + (data?.counts?.initiative || 0),
@@ -234,9 +244,7 @@ const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
               }
             };
 
-            const queryTopic = query?.topic;
-
-            return dataToDisplayPerPath() && queryTopic.length === 0 ? (
+            return dataToDisplayPerPath() && existingResources.length === 0 ? (
               <tr key={topic}>
                 <td className="tooltip-topic">{topicNames(topic)}</td>
                 <td className="tooltip-count-wrapper">
@@ -254,7 +262,7 @@ const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
                 </td>
               </tr>
             ) : (
-              queryTopic.includes(tooltipChecker()) && (
+              existingResources.includes(tooltipChecker()) && (
                 <tr key={topic}>
                   <td className="tooltip-topic">{topicNames(topic)}</td>
                   <td className="tooltip-count-wrapper">
@@ -399,14 +407,14 @@ const Maps = ({
   const resourceCount =
     path === KNOWLEDGE_LIBRARY &&
     countData.filter((data) => data.topic !== "gpml_member_entities");
-  const existingStakeholder =
+  const existingStakeholders =
     path === STAKEHOLDER_OVERVIEW &&
     stakeholderCount.existingStakeholder.map((data) => data?.networkType);
 
-  const existingResource =
+  const existingResources =
     path === KNOWLEDGE_LIBRARY ? resourceCount.map((data) => data.topic) : [];
   const existingData =
-    path === KNOWLEDGE_LIBRARY ? existingResource : existingStakeholder;
+    path === KNOWLEDGE_LIBRARY ? existingResources : existingStakeholders;
 
   const country =
     !isEmpty(countries) &&
@@ -787,7 +795,7 @@ const Maps = ({
                                     data={findData}
                                     geo={geo.properties}
                                     path={path}
-                                    query={query}
+                                    existingStakeholders={existingStakeholders}
                                   />
                                 );
                               }
@@ -797,7 +805,7 @@ const Maps = ({
                                     data={findData}
                                     geo={geo.properties}
                                     path={path}
-                                    query={query}
+                                    existingResources={existingResources}
                                   />
                                 );
                               }
