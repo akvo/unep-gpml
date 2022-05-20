@@ -116,3 +116,4 @@ select t.id, t.tag from initiative_tag it
   left join tag t
   on it.tag = t.id
   where it.initiative = :id
+  and t.review_status = 'APPROVED';
