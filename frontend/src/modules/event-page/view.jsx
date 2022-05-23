@@ -1,12 +1,13 @@
 import React from "react";
 import { Row, Col } from "antd";
 import "./styles.scss";
-import EventCalendar from "../event-calendar/view";
-import LeftSidebar from "../left-sidebar/LeftSidebar";
+import EventCalendar from "../../components/event-calendar/view";
+import LeftSidebar from "../../components/left-sidebar/left-sidebar";
 // Icons
 import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg";
 import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
 import { ReactComponent as IconCommunity } from "../../images/events/community-icon.svg";
+import { ReactComponent as IconPartner } from "../../images/stakeholder-overview/partner-icon.svg";
 
 const EventPage = () => {
   const sidebar = [
@@ -18,6 +19,7 @@ const EventPage = () => {
       icon: <IconCommunity />,
     },
     { id: 3, title: "Forums", url: null, icon: <IconForum /> },
+    { id: 4, title: "Partners", url: "/partners", icon: <IconPartner /> },
   ];
 
   return (

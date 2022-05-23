@@ -2,7 +2,7 @@ import { UIStore } from "../../store";
 import React, { useState, useEffect } from "react";
 import { PageHeader } from "antd";
 import { withRouter } from "react-router-dom";
-import Maps from "../map/Map";
+import Maps from "../map/map";
 
 import api from "../../utils/api";
 import isEmpty from "lodash/isEmpty";
@@ -20,22 +20,16 @@ const MapLanding = ({
   setListVisible,
   landingQuery,
 }) => {
-  const { countries, landing, transnationalOptions } = UIStore.useState(
-    (s) => ({
-      profile: s.profile,
-      countries: s.countries,
-      landing: s.landing,
-      nav: s.nav,
-      transnationalOptions: s.transnationalOptions,
-    })
-  );
+  const { countries, landing } = UIStore.useState((s) => ({
+    profile: s.profile,
+    countries: s.countries,
+    landing: s.landing,
+    nav: s.nav,
+  }));
 
   const [multiCountry, setMultiCountry] = useState(null);
   const box = document.getElementsByClassName("resource-list-container");
-  const isLoaded = () =>
-    !isEmpty(countries) &&
-    !isEmpty(landing?.map) &&
-    !isEmpty(transnationalOptions);
+  const isLoaded = () => !isEmpty(countries) && !isEmpty(landing?.map);
 
   const clickCountry = (name) => {
     setToggleButton("list");

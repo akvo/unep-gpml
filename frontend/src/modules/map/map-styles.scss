@@ -28,6 +28,10 @@
     justify-content: center;
     width: 35px;
     height: 32px;
+    @-moz-document url-prefix() {
+      width: 30px;
+      height: 30px;
+    }
     &:hover {
       background-color: $yellow-highlight;
       color: rgba(0, 0, 0, 0.85);
@@ -174,10 +178,16 @@
   // LEGEND CONTENT
   .total-per-transnational {
     margin-top: 24px;
+    @-moz-document url-prefix() {
+      margin-top: 20px;
+    }
     .transnational-name {
       display: block;
       margin-top: 24px;
       color: gray;
+      @-moz-document url-prefix() {
+        margin-top: 20px;
+      }
     }
   }
   .legend-transnational-count {
@@ -186,11 +196,17 @@
       display: block;
       color: #036799;
       margin-top: 24px;
+      @-moz-document url-prefix() {
+        margin-top: 20px;
+      }
     }
   }
   .legend-separator {
     display: block;
     width: calc(100% - 50px);
+    @-moz-document url-prefix() {
+      width: calc(100% - 40px);
+    }
   }
 
   .total-resources {
@@ -198,7 +214,14 @@
     justify-content: space-between;
     text-align: left;
   }
-
+  .total-count {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    @-moz-document url-prefix() {
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+  }
   .total-resources:not(:last-of-type) {
     border-bottom: 1px solid rgba(0, 0, 0, 0.5);
   }
@@ -277,11 +300,17 @@
     align-self: flex-end;
     .card-legend-wrapper {
       width: 300px;
+      @-moz-document url-prefix() {
+        width: 270px;
+      }
       .ant-card-body {
         display: flex;
         flex-direction: column;
         height: 240px;
         overflow-y: auto;
+        @-moz-document url-prefix() {
+          font-size: 12px;
+        }
       }
       @media (max-width: 719px) {
         max-width: 260px !important;
@@ -336,10 +365,17 @@
           padding-left: 24px;
           padding-right: 24px;
           padding-bottom: 20px;
+          @-moz-document url-prefix() {
+            padding-left: 20px;
+            padding-right: 20px;
+          }
         }
         .legend-content-wrapper,
         .total-resources-wrapper {
           padding: 24px !important;
+          @-moz-document url-prefix() {
+            padding: 20px !important;
+          }
         }
       }
     }

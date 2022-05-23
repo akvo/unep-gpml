@@ -171,6 +171,7 @@ select t.id, t.tag from policy_tag pt
   left join tag t
   on pt.tag = t.id
   where pt.policy = :id
+  and t.review_status = 'APPROVED';
 
 -- :name add-language-to-policy :! :n
 -- :doc Add language to policy

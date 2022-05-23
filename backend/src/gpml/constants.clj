@@ -23,6 +23,8 @@
 
 (def user-roles [:USER :REVIEWER :ADMIN])
 
+(def popular-tags '("plastics" "waste management" "marine litter" "capacity building" "product by design" "source to sea"))
+
 (def gcs-bucket-name "akvo-unep-gpml")
 
 (def ^:const sorted-user-columns
@@ -130,6 +132,26 @@
    :created_by "Created by"
    :created "Created"
    :modified "Modified"})
+
+(def ^:const sorted-tag-columns
+  ["ID"
+   "Category"
+   "Tag"
+   "Review status"
+   "Reviewed by"
+   "Reviewed at"
+   "Definition"
+   "Ontology"])
+
+(def ^:const tags-key-map
+  {:id "ID"
+   :tag_category "Category"
+   :tag "Tag"
+   :review_status "Review status"
+   :reviewed_by "Reviewed by"
+   :reviewed_at "Reviewed at"
+   :definition "Definition"
+   :ontology_ref_link "Ontology"})
 
 (def ^:const sorted-topic-columns
   ["ID"

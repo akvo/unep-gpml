@@ -101,11 +101,12 @@ const SharePanel = ({
 }) => {
   const noEditTopics = new Set(["stakeholder"]);
 
+  console.log(profile.id === data.createdBy);
   const canEdit = () =>
     isAuthenticated &&
     profile.reviewStatus === "APPROVED" &&
     (profile.role === "ADMIN" ||
-      profile.id === params.createdBy ||
+      profile.id === data.createdBy ||
       data.owners.includes(profile.id)) &&
     ((params.type !== "project" && !noEditTopics.has(params.type)) ||
       (params.type === "project" && params.id > 10000));
@@ -239,11 +240,7 @@ const StakeholderDetail = ({
   const breadcrumbLink = isConnectStakeholders ? "stakeholders" : "browse";
 
   const isLoaded = useCallback(
-    () =>
-      Boolean(
-        !isEmpty(countries) &&
-          (isConnectStakeholders ? !isEmpty(profile) : true)
-      ),
+    () => Boolean(!isEmpty(countries) && (isConnectStakeholders ? true : true)),
     [countries, profile, isConnectStakeholders]
   );
 
@@ -584,6 +581,7 @@ const StakeholderDetail = ({
                   </Row>
                   <div className="pagination-wrapper">
                     <Pagination
+                      showSizeChanger={false}
                       defaultCurrent={1}
                       current={ownedResourcesPage + 1}
                       pageSize={3}
@@ -618,7 +616,7 @@ const StakeholderDetail = ({
                           }}
                         >
                           <Row style={{ width: "100%" }}>
-                            <Col xs={6} lg={14}>
+                            <Col className="individual-details" xs={6} lg={14}>
                               <div className="profile-image">
                                 <img
                                   src={
@@ -630,7 +628,7 @@ const StakeholderDetail = ({
                                 />
                               </div>
                             </Col>
-                            <Col xs={6} lg={10}>
+                            <Col className="individual-details" xs={6} lg={10}>
                               <div className="profile-detail">
                                 <h3>{item.name}</h3>
                                 {/* <p>
@@ -649,6 +647,7 @@ const StakeholderDetail = ({
                   </Row>
                   <div className="pagination-wrapper">
                     <Pagination
+                      showSizeChanger={false}
                       defaultCurrent={1}
                       current={bookedResourcesPage + 1}
                       pageSize={3}

@@ -104,7 +104,7 @@ const CaseStudy = ({
                     );
                     const avatar = findSk
                       ? findSk.image
-                      : "https://ik.imagekit.io/8bnvluby33xpi/avatar-placeholder?updatedAt=1640774297572&tr=w-1080,h-1080,fo-auto";
+                      : `https://ui-avatars.com/api/?size=480&name=${sk}`;
                     return (
                       <Tooltip className="avatar" title={sk} key={sx}>
                         <Avatar src={avatar} />

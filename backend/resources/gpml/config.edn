@@ -73,7 +73,7 @@
                                                                       [:only {:optional true}
                                                                        [:enum "resources" "stakeholders" "tags" "entities" "non-member-entities"]]
                                                                       [:review_status
-                                                                       {:optional true #_#_:default "SUBMITTED"}
+                                                                       {:optional true :default "SUBMITTED"}
                                                                        [:enum "SUBMITTED" "APPROVED" "REJECTED"]]
                                                                       [:title {:optional true} string?]
                                                                       [:page {:optional true
@@ -319,21 +319,18 @@
                                                             :security [{:id_token []}]}
                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
                                                                #ig/ref :gpml.auth/auth-required
-                                                               #ig/ref :gpml.auth/approved-user]
+                                                               #ig/ref :gpml.auth/approved-user
+                                                               #ig/ref :gpml.auth/restrict-to-organisation-admin-or-owner]
                                                   :parameters {:path [:map [:id int?]]
                                                                :body #ig/ref :gpml.handler.organisation/put-params}
                                                   :handler #ig/ref :gpml.handler.organisation/put}}]
                                           ["/members"
-                                           {:get {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                               #ig/ref :gpml.auth/auth-required]
-                                                  :summary "List all members belonging to a given organisation"
+                                           {:get {:summary "List all members belonging to a given organisation"
                                                   :swagger {:tags ["organisation detail"]}
                                                   :parameters #ig/ref :gpml.handler.organisation-detail/get-members-params
                                                   :handler #ig/ref :gpml.handler.organisation-detail/get-members}}]
                                           ["/content"
-                                           {:get {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                               #ig/ref :gpml.auth/auth-required]
-                                                  :summary "List all content from a given organisation"
+                                           {:get {:summary "List all content from a given organisation"
                                                   :swagger {:tags ["organisation detail"]}
                                                   :parameters #ig/ref :gpml.handler.organisation-detail/get-content-params
                                                   :handler #ig/ref :gpml.handler.organisation-detail/get-content}}]]]
@@ -434,14 +431,13 @@
                                                               :body #ig/ref :gpml.handler.detail/put-params}
                                                  :handler #ig/ref :gpml.handler.detail/put}}]]
                                         ["/list"
-                                         ["/{topic-type}"
-                                          {:get {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                              #ig/ref :gpml.auth/auth-required]
-                                                 :summary "List all resources from a given topic"
-                                                 :swagger {:tags ["resource list"]}
-                                                 :parameters {:path [:map
-                                                                     [:topic-type #ig/ref :gpml.handler.detail/topics]]}
-                                                 :handler #ig/ref :gpml.handler.list/get}}]]
+                                         {:get {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                             #ig/ref :gpml.auth/auth-required]
+                                                :summary "List all resources from a given topic"
+                                                :swagger {:tags ["resource list"]}
+                                                :parameters #ig/ref :gpml.handler.list/get-params
+                                                :responses #ig/ref :gpml.handler.list/get-response
+                                                :handler #ig/ref :gpml.handler.list/get}}]
                                         ["/activity"
                                          ["/recent"
                                           {:get {:summary "Get the most recent activities"
@@ -463,8 +459,7 @@
                                          ["/{export-type}"
                                           {:get {:summary "Export all individuals"
                                                  :swagger {:tags ["export"]}
-                                                 :parameters {:path [:map
-                                                                     [:export-type #ig/ref :gpml.handler.export/export-types]]}
+                                                 :parameters #ig/ref :gpml.handler.export/get-params
                                                  :handler #ig/ref :gpml.handler.export/get}}]]
                                         ["/comment"
                                          [""
@@ -650,6 +645,8 @@
   :gpml.handler.detail/put-params {}
 
   :gpml.handler.list/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.list/get-params {}
+  :gpml.handler.list/get-response {}
 
   :gpml.handler.organisation-detail/get-content {:db #ig/ref :duct.database/sql}
   :gpml.handler.organisation-detail/get-content-params {}
@@ -662,12 +659,11 @@
   :gpml.handler.community/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.community/get-params {}
 
-  :gpml.handler.export/export-types {}
   :gpml.handler.export/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.export/get-params {}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
   :duct.migrator.ragtime/resources {:path "migrations"}
-  :duct.database/sql {:jdbc-url #duct/env "DATABASE_URL"}
 
   :gpml.auth/auth-middleware {:issuer #duct/env "OIDC_ISSUER"
                               :audience #duct/env "OIDC_AUDIENCE"
@@ -678,6 +674,7 @@
                                    :db #ig/ref :duct.database/sql}
   :gpml.auth/auth-required {}
   :gpml.auth/restrict-to-admin-and-comment-author-middleware {:db #ig/ref :duct.database/sql}
+  :gpml.auth/restrict-to-organisation-admin-or-owner {:db #ig/ref :duct.database/sql}
   :gpml.auth/approved-user {:db #ig/ref :duct.database/sql}
   :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}
   :gpml.auth/reviewer-required-middleware {:db #ig/ref :duct.database/sql}
@@ -689,7 +686,13 @@
 
   :gpml.handler.monitoring/hikaricp
   {:hikari-cp #ig/ref :duct.database.sql/hikaricp
-   :metrics-collector #ig/ref :gpml.handler.monitoring/collector}}
+   :metrics-collector #ig/ref :gpml.handler.monitoring/collector}
+
+  :duct.database.sql/hikaricp
+  {:jdbc-url #duct/env ["DATABASE_URL" Str]
+   :logger nil ;; We don't want log entries for sql sentences (not event ragtime ones!)
+   :minimum-idle 10
+   :maximum-pool-size 25}}
 
  :duct.profile/dev   #duct/include "dev"
  :duct.profile/local #duct/include "local"

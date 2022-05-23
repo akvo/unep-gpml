@@ -5,9 +5,6 @@ import { Link } from "react-router-dom";
 import { UIStore } from "../../store";
 import unionIcon from "../../images/stakeholder-overview/union-icon.svg";
 import communityIcon from "../../images/stakeholder-overview/union-2-icon.svg";
-import { ReactComponent as GPMLIcon } from "../../images/stakeholder-overview/gpml-logo.svg";
-import { ReactComponent as MedalIcon } from "../../images/stakeholder-overview/medal-icon.svg";
-import { ReactComponent as AgreementIcon } from "../../images/stakeholder-overview/agreement-icon.svg";
 import { TrimText } from "../../utils/string";
 
 const ProfileCard = ({ profile, isValidUser, profileType }) => {
@@ -83,7 +80,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                         ? profile?.picture
                         : `https://ui-avatars.com/api/?background=0D8ABC&size=480&name=${profile?.firstName}`
                     }
-                    alt={`${profile.firstName} ${profile.lastName}`}
+                    alt={profile?.name}
                   />
                   {profile?.affiliation &&
                     profile?.affiliation?.length !== 0 &&
@@ -165,9 +162,13 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
 
           <div className="person-role">
             <p className="seeking-text">Seeking:</p>
-            <p className="role-name">
-              {findSeeking && findSeeking.length !== 0 && findSeeking[0].tag}
-            </p>
+            <ul className="role-name">
+              {findSeeking &&
+                findSeeking.length !== 0 &&
+                findSeeking
+                  .slice(0, 3)
+                  .map((seeking) => <li>{seeking?.tag}</li>)}
+            </ul>
           </div>
         </Card>
       </Link>

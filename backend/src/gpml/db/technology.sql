@@ -183,7 +183,7 @@ select st.id, st.association as role, s.id as stakeholder_id, concat_ws(' ', s.f
 
 -- :name all-technologies
 -- :doc List all technologies
-select id, title
+select id, name
   from technology;
 
 -- :name related-content-by-id
@@ -199,3 +199,4 @@ select t.id, t.tag from technology_tag tt
   left join tag t
   on tt.tag = t.id
   where tt.technology = :id
+  and t.review_staus='APPROVED';

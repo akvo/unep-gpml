@@ -27,6 +27,7 @@ import api from "../../utils/api";
 import { useLocation } from "react-router-dom";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import cloneDeep from "lodash/cloneDeep";
 const { Step } = Steps;
 
 const getType = (type) => {
@@ -521,7 +522,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const { editId, data } = formData;
   const { status, id } = formEdit.flexible;
   const btnSubmit = useRef();
-  const [alert, setAlert] = useState("");
   const [displayModal, setDisplayModal] = useState(false);
   const [sending, setSending] = useState(false);
   const [highlight, setHighlight] = useState(false);
@@ -567,21 +567,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     representativeGroup,
   ]);
 
-  const getResourceByType = (type) => {
-    const t = getType(type);
-    api.get(`/list/${t}`).then((res) => {
-      UIStore.update((e) => {
-        e.relatedResource = res.data;
-      });
-    });
-  };
-
-  useEffect(() => {
-    if (mainType && isLoaded()) {
-      getResourceByType(mainType);
-    }
-  }, [mainType, isLoaded]);
-
   useEffect(() => {
     if (state?.state?.type && status !== "edit") {
       setMainType(state?.state?.type);
@@ -621,6 +606,11 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
 
     if (name === "relatedContent") {
+      if (value && value.length > 0) {
+        UIStore.update((e) => {
+          e.relatedResource = value;
+        });
+      }
       res =
         value && value.length > 0 && value[0].id !== null
           ? value.map((x) => x.id)
@@ -671,7 +661,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
         res = value
           ? moment(value).isValid()
             ? moment(value).format("YYYY-MM-DD")
-            : moment().format("YYYY-MM-DD")
+            : ""
           : "";
       }
     }
@@ -780,7 +770,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   }, [state]);
 
   useEffect(() => {
-    if (status === "edit") {
+    if (status === "edit" || params?.id) {
       const dataId = Number(params?.id || id);
       setMainType(getTypeByResource(state?.state.type).type);
       setLabel(getTypeByResource(state?.state.type).name);
@@ -795,6 +785,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
 
       if (state?.state.type === "initiative") {
         api.getRaw(`/initiative/${dataId}`).then((d) => {
+          setSubType(JSON.parse(d?.data).sub_content_type);
           initialFormData.update((e) => {
             e.data = revertFormData(JSON.parse(d.data));
             e.editId = true;
@@ -804,6 +795,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
         });
       } else {
         api.get(`/detail/${state?.state.type}/${dataId}`).then((d) => {
+          setSubType(d?.subContentType);
           let newData = [];
           if (d.data.organisations) {
             newData = d.data.organisations.map((item) => {
@@ -876,25 +868,25 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     profile,
   ]);
 
-  useEffect(() => {
-    if (isLoaded()) {
-      initialFormData.update((e) => {
-        e.data = {
-          ...e.data,
-          S4: {
-            ...e.data.S4,
-            S4_G5: {
-              ...e.data.S4.S4_G5,
-              individual: [
-                { role: "owner", stakeholder: profile.id },
-                ...e.data.S4.S4_G5.individual,
-              ],
-            },
-          },
-        };
-      });
-    }
-  }, [initialFormData, isLoaded, profile]);
+  // useEffect(() => {
+  //   if (isLoaded()) {
+  //     initialFormData.update((e) => {
+  //       e.data = {
+  //         ...e.data,
+  //         S4: {
+  //           ...e.data.S4,
+  //           S4_G5: {
+  //             ...e.data.S4.S4_G5,
+  //             individual: [
+  //               { role: "owner", stakeholder: profile.id },
+  //               ...e.data.S4.S4_G5.individual,
+  //             ],
+  //           },
+  //         },
+  //       };
+  //     });
+  //   }
+  // }, [initialFormData, isLoaded, profile]);
 
   useEffect(() => {
     if (isLoaded()) {
@@ -967,8 +959,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
               shape="circle"
               icon={
                 totalRequiredFields === 0 &&
-                data?.S4?.S4_G5.individual?.length > 0 &&
-                data?.S4?.S4_G5.individual[0].hasOwnProperty("role") ? (
+                ((data?.S4?.S4_G5.individual?.length > 0 &&
+                  data?.S4?.S4_G5.individual[0].hasOwnProperty("role")) ||
+                  (data?.S4?.S4_G5.entity?.length > 0 &&
+                    data?.S4?.S4_G5.entity[0].hasOwnProperty("role"))) ? (
                   <CheckOutlined />
                 ) : (
                   <EditOutlined />
@@ -1051,7 +1045,9 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                   (data?.[section]?.S4_G5.individual[0].hasOwnProperty(
                     "role"
                   ) ||
-                    data?.[section]?.S4_G5.entity[0].hasOwnProperty("role")) ? (
+                    data?.[section]?.S4_G5?.entity[0]?.hasOwnProperty(
+                      "role"
+                    )) ? (
                     <CheckOutlined />
                   ) : (
                     <EditOutlined />
@@ -1061,11 +1057,11 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                   right: "0",
                   position: "absolute",
                   color:
-                    data?.[section]?.S4_G5.individual &&
-                    (data?.[section]?.S4_G5.individual[0].hasOwnProperty(
+                    data?.[section]?.S4_G5?.individual &&
+                    (data?.[section]?.S4_G5?.individual[0]?.hasOwnProperty(
                       "role"
                     ) ||
-                      data?.[section]?.S4_G5.entity[0].hasOwnProperty("role"))
+                      data?.[section]?.S4_G5?.entity[0]?.hasOwnProperty("role"))
                       ? "#255B87"
                       : "#fff",
                   borderColor: "#255B87",
@@ -1530,10 +1526,14 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                         value={mainType}
                       >
                         {mainContentType.map((item) => {
-                          const img = require(`../../images/${item.code}.svg`)
-                            .default;
-                          const imgSelected = require(`../../images/${item.code}-selected.svg`)
-                            .default;
+                          const img = require(`../../images/${item?.code?.replace(
+                            /_/g,
+                            "-"
+                          )}.svg`).default;
+                          const imgSelected = require(`../../images/${item?.code?.replace(
+                            /_/g,
+                            "-"
+                          )}-selected.svg`).default;
                           return (
                             <Col
                               className="gutter-row"
@@ -1580,10 +1580,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                           <span>Optional</span>
                         </div>
                       </div>
-                      {subContentType.length > 0 ? (
+                      {subContentType?.length > 0 ? (
                         <div className="sub-content-topics">
                           <div className="ant-row" value={subType}>
-                            {subContentType.map((item, index) => (
+                            {subContentType?.map((item, index) => (
                               <Col
                                 className="gutter-row"
                                 xs={12}

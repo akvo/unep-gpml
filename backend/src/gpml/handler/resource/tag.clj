@@ -20,6 +20,12 @@
                                            (merge tag {:type "tag"})))
    new-tags))
 
+(defn- prep-resource-tags
+  [resource-name resource-id tags tag-category]
+  (if (= resource-name "stakeholder")
+    (map #(vector resource-id % tag-category) tags)
+    (map (partial vector resource-id) tags)))
+
 (defn create-resource-tags
   "Creates the relation between a resource `resource-name` and tags. If
   some of the tags don't exists they are created."
@@ -30,12 +36,13 @@
       (db.resource.tag/create-resource-tags conn
                                             {:table table
                                              :resource-col resource-name
-                                             :tags (map (partial vector resource-id) tags-ids)})
+                                             :tags (prep-resource-tags resource-name resource-id tags-ids tag-category)})
       (let [new-tags-ids (handler.tag/create-tags conn tags tag-category)
-            tags-to-add (map (partial vector resource-id) (concat (remove nil? tags-ids) new-tags-ids))
+            tags-to-add (concat (remove nil? tags-ids) new-tags-ids)
+            resource-tags-to-add (prep-resource-tags resource-name resource-id tags-to-add tag-category)
             new-tags (db.resource.tag/create-resource-tags conn {:table table
                                                                  :resource-col resource-name
-                                                                 :tags tags-to-add})]
+                                                                 :tags resource-tags-to-add})]
         (send-new-tags-admins-pending-approval-notification conn mailjet-config new-tags)))))
 
 (defn update-resource-tags

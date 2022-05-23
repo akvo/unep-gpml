@@ -1,9 +1,10 @@
 import React from "react";
 import { Row, Col } from "antd";
+
 import "./styles.scss";
-import Header from "./Header";
-import LeftSidebar from "../left-sidebar/LeftSidebar";
-import ActionPlan from "./ActionPlan";
+import Header from "./header";
+import LeftSidebar from "../../components/left-sidebar/left-sidebar";
+import ActionPlan from "./action-plan";
 
 // Icons
 import { ReactComponent as IconHome } from "../../images/workspace/home-icon.svg";

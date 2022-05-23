@@ -118,32 +118,8 @@ const SignUp = ({ match: { params }, ...props }) => {
   }, [schema, highlight]);
 
   const isLoaded = useCallback(() => {
-    return Boolean(
-      !isEmpty(countries) &&
-        !isEmpty(tags) &&
-        !isEmpty(profile) &&
-        !isEmpty(regionOptions) &&
-        !isEmpty(transnationalOptions) &&
-        !isEmpty(organisations) &&
-        !isEmpty(sectorOptions) &&
-        !isEmpty(organisationType) &&
-        !isEmpty(meaOptions) &&
-        !isEmpty(stakeholders) &&
-        !isEmpty(representativeGroup)
-    );
-  }, [
-    countries,
-    tags,
-    profile,
-    regionOptions,
-    transnationalOptions,
-    sectorOptions,
-    organisations,
-    organisationType,
-    meaOptions,
-    stakeholders,
-    representativeGroup,
-  ]);
+    return Boolean(!isEmpty(profile));
+  }, [profile]);
 
   useEffect(() => {
     const dataId = Number(params?.id || id);

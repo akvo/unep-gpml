@@ -1,22 +1,48 @@
 (ns gpml.handler.list
-  (:require [gpml.db.event :as db.event]
-            [gpml.db.initiative :as db.initiative]
-            [gpml.db.policy :as db.policy]
-            [gpml.db.resource :as db.resource]
-            [gpml.db.technology :as db.technology]
-            [integrant.core :as ig]
-            [ring.util.response :as resp]))
+  (:require
+   [gpml.db.resource.list :as db.resource.list]
+   [integrant.core :as ig]
+   [ring.util.response :as resp]))
 
-(defmethod ig/init-key :gpml.handler.list/get [_ {:keys [db]}]
-  (fn [{{:keys [path]} :parameters}]
+(def ^:const default-api-limit 100)
+
+(defn- api-opts->opts
+  [{:keys [q limit]
+    :or {limit default-api-limit}}]
+  (cond-> {}
+    limit
+    (assoc :limit limit)
+
+    (seq q)
+    (assoc-in [:filters :search-text] q)))
+
+(defmethod ig/init-key :gpml.handler.list/get
+  [_ {:keys [db]}]
+  (fn [{{:keys [query]} :parameters}]
     (let [conn (:spec db)
-          topic (:topic-type path)]
-      (resp/response (case topic
-                       "technical_resource" (db.resource/all-technical-resources conn)
-                       "financing_resource" (db.resource/all-financing-resources conn)
-                       "action_plan" (db.resource/all-action-plans conn)
-                       "event" (db.event/all-events conn)
-                       "policy" (db.policy/all-policies conn)
-                       "technology" (db.technology/all-technologies conn)
-                       "project" (db.initiative/all-initiatives conn)
-                       (db.resource/all-resources conn))))))
+          opts (api-opts->opts query)]
+      (resp/response (db.resource.list/get-resources conn opts)))))
+
+(defmethod ig/init-key :gpml.handler.list/get-params
+  [_ _]
+  {:query [:map
+           [:q
+            {:optional true
+             :swagger {:description "Text search term to be found on the platform resources."
+                       :type "string"
+                       :allowEmptyValue true}}
+            [:string]]
+           [:limit
+            {:optional true
+             :swagger {:description "Limit the amount of results returned by the API."
+                       :type "integer"
+                       :allowEmptyValue true}}
+            [:int {:min 1}]]]})
+
+(defmethod ig/init-key :gpml.handler.list/get-response
+  [_ _]
+  {200 {:body [:vector
+               [:maybe
+                [:map
+                 [:id [:int]]
+                 [:title [:string]]]]]}})

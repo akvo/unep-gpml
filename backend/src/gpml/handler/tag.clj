@@ -19,9 +19,9 @@
     {:optional true
      :default 20
      :swagger {:description "Limit the number of popular topic tags results"
-               :type "int"
+               :type "integer"
                :allowEmptyValue true}}
-    [:fn pos-int?]]])
+    [:int {:min 0}]]])
 
 (def ^:const put-params
   [:map
@@ -134,11 +134,24 @@
           category-tags (db.tag/tag-by-category conn {:category category})]
       (resp/response category-tags))))
 
+(defn topics-subset->db-topics-subset [topics query]
+  (merge
+   query
+   (reduce (fn [acc topic]
+             (merge acc {(:type topic) (str "(" (str/join "," (:ids topic)) ")")}))
+           {} topics)))
+
+(defn- popular-tags [db query]
+  (if-not (seq (get-in query [:filters :tags]))
+    (db.tag/get-popular-topics-tags db query)
+    (let [topics-subset (db.tag/get-popular-topics-tags-subset db (select-keys query [:filters]))
+          db-topics-subset (topics-subset->db-topics-subset topics-subset (dissoc query :filters))]
+      (db.tag/get-more-popular-topics-tags db db-topics-subset))))
+
 (defmethod ig/init-key :gpml.handler.tag/get-popular-topics-tags
   [_ {:keys [db]}]
   (fn [{{:keys [query]} :parameters}]
-    (resp/response (db.tag/get-popular-topics-tags (:spec db)
-                                                   (api-opts->opts query)))))
+    (resp/response (popular-tags (:spec db) (api-opts->opts query)))))
 
 (defmethod ig/init-key :gpml.handler.tag/all [_ {:keys [db]}]
   (fn [_]

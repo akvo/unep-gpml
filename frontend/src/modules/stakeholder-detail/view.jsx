@@ -21,6 +21,8 @@ import {
   notification,
 } from "antd";
 import StickyBox from "react-sticky-box";
+import ReadMoreReact from "read-more-less-react";
+import "read-more-less-react/dist/index.css";
 import AvatarImage from "../../images/stakeholder/Avatar.png";
 import StakeholderRating from "../../images/stakeholder/stakeholder-rating.png";
 import LocationImage from "../../images/location.svg";
@@ -438,7 +440,7 @@ const StakeholderDetail = ({
                       <List.Item.Meta
                         avatar={<Avatar src={LocationImage} />}
                         title={
-                          countries.find((it) => it.id === data?.country).name
+                          countries.find((it) => it.id === data?.country)?.name
                         }
                       />
                     </List.Item>
@@ -543,7 +545,12 @@ const StakeholderDetail = ({
                     }}
                   >
                     <div className="bio">
-                      <p>{data?.about}</p>
+                      <ReadMoreReact
+                        text={data?.about}
+                        lines={5}
+                        readMoreText="Read more"
+                        readLessText="Read less"
+                      />
                     </div>
                     <div className="exta-info">
                       <Row gutter={[16, 16]}>
@@ -553,8 +560,8 @@ const StakeholderDetail = ({
                               (item) => item.tagCategory === "seeking"
                             ).length > 0 && (
                               <CardComponent>
-                                <div class="ant-card-head-wrapper">
-                                  <div class="ant-card-head-title">
+                                <div className="ant-card-head-wrapper">
+                                  <div className="ant-card-head-title">
                                     Seeking{" "}
                                     <span>
                                       (
@@ -574,7 +581,7 @@ const StakeholderDetail = ({
                                       (item) => item.tagCategory === "seeking"
                                     )
                                     ?.map((str) => (
-                                      <List.Item>
+                                      <List.Item key={str.tag}>
                                         <Typography.Text>
                                           {str.tag}
                                         </Typography.Text>
@@ -590,8 +597,8 @@ const StakeholderDetail = ({
                               (item) => item.tagCategory === "offering"
                             ).length > 0 && (
                               <CardComponent>
-                                <div class="ant-card-head-wrapper">
-                                  <div class="ant-card-head-title">
+                                <div className="ant-card-head-wrapper">
+                                  <div className="ant-card-head-title">
                                     Offering{" "}
                                     <span>
                                       (
@@ -611,7 +618,7 @@ const StakeholderDetail = ({
                                       (item) => item.tagCategory === "offering"
                                     )
                                     ?.map((str) => (
-                                      <List.Item>
+                                      <List.Item key={str.tag}>
                                         <Typography.Text>
                                           {str.tag}
                                         </Typography.Text>
@@ -638,7 +645,7 @@ const StakeholderDetail = ({
             </Col>
           </Row>
           <div className="owned-resources-wrapper">
-            {ownedResources.length > 0 && (
+            {bookedResources.length > 0 && (
               <CardComponent
                 title={"Owned resources"}
                 style={{
@@ -649,7 +656,7 @@ const StakeholderDetail = ({
               >
                 <div style={{ padding: "0 10px" }}>
                   <Row gutter={[16, 16]}>
-                    {ownedResources.map((item) => (
+                    {ownedResources?.map((item) => (
                       <Col xs={6} lg={8}>
                         <div className="slider-card">
                           <div className="image-holder">
@@ -712,6 +719,7 @@ const StakeholderDetail = ({
                   </Row>
                   <div className="pagination-wrapper">
                     <Pagination
+                      showSizeChanger={false}
                       defaultCurrent={1}
                       current={ownedResourcesPage + 1}
                       pageSize={3}
@@ -736,7 +744,7 @@ const StakeholderDetail = ({
                 <div style={{ padding: "0 10px" }}>
                   <Row gutter={[16, 16]}>
                     {bookedResources.map((item) => (
-                      <Col xs={6} lg={8}>
+                      <Col xs={6} lg={8} key={item?.id}>
                         <div className="slider-card">
                           <div className="image-holder">
                             <img
@@ -772,6 +780,7 @@ const StakeholderDetail = ({
                                   >
                                     {item.entityConnections.map((item) => (
                                       <Avatar
+                                        key={item?.entity}
                                         src={
                                           item?.image
                                             ? item.image
@@ -796,6 +805,7 @@ const StakeholderDetail = ({
                   </Row>
                   <div className="pagination-wrapper">
                     <Pagination
+                      showSizeChanger={false}
                       defaultCurrent={1}
                       current={bookedResourcesPage + 1}
                       pageSize={3}

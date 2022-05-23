@@ -1,6 +1,7 @@
 import { Store } from "pullstate";
-import { schema } from "./stakeholderSchema";
+import { schema } from "./stakeholder-schema";
 import cloneDeep from "lodash/cloneDeep";
+import { isEmpty } from "lodash";
 
 const initialSignUpData = {
   tabs: ["S1"],
@@ -46,17 +47,19 @@ const getSchema = ({
   prop.S1.properties.email.default = profile.email;
 
   // // country options
-  prop.S1.properties["country"].enum = countries?.map((x) => x.id);
-  prop.S1.properties["country"].enumNames = countries?.map((x) => x.name);
+  prop.S1.properties["country"].enum = !isEmpty(countries)
+    ? countries?.map((x) => x.id)
+    : [];
+  prop.S1.properties["country"].enumNames = !isEmpty(countries)
+    ? countries?.map((x) => x.name)
+    : [];
 
-  prop.S2.properties["orgName"].enum = [
-    ...organisations,
-    ...nonMemberOrganisations,
-  ]?.map((x) => x.id);
-  prop.S2.properties["orgName"].enumNames = [
-    ...organisations,
-    ...nonMemberOrganisations,
-  ]?.map((x) => x.name);
+  prop.S2.properties["orgName"].enum = !isEmpty(organisations)
+    ? [...organisations, ...nonMemberOrganisations]?.map((x) => x.id)
+    : [];
+  prop.S2.properties["orgName"].enumNames = !isEmpty(organisations)
+    ? [...organisations, ...nonMemberOrganisations]?.map((x) => x.name)
+    : [];
 
   let array = Object.keys(tags)
     .map((k) => tags[k])
@@ -86,12 +89,12 @@ const getSchema = ({
   //   nonMemberOrganisations.map((x) => x.name)
   // );
 
-  prop.S2.properties["newCompanyHeadquarter"].enum = countries?.map(
-    (x) => x.id
-  );
-  prop.S2.properties["newCompanyHeadquarter"].enumNames = countries?.map(
-    (x) => x.name
-  );
+  prop.S2.properties["newCompanyHeadquarter"].enum = !isEmpty(countries)
+    ? countries?.map((x) => x.id)
+    : [];
+  prop.S2.properties["newCompanyHeadquarter"].enumNames = !isEmpty(countries)
+    ? countries?.map((x) => x.name)
+    : [];
   // geocoverage regional options
   // prop.S2.properties["geoCoverageValueRegional"].enum = regionOptions.map((x) =>
   //   String(x.id)
@@ -100,12 +103,12 @@ const getSchema = ({
   //   (x) => x.name
   // );
   // geocoverage national options
-  prop.S2.properties["geoCoverageValueNational"].enum = countries?.map((x) =>
-    String(x.id)
-  );
-  prop.S2.properties["geoCoverageValueNational"].enumNames = countries?.map(
-    (x) => x.name
-  );
+  prop.S2.properties["geoCoverageValueNational"].enum = !isEmpty(countries)
+    ? countries?.map((x) => String(x.id))
+    : [];
+  prop.S2.properties["geoCoverageValueNational"].enumNames = !isEmpty(countries)
+    ? countries?.map((x) => x.name)
+    : [];
   // geocoverage sub-national options
   // prop.S2.properties["geoCoverageValueSubNational"].enum = countries?.map(
   //   (x) => x.id
@@ -114,12 +117,16 @@ const getSchema = ({
   //   (x) => x.name
   // );
   // geocoverage transnational options
-  prop.S2.properties[
-    "geoCoverageValueTransnational"
-  ].enum = transnationalOptions?.map((x) => x.id);
-  prop.S2.properties[
-    "geoCoverageValueTransnational"
-  ].enumNames = transnationalOptions?.map((x) => x.name);
+  prop.S2.properties["geoCoverageValueTransnational"].enum = !isEmpty(
+    transnationalOptions
+  )
+    ? transnationalOptions?.map((x) => x.id)
+    : [];
+  prop.S2.properties["geoCoverageValueTransnational"].enumNames = !isEmpty(
+    transnationalOptions
+  )
+    ? transnationalOptions?.map((x) => x.name)
+    : [];
   // geocoverage global with elements in specific areas options
   // prop.S2.properties[
   //   "geoCoverageValueGlobalSpesific"

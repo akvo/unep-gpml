@@ -4,7 +4,7 @@ import ArrayFieldTemplate from "../../utils/forms/array-template";
 import FieldTemplate from "../../utils/forms/field-template";
 import widgets from "../../utils/forms";
 import { overideValidation } from "../../utils/forms";
-import uiSchema from "./uiSchema.json";
+import uiSchema from "./ui-schema.json";
 import common from "./common";
 import cloneDeep from "lodash/cloneDeep";
 import { withRouter } from "react-router-dom";
@@ -163,7 +163,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
+                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
           };
         });
 
@@ -188,6 +188,12 @@ const FlexibleForm = withRouter(
           data.geoCoverageCountries = data.geoCoverageCountries
             ? data.geoCoverageCountries.map((x) => parseInt(x))
             : [];
+          if (
+            data.geoCoverageValueTransnational &&
+            data.geoCoverageValueTransnational.length === 0
+          ) {
+            delete data.geoCoverageValueTransnational;
+          }
         }
       }
 
@@ -207,6 +213,7 @@ const FlexibleForm = withRouter(
 
       if (data.geoCoverageType === "global") {
         delete data.geoCoverageValueTransnational;
+        delete data.geoCoverageCountries;
       }
 
       if (data?.urls) {
@@ -332,7 +339,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
+                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
           };
         });
 
@@ -354,7 +361,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.qindividual) {
-        data.individual_connections = data.qindividual;
+        data.individual_connections = data.qindividual[0].hasOwnProperty("role")
+          ? data.qindividual
+          : [];
         delete data.qindividual;
       }
 
@@ -377,7 +386,11 @@ const FlexibleForm = withRouter(
         delete data.qgeoCoverageValueSubnationalCity;
       }
       if (data.q24.hasOwnProperty("national")) {
-        data.q24_2 = [data.q24_2];
+        if (status === "edit" || params?.id) {
+          data.q24_2 = Array.isArray(data.q24_2) ? data.q24_2 : [data.q24_2];
+        } else {
+          data.q24_2 = [data.q24_2];
+        }
         delete data.qgeoCoverageValueSubnational;
         delete data.qgeoCoverageValueSubnationalCity;
         delete data.q24_4;
@@ -385,12 +398,22 @@ const FlexibleForm = withRouter(
       }
 
       if (data.q24.hasOwnProperty("sub-national")) {
-        data.q24_2 = data.qgeoCoverageValueSubnational;
+        data.q24_2 = Array.isArray(data.qgeoCoverageValueSubnational)
+          ? data.qgeoCoverageValueSubnational
+          : [data.qgeoCoverageValueSubnational];
         data.q24_subnational_city = data.qgeoCoverageValueSubnationalCity;
         delete data.qgeoCoverageValueSubnational;
         delete data.qgeoCoverageValueSubnationalCity;
         delete data.q24_4;
         delete data.q24_3;
+      }
+
+      if (data.q24.hasOwnProperty("global")) {
+        delete data.q24_4;
+        delete data.q24_3;
+        delete data.q24_2;
+        delete data.qgeoCoverageValueSubnational;
+        delete data.qgeoCoverageValueSubnationalCity;
       }
 
       if (data?.qrelated) {
@@ -518,6 +541,11 @@ const FlexibleForm = withRouter(
         delete data.geoCoverageValueSubnational;
       }
 
+      if (data.geoCoverageType === "global") {
+        delete data.geoCoverageValueTransnational;
+        delete data.geoCoverageCountries;
+      }
+
       if (data?.urls) {
         data.urls = data.urls.map((x) => {
           return {
@@ -535,7 +563,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
+                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
           };
         });
 
@@ -543,7 +571,7 @@ const FlexibleForm = withRouter(
 
       if (data.hasOwnProperty("firstPublicationDate")) {
         data.firstPublicationDate = data.firstPublicationDate;
-        data.latestAmendmentDate = data.latestAmendmentDate || "Ongoing";
+        data.latestAmendmentDate = data.latestAmendmentDate || null;
       }
 
       if (data.hasOwnProperty("latestAmendmentDate")) {
@@ -562,9 +590,12 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.individual) {
-        data.individualConnections = data.individual;
+        data.individualConnections = data.individual[0].hasOwnProperty("role")
+          ? data.individual
+          : [];
         delete data.individual;
       }
+
       if (data?.info) {
         data.infoDocs = data.info === "<p><br></p>" ? "" : data.info;
         delete data.info;
@@ -701,14 +732,14 @@ const FlexibleForm = withRouter(
         data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
           parseInt(x)
         );
-      }
-
-      if (data.geoCoverageType === "sub-national") {
-        data.geoCoverageCountries = [
-          parseInt(Object.keys(data.geoCoverageValueSubnational)[0]),
-        ];
 
         delete data.geoCoverageValueSubnational;
+        delete data.geoCoverageValueTransnational;
+      }
+
+      if (data.geoCoverageType === "global") {
+        delete data.geoCoverageValueTransnational;
+        delete data.geoCoverageCountries;
       }
 
       if (data?.urls) {
@@ -728,7 +759,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
+                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
           };
         });
 
@@ -750,7 +781,9 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.individual) {
-        data.individualConnections = data.individual;
+        data.individualConnections = data.individual[0].hasOwnProperty("role")
+          ? data.individual
+          : [];
         delete data.individual;
       }
       if (data?.info) {
@@ -880,6 +913,11 @@ const FlexibleForm = withRouter(
         );
       }
 
+      if (data.geoCoverageType === "global") {
+        delete data.geoCoverageValueTransnational;
+        delete data.geoCoverageCountries;
+      }
+
       if (data?.yearFounded) {
         const yearFounded = new Date(data.yearFounded);
         data.yearFounded = yearFounded.getFullYear();
@@ -907,7 +945,7 @@ const FlexibleForm = withRouter(
             tag:
               Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
+                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
           };
         });
 
@@ -1148,32 +1186,32 @@ const FlexibleForm = withRouter(
         requiredFilledIn.length === 0 &&
           ((initialFormData?.currentState?.data.S4[
             "S4_G5"
-          ].individual[0].hasOwnProperty("role") &&
+          ].individual[0]?.hasOwnProperty("role") &&
             initialFormData?.currentState?.data.S4[
               "S4_G5"
-            ].individual[0].hasOwnProperty("stakeholder")) ||
+            ].individual[0]?.hasOwnProperty("stakeholder")) ||
             (initialFormData?.currentState?.data.S4[
               "S4_G5"
-            ].entity[0].hasOwnProperty("role") &&
+            ].entity[0]?.hasOwnProperty("role") &&
               initialFormData?.currentState?.data.S4[
                 "S4_G5"
-              ].entity[0].hasOwnProperty("entity"))) === true &&
+              ].entity[0]?.hasOwnProperty("entity"))) === true &&
           setDisabledBtn({ disabled: false, type: "primary" });
         requiredFilledIn.length !== 0 &&
           ((initialFormData?.currentState?.data.S4["S4_G5"].individual.length >
             0 &&
             initialFormData?.currentState?.data.S4[
               "S4_G5"
-            ].individual[0].hasOwnProperty("role") &&
+            ].individual[0]?.hasOwnProperty("role") &&
             initialFormData?.currentState?.data.S4[
               "S4_G5"
-            ].individual[0].hasOwnProperty("stakeholder")) ||
+            ].individual[0]?.hasOwnProperty("stakeholder")) ||
             (initialFormData?.currentState?.data.S4[
               "S4_G5"
-            ].entity[0].hasOwnProperty("role") &&
+            ].entity[0]?.hasOwnProperty("role") &&
               initialFormData?.currentState?.data.S4[
                 "S4_G5"
-              ].entity[0].hasOwnProperty("entity"))) === true &&
+              ].entity[0]?.hasOwnProperty("entity"))) === true &&
           setDisabledBtn({ disabled: true, type: "default" });
       },
       [initialFormData, formSchema, setDisabledBtn]

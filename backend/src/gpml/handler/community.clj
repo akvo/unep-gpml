@@ -7,7 +7,7 @@
             [ring.util.response :as resp]))
 
 (def ^:const community-network-types ["organisation" "stakeholder"])
-(def ^:const geo-coverage-types ["Transnational" "National" "Global"])
+(def ^:const geo-coverage-types ["Transnational" "National" "Global" "Sub-national"])
 (def ^:const geo-coverage-types-re (util.regex/comma-separated-enums-re geo-coverage-types))
 (def ^:const network-types-re (util.regex/comma-separated-enums-re community-network-types))
 (def ^:const default-api-limit 8)

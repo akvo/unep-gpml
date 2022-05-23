@@ -212,3 +212,4 @@ select t.id, t.tag from resource_tag rt
   left join tag t
   on rt.tag = t.id
   where rt.resource = :id
+  and t.review_status = 'APPROVED';

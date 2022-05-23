@@ -72,7 +72,7 @@
   (remove nil?
           (mapv (fn [y]
                   (if-let [language-id (db.language/language-by-name db {:name (:language y)})]
-                    (assoc y :url (:url y) :language (:id language-id)) nil))x)))
+                    (assoc y :url (:url y) :language (:id language-id)) nil)) x)))
 
 (defn get-action [db x]
   (db.action/action-by-code db {:code x}))
@@ -88,8 +88,8 @@
     (jdbc/execute! db [sql])))
 
 (defn seed-countries [db {:keys [old?]}]
-   (let [file (if old? "countries" "new_countries")]
-   (jdbc/insert-multi! db :country (get-data file))))
+  (let [file (if old? "countries" "new_countries")]
+    (jdbc/insert-multi! db :country (get-data file))))
 
 (defn seed-country-groups [db]
   (doseq [data (get-data "country_group")]
@@ -103,7 +103,6 @@
                               (get-ids (get-country db v))))))
            []
            (get-data "country_group_countries"))))
-
 
 (defn seed-country-group-country [db]
   (doseq [data (get-country-group-countries db)]
@@ -126,11 +125,11 @@
 
 (defn seed-organisations [db]
   (doseq [data (map-organisation db)]
-      (let [org-id (:id (db.organisation/new-organisation db data))
-            org-geo (:country_group data)]
-        (when (not-empty org-geo)
-          (let [res-geo (mapv #(assoc {} :organisation org-id :country_group %) org-geo)]
-            (jdbc/insert-multi! db :organisation_geo_coverage res-geo))))))
+    (let [org-id (:id (db.organisation/new-organisation db data))
+          org-geo (:country_group data)]
+      (when (not-empty org-geo)
+        (let [res-geo (mapv #(assoc {} :organisation org-id :country_group %) org-geo)]
+          (jdbc/insert-multi! db :organisation_geo_coverage res-geo))))))
 
 (defn seed-currencies [db]
   (jdbc/execute! db ["TRUNCATE TABLE currency"])
@@ -179,8 +178,7 @@
        (map (fn [x]
               (if-let [language-url (:resource_language_url x)]
                 (assoc x :resource_language_url (get-language db language-url))
-                x))
-            )
+                x)))
        (map (fn [x]
               (if-let [tags (:tags x)]
                 (assoc x :tags (get-ids (get-tag db tags)))
@@ -215,11 +213,10 @@
         (.printStackTrace e)
         (throw e)))))
 
-
 (defn get-events [db]
   (->> (get-data "events")
        (map (fn [x]
-                (assoc x :city (:city x) :review_status "APPROVED")))
+              (assoc x :city (:city x) :review_status "APPROVED")))
        (map (fn [x]
               (if-let [country (:country x)]
                 (if-let [data (first (get-country db [country]))]
@@ -239,8 +236,7 @@
        (map (fn [x]
               (if-let [language-url (:resource_language_url x)]
                 (assoc x :event_language_url (get-language db language-url))
-                x))
-            )
+                x)))
        (map (fn [x]
               (if-let [tags (:tags x)]
                 (assoc x :tags (get-ids (get-tag db tags)))
@@ -274,11 +270,11 @@
 (defn get-policies [db]
   (->> (get-data "policies")
        (map (fn [x]
-                (assoc x :image (:image x))))
+              (assoc x :image (:image x))))
        (map (fn [x]
-                (assoc x :value (:value_amount x) :review_status "APPROVED")))
+              (assoc x :value (:value_amount x) :review_status "APPROVED")))
        (map (fn [x]
-                (assoc x :url (first (:url x)))))
+              (assoc x :url (first (:url x)))))
        (map (fn [x]
               (if-let [country (:country x)]
                 (if-let [data (first (get-country db [country]))]
@@ -296,13 +292,11 @@
        (map (fn [x]
               (if-let [language-url (:resource_language_url x)]
                 (assoc x :resource_language_url (get-language db language-url))
-                x))
-            )
+                x)))
        (map (fn [x]
               (if-let [date (:latest_amendment_date x)]
                 (assoc x :latest_amendment_date (parse-date date))
-                x))
-            )
+                x)))
        (map (fn [x]
               (if-let [date (:first_publication_date x)]
                 (if-let [parsed (parse-date date)]
@@ -338,13 +332,13 @@
 (defn get-technologies [db]
   (->> (get-data "technologies")
        (map (fn [x]
-                (assoc x :image (:image x))))
+              (assoc x :image (:image x))))
        (map (fn [x]
-                (assoc x :logo (:logo x))))
+              (assoc x :logo (:logo x))))
        (map (fn [x]
-                (assoc x :review_status "APPROVED")))
+              (assoc x :review_status "APPROVED")))
        (map (fn [x]
-                (assoc x :url (first (:url x)))))
+              (assoc x :url (first (:url x)))))
        (map (fn [x]
               (if-let [country (:country x)]
                 (if-let [data (first (get-country db [country]))]
@@ -382,7 +376,7 @@
 
 (defn get-action-details [db]
   (map (fn [x] (if-let [action (get-action db (:action x))]
-          (assoc x :action (:id action)) x)) (get-data "action_details")))
+                 (assoc x :action (:id action)) x)) (get-data "action_details")))
 
 (defn seed-action-details [db]
   (jdbc/insert-multi! db :action_detail (mapv #(dissoc % :type) (get-action-details db))))
@@ -392,9 +386,9 @@
        (map (fn [x]
               (assoc x :summary (:summary x))))
        (map (fn [x]
-                (assoc x :review_status "APPROVED")))
+              (assoc x :review_status "APPROVED")))
        (map (fn [x]
-              (if-let [country (seq(:countries x))]
+              (if-let [country (seq (:countries x))]
                 (assoc x :countries (get-ids (get-country db country)))
                 x)))
        (map (fn [x]
@@ -511,27 +505,27 @@
                          (filter #(= (-> example-map first name Integer/parseInt) (:id %)))
                          first)
         current-record (if (= check "country")
-                        (db.country/country-by-id db old-example)
-                        (db.country-group/country-group-by-id db old-example))]
+                         (db.country/country-by-id db old-example)
+                         (db.country-group/country-group-by-id db old-example))]
     (if (not current-record)
       false
       (= (:name old-example) (:name current-record)))))
 
 (defn updater-country [db]
-   (let [cache-id (get-cache-id)
-         mapping-file (get-data "new_countries_mapping")
-         old-data? (is-old "country" mapping-file db)
-         mapping-file (if old-data?
-                        mapping-file
-                        (revert-mapping mapping-file))
-         json-file (get-data (if old-data? "new_countries" "countries"))]
-     (println (str "Migrating Country from " (if old-data? "old to new" "new to old")))
-     (db.util/country-id-updater db cache-id mapping-file)
-     (jdbc/execute! db ["TRUNCATE TABLE country"])
-     (seed-countries db {:old? (not old-data?)})
-     (println "Update countries in Initiative Data")
-     (db.util/update-initiative-country db mapping-file json-file)
-     (db.util/revert-constraint db cache-id)))
+  (let [cache-id (get-cache-id)
+        mapping-file (get-data "new_countries_mapping")
+        old-data? (is-old "country" mapping-file db)
+        mapping-file (if old-data?
+                       mapping-file
+                       (revert-mapping mapping-file))
+        json-file (get-data (if old-data? "new_countries" "countries"))]
+    (println (str "Migrating Country from " (if old-data? "old to new" "new to old")))
+    (db.util/country-id-updater db cache-id mapping-file)
+    (jdbc/execute! db ["TRUNCATE TABLE country"])
+    (seed-countries db {:old? (not old-data?)})
+    (println "Update countries in Initiative Data")
+    (db.util/update-initiative-country db mapping-file json-file)
+    (db.util/revert-constraint db cache-id)))
 
 (defn seed
   ([db {:keys [country? currency?
@@ -588,20 +582,20 @@
      (println "-- Done Seeding")))
   ([]
    (let [db (-> (dev-system)
-              (ig/init [:duct.database.sql/hikaricp])
-              :duct.database.sql/hikaricp
-              :spec)]
+                (ig/init [:duct.database.sql/hikaricp])
+                :duct.database.sql/hikaricp
+                :spec)]
      (seed db
-       {:country? true
-        :currency?  (db.util/is-empty db "currency")
-        :organisation? true
-        :language?  (db.util/is-empty db "language")
-        :tag?  (db.util/is-empty db "tag")
-        :policy? true
-        :resource? true
-        :technology? true
-        :event? true
-        :project? true})
+           {:country? true
+            :currency?  (db.util/is-empty db "currency")
+            :organisation? true
+            :language?  (db.util/is-empty db "language")
+            :tag?  (db.util/is-empty db "tag")
+            :policy? true
+            :resource? true
+            :technology? true
+            :event? true
+            :project? true})
      (gpml.handler.detail/cache-hierarchies! db))))
 
 (comment
@@ -609,15 +603,15 @@
   (seed)
 
   (time (seed (-> (dev-system)
-             (ig/init [:duct.database.sql/hikaricp])
-             :duct.database.sql/hikaricp
-             :spec)
+                  (ig/init [:duct.database.sql/hikaricp])
+                  :duct.database.sql/hikaricp
+                  :spec)
               {:resource? true}))
 
   (def db (-> (dev-system)
-               (ig/init [:duct.database.sql/hikaricp])
-               :duct.database.sql/hikaricp
-               :spec))
+              (ig/init [:duct.database.sql/hikaricp])
+              :duct.database.sql/hikaricp
+              :spec))
 
   ;; example resyncing
 
@@ -653,14 +647,14 @@
   (defn get-subscribed-topic []
     (->> (db.exporter/get-stakeholder-info db)
          (mapv (fn [x]
-             (if-let [topics (:associations x)]
-               (assoc x :associations
-                  (for [topic topics]
-                    (assoc topic :data (view-table-of topic))))
-               x)))))
+                 (if-let [topics (:associations x)]
+                   (assoc x :associations
+                          (for [topic topics]
+                            (assoc topic :data (view-table-of topic))))
+                   x)))))
 
   (->> (get-country-group-countries db)
-       (filter #(= 2 (:country_group %)) ,,,)
+       (filter #(= 2 (:country_group %)))
        count)
 
   (require '[clojure.set :as set])
@@ -670,7 +664,6 @@
                        (#(map :name %))
                        set)]
       (set/difference (set names) db-names)))
-
 
   (->> (get-data "country_group_countries")
        vals
@@ -683,9 +676,8 @@
                            (#(map :geo_coverage %))
                            flatten
                            (filter some?)
-                           (filter #(not(= "" %)))
-                           set
-                           )
+                           (filter #(not (= "" %)))
+                           set)
           countries (->> (get-data "countries")
                          (#(map :name %))
                          set)]
@@ -693,7 +685,4 @@
 
   (println "Technologies Geo Coverage")
   (doseq [item (geo-name-mimatches "technologies")]
-    (println item))
-
-
- )
+    (println item)))

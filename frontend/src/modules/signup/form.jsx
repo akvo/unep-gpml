@@ -24,8 +24,8 @@ import {
 } from "../../utils/forms";
 import entity from "./entity";
 import stakeholder from "./stakeholder";
-import entityUiSchema from "./entityUiSchema.json";
-import stakeholderUiSchema from "./stakeholderUiSchema.json";
+import entityUiSchema from "./entity-ui-schema.json";
+import stakeholderUiSchema from "./stakeholder-ui-schema.json";
 
 import { UIStore } from "../../store";
 import { withRouter } from "react-router-dom";
@@ -289,8 +289,12 @@ const SignUpForm = withRouter(
             });
             setDisabledBtn({ disabled: true, type: "default" });
           })
-          .catch(() => {
-            notification.error({ message: "An error occured" });
+          .catch((err) => {
+            notification.error({
+              message: err?.response?.data?.reason
+                ? err?.response?.data?.reason
+                : "An error occured",
+            });
           })
           .finally(() => {
             setSending(false);

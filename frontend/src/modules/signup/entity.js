@@ -1,6 +1,7 @@
 import { Store } from "pullstate";
-import { schema } from "./entitySchema";
+import { schema } from "./entity-schema";
 import cloneDeep from "lodash/cloneDeep";
+import { isEmpty } from "lodash";
 
 const initialSignUpData = {
   tabs: ["S1"],
@@ -56,45 +57,57 @@ const getSchema = (
     prop.S2.properties.email.default = profile.email;
     prop.S2.properties.S1_ExpertisesAndActivities.properties[
       "seeking"
-    ].enum = tags?.seeking?.map((it) => String(it.id));
+    ].enum = !isEmpty(tags) ? tags?.seeking?.map((it) => String(it.id)) : [];
     prop.S2.properties.S1_ExpertisesAndActivities.properties[
       "seeking"
-    ].enumNames = tags?.seeking?.map((it) => it.tag);
+    ].enumNames = !isEmpty(tags) ? tags?.seeking?.map((it) => it.tag) : [];
     prop.S2.properties.S1_ExpertisesAndActivities.properties[
       "offering"
-    ].enum = tags?.offering?.map((it) => String(it.id));
+    ].enum = !isEmpty(tags) ? tags?.offering?.map((it) => String(it.id)) : [];
     prop.S2.properties.S1_ExpertisesAndActivities.properties[
       "offering"
-    ].enumNames = tags?.offering?.map((it) => it.tag);
+    ].enumNames = !isEmpty(tags) ? tags?.offering?.map((it) => it.tag) : [];
 
     // // country options
-    prop.S2.properties["country"].enum = countries?.map((x) => x.id);
-    prop.S2.properties["country"].enumNames = countries?.map((x) => x.name);
+    prop.S2.properties["country"].enum = !isEmpty(countries)
+      ? countries?.map((x) => x.id)
+      : [];
+    prop.S2.properties["country"].enumNames = !isEmpty(countries)
+      ? countries?.map((x) => x.name)
+      : [];
   }
 
-  const representative = representativeGroup?.map((x) => x.name);
+  const representative = !isEmpty(representativeGroup)
+    ? representativeGroup?.map((x) => x.name)
+    : [];
   prop.S3.properties["org.representativeGroup"].enum = [...representative, -1];
   prop.S3.properties["org.representativeGroup"].enumNames = [
     ...representative,
     "Other",
   ];
-  prop.S3.properties[
-    "org.representativeGroupGovernment"
-  ].enum = representativeGroup.find((x) => x.code === "government")?.childs;
+  prop.S3.properties["org.representativeGroupGovernment"].enum = !isEmpty(
+    representativeGroup
+  )
+    ? representativeGroup.find((x) => x.code === "government")?.childs
+    : [];
+  prop.S3.properties["org.representativeGroupPrivateSector"].enum = !isEmpty(
+    tags
+  )
+    ? tags?.sector?.map((it) => String(it.id))
+    : [];
   prop.S3.properties[
     "org.representativeGroupPrivateSector"
-  ].enum = tags?.sector?.map((it) => String(it.id));
-  prop.S3.properties[
-    "org.representativeGroupPrivateSector"
-  ].enumNames = tags?.sector?.map((it) => it.tag);
-  prop.S3.properties[
-    "org.representativeGroupAcademiaResearch"
-  ].enum = representativeGroup.find(
-    (x) => x.code === "academia-research"
-  )?.childs;
-  prop.S3.properties[
-    "org.representativeGroupCivilSociety"
-  ].enum = representativeGroup.find((x) => x.code === "civil-society")?.childs;
+  ].enumNames = !isEmpty(tags) ? tags?.sector?.map((it) => it.tag) : [];
+  prop.S3.properties["org.representativeGroupAcademiaResearch"].enum = !isEmpty(
+    representativeGroup
+  )
+    ? representativeGroup.find((x) => x.code === "academia-research")?.childs
+    : [];
+  prop.S3.properties["org.representativeGroupCivilSociety"].enum = !isEmpty(
+    representativeGroup
+  )
+    ? representativeGroup.find((x) => x.code === "civil-society")?.childs
+    : [];
 
   let array = Object.keys(tags)
     .map((k) => tags[k])
@@ -102,11 +115,13 @@ const getSchema = (
 
   prop.S4.properties["orgExpertise"].enum = array?.map((it) => String(it.id));
   prop.S4.properties["orgExpertise"].enumNames = array?.map((it) => it.tag);
-  prop.S5.properties["orgHeadquarter"].enum = countries?.map((x) => x.id);
+  prop.S5.properties["orgHeadquarter"].enum = !isEmpty(countries)
+    ? countries?.map((x) => x.id)
+    : [];
 
-  prop.S5.properties["orgHeadquarter"].enumNames = countries?.map(
-    (x) => x.name
-  );
+  prop.S5.properties["orgHeadquarter"].enumNames = !isEmpty(countries)
+    ? countries?.map((x) => x.name)
+    : [];
   // prop.S1.properties["registeredStakeholders"].enum = stakeholders?.map((it) =>
   //   String(it.id)
   // );
@@ -137,19 +152,23 @@ const getSchema = (
   //   (x) => x.name
   // );
   // geocoverage transnational options
-  prop.S5.properties[
-    "geoCoverageValueTransnational"
-  ].enum = transnationalOptions?.map((x) => String(x.id));
-  prop.S5.properties[
-    "geoCoverageValueTransnational"
-  ].enumNames = transnationalOptions?.map((x) => x.name);
+  prop.S5.properties["geoCoverageValueTransnational"].enum = !isEmpty(
+    transnationalOptions
+  )
+    ? transnationalOptions?.map((x) => String(x.id))
+    : [];
+  prop.S5.properties["geoCoverageValueTransnational"].enumNames = !isEmpty(
+    transnationalOptions
+  )
+    ? transnationalOptions?.map((x) => x.name)
+    : [];
 
-  prop.S5.properties["geoCoverageCountries"].enum = countries?.map((x) =>
-    String(x.id)
-  );
-  prop.S5.properties["geoCoverageCountries"].enumNames = countries?.map(
-    (x) => x.name
-  );
+  prop.S5.properties["geoCoverageCountries"].enum = !isEmpty(countries)
+    ? countries?.map((x) => String(x.id))
+    : [];
+  prop.S5.properties["geoCoverageCountries"].enumNames = !isEmpty(countries)
+    ? countries?.map((x) => x.name)
+    : [];
   // geocoverage global with elements in specific areas options
   // prop.S5.properties[
   //   "geoCoverageValueGlobalSpesific"

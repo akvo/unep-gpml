@@ -13,7 +13,8 @@
   }
 
   .landing-container {
-    background-color: #036799;
+    // background-color: #036799;
+    background-color: #11689b;
     color: #ffffff;
   }
 
@@ -26,7 +27,7 @@
     background-repeat: no-repeat;
     background-size: 70%;
 
-    @media (max-width: 400px) {
+    @media (max-width: 540px) {
       background-size: cover !important;
       background-position-x: 70% !important;
       h1 {
@@ -87,7 +88,7 @@
     }
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 540px) {
     .content {
       .content-body {
         padding: 0 0 !important;
@@ -127,7 +128,7 @@
     }
   }
 
-  @media (min-width: 401px) {
+  @media (min-width: 541px) {
     .topic-bar-wrapper {
       display: none;
     }
@@ -155,10 +156,17 @@
             font-weight: 900;
             margin-bottom: 10px;
             color: $blue03;
+            @-moz-document url-prefix() {
+              font-size: 1.5rem;
+              margin-bottom: 5px;
+            }
           }
           span {
             text-transform: uppercase;
             font-size: 0.8rem;
+            @-moz-document url-prefix() {
+              font-size: 0.7rem;
+            }
           }
           .item {
             height: 80px;
@@ -188,6 +196,9 @@
               width: 77px;
               font-weight: 600;
               font-size: 0.8rem;
+              @-moz-document url-prefix() {
+                font-size: 0.7rem;
+              }
             }
           }
         }
@@ -275,7 +286,7 @@
     display: none;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 540px) {
     .content-left-desktop {
       display: none !important;
     }
@@ -334,7 +345,7 @@
           margin-right: 0.85rem;
           border-radius: 10px;
           min-height: 23rem;
-          @media (max-width: 400px) {
+          @media (max-width: 540px) {
             width: 300px !important;
           }
           .type-wrapper {
@@ -374,11 +385,17 @@
               color: #fff;
               font-size: 1rem;
               font-weight: 600;
+              @-moz-document url-prefix() {
+                font-size: 0.9rem;
+              }
             }
             p.role {
               font-size: 0.8rem;
               height: 25px;
               margin-bottom: 0;
+              @-moz-document url-prefix() {
+                font-size: 0.7rem;
+              }
             }
           }
         }
@@ -496,6 +513,9 @@
     border: 1px solid #2d6796;
     box-sizing: border-box;
     border-radius: 50px;
+    @-moz-document url-prefix() {
+      font-size: 0.6rem;
+    }
     .anticon {
       margin-right: 5px;
     }
@@ -519,6 +539,9 @@
     color: #34a6ff;
     font-size: 0.88rem;
     vertical-align: middle;
+    @-moz-document url-prefix() {
+      font-size: 0.78rem;
+    }
   }
 
   // antd carousel dots

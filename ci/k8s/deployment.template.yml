@@ -1,0 +1,179 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unep-gpml
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+        run: unep-gpml
+  template:
+    metadata:
+      labels:
+        run: unep-gpml
+        unep-gpml-version: "${CI_COMMIT}"
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '3000'
+    spec:
+      containers:
+      - name: frontend
+        image: eu.gcr.io/akvo-lumen/unep-gpml/frontend:${CI_COMMIT}
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "32Mi"
+          limits:
+            cpu: "200m"
+            memory: "64Mi"
+      - name: backend
+        image: eu.gcr.io/akvo-lumen/unep-gpml/backend:${CI_COMMIT}
+        ports:
+        - containerPort: 3000
+        env:
+        - name: APP_NAME
+          value: "${APP_NAME}"
+        - name: APP_DOMAIN
+          value: "https://${APP_DOMAIN}"
+        - name: OIDC_ISSUER
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: oidc-issuer
+        - name: OIDC_AUDIENCE
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: oidc-audience
+        - name: OIDC_AUDIENCE_CKAN
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: oidc-audience-ckan
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: database-url
+        - name: AUTH0_BACKEND_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: auth0-backend-client-id
+        - name: AUTH0_BACKEND_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: auth0-backend-secret
+        - name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: sentry-dsn
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: APP_VERSION
+          value: "${CI_COMMIT}"
+        - name: ENV_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: akvo
+              key: environment
+        - name: MAILJET_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: mailjet-api-key
+        - name: MAILJET_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: mailjet-secret-key
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: "/secrets/cloudsql/credentials.json"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+        volumeMounts:
+          - name: unep-gpml-secrets
+            mountPath: "/secrets/cloudsql/credentials.json"
+            subPath: "cloud-database-service-account.json"
+            readOnly: true
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+      - name: cloud-sql-proxy
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+        # https://cloud.google.com/sql/docs/mysql/connect-kubernetes-engine#run_the_as_a_sidecar
+        # It is recommended to use the latest version of the Cloud SQL proxy
+        # Make sure to update on a regular schedule!
+        image: eu.gcr.io/cloudsql-docker/gce-proxy:1.30.1
+        command:
+          - "/cloud_sql_proxy"
+
+          # By default, the proxy will write all logs to stderr. In some
+          # environments, anything printed to stderr is consider an error. To
+          # disable this behavior and write all logs to stdout (except errors
+          # which will still go to stderr), use:
+          - "-log_debug_stdout"
+
+          # Replace DB_PORT with the port the proxy should listen on
+          # Defaults: MySQL: 3306, Postgres: 5432, SQLServer: 1433
+          - "-instances=$(GOOGLE_PROJECT):$(GOOGLE_SQL_COMPUTE_ZONE):$(GOOGLE_SQL_DB_INSTANCE)=tcp:5432"
+          - "-credential_file=/secrets/cloudsql/credentials.json"
+        securityContext:
+          # The default Cloud SQL proxy image runs as the
+          # "nonroot" user and group (uid: 65532) by default.
+          runAsNonRoot: true
+        # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+        env:
+          - name: GOOGLE_SQL_COMPUTE_ZONE
+            valueFrom:
+              configMapKeyRef:
+                name: unep-gpml
+                key: google-sql-compute-zone
+          - name: GOOGLE_SQL_DB_INSTANCE
+            valueFrom:
+              configMapKeyRef:
+                name: unep-gpml
+                key: google-sql-db-instance
+          - name: GOOGLE_PROJECT
+            valueFrom:
+              configMapKeyRef:
+                name: unep-gpml
+                key: google-project
+        volumeMounts:
+          - name: unep-gpml-secrets
+            mountPath: "/secrets/cloudsql/credentials.json"
+            subPath: "cloud-database-service-account.json"
+            readOnly: true
+      volumes:
+        - name: unep-gpml-secrets
+          secret:
+            secretName: unep-gpml

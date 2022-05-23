@@ -8,6 +8,7 @@ import {
   withRouter,
   useLocation,
   useHistory,
+  NavLink,
 } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Input, Button, Menu, Dropdown, Layout } from "antd";
@@ -23,7 +24,7 @@ import Stakeholders from "./modules/stakeholders/view";
 import AddEvent from "./modules/events/view";
 import SignupView from "./modules/signup/view";
 import LandingSignupView from "./modules/signup-old/view";
-import logo from "./images/GPML-logo-white.png";
+import logo from "./images/gpml.svg";
 // add auth0 logo pop-up
 // eslint-disable-next-line
 import tmpLogo from "./images/GPML-temporary-logo-horiz.jpg";
@@ -56,13 +57,9 @@ import StakeholderDetail from "./modules/stakeholder-detail/view";
 import EntityDetail from "./modules/entity-detail/view";
 
 // Menu dropdown
-import AboutDropdownMenu from "./modules/dropdown-menu/about";
 import ExploreDropdownMenu from "./modules/dropdown-menu/explore";
-import DataHubDropdownMenu from "./modules/dropdown-menu/data-hub";
-import KnowledgeExchangeDropdownMenu from "./modules/dropdown-menu/knowledge-exchange";
-import ConnectStakeholdersDropdownMenu from "./modules/dropdown-menu/connect-stakeholders";
 import ResponsiveMenu from "./modules/dropdown-menu/responsive-menu";
-import WorkspaceButton from "./modules/dropdown-menu/WorkspaceButton";
+import WorkspaceButton from "./modules/dropdown-menu/workspace-button";
 
 // Discourse Forum
 import DiscourseForum from "./modules/discourse-forum/discourse-forum";
@@ -72,13 +69,14 @@ import FlexibleForms from "./modules/flexible-forms/view";
 import CapacityBuilding from "./modules/capacity-building/view";
 
 // New Details Page
-import NewDetailsView from "./modules/detailsPage/view";
+import NewDetailsView from "./modules/details-page/view";
 import CaseStudies from "./modules/case-studies/view";
 import KnowledgeLibrary from "./modules/knowledge-library/view";
 
 // Buttons
-import AddContentButton from "./modules/add-content-button/AddContentButton";
+import AddContentButton from "./components/add-content-button/add-content-button";
 import StakeholderOverview from "./modules/stakeholder-overview/view";
+import Partners from "./modules/partners/view";
 
 let tmid;
 
@@ -274,10 +272,9 @@ const Root = () => {
   const [countData, setCountData] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const [landingQuery, setLandingQuery] = useState("");
-  const getResults = (query, isSorted) => {
+  const getResults = (query) => {
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", pageSize);
-
     const topic = [
       "action_plan",
       "project",
@@ -286,7 +283,6 @@ const Root = () => {
       "technology",
       "event",
       "financing_resource",
-      // "capacity_building",
     ];
     if (query?.topic?.length === 0) {
       if (
@@ -314,7 +310,6 @@ const Root = () => {
       .catch((err) => {
         console.error(err);
       });
-    setLandingQuery(String(searchParms));
   };
 
   const updateQuery = (param, value) => {
@@ -335,7 +330,9 @@ const Root = () => {
     setLandingQuery(newParams.toString());
 
     clearTimeout(tmid);
+
     tmid = setTimeout(getResults(newQuery), 1000);
+
     if (param === "country") {
       setFilterCountries(value);
     }
@@ -360,26 +357,48 @@ const Root = () => {
                 <img src={logo} className="logo" alt="GPML" />
               </Link>
             </div>
-            {isAuthenticated && <WorkspaceButton />}
-            <div className="menu-dropdown-container">
-              <AboutDropdownMenu />
-              <ExploreDropdownMenu topicsCount={topicsCount} />
-              <DataHubDropdownMenu />
-              <KnowledgeExchangeDropdownMenu
-                resources={resourceCounts}
-                setFilterMenu={setFilterMenu}
-              />
-              <ConnectStakeholdersDropdownMenu
-                {...{
-                  profile,
-                  setWarningModalVisible,
-                  isAuthenticated,
-                  setStakeholderSignupModalVisible,
-                  loginWithPopup,
-                  stakeholderCounts,
-                  setFilterMenu,
-                }}
-              />
+            <div className="main-menu-items">
+              {isAuthenticated && <WorkspaceButton />}
+              <ul>
+                <li>
+                  <NavLink
+                    to="/about-us"
+                    className="menu-btn nav-link menu-dropdown"
+                    activeClassName="selected"
+                  >
+                    About
+                  </NavLink>
+                </li>
+                <li>
+                  <ExploreDropdownMenu topicsCount={topicsCount} />
+                </li>
+                <li>
+                  <a
+                    href="https://datahub.gpmarinelitter.org/"
+                    className="menu-btn nav-link menu-dropdown"
+                  >
+                    Data Hub
+                  </a>
+                </li>
+                <li>
+                  <NavLink
+                    to="/knowledge-library"
+                    className="menu-btn nav-link menu-dropdown"
+                    activeClassName="selected"
+                  >
+                    Knowledge Exchange
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/events"
+                    className="menu-btn nav-link"
+                    activeClassName="selected"
+                  >
+                    Connect Stakeholders
+                  </NavLink>
+                </li>
+              </ul>
             </div>
             <Switch>
               <Route path="/browse" />
@@ -672,6 +691,11 @@ const Root = () => {
           />
           <Route
             exact
+            render={(props) => <Partners {...props} />}
+            path="/partners"
+          />
+          <Route
+            exact
             render={(props) => (
               <StakeholderOverview
                 {...props}
@@ -763,90 +787,28 @@ const Root = () => {
   );
 };
 
-const renderDropdownMenu = (
-  tags,
-  landing,
-  profile,
-  setWarningModalVisible,
-  isAuthenticated,
-  setStakeholderSignupModalVisible,
-  loginWithPopup
-) => {
-  const excludeSummary = ["event", "organisation", "stakeholder"];
-  const summary =
-    landing?.summary &&
-    landing.summary
-      .filter((x) => !excludeSummary.includes(Object.keys(x)[0]))
-      .map((x) => {
-        return {
-          name: Object.keys(x)[0],
-          count: x[Object.keys(x)[0]],
-        };
-      });
-  return (
-    <div className="menu-dropdown-container">
-      <AboutDropdownMenu />
-      <ExploreDropdownMenu
-        topicsCount={tags?.topics ? tags.topics.length : 0}
-      />
-      <DataHubDropdownMenu />
-      <KnowledgeExchangeDropdownMenu resources={summary} />
-      <ConnectStakeholdersDropdownMenu
-        {...{
-          profile,
-          setWarningModalVisible,
-          isAuthenticated,
-          setStakeholderSignupModalVisible,
-          loginWithPopup,
-        }}
-      />
-    </div>
-  );
-};
-
 const Search = withRouter(({ history, updateQuery }) => {
   const [search, setSearch] = useState("");
-  const [isShownForm, setIsShownForm] = useState(false);
 
   const handleSearch = (src) => {
     const path = history.location.pathname;
     if (src) {
-      setIsShownForm(false);
       history.push(`/knowledge-library?q=${src.trim()}`);
       updateQuery("q", src.trim());
     } else {
       updateQuery("q", src.trim());
     }
-    setIsShownForm(!isShownForm);
   };
 
   return (
-    <div className={isShownForm ? "src" : "src toggle-icon"}>
-      {!isShownForm ? (
-        <Button
-          onClick={() => setIsShownForm(!isShownForm)}
-          type="primary"
-          shape="circle"
-          size="small"
-          icon={<SearchOutlined />}
-        />
-      ) : (
-        <Input
-          className="input-src"
-          placeholder="Search"
-          suffix={
-            <Button
-              onClick={() => handleSearch(search)}
-              type="primary"
-              shape="circle"
-              size="small"
-              icon={<SearchOutlined />}
-            />
-          }
-          onPressEnter={(e) => handleSearch(e.target.value)}
-          onSubmit={(e) => setSearch(e.target.value)}
-        />
-      )}
+    <div className="src">
+      <Input
+        className="input-src"
+        placeholder="Search"
+        suffix={<SearchOutlined />}
+        onPressEnter={(e) => handleSearch(e.target.value)}
+        onSubmit={(e) => setSearch(e.target.value)}
+      />
     </div>
   );
 });
@@ -902,9 +864,7 @@ const AddButton = withRouter(
               <JoinGPMLButton loginWithPopup={loginWithPopup} />
             )}
             <Link to="/flexible-forms">
-              <Button type="primary" placement="bottomRight">
-                Add Content
-              </Button>
+              <Button type="primary">Add Content</Button>
             </Link>
           </>
         );

@@ -14,8 +14,8 @@
 
 (defn parse-json [json-file]
   (j/read-value
-    (slurp json-file)
-    j/keyword-keys-object-mapper))
+   (slurp json-file)
+   j/keyword-keys-object-mapper))
 
 (defn write-cache [data cache-id]
   (let [fl (java.io.File. (str cache-path cache-id ".json"))]
@@ -52,7 +52,7 @@
       (seeder.db/add-constraint db query))
     (seeder.db/set-default-sequence db table)
     (delete-cache cache-id)
-  (println (str "Ref " (:tbl table) " added"))))
+    (println (str "Ref " (:tbl table) " added"))))
 
 (defn drop-constraint-country [db cache-id]
   (drop-all-constraint db {:cache cache-id
@@ -134,9 +134,9 @@
 
 ;; initiative updater
 (defn new-initiative-object-id [[k _] mapping json-file]
-    (let [new-id (keyword (str (get mapping k)))
-          new-data (filter #(= (:id %) (Integer/parseInt (name new-id))) json-file)]
-      (assoc {} new-id (-> new-data first :name))))
+  (let [new-id (keyword (str (get mapping k)))
+        new-data (filter #(= (:id %) (Integer/parseInt (name new-id))) json-file)]
+    (assoc {} new-id (-> new-data first :name))))
 
 (defn remap-initiative-object [v mapping json-file]
   (cond

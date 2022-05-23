@@ -1,5 +1,6 @@
 (ns gpml.handler.util
   (:require [clojure.string :as str]
+            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.constants :as constants]))
 
 (def unauthorized {:status 403 :body {:message "Unauthorized"}})
@@ -36,3 +37,10 @@
                 (and (> limit 0) limit)
                 1)]
     (int (Math/ceil (float (/ count limit*))))))
+
+(defn individual-connections->api-individual-connections [conn individual-connections created-by]
+  (let [creator-is-admin? (= "ADMIN" (:role (db.stakeholder/stakeholder-by-id conn {:id created-by})))]
+    (if creator-is-admin?
+      individual-connections
+      (conj individual-connections {:stakeholder created-by
+                                    :role "owner"}))))

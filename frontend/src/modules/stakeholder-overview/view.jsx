@@ -12,21 +12,22 @@ import api from "../../utils/api";
 import { redirectError } from "../error/error-util";
 import { entityName } from "../../utils/misc";
 import isEmpty from "lodash/isEmpty";
-import UnathenticatedPage from "./unathenticatedPage";
+import UnathenticatedPage from "./unathenticated-page";
 
 // Components
-import LeftSidebar from "../left-sidebar/LeftSidebar";
+import LeftSidebar from "../../components/left-sidebar/left-sidebar";
 import ProfileCard from "./card";
 import Header from "../knowledge-library/header";
-import FilterDrawer from "./filterDrawer";
-import MapView from "./mapView";
+import FilterDrawer from "./filter-drawer";
+import MapView from "./map-view";
 
 // Icons
 import topicViewIcon from "../../images/knowledge-library/topic-view-icon.svg";
 import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg";
 import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
 import { ReactComponent as IconCommunity } from "../../images/events/community-icon.svg";
-import StakeholderList from "./stakeholderList";
+import { ReactComponent as IconPartner } from "../../images/stakeholder-overview/partner-icon.svg";
+import StakeholderList from "./stakeholder-list";
 import { multicountryGroups } from "../knowledge-library/multicountry";
 import { titleCase } from "../../utils/string";
 import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
@@ -45,6 +46,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     organisations,
     seeking,
     offering,
+    tags,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -55,6 +57,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     seeking: s.tags.seeking,
     offering: s.tags.offering,
     stakeholders: s.stakeholders?.stakeholders,
+    tags: Object.values(s.tags).flat(),
   }));
 
   const viewportWidth = document.documentElement.clientWidth;
@@ -110,7 +113,9 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       url: "/stakeholder-overview",
       icon: <IconCommunity />,
     },
+
     { id: 3, title: "Forums", url: null, icon: <IconForum /> },
+    { id: 4, title: "Partners", url: "/partners", icon: <IconPartner /> },
   ];
 
   const selectionValue = (
@@ -234,7 +239,6 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         }
 
         setLoading(false);
-        setLandingQuery(String(searchParms));
       })
       .catch((err) => {
         console.error(err);
@@ -355,20 +359,11 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       }
 
       if (key === "geoCoverageType") {
-        const selectedGeoCoverage = geoCoverageTypeOptions?.find(
-          (x) => x.toLowerCase() === value.toLowerCase()
-        );
-
-        return selectedGeoCoverage;
+        return value.toLowerCase() === "sub-national" ? "Subnational" : value;
       }
 
       if (key === "representativeGroup") {
-        const selectedRepresentativeGroups = representativeGroup?.find(
-          (x) => x?.code?.toLowerCase() == value?.toLowerCase()
-        );
-        return value.toLowerCase() === "other"
-          ? "Other"
-          : selectedRepresentativeGroups?.name;
+        return value;
       }
       if (key === "transnational") {
         const transnationalGroup = multicountryGroups
@@ -381,11 +376,11 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         return selectedTransnational?.name;
       }
       if (key === "seeking") {
-        const selectedSeeking = seeking?.find((seek) => seek?.tag == value);
+        const selectedSeeking = tags?.find((seek) => seek?.tag == value);
         return selectedSeeking?.tag;
       }
       if (key === "offering") {
-        const selectedOffering = offering?.find((offer) => offer?.tag == value);
+        const selectedOffering = tags?.find((offer) => offer?.tag == value);
         return selectedOffering?.tag;
       }
       if (key === "entity") {

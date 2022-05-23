@@ -191,6 +191,12 @@
       padding-right: 0;
       border-radius: 10px;
       border: 0;
+      &:hover {
+        background-color: $yellow-highlight;
+        .select-button {
+          opacity: 0.5 !important;
+        }
+      }
 
       .selection-value,
       .ant-select-selection-item {
@@ -212,6 +218,7 @@
         height: 100%;
         align-items: center;
         justify-content: space-between;
+
         .label::first-letter {
           text-transform: uppercase;
         }
