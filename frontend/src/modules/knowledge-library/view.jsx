@@ -29,6 +29,7 @@ import { ReactComponent as IconExchange } from "../../images/capacity-building/i
 import { ReactComponent as IconCaseStudies } from "../../images/capacity-building/ic-case-studies.svg";
 
 import Header from "./header";
+import moment from "moment";
 
 const { Option } = Select;
 
@@ -235,10 +236,10 @@ const KnowledgeLibrary = ({
           : selectedRepresentativeGroups?.name;
       }
       if (key === "startDate") {
-        return `Start date ${value}`;
+        return `Start date ${moment(value).year()}`;
       }
       if (key === "endDate") {
-        return `End date ${value}`;
+        return `End date ${moment(value).year()}`;
       }
       if (key === "subContentType") {
         const selectedSubContentType = mainContentType.find((subContent) =>
@@ -438,7 +439,7 @@ const KnowledgeLibrary = ({
                       : `render-map-container`
                   }
                 >
-                  <TopicView {...{ updateQuery, query }} />
+                  <TopicView {...{ updateQuery, query, results }} />
                 </Col>
               )}
             </Row>

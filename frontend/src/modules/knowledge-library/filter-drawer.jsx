@@ -513,7 +513,8 @@ const DatePickerFilter = ({
       </Space>
       <div>
         <DatePicker
-          placeholder="dd.mm.yyyy"
+          placeholder="YYYY"
+          picker={"year"}
           value={!isEmpty(value) ? moment(value[0]) : ""}
           onChange={(val) =>
             updateQuery(flag, val ? moment(val).format("YYYY-MM-DD") : [])
@@ -521,7 +522,7 @@ const DatePickerFilter = ({
           disabledDate={(current) => {
             // Can not select days past start date
             if (startDate) {
-              return current < startDate;
+              return current <= startDate;
             }
             return null;
           }}
