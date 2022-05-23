@@ -5,7 +5,7 @@ import TopicChart from "../chart/topic-chart";
 import { titleCase } from "../../utils/string";
 import TopicBar from "../chart/topic-bar";
 
-const TopicView = ({ updateQuery, query }) => {
+const TopicView = ({ updateQuery, query, results }) => {
   const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const popularTags = [
@@ -87,14 +87,26 @@ const TopicView = ({ updateQuery, query }) => {
 
   // Apply when there is a selected topic
   useEffect(() => {
-    if (selectedTopic && savedTopic.length > 0) {
-      getPopularTopics(`/tag/topic/popular?tags=${selectedTopic}&limit=6`);
+    if (results.length > 0) {
+      if (selectedTopic && savedTopic.length > 0) {
+        getPopularTopics(`/tag/topic/popular?tags=${selectedTopic}&limit=6`);
+      } else {
+        !selectedTopic && getPopularTopics(`/tag/topic/popular`);
+      }
     } else {
-      !selectedTopic && getPopularTopics(`/tag/topic/popular`);
+      const topics = popularTags.map((topic) => {
+        return {
+          id: topic,
+          topic: topic,
+          tag: topic,
+          count: 0,
+        };
+      });
+      setSortedPopularTopics(topics);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTopic]);
+  }, [selectedTopic, results]);
 
   return (
     <>
