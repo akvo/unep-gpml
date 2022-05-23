@@ -197,8 +197,16 @@ export const schema = {
           title: "Seeking",
           enum: [],
         },
+        seekingSuggestedTags: {
+          title: "Suggested Tags Seeking",
+          enum: [],
+        },
         offering: {
           title: "Offering",
+          enum: [],
+        },
+        offeringSuggestedTags: {
+          title: "Offering Tags Seeking",
           enum: [],
         },
         about: {

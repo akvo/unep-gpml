@@ -4,8 +4,6 @@ import { utils } from "@rjsf/core";
 import { Select, Divider, Input, List } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
-import ModalAddEntity from "../../modules/flexible-forms/EntityModal/add-entity-modal";
-
 const { asNumber, guessType } = utils;
 
 const SELECT_STYLE = {
