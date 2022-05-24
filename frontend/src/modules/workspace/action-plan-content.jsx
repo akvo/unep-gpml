@@ -61,7 +61,7 @@ const plans = [
             <Link to="/knowledge/capacity-building">Tools & Toolkits</Link>.
           </li>
           <li>
-            The <Link to="/stakeholder-overview">Connect Stakeholders</Link>{" "}
+            The <Link to="/connect/community">Connect Stakeholders</Link>{" "}
             component can be used to identify and map stakeholders, as well as
             to identify organizations and experts that can provide specific
             services and expertise.

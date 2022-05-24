@@ -66,9 +66,11 @@ const ResponsiveMenu = withRouter(
           loginWithPopup();
         } else if (key === "logout" || key === "logout-mobile") {
           logout({ returnTo: window.location.origin });
-        } else if (key === "data-hub" || key === "stakeholder-overview") {
-        } else if (key.includes("knowledge/library")) {
-          history.push(`/knowledge/library`);
+        } else if (key === "data-hub") {
+        } else if (key.includes("stakeholder-overview")) {
+          history.push("/connect/events");
+        } else if (key.includes("knowledge-library")) {
+          history.push("/knowledge/library");
         } else if (key.includes("search-button")) {
           return;
         } else {
@@ -179,7 +181,7 @@ const ResponsiveMenu = withRouter(
             className="nav-link big-screen-menu"
           >
             <Menu.Item
-              key="knowledge/library"
+              key="knowledge-library"
               className="nav-link"
               onClick={() => setFilterMenu([])}
             >
@@ -205,7 +207,7 @@ const ResponsiveMenu = withRouter(
                   return (
                     name && (
                       <Menu.Item
-                        key={`/knowledge/library?topic=${topic}`}
+                        key={`knowledge/library?topic=${topic}`}
                         className="indent-right nav-link"
                         disabled={loading}
                         onClick={() => setFilterMenu([topic])}
@@ -227,7 +229,7 @@ const ResponsiveMenu = withRouter(
 
           {/* Connect Stakeholders */}
           <Menu.Item key="stakeholder-overview" className="nav-link">
-            <Link to="/events">Connect Stakeholders</Link>
+            <Link to="/connect/events">Connect Stakeholders</Link>
           </Menu.Item>
           {/* <SubMenu
             key="connect-stakeholders"

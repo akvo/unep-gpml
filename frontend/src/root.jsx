@@ -388,7 +388,7 @@ const Root = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/events"
+                    to="/connect/events"
                     className="menu-btn nav-link"
                     activeClassName="selected"
                   >
@@ -681,34 +681,40 @@ const Root = () => {
             }
             path="/workspace"
           />
-
-          <Route
-            exact
-            render={(props) => <EventPage {...props} />}
-            path="/events"
-          />
           <Route
             exact
             render={(props) => <StakeholderDetail {...props} />}
             path="/stakeholder-detail"
           />
           <Route
-            exact
-            render={(props) => <Partners {...props} />}
-            path="/partners"
-          />
-          <Route
-            exact
-            render={(props) => (
-              <StakeholderOverview
-                {...props}
-                loginWithPopup={loginWithPopup}
-                filters={filters}
-                setFilters={setFilters}
-              />
+            path="/connect"
+            render={() => (
+              <Switch>
+                <Route
+                  exact
+                  render={(props) => <EventPage {...props} />}
+                  path="/connect/events"
+                />
+                <Route
+                  path="/connect/community"
+                  render={(props) => (
+                    <StakeholderOverview
+                      {...props}
+                      loginWithPopup={loginWithPopup}
+                      filters={filters}
+                      setFilters={setFilters}
+                    />
+                  )}
+                />
+                <Route
+                  exact
+                  render={(props) => <Partners {...props} />}
+                  path="/connect/partners"
+                />
+              </Switch>
             )}
-            path="/stakeholder-overview"
           />
+
           <Route
             path="/:type(stakeholder)/:id"
             render={(props) => (

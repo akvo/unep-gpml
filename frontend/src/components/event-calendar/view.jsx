@@ -165,7 +165,7 @@ const EventCalendar = withRouter(({ history }) => {
               headerRender={(e) =>
                 calendarHeader({
                   ...e,
-                  isShownAddButton: path === "/events" ? true : false,
+                  isShownAddButton: path === "/connect/events" ? true : false,
                 })
               }
               dateCellRender={dateCellRender}

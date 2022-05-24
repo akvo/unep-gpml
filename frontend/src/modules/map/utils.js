@@ -37,7 +37,7 @@ export const curr = (findData, path, existingData) => {
           initiative: findData?.initiative || 0,
         });
       }
-      if (path === "/stakeholder-overview") {
+      if (path === "/connect/community") {
         return sumValues({
           stakeholder: findData?.stakeholder,
           organisation: findData?.organisation,

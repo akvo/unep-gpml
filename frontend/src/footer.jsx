@@ -63,7 +63,7 @@ const Footer = ({
                     // onClick={() =>
                     //   setFilterMenu(["organisation", "stakeholder"])
                     // }
-                    to="/events"
+                    to="/connect/events"
                   >
                     Connect Stakeholders
                   </Link>

@@ -44,7 +44,7 @@ const unsettledTerritoryIsoCode = [
 
 const higlightColor = "#255B87";
 export const KNOWLEDGE_LIBRARY = "/knowledge/library";
-export const STAKEHOLDER_OVERVIEW = "/stakeholder-overview";
+export const STAKEHOLDER_OVERVIEW = "/connect/community";
 
 const StakeholderTooltipContent = ({
   data,
@@ -513,7 +513,7 @@ const Maps = ({
               initiative: curr?.counts?.initiative || 0,
             });
           }
-          if (path === "/stakeholder-overview") {
+          if (path === "/connect/community") {
             return sumValues({
               stakeholder: curr?.counts?.stakeholder,
               organisation: curr?.counts?.organisation,

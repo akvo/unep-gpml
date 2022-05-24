@@ -514,7 +514,7 @@ const Landing = withRouter(
                 Our Community{" "}
                 <span className="see-more-link ant-btn-ghost ant-btn">
                   <Link
-                    to={isApprovedUser ? "/events" : "#"}
+                    to={isApprovedUser ? "/connect/events" : "#"}
                     onClick={() => {
                       !isApprovedUser
                         ? handleOurCommunityProfileClick()
