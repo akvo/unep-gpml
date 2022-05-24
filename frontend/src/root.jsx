@@ -195,7 +195,6 @@ const Root = () => {
     tags: s.tags,
   }));
 
-  const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [
     stakeholderSignupModalVisible,
     setStakeholderSignupModalVisible,
@@ -264,10 +263,8 @@ const Root = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterCountries, setFilterCountries] = useState([]);
-  const location = useLocation();
   const [relations, setRelations] = useState([]);
   const { isLoading } = useAuth0();
-  const [warningVisible, setWarningVisible] = useState(false);
   const pageSize = 8;
   const [countData, setCountData] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
@@ -449,7 +446,6 @@ const Root = () => {
         </Header>
         <Switch>
           <Route
-            profile={profile}
             path="/"
             exact
             render={(props) => (
@@ -474,6 +470,54 @@ const Root = () => {
             exact
             path="/glossary"
             render={(props) => <Glossary {...props} />}
+          />
+          <Route
+            path="/knowledge"
+            render={() => (
+              <Switch>
+                <Route
+                  path="/knowledge/library"
+                  render={(props) => (
+                    <KnowledgeLibrary
+                      {...{
+                        history,
+                        query,
+                        results,
+                        countData,
+                        pageSize,
+                        loading,
+                        filters,
+                        filterMenu,
+                        filterCountries,
+                        isAuthenticated,
+                        loginWithPopup,
+                        multiCountryCountries,
+                        isLoading,
+                        setLoading,
+                        landingQuery,
+
+                        //Functions
+                        getResults,
+                        updateQuery,
+                        setFilters,
+                        setRelations,
+                        setFilterCountries,
+                        setMultiCountryCountries,
+                        setWarningModalVisible,
+                        setStakeholderSignupModalVisible,
+                        ...props,
+                      }}
+                      setStakeholderSignupModalVisible={
+                        setStakeholderSignupModalVisible
+                      }
+                      filters={filters}
+                      setFilters={setFilters}
+                      filterMenu={filterMenu}
+                    />
+                  )}
+                />
+              </Switch>
+            )}
           />
           <Route
             exact
