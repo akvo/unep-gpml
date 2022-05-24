@@ -9,15 +9,20 @@ import { ReactComponent as IconPartner } from "../../images/stakeholder-overview
 
 function Partners() {
   const sidebar = [
-    { id: 1, title: "Events", url: "/events", icon: <IconEvent /> },
+    { id: 1, title: "Events", url: "/connect/events", icon: <IconEvent /> },
     {
       id: 2,
       title: "Community",
-      url: "/stakeholder-overview",
+      url: "/connect/community",
       icon: <IconCommunity />,
     },
     { id: 3, title: "Forums", url: null, icon: <IconForum /> },
-    { id: 4, title: "Partners", url: "/partners", icon: <IconPartner /> },
+    {
+      id: 4,
+      title: "Partners",
+      url: "/connect/partners",
+      icon: <IconPartner />,
+    },
   ];
 
   return (

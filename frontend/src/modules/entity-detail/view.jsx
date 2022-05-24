@@ -173,7 +173,7 @@ const SharePanel = ({
                       message: "Entity deleted successfully",
                     });
                     history.push({
-                      pathname: `/stakeholder-overview`,
+                      pathname: `/connect/community`,
                     });
                   })
                   .catch((err) => {

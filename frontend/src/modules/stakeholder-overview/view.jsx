@@ -106,16 +106,21 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     results.length + ((filters?.page && pageSize * filters?.page) || 0);
 
   const sidebar = [
-    { id: 1, title: "Events", url: "/events", icon: <IconEvent /> },
+    { id: 1, title: "Events", url: "/connect/events", icon: <IconEvent /> },
     {
       id: 2,
       title: "Community",
-      url: "/stakeholder-overview",
+      url: "/connect/community",
       icon: <IconCommunity />,
     },
 
     { id: 3, title: "Forums", url: null, icon: <IconForum /> },
-    { id: 4, title: "Partners", url: "/partners", icon: <IconPartner /> },
+    {
+      id: 4,
+      title: "Partners",
+      url: "/connect/partners",
+      icon: <IconPartner />,
+    },
   ];
 
   const selectionValue = (
@@ -319,7 +324,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
     setFilters(newQuery);
     const newParams = new URLSearchParams(newQuery);
-    history.push(`/stakeholder-overview?${newParams.toString()}`);
+    history.push(`/connect/community?${newParams.toString()}`);
     setLandingQuery(newParams.toString());
     clearTimeout(tmid);
     tmid = setTimeout(getResults(newQuery), 1000);

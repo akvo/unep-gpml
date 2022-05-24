@@ -43,8 +43,8 @@ const unsettledTerritoryIsoCode = [
 ];
 
 const higlightColor = "#255B87";
-export const KNOWLEDGE_LIBRARY = "/knowledge-library";
-export const STAKEHOLDER_OVERVIEW = "/stakeholder-overview";
+export const KNOWLEDGE_LIBRARY = "/knowledge/library";
+export const STAKEHOLDER_OVERVIEW = "/connect/community";
 
 const StakeholderTooltipContent = ({
   data,
@@ -501,7 +501,7 @@ const Maps = ({
         if (properties.length > 0) {
           return sumValues(propsToSum);
         } else {
-          if (path === "/knowledge-library") {
+          if (path === "/knowledge/library") {
             return sumValues({
               actionPlan: curr?.counts?.actionPlan,
               event: curr?.counts?.event,
@@ -513,7 +513,7 @@ const Maps = ({
               initiative: curr?.counts?.initiative || 0,
             });
           }
-          if (path === "/stakeholder-overview") {
+          if (path === "/connect/community") {
             return sumValues({
               stakeholder: curr?.counts?.stakeholder,
               organisation: curr?.counts?.organisation,

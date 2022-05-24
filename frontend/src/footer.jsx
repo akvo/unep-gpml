@@ -55,7 +55,7 @@ const Footer = ({
                 <h4>GPML Digital platform</h4>
               </li>
               <li>
-                <Link to="/knowledge-library"> Knowledge Exchange</Link>
+                <Link to="/knowledge/library"> Knowledge Exchange</Link>
               </li>
               <li>
                 {profile?.reviewStatus === "APPROVED" ? (
@@ -63,7 +63,7 @@ const Footer = ({
                     // onClick={() =>
                     //   setFilterMenu(["organisation", "stakeholder"])
                     // }
-                    to="/events"
+                    to="/connect/events"
                   >
                     Connect Stakeholders
                   </Link>
@@ -99,7 +99,7 @@ const Footer = ({
               <li>
                 <Link
                   onClick={() => setFilterMenu(["project"])}
-                  to="/knowledge-library?topic=project"
+                  to="/knowledge/library?topic=project"
                 >
                   Initiative
                 </Link>
@@ -107,7 +107,7 @@ const Footer = ({
               <li>
                 <Link
                   onClick={() => setFilterMenu(["action_plan"])}
-                  to="/knowledge-library?topic=action_plan"
+                  to="/knowledge/library?topic=action_plan"
                 >
                   Action Plan
                 </Link>
@@ -115,7 +115,7 @@ const Footer = ({
               <li>
                 <Link
                   onClick={() => setFilterMenu(["policy"])}
-                  to="/knowledge-library?topic=policy"
+                  to="/knowledge/library?topic=policy"
                 >
                   Policy
                 </Link>
@@ -123,7 +123,7 @@ const Footer = ({
               <li>
                 <a
                   onClick={() => setFilterMenu(["technical_resource"])}
-                  to="/knowledge-library?topic=technical_resource"
+                  to="/knowledge/library?topic=technical_resource"
                 >
                   Technical Resources
                 </a>
@@ -131,7 +131,7 @@ const Footer = ({
               <li>
                 <Link
                   onClick={() => setFilterMenu(["financing_resource"])}
-                  to="/knowledge-library?topic=financing_resource"
+                  to="/knowledge/library?topic=financing_resource"
                 >
                   Financing Resources
                 </Link>
@@ -139,7 +139,7 @@ const Footer = ({
               <li>
                 <Link
                   onClick={() => setFilterMenu(["event"])}
-                  to="/knowledge-library?topic=event"
+                  to="/knowledge/library?topic=event"
                 >
                   Event
                 </Link>
@@ -147,7 +147,7 @@ const Footer = ({
               <li>
                 <Link
                   onClick={() => setFilterMenu(["technology"])}
-                  to="/knowledge-library?topic=technology"
+                  to="/knowledge/library?topic=technology"
                 >
                   Technology
                 </Link>
