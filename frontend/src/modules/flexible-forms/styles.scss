@@ -511,6 +511,7 @@
             padding: 20px;
             margin-bottom: 10px;
             cursor: pointer;
+            min-height: 100px;
             @-moz-document url-prefix() {
               padding: 10px;
               margin-bottom: 5px;
