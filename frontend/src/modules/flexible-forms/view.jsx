@@ -1515,15 +1515,16 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                           </List>
                         </div>
 
-                        <div
+                        {/* <div
                           className={`Overlay ${displayModal ? "Show" : ""}`}
                           onClick={() => setDisplayModal(!displayModal)}
-                        />
+                        /> */}
                       </div>
                       <Radio.Group
                         className="ant-row"
                         onChange={handleMainContentType}
                         value={mainType}
+                        style={{ width: displayModal ? "50%" : "100%" }}
                       >
                         {mainContentType.map((item) => {
                           const img = require(`../../images/${item?.code?.replace(
@@ -1538,7 +1539,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                             <Col
                               className="gutter-row"
                               xs={12}
-                              lg={6}
+                              lg={displayModal ? 12 : 6}
                               key={item.code}
                             >
                               <Radio.Button
@@ -1675,7 +1676,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     </div>
                     <div className="center-content">
                       <p>Field to submit</p>
-                      <h6>0 of 1</h6>
+                      <h6>1 of 1</h6>
                     </div>
                     <div
                       className="next-button"
