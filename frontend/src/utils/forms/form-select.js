@@ -65,8 +65,8 @@ const SelectWidget = ({
   const stringify = (currentValue) =>
     Array.isArray(currentValue) ? value.map(String) : String(value);
 
-  const showEntity = uiSchema["ui:options"]?.["showEntity"];
-  const showTag = uiSchema["ui:options"]?.["ui:showTag"];
+  const showEntity = uiSchema?.["ui:options"]?.["showEntity"];
+  const showTag = uiSchema?.["ui:options"]?.["ui:showTag"];
 
   const [showModal, setShowModal] = useState(false);
 
