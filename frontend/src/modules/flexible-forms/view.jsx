@@ -1625,24 +1625,32 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     </div>
                   </Row>
                 ) : (
-                  <Row className="main-content">
-                    <FlexibleForm
-                      formType={props.formType}
-                      btnSubmit={btnSubmit}
-                      sending={sending}
-                      setSending={setSending}
-                      highlight={highlight}
-                      setHighlight={setHighlight}
-                      formSchema={formSchema}
-                      setDisabledBtn={setDisabledBtn}
-                      tabsData={tabsData}
-                      mainType={label}
-                      subContentType={subType}
-                      capacityBuilding={capacityBuilding}
-                      type={state && state?.state ? state?.state.type : ""}
-                    />
-                  </Row>
+                  <span></span>
                 )}
+                <Row
+                  className={`${
+                    getTabStepIndex().tabIndex !== 0 &&
+                    getTabStepIndex().tabIndex !== 1
+                      ? "main-content"
+                      : null
+                  }`}
+                >
+                  <FlexibleForm
+                    formType={props.formType}
+                    btnSubmit={btnSubmit}
+                    sending={sending}
+                    setSending={setSending}
+                    highlight={highlight}
+                    setHighlight={setHighlight}
+                    formSchema={formSchema}
+                    setDisabledBtn={setDisabledBtn}
+                    tabsData={tabsData}
+                    mainType={label && label}
+                    subContentType={subType && subType}
+                    capacityBuilding={capacityBuilding && capacityBuilding}
+                    type={state && state?.state ? state?.state.type : ""}
+                  />
+                </Row>
                 {getTabStepIndex().tabIndex === 0 ? (
                   <div className="bottom-panel">
                     <div className="center-content">
