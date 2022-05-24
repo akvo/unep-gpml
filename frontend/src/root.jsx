@@ -323,7 +323,7 @@ const Root = () => {
     setFilters(newQuery);
     const newParams = new URLSearchParams(newQuery);
 
-    history.push(`/knowledge-library?${newParams.toString()}`);
+    history.push(`/knowledge/library?${newParams.toString()}`);
     setLandingQuery(newParams.toString());
 
     clearTimeout(tmid);
@@ -379,7 +379,7 @@ const Root = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/knowledge-library"
+                    to="/knowledge/library"
                     className="menu-btn nav-link menu-dropdown"
                     activeClassName="selected"
                   >
@@ -516,51 +516,19 @@ const Root = () => {
                     />
                   )}
                 />
+                <Route
+                  path="/knowledge/capacity-building"
+                  render={(props) => <CapacityBuilding {...props} />}
+                />
+                <Route
+                  exact
+                  path="/knowledge/case-studies"
+                  render={(props) => <CaseStudies {...props} />}
+                />
               </Switch>
             )}
           />
-          <Route
-            exact
-            path="/knowledge-library"
-            render={(props) => (
-              <KnowledgeLibrary
-                {...{
-                  history,
-                  query,
-                  results,
-                  countData,
-                  pageSize,
-                  loading,
-                  filters,
-                  filterMenu,
-                  filterCountries,
-                  isAuthenticated,
-                  loginWithPopup,
-                  multiCountryCountries,
-                  isLoading,
-                  setLoading,
-                  landingQuery,
 
-                  //Functions
-                  getResults,
-                  updateQuery,
-                  setFilters,
-                  setRelations,
-                  setFilterCountries,
-                  setMultiCountryCountries,
-                  setWarningModalVisible,
-                  setStakeholderSignupModalVisible,
-                  ...props,
-                }}
-                setStakeholderSignupModalVisible={
-                  setStakeholderSignupModalVisible
-                }
-                filters={filters}
-                setFilters={setFilters}
-                filterMenu={filterMenu}
-              />
-            )}
-          />
           <Route
             path="/browse"
             render={(props) => (
@@ -705,15 +673,6 @@ const Root = () => {
             path="/discourse-forum"
             render={(props) => <DiscourseForum />}
           />
-          <Route
-            path="/capacity-building"
-            render={(props) => <CapacityBuilding {...props} />}
-          />
-          <Route
-            exact
-            path="/case-studies"
-            render={(props) => <CaseStudies {...props} />}
-          />
 
           <Route
             exact
@@ -837,7 +796,7 @@ const Search = withRouter(({ history, updateQuery }) => {
   const handleSearch = (src) => {
     const path = history.location.pathname;
     if (src) {
-      history.push(`/knowledge-library?q=${src.trim()}`);
+      history.push(`/knowledge/library?q=${src.trim()}`);
       updateQuery("q", src.trim());
     } else {
       updateQuery("q", src.trim());

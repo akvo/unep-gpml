@@ -1461,7 +1461,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       </p>
                       <p>
                         You can access existing content via the{" "}
-                        <Link to="/knowledge-library">
+                        <Link to="/knowledge/library">
                           Knowledge Exchange Library.
                         </Link>
                         Make sure to browse around and leave a review under the

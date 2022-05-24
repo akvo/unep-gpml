@@ -6,7 +6,7 @@ import { Button } from "antd";
 const KnowledgeExchangeDropdownMenu = () => {
   return (
     <NavLink
-      to="/knowledge-library"
+      to="/knowledge/library"
       className="menu-btn nav-link menu-dropdown"
       activeClassName="selected"
     >

@@ -35,20 +35,20 @@ const CapacityBuilding = () => {
   const sidebar = [
     {
       id: 1,
-      title: "LIBRARY",
-      url: "/knowledge-library",
+      title: "Library",
+      url: "/knowledge/library",
       icon: <IconLibrary />,
     },
     {
       id: 2,
-      title: "LEARNING",
-      url: "/capacity-building",
+      title: "Learning",
+      url: "/knowledge/capacity-building",
       icon: <IconLearning />,
     },
     {
       id: 4,
       title: "Case studies",
-      url: "/case-studies",
+      url: "/knowledge/case-studies",
       icon: <IconCaseStudies />,
     },
   ];
@@ -106,7 +106,7 @@ const CapacityBuilding = () => {
                       title={<span className="text-green text-upper">{g}</span>}
                       extra={
                         <Button
-                          href="/knowledge-library"
+                          href="/knowledge/library"
                           target="_blank"
                           rel="noopener noreferrer"
                           type="ghost"

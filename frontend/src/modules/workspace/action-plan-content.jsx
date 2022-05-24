@@ -27,17 +27,17 @@ const plans = [
         <ul>
           <li>
             The repository of{" "}
-            <Link to="/knowledge-library?country=&transnational=&topic=action_plan&tag=&q=&offset=0">
+            <Link to="/knowledge/library?country=&transnational=&topic=action_plan&tag=&q=&offset=0">
               Action Plans
             </Link>{" "}
             and{" "}
-            <Link to="/knowledge-library?country=&transnational=&topic=policy&tag=&q=&offset=0">
+            <Link to="/knowledge/library?country=&transnational=&topic=policy&tag=&q=&offset=0">
               Policies
             </Link>{" "}
             can be used to identify relevant examples of action plans and
             policies at the transnational and national level. Some of those are
             described in more detail as{" "}
-            <Link to="/case-studies">Case Studies</Link>.
+            <Link to="/knowledge/case-studies">Case Studies</Link>.
           </li>
           <li>
             The Digital Platform also contains various resources that can
@@ -46,7 +46,7 @@ const plans = [
             <a href="https://datahub.gpmarinelitter.org/">Data Hub</a> provides
             statistics of urban waste generated and mismanaged plastic waste at
             the country level. The repository of Monitoring & Analysis{" "}
-            <Link to="/knowledge-library?country=&transnational=&topic=project&tag=&q=&offset=0">
+            <Link to="/knowledge/library?country=&transnational=&topic=project&tag=&q=&offset=0">
               Initiatives
             </Link>{" "}
             can be helpful in identifying relevant data.
@@ -58,7 +58,7 @@ const plans = [
               ISWA plastic pollution calculator
             </Link>{" "}
             , can be found under{" "}
-            <Link to="/capacity-building">Tools & Toolkits</Link>.
+            <Link to="/knowledge/capacity-building">Tools & Toolkits</Link>.
           </li>
           <li>
             The <Link to="/stakeholder-overview">Connect Stakeholders</Link>{" "}
@@ -67,11 +67,15 @@ const plans = [
             services and expertise.
           </li>
           <li>
-            The <Link to="/capacity-building">Capacity Building section</Link>{" "}
-            contains <Link to="/capacity-building">Courses & Trainings</Link>{" "}
-            and <Link to="/capacity-building">Events</Link>, such as the{" "}
-            <Link to="/technical_resource/149">MOOC on Marine Litter</Link> ,
-            webinars, and conferences, that provide training opportunities in
+            The{" "}
+            <Link to="/knowledge/capacity-building">
+              Capacity Building section
+            </Link>{" "}
+            contains{" "}
+            <Link to="/knowledge/capacity-building">Courses & Trainings</Link>{" "}
+            and <Link to="/knowledge/capacity-building">Events</Link>, such as
+            the <Link to="/technical_resource/149">MOOC on Marine Litter</Link>{" "}
+            , webinars, and conferences, that provide training opportunities in
             different areas.
           </li>
         </ul>
@@ -102,7 +106,8 @@ const plans = [
             >
               Guidance Documents
             </a>
-            . The <Link to="/case-studies">Belize and PAME case study</Link>{" "}
+            . The{" "}
+            <Link to="/knowledge/case-studies">Belize and PAME case study</Link>{" "}
             provide examples of different types of implementation actions that
             are being applied as part of a national and Regional Action Plan
             respectively. Other examples include:

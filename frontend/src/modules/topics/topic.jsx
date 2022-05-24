@@ -59,7 +59,7 @@ const renderTopics = (topics) => {
       >
         <Link
           to={{
-            pathname: "/knowledge-library",
+            pathname: "/knowledge/library",
             search: `?tag=${tag}`,
           }}
         >
