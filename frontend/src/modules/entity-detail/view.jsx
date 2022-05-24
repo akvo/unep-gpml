@@ -101,7 +101,6 @@ const SharePanel = ({
 }) => {
   const noEditTopics = new Set(["stakeholder"]);
 
-  console.log(profile.id === data.createdBy);
   const canEdit = () =>
     isAuthenticated &&
     profile.reviewStatus === "APPROVED" &&
@@ -557,6 +556,7 @@ const StakeholderDetail = ({
                                   >
                                     {item.entityConnections.map((item) => (
                                       <Avatar
+                                        key={item.entity}
                                         src={
                                           item?.image
                                             ? item.image
