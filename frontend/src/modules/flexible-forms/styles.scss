@@ -263,7 +263,6 @@
       padding: 13px 10px 0px 13px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
       @-moz-document url-prefix() {
         padding: 6.5px 5px 0px 6.5px;
       }
@@ -297,6 +296,7 @@
         border-radius: 5px;
         width: 100%;
         padding: 20px;
+        flex: 1;
         @-moz-document url-prefix() {
           padding: 10px;
         }
