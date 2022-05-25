@@ -10,20 +10,28 @@ filtered_entities AS (
 --~ (#'gpml.db.topic/generate-filter-topic-snippet params)
 ),
 country_counts AS (
-  SELECT geo_coverage, topic, COUNT(topic) AS topic_count
+  SELECT (countries.value)::TEXT::INT AS geo_coverage,
+         topic,
+         COUNT(topic) AS topic_count
   FROM filtered_entities
-  WHERE geo_coverage IS NOT NULL
-  GROUP BY geo_coverage, topic
+  LEFT JOIN json_array_elements(geo_coverage) countries
+  ON geo_coverage IS NOT NULL
+  WHERE (countries.value)::TEXT <> 'null'
+  GROUP BY (countries.value)::TEXT::INT, topic
+/*~ (when (= (:entity-group params) :community) */
   UNION ALL
-  SELECT geo_coverage, 'organisation' AS topic, COUNT(topic)
+  SELECT (countries.value)::TEXT::INT AS geo_coverage, 'organisation' AS topic, COUNT(topic) AS topic_count
   FROM filtered_entities
-  WHERE geo_coverage IS NOT NULL AND topic = 'organisation' AND (json->>'is_member')::BOOLEAN IS TRUE
-  GROUP BY geo_coverage, topic
+  LEFT JOIN json_array_elements(geo_coverage) countries ON geo_coverage IS NOT NULL
+  WHERE (countries.value)::TEXT <> 'null' AND topic = 'organisation' AND (json->>'is_member')::BOOLEAN IS TRUE
+  GROUP BY (countries.value)::TEXT::INT, topic
   UNION ALL
-  SELECT geo_coverage, 'non_member_organisation' AS topic, COUNT(topic)
+  SELECT (countries.value)::TEXT::INT AS geo_coverage, 'non_member_organisation' AS topic, COUNT(topic) AS topic_count
   FROM filtered_entities
-  WHERE geo_coverage IS NOT NULL AND topic = 'organisation' AND (json->>'is_member')::BOOLEAN IS FALSE
-  GROUP BY geo_coverage, topic
+  LEFT JOIN json_array_elements(geo_coverage) countries ON geo_coverage IS NOT NULL
+  WHERE (countries.value)::TEXT <> 'null' AND topic = 'organisation' AND (json->>'is_member')::BOOLEAN IS FALSE
+  GROUP BY (countries.value)::TEXT::INT, topic
+/*~ ) ~*/
 )
 SELECT geo_coverage AS id, json_object_agg(COALESCE(topic, 'project'), topic_count)
 --~ (str " AS " (:count-name params))
