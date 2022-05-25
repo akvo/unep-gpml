@@ -77,14 +77,11 @@
   Stakeholder, etc.) by country. The result of this
   counting is grouped by countries."
   [conn opts]
-  (let [counts (map-counts conn (merge opts {:count-name "counts"
-                                             :distinct-on-geo-coverage? false}
+  (let [counts (map-counts conn (merge opts {:count-name "counts"}
                                        (when (= :topic (:entity-group opts))
-                                         {:geo-coverage-types non-transnational-geo-coverage-types
-                                          :distinct-on-geo-coverage? true})))
+                                         {:geo-coverage-types non-transnational-geo-coverage-types})))
         transnational-counts-by-country (map-counts conn (merge opts {:geo-coverage-types transnational-geo-coverage-types
-                                                                      :count-name "transnational_counts"
-                                                                      :distinct-on-geo-coverage? true}))]
+                                                                      :count-name "transnational_counts"}))]
     (reduce
      (fn [acc [_ counts]]
        (conj acc (merge-with into topic-counts (apply merge counts))))
