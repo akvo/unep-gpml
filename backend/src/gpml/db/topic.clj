@@ -625,7 +625,14 @@
      UNION ALL
      SELECT 'gpml_member_entities' AS topic, COUNT(*)
      FROM organisation
-     WHERE review_status='APPROVED' AND is_member=true
+     WHERE review_status='APPROVED' AND is_member IS TRUE
+     GROUP BY topic
+     UNION ALL
+     SELECT 'capacity_building' AS topic, COUNT(*)
+     FROM cte_results
+     WHERE (SELECT COUNT(t.*)
+            FROM json_array_elements((CASE WHEN (json->>'tags'::TEXT = '') IS NOT FALSE THEN '[]'::JSON
+                                    ELSE (json->>'tags')::JSON END)) t WHERE t->>'tag' = 'capacity building') > 0
      GROUP BY topic"
     (str/join
      " "
