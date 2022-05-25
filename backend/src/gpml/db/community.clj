@@ -3,13 +3,13 @@
 
 (declare get-community-members)
 
-(hugsql/def-db-fns "gpml/db/community.sql")
+(hugsql/def-db-fns "gpml/db/community.sql" {:quoting :ansi})
 
 (defn get-community-members-query-and-filters
   [params]
   (let [{:keys [count-only? limit page filters order-by descending]} params
         {:keys [search-text network-type affiliation geo-coverage-type transnational
-                country tag representative-group entity]} filters
+                country tag representative-group entity is-member]} filters
         pagination (when (and (not count-only?)
                               limit page)
                      (format "LIMIT %d OFFSET %d" limit (* limit page)))
@@ -43,7 +43,10 @@
                      (str " AND type IN (:v*:filters.network-type)")
 
                      (seq entity)
-                     (str " AND id IN (:v*:filters.entity)"))]
+                     (str " AND id IN (:v*:filters.entity)")
+
+                     (not (nil? is-member))
+                     (str " AND is_member IS " is-member))]
 
     (if (:count-only? params)
       (format "SELECT cm.type AS network_type, COUNT(cm.*)
