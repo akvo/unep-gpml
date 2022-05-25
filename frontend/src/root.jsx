@@ -187,6 +187,7 @@ const Root = () => {
 
   const query = useQuery();
   const history = useHistory();
+  const path = history.location.pathname;
 
   const { profile, disclaimer, nav, tags } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -334,7 +335,7 @@ const Root = () => {
       setFilterCountries(value);
     }
   };
-
+  console.log(path.includes("/knowledge"), path);
   return (
     <>
       <ScrollToTop />
@@ -380,8 +381,10 @@ const Root = () => {
                 <li>
                   <NavLink
                     to="/knowledge/library"
-                    className="menu-btn nav-link menu-dropdown"
-                    activeClassName="selected"
+                    className={`menu-btn nav-link menu-dropdown ${
+                      path.includes("/knowledge") && "selected"
+                    }`}
+                    activeClassName={"selected"}
                   >
                     Knowledge Exchange
                   </NavLink>
@@ -389,7 +392,9 @@ const Root = () => {
                 <li>
                   <NavLink
                     to="/connect/events"
-                    className="menu-btn nav-link"
+                    className={`menu-btn nav-link ${
+                      path.includes("/connect") && "selected"
+                    }`}
                     activeClassName="selected"
                   >
                     Connect Stakeholders
