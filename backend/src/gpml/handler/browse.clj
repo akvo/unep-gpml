@@ -143,7 +143,7 @@
                               (map #(Integer/parseInt %))))
 
     (seq transnational)
-    (assoc :transnational (set (map str (str/split transnational #","))))
+    (assoc :transnational (set (map #(Integer/parseInt %) (str/split transnational #","))))
 
     (seq topic)
     (assoc :topic (set (str/split topic #",")))
@@ -208,13 +208,12 @@
                            (let [country-group-countries (flatten
                                                           (conj
                                                            (map #(db.country-group/get-country-group-countries
-                                                                  db {:id (Integer/parseInt %)})
+                                                                  db {:id %})
                                                                 (:transnational modified-filters))))
-                                 geo-coverage-countries (map (comp str :id) country-group-countries)
-                                 geo-coverage (map str geo-coverage)
+                                 geo-coverage-countries (map :id country-group-countries)
                                  transnational (->> (map #(db.country-group/get-country-groups-by-country db {:id %}) (:geo-coverage modified-filters))
                                                     (apply concat)
-                                                    (map (comp str :id))
+                                                    (map :id)
                                                     set)]
                              (assoc modified-filters :geo-coverage-countries (set (concat geo-coverage-countries geo-coverage))
                                     :transnational transnational))
@@ -222,7 +221,7 @@
                            (seq geo-coverage)
                            (let [transnational (->> (map #(db.country-group/get-country-groups-by-country db {:id %}) (:geo-coverage modified-filters))
                                                     (apply concat)
-                                                    (map (comp str :id))
+                                                    (map :id)
                                                     set)]
                              (assoc modified-filters :transnational transnational))
 
@@ -230,11 +229,10 @@
                            (let [country-group-countries (flatten
                                                           (conj
                                                            (map #(db.country-group/get-country-group-countries
-                                                                  db {:id (Integer/parseInt %)})
+                                                                  db {:id %})
                                                                 (:transnational modified-filters))))
-                                 geo-coverage-countries (map (comp str :id) country-group-countries)]
+                                 geo-coverage-countries (map :id country-group-countries)]
                              (assoc modified-filters :geo-coverage-countries (set geo-coverage-countries)))
-
                            :else
                            modified-filters)
         results (->> modified-filters
