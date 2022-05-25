@@ -9,10 +9,10 @@ const AddContentButton = withRouter(({ history }) => {
 
   const shouldDisplayButton =
     pathname === "/workspace" ||
-    pathname === "/knowledge-library" ||
-    pathname === "/events" ||
-    pathname === "/case-studies" ||
-    pathname === "/capacity-building";
+    pathname === "/knowledge/library" ||
+    pathname === "/connect/events" ||
+    pathname === "/knowledge/case-studies" ||
+    pathname === "/knowledge/capacity-building";
 
   return (
     shouldDisplayButton && (

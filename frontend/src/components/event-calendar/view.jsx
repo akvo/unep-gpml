@@ -135,7 +135,7 @@ const EventCalendar = withRouter(({ history }) => {
           <h2>
             Upcoming Events{" "}
             <span className="see-more-link">
-              <Link to="/knowledge-library?topic=event">
+              <Link to="/knowledge/library?topic=event">
                 See all <RightOutlined />
               </Link>
             </span>
@@ -165,7 +165,7 @@ const EventCalendar = withRouter(({ history }) => {
               headerRender={(e) =>
                 calendarHeader({
                   ...e,
-                  isShownAddButton: path === "/events" ? true : false,
+                  isShownAddButton: path === "/connect/events" ? true : false,
                 })
               }
               dateCellRender={dateCellRender}

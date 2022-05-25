@@ -150,7 +150,7 @@ const Landing = withRouter(
       if (!isMobileScreen) {
         setSelectedTopic(name?.toLocaleLowerCase());
       } else {
-        isMobileScreen && history.push(`/knowledge-library?tag=${tag}`);
+        isMobileScreen && history.push(`/knowledge/library?tag=${tag}`);
       }
     };
 
@@ -296,7 +296,7 @@ const Landing = withRouter(
             <h2>
               Featured Content{" "}
               <span className="see-more-link">
-                <Link to="/knowledge-library">
+                <Link to="/knowledge/library">
                   See all <RightOutlined />
                 </Link>
               </span>
@@ -514,7 +514,7 @@ const Landing = withRouter(
                 Our Community{" "}
                 <span className="see-more-link ant-btn-ghost ant-btn">
                   <Link
-                    to={isApprovedUser ? "/events" : "#"}
+                    to={isApprovedUser ? "/connect/events" : "#"}
                     onClick={() => {
                       !isApprovedUser
                         ? handleOurCommunityProfileClick()

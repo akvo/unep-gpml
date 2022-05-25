@@ -46,7 +46,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
             ? profile.type === "organisation"
               ? `/organisation/${profile?.id}`
               : `/stakeholder/${profile?.id}`
-            : "/stakeholder-overview"
+            : "/connect/community"
         }
       >
         <Card className="profile-card">
