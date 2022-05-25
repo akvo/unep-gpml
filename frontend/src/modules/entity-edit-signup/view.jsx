@@ -402,6 +402,15 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
     if (type === "item-array" && isObject && isArray) {
       res = value;
     }
+    if (name === "type" && value === "Intergovernmental organization") {
+      res = "Intergovernmental Organizations (IGOs)";
+    }
+    if (name === "type" && value === "Private Sector") {
+      res = "Private Sector (for-profit)";
+    }
+    if (name === "type" && value === "Academia & Research") {
+      res = "Academia and Research";
+    }
     return res;
   };
 
