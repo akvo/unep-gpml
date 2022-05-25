@@ -1,5 +1,6 @@
 (ns gpml.handler.browse
   (:require [clojure.string :as str]
+            [duct.logger :refer [log]]
             [gpml.constants :refer [topics resource-types]]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.event :as db.event]
@@ -198,7 +199,8 @@
 
     result))
 
-(defn browse-response [query db approved? admin]
+(defn browse-response
+  [{:keys [logger] {db :spec} :db} query approved? admin]
   (let [{:keys [geo-coverage transnational] :as modified-filters} (->> query
                                                                        (get-db-filter)
                                                                        (merge {:approved approved?
@@ -235,22 +237,28 @@
                              (assoc modified-filters :geo-coverage-countries (set geo-coverage-countries)))
                            :else
                            modified-filters)
+        get-topics-start-time (System/currentTimeMillis)
         results (->> modified-filters
                      (db.topic/get-topics db)
                      (map (fn [{:keys [json topic]}]
                             (assoc json :type topic))))
+        get-topics-exec-time (- (System/currentTimeMillis) get-topics-start-time)
+        count-topics-start-time (System/currentTimeMillis)
         counts (->> (assoc modified-filters :count-only? true)
-                    (db.topic/get-topics db))]
+                    (db.topic/get-topics db))
+        count-topics-exec-time (- (System/currentTimeMillis) count-topics-start-time)]
+    (log logger :info ::query-exec-time {:get-topics-exec-time (str get-topics-exec-time "ms")
+                                         :count-topics-exec-time (str count-topics-exec-time "ms")})
     {:results (map #(result->result-with-connections db %) results)
      :counts counts}))
 
-(defmethod ig/init-key :gpml.handler.browse/get [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.browse/get [_ config]
   (fn [{{:keys [query]} :parameters
         approved? :approved?
         user :user}]
     (resp/response (#'browse-response
+                    config
                     (merge query {:user-id (:id user)})
-                    (:spec db)
                     approved?
                     (= "ADMIN" (:role user))))))
 
