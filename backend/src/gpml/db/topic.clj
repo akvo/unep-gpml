@@ -10,7 +10,7 @@
 ;; Lucas Sousa 2022-01-20
 (declare get-topics get-flat-topics)
 
-(hugsql/def-db-fns "gpml/db/topic.sql")
+(hugsql/def-db-fns "gpml/db/topic.sql" {:quoting :ansi})
 
 (def ^:const generic-cte-opts
   "Common set of options for all CTE generation functions."
@@ -97,7 +97,7 @@
             json_agg(json_build_object('id', o.id, 'name', o.name)) AS organisations
         FROM
             resource_organisation ro
-            LEFT JOIN organisation o ON ro.organisation = o.id
+            JOIN organisation o ON ro.organisation = o.id
     GROUP BY
         ro.resource
    ) orgs ON e.id = orgs.resource")
@@ -234,7 +234,7 @@
        FROM
            initiative i
            JOIN LATERAL jsonb_array_elements(i.q32) tag_elements(value) ON true
-           JOIN LATERAL jsonb_each_text(tag_elements.value) tag_text(key, value) ON true
+           JOIN LATERAL jsonb_each_text(tag_elements.value) tag_text(id, tag) ON true
        GROUP BY
            i.id
    ) tag ON e.id = tag.id")
@@ -265,7 +265,7 @@
          "LEFT JOIN (
               SELECT
                   et.%s,
-                  json_agg(json_build_object(t.id, t.tag)) AS tags
+                  json_agg(json_build_object('id', t.id, 'tag', t.tag)) AS tags
               FROM
                   %s_tag et
               JOIN tag t ON et.tag = t.id
@@ -297,41 +297,38 @@
    entity-name))
 
 ;;======================= Geo Coverage queries =================================
-(def ^:const ^:private initiative-topic-geo-coverage-where-cond
-  "Initiative `WHERE` condition is a special case since the
-  `geo_coverage_type` is within a form answer."
-  "e.q24->>'global'::text IS NULL")
-
-(def ^:const ^:private generic-topic-geo-coverage-where-cond
-  "e.geo_coverage_type <> 'global'::public.geo_coverage_type")
-
 (defn generic-topic-geo-coverage-query
   "Generic query for geo coverage data. The `e` alias stands for
   `entity`."
-  [entity-name where-cond]
-  (apply format
-         "SELECT
+  [entity-name]
+  (let [non-global-where-cond (if (= entity-name "initiative")
+                                "e.q24->>'global'::TEXT IS NULL"
+                                "e.geo_coverage_type <> 'global'::geo_coverage_type")
+        global-where-cond (if (= entity-name "initiative")
+                            "e.q24->>'global'::TEXT IS NOT NULL"
+                            "e.geo_coverage_type = 'global'::geo_coverage_type")]
+    (apply format
+           "SELECT
         e.id,
-        COALESCE(cgc.country, egc.country) AS geo_coverage
+        json_agg(COALESCE(cgc.country, egc.country)) AS geo_coverage
     FROM
-        public.%s e
+        %s e
         LEFT JOIN %s_geo_coverage egc ON e.id = egc.%s
         LEFT JOIN country_group_country cgc ON cgc.country_group = egc.country_group
     WHERE
          %s
+    GROUP BY e.id
     UNION ALL
-    SELECT
-        e.id,
-        0 AS geo_coverage
+    SELECT e.id,
+         '[0]'::json
     FROM
         %s e
     WHERE
-        %s"
-         (concat
-          (repeat 3 entity-name)
-          [where-cond
-           entity-name
-           where-cond])))
+        %s
+    GROUP BY e.id"
+           (concat
+            (repeat 3 entity-name)
+            [non-global-where-cond entity-name global-where-cond]))))
 
 (defn generic-entity-geo-coverage-query
   [entity-name]
@@ -499,12 +496,9 @@
   There is one exception to the generic query that is considered, when
   the content table is `initiative` the `WHERE` condition changes."
   [entity-name _ _]
-  (let [where-cond (if (= entity-name "initiative")
-                     initiative-topic-geo-coverage-where-cond
-                     generic-topic-geo-coverage-where-cond)]
-    (if (some #{entity-name} ["organisation" "stakeholder"])
-      (generic-entity-geo-coverage-query entity-name)
-      (generic-topic-geo-coverage-query entity-name where-cond))))
+  (if (some #{entity-name} ["organisation" "stakeholder"])
+    (generic-entity-geo-coverage-query entity-name)
+    (generic-topic-geo-coverage-query entity-name)))
 
 (defn build-topic-search-text-query
   "Generates SQL statements for querying searchable text from every
@@ -649,33 +643,31 @@
       (when offset
         "OFFSET :offset")))))
 
-(defn- geo-coverage-values-generic-cond
-  [geo-coverage-value-param]
+(defn- generic-json-array-lookup-cond
+  [json-column values-to-lookup]
   (format
    "(SELECT COUNT(*)
-     FROM json_array_elements_text((CASE WHEN (json->>'geo_coverage_values' = '') IS NOT FALSE THEN '[]'::JSON
-                                         ELSE (json->>'geo_coverage_values')::JSON END))
-     WHERE value::TEXT IN (:v*:%s)) > 0" geo-coverage-value-param))
+     FROM json_array_elements_text((CASE WHEN (%s::TEXT = '') IS NOT FALSE THEN '[]'::JSON
+                                         ELSE (%s)::JSON END))
+     WHERE value::INTEGER IN (:v*:%s)) > 0" json-column json-column values-to-lookup))
 
 (defn generate-filter-topic-snippet
   [{:keys [favorites user-id topic tag start-date end-date transnational
            search-text geo-coverage resource-types geo-coverage-countries
            representative-group sub-content-type affiliation
-           entity distinct-on-geo-coverage? geo-coverage-types]
-    :or {distinct-on-geo-coverage? false}}]
+           entity geo-coverage-types]}]
   (let [geo-coverage? (seq geo-coverage)
         transnational? (seq transnational)
         geo-coverage-countries? (seq geo-coverage-countries)]
     (str/join
      " "
      (list
-      (if distinct-on-geo-coverage?
-        "SELECT DISTINCT ON (geo_coverage, json->>'id') t.topic, t.geo_coverage, t.json FROM cte_topic t"
-        "SELECT DISTINCT ON (t.topic, (COALESCE(t.json->>'start_date', t.json->>'created'))::timestamptz, (t.json->>'id')::int) t.topic, t.geo_coverage, t.json FROM cte_topic t")
+      "SELECT t.* FROM cte_topic t"
       (when (and favorites user-id resource-types)
         "JOIN v_stakeholder_association a ON a.stakeholder = :user-id AND a.id = (t.json->>'id')::int AND (a.topic = t.topic OR (a.topic = 'resource' AND t.topic IN (:v*:resource-types)))")
       (when (seq tag)
-        "JOIN json_array_elements(t.json->'tags') tags ON true JOIN json_each_text(tags) tag ON LOWER(tag.value) = ANY(ARRAY[:v*:tag]::varchar[])")
+        "JOIN json_array_elements((CASE WHEN (t.json->>'tags'::TEXT = '') IS NOT FALSE THEN '[]'::JSON
+                                    ELSE (t.json->>'tags')::JSON END)) tags ON LOWER(tags->>'tag') IN (:v*:tag)")
       (when (or (seq entity) (seq representative-group))
         "JOIN json_to_recordset(t.json->'entity_connections') AS ecs(id int, entity_id int, entity text, role text, representative_group text, image text) ON t.json->>'entity_connections' IS NOT NULL")
       "WHERE t.json->>'review_status'='APPROVED'"
@@ -703,18 +695,20 @@
           (seq end-date)
           " AND TO_DATE(json->>'end_date', 'YYYY-MM-DD') <= :end-date::date"))
       (cond
-        (and geo-coverage? geo-coverage-countries?)
-        (str " AND " (geo-coverage-values-generic-cond "geo-coverage-countries"))
+        (and geo-coverage-countries? transnational?)
+        (str " AND (" (generic-json-array-lookup-cond "t.json->>'geo_coverage_values'" "geo-coverage-countries")
+             " OR t.json->>'geo_coverage_type'='transnational'
+               AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_country_groups'" "transnational") ")")
 
         (and geo-coverage? transnational?)
-        (str " AND (t.geo_coverage IN (:v*:geo-coverage)
-                 OR t.json->>'geo_coverage_type'='transnational'
-                 AND " (geo-coverage-values-generic-cond "transnational") ")")
+        (str " AND (" (generic-json-array-lookup-cond "t.geo_coverage" "geo-coverage")
+             " OR t.json->>'geo_coverage_type'='transnational'
+                 AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_country_groups'" "transnational") ")")
 
         geo-coverage?
-        " AND t.geo_coverage IN (:v*:geo-coverage)"
+        (str " AND " (generic-json-array-lookup-cond "t.geo_coverage" "geo-coverage"))
 
         geo-coverage-countries?
-        (str " AND " (geo-coverage-values-generic-cond "geo-coverage-countries")))
+        (str " AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_values'" "geo-coverage-countries")))
       ;; NOTE: Empty strings in the tags column cause problems with using json_array_elements
       (when (seq tag) " AND t.json->>'tags' <> ''")))))
