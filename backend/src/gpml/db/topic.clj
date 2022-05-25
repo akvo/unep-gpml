@@ -333,9 +333,10 @@
 (defn generic-entity-geo-coverage-query
   [entity-name]
   (format
-   "SELECT e.id, c.id AS geo_coverage
+   "SELECT e.id, json_agg(c.id) AS geo_coverage
     FROM %s e
-    LEFT JOIN country c ON e.country = c.id"
+    LEFT JOIN country c ON e.country = c.id
+    GROUP BY e.id"
    entity-name))
 
 ;;======================= Search Text queries =================================
