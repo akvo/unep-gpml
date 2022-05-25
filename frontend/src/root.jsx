@@ -379,7 +379,7 @@ const Root = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/knowledge/library"
+                    to="/knowledge"
                     className="menu-btn nav-link menu-dropdown"
                     activeClassName="selected"
                   >
@@ -388,7 +388,7 @@ const Root = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/connect/events"
+                    to="/connect"
                     className="menu-btn nav-link"
                     activeClassName="selected"
                   >
