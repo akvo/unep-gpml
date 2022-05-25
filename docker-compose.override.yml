@@ -17,7 +17,10 @@ services:
     depends_on:
       - db
   backend:
-    image: akvo/akvo-clojure-lein:20210124.114043.4437caf
+    build:
+      context: backend
+      dockerfile: dev.Dockerfile
+    entrypoint: ""
     command: ["lein", "repl", ":headless"]
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/credentials/cloud-database-service-account.json
@@ -28,10 +31,6 @@ services:
       - 47481:47481
     volumes:
       - ./backend:/app
-      - ~/.m2:/home/akvo/.m2
-      - ~/.lein:/home/akvo/.lein
-      - ~/.m2:/root/.m2:delegated
-      - ~/.lein:/root/.lein:delegated
 
   frontend:
     image: akvo/akvo-node-14-alpine:20210106.152005.1864760

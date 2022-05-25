@@ -14,6 +14,7 @@
 * Start the development environment: `docker-compose up -d`
 * Stop dev environment: `docker-compose down`
 * If you want to clean up all the stored data use `-v`: `docker-compose down -v`
+* For rebuilding the backend image when deps change: `docker-compose build`
 
 Website will be available at [http://localhost:3001](http://localhost:3001).
 
