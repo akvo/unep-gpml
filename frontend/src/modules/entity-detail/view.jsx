@@ -101,7 +101,6 @@ const SharePanel = ({
 }) => {
   const noEditTopics = new Set(["stakeholder"]);
 
-  console.log(profile.id === data.createdBy);
   const canEdit = () =>
     isAuthenticated &&
     profile.reviewStatus === "APPROVED" &&
@@ -173,7 +172,7 @@ const SharePanel = ({
                       message: "Entity deleted successfully",
                     });
                     history.push({
-                      pathname: `/stakeholder-overview`,
+                      pathname: `/connect/community`,
                     });
                   })
                   .catch((err) => {
@@ -557,6 +556,7 @@ const StakeholderDetail = ({
                                   >
                                     {item.entityConnections.map((item) => (
                                       <Avatar
+                                        key={item.entity}
                                         src={
                                           item?.image
                                             ? item.image

@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 const ConnectStakeholdersDropdownMenu = () => {
   return (
     <NavLink
-      to="/events"
+      to="/connect/events"
       className="menu-btn nav-link"
       activeClassName="selected"
     >

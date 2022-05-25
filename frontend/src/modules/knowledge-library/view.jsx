@@ -29,6 +29,7 @@ import { ReactComponent as IconExchange } from "../../images/capacity-building/i
 import { ReactComponent as IconCaseStudies } from "../../images/capacity-building/ic-case-studies.svg";
 
 import Header from "./header";
+import moment from "moment";
 
 const { Option } = Select;
 
@@ -71,20 +72,20 @@ const KnowledgeLibrary = ({
   const sidebar = [
     {
       id: 1,
-      title: "LIBRARY",
-      url: "/knowledge-library",
+      title: "Library",
+      url: "/knowledge/library",
       icon: <IconLibrary />,
     },
     {
       id: 2,
-      title: "LEARNING",
-      url: "/capacity-building",
+      title: "Learning",
+      url: "/knowledge/capacity-building",
       icon: <IconLearning />,
     },
     {
       id: 4,
       title: "Case studies",
-      url: "/case-studies",
+      url: "/knowledge/case-studies",
       icon: <IconCaseStudies />,
     },
   ];
@@ -176,8 +177,8 @@ const KnowledgeLibrary = ({
         topic: query.topic,
         tag: query.tag,
       });
-      if (history.location.pathname === "/knowledge-library") {
-        history.push(`/knowledge-library?${newParams.toString()}`);
+      if (history.location.pathname === "/knowledge/library") {
+        history.push(`/knowledge/library?${newParams.toString()}`);
       }
       clearTimeout(tmid);
       tmid = setTimeout(getResults(query), 1000);
@@ -235,10 +236,10 @@ const KnowledgeLibrary = ({
           : selectedRepresentativeGroups?.name;
       }
       if (key === "startDate") {
-        return `Start date ${value}`;
+        return `Start date ${moment(value).year()}`;
       }
       if (key === "endDate") {
-        return `End date ${value}`;
+        return `End date ${moment(value).year()}`;
       }
       if (key === "subContentType") {
         const selectedSubContentType = mainContentType.find((subContent) =>
@@ -438,7 +439,7 @@ const KnowledgeLibrary = ({
                       : `render-map-container`
                   }
                 >
-                  <TopicView {...{ updateQuery, query }} />
+                  <TopicView {...{ updateQuery, query, results }} />
                 </Col>
               )}
             </Row>

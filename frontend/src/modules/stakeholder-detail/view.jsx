@@ -196,7 +196,7 @@ const SharePanel = ({
                       message: "Entity deleted successfully",
                     });
                     history.push({
-                      pathname: `/stakeholder-overview`,
+                      pathname: `/connect/community`,
                     });
                   })
                   .catch((err) => {
@@ -557,7 +557,7 @@ const StakeholderDetail = ({
                         <Col xs={12} lg={12}>
                           {data?.tags &&
                             data?.tags?.filter(
-                              (item) => item.tagCategory === "seeking"
+                              (item) => item.tagRelationCategory === "seeking"
                             ).length > 0 && (
                               <CardComponent>
                                 <div className="ant-card-head-wrapper">
@@ -568,7 +568,8 @@ const StakeholderDetail = ({
                                       {
                                         data?.tags?.filter(
                                           (item) =>
-                                            item.tagCategory === "seeking"
+                                            item.tagRelationCategory ===
+                                            "seeking"
                                         ).length
                                       }{" "}
                                       Keywords)
@@ -578,7 +579,8 @@ const StakeholderDetail = ({
                                 <List>
                                   {data?.tags
                                     ?.filter(
-                                      (item) => item.tagCategory === "seeking"
+                                      (item) =>
+                                        item.tagRelationCategory === "seeking"
                                     )
                                     ?.map((str) => (
                                       <List.Item key={str.tag}>
@@ -594,7 +596,7 @@ const StakeholderDetail = ({
                         <Col xs={12} lg={12}>
                           {data?.tags &&
                             data?.tags?.filter(
-                              (item) => item.tagCategory === "offering"
+                              (item) => item.tagRelationCategory === "offering"
                             ).length > 0 && (
                               <CardComponent>
                                 <div className="ant-card-head-wrapper">
@@ -605,7 +607,8 @@ const StakeholderDetail = ({
                                       {
                                         data?.tags?.filter(
                                           (item) =>
-                                            item.tagCategory === "offering"
+                                            item.tagRelationCategory ===
+                                            "offering"
                                         ).length
                                       }{" "}
                                       Keywords)
@@ -615,7 +618,8 @@ const StakeholderDetail = ({
                                 <List>
                                   {data?.tags
                                     ?.filter(
-                                      (item) => item.tagCategory === "offering"
+                                      (item) =>
+                                        item.tagRelationCategory === "offering"
                                     )
                                     ?.map((str) => (
                                       <List.Item key={str.tag}>

@@ -473,7 +473,7 @@ const FilterDrawer = ({
                 query={query}
                 updateQuery={updateQuery}
                 span={12}
-                startDate={
+                endDate={
                   !isEmpty(query?.endDate) ? moment(query?.endDate[0]) : null
                 }
               />
@@ -513,15 +513,22 @@ const DatePickerFilter = ({
       </Space>
       <div>
         <DatePicker
-          placeholder="dd.mm.yyyy"
-          value={!isEmpty(value) ? moment(value[0]) : ""}
+          placeholder="YYYY"
+          picker={"year"}
+          value={
+            !isEmpty(value)
+              ? flag.toLowerCase() === "startdate"
+                ? moment(value[0]).startOf("year")
+                : moment(value[0]).endOf("year")
+              : ""
+          }
           onChange={(val) =>
             updateQuery(flag, val ? moment(val).format("YYYY-MM-DD") : [])
           }
           disabledDate={(current) => {
             // Can not select days past start date
             if (startDate) {
-              return current < startDate;
+              return current <= startDate;
             }
             return null;
           }}
