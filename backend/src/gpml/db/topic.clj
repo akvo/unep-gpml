@@ -634,7 +634,7 @@
      WHERE (SELECT COUNT(t.*)
             FROM json_array_elements((CASE WHEN (json->>'tags'::TEXT = '') IS NOT FALSE THEN '[]'::JSON
                                     ELSE (json->>'tags')::JSON END)) t WHERE t->>'tag' = 'capacity building') > 0
-     GROUP BY topic"
+     GROUP BY 1"
     (str/join
      " "
      (list
