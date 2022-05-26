@@ -119,11 +119,9 @@ const TabComponent = ({
             </a>
           </li>
         )}
-        {profile && profile.reviewStatus === "APPROVED" && (
-          <li>
-            <a onClick={() => reviewsRef.current.scrollIntoView()}>Comments</a>
-          </li>
-        )}
+        <li>
+          <a onClick={() => reviewsRef.current.scrollIntoView()}>Comments</a>
+        </li>
       </ul>
     </div>
   );
@@ -1490,10 +1488,10 @@ const DetailsView = ({
               {profile && (
                 <CardComponent title="Comments" getRef={reviews}>
                   <div className="comments-container">
-                    <div className="comment-list-container">
-                      {comments &&
-                        comments.length > 0 &&
-                        comments?.map((item) => (
+                    {comments &&
+                      comments.length > 0 &&
+                      comments?.map((item) => (
+                        <div className="comment-list-container">
                           <CommentList
                             item={item}
                             showReplyBox={showReplyBox}
@@ -1507,8 +1505,13 @@ const DetailsView = ({
                             setEditComment={setEditComment}
                             onEditComment={onEditComment}
                           />
-                        ))}
-                    </div>
+                        </div>
+                      ))}
+                    {!isAuthenticated && (
+                      <p className="no-login">
+                        Please login to comment on this resource
+                      </p>
+                    )}
                     {profile && profile.reviewStatus === "APPROVED" && (
                       <Form layout="vertical">
                         <FinalForm
