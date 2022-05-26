@@ -10709,6 +10709,13 @@ react-final-form@^6.5.2:
   dependencies:
     "@babel/runtime" "^7.12.1"
 
+react-initials-avatar@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-initials-avatar/-/react-initials-avatar-1.1.2.tgz#e3e08e4d2a1ddac37aea723885860c011f59f548"
+  integrity sha512-B82hHH62m1KLtnfpcAV1/J9a0CeLvPR3Qn5AwPHS0sXDCqbcpQhQ8gecsFYz3ipLCS0ggZrW0U6Spk0yoqMf1g==
+  dependencies:
+    "@babel/runtime" "^7.12.1"
+
 react-is@^16.12.0, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.9.0:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz"

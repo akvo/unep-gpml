@@ -19,6 +19,7 @@ import {
   Pagination,
   Modal,
   notification,
+  Image,
 } from "antd";
 import StickyBox from "react-sticky-box";
 import ReadMoreReact from "read-more-less-react";
@@ -399,11 +400,22 @@ const StakeholderDetail = ({
                     <img src={data?.picture} />
                     {data.affiliation && (
                       <div className="topbar-entity-image-holder">
-                        <img
+                        <Avatar
+                          size={50}
                           src={
-                            data?.affiliation?.logo
-                              ? data?.affiliation?.logo
-                              : `https://ui-avatars.com/api/?background=0D8ABC&color=ffffff&size=480&name=${data?.affiliation?.name}`
+                            data?.affiliation?.logo ? (
+                              data?.affiliation?.logo
+                            ) : (
+                              <Avatar
+                                style={{
+                                  backgroundColor: "#09689A",
+                                  verticalAlign: "middle",
+                                }}
+                                size={50}
+                              >
+                                {data?.affiliation?.name?.substring(0, 2)}
+                              </Avatar>
+                            )
                           }
                         />
                       </div>
@@ -449,11 +461,22 @@ const StakeholderDetail = ({
                         <List.Item.Meta
                           avatar={
                             <Avatar
+                              size={55}
                               className="info-entity-icon"
                               src={
-                                data?.affiliation?.logo
-                                  ? data?.affiliation?.logo
-                                  : `https://ui-avatars.com/api/?size=480&name=${data?.affiliation?.name}`
+                                data?.affiliation?.logo ? (
+                                  data?.affiliation?.logo
+                                ) : (
+                                  <Avatar
+                                    style={{
+                                      backgroundColor: "#09689A",
+                                      verticalAlign: "middle",
+                                    }}
+                                    size={55}
+                                  >
+                                    {data?.affiliation?.name?.substring(0, 2)}
+                                  </Avatar>
+                                )
                               }
                             />
                           }
@@ -699,10 +722,22 @@ const StakeholderDetail = ({
                                   >
                                     {item.entityConnections.map((item) => (
                                       <Avatar
+                                        style={{ border: "none" }}
+                                        key={item?.entity}
                                         src={
-                                          item?.image
-                                            ? item.image
-                                            : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
+                                          item?.image ? (
+                                            item.image
+                                          ) : (
+                                            <Avatar
+                                              style={{
+                                                backgroundColor: "#09689A",
+                                                verticalAlign: "middle",
+                                              }}
+                                              size={40}
+                                            >
+                                              {item?.entity?.substring(0, 2)}
+                                            </Avatar>
+                                          )
                                         }
                                       />
                                     ))}
@@ -784,11 +819,22 @@ const StakeholderDetail = ({
                                   >
                                     {item.entityConnections.map((item) => (
                                       <Avatar
+                                        style={{ border: "none" }}
                                         key={item?.entity}
                                         src={
-                                          item?.image
-                                            ? item.image
-                                            : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
+                                          item?.image ? (
+                                            item.image
+                                          ) : (
+                                            <Avatar
+                                              style={{
+                                                backgroundColor: "#09689A",
+                                                verticalAlign: "middle",
+                                              }}
+                                              size={40}
+                                            >
+                                              {item?.entity?.substring(0, 2)}
+                                            </Avatar>
+                                          )
                                         }
                                       />
                                     ))}
