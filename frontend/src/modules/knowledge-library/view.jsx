@@ -173,9 +173,14 @@ const KnowledgeLibrary = ({
     }
 
     if (isLoading === false && filters) {
-      const newParams = new URLSearchParams({
-        ...filters,
-      });
+      const arrayOfQuery = Object.entries(filters).filter(
+        (item) => item[1].length !== 0
+      );
+
+      const pureQuery = Object.fromEntries(arrayOfQuery);
+
+      const newParams = new URLSearchParams(pureQuery);
+
       if (history.location.pathname === "/knowledge/library") {
         history.push(`/knowledge/library?${newParams.toString()}`);
       }

@@ -66,6 +66,7 @@ const FilterDrawer = ({
     tagsExcludingCapacityBuilding,
     setTagsExcludingCapacityBuilding,
   ] = useState([]);
+
   const [isClearFilter, setIsClearFilter] = useState(false);
 
   const filteredMainContentOptions = !isEmpty(mainContentType)
@@ -92,14 +93,10 @@ const FilterDrawer = ({
     : [];
 
   const mainContentOption = () => {
-    if (query?.topic) {
-      if (query?.topic?.length > 0) {
-        return filteredMainContentOptions;
-      } else if (query?.topic?.length === 0) {
-        return mainContentType;
-      }
-    } else {
-      return [];
+    if (query?.topic?.length > 0) {
+      return filteredMainContentOptions;
+    } else if (query?.topic?.length === 0 || !query?.topic) {
+      return mainContentType;
     }
   };
 
