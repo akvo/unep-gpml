@@ -86,16 +86,20 @@ const FilterDrawer = ({
               return name;
             }
           };
-          return query?.topic.includes(resourceName(content.code));
+          return query?.topic?.includes(resourceName(content?.code));
         })
         .sort((a, b) => a?.code.localeCompare(b?.code))
     : [];
 
   const mainContentOption = () => {
-    if (query?.topic.length > 0) {
-      return filteredMainContentOptions;
-    } else if (query?.topic.length === 0) {
-      return mainContentType;
+    if (query?.topic) {
+      if (query?.topic?.length > 0) {
+        return filteredMainContentOptions;
+      } else if (query?.topic?.length === 0) {
+        return mainContentType;
+      }
+    } else {
+      return [];
     }
   };
 
@@ -172,8 +176,8 @@ const FilterDrawer = ({
 
   const clearTopicFilter = () => {
     setIsClearFilter(true);
-    const removeCapacityBuilding = query.tag.filter(
-      (tag) => tag.toLowerCase() !== "capacity building"
+    const removeCapacityBuilding = query?.tag?.filter(
+      (tag) => tag?.toLowerCase() !== "capacity building"
     );
     updateQuery("topic", []);
     setTagsExcludingCapacityBuilding(removeCapacityBuilding);
@@ -212,8 +216,7 @@ const FilterDrawer = ({
           <Col span={24} className="resources-card-filter">
             <Space align="middle">
               <div className="filter-title">Resources type</div>
-              {isEmpty(query?.topic) &&
-              !query.tag.includes("capacity building") ? (
+              {isEmpty(query?.topic) ? (
                 <Tag className="resource-type">All (default)</Tag>
               ) : (
                 <Tag
@@ -235,7 +238,7 @@ const FilterDrawer = ({
               {topicTypes.map((type) => {
                 const topic = humps.decamelize(type);
                 const count =
-                  countData?.find((it) => it.topic === topic)?.count || 0;
+                  countData?.find((it) => it?.topic === topic)?.count || 0;
 
                 return (
                   <Col span={6} key={type} className="resource-card-wrapper">
@@ -275,7 +278,7 @@ const FilterDrawer = ({
                       .map((child, i) => ({
                         label: child?.title,
                         value: child?.title,
-                        key: `${i}-${content.name}`,
+                        key: `${i}-${content?.name}`,
                       }))
                       .sort((a, b) =>
                         a?.label?.trim().localeCompare(b?.label?.trim())

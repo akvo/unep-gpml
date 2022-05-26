@@ -167,7 +167,9 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                 findSeeking.length !== 0 &&
                 findSeeking
                   .slice(0, 3)
-                  .map((seeking) => <li>{seeking?.tag}</li>)}
+                  .map((seeking, i) => (
+                    <li key={`${i}-${seeking?.tag}`}>{seeking?.tag}</li>
+                  ))}
             </ul>
           </div>
         </Card>
