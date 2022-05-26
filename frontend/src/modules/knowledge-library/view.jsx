@@ -68,7 +68,7 @@ const KnowledgeLibrary = ({
   const [isAscending, setIsAscending] = useState(null);
   const [allResults, setAllResults] = useState([]);
   const [view, setView] = useState("map");
-console.log('countData::::::',countData);
+
   const sidebar = [
     {
       id: 1,
