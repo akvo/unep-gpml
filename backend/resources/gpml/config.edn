@@ -663,7 +663,9 @@
   :gpml.handler.export/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.export/get-params {}
 
-  :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
+  :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources
+                          :logger #ig/ref :duct/logger
+                          :strategy :raise-error}
   :duct.migrator.ragtime/resources {:path "migrations"}
 
   :gpml.auth/auth-middleware {:issuer #duct/env "OIDC_ISSUER"
@@ -703,6 +705,7 @@
   :duct.server.http/jetty {:configurator #ig/ref :gpml.handler.monitoring/jetty-configurator}
   :duct.logger/timbre
   {:min-level     :warn
+   :level         :warn
    :set-root-config? true
    :appenders {:out #ig/ref :duct.logger.timbre/println
                :sentry #ig/ref :gpml.handler.monitoring/sentry-logger}}
