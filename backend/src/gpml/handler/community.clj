@@ -86,6 +86,11 @@
                :type "string"
                :allowEmptyValue true}}
     string?]
+   [:isMember {:optional true
+               :swagger {:description "Filter member/non-member organisations"
+                         :type "boolean"
+                         :allowEmptyValue true}}
+    [:boolean]]
    [:orderBy {:optional true
               :swagger {:description "One of the following properties to order the list of results: name"
                         :type "string"
@@ -105,7 +110,7 @@
 
 (defn api-params->opts
   [{:keys [q country tag networkType affiliation representativeGroup geoCoverageType
-           limit page transnational orderBy descending entity]
+           limit page transnational orderBy descending entity isMember]
     :or {limit default-api-limit
          page 0}}]
   (cond-> {}
@@ -142,6 +147,9 @@
 
     (seq entity)
     (assoc-in [:filters :entity] (map #(Integer/parseInt %) (str/split entity #",")))
+
+    (not (nil? isMember))
+    (assoc-in [:filters :is-member] isMember)
 
     (seq orderBy)
     (assoc :order-by orderBy)
