@@ -93,7 +93,7 @@ const StakeholderTooltipContent = ({
           </div>
         </div>
         <div>
-          {stakeholderToDisplay.length === 0 ? (
+          {stakeholderToDisplay?.length === 0 ? (
             <>
               <div className="table-row">
                 <div className="tooltip-topic">Entity</div>
@@ -132,7 +132,7 @@ const StakeholderTooltipContent = ({
             </>
           ) : (
             <>
-              {stakeholderToDisplay.includes("organisation") && (
+              {stakeholderToDisplay?.includes("organisation") && (
                 <div className="table-row">
                   <div className="tooltip-topic">Entity</div>
                   <div>
@@ -159,7 +159,7 @@ const StakeholderTooltipContent = ({
                   </div>
                 </div>
               )}
-              {stakeholderToDisplay.includes("stakeholder") && (
+              {stakeholderToDisplay?.includes("stakeholder") && (
                 <div className="table-row">
                   <div className="tooltip-topic">Individuals</div>
 

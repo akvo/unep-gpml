@@ -85,8 +85,10 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     suggestedProfiles.length = 4;
   }
 
+  const pageNumber = query?.page?.map((count) => Number(count))[0];
+
   const resultCounts =
-    results.length + ((filters?.page && pageSize * filters?.page) || 0);
+    results.length + ((pageNumber && pageSize * pageNumber) || 0);
 
   const sidebar = [
     { id: 1, title: "Events", url: "/connect/events", icon: <IconEvent /> },
@@ -235,7 +237,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
   const itemCount = loading
     ? 0
-    : filters?.page !== undefined
+    : pageNumber !== undefined
     ? resultCount
     : pageSize;
 
@@ -300,9 +302,11 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       .flat()
       .filter((tag) => tag);
 
-    const pureQuery = Object.entries(newQuery).filter(
+    const arrayOfQuery = Object.entries(newQuery).filter(
       (item) => item[1].length !== 0
     );
+
+    const pureQuery = Object.fromEntries(arrayOfQuery);
 
     setFilters(pureQuery);
 
@@ -513,7 +517,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                       ) : isLoaded() && !loading && !isEmpty(results) ? (
                         <>
                           <div className="result-number">
-                            {resultCount > pageSize + Number(filters?.page)
+                            {resultCount > pageSize + pageNumber
                               ? resultCounts
                               : itemCount}{" "}
                             of {resultCount || 0} result

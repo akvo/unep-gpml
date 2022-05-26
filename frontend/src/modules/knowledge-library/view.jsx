@@ -379,9 +379,9 @@ const KnowledgeLibrary = ({
                   <ResourceList
                     {...{
                       view,
+                      query,
                       allResults,
                       countData,
-                      filters,
                       loading,
                       pageSize,
                       updateQuery,
