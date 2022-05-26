@@ -9,7 +9,7 @@ const WorkspaceButton = () => (
     activeClassName="selected"
   >
     <HomeOutlined />
-    Workspace
+    <span className="text">Workspace</span>
   </NavLink>
 );
 

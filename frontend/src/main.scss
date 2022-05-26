@@ -407,10 +407,17 @@ h4 {
     border-radius: 5px;
     border: none;
     cursor: pointer;
-
     svg {
       font-size: 22px;
       margin-right: 10px;
+    }
+    @media screen and (max-width: 1350px){
+      span.text{
+        display: none;
+      }
+      svg{
+        margin-right: 0;
+      }
     }
     &:hover {
       background-color: rgba(24, 22, 47, 0.2);
