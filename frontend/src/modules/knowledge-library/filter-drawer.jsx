@@ -50,27 +50,18 @@ const FilterDrawer = ({
   filterTagValue,
 }) => {
   const {
-    nav,
     tags,
-    countries,
-    transnationalOptions,
-    geoCoverageTypeOptions,
     representativeGroup,
     mainContentType,
     organisations,
   } = UIStore.useState((s) => ({
     profile: s.profile,
-    nav: s.nav,
     tags: s.tags,
-    countries: s.countries,
-    transnationalOptions: s.transnationalOptions,
-    geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     mainContentType: s.mainContentType,
     representativeGroup: s.representativeGroup,
     organisations: s.organisations,
   }));
   const { isAuthenticated } = useAuth0();
-  const [capacityBuildingCount, setCapacityBuildingCount] = useState(0);
   const [
     tagsExcludingCapacityBuilding,
     setTagsExcludingCapacityBuilding,
@@ -173,25 +164,6 @@ const FilterDrawer = ({
     : [];
 
   useEffect(() => {
-    return api
-      .get(`/browse?tag=capacity+building`)
-      .then((resp) => {
-        const data = resp?.data?.counts.filter(
-          (item) => item?.topic !== "gpml_member_entities"
-        );
-        const capacityBuildingCounts = data.reduce(
-          (acc, val) => acc + val?.count,
-          0
-        );
-
-        setCapacityBuildingCount(capacityBuildingCounts || 0);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
-
-  useEffect(() => {
     if (isClearFilter) {
       updateQuery("tag", tagsExcludingCapacityBuilding);
     }
@@ -268,9 +240,16 @@ const FilterDrawer = ({
                 return (
                   <Col span={6} key={type} className="resource-card-wrapper">
                     <Card
-                      onClick={() => handleChangeResourceType("topic", topic)}
+                      onClick={() =>
+                        topic === "capacity_building"
+                          ? handleChangeResourceType("tag", "capacity building")
+                          : handleChangeResourceType("topic", topic)
+                      }
                       className={classNames("resource-type-card", {
-                        active: query?.topic?.includes(topic),
+                        active:
+                          topic === "capacity_building"
+                            ? query?.tag?.includes("capacity building")
+                            : query?.topic?.includes(topic),
                       })}
                     >
                       <Space direction="vertical" align="center">
@@ -282,28 +261,6 @@ const FilterDrawer = ({
                   </Col>
                 );
               })}
-              <Col
-                span={6}
-                key={"capacityBuilding"}
-                className="resource-card-wrapper"
-              >
-                <Card
-                  onClick={() =>
-                    handleChangeResourceType("tag", "capacity building")
-                  }
-                  className={classNames("resource-type-card", {
-                    active: query?.tag?.includes("capacity building"),
-                  })}
-                >
-                  <Space direction="vertical" align="center">
-                    {topicIcons("capacityBuilding")}
-                    <div className="topic-text">
-                      {topicNames("capacityBuilding")}
-                    </div>
-                    <div className="topic-count">{capacityBuildingCount}</div>
-                  </Space>
-                </Card>
-              </Col>
             </Row>
           </Col>
 
