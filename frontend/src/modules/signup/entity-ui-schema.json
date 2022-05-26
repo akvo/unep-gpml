@@ -92,7 +92,8 @@
   "S3": {
     "classNames": "list-group",
     "org.name": {
-      "ui:placeholder": "Organisation name"
+      "ui:placeholder": "Organisation name",
+      "ui:widget": "AutoCompleteWidget"
     },
     "org.representativeGroup": {
       "ui:widget": "radio"
