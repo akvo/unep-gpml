@@ -414,7 +414,12 @@ const Maps = ({
 
   const resourceCount =
     path === KNOWLEDGE_LIBRARY &&
-    countData.filter((data) => data.topic !== "gpml_member_entities");
+    countData.filter(
+      (data) =>
+        data.topic !== "gpml_member_entities" &&
+        data.topic !== "capacity_building"
+    );
+
   const existingStakeholders =
     path === STAKEHOLDER_OVERVIEW &&
     stakeholderCount.existingStakeholder.map((data) => data?.networkType);
