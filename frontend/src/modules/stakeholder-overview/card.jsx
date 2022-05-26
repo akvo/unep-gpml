@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { Row, Card, Popover } from "antd";
+import { Row, Card, Popover, Avatar } from "antd";
 import { Link } from "react-router-dom";
-import InitialsAvatar from 'react-initials-avatar'
-import 'react-initials-avatar/lib/ReactInitialsAvatar.css'
 
 import { UIStore } from "../../store";
 import unionIcon from "../../images/stakeholder-overview/union-icon.svg";
@@ -61,15 +59,65 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
         <Row type="flex" className="profile-details">
           {profile.type === "organisation" ? (
             <div className="image-wrapper organisation-image">
-              {profile.picture ? <img className="profile-image" src={profile.picture} alt={profile?.name} /> : <InitialsAvatar name={profile.name} />}
+              {profile.picture ? (
+                <img
+                  className="profile-image"
+                  src={profile.picture}
+                  alt={profile?.name}
+                />
+              ) : (
+                <Avatar
+                  style={{
+                    backgroundColor: "#09689A",
+                    verticalAlign: "middle",
+                  }}
+                  size={150}
+                >
+                  {profile?.name?.substring(0, 2)}
+                </Avatar>
+              )}
             </div>
           ) : (
             <div className="images-wrapper">
               <div className="image-wrapper">
-                {profile.picture ? <img className="profile-image" src={profile.picture} alt={profile?.firstName} /> : <InitialsAvatar name={profile.name} />}
-                {profile?.affiliation && profile?.affiliation?.length !== 0 && profileType !== "suggested-profiles" && (
+                {profile.picture ? (
+                  <img
+                    className="profile-image"
+                    src={profile.picture}
+                    alt={profile?.firstName}
+                  />
+                ) : (
+                  <Avatar
+                    style={{
+                      backgroundColor: "#09689A",
+                      verticalAlign: "middle",
+                    }}
+                    size={40}
+                  >
+                    {profile?.name?.substring(0, 2)}
+                  </Avatar>
+                )}
+                {profile?.affiliation &&
+                  profile?.affiliation?.length !== 0 &&
+                  profileType !== "suggested-profiles" && (
                     <div className="affiliation-image-wrapper">
-                      {profile?.affiliation?.logo ? <img className="profile-image" src={profile?.affiliation?.logo} alt={profile?.affiliation?.name} /> : <InitialsAvatar name={profile?.affiliation?.name} />}
+                      {profile?.affiliation?.logo ? (
+                        <img
+                          className="profile-image"
+                          src={profile?.affiliation?.logo}
+                          alt={profile?.affiliation?.name}
+                        />
+                      ) : (
+                        <Avatar
+                          style={{
+                            backgroundColor: "#09689A",
+                            verticalAlign: "middle",
+                          }}
+                          size={40}
+                        >
+                          {profile?.affiliation?.name?.substring(0, 2)}
+                        </Avatar>
+                      )}
                     </div>
                   )}
               </div>
@@ -84,9 +132,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                       {`${profile.firstName} ${profile.lastName}`}
                     </div>
                   ) : (
-                    <div className="trimmed-name">
-                      {profile.name}
-                    </div>
+                    <div className="trimmed-name">{profile.name}</div>
                   )}
                 </h4>
               </li>

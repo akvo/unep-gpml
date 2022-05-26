@@ -1290,10 +1290,21 @@ const DetailsView = ({
                             <List.Item.Meta
                               avatar={
                                 <Avatar
+                                  size={50}
                                   src={
-                                    item?.image
-                                      ? item.image
-                                      : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
+                                    item?.image ? (
+                                      item?.image
+                                    ) : (
+                                      <Avatar
+                                        style={{
+                                          backgroundColor: "#09689A",
+                                          verticalAlign: "middle",
+                                        }}
+                                        size={50}
+                                      >
+                                        {item.entity?.substring(0, 2)}
+                                      </Avatar>
+                                    )
                                   }
                                 />
                               }
