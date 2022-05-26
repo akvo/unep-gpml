@@ -419,7 +419,7 @@ const Maps = ({
         data.topic !== "gpml_member_entities" &&
         data.topic !== "capacity_building"
     );
-    
+
   const existingStakeholders =
     path === STAKEHOLDER_OVERVIEW &&
     stakeholderCount.existingStakeholder.map((data) => data?.networkType);
