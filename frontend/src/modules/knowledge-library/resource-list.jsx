@@ -28,9 +28,9 @@ import isEmpty from "lodash/isEmpty";
 
 const ResourceList = ({
   view,
+  query,
   allResults,
   countData,
-  filters,
   loading,
   pageSize,
   updateQuery,
@@ -44,27 +44,32 @@ const ResourceList = ({
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
 
+  const topics = query?.topic || [];
   // Choose topics to count, based on whether user is approved or not,
   // and if any topic filters are active.
   const topicsForTotal = (isApprovedUser
     ? topicTypesApprovedUser
     : topicTypes
   ).map((t) => humps.decamelize(t));
+
   const filteredTopics =
-    filters?.topic?.length > 0
-      ? filters?.topic?.filter((t) => topicsForTotal.indexOf(t) > -1)
+    topics?.length > 0
+      ? topics?.filter((t) => topicsForTotal.indexOf(t) > -1)
       : topicsForTotal.filter(
           (t) => t !== "organisation" && t !== "stakeholder"
         );
+
   const totalItems = filteredTopics.reduce(
     (acc, topic) =>
       acc + (countData?.find((it) => it.topic === topic)?.count || 0),
     0
   );
 
+  const pageNumber = query?.offset?.map((count) => Number(count))[0] || 0;
+
   const itemCount = loading
     ? 0
-    : filters?.offset !== undefined
+    : pageNumber !== undefined
     ? totalItems
     : pageSize;
 
@@ -101,7 +106,7 @@ const ResourceList = ({
         <div className="page">
           <Pagination
             defaultCurrent={1}
-            current={(filters?.offset || 0) / pageSize + 1}
+            current={(pageNumber || 0) / pageSize + 1}
             pageSize={pageSize}
             total={totalItems}
             showSizeChanger={false}
@@ -109,8 +114,8 @@ const ResourceList = ({
           />
 
           <div className="result-number" style={{ opacity: loading && "0" }}>
-            {totalItems > pageSize + filters?.offset
-              ? pageSize + Number(filters?.offset)
+            {totalItems > pageSize + pageNumber
+              ? pageSize + pageNumber
               : itemCount}{" "}
             of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
           </div>
