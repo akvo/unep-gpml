@@ -8,20 +8,21 @@ import { LoadingOutlined } from "@ant-design/icons";
 
 const StakeholderList = ({
   view,
+  query,
   results,
   pageSize,
-  filters,
   itemCount,
   loading,
   updateQuery,
   isLoaded,
   resultCount,
   resultCounts,
-  query,
 }) => {
   const [listVisible, setListVisible] = useState(true);
 
   const viewport = window.innerWidth;
+
+  const pageNumber = query?.page?.map((count) => Number(count))[0];
 
   return (
     <div className="stakeholder-list ">
@@ -69,7 +70,7 @@ const StakeholderList = ({
                   className="result-number"
                   style={{ opacity: loading && "0" }}
                 >
-                  {resultCount > pageSize + Number(filters?.page)
+                  {resultCount > pageSize + pageNumber
                     ? resultCounts
                     : itemCount}{" "}
                   of {resultCount || 0} result
