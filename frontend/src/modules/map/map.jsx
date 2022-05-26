@@ -252,7 +252,7 @@ const KnowledgeLibraryToolTipContent = ({
               }
             };
 
-            return dataToDisplayPerPath() && resourceToShow.length === 0 ? (
+            return dataToDisplayPerPath() && resourceToShow?.length === 0 ? (
               <tr key={topic}>
                 <td className="tooltip-topic">{topicNames(topic)}</td>
                 <td className="tooltip-count-wrapper">
@@ -733,8 +733,8 @@ const Maps = ({
                     );
 
                     const multiselection =
-                      multiCountrySelection.length !== 0 &&
-                      multiCountrySelection.flat();
+                      multiCountrySelection?.length !== 0 &&
+                      multiCountrySelection?.flat();
 
                     const selectionCondition = () => {
                       const mapProps = Number(geo.properties.M49Code);

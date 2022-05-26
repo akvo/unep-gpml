@@ -321,21 +321,27 @@ const Root = () => {
     if (param !== "offset") {
       newQuery["offset"] = 0;
     }
-    setFilters(newQuery);
-    const newParams = new URLSearchParams(newQuery);
+    const pureQuery = Object.entries(newQuery).filter(
+      (item) => item[1].length !== 0
+    );
+
+    setFilters(pureQuery);
+
+    const newParams = new URLSearchParams(pureQuery);
 
     history.push(`/knowledge/library?${newParams.toString()}`);
+
     setLandingQuery(newParams.toString());
 
     clearTimeout(tmid);
 
-    tmid = setTimeout(getResults(newQuery), 1000);
+    tmid = setTimeout(getResults(pureQuery), 1000);
 
     if (param === "country") {
       setFilterCountries(value);
     }
   };
-  console.log(path.includes("/knowledge"), path);
+
   return (
     <>
       <ScrollToTop />
