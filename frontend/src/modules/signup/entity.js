@@ -49,6 +49,7 @@ const getSchema = (
     organisationType,
     representativeGroup,
     profile,
+    nonMemberOrganisations,
   },
   hideEntityPersonalDetail = false
 ) => {
@@ -76,6 +77,13 @@ const getSchema = (
       ? countries?.map((x) => x.name)
       : [];
   }
+
+  prop.S3.properties["org.name"].enum = !isEmpty(nonMemberOrganisations)
+    ? nonMemberOrganisations?.map((x) => x.name)
+    : [];
+  prop.S3.properties["org.name"].enumNames = !isEmpty(nonMemberOrganisations)
+    ? nonMemberOrganisations?.map((x) => x.name)
+    : [];
 
   const representative = !isEmpty(representativeGroup)
     ? representativeGroup?.map((x) => x.name)
