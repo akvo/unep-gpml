@@ -93,7 +93,7 @@ const StakeholderTooltipContent = ({
           </div>
         </div>
         <div>
-          {stakeholderToDisplay.length === 0 ? (
+          {stakeholderToDisplay?.length === 0 ? (
             <>
               <div className="table-row">
                 <div className="tooltip-topic">Entity</div>
@@ -132,7 +132,7 @@ const StakeholderTooltipContent = ({
             </>
           ) : (
             <>
-              {stakeholderToDisplay.includes("organisation") && (
+              {stakeholderToDisplay?.includes("organisation") && (
                 <div className="table-row">
                   <div className="tooltip-topic">Entity</div>
                   <div>
@@ -159,7 +159,7 @@ const StakeholderTooltipContent = ({
                   </div>
                 </div>
               )}
-              {stakeholderToDisplay.includes("stakeholder") && (
+              {stakeholderToDisplay?.includes("stakeholder") && (
                 <div className="table-row">
                   <div className="tooltip-topic">Individuals</div>
 
@@ -252,7 +252,7 @@ const KnowledgeLibraryToolTipContent = ({
               }
             };
 
-            return dataToDisplayPerPath() && resourceToShow.length === 0 ? (
+            return dataToDisplayPerPath() && resourceToShow?.length === 0 ? (
               <tr key={topic}>
                 <td className="tooltip-topic">{topicNames(topic)}</td>
                 <td className="tooltip-count-wrapper">
@@ -414,7 +414,12 @@ const Maps = ({
 
   const resourceCount =
     path === KNOWLEDGE_LIBRARY &&
-    countData.filter((data) => data.topic !== "gpml_member_entities");
+    countData.filter(
+      (data) =>
+        data.topic !== "gpml_member_entities" &&
+        data.topic !== "capacity_building"
+    );
+
   const existingStakeholders =
     path === STAKEHOLDER_OVERVIEW &&
     stakeholderCount.existingStakeholder.map((data) => data?.networkType);
@@ -733,8 +738,8 @@ const Maps = ({
                     );
 
                     const multiselection =
-                      multiCountrySelection.length !== 0 &&
-                      multiCountrySelection.flat();
+                      multiCountrySelection?.length !== 0 &&
+                      multiCountrySelection?.flat();
 
                     const selectionCondition = () => {
                       const mapProps = Number(geo.properties.M49Code);

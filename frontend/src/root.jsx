@@ -187,6 +187,7 @@ const Root = () => {
 
   const query = useQuery();
   const history = useHistory();
+  const path = history.location.pathname;
 
   const { profile, disclaimer, nav, tags } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -320,15 +321,24 @@ const Root = () => {
     if (param !== "offset") {
       newQuery["offset"] = 0;
     }
-    setFilters(newQuery);
-    const newParams = new URLSearchParams(newQuery);
+
+    const arrayOfQuery = Object.entries(newQuery).filter(
+      (item) => item[1].length !== 0
+    );
+
+    const pureQuery = Object.fromEntries(arrayOfQuery);
+
+    setFilters(pureQuery);
+
+    const newParams = new URLSearchParams(pureQuery);
 
     history.push(`/knowledge/library?${newParams.toString()}`);
+
     setLandingQuery(newParams.toString());
 
     clearTimeout(tmid);
 
-    tmid = setTimeout(getResults(newQuery), 1000);
+    tmid = setTimeout(getResults(pureQuery), 1000);
 
     if (param === "country") {
       setFilterCountries(value);
@@ -380,8 +390,10 @@ const Root = () => {
                 <li>
                   <NavLink
                     to="/knowledge/library"
-                    className="menu-btn nav-link menu-dropdown"
-                    activeClassName="selected"
+                    className={`menu-btn nav-link menu-dropdown ${
+                      path.includes("/knowledge") && "selected"
+                    }`}
+                    activeClassName={"selected"}
                   >
                     Knowledge Exchange
                   </NavLink>
@@ -389,7 +401,9 @@ const Root = () => {
                 <li>
                   <NavLink
                     to="/connect/events"
-                    className="menu-btn nav-link"
+                    className={`menu-btn nav-link ${
+                      path.includes("/connect") && "selected"
+                    }`}
                     activeClassName="selected"
                   >
                     Connect Stakeholders

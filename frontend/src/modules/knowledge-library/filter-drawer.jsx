@@ -50,31 +50,23 @@ const FilterDrawer = ({
   filterTagValue,
 }) => {
   const {
-    nav,
     tags,
-    countries,
-    transnationalOptions,
-    geoCoverageTypeOptions,
     representativeGroup,
     mainContentType,
     organisations,
   } = UIStore.useState((s) => ({
     profile: s.profile,
-    nav: s.nav,
     tags: s.tags,
-    countries: s.countries,
-    transnationalOptions: s.transnationalOptions,
-    geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     mainContentType: s.mainContentType,
     representativeGroup: s.representativeGroup,
     organisations: s.organisations,
   }));
   const { isAuthenticated } = useAuth0();
-  const [capacityBuildingCount, setCapacityBuildingCount] = useState(0);
   const [
     tagsExcludingCapacityBuilding,
     setTagsExcludingCapacityBuilding,
   ] = useState([]);
+
   const [isClearFilter, setIsClearFilter] = useState(false);
 
   const filteredMainContentOptions = !isEmpty(mainContentType)
@@ -95,15 +87,15 @@ const FilterDrawer = ({
               return name;
             }
           };
-          return query?.topic.includes(resourceName(content.code));
+          return query?.topic?.includes(resourceName(content?.code));
         })
         .sort((a, b) => a?.code.localeCompare(b?.code))
     : [];
 
   const mainContentOption = () => {
-    if (query?.topic.length > 0) {
+    if (query?.topic?.length > 0) {
       return filteredMainContentOptions;
-    } else if (query?.topic.length === 0) {
+    } else if (query?.topic?.length === 0 || !query?.topic) {
       return mainContentType;
     }
   };
@@ -173,25 +165,6 @@ const FilterDrawer = ({
     : [];
 
   useEffect(() => {
-    return api
-      .get(`/browse?tag=capacity+building`)
-      .then((resp) => {
-        const data = resp?.data?.counts.filter(
-          (item) => item?.topic !== "gpml_member_entities"
-        );
-        const capacityBuildingCounts = data.reduce(
-          (acc, val) => acc + val?.count,
-          0
-        );
-
-        setCapacityBuildingCount(capacityBuildingCounts || 0);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
-
-  useEffect(() => {
     if (isClearFilter) {
       updateQuery("tag", tagsExcludingCapacityBuilding);
     }
@@ -200,8 +173,8 @@ const FilterDrawer = ({
 
   const clearTopicFilter = () => {
     setIsClearFilter(true);
-    const removeCapacityBuilding = query.tag.filter(
-      (tag) => tag.toLowerCase() !== "capacity building"
+    const removeCapacityBuilding = query?.tag?.filter(
+      (tag) => tag?.toLowerCase() !== "capacity building"
     );
     updateQuery("topic", []);
     setTagsExcludingCapacityBuilding(removeCapacityBuilding);
@@ -240,8 +213,7 @@ const FilterDrawer = ({
           <Col span={24} className="resources-card-filter">
             <Space align="middle">
               <div className="filter-title">Resources type</div>
-              {isEmpty(query?.topic) &&
-              !query.tag.includes("capacity building") ? (
+              {isEmpty(query?.topic) ? (
                 <Tag className="resource-type">All (default)</Tag>
               ) : (
                 <Tag
@@ -263,14 +235,21 @@ const FilterDrawer = ({
               {topicTypes.map((type) => {
                 const topic = humps.decamelize(type);
                 const count =
-                  countData?.find((it) => it.topic === topic)?.count || 0;
+                  countData?.find((it) => it?.topic === topic)?.count || 0;
 
                 return (
                   <Col span={6} key={type} className="resource-card-wrapper">
                     <Card
-                      onClick={() => handleChangeResourceType("topic", topic)}
+                      onClick={() =>
+                        topic === "capacity_building"
+                          ? handleChangeResourceType("tag", "capacity building")
+                          : handleChangeResourceType("topic", topic)
+                      }
                       className={classNames("resource-type-card", {
-                        active: query?.topic?.includes(topic),
+                        active:
+                          topic === "capacity_building"
+                            ? query?.tag?.includes("capacity building")
+                            : query?.topic?.includes(topic),
                       })}
                     >
                       <Space direction="vertical" align="center">
@@ -282,28 +261,6 @@ const FilterDrawer = ({
                   </Col>
                 );
               })}
-              <Col
-                span={6}
-                key={"capacityBuilding"}
-                className="resource-card-wrapper"
-              >
-                <Card
-                  onClick={() =>
-                    handleChangeResourceType("tag", "capacity building")
-                  }
-                  className={classNames("resource-type-card", {
-                    active: query?.tag?.includes("capacity building"),
-                  })}
-                >
-                  <Space direction="vertical" align="center">
-                    {topicIcons("capacityBuilding")}
-                    <div className="topic-text">
-                      {topicNames("capacityBuilding")}
-                    </div>
-                    <div className="topic-count">{capacityBuildingCount}</div>
-                  </Space>
-                </Card>
-              </Col>
             </Row>
           </Col>
 
@@ -318,7 +275,7 @@ const FilterDrawer = ({
                       .map((child, i) => ({
                         label: child?.title,
                         value: child?.title,
-                        key: `${i}-${content.name}`,
+                        key: `${i}-${content?.name}`,
                       }))
                       .sort((a, b) =>
                         a?.label?.trim().localeCompare(b?.label?.trim())

@@ -18,7 +18,7 @@ const TopicView = ({ updateQuery, query, results }) => {
   ];
 
   const savedTopic = popularTags.filter((item) => {
-    if (query.tag.includes(item)) {
+    if (query?.tag?.includes(item)) {
       return item;
     }
   });
@@ -36,12 +36,12 @@ const TopicView = ({ updateQuery, query, results }) => {
   };
 
   useEffect(() => {
-    if (!selectedTopic && savedTopic.length > 0) {
+    if (!selectedTopic && savedTopic?.length > 0) {
       setSelectedTopic(savedTopic[0]);
     }
 
     // Reset selection when the filter is clear
-    if (savedTopic.length === 0 && selectedTopic) {
+    if (savedTopic?.length === 0 && selectedTopic) {
       setSelectedTopic(null);
     }
 
@@ -88,7 +88,7 @@ const TopicView = ({ updateQuery, query, results }) => {
   // Apply when there is a selected topic
   useEffect(() => {
     if (results.length > 0) {
-      if (selectedTopic && savedTopic.length > 0) {
+      if (selectedTopic && savedTopic?.length > 0) {
         getPopularTopics(`/tag/topic/popular?tags=${selectedTopic}&limit=6`);
       } else {
         !selectedTopic && getPopularTopics(`/tag/topic/popular`);

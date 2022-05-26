@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Pagination, Tag } from "antd";
+import { Col, Pagination, Tag } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -9,7 +9,6 @@ import { UIStore } from "../../store";
 import { useQuery } from "./common";
 import humps from "humps";
 import api from "../../utils/api";
-import { redirectError } from "../error/error-util";
 import { entityName } from "../../utils/misc";
 import isEmpty from "lodash/isEmpty";
 import UnathenticatedPage from "./unathenticated-page";
@@ -29,24 +28,19 @@ import { ReactComponent as IconCommunity } from "../../images/events/community-i
 import { ReactComponent as IconPartner } from "../../images/stakeholder-overview/partner-icon.svg";
 import StakeholderList from "./stakeholder-list";
 import { multicountryGroups } from "../knowledge-library/multicountry";
-import { titleCase } from "../../utils/string";
 import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
-import TooltipOutlined from "../../images/knowledge-library/tooltip-outlined.svg";
 import DownArrow from "../../images/knowledge-library/chevron-down.svg";
 
 let tmid;
 
 const StakeholderOverview = ({ history, loginWithPopup }) => {
   const {
+    tags,
     profile,
     countries,
-    representativeGroup,
-    geoCoverageTypeOptions,
     stakeholders,
     organisations,
-    seeking,
-    offering,
-    tags,
+    entityRoleOptions,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
@@ -54,13 +48,10 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     stakeholders: s.stakeholders,
     organisations: s.organisations,
-    seeking: s.tags.seeking,
-    offering: s.tags.offering,
     stakeholders: s.stakeholders?.stakeholders,
+    entityRoleOptions: s.entityRoleOptions,
     tags: Object.values(s.tags).flat(),
   }));
-
-  const viewportWidth = document.documentElement.clientWidth;
 
   const [filterCountries, setFilterCountries] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
@@ -88,22 +79,16 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   const [isAscending, setIsAscending] = useState(null);
   const [filters, setFilters] = useState(null);
   const pageSize = 16;
-  const { innerWidth } = window;
   const [resultCount, setResultCount] = useState(0);
-  const { entityRoleOptions } = UIStore.useState((s) => ({
-    entityRoleOptions: s.entityRoleOptions,
-    countries: s.countries,
-    tags: s.tags,
-    geoCoverageTypeOptions: s.geoCoverageTypeOptions,
-    languages: s.languages,
-  }));
 
   if (suggestedProfiles.length > 4) {
     suggestedProfiles.length = 4;
   }
 
+  const pageNumber = query?.page?.map((count) => Number(count))[0];
+
   const resultCounts =
-    results.length + ((filters?.page && pageSize * filters?.page) || 0);
+    results.length + ((pageNumber && pageSize * pageNumber) || 0);
 
   const sidebar = [
     { id: 1, title: "Events", url: "/connect/events", icon: <IconEvent /> },
@@ -225,13 +210,13 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
         );
 
         if (
-          query?.networkType.length === 1 &&
-          query?.networkType.includes("organisation")
+          query?.networkType?.length === 1 &&
+          query?.networkType?.includes("organisation")
         ) {
           setResultCount(organisationType?.count || 0);
         } else if (
-          query?.networkType.length === 1 &&
-          query?.networkType.includes("stakeholder")
+          query?.networkType?.length === 1 &&
+          query?.networkType?.includes("stakeholder")
         ) {
           setResultCount(stakeholderType?.count);
         } else {
@@ -252,7 +237,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
 
   const itemCount = loading
     ? 0
-    : filters?.page !== undefined
+    : pageNumber !== undefined
     ? resultCount
     : pageSize;
 
@@ -268,17 +253,10 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
   }, [isLoading, isValidUser]); // eslint-disable-line
 
   useEffect(() => {
-    // setFilterCountries if user click from map to browse view
+    // setFilterCountries if user click on map view
     query?.country &&
       query?.country.length > 0 &&
       setFilterCountries(query?.country);
-
-    // Manage filters display
-    !filters && setFilters(query);
-    if (filters) {
-      setFilters({ ...filters, topic: query.topic, tag: query.tag });
-      setFilterCountries(filters?.country);
-    }
 
     setTimeout(() => {
       getSuggestedProfiles();
@@ -320,14 +298,25 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       }
     }
 
-    newQuery["tag"] = [newQuery["offering"], newQuery["seeking"]].flat();
+    newQuery["tag"] = [newQuery["offering"], newQuery["seeking"]]
+      .flat()
+      .filter((tag) => tag);
 
-    setFilters(newQuery);
-    const newParams = new URLSearchParams(newQuery);
+    const arrayOfQuery = Object.entries(newQuery).filter(
+      (item) => item[1].length !== 0
+    );
+
+    const pureQuery = Object.fromEntries(arrayOfQuery);
+
+    setFilters(pureQuery);
+
+    const newParams = new URLSearchParams(pureQuery);
+
     history.push(`/connect/community?${newParams.toString()}`);
+
     setLandingQuery(newParams.toString());
     clearTimeout(tmid);
-    tmid = setTimeout(getResults(newQuery), 1000);
+    tmid = setTimeout(getResults(pureQuery), 1000);
     if (param === "country") {
       setFilterCountries(value);
     }
@@ -528,7 +517,7 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
                       ) : isLoaded() && !loading && !isEmpty(results) ? (
                         <>
                           <div className="result-number">
-                            {resultCount > pageSize + Number(filters?.page)
+                            {resultCount > pageSize + pageNumber
                               ? resultCounts
                               : itemCount}{" "}
                             of {resultCount || 0} result

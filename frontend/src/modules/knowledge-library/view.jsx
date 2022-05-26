@@ -157,13 +157,14 @@ const KnowledgeLibrary = ({
     // setFilterCountries if user click from map to browse view
     query?.country &&
       query?.country.length > 0 &&
-      setFilterCountries(query.country);
+      setFilterCountries(query?.country || []);
 
     // Manage filters display
+
     !filters && setFilters(query);
     if (filters) {
-      setFilters({ ...filters, topic: query.topic, tag: query.tag });
-      setFilterCountries(filters.country);
+      setFilters({ ...filters });
+      setFilterCountries(filters?.country || []);
     }
 
     setLoading(true);
@@ -172,11 +173,14 @@ const KnowledgeLibrary = ({
     }
 
     if (isLoading === false && filters) {
-      const newParams = new URLSearchParams({
-        ...filters,
-        topic: query.topic,
-        tag: query.tag,
-      });
+      const arrayOfQuery = Object.entries(filters).filter(
+        (item) => item[1].length !== 0
+      );
+
+      const pureQuery = Object.fromEntries(arrayOfQuery);
+
+      const newParams = new URLSearchParams(pureQuery);
+
       if (history.location.pathname === "/knowledge/library") {
         history.push(`/knowledge/library?${newParams.toString()}`);
       }
@@ -380,9 +384,9 @@ const KnowledgeLibrary = ({
                   <ResourceList
                     {...{
                       view,
+                      query,
                       allResults,
                       countData,
-                      filters,
                       loading,
                       pageSize,
                       updateQuery,
