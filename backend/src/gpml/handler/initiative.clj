@@ -1,17 +1,19 @@
 (ns gpml.handler.initiative
-  (:require [clojure.java.jdbc :as jdbc]
-            [gpml.db.favorite :as db.favorite]
-            [gpml.db.initiative :as db.initiative]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.tag :as db.tag]
-            [gpml.email-util :as email]
-            [gpml.handler.geo :as handler.geo]
-            [gpml.handler.auth :as h.auth]
-            [gpml.handler.image :as handler.image]
-            [gpml.handler.util :as util]
-            [gpml.pg-util :as pg-util]
-            [integrant.core :as ig]
-            [ring.util.response :as resp]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [gpml.db.favorite :as db.favorite]
+   [gpml.db.initiative :as db.initiative]
+   [gpml.db.resource.tag :as db.resource.tag]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.db.tag :as db.tag]
+   [gpml.email-util :as email]
+   [gpml.handler.auth :as h.auth]
+   [gpml.handler.geo :as handler.geo]
+   [gpml.handler.image :as handler.image]
+   [gpml.handler.util :as util]
+   [gpml.pg-util :as pg-util]
+   [integrant.core :as ig]
+   [ring.util.response :as resp]))
 
 (defn- add-geo-initiative [conn initiative-id {:keys [geo_coverage_country_groups geo_coverage_countries] :as data}]
   (when (or (not-empty geo_coverage_country_groups)
@@ -120,7 +122,9 @@
           data (db.initiative/initiative-by-id conn {:id id})
           extra-details (merge {:entity_connections (db.initiative/entity-connections-by-id conn {:id id})
                                 :stakeholder_connections (db.initiative/stakeholder-connections-by-id conn {:id id})
-                                :tags (db.initiative/tags-by-id conn {:id id})
+                                :tags (db.resource.tag/get-resource-tags conn {:table "initiative_tag"
+                                                                               :resource-col "initiative"
+                                                                               :resource-id id})
                                 :type "Initiative"}
                                (when-not (empty? (:related_content data))
                                  {:related_content (expand-related-initiative-content conn id)}))]
