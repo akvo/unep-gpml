@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import { Row, Card, Popover, Avatar } from "antd";
+import React from "react";
+import { Row, Card, Avatar } from "antd";
 import { Link } from "react-router-dom";
 
 import { UIStore } from "../../store";
 import unionIcon from "../../images/stakeholder-overview/union-icon.svg";
 import communityIcon from "../../images/stakeholder-overview/union-2-icon.svg";
-import { TrimText } from "../../utils/string";
 
 const ProfileCard = ({ profile, isValidUser, profileType }) => {
   const { countries, seeking } = UIStore.useState((s) => ({
@@ -20,22 +19,6 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
     seeking?.filter((seek) => {
       return profile?.seeking?.includes(seek?.id);
     });
-
-  const popoverContent = () => {
-    return (
-      <div className="popover-wrapper">
-        <h3>{profile?.type === "organisation" ? "Entity" : "Individual"}</h3>
-        <h4
-          className="profile-name"
-          style={{ color: "#255b87", fontSize: "13px", fontWeight: "700" }}
-        >
-          {profile.firstName
-            ? `${profile?.firstName} ${profile?.lastName}`
-            : profile?.name}
-        </h4>
-      </div>
-    );
-  };
 
   return (
     <Link
@@ -60,11 +43,9 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
           {profile.type === "organisation" ? (
             <div className="image-wrapper organisation-image">
               {profile.picture ? (
-                <img
-                  className="profile-image"
-                  src={profile.picture}
-                  alt={profile?.name}
-                />
+                <Avatar src={profile.picture} size={150} alt={profile.name}>
+                  {profile.name.substring(0, 2)}
+                </Avatar>
               ) : (
                 <Avatar
                   style={{
@@ -102,11 +83,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                   profileType !== "suggested-profiles" && (
                     <div className="affiliation-image-wrapper">
                       {profile?.affiliation?.logo ? (
-                        <img
-                          className="profile-image"
-                          src={profile?.affiliation?.logo}
-                          alt={profile?.affiliation?.name}
-                        />
+                        <Avatar src={profile?.affiliation?.logo} size={40} />
                       ) : (
                         <Avatar
                           style={{
