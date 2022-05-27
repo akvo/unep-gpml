@@ -632,7 +632,7 @@
       (doseq [association (expand-associations individual_connections "stakeholder" topic resource-id)]
         (if (contains? association :id)
           (db.favorite/update-stakeholder-association conn association)
-          (db.favorite/new-association conn association))))
+          (db.favorite/new-stakeholder-association conn association))))
     (when (not-empty entity_connections)
       (doseq [association (expand-associations entity_connections "organisation" topic resource-id)]
         (if (contains? association :id)

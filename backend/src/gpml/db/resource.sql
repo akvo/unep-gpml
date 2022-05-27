@@ -175,6 +175,7 @@ select sr.id, sr.association as role, s.id as stakeholder_id, concat_ws(' ', s.f
   left join stakeholder s
   on sr.stakeholder = s.id
   where sr.resource = :id
+  and sr.is_bookmark = false;
 
 -- :name all-resources
 -- :doc List all resources

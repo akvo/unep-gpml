@@ -1,5 +1,15 @@
 -- :name new-association :!
 -- :doc Upserts a new relation between a stakeholder and a topic
+--~ (format "INSERT INTO stakeholder_%1$s AS sp (stakeholder, %2$s, association, remarks, is_bookmark)" (:topic params) (or (:column_name params) (:topic params)))
+--~ (format "VALUES (:stakeholder, :topic_id, :v:association::%1$s_association, :remarks, true)" (:topic params))
+--~ (format "ON CONFLICT (stakeholder, %1$s, association)" (or (:column_name params) (:topic params)))
+DO UPDATE SET modified = now(), remarks = EXCLUDED.remarks, is_bookmark = true
+    WHERE sp.stakeholder = EXCLUDED.stakeholder
+--~ (format "AND sp.%1$s = EXCLUDED.%1$s" (or (:column_name params) (:topic params)))
+      AND sp.association = EXCLUDED.association;
+
+-- :name new-stakeholder-association :!
+-- :doc Upserts a new relation between a stakeholder and a topic
 --~ (format "INSERT INTO stakeholder_%1$s AS sp (stakeholder, %2$s, association, remarks)" (:topic params) (or (:column_name params) (:topic params)))
 --~ (format "VALUES (:stakeholder, :topic_id, :v:association::%1$s_association, :remarks)" (:topic params))
 --~ (format "ON CONFLICT (stakeholder, %1$s, association)" (or (:column_name params) (:topic params)))
@@ -12,10 +22,18 @@ DO UPDATE SET modified = now(), remarks = EXCLUDED.remarks
 -- :doc Get all associations for a given stakeholder
 SELECT * FROM v_stakeholder_association WHERE stakeholder = :stakeholder
 
+-- :name stakeholder-bookmarks :? :*
+-- :doc Get stakeholder bookmark for a given topic
+SELECT * FROM :i:table
+WHERE stakeholder = :stakeholder
+AND :i:topic = :topic_id
+AND is_bookmark = true;
+
 -- :name association-by-stakeholder-topic :? :*
 SELECT * FROM :i:topic
 WHERE stakeholder = :stakeholder
 AND :i:column_name = :topic_id
+AND is_bookmark = false;
 
 -- :name delete-stakeholder-association :! :n
 DELETE FROM :i:topic WHERE id = :id

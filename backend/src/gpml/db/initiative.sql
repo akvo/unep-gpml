@@ -92,6 +92,7 @@ select si.id, si.association as role, s.id as stakeholder_id, concat_ws(' ', s.f
   left join stakeholder s
   on si.stakeholder = s.id
   where si.initiative = :id
+  and si.is_bookmark = false;
 
 -- :name all-initiatives
 -- :doc List all initiatives

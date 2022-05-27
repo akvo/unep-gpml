@@ -180,6 +180,7 @@ select st.id, st.association as role, s.id as stakeholder_id, concat_ws(' ', s.f
   left join stakeholder s
   on st.stakeholder = s.id
   where st.technology = :id
+  and st.is_bookmark = false;
 
 -- :name all-technologies
 -- :doc List all technologies

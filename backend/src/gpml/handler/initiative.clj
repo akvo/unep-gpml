@@ -89,7 +89,7 @@
         (db.favorite/new-organisation-association conn association)))
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections initiative-id)]
-        (db.favorite/new-association conn association)))
+        (db.favorite/new-stakeholder-association conn association)))
     (when (not-empty tags)
       (add-tags conn mailjet-config tags initiative-id))
     (email/notify-admins-pending-approval
