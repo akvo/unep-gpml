@@ -65,9 +65,8 @@ const AutoCompleteWidget = ({
         options={enumOptions}
         placeholder={placeholder}
         onChange={!readonly ? handleChange : undefined}
-        filterOption={(input, option) =>
-          option?.children?.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
-          option.value === "-1"
+        filterOption={(inputValue, option) =>
+          option?.value?.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
         }
       />
     </>
