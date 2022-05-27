@@ -672,7 +672,7 @@ const StakeholderDetail = ({
             </Col>
           </Row>
           <div className="owned-resources-wrapper">
-            {bookedResources.length > 0 && (
+            {ownedResources.length > 0 && (
               <CardComponent
                 title={"Owned resources"}
                 style={{
