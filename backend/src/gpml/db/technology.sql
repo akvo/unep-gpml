@@ -192,11 +192,3 @@ select tech.id, tech.name as title, tech.remarks as description from technology 
   left join technology tech
   on tech.id = ANY(t.related_content)
   where t.id = :id
-
--- :name tags-by-id
--- :doc Get tags by id
-select t.id, t.tag from technology_tag tt
-  left join tag t
-  on tt.tag = t.id
-  where tt.technology = :id
-  and t.review_status='APPROVED';
