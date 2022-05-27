@@ -322,8 +322,8 @@ const Root = () => {
       newQuery["offset"] = 0;
     }
 
-    const arrayOfQuery = Object.entries(newQuery).filter(
-      (item) => item[1].length !== 0
+    const arrayOfQuery = Object.entries(newQuery)?.filter(
+      (item) => item[1]?.length !== 0
     );
 
     const pureQuery = Object.fromEntries(arrayOfQuery);
