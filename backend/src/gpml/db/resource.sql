@@ -205,11 +205,3 @@ select res.id, res.title, res.summary as description from resource r
   left join resource res
   on res.id = ANY(r.related_content)
   where r.id = :id
-
--- :name tags-by-id
--- :doc Get tags by id
-select t.id, t.tag from resource_tag rt
-  left join tag t
-  on rt.tag = t.id
-  where rt.resource = :id
-  and t.review_status = 'APPROVED';
