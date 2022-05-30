@@ -3,7 +3,7 @@
 .ui-header {
   // background-color: rgba(0, 91, 112, 0.8);
   background-color: #004a6f;
-  padding: 5px 10px 5px 18px;
+  padding: 5px 10px 5px;
   min-height: 70px;
   display: flex;
   align-items: center;
@@ -114,8 +114,11 @@
   // Search input
 
   .search-box {
-    width: 420px;
     display: flex;
+    
+    @media screen and (min-width: 768px){
+      width: 420px;
+    }
 
     @-moz-document url-prefix() {
       max-width: 427px;
