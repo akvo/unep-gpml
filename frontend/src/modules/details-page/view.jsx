@@ -1451,7 +1451,10 @@ const DetailsView = ({
                     <Row gutter={16} className="related-content">
                       {data?.relatedContent.map((item) => (
                         <Col span={12}>
-                          <div className="slider-card">
+                          <a
+                            href={`/${params.type}/${item.id}`}
+                            className="slider-card"
+                          >
                             <div className="image-holder">
                               <img
                                 src={
@@ -1491,7 +1494,7 @@ const DetailsView = ({
                                 </a>
                               </div>
                             </div>
-                          </div>
+                          </a>
                         </Col>
                       ))}
                     </Row>
