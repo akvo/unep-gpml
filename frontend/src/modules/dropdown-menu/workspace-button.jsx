@@ -7,6 +7,7 @@ const WorkspaceButton = () => (
     to="/workspace"
     className="btn-workspace menu-btn"
     activeClassName="selected"
+    aria-label="Workspace"
   >
     <HomeOutlined />
     <span className="text">Workspace</span>

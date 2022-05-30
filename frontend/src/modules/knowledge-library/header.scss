@@ -1,14 +1,21 @@
 @import "../../vars.scss";
 
 .ui-header {
-  background-color: rgba(0, 91, 112, 0.8);
-  padding: 5px calc(45px - 15px) 5px 38px;
-
+  // background-color: rgba(0, 91, 112, 0.8);
+  background-color: #004a6f;
+  padding: 5px 10px 5px 18px;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  & > .ui-container {
+    flex: 1;
+  }
   .mobile-src {
     display: none;
   }
   .desktop-src {
     display: block;
+    flex: 1;
   }
 
   .ant-space.ant-space-horizontal.ant-space-align-center .ant-select-selector {
@@ -17,6 +24,15 @@
 
   .filter-icon-button {
     border: none;
+    display: flex;
+    color: white !important;
+    font-size: 16px;
+    font-weight: 600;
+    span {
+      margin-left: 5px;
+      display: inline-block;
+      transform: translateY(2px);
+    }
   }
 
   .sort-btn {
@@ -47,8 +63,6 @@
     .ant-space {
       flex-wrap: wrap;
       gap: 8px;
-      max-height: 33px;
-      overflow-y: auto;
       .ant-space-item {
         margin-right: 0 !important;
       }
@@ -94,15 +108,14 @@
   }
 
   .header-filter-option .ant-col {
-    flex-basis: 50%;
-    flex-grow: 1;
+    flex: 1;
   }
 
   // Search input
 
   .search-box {
-    width: 100%;
-    max-width: 478px;
+    width: 420px;
+    display: flex;
 
     @-moz-document url-prefix() {
       max-width: 427px;
@@ -112,12 +125,27 @@
     }
 
     .ant-space-item:nth-of-type(1) {
-      width: 100%;
+      flex: 1;
     }
     .ant-space-align-center {
       width: 100%;
     }
-
+    position: relative;
+    .filter-status {
+      position: absolute;
+      background-color: #e91a08;
+      color: white;
+      font-weight: 700;
+      height: 15px;
+      border-radius: 8px;
+      top: 0;
+      left: 32px;
+      font-size: 10px;
+      line-height: 15px;
+      padding: 0 2px;
+      min-width: 15px;
+      text-align: center;
+    }
     .filter-icon {
       display: block;
       width: 27px;
@@ -127,7 +155,8 @@
     .ant-input::-webkit-input-placeholder,
     .ant-input {
       font-size: 14px;
-      color: $green05;
+      color: #18162f;
+      line-height: 30px;
     }
 
     .ant-input-affix-wrapper {
@@ -136,6 +165,9 @@
       padding-top: 0px;
       padding-bottom: 0px;
       overflow: auto;
+      .ant-input-suffix {
+        margin-right: 8px;
+      }
       button {
         color: $blue10;
         background-color: $green01;

@@ -325,19 +325,6 @@ const KnowledgeLibrary = ({
   return (
     <Row id="knowledge-library">
       {/* Header */}
-      <Header
-        {...{
-          isAscending,
-          updateQuery,
-          filterVisible,
-          setFilterVisible,
-          sortResults,
-          filterTagValue,
-          renderFilterTag,
-          selectionValue,
-          setView,
-        }}
-      />
 
       {/* Content */}
       <Col span={24}>
@@ -360,6 +347,17 @@ const KnowledgeLibrary = ({
           />
 
           <LeftSidebar active={1} sidebar={sidebar}>
+            <Header
+              {...{
+                updateQuery,
+                filterVisible,
+                setFilterVisible,
+                filterTagValue,
+                renderFilterTag,
+                selectionValue,
+                setView,
+              }}
+            />
             <Row
               className={
                 view === "map"
@@ -390,6 +388,8 @@ const KnowledgeLibrary = ({
                       loading,
                       pageSize,
                       updateQuery,
+                      sortResults,
+                      isAscending,
                     }}
                     hideListButtonVisible={view === "map"}
                   />

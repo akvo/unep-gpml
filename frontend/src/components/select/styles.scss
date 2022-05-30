@@ -42,7 +42,7 @@
   }
 
   .ant-select-selection-placeholder {
-    font-style: italic;
+    // font-style: italic;
     font-weight: 700;
     padding-left: 30px;
     @-moz-document url-prefix() {
@@ -72,15 +72,16 @@
   }
 
   .ant-select-selection-overflow {
-    padding-left: calc(44px - 9px);
-    height: 29px;
-    overflow-y: auto;
+    padding-left: 35px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     @-moz-document url-prefix() {
       height: 22px;
       padding-left: calc(33px - 4.5px);
     }
     .ant-select-selection-item {
-      background-color: transparent;
+      background-color: #c3dbe7;
+      border-radius: 4px;
       @-moz-document url-prefix() {
         line-height: 15px;
       }
@@ -100,7 +101,7 @@
     font-weight: 700;
     font-size: 16px;
     color: $blue06;
-    font-style: italic;
+    // font-style: italic;
     overflow: visible;
     @-moz-document url-prefix() {
       font-size: 12px;
@@ -242,11 +243,6 @@
     }
 
     .ant-select-selection-overflow {
-      height: 29px;
-      overflow-y: auto;
-      @-moz-document url-prefix() {
-        height: 22px;
-      }
     }
 
     .ant-select {

@@ -25,48 +25,21 @@ const KnowledgeLibrarySearch = withRouter(
     return (
       <>
         <div className="src mobile-src">
-          {!isShownForm && (
-            <Button
-              onClick={() => setIsShownForm(!isShownForm)}
-              type="primary"
-              shape="circle"
-              size="small"
-              icon={<SearchOutlined />}
-            />
-          )}
-          {isShownForm && (
-            <Input
-              className="input-src"
-              placeholder="Search resources"
-              value={search}
-              suffix={
-                <Button
-                  onClick={() => handleSearch(search)}
-                  type="primary"
-                  shape="circle"
-                  size="small"
-                  icon={<SearchOutlined />}
-                />
-              }
-              onPressEnter={(e) => handleSearch(e.target.value)}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          )}
+          <Input
+            className="input-src"
+            placeholder="Search resources"
+            value={search}
+            suffix={<SearchOutlined />}
+            onPressEnter={(e) => handleSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </div>
         <div className="src desktop-src">
           <Input
             className="input-src"
             placeholder="Search resources"
             value={search}
-            suffix={
-              <Button
-                onClick={() => handleSearch(search)}
-                type="primary"
-                shape="circle"
-                size="small"
-                icon={<SearchOutlined />}
-              />
-            }
+            suffix={<SearchOutlined />}
             onPressEnter={(e) => handleSearch(e.target.value)}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -107,15 +80,7 @@ const StakeholderOverviewSearch = withRouter(
               className="input-src"
               placeholder="Search the community"
               value={search}
-              suffix={
-                <Button
-                  onClick={() => handleSearch(search)}
-                  type="primary"
-                  shape="circle"
-                  size="small"
-                  icon={<SearchOutlined />}
-                />
-              }
+              suffix={<SearchOutlined />}
               onPressEnter={(e) => handleSearch(e.target.value)}
               onChange={(e) => {
                 setSearch(e.target.value);
@@ -135,15 +100,7 @@ const StakeholderOverviewSearch = withRouter(
             className="input-src"
             placeholder="Search the community"
             value={search}
-            suffix={
-              <Button
-                onClick={() => handleSearch(search)}
-                type="primary"
-                shape="circle"
-                size="small"
-                icon={<SearchOutlined />}
-              />
-            }
+            suffix={<SearchOutlined />}
             onPressEnter={(e) => handleSearch(e.target.value)}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -164,8 +121,6 @@ const StakeholderOverviewSearch = withRouter(
 
 const Header = ({
   setView,
-  sortResults,
-  isAscending,
   filterVisible,
   setFilterVisible,
   selectionValue,
@@ -189,58 +144,38 @@ const Header = ({
           {/* Search input & filtered by list */}
           <Col lg={22} md={20} sm={18}>
             <Row type="flex" justify="space-between" align="middle">
-              <Col
-                lg={5}
-                md={7}
-                sm={9}
-                className={
-                  !isShownForm ? `search-box search-box-mobile` : `search-box`
-                }
-              >
-                <Space>
-                  {/* <Search updateQuery={updateQuery} /> */}
-                  {path === KNOWLEDGE_LIBRARY ? (
-                    <KnowledgeLibrarySearch
-                      {...{ updateQuery, isShownForm, setIsShownForm }}
-                    />
-                  ) : (
-                    <StakeholderOverviewSearch
-                      {...{ updateQuery, isShownForm, setIsShownForm }}
-                    />
-                  )}
-                  <Button
-                    onClick={() => setFilterVisible(!filterVisible)}
-                    type="ghost"
-                    shape="circle"
-                    className="filter-icon-button"
-                    icon={
-                      <img
-                        src={FilterIcon}
-                        className="filter-icon"
-                        alt="config-icon"
-                      />
-                    }
+              <div className="search-box search-box-mobile">
+                {/* <Search updateQuery={updateQuery} /> */}
+                {path === KNOWLEDGE_LIBRARY ? (
+                  <KnowledgeLibrarySearch
+                    {...{ updateQuery, isShownForm, setIsShownForm }}
                   />
-                  <Button
-                    className="sort-btn"
-                    onClick={() => sortResults(!isAscending)}
-                  >
-                    <SortIcon
-                      style={{
-                        transform:
-                          isAscending || isAscending === null
-                            ? "initial"
-                            : "rotate(180deg)",
-                      }}
-                    />
-                  </Button>
-                </Space>
-              </Col>
-              {filterTagValue.length > 0 && (
+                ) : (
+                  <StakeholderOverviewSearch
+                    {...{ updateQuery, isShownForm, setIsShownForm }}
+                  />
+                )}
+                <Button
+                  onClick={() => setFilterVisible(!filterVisible)}
+                  className="filter-icon-button"
+                  type="link"
+                >
+                  {filterTagValue.length > 0 && (
+                    <div className="filter-status">{filterTagValue.length}</div>
+                  )}
+                  <img
+                    src={FilterIcon}
+                    className="filter-icon"
+                    alt="config-icon"
+                  />
+                  Filter
+                </Button>
+              </div>
+              {/* {filterTagValue.length > 0 && (
                 <Col lg={19} md={17} sm={15} className="filter-tag">
                   <Space direction="horizontal">{renderFilterTag()}</Space>
                 </Col>
-              )}
+              )} */}
             </Row>
           </Col>
           {/* Map/Topic view dropdown */}
