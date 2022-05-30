@@ -5,7 +5,7 @@ import TopicChart from "../chart/topic-chart";
 import { titleCase } from "../../utils/string";
 import TopicBar from "../chart/topic-bar";
 
-const TopicView = ({ updateQuery, query, results }) => {
+const TopicView = ({ updateQuery, query, results, countData }) => {
   const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const popularTags = [
@@ -16,6 +16,9 @@ const TopicView = ({ updateQuery, query, results }) => {
     "product by design",
     "source to sea",
   ];
+  const capacityBuilding = countData.find(
+    (data) => data?.topic === "capacity_building"
+  );
 
   const savedTopic = popularTags.filter((item) => {
     if (query?.tag?.includes(item)) {
@@ -53,12 +56,21 @@ const TopicView = ({ updateQuery, query, results }) => {
       .get(url)
       .then((resp) => {
         const data = resp?.data.map((item, i) => {
-          return {
-            id: item?.tag,
-            topic: item?.tag,
-            tag: item?.tag,
-            count: item?.count,
-          };
+          if (item?.tag.toLowerCase() === "capacity building") {
+            return {
+              id: item?.tag,
+              topic: item?.tag,
+              tag: item?.tag,
+              count: capacityBuilding?.count || 0,
+            };
+          } else {
+            return {
+              id: item?.tag,
+              topic: item?.tag,
+              tag: item?.tag,
+              count: item?.count,
+            };
+          }
         });
         const dataTag = data.map((item) => item?.tag);
         const nonExistedTopic = popularTags
@@ -106,7 +118,7 @@ const TopicView = ({ updateQuery, query, results }) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTopic, results]);
+  }, [selectedTopic, results, capacityBuilding]);
 
   return (
     <>

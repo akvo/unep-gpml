@@ -443,7 +443,7 @@ const KnowledgeLibrary = ({
                       : `render-map-container`
                   }
                 >
-                  <TopicView {...{ updateQuery, query, results }} />
+                  <TopicView {...{ updateQuery, query, results, countData }} />
                 </Col>
               )}
             </Row>
