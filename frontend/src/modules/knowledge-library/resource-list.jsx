@@ -47,7 +47,7 @@ const ResourceList = ({
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
 
-  const topics = query?.topic || [];
+  const topics = query?.topic;
   // Choose topics to count, based on whether user is approved or not,
   // and if any topic filters are active.
   const topicsForTotal = (isApprovedUser
@@ -59,7 +59,10 @@ const ResourceList = ({
     topics?.length > 0
       ? topics?.filter((t) => topicsForTotal.indexOf(t) > -1)
       : topicsForTotal.filter(
-          (t) => t !== "organisation" && t !== "stakeholder"
+          (t) =>
+            t !== "organisation" &&
+            t !== "stakeholder" &&
+            t !== "capacity_building"
         );
 
   const totalItems = filteredTopics.reduce(

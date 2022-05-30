@@ -177,7 +177,9 @@ const Landing = withRouter(
           setResources({
             items: data?.results,
             summary: data?.counts.filter(
-              (count) => count.topic !== "gpml_member_entities"
+              (count) =>
+                count?.topic !== "gpml_member_entities" &&
+                count?.topic !== "capacity_building"
             ),
           });
         }));

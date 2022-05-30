@@ -302,8 +302,8 @@ const StakeholderOverview = ({ history, loginWithPopup }) => {
       .flat()
       .filter((tag) => tag);
 
-    const arrayOfQuery = Object.entries(newQuery).filter(
-      (item) => item[1].length !== 0
+    const arrayOfQuery = Object.entries(newQuery)?.filter(
+      (item) => item[1]?.length !== 0
     );
 
     const pureQuery = Object.fromEntries(arrayOfQuery);

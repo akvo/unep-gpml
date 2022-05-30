@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Card, Row, Col, Pagination } from "antd";
+import { Card, Row, Col, Pagination, Avatar } from "antd";
 import { TrimText } from "../../utils/string";
 import { isEmpty } from "lodash";
 import "./stakeholder-list.scss";
@@ -108,14 +108,27 @@ const ResourceItem = ({ results, view }) => {
               </div>
               {result?.affiliation && result?.affiliation?.length !== 0 && (
                 <div className="list-affiliation-image-wrapper">
-                  <img
-                    className="affiliation-image"
+                  <Avatar
+                    size={32}
+                    style={{
+                      border: "none",
+                    }}
                     src={
-                      result?.affiliation?.logo
-                        ? result?.affiliation?.logo
-                        : `https://ui-avatars.com/api/?background=0D8ABC&color=ffffff&size=480&name=${result?.affiliation?.name}`
+                      result?.affiliation?.logo ? (
+                        result?.affiliation?.logo
+                      ) : (
+                        <Avatar
+                          style={{
+                            backgroundColor: "#09689A",
+                            verticalAlign: "middle",
+                            border: "none",
+                          }}
+                          size={32}
+                        >
+                          {result?.affiliation?.name?.substring(0, 2)}
+                        </Avatar>
+                      )
                     }
-                    alt={result?.affiliation?.name}
                   />
                 </div>
               )}

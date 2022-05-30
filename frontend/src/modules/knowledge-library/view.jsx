@@ -173,8 +173,8 @@ const KnowledgeLibrary = ({
     }
 
     if (isLoading === false && filters) {
-      const arrayOfQuery = Object.entries(filters).filter(
-        (item) => item[1].length !== 0
+      const arrayOfQuery = Object.entries(filters)?.filter(
+        (item) => item[1]?.length !== 0
       );
 
       const pureQuery = Object.fromEntries(arrayOfQuery);

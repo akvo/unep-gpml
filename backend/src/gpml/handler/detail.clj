@@ -284,7 +284,9 @@
     :related_content (if (seq related_content)
                        (expand-related-project-content db project)
                        [])
-    :tags (db.initiative/tags-by-id db (select-keys project [:id]))
+    :tags (db.resource.tag/get-resource-tags db {:table "initiative_tag"
+                                                 :resource-col "initiative"
+                                                 :resource-id (:id project)})
     :type "Initiative"}
    (if (> (:id project) 10000)
      (db.initiative/initiative-detail-by-id db project)
@@ -304,7 +306,9 @@
     :related_content (if (seq related_content)
                        (expand-related-policy-content db policy)
                        [])
-    :tags (db.policy/tags-by-id db (select-keys policy [:id]))
+    :tags (db.resource.tag/get-resource-tags db {:table "policy_tag"
+                                                 :resource-col "policy"
+                                                 :resource-id (:id policy)})
     :language (db.policy/language-by-policy-id db (select-keys policy [:id]))
     :type "Policy"}
    (when-let [implementing-mea (:implementing_mea policy)]
@@ -324,7 +328,9 @@
     :related_content (if (seq related_content)
                        (expand-related-technology-content db technology)
                        [])
-    :tags (db.technology/tags-by-id db (select-keys technology [:id]))
+    :tags (db.resource.tag/get-resource-tags db {:table "technology_tag"
+                                                 :resource-col "technology"
+                                                 :resource-id (:id technology)})
     :type "Technology"}
    (when-let [headquarters-country (:country technology)]
      {:headquarters (gpml.db.country/country-by-id db {:id headquarters-country})})))
@@ -348,7 +354,9 @@
    :related_content (if (seq related_content)
                       (expand-related-resource-content db resource)
                       [])
-   :tags (db.resource/tags-by-id db (select-keys resource [:id]))})
+   :tags (db.resource.tag/get-resource-tags db {:table "resource_tag"
+                                                :resource-col "resource"
+                                                :resource-id (:id resource)})})
 
 (defmethod extra-details "financing_resource" [_ db {:keys [related_content] :as resource}]
   {:entity_connections (db.resource/entity-connections-by-id db (select-keys resource [:id]))
@@ -356,7 +364,9 @@
    :related_content (if (seq related_content)
                       (expand-related-resource-content db resource)
                       [])
-   :tags (db.resource/tags-by-id db (select-keys resource [:id]))})
+   :tags (db.resource.tag/get-resource-tags db {:table "resource_tag"
+                                                :resource-col "resource"
+                                                :resource-id (:id resource)})})
 
 (defmethod extra-details "action_plan" [_ db {:keys [related_content] :as resource}]
   {:entity_connections (db.resource/entity-connections-by-id db (select-keys resource [:id]))
@@ -364,7 +374,9 @@
    :related_content (if (seq related_content)
                       (expand-related-resource-content db resource)
                       [])
-   :tags (db.resource/tags-by-id db (select-keys resource [:id]))})
+   :tags (db.resource.tag/get-resource-tags db {:table "resource_tag"
+                                                :resource-col "resource"
+                                                :resource-id (:id resource)})})
 
 (defn expand-related-entity-content [db event]
   (let [related_content (db.event/related-content-by-id db (select-keys event [:id]))]
@@ -379,7 +391,9 @@
    :related_content (if (seq related_content)
                       (expand-related-entity-content db event)
                       [])
-   :tags (db.event/tags-by-id db (select-keys event [:id]))
+   :tags (db.resource.tag/get-resource-tags db {:table "event_tag"
+                                                :resource-col "event"
+                                                :resource-id (:id event)})
    :type "Event"})
 
 (defmethod extra-details :nothing [_ _ _]

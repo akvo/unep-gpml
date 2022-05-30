@@ -237,7 +237,11 @@ const KnowledgeLibraryToolTipContent = ({
         <tbody>
           {tTypes.map((topic) => {
             const dataToDisplayPerPath = () => {
-              return topic !== "organisation" && topic !== "stakeholder";
+              return (
+                topic !== "organisation" &&
+                topic !== "stakeholder" &&
+                topic !== "capacity_building"
+              );
             };
 
             const tooltipChecker = () => {

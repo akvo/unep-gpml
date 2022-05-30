@@ -382,11 +382,23 @@ const StakeholderDetail = ({
               <Col xs={24} lg={24}>
                 <div className="topbar-wrapper">
                   <div className="topbar-image-holder">
-                    <img
+                    <Avatar
+                      size={150}
                       src={
-                        data?.logo
-                          ? data?.logo
-                          : `https://ui-avatars.com/api/?size=480&name=${data?.name}`
+                        data?.logo ? (
+                          data?.logo
+                        ) : (
+                          <Avatar
+                            style={{
+                              backgroundColor: "#09689A",
+                              verticalAlign: "middle",
+                              border: "4px solid #fff",
+                            }}
+                            size={145}
+                          >
+                            {data?.name?.substring(0, 2)}
+                          </Avatar>
+                        )
                       }
                     />
                   </div>
@@ -556,11 +568,22 @@ const StakeholderDetail = ({
                                   >
                                     {item.entityConnections.map((item) => (
                                       <Avatar
-                                        key={item.entity}
+                                        style={{ border: "none" }}
+                                        key={item?.entity}
                                         src={
-                                          item?.image
-                                            ? item.image
-                                            : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
+                                          item?.image ? (
+                                            item.image
+                                          ) : (
+                                            <Avatar
+                                              style={{
+                                                backgroundColor: "#09689A",
+                                                verticalAlign: "middle",
+                                              }}
+                                              size={40}
+                                            >
+                                              {item?.entity?.substring(0, 2)}
+                                            </Avatar>
+                                          )
                                         }
                                       />
                                     ))}
@@ -618,13 +641,25 @@ const StakeholderDetail = ({
                           <Row style={{ width: "100%" }}>
                             <Col className="individual-details" xs={6} lg={14}>
                               <div className="profile-image">
-                                <img
+                                <Avatar
+                                  style={{ border: "none" }}
+                                  key={item?.picture}
+                                  size={200}
                                   src={
-                                    item?.picture
-                                      ? item?.picture
-                                      : `https://ui-avatars.com/api/?size=480&name=${item?.name}`
+                                    item?.picture ? (
+                                      item?.picture
+                                    ) : (
+                                      <Avatar
+                                        style={{
+                                          backgroundColor: "#09689A",
+                                          verticalAlign: "middle",
+                                        }}
+                                        size={195}
+                                      >
+                                        {item?.name?.substring(0, 2)}
+                                      </Avatar>
+                                    )
                                   }
-                                  alt={`${item.name}`}
                                 />
                               </div>
                             </Col>
