@@ -14,18 +14,32 @@
     padding-top: 40px;
     padding-bottom: 30px;
   }
-  .green {
-    h2 {
-      color: #4dffa5;
-      @-moz-document url-prefix() {
-        font-size: 1.5rem !important;
-      }
-      span.see-more-link a {
+  .section-title {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    &.white {
+      h2 {
         color: #fff;
+        @-moz-document url-prefix() {
+          font-size: 1.5rem !important;
+        }
+        span.see-more-link a {
+          color: #fff;
+        }
       }
     }
+    .event-add-button {
+      background-color: transparent !important;
+      color: springgreen !important;
+      border: 2px solid springgreen !important;
+      font-size: 16px;
+      font-weight: 700;
+      height: 42px;
+      padding: 0 20px;
+    }
   }
-
   background: linear-gradient(
       0deg,
       rgba(28, 165, 133, 0.8),
@@ -38,6 +52,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    margin-top: 20px;
     .content,
     .calendar {
       width: 100%;
@@ -46,6 +61,8 @@
       }
     }
     .calendar {
+      border-top: 1px solid #d3dee7;
+      padding-top: 15px;
       .ant-picker-calendar {
         height: 100%;
         font-size: 1.2rem;
@@ -77,7 +94,7 @@
         }
         .ant-picker-cell-inner.ant-picker-calendar-date {
           text-align: center;
-          min-height: 6.8rem;
+          min-height: 5.8rem;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -101,7 +118,7 @@
         margin: 4px;
         padding: 4px 8px 0;
         border: 0;
-        border-top: 2px solid #f0f0f0;
+        border-top: 2px solid #8691b0;
         border-radius: 0;
       }
       .ant-picker-calendar-full
@@ -277,8 +294,7 @@
       .event-more {
         color: #fff;
         font-weight: 600;
-        margin-top: 10px;
-        background: rgba(255, 255, 255, 0.33);
+        background: rgba(211, 222, 231, 0.53);
         border-radius: 10px 10px 0px 0px;
         padding: 12px 24px; // same as ant-card-body padding
         display: flex;
