@@ -803,7 +803,7 @@ const FlexibleForm = withRouter(
         delete data.individual;
       }
       if (data?.info) {
-        data.infoDocs = data.info;
+        data.infoDocs = data.info === "<p><br></p>" ? "" : data.info;
         delete data.info;
       }
 
@@ -982,7 +982,7 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.info) {
-        data.infoDocs = data.info;
+        data.infoDocs = data.info === "<p><br></p>" ? "" : data.info;
         delete data.info;
       }
 
