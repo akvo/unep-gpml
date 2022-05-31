@@ -1489,9 +1489,7 @@ const DetailsView = ({
                 >
                   {data?.relatedContent.length > 0 && (
                     <Carousel
-                      totalItems={3}
-                      gutter={16}
-                      draggable={true}
+                      slidesToSlide={9}
                       centerMode={true}
                       responsive={responsive}
                       containerClass="related-content"
