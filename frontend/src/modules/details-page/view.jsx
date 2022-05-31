@@ -1510,7 +1510,7 @@ const DetailsView = ({
                               className="description-holder"
                             >
                               <div>
-                                <h6>{item.title}</h6>
+                                <h3>{item.title}</h3>
                                 <h4>{data?.type ? data.type : ""}</h4>
                               </div>
                               <div className="bottom-panel">
