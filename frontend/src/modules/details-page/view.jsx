@@ -22,6 +22,7 @@ import {
   Form,
   Comment,
 } from "antd";
+import Carousel from "react-multi-carousel";
 import { InfoCircleOutlined } from "@ant-design/icons";
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -61,9 +62,15 @@ import { FieldsFromSchema } from "../../utils/form-utils";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
-const CardComponent = ({ title, style, children, getRef }) => {
+const CardComponent = ({
+  title,
+  style,
+  children,
+  getRef,
+  specificClassName,
+}) => {
   return (
-    <div className={`card-wrapper mb-10`} ref={getRef}>
+    <div className={`card-wrapper mb-10 ${specificClassName}`} ref={getRef}>
       <Card title={title} bordered={false} style={style}>
         {children}
       </Card>
@@ -1125,6 +1132,25 @@ const DetailsView = ({
       countries
     )?.props?.children !== "There is no data to display";
 
+  const responsive = {
+    superLargeDesktop: {
+      breakpoint: { max: 4000, min: 1200 },
+      items: 4,
+    },
+    desktop: {
+      breakpoint: { max: 1199, min: 992 },
+      items: 3,
+    },
+    tablet: {
+      breakpoint: { max: 991, min: 768 },
+      items: 2,
+    },
+    mobile: {
+      breakpoint: { max: 599, min: 0 },
+      items: 1,
+    },
+  };
+
   return (
     <div id="details">
       <div className="section-header">
@@ -1446,29 +1472,31 @@ const DetailsView = ({
                     data?.relatedContent && data?.relatedContent.length
                   })`}
                   getRef={relatedContent}
+                  specificClassName={"related-content-wrapper"}
                 >
                   {data?.relatedContent.length > 0 && (
-                    <Row gutter={16} className="related-content">
-                      {data?.relatedContent.map((item) => (
-                        <Col span={12}>
-                          <a
-                            href={`/${params.type}/${item.id}`}
-                            className="slider-card"
-                          >
-                            <div className="image-holder">
-                              <img
-                                src={
-                                  require(`../../images/${icons[item?.type]}`)
-                                    .default
-                                }
-                              />
-                            </div>
-
-                            <div className="description-holder">
-                              <h4>
-                                {item?.type ? item.type.replace(/_/g, " ") : ""}
-                              </h4>
+                    <Carousel
+                      totalItems={3}
+                      gutter={16}
+                      draggable={true}
+                      centerMode={true}
+                      responsive={responsive}
+                      containerClass="related-content"
+                      itemClass="carousel-item"
+                      dotListClass="carousel-dot-list"
+                      showDots={true}
+                      renderDotsOutside={true}
+                      removeArrowOnDeviceType={["tablet", "mobile"]}
+                    >
+                      {data?.relatedContent.map((item) => {
+                        return (
+                          <Col className="card" span={12}>
+                            <a
+                              href={`/${params.type}/${item.id}`}
+                              className="description-holder"
+                            >
                               <h6>{item.title}</h6>
+                              <h4>{data?.type ? data.type : ""}</h4>
                               <div className="bottom-panel">
                                 <div>
                                   <Avatar.Group
@@ -1493,11 +1521,51 @@ const DetailsView = ({
                                   </div>
                                 </a>
                               </div>
+                            </a>
+                            <div className="slider-card">
+                              {/* <div className="image-holder">
+                                <img
+                                  src={
+                                    require(`../../images/${
+                                      icons[params.type]
+                                    }`).default
+                                  }
+                                />
+                              </div> */}
+
+                              {/* <div className="description-holder">
+                                <h4>{data?.type ? data.type : ""}</h4>
+                                <h6>{item.title}</h6>
+                                <div className="bottom-panel">
+                                  <div>
+                                    <Avatar.Group
+                                      maxCount={2}
+                                      size="large"
+                                      maxStyle={{
+                                        color: "#f56a00",
+                                        backgroundColor: "#fde3cf",
+                                        cursor: "pointer",
+                                      }}
+                                    >
+                                      {item?.entityConnections?.map(
+                                        (connection, index) => (
+                                          <Avatar src={connection.image} />
+                                        )
+                                      )}
+                                    </Avatar.Group>
+                                  </div>
+                                  <a href={`/${params.type}/${item.id}`}>
+                                    <div className="read-more">
+                                      Read More <ArrowRightOutlined />
+                                    </div>
+                                  </a>
+                                </div>
+                              </div> */}
                             </div>
-                          </a>
-                        </Col>
-                      ))}
-                    </Row>
+                          </Col>
+                        );
+                      })}
+                    </Carousel>
                   )}
                 </CardComponent>
               )}
