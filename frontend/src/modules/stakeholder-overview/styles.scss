@@ -910,6 +910,13 @@
         border-radius: 20.5px;
         border: 0;
         box-shadow: unset;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .anticon-close-circle {
+          font-size: 20px;
+          line-height: 13px;
+        }
         @-moz-document url-prefix() {
           max-width: 282px !important;
           font-size: 12px !important;
@@ -920,10 +927,6 @@
         }
         span {
           display: block;
-        }
-
-        &:hover {
-          box-shadow: 0 0 9px rgba(0, 0, 0, 0.2);
         }
 
         &.disabled:disabled {
