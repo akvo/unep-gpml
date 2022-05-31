@@ -602,7 +602,7 @@ const renderItemValues = (
                     .format("DD MMM YYYY") +
                     " - " +
                     moment(data[arrayCustomValue[1]])
-                      .utc(data[arrayCustomValue[0]], "MM-DD-YYYY")
+                      .utc(data[arrayCustomValue[1]], "MM-DD-YYYY")
                       .format("DD MMM YYYY")}
                 {data[key] &&
                   value === "isoCode" &&
