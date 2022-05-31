@@ -402,7 +402,8 @@ const FilterDrawer = ({
                 }
               }}
             >
-              Clear all
+              <CloseCircleOutlined />
+              Clear all filters
             </Button>
           </Col>
         </Row>
