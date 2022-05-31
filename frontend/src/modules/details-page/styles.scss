@@ -94,6 +94,7 @@
   }
 
   .carousel-dot-list {
+    position: unset;
     width: 100%;
   }
 
@@ -107,6 +108,7 @@
       margin-right: unset;
     }
     button {
+      display: block;
       width: 100%;
       height: 4px;
       border: unset;

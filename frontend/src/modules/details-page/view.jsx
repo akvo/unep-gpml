@@ -1489,7 +1489,6 @@ const DetailsView = ({
                 >
                   {data?.relatedContent.length > 0 && (
                     <Carousel
-                      slidesToSlide={9}
                       centerMode={true}
                       responsive={responsive}
                       containerClass="related-content"
@@ -1497,7 +1496,6 @@ const DetailsView = ({
                       dotListClass="carousel-dot-list"
                       showDots={true}
                       renderDotsOutside={true}
-                      removeArrowOnDeviceType={["tablet", "mobile"]}
                     >
                       {data?.relatedContent.map((item) => {
                         return (
