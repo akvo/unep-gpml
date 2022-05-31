@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import ObjectFieldTemplate from "../../utils/forms/object-template";
 import ArrayFieldTemplate from "../../utils/forms/array-template";
 import FieldTemplate from "../../utils/forms/field-template";
@@ -21,6 +21,14 @@ import { checkRequiredFieldFilledIn, customFormats } from "../../utils/forms";
 import api from "../../utils/api";
 
 const Form = withTheme(AntDTheme);
+
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+  return ref.current;
+}
 
 const FlexibleForm = withRouter(
   ({
@@ -62,7 +70,13 @@ const FlexibleForm = withRouter(
 
     const [dependValue, setDependValue] = useState([]);
     const [schema, setSchema] = useState(formSchema.schema);
-    const [editCheck, setEditCheck] = useState(true);
+    const prevSchema = usePrevious(formSchema.schema);
+
+    useEffect(() => {
+      if (JSON.stringify(prevSchema) !== JSON.stringify(formSchema.schema)) {
+        setSchema(formSchema.schema);
+      }
+    }, [formSchema, prevSchema]);
 
     const handleOnSubmit = ({ formData }) => {
       if (mainType === "Policy") {
@@ -384,6 +398,8 @@ const FlexibleForm = withRouter(
         data.q24_3 = null;
         delete data.qgeoCoverageValueSubnational;
         delete data.qgeoCoverageValueSubnationalCity;
+        delete data.qgeoCoverageCountries;
+        delete data.qgeoCoverageValueTransnational;
       }
       if (data.q24.hasOwnProperty("national")) {
         if (status === "edit" || params?.id) {
@@ -1062,11 +1078,14 @@ const FlexibleForm = withRouter(
         let updatedFormDataSchema = {};
 
         if (
-          formData?.S4.S4_G2.geoCoverageType === "transnational" &&
-          formData?.S4.S4_G2.geoCoverageValueTransnational
+          (formData?.S4.S4_G2.geoCoverageType === "transnational" &&
+            formData?.S4.S4_G2.geoCoverageValueTransnational) ||
+          (formData?.S4.S4_G2.geoCoverageType === "transnational" &&
+            formData?.S4.S4_G2["S4_G2_24.3"])
         ) {
           let result = formSchema.schema.properties.S4.properties.S4_G2.required.filter(
-            (value) => value !== "geoCoverageCountries"
+            (value) =>
+              value !== "geoCoverageCountries" && value !== "S4_G2_24.4"
           );
           updatedFormDataSchema = {
             ...formSchema.schema,
@@ -1085,11 +1104,15 @@ const FlexibleForm = withRouter(
             },
           };
         } else if (
-          formData?.S4.S4_G2.geoCoverageType === "transnational" &&
-          formData?.S4.S4_G2.geoCoverageCountries
+          (formData?.S4.S4_G2.geoCoverageType === "transnational" &&
+            formData?.S4.S4_G2.geoCoverageCountries) ||
+          (formData?.S4.S4_G2.geoCoverageType === "transnational" &&
+            formData?.S4.S4_G2["S4_G2_24.4"])
         ) {
           let result = formSchema.schema.properties.S4.properties.S4_G2.required.filter(
-            (value) => value !== "geoCoverageValueTransnational"
+            (value) =>
+              value !== "geoCoverageValueTransnational" &&
+              value !== "S4_G2_24.3"
           );
           updatedFormDataSchema = {
             ...formSchema.schema,
