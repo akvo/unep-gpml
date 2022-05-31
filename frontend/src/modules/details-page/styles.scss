@@ -49,12 +49,16 @@
         .description-holder {
           position: absolute;
           display: none;
-          border: solid 13px #fff;
-          background-color: rgba(255, 255, 255, 0.9);
+          flex-direction: column;
+          justify-content: space-between;
+          padding: 13px;
+          background-color: #fff;
           box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.25);
           height: 100%;
           max-height: 294px;
           border-radius: 5px;
+          width: 170px;
+          height: 190px;
           h3 {
             font-style: normal;
             font-weight: 600;
@@ -78,10 +82,10 @@
       }
       &:hover {
         border-radius: 5px;
-        transform: scale(1.4) translateY(-10px);
+        transform: scale(1.4) translateY(-12px);
         z-index: 9999;
         .description-holder {
-          display: block;
+          display: flex;
         }
         .slider-card {
           border-radius: 10px !important;

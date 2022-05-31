@@ -1509,8 +1509,10 @@ const DetailsView = ({
                               href={`/${params.type}/${item.id}`}
                               className="description-holder"
                             >
-                              <h6>{item.title}</h6>
-                              <h4>{data?.type ? data.type : ""}</h4>
+                              <div>
+                                <h6>{item.title}</h6>
+                                <h4>{data?.type ? data.type : ""}</h4>
+                              </div>
                               <div className="bottom-panel">
                                 <div>
                                   <Avatar.Group
