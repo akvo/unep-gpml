@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import ObjectFieldTemplate from "../../utils/forms/object-template";
 import ArrayFieldTemplate from "../../utils/forms/array-template";
 import FieldTemplate from "../../utils/forms/field-template";
@@ -21,6 +21,14 @@ import { checkRequiredFieldFilledIn, customFormats } from "../../utils/forms";
 import api from "../../utils/api";
 
 const Form = withTheme(AntDTheme);
+
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+  return ref.current;
+}
 
 const FlexibleForm = withRouter(
   ({
@@ -62,13 +70,13 @@ const FlexibleForm = withRouter(
 
     const [dependValue, setDependValue] = useState([]);
     const [schema, setSchema] = useState(formSchema.schema);
-    const [editCheck, setEditCheck] = useState(true);
+    const prevSchema = usePrevious(formSchema.schema);
 
     useEffect(() => {
-      if (formSchema) {
+      if (JSON.stringify(prevSchema) !== JSON.stringify(formSchema.schema)) {
         setSchema(formSchema.schema);
       }
-    }, [formSchema]);
+    }, [formSchema, prevSchema]);
 
     const handleOnSubmit = ({ formData }) => {
       if (mainType === "Policy") {
