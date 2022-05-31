@@ -14,13 +14,33 @@
     overflow: hidden;
     min-height: 312px;
   }
+
+  .related-content-title-wrapper {
+    display: flex;
+    align-items: center;
+    .related-content-title {
+      margin-right: 19px;
+    }
+    .related-content-count {
+      font-size: 12px;
+      color: #000000;
+      font-weight: 500;
+      border-radius: 5px;
+      padding: 5px 14px;
+      text-transform: uppercase;
+      border: 1px solid #000000;
+    }
+  }
+
   .related-content {
     .slider-card {
       background-color: #007090 !important;
       border-radius: 0 !important;
     }
+
     .carousel-item {
       width: unset !important;
+
       .card {
         position: relative;
         width: 140px;
@@ -35,7 +55,6 @@
           height: 100%;
           max-height: 294px;
           border-radius: 5px;
-          // width: 241px;
           h3 {
             font-style: normal;
             font-weight: 600;
@@ -63,6 +82,9 @@
         z-index: 9999;
         .description-holder {
           display: block;
+        }
+        .slider-card {
+          border-radius: 10px !important;
         }
       }
       .ant-col-12 {

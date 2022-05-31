@@ -1468,9 +1468,17 @@ const DetailsView = ({
               )}
               {data?.relatedContent && data?.relatedContent?.length > 0 && (
                 <CardComponent
-                  title={`Related content (${
-                    data?.relatedContent && data?.relatedContent.length
-                  })`}
+                  title={
+                    <div className="related-content-title-wrapper">
+                      <div className="related-content-title">
+                        Related content
+                      </div>
+                      <div className="related-content-count">
+                        Total{" "}
+                        {data?.relatedContent && data?.relatedContent.length}
+                      </div>
+                    </div>
+                  }
                   getRef={relatedContent}
                   specificClassName={"related-content-wrapper"}
                 >
