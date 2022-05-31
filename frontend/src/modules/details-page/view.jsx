@@ -1055,6 +1055,7 @@ const DetailsView = ({
   const formRef = useRef();
   const [formSchema, setFormSchema] = useState(defaultFormSchema);
   const [comment, setComment] = useState("");
+  const [isHovered, setIsHovered] = useState(false);
 
   const onSubmit = (val) => {
     const data = {
@@ -1468,6 +1469,10 @@ const DetailsView = ({
               )}
               {data?.relatedContent && data?.relatedContent?.length > 0 && (
                 <CardComponent
+                  style={{
+                    transition: "all linear 0.1s",
+                    background: isHovered ? "rgba(24, 22, 47, 0.15)" : "",
+                  }}
                   title={
                     <div className="related-content-title-wrapper">
                       <div className="related-content-title">
@@ -1498,7 +1503,12 @@ const DetailsView = ({
                     >
                       {data?.relatedContent.map((item) => {
                         return (
-                          <Col className="card" span={12}>
+                          <Col
+                            className="card"
+                            span={12}
+                            onMouseEnter={() => setIsHovered(true)}
+                            onMouseLeave={() => setIsHovered(false)}
+                          >
                             <a
                               href={`/${params.type}/${item.id}`}
                               className="description-holder"
