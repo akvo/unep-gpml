@@ -107,7 +107,7 @@ const CaseStudy = ({
                     ) : (
                       <Avatar
                         style={{
-                          backgroundColor: "#09689A",
+                          backgroundColor: "#006776",
                           verticalAlign: "middle",
                         }}
                         size={60}
