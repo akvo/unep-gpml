@@ -62,11 +62,13 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
             <div className="images-wrapper">
               <div className="image-wrapper">
                 {profile.picture ? (
-                  <img
-                    className="profile-image"
+                  <Avatar
                     src={profile.picture}
+                    size={150}
                     alt={profile?.firstName}
-                  />
+                  >
+                    {profile?.firstName?.substring(0, 2)}
+                  </Avatar>
                 ) : (
                   <Avatar
                     style={{
@@ -78,26 +80,26 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                     {profile?.name?.substring(0, 2)}
                   </Avatar>
                 )}
-                {profile?.affiliation &&
-                  profile?.affiliation?.length !== 0 &&
-                  profileType !== "suggested-profiles" && (
-                    <div className="affiliation-image-wrapper">
-                      {profile?.affiliation?.logo ? (
-                        <Avatar src={profile?.affiliation?.logo} size={40} />
-                      ) : (
-                        <Avatar
-                          style={{
-                            backgroundColor: "#09689A",
-                            verticalAlign: "middle",
-                          }}
-                          size={40}
-                        >
-                          {profile?.affiliation?.name?.substring(0, 2)}
-                        </Avatar>
-                      )}
-                    </div>
-                  )}
               </div>
+              {profile?.affiliation &&
+                profile?.affiliation?.length !== 0 &&
+                profileType !== "suggested-profiles" && (
+                  <div className="affiliation-image-wrapper">
+                    {profile?.affiliation?.logo ? (
+                      <Avatar src={profile?.affiliation?.logo} size={40} />
+                    ) : (
+                      <Avatar
+                        style={{
+                          backgroundColor: "#09689A",
+                          verticalAlign: "middle",
+                        }}
+                        size={40}
+                      >
+                        {profile?.affiliation?.name?.substring(0, 2)}
+                      </Avatar>
+                    )}
+                  </div>
+                )}
             </div>
           )}
           <div className="profile-details-container">
