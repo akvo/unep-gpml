@@ -122,7 +122,14 @@
       background-color: #3176ae;
     }
   }
-
+  .react-multiple-carousel__arrow--left {
+    top: calc(calc(160px - calc(42px / 2)) / 2);
+    left: 0;
+  }
+  .react-multiple-carousel__arrow--right {
+    top: calc(calc(160px - calc(42px / 2)) / 2);
+    right: 0;
+  }
   .section-header {
     background-color: #007090;
     padding: 20px 0px;
