@@ -64,6 +64,12 @@ const FlexibleForm = withRouter(
     const [schema, setSchema] = useState(formSchema.schema);
     const [editCheck, setEditCheck] = useState(true);
 
+    useEffect(() => {
+      if (formSchema) {
+        setSchema(formSchema.schema);
+      }
+    }, [formSchema]);
+
     const handleOnSubmit = ({ formData }) => {
       if (mainType === "Policy") {
         handleOnSubmitPolicy(formData);
@@ -384,6 +390,8 @@ const FlexibleForm = withRouter(
         data.q24_3 = null;
         delete data.qgeoCoverageValueSubnational;
         delete data.qgeoCoverageValueSubnationalCity;
+        delete data.qgeoCoverageCountries;
+        delete data.qgeoCoverageValueTransnational;
       }
       if (data.q24.hasOwnProperty("national")) {
         if (status === "edit" || params?.id) {
@@ -1062,11 +1070,14 @@ const FlexibleForm = withRouter(
         let updatedFormDataSchema = {};
 
         if (
-          formData?.S4.S4_G2.geoCoverageType === "transnational" &&
-          formData?.S4.S4_G2.geoCoverageValueTransnational
+          (formData?.S4.S4_G2.geoCoverageType === "transnational" &&
+            formData?.S4.S4_G2.geoCoverageValueTransnational) ||
+          (formData?.S4.S4_G2.geoCoverageType === "transnational" &&
+            formData?.S4.S4_G2["S4_G2_24.3"])
         ) {
           let result = formSchema.schema.properties.S4.properties.S4_G2.required.filter(
-            (value) => value !== "geoCoverageCountries"
+            (value) =>
+              value !== "geoCoverageCountries" && value !== "S4_G2_24.4"
           );
           updatedFormDataSchema = {
             ...formSchema.schema,
@@ -1085,11 +1096,15 @@ const FlexibleForm = withRouter(
             },
           };
         } else if (
-          formData?.S4.S4_G2.geoCoverageType === "transnational" &&
-          formData?.S4.S4_G2.geoCoverageCountries
+          (formData?.S4.S4_G2.geoCoverageType === "transnational" &&
+            formData?.S4.S4_G2.geoCoverageCountries) ||
+          (formData?.S4.S4_G2.geoCoverageType === "transnational" &&
+            formData?.S4.S4_G2["S4_G2_24.4"])
         ) {
           let result = formSchema.schema.properties.S4.properties.S4_G2.required.filter(
-            (value) => value !== "geoCoverageValueTransnational"
+            (value) =>
+              value !== "geoCoverageValueTransnational" &&
+              value !== "S4_G2_24.3"
           );
           updatedFormDataSchema = {
             ...formSchema.schema,
