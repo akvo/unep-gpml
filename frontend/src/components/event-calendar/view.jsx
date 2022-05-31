@@ -14,6 +14,7 @@ import {
   LeftOutlined,
   RightOutlined,
   ArrowRightOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import "./styles.scss";
@@ -131,7 +132,7 @@ const EventCalendar = withRouter(({ history }) => {
   return (
     <div className="event section-container">
       <div className="ui container">
-        <div className="section-title green">
+        <div className="section-title white">
           <h2>
             Upcoming Events{" "}
             <span className="see-more-link">
@@ -140,6 +141,22 @@ const EventCalendar = withRouter(({ history }) => {
               </Link>
             </span>
           </h2>
+          {path === "/connect/events" && (
+            <Link
+              to={{
+                pathname: "/flexible-forms",
+                state: { type: "event_flexible", label: "Event" },
+              }}
+            >
+              <Button
+                type="primary"
+                className="event-add-button"
+                icon={<PlusOutlined />}
+              >
+                Add An Event
+              </Button>
+            </Link>
+          )}
         </div>
         <div className="body">
           <div className="content">
@@ -335,18 +352,6 @@ const calendarHeader = ({ value, onChange, isShownAddButton }) => {
   return (
     <div style={{ padding: 8 }}>
       <Row gutter={8} justify="end">
-        {isShownAddButton && (
-          <Link
-            to={{
-              pathname: "/flexible-forms",
-              state: { type: "event_flexible", label: "Event" },
-            }}
-          >
-            <Button type="primary" className="event-add-button">
-              Add Event
-            </Button>
-          </Link>
-        )}
         {!isShownAddButton && (
           <Col>
             <Select
