@@ -102,6 +102,10 @@
                         :type "string"
                         :allowEmptyValue true}}
     (apply vector :enum order-by-fields)]
+   [:incCountsForTags {:optional true
+                       :swagger {:description "Includes the counts for the specified tags which is a comma separated list of approved tags."
+                                 :type "string"}}
+    [:string {:min 1}]]
    [:descending {:optional true
                  :swagger {:description "Order results in descending order: true or false"
                            :type "boolean"
@@ -120,7 +124,8 @@
 
 (defn get-db-filter
   [{:keys [limit offset startDate endDate user-id favorites country transnational
-           topic tag affiliation representativeGroup subContentType entity orderBy descending q]
+           topic tag affiliation representativeGroup subContentType entity orderBy
+           descending q incCountsForTags]
     :or {limit default-limit
          offset default-offset}}]
   (cond-> {}
@@ -151,6 +156,9 @@
 
     (seq tag)
     (assoc :tag (set (str/split tag #",")))
+
+    (seq incCountsForTags)
+    (assoc :tags-to-count (set (str/split incCountsForTags #",")))
 
     (seq affiliation)
     (assoc :affiliation (set (map #(Integer/parseInt %) (str/split affiliation #","))))
