@@ -323,7 +323,7 @@ const StakeholderDetail = ({
         });
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
-        api.get("/favorite").then((resp) => {
+        api.get(`/favorite/${params.type}/${params.id}`).then((resp) => {
           setRelations(resp.data);
         });
       }, 100);

@@ -111,7 +111,7 @@
         (db.favorite/new-organisation-association conn association)))
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections policy-id)]
-        (db.favorite/new-association conn association)))
+        (db.favorite/new-stakeholder-association conn association)))
     (if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
       (let [geo-data (handler.geo/get-geo-vector-v2 policy-id data)]

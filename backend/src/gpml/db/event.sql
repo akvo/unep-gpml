@@ -153,6 +153,7 @@ select se.id, se.association as role, s.id as stakeholder_id, concat_ws(' ', s.f
   left join stakeholder s
   on se.stakeholder = s.id
   where se.event = :id
+  and se.is_bookmark = false;
 
 -- :name all-events
 -- :doc List all events
