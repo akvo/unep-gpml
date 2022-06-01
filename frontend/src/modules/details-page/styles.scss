@@ -40,6 +40,24 @@
     }
   }
 
+  .custom-right-arrow,
+  .custom-left-arrow {
+    padding: 0;
+    background-color: unset;
+    svg {
+      width: 24px;
+      height: 38px;
+    }
+  }
+
+  .custom-left-arrow {
+    left: -18px;
+  }
+
+  .custom-right-arrow {
+    right: -18px;
+  }
+
   .related-content {
     .slider-card {
       background-color: #007090 !important;

@@ -39,6 +39,8 @@ import { ReactComponent as EditIcon } from "../../images/resource-detail/edit-ic
 import { ReactComponent as ShareIcon } from "../../images/resource-detail/share-icn.svg";
 import { ReactComponent as TrashIcon } from "../../images/resource-detail/trash-icn.svg";
 import { ReactComponent as BookMarkIcon } from "../../images/resource-detail/bookmark-icn.svg";
+import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
+import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
 import {
   DeleteOutlined,
   ArrowRightOutlined,
@@ -1057,6 +1059,38 @@ const DetailsView = ({
   const [comment, setComment] = useState("");
   const [isHovered, setIsHovered] = useState(false);
 
+  const CustomRightArrow = ({ onClick, ...rest }) => {
+    const {
+      onMove,
+      carouselState: { currentSlide },
+    } = rest;
+
+    return (
+      <button
+        className="react-multiple-carousel__arrow custom-right-arrow"
+        onClick={() => onClick()}
+      >
+        <RightArrow />
+      </button>
+    );
+  };
+
+  const CustomLeftArrow = ({ onClick, ...rest }) => {
+    const {
+      onMove,
+      carouselState: { currentSlide },
+    } = rest;
+
+    return (
+      <button
+        className="react-multiple-carousel__arrow custom-left-arrow"
+        onClick={() => onClick()}
+      >
+        <LeftArrow />
+      </button>
+    );
+  };
+
   const onSubmit = (val) => {
     const data = {
       author_id: profile.id,
@@ -1500,6 +1534,8 @@ const DetailsView = ({
                       dotListClass="carousel-dot-list"
                       showDots={true}
                       renderDotsOutside={true}
+                      customLeftArrow={<CustomLeftArrow />}
+                      customRightArrow={<CustomRightArrow />}
                     >
                       {data?.relatedContent.map((item) => {
                         return (
