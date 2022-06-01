@@ -1455,14 +1455,16 @@ const DetailsView = ({
                             <div className="image-holder">
                               <img
                                 src={
-                                  require(`../../images/${icons[params.type]}`)
+                                  require(`../../images/${icons[item?.type]}`)
                                     .default
                                 }
                               />
                             </div>
 
                             <div className="description-holder">
-                              <h4>{data?.type ? data.type : ""}</h4>
+                              <h4>
+                                {item?.type ? item.type.replace(/_/g, " ") : ""}
+                              </h4>
                               <h6>{item.title}</h6>
                               <div className="bottom-panel">
                                 <div>
@@ -1482,7 +1484,7 @@ const DetailsView = ({
                                     )}
                                   </Avatar.Group>
                                 </div>
-                                <a href={`/${params.type}/${item.id}`}>
+                                <a href={`/${item?.type}/${item.id}`}>
                                   <div className="read-more">
                                     Read More <ArrowRightOutlined />
                                   </div>
