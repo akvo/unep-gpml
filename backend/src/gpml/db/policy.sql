@@ -161,7 +161,7 @@ select id, title
 
 -- :name related-content-by-id
 -- :doc Get related content by id
-select pol.id, pol.title, pol.abstract as description from policy p
+select pol.id, pol.title, pol.abstract as description, pol.image, 'policy' as type from policy p
   left join policy pol
   on pol.id = ANY(p.related_content)
   where p.id = :id

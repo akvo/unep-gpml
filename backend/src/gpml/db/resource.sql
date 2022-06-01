@@ -202,7 +202,7 @@ select id, title
 
 -- :name related-content-by-id
 -- :doc Get related content by id
-select res.id, res.title, res.summary as description from resource r
+select res.id, res.title, res.summary as description, res.image, replace(lower(res.type), ' ', '_') as type from resource r
   left join resource res
   on res.id = ANY(r.related_content)
   where r.id = :id
