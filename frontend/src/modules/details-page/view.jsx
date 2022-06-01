@@ -1137,18 +1137,22 @@ const DetailsView = ({
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
       items: 4,
+      slidesToSlide: 4,
     },
     desktop: {
       breakpoint: { max: 1199, min: 992 },
       items: 3,
+      slidesToSlide: 3,
     },
     tablet: {
       breakpoint: { max: 991, min: 768 },
       items: 2,
+      slidesToSlide: 2,
     },
     mobile: {
       breakpoint: { max: 599, min: 0 },
       items: 1,
+      slidesToSlide: 1,
     },
   };
 
