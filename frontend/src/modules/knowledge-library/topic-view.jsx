@@ -5,11 +5,9 @@ import TopicChart from "../chart/topic-chart";
 import { titleCase } from "../../utils/string";
 import TopicBar from "../chart/topic-bar";
 
-const TopicView = ({ updateQuery, query }) => {
+const TopicView = ({ updateQuery, query, results }) => {
   const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
-  const defTopic = sortedPopularTopics[0]?.topic?.toLocaleLowerCase();
   const [selectedTopic, setSelectedTopic] = useState(null);
-  const isMobileScreen = innerWidth <= 991;
   const popularTags = [
     "plastics",
     "waste management",
@@ -20,7 +18,7 @@ const TopicView = ({ updateQuery, query }) => {
   ];
 
   const savedTopic = popularTags.filter((item) => {
-    if (query.tag.includes(item)) {
+    if (query?.tag?.includes(item)) {
       return item;
     }
   });
@@ -38,12 +36,17 @@ const TopicView = ({ updateQuery, query }) => {
   };
 
   useEffect(() => {
-    if (!selectedTopic && savedTopic.length > 0) {
-      setSelectedTopic(defTopic);
+    if (!selectedTopic && savedTopic?.length > 0) {
+      setSelectedTopic(savedTopic[0]);
+    }
+
+    // Reset selection when the filter is clear
+    if (savedTopic?.length === 0 && selectedTopic) {
+      setSelectedTopic(null);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortedPopularTopics]);
+  }, [savedTopic]);
 
   const getPopularTopics = (url) => {
     api
@@ -82,22 +85,28 @@ const TopicView = ({ updateQuery, query }) => {
       });
   };
 
+  // Apply when there is a selected topic
   useEffect(() => {
-    if (selectedTopic || savedTopic.length > 0) {
-      getPopularTopics(
-        `/tag/topic/popular?tags=${selectedTopic || savedTopic}&limit=6`
-      );
+    if (results.length > 0) {
+      if (selectedTopic && savedTopic?.length > 0) {
+        getPopularTopics(`/tag/topic/popular?tags=${selectedTopic}&limit=6`);
+      } else {
+        !selectedTopic && getPopularTopics(`/tag/topic/popular`);
+      }
+    } else {
+      const topics = popularTags.map((topic) => {
+        return {
+          id: topic,
+          topic: topic,
+          tag: topic,
+          count: 0,
+        };
+      });
+      setSortedPopularTopics(topics);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTopic]);
-
-  useEffect(() => {
-    if (savedTopic.length === 0) {
-      getPopularTopics(`/tag/topic/popular`);
-    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [selectedTopic, results]);
 
   return (
     <>
@@ -107,7 +116,6 @@ const TopicView = ({ updateQuery, query }) => {
         {...{
           selectedTopic,
           setSelectedTopic,
-          isMobileScreen,
           sortedPopularTopics,
           handlePopularTopicChartClick,
         }}

@@ -119,11 +119,9 @@ const TabComponent = ({
             </a>
           </li>
         )}
-        {profile && profile.reviewStatus === "APPROVED" && (
-          <li>
-            <a onClick={() => reviewsRef.current.scrollIntoView()}>Comments</a>
-          </li>
-        )}
+        <li>
+          <a onClick={() => reviewsRef.current.scrollIntoView()}>Comments</a>
+        </li>
       </ul>
     </div>
   );
@@ -599,9 +597,9 @@ const renderItemValues = (
                   data[key][customValue]}
                 {value === "custom" &&
                   type === "startEndDate" &&
-                  moment(data[arrayCustomValue[0]]).format("DD MMM YYYY") +
+                  moment.utc(data[arrayCustomValue[0]]).format("DD MMM YYYY") +
                     " - " +
-                    moment(data[arrayCustomValue[1]]).format("DD MMM YYYY")}
+                    moment.utc(data[arrayCustomValue[1]]).format("DD MMM YYYY")}
                 {data[key] &&
                   value === "isoCode" &&
                   type === "array" &&
@@ -950,7 +948,7 @@ const DetailsView = ({
         });
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
-        api.get("/favorite").then((resp) => {
+        api.get(`/favorite/${params.type}/${params.id}`).then((resp) => {
           setRelations(resp.data);
         });
       }, 100);
@@ -1292,10 +1290,21 @@ const DetailsView = ({
                             <List.Item.Meta
                               avatar={
                                 <Avatar
+                                  size={50}
                                   src={
-                                    item?.image
-                                      ? item.image
-                                      : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
+                                    item?.image ? (
+                                      item?.image
+                                    ) : (
+                                      <Avatar
+                                        style={{
+                                          backgroundColor: "#09689A",
+                                          verticalAlign: "middle",
+                                        }}
+                                        size={50}
+                                      >
+                                        {item.entity?.substring(0, 2)}
+                                      </Avatar>
+                                    )
                                   }
                                 />
                               }
@@ -1324,7 +1333,7 @@ const DetailsView = ({
                               x.role === "interested in"
                           )
                           .map((item) => (
-                            <List.Item>
+                            <List.Item key={item?.id}>
                               <List.Item.Meta
                                 avatar={<Avatar src={item.image} />}
                                 title={
@@ -1490,10 +1499,10 @@ const DetailsView = ({
               {profile && (
                 <CardComponent title="Comments" getRef={reviews}>
                   <div className="comments-container">
-                    <div className="comment-list-container">
-                      {comments &&
-                        comments.length > 0 &&
-                        comments?.map((item) => (
+                    {comments &&
+                      comments.length > 0 &&
+                      comments?.map((item) => (
+                        <div className="comment-list-container">
                           <CommentList
                             item={item}
                             showReplyBox={showReplyBox}
@@ -1507,8 +1516,13 @@ const DetailsView = ({
                             setEditComment={setEditComment}
                             onEditComment={onEditComment}
                           />
-                        ))}
-                    </div>
+                        </div>
+                      ))}
+                    {!isAuthenticated && (
+                      <p className="no-login">
+                        Please login to comment on this resource
+                      </p>
+                    )}
                     {profile && profile.reviewStatus === "APPROVED" && (
                       <Form layout="vertical">
                         <FinalForm

@@ -1,31 +1,28 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Card, Row, Col, Pagination, Tag, PageHeader, Button } from "antd";
+import { Card, Row, Col, Pagination, Avatar } from "antd";
 import { TrimText } from "../../utils/string";
 import { isEmpty } from "lodash";
-import { topicNames } from "../../utils/misc";
 import "./stakeholder-list.scss";
 import { LoadingOutlined } from "@ant-design/icons";
-import { ReactComponent as GPMLIcon } from "../../images/stakeholder-overview/gpml-logo.svg";
-import SortIcon from "../../images/knowledge-library/sort-icon.svg";
-import HideIcon from "../../images/knowledge-library/hide-icon.svg";
 
 const StakeholderList = ({
   view,
+  query,
   results,
   pageSize,
-  filters,
   itemCount,
   loading,
   updateQuery,
   isLoaded,
   resultCount,
   resultCounts,
-  query,
 }) => {
   const [listVisible, setListVisible] = useState(true);
 
   const viewport = window.innerWidth;
+
+  const pageNumber = query?.page?.map((count) => Number(count))[0];
 
   return (
     <div className="stakeholder-list ">
@@ -73,7 +70,7 @@ const StakeholderList = ({
                   className="result-number"
                   style={{ opacity: loading && "0" }}
                 >
-                  {resultCount > pageSize + Number(filters?.page)
+                  {resultCount > pageSize + pageNumber
                     ? resultCounts
                     : itemCount}{" "}
                   of {resultCount || 0} result
@@ -111,14 +108,27 @@ const ResourceItem = ({ results, view }) => {
               </div>
               {result?.affiliation && result?.affiliation?.length !== 0 && (
                 <div className="list-affiliation-image-wrapper">
-                  <img
-                    className="affiliation-image"
+                  <Avatar
+                    size={32}
+                    style={{
+                      border: "none",
+                    }}
                     src={
-                      result?.affiliation?.logo
-                        ? result?.affiliation?.logo
-                        : `https://ui-avatars.com/api/?background=0D8ABC&color=ffffff&size=480&name=${result?.affiliation?.name}`
+                      result?.affiliation?.logo ? (
+                        result?.affiliation?.logo
+                      ) : (
+                        <Avatar
+                          style={{
+                            backgroundColor: "#09689A",
+                            verticalAlign: "middle",
+                            border: "none",
+                          }}
+                          size={32}
+                        >
+                          {result?.affiliation?.name?.substring(0, 2)}
+                        </Avatar>
+                      )
                     }
-                    alt={result?.affiliation?.name}
                   />
                 </div>
               )}

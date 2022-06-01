@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Space, Drawer, Tag, Card, Select, Button } from "antd";
+import { Row, Col, Space, Drawer, Tag, Card, Button } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
@@ -41,6 +41,7 @@ const FilterDrawer = ({
     representativeGroup,
     transnationalOptions,
     geoCoverageTypeOptions,
+    tags,
   } = UIStore.useState((s) => ({
     seeking: s.tags.seeking,
     offering: s.tags.offering,
@@ -49,6 +50,7 @@ const FilterDrawer = ({
     representativeGroup: s.representativeGroup,
     transnationalOptions: s.transnationalOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
+    tags: Object.values(s.tags).flat(),
   }));
 
   const entityIcon = (name) => {
@@ -106,11 +108,6 @@ const FilterDrawer = ({
   );
 
   const queryValues = Object.values(queryToRefresh).flat();
-
-  const countryOpts = countries
-    .filter((country) => country.description === "Member State")
-    .map((it) => ({ value: it.id, label: it.name }))
-    .sort((a, b) => a.label.localeCompare(b.label));
 
   const representativeOpts = !isEmpty(representativeGroup)
     ? [...representativeGroup, { code: "other", name: "Other" }].map((x) => ({
@@ -229,7 +226,7 @@ const FilterDrawer = ({
                       <Card
                         onClick={() => handleChangeType("isMember", "true")}
                         className={classNames("drawer-card", {
-                          active: query?.isMember.includes("true"),
+                          active: query?.isMember?.includes("true"),
                         })}
                       >
                         <Space
@@ -240,7 +237,7 @@ const FilterDrawer = ({
                           {entityIcon(name)}
                           <div className="topic-text">{entityName(name)}</div>
                           <div className="topic-text topic-counts">
-                            {stakeholderCount.GPMLMemberCount}
+                            {stakeholderCount?.GPMLMemberCount}
                           </div>
                         </Space>
                       </Card>
@@ -346,8 +343,8 @@ const FilterDrawer = ({
           <MultipleSelectFilter
             title="What expertises are they offering?"
             options={
-              !isEmpty(offering)
-                ? offering?.map((x) => ({ value: x.tag, label: x.tag }))
+              !isEmpty(tags)
+                ? tags?.map((x) => ({ value: x.tag, label: x.tag }))
                 : []
             }
             value={query?.offering || []}
@@ -360,8 +357,8 @@ const FilterDrawer = ({
           <MultipleSelectFilter
             title="What expertises are they seeking?"
             options={
-              !isEmpty(seeking)
-                ? seeking?.map((x) => ({ value: x.tag, label: x.tag }))
+              !isEmpty(tags)
+                ? tags?.map((x) => ({ value: x.tag, label: x.tag }))
                 : []
             }
             value={query?.seeking || []}
@@ -369,27 +366,6 @@ const FilterDrawer = ({
             query={query}
             updateQuery={updateQuery}
           />
-          {/* Entities */}
-          {/* <MultipleSelectFilter
-            title="Entities"
-            options={
-              !isEmpty(organisations)
-                ? organisations
-                    ?.map((x) => ({ value: x.id, label: x.name }))
-                    .filter(
-                      (organisation) =>
-                        organisation?.value > -1 ||
-                        organisation?.label?.length === 0
-                    )
-                    .sort((a, b) => a?.label.localeCompare(b?.label))
-                : []
-            }
-            value={query?.entity?.map((x) => parseInt(x)) || []}
-            flag="entity"
-            query={query}
-            updateQuery={updateQuery}
-          /> */}
-
           {/* Representative group */}
           <MultipleSelectFilter
             title="Representative group"
@@ -426,7 +402,8 @@ const FilterDrawer = ({
                 }
               }}
             >
-              Clear all
+              <CloseCircleOutlined />
+              Clear all filters
             </Button>
           </Col>
         </Row>

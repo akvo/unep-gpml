@@ -1607,11 +1607,14 @@
 
     header.ant-layout-header.nav-header-container {
       width: 100%;
+      .main-menu-items {
+        display: none;
+      }
     }
 
     & > header {
       .src {
-        width: 50%;
+        // width: 50%;
       }
     }
   }

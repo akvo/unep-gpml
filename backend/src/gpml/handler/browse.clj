@@ -1,5 +1,6 @@
 (ns gpml.handler.browse
   (:require [clojure.string :as str]
+            [duct.logger :refer [log]]
             [gpml.constants :refer [topics resource-types]]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.event :as db.event]
@@ -101,6 +102,10 @@
                         :type "string"
                         :allowEmptyValue true}}
     (apply vector :enum order-by-fields)]
+   [:incCountsForTags {:optional true
+                       :swagger {:description "Includes the counts for the specified tags which is a comma separated list of approved tags."
+                                 :type "string"}}
+    [:string {:min 1}]]
    [:descending {:optional true
                  :swagger {:description "Order results in descending order: true or false"
                            :type "boolean"
@@ -119,7 +124,8 @@
 
 (defn get-db-filter
   [{:keys [limit offset startDate endDate user-id favorites country transnational
-           topic tag affiliation representativeGroup subContentType entity orderBy descending q]
+           topic tag affiliation representativeGroup subContentType entity orderBy
+           descending q incCountsForTags]
     :or {limit default-limit
          offset default-offset}}]
   (cond-> {}
@@ -143,13 +149,16 @@
                               (map #(Integer/parseInt %))))
 
     (seq transnational)
-    (assoc :transnational (set (map str (str/split transnational #","))))
+    (assoc :transnational (set (map #(Integer/parseInt %) (str/split transnational #","))))
 
     (seq topic)
     (assoc :topic (set (str/split topic #",")))
 
     (seq tag)
     (assoc :tag (set (str/split tag #",")))
+
+    (seq incCountsForTags)
+    (assoc :tags-to-count (set (str/split incCountsForTags #",")))
 
     (seq affiliation)
     (assoc :affiliation (set (map #(Integer/parseInt %) (str/split affiliation #","))))
@@ -198,7 +207,8 @@
 
     result))
 
-(defn browse-response [query db approved? admin]
+(defn browse-response
+  [{:keys [logger] {db :spec} :db} query approved? admin]
   (let [{:keys [geo-coverage transnational] :as modified-filters} (->> query
                                                                        (get-db-filter)
                                                                        (merge {:approved approved?
@@ -208,13 +218,12 @@
                            (let [country-group-countries (flatten
                                                           (conj
                                                            (map #(db.country-group/get-country-group-countries
-                                                                  db {:id (Integer/parseInt %)})
+                                                                  db {:id %})
                                                                 (:transnational modified-filters))))
-                                 geo-coverage-countries (map (comp str :id) country-group-countries)
-                                 geo-coverage (map str geo-coverage)
+                                 geo-coverage-countries (map :id country-group-countries)
                                  transnational (->> (map #(db.country-group/get-country-groups-by-country db {:id %}) (:geo-coverage modified-filters))
                                                     (apply concat)
-                                                    (map (comp str :id))
+                                                    (map :id)
                                                     set)]
                              (assoc modified-filters :geo-coverage-countries (set (concat geo-coverage-countries geo-coverage))
                                     :transnational transnational))
@@ -222,7 +231,7 @@
                            (seq geo-coverage)
                            (let [transnational (->> (map #(db.country-group/get-country-groups-by-country db {:id %}) (:geo-coverage modified-filters))
                                                     (apply concat)
-                                                    (map (comp str :id))
+                                                    (map :id)
                                                     set)]
                              (assoc modified-filters :transnational transnational))
 
@@ -230,29 +239,34 @@
                            (let [country-group-countries (flatten
                                                           (conj
                                                            (map #(db.country-group/get-country-group-countries
-                                                                  db {:id (Integer/parseInt %)})
+                                                                  db {:id %})
                                                                 (:transnational modified-filters))))
-                                 geo-coverage-countries (map (comp str :id) country-group-countries)]
+                                 geo-coverage-countries (map :id country-group-countries)]
                              (assoc modified-filters :geo-coverage-countries (set geo-coverage-countries)))
-
                            :else
                            modified-filters)
+        get-topics-start-time (System/currentTimeMillis)
         results (->> modified-filters
                      (db.topic/get-topics db)
                      (map (fn [{:keys [json topic]}]
                             (assoc json :type topic))))
+        get-topics-exec-time (- (System/currentTimeMillis) get-topics-start-time)
+        count-topics-start-time (System/currentTimeMillis)
         counts (->> (assoc modified-filters :count-only? true)
-                    (db.topic/get-topics db))]
+                    (db.topic/get-topics db))
+        count-topics-exec-time (- (System/currentTimeMillis) count-topics-start-time)]
+    (log logger :info ::query-exec-time {:get-topics-exec-time (str get-topics-exec-time "ms")
+                                         :count-topics-exec-time (str count-topics-exec-time "ms")})
     {:results (map #(result->result-with-connections db %) results)
      :counts counts}))
 
-(defmethod ig/init-key :gpml.handler.browse/get [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.browse/get [_ config]
   (fn [{{:keys [query]} :parameters
         approved? :approved?
         user :user}]
     (resp/response (#'browse-response
+                    config
                     (merge query {:user-id (:id user)})
-                    (:spec db)
                     approved?
                     (= "ADMIN" (:role user))))))
 

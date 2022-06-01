@@ -19,6 +19,7 @@ import {
   Pagination,
   Modal,
   notification,
+  Image,
 } from "antd";
 import StickyBox from "react-sticky-box";
 import ReadMoreReact from "read-more-less-react";
@@ -196,7 +197,7 @@ const SharePanel = ({
                       message: "Entity deleted successfully",
                     });
                     history.push({
-                      pathname: `/stakeholder-overview`,
+                      pathname: `/connect/community`,
                     });
                   })
                   .catch((err) => {
@@ -337,7 +338,7 @@ const StakeholderDetail = ({
         });
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
-        api.get("/favorite").then((resp) => {
+        api.get(`/favorite/${params.type}/${params.id}`).then((resp) => {
           setRelations(resp.data);
         });
       }, 100);
@@ -399,11 +400,22 @@ const StakeholderDetail = ({
                     <img src={data?.picture} />
                     {data.affiliation && (
                       <div className="topbar-entity-image-holder">
-                        <img
+                        <Avatar
+                          size={50}
                           src={
-                            data?.affiliation?.logo
-                              ? data?.affiliation?.logo
-                              : `https://ui-avatars.com/api/?background=0D8ABC&color=ffffff&size=480&name=${data?.affiliation?.name}`
+                            data?.affiliation?.logo ? (
+                              data?.affiliation?.logo
+                            ) : (
+                              <Avatar
+                                style={{
+                                  backgroundColor: "#09689A",
+                                  verticalAlign: "middle",
+                                }}
+                                size={50}
+                              >
+                                {data?.affiliation?.name?.substring(0, 2)}
+                              </Avatar>
+                            )
                           }
                         />
                       </div>
@@ -449,11 +461,22 @@ const StakeholderDetail = ({
                         <List.Item.Meta
                           avatar={
                             <Avatar
+                              size={55}
                               className="info-entity-icon"
                               src={
-                                data?.affiliation?.logo
-                                  ? data?.affiliation?.logo
-                                  : `https://ui-avatars.com/api/?size=480&name=${data?.affiliation?.name}`
+                                data?.affiliation?.logo ? (
+                                  data?.affiliation?.logo
+                                ) : (
+                                  <Avatar
+                                    style={{
+                                      backgroundColor: "#09689A",
+                                      verticalAlign: "middle",
+                                    }}
+                                    size={55}
+                                  >
+                                    {data?.affiliation?.name?.substring(0, 2)}
+                                  </Avatar>
+                                )
                               }
                             />
                           }
@@ -557,7 +580,7 @@ const StakeholderDetail = ({
                         <Col xs={12} lg={12}>
                           {data?.tags &&
                             data?.tags?.filter(
-                              (item) => item.tagCategory === "seeking"
+                              (item) => item.tagRelationCategory === "seeking"
                             ).length > 0 && (
                               <CardComponent>
                                 <div className="ant-card-head-wrapper">
@@ -568,7 +591,8 @@ const StakeholderDetail = ({
                                       {
                                         data?.tags?.filter(
                                           (item) =>
-                                            item.tagCategory === "seeking"
+                                            item.tagRelationCategory ===
+                                            "seeking"
                                         ).length
                                       }{" "}
                                       Keywords)
@@ -578,7 +602,8 @@ const StakeholderDetail = ({
                                 <List>
                                   {data?.tags
                                     ?.filter(
-                                      (item) => item.tagCategory === "seeking"
+                                      (item) =>
+                                        item.tagRelationCategory === "seeking"
                                     )
                                     ?.map((str) => (
                                       <List.Item key={str.tag}>
@@ -594,7 +619,7 @@ const StakeholderDetail = ({
                         <Col xs={12} lg={12}>
                           {data?.tags &&
                             data?.tags?.filter(
-                              (item) => item.tagCategory === "offering"
+                              (item) => item.tagRelationCategory === "offering"
                             ).length > 0 && (
                               <CardComponent>
                                 <div className="ant-card-head-wrapper">
@@ -605,7 +630,8 @@ const StakeholderDetail = ({
                                       {
                                         data?.tags?.filter(
                                           (item) =>
-                                            item.tagCategory === "offering"
+                                            item.tagRelationCategory ===
+                                            "offering"
                                         ).length
                                       }{" "}
                                       Keywords)
@@ -615,7 +641,8 @@ const StakeholderDetail = ({
                                 <List>
                                   {data?.tags
                                     ?.filter(
-                                      (item) => item.tagCategory === "offering"
+                                      (item) =>
+                                        item.tagRelationCategory === "offering"
                                     )
                                     ?.map((str) => (
                                       <List.Item key={str.tag}>
@@ -645,7 +672,7 @@ const StakeholderDetail = ({
             </Col>
           </Row>
           <div className="owned-resources-wrapper">
-            {bookedResources.length > 0 && (
+            {ownedResources.length > 0 && (
               <CardComponent
                 title={"Owned resources"}
                 style={{
@@ -695,10 +722,22 @@ const StakeholderDetail = ({
                                   >
                                     {item.entityConnections.map((item) => (
                                       <Avatar
+                                        style={{ border: "none" }}
+                                        key={item?.entity}
                                         src={
-                                          item?.image
-                                            ? item.image
-                                            : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
+                                          item?.image ? (
+                                            item.image
+                                          ) : (
+                                            <Avatar
+                                              style={{
+                                                backgroundColor: "#09689A",
+                                                verticalAlign: "middle",
+                                              }}
+                                              size={40}
+                                            >
+                                              {item?.entity?.substring(0, 2)}
+                                            </Avatar>
+                                          )
                                         }
                                       />
                                     ))}
@@ -780,11 +819,22 @@ const StakeholderDetail = ({
                                   >
                                     {item.entityConnections.map((item) => (
                                       <Avatar
+                                        style={{ border: "none" }}
                                         key={item?.entity}
                                         src={
-                                          item?.image
-                                            ? item.image
-                                            : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
+                                          item?.image ? (
+                                            item.image
+                                          ) : (
+                                            <Avatar
+                                              style={{
+                                                backgroundColor: "#09689A",
+                                                verticalAlign: "middle",
+                                              }}
+                                              size={40}
+                                            >
+                                              {item?.entity?.substring(0, 2)}
+                                            </Avatar>
+                                          )
                                         }
                                       />
                                     ))}

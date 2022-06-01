@@ -43,10 +43,15 @@ const unsettledTerritoryIsoCode = [
 ];
 
 const higlightColor = "#255B87";
-export const KNOWLEDGE_LIBRARY = "/knowledge-library";
-export const STAKEHOLDER_OVERVIEW = "/stakeholder-overview";
+export const KNOWLEDGE_LIBRARY = "/knowledge/library";
+export const STAKEHOLDER_OVERVIEW = "/connect/community";
 
-const StakeholderTooltipContent = ({ data, geo, path, query }) => {
+const StakeholderTooltipContent = ({
+  data,
+  geo,
+  existingStakeholders,
+  query,
+}) => {
   const dataToDisplay = () => {
     return {
       organisation: data?.counts?.organisation,
@@ -68,7 +73,12 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
     .toString();
 
   const characterLength = transnationalMaxValue?.length;
-  const topicType = query.networkType;
+
+  const stakeholderToDisplay =
+    existingStakeholders?.length > 0
+      ? existingStakeholders
+      : query?.networkType;
+
   return (
     <div
       key={`${geo.ISO3CD}-tooltip`}
@@ -83,7 +93,7 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
           </div>
         </div>
         <div>
-          {topicType.length === 0 ? (
+          {stakeholderToDisplay?.length === 0 ? (
             <>
               <div className="table-row">
                 <div className="tooltip-topic">Entity</div>
@@ -122,7 +132,7 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
             </>
           ) : (
             <>
-              {topicType.includes("organisation") && (
+              {stakeholderToDisplay?.includes("organisation") && (
                 <div className="table-row">
                   <div className="tooltip-topic">Entity</div>
                   <div>
@@ -149,7 +159,7 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
                   </div>
                 </div>
               )}
-              {topicType.includes("stakeholder") && (
+              {stakeholderToDisplay?.includes("stakeholder") && (
                 <div className="table-row">
                   <div className="tooltip-topic">Individuals</div>
 
@@ -168,7 +178,12 @@ const StakeholderTooltipContent = ({ data, geo, path, query }) => {
   );
 };
 
-const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
+const KnowledgeLibraryToolTipContent = ({
+  data,
+  geo,
+  existingResources,
+  query,
+}) => {
   const dataToDisplay = () => {
     return {
       project: (data?.counts?.project || 0) + (data?.counts?.initiative || 0),
@@ -201,6 +216,9 @@ const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
 
   const characterLength = transnationalMaxValue?.length;
 
+  const resourceToShow =
+    existingResources?.length > 0 ? existingResources : query?.topic;
+
   return (
     <div
       key={`${geo.ISO3CD}-tooltip`}
@@ -219,7 +237,11 @@ const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
         <tbody>
           {tTypes.map((topic) => {
             const dataToDisplayPerPath = () => {
-              return topic !== "organisation" && topic !== "stakeholder";
+              return (
+                topic !== "organisation" &&
+                topic !== "stakeholder" &&
+                topic !== "capacity_building"
+              );
             };
 
             const tooltipChecker = () => {
@@ -234,9 +256,7 @@ const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
               }
             };
 
-            const queryTopic = query?.topic;
-
-            return dataToDisplayPerPath() && queryTopic.length === 0 ? (
+            return dataToDisplayPerPath() && resourceToShow?.length === 0 ? (
               <tr key={topic}>
                 <td className="tooltip-topic">{topicNames(topic)}</td>
                 <td className="tooltip-count-wrapper">
@@ -254,7 +274,7 @@ const KnowledgeLibraryToolTipContent = ({ data, geo, path, query }) => {
                 </td>
               </tr>
             ) : (
-              queryTopic.includes(tooltipChecker()) && (
+              resourceToShow.includes(tooltipChecker()) && (
                 <tr key={topic}>
                   <td className="tooltip-topic">{topicNames(topic)}</td>
                   <td className="tooltip-count-wrapper">
@@ -398,15 +418,20 @@ const Maps = ({
 
   const resourceCount =
     path === KNOWLEDGE_LIBRARY &&
-    countData.filter((data) => data.topic !== "gpml_member_entities");
-  const existingStakeholder =
+    countData.filter(
+      (data) =>
+        data.topic !== "gpml_member_entities" &&
+        data.topic !== "capacity_building"
+    );
+
+  const existingStakeholders =
     path === STAKEHOLDER_OVERVIEW &&
     stakeholderCount.existingStakeholder.map((data) => data?.networkType);
 
-  const existingResource =
+  const existingResources =
     path === KNOWLEDGE_LIBRARY ? resourceCount.map((data) => data.topic) : [];
   const existingData =
-    path === KNOWLEDGE_LIBRARY ? existingResource : existingStakeholder;
+    path === KNOWLEDGE_LIBRARY ? existingResources : existingStakeholders;
 
   const country =
     !isEmpty(countries) &&
@@ -485,7 +510,7 @@ const Maps = ({
         if (properties.length > 0) {
           return sumValues(propsToSum);
         } else {
-          if (path === "/knowledge-library") {
+          if (path === "/knowledge/library") {
             return sumValues({
               actionPlan: curr?.counts?.actionPlan,
               event: curr?.counts?.event,
@@ -497,7 +522,7 @@ const Maps = ({
               initiative: curr?.counts?.initiative || 0,
             });
           }
-          if (path === "/stakeholder-overview") {
+          if (path === "/connect/community") {
             return sumValues({
               stakeholder: curr?.counts?.stakeholder,
               organisation: curr?.counts?.organisation,
@@ -717,8 +742,8 @@ const Maps = ({
                     );
 
                     const multiselection =
-                      multiCountrySelection.length !== 0 &&
-                      multiCountrySelection.flat();
+                      multiCountrySelection?.length !== 0 &&
+                      multiCountrySelection?.flat();
 
                     const selectionCondition = () => {
                       const mapProps = Number(geo.properties.M49Code);
@@ -786,7 +811,7 @@ const Maps = ({
                                   <StakeholderTooltipContent
                                     data={findData}
                                     geo={geo.properties}
-                                    path={path}
+                                    existingStakeholders={existingStakeholders}
                                     query={query}
                                   />
                                 );
@@ -796,7 +821,7 @@ const Maps = ({
                                   <KnowledgeLibraryToolTipContent
                                     data={findData}
                                     geo={geo.properties}
-                                    path={path}
+                                    existingResources={existingResources}
                                     query={query}
                                   />
                                 );

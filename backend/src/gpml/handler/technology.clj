@@ -92,7 +92,7 @@
         (db.favorite/new-organisation-association conn association)))
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections technology-id)]
-        (db.favorite/new-association conn association)))
+        (db.favorite/new-stakeholder-association conn association)))
     (when (not-empty tags)
       (handler.resource.tag/create-resource-tags conn mailjet-config {:tags tags
                                                                       :tag-category "general"

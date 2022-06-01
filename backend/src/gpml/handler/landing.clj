@@ -114,7 +114,8 @@
                               (map #(Integer/parseInt %))))
 
     (seq transnational)
-    (assoc :transnational (set (map str (str/split transnational #","))))
+    (assoc :transnational (->> (set (str/split transnational #","))
+                               (map #(Integer/parseInt %))))
 
     (seq topic)
     (assoc :topic (set (str/split topic #",")))
@@ -146,7 +147,7 @@
   (let [opts (api-opts->opts query)
         modified-opts (let [country-group-countries (->> (get opts :transnational)
                                                          (map #(db.country-group/get-country-group-countries
-                                                                conn {:id (Integer/parseInt %)}))
+                                                                conn {:id %}))
                                                          (apply concat))
                             geo-coverage-countries (map :id country-group-countries)]
                         (assoc opts :geo-coverage (set (concat

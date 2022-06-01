@@ -328,13 +328,56 @@ const SignUpForm = withRouter(
           formData?.S2?.newCompanySubnationalAreaOnly &&
             delete formData?.S2?.newCompanySubnationalAreaOnly;
         }
+        if (formData?.S3?.seekingSuggestedTags) {
+          let array =
+            Object.values(tags)
+              .flat()
+              .find(
+                (o) =>
+                  o.tag === formData?.S3?.seekingSuggestedTags.toLowerCase()
+              )?.id || formData?.S3?.seekingSuggestedTags.toLowerCase();
 
-        signUpData.update((e) => {
-          e.data = {
-            ...e.data,
-            ...formData,
-          };
-        });
+          signUpData.update((e) => {
+            e.data = {
+              ...e.data,
+              S3: {
+                ...e.data.S3,
+                seeking: [
+                  ...(e.data.S3.seeking ? e.data.S3.seeking : []),
+                  array,
+                ],
+              },
+            };
+          });
+        } else if (formData?.S3?.offeringSuggestedTags) {
+          let array =
+            Object.values(tags)
+              .flat()
+              .find(
+                (o) =>
+                  o.tag === formData?.S3?.offeringSuggestedTags.toLowerCase()
+              )?.id || formData?.S3?.offeringSuggestedTags.toLowerCase();
+
+          signUpData.update((e) => {
+            e.data = {
+              ...e.data,
+              S3: {
+                ...e.data.S3,
+                offering: [
+                  ...(e.data.S3.offering ? e.data.S3.offering : []),
+                  array,
+                ],
+              },
+            };
+          });
+        } else {
+          signUpData.update((e) => {
+            e.data = {
+              ...e.data,
+              ...formData,
+            };
+          });
+        }
 
         let updatedFormDataSchema = {};
 

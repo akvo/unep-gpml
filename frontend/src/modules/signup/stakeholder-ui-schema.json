@@ -117,11 +117,19 @@
       "ui:mode": "tags",
       "ui:showSearch": true
     },
+    "seekingSuggestedTags": {
+      "ui:widget": "TaglistWidget",
+      "ui:label": null
+    },
     "offering": {
       "ui:widget": "select",
       "ui:placeholder": "Search",
       "ui:mode": "tags",
       "ui:showSearch": true
+    },
+    "offeringSuggestedTags": {
+      "ui:widget": "TaglistWidget",
+      "ui:label": null
     },
     "about": {
       "ui:placeholder": "",
@@ -138,6 +146,15 @@
       "ui:widget": "checkbox",
       "ui:label": null
     },
-    "ui:order": ["seeking", "offering", "about", "tags", "cv", "publicDatabase"]
+    "ui:order": [
+      "seeking",
+      "seekingSuggestedTags",
+      "offering",
+      "offeringSuggestedTags",
+      "about",
+      "tags",
+      "cv",
+      "publicDatabase"
+    ]
   }
 }

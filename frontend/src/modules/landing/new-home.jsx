@@ -150,7 +150,7 @@ const Landing = withRouter(
       if (!isMobileScreen) {
         setSelectedTopic(name?.toLocaleLowerCase());
       } else {
-        isMobileScreen && history.push(`/knowledge-library?tag=${tag}`);
+        isMobileScreen && history.push(`/knowledge/library?tag=${tag}`);
       }
     };
 
@@ -177,7 +177,9 @@ const Landing = withRouter(
           setResources({
             items: data?.results,
             summary: data?.counts.filter(
-              (count) => count.topic !== "gpml_member_entities"
+              (count) =>
+                count?.topic !== "gpml_member_entities" &&
+                count?.topic !== "capacity_building"
             ),
           });
         }));
@@ -221,17 +223,8 @@ const Landing = withRouter(
     }, [sortPopularTopic]);
 
     useEffect(() => {
-      const popularTags = [
-        "plastics",
-        "waste management",
-        "marine litter",
-        "capacity building",
-        "product by design",
-        "source to sea",
-      ];
-
       api
-        .get(`/tag/topic/popular?tags=${popularTags}&limit=6`)
+        .get(`/tag/topic/popular?&limit=6`)
         .then((resp) => {
           const data = resp?.data.map((item, i) => {
             return {
@@ -305,7 +298,7 @@ const Landing = withRouter(
             <h2>
               Featured Content{" "}
               <span className="see-more-link">
-                <Link to="/knowledge-library">
+                <Link to="/knowledge/library">
                   See all <RightOutlined />
                 </Link>
               </span>
@@ -523,7 +516,7 @@ const Landing = withRouter(
                 Our Community{" "}
                 <span className="see-more-link ant-btn-ghost ant-btn">
                   <Link
-                    to={isApprovedUser ? "/events" : "#"}
+                    to={isApprovedUser ? "/connect/events" : "#"}
                     onClick={() => {
                       !isApprovedUser
                         ? handleOurCommunityProfileClick()

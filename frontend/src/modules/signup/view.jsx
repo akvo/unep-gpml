@@ -52,6 +52,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     profile: s.profile,
     formStep: s.formStep,
     formEdit: s.formEdit,
+    stakeholderSuggestedTags: s.stakeholderSuggestedTags,
   }));
 
   const {
@@ -70,6 +71,7 @@ const SignUp = ({ match: { params }, ...props }) => {
     formStep,
     formEdit,
     profile,
+    stakeholderSuggestedTags,
   } = storeData;
 
   const formData = signUpData.useState();
