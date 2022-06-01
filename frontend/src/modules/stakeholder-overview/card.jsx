@@ -75,7 +75,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                       backgroundColor: "#006776",
                       verticalAlign: "middle",
                     }}
-                    size={40}
+                    size={150}
                   >
                     {profile?.name?.substring(0, 2)}
                   </Avatar>
