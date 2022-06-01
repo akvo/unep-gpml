@@ -189,7 +189,7 @@ select id, name
 
 -- :name related-content-by-id
 -- :doc Get related content by id
-select tech.id, tech.name as title, tech.remarks as description from technology t
+select tech.id, tech.name as title, tech.remarks as description, tech.image, 'technology' as type from technology t
   left join technology tech
   on tech.id = ANY(t.related_content)
   where t.id = :id
