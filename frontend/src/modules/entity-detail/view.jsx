@@ -230,6 +230,7 @@ const StakeholderDetail = ({
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const history = useHistory();
   const [data, setData] = useState(null);
+  const [bgColor, setColor] = useState(null);
   const [relations, setRelations] = useState([]);
   const [ownedResources, setOwnedResources] = useState([]);
   const [bookedResources, setBookedResources] = useState([]);
@@ -326,6 +327,7 @@ const StakeholderDetail = ({
         .get(`/detail/${params.type}/${params.id}`)
         .then((d) => {
           setData(d.data);
+          setColor(colors[Math.floor(Math.random() * colors.length)]);
           getOwnedResources(0);
           getBookedResources(0);
         })
@@ -402,10 +404,7 @@ const StakeholderDetail = ({
                         ) : (
                           <Avatar
                             style={{
-                              backgroundColor:
-                                colors[
-                                  Math.floor(Math.random() * colors.length)
-                                ],
+                              backgroundColor: bgColor,
                               fontSize: "62px",
                               fontWeight: "bold",
                               verticalAlign: "middle",
