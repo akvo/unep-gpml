@@ -6,6 +6,18 @@ import { UIStore } from "../../store";
 import unionIcon from "../../images/stakeholder-overview/union-icon.svg";
 import communityIcon from "../../images/stakeholder-overview/union-2-icon.svg";
 
+let colors = [
+  "#FFB800",
+  "#98B527",
+  "#38A259",
+  "#008776",
+  "#006776",
+  "#2F4858",
+  "#FFC1B4",
+  "#FE8A7F",
+  "#C1554E",
+];
+
 const ProfileCard = ({ profile, isValidUser, profileType }) => {
   const { countries, seeking } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -49,12 +61,15 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
               ) : (
                 <Avatar
                   style={{
-                    backgroundColor: "#006776",
+                    backgroundColor:
+                      colors[Math.floor(Math.random() * colors.length)],
                     verticalAlign: "middle",
+                    fontSize: "62px",
+                    fontWeight: "bold",
                   }}
                   size={150}
                 >
-                  {profile?.name?.substring(0, 2)}
+                  {profile?.name?.substring(0, 1)}
                 </Avatar>
               )}
             </div>
@@ -69,19 +84,22 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                       profile?.firstName ? profile?.firstName : profile?.name
                     }
                   >
-                    {profile?.firstName?.substring(0, 2)}
+                    {profile?.firstName?.substring(0, 1)}
                   </Avatar>
                 ) : (
                   <Avatar
                     style={{
-                      backgroundColor: "#006776",
+                      backgroundColor:
+                        colors[Math.floor(Math.random() * colors.length)],
                       verticalAlign: "middle",
+                      fontSize: "62px",
+                      fontWeight: "bold",
                     }}
                     size={150}
                   >
                     {profile?.firstName
-                      ? profile?.firstName?.substring(0, 2)
-                      : profile?.name?.substring(0, 2)}
+                      ? profile?.firstName?.substring(0, 1)
+                      : profile?.name?.substring(0, 1)}
                   </Avatar>
                 )}
               </div>
@@ -94,7 +112,8 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                     ) : (
                       <Avatar
                         style={{
-                          backgroundColor: "#006776",
+                          backgroundColor:
+                            colors[Math.floor(Math.random() * colors.length)],
                           verticalAlign: "middle",
                         }}
                         size={40}
