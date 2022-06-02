@@ -338,7 +338,7 @@ const StakeholderDetail = ({
         });
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
-        api.get("/favorite").then((resp) => {
+        api.get(`/favorite/${params.type}/${params.id}`).then((resp) => {
           setRelations(resp.data);
         });
       }, 100);
@@ -397,7 +397,25 @@ const StakeholderDetail = ({
               <Col xs={24} lg={24}>
                 <div className="topbar-wrapper">
                   <div className="topbar-image-holder">
-                    <img src={data?.picture} />
+                    <Avatar
+                      size={150}
+                      src={
+                        data?.picture ? (
+                          data?.picture
+                        ) : (
+                          <Avatar
+                            style={{
+                              backgroundColor: "#09689A",
+                              verticalAlign: "middle",
+                              border: "4px solid #fff",
+                            }}
+                            size={145}
+                          >
+                            {data?.firstName?.substring(0, 2)}
+                          </Avatar>
+                        )
+                      }
+                    />
                     {data.affiliation && (
                       <div className="topbar-entity-image-holder">
                         <Avatar
@@ -408,7 +426,7 @@ const StakeholderDetail = ({
                             ) : (
                               <Avatar
                                 style={{
-                                  backgroundColor: "#09689A",
+                                  backgroundColor: "#006776",
                                   verticalAlign: "middle",
                                 }}
                                 size={50}
@@ -469,7 +487,7 @@ const StakeholderDetail = ({
                                 ) : (
                                   <Avatar
                                     style={{
-                                      backgroundColor: "#09689A",
+                                      backgroundColor: "#006776",
                                       verticalAlign: "middle",
                                     }}
                                     size={55}
@@ -730,7 +748,7 @@ const StakeholderDetail = ({
                                           ) : (
                                             <Avatar
                                               style={{
-                                                backgroundColor: "#09689A",
+                                                backgroundColor: "#006776",
                                                 verticalAlign: "middle",
                                               }}
                                               size={40}
@@ -827,7 +845,7 @@ const StakeholderDetail = ({
                                           ) : (
                                             <Avatar
                                               style={{
-                                                backgroundColor: "#09689A",
+                                                backgroundColor: "#006776",
                                                 verticalAlign: "middle",
                                               }}
                                               size={40}

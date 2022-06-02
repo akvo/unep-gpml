@@ -323,7 +323,7 @@ const StakeholderDetail = ({
         });
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
-        api.get("/favorite").then((resp) => {
+        api.get(`/favorite/${params.type}/${params.id}`).then((resp) => {
           setRelations(resp.data);
         });
       }, 100);
@@ -390,7 +390,7 @@ const StakeholderDetail = ({
                         ) : (
                           <Avatar
                             style={{
-                              backgroundColor: "#09689A",
+                              backgroundColor: "#006776",
                               verticalAlign: "middle",
                               border: "4px solid #fff",
                             }}
@@ -576,7 +576,7 @@ const StakeholderDetail = ({
                                           ) : (
                                             <Avatar
                                               style={{
-                                                backgroundColor: "#09689A",
+                                                backgroundColor: "#006776",
                                                 verticalAlign: "middle",
                                               }}
                                               size={40}
@@ -651,7 +651,7 @@ const StakeholderDetail = ({
                                     ) : (
                                       <Avatar
                                         style={{
-                                          backgroundColor: "#09689A",
+                                          backgroundColor: "#006776",
                                           verticalAlign: "middle",
                                         }}
                                         size={195}

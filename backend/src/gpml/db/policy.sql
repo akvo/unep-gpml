@@ -152,6 +152,7 @@ select sp.id, sp.association as role, s.id as stakeholder_id, concat_ws(' ', s.f
   left join stakeholder s
   on sp.stakeholder = s.id
   where sp.policy = :id
+  and sp.is_bookmark = false;
 
 -- :name all-policies
 -- :doc List all policies
@@ -160,7 +161,7 @@ select id, title
 
 -- :name related-content-by-id
 -- :doc Get related content by id
-select pol.id, pol.title, pol.abstract as description from policy p
+select pol.id, pol.title, pol.abstract as description, pol.image, 'policy' as type from policy p
   left join policy pol
   on pol.id = ANY(p.related_content)
   where p.id = :id

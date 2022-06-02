@@ -119,7 +119,7 @@ const ResourceItem = ({ results, view }) => {
                       ) : (
                         <Avatar
                           style={{
-                            backgroundColor: "#09689A",
+                            backgroundColor: "#006776",
                             verticalAlign: "middle",
                             border: "none",
                           }}

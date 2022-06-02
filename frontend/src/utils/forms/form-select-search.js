@@ -59,14 +59,10 @@ const SelectWidget = ({
   const prevValue = usePrevious(enumOptions);
 
   useEffect(() => {
-    if (
-      !prevValue?.filter((item1) =>
-        enumOptions.find((item2) => item1.value === item2.value)
-      )
-    ) {
+    if (JSON.stringify(prevValue) !== JSON.stringify(enumOptions)) {
       setData(enumOptions.map((elm) => ({ id: elm.value, title: elm.label })));
     }
-  }, [enumOptions]);
+  }, [enumOptions, prevValue]);
 
   const handleSearch = React.useMemo(() => {
     const loadOptions = async (value) => {

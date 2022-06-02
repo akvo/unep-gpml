@@ -96,7 +96,7 @@
         (db.favorite/new-organisation-association conn association)))
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections resource-id)]
-        (db.favorite/new-association conn association)))
+        (db.favorite/new-stakeholder-association conn association)))
     (when (not-empty urls)
       (let [lang-urls (map #(vector resource-id
                                     (->> % :lang

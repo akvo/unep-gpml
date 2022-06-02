@@ -554,6 +554,7 @@
             font-size: 14px;
             font-weight: bold;
             margin-bottom: 0px;
+            text-transform: capitalize;
             @-moz-document url-prefix() {
               font-size: 12px !important;
             }

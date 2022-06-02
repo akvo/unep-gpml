@@ -6,6 +6,7 @@
             [gpml.db.activity :as db.activity]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.handler.util :as api-util]
             [gpml.util :as util]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
@@ -43,8 +44,12 @@
   (:id (db.stakeholder/approved-stakeholder-by-email db {:email email})))
 
 (defn get-favorites
-  [db id]
-  (let [data (db.favorite/association-by-stakeholder db {:stakeholder id})]
+  [db stakeholder topic-type topic-id]
+  (let [topic (api-util/get-internal-topic-type topic-type)
+        data (db.favorite/association-by-stakeholder db {:stakeholder stakeholder
+                                                         :topic topic
+                                                         :table (str "stakeholder_" topic)
+                                                         :topic_id topic-id})]
     (reduce (fn [acc [[topic_id topic] v]]
               (conj acc {:topic_id topic_id
                          :topic topic
@@ -53,9 +58,9 @@
             (group-by (juxt :id :topic) data))))
 
 (defmethod ig/init-key ::get [_ {:keys [db]}]
-  (fn [{{:keys [email]} :jwt-claims}]
+  (fn [{{:keys [email]} :jwt-claims {{:keys [topic-type topic-id]} :path} :parameters}]
     (if-let [stakeholder (get-stakeholder-id (:spec db) email)]
-      (resp/response (get-favorites (:spec db) stakeholder))
+      (resp/response (get-favorites (:spec db) stakeholder topic-type topic-id))
       (resp/bad-request {:message (format "User with email %s does not exist" email)}))))
 
 (defn topic->api-topic [topic]

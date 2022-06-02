@@ -92,6 +92,7 @@ select si.id, si.association as role, s.id as stakeholder_id, concat_ws(' ', s.f
   left join stakeholder s
   on si.stakeholder = s.id
   where si.initiative = :id
+  and si.is_bookmark = false;
 
 -- :name all-initiatives
 -- :doc List all initiatives
@@ -105,7 +106,7 @@ values :t*:tags RETURNING id;
 
 -- :name related-content-by-id
 -- :doc Get related content by id
-select init.id, init.q2 as title, init.q3 as description from initiative i
+select init.id, init.q2 as title, init.q3 as description, init.qimage as image, 'project' as type from initiative i
   left join initiative init
   on init.id = ANY(i.related_content)
   where i.id = :id

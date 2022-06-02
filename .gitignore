@@ -9,3 +9,5 @@ notify.team.sh
 /doc/images/*
 */roam/
 .DS_Store
+frontend/package-lock.json
+frontend/yarn.lock

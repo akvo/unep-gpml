@@ -6,6 +6,18 @@ import { UIStore } from "../../store";
 import unionIcon from "../../images/stakeholder-overview/union-icon.svg";
 import communityIcon from "../../images/stakeholder-overview/union-2-icon.svg";
 
+let colors = [
+  "#FFB800",
+  "#98B527",
+  "#38A259",
+  "#008776",
+  "#006776",
+  "#2F4858",
+  "#FFC1B4",
+  "#FE8A7F",
+  "#C1554E",
+];
+
 const ProfileCard = ({ profile, isValidUser, profileType }) => {
   const { countries, seeking } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -49,12 +61,15 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
               ) : (
                 <Avatar
                   style={{
-                    backgroundColor: "#09689A",
+                    backgroundColor:
+                      colors[Math.floor(Math.random() * colors.length)],
                     verticalAlign: "middle",
+                    fontSize: "62px",
+                    fontWeight: "bold",
                   }}
                   size={150}
                 >
-                  {profile?.name?.substring(0, 2)}
+                  {profile?.name?.substring(0, 1)}
                 </Avatar>
               )}
             </div>
@@ -62,42 +77,52 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
             <div className="images-wrapper">
               <div className="image-wrapper">
                 {profile.picture ? (
-                  <img
-                    className="profile-image"
+                  <Avatar
                     src={profile.picture}
-                    alt={profile?.firstName}
-                  />
+                    size={150}
+                    alt={
+                      profile?.firstName ? profile?.firstName : profile?.name
+                    }
+                  >
+                    {profile?.firstName?.substring(0, 1)}
+                  </Avatar>
                 ) : (
                   <Avatar
                     style={{
-                      backgroundColor: "#09689A",
+                      backgroundColor:
+                        colors[Math.floor(Math.random() * colors.length)],
                       verticalAlign: "middle",
+                      fontSize: "62px",
+                      fontWeight: "bold",
                     }}
-                    size={40}
+                    size={150}
                   >
-                    {profile?.name?.substring(0, 2)}
+                    {profile?.firstName
+                      ? profile?.firstName?.substring(0, 1)
+                      : profile?.name?.substring(0, 1)}
                   </Avatar>
                 )}
-                {profile?.affiliation &&
-                  profile?.affiliation?.length !== 0 &&
-                  profileType !== "suggested-profiles" && (
-                    <div className="affiliation-image-wrapper">
-                      {profile?.affiliation?.logo ? (
-                        <Avatar src={profile?.affiliation?.logo} size={40} />
-                      ) : (
-                        <Avatar
-                          style={{
-                            backgroundColor: "#09689A",
-                            verticalAlign: "middle",
-                          }}
-                          size={40}
-                        >
-                          {profile?.affiliation?.name?.substring(0, 2)}
-                        </Avatar>
-                      )}
-                    </div>
-                  )}
               </div>
+              {profile?.affiliation &&
+                profile?.affiliation?.length !== 0 &&
+                profileType !== "suggested-profiles" && (
+                  <div className="affiliation-image-wrapper">
+                    {profile?.affiliation?.logo ? (
+                      <Avatar src={profile?.affiliation?.logo} size={40} />
+                    ) : (
+                      <Avatar
+                        style={{
+                          backgroundColor:
+                            colors[Math.floor(Math.random() * colors.length)],
+                          verticalAlign: "middle",
+                        }}
+                        size={40}
+                      >
+                        {profile?.affiliation?.name?.substring(0, 2)}
+                      </Avatar>
+                    )}
+                  </div>
+                )}
             </div>
           )}
           <div className="profile-details-container">
