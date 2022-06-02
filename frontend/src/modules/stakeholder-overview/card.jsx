@@ -49,7 +49,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
               ) : (
                 <Avatar
                   style={{
-                    backgroundColor: "#09689A",
+                    backgroundColor: "#006776",
                     verticalAlign: "middle",
                   }}
                   size={150}
@@ -62,42 +62,48 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
             <div className="images-wrapper">
               <div className="image-wrapper">
                 {profile.picture ? (
-                  <img
-                    className="profile-image"
+                  <Avatar
                     src={profile.picture}
-                    alt={profile?.firstName}
-                  />
+                    size={150}
+                    alt={
+                      profile?.firstName ? profile?.firstName : profile?.name
+                    }
+                  >
+                    {profile?.firstName?.substring(0, 2)}
+                  </Avatar>
                 ) : (
                   <Avatar
                     style={{
-                      backgroundColor: "#09689A",
+                      backgroundColor: "#006776",
                       verticalAlign: "middle",
                     }}
-                    size={40}
+                    size={150}
                   >
-                    {profile?.name?.substring(0, 2)}
+                    {profile?.firstName
+                      ? profile?.firstName?.substring(0, 2)
+                      : profile?.name?.substring(0, 2)}
                   </Avatar>
                 )}
-                {profile?.affiliation &&
-                  profile?.affiliation?.length !== 0 &&
-                  profileType !== "suggested-profiles" && (
-                    <div className="affiliation-image-wrapper">
-                      {profile?.affiliation?.logo ? (
-                        <Avatar src={profile?.affiliation?.logo} size={40} />
-                      ) : (
-                        <Avatar
-                          style={{
-                            backgroundColor: "#09689A",
-                            verticalAlign: "middle",
-                          }}
-                          size={40}
-                        >
-                          {profile?.affiliation?.name?.substring(0, 2)}
-                        </Avatar>
-                      )}
-                    </div>
-                  )}
               </div>
+              {profile?.affiliation &&
+                profile?.affiliation?.length !== 0 &&
+                profileType !== "suggested-profiles" && (
+                  <div className="affiliation-image-wrapper">
+                    {profile?.affiliation?.logo ? (
+                      <Avatar src={profile?.affiliation?.logo} size={40} />
+                    ) : (
+                      <Avatar
+                        style={{
+                          backgroundColor: "#006776",
+                          verticalAlign: "middle",
+                        }}
+                        size={40}
+                      >
+                        {profile?.affiliation?.name?.substring(0, 2)}
+                      </Avatar>
+                    )}
+                  </div>
+                )}
             </div>
           )}
           <div className="profile-details-container">
