@@ -23,13 +23,7 @@ const RelatedContent = ({
   relatedContentPage,
   getRelatedContent,
 }) => {
-  const CardComponent = ({
-    title,
-    style,
-    children,
-    getRef,
-    specificClassName,
-  }) => {
+  const CardComponent = ({ title, style, children, getRef }) => {
     return (
       <div
         className={`card-wrapper mb-10 related-content-wrapper`}
@@ -207,7 +201,9 @@ const RelatedContent = ({
               >
                 <div>
                   <h3>{item.title}</h3>
-                  <h4>{data?.type ? data.type : ""}</h4>
+                  <h4>
+                    {data?.type ? data.type : item?.type ? item?.type : ""}
+                  </h4>
                 </div>
                 <div className="bottom-panel">
                   <div>
