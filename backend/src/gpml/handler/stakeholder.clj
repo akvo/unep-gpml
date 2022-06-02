@@ -294,9 +294,7 @@
                                       :idp_usernames [(:sub jwt-claims)]
                                       :cv (or (assoc-cv db (:cv body-params))
                                               (:cv body-params))
-                                      :picture (or (handler.image/assoc-image db (:photo body-params) "profile")
-                                                   (let [{:keys [first_name last_name]} (select-keys body-params [:first_name :last_name])]
-                                                     (format "https://ui-avatars.com/api/?size=480&name=%s+%s" first_name last_name)))))
+                                      :picture (handler.image/assoc-image db (:photo body-params) "profile")))
          stakeholder-id (if-let [current-stakeholder (db.stakeholder/stakeholder-by-email db {:email (:email profile)})]
                           (let [idp-usernames (vec (-> current-stakeholder :idp_usernames (concat (:idp_usernames profile))))]
                             (db.stakeholder/update-stakeholder db (assoc (select-keys profile [:affiliation])
