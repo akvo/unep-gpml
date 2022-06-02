@@ -39,8 +39,6 @@ import { ReactComponent as EditIcon } from "../../images/resource-detail/edit-ic
 import { ReactComponent as ShareIcon } from "../../images/resource-detail/share-icn.svg";
 import { ReactComponent as TrashIcon } from "../../images/resource-detail/trash-icn.svg";
 import { ReactComponent as BookMarkIcon } from "../../images/resource-detail/bookmark-icn.svg";
-import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
-import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
 import {
   DeleteOutlined,
   ArrowRightOutlined,
@@ -61,6 +59,7 @@ import { multicountryGroups } from "../knowledge-library/multicountry";
 import { Form as FinalForm, FormSpy, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import { FieldsFromSchema } from "../../utils/form-utils";
+import RelatedContent from "../../components/related-content/related-content";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
@@ -1057,39 +1056,6 @@ const DetailsView = ({
   const formRef = useRef();
   const [formSchema, setFormSchema] = useState(defaultFormSchema);
   const [comment, setComment] = useState("");
-  const [isHovered, setIsHovered] = useState(false);
-
-  const CustomRightArrow = ({ onClick, ...rest }) => {
-    const {
-      onMove,
-      carouselState: { currentSlide },
-    } = rest;
-
-    return (
-      <button
-        className="react-multiple-carousel__arrow custom-right-arrow"
-        onClick={() => onClick()}
-      >
-        <RightArrow />
-      </button>
-    );
-  };
-
-  const CustomLeftArrow = ({ onClick, ...rest }) => {
-    const {
-      onMove,
-      carouselState: { currentSlide },
-    } = rest;
-
-    return (
-      <button
-        className="react-multiple-carousel__arrow custom-left-arrow"
-        onClick={() => onClick()}
-      >
-        <LeftArrow />
-      </button>
-    );
-  };
 
   const onSubmit = (val) => {
     const data = {
@@ -1166,29 +1132,6 @@ const DetailsView = ({
       profile,
       countries
     )?.props?.children !== "There is no data to display";
-
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 1200 },
-      items: 7,
-      slidesToSlide: 4,
-    },
-    desktop: {
-      breakpoint: { max: 1199, min: 992 },
-      items: 7,
-      slidesToSlide: 3,
-    },
-    tablet: {
-      breakpoint: { max: 991, min: 768 },
-      items: 5,
-      slidesToSlide: 2,
-    },
-    mobile: {
-      breakpoint: { max: 599, min: 0 },
-      items: 1,
-      slidesToSlide: 1,
-    },
-  };
 
   return (
     <div id="details">
@@ -1505,126 +1448,15 @@ const DetailsView = ({
                   </div>
                 </CardComponent>
               )}
-              {data?.relatedContent && data?.relatedContent?.length > 0 && (
-                <CardComponent
-                  style={{
-                    transition: "all linear 0.1s",
-                    background: isHovered ? "rgba(24, 22, 47, 0.15)" : "",
-                  }}
-                  title={
-                    <div className="related-content-title-wrapper">
-                      <div className="related-content-title">
-                        Related content
-                      </div>
-                      <div className="related-content-count">
-                        Total{" "}
-                        {data?.relatedContent && data?.relatedContent.length}
-                      </div>
-                    </div>
-                  }
-                  getRef={relatedContent}
-                  specificClassName={"related-content-wrapper"}
-                >
-                  {data?.relatedContent.length > 0 && (
-                    <Carousel
-                      centerMode={true}
-                      responsive={responsive}
-                      containerClass="related-content"
-                      itemClass="carousel-item"
-                      dotListClass="carousel-dot-list"
-                      showDots={true}
-                      renderDotsOutside={true}
-                      customLeftArrow={<CustomLeftArrow />}
-                      customRightArrow={<CustomRightArrow />}
-                    >
-                      {data?.relatedContent.map((item) => {
-                        return (
-                          <Col
-                            className="card"
-                            span={12}
-                            onMouseEnter={() => setIsHovered(true)}
-                            onMouseLeave={() => setIsHovered(false)}
-                          >
-                            <a
-                              href={`/${params.type}/${item.id}`}
-                              className="description-holder"
-                            >
-                              <div>
-                                <h3>{item.title}</h3>
-                                <h4>{data?.type ? data.type : ""}</h4>
-                              </div>
-                              <div className="bottom-panel">
-                                <div>
-                                  <Avatar.Group
-                                    maxCount={2}
-                                    size="large"
-                                    maxStyle={{
-                                      color: "#f56a00",
-                                      backgroundColor: "#fde3cf",
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    {item?.entityConnections?.map(
-                                      (connection, index) => (
-                                        <Avatar src={connection.image} />
-                                      )
-                                    )}
-                                  </Avatar.Group>
-                                </div>
-                                <a href={`/${item?.type}/${item.id}`}>
-                                  <div className="read-more">
-                                    Read More <ArrowRightOutlined />
-                                  </div>
-                                </a>
-                              </div>
-                            </a>
-                            <div className="slider-card">
-                              {/* <div className="image-holder">
-                                <img
-                                  src={
-                                    require(`../../images/${
-                                      icons[params.type]
-                                    }`).default
-                                  }
-                                />
-                              </div> */}
-
-                              {/* <div className="description-holder">
-                                <h4>{data?.type ? data.type : ""}</h4>
-                                <h6>{item.title}</h6>
-                                <div className="bottom-panel">
-                                  <div>
-                                    <Avatar.Group
-                                      maxCount={2}
-                                      size="large"
-                                      maxStyle={{
-                                        color: "#f56a00",
-                                        backgroundColor: "#fde3cf",
-                                        cursor: "pointer",
-                                      }}
-                                    >
-                                      {item?.entityConnections?.map(
-                                        (connection, index) => (
-                                          <Avatar src={connection.image} />
-                                        )
-                                      )}
-                                    </Avatar.Group>
-                                  </div>
-                                  <a href={`/${params.type}/${item.id}`}>
-                                    <div className="read-more">
-                                      Read More <ArrowRightOutlined />
-                                    </div>
-                                  </a>
-                                </div>
-                              </div> */}
-                            </div>
-                          </Col>
-                        );
-                      })}
-                    </Carousel>
-                  )}
-                </CardComponent>
-              )}
+              {data?.relatedContent &&
+                data?.relatedContent?.length > 0 &&
+                data?.relatedContent.length > 0 && (
+                  <RelatedContent
+                    data={data}
+                    title="Related content"
+                    relatedContent={data?.relatedContent}
+                  />
+                )}
               {profile && (
                 <CardComponent title="Comments" getRef={reviews}>
                   <div className="comments-container">

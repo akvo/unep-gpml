@@ -51,6 +51,7 @@ import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
 import { TrimText } from "../../utils/string";
 import { colors } from "../../utils/misc";
+import RelatedContent from "../../components/related-content/related-content";
 
 const getType = (type) => {
   let t = "";
@@ -531,112 +532,11 @@ const StakeholderDetail = ({
           </Row>
           <div className="owned-resources-wrapper">
             {ownedResources.length > 0 && (
-              <CardComponent
-                title={`Content on the platform (${ownedResourcesCount})`}
-                style={{
-                  height: "100%",
-                  boxShadow: "none",
-                  borderRadius: "none",
-                }}
-              >
-                <div style={{ padding: "0 10px" }}>
-                  <Row gutter={[16, 16]}>
-                    {ownedResources.slice(0, 3).map((item) => (
-                      <Col xs={6} lg={8} key={item.id}>
-                        <div className="slider-card">
-                          <div className="image-holder">
-                            <img
-                              style={{ width: 60 }}
-                              src={
-                                require(`../../images/${
-                                  icons[
-                                    getType(item.type)
-                                      ? getType(item.type)
-                                      : "action_plan"
-                                  ]
-                                }`).default
-                              }
-                            />
-                          </div>
-                          <div className="description-holder">
-                            <div>
-                              <h4>{item.type}</h4>
-                              {item.title && (
-                                <TrimText text={item.title} max={30} />
-                              )}
-                            </div>
-                            {item.entityConnections &&
-                              item.entityConnections.length > 0 && (
-                                <div className="connection-wrapper">
-                                  <Avatar.Group
-                                    maxCount={2}
-                                    maxPopoverTrigger="click"
-                                    size="large"
-                                    maxStyle={{
-                                      color: "#f56a00",
-                                      backgroundColor:
-                                        colors[
-                                          Math.floor(
-                                            Math.random() * colors.length
-                                          )
-                                        ],
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    {item.entityConnections.map((item) => (
-                                      <Avatar
-                                        style={{ border: "none" }}
-                                        key={item?.entity}
-                                        src={
-                                          item?.image ? (
-                                            item.image
-                                          ) : (
-                                            <Avatar
-                                              style={{
-                                                backgroundColor:
-                                                  colors[
-                                                    Math.floor(
-                                                      Math.random() *
-                                                        colors.length
-                                                    )
-                                                  ],
-                                                verticalAlign: "middle",
-                                              }}
-                                              size={40}
-                                            >
-                                              {item?.entity?.substring(0, 2)}
-                                            </Avatar>
-                                          )
-                                        }
-                                      />
-                                    ))}
-                                  </Avatar.Group>
-                                  <Link
-                                    to={`/${getType(item.type)}/${item.id}`}
-                                  >
-                                    <div className="read-more">
-                                      Read More <ArrowRightOutlined />
-                                    </div>
-                                  </Link>
-                                </div>
-                              )}
-                          </div>
-                        </div>
-                      </Col>
-                    ))}
-                  </Row>
-                  <div className="pagination-wrapper">
-                    <Pagination
-                      showSizeChanger={false}
-                      defaultCurrent={1}
-                      current={ownedResourcesPage + 1}
-                      pageSize={3}
-                      total={ownedResourcesCount || 0}
-                      onChange={(n, size) => getOwnedResources(n - 1)}
-                    />
-                  </div>
-                </div>
-              </CardComponent>
+              <RelatedContent
+                data={[]}
+                relatedContent={ownedResources}
+                title="Content on the platform"
+              />
             )}
           </div>
           <div>
