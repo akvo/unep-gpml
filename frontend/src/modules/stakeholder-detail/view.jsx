@@ -58,6 +58,18 @@ import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
 import { TrimText } from "../../utils/string";
 
+let colors = [
+  "#FFB800",
+  "#98B527",
+  "#38A259",
+  "#008776",
+  "#006776",
+  "#2F4858",
+  "#FFC1B4",
+  "#FE8A7F",
+  "#C1554E",
+];
+
 const getType = (type) => {
   let t = "";
   switch (type) {
@@ -405,9 +417,14 @@ const StakeholderDetail = ({
                         ) : (
                           <Avatar
                             style={{
-                              backgroundColor: "#09689A",
+                              backgroundColor:
+                                colors[
+                                  Math.floor(Math.random() * colors.length)
+                                ],
                               verticalAlign: "middle",
                               border: "4px solid #fff",
+                              fontSize: "62px",
+                              fontWeight: "bold",
                             }}
                             size={145}
                           >
@@ -426,7 +443,10 @@ const StakeholderDetail = ({
                             ) : (
                               <Avatar
                                 style={{
-                                  backgroundColor: "#006776",
+                                  backgroundColor:
+                                    colors[
+                                      Math.floor(Math.random() * colors.length)
+                                    ],
                                   verticalAlign: "middle",
                                 }}
                                 size={50}
@@ -487,7 +507,12 @@ const StakeholderDetail = ({
                                 ) : (
                                   <Avatar
                                     style={{
-                                      backgroundColor: "#006776",
+                                      backgroundColor:
+                                        colors[
+                                          Math.floor(
+                                            Math.random() * colors.length
+                                          )
+                                        ],
                                       verticalAlign: "middle",
                                     }}
                                     size={55}
@@ -734,7 +759,12 @@ const StakeholderDetail = ({
                                     size="large"
                                     maxStyle={{
                                       color: "#f56a00",
-                                      backgroundColor: "#fde3cf",
+                                      backgroundColor:
+                                        colors[
+                                          Math.floor(
+                                            Math.random() * colors.length
+                                          )
+                                        ],
                                       cursor: "pointer",
                                     }}
                                   >
@@ -748,7 +778,13 @@ const StakeholderDetail = ({
                                           ) : (
                                             <Avatar
                                               style={{
-                                                backgroundColor: "#006776",
+                                                backgroundColor:
+                                                  colors[
+                                                    Math.floor(
+                                                      Math.random() *
+                                                        colors.length
+                                                    )
+                                                  ],
                                                 verticalAlign: "middle",
                                               }}
                                               size={40}
@@ -831,7 +867,12 @@ const StakeholderDetail = ({
                                     size="large"
                                     maxStyle={{
                                       color: "#f56a00",
-                                      backgroundColor: "#fde3cf",
+                                      backgroundColor:
+                                        colors[
+                                          Math.floor(
+                                            Math.random() * colors.length
+                                          )
+                                        ],
                                       cursor: "pointer",
                                     }}
                                   >
@@ -845,7 +886,13 @@ const StakeholderDetail = ({
                                           ) : (
                                             <Avatar
                                               style={{
-                                                backgroundColor: "#006776",
+                                                backgroundColor:
+                                                  colors[
+                                                    Math.floor(
+                                                      Math.random() *
+                                                        colors.length
+                                                    )
+                                                  ],
                                                 verticalAlign: "middle",
                                               }}
                                               size={40}
