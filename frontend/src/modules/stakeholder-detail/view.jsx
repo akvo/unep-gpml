@@ -397,7 +397,25 @@ const StakeholderDetail = ({
               <Col xs={24} lg={24}>
                 <div className="topbar-wrapper">
                   <div className="topbar-image-holder">
-                    <img src={data?.picture} />
+                    <Avatar
+                      size={150}
+                      src={
+                        data?.picture ? (
+                          data?.picture
+                        ) : (
+                          <Avatar
+                            style={{
+                              backgroundColor: "#09689A",
+                              verticalAlign: "middle",
+                              border: "4px solid #fff",
+                            }}
+                            size={145}
+                          >
+                            {data?.firstName?.substring(0, 2)}
+                          </Avatar>
+                        )
+                      }
+                    />
                     {data.affiliation && (
                       <div className="topbar-entity-image-holder">
                         <Avatar
