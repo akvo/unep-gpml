@@ -537,6 +537,7 @@ const StakeholderDetail = ({
                 relatedContent={ownedResources}
                 title="Content on the platform"
                 isShownPagination={true}
+                dataCount={ownedResourcesCount}
                 relatedContentPage={ownedResourcesPage}
                 relatedContentCount={ownedResourcesCount}
                 getRelatedContent={getOwnedResources}

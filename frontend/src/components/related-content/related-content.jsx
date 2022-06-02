@@ -15,11 +15,12 @@ import event from "../../images/placeholders/initiative-placeholder.png";
 
 const RelatedContent = ({
   data,
-  relatedContent,
   title,
+  relatedContent,
+  dataCount,
+  relatedContentCount,
   isShownPagination,
   relatedContentPage,
-  relatedContentCount,
   getRelatedContent,
 }) => {
   const CardComponent = ({
@@ -169,9 +170,9 @@ const RelatedContent = ({
       title={
         <div className="related-content-title-wrapper">
           <div className="related-content-title">{title}</div>
-          <div className="related-content-count">
-            Total {relatedContent && relatedContent?.length}
-          </div>
+          {dataCount && (
+            <div className="related-content-count">Total {dataCount}</div>
+          )}
         </div>
       }
       getRef={relatedContent}
