@@ -77,7 +77,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                     }}
                     size={150}
                   >
-                    {profile?.name?.substring(0, 2)}
+                    {profile?.firstName?.substring(0, 2)}
                   </Avatar>
                 )}
               </div>
