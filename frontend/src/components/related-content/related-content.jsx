@@ -197,6 +197,7 @@ const RelatedContent = ({
                     ? `calc(100% - 16px) auto`
                     : `calc(100% - 16px) calc(100% - 16px)`,
                   backgroundRepeat: "no-repeat",
+                  minHeight: isShownPagination ? "216px" : "195px",
                 }}
               >
                 <div>
