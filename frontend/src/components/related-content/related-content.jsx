@@ -1,6 +1,6 @@
 import React from "react";
 import "./style.scss";
-import { Col, Avatar, Card } from "antd";
+import { Col, Avatar, Card, Pagination } from "antd";
 import Carousel from "react-multi-carousel";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
@@ -13,7 +13,15 @@ import technology from "../../images/placeholders/technology-placeholder.png";
 import initiative from "../../images/placeholders/initiative-placeholder.png";
 import event from "../../images/placeholders/initiative-placeholder.png";
 
-const RelatedContent = ({ data, relatedContent, title }) => {
+const RelatedContent = ({
+  data,
+  relatedContent,
+  title,
+  isShownPagination,
+  relatedContentPage,
+  relatedContentCount,
+  getRelatedContent,
+}) => {
   const CardComponent = ({
     title,
     style,
@@ -252,6 +260,19 @@ const RelatedContent = ({ data, relatedContent, title }) => {
           );
         })}
       </Carousel>
+
+      {isShownPagination && (
+        <div className="pagination-wrapper">
+          <Pagination
+            showSizeChanger={false}
+            defaultCurrent={1}
+            current={relatedContentPage + 1}
+            pageSize={8}
+            total={relatedContentCount || 0}
+            onChange={(n, size) => getRelatedContent(n - 1)}
+          />
+        </div>
+      )}
     </CardComponent>
   );
 };

@@ -1455,6 +1455,10 @@ const DetailsView = ({
                     data={data}
                     title="Related content"
                     relatedContent={data?.relatedContent}
+                    isShownPagination={false}
+                    relatedContentPage
+                    relatedContentCount
+                    getRelatedContent
                   />
                 )}
               {profile && (

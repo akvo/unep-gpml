@@ -290,7 +290,7 @@ const StakeholderDetail = ({
     (n) => {
       setOwnedResourcesPage(n);
       const searchParms = new URLSearchParams();
-      searchParms.set("limit", 3);
+      searchParms.set("limit", 12);
       searchParms.set("page", n);
       searchParms.set("association", "owner");
       const url = `/stakeholder/${params.id}/associated-topics?${String(
@@ -314,7 +314,7 @@ const StakeholderDetail = ({
     (n) => {
       setBookedResourcesPage(n);
       const searchParms = new URLSearchParams();
-      searchParms.set("limit", 3);
+      searchParms.set("limit", 12);
       searchParms.set("page", n);
       searchParms.set("association", "interested in");
       const url = `/stakeholder/${params.id}/associated-topics?${String(
@@ -713,6 +713,10 @@ const StakeholderDetail = ({
                 data={[]}
                 relatedContent={ownedResources || []}
                 title="Owned resources"
+                isShownPagination={true}
+                relatedContentPage={ownedResourcesPage}
+                relatedContentCount={ownedResourcesCount}
+                getRelatedContent={getOwnedResources}
               />
               // <CardComponent
               //   title={"Owned resources"}
@@ -817,6 +821,10 @@ const StakeholderDetail = ({
                 data={[]}
                 relatedContent={bookedResources || []}
                 title="Bookmarked resources "
+                isShownPagination={true}
+                relatedContentPage={bookedResourcesPage}
+                relatedContentCount={bookedResourcesCount}
+                getRelatedContent={getBookedResources}
               />
               // <CardComponent
               //   title={"Bookmarked resources"}
