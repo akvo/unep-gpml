@@ -5,6 +5,13 @@ import Carousel from "react-multi-carousel";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
 import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
+import technicalResource from "../../images/placeholders/technical-resource-placeholder.png";
+import actionPlan from "../../images/placeholders/action-plan-placeholder.png";
+import policy from "../../images/placeholders/policy-placeholder.png";
+import financingResource from "../../images/placeholders/financing-resource-placeholder.png";
+import technology from "../../images/placeholders/technology-placeholder.png";
+import initiative from "../../images/placeholders/initiative-placeholder.png";
+import event from "../../images/placeholders/initiative-placeholder.png";
 
 const RelatedContent = ({ data, relatedContent, title }) => {
   const CardComponent = ({
@@ -88,6 +95,44 @@ const RelatedContent = ({ data, relatedContent, title }) => {
     return t;
   };
 
+  const defaultImage = (item) => {
+    if (!item?.image) {
+      if (
+        item?.type === "action_plan" ||
+        item?.type?.toLowerCase() === "action plan"
+      ) {
+        return actionPlan;
+      }
+      if (item?.type?.toLowerCase() === "policy") {
+        return policy;
+      }
+      if (item?.type?.toLowerCase() === "technology") {
+        return technology;
+      }
+      if (item?.type?.toLowerCase() === "event") {
+        return event;
+      }
+      if (
+        item?.type?.toLowerCase() === "initiative" ||
+        item?.type?.toLowerCase() === "project"
+      ) {
+        return initiative;
+      }
+      if (
+        item?.type === "technical_resource" ||
+        item?.type?.toLowerCase() === "technical resource"
+      ) {
+        return technicalResource;
+      }
+      if (
+        item?.type === "financing_resource" ||
+        item?.type?.toLowerCase() === "financing resource"
+      ) {
+        return financingResource;
+      }
+    }
+  };
+
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
@@ -141,9 +186,13 @@ const RelatedContent = ({ data, relatedContent, title }) => {
                 href={`/${getType(item?.type)}/${item.id}`}
                 className="description-holder"
                 style={{
-                  backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${item?.image})`,
+                  backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${
+                    item?.image ? item?.image : defaultImage(item)
+                  })`,
                   backgroundPosition: "center",
-                  backgroundSize: "calc(100% - 16px) calc(100% - 16px)",
+                  backgroundSize: item.image
+                    ? `calc(100% - 16px) auto`
+                    : `calc(100% - 16px) calc(100% - 16px)`,
                   backgroundRepeat: "no-repeat",
                 }}
               >
@@ -193,13 +242,11 @@ const RelatedContent = ({ data, relatedContent, title }) => {
                 </div>
               </a>
               <div className="slider-card">
-                {item?.image && (
-                  <img
-                    className="related-content-image"
-                    src={item?.image}
-                    alt={item?.type}
-                  />
-                )}
+                <img
+                  className="related-content-image"
+                  src={item?.image ? item?.image : defaultImage(item)}
+                  alt={item?.type}
+                />
               </div>
             </Col>
           );
