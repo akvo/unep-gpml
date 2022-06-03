@@ -203,7 +203,7 @@
       (assoc profile :non_member_organisation (-> profile :org :id) :affiliation nil))))
 
 (defn update-stakeholder [db mailjet-config {:keys [id] :as body-params} old-profile]
-  (let [tags (into [] (concat (:tags body-params) (:offering body-params) (:seeking body-params)))
+  (let [tags (:tags body-params)
         org (:org body-params)
         new-profile (merge (dissoc old-profile :non_member_organisation)
                            (if (:non_member_organisation body-params)
