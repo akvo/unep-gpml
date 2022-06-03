@@ -47,7 +47,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start-fe": "PORT=3001 react-scripts start",
+    "start-fe": "REACT_APP_FEENV=true PORT=3001 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
