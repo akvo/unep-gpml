@@ -282,6 +282,17 @@ const Root = () => {
       "event",
       "financing_resource",
     ];
+    const popularTags = [
+      "plastics",
+      "waste management",
+      "marine litter",
+      "capacity building",
+      "product by design",
+      "source to sea",
+    ];
+    if (query?.tag?.length === 0) {
+      searchParms.set("incCountsForTags", popularTags);
+    }
     if (query?.topic?.length === 0) {
       if (
         (query?.startDate && query?.startDate?.length !== 0) ||
@@ -332,12 +343,12 @@ const Root = () => {
       newQuery["offset"] = 0;
     }
 
-    if (newQuery?.tag?.length === 0) {
-      newQuery["incCountsForTags"] = [];
-    }
-    if (popularTags.includes(value[0])) {
-      newQuery["incCountsForTags"] = value[0];
-    }
+    // if (newQuery?.tag?.length === 0) {
+    //   newQuery["incCountsForTags"] = [];
+    // }
+    // if (popularTags.includes(value[0])) {
+    newQuery["incCountsForTags"] = popularTags;
+    // }
 
     // Remove empty query
     const arrayOfQuery = Object.entries(newQuery)?.filter(

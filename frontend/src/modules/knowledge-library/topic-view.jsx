@@ -24,6 +24,40 @@ const TopicView = ({ updateQuery, query, results, countData }) => {
 
   const selectedTag = countData.find((item) => item?.topic === selectedTopic);
 
+  const topics = countData
+    .filter(
+      (item) =>
+        item.topic === "plastics" ||
+        item.topic === "waste management" ||
+        item.topic === "marine litter" ||
+        item.topic === "capacity building" ||
+        item.topic === "product by design" ||
+        item.topic === "source to sea"
+    )
+    .map((item) => {
+      return {
+        id: item?.topic,
+        topic: item?.topic,
+        tag: item?.topic,
+        count: item?.count,
+      };
+    });
+
+  const dataTag = topics.map((item) => item?.tag);
+
+  const nonExistedTopic = popularTags
+    .filter((item) => !dataTag.includes(item))
+    .map((x) => {
+      return {
+        id: x,
+        topic: x,
+        tag: x,
+        count: 0,
+      };
+    });
+
+  const allTopics = [...nonExistedTopic, topics].flat();
+
   const handlePopularTopicChartClick = (params) => {
     const { name, tag } = params?.data;
     setSelectedTopic(name?.toLowerCase());
@@ -99,12 +133,7 @@ const TopicView = ({ updateQuery, query, results, countData }) => {
   // Apply when there is a selected topic
   useEffect(() => {
     if (results.length > 0) {
-      if (selectedTag && selectedTopic && savedTopic?.length > 0) {
-        getPopularTopics(`/tag/topic/popular?tags=${selectedTopic}&limit=6`);
-      }
-      if (!selectedTopic) {
-        getPopularTopics(`/tag/topic/popular`);
-      }
+      setSortedPopularTopics(allTopics);
     } else {
       const topics = popularTags.map((topic) => {
         return {
@@ -118,7 +147,7 @@ const TopicView = ({ updateQuery, query, results, countData }) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTopic, results, selectedTag]);
+  }, [selectedTopic, results, countData]);
 
   return (
     <>
