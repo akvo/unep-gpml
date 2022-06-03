@@ -57,18 +57,7 @@ import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
 import { TrimText } from "../../utils/string";
-
-let colors = [
-  "#FFB800",
-  "#98B527",
-  "#38A259",
-  "#008776",
-  "#006776",
-  "#2F4858",
-  "#FFC1B4",
-  "#FE8A7F",
-  "#C1554E",
-];
+import { colors } from "../../utils/misc";
 
 const getType = (type) => {
   let t = "";
