@@ -195,18 +195,18 @@ const SignupForm = ({
     );
   };
 
-  newSchema["expertiesActivities"].offering.options = tags?.offering?.map(
-    (x) => ({
-      value: x.id,
-      label: x.tag,
-    })
-  );
-  newSchema["expertiesActivities"].seeking.options = tags?.seeking?.map(
-    (x) => ({
-      value: x.id,
-      label: x.tag,
-    })
-  );
+  const array = Object.keys(tags)
+    .map((k) => tags[k])
+    .flat();
+
+  newSchema["expertiesActivities"].offering.options = array?.map((x) => ({
+    value: x.id,
+    label: x.tag,
+  }));
+  newSchema["expertiesActivities"].seeking.options = array?.map((x) => ({
+    value: x.id,
+    label: x.tag,
+  }));
 
   newSchema["personalDetails"][
     "socialLocation"

@@ -27,6 +27,7 @@ import entity from "./entity";
 import stakeholder from "./stakeholder";
 import entityUiSchema from "./entity-ui-schema.json";
 import stakeholderUiSchema from "./stakeholder-ui-schema.json";
+import { tagsMap } from "../../utils/misc";
 
 import { UIStore } from "../../store";
 import { withRouter } from "react-router-dom";
@@ -192,17 +193,7 @@ const SignUpForm = withRouter(
           delete data.authorizeSubmission;
 
           if (data.orgExpertise) {
-            data.org.tags = data.orgExpertise.map((x) => {
-              return {
-                ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
-                tag:
-                  Object.values(tags)
-                    .flat()
-                    .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
-
-                ...(isNaN(parseInt(x)) && { tag_category: "general" }),
-              };
-            });
+            data.org.tags = tagsMap(data.orgExpertise, "general", tags);
             delete data.orgExpertise;
             delete data.expertise;
           }

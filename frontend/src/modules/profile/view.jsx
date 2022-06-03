@@ -26,6 +26,8 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 
+import { tagsMap } from "../../utils/misc";
+
 const userRoles = new Set(roles);
 
 const reviewerRoles = new Set(["REVIEWER", "ADMIN"]);
@@ -283,6 +285,16 @@ const ProfileView = ({ relations }) => {
     ) {
       vals.org.geoCoverageValue = null;
     }
+
+    vals.seeking = tagsMap(vals?.seeking, "seeking", tags);
+
+    vals.offering = tagsMap(vals?.offering, "offering", tags);
+
+    vals.tags = [...vals.seeking, ...vals.offering];
+
+    delete vals.seeking;
+    delete vals.offering;
+
     api
       .put("/profile", vals)
       .then(() => {

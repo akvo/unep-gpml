@@ -131,3 +131,16 @@ export const colors = [
   "#FE8A7F",
   "#C1554E",
 ];
+export const tagsMap = (array, category, tags) => {
+  console.log(tags);
+  return array.map((x) => {
+    return {
+      ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
+      tag:
+        Object.values(tags)
+          .flat()
+          .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
+      tag_category: category,
+    };
+  });
+};

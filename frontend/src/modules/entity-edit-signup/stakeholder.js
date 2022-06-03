@@ -59,7 +59,7 @@ const getSchema = ({
     ...nonMemberOrganisations,
   ]?.map((x) => x.name);
 
-  let array = Object.keys(tags)
+  const array = Object.keys(tags)
     .map((k) => tags[k])
     .flat();
 
