@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { orderBy } from "lodash";
 import api from "../../utils/api";
 import TopicChart from "../chart/topic-chart";
-import { titleCase } from "../../utils/string";
 import TopicBar from "../chart/topic-bar";
 
 const TopicView = ({ updateQuery, query, results, countData }) => {
@@ -68,6 +67,7 @@ const TopicView = ({ updateQuery, query, results, countData }) => {
               topic: item?.tag,
               tag: item?.tag,
               count: item?.count,
+              selectedTag,
             };
           }
         });
@@ -99,10 +99,11 @@ const TopicView = ({ updateQuery, query, results, countData }) => {
   // Apply when there is a selected topic
   useEffect(() => {
     if (results.length > 0) {
-      if (selectedTopic && savedTopic?.length > 0) {
+      if (selectedTag && selectedTopic && savedTopic?.length > 0) {
         getPopularTopics(`/tag/topic/popular?tags=${selectedTopic}&limit=6`);
-      } else {
-        !selectedTopic && getPopularTopics(`/tag/topic/popular`);
+      }
+      if (!selectedTopic) {
+        getPopularTopics(`/tag/topic/popular`);
       }
     } else {
       const topics = popularTags.map((topic) => {
