@@ -135,9 +135,7 @@
    :cv cv
    :country country
    :representation representation
-   :tags (-> (filter (comp #{"general"} :category) tags) first :tags)
-   :offering (-> (filter (comp #{"offering"} :category) tags) first :tags)
-   :seeking (-> (filter (comp #{"seeking"} :category) tags) first :tags)
+   :tags tags
    :geo_coverage_type geo_coverage_type
    :geo_coverage_value geo
    :org org
@@ -188,7 +186,9 @@
 
 (defn get-stakeholder-profile [db stakeholder]
   (let [conn (:spec db)
-        tags (db.stakeholder/stakeholder-tags conn stakeholder)
+        tags (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
+                                                      :resource-col "stakeholder"
+                                                      :resource-id (:id stakeholder)})
         org (db.organisation/organisation-by-id conn {:id (:affiliation stakeholder)})
         geo-type (:geo_coverage_type stakeholder)
         geo-value (db.stakeholder/get-stakeholder-geo conn stakeholder)
