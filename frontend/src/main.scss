@@ -48,9 +48,8 @@ i,
 input,
 ::placeholder,
 .ant-input::-webkit-input-placeholder {
-  font-family: "Jost", "Segoe UI",
-    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-    "Helvetica Neue", sans-serif;
+  font-family: "Jost", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
 // Typography
@@ -435,11 +434,11 @@ h4 {
       font-size: 22px;
       margin-right: 10px;
     }
-    @media screen and (max-width: 1350px){
-      span.text{
+    @media screen and (max-width: 1350px) {
+      span.text {
         display: none;
       }
-      svg{
+      svg {
         margin-right: 0;
       }
     }

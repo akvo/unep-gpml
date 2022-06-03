@@ -175,6 +175,7 @@ select sr.id, sr.association as role, s.id as stakeholder_id, concat_ws(' ', s.f
   left join stakeholder s
   on sr.stakeholder = s.id
   where sr.resource = :id
+  and sr.is_bookmark = false;
 
 -- :name all-resources
 -- :doc List all resources
@@ -201,15 +202,7 @@ select id, title
 
 -- :name related-content-by-id
 -- :doc Get related content by id
-select res.id, res.title, res.summary as description from resource r
+select res.id, res.title, res.summary as description, res.image, replace(lower(res.type), ' ', '_') as type from resource r
   left join resource res
   on res.id = ANY(r.related_content)
   where r.id = :id
-
--- :name tags-by-id
--- :doc Get tags by id
-select t.id, t.tag from resource_tag rt
-  left join tag t
-  on rt.tag = t.id
-  where rt.resource = :id
-  and t.review_status = 'APPROVED';

@@ -4,6 +4,8 @@ const useQuery = () => {
   const srcParams = new URLSearchParams(useLocation().search);
   const ret = {
     country: [],
+    networkType: [],
+    tag: [],
     page: [],
   };
 

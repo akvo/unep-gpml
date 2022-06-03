@@ -337,15 +337,19 @@
                                         ["/favorite" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                    #ig/ref :gpml.auth/auth-required]}
                                          [""
-                                          {:get {:summary "List of associations between Stakeholder and topics"
-                                                 :swagger {:tags ["favorite"]
-                                                           :security [{:id_token []}]}
-                                                 :handler #ig/ref :gpml.handler.favorite/get}
-                                           :post {:summary "Creates or updates relations between Stakeholder and topics"
+                                          {:post {:summary "Creates or updates relations between Stakeholder and topics"
                                                   :swagger {:tags ["favorite"]
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.favorite/post-params}
-                                                  :handler #ig/ref :gpml.handler.favorite/post}}]]
+                                                  :handler #ig/ref :gpml.handler.favorite/post}}]
+                                         ["/{topic-type}/{topic-id}"
+                                          {:get {:summary "List of associations between Stakeholder and topics"
+                                                 :swagger {:tags ["favorite"]
+                                                           :security [{:id_token []}]}
+                                                 :parameters {:path [:map
+                                                                     [:topic-type #ig/ref :gpml.handler.detail/topics]
+                                                                     [:topic-id int?]]}
+                                                 :handler #ig/ref :gpml.handler.favorite/get}}]]
                                         ["/auth" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          ["/{topic-type}/{topic-id}"
                                           [""

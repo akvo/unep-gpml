@@ -119,11 +119,9 @@ const TabComponent = ({
             </a>
           </li>
         )}
-        {profile && profile.reviewStatus === "APPROVED" && (
-          <li>
-            <a onClick={() => reviewsRef.current.scrollIntoView()}>Comments</a>
-          </li>
-        )}
+        <li>
+          <a onClick={() => reviewsRef.current.scrollIntoView()}>Comments</a>
+        </li>
       </ul>
     </div>
   );
@@ -599,9 +597,9 @@ const renderItemValues = (
                   data[key][customValue]}
                 {value === "custom" &&
                   type === "startEndDate" &&
-                  moment(data[arrayCustomValue[0]]).format("DD MMM YYYY") +
+                  moment.utc(data[arrayCustomValue[0]]).format("DD MMM YYYY") +
                     " - " +
-                    moment(data[arrayCustomValue[1]]).format("DD MMM YYYY")}
+                    moment.utc(data[arrayCustomValue[1]]).format("DD MMM YYYY")}
                 {data[key] &&
                   value === "isoCode" &&
                   type === "array" &&
@@ -950,7 +948,7 @@ const DetailsView = ({
         });
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
-        api.get("/favorite").then((resp) => {
+        api.get(`/favorite/${params.type}/${params.id}`).then((resp) => {
           setRelations(resp.data);
         });
       }, 100);
@@ -1457,14 +1455,16 @@ const DetailsView = ({
                             <div className="image-holder">
                               <img
                                 src={
-                                  require(`../../images/${icons[params.type]}`)
+                                  require(`../../images/${icons[item?.type]}`)
                                     .default
                                 }
                               />
                             </div>
 
                             <div className="description-holder">
-                              <h4>{data?.type ? data.type : ""}</h4>
+                              <h4>
+                                {item?.type ? item.type.replace(/_/g, " ") : ""}
+                              </h4>
                               <h6>{item.title}</h6>
                               <div className="bottom-panel">
                                 <div>
@@ -1484,7 +1484,7 @@ const DetailsView = ({
                                     )}
                                   </Avatar.Group>
                                 </div>
-                                <a href={`/${params.type}/${item.id}`}>
+                                <a href={`/${item?.type}/${item.id}`}>
                                   <div className="read-more">
                                     Read More <ArrowRightOutlined />
                                   </div>
@@ -1501,10 +1501,10 @@ const DetailsView = ({
               {profile && (
                 <CardComponent title="Comments" getRef={reviews}>
                   <div className="comments-container">
-                    <div className="comment-list-container">
-                      {comments &&
-                        comments.length > 0 &&
-                        comments?.map((item) => (
+                    {comments &&
+                      comments.length > 0 &&
+                      comments?.map((item) => (
+                        <div className="comment-list-container">
                           <CommentList
                             item={item}
                             showReplyBox={showReplyBox}
@@ -1518,8 +1518,13 @@ const DetailsView = ({
                             setEditComment={setEditComment}
                             onEditComment={onEditComment}
                           />
-                        ))}
-                    </div>
+                        </div>
+                      ))}
+                    {!isAuthenticated && (
+                      <p className="no-login">
+                        Please login to comment on this resource
+                      </p>
+                    )}
                     {profile && profile.reviewStatus === "APPROVED" && (
                       <Form layout="vertical">
                         <FinalForm

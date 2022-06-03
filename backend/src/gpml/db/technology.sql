@@ -180,6 +180,7 @@ select st.id, st.association as role, s.id as stakeholder_id, concat_ws(' ', s.f
   left join stakeholder s
   on st.stakeholder = s.id
   where st.technology = :id
+  and st.is_bookmark = false;
 
 -- :name all-technologies
 -- :doc List all technologies
@@ -188,15 +189,7 @@ select id, name
 
 -- :name related-content-by-id
 -- :doc Get related content by id
-select tech.id, tech.name as title, tech.remarks as description from technology t
+select tech.id, tech.name as title, tech.remarks as description, tech.image, 'technology' as type from technology t
   left join technology tech
   on tech.id = ANY(t.related_content)
   where t.id = :id
-
--- :name tags-by-id
--- :doc Get tags by id
-select t.id, t.tag from technology_tag tt
-  left join tag t
-  on tt.tag = t.id
-  where tt.technology = :id
-  and t.review_staus='APPROVED';

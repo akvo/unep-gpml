@@ -619,10 +619,8 @@
        topic-ctes
        topic-cte]))))
 
-(defn generate-get-topics
-  [{:keys [count-only? order-by limit offset descending]}]
-  (if count-only?
-    "SELECT topic, COUNT(*) FROM cte_results GROUP BY topic
+(def ^:const ^:private count-aggregate-query-raw-sql
+  "SELECT topic, COUNT(*) FROM cte_results GROUP BY topic
      UNION ALL
      SELECT 'gpml_member_entities' AS topic, COUNT(*)
      FROM organisation
@@ -634,22 +632,42 @@
      WHERE (SELECT COUNT(t.*)
             FROM json_array_elements((CASE WHEN (json->>'tags'::TEXT = '') IS NOT FALSE THEN '[]'::JSON
                                     ELSE (json->>'tags')::JSON END)) t WHERE t->>'tag' = 'capacity building') > 0
-     GROUP BY 1"
+     GROUP BY 1")
+
+(def ^:const ^:private tags-count-aggregate-hugsql
+  "SELECT tags->>'tag' AS topic, COUNT(*)
+   FROM cte_results t
+   JOIN json_array_elements(CASE WHEN (t.json->>'tags'::TEXT = '') IS NOT FALSE THEN '[]'::JSON
+                            ELSE (t.json->>'tags')::JSON END) tags ON LOWER(tags->>'tag') IN (:v*:tags-to-count)
+   GROUP BY 1")
+
+(defn- generate-count-aggregate-query
+  [{:keys [tags-to-count]}]
+  (str
+   count-aggregate-query-raw-sql
+   (when (seq tags-to-count)
+     (str " UNION ALL " tags-count-aggregate-hugsql))))
+
+(defn- generate-get-topics-query
+  [{:keys [order-by limit offset descending]}]
+  (let [order (if descending "DESC" "ASC")
+        order-by-clause (if (seq order-by)
+                          (format "ORDER BY json->>'%s' %s" order-by order)
+                          "ORDER BY (COALESCE(json->>'start_date', json->>'created'))::timestamptz DESC")]
     (str/join
      " "
-     (list
-      "SELECT * FROM cte_results"
-      (if (seq order-by)
-        (format "ORDER BY json->>'%s'" order-by)
-        "ORDER BY
-       (COALESCE(json->>'start_date', json->>'created'))::timestamptz DESC,
-       (json->>'id')::int")
-      (when descending
-        "DESC")
+     ["SELECT * FROM cte_results"
+      order-by-clause
       (when limit
         "LIMIT :limit")
       (when offset
-        "OFFSET :offset")))))
+        "OFFSET :offset")])))
+
+(defn generate-get-topics
+  [{:keys [count-only?] :as opts}]
+  (if count-only?
+    (generate-count-aggregate-query opts)
+    (generate-get-topics-query opts)))
 
 (defn- generic-json-array-lookup-cond
   [json-column values-to-lookup]

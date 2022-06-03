@@ -948,7 +948,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
           ? "unset"
           : totalRequiredFields === 0
           ? "unset"
-          : "none";
+          : "inline";
       return (
         <div className="custom-step-title">
           <span>{parentTitle}</span>

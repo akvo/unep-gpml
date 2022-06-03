@@ -353,7 +353,7 @@ const StakeholderDetail = ({
         });
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
-        api.get("/favorite").then((resp) => {
+        api.get(`/favorite/${params.type}/${params.id}`).then((resp) => {
           setRelations(resp.data);
         });
       }, 100);
@@ -707,7 +707,7 @@ const StakeholderDetail = ({
             </Col>
           </Row>
           <div className="owned-resources-wrapper">
-            {bookedResources.length > 0 && (
+            {ownedResources.length > 0 && (
               <CardComponent
                 title={"Owned resources"}
                 style={{

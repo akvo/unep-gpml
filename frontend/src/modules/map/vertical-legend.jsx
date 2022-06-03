@@ -137,7 +137,8 @@ const VerticalLegend = ({
         data.topic !== "stakeholder" &&
         data.topic !== "organisation" &&
         data.topic !== "gpml_member_entities" &&
-        data.topic !== "non_member_organisation"
+        data.topic !== "non_member_organisation" &&
+        data.topic !== "capacity_building"
     );
 
   const resourcesPerTransnationalList = ResourcesCountPerTransnationalGroups.map(
@@ -160,7 +161,10 @@ const VerticalLegend = ({
             <div>
               {tTypes
                 .filter(
-                  (topic) => topic !== "organisation" && topic !== "stakeholder"
+                  (topic) =>
+                    topic !== "organisation" &&
+                    topic !== "stakeholder" &&
+                    topic !== "capacity_building"
                 )
                 .map((topic) => {
                   const topicChecker = () => {
@@ -209,7 +213,12 @@ const VerticalLegend = ({
 
   const totalResourcesContent = () =>
     tTypes
-      .filter((topic) => topic !== "organisation" && topic !== "stakeholder")
+      .filter(
+        (topic) =>
+          topic !== "organisation" &&
+          topic !== "stakeholder" &&
+          topic !== "capacity_building"
+      )
       .map((topic) => {
         const topicChecker = () => {
           if (topic === "actionPlan") {

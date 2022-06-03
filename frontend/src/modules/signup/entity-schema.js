@@ -129,6 +129,7 @@ export const schema = {
         "org.name": {
           title: "What is the name of your Entity?",
           type: "string",
+          enum: [],
         },
         "org.representativeGroup": {
           title: "Which representative group fits your Entity?",
