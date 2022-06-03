@@ -171,9 +171,7 @@
       (is (= "Doe" (-> (:body resp) :last_name)))
       (is (= "SUBMITTED" (-> (:body resp) :review_status)))
       (testing "New incomplete profile is created"
-        (is (= "https://ui-avatars.com/api/?size=480&name=John+Doe" (-> (:body resp) :photo)))
         (is (= nil (-> (:body resp) :linkedin)))
-        (is (= "https://ui-avatars.com/api/?size=480&name=John+Doe" (-> (:body resp) :photo)))
         (is (= nil (-> (:body resp) :org)))))))
 
 (deftest handler-put-test

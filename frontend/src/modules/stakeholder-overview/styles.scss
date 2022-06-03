@@ -76,7 +76,7 @@
     align-items: center;
     position: absolute;
     bottom: -5px;
-    right: 5px;
+    right: 20px;
     overflow: hidden;
     width: 40px;
     height: 40px;
@@ -248,7 +248,7 @@
       .image-wrapper {
         display: flex;
         align-items: center;
-        position: relative;
+        overflow: hidden;
         border-radius: 50%;
         width: 100%;
         max-width: 9em;

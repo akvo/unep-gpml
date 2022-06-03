@@ -51,6 +51,18 @@ import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
 import { TrimText } from "../../utils/string";
 
+let colors = [
+  "#FFB800",
+  "#98B527",
+  "#38A259",
+  "#008776",
+  "#006776",
+  "#2F4858",
+  "#FFC1B4",
+  "#FE8A7F",
+  "#C1554E",
+];
+
 const getType = (type) => {
   let t = "";
   switch (type) {
@@ -218,6 +230,7 @@ const StakeholderDetail = ({
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const history = useHistory();
   const [data, setData] = useState(null);
+  const [bgColor, setColor] = useState(null);
   const [relations, setRelations] = useState([]);
   const [ownedResources, setOwnedResources] = useState([]);
   const [bookedResources, setBookedResources] = useState([]);
@@ -314,6 +327,7 @@ const StakeholderDetail = ({
         .get(`/detail/${params.type}/${params.id}`)
         .then((d) => {
           setData(d.data);
+          setColor(colors[Math.floor(Math.random() * colors.length)]);
           getOwnedResources(0);
           getBookedResources(0);
         })
@@ -390,7 +404,9 @@ const StakeholderDetail = ({
                         ) : (
                           <Avatar
                             style={{
-                              backgroundColor: "#09689A",
+                              backgroundColor: bgColor,
+                              fontSize: "62px",
+                              fontWeight: "bold",
                               verticalAlign: "middle",
                               border: "4px solid #fff",
                             }}
@@ -562,7 +578,12 @@ const StakeholderDetail = ({
                                     size="large"
                                     maxStyle={{
                                       color: "#f56a00",
-                                      backgroundColor: "#fde3cf",
+                                      backgroundColor:
+                                        colors[
+                                          Math.floor(
+                                            Math.random() * colors.length
+                                          )
+                                        ],
                                       cursor: "pointer",
                                     }}
                                   >
@@ -576,7 +597,13 @@ const StakeholderDetail = ({
                                           ) : (
                                             <Avatar
                                               style={{
-                                                backgroundColor: "#09689A",
+                                                backgroundColor:
+                                                  colors[
+                                                    Math.floor(
+                                                      Math.random() *
+                                                        colors.length
+                                                    )
+                                                  ],
                                                 verticalAlign: "middle",
                                               }}
                                               size={40}
@@ -651,8 +678,15 @@ const StakeholderDetail = ({
                                     ) : (
                                       <Avatar
                                         style={{
-                                          backgroundColor: "#09689A",
+                                          backgroundColor:
+                                            colors[
+                                              Math.floor(
+                                                Math.random() * colors.length
+                                              )
+                                            ],
                                           verticalAlign: "middle",
+                                          fontSize: "62px",
+                                          fontWeight: "bold",
                                         }}
                                         size={195}
                                       >

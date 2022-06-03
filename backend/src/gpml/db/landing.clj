@@ -14,7 +14,21 @@
 
 (defn- entity-count-by-country-group-query
   [entity-name]
-  (let [entity-name-from-clause (if (= entity-name "non_member_organisation")
+  (let [entity-name-select-clause (cond
+                                    (= entity-name "resource")
+                                    "REPLACE(LOWER(e.type), ' ', '_')"
+
+                                    ;;TODO: discuss initiative naming
+                                    ;;with FE team. Ideally we should
+                                    ;;stop using `project` name and
+                                    ;;use the real table name which is
+                                    ;;`initiative`.
+                                    (= entity-name "initiative")
+                                    "'project'"
+
+                                    :else
+                                    (str "'" entity-name "'"))
+        entity-name-from-clause (if (= entity-name "non_member_organisation")
                                   "organisation"
                                   entity-name)
         where-cond (cond-> ""
@@ -22,35 +36,34 @@
                      (str " AND e.is_member IS FALSE")
 
                      (= entity-name "organisation")
-                     (str " AND e.is_member IS TRUE"))]
+                     (str " AND e.is_member IS TRUE"))
+        extra-group-by-field (if (= entity-name "resource")
+                               ", e.type"
+                               "")]
     (apply
      format
-     "SELECT
-         '%s' AS entity,
-         country_group AS geo_coverage,
-         COUNT(e.*)
-     FROM
-         %s e
-     JOIN
-         %s_geo_coverage egc ON e.id = egc.%s
-     WHERE egc.country_group IS NOT NULL %s
-     GROUP BY entity, geo_coverage"
-     (flatten [entity-name (repeat 3 entity-name-from-clause) where-cond]))))
+     "SELECT DISTINCT ON (cgc.country_group, e.id) cgc.country_group AS country_group_id,
+	     %s AS entity,
+             COUNT(e.id) entity_count
+      FROM %s_geo_coverage egc
+      LEFT JOIN %s e ON e.id = egc.%s
+      LEFT JOIN country_group_country cgc ON egc.country = cgc.country
+      OR egc.country_group = cgc.country_group
+      WHERE e.review_status = 'APPROVED' %s
+      GROUP BY cgc.country_group, e.id, cgc.country %s"
+     (flatten [entity-name-select-clause
+               (repeat 3 entity-name-from-clause)
+               where-cond extra-group-by-field]))))
 
-(defn generate-entity-count-by-country-group-query-cte
-  [{:keys [cte-name]} _opts]
-  (str
-   "WITH "
-   cte-name
-   " AS ("
-   (reduce (fn [acc entity]
-             (let [query (entity-count-by-country-group-query entity)]
-               (if (seq acc)
-                 (str acc " UNION ALL " query)
-                 query)))
-           ""
-           constants/geo-coverage-entity-tables)
-   ")"))
+(defn generate-entity-count-by-country-group-queries
+  [_ _]
+  (reduce (fn [acc entity]
+            (let [query (entity-count-by-country-group-query entity)]
+              (if (seq acc)
+                (str acc " UNION ALL " query)
+                query)))
+          ""
+          constants/geo-coverage-entity-tables))
 
 (def topic-counts
   (->> constants/topics

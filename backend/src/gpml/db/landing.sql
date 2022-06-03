@@ -41,10 +41,17 @@ GROUP BY geo_coverage;
 -- :name map-counts-by-country-group :? :*
 -- :doc Get the entity count per country group.
 -- :require [gpml.db.landing]
---~(#'gpml.db.landing/generate-entity-count-by-country-group-query-cte {:cte-name "country_group_counts"} {})
-SELECT geo_coverage AS country_group_id, json_object_agg(entity, count) AS counts
-FROM country_group_counts
-GROUP BY geo_coverage;
+WITH country_group_counts AS (
+--~(#'gpml.db.landing/generate-entity-count-by-country-group-queries {} {})
+),
+aggregate_country_group_counts AS (
+  SELECT country_group_id, entity, SUM(entity_count) AS total_entity_count
+  FROM country_group_counts
+  GROUP BY country_group_id, entity
+)
+SELECT country_group_id, json_object_agg(COALESCE(entity, 'project'), total_entity_count) AS counts
+FROM aggregate_country_group_counts
+GROUP BY country_group_id;
 
 -- :name summary
 -- :doc Get summary of count of entities and number of countries
