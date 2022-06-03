@@ -5,7 +5,7 @@ import TopicChart from "../chart/topic-chart";
 import { titleCase } from "../../utils/string";
 import TopicBar from "../chart/topic-bar";
 
-const TopicView = ({ updateQuery, query, results }) => {
+const TopicView = ({ updateQuery, query, results, countData }) => {
   const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const popularTags = [
@@ -22,6 +22,8 @@ const TopicView = ({ updateQuery, query, results }) => {
       return item;
     }
   });
+
+  const selectedTag = countData.find((item) => item?.topic === selectedTopic);
 
   const handlePopularTopicChartClick = (params) => {
     const { name, tag } = params?.data;
@@ -53,12 +55,21 @@ const TopicView = ({ updateQuery, query, results }) => {
       .get(url)
       .then((resp) => {
         const data = resp?.data.map((item, i) => {
-          return {
-            id: item?.tag,
-            topic: item?.tag,
-            tag: item?.tag,
-            count: item?.count,
-          };
+          if (selectedTag?.topic === item?.tag) {
+            return {
+              id: item?.tag,
+              topic: item?.tag,
+              tag: item?.tag,
+              count: selectedTag?.count || 0,
+            };
+          } else {
+            return {
+              id: item?.tag,
+              topic: item?.tag,
+              tag: item?.tag,
+              count: item?.count,
+            };
+          }
         });
         const dataTag = data.map((item) => item?.tag);
         const nonExistedTopic = popularTags
@@ -106,7 +117,7 @@ const TopicView = ({ updateQuery, query, results }) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTopic, results]);
+  }, [selectedTopic, results, selectedTag]);
 
   return (
     <>

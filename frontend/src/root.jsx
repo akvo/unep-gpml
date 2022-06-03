@@ -311,6 +311,15 @@ const Root = () => {
   };
 
   const updateQuery = (param, value) => {
+    const popularTags = [
+      "plastics",
+      "waste management",
+      "marine litter",
+      "capacity building",
+      "product by design",
+      "source to sea",
+    ];
+
     const topScroll = window.innerWidth < 640 ? 996 : 207;
     window.scrollTo({
       top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
@@ -318,10 +327,19 @@ const Root = () => {
     setLoading(true);
     const newQuery = { ...query };
     newQuery[param] = value;
+
     if (param !== "offset") {
       newQuery["offset"] = 0;
     }
 
+    if (newQuery?.tag?.length === 0) {
+      newQuery["incCountsForTags"] = [];
+    }
+    if (popularTags.includes(value[0])) {
+      newQuery["incCountsForTags"] = value[0];
+    }
+
+    // Remove empty query
     const arrayOfQuery = Object.entries(newQuery)?.filter(
       (item) => item[1]?.length !== 0
     );
