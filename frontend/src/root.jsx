@@ -332,7 +332,7 @@ const Root = () => {
       newQuery["offset"] = 0;
     }
 
-    if (query?.tag.length === 0) {
+    if (newQuery?.tag?.length === 0) {
       newQuery["incCountsForTags"] = [];
     }
     if (popularTags.includes(value[0])) {
