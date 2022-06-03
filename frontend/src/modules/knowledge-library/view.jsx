@@ -260,14 +260,15 @@ const KnowledgeLibrary = ({
       }
     };
     return Object.keys(query).map((key, index) => {
-      // don't render if key is limit and offset
+      // don't render if key is one of those listed below
       if (
         key === "limit" ||
         key === "offset" ||
         key === "q" ||
         key === "favorites" ||
         key === "descending" ||
-        key === "orderBy"
+        key === "orderBy" ||
+        key === "incCountsForTags"
       ) {
         return;
       }
@@ -443,7 +444,12 @@ const KnowledgeLibrary = ({
                       : `render-map-container`
                   }
                 >
-                  <TopicView {...{ updateQuery, query, results }} />
+                  <TopicView
+                    {...{ updateQuery, query, results }}
+                    countData={countData.filter(
+                      (count) => count.topic !== "gpml_member_entities"
+                    )}
+                  />
                 </Col>
               )}
             </Row>
