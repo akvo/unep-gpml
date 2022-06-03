@@ -119,3 +119,15 @@ export const publishStatusUIText = {
   UNAPPROVED: "Unpublished",
   UNAPPROVE: "Unpublish",
 };
+
+export const colors = [
+  "#FFB800",
+  "#98B527",
+  "#38A259",
+  "#008776",
+  "#006776",
+  "#2F4858",
+  "#FFC1B4",
+  "#FE8A7F",
+  "#C1554E",
+];
