@@ -121,7 +121,6 @@ export const publishStatusUIText = {
 };
 
 export const tagsMap = (array, category, tags) => {
-  console.log(tags);
   return array.map((x) => {
     return {
       ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
