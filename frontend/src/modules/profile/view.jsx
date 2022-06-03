@@ -26,6 +26,8 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 
+import { tagsMap } from "../../utils/misc";
+
 const userRoles = new Set(roles);
 
 const reviewerRoles = new Set(["REVIEWER", "ADMIN"]);
@@ -284,27 +286,9 @@ const ProfileView = ({ relations }) => {
       vals.org.geoCoverageValue = null;
     }
 
-    vals.seeking = vals?.seeking?.map((x) => {
-      return {
-        ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
-        tag:
-          Object.values(tags)
-            .flat()
-            .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
-        tag_category: "seeking",
-      };
-    });
+    vals.seeking = tagsMap(vals?.seeking, "seeking", tags);
 
-    vals.offering = vals?.offering?.map((x) => {
-      return {
-        ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
-        tag:
-          Object.values(tags)
-            .flat()
-            .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
-        tag_category: "offering",
-      };
-    });
+    vals.offering = tagsMap(vals?.offering, "offering", tags);
 
     vals.tags = [...vals.seeking, ...vals.offering];
 

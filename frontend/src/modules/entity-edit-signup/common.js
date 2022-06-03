@@ -1,3 +1,5 @@
+import { tagsMap } from "../../utils/misc";
+
 export default {
   feedCountry: (data, formData, group) => {
     if (data.country?.[formData[group].country]) {
@@ -6,30 +8,12 @@ export default {
   },
   feedSeeking: (data, formData, tags) => {
     if (data.seeking) {
-      data.seeking = data.seeking.map((x) => {
-        return {
-          ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
-          tag:
-            Object.values(tags)
-              .flat()
-              .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
-          tag_category: "seeking",
-        };
-      });
+      data.seeking = tagsMap(data.seeking, "seeking", tags);
     }
   },
   feedOffering: (data, formData, tags) => {
     if (data.offering) {
-      data.offering = data.offering.map((x) => {
-        return {
-          ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
-          tag:
-            Object.values(tags)
-              .flat()
-              .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
-          tag_category: "offering",
-        };
-      });
+      data.offering = tagsMap(data.offering, "offering", tags);
     }
   },
   feedTitle: (data, formData, group) => {

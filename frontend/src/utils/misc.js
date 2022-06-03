@@ -119,3 +119,17 @@ export const publishStatusUIText = {
   UNAPPROVED: "Unpublished",
   UNAPPROVE: "Unpublish",
 };
+
+export const tagsMap = (array, category, tags) => {
+  console.log(tags);
+  return array.map((x) => {
+    return {
+      ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
+      tag:
+        Object.values(tags)
+          .flat()
+          .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
+      tag_category: category,
+    };
+  });
+};
