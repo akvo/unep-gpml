@@ -16,15 +16,14 @@ const TopicView = ({ updateQuery, query, results, countData }) => {
     "product by design",
     "source to sea",
   ];
-  const capacityBuilding = countData.find(
-    (data) => data?.topic === "capacity_building"
-  );
 
   const savedTopic = popularTags.filter((item) => {
     if (query?.tag?.includes(item)) {
       return item;
     }
   });
+
+  const selectedTag = countData.find((item) => item?.topic === selectedTopic);
 
   const handlePopularTopicChartClick = (params) => {
     const { name, tag } = params?.data;
@@ -56,12 +55,12 @@ const TopicView = ({ updateQuery, query, results, countData }) => {
       .get(url)
       .then((resp) => {
         const data = resp?.data.map((item, i) => {
-          if (item?.tag.toLowerCase() === "capacity building") {
+          if (selectedTag?.topic === item?.tag) {
             return {
               id: item?.tag,
               topic: item?.tag,
               tag: item?.tag,
-              count: capacityBuilding?.count || 0,
+              count: selectedTag?.count || 0,
             };
           } else {
             return {
@@ -118,7 +117,7 @@ const TopicView = ({ updateQuery, query, results, countData }) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTopic, results, capacityBuilding]);
+  }, [selectedTopic, results, selectedTag]);
 
   return (
     <>
