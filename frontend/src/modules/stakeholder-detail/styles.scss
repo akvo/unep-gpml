@@ -9,6 +9,7 @@
   @-moz-document url-prefix() {
     padding-bottom: 20px !important;
     .ant-avatar {
+      display: flex;
       width: 25px !important;
       height: 25px !important;
     }
@@ -24,7 +25,11 @@
   .topbar-container {
     background-color: #007090;
     padding: 10px 0;
-
+    .ant-avatar-string {
+      @-moz-document url-prefix() {
+        line-height: 26px !important;
+      }
+    }
     .ui.container {
       color: #fff;
     }

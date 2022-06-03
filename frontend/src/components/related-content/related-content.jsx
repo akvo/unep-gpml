@@ -187,7 +187,9 @@ const RelatedContent = ({
             <Col key={item?.id} className="card" span={12}>
               <a
                 href={`/${getType(item?.type)}/${item.id}`}
-                className="description-holder"
+                className={`description-holder ${
+                  isShownPagination ? "with-pagination" : "no-pagination"
+                }`}
                 style={{
                   backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${
                     item?.image ? item?.image : defaultImage(item)
@@ -197,7 +199,6 @@ const RelatedContent = ({
                     ? `calc(100% - 16px) auto`
                     : `calc(100% - 16px) calc(100% - 16px)`,
                   backgroundRepeat: "no-repeat",
-                  minHeight: isShownPagination ? "216px" : "195px",
                 }}
               >
                 <div>
@@ -219,6 +220,7 @@ const RelatedContent = ({
                     >
                       {item?.entityConnections?.map((connection, index) => (
                         <Avatar
+                          className="related-content-avatar"
                           style={{ border: "none" }}
                           key={item?.entity || index}
                           src={

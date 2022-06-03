@@ -9,6 +9,9 @@
   .ant-card {
     padding: 0 !important;
     min-height: 300px;
+    @-moz-document url-prefix() {
+      min-height: 245px;
+    }
     .ant-card-body {
       padding: 14px 10px !important;
     }
@@ -111,6 +114,12 @@
             font-size: 9px;
           }
         }
+
+        .ant-avatar-circle {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
         .bottom-panel {
           .read-more {
             font-weight: 500;
@@ -120,6 +129,18 @@
               font-size: 9px;
             }
           }
+        }
+      }
+      .with-pagination {
+        min-height: 216px;
+        @-moz-document url-prefix() {
+          min-height: 172px;
+        }
+      }
+      .no-pagination {
+        min-height: 195px;
+        @-moz-document url-prefix() {
+          min-height: 165px;
         }
       }
     }
