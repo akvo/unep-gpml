@@ -83,53 +83,6 @@ const TopicView = ({ updateQuery, query, results, countData }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [savedTopic]);
 
-  const getPopularTopics = (url) => {
-    api
-      .get(url)
-      .then((resp) => {
-        const data = resp?.data.map((item, i) => {
-          if (selectedTag?.topic === item?.tag) {
-            return {
-              id: item?.tag,
-              topic: item?.tag,
-              tag: item?.tag,
-              count: selectedTag?.count || 0,
-            };
-          } else {
-            return {
-              id: item?.tag,
-              topic: item?.tag,
-              tag: item?.tag,
-              count: item?.count,
-              selectedTag,
-            };
-          }
-        });
-        const dataTag = data.map((item) => item?.tag);
-        const nonExistedTopic = popularTags
-          .filter((item) => !dataTag.includes(item))
-          .map((x) => {
-            return {
-              id: x,
-              topic: x,
-              tag: x,
-              count: 0,
-            };
-          });
-
-        const sorted = orderBy(
-          [...data, ...nonExistedTopic],
-          ["count", "topic"],
-          ["desc", "desc"]
-        );
-
-        setSortedPopularTopics(sorted);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
   // Apply when there is a selected topic
   useEffect(() => {
     if (results.length > 0) {
