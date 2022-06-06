@@ -391,7 +391,7 @@ const StakeholderDetail = ({
                         sm: 60,
                         md: 60,
                         lg: 100,
-                        xl: 100,
+                        xl: 150,
                         xxl: 150,
                       }}
                       src={
@@ -406,9 +406,16 @@ const StakeholderDetail = ({
                               verticalAlign: "middle",
                               border: "4px solid #fff",
                             }}
-                            size={145}
+                            size={{
+                              xs: 55,
+                              sm: 55,
+                              md: 55,
+                              lg: 95,
+                              xl: 145,
+                              xxl: 145,
+                            }}
                           >
-                            {data?.name?.substring(0, 2)}
+                            {data?.name?.substring(0, 1)}
                           </Avatar>
                         )
                       }
@@ -652,7 +659,7 @@ const StakeholderDetail = ({
                 <div style={{ padding: "0 10px" }} className="individuals">
                   <Row gutter={[16, 16]} style={{ width: "100%" }}>
                     {bookedResources.map((item) => (
-                      <Col xs={6} lg={7} key={item.id}>
+                      <Col xs={6} lg={8} key={item.id}>
                         <div
                           className="slider-card"
                           onClick={() => {
@@ -667,7 +674,14 @@ const StakeholderDetail = ({
                                 <Avatar
                                   style={{ border: "none" }}
                                   key={item?.picture}
-                                  size={200}
+                                  size={{
+                                    xs: 60,
+                                    sm: 60,
+                                    md: 60,
+                                    lg: 100,
+                                    xl: 150,
+                                    xxl: 150,
+                                  }}
                                   src={
                                     item?.picture ? (
                                       item?.picture
@@ -684,7 +698,14 @@ const StakeholderDetail = ({
                                           fontSize: "62px",
                                           fontWeight: "bold",
                                         }}
-                                        size={195}
+                                        size={{
+                                          xs: 55,
+                                          sm: 55,
+                                          md: 55,
+                                          lg: 95,
+                                          xl: 145,
+                                          xxl: 145,
+                                        }}
                                       >
                                         {item?.name?.substring(0, 2)}
                                       </Avatar>

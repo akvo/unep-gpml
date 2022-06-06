@@ -58,6 +58,7 @@ import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
 import { TrimText } from "../../utils/string";
 import { colors } from "../../utils/misc";
+const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
 const getType = (type) => {
   let t = "";
@@ -252,8 +253,6 @@ const StakeholderDetail = ({
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const history = useHistory();
   const [data, setData] = useState(null);
-  const [bgColor, setColor] = useState(null);
-  const [entityColor, setEntityColor] = useState(null);
   const [relations, setRelations] = useState([]);
   const [ownedResources, setOwnedResources] = useState([]);
   const [bookedResources, setBookedResources] = useState([]);
@@ -262,6 +261,7 @@ const StakeholderDetail = ({
   const [ownedResourcesPage, setOwnedResourcesPage] = useState(0);
   const [bookedResourcesPage, setBookedResourcesPage] = useState(0);
   const [warningVisible, setWarningVisible] = useState(false);
+  const [color, setColor] = useState([colour(), colour(), colour()]);
 
   const prevValue = usePrevious(data);
 
@@ -342,8 +342,6 @@ const StakeholderDetail = ({
         .get(`/detail/${params.type}/${params.id}`)
         .then((d) => {
           setData(d.data);
-          setColor(colors[Math.floor(Math.random() * colors.length)]);
-          setEntityColor(colors[Math.floor(Math.random() * colors.length)]);
           getOwnedResources(0);
           getBookedResources(0);
         })
@@ -420,7 +418,7 @@ const StakeholderDetail = ({
                         ) : (
                           <Avatar
                             style={{
-                              backgroundColor: bgColor,
+                              backgroundColor: color[1],
                               verticalAlign: "middle",
                               border: "4px solid #fff",
                               fontSize: "62px",
@@ -443,7 +441,7 @@ const StakeholderDetail = ({
                             ) : (
                               <Avatar
                                 style={{
-                                  backgroundColor: entityColor,
+                                  backgroundColor: color[0],
                                   verticalAlign: "middle",
                                 }}
                                 size={50}
@@ -504,7 +502,7 @@ const StakeholderDetail = ({
                                 ) : (
                                   <Avatar
                                     style={{
-                                      backgroundColor: entityColor,
+                                      backgroundColor: color[0],
                                       verticalAlign: "middle",
                                     }}
                                     size={55}
@@ -751,12 +749,7 @@ const StakeholderDetail = ({
                                     size="large"
                                     maxStyle={{
                                       color: "#f56a00",
-                                      backgroundColor:
-                                        colors[
-                                          Math.floor(
-                                            Math.random() * colors.length
-                                          )
-                                        ],
+                                      backgroundColor: color[2],
                                       cursor: "pointer",
                                     }}
                                   >
@@ -770,13 +763,7 @@ const StakeholderDetail = ({
                                           ) : (
                                             <Avatar
                                               style={{
-                                                backgroundColor:
-                                                  colors[
-                                                    Math.floor(
-                                                      Math.random() *
-                                                        colors.length
-                                                    )
-                                                  ],
+                                                backgroundColor: color[1],
                                                 verticalAlign: "middle",
                                               }}
                                               size={40}
@@ -859,12 +846,7 @@ const StakeholderDetail = ({
                                     size="large"
                                     maxStyle={{
                                       color: "#f56a00",
-                                      backgroundColor:
-                                        colors[
-                                          Math.floor(
-                                            Math.random() * colors.length
-                                          )
-                                        ],
+                                      backgroundColor: color[2],
                                       cursor: "pointer",
                                     }}
                                   >
@@ -878,18 +860,12 @@ const StakeholderDetail = ({
                                           ) : (
                                             <Avatar
                                               style={{
-                                                backgroundColor:
-                                                  colors[
-                                                    Math.floor(
-                                                      Math.random() *
-                                                        colors.length
-                                                    )
-                                                  ],
+                                                backgroundColor: color[2],
                                                 verticalAlign: "middle",
                                               }}
                                               size={40}
                                             >
-                                              {item?.entity?.substring(0, 2)}
+                                              {item?.entity?.substring(0, 1)}
                                             </Avatar>
                                           )
                                         }
@@ -910,16 +886,18 @@ const StakeholderDetail = ({
                       </Col>
                     ))}
                   </Row>
-                  <div className="pagination-wrapper">
-                    <Pagination
-                      showSizeChanger={false}
-                      defaultCurrent={1}
-                      current={bookedResourcesPage + 1}
-                      pageSize={3}
-                      total={bookedResourcesCount || 0}
-                      onChange={(n, size) => getBookedResources(n - 1)}
-                    />
-                  </div>
+                  {bookedResourcesCount > 3 && (
+                    <div className="pagination-wrapper">
+                      <Pagination
+                        showSizeChanger={false}
+                        defaultCurrent={1}
+                        current={bookedResourcesPage + 1}
+                        pageSize={3}
+                        total={bookedResourcesCount || 0}
+                        onChange={(n, size) => getBookedResources(n - 1)}
+                      />
+                    </div>
+                  )}
                 </div>
               </CardComponent>
             )}
