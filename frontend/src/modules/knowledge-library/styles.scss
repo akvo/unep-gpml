@@ -1023,10 +1023,6 @@
         width: 15px;
       }
     }
-    .ant-drawer-content-wrapper {
-      zoom: 80%;
-      height: 100% !important;
-    }
 
     .ui-header {
       .sort-btn {
@@ -1104,18 +1100,6 @@
         }
       }
     }
-  }
-}
-
-@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
-  .ant-picker-dropdown {
-    zoom: 80%;
-    @-moz-document url-prefix() {
-      font-size: 12px;
-    }
-  }
-  .overlay-zoom {
-    zoom: 100%;
   }
 }
 

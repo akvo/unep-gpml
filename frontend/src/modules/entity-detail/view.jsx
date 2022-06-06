@@ -386,7 +386,14 @@ const StakeholderDetail = ({
                 <div className="topbar-wrapper">
                   <div className="topbar-image-holder">
                     <Avatar
-                      size={150}
+                      size={{
+                        xs: 60,
+                        sm: 60,
+                        md: 60,
+                        lg: 100,
+                        xl: 100,
+                        xxl: 150,
+                      }}
                       src={
                         data?.logo ? (
                           data?.logo
