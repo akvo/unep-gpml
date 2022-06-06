@@ -195,9 +195,7 @@ const RelatedContent = ({
                     item?.image ? item?.image : defaultImage(item)
                   })`,
                   backgroundPosition: "center",
-                  backgroundSize: item.image
-                    ? `calc(100% - 16px) auto`
-                    : `calc(100% - 16px) calc(100% - 16px)`,
+                  backgroundSize: "cover",
                   backgroundRepeat: "no-repeat",
                 }}
               >
