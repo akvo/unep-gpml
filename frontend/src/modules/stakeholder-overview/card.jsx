@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Row, Card, Avatar } from "antd";
 import { Link } from "react-router-dom";
 
@@ -8,7 +8,10 @@ import communityIcon from "../../images/stakeholder-overview/union-2-icon.svg";
 
 import { colors } from "../../utils/misc";
 
+const colour = () => colors[Math.floor(Math.random() * colors.length)];
+
 const ProfileCard = ({ profile, isValidUser, profileType }) => {
+  const [color, setColor] = useState([colour(), colour(), colour()]);
   const { countries, seeking } = UIStore.useState((s) => ({
     countries: s.countries,
     seeking: s?.tags?.seeking,
@@ -45,14 +48,22 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
           {profile.type === "organisation" ? (
             <div className="image-wrapper organisation-image">
               {profile.picture ? (
-                <Avatar src={profile.picture} size={150} alt={profile.name}>
+                <Avatar
+                  src={profile.picture}
+                  size={150}
+                  alt={profile.name}
+                  style={{
+                    verticalAlign: "middle",
+                    fontSize: "62px",
+                    fontWeight: "bold",
+                  }}
+                >
                   {profile.name.substring(0, 2)}
                 </Avatar>
               ) : (
                 <Avatar
                   style={{
-                    backgroundColor:
-                      colors[Math.floor(Math.random() * colors.length)],
+                    backgroundColor: color[0],
                     verticalAlign: "middle",
                     fontSize: "62px",
                     fontWeight: "bold",
@@ -79,8 +90,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                 ) : (
                   <Avatar
                     style={{
-                      backgroundColor:
-                        colors[Math.floor(Math.random() * colors.length)],
+                      backgroundColor: color[1],
                       verticalAlign: "middle",
                       fontSize: "62px",
                       fontWeight: "bold",
@@ -102,8 +112,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                     ) : (
                       <Avatar
                         style={{
-                          backgroundColor:
-                            colors[Math.floor(Math.random() * colors.length)],
+                          backgroundColor: color[2],
                           verticalAlign: "middle",
                         }}
                         size={40}
