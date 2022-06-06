@@ -158,6 +158,7 @@ const SignupForm = ({
   }));
 
   const [noOrg, setNoOrg] = useState(false);
+  const [formInitialValues, setInitialValues] = useState(false);
   const [pubEmail, setPubEmail] = useState({
     checked: false,
     text: "Show my email address on public listing",
@@ -195,18 +196,18 @@ const SignupForm = ({
     );
   };
 
-  newSchema["expertiesActivities"].offering.options = tags?.offering?.map(
-    (x) => ({
-      value: x.id,
-      label: x.tag,
-    })
-  );
-  newSchema["expertiesActivities"].seeking.options = tags?.seeking?.map(
-    (x) => ({
-      value: x.id,
-      label: x.tag,
-    })
-  );
+  const array = Object.keys(tags)
+    .map((k) => tags[k])
+    .flat();
+
+  newSchema["expertiesActivities"].offering.options = array?.map((x) => ({
+    value: x.id,
+    label: x.tag,
+  }));
+  newSchema["expertiesActivities"].seeking.options = array?.map((x) => ({
+    value: x.id,
+    label: x.tag,
+  }));
 
   newSchema["personalDetails"][
     "socialLocation"
@@ -273,10 +274,22 @@ const SignupForm = ({
     }
   }, [initialValues]); // eslint-disable-line
 
+  useEffect(() => {
+    setInitialValues({
+      ...initialValues,
+      seeking: initialValues?.tags
+        ?.filter((item) => item.tagRelationCategory === "seeking")
+        .map((x) => x.id),
+      offering: initialValues?.tags
+        ?.filter((item) => item.tagRelationCategory === "offering")
+        .map((x) => x.id),
+    });
+  }, [initialValues]);
+
   return (
     <Form layout="vertical">
       <FinalForm
-        initialValues={initialValues || {}}
+        initialValues={formInitialValues || {}}
         subscription={{}}
         mutators={{ ...arrayMutators }}
         onSubmit={onSubmit}

@@ -98,7 +98,7 @@ const getSchema = (
     "org.representativeGroupCivilSociety"
   ].enum = representativeGroup.find((x) => x.code === "civil-society")?.childs;
 
-  let array = Object.keys(tags)
+  const array = Object.keys(tags)
     .map((k) => tags[k])
     .flat();
 
