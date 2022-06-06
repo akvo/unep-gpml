@@ -210,6 +210,9 @@
               flex: 0 0 50% !important;
               max-width: 50% !important;
             }
+            .related-content .carousel-item .ant-col-12 {
+              max-width: 100% !important;
+            }
           }
           @media (min-width: 801px) and (max-width: 1200px) {
             flex-direction: row;
