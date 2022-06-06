@@ -240,7 +240,13 @@ const KnowledgeLibraryToolTipContent = ({
               return (
                 topic !== "organisation" &&
                 topic !== "stakeholder" &&
-                topic !== "capacity_building"
+                topic !== "capacity_building" &&
+                topic !== "plastics" &&
+                topic !== "waste management" &&
+                topic !== "marine litter" &&
+                topic !== "capacity building" &&
+                topic !== "product by design" &&
+                topic !== "source to sea"
               );
             };
 
@@ -421,7 +427,14 @@ const Maps = ({
     countData.filter(
       (data) =>
         data.topic !== "gpml_member_entities" &&
-        data.topic !== "capacity_building"
+        data.topic !== "capacity_building" &&
+        data.topic !== "capacity building" &&
+        data.topic !== "plastics" &&
+        data.topic !== "waste management" &&
+        data.topic !== "marine litter" &&
+        data.topic !== "capacity building" &&
+        data.topic !== "product by design" &&
+        data.topic !== "source to sea"
     );
 
   const existingStakeholders =

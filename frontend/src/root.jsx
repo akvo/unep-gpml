@@ -282,6 +282,18 @@ const Root = () => {
       "event",
       "financing_resource",
     ];
+
+    const popularTags = [
+      "plastics",
+      "waste management",
+      "marine litter",
+      "capacity building",
+      "product by design",
+      "source to sea",
+    ];
+
+    searchParms.set("incCountsForTags", popularTags);
+
     if (query?.topic?.length === 0) {
       if (
         (query?.startDate && query?.startDate?.length !== 0) ||
@@ -318,10 +330,12 @@ const Root = () => {
     setLoading(true);
     const newQuery = { ...query };
     newQuery[param] = value;
+
     if (param !== "offset") {
       newQuery["offset"] = 0;
     }
 
+    // Remove empty query
     const arrayOfQuery = Object.entries(newQuery)?.filter(
       (item) => item[1]?.length !== 0
     );
