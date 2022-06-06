@@ -3,9 +3,6 @@
 $green-primary: #4dffa5;
 
 #case-study {
-  @media (max-width: 1199px) {
-    zoom: 98%;
-  }
   .ui-header {
     @-moz-document url-prefix() {
       padding: 4px calc(44px - 14px) 4px 37px;

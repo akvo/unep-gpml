@@ -1,12 +1,5 @@
 @import "../../vars.scss";
 
-.event-overlay-zoom {
-  zoom: 80% !important;
-  @media (max-width: 540px) {
-    zoom: unset !important;
-  }
-}
-
 .event {
   padding-top: 50px;
   padding-bottom: 40px;
@@ -429,75 +422,9 @@
 
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
   .event {
-    padding-top: 10px;
+    padding-top: 20px;
     @-moz-document url-prefix() {
       padding-top: 5px;
-    }
-    &.section-container {
-      zoom: 80%;
-    }
-
-    .item-body {
-      .body-text {
-        font-size: 1.4rem;
-        line-height: 1.6rem;
-        @-moz-document url-prefix() {
-          font-size: 1rem;
-        }
-      }
-      .asset-title {
-        font-weight: 600 !important;
-        font-size: 1.4rem;
-        margin-bottom: 16px !important;
-        @-moz-document url-prefix() {
-          font-size: 1rem;
-          margin-bottom: 8px !important;
-        }
-      }
-    }
-    .item-footer {
-      .read-more {
-        font-size: 1.2rem;
-        @-moz-document url-prefix() {
-          font-size: 0.9rem;
-        }
-      }
-    }
-    .item-meta {
-      font-size: 1.2rem !important;
-      @-moz-document url-prefix() {
-        font-size: 0.9rem !important;
-      }
-      .mark {
-        font-size: 1rem !important;
-        @-moz-document url-prefix() {
-          font-size: 0.7 !important;
-        }
-      }
-    }
-    .event-more {
-      font-size: 1.2rem !important;
-      @-moz-document url-prefix() {
-        font-size: 0.9rem !important;
-      }
-    }
-    .see-more-link {
-      font-size: 1.2rem !important;
-      @-moz-document url-prefix() {
-        font-size: 0.9rem !important;
-      }
-    }
-    .ant-picker-calendar-date-value {
-      font-size: 1.4rem !important;
-      @-moz-document url-prefix() {
-        font-size: 1.1rem !important;
-      }
-    }
-    .ant-select-selector {
-      font-size: 1.2rem !important;
-      @-moz-document url-prefix() {
-        font-size: 0.9rem !important;
-      }
     }
   }
 }
