@@ -124,7 +124,7 @@ const detailEvent = [
   },
   {
     key: "startDate",
-    name: "Start Date/End",
+    name: "Start Date/End Date",
     value: "custom",
     arrayCustomValue: ["startDate", "endDate"],
     type: "startEndDate",
