@@ -120,37 +120,12 @@
     url("../../images/knowledge-library/chevron-down-grey.svg");
 }
 
-@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
-  .multiselection-dropdown {
-    zoom: 80%;
-    @-moz-document url-prefix() {
-      font-size: 12px;
-      .ant-select-item-group {
-        font-size: 10px;
-      }
-      .ant-select-item-option-content {
-        font-size: 12px;
-      }
-    }
-  }
-}
-
 // Transnational filter tab
 .popover-multi-country {
   cursor: pointer;
   border-radius: 50%;
   &:hover {
     background-color: $yellow-highlight !important;
-  }
-}
-
-.country-info-popover {
-  zoom: 60% !important;
-  .popover-content-item {
-    font-size: 18px !important;
-  }
-  @-moz-document url-prefix() {
-    font-size: 14px !important;
   }
 }
 

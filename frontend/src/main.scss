@@ -35,12 +35,6 @@ body {
   scrollbar-width: thin !important;
 }
 
-@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
-  body {
-    zoom: 90%;
-  }
-}
-
 body,
 button,
 a,
@@ -408,6 +402,10 @@ h4 {
     padding: 4px 15px;
     white-space: nowrap;
     border-radius: 5px;
+
+    @media screen and (max-width: 1366px) {
+      font-size: 14px;
+    }
     span.anticon.anticon-down {
       margin-top: 5px;
     }
@@ -434,7 +432,7 @@ h4 {
       font-size: 22px;
       margin-right: 10px;
     }
-    @media screen and (max-width: 1350px) {
+    @media screen and (max-width: 1366px) {
       span.text {
         display: none;
       }
@@ -680,10 +678,6 @@ footer {
   padding: 50px 0 0 0;
   @-moz-document url-prefix() {
     padding: 40px 0 0 0;
-  }
-
-  @media (max-width: 1199px) {
-    zoom: 95%;
   }
 
   a {
