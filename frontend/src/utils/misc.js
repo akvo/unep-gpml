@@ -131,6 +131,7 @@ export const colors = [
   "#FE8A7F",
   "#C1554E",
 ];
+
 export const tagsMap = (array, category, tags) => {
   return array.map((x) => {
     return {
