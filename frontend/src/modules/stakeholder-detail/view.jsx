@@ -59,34 +59,7 @@ import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
 import { TrimText } from "../../utils/string";
 import { colors } from "../../utils/misc";
-
-const getType = (type) => {
-  let t = "";
-  switch (type) {
-    case "Action Plan":
-      t = "action_plan";
-      break;
-    case "Event":
-      t = "event";
-      break;
-    case "Initiative":
-      t = "project";
-      break;
-    case "Policy":
-      t = "policy";
-      break;
-    case "Financing Resource":
-      t = "financing_resource";
-      break;
-    case "Technical Resource":
-      t = "technical_resource";
-      break;
-    case "Technology":
-      t = "technology";
-      break;
-  }
-  return t;
-};
+const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
 const usePrevious = (value) => {
   const ref = useRef();
@@ -253,8 +226,6 @@ const StakeholderDetail = ({
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const history = useHistory();
   const [data, setData] = useState(null);
-  const [bgColor, setColor] = useState(null);
-  const [entityColor, setEntityColor] = useState(null);
   const [relations, setRelations] = useState([]);
   const [ownedResources, setOwnedResources] = useState([]);
   const [bookedResources, setBookedResources] = useState([]);
@@ -263,6 +234,7 @@ const StakeholderDetail = ({
   const [ownedResourcesPage, setOwnedResourcesPage] = useState(0);
   const [bookedResourcesPage, setBookedResourcesPage] = useState(0);
   const [warningVisible, setWarningVisible] = useState(false);
+  const [color, setColor] = useState([colour(), colour(), colour()]);
 
   const prevValue = usePrevious(data);
 
@@ -343,8 +315,6 @@ const StakeholderDetail = ({
         .get(`/detail/${params.type}/${params.id}`)
         .then((d) => {
           setData(d.data);
-          setColor(colors[Math.floor(Math.random() * colors.length)]);
-          setEntityColor(colors[Math.floor(Math.random() * colors.length)]);
           getOwnedResources(0);
           getBookedResources(0);
         })
@@ -421,7 +391,7 @@ const StakeholderDetail = ({
                         ) : (
                           <Avatar
                             style={{
-                              backgroundColor: bgColor,
+                              backgroundColor: color[1],
                               verticalAlign: "middle",
                               border: "4px solid #fff",
                               fontSize: "62px",
@@ -444,7 +414,7 @@ const StakeholderDetail = ({
                             ) : (
                               <Avatar
                                 style={{
-                                  backgroundColor: entityColor,
+                                  backgroundColor: color[0],
                                   verticalAlign: "middle",
                                 }}
                                 size={50}
@@ -505,7 +475,7 @@ const StakeholderDetail = ({
                                 ) : (
                                   <Avatar
                                     style={{
-                                      backgroundColor: entityColor,
+                                      backgroundColor: color[0],
                                       verticalAlign: "middle",
                                     }}
                                     size={55}

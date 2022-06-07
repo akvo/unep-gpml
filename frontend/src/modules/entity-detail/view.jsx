@@ -52,34 +52,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { TrimText } from "../../utils/string";
 import { colors } from "../../utils/misc";
 import RelatedContent from "../../components/related-content/related-content";
-
-const getType = (type) => {
-  let t = "";
-  switch (type) {
-    case "Action Plan":
-      t = "action_plan";
-      break;
-    case "Event":
-      t = "event";
-      break;
-    case "Initiative":
-      t = "project";
-      break;
-    case "Policy":
-      t = "policy";
-      break;
-    case "Financing Resource":
-      t = "financing_resource";
-      break;
-    case "Technical Resource":
-      t = "technical_resource";
-      break;
-    case "Technology":
-      t = "technology";
-      break;
-  }
-  return t;
-};
+const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
 const CardComponent = ({ title, style, children, getRef }) => {
   return (
@@ -220,7 +193,7 @@ const StakeholderDetail = ({
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const history = useHistory();
   const [data, setData] = useState(null);
-  const [bgColor, setColor] = useState(null);
+  const [color, setColor] = useState([colour(), colour(), colour()]);
   const [relations, setRelations] = useState([]);
   const [ownedResources, setOwnedResources] = useState([]);
   const [bookedResources, setBookedResources] = useState([]);
@@ -317,7 +290,6 @@ const StakeholderDetail = ({
         .get(`/detail/${params.type}/${params.id}`)
         .then((d) => {
           setData(d.data);
-          setColor(colors[Math.floor(Math.random() * colors.length)]);
           getOwnedResources(0);
           getBookedResources(0);
         })
@@ -392,7 +364,7 @@ const StakeholderDetail = ({
                         sm: 60,
                         md: 60,
                         lg: 100,
-                        xl: 100,
+                        xl: 150,
                         xxl: 150,
                       }}
                       src={
@@ -401,15 +373,22 @@ const StakeholderDetail = ({
                         ) : (
                           <Avatar
                             style={{
-                              backgroundColor: bgColor,
+                              backgroundColor: color[0],
                               fontSize: "62px",
                               fontWeight: "bold",
                               verticalAlign: "middle",
                               border: "4px solid #fff",
                             }}
-                            size={145}
+                            size={{
+                              xs: 55,
+                              sm: 55,
+                              md: 55,
+                              lg: 95,
+                              xl: 145,
+                              xxl: 145,
+                            }}
                           >
-                            {data?.name?.substring(0, 2)}
+                            {data?.name?.substring(0, 1)}
                           </Avatar>
                         )
                       }
@@ -557,7 +536,7 @@ const StakeholderDetail = ({
                 <div style={{ padding: "0 10px" }} className="individuals">
                   <Row gutter={[16, 16]} style={{ width: "100%" }}>
                     {bookedResources.map((item) => (
-                      <Col xs={6} lg={7} key={item.id}>
+                      <Col xs={6} lg={8} key={item.id}>
                         <div
                           className="slider-card"
                           onClick={() => {
@@ -572,24 +551,33 @@ const StakeholderDetail = ({
                                 <Avatar
                                   style={{ border: "none" }}
                                   key={item?.picture}
-                                  size={200}
+                                  size={{
+                                    xs: 60,
+                                    sm: 60,
+                                    md: 60,
+                                    lg: 100,
+                                    xl: 150,
+                                    xxl: 150,
+                                  }}
                                   src={
                                     item?.picture ? (
                                       item?.picture
                                     ) : (
                                       <Avatar
                                         style={{
-                                          backgroundColor:
-                                            colors[
-                                              Math.floor(
-                                                Math.random() * colors.length
-                                              )
-                                            ],
+                                          backgroundColor: color[2],
                                           verticalAlign: "middle",
                                           fontSize: "62px",
                                           fontWeight: "bold",
                                         }}
-                                        size={195}
+                                        size={{
+                                          xs: 55,
+                                          sm: 55,
+                                          md: 55,
+                                          lg: 95,
+                                          xl: 145,
+                                          xxl: 145,
+                                        }}
                                       >
                                         {item?.name?.substring(0, 2)}
                                       </Avatar>
@@ -615,16 +603,18 @@ const StakeholderDetail = ({
                       </Col>
                     ))}
                   </Row>
-                  <div className="pagination-wrapper">
-                    <Pagination
-                      showSizeChanger={false}
-                      defaultCurrent={1}
-                      current={bookedResourcesPage + 1}
-                      pageSize={3}
-                      total={bookedResourcesCount || 0}
-                      onChange={(n, size) => getBookedResources(n - 1)}
-                    />
-                  </div>
+                  {bookedResourcesCount > 3 && (
+                    <div className="pagination-wrapper">
+                      <Pagination
+                        showSizeChanger={false}
+                        defaultCurrent={1}
+                        current={bookedResourcesPage + 1}
+                        pageSize={3}
+                        total={bookedResourcesCount || 0}
+                        onChange={(n, size) => getBookedResources(n - 1)}
+                      />
+                    </div>
+                  )}
                 </div>
               </CardComponent>
             )}
