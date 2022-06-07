@@ -115,7 +115,7 @@
     .ant-drawer-content-wrapper {
       box-shadow: none;
       height: 700px;
-      max-width: 500px;
+      max-width: 550px;
       width: 100% !important;
       @-moz-document url-prefix() {
         max-width: 360px;
@@ -375,20 +375,25 @@
         align-items: center;
         align-self: baseline;
         color: $blue04;
-        border: 1px solid $blue04;
-        border-radius: 20px;
+        // border: 1px solid $blue04;
+        border: none;
+        font-size: 16px;
+        // text-transform: uppercase;
+        // border-radius: 20px;
         margin-bottom: 8px;
+        transform: translateY(2px);
         cursor: pointer;
         @-moz-document url-prefix() {
           margin-bottom: 4px;
         }
         &:hover {
-          background-color: $yellow-highlight;
+          background-color: transparent;
         }
         .anticon-close {
           color: $blue04;
           font-weight: bold;
           padding-right: 3px;
+          font-size: 15px;
         }
       }
 
@@ -576,8 +581,8 @@
     z-index: 3;
     height: 700px;
     width: 100%;
-    background-color: rgba(237, 242, 247, 0.3);
-    max-width: 402px;
+    background-color: white;
+    max-width: 442px;
     @-moz-document url-prefix() {
       max-width: 350px;
     }
@@ -588,6 +593,31 @@
     }
     .empty-container {
       display: flex !important;
+    }
+    .subheader {
+      display: flex;
+      width: 100%;
+      p {
+        margin-left: 10px;
+        margin-top: 4px;
+      }
+      .sort-by {
+        margin-left: auto;
+        display: flex;
+        cursor: pointer;
+        svg {
+          width: 28px;
+          height: 28px;
+          display: inline-block;
+          margin-top: 2px;
+        }
+        & > div {
+          display: flex;
+          flex-direction: column;
+          margin-left: 8px;
+          line-height: 16px;
+        }
+      }
     }
   }
 
@@ -714,17 +744,15 @@
     }
     .resource-item-wrapper {
       width: 100%;
+      margin-bottom: 8px;
       @media (max-width: 950px) {
         height: 100%;
-      }
-      &:hover {
-        background: $yellow-highlight;
-        border-radius: 8px;
       }
       .resource-item {
         height: 100%;
         width: 100%;
         border-radius: 8px;
+        padding: 4px 7px 2px;
         box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
         text-align: left;
         color: $black;
@@ -737,10 +765,10 @@
         }
 
         .topic {
-          color: $green05;
+          color: #d3dee7;
           font-size: 12px;
           text-transform: uppercase;
-          font-weight: bold;
+          font-weight: 500;
           @-moz-document url-prefix() {
             font-size: 10px;
           }
@@ -748,17 +776,16 @@
 
         .item-body {
           margin-top: 5px;
-
-          .title,
+          .title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #18162f;
+            line-height: 25px;
+            margin-top: -5px;
+          }
           .description,
           .read-more {
             font-size: 14px;
-            @-moz-document url-prefix() {
-              font-size: 12px !important;
-            }
-            @media (max-width: 540px) {
-              font-size: 12px;
-            }
           }
 
           .description {
@@ -771,6 +798,12 @@
           .read-more,
           .avatar-count {
             color: $blue04;
+          }
+          .read-more {
+            span {
+              padding-left: 5px;
+              display: inline-block;
+            }
           }
 
           .avatar-count {
@@ -793,6 +826,11 @@
             }
             @media (max-width: 540px) {
               font-size: 12px;
+            }
+            span {
+              margin-left: 4px;
+              display: inline-block;
+              transform: translateY(1px);
             }
           }
           .read-more,
@@ -835,12 +873,13 @@
   // Pagination
   .page {
     width: 100%;
-    max-width: 402px;
+    max-width: 422px;
     padding: 1rem 0 1rem 10px;
     text-align: center;
     position: absolute;
     bottom: 0;
     background-color: #ffffff;
+    border-top: 1px solid #ccc;
     @-moz-document url-prefix() {
       max-width: 350px !important;
     }
@@ -984,10 +1023,6 @@
         width: 15px;
       }
     }
-    .ant-drawer-content-wrapper {
-      zoom: 80%;
-      height: 100% !important;
-    }
 
     .ui-header {
       .sort-btn {
@@ -1065,18 +1100,6 @@
         }
       }
     }
-  }
-}
-
-@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
-  .ant-picker-dropdown {
-    zoom: 80%;
-    @-moz-document url-prefix() {
-      font-size: 12px;
-    }
-  }
-  .overlay-zoom {
-    zoom: 100%;
   }
 }
 

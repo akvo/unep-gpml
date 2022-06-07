@@ -187,6 +187,7 @@ const Root = () => {
 
   const query = useQuery();
   const history = useHistory();
+  const path = history.location.pathname;
 
   const { profile, disclaimer, nav, tags } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -195,7 +196,6 @@ const Root = () => {
     tags: s.tags,
   }));
 
-  const [signupModalVisible, setSignupModalVisible] = useState(false);
   const [
     stakeholderSignupModalVisible,
     setStakeholderSignupModalVisible,
@@ -264,10 +264,8 @@ const Root = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterCountries, setFilterCountries] = useState([]);
-  const location = useLocation();
   const [relations, setRelations] = useState([]);
   const { isLoading } = useAuth0();
-  const [warningVisible, setWarningVisible] = useState(false);
   const pageSize = 8;
   const [countData, setCountData] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
@@ -284,6 +282,18 @@ const Root = () => {
       "event",
       "financing_resource",
     ];
+
+    const popularTags = [
+      "plastics",
+      "waste management",
+      "marine litter",
+      "capacity building",
+      "product by design",
+      "source to sea",
+    ];
+
+    searchParms.set("incCountsForTags", popularTags);
+
     if (query?.topic?.length === 0) {
       if (
         (query?.startDate && query?.startDate?.length !== 0) ||
@@ -320,18 +330,29 @@ const Root = () => {
     setLoading(true);
     const newQuery = { ...query };
     newQuery[param] = value;
+
     if (param !== "offset") {
       newQuery["offset"] = 0;
     }
-    setFilters(newQuery);
-    const newParams = new URLSearchParams(newQuery);
 
-    history.push(`/knowledge-library?${newParams.toString()}`);
+    // Remove empty query
+    const arrayOfQuery = Object.entries(newQuery)?.filter(
+      (item) => item[1]?.length !== 0
+    );
+
+    const pureQuery = Object.fromEntries(arrayOfQuery);
+
+    setFilters(pureQuery);
+
+    const newParams = new URLSearchParams(pureQuery);
+
+    history.push(`/knowledge/library?${newParams.toString()}`);
+
     setLandingQuery(newParams.toString());
 
     clearTimeout(tmid);
 
-    tmid = setTimeout(getResults(newQuery), 1000);
+    tmid = setTimeout(getResults(pureQuery), 1000);
 
     if (param === "country") {
       setFilterCountries(value);
@@ -382,17 +403,21 @@ const Root = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/knowledge-library"
-                    className="menu-btn nav-link menu-dropdown"
-                    activeClassName="selected"
+                    to="/knowledge/library"
+                    className={`menu-btn nav-link menu-dropdown ${
+                      path.includes("/knowledge") && "selected"
+                    }`}
+                    activeClassName={"selected"}
                   >
                     Knowledge Exchange
                   </NavLink>
                 </li>
                 <li>
                   <NavLink
-                    to="/events"
-                    className="menu-btn nav-link"
+                    to="/connect/events"
+                    className={`menu-btn nav-link ${
+                      path.includes("/connect") && "selected"
+                    }`}
                     activeClassName="selected"
                   >
                     Connect Stakeholders
@@ -449,7 +474,6 @@ const Root = () => {
         </Header>
         <Switch>
           <Route
-            profile={profile}
             path="/"
             exact
             render={(props) => (
@@ -476,47 +500,63 @@ const Root = () => {
             render={(props) => <Glossary {...props} />}
           />
           <Route
-            exact
-            path="/knowledge-library"
-            render={(props) => (
-              <KnowledgeLibrary
-                {...{
-                  history,
-                  query,
-                  results,
-                  countData,
-                  pageSize,
-                  loading,
-                  filters,
-                  filterMenu,
-                  filterCountries,
-                  isAuthenticated,
-                  loginWithPopup,
-                  multiCountryCountries,
-                  isLoading,
-                  setLoading,
-                  landingQuery,
+            path="/knowledge"
+            render={() => (
+              <Switch>
+                <Route
+                  path="/knowledge/library"
+                  render={(props) => (
+                    <KnowledgeLibrary
+                      {...{
+                        history,
+                        query,
+                        results,
+                        countData,
+                        pageSize,
+                        loading,
+                        filters,
+                        filterMenu,
+                        filterCountries,
+                        isAuthenticated,
+                        loginWithPopup,
+                        multiCountryCountries,
+                        isLoading,
+                        setLoading,
+                        landingQuery,
 
-                  //Functions
-                  getResults,
-                  updateQuery,
-                  setFilters,
-                  setRelations,
-                  setFilterCountries,
-                  setMultiCountryCountries,
-                  setWarningModalVisible,
-                  setStakeholderSignupModalVisible,
-                  ...props,
-                }}
-                setStakeholderSignupModalVisible={
-                  setStakeholderSignupModalVisible
-                }
-                filters={filters}
-                setFilters={setFilters}
-                filterMenu={filterMenu}
-              />
+                        //Functions
+                        getResults,
+                        updateQuery,
+                        setFilters,
+                        setRelations,
+                        setFilterCountries,
+                        setMultiCountryCountries,
+                        setWarningModalVisible,
+                        setStakeholderSignupModalVisible,
+                        ...props,
+                      }}
+                      setStakeholderSignupModalVisible={
+                        setStakeholderSignupModalVisible
+                      }
+                      filters={filters}
+                      setFilters={setFilters}
+                      filterMenu={filterMenu}
+                    />
+                  )}
+                />
+                <Route
+                  path="/knowledge/capacity-building"
+                  render={(props) => <CapacityBuilding {...props} />}
+                />
+                <Route
+                  exact
+                  path="/knowledge/case-studies"
+                  render={(props) => <CaseStudies {...props} />}
+                />
+              </Switch>
             )}
           />
+
           <Route
             path="/browse"
             render={(props) => (
@@ -661,15 +701,6 @@ const Root = () => {
             path="/discourse-forum"
             render={(props) => <DiscourseForum />}
           />
-          <Route
-            path="/capacity-building"
-            render={(props) => <CapacityBuilding {...props} />}
-          />
-          <Route
-            exact
-            path="/case-studies"
-            render={(props) => <CaseStudies {...props} />}
-          />
 
           <Route
             exact
@@ -678,34 +709,40 @@ const Root = () => {
             }
             path="/workspace"
           />
-
-          <Route
-            exact
-            render={(props) => <EventPage {...props} />}
-            path="/events"
-          />
           <Route
             exact
             render={(props) => <StakeholderDetail {...props} />}
             path="/stakeholder-detail"
           />
           <Route
-            exact
-            render={(props) => <Partners {...props} />}
-            path="/partners"
-          />
-          <Route
-            exact
-            render={(props) => (
-              <StakeholderOverview
-                {...props}
-                loginWithPopup={loginWithPopup}
-                filters={filters}
-                setFilters={setFilters}
-              />
+            path="/connect"
+            render={() => (
+              <Switch>
+                <Route
+                  exact
+                  render={(props) => <EventPage {...props} />}
+                  path="/connect/events"
+                />
+                <Route
+                  path="/connect/community"
+                  render={(props) => (
+                    <StakeholderOverview
+                      {...props}
+                      loginWithPopup={loginWithPopup}
+                      filters={filters}
+                      setFilters={setFilters}
+                    />
+                  )}
+                />
+                <Route
+                  exact
+                  render={(props) => <Partners {...props} />}
+                  path="/connect/partners"
+                />
+              </Switch>
             )}
-            path="/stakeholder-overview"
           />
+
           <Route
             path="/:type(stakeholder)/:id"
             render={(props) => (
@@ -793,7 +830,7 @@ const Search = withRouter(({ history, updateQuery }) => {
   const handleSearch = (src) => {
     const path = history.location.pathname;
     if (src) {
-      history.push(`/knowledge-library?q=${src.trim()}`);
+      history.push(`/knowledge/library?q=${src.trim()}`);
       updateQuery("q", src.trim());
     } else {
       updateQuery("q", src.trim());

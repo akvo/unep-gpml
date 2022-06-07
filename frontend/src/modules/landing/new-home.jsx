@@ -150,7 +150,7 @@ const Landing = withRouter(
       if (!isMobileScreen) {
         setSelectedTopic(name?.toLocaleLowerCase());
       } else {
-        isMobileScreen && history.push(`/knowledge-library?tag=${tag}`);
+        isMobileScreen && history.push(`/knowledge/library?tag=${tag}`);
       }
     };
 
@@ -177,7 +177,14 @@ const Landing = withRouter(
           setResources({
             items: data?.results,
             summary: data?.counts.filter(
-              (count) => count.topic !== "gpml_member_entities"
+              (count) =>
+                count?.topic !== "gpml_member_entities" &&
+                count?.topic !== "plastics" &&
+                count?.topic !== "waste management" &&
+                count?.topic !== "marine litter" &&
+                count?.topic !== "capacity building" &&
+                count?.topic !== "product by design" &&
+                count?.topic !== "source to sea"
             ),
           });
         }));
@@ -296,7 +303,7 @@ const Landing = withRouter(
             <h2>
               Featured Content{" "}
               <span className="see-more-link">
-                <Link to="/knowledge-library">
+                <Link to="/knowledge/library">
                   See all <RightOutlined />
                 </Link>
               </span>
@@ -514,7 +521,7 @@ const Landing = withRouter(
                 Our Community{" "}
                 <span className="see-more-link ant-btn-ghost ant-btn">
                   <Link
-                    to={isApprovedUser ? "/events" : "#"}
+                    to={isApprovedUser ? "/connect/events" : "#"}
                     onClick={() => {
                       !isApprovedUser
                         ? handleOurCommunityProfileClick()

@@ -23,17 +23,20 @@ import {
 import humps from "humps";
 import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
+import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 
 // Icons
 
 const ResourceList = ({
   view,
+  query,
   allResults,
   countData,
-  filters,
   loading,
   pageSize,
   updateQuery,
+  isAscending,
+  sortResults,
 }) => {
   const { profile, stakeholders } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -44,27 +47,41 @@ const ResourceList = ({
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
 
+  const topics = query?.topic;
   // Choose topics to count, based on whether user is approved or not,
   // and if any topic filters are active.
   const topicsForTotal = (isApprovedUser
     ? topicTypesApprovedUser
     : topicTypes
   ).map((t) => humps.decamelize(t));
+
   const filteredTopics =
-    filters?.topic?.length > 0
-      ? filters?.topic?.filter((t) => topicsForTotal.indexOf(t) > -1)
+    topics?.length > 0
+      ? topics?.filter((t) => topicsForTotal.indexOf(t) > -1)
       : topicsForTotal.filter(
-          (t) => t !== "organisation" && t !== "stakeholder"
+          (t) =>
+            t !== "organisation" &&
+            t !== "stakeholder" &&
+            t !== "gpml_member_entities" &&
+            t !== "plastics" &&
+            t !== "waste management" &&
+            t !== "marine litter" &&
+            t !== "capacity building" &&
+            t !== "product by design" &&
+            t !== "source to sea"
         );
+
   const totalItems = filteredTopics.reduce(
     (acc, topic) =>
       acc + (countData?.find((it) => it.topic === topic)?.count || 0),
     0
   );
 
+  const pageNumber = query?.offset?.map((count) => Number(count))[0] || 0;
+
   const itemCount = loading
     ? 0
-    : filters?.offset !== undefined
+    : pageNumber !== undefined
     ? totalItems
     : pageSize;
 
@@ -83,6 +100,28 @@ const ResourceList = ({
         }`}
         style={!loading && !isEmpty(allResults) && { overflowY: "auto" }}
       >
+        <div className="subheader">
+          <p>
+            {totalItems > pageSize + pageNumber
+              ? pageSize + pageNumber
+              : itemCount}{" "}
+            of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
+          </p>
+          <div className="sort-by" onClick={() => sortResults(!isAscending)}>
+            <SortIcon
+              style={{
+                transform:
+                  isAscending || isAscending === null
+                    ? "initial"
+                    : "rotate(180deg)",
+              }}
+            />
+            <div>
+              <span>Sort by:</span>
+              <b>{isAscending ? `A>Z` : "Z>A"}</b>
+            </div>
+          </div>
+        </div>
         {loading ? (
           <h2 className="loading">
             <LoadingOutlined spin /> Loading
@@ -101,19 +140,12 @@ const ResourceList = ({
         <div className="page">
           <Pagination
             defaultCurrent={1}
-            current={(filters?.offset || 0) / pageSize + 1}
+            current={(pageNumber || 0) / pageSize + 1}
             pageSize={pageSize}
             total={totalItems}
             showSizeChanger={false}
             onChange={(n, size) => updateQuery("offset", (n - 1) * size)}
           />
-
-          <div className="result-number" style={{ opacity: loading && "0" }}>
-            {totalItems > pageSize + filters?.offset
-              ? pageSize + Number(filters?.offset)
-              : itemCount}{" "}
-            of {totalItems || 0} result{totalItems > 1 ? "s" : ""}
-          </div>
         </div>
       )}
     </Row>
@@ -178,9 +210,7 @@ const ResourceItem = ({ results, view, stakeholders }) => {
         >
           <div className="topic">{topicNames(type)}</div>
           <div className="item-body">
-            <div className="title">
-              <TrimText text={title} max={45} />
-            </div>
+            <div className="title">{title}</div>
             <div className="description">
               <TrimText text={description} max={45} />
             </div>

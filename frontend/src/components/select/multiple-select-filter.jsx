@@ -34,6 +34,7 @@ const MultipleSelectFilter = ({
           dropdownClassName="multiselection-dropdown"
           showSearch
           allowClear
+          aria-multiline
           mode="multiple"
           placeholder="All (default)"
           options={options}

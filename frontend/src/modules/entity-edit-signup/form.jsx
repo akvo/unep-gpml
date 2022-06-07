@@ -27,6 +27,7 @@ import entity from "./entity";
 import stakeholder from "./stakeholder";
 import entityUiSchema from "./entity-ui-schema.json";
 import stakeholderUiSchema from "./stakeholder-ui-schema.json";
+import { tagsMap } from "../../utils/misc";
 
 import { UIStore } from "../../store";
 import { withRouter } from "react-router-dom";
@@ -192,17 +193,7 @@ const SignUpForm = withRouter(
           delete data.authorizeSubmission;
 
           if (data.orgExpertise) {
-            data.org.tags = data.orgExpertise.map((x) => {
-              return {
-                ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
-                tag:
-                  Object.values(tags)
-                    .flat()
-                    .find((o) => o.id === parseInt(x))?.tag || x.toLowerCase(),
-
-                ...(isNaN(parseInt(x)) && { tag_category: "general" }),
-              };
-            });
+            data.org.tags = tagsMap(data.orgExpertise, "general", tags);
             delete data.orgExpertise;
             delete data.expertise;
           }
@@ -328,13 +319,56 @@ const SignUpForm = withRouter(
           formData?.S2?.newCompanySubnationalAreaOnly &&
             delete formData?.S2?.newCompanySubnationalAreaOnly;
         }
+        if (formData?.S3?.seekingSuggestedTags) {
+          let array =
+            Object.values(tags)
+              .flat()
+              .find(
+                (o) =>
+                  o.tag === formData?.S3?.seekingSuggestedTags.toLowerCase()
+              )?.id || formData?.S3?.seekingSuggestedTags.toLowerCase();
 
-        signUpData.update((e) => {
-          e.data = {
-            ...e.data,
-            ...formData,
-          };
-        });
+          signUpData.update((e) => {
+            e.data = {
+              ...e.data,
+              S3: {
+                ...e.data.S3,
+                seeking: [
+                  ...(e.data.S3.seeking ? e.data.S3.seeking : []),
+                  array,
+                ],
+              },
+            };
+          });
+        } else if (formData?.S3?.offeringSuggestedTags) {
+          let array =
+            Object.values(tags)
+              .flat()
+              .find(
+                (o) =>
+                  o.tag === formData?.S3?.offeringSuggestedTags.toLowerCase()
+              )?.id || formData?.S3?.offeringSuggestedTags.toLowerCase();
+
+          signUpData.update((e) => {
+            e.data = {
+              ...e.data,
+              S3: {
+                ...e.data.S3,
+                offering: [
+                  ...(e.data.S3.offering ? e.data.S3.offering : []),
+                  array,
+                ],
+              },
+            };
+          });
+        } else {
+          signUpData.update((e) => {
+            e.data = {
+              ...e.data,
+              ...formData,
+            };
+          });
+        }
 
         let updatedFormDataSchema = {};
 

@@ -137,7 +137,14 @@ const VerticalLegend = ({
         data.topic !== "stakeholder" &&
         data.topic !== "organisation" &&
         data.topic !== "gpml_member_entities" &&
-        data.topic !== "non_member_organisation"
+        data.topic !== "non_member_organisation" &&
+        data.topic !== "capacity_building" &&
+        data.topic !== "plastics" &&
+        data.topic !== "waste management" &&
+        data.topic !== "marine litter" &&
+        data.topic !== "capacity building" &&
+        data.topic !== "product by design" &&
+        data.topic !== "source to sea"
     );
 
   const resourcesPerTransnationalList = ResourcesCountPerTransnationalGroups.map(
@@ -160,7 +167,16 @@ const VerticalLegend = ({
             <div>
               {tTypes
                 .filter(
-                  (topic) => topic !== "organisation" && topic !== "stakeholder"
+                  (topic) =>
+                    topic !== "organisation" &&
+                    topic !== "stakeholder" &&
+                    topic !== "capacity_building" &&
+                    topic !== "plastics" &&
+                    topic !== "waste management" &&
+                    topic !== "marine litter" &&
+                    topic !== "capacity building" &&
+                    topic !== "product by design" &&
+                    topic !== "source to sea"
                 )
                 .map((topic) => {
                   const topicChecker = () => {
@@ -209,7 +225,18 @@ const VerticalLegend = ({
 
   const totalResourcesContent = () =>
     tTypes
-      .filter((topic) => topic !== "organisation" && topic !== "stakeholder")
+      .filter(
+        (topic) =>
+          topic !== "organisation" &&
+          topic !== "stakeholder" &&
+          topic !== "capacity_building" &&
+          topic !== "plastics" &&
+          topic !== "waste management" &&
+          topic !== "marine litter" &&
+          topic !== "capacity building" &&
+          topic !== "product by design" &&
+          topic !== "source to sea"
+      )
       .map((topic) => {
         const topicChecker = () => {
           if (topic === "actionPlan") {

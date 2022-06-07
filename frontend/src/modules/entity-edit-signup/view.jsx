@@ -282,6 +282,7 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
     profile: s.profile,
     formStep: s.formStep,
     formEdit: s.formEdit,
+    stakeholderSuggestedTags: s.stakeholderSuggestedTags,
   }));
 
   const {
@@ -299,6 +300,7 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
     formStep,
     formEdit,
     profile,
+    stakeholderSuggestedTags,
   } = storeData;
 
   const formData = signUpData.useState();
@@ -399,6 +401,15 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
     }
     if (type === "item-array" && isObject && isArray) {
       res = value;
+    }
+    if (name === "type" && value === "Intergovernmental organization") {
+      res = "Intergovernmental Organizations (IGOs)";
+    }
+    if (name === "type" && value === "Private Sector") {
+      res = "Private Sector (for-profit)";
+    }
+    if (name === "type" && value === "Academia & Research") {
+      res = "Academia and Research";
     }
     return res;
   };

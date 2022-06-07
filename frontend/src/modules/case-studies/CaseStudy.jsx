@@ -102,9 +102,19 @@ const CaseStudy = ({
                     const findSk = datastakeholders.find((ds) =>
                       sk?.toLowerCase()?.includes(ds?.name?.toLowerCase())
                     );
-                    const avatar = findSk
-                      ? findSk.image
-                      : `https://ui-avatars.com/api/?size=480&name=${sk}`;
+                    const avatar = findSk ? (
+                      findSk.image
+                    ) : (
+                      <Avatar
+                        style={{
+                          backgroundColor: "#006776",
+                          verticalAlign: "middle",
+                        }}
+                        size={60}
+                      >
+                        {sk?.substring(0, 2)}
+                      </Avatar>
+                    );
                     return (
                       <Tooltip className="avatar" title={sk} key={sx}>
                         <Avatar src={avatar} />

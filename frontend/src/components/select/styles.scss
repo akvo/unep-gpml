@@ -42,7 +42,7 @@
   }
 
   .ant-select-selection-placeholder {
-    font-style: italic;
+    // font-style: italic;
     font-weight: 700;
     padding-left: 30px;
     @-moz-document url-prefix() {
@@ -72,15 +72,16 @@
   }
 
   .ant-select-selection-overflow {
-    padding-left: calc(44px - 9px);
-    height: 29px;
-    overflow-y: auto;
+    padding-left: 35px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     @-moz-document url-prefix() {
       height: 22px;
       padding-left: calc(33px - 4.5px);
     }
     .ant-select-selection-item {
-      background-color: transparent;
+      background-color: #c3dbe7;
+      border-radius: 4px;
       @-moz-document url-prefix() {
         line-height: 15px;
       }
@@ -100,7 +101,7 @@
     font-weight: 700;
     font-size: 16px;
     color: $blue06;
-    font-style: italic;
+    // font-style: italic;
     overflow: visible;
     @-moz-document url-prefix() {
       font-size: 12px;
@@ -119,37 +120,12 @@
     url("../../images/knowledge-library/chevron-down-grey.svg");
 }
 
-@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
-  .multiselection-dropdown {
-    zoom: 80%;
-    @-moz-document url-prefix() {
-      font-size: 12px;
-      .ant-select-item-group {
-        font-size: 10px;
-      }
-      .ant-select-item-option-content {
-        font-size: 12px;
-      }
-    }
-  }
-}
-
 // Transnational filter tab
 .popover-multi-country {
   cursor: pointer;
   border-radius: 50%;
   &:hover {
     background-color: $yellow-highlight !important;
-  }
-}
-
-.country-info-popover {
-  zoom: 60% !important;
-  .popover-content-item {
-    font-size: 18px !important;
-  }
-  @-moz-document url-prefix() {
-    font-size: 14px !important;
   }
 }
 
@@ -242,11 +218,6 @@
     }
 
     .ant-select-selection-overflow {
-      height: 29px;
-      overflow-y: auto;
-      @-moz-document url-prefix() {
-        height: 22px;
-      }
     }
 
     .ant-select {

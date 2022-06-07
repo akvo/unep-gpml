@@ -29,6 +29,7 @@ import { ReactComponent as IconExchange } from "../../images/capacity-building/i
 import { ReactComponent as IconCaseStudies } from "../../images/capacity-building/ic-case-studies.svg";
 
 import Header from "./header";
+import moment from "moment";
 
 const { Option } = Select;
 
@@ -71,20 +72,20 @@ const KnowledgeLibrary = ({
   const sidebar = [
     {
       id: 1,
-      title: "LIBRARY",
-      url: "/knowledge-library",
+      title: "Library",
+      url: "/knowledge/library",
       icon: <IconLibrary />,
     },
     {
       id: 2,
-      title: "LEARNING",
-      url: "/capacity-building",
+      title: "Learning",
+      url: "/knowledge/capacity-building",
       icon: <IconLearning />,
     },
     {
       id: 4,
       title: "Case studies",
-      url: "/case-studies",
+      url: "/knowledge/case-studies",
       icon: <IconCaseStudies />,
     },
   ];
@@ -156,13 +157,14 @@ const KnowledgeLibrary = ({
     // setFilterCountries if user click from map to browse view
     query?.country &&
       query?.country.length > 0 &&
-      setFilterCountries(query.country);
+      setFilterCountries(query?.country || []);
 
     // Manage filters display
+
     !filters && setFilters(query);
     if (filters) {
-      setFilters({ ...filters, topic: query.topic, tag: query.tag });
-      setFilterCountries(filters.country);
+      setFilters({ ...filters });
+      setFilterCountries(filters?.country || []);
     }
 
     setLoading(true);
@@ -171,13 +173,16 @@ const KnowledgeLibrary = ({
     }
 
     if (isLoading === false && filters) {
-      const newParams = new URLSearchParams({
-        ...filters,
-        topic: query.topic,
-        tag: query.tag,
-      });
-      if (history.location.pathname === "/knowledge-library") {
-        history.push(`/knowledge-library?${newParams.toString()}`);
+      const arrayOfQuery = Object.entries(filters)?.filter(
+        (item) => item[1]?.length !== 0
+      );
+
+      const pureQuery = Object.fromEntries(arrayOfQuery);
+
+      const newParams = new URLSearchParams(pureQuery);
+
+      if (history.location.pathname === "/knowledge/library") {
+        history.push(`/knowledge/library?${newParams.toString()}`);
       }
       clearTimeout(tmid);
       tmid = setTimeout(getResults(query), 1000);
@@ -235,10 +240,10 @@ const KnowledgeLibrary = ({
           : selectedRepresentativeGroups?.name;
       }
       if (key === "startDate") {
-        return `Start date ${value}`;
+        return `Start date ${moment(value).year()}`;
       }
       if (key === "endDate") {
-        return `End date ${value}`;
+        return `End date ${moment(value).year()}`;
       }
       if (key === "subContentType") {
         const selectedSubContentType = mainContentType.find((subContent) =>
@@ -255,14 +260,15 @@ const KnowledgeLibrary = ({
       }
     };
     return Object.keys(query).map((key, index) => {
-      // don't render if key is limit and offset
+      // don't render if key is one of those listed below
       if (
         key === "limit" ||
         key === "offset" ||
         key === "q" ||
         key === "favorites" ||
         key === "descending" ||
-        key === "orderBy"
+        key === "orderBy" ||
+        key === "incCountsForTags"
       ) {
         return;
       }
@@ -320,19 +326,6 @@ const KnowledgeLibrary = ({
   return (
     <Row id="knowledge-library">
       {/* Header */}
-      <Header
-        {...{
-          isAscending,
-          updateQuery,
-          filterVisible,
-          setFilterVisible,
-          sortResults,
-          filterTagValue,
-          renderFilterTag,
-          selectionValue,
-          setView,
-        }}
-      />
 
       {/* Content */}
       <Col span={24}>
@@ -355,6 +348,17 @@ const KnowledgeLibrary = ({
           />
 
           <LeftSidebar active={1} sidebar={sidebar}>
+            <Header
+              {...{
+                updateQuery,
+                filterVisible,
+                setFilterVisible,
+                filterTagValue,
+                renderFilterTag,
+                selectionValue,
+                setView,
+              }}
+            />
             <Row
               className={
                 view === "map"
@@ -379,12 +383,14 @@ const KnowledgeLibrary = ({
                   <ResourceList
                     {...{
                       view,
+                      query,
                       allResults,
                       countData,
-                      filters,
                       loading,
                       pageSize,
                       updateQuery,
+                      sortResults,
+                      isAscending,
                     }}
                     hideListButtonVisible={view === "map"}
                   />
@@ -438,7 +444,12 @@ const KnowledgeLibrary = ({
                       : `render-map-container`
                   }
                 >
-                  <TopicView {...{ updateQuery, query }} />
+                  <TopicView
+                    {...{ updateQuery, query, results }}
+                    countData={countData.filter(
+                      (count) => count.topic !== "gpml_member_entities"
+                    )}
+                  />
                 </Col>
               )}
             </Row>

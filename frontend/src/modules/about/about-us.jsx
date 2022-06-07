@@ -71,7 +71,14 @@ const AboutUs = () => {
       .get(`/browse?topic=${topic}`)
       .then((resp) => {
         const data = resp?.data?.counts.filter(
-          (item) => item?.topic !== "gpml_member_entities"
+          (item) =>
+            item?.topic !== "gpml_member_entities" &&
+            item?.topic !== "plastics" &&
+            item?.topic !== "waste management" &&
+            item?.topic !== "marine litter" &&
+            item?.topic !== "capacity building" &&
+            item?.topic !== "product by design" &&
+            item?.topic !== "source to sea"
         );
         setResourcesCount(data);
         // setEntityCount(GPMLMember[0].count || 0);

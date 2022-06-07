@@ -9,6 +9,7 @@
   @-moz-document url-prefix() {
     padding-bottom: 20px !important;
     .ant-avatar {
+      display: flex;
       width: 25px !important;
       height: 25px !important;
     }
@@ -24,16 +25,17 @@
   .topbar-container {
     background-color: #007090;
     padding: 10px 0;
-
+    .ant-avatar-string {
+      @-moz-document url-prefix() {
+        line-height: 26px !important;
+      }
+    }
     .ui.container {
       color: #fff;
     }
     .topbar-wrapper {
       display: flex;
       align-items: center;
-      @media (max-width: 700px) {
-        zoom: 75% !important;
-      }
       .topbar-image-holder {
         background-image: url("../../images/stakeholder/individual-icn.svg");
         background-repeat: no-repeat;
@@ -236,6 +238,9 @@
               flex: 0 0 50% !important;
               max-width: 50% !important;
             }
+            .related-content .carousel-item .ant-col-12 {
+              max-width: 100% !important;
+            }
           }
 
           @media (min-width: 801px) and (max-width: 1200px) {
@@ -435,11 +440,6 @@
         p,
         .display-text-group {
           padding: 0 20px;
-          font-size: 1.4rem;
-          @-moz-document url-prefix() {
-            padding: 0 10px !important;
-            font-size: 12px;
-          }
         }
         .rm-text-container {
           margin-bottom: 5px;
@@ -455,7 +455,6 @@
             cursor: pointer;
             background-color: unset;
             border: unset;
-            font-size: 1.4rem;
             font-weight: 400;
             padding: 0;
 
@@ -783,15 +782,6 @@
 
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
   #stakeholder-detail {
-    .ui.container {
-      zoom: 75%;
-      width: 1560px;
-      margin-left: auto !important;
-      margin-right: auto !important;
-      @-moz-document url-prefix() {
-        width: 1056px;
-      }
-    }
     .topbar-container {
       .topbar-wrapper {
         .topbar-title-holder {
@@ -851,63 +841,6 @@
                 }
               }
             }
-          }
-          .ant-card-head {
-            .ant-card-head-title {
-              font-size: 1.4rem;
-              @-moz-document url-prefix() {
-                font-size: 12px !important;
-              }
-            }
-          }
-          .ant-card-body {
-            p {
-              font-size: 1.4rem;
-              @-moz-document url-prefix() {
-                font-size: 12px !important;
-              }
-            }
-
-            .list {
-              .ant-list-item {
-                .ant-list-item-meta {
-                  h4 {
-                    font-size: 1.4rem;
-                    @-moz-document url-prefix() {
-                      font-size: 12px !important;
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      .slider-card {
-        .description-holder {
-          h4 {
-            font-size: 1.4rem;
-          }
-          h6 {
-            font-size: 1.4rem;
-          }
-          .connection-wrapper .read-more {
-            font-size: 1.4rem;
-          }
-          @-moz-document url-prefix() {
-            h4,
-            h6,
-            .connection-wrapper .read-more {
-              font-size: 12px !important;
-            }
-          }
-        }
-      }
-      .exta-info {
-        .ant-typography {
-          font-size: 1.4rem;
-          @-moz-document url-prefix() {
-            font-size: 12px !important;
           }
         }
       }

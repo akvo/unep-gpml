@@ -26,6 +26,8 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 
+import { tagsMap } from "../../utils/misc";
+
 const userRoles = new Set(roles);
 
 const reviewerRoles = new Set(["REVIEWER", "ADMIN"]);
@@ -283,11 +285,30 @@ const ProfileView = ({ relations }) => {
     ) {
       vals.org.geoCoverageValue = null;
     }
+
+    vals.seeking = tagsMap(vals?.seeking, "seeking", tags);
+
+    vals.offering = tagsMap(vals?.offering, "offering", tags);
+
+    vals.tags = [...vals.seeking, ...vals.offering];
+
+    delete vals.seeking;
+    delete vals.offering;
+
     api
       .put("/profile", vals)
       .then(() => {
+        let data = {
+          ...vals,
+          tags: vals?.tags.map((x) => ({
+            id: x.id,
+            tag: x.tag,
+            tagRelationCategory: x.tag_category,
+            tagCategory: x.tag_category,
+          })),
+        };
         UIStore.update((e) => {
-          e.profile = vals;
+          e.profile = data;
         });
         notification.success({ message: "Profile updated" });
         setSaving(false);
@@ -433,7 +454,13 @@ const ProfileView = ({ relations }) => {
                           xl: 125,
                           xxl: 200,
                         }}
-                      />
+                        style={{
+                          fontSize: "62px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {profile?.firstName.substring(0, 1)}
+                      </Avatar>
                     </div>
                   )}
                   <Menu

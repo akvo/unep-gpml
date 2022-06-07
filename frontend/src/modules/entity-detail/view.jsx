@@ -50,34 +50,9 @@ import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
 import { TrimText } from "../../utils/string";
-
-const getType = (type) => {
-  let t = "";
-  switch (type) {
-    case "Action Plan":
-      t = "action_plan";
-      break;
-    case "Event":
-      t = "event";
-      break;
-    case "Initiative":
-      t = "project";
-      break;
-    case "Policy":
-      t = "policy";
-      break;
-    case "Financing Resource":
-      t = "financing_resource";
-      break;
-    case "Technical Resource":
-      t = "technical_resource";
-      break;
-    case "Technology":
-      t = "technology";
-      break;
-  }
-  return t;
-};
+import { colors } from "../../utils/misc";
+import RelatedContent from "../../components/related-content/related-content";
+const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
 const CardComponent = ({ title, style, children, getRef }) => {
   return (
@@ -101,7 +76,6 @@ const SharePanel = ({
 }) => {
   const noEditTopics = new Set(["stakeholder"]);
 
-  console.log(profile.id === data.createdBy);
   const canEdit = () =>
     isAuthenticated &&
     profile.reviewStatus === "APPROVED" &&
@@ -173,7 +147,7 @@ const SharePanel = ({
                       message: "Entity deleted successfully",
                     });
                     history.push({
-                      pathname: `/stakeholder-overview`,
+                      pathname: `/connect/community`,
                     });
                   })
                   .catch((err) => {
@@ -219,6 +193,7 @@ const StakeholderDetail = ({
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const history = useHistory();
   const [data, setData] = useState(null);
+  const [color, setColor] = useState([colour(), colour(), colour()]);
   const [relations, setRelations] = useState([]);
   const [ownedResources, setOwnedResources] = useState([]);
   const [bookedResources, setBookedResources] = useState([]);
@@ -248,7 +223,7 @@ const StakeholderDetail = ({
     (n) => {
       setOwnedResourcesPage(n);
       const searchParms = new URLSearchParams();
-      searchParms.set("limit", 3);
+      searchParms.set("limit", 12);
       searchParms.set("page", n);
       const url = `/organisation/${params.id}/content?${String(searchParms)}`;
       api
@@ -269,7 +244,7 @@ const StakeholderDetail = ({
     (n) => {
       setBookedResourcesPage(n);
       const searchParms = new URLSearchParams();
-      searchParms.set("limit", 3);
+      searchParms.set("limit", 12);
       searchParms.set("page", n);
       const url = `/organisation/${params.id}/members?${String(searchParms)}`;
       api
@@ -324,7 +299,7 @@ const StakeholderDetail = ({
         });
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
-        api.get("/favorite").then((resp) => {
+        api.get(`/favorite/${params.type}/${params.id}`).then((resp) => {
           setRelations(resp.data);
         });
       }, 100);
@@ -383,11 +358,39 @@ const StakeholderDetail = ({
               <Col xs={24} lg={24}>
                 <div className="topbar-wrapper">
                   <div className="topbar-image-holder">
-                    <img
+                    <Avatar
+                      size={{
+                        xs: 60,
+                        sm: 60,
+                        md: 60,
+                        lg: 100,
+                        xl: 150,
+                        xxl: 150,
+                      }}
                       src={
-                        data?.logo
-                          ? data?.logo
-                          : `https://ui-avatars.com/api/?size=480&name=${data?.name}`
+                        data?.logo ? (
+                          data?.logo
+                        ) : (
+                          <Avatar
+                            style={{
+                              backgroundColor: color[0],
+                              fontSize: "62px",
+                              fontWeight: "bold",
+                              verticalAlign: "middle",
+                              border: "4px solid #fff",
+                            }}
+                            size={{
+                              xs: 55,
+                              sm: 55,
+                              md: 55,
+                              lg: 95,
+                              xl: 145,
+                              xxl: 145,
+                            }}
+                          >
+                            {data?.name?.substring(0, 1)}
+                          </Avatar>
+                        )
                       }
                     />
                   </div>
@@ -508,89 +511,16 @@ const StakeholderDetail = ({
           </Row>
           <div className="owned-resources-wrapper">
             {ownedResources.length > 0 && (
-              <CardComponent
-                title={`Content on the platform (${ownedResourcesCount})`}
-                style={{
-                  height: "100%",
-                  boxShadow: "none",
-                  borderRadius: "none",
-                }}
-              >
-                <div style={{ padding: "0 10px" }}>
-                  <Row gutter={[16, 16]}>
-                    {ownedResources.slice(0, 3).map((item) => (
-                      <Col xs={6} lg={8} key={item.id}>
-                        <div className="slider-card">
-                          <div className="image-holder">
-                            <img
-                              style={{ width: 60 }}
-                              src={
-                                require(`../../images/${
-                                  icons[
-                                    getType(item.type)
-                                      ? getType(item.type)
-                                      : "action_plan"
-                                  ]
-                                }`).default
-                              }
-                            />
-                          </div>
-                          <div className="description-holder">
-                            <div>
-                              <h4>{item.type}</h4>
-                              {item.title && (
-                                <TrimText text={item.title} max={30} />
-                              )}
-                            </div>
-                            {item.entityConnections &&
-                              item.entityConnections.length > 0 && (
-                                <div className="connection-wrapper">
-                                  <Avatar.Group
-                                    maxCount={2}
-                                    maxPopoverTrigger="click"
-                                    size="large"
-                                    maxStyle={{
-                                      color: "#f56a00",
-                                      backgroundColor: "#fde3cf",
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    {item.entityConnections.map((item) => (
-                                      <Avatar
-                                        src={
-                                          item?.image
-                                            ? item.image
-                                            : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
-                                        }
-                                      />
-                                    ))}
-                                  </Avatar.Group>
-                                  <Link
-                                    to={`/${getType(item.type)}/${item.id}`}
-                                  >
-                                    <div className="read-more">
-                                      Read More <ArrowRightOutlined />
-                                    </div>
-                                  </Link>
-                                </div>
-                              )}
-                          </div>
-                        </div>
-                      </Col>
-                    ))}
-                  </Row>
-                  <div className="pagination-wrapper">
-                    <Pagination
-                      showSizeChanger={false}
-                      defaultCurrent={1}
-                      current={ownedResourcesPage + 1}
-                      pageSize={3}
-                      total={ownedResourcesCount || 0}
-                      onChange={(n, size) => getOwnedResources(n - 1)}
-                    />
-                  </div>
-                </div>
-              </CardComponent>
+              <RelatedContent
+                data={[]}
+                relatedContent={ownedResources}
+                title="Content on the platform"
+                isShownPagination={true}
+                dataCount={ownedResourcesCount}
+                relatedContentPage={ownedResourcesPage}
+                relatedContentCount={ownedResourcesCount}
+                getRelatedContent={getOwnedResources}
+              />
             )}
           </div>
           <div>
@@ -606,7 +536,7 @@ const StakeholderDetail = ({
                 <div style={{ padding: "0 10px" }} className="individuals">
                   <Row gutter={[16, 16]} style={{ width: "100%" }}>
                     {bookedResources.map((item) => (
-                      <Col xs={6} lg={7} key={item.id}>
+                      <Col xs={6} lg={8} key={item.id}>
                         <div
                           className="slider-card"
                           onClick={() => {
@@ -618,13 +548,41 @@ const StakeholderDetail = ({
                           <Row style={{ width: "100%" }}>
                             <Col className="individual-details" xs={6} lg={14}>
                               <div className="profile-image">
-                                <img
+                                <Avatar
+                                  style={{ border: "none" }}
+                                  key={item?.picture}
+                                  size={{
+                                    xs: 60,
+                                    sm: 60,
+                                    md: 60,
+                                    lg: 100,
+                                    xl: 150,
+                                    xxl: 150,
+                                  }}
                                   src={
-                                    item?.picture
-                                      ? item?.picture
-                                      : `https://ui-avatars.com/api/?size=480&name=${item?.name}`
+                                    item?.picture ? (
+                                      item?.picture
+                                    ) : (
+                                      <Avatar
+                                        style={{
+                                          backgroundColor: color[2],
+                                          verticalAlign: "middle",
+                                          fontSize: "62px",
+                                          fontWeight: "bold",
+                                        }}
+                                        size={{
+                                          xs: 55,
+                                          sm: 55,
+                                          md: 55,
+                                          lg: 95,
+                                          xl: 145,
+                                          xxl: 145,
+                                        }}
+                                      >
+                                        {item?.name?.substring(0, 2)}
+                                      </Avatar>
+                                    )
                                   }
-                                  alt={`${item.name}`}
                                 />
                               </div>
                             </Col>
@@ -645,16 +603,18 @@ const StakeholderDetail = ({
                       </Col>
                     ))}
                   </Row>
-                  <div className="pagination-wrapper">
-                    <Pagination
-                      showSizeChanger={false}
-                      defaultCurrent={1}
-                      current={bookedResourcesPage + 1}
-                      pageSize={3}
-                      total={bookedResourcesCount || 0}
-                      onChange={(n, size) => getBookedResources(n - 1)}
-                    />
-                  </div>
+                  {bookedResourcesCount > 3 && (
+                    <div className="pagination-wrapper">
+                      <Pagination
+                        showSizeChanger={false}
+                        defaultCurrent={1}
+                        current={bookedResourcesPage + 1}
+                        pageSize={3}
+                        total={bookedResourcesCount || 0}
+                        onChange={(n, size) => getBookedResources(n - 1)}
+                      />
+                    </div>
+                  )}
                 </div>
               </CardComponent>
             )}

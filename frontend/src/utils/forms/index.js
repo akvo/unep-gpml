@@ -14,6 +14,8 @@ import TextareaWidget from "./form-textarea";
 import CheckboxWidget from "./form-checkbox";
 import RichWidget from "./rich-editor/form-editor";
 import CollapseWidget from "./collapse-form/form-collapse";
+import TaglistWidget from "./form-taglist";
+import AutoCompleteWidget from "./form-autocomplete";
 
 import difference from "lodash/difference";
 import intersection from "lodash/intersection";
@@ -36,6 +38,8 @@ const widgets = {
   CheckboxWidget: CheckboxWidget,
   RichWidget: RichWidget,
   CollapseWidget: CollapseWidget,
+  TaglistWidget: TaglistWidget,
+  AutoCompleteWidget: AutoCompleteWidget,
 };
 
 /**

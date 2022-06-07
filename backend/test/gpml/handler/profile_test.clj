@@ -1,14 +1,16 @@
 (ns gpml.handler.profile-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
-            [gpml.db.country :as db.country]
-            [gpml.db.tag :as db.tag]
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.organisation :as db.organisation]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.fixtures :as fixtures]
-            [gpml.handler.stakeholder :as stakeholder]
-            [integrant.core :as ig]
-            [ring.mock.request :as mock]))
+  (:require
+   [clojure.test :refer [deftest is testing use-fixtures]]
+   [gpml.db.country :as db.country]
+   [gpml.db.country-group :as db.country-group]
+   [gpml.db.organisation :as db.organisation]
+   [gpml.db.resource.tag :as db.resource.tag]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.db.tag :as db.tag]
+   [gpml.fixtures :as fixtures]
+   [gpml.handler.stakeholder :as stakeholder]
+   [integrant.core :as ig]
+   [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 
@@ -171,9 +173,7 @@
       (is (= "Doe" (-> (:body resp) :last_name)))
       (is (= "SUBMITTED" (-> (:body resp) :review_status)))
       (testing "New incomplete profile is created"
-        (is (= "https://ui-avatars.com/api/?size=480&name=John+Doe" (-> (:body resp) :photo)))
         (is (= nil (-> (:body resp) :linkedin)))
-        (is (= "https://ui-avatars.com/api/?size=480&name=John+Doe" (-> (:body resp) :photo)))
         (is (= nil (-> (:body resp) :org)))))))
 
 (deftest handler-put-test
@@ -296,8 +296,13 @@
           tags (->> (db.tag/all-tags db)
                     (take 2)
                     (map :id))
-          _ (db.stakeholder/new-stakeholder db (new-profile 1))
-          _ (db.stakeholder/add-stakeholder-tags db {:tags (map #(vector 10001 %) tags)})
+          sth-id (:id (db.stakeholder/new-stakeholder db (new-profile 1)))
+          _ (db.resource.tag/create-resource-tags db {:table "stakeholder_tag"
+                                                      :resource-col "stakeholder"
+                                                      :tags (map #(vector 10001 % "seeking") tags)})
+          created-resource-tags (db.resource.tag/get-resource-tags db {:table "stakeholder_tag"
+                                                                       :resource-col "stakeholder"
+                                                                       :resource-id sth-id})
           geo (db.stakeholder/add-stakeholder-geo db {:geo [[10001 nil 1] [10001 nil 2]]})
           ;; dashboard check if this guy has profile
           req (handler (-> (mock/request :get "/")
@@ -310,7 +315,7 @@
       (is (= "Doe" (-> resp :last_name)))
       (is (= "SUBMITTED" (-> resp :review_status)))
       (is (= (db.organisation/organisation-by-id db {:id 1}) (-> resp :org)))
-      (is (= tags (-> resp :tags)))
+      (is (= created-resource-tags (-> resp :tags)))
       (is (= 1 (-> resp :country))))))
 
 (deftest handler-get-test-no-profile

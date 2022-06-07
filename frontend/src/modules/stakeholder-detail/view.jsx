@@ -19,6 +19,7 @@ import {
   Pagination,
   Modal,
   notification,
+  Image,
 } from "antd";
 import StickyBox from "react-sticky-box";
 import ReadMoreReact from "read-more-less-react";
@@ -45,6 +46,7 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 import { withRouter, useHistory, Link } from "react-router-dom";
+import RelatedContent from "../../components/related-content/related-content";
 import api from "../../utils/api";
 import {
   topicNames,
@@ -56,33 +58,15 @@ import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
 import { TrimText } from "../../utils/string";
+import { colors } from "../../utils/misc";
+const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
-const getType = (type) => {
-  let t = "";
-  switch (type) {
-    case "Action Plan":
-      t = "action_plan";
-      break;
-    case "Event":
-      t = "event";
-      break;
-    case "Initiative":
-      t = "project";
-      break;
-    case "Policy":
-      t = "policy";
-      break;
-    case "Financing Resource":
-      t = "financing_resource";
-      break;
-    case "Technical Resource":
-      t = "technical_resource";
-      break;
-    case "Technology":
-      t = "technology";
-      break;
-  }
-  return t;
+const usePrevious = (value) => {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
 };
 
 const CardComponent = ({ title, style, children, getRef }) => {
@@ -196,7 +180,7 @@ const SharePanel = ({
                       message: "Entity deleted successfully",
                     });
                     history.push({
-                      pathname: `/stakeholder-overview`,
+                      pathname: `/connect/community`,
                     });
                   })
                   .catch((err) => {
@@ -250,6 +234,9 @@ const StakeholderDetail = ({
   const [ownedResourcesPage, setOwnedResourcesPage] = useState(0);
   const [bookedResourcesPage, setBookedResourcesPage] = useState(0);
   const [warningVisible, setWarningVisible] = useState(false);
+  const [color, setColor] = useState([colour(), colour(), colour()]);
+
+  const prevValue = usePrevious(data);
 
   const relation = relations.find(
     (it) =>
@@ -275,7 +262,7 @@ const StakeholderDetail = ({
     (n) => {
       setOwnedResourcesPage(n);
       const searchParms = new URLSearchParams();
-      searchParms.set("limit", 3);
+      searchParms.set("limit", 12);
       searchParms.set("page", n);
       searchParms.set("association", "owner");
       const url = `/stakeholder/${params.id}/associated-topics?${String(
@@ -299,7 +286,7 @@ const StakeholderDetail = ({
     (n) => {
       setBookedResourcesPage(n);
       const searchParms = new URLSearchParams();
-      searchParms.set("limit", 3);
+      searchParms.set("limit", 12);
       searchParms.set("page", n);
       searchParms.set("association", "interested in");
       const url = `/stakeholder/${params.id}/associated-topics?${String(
@@ -337,7 +324,7 @@ const StakeholderDetail = ({
         });
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
-        api.get("/favorite").then((resp) => {
+        api.get(`/favorite/${params.type}/${params.id}`).then((resp) => {
           setRelations(resp.data);
         });
       }, 100);
@@ -396,14 +383,45 @@ const StakeholderDetail = ({
               <Col xs={24} lg={24}>
                 <div className="topbar-wrapper">
                   <div className="topbar-image-holder">
-                    <img src={data?.picture} />
+                    <Avatar
+                      size={150}
+                      src={
+                        data?.picture ? (
+                          data?.picture
+                        ) : (
+                          <Avatar
+                            style={{
+                              backgroundColor: color[1],
+                              verticalAlign: "middle",
+                              border: "4px solid #fff",
+                              fontSize: "62px",
+                              fontWeight: "bold",
+                            }}
+                            size={145}
+                          >
+                            {data?.firstName?.substring(0, 2)}
+                          </Avatar>
+                        )
+                      }
+                    />
                     {data.affiliation && (
                       <div className="topbar-entity-image-holder">
-                        <img
+                        <Avatar
+                          size={50}
                           src={
-                            data?.affiliation?.logo
-                              ? data?.affiliation?.logo
-                              : `https://ui-avatars.com/api/?background=0D8ABC&color=ffffff&size=480&name=${data?.affiliation?.name}`
+                            data?.affiliation?.logo ? (
+                              data?.affiliation?.logo
+                            ) : (
+                              <Avatar
+                                style={{
+                                  backgroundColor: color[0],
+                                  verticalAlign: "middle",
+                                }}
+                                size={50}
+                              >
+                                {data?.affiliation?.name?.substring(0, 2)}
+                              </Avatar>
+                            )
                           }
                         />
                       </div>
@@ -449,11 +467,22 @@ const StakeholderDetail = ({
                         <List.Item.Meta
                           avatar={
                             <Avatar
+                              size={55}
                               className="info-entity-icon"
                               src={
-                                data?.affiliation?.logo
-                                  ? data?.affiliation?.logo
-                                  : `https://ui-avatars.com/api/?size=480&name=${data?.affiliation?.name}`
+                                data?.affiliation?.logo ? (
+                                  data?.affiliation?.logo
+                                ) : (
+                                  <Avatar
+                                    style={{
+                                      backgroundColor: color[0],
+                                      verticalAlign: "middle",
+                                    }}
+                                    size={55}
+                                  >
+                                    {data?.affiliation?.name?.substring(0, 2)}
+                                  </Avatar>
+                                )
                               }
                             />
                           }
@@ -557,7 +586,7 @@ const StakeholderDetail = ({
                         <Col xs={12} lg={12}>
                           {data?.tags &&
                             data?.tags?.filter(
-                              (item) => item.tagCategory === "seeking"
+                              (item) => item.tagRelationCategory === "seeking"
                             ).length > 0 && (
                               <CardComponent>
                                 <div className="ant-card-head-wrapper">
@@ -568,7 +597,8 @@ const StakeholderDetail = ({
                                       {
                                         data?.tags?.filter(
                                           (item) =>
-                                            item.tagCategory === "seeking"
+                                            item.tagRelationCategory ===
+                                            "seeking"
                                         ).length
                                       }{" "}
                                       Keywords)
@@ -578,7 +608,8 @@ const StakeholderDetail = ({
                                 <List>
                                   {data?.tags
                                     ?.filter(
-                                      (item) => item.tagCategory === "seeking"
+                                      (item) =>
+                                        item.tagRelationCategory === "seeking"
                                     )
                                     ?.map((str) => (
                                       <List.Item key={str.tag}>
@@ -594,7 +625,7 @@ const StakeholderDetail = ({
                         <Col xs={12} lg={12}>
                           {data?.tags &&
                             data?.tags?.filter(
-                              (item) => item.tagCategory === "offering"
+                              (item) => item.tagRelationCategory === "offering"
                             ).length > 0 && (
                               <CardComponent>
                                 <div className="ant-card-head-wrapper">
@@ -605,7 +636,8 @@ const StakeholderDetail = ({
                                       {
                                         data?.tags?.filter(
                                           (item) =>
-                                            item.tagCategory === "offering"
+                                            item.tagRelationCategory ===
+                                            "offering"
                                         ).length
                                       }{" "}
                                       Keywords)
@@ -615,7 +647,8 @@ const StakeholderDetail = ({
                                 <List>
                                   {data?.tags
                                     ?.filter(
-                                      (item) => item.tagCategory === "offering"
+                                      (item) =>
+                                        item.tagRelationCategory === "offering"
                                     )
                                     ?.map((str) => (
                                       <List.Item key={str.tag}>
@@ -645,176 +678,29 @@ const StakeholderDetail = ({
             </Col>
           </Row>
           <div className="owned-resources-wrapper">
-            {bookedResources.length > 0 && (
-              <CardComponent
-                title={"Owned resources"}
-                style={{
-                  height: "100%",
-                  boxShadow: "none",
-                  borderRadius: "none",
-                }}
-              >
-                <div style={{ padding: "0 10px" }}>
-                  <Row gutter={[16, 16]}>
-                    {ownedResources?.map((item) => (
-                      <Col xs={6} lg={8}>
-                        <div className="slider-card">
-                          <div className="image-holder">
-                            <img
-                              style={{ width: 60 }}
-                              src={
-                                require(`../../images/${
-                                  icons[
-                                    getType(item.type)
-                                      ? getType(item.type)
-                                      : "action_plan"
-                                  ]
-                                }`).default
-                              }
-                            />
-                          </div>
-                          <div className="description-holder">
-                            <div>
-                              <h4>{item.type}</h4>
-                              {item.title && (
-                                <TrimText text={item.title} max={30} />
-                              )}
-                            </div>
-                            {item.entityConnections &&
-                              item.entityConnections.length > 0 && (
-                                <div className="connection-wrapper">
-                                  <Avatar.Group
-                                    maxCount={2}
-                                    maxPopoverTrigger="click"
-                                    size="large"
-                                    maxStyle={{
-                                      color: "#f56a00",
-                                      backgroundColor: "#fde3cf",
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    {item.entityConnections.map((item) => (
-                                      <Avatar
-                                        src={
-                                          item?.image
-                                            ? item.image
-                                            : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
-                                        }
-                                      />
-                                    ))}
-                                  </Avatar.Group>
-                                  <Link
-                                    to={`/${getType(item.type)}/${item.id}`}
-                                  >
-                                    <div className="read-more">
-                                      Read More <ArrowRightOutlined />
-                                    </div>
-                                  </Link>
-                                </div>
-                              )}
-                          </div>
-                        </div>
-                      </Col>
-                    ))}
-                  </Row>
-                  <div className="pagination-wrapper">
-                    <Pagination
-                      showSizeChanger={false}
-                      defaultCurrent={1}
-                      current={ownedResourcesPage + 1}
-                      pageSize={3}
-                      total={ownedResourcesCount || 0}
-                      onChange={(n, size) => getOwnedResources(n - 1)}
-                    />
-                  </div>
-                </div>
-              </CardComponent>
+            {ownedResources.length > 0 && (
+              <RelatedContent
+                data={[]}
+                relatedContent={ownedResources || []}
+                title="Owned resources"
+                isShownPagination={true}
+                relatedContentPage={ownedResourcesPage}
+                relatedContentCount={ownedResourcesCount}
+                getRelatedContent={getOwnedResources}
+              />
             )}
           </div>
           <div className="bookmarked-resources-wrapper">
             {bookedResources.length > 0 && (
-              <CardComponent
-                title={"Bookmarked resources"}
-                style={{
-                  height: "100%",
-                  boxShadow: "none",
-                  borderRadius: "none",
-                }}
-              >
-                <div style={{ padding: "0 10px" }}>
-                  <Row gutter={[16, 16]}>
-                    {bookedResources.map((item) => (
-                      <Col xs={6} lg={8} key={item?.id}>
-                        <div className="slider-card">
-                          <div className="image-holder">
-                            <img
-                              style={{ width: 60 }}
-                              src={
-                                require(`../../images/${
-                                  icons[
-                                    getType(item.type)
-                                      ? getType(item.type)
-                                      : "action_plan"
-                                  ]
-                                }`).default
-                              }
-                            />
-                          </div>
-                          <div className="description-holder">
-                            <div>
-                              <h4>{item.type}</h4>
-                              <h6>{item.title}</h6>
-                            </div>
-                            {item.entityConnections &&
-                              item.entityConnections.length > 0 && (
-                                <div className="connection-wrapper">
-                                  <Avatar.Group
-                                    maxCount={2}
-                                    maxPopoverTrigger="click"
-                                    size="large"
-                                    maxStyle={{
-                                      color: "#f56a00",
-                                      backgroundColor: "#fde3cf",
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    {item.entityConnections.map((item) => (
-                                      <Avatar
-                                        key={item?.entity}
-                                        src={
-                                          item?.image
-                                            ? item.image
-                                            : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
-                                        }
-                                      />
-                                    ))}
-                                  </Avatar.Group>
-                                  <Link
-                                    to={`/${getType(item.type)}/${item.id}`}
-                                  >
-                                    <div className="read-more">
-                                      Read More <ArrowRightOutlined />
-                                    </div>
-                                  </Link>
-                                </div>
-                              )}
-                          </div>
-                        </div>
-                      </Col>
-                    ))}
-                  </Row>
-                  <div className="pagination-wrapper">
-                    <Pagination
-                      showSizeChanger={false}
-                      defaultCurrent={1}
-                      current={bookedResourcesPage + 1}
-                      pageSize={3}
-                      total={bookedResourcesCount || 0}
-                      onChange={(n, size) => getBookedResources(n - 1)}
-                    />
-                  </div>
-                </div>
-              </CardComponent>
+              <RelatedContent
+                data={[]}
+                relatedContent={bookedResources || []}
+                title="Bookmarked resources "
+                isShownPagination={true}
+                relatedContentPage={bookedResourcesPage}
+                relatedContentCount={bookedResourcesCount}
+                getRelatedContent={getBookedResources}
+              />
             )}
           </div>
         </div>

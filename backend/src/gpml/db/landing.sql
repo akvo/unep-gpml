@@ -10,20 +10,28 @@ filtered_entities AS (
 --~ (#'gpml.db.topic/generate-filter-topic-snippet params)
 ),
 country_counts AS (
-  SELECT geo_coverage, topic, COUNT(topic) AS topic_count
+  SELECT (countries.value)::TEXT::INT AS geo_coverage,
+         topic,
+         COUNT(topic) AS topic_count
   FROM filtered_entities
-  WHERE geo_coverage IS NOT NULL
-  GROUP BY geo_coverage, topic
+  LEFT JOIN json_array_elements(geo_coverage) countries
+  ON geo_coverage IS NOT NULL
+  WHERE (countries.value)::TEXT <> 'null'
+  GROUP BY (countries.value)::TEXT::INT, topic
+/*~ (when (= (:entity-group params) :community) */
   UNION ALL
-  SELECT geo_coverage, 'organisation' AS topic, COUNT(topic)
+  SELECT (countries.value)::TEXT::INT AS geo_coverage, 'organisation' AS topic, COUNT(topic) AS topic_count
   FROM filtered_entities
-  WHERE geo_coverage IS NOT NULL AND topic = 'organisation' AND (json->>'is_member')::BOOLEAN IS TRUE
-  GROUP BY geo_coverage, topic
+  LEFT JOIN json_array_elements(geo_coverage) countries ON geo_coverage IS NOT NULL
+  WHERE (countries.value)::TEXT <> 'null' AND topic = 'organisation' AND (json->>'is_member')::BOOLEAN IS TRUE
+  GROUP BY (countries.value)::TEXT::INT, topic
   UNION ALL
-  SELECT geo_coverage, 'non_member_organisation' AS topic, COUNT(topic)
+  SELECT (countries.value)::TEXT::INT AS geo_coverage, 'non_member_organisation' AS topic, COUNT(topic) AS topic_count
   FROM filtered_entities
-  WHERE geo_coverage IS NOT NULL AND topic = 'organisation' AND (json->>'is_member')::BOOLEAN IS FALSE
-  GROUP BY geo_coverage, topic
+  LEFT JOIN json_array_elements(geo_coverage) countries ON geo_coverage IS NOT NULL
+  WHERE (countries.value)::TEXT <> 'null' AND topic = 'organisation' AND (json->>'is_member')::BOOLEAN IS FALSE
+  GROUP BY (countries.value)::TEXT::INT, topic
+/*~ ) ~*/
 )
 SELECT geo_coverage AS id, json_object_agg(COALESCE(topic, 'project'), topic_count)
 --~ (str " AS " (:count-name params))
@@ -33,10 +41,17 @@ GROUP BY geo_coverage;
 -- :name map-counts-by-country-group :? :*
 -- :doc Get the entity count per country group.
 -- :require [gpml.db.landing]
---~(#'gpml.db.landing/generate-entity-count-by-country-group-query-cte {:cte-name "country_group_counts"} {})
-SELECT geo_coverage AS country_group_id, json_object_agg(entity, count) AS counts
-FROM country_group_counts
-GROUP BY geo_coverage;
+WITH country_group_counts AS (
+--~(#'gpml.db.landing/generate-entity-count-by-country-group-queries {} {})
+),
+aggregate_country_group_counts AS (
+  SELECT country_group_id, entity, SUM(entity_count) AS total_entity_count
+  FROM country_group_counts
+  GROUP BY country_group_id, entity
+)
+SELECT country_group_id, json_object_agg(COALESCE(entity, 'project'), total_entity_count) AS counts
+FROM aggregate_country_group_counts
+GROUP BY country_group_id;
 
 -- :name summary
 -- :doc Get summary of count of entities and number of countries

@@ -20,7 +20,7 @@ export const topicTypes = [
   "financingResource",
   "event",
   "technology",
-  // "capacityBuilding",
+  "capacityBuilding",
 ];
 
 export const networkTypes = ["organisation", "stakeholder"];
@@ -118,4 +118,29 @@ export const publishStatusUIText = {
   REJECT: "Decline",
   UNAPPROVED: "Unpublished",
   UNAPPROVE: "Unpublish",
+};
+
+export const colors = [
+  "#FFB800",
+  "#98B527",
+  "#38A259",
+  "#008776",
+  "#006776",
+  "#2F4858",
+  "#FFC1B4",
+  "#FE8A7F",
+  "#C1554E",
+];
+
+export const tagsMap = (array, category, tags) => {
+  return array.map((x) => {
+    return {
+      ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
+      tag:
+        Object.values(tags)
+          .flat()
+          .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
+      tag_category: category,
+    };
+  });
 };

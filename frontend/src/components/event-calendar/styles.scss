@@ -1,12 +1,5 @@
 @import "../../vars.scss";
 
-.event-overlay-zoom {
-  zoom: 80% !important;
-  @media (max-width: 540px) {
-    zoom: unset !important;
-  }
-}
-
 .event {
   padding-top: 50px;
   padding-bottom: 40px;
@@ -14,18 +7,32 @@
     padding-top: 40px;
     padding-bottom: 30px;
   }
-  .green {
-    h2 {
-      color: #4dffa5;
-      @-moz-document url-prefix() {
-        font-size: 1.5rem !important;
-      }
-      span.see-more-link a {
+  .section-title {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    &.white {
+      h2 {
         color: #fff;
+        @-moz-document url-prefix() {
+          font-size: 1.5rem !important;
+        }
+        span.see-more-link a {
+          color: #fff;
+        }
       }
     }
+    .event-add-button {
+      background-color: transparent !important;
+      color: springgreen !important;
+      border: 2px solid springgreen !important;
+      font-size: 16px;
+      font-weight: 700;
+      height: 42px;
+      padding: 0 20px;
+    }
   }
-
   background: linear-gradient(
       0deg,
       rgba(28, 165, 133, 0.8),
@@ -38,6 +45,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    margin-top: 20px;
     .content,
     .calendar {
       width: 100%;
@@ -46,6 +54,8 @@
       }
     }
     .calendar {
+      border-top: 1px solid #d3dee7;
+      padding-top: 15px;
       .ant-picker-calendar {
         height: 100%;
         font-size: 1.2rem;
@@ -77,7 +87,7 @@
         }
         .ant-picker-cell-inner.ant-picker-calendar-date {
           text-align: center;
-          min-height: 6.8rem;
+          min-height: 5.8rem;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -101,7 +111,7 @@
         margin: 4px;
         padding: 4px 8px 0;
         border: 0;
-        border-top: 2px solid #f0f0f0;
+        border-top: 2px solid #8691b0;
         border-radius: 0;
       }
       .ant-picker-calendar-full
@@ -277,8 +287,7 @@
       .event-more {
         color: #fff;
         font-weight: 600;
-        margin-top: 10px;
-        background: rgba(255, 255, 255, 0.33);
+        background: rgba(211, 222, 231, 0.53);
         border-radius: 10px 10px 0px 0px;
         padding: 12px 24px; // same as ant-card-body padding
         display: flex;
@@ -413,75 +422,9 @@
 
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
   .event {
-    padding-top: 10px;
+    padding-top: 20px;
     @-moz-document url-prefix() {
       padding-top: 5px;
-    }
-    &.section-container {
-      zoom: 80%;
-    }
-
-    .item-body {
-      .body-text {
-        font-size: 1.4rem;
-        line-height: 1.6rem;
-        @-moz-document url-prefix() {
-          font-size: 1rem;
-        }
-      }
-      .asset-title {
-        font-weight: 600 !important;
-        font-size: 1.4rem;
-        margin-bottom: 16px !important;
-        @-moz-document url-prefix() {
-          font-size: 1rem;
-          margin-bottom: 8px !important;
-        }
-      }
-    }
-    .item-footer {
-      .read-more {
-        font-size: 1.2rem;
-        @-moz-document url-prefix() {
-          font-size: 0.9rem;
-        }
-      }
-    }
-    .item-meta {
-      font-size: 1.2rem !important;
-      @-moz-document url-prefix() {
-        font-size: 0.9rem !important;
-      }
-      .mark {
-        font-size: 1rem !important;
-        @-moz-document url-prefix() {
-          font-size: 0.7 !important;
-        }
-      }
-    }
-    .event-more {
-      font-size: 1.2rem !important;
-      @-moz-document url-prefix() {
-        font-size: 0.9rem !important;
-      }
-    }
-    .see-more-link {
-      font-size: 1.2rem !important;
-      @-moz-document url-prefix() {
-        font-size: 0.9rem !important;
-      }
-    }
-    .ant-picker-calendar-date-value {
-      font-size: 1.4rem !important;
-      @-moz-document url-prefix() {
-        font-size: 1.1rem !important;
-      }
-    }
-    .ant-select-selector {
-      font-size: 1.2rem !important;
-      @-moz-document url-prefix() {
-        font-size: 0.9rem !important;
-      }
     }
   }
 }

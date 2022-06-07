@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { orderBy } from "lodash";
 import api from "../../utils/api";
 import TopicChart from "../chart/topic-chart";
-import { titleCase } from "../../utils/string";
 import TopicBar from "../chart/topic-bar";
 
-const TopicView = ({ updateQuery, query }) => {
+const TopicView = ({ updateQuery, query, results, countData }) => {
   const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const popularTags = [
@@ -18,10 +17,46 @@ const TopicView = ({ updateQuery, query }) => {
   ];
 
   const savedTopic = popularTags.filter((item) => {
-    if (query.tag.includes(item)) {
+    if (query?.tag?.includes(item)) {
       return item;
     }
   });
+
+  const selectedTag = countData.find((item) => item?.topic === selectedTopic);
+
+  const topics = countData
+    .filter(
+      (item) =>
+        item.topic === "plastics" ||
+        item.topic === "waste management" ||
+        item.topic === "marine litter" ||
+        item.topic === "capacity building" ||
+        item.topic === "product by design" ||
+        item.topic === "source to sea"
+    )
+    .map((item) => {
+      return {
+        id: item?.topic,
+        topic: item?.topic,
+        tag: item?.topic,
+        count: item?.count,
+      };
+    });
+
+  const dataTag = topics.map((item) => item?.tag);
+
+  const nonExistedTopic = popularTags
+    .filter((item) => !dataTag.includes(item))
+    .map((x) => {
+      return {
+        id: x,
+        topic: x,
+        tag: x,
+        count: 0,
+      };
+    });
+
+  const allTopics = [...nonExistedTopic, topics].flat();
 
   const handlePopularTopicChartClick = (params) => {
     const { name, tag } = params?.data;
@@ -36,65 +71,36 @@ const TopicView = ({ updateQuery, query }) => {
   };
 
   useEffect(() => {
-    if (!selectedTopic && savedTopic.length > 0) {
+    if (!selectedTopic && savedTopic?.length > 0) {
       setSelectedTopic(savedTopic[0]);
     }
 
     // Reset selection when the filter is clear
-    if (savedTopic.length === 0 && selectedTopic) {
+    if (savedTopic?.length === 0 && selectedTopic) {
       setSelectedTopic(null);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [savedTopic]);
 
-  const getPopularTopics = (url) => {
-    api
-      .get(url)
-      .then((resp) => {
-        const data = resp?.data.map((item, i) => {
-          return {
-            id: item?.tag,
-            topic: item?.tag,
-            tag: item?.tag,
-            count: item?.count,
-          };
-        });
-        const dataTag = data.map((item) => item?.tag);
-        const nonExistedTopic = popularTags
-          .filter((item) => !dataTag.includes(item))
-          .map((x) => {
-            return {
-              id: x,
-              topic: x,
-              tag: x,
-              count: 0,
-            };
-          });
-
-        const sorted = orderBy(
-          [...data, ...nonExistedTopic],
-          ["count", "topic"],
-          ["desc", "desc"]
-        );
-
-        setSortedPopularTopics(sorted);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
   // Apply when there is a selected topic
   useEffect(() => {
-    if (selectedTopic && savedTopic.length > 0) {
-      getPopularTopics(`/tag/topic/popular?tags=${selectedTopic}&limit=6`);
+    if (results.length > 0) {
+      setSortedPopularTopics(allTopics);
     } else {
-      !selectedTopic && getPopularTopics(`/tag/topic/popular`);
+      const topics = popularTags.map((topic) => {
+        return {
+          id: topic,
+          topic: topic,
+          tag: topic,
+          count: 0,
+        };
+      });
+      setSortedPopularTopics(topics);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTopic]);
+  }, [selectedTopic, results, countData]);
 
   return (
     <>

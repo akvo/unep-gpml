@@ -22,6 +22,7 @@ import {
   Form,
   Comment,
 } from "antd";
+import Carousel from "react-multi-carousel";
 import { InfoCircleOutlined } from "@ant-design/icons";
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -58,12 +59,19 @@ import { multicountryGroups } from "../knowledge-library/multicountry";
 import { Form as FinalForm, FormSpy, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import { FieldsFromSchema } from "../../utils/form-utils";
+import RelatedContent from "../../components/related-content/related-content";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
-const CardComponent = ({ title, style, children, getRef }) => {
+const CardComponent = ({
+  title,
+  style,
+  children,
+  getRef,
+  specificClassName,
+}) => {
   return (
-    <div className={`card-wrapper mb-10`} ref={getRef}>
+    <div className={`card-wrapper mb-10 ${specificClassName}`} ref={getRef}>
       <Card title={title} bordered={false} style={style}>
         {children}
       </Card>
@@ -119,11 +127,9 @@ const TabComponent = ({
             </a>
           </li>
         )}
-        {profile && profile.reviewStatus === "APPROVED" && (
-          <li>
-            <a onClick={() => reviewsRef.current.scrollIntoView()}>Comments</a>
-          </li>
-        )}
+        <li>
+          <a onClick={() => reviewsRef.current.scrollIntoView()}>Comments</a>
+        </li>
       </ul>
     </div>
   );
@@ -599,9 +605,9 @@ const renderItemValues = (
                   data[key][customValue]}
                 {value === "custom" &&
                   type === "startEndDate" &&
-                  moment(data[arrayCustomValue[0]]).format("DD MMM YYYY") +
+                  moment.utc(data[arrayCustomValue[0]]).format("DD MMM YYYY") +
                     " - " +
-                    moment(data[arrayCustomValue[1]]).format("DD MMM YYYY")}
+                    moment.utc(data[arrayCustomValue[1]]).format("DD MMM YYYY")}
                 {data[key] &&
                   value === "isoCode" &&
                   type === "array" &&
@@ -950,7 +956,7 @@ const DetailsView = ({
         });
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
-        api.get("/favorite").then((resp) => {
+        api.get(`/favorite/${params.type}/${params.id}`).then((resp) => {
           setRelations(resp.data);
         });
       }, 100);
@@ -1292,10 +1298,21 @@ const DetailsView = ({
                             <List.Item.Meta
                               avatar={
                                 <Avatar
+                                  size={50}
                                   src={
-                                    item?.image
-                                      ? item.image
-                                      : `https://ui-avatars.com/api/?size=480&name=${item.entity}`
+                                    item?.image ? (
+                                      item?.image
+                                    ) : (
+                                      <Avatar
+                                        style={{
+                                          backgroundColor: "#09689A",
+                                          verticalAlign: "middle",
+                                        }}
+                                        size={50}
+                                      >
+                                        {item.entity?.substring(0, 2)}
+                                      </Avatar>
+                                    )
                                   }
                                 />
                               }
@@ -1431,69 +1448,24 @@ const DetailsView = ({
                   </div>
                 </CardComponent>
               )}
-              {data?.relatedContent && data?.relatedContent?.length > 0 && (
-                <CardComponent
-                  title={`Related content (${
-                    data?.relatedContent && data?.relatedContent.length
-                  })`}
-                  getRef={relatedContent}
-                >
-                  {data?.relatedContent.length > 0 && (
-                    <Row gutter={16} className="related-content">
-                      {data?.relatedContent.map((item) => (
-                        <Col span={12}>
-                          <div className="slider-card">
-                            <div className="image-holder">
-                              <img
-                                src={
-                                  require(`../../images/${icons[params.type]}`)
-                                    .default
-                                }
-                              />
-                            </div>
-
-                            <div className="description-holder">
-                              <h4>{data?.type ? data.type : ""}</h4>
-                              <h6>{item.title}</h6>
-                              <div className="bottom-panel">
-                                <div>
-                                  <Avatar.Group
-                                    maxCount={2}
-                                    size="large"
-                                    maxStyle={{
-                                      color: "#f56a00",
-                                      backgroundColor: "#fde3cf",
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    {item?.entityConnections?.map(
-                                      (connection, index) => (
-                                        <Avatar src={connection.image} />
-                                      )
-                                    )}
-                                  </Avatar.Group>
-                                </div>
-                                <a href={`/${params.type}/${item.id}`}>
-                                  <div className="read-more">
-                                    Read More <ArrowRightOutlined />
-                                  </div>
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </Col>
-                      ))}
-                    </Row>
-                  )}
-                </CardComponent>
-              )}
+              {data?.relatedContent &&
+                data?.relatedContent?.length > 0 &&
+                data?.relatedContent.length > 0 && (
+                  <RelatedContent
+                    data={data}
+                    title="Related content"
+                    relatedContent={data?.relatedContent}
+                    isShownPagination={false}
+                    dataCount={relatedContent?.length}
+                  />
+                )}
               {profile && (
                 <CardComponent title="Comments" getRef={reviews}>
                   <div className="comments-container">
-                    <div className="comment-list-container">
-                      {comments &&
-                        comments.length > 0 &&
-                        comments?.map((item) => (
+                    {comments &&
+                      comments.length > 0 &&
+                      comments?.map((item) => (
+                        <div className="comment-list-container">
                           <CommentList
                             item={item}
                             showReplyBox={showReplyBox}
@@ -1507,8 +1479,13 @@ const DetailsView = ({
                             setEditComment={setEditComment}
                             onEditComment={onEditComment}
                           />
-                        ))}
-                    </div>
+                        </div>
+                      ))}
+                    {!isAuthenticated && (
+                      <p className="no-login">
+                        Please login to comment on this resource
+                      </p>
+                    )}
                     {profile && profile.reviewStatus === "APPROVED" && (
                       <Form layout="vertical">
                         <FinalForm
