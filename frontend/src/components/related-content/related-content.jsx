@@ -174,9 +174,11 @@ const RelatedContent = ({
       <Carousel
         centerMode={true}
         responsive={responsive}
-        containerClass={`related-content ${isShownPagination && 'content-with-pagination'}`}
+        containerClass={`related-content ${
+          isShownPagination && "content-with-pagination"
+        }`}
         itemClass="carousel-item"
-        dotListClass={`carousel-dot-list ${isShownPagination && 'hidden-dot'}`}
+        dotListClass={`carousel-dot-list ${isShownPagination && "hidden-dot"}`}
         showDots={true}
         renderDotsOutside={true}
         customLeftArrow={<CustomLeftArrow />}
