@@ -23,7 +23,6 @@ insert into policy(
 --~ (when (contains? params :info_docs) ", info_docs")
 --~ (when (contains? params :sub_content_type) ", sub_content_type")
 --~ (when (contains? params :topics) ", topics")
---~ (when (contains? params :related_content) ", related_content")
 --~ (when (contains? params :subnational_city) ", subnational_city")
 --~ (when (contains? params :document_preview) ", document_preview")
 )
@@ -50,7 +49,6 @@ values(
 --~ (when (contains? params :info_docs) ", :info_docs")
 --~ (when (contains? params :sub_content_type) ", :sub_content_type")
 --~ (when (contains? params :topics) ", :topics")
---~ (when (contains? params :related_content) ", :related_content")
 --~ (when (contains? params :subnational_city) ", :subnational_city")
 --~ (when (contains? params :document_preview) ", :document_preview")
 )
@@ -158,13 +156,6 @@ select sp.id, sp.association as role, s.id as stakeholder_id, concat_ws(' ', s.f
 -- :doc List all policies
 select id, title
   from policy;
-
--- :name related-content-by-id
--- :doc Get related content by id
-select pol.id, pol.title, pol.abstract as description, pol.image, 'policy' as type from policy p
-  left join policy pol
-  on pol.id = ANY(p.related_content)
-  where p.id = :id
 
 -- :name add-language-to-policy :! :n
 -- :doc Add language to policy

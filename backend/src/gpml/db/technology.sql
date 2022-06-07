@@ -19,7 +19,6 @@ insert into technology(
 --~ (when (contains? params :created_by) ", created_by")
 --~ (when (contains? params :info_docs) ", info_docs")
 --~ (when (contains? params :sub_content_type) ", sub_content_type")
---~ (when (contains? params :related_content) ", related_content")
 --~ (when (contains? params :subnational_city) ", subnational_city")
 --~ (when (contains? params :headquarter) ", headquarter")
 --~ (when (contains? params :document_preview) ", document_preview")
@@ -43,7 +42,6 @@ values(
 --~ (when (contains? params :created_by) ", :created_by")
 --~ (when (contains? params :info_docs) ", :info_docs")
 --~ (when (contains? params :sub_content_type) ", :sub_content_type")
---~ (when (contains? params :related_content) ", :related_content")
 --~ (when (contains? params :subnational_city) ", :subnational_city")
 --~ (when (contains? params :headquarter) ", :headquarter")
 --~ (when (contains? params :document_preview) ", :document_preview")
@@ -71,7 +69,6 @@ select
     sub_content_type,
     subnational_city,
     headquarter,
-    related_content,
     created_by,
     document_preview,
     COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners,
@@ -186,10 +183,3 @@ select st.id, st.association as role, s.id as stakeholder_id, concat_ws(' ', s.f
 -- :doc List all technologies
 select id, name
   from technology;
-
--- :name related-content-by-id
--- :doc Get related content by id
-select tech.id, tech.name as title, tech.remarks as description, tech.image, 'technology' as type from technology t
-  left join technology tech
-  on tech.id = ANY(t.related_content)
-  where t.id = :id

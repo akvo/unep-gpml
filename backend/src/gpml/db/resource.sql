@@ -23,7 +23,6 @@ insert into resource(
 --~ (when (contains? params :sub_content_type) ", sub_content_type")
 --~ (when (contains? params :first_publication_date) ", first_publication_date")
 --~ (when (contains? params :latest_amendment_date) ", latest_amendment_date")
---~ (when (contains? params :related_content) ", related_content")
 --~ (when (contains? params :capacity_building) ", capacity_building")
 --~ (when (contains? params :subnational_city) ", subnational_city")
 --~ (when (contains? params :document_preview) ", document_preview")
@@ -51,7 +50,6 @@ values(
 --~ (when (contains? params :sub_content_type) ", :sub_content_type")
 --~ (when (contains? params :first_publication_date) ", :first_publication_date")
 --~ (when (contains? params :latest_amendment_date) ", :latest_amendment_date")
---~ (when (contains? params :related_content) ", :related_content")
 --~ (when (contains? params :capacity_building) ", :capacity_building")
 --~ (when (contains? params :subnational_city) ", :subnational_city")
 --~ (when (contains? params :document_preview) ", :document_preview")
@@ -199,10 +197,3 @@ select id, title
 select id, title
   from resource
   where type = 'Action Plan';
-
--- :name related-content-by-id
--- :doc Get related content by id
-select res.id, res.title, res.summary as description, res.image, replace(lower(res.type), ' ', '_') as type from resource r
-  left join resource res
-  on res.id = ANY(r.related_content)
-  where r.id = :id

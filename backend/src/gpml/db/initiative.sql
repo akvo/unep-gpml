@@ -103,10 +103,3 @@ select id, q2 as title
 -- :doc add initiative tags
 insert into initiative_tag(initiative, tag)
 values :t*:tags RETURNING id;
-
--- :name related-content-by-id
--- :doc Get related content by id
-select init.id, init.q2 as title, init.q3 as description, init.qimage as image, 'project' as type from initiative i
-  left join initiative init
-  on init.id = ANY(i.related_content)
-  where i.id = :id
