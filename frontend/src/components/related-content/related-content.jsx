@@ -139,18 +139,18 @@ const RelatedContent = ({
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
-      items: 7,
-      slidesToSlide: 4,
+      items: 4,
+      slidesToSlide: 1,
     },
     desktop: {
       breakpoint: { max: 1199, min: 992 },
-      items: 7,
-      slidesToSlide: 3,
+      items: 4,
+      slidesToSlide: 1,
     },
     tablet: {
       breakpoint: { max: 991, min: 768 },
-      items: 5,
-      slidesToSlide: 2,
+      items: 2,
+      slidesToSlide: 1,
     },
     mobile: {
       breakpoint: { max: 599, min: 0 },
