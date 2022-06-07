@@ -115,21 +115,28 @@
   (let [related_content (handler.resource.related-content/get-related-contents db initiative-id "initiative")]
     (for [item related_content]
       (merge item
-             {:entity_connections (db.initiative/entity-connections-by-id db (select-keys item [:id]))
-              :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys item [:id]))}))))
+             {:entity_connections (db.resource.connection/get-resource-entity-connections db {:resource-type "initiative"
+                                                                                              :resource-id (:id item)})
+              :stakeholder_connections (db.resource.connection/get-resource-stakeholder-connections db {:resource-type "initiative"
+                                                                                                        :resource-id (:id item)})}))))
 
 (defmethod ig/init-key :gpml.handler.initiative/get [_ {:keys [db]}]
   (fn [{{{:keys [id]} :path} :parameters}]
     (let [conn (:spec db)
           data (db.initiative/initiative-by-id conn {:id id})
-          extra-details (merge {:entity_connections (db.initiative/entity-connections-by-id conn {:id id})
-                                :stakeholder_connections (db.initiative/stakeholder-connections-by-id conn {:id id})
-                                :tags (db.resource.tag/get-resource-tags conn {:table "initiative_tag"
-                                                                               :resource-col "initiative"
-                                                                               :resource-id id})
-                                :type "Initiative"}
-                               (when-not (empty? (:related_content data))
-                                 {:related_content (expand-related-initiative-content conn id)}))]
+          entity-connections
+          (db.resource.connection/get-resource-entity-connections db {:resource-type "initiative"
+                                                                      :resource-id id})
+          stakeholder-connections
+          (db.resource.connection/get-resource-stakeholder-connections db {:resource-type "initiative"
+                                                                           :resource-id id})
+          extra-details {:entity_connections entity-connections
+                         :stakeholder_connections stakeholder-connections
+                         :tags (db.resource.tag/get-resource-tags conn {:table "initiative_tag"
+                                                                        :resource-col "initiative"
+                                                                        :resource-id id})
+                         :related_content (expand-related-initiative-content conn id)
+                         :type "Initiative"}]
       (resp/response (merge data extra-details)))))
 
 (defmethod ig/init-key :gpml.handler.initiative/post-params [_ _]

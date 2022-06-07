@@ -134,24 +134,6 @@ values :t*:geo RETURNING id;
 insert into policy_language_url(policy, language, url)
 values :t*:urls RETURNING id;
 
--- :name entity-connections-by-id
--- :doc Get entity connections by id
-select orgpol.id, orgpol.association as role, org.id as entity_id, org.name as entity, org.logo as image
- from organisation_policy orgpol
- left join organisation org
- on orgpol.organisation = org.id
- where orgpol.policy = :id
-
--- :name stakeholder-connections-by-id
--- :doc Get stakeholder connections by id
-select sp.id, sp.association as role, s.id as stakeholder_id, concat_ws(' ', s.first_name, s.last_name) as stakeholder,
- s.picture as image, s.role as stakeholder_role
-  from stakeholder_policy sp
-  left join stakeholder s
-  on sp.stakeholder = s.id
-  where sp.policy = :id
-  and sp.is_bookmark = false;
-
 -- :name all-policies
 -- :doc List all policies
 select id, title

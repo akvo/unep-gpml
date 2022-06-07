@@ -161,24 +161,6 @@ update technology set
 modified = now()
 where id = :id;
 
--- :name entity-connections-by-id
--- :doc Get entity connections by id
-select ot.id, ot.association as role, org.id as entity_id, org.name as entity, org.logo as image
- from organisation_technology ot
- left join organisation org
- on ot.organisation = org.id
- where ot.technology = :id
-
--- :name stakeholder-connections-by-id
--- :doc Get stakeholder connections by id
-select st.id, st.association as role, s.id as stakeholder_id, concat_ws(' ', s.first_name, s.last_name) as stakeholder,
- s.picture as image, s.role as stakeholder_role
-  from stakeholder_technology st
-  left join stakeholder s
-  on st.stakeholder = s.id
-  where st.technology = :id
-  and st.is_bookmark = false;
-
 -- :name all-technologies
 -- :doc List all technologies
 select id, name
