@@ -179,7 +179,12 @@ const Landing = withRouter(
             summary: data?.counts.filter(
               (count) =>
                 count?.topic !== "gpml_member_entities" &&
-                count?.topic !== "capacity_building"
+                count?.topic !== "plastics" &&
+                count?.topic !== "waste management" &&
+                count?.topic !== "marine litter" &&
+                count?.topic !== "capacity building" &&
+                count?.topic !== "product by design" &&
+                count?.topic !== "source to sea"
             ),
           });
         }));
