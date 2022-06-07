@@ -23,7 +23,6 @@ insert into policy(
 --~ (when (contains? params :info_docs) ", info_docs")
 --~ (when (contains? params :sub_content_type) ", sub_content_type")
 --~ (when (contains? params :topics) ", topics")
---~ (when (contains? params :related_content) ", related_content")
 --~ (when (contains? params :subnational_city) ", subnational_city")
 --~ (when (contains? params :document_preview) ", document_preview")
 )
@@ -50,7 +49,6 @@ values(
 --~ (when (contains? params :info_docs) ", :info_docs")
 --~ (when (contains? params :sub_content_type) ", :sub_content_type")
 --~ (when (contains? params :topics) ", :topics")
---~ (when (contains? params :related_content) ", :related_content")
 --~ (when (contains? params :subnational_city) ", :subnational_city")
 --~ (when (contains? params :document_preview) ", :document_preview")
 )
@@ -136,35 +134,10 @@ values :t*:geo RETURNING id;
 insert into policy_language_url(policy, language, url)
 values :t*:urls RETURNING id;
 
--- :name entity-connections-by-id
--- :doc Get entity connections by id
-select orgpol.id, orgpol.association as role, org.id as entity_id, org.name as entity, org.logo as image
- from organisation_policy orgpol
- left join organisation org
- on orgpol.organisation = org.id
- where orgpol.policy = :id
-
--- :name stakeholder-connections-by-id
--- :doc Get stakeholder connections by id
-select sp.id, sp.association as role, s.id as stakeholder_id, concat_ws(' ', s.first_name, s.last_name) as stakeholder,
- s.picture as image, s.role as stakeholder_role
-  from stakeholder_policy sp
-  left join stakeholder s
-  on sp.stakeholder = s.id
-  where sp.policy = :id
-  and sp.is_bookmark = false;
-
 -- :name all-policies
 -- :doc List all policies
 select id, title
   from policy;
-
--- :name related-content-by-id
--- :doc Get related content by id
-select pol.id, pol.title, pol.abstract as description, pol.image, 'policy' as type from policy p
-  left join policy pol
-  on pol.id = ANY(p.related_content)
-  where p.id = :id
 
 -- :name add-language-to-policy :! :n
 -- :doc Add language to policy

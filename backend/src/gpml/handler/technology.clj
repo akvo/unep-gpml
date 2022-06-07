@@ -11,9 +11,9 @@
    [gpml.handler.auth :as h.auth]
    [gpml.handler.geo :as handler.geo]
    [gpml.handler.image :as handler.image]
+   [gpml.handler.resource.related-content :as handler.resource.related-content]
    [gpml.handler.resource.tag :as handler.resource.tag]
    [gpml.handler.util :as util]
-   [gpml.pg-util :as pg-util]
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 
@@ -72,7 +72,6 @@
               :sub_content_type sub_content_type
               :headquarter headquarter
               :document_preview document_preview
-              :related_content (pg-util/->JDBCArray related_content "integer")
               :review_status "SUBMITTED"}
         technology-id (->> data (db.technology/new-technology conn) :id)
         api-individual-connections (util/individual-connections->api-individual-connections conn individual_connections created_by)
@@ -80,6 +79,8 @@
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
                                                           api-individual-connections)))))]
+    (when (seq related_content)
+      (handler.resource.related-content/create-related-contents conn technology-id "technology" related_content))
     (when headquarter
       (db.country/add-country-headquarter conn {:id country :headquarter headquarter}))
     (doseq [stakeholder-id owners]
