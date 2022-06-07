@@ -101,7 +101,9 @@
         h3 {
           font-style: normal;
           font-weight: 600;
-          font-size: 16px;
+          font-size: 12px;
+          max-height: 70px;
+          overflow: hidden;
           @-moz-document url-prefix() {
             line-height: 12px;
             font-size: 12px !important;
@@ -110,7 +112,7 @@
         h4 {
           color: #bbbbbb;
           font-weight: 400;
-          font-size: 12px;
+          font-size: 10px;
           line-height: 17px;
           text-transform: uppercase;
           @-moz-document url-prefix() {
@@ -126,7 +128,7 @@
         .bottom-panel {
           .read-more {
             font-weight: 500;
-            font-size: 12px;
+            font-size: 10px;
             color: #34a6ff;
             @-moz-document url-prefix() {
               font-size: 9px;
