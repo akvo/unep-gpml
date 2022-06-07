@@ -138,7 +138,13 @@ const VerticalLegend = ({
         data.topic !== "organisation" &&
         data.topic !== "gpml_member_entities" &&
         data.topic !== "non_member_organisation" &&
-        data.topic !== "capacity_building"
+        data.topic !== "capacity_building" &&
+        data.topic !== "plastics" &&
+        data.topic !== "waste management" &&
+        data.topic !== "marine litter" &&
+        data.topic !== "capacity building" &&
+        data.topic !== "product by design" &&
+        data.topic !== "source to sea"
     );
 
   const resourcesPerTransnationalList = ResourcesCountPerTransnationalGroups.map(
@@ -164,7 +170,13 @@ const VerticalLegend = ({
                   (topic) =>
                     topic !== "organisation" &&
                     topic !== "stakeholder" &&
-                    topic !== "capacity_building"
+                    topic !== "capacity_building" &&
+                    topic !== "plastics" &&
+                    topic !== "waste management" &&
+                    topic !== "marine litter" &&
+                    topic !== "capacity building" &&
+                    topic !== "product by design" &&
+                    topic !== "source to sea"
                 )
                 .map((topic) => {
                   const topicChecker = () => {
@@ -217,7 +229,13 @@ const VerticalLegend = ({
         (topic) =>
           topic !== "organisation" &&
           topic !== "stakeholder" &&
-          topic !== "capacity_building"
+          topic !== "capacity_building" &&
+          topic !== "plastics" &&
+          topic !== "waste management" &&
+          topic !== "marine litter" &&
+          topic !== "capacity building" &&
+          topic !== "product by design" &&
+          topic !== "source to sea"
       )
       .map((topic) => {
         const topicChecker = () => {

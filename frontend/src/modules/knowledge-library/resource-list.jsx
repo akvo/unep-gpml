@@ -62,7 +62,13 @@ const ResourceList = ({
           (t) =>
             t !== "organisation" &&
             t !== "stakeholder" &&
-            t !== "capacity_building"
+            t !== "gpml_member_entities" &&
+            t !== "plastics" &&
+            t !== "waste management" &&
+            t !== "marine litter" &&
+            t !== "capacity building" &&
+            t !== "product by design" &&
+            t !== "source to sea"
         );
 
   const totalItems = filteredTopics.reduce(
