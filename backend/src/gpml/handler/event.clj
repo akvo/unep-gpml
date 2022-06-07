@@ -10,9 +10,9 @@
    [gpml.handler.auth :as h.auth]
    [gpml.handler.geo :as handler.geo]
    [gpml.handler.image :as handler.image]
+   [gpml.handler.resource.related-content :as handler.resource.related-content]
    [gpml.handler.resource.tag :as handler.resource.tag]
    [gpml.handler.util :as util]
-   [gpml.pg-util :as pg-util]
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 
@@ -64,8 +64,7 @@
               :info_docs info_docs
               :sub_content_type sub_content_type
               :recording recording
-              :document_preview document_preview
-              :related_content (pg-util/->JDBCArray related_content "integer")}
+              :document_preview document_preview}
         event-id (->> data (db.event/new-event conn) :id)
         api-individual-connections (util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
@@ -88,6 +87,8 @@
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections event-id)]
         (db.favorite/new-stakeholder-association conn association)))
+    (when (seq related_content)
+      (handler.resource.related-content/create-related-contents conn event-id "event" related_content))
     (when (not-empty urls)
       (let [lang-urls (map #(vector event-id
                                     (->> % :lang

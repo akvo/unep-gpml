@@ -3,6 +3,7 @@
    [clojure.java.jdbc :as jdbc]
    [gpml.db.favorite :as db.favorite]
    [gpml.db.initiative :as db.initiative]
+   [gpml.db.resource.connection :as db.resource.connection]
    [gpml.db.resource.tag :as db.resource.tag]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.db.tag :as db.tag]
@@ -10,8 +11,8 @@
    [gpml.handler.auth :as h.auth]
    [gpml.handler.geo :as handler.geo]
    [gpml.handler.image :as handler.image]
+   [gpml.handler.resource.related-content :as handler.resource.related-content]
    [gpml.handler.util :as util]
-   [gpml.pg-util :as pg-util]
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 
@@ -72,8 +73,7 @@
                                       entity_connections individual_connections qimage] :as initiative}]
   (let [data (-> initiative
                  (dissoc :tags :owners :mailjet-config :entity_connections :individual_connections :related_content)
-                 (assoc :qimage (handler.image/assoc-image conn qimage "initiative")
-                        :related_content (pg-util/->JDBCArray related_content "integer")))
+                 (assoc :qimage (handler.image/assoc-image conn qimage "initiative")))
         initiative-id (:id (db.initiative/new-initiative conn data))
         api-individual-connections (util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
@@ -86,6 +86,8 @@
                                                 :topic-type "initiative"
                                                 :stakeholder-id stakeholder-id
                                                 :roles ["owner"]}))
+    (when (seq related_content)
+      (handler.resource.related-content/create-related-contents conn initiative-id "initiative" related_content))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections initiative-id)]
         (db.favorite/new-organisation-association conn association)))
@@ -110,24 +112,31 @@
         (resp/created (:referrer req) {:message "New initiative created" :id initiative-id})))))
 
 (defn expand-related-initiative-content [db initiative-id]
-  (let [related_content (db.initiative/related-content-by-id db {:id initiative-id})]
+  (let [related_content (handler.resource.related-content/get-related-contents db initiative-id "initiative")]
     (for [item related_content]
       (merge item
-             {:entity_connections (db.initiative/entity-connections-by-id db (select-keys item [:id]))
-              :stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys item [:id]))}))))
+             {:entity_connections (db.resource.connection/get-resource-entity-connections db {:resource-type "initiative"
+                                                                                              :resource-id (:id item)})
+              :stakeholder_connections (db.resource.connection/get-resource-stakeholder-connections db {:resource-type "initiative"
+                                                                                                        :resource-id (:id item)})}))))
 
 (defmethod ig/init-key :gpml.handler.initiative/get [_ {:keys [db]}]
   (fn [{{{:keys [id]} :path} :parameters}]
     (let [conn (:spec db)
           data (db.initiative/initiative-by-id conn {:id id})
-          extra-details (merge {:entity_connections (db.initiative/entity-connections-by-id conn {:id id})
-                                :stakeholder_connections (db.initiative/stakeholder-connections-by-id conn {:id id})
-                                :tags (db.resource.tag/get-resource-tags conn {:table "initiative_tag"
-                                                                               :resource-col "initiative"
-                                                                               :resource-id id})
-                                :type "Initiative"}
-                               (when-not (empty? (:related_content data))
-                                 {:related_content (expand-related-initiative-content conn id)}))]
+          entity-connections
+          (db.resource.connection/get-resource-entity-connections db {:resource-type "initiative"
+                                                                      :resource-id id})
+          stakeholder-connections
+          (db.resource.connection/get-resource-stakeholder-connections db {:resource-type "initiative"
+                                                                           :resource-id id})
+          extra-details {:entity_connections entity-connections
+                         :stakeholder_connections stakeholder-connections
+                         :tags (db.resource.tag/get-resource-tags conn {:table "initiative_tag"
+                                                                        :resource-col "initiative"
+                                                                        :resource-id id})
+                         :related_content (expand-related-initiative-content conn id)
+                         :type "Initiative"}]
       (resp/response (merge data extra-details)))))
 
 (defmethod ig/init-key :gpml.handler.initiative/post-params [_ _]
