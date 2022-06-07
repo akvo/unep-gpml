@@ -46,6 +46,7 @@
 .related-content {
   overflow: visible !important;
   padding: 0px 10px !important;
+
   .ant-col {
     margin-bottom: 20px;
   }
@@ -178,9 +179,19 @@
   }
 }
 
+.content-with-pagination {
+  .card {
+    margin-bottom: 0;
+  }
+}
+
 .carousel-dot-list {
   position: unset;
   width: 100%;
+}
+
+.hidden-dot {
+  display: none;
 }
 
 .react-multi-carousel-dot {
@@ -258,4 +269,25 @@
 }
 .react-multiple-carousel__arrow--right {
   right: 0;
+}
+.ant-pagination-prev,
+.ant-pagination-next,
+.ant-pagination-disabled {
+  display: none;
+}
+
+.ant-pagination-item {
+  border-radius: 50%;
+  height: 10px;
+  min-width: 10px;
+  margin-right: 5px;
+  border: 1px solid rgba(37, 91, 135, 0.8) !important;
+  background: unset !important;
+  a {
+    display: none;
+  }
+}
+
+.ant-pagination-item-active {
+  background: rgba(37, 91, 135, 0.8) !important;
 }
