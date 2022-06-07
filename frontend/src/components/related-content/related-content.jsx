@@ -140,12 +140,12 @@ const RelatedContent = ({
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
       items: 4,
-      slidesToSlide: 1,
+      slidesToSlide: 4,
     },
     desktop: {
       breakpoint: { max: 1199, min: 992 },
-      items: 4,
-      slidesToSlide: 1,
+      items: 3,
+      slidesToSlide: 3,
     },
     tablet: {
       breakpoint: { max: 991, min: 768 },
