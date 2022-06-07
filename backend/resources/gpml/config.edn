@@ -710,6 +710,7 @@
   :duct.logger/timbre
   {:min-level     :warn
    :level         :info
+   :set-root-config? true
    :appenders {:out #ig/ref :duct.logger.timbre/println
                :sentry #ig/ref :gpml.handler.monitoring/sentry-logger}}
 
