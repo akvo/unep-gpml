@@ -22,6 +22,7 @@ import {
   Form,
   Comment,
 } from "antd";
+import Carousel from "react-multi-carousel";
 import { InfoCircleOutlined } from "@ant-design/icons";
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -58,12 +59,19 @@ import { multicountryGroups } from "../knowledge-library/multicountry";
 import { Form as FinalForm, FormSpy, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import { FieldsFromSchema } from "../../utils/form-utils";
+import RelatedContent from "../../components/related-content/related-content";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
-const CardComponent = ({ title, style, children, getRef }) => {
+const CardComponent = ({
+  title,
+  style,
+  children,
+  getRef,
+  specificClassName,
+}) => {
   return (
-    <div className={`card-wrapper mb-10`} ref={getRef}>
+    <div className={`card-wrapper mb-10 ${specificClassName}`} ref={getRef}>
       <Card title={title} bordered={false} style={style}>
         {children}
       </Card>
@@ -1440,64 +1448,17 @@ const DetailsView = ({
                   </div>
                 </CardComponent>
               )}
-              {data?.relatedContent && data?.relatedContent?.length > 0 && (
-                <CardComponent
-                  title={`Related content (${
-                    data?.relatedContent && data?.relatedContent.length
-                  })`}
-                  getRef={relatedContent}
-                >
-                  {data?.relatedContent.length > 0 && (
-                    <Row gutter={16} className="related-content">
-                      {data?.relatedContent.map((item) => (
-                        <Col span={12}>
-                          <div className="slider-card">
-                            <div className="image-holder">
-                              <img
-                                src={
-                                  require(`../../images/${icons[item?.type]}`)
-                                    .default
-                                }
-                              />
-                            </div>
-
-                            <div className="description-holder">
-                              <h4>
-                                {item?.type ? item.type.replace(/_/g, " ") : ""}
-                              </h4>
-                              <h6>{item.title}</h6>
-                              <div className="bottom-panel">
-                                <div>
-                                  <Avatar.Group
-                                    maxCount={2}
-                                    size="large"
-                                    maxStyle={{
-                                      color: "#f56a00",
-                                      backgroundColor: "#fde3cf",
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    {item?.entityConnections?.map(
-                                      (connection, index) => (
-                                        <Avatar src={connection.image} />
-                                      )
-                                    )}
-                                  </Avatar.Group>
-                                </div>
-                                <a href={`/${item?.type}/${item.id}`}>
-                                  <div className="read-more">
-                                    Read More <ArrowRightOutlined />
-                                  </div>
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </Col>
-                      ))}
-                    </Row>
-                  )}
-                </CardComponent>
-              )}
+              {data?.relatedContent &&
+                data?.relatedContent?.length > 0 &&
+                data?.relatedContent.length > 0 && (
+                  <RelatedContent
+                    data={data}
+                    title="Related content"
+                    relatedContent={data?.relatedContent}
+                    isShownPagination={false}
+                    dataCount={relatedContent?.length}
+                  />
+                )}
               {profile && (
                 <CardComponent title="Comments" getRef={reviews}>
                   <div className="comments-container">
