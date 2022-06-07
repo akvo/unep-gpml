@@ -68,11 +68,18 @@
   .carousel-item {
     width: unset !important;
     transition: all linear 0.1s;
+    &:first-of-type {
+      .card {
+        margin-left: 0;
+      }
+    }
     .card {
       transition: all linear 0.1s;
       position: relative;
       width: 150px;
       height: 192px;
+      margin-left: 19px;
+
       @-moz-document url-prefix() {
         width: 110px;
         height: 136px;
