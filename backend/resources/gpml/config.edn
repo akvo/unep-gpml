@@ -709,8 +709,7 @@
   :duct.server.http/jetty {:configurator #ig/ref :gpml.handler.monitoring/jetty-configurator}
   :duct.logger/timbre
   {:min-level     :warn
-   :level         :warn
-   :set-root-config? true
+   :level         :info
    :appenders {:out #ig/ref :duct.logger.timbre/println
                :sentry #ig/ref :gpml.handler.monitoring/sentry-logger}}
 
