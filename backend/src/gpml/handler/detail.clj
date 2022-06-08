@@ -261,16 +261,25 @@
                                           :fn-to-retrieve-data (partial #'keep-action-details action-details))))]))
                 data-queries)))
 
+(defn- resolve-resource-type
+  [resource-type]
+  (cond
+    (some #{resource-type} constants/resource-types)
+    "resource"
+
+    (= resource-type "project")
+    "initiative"
+
+    :else resource-type))
+
 (defn expand-related-content [db resource-id resource-table-name]
   (let [related-contents
         (handler.resource.related-content/get-related-contents db
                                                                resource-id
                                                                resource-table-name)]
     (reduce
-     (fn [acc {:keys [id type] :as related-content}]
-       (let [resource-type (if (some #{type} constants/resource-types)
-                             "resource"
-                             type)
+     (fn [acc {id :id resource-type :type :as related-content}]
+       (let [resource-type (resolve-resource-type resource-type)
              entity-connections
              (db.resource.connection/get-resource-entity-connections db {:resource-id id
                                                                          :resource-type resource-type})
@@ -287,34 +296,25 @@
    {:keys [tags? entity-connections? stakeholder-connections? related-content?]
     :or {tags? true entity-connections? true
          stakeholder-connections? true related-content? true}}]
-  (letfn [(resolve-resource-type [resource-type]
-            (cond
-              (some #{resource-type} constants/resource-types)
-              "resource"
+  (cond-> resource
+    tags?
+    (assoc :tags (db.resource.tag/get-resource-tags db {:table (str (resolve-resource-type resource-type) "_tag")
+                                                        :resource-col (resolve-resource-type resource-type)
+                                                        :resource-id id}))
 
-              (= resource-type "project")
-              "initiative"
+    entity-connections?
+    (assoc :entity_connections (db.resource.connection/get-resource-entity-connections db {:resource-id id
+                                                                                           :resource-type (resolve-resource-type resource-type)}))
 
-              :else resource-type))]
-    (cond-> resource
-      tags?
-      (assoc :tags (db.resource.tag/get-resource-tags db {:table (str (resolve-resource-type resource-type) "_tag")
-                                                          :resource-col (resolve-resource-type resource-type)
-                                                          :resource-id id}))
+    stakeholder-connections?
+    (assoc :stakeholder_connections (db.resource.connection/get-resource-stakeholder-connections db {:resource-id id
+                                                                                                     :resource-type (resolve-resource-type resource-type)}))
 
-      entity-connections?
-      (assoc :entity_connections (db.resource.connection/get-resource-entity-connections db {:resource-id id
-                                                                                             :resource-type (resolve-resource-type resource-type)}))
+    related-content?
+    (assoc :related_content (expand-related-content db id (resolve-resource-type resource-type)))
 
-      stakeholder-connections?
-      (assoc :stakeholder_connections (db.resource.connection/get-resource-stakeholder-connections db {:resource-id id
-                                                                                                       :resource-type (resolve-resource-type resource-type)}))
-
-      related-content?
-      (assoc :related_content (expand-related-content db id (resolve-resource-type resource-type)))
-
-      true
-      (assoc :type resource-type))))
+    true
+    (assoc :type resource-type)))
 
 (defmulti extra-details (fn [resource-type _ _] resource-type) :default :nothing)
 
