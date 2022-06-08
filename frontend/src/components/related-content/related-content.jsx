@@ -139,17 +139,22 @@ const RelatedContent = ({
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
-      items: 7,
+      items: 4,
       slidesToSlide: 4,
     },
     desktop: {
       breakpoint: { max: 1199, min: 992 },
-      items: 7,
+      items: 3,
       slidesToSlide: 3,
     },
     tablet: {
       breakpoint: { max: 991, min: 768 },
-      items: 5,
+      items: 3,
+      slidesToSlide: 3,
+    },
+    mobile2: {
+      breakpoint: { max: 767, min: 600 },
+      items: 2,
       slidesToSlide: 2,
     },
     mobile: {
@@ -174,9 +179,11 @@ const RelatedContent = ({
       <Carousel
         centerMode={true}
         responsive={responsive}
-        containerClass="related-content"
+        containerClass={`related-content ${
+          isShownPagination && "content-with-pagination"
+        }`}
         itemClass="carousel-item"
-        dotListClass="carousel-dot-list"
+        dotListClass={`carousel-dot-list ${isShownPagination && "hidden-dot"}`}
         showDots={true}
         renderDotsOutside={true}
         customLeftArrow={<CustomLeftArrow />}
@@ -262,6 +269,7 @@ const RelatedContent = ({
       {isShownPagination && (
         <div className="pagination-wrapper">
           <Pagination
+            showTitle={false}
             showSizeChanger={false}
             defaultCurrent={1}
             current={relatedContentPage + 1}
