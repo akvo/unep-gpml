@@ -20,6 +20,7 @@ const RelatedContent = ({
   title,
   relatedContent,
   dataCount,
+  isShownCount,
   relatedContentCount,
   isShownPagination,
   relatedContentPage,
@@ -171,7 +172,7 @@ const RelatedContent = ({
       title={
         <div className="related-content-title-wrapper">
           <div className="related-content-title">{title}</div>
-          {dataCount && (
+          {isShownCount && dataCount > 0 && (
             <div className="related-content-count">Total {dataCount}</div>
           )}
         </div>

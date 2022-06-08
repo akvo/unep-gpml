@@ -681,6 +681,8 @@ const StakeholderDetail = ({
             {ownedResources.length > 0 && (
               <RelatedContent
                 data={[]}
+                isShownCount={false}
+                dataCount={ownedResourcesCount}
                 relatedContent={ownedResources || []}
                 title="Owned resources"
                 isShownPagination={true}
@@ -694,6 +696,8 @@ const StakeholderDetail = ({
             {bookedResources.length > 0 && (
               <RelatedContent
                 data={[]}
+                isShownCount={false}
+                dataCount={bookedResourcesCount}
                 relatedContent={bookedResources || []}
                 title="Bookmarked resources "
                 isShownPagination={true}
