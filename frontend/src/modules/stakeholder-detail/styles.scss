@@ -778,6 +778,12 @@
       }
     }
   }
+  @media (min-width: 1200px) {
+    .custom-right-arrow,
+    .custom-left-arrow {
+      display: none;
+    }
+  }
 }
 
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {

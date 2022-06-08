@@ -1,10 +1,8 @@
 @import "../../vars.scss";
-.ant-avatar-group-popover {
-  zoom: 75%;
-}
 
+// transform: translate3d(0px, 0px, 0px); transition-duration: 400ms; transition-timing-function: cubic-bezier(0.5, 0, 0.1, 1); transition-delay: 0ms; z-index: 4;
 .related-content-wrapper {
-  // overflow: hidden;
+  overflow: hidden;
   min-height: 312px;
   .ant-card {
     padding: 0 !important;
@@ -15,6 +13,21 @@
     .ant-card-body {
       padding: 14px 10px !important;
     }
+  }
+  .ant-pagination-item {
+    border-radius: 50%;
+    height: 10px;
+    min-width: 10px;
+    margin-right: 5px;
+    border: 1px solid rgba(37, 91, 135, 0.8) !important;
+    background: unset !important;
+    a {
+      display: none;
+    }
+  }
+
+  .ant-pagination-item-active {
+    background: rgba(37, 91, 135, 0.8) !important;
   }
 }
 
@@ -46,6 +59,7 @@
 .related-content {
   overflow: visible !important;
   padding: 0px 10px !important;
+
   .ant-col {
     margin-bottom: 20px;
   }
@@ -68,11 +82,19 @@
   .carousel-item {
     width: unset !important;
     transition: all linear 0.1s;
+    &:first-of-type {
+      .card {
+        margin-left: 0;
+      }
+    }
     .card {
       transition: all linear 0.1s;
       position: relative;
-      width: 150px;
-      height: 192px;
+      width: 150px !important;
+      height: 192px !important;
+      margin-left: 19px;
+      padding: 0 !important;
+
       @-moz-document url-prefix() {
         width: 110px;
         height: 136px;
@@ -152,6 +174,7 @@
 
     &:hover {
       border-radius: 5px;
+      margin: 0 20px 0 40px !important;
       transform: scale(1.27) translateY(-12px);
       z-index: 9999;
       transition: all ease-out 0.2s;
@@ -171,9 +194,19 @@
   }
 }
 
+.content-with-pagination {
+  .card {
+    margin-bottom: 0;
+  }
+}
+
 .carousel-dot-list {
   position: unset;
   width: 100%;
+}
+
+.hidden-dot {
+  display: none;
 }
 
 .react-multi-carousel-dot {
@@ -251,4 +284,9 @@
 }
 .react-multiple-carousel__arrow--right {
   right: 0;
+}
+.ant-pagination-prev,
+.ant-pagination-next,
+.ant-pagination-disabled {
+  display: none;
 }
