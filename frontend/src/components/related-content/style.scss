@@ -1,8 +1,6 @@
 @import "../../vars.scss";
-.ant-avatar-group-popover {
-  zoom: 75%;
-}
 
+// transform: translate3d(0px, 0px, 0px); transition-duration: 400ms; transition-timing-function: cubic-bezier(0.5, 0, 0.1, 1); transition-delay: 0ms; z-index: 4;
 .related-content-wrapper {
   overflow: hidden;
   min-height: 312px;
@@ -92,9 +90,10 @@
     .card {
       transition: all linear 0.1s;
       position: relative;
-      width: 150px;
-      height: 192px;
+      width: 150px !important;
+      height: 192px !important;
       margin-left: 19px;
+      padding: 0 !important;
 
       @-moz-document url-prefix() {
         width: 110px;
@@ -175,10 +174,8 @@
 
     &:hover {
       border-radius: 5px;
-      transform: scale(1.2);
-      margin: 0 40px;
-      // transform: scale(1.27) translateY(-12px);
-      // width: 241px !important;
+      margin: 0 20px 0 40px !important;
+      transform: scale(1.27) translateY(-12px);
       z-index: 9999;
       transition: all ease-out 0.2s;
       @-moz-document url-prefix() {
