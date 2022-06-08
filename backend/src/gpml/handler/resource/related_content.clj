@@ -1,18 +1,35 @@
 (ns gpml.handler.resource.related-content
   (:require
+   [clojure.set :as set]
    [clojure.string :as str]
    [gpml.constants :as constants]
    [gpml.db.resource.related-content :as db.resource.related-content]))
 
+(def ^:const ^:private related-content-shared-keys
+  [:id :title :description :image])
+
+(def ^:const ^:private related-content-non-shared-keys-mapping
+  {:initiative {:q2 :title
+                :q3 :description
+                :qimage :image}
+   :technology {:name :title}
+   :policy {:abstract :description}
+   :resource {:summary :description}})
+
 (defn- unwrap-related-contents
   [related-contents]
-  (map (fn [{:keys [resource_type resource_data]}]
-         (let [resource-type (case resource_type
-                               "resource" (str/replace (str/lower-case (:type resource_data)) #" " "_")
-                               "initiative" "project"
-                               resource_type)]
-           (assoc resource_data :type resource-type)))
-       related-contents))
+  (map
+   (fn [{:keys [resource_type resource_data]}]
+     (let [resource-type (case resource_type
+                           "resource" (str/replace (str/lower-case (:type resource_data)) #" " "_")
+                           "initiative" "project"
+                           resource_type)
+           non-shared-keys-mapping (get related-content-non-shared-keys-mapping (keyword resource_type))]
+       (-> resource_data
+           (select-keys related-content-shared-keys)
+           (merge (set/rename-keys (select-keys resource_data (keys non-shared-keys-mapping)) non-shared-keys-mapping))
+           (assoc :type resource-type))))
+   related-contents))
 
 (defn create-related-contents
   "Creates related contents records for a given `resource-id` and `resource-table-name`"
