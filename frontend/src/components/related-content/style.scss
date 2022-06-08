@@ -171,36 +171,49 @@
   .carousel-with-extra-card:last-of-type {
     display: flex;
     height: 192px;
-    background-color: #d9d9d9;
-
     transform: unset !important;
     z-index: unset;
     margin-left: 19px !important;
     border-radius: 5px;
+    border-radius: 4px;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
     .card {
-      min-width: 150px;
-      background-color: #3176ae;
-      padding: 13px !important;
       display: flex;
       flex-direction: column;
+      align-items: center;
+      border-radius: 4px;
+      min-width: 150px;
+      padding: 13px !important;
       margin: 0 !important;
     }
 
     .resources-count {
-      color: #000000;
       display: flex;
+      flex-direction: column;
       align-items: center;
       text-align: center;
+      color: #18162f;
+      text-transform: uppercase;
       height: 100%;
       font-weight: 600;
       font-size: 14px;
       line-height: 20px;
+      .count {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 49px;
+        min-height: 49px;
+        border-radius: 50%;
+        margin-bottom: 2px;
+        border: 2px solid #18162f;
+      }
     }
 
     .read-more {
-      color: #000000;
+      font-weight: 600;
       font-size: 12px;
-      line-height: 15px;
+      line-height: 17px;
     }
 
     &:hover {
