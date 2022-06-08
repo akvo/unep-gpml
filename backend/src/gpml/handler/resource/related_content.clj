@@ -1,6 +1,7 @@
 (ns gpml.handler.resource.related-content
   (:require
    [clojure.string :as str]
+   [gpml.constants :as constants]
    [gpml.db.resource.related-content :as db.resource.related-content]))
 
 (defn- unwrap-related-contents
@@ -17,7 +18,14 @@
   "Creates related contents records for a given `resource-id` and `resource-table-name`"
   [conn resource-id resource-table-name related-contents]
   (try
-    (let [related-contents (map #(vector resource-id resource-table-name (:id %) (:type %)) related-contents)
+    (let [related-contents (map
+                            (fn [{id :id resource-type :type}]
+                              (vector
+                               resource-id resource-table-name id
+                               (if (some #{resource-type} constants/resource-types)
+                                 "resource"
+                                 resource-type)))
+                            related-contents)
           affected-rows (db.resource.related-content/create-related-contents conn {:related-contents related-contents})]
       (if (= affected-rows (count related-contents))
         {:success? true}
