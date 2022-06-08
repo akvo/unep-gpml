@@ -953,14 +953,11 @@
         margin-bottom: 0px !important;
       }
       .short-image {
-        // min-height: 350px;
-        img {
-          // object-fit: fill;
-        }
+        min-height: 350px;
       }
       .banner-wrapper {
         .long-image {
-          // max-height: 350px;
+          max-height: 350px;
         }
       }
       .sticky-panel {
