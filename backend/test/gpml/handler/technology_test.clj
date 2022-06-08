@@ -76,7 +76,6 @@
                     :headquarter nil
                     :info_docs nil
                     :sub_content_type nil
-                    :related_content []
                     :subnational_city nil
                     :tags (map #(:id %) (:tags data))
                     :owners [(:id user)]
@@ -89,7 +88,6 @@
                     :headquarter nil
                     :info_docs nil
                     :sub_content_type nil
-                    :related_content []
                     :subnational_city nil
                     :tags (map #(:id %) (:tags data))
                     :owners [(:id user)]

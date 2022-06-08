@@ -1,17 +1,14 @@
 (ns gpml.handler.browse
-  (:require [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.constants :refer [topics resource-types]]
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.event :as db.event]
-            [gpml.db.initiative :as db.initiative]
-            [gpml.db.policy :as db.policy]
-            [gpml.db.resource :as db.resource]
-            [gpml.db.technology :as db.technology]
-            [gpml.db.topic :as db.topic]
-            [gpml.util.regular-expressions :as util.regex]
-            [integrant.core :as ig]
-            [ring.util.response :as resp]))
+  (:require
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.constants :refer [resource-types topics]]
+   [gpml.db.country-group :as db.country-group]
+   [gpml.db.resource.connection :as db.resource.connection]
+   [gpml.db.topic :as db.topic]
+   [gpml.util.regular-expressions :as util.regex]
+   [integrant.core :as ig]
+   [ring.util.response :as resp]))
 
 (def ^:const topic-re (util.regex/comma-separated-enums-re topics))
 (def ^:const order-by-fields ["title" "description" "id"])
@@ -184,28 +181,21 @@
                              (str/join " & ")))))
 
 (defn- result->result-with-connections [db {:keys [type] :as result}]
-  (case type
-    (or "technical_resource" "financing_resource" "action_plan")
-    (merge result
-           {:stakeholder_connections (db.resource/stakeholder-connections-by-id db (select-keys result [:id]))})
+  (let [resource-type (cond
+                        (some #{type} resource-types)
+                        "resource"
 
-    "event"
-    (merge result
-           {:stakeholder_connections (db.event/stakeholder-connections-by-id db (select-keys result [:id]))})
+                        ;; TODO: review with the team the change from
+                        ;; project to initiative
+                        (= type "project")
+                        "initiative"
 
-    "project"
-    (merge result
-           {:stakeholder_connections (db.initiative/stakeholder-connections-by-id db (select-keys result [:id]))})
-
-    "policy"
-    (merge result
-           {:stakeholder_connections (db.policy/stakeholder-connections-by-id db (select-keys result [:id]))})
-
-    "technology"
-    (merge result
-           {:stakeholder_connections (db.technology/stakeholder-connections-by-id db (select-keys result [:id]))})
-
-    result))
+                        :else
+                        type)]
+    (->> {:resource-type resource-type
+          :resource-id (:id result)}
+         (db.resource.connection/get-resource-stakeholder-connections db)
+         (assoc result :stakeholder_connections))))
 
 (defn browse-response
   [{:keys [logger] {db :spec} :db} query approved? admin]

@@ -10,6 +10,7 @@
   (apply conj topic-tables ["organisation" "stakeholder" "non_member_organisation"]))
 
 (def resource-types #{"financing_resource" "technical_resource" "action_plan"})
+(def ^:const resources (concat resource-types (butlast topic-tables)))
 (def approved-user-topics #{"stakeholder"})
 (def stakeholder-types #{"individual" "entity"})
 (def topics

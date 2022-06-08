@@ -2,9 +2,6 @@
 import React, { useState } from "react";
 import { utils } from "@rjsf/core";
 import { AutoComplete } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-
-import ModalAddEntity from "../../modules/flexible-forms/entity-modal/add-entity-modal";
 
 const { asNumber, guessType } = utils;
 

@@ -258,9 +258,15 @@ const FlexibleForm = withRouter(
         delete data.info;
       }
 
-      if (data?.related) {
-        data.relatedContent = data?.related.map((x) => parseInt(x));
+      if (data?.type?.length > 0) {
+        data.relatedContent = data?.type.map((x) => {
+          return {
+            id: parseInt(x.value),
+            type: x.label,
+          };
+        });
         delete data.related;
+        delete data.type;
       }
 
       if (status === "add" && !params?.id) {
@@ -358,6 +364,7 @@ const FlexibleForm = withRouter(
         });
 
       delete data.qtags;
+      delete data.qid;
 
       data.url = data.qurl;
       delete data.qurl;
@@ -432,10 +439,17 @@ const FlexibleForm = withRouter(
         delete data.qgeoCoverageValueSubnationalCity;
       }
 
-      if (data?.qrelated) {
-        data.related_content = data?.qrelated.map((x) => parseInt(x));
+      if (data?.qtype?.length > 0) {
+        data.related_content = data?.qtype.map((x) => {
+          return {
+            id: parseInt(x.value),
+            type: x.label,
+          };
+        });
         delete data.qrelated;
+        delete data.qtype;
       }
+
       delete data.tagsList;
       delete data.qtagsList;
 
@@ -617,9 +631,15 @@ const FlexibleForm = withRouter(
         delete data.info;
       }
 
-      if (data?.related) {
-        data.relatedContent = data?.related.map((x) => parseInt(x));
+      if (data?.type?.length > 0) {
+        data.relatedContent = data?.type.map((x) => {
+          return {
+            id: parseInt(x.value),
+            type: x.label,
+          };
+        });
         delete data.related;
+        delete data.type;
       }
 
       if (data?.summary) {
@@ -807,9 +827,15 @@ const FlexibleForm = withRouter(
         delete data.info;
       }
 
-      if (data?.related) {
-        data.relatedContent = data?.related.map((x) => parseInt(x));
+      if (data?.type?.length > 0) {
+        data.relatedContent = data?.type.map((x) => {
+          return {
+            id: parseInt(x.value),
+            type: x.label,
+          };
+        });
         delete data.related;
+        delete data.type;
       }
 
       if (data?.summary) {
@@ -986,9 +1012,15 @@ const FlexibleForm = withRouter(
         delete data.info;
       }
 
-      if (data?.related) {
-        data.relatedContent = data?.related.map((x) => parseInt(x));
+      if (data?.type?.length > 0) {
+        data.relatedContent = data?.type.map((x) => {
+          return {
+            id: parseInt(x.value),
+            type: x.label,
+          };
+        });
         delete data.related;
+        delete data.type;
       }
 
       if (data?.summary) {
