@@ -261,6 +261,7 @@
 .react-multiple-carousel__arrow {
   top: calc(calc(160px - calc(42px / 2)) / 2);
   background: unset !important;
+  z-index: 1;
   svg {
     width: 24px;
     height: 38px;
