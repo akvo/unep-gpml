@@ -25,6 +25,7 @@ const RelatedContent = ({
   isShownPagination,
   relatedContentPage,
   getRelatedContent,
+  responsive,
 }) => {
   const CardComponent = ({ title, style, children, getRef }) => {
     return (
@@ -137,34 +138,6 @@ const RelatedContent = ({
         return financingResource;
       }
     }
-  };
-
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 1200 },
-      items: 4,
-      slidesToSlide: 4,
-    },
-    desktop: {
-      breakpoint: { max: 1199, min: 992 },
-      items: 3,
-      slidesToSlide: 3,
-    },
-    tablet: {
-      breakpoint: { max: 991, min: 768 },
-      items: 3,
-      slidesToSlide: 3,
-    },
-    mobile2: {
-      breakpoint: { max: 767, min: 600 },
-      items: 2,
-      slidesToSlide: 2,
-    },
-    mobile: {
-      breakpoint: { max: 599, min: 0 },
-      items: 1,
-      slidesToSlide: 1,
-    },
   };
 
   return (
