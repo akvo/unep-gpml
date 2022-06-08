@@ -1,20 +1,39 @@
 @import "../../vars.scss";
-.ant-avatar-group-popover {
-  zoom: 75%;
-}
 
 .related-content-wrapper {
-  // overflow: hidden;
+  overflow: hidden;
   min-height: 312px;
+  border-radius: 10px;
   .ant-card {
     padding: 0 !important;
     min-height: 300px;
-    @-moz-document url-prefix() {
-      min-height: 245px;
+    border-radius: 10px;
+
+    .ant-card-head {
+      border-radius: 10px;
     }
     .ant-card-body {
       padding: 14px 10px !important;
     }
+  }
+  .pagination-wrapper {
+    display: none !important;
+  }
+
+  .ant-pagination-item {
+    border-radius: 50%;
+    height: 10px;
+    min-width: 10px;
+    margin-right: 5px;
+    border: 1px solid rgba(37, 91, 135, 0.8) !important;
+    background: unset !important;
+    a {
+      display: none;
+    }
+  }
+
+  .ant-pagination-item-active {
+    background: rgba(37, 91, 135, 0.8) !important;
   }
 }
 
@@ -23,9 +42,6 @@
   align-items: center;
   .related-content-title {
     margin-right: 19px;
-    @-moz-document url-prefix() {
-      margin-right: 12px;
-    }
   }
   .related-content-count {
     font-size: 12px;
@@ -35,23 +51,13 @@
     padding: 5px 14px !important;
     text-transform: uppercase;
     border: 1px solid #000000;
-    @-moz-document url-prefix() {
-      font-size: 10px;
-      border-radius: 3px;
-      padding: 2.5px 10px !important;
-    }
   }
 }
 
 .related-content {
   overflow: visible !important;
   padding: 0px 10px !important;
-  .ant-col {
-    margin-bottom: 20px;
-  }
-  li {
-    margin-bottom: 10px;
-  }
+
   .slider-card {
     background-color: #fff !important;
     border-radius: 0 !important;
@@ -68,17 +74,21 @@
   .carousel-item {
     width: unset !important;
     transition: all linear 0.1s;
+    &:first-of-type {
+      .card {
+        margin-left: 0;
+      }
+    }
     .card {
       transition: all linear 0.1s;
       position: relative;
-      width: 150px;
-      height: 192px;
-      @-moz-document url-prefix() {
-        width: 110px;
-        height: 136px;
-      }
+      width: 150px !important;
+      height: 192px !important;
+      margin-left: 19px;
+      padding: 0 !important;
 
       .description-holder {
+        display: none !important;
         transition: all ease-in 0.1s;
         position: absolute;
         display: flex;
@@ -94,20 +104,12 @@
         width: 170px;
         margin-left: -20px;
 
-        @-moz-document url-prefix() {
-          width: 140px;
-          height: 150px;
-        }
         h3 {
           font-style: normal;
           font-weight: 600;
           font-size: 12px;
           max-height: 70px;
           overflow: hidden;
-          @-moz-document url-prefix() {
-            line-height: 12px;
-            font-size: 12px !important;
-          }
         }
         h4 {
           color: #bbbbbb;
@@ -115,9 +117,6 @@
           font-size: 10px;
           line-height: 17px;
           text-transform: uppercase;
-          @-moz-document url-prefix() {
-            font-size: 9px;
-          }
         }
 
         .ant-avatar-circle {
@@ -130,58 +129,116 @@
             font-weight: 500;
             font-size: 10px;
             color: #34a6ff;
-            @-moz-document url-prefix() {
-              font-size: 9px;
-            }
           }
         }
       }
       .with-pagination {
         min-height: 216px;
-        @-moz-document url-prefix() {
-          min-height: 172px;
-        }
       }
       .no-pagination {
         min-height: 195px;
-        @-moz-document url-prefix() {
-          min-height: 165px;
-        }
       }
     }
 
     &:hover {
       border-radius: 5px;
+      margin: 0 20px 0 calc(40px + 19px) !important;
       transform: scale(1.27) translateY(-12px);
       z-index: 9999;
       transition: all ease-out 0.2s;
-      @-moz-document url-prefix() {
-        transform: scale(1.3) translateY(-15px);
-      }
+
       .description-holder {
+        display: flex !important;
         opacity: 1;
       }
       .slider-card {
         border-radius: 10px !important;
       }
+      .card {
+        margin-left: 0;
+      }
     }
     .ant-col-12 {
       max-width: 100% !important;
     }
+    .related-content-image {
+      border-radius: 5px;
+    }
+  }
+
+  .carousel-with-extra-card:last-of-type {
+    display: flex;
+    height: 192px;
+    transform: unset !important;
+    z-index: unset;
+    margin-left: 19px !important;
+    border-radius: 5px;
+    border-radius: 4px;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: 4px;
+      min-width: 150px;
+      padding: 13px !important;
+      margin: 0 !important;
+    }
+
+    .resources-count {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      color: #18162f;
+      text-transform: uppercase;
+      height: 100%;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+      .count {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 49px;
+        min-height: 49px;
+        border-radius: 50%;
+        margin-bottom: 2px;
+        border: 2px solid #18162f;
+      }
+    }
+
+    .read-more {
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 17px;
+    }
+
+    &:hover {
+      height: 192px;
+      transform: unset !important;
+      z-index: unset !important;
+      margin-left: 19px !important;
+    }
+  }
+}
+
+.content-with-pagination {
+  .card {
+    margin-bottom: 0;
   }
 }
 
 .carousel-dot-list {
   position: unset;
   width: 100%;
+  margin-top: 30px;
 }
 
 .react-multi-carousel-dot {
   width: 31px;
   margin-right: 4px;
-  @-moz-document url-prefix() {
-    margin-right: 2px;
-  }
+
   &:last-of-type {
     margin-right: unset;
   }
@@ -192,9 +249,6 @@
     border: unset;
     border-radius: unset;
     background-color: #c4c4c4;
-    @-moz-document url-prefix() {
-      height: 2px;
-    }
   }
 }
 .react-multi-carousel-dot--active {
@@ -206,6 +260,7 @@
 .react-multiple-carousel__arrow {
   top: calc(calc(160px - calc(42px / 2)) / 2);
   background: unset !important;
+  z-index: 1;
   svg {
     width: 24px;
     height: 38px;
@@ -214,14 +269,6 @@
     svg path {
       fill: $yellow-highlight;
       fill-opacity: 1;
-    }
-  }
-  @-moz-document url-prefix() {
-    min-width: 30px;
-    min-height: 30px;
-    top: calc(calc(125px - calc(27px / 2)) / 2);
-    &::before {
-      font-size: 12px;
     }
   }
 }
@@ -234,16 +281,10 @@
 
 .custom-left-arrow {
   left: -18px;
-  @-moz-document url-prefix() {
-    left: -12px;
-  }
 }
 
 .custom-right-arrow {
   right: -18px;
-  @-moz-document url-prefix() {
-    right: -12px;
-  }
 }
 
 .react-multiple-carousel__arrow--left {
@@ -251,4 +292,9 @@
 }
 .react-multiple-carousel__arrow--right {
   right: 0;
+}
+.ant-pagination-prev,
+.ant-pagination-next,
+.ant-pagination-disabled {
+  display: none;
 }
