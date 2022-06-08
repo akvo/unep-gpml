@@ -58,12 +58,6 @@
   overflow: visible !important;
   padding: 0px 10px !important;
 
-  .ant-col {
-    margin-bottom: 20px;
-  }
-  li {
-    margin-bottom: 10px;
-  }
   .slider-card {
     background-color: #fff !important;
     border-radius: 0 !important;
@@ -94,6 +88,7 @@
       padding: 0 !important;
 
       .description-holder {
+        display: none !important;
         transition: all ease-in 0.1s;
         position: absolute;
         display: flex;
@@ -147,21 +142,24 @@
 
     &:hover {
       border-radius: 5px;
-      margin: 0 20px 0 40px !important;
+      margin: 0 20px 0 calc(40px + 19px) !important;
       transform: scale(1.27) translateY(-12px);
       z-index: 9999;
       transition: all ease-out 0.2s;
 
       .description-holder {
+        display: flex !important;
         opacity: 1;
       }
       .slider-card {
         border-radius: 10px !important;
       }
+      .card {
+        margin-left: 0;
+      }
     }
     .ant-col-12 {
       max-width: 100% !important;
-      margin-bottom: 20px;
     }
     .related-content-image {
       border-radius: 5px;
@@ -234,6 +232,7 @@
 .carousel-dot-list {
   position: unset;
   width: 100%;
+  margin-top: 30px;
 }
 
 .react-multi-carousel-dot {
