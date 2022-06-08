@@ -2,6 +2,7 @@ import React from "react";
 import "./style.scss";
 import { Col, Avatar, Card, Pagination } from "antd";
 import Carousel from "react-multi-carousel";
+import { Link } from "react-router-dom";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
 import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
@@ -14,6 +15,7 @@ import initiative from "../../images/placeholders/initiative-placeholder.png";
 import event from "../../images/placeholders/initiative-placeholder.png";
 
 const RelatedContent = ({
+  url,
   data,
   title,
   relatedContent,
@@ -182,7 +184,9 @@ const RelatedContent = ({
         containerClass={`related-content ${
           isShownPagination && "content-with-pagination"
         }`}
-        itemClass="carousel-item"
+        itemClass={`carousel-item ${
+          dataCount < 100 && "carousel-with-extra-card"
+        }`}
         dotListClass={`carousel-dot-list ${isShownPagination && "hidden-dot"}`}
         showDots={true}
         renderDotsOutside={true}
@@ -264,6 +268,15 @@ const RelatedContent = ({
             </Col>
           );
         })}
+        {dataCount < 100 && (
+          <a href={`/knowledge/library?${url}`} className="card" span={12}>
+            <p className="resources-count">+{dataCount - 20} more resources</p>
+
+            <div className="read-more">
+              View All <ArrowRightOutlined />
+            </div>
+          </a>
+        )}
       </Carousel>
 
       {isShownPagination && (

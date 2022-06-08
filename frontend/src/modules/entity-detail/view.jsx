@@ -512,6 +512,7 @@ const StakeholderDetail = ({
           <div className="owned-resources-wrapper">
             {ownedResources.length > 0 && (
               <RelatedContent
+                url={`entity=${data.id}`}
                 data={[]}
                 relatedContent={ownedResources}
                 title="Content on the platform"
