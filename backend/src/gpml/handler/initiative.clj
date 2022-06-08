@@ -111,25 +111,25 @@
                                                          :mailjet-config mailjet-config))]
         (resp/created (:referrer req) {:message "New initiative created" :id initiative-id})))))
 
-(defn expand-related-initiative-content [db initiative-id]
-  (let [related_content (handler.resource.related-content/get-related-contents db initiative-id "initiative")]
+(defn expand-related-initiative-content [conn initiative-id]
+  (let [related_content (handler.resource.related-content/get-related-contents conn initiative-id "initiative")]
     (for [item related_content]
       (merge item
-             {:entity_connections (db.resource.connection/get-resource-entity-connections db {:resource-type "initiative"
-                                                                                              :resource-id (:id item)})
-              :stakeholder_connections (db.resource.connection/get-resource-stakeholder-connections db {:resource-type "initiative"
-                                                                                                        :resource-id (:id item)})}))))
+             {:entity_connections (db.resource.connection/get-resource-entity-connections conn {:resource-type "initiative"
+                                                                                                :resource-id (:id item)})
+              :stakeholder_connections (db.resource.connection/get-resource-stakeholder-connections conn {:resource-type "initiative"
+                                                                                                          :resource-id (:id item)})}))))
 
 (defmethod ig/init-key :gpml.handler.initiative/get [_ {:keys [db]}]
   (fn [{{{:keys [id]} :path} :parameters}]
     (let [conn (:spec db)
           data (db.initiative/initiative-by-id conn {:id id})
           entity-connections
-          (db.resource.connection/get-resource-entity-connections db {:resource-type "initiative"
-                                                                      :resource-id id})
+          (db.resource.connection/get-resource-entity-connections conn {:resource-type "initiative"
+                                                                        :resource-id id})
           stakeholder-connections
-          (db.resource.connection/get-resource-stakeholder-connections db {:resource-type "initiative"
-                                                                           :resource-id id})
+          (db.resource.connection/get-resource-stakeholder-connections conn {:resource-type "initiative"
+                                                                             :resource-id id})
           extra-details {:entity_connections entity-connections
                          :stakeholder_connections stakeholder-connections
                          :tags (db.resource.tag/get-resource-tags conn {:table "initiative_tag"

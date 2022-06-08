@@ -2,6 +2,7 @@
   (:require
    [clojure.java.jdbc :as jdbc]
    [gpml.auth :as auth]
+   [gpml.constants :as constants]
    [gpml.db.country :as db.country]
    [gpml.db.favorite :as db.favorite]
    [gpml.db.language :as db.language]
@@ -153,7 +154,10 @@
          [:url {:optional true} string?]
          [:info_docs {:optional true} string?]
          [:related_content {:optional true}
-          [:vector {:optional true} integer?]]
+          [:vector {:optional true}
+           [:map {:optional true}
+            [:id [:int]]
+            [:type (vec (conj constants/resources :enum))]]]]
          [:sub_content_type {:optional true} string?]
          [:headquarter {:optional true} string?]
          [:document_preview {:optional true} boolean?]

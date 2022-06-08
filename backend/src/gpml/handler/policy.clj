@@ -2,6 +2,7 @@
   (:require
    [clojure.java.jdbc :as jdbc]
    [gpml.auth :as auth]
+   [gpml.constants :as constants]
    [gpml.db.favorite :as db.favorite]
    [gpml.db.language :as db.language]
    [gpml.db.policy :as db.policy]
@@ -165,7 +166,10 @@
     [:sub_content_type {:optional true} string?]
     [:document_preview {:optional true} boolean?]
     [:related_content {:optional true}
-     [:vector {:optional true} integer?]]
+     [:vector {:optional true}
+      [:map {:optional true}
+       [:id [:int]]
+       [:type (vec (conj constants/resources :enum))]]]]
     [:topics {:optional true}
      [:vector {:optional true} string?]]
     [:entity_connections {:optional true}
