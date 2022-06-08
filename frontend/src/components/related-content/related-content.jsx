@@ -270,7 +270,11 @@ const RelatedContent = ({
           );
         })}
         {dataCount < 100 && (
-          <a href={`/knowledge/library?${url}`} className="card" span={12}>
+          <a
+            href={`/knowledge/library${url ? url : ""}`}
+            className="card"
+            span={12}
+          >
             <div className="resources-count">
               <span className="count">+{dataCount - 20}</span>
               <p>resources</p>

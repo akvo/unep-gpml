@@ -512,7 +512,7 @@ const StakeholderDetail = ({
           <div className="owned-resources-wrapper">
             {ownedResources.length > 0 && (
               <RelatedContent
-                url={`entity=${data.id}`}
+                url={`?entity=${data.id}`}
                 data={[]}
                 isShownCount={true}
                 relatedContent={ownedResources}

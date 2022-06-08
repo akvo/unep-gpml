@@ -681,6 +681,7 @@ const StakeholderDetail = ({
             {ownedResources.length > 0 && (
               <RelatedContent
                 data={[]}
+                url={""}
                 isShownCount={false}
                 dataCount={ownedResourcesCount}
                 relatedContent={ownedResources || []}
@@ -696,6 +697,7 @@ const StakeholderDetail = ({
             {bookedResources.length > 0 && (
               <RelatedContent
                 data={[]}
+                url={""}
                 isShownCount={false}
                 dataCount={bookedResourcesCount}
                 relatedContent={bookedResources || []}
