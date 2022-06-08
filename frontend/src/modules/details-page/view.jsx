@@ -1453,10 +1453,11 @@ const DetailsView = ({
                 data?.relatedContent.length > 0 && (
                   <RelatedContent
                     data={data}
+                    isShownCount={false}
                     title="Related content"
                     relatedContent={data?.relatedContent}
                     isShownPagination={false}
-                    dataCount={relatedContent?.length}
+                    dataCount={relatedContent?.length || 0}
                   />
                 )}
               {profile && (

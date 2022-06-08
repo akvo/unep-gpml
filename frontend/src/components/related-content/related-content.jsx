@@ -2,6 +2,7 @@ import React from "react";
 import "./style.scss";
 import { Col, Avatar, Card, Pagination } from "antd";
 import Carousel from "react-multi-carousel";
+import { Link } from "react-router-dom";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
 import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
@@ -14,10 +15,12 @@ import initiative from "../../images/placeholders/initiative-placeholder.png";
 import event from "../../images/placeholders/initiative-placeholder.png";
 
 const RelatedContent = ({
+  url,
   data,
   title,
   relatedContent,
   dataCount,
+  isShownCount,
   relatedContentCount,
   isShownPagination,
   relatedContentPage,
@@ -139,17 +142,22 @@ const RelatedContent = ({
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
-      items: 7,
+      items: 4,
       slidesToSlide: 4,
     },
     desktop: {
       breakpoint: { max: 1199, min: 992 },
-      items: 7,
+      items: 3,
       slidesToSlide: 3,
     },
     tablet: {
       breakpoint: { max: 991, min: 768 },
-      items: 5,
+      items: 3,
+      slidesToSlide: 3,
+    },
+    mobile2: {
+      breakpoint: { max: 767, min: 600 },
+      items: 2,
       slidesToSlide: 2,
     },
     mobile: {
@@ -164,7 +172,7 @@ const RelatedContent = ({
       title={
         <div className="related-content-title-wrapper">
           <div className="related-content-title">{title}</div>
-          {dataCount && (
+          {isShownCount && dataCount > 0 && (
             <div className="related-content-count">Total {dataCount}</div>
           )}
         </div>
@@ -174,9 +182,13 @@ const RelatedContent = ({
       <Carousel
         centerMode={true}
         responsive={responsive}
-        containerClass="related-content"
-        itemClass="carousel-item"
-        dotListClass="carousel-dot-list"
+        containerClass={`related-content ${
+          isShownPagination && "content-with-pagination"
+        }`}
+        itemClass={`carousel-item ${
+          dataCount > 20 && "carousel-with-extra-card"
+        }`}
+        dotListClass={`carousel-dot-list ${isShownPagination && "hidden-dot"}`}
         showDots={true}
         renderDotsOutside={true}
         customLeftArrow={<CustomLeftArrow />}
@@ -257,11 +269,28 @@ const RelatedContent = ({
             </Col>
           );
         })}
+        {dataCount > 20 && (
+          <a
+            href={`/knowledge/library${url ? url : ""}`}
+            className="card"
+            span={12}
+          >
+            <div className="resources-count">
+              <span className="count">+{dataCount - 20}</span>
+              <p>resources</p>
+            </div>
+
+            <div className="read-more">
+              View All <ArrowRightOutlined />
+            </div>
+          </a>
+        )}
       </Carousel>
 
       {isShownPagination && (
         <div className="pagination-wrapper">
           <Pagination
+            showTitle={false}
             showSizeChanger={false}
             defaultCurrent={1}
             current={relatedContentPage + 1}
