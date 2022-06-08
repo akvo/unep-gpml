@@ -92,13 +92,14 @@ const TabComponent = ({
   data,
   recordShow,
   profile,
+  params,
 }) => {
   return (
     <div className="tab-wrapper" style={style}>
       <ul>
-        {data.type !== "Technical Resource" &&
-          data.type !== "Policy" &&
-          data.type !== "Action Plan" && (
+        {params.type !== "technical_resource" &&
+          params.type !== "policy" &&
+          params.type !== "action_plan" && (
             <li>
               <a onClick={() => descriptionRef.current.scrollIntoView()}>
                 Description
@@ -348,9 +349,9 @@ const renderBannerSection = (
     profile.role === "ADMIN";
 
   if (
-    data.type === "Technical Resource" ||
-    data.type === "Policy" ||
-    data.type === "Action Plan"
+    params.type === "technical_resource" ||
+    params.type === "policy" ||
+    params.type === "action_plan"
   ) {
     return (
       <>
@@ -1387,10 +1388,11 @@ const DetailsView = ({
                 data={data}
                 recordShow={recordShow}
                 profile={profile}
+                params={params}
               />
-              {data.type !== "Technical Resource" &&
-                data.type !== "Policy" &&
-                data.type !== "Action Plan" && (
+              {params.type !== "technical_resource" &&
+                params.type !== "policy" &&
+                params.type !== "action_plan" && (
                   <CardComponent title="Description" getRef={description}>
                     <p className="summary">{data?.summary}</p>
                   </CardComponent>
@@ -1455,6 +1457,8 @@ const DetailsView = ({
                     data={data}
                     title="Related content"
                     relatedContent={data?.relatedContent}
+                    isShownPagination={false}
+                    dataCount={relatedContent?.length}
                   />
                 )}
               {profile && (
