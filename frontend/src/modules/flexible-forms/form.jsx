@@ -364,6 +364,7 @@ const FlexibleForm = withRouter(
         });
 
       delete data.qtags;
+      delete data.qid;
 
       data.url = data.qurl;
       delete data.qurl;

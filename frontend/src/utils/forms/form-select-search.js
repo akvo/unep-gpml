@@ -107,7 +107,7 @@ const SelectWidget = ({
         virtual={false}
         dropdownRender={(menu) => <div>{menu}</div>}
         getPopupContainer={getPopupContainer}
-        value={value?.id}
+        value={value?.id ? value?.id : value}
         loading={fetching}
         notFoundContent={
           fetching ? (
