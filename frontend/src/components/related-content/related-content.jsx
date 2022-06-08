@@ -149,8 +149,13 @@ const RelatedContent = ({
     },
     tablet: {
       breakpoint: { max: 991, min: 768 },
+      items: 3,
+      slidesToSlide: 3,
+    },
+    mobile2: {
+      breakpoint: { max: 767, min: 600 },
       items: 2,
-      slidesToSlide: 1,
+      slidesToSlide: 2,
     },
     mobile: {
       breakpoint: { max: 599, min: 0 },
