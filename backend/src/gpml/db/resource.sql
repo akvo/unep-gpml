@@ -23,7 +23,6 @@ insert into resource(
 --~ (when (contains? params :sub_content_type) ", sub_content_type")
 --~ (when (contains? params :first_publication_date) ", first_publication_date")
 --~ (when (contains? params :latest_amendment_date) ", latest_amendment_date")
---~ (when (contains? params :related_content) ", related_content")
 --~ (when (contains? params :capacity_building) ", capacity_building")
 --~ (when (contains? params :subnational_city) ", subnational_city")
 --~ (when (contains? params :document_preview) ", document_preview")
@@ -51,7 +50,6 @@ values(
 --~ (when (contains? params :sub_content_type) ", :sub_content_type")
 --~ (when (contains? params :first_publication_date) ", :first_publication_date")
 --~ (when (contains? params :latest_amendment_date) ", :latest_amendment_date")
---~ (when (contains? params :related_content) ", :related_content")
 --~ (when (contains? params :capacity_building) ", :capacity_building")
 --~ (when (contains? params :subnational_city) ", :subnational_city")
 --~ (when (contains? params :document_preview) ", :document_preview")
@@ -159,24 +157,6 @@ select * from resource_image where id = :id
 insert into resource_image (image)
 values(:image) returning id;
 
--- :name entity-connections-by-id
--- :doc Get entity connections by id
-select orgrsc.id, orgrsc.association as role, org.id as entity_id, org.name as entity, org.logo as image
- from organisation_resource orgrsc
- left join organisation org
- on orgrsc.organisation = org.id
- where orgrsc.resource = :id
-
--- :name stakeholder-connections-by-id
--- :doc Get stakeholder connections by id
-select sr.id, sr.association as role, s.id as stakeholder_id, concat_ws(' ', s.first_name, s.last_name) as stakeholder,
- s.picture as image, s.role as stakeholder_role
-  from stakeholder_resource sr
-  left join stakeholder s
-  on sr.stakeholder = s.id
-  where sr.resource = :id
-  and sr.is_bookmark = false;
-
 -- :name all-resources
 -- :doc List all resources
 select id, title
@@ -199,10 +179,3 @@ select id, title
 select id, title
   from resource
   where type = 'Action Plan';
-
--- :name related-content-by-id
--- :doc Get related content by id
-select res.id, res.title, res.summary as description, res.image, replace(lower(res.type), ' ', '_') as type from resource r
-  left join resource res
-  on res.id = ANY(r.related_content)
-  where r.id = :id
