@@ -4,7 +4,7 @@
 WITH platform_resources AS (
 --~(#'gpml.db.resource.list/generate-get-resources-query)
 )
-SELECT id, title
+SELECT id, title, type
 FROM platform_resources
 --~(when (seq (get-in params [:filters :search-text])) " WHERE title ilike ('%' || :filters.search-text || '%') ")
 --~(if (:limit params) "LIMIT :limit" (str "LIMIT " gpml.db.resource.list/default-limit))

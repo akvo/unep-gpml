@@ -51,7 +51,12 @@ const SelectWidget = ({
   const { readonlyAsDisabled = true } = formContext;
   const { enumOptions, enumDisabled } = options;
   const [fetching, setFetching] = useState(false);
-  const handleChange = (nextValue) => onChange(nextValue);
+  const handleChange = (nextValue, option) => {
+    onChange({
+      id: nextValue,
+      type: option,
+    });
+  };
   const [data, setData] = useState([]);
   const [searchStr, setSearchStr] = useState([]);
   const fetchRef = React.useRef(0);
@@ -102,7 +107,7 @@ const SelectWidget = ({
         virtual={false}
         dropdownRender={(menu) => <div>{menu}</div>}
         getPopupContainer={getPopupContainer}
-        value={value}
+        value={value?.id ? value?.id : value}
         loading={fetching}
         notFoundContent={
           fetching ? (
@@ -113,14 +118,17 @@ const SelectWidget = ({
         }
       >
         {data &&
-          data.map(({ id: optionValue, title: optionLabel }, i) => (
-            <Select.Option
-              key={String(optionValue) + i.toString(36)}
-              value={optionValue && optionValue}
-            >
-              {optionLabel}
-            </Select.Option>
-          ))}
+          data.map(
+            ({ id: optionValue, title: optionLabel, type: optionType }, i) => (
+              <Select.Option
+                key={String(optionValue) + "-" + optionType}
+                value={optionValue && optionValue}
+                label={optionType}
+              >
+                {optionLabel}
+              </Select.Option>
+            )
+          )}
       </Select>
     </>
   );
