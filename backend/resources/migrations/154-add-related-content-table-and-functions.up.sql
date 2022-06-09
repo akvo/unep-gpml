@@ -55,22 +55,22 @@ WHERE related_content IS NOT NULL;
 --;;
 INSERT INTO related_content
 SELECT id AS resource_id, 'policy' AS resource_table_name, unnest(related_content) AS related_resource_id, 'policy' AS related_resource_table_name
-FROM event
+FROM policy
 WHERE related_content IS NOT NULL;
 --;;
 INSERT INTO related_content
 SELECT id AS resource_id, 'technology' AS resource_table_name, unnest(related_content) AS related_resource_id, 'technology' AS related_resource_table_name
-FROM event
+FROM technology
 WHERE related_content IS NOT NULL;
 --;;
 INSERT INTO related_content
 SELECT id AS resource_id, 'initiative' AS resource_table_name, unnest(related_content) AS related_resource_id, 'initiative' AS related_resource_table_name
-FROM event
+FROM initiative
 WHERE related_content IS NOT NULL;
 --;;
 INSERT INTO related_content
 SELECT id AS resource_id, 'resource' AS resource_table_name, unnest(related_content) AS related_resource_id, 'resource' AS related_resource_table_name
-FROM event
+FROM resource
 WHERE related_content IS NOT NULL;
 --;;
 ALTER TABLE event
