@@ -49,28 +49,28 @@ ADD CONSTRAINT related_content_resource_id_table_name CHECK (resource_record_exi
 ADD CONSTRAINT related_content_related_resource_id_table_name CHECK (resource_record_exists(related_resource_table_name, related_resource_id));
 --;;
 INSERT INTO related_content
-SELECT id AS resource_id, 'event' AS resource_table_name, unnest(related_content) AS related_resource_id, 'event' AS related_resource_table_name
+SELECT id AS resource_id, 'event' AS resource_table_name, unnest(array_remove(related_content, NULL)) AS related_resource_id, 'event' AS related_resource_table_name
 FROM event
 WHERE related_content IS NOT NULL;
 --;;
 INSERT INTO related_content
-SELECT id AS resource_id, 'policy' AS resource_table_name, unnest(related_content) AS related_resource_id, 'policy' AS related_resource_table_name
-FROM event
+SELECT id AS resource_id, 'policy' AS resource_table_name, unnest(array_remove(related_content, NULL)) AS related_resource_id, 'policy' AS related_resource_table_name
+FROM policy
 WHERE related_content IS NOT NULL;
 --;;
 INSERT INTO related_content
-SELECT id AS resource_id, 'technology' AS resource_table_name, unnest(related_content) AS related_resource_id, 'technology' AS related_resource_table_name
-FROM event
+SELECT id AS resource_id, 'technology' AS resource_table_name, unnest(array_remove(related_content, NULL)) AS related_resource_id, 'technology' AS related_resource_table_name
+FROM technology
 WHERE related_content IS NOT NULL;
 --;;
 INSERT INTO related_content
-SELECT id AS resource_id, 'initiative' AS resource_table_name, unnest(related_content) AS related_resource_id, 'initiative' AS related_resource_table_name
-FROM event
+SELECT id AS resource_id, 'initiative' AS resource_table_name, unnest(array_remove(related_content, NULL)) AS related_resource_id, 'initiative' AS related_resource_table_name
+FROM initiative
 WHERE related_content IS NOT NULL;
 --;;
 INSERT INTO related_content
-SELECT id AS resource_id, 'resource' AS resource_table_name, unnest(related_content) AS related_resource_id, 'resource' AS related_resource_table_name
-FROM event
+SELECT id AS resource_id, 'resource' AS resource_table_name, unnest(array_remove(related_content, NULL)) AS related_resource_id, 'resource' AS related_resource_table_name
+FROM resource
 WHERE related_content IS NOT NULL;
 --;;
 ALTER TABLE event
