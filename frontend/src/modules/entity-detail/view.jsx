@@ -479,7 +479,8 @@ const StakeholderDetail = ({
                           title={
                             <a
                               href={
-                                data?.url.includes("https://")
+                                data?.url?.includes("https://") ||
+                                data?.url?.includes("http://")
                                   ? data?.url
                                   : "https://" + data?.url
                               }

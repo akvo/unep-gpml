@@ -159,7 +159,7 @@ const RelatedContent = ({
           isShownPagination && "content-with-pagination"
         }`}
         itemClass={`carousel-item ${
-          dataCount > 20 && "carousel-with-extra-card"
+          dataCount < 20 && "carousel-with-extra-card"
         }`}
         dotListClass={`carousel-dot-list ${isShownPagination && "hidden-dot"}`}
         showDots={true}
@@ -242,7 +242,7 @@ const RelatedContent = ({
             </Col>
           );
         })}
-        {dataCount > 20 && (
+        {dataCount < 20 && (
           <a
             href={`/knowledge/library${url ? url : ""}`}
             className="card"

@@ -181,7 +181,7 @@
       align-items: center;
       border-radius: 4px;
       min-width: 150px;
-      padding: 13px !important;
+      padding: 19px 13px 18px 13px !important;
       margin: 0 !important;
     }
 
@@ -194,7 +194,7 @@
       text-transform: uppercase;
       height: 100%;
       font-weight: 600;
-      font-size: 14px;
+
       line-height: 20px;
       .count {
         display: flex;
@@ -203,8 +203,11 @@
         min-width: 49px;
         min-height: 49px;
         border-radius: 50%;
-        margin-bottom: 2px;
         border: 2px solid #18162f;
+      }
+      p,
+      .count {
+        font-size: 12px !important;
       }
     }
 
