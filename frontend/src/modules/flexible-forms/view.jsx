@@ -189,7 +189,7 @@ const formDataMapping = [
     type: "array",
     section: "S4",
     group: "S4_G6",
-    question: "type",
+    question: "related",
   },
   {
     key: "infoDocs",
