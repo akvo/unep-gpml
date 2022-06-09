@@ -10,9 +10,6 @@ $bg-green-primary: #10f9b7;
   .plan-content,
   .create-action-plan {
     font-size: 1.5rem;
-    @-moz-document url-prefix() {
-      font-size: 17px;
-    }
   }
 
   .plan-list-item,
@@ -20,9 +17,6 @@ $bg-green-primary: #10f9b7;
   .plan-content h3,
   .plan-heading {
     font-size: 1.3rem;
-    @-moz-document url-prefix() {
-      font-size: 15.2px;
-    }
   }
 
   .header-container .ant-col {
@@ -49,9 +43,6 @@ $bg-green-primary: #10f9b7;
     margin: auto;
     background-color: #ffff;
     padding: 14px 17px 20.3px 17px;
-    @-moz-document url-prefix() {
-      padding: 9px 12px 15.3px 12px;
-    }
 
     .card {
       display: flex;
@@ -64,21 +55,12 @@ $bg-green-primary: #10f9b7;
       background: url("../../images/workspace/dark-sea-bg-small.png") no-repeat
         bottom;
       background-size: cover;
-      @-moz-document url-prefix() {
-        gap: 16px;
-        padding: 32px 31px 36px 31px;
-      }
     }
 
     .download-guidance {
       font-size: 2.125rem;
       line-height: 30px;
       margin-bottom: 30px;
-      @-moz-document url-prefix() {
-        font-size: 24.75px;
-        line-height: 20px;
-        margin-bottom: 25px;
-      }
     }
 
     .download-link {
@@ -91,11 +73,6 @@ $bg-green-primary: #10f9b7;
       background-color: rgba(53, 121, 152, 0.7);
       border-radius: 22px;
       padding: 63px 30px 78px 30px;
-      @-moz-document url-prefix() {
-        border-radius: 17px;
-        max-width: 226px;
-        padding: 58px 25px 73px 25px;
-      }
 
       &:hover {
         background-color: $yellow-highlight;
@@ -105,20 +82,12 @@ $bg-green-primary: #10f9b7;
         font-weight: bold;
         font-size: 1.12rem;
         line-height: 20px;
-        @-moz-document url-prefix() {
-          line-height: 10px;
-          font-size: 12.68px;
-        }
       }
 
       img {
         width: 100%;
         max-width: 135.58px;
         margin-bottom: 30px;
-        @-moz-document url-prefix() {
-          max-width: 98px;
-          margin-bottom: 25px;
-        }
       }
     }
   }
@@ -131,9 +100,6 @@ $bg-green-primary: #10f9b7;
       display: flex;
       cursor: pointer;
       padding: 0;
-      @-moz-document url-prefix() {
-        height: 90px;
-      }
 
       p {
         margin-top: 6px;
@@ -171,10 +137,6 @@ $bg-green-primary: #10f9b7;
       svg {
         width: 30px;
         height: 30px;
-        @-moz-document url-prefix() {
-          width: 35px;
-          height: 35px;
-        }
       }
 
       &.active {
@@ -195,9 +157,6 @@ $bg-green-primary: #10f9b7;
         align-self: center;
         text-align: center;
         padding: 13.5px 0 13.5px 0;
-        @-moz-document url-prefix() {
-          padding: 8.5px 0 8.5px 0;
-        }
       }
     }
   }
@@ -209,50 +168,30 @@ $bg-green-primary: #10f9b7;
     padding: 14px 10px 17px 8px;
     background-color: $blue06;
     overflow: hidden;
-    @-moz-document url-prefix() {
-      padding: 9px 5px 12px 3px;
-    }
 
     .create-action-plan {
       padding-left: calc(25px - 8px);
       line-height: 33px;
-      @-moz-document url-prefix() {
-        padding-left: calc(20px - 8px);
-        line-height: 23px;
-      }
     }
 
     .container {
       border-radius: 10px;
       padding: 13px;
       background-color: rgba(255, 255, 255, 0.5);
-      @-moz-document url-prefix() {
-        padding: 8px;
-        border-radius: 8px;
-      }
     }
 
     .plan-content {
       background-color: #ffffff;
       padding: 55px 27.24px 78px 36px;
-      @-moz-document url-prefix() {
-        padding: 50px 22.24px 73px 31px;
-      }
 
       i {
         display: block;
         margin-bottom: 16px;
-        @-moz-document url-prefix() {
-          margin-bottom: 11px;
-        }
       }
 
       ul {
         list-style: disc;
         padding-left: 32px;
-        @-moz-document url-prefix() {
-          padding-left: 27px;
-        }
 
         ul {
           list-style: square;
@@ -260,9 +199,6 @@ $bg-green-primary: #10f9b7;
 
         li {
           margin-bottom: 16px;
-          @-moz-document url-prefix() {
-            margin-bottom: 11px;
-          }
         }
       }
     }
@@ -274,10 +210,6 @@ $bg-green-primary: #10f9b7;
       border-top: 1px solid rgba(124, 157, 183, 0.2);
       border-radius: 0 0 10px 10px;
       padding-bottom: 122px;
-      @-moz-document url-prefix() {
-        padding-bottom: 91px;
-        border-radius: 0 0 8px 8px;
-      }
     }
 
     .plan-list {
@@ -288,9 +220,6 @@ $bg-green-primary: #10f9b7;
       overflow-x: auto;
       border-radius: 10px 10px 0 10px;
       background: white;
-      @-moz-document url-prefix() {
-        border-radius: 8px 8px 0 8px;
-      }
     }
 
     .plan-list-item {
@@ -305,20 +234,11 @@ $bg-green-primary: #10f9b7;
       border-right: 1px solid #ffffff;
       padding: 0 0 0 57.5px;
       cursor: pointer;
-      @-moz-document url-prefix() {
-        height: 86px;
-        border: 1px solid #fff;
-        border-right: 0.5px solid #fff;
-        padding: 0 0 0 52.5px;
-      }
 
       &:hover {
         background-color: $yellow-highlight;
         &::after {
           border-left: 30px solid $yellow-highlight;
-          @-moz-document url-prefix() {
-            border-left: 25px solid $yellow-highlight;
-          }
         }
       }
       &::after,
@@ -336,12 +256,6 @@ $bg-green-primary: #10f9b7;
         border-bottom: 59px solid transparent;
         z-index: 2;
         top: 0px;
-        @-moz-document url-prefix() {
-          right: -24px;
-          border-top: 42px solid transparent;
-          border-left: 24px solid $grey01;
-          border-bottom: 42px solid transparent;
-        }
       }
 
       &::before {
@@ -351,12 +265,6 @@ $bg-green-primary: #10f9b7;
         border-bottom: 59px solid transparent;
         z-index: 1;
         top: 0px;
-        @-moz-document url-prefix() {
-          left: 0px;
-          border-top: 42px solid transparent;
-          border-left: 24px solid #fff;
-          border-bottom: 42px solid transparent;
-        }
       }
 
       &:first-child::before,
@@ -366,9 +274,6 @@ $bg-green-primary: #10f9b7;
 
       &:first-child {
         border-radius: 10px 0 0 10px;
-        @-moz-document url-prefix() {
-          border-radius: 8px 0 0 8px;
-        }
       }
 
       &.active {
@@ -381,10 +286,6 @@ $bg-green-primary: #10f9b7;
       &:last-child {
         border-radius: 0 10px 0 0;
         padding-right: 30px;
-        @-moz-document url-prefix() {
-          padding-right: 25px;
-          border-radius: 0 8px 0 0;
-        }
 
         &.active::after {
           border-color: transparent;
@@ -399,9 +300,6 @@ $bg-green-primary: #10f9b7;
         font-weight: bold;
         line-height: 28px;
         color: #000000;
-        @-moz-document url-prefix() {
-          line-height: 18px;
-        }
       }
 
       .plan-number {
@@ -415,13 +313,6 @@ $bg-green-primary: #10f9b7;
         border-radius: 50%;
         padding: 6px;
         margin-right: 28.33px;
-        @-moz-document url-prefix() {
-          font-size: 22px;
-          padding: 3px;
-          line-height: 34px;
-          max-height: 42px;
-          max-width: 38px;
-        }
       }
     }
   }

@@ -120,13 +120,6 @@
       width: 420px;
     }
 
-    @-moz-document url-prefix() {
-      max-width: 427px;
-      @media (min-width: 471px) and (max-width: 735px) {
-        max-width: 350px;
-      }
-    }
-
     .ant-space-item:nth-of-type(1) {
       flex: 1;
     }
