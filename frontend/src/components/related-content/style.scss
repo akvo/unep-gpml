@@ -73,14 +73,14 @@
 
   .carousel-item {
     width: unset !important;
-    transition: all linear 0.1s;
+    transition: all ease-out 0.2s;
     &:first-of-type {
       .card {
         margin-left: 0;
       }
     }
     .card {
-      transition: all linear 0.1s;
+      transition: all ease-out 0.2s;
       position: relative;
       width: 150px !important;
       height: 192px !important;
@@ -90,7 +90,7 @@
 
       .description-holder {
         display: none !important;
-        transition: all ease-in 0.1s;
+        transition: all ease-out 0.2s;
         position: absolute;
         display: flex;
         opacity: 0;
