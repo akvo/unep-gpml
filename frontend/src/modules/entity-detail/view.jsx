@@ -244,7 +244,7 @@ const StakeholderDetail = ({
     (n) => {
       setBookedResourcesPage(n);
       const searchParms = new URLSearchParams();
-      searchParms.set("limit", 20);
+      searchParms.set("limit", 3);
       searchParms.set("page", n);
       const url = `/organisation/${params.id}/members?${String(searchParms)}`;
       api
