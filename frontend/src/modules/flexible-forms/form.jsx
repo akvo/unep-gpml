@@ -267,6 +267,7 @@ const FlexibleForm = withRouter(
         });
         delete data.related;
         delete data.type;
+        delete data.id;
       }
 
       if (status === "add" && !params?.id) {
@@ -640,6 +641,7 @@ const FlexibleForm = withRouter(
         });
         delete data.related;
         delete data.type;
+        delete data.id;
       }
 
       if (data?.summary) {
@@ -836,6 +838,7 @@ const FlexibleForm = withRouter(
         });
         delete data.related;
         delete data.type;
+        delete data.id;
       }
 
       if (data?.summary) {
@@ -1021,6 +1024,7 @@ const FlexibleForm = withRouter(
         });
         delete data.related;
         delete data.type;
+        delete data.id;
       }
 
       if (data?.summary) {
