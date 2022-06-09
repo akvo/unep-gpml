@@ -91,11 +91,7 @@
     padding-bottom: 34.66px;
     padding-left: 30px;
     padding-right: 30px;
-    @-moz-document url-prefix() {
-      padding-bottom: 24.66px;
-      padding-left: 20px;
-      padding-right: 20px;
-    }
+
     .person-role {
       display: none;
     }
@@ -106,11 +102,6 @@
       margin: auto;
       font-size: 12px;
       text-align: center;
-      @-moz-document url-prefix() {
-        padding-top: 0.4em;
-        padding-bottom: 0.4em;
-        font-size: 9px;
-      }
     }
     .loading {
       font-weight: normal;
@@ -124,18 +115,14 @@
 
   .card-container {
     padding: 16px 5px 34px 5px;
-    @-moz-document url-prefix() {
-      padding: 8px 5px 24px 5px;
-    }
+
     #title {
       font-size: 22px;
       text-transform: uppercase;
       margin-bottom: 13px;
       text-align: center;
       line-height: 30px;
-      @-moz-document url-prefix() {
-        font-size: 20px;
-      }
+
       @media (max-width: 540px) {
         font-size: 18px;
       }
@@ -147,9 +134,7 @@
     .profile-card {
       min-height: 120px;
       margin: auto;
-      @-moz-document url-prefix() {
-        min-height: 110px;
-      }
+
       .ant-card-body {
         display: flex;
         flex-direction: column;
@@ -159,9 +144,7 @@
           }
         }
         min-height: 250px;
-        @-moz-document url-prefix() {
-          min-height: 240px;
-        }
+
         .person-role {
           max-height: fit-content;
           margin-top: auto;
@@ -211,9 +194,6 @@
       position: absolute;
       z-index: -1;
     }
-    @-moz-document url-prefix() {
-      min-height: 120px;
-    }
 
     .icons-list {
       display: flex;
@@ -236,10 +216,7 @@
       padding: 16px 16px 11px 16px;
       flex-wrap: nowrap;
       min-height: 175px;
-      @-moz-document url-prefix() {
-        padding: 8px 8px 5.5px 8px;
-        min-height: 165px;
-      }
+
       img {
         width: 100%;
         max-height: 100%;
@@ -257,12 +234,6 @@
         height: 9em;
         margin-right: 16.51px;
         text-align: center;
-        @-moz-document url-prefix() {
-          max-width: 8.6em;
-          max-height: 8.6em;
-          height: 8.6em;
-          margin-right: 9px;
-        }
       }
 
       .organisation-image {
@@ -305,9 +276,7 @@
               display: flex;
               align-items: center;
               padding-left: 20px;
-              @-moz-document url-prefix() {
-                font-size: 9px;
-              }
+
               &::before {
                 content: " ";
                 display: block;
@@ -327,9 +296,6 @@
               font-weight: bold;
               font-size: 12px;
               color: #18162f;
-              @-moz-document url-prefix() {
-                font-size: 9px;
-              }
             }
 
             .badge {
@@ -370,15 +336,10 @@
       position: relative;
       max-width: 72px;
       padding: 6px 0 0 8.43px;
-      @-moz-document url-prefix() {
-        padding: 3px 0 0 4.22px;
-      }
+
       img {
         position: absolute;
         max-width: 3.5em;
-        @-moz-document url-prefix() {
-          max-width: 3.1em;
-        }
       }
     }
 
@@ -388,32 +349,21 @@
       background: rgba(37, 91, 135, 0.24);
       border-radius: 0px 0px 12px 12px;
       margin: 0 6px 3px 2px;
-      @-moz-document url-prefix() {
-        padding: 4px 5.5px 4px 5.5px;
-      }
 
       .seeking-text,
       .role-name {
         margin-bottom: 0;
         color: #18162f;
         font-size: 12px;
-        @-moz-document url-prefix() {
-          font-size: 12px;
-        }
       }
 
       .role-name {
         font-weight: bold;
         display: flex;
         font-size: 9px;
-        @-moz-document url-prefix() {
-          font-size: 8px;
-        }
+
         li {
           margin-right: 10px;
-          @-moz-document url-prefix() {
-            margin-right: 8px;
-          }
         }
       }
     }
@@ -423,9 +373,6 @@
     .item-sidebar {
       width: 100%;
       height: 100px !important;
-      @-moz-document url-prefix() {
-        height: 90px !important;
-      }
 
       p {
         margin-top: 10px;
@@ -433,10 +380,6 @@
         font-weight: bold;
         font-size: 12px;
         color: #fff;
-        @-moz-document url-prefix() {
-          margin-top: 5px;
-          font-size: 11px;
-        }
       }
 
       &.active {
@@ -451,16 +394,6 @@
         width: 100%;
         align-self: center;
         text-align: center;
-        svg {
-          @-moz-document url-prefix() {
-            transform: scale(1.3);
-          }
-        }
-        .partner-icon {
-          @-moz-document url-prefix() {
-            transform: unset;
-          }
-        }
       }
     }
   }
@@ -470,25 +403,17 @@
     text-align: center;
     margin: auto;
     padding-top: calc(38px - 21.47px);
-    @-moz-document url-prefix() {
-      padding-top: calc(28px - 21.47px);
-    }
+
     .result-number,
     .ant-pagination-item a {
       font-weight: bold;
       font-size: 12px;
-      @-moz-document url-prefix() {
-        font-size: 9px;
-      }
     }
 
     .result-number {
       text-align: center;
       color: #000000;
       margin-top: 12px;
-      @-moz-document url-prefix() {
-        margin-top: 6px;
-      }
     }
 
     .ant-pagination-item {
@@ -496,10 +421,7 @@
       height: 34px;
       margin-right: 2px;
       border-radius: 5px;
-      @-moz-document url-prefix() {
-        width: 29px;
-        height: 29px;
-      }
+
       a {
         width: 100%;
         height: 100%;
@@ -512,9 +434,6 @@
           background-color: $yellow-highlight;
           border-color: $yellow-highlight;
         }
-        @-moz-document url-prefix() {
-          line-height: 26px;
-        }
       }
     }
 
@@ -523,10 +442,6 @@
       font-weight: bold;
       margin-left: calc(10px - 2px);
       margin-right: 10px;
-      @-moz-document url-prefix() {
-        margin-left: calc(5px - 2px);
-        margin-right: 5px;
-      }
     }
 
     .ant-pagination-item-active {
@@ -544,9 +459,7 @@
       background-repeat: no-repeat;
       background-position: center;
       background-size: 8px;
-      @-moz-document url-prefix() {
-        background-size: 6px;
-      }
+
       svg {
         display: none;
       }
@@ -588,29 +501,13 @@
       width: 100%;
     }
 
-    @-moz-document url-prefix() {
-      @media (max-width: 749px) {
-        top: 90px !important;
-        left: 0px !important;
-      }
-    }
-
     @media (min-width: 750px) {
       top: 0 !important;
       left: 100px !important;
-      @-moz-document url-prefix() {
-        & {
-          top: 0 !important;
-          left: 90px !important;
-        }
-      }
     }
 
     .for-entity svg {
       max-width: 30px;
-      @-moz-document url-prefix() {
-        max-width: 25px;
-      }
     }
 
     .ant-tabs-nav-operations {
@@ -621,9 +518,6 @@
       background-color: rgba(211, 222, 231, 0.2);
       border-radius: 6px;
       padding: 9px;
-      @-moz-document url-prefix() {
-        padding: 4.5px;
-      }
 
       .ant-col {
         flex: unset;
@@ -631,9 +525,6 @@
       }
       .ant-card {
         height: 71px;
-        @-moz-document url-prefix() {
-          height: 61px;
-        }
       }
       svg {
         width: 100%;
@@ -645,19 +536,12 @@
         font-size: 8px;
         margin-bottom: calc(8px - 5px);
         text-transform: uppercase;
-        @-moz-document url-prefix() {
-          font-size: 6px;
-        }
       }
       .drawer-card {
         height: 100px;
         width: 100%;
         max-width: 100px;
         background-color: inherit;
-        @-moz-document url-prefix() {
-          max-width: 73px;
-          height: 73px;
-        }
       }
     }
 
@@ -675,15 +559,10 @@
       box-shadow: none;
       max-width: 500px;
       width: 100% !important;
-      @-moz-document url-prefix() {
-        max-width: 360px;
-      }
 
       .ant-drawer-header {
         background: $blue05;
-        @-moz-document url-prefix() {
-          padding: 8px 14px;
-        }
+
         .apply-button {
           width: auto;
           color: #ffffff;
@@ -695,24 +574,13 @@
           font-size: 14px;
           font-weight: bold;
           height: auto;
-          @-moz-document url-prefix() {
-            font-size: 10px;
-            padding: 2px 5.5px 2px 5.5px;
-            border: 1px solid #ffffff;
-            line-height: 14px;
-          }
+
           @media (max-width: 540px) {
             font-size: 12px;
           }
           &:hover {
             background-color: $yellow-highlight;
           }
-        }
-      }
-
-      .ant-drawer-body {
-        @-moz-document url-prefix() {
-          padding: 14px;
         }
       }
 
@@ -726,9 +594,7 @@
         color: #fff;
         font-weight: 400;
         font-size: 16px;
-        @-moz-document url-prefix() {
-          font-size: 14px !important;
-        }
+
         @media (max-width: 540px) {
           font-size: 14px;
         }
@@ -745,29 +611,19 @@
 
       .ant-drawer-close {
         top: -5px;
-        @-moz-document url-prefix() {
-          top: -11px;
-        }
+
         span,
         svg {
           display: block;
           width: 23px;
           height: 23px;
-
-          @-moz-document url-prefix() {
-            width: 15px;
-            height: 15px;
-          }
         }
       }
 
       .network-card-filter {
         padding-top: 5px !important;
         padding-bottom: 5px !important;
-        @-moz-document url-prefix() {
-          padding-top: 2.5px !important;
-          padding-bottom: 2.5px !important;
-        }
+
         .ant-col {
           max-width: 100%;
         }
@@ -779,15 +635,6 @@
         max-width: 100px !important;
         margin-right: 15px;
         margin-bottom: 15px;
-        @-moz-document url-prefix() {
-          height: 73px;
-          max-width: 73px !important;
-          margin-right: 7.5px;
-          margin-bottom: 7.5px;
-          svg {
-            width: 26px !important;
-          }
-        }
       }
 
       .selection-card-type {
@@ -802,10 +649,7 @@
         font-size: 14px;
         font-weight: bold;
         background-color: unset;
-        @-moz-document url-prefix() {
-          font-size: 12px;
-          line-height: 25px;
-        }
+
         @media (max-width: 540px) {
           font-size: 12px;
         }
@@ -848,11 +692,7 @@
         text-align: center;
         border: 1px solid $grey03;
         border-radius: 4px;
-        @-moz-document url-prefix() {
-          width: 73px !important;
-          height: 73px !important;
-          padding: 2px !important;
-        }
+
         .ant-card-body {
           padding: 0;
           .ant-space {
@@ -864,17 +704,11 @@
         .topic-count {
           font-size: 12px;
           text-transform: uppercase;
-          @-moz-document url-prefix() {
-            font-size: 9px;
-          }
         }
 
         .topic-text {
           font-size: 12px;
           line-height: 14px;
-          @-moz-document url-prefix() {
-            font-size: 9px;
-          }
         }
 
         .topic-count {
@@ -917,11 +751,7 @@
           font-size: 20px;
           line-height: 13px;
         }
-        @-moz-document url-prefix() {
-          max-width: 282px !important;
-          font-size: 12px !important;
-          margin-bottom: 5px !important;
-        }
+
         @media (max-width: 540px) {
           font-size: 14px;
         }
@@ -934,16 +764,6 @@
           box-shadow: unset;
           cursor: not-allowed;
         }
-      }
-    }
-  }
-
-  @media (max-width: 510px) {
-    .ant-drawer-content-wrapper {
-      @-moz-document url-prefix() {
-        width: 100% !important;
-        max-width: 100% !important;
-        transform: unset !important;
       }
     }
   }
@@ -1000,9 +820,6 @@
     .profile-card {
       max-width: 100%;
       min-height: 155px;
-      @-moz-document url-prefix() {
-        min-height: 120px;
-      }
     }
     .card-wrapper,
     #title {
@@ -1075,21 +892,9 @@
     }
   }
 
-  @media (min-width: 810px) and (max-width: 1010px) {
-    @-moz-document url-prefix() {
-      .all-profiles > .ui.container,
-      .card-container.green .ui.container {
-        grid-template-columns: repeat(2, 1fr) !important;
-      }
-    }
-  }
-
   @media (min-width: 1700px) {
     #title {
       padding-left: 12px;
-      @-moz-document url-prefix() {
-        padding-left: 6 !important;
-      }
     }
   }
   @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
@@ -1102,27 +907,16 @@
       .item-sidebar {
         height: 100px !important;
         padding: 20px 0;
-        @-moz-document url-prefix() {
-          height: 90px !important;
-        }
+
         p {
           margin-bottom: 0px;
           font-size: 1em;
-          @-moz-document url-prefix() {
-            font-size: 10px;
-          }
         }
         .item-menu img {
           width: 30px;
-          @-moz-document url-prefix() {
-            width: 20px;
-          }
         }
         &.active {
           border-left: 2px solid #07e982;
-          @-moz-document url-prefix() {
-            border-left: 1px solid #07e982;
-          }
         }
       }
     }
@@ -1133,11 +927,6 @@
       margin-right: 1em !important;
       max-width: fit-content;
       width: auto;
-      @-moz-document url-prefix() {
-        margin-left: 0.6em !important;
-        margin-right: 0.6em !important;
-        column-gap: 7.5px;
-      }
     }
     .ui-header {
       .ant-select-selector {
@@ -1148,10 +937,6 @@
           button {
             width: 25px;
             height: 25px;
-            @-moz-document url-prefix() {
-              width: 15px;
-              height: 15px;
-            }
           }
         }
       }
@@ -1162,11 +947,7 @@
         margin-left: 1em !important;
         font-size: 1.2em;
         margin-bottom: 0.4em;
-        @-moz-document url-prefix() {
-          margin-left: 0.6em !important;
-          font-size: 0.8em;
-          margin-bottom: 0.2em;
-        }
+
         @media (max-width: 540px) {
           font-size: 0.8em;
         }
@@ -1179,15 +960,9 @@
           padding: 4px 10.5px 4px 10.5px;
           .seeking-text {
             font-size: 12px;
-            @-moz-document url-prefix() {
-              font-size: 10px;
-            }
           }
           .role-name {
             font-size: 9px;
-            @-moz-document url-prefix() {
-              font-size: 9px;
-            }
           }
         }
       }
@@ -1197,17 +972,12 @@
       .profile-icon-container {
         img {
           max-width: 40px;
-          @-moz-document url-prefix() {
-            max-width: 30px;
-          }
         }
       }
       .profile-details {
         min-height: auto;
         padding: 10px 16px 6px 16px;
-        @-moz-document url-prefix() {
-          padding: 5px 8px 3px 8px;
-        }
+
         .profile-details-container {
           .profile-detail-list {
             .list-item {
@@ -1228,10 +998,6 @@
     .all-profiles {
       padding-left: 10px;
       padding-right: 10px;
-      @-moz-document url-prefix() {
-        padding-left: 5px;
-        padding-right: 5px;
-      }
     }
     .ui-header .select-wrapper .view-selection .selection-value {
       .selection-arrow {

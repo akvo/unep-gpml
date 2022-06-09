@@ -156,17 +156,10 @@
             font-weight: 900;
             margin-bottom: 10px;
             color: $blue03;
-            @-moz-document url-prefix() {
-              font-size: 1.5rem;
-              margin-bottom: 5px;
-            }
           }
           span {
             text-transform: uppercase;
             font-size: 0.8rem;
-            @-moz-document url-prefix() {
-              font-size: 0.7rem;
-            }
           }
           .item {
             height: 80px;
@@ -196,9 +189,6 @@
               width: 77px;
               font-weight: 600;
               font-size: 0.8rem;
-              @-moz-document url-prefix() {
-                font-size: 0.7rem;
-              }
             }
           }
         }
@@ -385,17 +375,11 @@
               color: #fff;
               font-size: 1rem;
               font-weight: 600;
-              @-moz-document url-prefix() {
-                font-size: 0.9rem;
-              }
             }
             p.role {
               font-size: 0.8rem;
               height: 25px;
               margin-bottom: 0;
-              @-moz-document url-prefix() {
-                font-size: 0.7rem;
-              }
             }
           }
         }
@@ -513,9 +497,7 @@
     border: 1px solid #2d6796;
     box-sizing: border-box;
     border-radius: 50px;
-    @-moz-document url-prefix() {
-      font-size: 0.6rem;
-    }
+
     .anticon {
       margin-right: 5px;
     }
@@ -539,9 +521,6 @@
     color: #34a6ff;
     font-size: 0.88rem;
     vertical-align: middle;
-    @-moz-document url-prefix() {
-      font-size: 0.78rem;
-    }
   }
 
   // antd carousel dots
