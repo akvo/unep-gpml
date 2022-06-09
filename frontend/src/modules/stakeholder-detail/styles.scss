@@ -797,26 +797,9 @@
           @-moz-document url-prefix() {
             padding-left: 10px !important;
           }
-          img {
-            width: 100px;
-            height: 100px;
-            @-moz-document url-prefix() {
-              width: 90px;
-              height: 90px;
-            }
-          }
+
           .topbar-entity-image-holder {
-            width: 40px !important;
-            height: 40px !important;
             right: 10px;
-            @-moz-document url-prefix() {
-              width: 25px !important;
-              height: 25px !important;
-              img {
-                height: 25px !important;
-                width: 25px !important;
-              }
-            }
             img {
               height: 40px;
               width: 40px;
