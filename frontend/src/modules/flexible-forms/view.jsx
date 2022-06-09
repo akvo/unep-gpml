@@ -447,6 +447,13 @@ const formDataMapping = [
     group: "S4_G5",
   },
   {
+    name: "q4",
+    section: "S5",
+    group: "S5_G1",
+    question: "S5_G1_4",
+    type: "multiple-option",
+  },
+  {
     name: "q4_1_1",
     section: "S5",
     group: "S5_G1",
@@ -785,13 +792,21 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
 
       if (state?.state.type === "initiative") {
         api.getRaw(`/initiative/${dataId}`).then((d) => {
-          setSubType(JSON.parse(d?.data).sub_content_type);
+          let data = JSON.parse(d.data);
+          setSubType(data.sub_content_type);
+          if (JSON.parse(d?.data).q24.hasOwnProperty("transnational")) {
+            data = {
+              ...data,
+              q24_3: data.q24_2,
+              q24_2: null,
+            };
+          }
           initialFormData.update((e) => {
-            e.data = revertFormData(JSON.parse(d.data));
+            e.data = revertFormData(data);
             e.editId = true;
             e.type = "project";
           });
-          setSubType(JSON.parse(d?.data).sub_content_type);
+          setSubType(data.sub_content_type);
         });
       } else {
         api.get(`/detail/${state?.state.type}/${dataId}`).then((d) => {
@@ -1265,13 +1280,8 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
             S5: {
               ...e.data.S5,
               S5_G1: {
-                ...e.data.S4.S5_G1,
-                S5_G1_4: [
-                  {
-                    "4-1":
-                      "WORKING WITH PEOPLE (encouraging or enabling others, e.g., education, training, communication, awareness raising, behaviour change programmes).",
-                  },
-                ],
+                ...e.data.S5.S5_G1,
+                S5_G1_4: ["4-1"],
               },
             },
           };
@@ -1284,13 +1294,8 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
             S5: {
               ...e.data.S5,
               S5_G1: {
-                ...e.data.S4.S5_G1,
-                S5_G1_4: [
-                  {
-                    "4-0":
-                      "LEGISLATION, STANDARDS, RULES (e.g., agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments).",
-                  },
-                ],
+                ...e.data.S5.S5_G1,
+                S5_G1_4: ["4-0"],
               },
             },
           };
@@ -1303,13 +1308,8 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
             S5: {
               ...e.data.S5,
               S5_G1: {
-                ...e.data.S4.S5_G1,
-                S5_G1_4: [
-                  {
-                    "4-2":
-                      "TECHNOLOGY and PROCESSES (new technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning).",
-                  },
-                ],
+                ...e.data.S5.S5_G1,
+                S5_G1_4: ["4-2"],
               },
             },
           };
@@ -1322,13 +1322,8 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
             S5: {
               ...e.data.S5,
               S5_G1: {
-                ...e.data.S4.S5_G1,
-                S5_G1_4: [
-                  {
-                    "4-3":
-                      "MONITORING and ANALYSIS (collecting evidence around plastic discharge to the ocean/waterways, e.g., monitoring, analysis).",
-                  },
-                ],
+                ...e.data.S5.S5_G1,
+                S5_G1_4: ["4-3"],
               },
             },
           };
