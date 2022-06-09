@@ -262,7 +262,7 @@ const StakeholderDetail = ({
     (n) => {
       setOwnedResourcesPage(n);
       const searchParms = new URLSearchParams();
-      searchParms.set("limit", 12);
+      searchParms.set("limit", 20);
       searchParms.set("page", n);
       searchParms.set("association", "owner");
       const url = `/stakeholder/${params.id}/associated-topics?${String(
@@ -286,7 +286,7 @@ const StakeholderDetail = ({
     (n) => {
       setBookedResourcesPage(n);
       const searchParms = new URLSearchParams();
-      searchParms.set("limit", 12);
+      searchParms.set("limit", 20);
       searchParms.set("page", n);
       searchParms.set("association", "interested in");
       const url = `/stakeholder/${params.id}/associated-topics?${String(
@@ -373,6 +373,34 @@ const StakeholderDetail = ({
       </div>
     );
   }
+
+  const responsive = {
+    superLargeDesktop: {
+      breakpoint: { max: 4000, min: 1200 },
+      items: 5.5,
+      slidesToSlide: 5.5,
+    },
+    desktop: {
+      breakpoint: { max: 1199, min: 992 },
+      items: 4.5,
+      slidesToSlide: 4.5,
+    },
+    tablet: {
+      breakpoint: { max: 991, min: 768 },
+      items: 3.5,
+      slidesToSlide: 3.5,
+    },
+    mobile2: {
+      breakpoint: { max: 767, min: 600 },
+      items: 2.5,
+      slidesToSlide: 2.5,
+    },
+    mobile: {
+      breakpoint: { max: 599, min: 0 },
+      items: 1.5,
+      slidesToSlide: 1.5,
+    },
+  };
 
   return (
     <div id="stakeholder-detail">
@@ -681,6 +709,10 @@ const StakeholderDetail = ({
             {ownedResources.length > 0 && (
               <RelatedContent
                 data={[]}
+                url={""}
+                responsive={responsive}
+                isShownCount={false}
+                dataCount={ownedResourcesCount}
                 relatedContent={ownedResources || []}
                 title="Owned resources"
                 isShownPagination={true}
@@ -694,6 +726,10 @@ const StakeholderDetail = ({
             {bookedResources.length > 0 && (
               <RelatedContent
                 data={[]}
+                url={""}
+                responsive={responsive}
+                isShownCount={false}
+                dataCount={bookedResourcesCount}
                 relatedContent={bookedResources || []}
                 title="Bookmarked resources "
                 isShownPagination={true}
