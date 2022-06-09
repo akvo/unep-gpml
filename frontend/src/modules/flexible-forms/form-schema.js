@@ -319,7 +319,45 @@ export const schema = {
             type: "object",
             required: [],
             properties: {
-              S5_G1_4: {},
+              S5_G1_4: {
+                title:
+                  "What is the MAIN focus of the initiative? (Please tick ALL that apply).",
+                type: "array",
+                dependency: [
+                  {
+                    value: ["4-0"],
+                    questions: ["S5_G1_4.1.1", "S5_G1_4.1.2"],
+                  },
+                  {
+                    value: ["4-1"],
+                    questions: ["S5_G1_4.2.1", "S5_G1_4.2.2"],
+                  },
+                  {
+                    value: ["4-2"],
+                    questions: ["S5_G1_4.3.1", "S5_G1_4.3.2"],
+                  },
+                  {
+                    value: ["4-3"],
+                    questions: [
+                      "S5_G1_4.4.1",
+                      "S5_G1_4.4.2",
+                      "S5_G1_4.4.3",
+                      "S5_G1_4.4.4",
+                      "S5_G1_4.4.5",
+                    ],
+                  },
+                ],
+                items: {
+                  enum: ["4-0", "4-1", "4-2", "4-3"],
+                  enumNames: [
+                    "LEGISLATION, STANDARDS, RULES (e.g., agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments).",
+                    "WORKING WITH PEOPLE (encouraging or enabling others, e.g., education, training, communication, awareness raising, behaviour change programmes).",
+                    "TECHNOLOGY and PROCESSES (new technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning).",
+                    "MONITORING and ANALYSIS (collecting evidence around plastic discharge to the ocean/waterways, e.g., monitoring, analysis).",
+                  ],
+                },
+                uniqueItems: true,
+              },
               "S5_G1_4.1.1": {
                 title:
                   "Legislation, Standards and Rules. You have selected legislation, standards and rules as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):",

@@ -143,7 +143,12 @@
     "S5": {
       "classNames": "list-group",
       "S5_G1": {
-        "S5_G1_4": {},
+        "S5_G1_4": {
+          "ui:widget": "checkboxes",
+          "ui:options": {
+            "inline": true
+          }
+        },
         "S5_G1_4.1.1": {
           "ui:widget": "checkboxes",
           "ui:options": {
