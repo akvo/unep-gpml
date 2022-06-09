@@ -454,6 +454,14 @@ const formDataMapping = [
     type: "multiple-option",
   },
   {
+    key: "related_content",
+    name: "related_content",
+    type: "array",
+    section: "S4",
+    group: "S4_G6",
+    question: "related",
+  },
+  {
     name: "q4_1_1",
     section: "S5",
     group: "S5_G1",
@@ -612,7 +620,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       res = value ? value : "";
     }
 
-    if (name === "relatedContent") {
+    if (name === "relatedContent" || name === "related_content") {
       if (value && value.length > 0) {
         UIStore.update((e) => {
           e.relatedResource = value;

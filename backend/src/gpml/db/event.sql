@@ -16,7 +16,6 @@ insert into event(
 --~ (when (contains? params :url) ", url")
 --~ (when (contains? params :info_docs) ", info_docs")
 --~ (when (contains? params :sub_content_type) ", sub_content_type")
---~ (when (contains? params :related_content) ", related_content")
 --~ (when (contains? params :capacity_building) ", capacity_building")
 --~ (when (contains? params :event_type) ", event_type")
 --~ (when (contains? params :recording) ", recording")
@@ -39,7 +38,6 @@ values(
 --~ (when (contains? params :url) ", :url")
 --~ (when (contains? params :info_docs) ", :info_docs")
 --~ (when (contains? params :sub_content_type) ", :sub_content_type")
---~ (when (contains? params :related_content) ", :related_content")
 --~ (when (contains? params :capacity_building) ", :capacity_building")
 --~ (when (contains? params :event_type) ", :event_type")
 --~ (when (contains? params :recording) ", :recording")
@@ -137,32 +135,7 @@ values(:image) returning id;
 -- :name dummy
 select count(*) from event where title like 'Dummy%';
 
--- :name entity-connections-by-id
--- :doc Get entity connections by id
-select oe.id, oe.association as role, org.id as entity_id, org.name as entity, org.logo as image
- from organisation_event oe
- left join organisation org
- on oe.organisation = org.id
- where oe.event = :id
-
--- :name stakeholder-connections-by-id
--- :doc Get stakeholder connections by id
-select se.id, se.association as role, s.id as stakeholder_id, concat_ws(' ', s.first_name, s.last_name) as stakeholder,
- s.picture as image, s.role as stakeholder_role
-  from stakeholder_event se
-  left join stakeholder s
-  on se.stakeholder = s.id
-  where se.event = :id
-  and se.is_bookmark = false;
-
 -- :name all-events
 -- :doc List all events
 select id, title
   from event;
-
--- :name related-content-by-id
--- :doc Get related content by id
-select ev.id, ev.title, ev.description, ev.image, 'event' as type from event e
-  left join event ev
-  on ev.id = any(e.related_content)
-where e.id = :id
