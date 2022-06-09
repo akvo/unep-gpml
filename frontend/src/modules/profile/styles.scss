@@ -4,15 +4,7 @@
   .loading {
     color: #fff;
   }
-  @-moz-document url-prefix() {
-    .photo {
-      .ant-avatar-circle {
-        width: 100%;
-        max-width: 112px;
-        max-height: 112px;
-      }
-    }
-  }
+
   .profile-container {
     background: linear-gradient(
         0deg,
@@ -84,11 +76,6 @@
 
   .photo-upload img {
     border-radius: 50%;
-    @-moz-document url-prefix() {
-      width: 100%;
-      max-width: 91px;
-      max-height: 91px;
-    }
   }
 
   .status-none {
@@ -128,12 +115,7 @@
     align-items: center;
     justify-content: space-between;
   }
-  @-moz-document url-prefix() {
-    .approval-bold-text,
-    .ant-btn {
-      font-size: 12px !important;
-    }
-  }
+
   @media (max-width: 540px) {
     .approval-bold-text,
     .ant-btn {
@@ -141,11 +123,6 @@
     }
   }
 
-  @-moz-document url-prefix() {
-    .review-status-wrapper {
-      font-size: 12px !important;
-    }
-  }
   @media (max-width: 540px) {
     .review-status-wrapper {
       font-size: 12px !important;
@@ -159,14 +136,7 @@
     border: 1px solid #cbd8e2;
     box-sizing: border-box;
     border-radius: 5px;
-    @-moz-document url-prefix() {
-      padding-top: 8px;
-      margin-top: 22px;
-      .ant-select-selection-item,
-      .row {
-        font-size: 12px !important;
-      }
-    }
+
     @media (max-width: 540px) {
       .ant-select-selection-item,
       .row {
@@ -177,10 +147,7 @@
   .tab-label {
     color: #2d6796;
     margin-top: 10px;
-    @-moz-document url-prefix() {
-      margin-top: 5px;
-      font-size: 18px;
-    }
+
     @media (max-width: 800px) {
       font-size: 18px;
       @media (max-width: 540px) {
@@ -207,9 +174,6 @@
   h2 {
     color: #046799;
     font-size: 1.4rem;
-    @-moz-document url-prefix() {
-      font-size: 20px;
-    }
   }
 
   .archive {
@@ -330,10 +294,6 @@
         .content-img {
           width: 50px;
           margin-right: 0.85rem;
-          @-moz-document url-prefix() {
-            width: 48px;
-            height: 48px;
-          }
         }
         .content-body {
           flex: 1;
@@ -365,9 +325,6 @@
         font-weight: 600;
         font-size: 1rem;
         line-height: 1.5rem;
-        @-moz-document url-prefix() {
-          font-size: 12px;
-        }
       }
       .topic {
         font-weight: 500;
@@ -375,9 +332,6 @@
         font-size: 0.85rem;
         line-height: 1.35rem;
         color: rgba(37, 91, 135, 0.8);
-        @-moz-document url-prefix() {
-          font-size: 11px;
-        }
       }
     }
   }
@@ -392,9 +346,7 @@
     font-weight: 600;
     text-align: center;
     padding: 0.2rem 0.7rem;
-    @-moz-document url-prefix() {
-      font-size: 10.8px;
-    }
+
     &.rejected {
       color: #ffb800;
       border-color: #ffb800;
@@ -447,9 +399,6 @@
         border-bottom: solid 2px #eee;
         font-weight: bold;
         font-size: 12px;
-        @-moz-document url-prefix() {
-          font-size: 10px;
-        }
       }
 
       li {
@@ -513,9 +462,6 @@
         border-bottom: solid 2px #eee;
         font-weight: bold;
         font-size: 12px;
-        @-moz-document url-prefix() {
-          font-size: 10px;
-        }
       }
 
       li {
@@ -571,9 +517,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    @-moz-document url-prefix() {
-      padding: 5px 0;
-    }
+
     &.with-notes {
       justify-content: space-between;
       align-items: flex-start;
@@ -589,9 +533,6 @@
       span.anticon {
         color: $blue06;
         font-size: 0.85rem;
-        @-moz-document url-prefix() {
-          font-size: 11px;
-        }
       }
     }
     .ant-pagination-item {
@@ -636,16 +577,10 @@
       display: flex;
       justify-content: center;
       padding: 35px 10px;
-      @-moz-document url-prefix() {
-        padding: 25px 5px;
-      }
     }
 
     .menu-content-wrapper {
       padding: 20px 0;
-      @-moz-document url-prefix() {
-        padding: 10px 0;
-      }
     }
     .ant-menu-item .ant-menu-item-icon,
     .ant-menu-submenu-title .ant-menu-item-icon,
@@ -672,9 +607,6 @@
       display: flex;
       align-items: center;
       opacity: 0.5;
-      @-moz-document url-prefix() {
-        font-size: 12px;
-      }
     }
 
     button.ant-btn.ant-btn-ghost.ant-btn-circle.ant-btn-icon-only.white.ant-menu-item-icon {
@@ -697,11 +629,7 @@
   }
 
   .content-wrapper {
-    // flex: 1;
     padding: 35px 40px;
-    @-moz-document url-prefix() {
-      padding: 25px 30px;
-    }
   }
 }
 
@@ -710,11 +638,6 @@
   overflow: auto;
   padding-right: 8px;
   margin-bottom: 10px;
-  @-moz-document url-prefix() {
-    max-height: 290px;
-    padding-right: 4px;
-    margin-bottom: 5px;
-  }
 }
 
 .download-container {
@@ -723,18 +646,11 @@
   padding: 20px 20px 0px 20px;
   background-color: #dbe9f14d;
   border: 1px solid #dbe9f1;
-  @-moz-document url-prefix() {
-    width: 390px;
-    margin-bottom: 40px;
-    padding: 10px 10px 0px 10px;
-  }
+
   p {
     color: #046799;
     font-weight: bold;
     font-size: 16px;
-    @-moz-document url-prefix() {
-      font-size: 14px;
-    }
   }
 
   .btn-download {
@@ -748,9 +664,6 @@
   margin-bottom: 1.5rem;
   .profile-tab-pane {
     padding: 0.85rem 1.85rem;
-    @-moz-document url-prefix() {
-      padding: 1.8rem 1.8rem !important;
-    }
   }
   .ant-tabs-nav-list {
     justify-content: space-evenly;
@@ -765,10 +678,7 @@
     background: #edf2f7 !important;
     border: 1px solid #d3dee7 !important;
     border-radius: 0 !important;
-    @-moz-document url-prefix() {
-      font-size: 14px !important;
-      padding: 1rem 1.8rem !important;
-    }
+
     @media (max-width: 540px) {
       padding: 0.6rem 0.6rem !important;
       font-size: 14px !important;

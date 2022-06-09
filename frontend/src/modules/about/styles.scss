@@ -2,21 +2,7 @@
 
 #about-us {
   position: relative;
-  @-moz-document url-prefix() {
-    .text-green,
-    .text-blue {
-      font-size: 22.6px;
-    }
-    @media (max-width: 540px) {
-      .ant-btn-ghost span {
-        font-size: 12px !important;
-      }
-      .text-green,
-      .text-blue {
-        font-size: 20px;
-      }
-    }
-  }
+
   img {
     max-width: 100%;
   }
@@ -129,9 +115,6 @@
         .item-increment {
           font-size: 1.2rem;
           color: $blue02;
-          @-moz-document url-prefix() {
-            font-size: 14.8px;
-          }
         }
         .item-name {
           text-transform: uppercase;
@@ -144,9 +127,7 @@
           font-size: 3.8rem;
           font-weight: 900;
           color: $blue02;
-          @-moz-document url-prefix() {
-            font-size: 24px;
-          }
+
           @media (max-width: 540px) {
             font-size: 47px;
           }
@@ -190,9 +171,7 @@
           margin: 0.5rem 1rem;
           color: white !important;
           border-color: white !important;
-          @-moz-document url-prefix() {
-            font-size: 12px;
-          }
+
           @media (max-width: 540px) {
             font-size: 12px;
           }
@@ -212,8 +191,6 @@
 
   // Section Timeline & Roadmap
   .section-timeline-roadmap-container {
-    .section-timeline-roadmap-wrapper {
-    }
     .section-timeline-roadmap-graphic {
       padding: 0;
       text-align: center;
@@ -271,8 +248,6 @@
         }
       }
     }
-    .section-community-wrapper {
-    }
   }
 
   // Section History
@@ -288,15 +263,12 @@
       text-align: center;
       @media only screen and (max-width: 800px) {
         .ant-image-img {
-          // max-width: 112%;
           transform: scale(1.5);
           margin-top: 3rem;
         }
       }
     }
     .section-history-wrapper {
-      .section-history-text {
-      }
       .section-history-img-wrapper {
         background-color: #006666 !important;
         display: block;
@@ -318,9 +290,6 @@
       padding: 1rem 0;
       .txt-emphasis {
         font-size: 1.2rem;
-        @-moz-document url-prefix() {
-          font-size: 14.8px !important;
-        }
       }
     }
     .section-summary-container {
@@ -329,9 +298,6 @@
           padding: 0.5rem 1.5rem;
           .item-value {
             font-size: 2rem;
-            @-moz-document url-prefix() {
-              font-size: 24px;
-            }
           }
         }
       }

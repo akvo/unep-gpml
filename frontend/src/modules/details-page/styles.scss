@@ -1,12 +1,6 @@
 @import "../../vars.scss";
 
 #details {
-  @-moz-document url-prefix() {
-    .ant-avatar {
-      width: 26px !important;
-      height: 26px !important;
-    }
-  }
   .react-multi-carousel-list {
     overflow: visible;
   }
@@ -14,9 +8,7 @@
   .section-header {
     background-color: #007090;
     padding: 20px 0px;
-    @-moz-document url-prefix() {
-      padding: 10px 0px !important;
-    }
+
     width: 100%;
     .header-wrapper {
       display: flex;
@@ -29,9 +21,6 @@
       h2 {
         font-size: 16px;
         color: #1ca585;
-        @-moz-document url-prefix() {
-          font-size: 12px !important;
-        }
       }
       h4 {
         color: #fff;
@@ -39,15 +28,9 @@
         font-weight: 700;
         line-height: 30px;
         text-transform: capitalize;
-        @-moz-document url-prefix() {
-          font-size: 14px !important;
-        }
       }
       img {
         margin-right: 20px;
-        @-moz-document url-prefix() {
-          margin-right: 10px !important;
-        }
       }
     }
   }
@@ -57,9 +40,7 @@
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    @-moz-document url-prefix() {
-      padding: 10px 0px !important;
-    }
+
     .resource-image {
       width: 100%;
       border-radius: 10px;
@@ -72,20 +53,12 @@
       justify-content: space-between;
       max-height: 500px;
       overflow: auto;
-      @-moz-document url-prefix() {
-        max-height: 351px !important;
-      }
+
       .ant-card-head {
         padding: 0 40px !important;
-        @-moz-document url-prefix() {
-          padding: 0 20px !important;
-        }
       }
       .ant-card-body {
         padding: 24px 40px !important;
-        @-moz-document url-prefix() {
-          padding: 14px 20px !important;
-        }
       }
 
       .long-image {
@@ -94,9 +67,7 @@
         padding: 2px;
         width: 100%;
         overflow: hidden;
-        @-moz-document url-prefix() {
-          min-height: 300px !important;
-        }
+
         img {
           height: 100%;
           object-fit: cover;
@@ -113,10 +84,7 @@
       padding: 2px;
       position: relative;
       padding-top: 100%;
-      @-moz-document url-prefix() {
-        min-height: 351px !important;
-        max-height: 351px !important;
-      }
+
       img {
         height: 100%;
         object-fit: cover;
@@ -134,9 +102,7 @@
       border: 1px solid #d3dee7;
       box-sizing: border-box;
       border-radius: 0px 10px 10px 0px;
-      @-moz-document url-prefix() {
-        flex: 0 0 72px !important;
-      }
+
       .sticky-panel-item {
         border-bottom: 1px solid #094271;
         box-shadow: 0px 1px 0px #3872a0;
@@ -177,9 +143,6 @@
         span {
           font-size: 30px;
           color: #ffffff;
-          @-moz-document url-prefix() {
-            font-size: 18px !important;
-          }
         }
         h2 {
           font-size: 16px;
@@ -188,15 +151,10 @@
           margin-bottom: 0px;
           text-transform: uppercase;
           line-height: 20px;
-          @-moz-document url-prefix() {
-            font-size: 12px !important;
-          }
         }
         .recording-icon {
           width: 40px;
-          @-moz-document url-prefix() {
-            width: 30px !important;
-          }
+
           path {
             fill: #fff;
           }
@@ -208,18 +166,13 @@
         }
         .bookmark-icon {
           width: 34px;
-          @-moz-document url-prefix() {
-            width: 24px !important;
-          }
         }
         .bookmark-filled {
           fill: #fff;
         }
         .edit-icon {
           width: 50px;
-          @-moz-document url-prefix() {
-            width: 30px !important;
-          }
+
           path {
             fill: #fff;
           }
@@ -230,15 +183,9 @@
   .card-wrapper {
     &.mb-10 {
       margin-bottom: 30px;
-      @-moz-document url-prefix() {
-        margin-bottom: 15px !important;
-      }
     }
     .summary {
       padding: 0 10px;
-      @-moz-document url-prefix() {
-        padding: 0px 5px !important;
-      }
     }
     .ant-card {
       padding: 10px 0px;
@@ -250,36 +197,22 @@
         border: none;
         min-height: auto;
         padding: 0px 20px;
-        @-moz-document url-prefix() {
-          padding: 0px 10px !important;
-        }
 
         .ant-card-head-title {
           padding-bottom: 0px;
           color: #1ca585;
           font-size: 18px;
           font-weight: bold;
-          @-moz-document url-prefix() {
-            font-size: 14px !important;
-          }
         }
       }
       .ant-card-body {
         padding: 24px 10px;
-        @-moz-document url-prefix() {
-          padding: 14px 5px !important;
-        }
+
         p {
           font-size: 16px;
-          @-moz-document url-prefix() {
-            font-size: 12px !important;
-          }
         }
         li {
           font-size: 16px;
-          @-moz-document url-prefix() {
-            font-size: 12px !important;
-          }
         }
       }
     }
@@ -287,16 +220,12 @@
   .section-info {
     background: #edf2f7;
     padding: 30px 0px;
-    @-moz-document url-prefix() {
-      padding: 15px 0px !important;
-    }
+
     .tab-wrapper {
       background: #007090;
       border-radius: 5px;
       padding: 10px 0px;
-      @-moz-document url-prefix() {
-        padding: 5px 0px !important;
-      }
+
       ul {
         margin: 0;
         padding: 0;
@@ -316,9 +245,6 @@
             color: #ffffff;
             font-weight: bold;
             font-size: 18px;
-            @-moz-document url-prefix() {
-              font-size: 16px !important;
-            }
           }
         }
       }
@@ -330,11 +256,7 @@
         display: flex;
         padding-left: 10px;
         padding-right: 10px;
-        @-moz-document url-prefix() {
-          padding: 6px 0px !important;
-          padding-left: 5px !important;
-          padding-right: 5px !important;
-        }
+
         .ant-list-item-meta {
           align-items: center;
           .ant-avatar {
@@ -381,10 +303,7 @@
       .ant-avatar-circle {
         width: 50px !important;
         height: 50px !important;
-        @-moz-document url-prefix() {
-          width: 40px !important;
-          height: 40px !important;
-        }
+
         img {
           border-radius: 50%;
         }
@@ -392,11 +311,6 @@
       .ant-list-item-meta-title {
         margin-bottom: 0px;
         color: #181818;
-        @-moz-document url-prefix() {
-          span {
-            font-size: 12px !important;
-          }
-        }
       }
       .ant-list-item-meta-description {
         color: rgba(37, 91, 135, 0.5);
@@ -430,9 +344,6 @@
     .tag-list {
       h4 {
         text-transform: capitalize;
-        @-moz-document url-prefix() {
-          font-size: 12px !important;
-        }
       }
       ul {
         list-style: none;
@@ -448,10 +359,7 @@
           position: relative;
           margin: 0 10px 10px 0;
           text-decoration: none;
-          @-moz-document url-prefix() {
-            padding: 2.5px 20px 2.5px 30px !important;
-            margin: 0 5px 5px 0 !important;
-          }
+
           &::before {
             background: #fff;
             border-radius: 10px;
@@ -470,27 +378,12 @@
     .geo-coverage {
       h4 {
         text-transform: capitalize;
-        @-moz-document url-prefix() {
-          font-size: 12px;
-          span {
-            font-size: 12px !important;
-          }
-        }
-      }
-      @-moz-document url-prefix() {
-        .ant-avatar-circle {
-          width: 20px !important;
-          height: 20px !important;
-        }
       }
     }
     .related-content {
       padding: 0px 10px;
       .ant-col {
         margin-bottom: 20px;
-        @-moz-document url-prefix() {
-          margin-bottom: 10px !important;
-        }
       }
       .ant-card-head {
         padding: 0px 15px;
@@ -498,33 +391,19 @@
         .ant-card-head-title {
           font-size: 14px;
         }
-        @-moz-document url-prefix() {
-          padding: 0px 7.5px !important;
-          .ant-card-head-title {
-            font-size: 12px !important;
-          }
-        }
       }
       .ant-card-body {
         padding: 0px 15px;
-        @-moz-document url-prefix() {
-          padding: 0px 7.5px !important;
-        }
+
         h4 {
           font-size: 14px;
           color: #18162f;
           font-weight: normal;
           margin-bottom: 5px;
-          @-moz-document url-prefix() {
-            font-size: 12px !important;
-          }
         }
         p {
           color: #374a59;
           font-size: 14px;
-          @-moz-document url-prefix() {
-            font-size: 12px !important;
-          }
         }
       }
 
@@ -550,45 +429,31 @@
         .description-holder {
           padding: 15px;
           width: 100%;
-          @-moz-document url-prefix() {
-            padding: 7.5px !important;
-          }
+
           h4 {
             color: #1ca585;
             font-size: 14px;
             font-weight: bold;
             margin-bottom: 0px;
             text-transform: capitalize;
-            @-moz-document url-prefix() {
-              font-size: 12px !important;
-            }
           }
           h6 {
             font-size: 14px;
             color: #18162f;
             font-weight: normal;
             margin-bottom: 2px;
-            @-moz-document url-prefix() {
-              font-size: 12px;
-            }
           }
           p {
             font-size: 14px;
             color: #374a59;
             margin-bottom: 0px;
             font-weight: normal;
-            @-moz-document url-prefix() {
-              font-size: 12px !important;
-            }
           }
           .connection-wrapper {
             margin-top: 30px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            @-moz-document url-prefix() {
-              margin-top: 15px !important;
-            }
 
             .read-more {
               color: #34a6ff;
@@ -615,11 +480,7 @@
       margin-left: 10px;
       margin-right: 10px;
       border-radius: 8px;
-      @-moz-document url-prefix() {
-        padding: 10px;
-        margin-left: 5px;
-        margin-right: 5px;
-      }
+
       .no-login {
         text-align: center;
         margin-bottom: 0;
@@ -628,28 +489,16 @@
       .comment-list-container {
         border-bottom: 1px solid #edf2f7;
         margin-bottom: 20px;
-        @-moz-document url-prefix() {
-          margin-bottom: 10px;
-        }
+
         .ant-form-item {
           width: 500px;
-          @-moz-document url-prefix() {
-            input {
-              height: 20px;
-            }
-            textarea {
-              height: 54px;
-            }
-          }
+
           .comment-reply {
             margin-top: 10px;
             border: 1px solid #34a6ff;
             border-radius: 25px;
             color: #34a6ff;
             font-weight: 700;
-            @-moz-document url-prefix() {
-              margin-top: 5px;
-            }
           }
         }
       }
@@ -666,9 +515,6 @@
       label {
         font-size: 16px;
         font-weight: 400;
-        @-moz-document url-prefix() {
-          font-size: 12px;
-        }
       }
       .comment-submit {
         margin: 0 auto;
@@ -677,11 +523,7 @@
         border-radius: 25px;
         color: #34a6ff;
         font-weight: 700;
-        @-moz-document url-prefix() {
-          font-size: 12px;
-          height: 28px;
-          line-height: 10px;
-        }
+
         &:hover {
           background-color: $yellow-highlight;
         }
@@ -697,28 +539,18 @@
       h5 {
         font-size: 1.2rem;
         margin-bottom: 5px;
-        @-moz-document url-prefix() {
-          font-size: 0.9rem;
-        }
       }
       p {
         font-size: 1rem;
-        @-moz-document url-prefix() {
-          font-size: 0.7rem;
-        }
       }
     }
     .record-table {
       padding: 0px 10px;
-      @-moz-document url-prefix() {
-        font-size: 12px !important;
-      }
+
       .record-table-wrapper {
         display: flex;
         padding: 6px 10px;
-        @-moz-document url-prefix() {
-          padding: 3px 5px !important;
-        }
+
         &:nth-of-type(odd) {
           background: #edf2f7;
         }
@@ -733,10 +565,7 @@
       background: #fff;
       padding: 0px 40px;
       margin-bottom: 30px;
-      @-moz-document url-prefix() {
-        padding: 0px 20px !important;
-        margin-bottom: 15px !important;
-      }
+
       .ant-list-item-meta {
         align-items: center;
         .ant-avatar {
@@ -802,16 +631,10 @@
 
         .ant-card-head-title {
           padding-bottom: 16px !important;
-          @-moz-document url-prefix() {
-            padding-bottom: 8px !important;
-          }
         }
         .ant-card-body {
           max-height: 350px;
           overflow-y: auto;
-          @-moz-document url-prefix() {
-            max-height: 219px !important;
-          }
         }
         .sticky-panel {
           display: flex;
@@ -819,36 +642,22 @@
           margin: 0;
           max-height: 80px;
           border-radius: 0px 10px 10px 10px;
-          @-moz-document url-prefix() {
-            max-height: 60px !important;
-          }
+
           .sticky-panel-item {
             height: 100%;
 
             border-bottom: unset;
             h2 {
               font-size: 12px;
-              @-moz-document url-prefix() {
-                font-size: 10px !important;
-              }
             }
             .recording-icon {
               width: 35px;
-              @-moz-document url-prefix() {
-                width: 25px !important;
-              }
             }
             .edit-icon {
               width: 38px;
-              @-moz-document url-prefix() {
-                width: 28px !important;
-              }
             }
             .bookmark-icon {
               width: 25px;
-              @-moz-document url-prefix() {
-                width: 18px !important;
-              }
             }
           }
           .sticky-panel-item:first-child {
@@ -931,9 +740,6 @@
           }
           h2 {
             font-size: 14px;
-            @-moz-document url-prefix() {
-              font-size: 10px !important;
-            }
           }
         }
       }
@@ -945,9 +751,6 @@
           li {
             a {
               font-size: 16px;
-              @-moz-document url-prefix() {
-                font-size: 12px !important;
-              }
             }
           }
         }
@@ -963,11 +766,7 @@
     }
     .section-info {
       padding: 10px 0px;
-      @-moz-document url-prefix() {
-        .ant-list-item-meta-avatar {
-          margin-right: 8px !important;
-        }
-      }
+
       .tab-wrapper {
         margin-bottom: 10px !important;
         padding: 5px 0px;
@@ -980,16 +779,10 @@
       .ant-card {
         .ant-card-body {
           padding: 14px 10px;
-          @-moz-document url-prefix() {
-            padding: 7px 10px !important;
-          }
         }
         .ant-card-head {
           .ant-card-head-title {
             font-size: 16px;
-            @-moz-document url-prefix() {
-              font-size: 12px !important;
-            }
           }
         }
       }
@@ -999,15 +792,9 @@
     }
   }
   .popover-multi-country {
-    @-moz-document url-prefix() {
-      transform: scale(0.8);
-    }
     .list-country-group {
       li {
         font-size: 1.2rem;
-        @-moz-document url-prefix() {
-          font-size: 10px !important;
-        }
       }
     }
   }

@@ -8,45 +8,27 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  @-moz-document url-prefix() {
-    padding: 15px 30px;
-  }
 
   p {
     font-size: 15px;
     color: #09689a;
     margin-bottom: 15px;
-    @-moz-document url-prefix() {
-      font-size: 13px;
-      margin-bottom: 10px;
-    }
   }
   a {
     word-break: break-all;
     color: #00585f;
     margin-top: 15px;
     margin-bottom: 15px;
-    @-moz-document url-prefix() {
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
   }
   .image {
     width: 20px;
     height: 20px;
-    @-moz-document url-prefix() {
-      width: 18px;
-      height: 18px;
-    }
   }
   .login-button {
     display: block;
     max-width: max-content;
     padding: 7px;
     background-color: #00585f;
-    @-moz-document url-prefix() {
-      padding: 5px;
-    }
 
     span {
       color: #ffff;
