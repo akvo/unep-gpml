@@ -13,24 +13,24 @@ body {
   display: none !important;
 }
 
-::-webkit-scrollbar {
+div::-webkit-scrollbar {
   width: 19px;
 }
 
-::-webkit-scrollbar-track {
+div::-webkit-scrollbar-track {
   background-color: #d3dee7;
   border-radius: 60px;
   border: 1px solid #edf2f7;
 }
 
-::-webkit-scrollbar-thumb {
+div::-webkit-scrollbar-thumb {
   border-radius: 90px;
   border: 4px solid transparent;
   background-clip: content-box;
   background-color: #255b87;
 }
 
-:root {
+div:root {
   scrollbar-color: #255b87 #edf2f7 !important;
   scrollbar-width: thin !important;
 }
