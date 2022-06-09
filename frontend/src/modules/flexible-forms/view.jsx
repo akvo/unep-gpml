@@ -785,13 +785,21 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
 
       if (state?.state.type === "initiative") {
         api.getRaw(`/initiative/${dataId}`).then((d) => {
-          setSubType(JSON.parse(d?.data).sub_content_type);
+          let data = JSON.parse(d.data);
+          setSubType(data.sub_content_type);
+          if (JSON.parse(d?.data).q24.hasOwnProperty("transnational")) {
+            data = {
+              ...data,
+              q24_3: data.q24_2,
+              q24_2: null,
+            };
+          }
           initialFormData.update((e) => {
-            e.data = revertFormData(JSON.parse(d.data));
+            e.data = revertFormData(data);
             e.editId = true;
             e.type = "project";
           });
-          setSubType(JSON.parse(d?.data).sub_content_type);
+          setSubType(data.sub_content_type);
         });
       } else {
         api.get(`/detail/${state?.state.type}/${dataId}`).then((d) => {
