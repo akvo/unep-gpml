@@ -173,7 +173,7 @@ const DetailViewModal = () => {
             </List>
           </Col>
           {/* DATE */}
-          <Row className="section">
+          <Row className="section section-date">
             <Col>
               <h3 className="content-heading">Year</h3>
               <span className="detail-item">2018</span>
