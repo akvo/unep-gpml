@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./style.scss";
-import { Modal, Button, Row, Col, List, Avatar, Input } from "antd";
+import { Modal, Button, Row, Col, List, Avatar, Input, Tag } from "antd";
 import {
   EyeFilled,
   HeartTwoTone,
@@ -158,13 +158,15 @@ const DetailViewModal = () => {
               <List.Item>
                 <List.Item.Meta
                   title={
-                    <ul>
+                    <ul className="tag-list">
                       {[
                         "Reducing plastics",
                         "Action Plan",
                         "Urban Area (Environment)",
                       ].map((tag) => (
-                        <li key={tag}>{tag}</li>
+                        <li className="tag-list-item" key={tag}>
+                          <Tag className="resource-tag">{tag}</Tag>
+                        </li>
                       ))}
                     </ul>
                   }
