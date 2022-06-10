@@ -1,16 +1,50 @@
 import React, { useState } from "react";
 import "./style.scss";
-import { Modal, Button, Row, Col, List, Avatar, Input, Tag } from "antd";
+import {
+  Modal,
+  Button,
+  Row,
+  Col,
+  List,
+  Avatar,
+  Input,
+  Tag,
+  Tooltip,
+  Comment,
+} from "antd";
 import {
   EyeFilled,
   HeartTwoTone,
   MailTwoTone,
+  MessageOutlined,
   PlayCircleTwoTone,
+  SendOutlined,
 } from "@ant-design/icons";
 import TestImage from "../../images/landing-gpml.jpg";
+import moment from "moment";
 
 const DetailViewModal = () => {
   const [isShownModal, setIsShownModal] = useState(true);
+  const data = [
+    {
+      author: "Han Solo",
+      avatar: "https://joeschmoe.io/api/v1/random",
+      content: (
+        <p>
+          We supply a series of design principles, practical patterns and high
+          quality design resources (Sketch and Axure), to help people create
+          their product prototypes beautifully and efficiently.
+        </p>
+      ),
+      datetime: (
+        <Tooltip
+          title={moment().subtract(2, "days").format("YYYY-MM-DD HH:mm:ss")}
+        >
+          <span>{moment().subtract(2, "days").fromNow()}</span>
+        </Tooltip>
+      ),
+    },
+  ];
 
   return (
     <div id="detail-view-modal">
@@ -192,23 +226,34 @@ const DetailViewModal = () => {
         </Col>
 
         {/* COMMENTS */}
-        <Col className="section">
+        <Col className="section comment-section">
           <h3 className="content-heading">Discussion</h3>
           <Row>
-            <Avatar>R</Avatar>
-            <Col>
-              <Row>
-                <span>Mikal Goranov</span>
-                <span>5 days ago</span>
-              </Row>
-              <p className="content-paragraph">
-                This is a national plan of action, with international ambition.
-                As well as setting an example for others to follow in our
-                treatment of the countryside, rivers, coastlines and air.
-              </p>
-            </Col>
+            <List
+              className="comment-list"
+              itemLayout="horizontal"
+              dataSource={data}
+              renderItem={(item) => (
+                <li>
+                  <Comment
+                    // actions={item.actions}
+                    author={item.author}
+                    avatar={item.avatar}
+                    content={item.content}
+                    datetime={item.datetime}
+                  />
+                </li>
+              )}
+            />
           </Row>
-          <Input placeholder="Join the discussion..." />
+          <Col className="input-wrapper">
+            <MessageOutlined className="message-icon" />
+            <Input
+              className="comment-input"
+              placeholder="Join the discussion..."
+              suffix={<SendOutlined />}
+            />
+          </Col>
         </Col>
       </Modal>
     </div>
