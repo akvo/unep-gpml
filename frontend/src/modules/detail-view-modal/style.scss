@@ -31,9 +31,10 @@
     position: sticky;
     top: 0;
     border-bottom: unset;
-    padding: 16px 20px 0 0 !important;
+    padding: 27px 20px 0 0 !important;
     background-color: #fff;
     z-index: 10;
+    border-radius: 5px 5px 0 0;
 
     .ant-modal-close-x {
       span {
@@ -192,6 +193,7 @@
       align-items: center;
       background: #f3f3f3;
       padding: 27px 28px 26px 39px;
+      border-radius: 0 0 5px 5px;
       .comment-input {
         height: 54px;
         background: #e6f7ff;
