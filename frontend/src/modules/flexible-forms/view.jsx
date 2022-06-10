@@ -628,7 +628,15 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       }
       res =
         value && value.length > 0 && value[0].id !== null
-          ? value.map((x) => x.id)
+          ? {
+              id: value.map((x) => x.id),
+              type: value.map((x) => ({
+                value: x.id,
+                key: x.id + "-" + x.type,
+                label: x.type,
+                children: x.title,
+              })),
+            }
           : "";
     }
 

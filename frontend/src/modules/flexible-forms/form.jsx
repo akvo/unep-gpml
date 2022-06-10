@@ -258,6 +258,8 @@ const FlexibleForm = withRouter(
         delete data.info;
       }
 
+      data.summary = data?.summary?.replace(/(?:\r\n|\r|\n)/g, " ");
+
       if (data?.type?.length > 0) {
         data.relatedContent = data?.type.map((x) => {
           return {
@@ -392,7 +394,7 @@ const FlexibleForm = withRouter(
       data.q2 = data.qtitle;
       delete data.qtitle;
 
-      data.q3 = data.qsummary;
+      data.q3 = data?.qsummary.replace(/(?:\r\n|\r|\n)/g, " ");
       delete data.qsummary;
 
       data.q24 = data.qgeoCoverageType;
@@ -645,7 +647,7 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.summary) {
-        data.abstract = data?.summary;
+        data.abstract = data?.summary?.replace(/(?:\r\n|\r|\n)/g, " ");
         delete data.summary;
       }
 
@@ -842,7 +844,7 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.summary) {
-        data.description = data?.summary;
+        data.description = data?.summary?.replace(/(?:\r\n|\r|\n)/g, " ");
         delete data.summary;
       }
 
@@ -1028,7 +1030,7 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.summary) {
-        data.remarks = data?.summary;
+        data.remarks = data?.summary?.replace(/(?:\r\n|\r|\n)/g, " ");
         delete data.summary;
       }
 
