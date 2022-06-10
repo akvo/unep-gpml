@@ -109,7 +109,7 @@ const DetailViewModal = () => {
         onCancel={() => setIsShownModal(false)}
       >
         <Row
-          className="resource-info"
+          className="resource-info section"
           gutter={{
             lg: 24,
           }}
@@ -151,7 +151,7 @@ const DetailViewModal = () => {
 
         <Col>
           {/* CONNECTION */}
-          <Col>
+          <Col className="section">
             <h3 className="content-heading">Connections</h3>
             <Avatar.Group
               maxCount={2}
@@ -246,14 +246,14 @@ const DetailViewModal = () => {
               )}
             />
           </Row>
-          <Col className="input-wrapper">
-            <MessageOutlined className="message-icon" />
-            <Input
-              className="comment-input"
-              placeholder="Join the discussion..."
-              suffix={<SendOutlined />}
-            />
-          </Col>
+        </Col>
+        <Col className="input-wrapper">
+          <MessageOutlined className="message-icon" />
+          <Input
+            className="comment-input"
+            placeholder="Join the discussion..."
+            suffix={<SendOutlined />}
+          />
         </Col>
       </Modal>
     </div>

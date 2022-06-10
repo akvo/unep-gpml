@@ -18,10 +18,15 @@
   .section {
     margin-top: 38px;
   }
+  .ant-modal-title,
+  .section {
+    padding: 0 45px;
+  }
 
   .ant-modal-header {
     border-bottom: unset;
-    padding-bottom: 0;
+    padding: 16px 20px 0 0 !important;
+
     .ant-modal-close-x {
       span {
         width: 28px;
@@ -173,37 +178,37 @@
       .ant-comment-content-detail p {
         max-width: 670px;
       }
-      .input-wrapper {
-        display: flex;
-        align-items: center;
-        background: #f3f3f3;
-        padding: 27px 28px 26px 39px;
-        .comment-input {
-          height: 54px;
-          background: #e6f7ff;
-          border: 1px solid #339cfe;
-          border-radius: 5px;
-        }
-        .message-icon {
-          color: #339cfe;
+    }
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      background: #f3f3f3;
+      padding: 27px 28px 26px 39px;
+      .comment-input {
+        height: 54px;
+        background: #e6f7ff;
+        border: 1px solid #339cfe;
+        border-radius: 5px;
+      }
+      .message-icon {
+        color: #339cfe;
+        width: 43px;
+        height: 43px;
+        margin-right: 27px;
+        svg {
           width: 43px;
           height: 43px;
-          margin-right: 27px;
-          svg {
-            width: 43px;
-            height: 43px;
-          }
         }
-        .ant-input-suffix {
+      }
+      .ant-input-suffix {
+        width: 24px;
+        height: 24px;
+        align-self: center;
+        svg {
           width: 24px;
           height: 24px;
-          align-self: center;
-          svg {
-            width: 24px;
-            height: 24px;
-            path {
-              fill: #339cfe;
-            }
+          path {
+            fill: #339cfe;
           }
         }
       }
