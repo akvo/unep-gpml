@@ -454,7 +454,6 @@ const KnowledgeLibrary = ({
                 </Col>
               )}
             </Row>
-            <DetailViewModal />
           </LeftSidebar>
         </div>
       </Col>

@@ -24,6 +24,8 @@ import humps from "humps";
 import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
+import DetailViewModal from "../detail-view-modal/view";
+import api from "../../utils/api";
 
 // Icons
 
@@ -44,7 +46,12 @@ const ResourceList = ({
   }));
 
   const [didMount, setDidMount] = useState(false);
-
+  const [isShownModal, setIsShownModal] = useState(false);
+  const [dataProperties, setDataProperties] = useState({
+    resourceType: null,
+    resourceId: null,
+  });
+  const [data, setData] = useState(null);
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
 
   const topics = query?.topic;
@@ -127,11 +134,24 @@ const ResourceList = ({
             <LoadingOutlined spin /> Loading
           </h2>
         ) : !loading && !isEmpty(allResults) ? (
-          <ResourceItem
-            view={view}
-            results={allResults}
-            stakeholders={stakeholders}
-          />
+          <>
+            <ResourceItem
+              view={view}
+              results={allResults}
+              stakeholders={stakeholders}
+              setIsShownModal={setIsShownModal}
+              setData={setData}
+              setDataProperties={setDataProperties}
+            />
+            <DetailViewModal
+              isShownModal={isShownModal}
+              setIsShownModal={setIsShownModal}
+              setData={setData}
+              resourceId={dataProperties.resourceId}
+              resourceType={dataProperties.resourceType}
+              data={data}
+            />
+          </>
         ) : (
           <h2 className="loading ">There is no data to display</h2>
         )}
@@ -152,7 +172,14 @@ const ResourceList = ({
   );
 };
 
-const ResourceItem = ({ results, view, stakeholders }) => {
+const ResourceItem = ({
+  results,
+  view,
+  stakeholders,
+  setIsShownModal,
+  setDataProperties,
+  setData,
+}) => {
   return results.map((result) => {
     const { id, type } = result;
     const fullName = (data) =>
@@ -199,7 +226,25 @@ const ResourceItem = ({ results, view, stakeholders }) => {
     };
 
     return (
-      <Link className="resource-item-wrapper" key={`${type}-${id}`} to={linkTo}>
+      <div
+        className="resource-item-wrapper"
+        key={`${type}-${id}`}
+        // to={linkTo}
+        onClick={() => {
+          console.log(id);
+          setIsShownModal(true);
+          setDataProperties({ resourceId: id, resourceType: type });
+          api
+            .get(`/detail/${type}/${id}`)
+            .then((d) => {
+              setData(d.data);
+            })
+            .catch((err) => {
+              console.error(err);
+              // redirectError(err, history);
+            });
+        }}
+      >
         <Card
           className="resource-item"
           style={
@@ -261,7 +306,7 @@ const ResourceItem = ({ results, view, stakeholders }) => {
             </span>
           </div>
         </Card>
-      </Link>
+      </div>
     );
   });
 };

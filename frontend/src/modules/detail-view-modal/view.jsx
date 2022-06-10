@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./style.scss";
+import isoConv from "iso-language-converter";
 import {
   Modal,
   Button,
@@ -22,10 +23,56 @@ import {
 } from "@ant-design/icons";
 import TestImage from "../../images/landing-gpml.jpg";
 import moment from "moment";
+import { isEmpty } from "lodash";
+import api from "../../utils/api";
+import { UIStore } from "../../store";
+import { redirectError } from "../error/error-util";
+import { titleCase } from "../../utils/string";
+import { Link } from "react-router-dom";
+import { topicNames, topicTypes } from "../../utils/misc";
 
-const DetailViewModal = () => {
-  const [isShownModal, setIsShownModal] = useState(true);
-  const data = [
+const DetailViewModal = ({
+  resourceType,
+  resourceId,
+  isShownModal,
+  setIsShownModal,
+  data,
+}) => {
+  const { profile, countries } = UIStore.useState((s) => ({
+    profile: s.profile,
+    countries: s.countries,
+  }));
+
+  const [relations, setRelations] = useState([]);
+  const isConnectStakeholders = ["organisation", "stakeholder"].includes(
+    resourceType
+  );
+  const isLoaded = useCallback(
+    () =>
+      Boolean(
+        !isEmpty(countries) &&
+          (isConnectStakeholders ? !isEmpty(profile) : true)
+      ),
+    [countries, profile, isConnectStakeholders]
+  );
+  console.log(resourceType, resourceId, isShownModal, data, isoConv("en"));
+
+  useEffect(() => {
+    if (isLoaded() && profile.reviewStatus === "APPROVED") {
+      setTimeout(() => {
+        api.get(`/favorite/${resourceType}/${resourceId}`).then((resp) => {
+          setRelations(resp.data);
+        });
+      }, 100);
+    }
+    UIStore.update((e) => {
+      e.disclaimer = null;
+    });
+    window.scrollTo({ top: 0 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile, isLoaded]);
+
+  const testData = [
     {
       author: "Han Solo",
       avatar: "https://joeschmoe.io/api/v1/random",
@@ -54,10 +101,10 @@ const DetailViewModal = () => {
       <Modal
         title={
           <div className="modal-header">
-            <h3 className="modal-resource-type content-heading">Action plan</h3>
-            <h4 className="modal-resource-title">
-              A Green Future: Our 25 Year Plan To Improve The Environment
-            </h4>
+            <h3 className="modal-resource-type content-heading">
+              {topicNames(resourceType)}
+            </h3>
+            <h4 className="modal-resource-title">{data?.title}</h4>
             <Col className="tool-buttons">
               <Button
                 className="view-button "
@@ -115,23 +162,12 @@ const DetailViewModal = () => {
           }}
         >
           <Col lg={12}>
-            <img className="resource-image" src={TestImage} alt="" />
+            <img className="resource-image" src={data?.image} alt="" />
           </Col>
           <Col lg={12}>
             <Row>
               <h3 className="content-heading">Description</h3>
-              <p className="content-paragraph">
-                This 25 Year Environment Plan sets out government action to help
-                the natural world regain and retain good health. It aims to
-                deliver cleaner air and water in our cities and rural
-                landscapes, protect threatened species and provide richer
-                wildlife habitats. It calls for an approach to agriculture,
-                forestry, land use and fishing that puts the environment first.
-                The Plan looks forward to delivering a Green Brexit ? seizing
-                this once-in-alifetime chance to reform our agriculture and
-                fisheries management, how we restore nature, and how we care for
-                our land, our rivers and our seas.
-              </p>
+              <p className="content-paragraph">{data?.summary}</p>
             </Row>
             <Row>
               <Col>
@@ -143,7 +179,13 @@ const DetailViewModal = () => {
                     .join(", ")}
                 </div>
 
-                <span className="detail-item">English</span>
+                {data?.languages && (
+                  <span className="detail-item">
+                    {data?.languages
+                      .map((language) => isoConv(language?.isoCode) || "")
+                      .join(", ")}
+                  </span>
+                )}
               </Col>
             </Row>
           </Col>
@@ -164,20 +206,26 @@ const DetailViewModal = () => {
                 width: 51,
               }}
             >
-              {["a", "b", "c"].map((connection, index) => (
+              {data?.stakeholderConnections?.map((connection, index) => (
                 <Avatar
                   className="related-content-avatar"
                   style={{ border: "none", height: 51, width: 51 }}
                   key={index}
                   src={
                     <Avatar
+                      avatar={<Avatar src={connection?.image} />}
                       style={{
                         backgroundColor: "#09689A",
                         verticalAlign: "middle",
                       }}
                       size={51}
+                      title={
+                        <Link to={`/stakeholder/${connection?.stakeholderId}`}>
+                          {connection?.stakeholder}
+                        </Link>
+                      }
                     >
-                      {connection}
+                      {connection?.stakeholder}
                     </Avatar>
                   }
                 />
@@ -193,13 +241,11 @@ const DetailViewModal = () => {
                 <List.Item.Meta
                   title={
                     <ul className="tag-list">
-                      {[
-                        "Reducing plastics",
-                        "Action Plan",
-                        "Urban Area (Environment)",
-                      ].map((tag) => (
+                      {data?.tags?.map((tag) => (
                         <li className="tag-list-item" key={tag}>
-                          <Tag className="resource-tag">{tag}</Tag>
+                          <Tag className="resource-tag">
+                            {titleCase(tag?.tag)}
+                          </Tag>
                         </li>
                       ))}
                     </ul>
@@ -232,7 +278,7 @@ const DetailViewModal = () => {
             <List
               className="comment-list"
               itemLayout="horizontal"
-              dataSource={data}
+              dataSource={testData}
               renderItem={(item) => (
                 <li>
                   <Comment
