@@ -26,6 +26,7 @@ import isEmpty from "lodash/isEmpty";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 import DetailViewModal from "../detail-view-modal/view";
 import api from "../../utils/api";
+import { redirectError } from "../error/error-util";
 
 // Icons
 
@@ -97,6 +98,18 @@ const ResourceList = ({
     return () => setDidMount(false);
   }, []);
 
+  const getData = ({ type, id }) => {
+    api
+      .get(`/detail/${type}/${id}`)
+      .then((d) => {
+        setData(d.data);
+      })
+      .catch((err) => {
+        console.error(err);
+        redirectError(err, history);
+      });
+  };
+
   return (
     <Row style={{ postion: "relative" }}>
       <Col
@@ -142,6 +155,7 @@ const ResourceList = ({
               setIsShownModal={setIsShownModal}
               setData={setData}
               setDataProperties={setDataProperties}
+              getData={getData}
             />
             <DetailViewModal
               isShownModal={isShownModal}
@@ -178,7 +192,7 @@ const ResourceItem = ({
   stakeholders,
   setIsShownModal,
   setDataProperties,
-  setData,
+  getData,
 }) => {
   return results.map((result) => {
     const { id, type } = result;
@@ -229,20 +243,11 @@ const ResourceItem = ({
       <div
         className="resource-item-wrapper"
         key={`${type}-${id}`}
-        // to={linkTo}
         onClick={() => {
           console.log(id);
           setIsShownModal(true);
           setDataProperties({ resourceId: id, resourceType: type });
-          api
-            .get(`/detail/${type}/${id}`)
-            .then((d) => {
-              setData(d.data);
-            })
-            .catch((err) => {
-              console.error(err);
-              // redirectError(err, history);
-            });
+          getData({ type, id });
         }}
       >
         <Card

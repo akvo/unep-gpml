@@ -26,10 +26,9 @@ import moment from "moment";
 import { isEmpty } from "lodash";
 import api from "../../utils/api";
 import { UIStore } from "../../store";
-import { redirectError } from "../error/error-util";
 import { titleCase } from "../../utils/string";
 import { Link } from "react-router-dom";
-import { topicNames, topicTypes } from "../../utils/misc";
+import { topicNames } from "../../utils/misc";
 
 const DetailViewModal = ({
   resourceType,
@@ -55,7 +54,6 @@ const DetailViewModal = ({
       ),
     [countries, profile, isConnectStakeholders]
   );
-  console.log(resourceType, resourceId, isShownModal, data, isoConv("en"));
 
   useEffect(() => {
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
@@ -161,10 +159,12 @@ const DetailViewModal = ({
             lg: 24,
           }}
         >
-          <Col lg={12}>
-            <img className="resource-image" src={data?.image} alt="" />
-          </Col>
-          <Col lg={12}>
+          {data?.image && (
+            <Col lg={12}>
+              <img className="resource-image" src={data?.image} alt="" />
+            </Col>
+          )}
+          <Col lg={data?.image ? 12 : 24}>
             <Row>
               <h3 className="content-heading">Description</h3>
               <p className="content-paragraph">{data?.summary}</p>
@@ -172,7 +172,9 @@ const DetailViewModal = ({
             <Row>
               <Col>
                 <h3 className="content-heading">Location & Geocoverage</h3>
-                <span className="detail-item">Geocoverage: National</span>
+                <span className="detail-item">
+                  Geocoverage: {titleCase(data?.geoCoverageType || "")}
+                </span>
                 <div className="detail-item">
                   {["United Kingdom", "France", "Belgium", "Germany"]
                     .map((location) => location)
@@ -193,67 +195,74 @@ const DetailViewModal = ({
 
         <Col>
           {/* CONNECTION */}
-          <Col className="section">
-            <h3 className="content-heading">Connections</h3>
-            <Avatar.Group
-              maxCount={2}
-              size="large"
-              maxStyle={{
-                color: "#f56a00",
-                backgroundColor: "#fde3cf",
-                cursor: "pointer",
-                height: 51,
-                width: 51,
-              }}
-            >
-              {data?.stakeholderConnections?.map((connection, index) => (
-                <Avatar
-                  className="related-content-avatar"
-                  style={{ border: "none", height: 51, width: 51 }}
-                  key={index}
-                  src={
+          {data?.stakeholderConnections &&
+            data?.stakeholderConnections?.length > 0 && (
+              <Col className="section">
+                <h3 className="content-heading">Connections</h3>
+                <Avatar.Group
+                  maxCount={2}
+                  size="large"
+                  maxStyle={{
+                    color: "#f56a00",
+                    backgroundColor: "#fde3cf",
+                    cursor: "pointer",
+                    height: 51,
+                    width: 51,
+                  }}
+                >
+                  {data?.stakeholderConnections?.map((connection, index) => (
                     <Avatar
-                      avatar={<Avatar src={connection?.image} />}
-                      style={{
-                        backgroundColor: "#09689A",
-                        verticalAlign: "middle",
-                      }}
-                      size={51}
-                      title={
-                        <Link to={`/stakeholder/${connection?.stakeholderId}`}>
+                      className="related-content-avatar"
+                      style={{ border: "none", height: 51, width: 51 }}
+                      key={index}
+                      src={
+                        <Avatar
+                          avatar={<Avatar src={connection?.image} />}
+                          style={{
+                            backgroundColor: "#09689A",
+                            verticalAlign: "middle",
+                          }}
+                          size={51}
+                          title={
+                            <Link
+                              to={`/stakeholder/${connection?.stakeholderId}`}
+                            >
+                              {connection?.stakeholder}
+                            </Link>
+                          }
+                        >
                           {connection?.stakeholder}
-                        </Link>
+                        </Avatar>
                       }
-                    >
-                      {connection?.stakeholder}
-                    </Avatar>
-                  }
-                />
-              ))}
-            </Avatar.Group>
-          </Col>
+                    />
+                  ))}
+                </Avatar.Group>
+              </Col>
+            )}
 
           {/* TAGS */}
-          <Col className="section">
-            <h3 className="content-heading">Tags</h3>
-            <List itemLayout="horizontal">
-              <List.Item>
-                <List.Item.Meta
-                  title={
-                    <ul className="tag-list">
-                      {data?.tags?.map((tag) => (
-                        <li className="tag-list-item" key={tag}>
-                          <Tag className="resource-tag">
-                            {titleCase(tag?.tag)}
-                          </Tag>
-                        </li>
-                      ))}
-                    </ul>
-                  }
-                />
-              </List.Item>
-            </List>
-          </Col>
+          {data?.tags && data?.tags?.length > 0 && (
+            <Col className="section">
+              <h3 className="content-heading">Tags</h3>
+              <List itemLayout="horizontal">
+                <List.Item>
+                  <List.Item.Meta
+                    title={
+                      <ul className="tag-list">
+                        {data?.tags?.map((tag) => (
+                          <li className="tag-list-item" key={tag}>
+                            <Tag className="resource-tag">
+                              {titleCase(tag?.tag || "")}
+                            </Tag>
+                          </li>
+                        ))}
+                      </ul>
+                    }
+                  />
+                </List.Item>
+              </List>
+            </Col>
+          )}
           {/* DATE */}
           <Row className="section section-date">
             <Col>
