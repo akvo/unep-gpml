@@ -250,7 +250,7 @@ const DetailViewModal = ({
                     title={
                       <ul className="tag-list">
                         {data?.tags?.map((tag) => (
-                          <li className="tag-list-item" key={tag}>
+                          <li className="tag-list-item" key={tag?.tag}>
                             <Tag className="resource-tag">
                               {titleCase(tag?.tag || "")}
                             </Tag>

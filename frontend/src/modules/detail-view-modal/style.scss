@@ -196,9 +196,12 @@
       border-radius: 0 0 5px 5px;
       .comment-input {
         height: 54px;
-        background: #e6f7ff;
+        background: hsl(199, 100%, 95%);
         border: 1px solid #339cfe;
         border-radius: 5px;
+        .ant-input {
+          background: hsl(199, 100%, 95%);
+        }
       }
       .message-icon {
         color: #339cfe;
