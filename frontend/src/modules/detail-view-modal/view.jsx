@@ -178,8 +178,15 @@ const DetailViewModal = ({
 
                 <div className="detail-item">
                   {data?.geoCoverageCountries &&
-                    ["United Kingdom", "France", "Belgium", "Germany"]
-                      .map((location) => location)
+                    data?.geoCoverageCountries.length > 0 &&
+                    data?.geoCoverageCountries
+                      .map((geoCoverageCountry) => {
+                        const country = countries.find(
+                          (item) => item?.id === geoCoverageCountry
+                        );
+                        return country;
+                      })
+
                       .join(", ")}
                 </div>
 
