@@ -174,7 +174,7 @@ const DetailViewModal = ({
               <Col>
                 <h3 className="content-heading">Location & Geocoverage</h3>
                 <span className="detail-item">
-                  <EnvironmentOutlined /> Geocoverage: {" "}
+                  <EnvironmentOutlined /> Geocoverage:{" "}
                   {titleCase(data?.geoCoverageType || "")}
                 </span>
 
