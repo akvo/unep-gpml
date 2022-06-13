@@ -72,6 +72,7 @@ const DetailView = ({
     icons: s.icons,
     placeholder: s.placeholder,
   }));
+  console.log(UIStore.currentState);
   const history = useHistory();
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
@@ -182,6 +183,72 @@ const DetailView = ({
     },
   ];
 
+  const handleEditBtn = () => {
+    let form = null;
+    let type = null;
+    let link = null;
+    switch (params.type) {
+      case "project":
+        form = "initiative";
+        link = "edit-initiative";
+        type = "initiative";
+        break;
+      case "action_plan":
+        form = "actionPlan";
+        link = "edit-action-plan";
+        type = "action_plan";
+        break;
+      case "policy":
+        form = "policy";
+        link = "edit-policy";
+        type = "policy";
+        break;
+      case "technical_resource":
+        form = "technicalResource";
+        link = "edit-technical-resource";
+        type = "technical_resource";
+        break;
+      case "financing_resource":
+        form = "financingResource";
+        link = "edit-financing-resource";
+        type = "financing_resource";
+        break;
+      case "technology":
+        form = "technology";
+        link = "edit-technology";
+        type = "technology";
+        break;
+      case "event":
+        form = "event";
+        link = "edit-event";
+        type = "event";
+        break;
+      default:
+        form = "entity";
+        link = "edit-entity";
+        type = "initiative";
+        break;
+    }
+    UIStore.update((e) => {
+      e.formEdit = {
+        ...e.formEdit,
+        flexible: {
+          status: "edit",
+          id: params.id,
+        },
+      };
+      e.formStep = {
+        ...e.formStep,
+        flexible: 1,
+      };
+    });
+
+    history.push({
+      pathname: `/${link}/${params.id}`,
+      state: { type: type },
+    });
+  };
+
   const renderGeoCoverageCountryGroups = (
     data,
     countries,
@@ -283,6 +350,7 @@ const DetailView = ({
           >
             Bookmark
           </Button>
+          <Button onClick={handleEditBtn}>EDIT</Button>
         </Col>
       </div>
 
@@ -485,56 +553,64 @@ const DetailView = ({
           <table className="record-table">
             <tbody>
               <tr className="record-row">
-                <td>Year</td>
+                <td className="record-name">Year</td>
                 <td className="record-value">2</td>
               </tr>
               <tr className="record-row">
-                <td>Valid from</td>
+                <td className="record-name">Valid from</td>
                 <td className="record-value">2</td>
               </tr>
               <tr className="record-row">
-                <td>Valid until</td>
+                <td className="record-name">Valid until</td>
                 <td className="record-value">2</td>
               </tr>
               <tr className="record-row">
-                <td>Amount Invested</td>
+                <td className="record-name">Amount Invested</td>
                 <td className="record-value">2</td>
               </tr>
               <tr className="record-row">
-                <td>In Kind Contributions</td>
+                <td className="record-name">In Kind Contributions</td>
                 <td className="record-value">2</td>
               </tr>
               <tr className="record-row">
-                <td>Funding Type</td>
+                <td className="record-name">Funding Type</td>
+                <td className="record-value">
+                  {data?.funding ? data?.funding?.type : "Not applicable"}
+                </td>
+              </tr>
+              <tr className="record-row">
+                <td className="record-name">Funding Name</td>
+                <td className="record-value">
+                  {data?.funding ? data?.funding?.name : "Not applicable"}
+                </td>
+              </tr>
+              <tr className="record-row">
+                <td className="record-name">Focus Area:</td>
                 <td className="record-value">2</td>
               </tr>
               <tr className="record-row">
-                <td>Funding Name</td>
+                <td className="record-name">Lifecycle Phase</td>
                 <td className="record-value">2</td>
               </tr>
               <tr className="record-row">
-                <td>Focus Area:</td>
+                <td className="record-name">Sector</td>
+                <td className="record-value">
+                  {data?.sector && data?.sector?.length > 0
+                    ? data?.sector.map((item) => item)
+                    : "Not applicable"}
+                </td>
+              </tr>
+              <tr className="record-row">
+                <td className="record-name">Initiative Owner</td>
                 <td className="record-value">2</td>
               </tr>
               <tr className="record-row">
-                <td>Lifecycle Phase</td>
+                <td className="record-name">Entity Type</td>
                 <td className="record-value">2</td>
               </tr>
               <tr className="record-row">
-                <td>Sector</td>
+                <td className="record-name">Initiative Term</td>
                 <td className="record-value">2</td>
-              </tr>
-              <tr className="record-row">
-                <td>Initiative Owner</td>
-                <td className="record-value">2</td>
-              </tr>
-              <tr className="record-row">
-                <td>Entity Type</td>
-                <td className="record-value">2</td>
-              </tr>
-              <tr className="record-row">
-                <td>Initiative Term</td>
-                <td>2</td>
               </tr>
             </tbody>
           </table>
