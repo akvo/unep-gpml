@@ -41,7 +41,8 @@
       display: flex;
       flex-wrap: wrap;
       margin-top: 23px;
-      button {
+      button,
+      a {
         display: flex;
         align-items: center;
         color: $blue02;

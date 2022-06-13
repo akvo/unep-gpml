@@ -21,6 +21,7 @@ import {
   PlayCircleTwoTone,
   SendOutlined,
   EnvironmentOutlined,
+  HeartFilled,
 } from "@ant-design/icons";
 import TestImage from "../../images/landing-gpml.jpg";
 import moment from "moment";
@@ -303,6 +304,20 @@ const DetailView = ({
     return dataCountries;
   };
 
+  const handleChangeRelation = (relationType) => {
+    let association = relation ? [...relation.association] : [];
+    if (!association.includes(relationType)) {
+      association = [relationType];
+    } else {
+      association = association.filter((it) => it !== relationType);
+    }
+    handleRelationChange({
+      topicId: parseInt(params.id),
+      association,
+      params: resourceTypeToTopicType(params.type),
+    });
+  };
+
   return (
     <div id="detail-view">
       <div className="detail-header">
@@ -317,6 +332,16 @@ const DetailView = ({
             type="primary"
             shape="round"
             size="middle"
+            href={`${
+              data?.url && data?.url?.includes("https://")
+                ? data?.url
+                : data?.languages
+                ? data?.languages[0]?.url
+                : data?.url?.includes("http://")
+                ? data?.url
+                : "https://" + data?.url
+            }`}
+            target="_blank"
           >
             View
           </Button>
@@ -327,6 +352,14 @@ const DetailView = ({
             shape="round"
             size="middle"
             ghost
+            onClick={() => {
+              window.open(
+                data?.recording.includes("https://")
+                  ? data?.recording
+                  : "https://" + data?.recording,
+                "_blank"
+              );
+            }}
           >
             Recording
           </Button>
@@ -337,19 +370,32 @@ const DetailView = ({
             shape="round"
             size="middle"
             ghost
+            onClick={() => setVisible(!visible)}
           >
             Share
           </Button>
+
           <Button
-            className="bookmark-button two-tone-button"
-            icon={<HeartTwoTone twoToneColor="#09689a" />}
+            className={`bookmark-button ${
+              relation?.association?.indexOf("interested in") !== -1 &&
+              "two-tone-button"
+            }`}
+            icon={
+              relation?.association?.indexOf("interested in") !== -1 ? (
+                <HeartFilled />
+              ) : (
+                <HeartTwoTone twoToneColor="#09689a" />
+              )
+            }
             type="primary"
             shape="round"
             size="middle"
             ghost
+            onClick={() => handleChangeRelation("interested in")}
           >
             Bookmark
           </Button>
+
           <Button onClick={handleEditBtn}>EDIT</Button>
         </Col>
       </div>
