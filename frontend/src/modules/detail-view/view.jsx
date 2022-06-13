@@ -33,6 +33,11 @@ import { topicNames, resourceTypeToTopicType } from "../../utils/misc";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useHistory } from "react-router-dom";
 import { redirectError } from "../error/error-util";
+import { multicountryGroups } from "../knowledge-library/multicountry";
+import { ReactComponent as LocationImage } from "../../images/location.svg";
+import { ReactComponent as TransnationalImage } from "../../images/transnational.svg";
+import { ReactComponent as CityImage } from "../../images/city-icn.svg";
+import { ReactComponent as TagsImage } from "../../images/tags.svg";
 
 const DetailView = ({
   params,
@@ -82,7 +87,7 @@ const DetailView = ({
       it.topicId === parseInt(params.id) &&
       it.topic === resourceTypeToTopicType(params.type)
   );
-console.log('data::::::',data);
+  console.log("data::::::", data);
   const isConnectStakeholders = ["organisation", "stakeholder"].includes(
     params?.type
   );
@@ -141,7 +146,7 @@ console.log('data::::::',data);
         })
         .catch((err) => {
           console.error(err);
-         redirectError(err, history);
+          redirectError(err, history);
         });
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
@@ -177,11 +182,65 @@ console.log('data::::::',data);
     },
   ];
 
+  const renderGeoCoverageCountryGroups = (
+    data,
+    countries,
+    transnationalOptions
+  ) => {
+    let dataCountries = null;
+    const subItems = [].concat(
+      ...multicountryGroups.map(({ item }) => item || [])
+    );
+    const newArray = [...new Set([...subItems, ...countries])];
+    dataCountries = data["geoCoverageValues"]?.map((x) => {
+      return {
+        name: newArray.find((it) => it.id === x)?.name,
+        countries: newArray.find((it) => it.id === x)?.countries
+          ? newArray.find((it) => it.id === x)?.countries
+          : [],
+      };
+    });
+    return (
+      <>
+        {dataCountries.map((item, index) => (
+          <span id={index}>
+            {(index ? ", " : " ") + item.name}{" "}
+            {item.countries && item.countries.length > 0 && (
+              <Popover
+                overlayClassName="popover-multi-country"
+                title={""}
+                content={
+                  <ul className="list-country-group">
+                    {item.countries.map((name) => (
+                      <li id={name.id}>{name.name}</li>
+                    ))}
+                  </ul>
+                }
+                placement="right"
+                arrowPointAtCenter
+              >
+                <InfoCircleOutlined />
+              </Popover>
+            )}
+          </span>
+        ))}
+      </>
+    );
+  };
+  const renderCountries = (data, countries, transnationalOptions) => {
+    let dataCountries = null;
+    const newArray = [...new Set([...countries])];
+    dataCountries = data["geoCoverageCountries"]
+      ?.map((x) => newArray.find((it) => it.id === x)?.name)
+      .join(", ");
+    return dataCountries;
+  };
+
   return (
     <div id="detail-view">
       <div className="detail-header">
         <h3 className="detail-resource-type content-heading">
-          {/* {topicNames(resourceType)} */}Event
+          {topicNames(params?.type)}
         </h3>
         <h4 className="detail-resource-title">{data?.title}</h4>
         <Col className="tool-buttons">
@@ -241,36 +300,76 @@ console.log('data::::::',data);
         <Col lg={data?.image ? 12 : 24}>
           <Row>
             <h3 className="content-heading">Description</h3>
-            <p className="content-paragraph">
-              {/* {data?.summary} */}
-              This 25 Year Environment Plan sets out government action to help
-              the natural world regain and retain good health. It aims to
-              deliver cleaner air and water in our cities and rural landscapes,
-              protect threatened species and provide richer wildlife habitats.
-              It calls for an approach to agriculture, forestry, land use and
-              fishing that puts the environment first. The Plan looks forward to
-              delivering a Green Brexit ? seizing this once-in-alifetime chance
-              to reform our agriculture and fisheries management, how we restore
-              nature, and how we care for our land, our rivers and our seas.
-            </p>
+            <p className="content-paragraph">{data?.description}</p>
           </Row>
           <Row>
             <Col>
               <h3 className="content-heading">Location & Geocoverage</h3>
               <span className="detail-item">
-                <EnvironmentOutlined /> Geocoverage: Transnational
-                {/* {titleCase(data?.geoCoverageType || "")} */}
+                <TransnationalImage />{" "}
+                <span>{titleCase(data?.geoCoverageType || "")}</span>
               </span>
 
               <div className="detail-item">
-                {
-                  //   data?.geoCoverageCountries &&
-                  //     data?.geoCoverageCountries.length > 0 &&
-                  ["United Kingdom", "France", "Belgium", "Germany"]
-                    .map((geoCoverageCountry) => geoCoverageCountry)
+                {data?.geoCoverageType !== "sub-national" &&
+                  data?.geoCoverageType !== "national" && (
+                    <>
+                      {data?.geoCoverageCountryGroups &&
+                        data?.geoCoverageCountryGroups.length > 0 && (
+                          <>
+                            <LocationImage />{" "}
+                            {renderGeoCoverageCountryGroups(
+                              data,
+                              countries,
+                              transnationalOptions
+                            )}
+                          </>
+                        )}
+                    </>
+                  )}
 
-                    .join(", ")
-                }
+                {data?.geoCoverageType !== "sub-national" &&
+                  data?.geoCoverageType !== "national" && (
+                    <>
+                      {data?.geoCoverageCountries &&
+                        data?.geoCoverageCountries.length > 0 && (
+                          <>
+                            <LocationImage />{" "}
+                            {renderCountries(
+                              data,
+                              countries,
+                              transnationalOptions
+                            )}
+                          </>
+                        )}
+                    </>
+                  )}
+
+                {(data?.geoCoverageType === "sub-national" ||
+                  data?.geoCoverageType === "national") && (
+                  <>
+                    {data?.geoCoverageValues &&
+                      data?.geoCoverageValues.length > 0 && (
+                        <>
+                          <LocationImage />{" "}
+                          {renderCountries(
+                            data,
+                            countries,
+                            transnationalOptions
+                          )}
+                        </>
+                      )}
+                  </>
+                )}
+
+                {(data?.subnationalCity || data?.q24SubnationalCity) && (
+                  <>
+                    <CityImage />{" "}
+                    {data?.subnationalCity
+                      ? data?.subnationalCity
+                      : data?.q24SubnationalCity}
+                  </>
+                )}
               </div>
 
               {data?.languages && (
@@ -287,77 +386,98 @@ console.log('data::::::',data);
 
       <Col>
         {/* CONNECTION */}
-        {/* {data?.stakeholderConnections &&
-            data?.stakeholderConnections?.length > 0 && ( */}
-        <Col className="section">
-          <h3 className="content-heading">Connections</h3>
-          <Avatar.Group
-            maxCount={2}
-            size="large"
-            maxStyle={{
-              color: "#f56a00",
-              backgroundColor: "#fde3cf",
-              cursor: "pointer",
-              height: 51,
-              width: 51,
-            }}
-          >
-            {["a", "b", "c"].map((connection, index) => (
-              <Avatar
-                className="related-content-avatar"
-                style={{ border: "none", height: 51, width: 51 }}
-                key={index}
-                src={
-                  <Avatar
-                    avatar={<Avatar src={connection} />}
-                    style={{
-                      backgroundColor: "#09689A",
-                      verticalAlign: "middle",
-                    }}
-                    size={51}
-                    title={
-                      <Link to={`/stakeholder/${connection}`}>
-                        {connection}
-                      </Link>
-                    }
-                  >
-                    {connection}
-                  </Avatar>
-                }
-              />
-            ))}
-          </Avatar.Group>
-        </Col>
-        {/* )} */}
+        {data?.stakeholderConnections &&
+          data?.stakeholderConnections?.length > 0 && (
+            <Col className="section">
+              <h3 className="content-heading">Connections</h3>
+
+              <Avatar.Group
+                maxCount={2}
+                size="large"
+                maxStyle={{
+                  color: "#f56a00",
+                  backgroundColor: "#fde3cf",
+                  cursor: "pointer",
+                  height: 51,
+                  width: 51,
+                }}
+              >
+                {data?.stakeholderConnections.filter(
+                  (x) =>
+                    x.stakeholderRole !== "ADMIN" || x.role === "interested in"
+                )?.length > 0 &&
+                  data?.stakeholderConnections
+                    .filter(
+                      (x) =>
+                        x.stakeholderRole !== "ADMIN" ||
+                        x.role === "interested in"
+                    )
+                    .map((connection, index) => (
+                      <Avatar
+                        className="related-content-avatar"
+                        style={{ border: "none", height: 51, width: 51 }}
+                        key={index}
+                        src={
+                          <Avatar
+                            avatar={<Avatar src={connection} />}
+                            style={{
+                              backgroundColor: "#09689A",
+                              verticalAlign: "middle",
+                            }}
+                            size={51}
+                            title={
+                              <Link to={`/stakeholder/${connection}`}>
+                                {connection}
+                              </Link>
+                            }
+                          >
+                            {connection}
+                          </Avatar>
+                        }
+                      />
+                    ))}
+              </Avatar.Group>
+            </Col>
+          )}
 
         {/* TAGS */}
-        {/* {data?.tags && data?.tags?.length > 0 && ( */}
-        <Col className="section">
-          <h3 className="content-heading">Tags</h3>
-          <List itemLayout="horizontal">
-            <List.Item>
-              <List.Item.Meta
-                title={
-                  <ul className="tag-list">
-                    {[
-                      "Reducing plastics",
-                      "Action Plan",
-                      "Urban Area (Environment)",
-                    ].map((tag) => (
-                      <li className="tag-list-item" key={tag}>
-                        <Tag className="resource-tag">
-                          {tag}
-                          {/* {titleCase(tag?.tag || "")} */}
-                        </Tag>
-                      </li>
-                    ))}
-                  </ul>
-                }
-              />
-            </List.Item>
-          </List>
-        </Col>
+        {data?.tags && data?.tags?.length > 0 && (
+          <Col className="section">
+            <h3 className="content-heading">Tags</h3>
+            <List itemLayout="horizontal">
+              <List.Item>
+                <List.Item.Meta
+                  title={
+                    <ul className="tag-list">
+                      {data?.tags &&
+                        data?.tags.map((tag) => (
+                          <li className="tag-list-item" key={tag?.tag}>
+                            <Tag className="resource-tag">
+                              {titleCase(tag?.tag || "")}
+                            </Tag>
+                          </li>
+                        ))}
+                    </ul>
+                  }
+                />
+              </List.Item>
+            </List>
+          </Col>
+        )}
       </Col>
+
+      {/* DOCUMENTS AND INFO */}
+      {data?.infoDocs && (
+        <Col className="section">
+          <h3 className="content-heading">Documents and info</h3>
+          <p className="content-paragraph">
+            <div
+              className="list documents-list"
+              dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
+            />
+          </p>
+        </Col>
+      )}
 
       {/* COMMENTS */}
       <Col className="section comment-section">
