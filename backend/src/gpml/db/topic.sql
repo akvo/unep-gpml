@@ -57,7 +57,7 @@ WITH flat_topic AS (
     capacity_building,
     NULL AS event_type,
     NULL AS recording,
-    related_content,
+    array_remove(array_agg(related_content.related_resource_id), NULL) AS related_content,
     NULL::text[] AS topics,
     NULL AS record_number,
     first_publication_date::text,
@@ -125,7 +125,9 @@ WITH flat_topic AS (
     NULL AS q35_1,
     NULL AS q1_1_1
   FROM resource
+  LEFT JOIN related_content ON resource.id = related_content.resource_id AND resource_table_name = 'resource'::regclass
   --~ (when (:review-status params) "WHERE review_status = (:v:review-status)::review_status")
+  GROUP BY resource.id
 UNION ALL
 	SELECT
 		'event'::text AS topic,
@@ -173,7 +175,7 @@ UNION ALL
     capacity_building,
     event_type,
     recording,
-    related_content,
+    array_remove(array_agg(related_content.related_resource_id), NULL) AS related_content,
     NULL::text[] AS topics,
     NULL AS record_number,
     NULL AS first_publication_date,
@@ -240,8 +242,10 @@ UNION ALL
     NULL AS q1_1,
     NULL AS q35_1,
     NULL AS q1_1_1
-	FROM event
-	--~ (when (:review-status params) "WHERE review_status = (:v:review-status)::review_status")
+    FROM event
+    LEFT JOIN related_content ON event.id = related_content.resource_id AND resource_table_name = 'event'::regclass
+    --~ (when (:review-status params) "WHERE review_status = (:v:review-status)::review_status")
+    GROUP BY event.id
 UNION ALL
 	SELECT
 		'initiative'::text AS topic,
@@ -289,7 +293,7 @@ UNION ALL
     NULL AS capacity_building,
     NULL AS event_type,
     NULL AS recording,
-    related_content,
+    array_remove(array_agg(related_content.related_resource_id), NULL) AS related_content,
     NULL::text[] AS topics,
     NULL AS record_number,
     NULL AS first_publication_date,
@@ -357,7 +361,9 @@ UNION ALL
     q35_1::text,
     q1_1_1::text
 	FROM initiative
-	--~ (when (:review-status params) "WHERE review_status = (:v:review-status)::review_status")
+        LEFT JOIN related_content ON initiative.id = related_content.resource_id AND resource_table_name = 'initiative'::regclass
+        --~ (when (:review-status params) "WHERE review_status = (:v:review-status)::review_status")
+  GROUP BY initiative.id
 UNION ALL
   SELECT
   	'policy'::text AS topic,
@@ -405,7 +411,7 @@ UNION ALL
     NULL AS capacity_building,
     NULL AS event_type,
     NULL AS recording,
-    related_content,
+    array_remove(array_agg(related_content.related_resource_id), NULL) AS related_content,
     topics,
     record_number,
     first_publication_date::text,
@@ -473,7 +479,9 @@ UNION ALL
     NULL AS q35_1,
     NULL AS q1_1_1
   FROM policy
+  LEFT JOIN related_content ON policy.id = related_content.resource_id AND resource_table_name = 'policy'::regclass
   --~ (when (:review-status params) "WHERE review_status = (:v:review-status)::review_status")
+  GROUP BY policy.id
 UNION ALL
   SELECT
     'technology'::text AS topic,
@@ -521,7 +529,7 @@ UNION ALL
     NULL AS capacity_building,
     NULL AS event_type,
     NULL AS recording,
-    related_content,
+    array_remove(array_agg(related_content.related_resource_id), NULL) AS related_content,
     NULL::text[] AS topics,
     NULL AS record_number,
     NULL AS first_publication_date,
@@ -589,6 +597,8 @@ UNION ALL
     NULL AS q35_1,
     NULL AS q1_1_1
   FROM technology
+  LEFT JOIN related_content ON technology.id = related_content.resource_id AND resource_table_name = 'technology'::regclass
   --~ (when (:review-status params) "WHERE review_status = (:v:review-status)::review_status")
+  GROUP BY technology.id
 )
 SELECT * FROM flat_topic ORDER BY id;
