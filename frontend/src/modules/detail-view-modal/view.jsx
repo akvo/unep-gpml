@@ -41,7 +41,7 @@ const DetailViewModal = ({
     profile: s.profile,
     countries: s.countries,
   }));
-
+  console.log("data::::::", data);
   const [relations, setRelations] = useState([]);
   const isConnectStakeholders = ["organisation", "stakeholder"].includes(
     resourceType
@@ -175,10 +175,12 @@ const DetailViewModal = ({
                 <span className="detail-item">
                   Geocoverage: {titleCase(data?.geoCoverageType || "")}
                 </span>
+
                 <div className="detail-item">
-                  {["United Kingdom", "France", "Belgium", "Germany"]
-                    .map((location) => location)
-                    .join(", ")}
+                  {data?.geoCoverageCountries &&
+                    ["United Kingdom", "France", "Belgium", "Germany"]
+                      .map((location) => location)
+                      .join(", ")}
                 </div>
 
                 {data?.languages && (
