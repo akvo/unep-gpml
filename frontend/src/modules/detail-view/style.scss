@@ -94,6 +94,33 @@
       border: 5px solid rgba(0, 0, 0, 0.3);
     }
   }
+  .record-table {
+    width: 100%;
+    .record-row:not(:last-of-type) {
+      border-bottom: 0.25px solid #a5b0c9;
+    }
+    .record-row {
+      td {
+        padding: 9px 0;
+      }
+      td:first-of-type {
+        width: 100%;
+        max-width: 30%;
+      }
+
+      .record-value {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 20px;
+        color: #181818;
+      }
+
+      a {
+        color: #000000;
+        border-bottom: 2px solid #c5c5c5;
+      }
+    }
+  }
 
   .detail-item {
     font-weight: 500;

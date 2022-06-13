@@ -479,6 +479,68 @@ const DetailView = ({
         </Col>
       )}
 
+      <Col className="section">
+        <h3 className="content-heading">Records</h3>
+        <div>
+          <table className="record-table">
+            <tbody>
+              <tr className="record-row">
+                <td>Year</td>
+                <td className="record-value">2</td>
+              </tr>
+              <tr className="record-row">
+                <td>Valid from</td>
+                <td className="record-value">2</td>
+              </tr>
+              <tr className="record-row">
+                <td>Valid until</td>
+                <td className="record-value">2</td>
+              </tr>
+              <tr className="record-row">
+                <td>Amount Invested</td>
+                <td className="record-value">2</td>
+              </tr>
+              <tr className="record-row">
+                <td>In Kind Contributions</td>
+                <td className="record-value">2</td>
+              </tr>
+              <tr className="record-row">
+                <td>Funding Type</td>
+                <td className="record-value">2</td>
+              </tr>
+              <tr className="record-row">
+                <td>Funding Name</td>
+                <td className="record-value">2</td>
+              </tr>
+              <tr className="record-row">
+                <td>Focus Area:</td>
+                <td className="record-value">2</td>
+              </tr>
+              <tr className="record-row">
+                <td>Lifecycle Phase</td>
+                <td className="record-value">2</td>
+              </tr>
+              <tr className="record-row">
+                <td>Sector</td>
+                <td className="record-value">2</td>
+              </tr>
+              <tr className="record-row">
+                <td>Initiative Owner</td>
+                <td className="record-value">2</td>
+              </tr>
+              <tr className="record-row">
+                <td>Entity Type</td>
+                <td className="record-value">2</td>
+              </tr>
+              <tr className="record-row">
+                <td>Initiative Term</td>
+                <td>2</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </Col>
+
       {/* COMMENTS */}
       <Col className="section comment-section">
         <h3 className="content-heading">Discussion</h3>
