@@ -20,6 +20,7 @@ import {
   MessageOutlined,
   PlayCircleTwoTone,
   SendOutlined,
+  EnvironmentOutlined,
 } from "@ant-design/icons";
 import TestImage from "../../images/landing-gpml.jpg";
 import moment from "moment";
@@ -173,7 +174,8 @@ const DetailViewModal = ({
               <Col>
                 <h3 className="content-heading">Location & Geocoverage</h3>
                 <span className="detail-item">
-                  Geocoverage: {titleCase(data?.geoCoverageType || "")}
+                  <EnvironmentOutlined /> Geocoverage: {" "}
+                  {titleCase(data?.geoCoverageType || "")}
                 </span>
 
                 <div className="detail-item">
