@@ -98,17 +98,17 @@ const ResourceList = ({
     return () => setDidMount(false);
   }, []);
 
-  const getData = ({ type, id }) => {
-    api
-      .get(`/detail/${type}/${id}`)
-      .then((d) => {
-        setData(d.data);
-      })
-      .catch((err) => {
-        console.error(err);
-        redirectError(err, history);
-      });
-  };
+  // const getData = ({ type, id }) => {
+  //   api
+  //     .get(`/detail/${type}/${id}`)
+  //     .then((d) => {
+  //       setData(d.data);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //       redirectError(err, history);
+  //     });
+  // };
 
   return (
     <Row style={{ postion: "relative" }}>
@@ -155,18 +155,8 @@ const ResourceList = ({
               setIsShownModal={setIsShownModal}
               setData={setData}
               setDataProperties={setDataProperties}
-              getData={getData}
+              // getData={getData}
             />
-            {isShownModal && (
-              <DetailViewModal
-                isShownModal={isShownModal}
-                setIsShownModal={setIsShownModal}
-                setData={setData}
-                resourceId={dataProperties.resourceId}
-                resourceType={dataProperties.resourceType}
-                data={data}
-              />
-            )}
           </>
         ) : (
           <h2 className="loading ">There is no data to display</h2>
@@ -188,14 +178,7 @@ const ResourceList = ({
   );
 };
 
-const ResourceItem = ({
-  results,
-  view,
-  stakeholders,
-  setIsShownModal,
-  setDataProperties,
-  getData,
-}) => {
+const ResourceItem = ({ results, view, stakeholders }) => {
   return results.map((result) => {
     const { id, type } = result;
     const fullName = (data) =>
@@ -242,16 +225,7 @@ const ResourceItem = ({
     };
 
     return (
-      <div
-        className="resource-item-wrapper"
-        key={`${type}-${id}`}
-        onClick={() => {
-          console.log(id);
-          setIsShownModal(true);
-          setDataProperties({ resourceId: id, resourceType: type });
-          getData({ type, id });
-        }}
-      >
+      <Link to={linkTo} className="resource-item-wrapper" key={`${type}-${id}`}>
         <Card
           className="resource-item"
           style={
@@ -313,7 +287,7 @@ const ResourceItem = ({
             </span>
           </div>
         </Card>
-      </div>
+      </Link>
     );
   });
 };

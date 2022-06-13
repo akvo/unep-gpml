@@ -6,7 +6,7 @@ import React, {
   useCallback,
   useRef,
 } from "react";
-import "./styles.scss";
+// import "./styles.scss";
 import {
   Row,
   Col,
@@ -60,6 +60,7 @@ import { Form as FinalForm, FormSpy, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import { FieldsFromSchema } from "../../utils/form-utils";
 import RelatedContent from "../../components/related-content/related-content";
+import DetailView from "../detail-view/view";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
@@ -851,719 +852,724 @@ const DetailsView = ({
   setStakeholderSignupModalVisible,
   setFilterMenu,
 }) => {
-  const relatedContent = useRef(null);
-  const record = useRef(null);
-  const document = useRef(null);
-  const tag = useRef(null);
-  const description = useRef(null);
-  const reviews = useRef(null);
-  const [showLess, setShowLess] = useState(true);
-  const [sending, setSending] = useState(false);
-
-  const {
-    profile,
-    countries,
-    languages,
-    regionOptions,
-    meaOptions,
-    transnationalOptions,
-    icons,
-    placeholder,
-  } = UIStore.useState((s) => ({
-    profile: s.profile,
-    countries: s.countries,
-    languages: s.languages,
-    regionOptions: s.regionOptions,
-    meaOptions: s.meaOptions,
-    transnationalOptions: s.transnationalOptions,
-    icons: s.icons,
-    placeholder: s.placeholder,
-  }));
-  const history = useHistory();
-  const [data, setData] = useState(null);
-  const [relations, setRelations] = useState([]);
-  const [comments, setComments] = useState([]);
-  const { isAuthenticated, loginWithPopup } = useAuth0();
-  const [warningVisible, setWarningVisible] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const [showReplyBox, setShowReplyBox] = useState("");
-  const [editComment, setEditComment] = useState("");
-
-  const relation = relations.find(
-    (it) =>
-      it.topicId === parseInt(params.id) &&
-      it.topic === resourceTypeToTopicType(params.type)
-  );
-
-  const isConnectStakeholders = ["organisation", "stakeholder"].includes(
-    params?.type
-  );
-  const breadcrumbLink = isConnectStakeholders ? "stakeholders" : "browse";
-
-  const allowBookmark =
-    params.type !== "stakeholder" || profile.id !== params.id;
-
-  const isLoaded = useCallback(
-    () =>
-      Boolean(
-        !isEmpty(countries) &&
-          (isConnectStakeholders ? !isEmpty(profile) : true)
-      ),
-    [countries, profile, isConnectStakeholders]
-  );
-
-  const handleRelationChange = (relation) => {
-    if (!isAuthenticated) {
-      loginWithPopup();
-    }
-    if (profile.reviewStatus === "SUBMITTED") {
-      setWarningVisible(true);
-    }
-    if (isAuthenticated && profile.reviewStatus === undefined) {
-      setStakeholderSignupModalVisible(true);
-    }
-    if (profile.reviewStatus === "APPROVED") {
-      api.post("/favorite", relation).then((res) => {
-        const relationIndex = relations.findIndex(
-          (it) => it.topicId === relation.topicId
-        );
-        if (relationIndex !== -1) {
-          setRelations([
-            ...relations.slice(0, relationIndex),
-            relation,
-            ...relations.slice(relationIndex + 1),
-          ]);
-        } else {
-          setRelations([...relations, relation]);
-        }
-      });
-    }
-  };
-
-  useEffect(() => {
-    isLoaded() &&
-      !data &&
-      params?.type &&
-      params?.id &&
-      api
-        .get(`/detail/${params.type}/${params.id}`)
-        .then((d) => {
-          setData(d.data);
-          getComment(params.id, params.type);
-        })
-        .catch((err) => {
-          console.error(err);
-          redirectError(err, history);
-        });
-    if (isLoaded() && profile.reviewStatus === "APPROVED") {
-      setTimeout(() => {
-        api.get(`/favorite/${params.type}/${params.id}`).then((resp) => {
-          setRelations(resp.data);
-        });
-      }, 100);
-    }
-    UIStore.update((e) => {
-      e.disclaimer = null;
-    });
-    window.scrollTo({ top: 0 });
-  }, [profile, isLoaded]);
-
-  const getComment = async (id, type) => {
-    let res = await api.get(
-      `/comment?resource_id=${id}&resource_type=${
-        type === "project" ? "initiative" : type
-      }`
-    );
-    if (res && res?.data) {
-      setComments(res.data?.comments);
-    }
-  };
-
-  const handleEditBtn = () => {
-    let form = null;
-    let type = null;
-    let link = null;
-    switch (params.type) {
-      case "project":
-        form = "initiative";
-        link = "edit-initiative";
-        type = "initiative";
-        break;
-      case "action_plan":
-        form = "actionPlan";
-        link = "edit-action-plan";
-        type = "action_plan";
-        break;
-      case "policy":
-        form = "policy";
-        link = "edit-policy";
-        type = "policy";
-        break;
-      case "technical_resource":
-        form = "technicalResource";
-        link = "edit-technical-resource";
-        type = "technical_resource";
-        break;
-      case "financing_resource":
-        form = "financingResource";
-        link = "edit-financing-resource";
-        type = "financing_resource";
-        break;
-      case "technology":
-        form = "technology";
-        link = "edit-technology";
-        type = "technology";
-        break;
-      case "event":
-        form = "event";
-        link = "edit-event";
-        type = "event";
-        break;
-      default:
-        form = "entity";
-        link = "edit-entity";
-        type = "initiative";
-        break;
-    }
-    UIStore.update((e) => {
-      e.formEdit = {
-        ...e.formEdit,
-        flexible: {
-          status: "edit",
-          id: params.id,
-        },
-      };
-      e.formStep = {
-        ...e.formStep,
-        flexible: 1,
-      };
-    });
-
-    history.push({
-      pathname: `/${link}/${params.id}`,
-      state: { type: type },
-    });
-  };
-
-  const handleVisible = () => {
-    setVisible(!visible);
-  };
-
-  const defaultFormSchema = {
-    title: { label: "Title", required: true },
-    description: { label: "Description", control: "textarea", required: true },
-  };
-
-  const formRef = useRef();
-  const [formSchema, setFormSchema] = useState(defaultFormSchema);
-  const [comment, setComment] = useState("");
-
-  const onSubmit = (val) => {
-    const data = {
-      author_id: profile.id,
-      resource_id: parseInt(params.id),
-      resource_type: params?.type,
-      ...(val.parent_id && { parent_id: val.parent_id }),
-      title: val.title,
-      content: val.description,
-    };
-
-    setSending(true);
-    api
-      .post("/comment", data)
-      .then((data) => {
-        setSending(false);
-        getComment(params.id, params.type);
-      })
-      .catch(() => {
-        setSending(false);
-        // notification.error({ message: "An error occured" });
-      })
-      .finally(() => {
-        setSending(false);
-      });
-  };
-
-  const onReply = (id, title) => {
-    const val = {
-      parent_id: id,
-      title: title,
-      description: comment,
-    };
-    onSubmit(val);
-  };
-
-  const onEditComment = (id, title) => {
-    const val = {
-      id: id,
-      title: title,
-      content: comment,
-    };
-    api
-      .put("/comment", val)
-      .then((data) => {
-        getComment(params.id, params.type);
-      })
-      .catch(() => {})
-      .finally(() => {});
-  };
-
-  if (!data) {
-    return (
-      <div className="details-view">
-        <div className="loading">
-          <LoadingOutlined spin />
-          <i>Loading...</i>
-        </div>
-      </div>
-    );
-  }
-
-  let recordShow =
-    renderDetails(
-      {
-        countries,
-        languages,
-        regionOptions,
-        meaOptions,
-        transnationalOptions,
-      },
-      params,
-      data,
-      profile,
-      countries
-    )?.props?.children !== "There is no data to display";
-
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 1200 },
-      items: 4,
-      slidesToSlide: 4,
-    },
-    desktop: {
-      breakpoint: { max: 1199, min: 992 },
-      items: 3,
-      slidesToSlide: 3,
-    },
-    tablet: {
-      breakpoint: { max: 991, min: 768 },
-      items: 3,
-      slidesToSlide: 3,
-    },
-    mobile2: {
-      breakpoint: { max: 767, min: 600 },
-      items: 2,
-      slidesToSlide: 2,
-    },
-    mobile: {
-      breakpoint: { max: 599, min: 0 },
-      items: 1,
-      slidesToSlide: 1,
-    },
-  };
-
   return (
-    <div id="details">
-      <div className="section-header">
-        <div className="ui container">
-          <Row>
-            <Col xs={24} lg={24}>
-              <div className="header-wrapper">
-                <img src={ActionGreen} />
-                <div>
-                  <Title level={2}>{topicNames(params?.type)}</Title>
-                  <Title level={4}>{data?.title}</Title>
-                </div>
-              </div>
-            </Col>
-          </Row>
-        </div>
-      </div>
-
-      <div className="section-banner">
-        <div className="ui container">
-          <Row gutter={[16, 16]}>
-            {renderBannerSection(
-              data,
-              LeftImage,
-              profile,
-              isAuthenticated,
-              params,
-              handleEditBtn,
-              allowBookmark,
-              visible,
-              handleVisible,
-              showLess,
-              setShowLess,
-              placeholder,
-              { ...{ handleRelationChange, relation } }
-            )}
-          </Row>
-        </div>
-      </div>
-
-      <div className="section-info">
-        <div className="ui container">
-          <Row gutter={[16, 16]}>
-            <Col xs={6} lg={6}>
-              {/* <div className="views-container">
-                <List itemLayout="horizontal">
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={<Avatar src={ViewsImage} />}
-                      title={"123 views"}
-                    />
-                  </List.Item>
-                </List>
-              </div> */}
-
-              <CardComponent title="Location and Geo-coverage">
-                <div className="list geo-coverage">
-                  <List itemLayout="horizontal">
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={TransnationalImage} />}
-                        title={data?.geoCoverageType}
-                      />
-                    </List.Item>
-                    {data?.geoCoverageType !== "sub-national" &&
-                      data?.geoCoverageType !== "national" && (
-                        <>
-                          {data?.geoCoverageCountryGroups &&
-                            data?.geoCoverageCountryGroups.length > 0 && (
-                              <List.Item>
-                                <List.Item.Meta
-                                  avatar={<Avatar src={LocationImage} />}
-                                  title={
-                                    <>
-                                      {renderGeoCoverageCountryGroups(
-                                        data,
-                                        countries,
-                                        transnationalOptions
-                                      )}
-                                    </>
-                                  }
-                                />
-                              </List.Item>
-                            )}
-                        </>
-                      )}
-                    {data?.geoCoverageType !== "sub-national" &&
-                      data?.geoCoverageType !== "national" && (
-                        <>
-                          {data?.geoCoverageCountries &&
-                            data?.geoCoverageCountries.length > 0 && (
-                              <List.Item>
-                                <List.Item.Meta
-                                  avatar={<Avatar src={LocationImage} />}
-                                  title={
-                                    <>
-                                      {renderCountries(
-                                        data,
-                                        countries,
-                                        transnationalOptions
-                                      )}
-                                    </>
-                                  }
-                                />
-                              </List.Item>
-                            )}
-                        </>
-                      )}
-                    {(data?.geoCoverageType === "sub-national" ||
-                      data?.geoCoverageType === "national") && (
-                      <>
-                        {data?.geoCoverageValues &&
-                          data?.geoCoverageValues.length > 0 && (
-                            <List.Item>
-                              <List.Item.Meta
-                                avatar={<Avatar src={LocationImage} />}
-                                title={renderCountries(
-                                  data,
-                                  countries,
-                                  transnationalOptions
-                                )}
-                              />
-                            </List.Item>
-                          )}
-                      </>
-                    )}
-                    {(data?.subnationalCity || data?.q24SubnationalCity) && (
-                      <List.Item>
-                        <List.Item.Meta
-                          avatar={<Avatar src={CityImage} />}
-                          title={
-                            data?.subnationalCity
-                              ? data?.subnationalCity
-                              : data?.q24SubnationalCity
-                          }
-                        />
-                      </List.Item>
-                    )}
-                  </List>
-                </div>
-              </CardComponent>
-              {data?.entityConnections.length +
-                data?.stakeholderConnections.filter(
-                  (x) =>
-                    x.stakeholderRole !== "ADMIN" || x.role === "interested in"
-                )?.length >
-                0 && (
-                <CardComponent
-                  title={`Connections (${
-                    data?.entityConnections.length +
-                    data?.stakeholderConnections.filter(
-                      (x) =>
-                        x.stakeholderRole !== "ADMIN" ||
-                        x.role === "interested in"
-                    )?.length
-                  })`}
-                >
-                  <div className="list connection-list">
-                    {data?.entityConnections.length > 0 && (
-                      <List itemLayout="horizontal">
-                        {data?.entityConnections.map((item) => (
-                          <List.Item>
-                            <List.Item.Meta
-                              avatar={
-                                <Avatar
-                                  size={50}
-                                  src={
-                                    item?.image ? (
-                                      item?.image
-                                    ) : (
-                                      <Avatar
-                                        style={{
-                                          backgroundColor: "#09689A",
-                                          verticalAlign: "middle",
-                                        }}
-                                        size={50}
-                                      >
-                                        {item.entity?.substring(0, 2)}
-                                      </Avatar>
-                                    )
-                                  }
-                                />
-                              }
-                              title={
-                                <Link to={`/organisation/${item.entityId}`}>
-                                  {item.entity}
-                                </Link>
-                              }
-                              description={"Entity"}
-                            />{" "}
-                            {/* <div className="see-more-button">See More</div> */}
-                          </List.Item>
-                        ))}
-                      </List>
-                    )}
-                    {data?.stakeholderConnections.filter(
-                      (x) =>
-                        x.stakeholderRole !== "ADMIN" ||
-                        x.role === "interested in"
-                    )?.length > 0 && (
-                      <List itemLayout="horizontal">
-                        {data?.stakeholderConnections
-                          .filter(
-                            (x) =>
-                              x.stakeholderRole !== "ADMIN" ||
-                              x.role === "interested in"
-                          )
-                          .map((item) => (
-                            <List.Item key={item?.id}>
-                              <List.Item.Meta
-                                avatar={<Avatar src={item.image} />}
-                                title={
-                                  <Link
-                                    to={`/stakeholder/${item.stakeholderId}`}
-                                  >
-                                    {item.stakeholder}
-                                  </Link>
-                                }
-                                description={item.role}
-                              />
-                            </List.Item>
-                          ))}
-                      </List>
-                    )}
-                    {/* <List itemLayout="horizontal">
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={
-                          <>
-                            <div className="count">+72</div>
-                          </>
-                        }
-                        title={"Scroll to see more"}
-                      />
-                    </List.Item>
-                  </List> */}
-                  </div>
-                </CardComponent>
-              )}
-            </Col>
-            <Col xs={18} lg={18}>
-              <TabComponent
-                style={{
-                  marginBottom: "30px",
-                }}
-                relatedRef={relatedContent}
-                recordRef={record}
-                documentRef={document}
-                tagRef={tag}
-                reviewsRef={reviews}
-                descriptionRef={description}
-                data={data}
-                recordShow={recordShow}
-                profile={profile}
-                params={params}
-              />
-              {params.type !== "technical_resource" &&
-                params.type !== "policy" &&
-                params.type !== "action_plan" && (
-                  <CardComponent title="Description" getRef={description}>
-                    <p className="summary">{data?.summary}</p>
-                  </CardComponent>
-                )}
-              {countries && recordShow && (
-                <CardComponent title="Record" getRef={record}>
-                  <div className="record-table">
-                    {countries &&
-                      renderDetails(
-                        {
-                          countries,
-                          languages,
-                          regionOptions,
-                          meaOptions,
-                          transnationalOptions,
-                        },
-                        params,
-                        data,
-                        profile,
-                        countries
-                      )}
-                  </div>
-                </CardComponent>
-              )}
-              {data?.infoDocs && (
-                <CardComponent title="Documents and info" getRef={document}>
-                  {data?.infoDocs && (
-                    <div
-                      className="list documents-list"
-                      dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
-                    />
-                  )}
-                </CardComponent>
-              )}
-              {data?.tags && data?.tags.length > 0 && (
-                <CardComponent title="Tags" getRef={tag}>
-                  <div className="list tag-list">
-                    <List itemLayout="horizontal">
-                      {data?.tags && (
-                        <List.Item>
-                          <List.Item.Meta
-                            avatar={<Avatar src={TagsImage} />}
-                            title={
-                              <ul>
-                                {data?.tags &&
-                                  data?.tags.map((tag) => (
-                                    <li key={tag.tag}>{tag.tag}</li>
-                                  ))}
-                              </ul>
-                            }
-                          />
-                        </List.Item>
-                      )}
-                    </List>
-                  </div>
-                </CardComponent>
-              )}
-              {data?.relatedContent &&
-                data?.relatedContent?.length > 0 &&
-                data?.relatedContent.length > 0 && (
-                  <RelatedContent
-                    data={data}
-                    responsive={responsive}
-                    isShownCount={false}
-                    title="Related content"
-                    relatedContent={data?.relatedContent}
-                    isShownPagination={false}
-                    dataCount={relatedContent?.length || 0}
-                  />
-                )}
-              {profile && (
-                <CardComponent title="Comments" getRef={reviews}>
-                  <div className="comments-container">
-                    {comments &&
-                      comments.length > 0 &&
-                      comments?.map((item) => (
-                        <div className="comment-list-container">
-                          <CommentList
-                            item={item}
-                            showReplyBox={showReplyBox}
-                            setShowReplyBox={setShowReplyBox}
-                            onReply={onReply}
-                            setComment={setComment}
-                            profile={profile}
-                            getComment={getComment}
-                            params={params}
-                            editComment={editComment}
-                            setEditComment={setEditComment}
-                            onEditComment={onEditComment}
-                          />
-                        </div>
-                      ))}
-                    {!isAuthenticated && (
-                      <p className="no-login">
-                        Please login to comment on this resource
-                      </p>
-                    )}
-                    {profile && profile.reviewStatus === "APPROVED" && (
-                      <Form layout="vertical">
-                        <FinalForm
-                          initialValues={{}}
-                          subscription={{}}
-                          mutators={{ ...arrayMutators }}
-                          onSubmit={onSubmit}
-                          render={({ handleSubmit, form, ...props }) => {
-                            formRef.current = form;
-                            return (
-                              <>
-                                <FieldsFromSchema schema={formSchema} />
-                                <Button
-                                  className="comment-submit"
-                                  size="large"
-                                  loading={sending}
-                                  onClick={() => {
-                                    handleSubmit();
-                                    form.reset();
-                                    form.resetFieldState("title");
-                                    form.resetFieldState("description");
-                                  }}
-                                >
-                                  Submit
-                                </Button>
-                              </>
-                            );
-                          }}
-                        />
-                      </Form>
-                    )}
-                  </div>
-                </CardComponent>
-              )}
-              {/* <CardComponent
-                title="Comments (0)"
-                style={{
-                  marginBottom: "30px",
-                }}
-              /> */}
-            </Col>
-          </Row>
-        </div>
-      </div>
-    </div>
+    <DetailView
+      {...{ params, setStakeholderSignupModalVisible, setFilterMenu }}
+    />
   );
+  // const relatedContent = useRef(null);
+  // const record = useRef(null);
+  // const document = useRef(null);
+  // const tag = useRef(null);
+  // const description = useRef(null);
+  // const reviews = useRef(null);
+  // const [showLess, setShowLess] = useState(true);
+  // const [sending, setSending] = useState(false);
+
+  // const {
+  //   profile,
+  //   countries,
+  //   languages,
+  //   regionOptions,
+  //   meaOptions,
+  //   transnationalOptions,
+  //   icons,
+  //   placeholder,
+  // } = UIStore.useState((s) => ({
+  //   profile: s.profile,
+  //   countries: s.countries,
+  //   languages: s.languages,
+  //   regionOptions: s.regionOptions,
+  //   meaOptions: s.meaOptions,
+  //   transnationalOptions: s.transnationalOptions,
+  //   icons: s.icons,
+  //   placeholder: s.placeholder,
+  // }));
+  // const history = useHistory();
+  // const [data, setData] = useState(null);
+  // const [relations, setRelations] = useState([]);
+  // const [comments, setComments] = useState([]);
+  // const { isAuthenticated, loginWithPopup } = useAuth0();
+  // const [warningVisible, setWarningVisible] = useState(false);
+  // const [visible, setVisible] = useState(false);
+  // const [showReplyBox, setShowReplyBox] = useState("");
+  // const [editComment, setEditComment] = useState("");
+
+  // const relation = relations.find(
+  //   (it) =>
+  //     it.topicId === parseInt(params.id) &&
+  //     it.topic === resourceTypeToTopicType(params.type)
+  // );
+
+  // const isConnectStakeholders = ["organisation", "stakeholder"].includes(
+  //   params?.type
+  // );
+  // const breadcrumbLink = isConnectStakeholders ? "stakeholders" : "browse";
+
+  // const allowBookmark =
+  //   params.type !== "stakeholder" || profile.id !== params.id;
+
+  // const isLoaded = useCallback(
+  //   () =>
+  //     Boolean(
+  //       !isEmpty(countries) &&
+  //         (isConnectStakeholders ? !isEmpty(profile) : true)
+  //     ),
+  //   [countries, profile, isConnectStakeholders]
+  // );
+
+  // const handleRelationChange = (relation) => {
+  //   if (!isAuthenticated) {
+  //     loginWithPopup();
+  //   }
+  //   if (profile.reviewStatus === "SUBMITTED") {
+  //     setWarningVisible(true);
+  //   }
+  //   if (isAuthenticated && profile.reviewStatus === undefined) {
+  //     setStakeholderSignupModalVisible(true);
+  //   }
+  //   if (profile.reviewStatus === "APPROVED") {
+  //     api.post("/favorite", relation).then((res) => {
+  //       const relationIndex = relations.findIndex(
+  //         (it) => it.topicId === relation.topicId
+  //       );
+  //       if (relationIndex !== -1) {
+  //         setRelations([
+  //           ...relations.slice(0, relationIndex),
+  //           relation,
+  //           ...relations.slice(relationIndex + 1),
+  //         ]);
+  //       } else {
+  //         setRelations([...relations, relation]);
+  //       }
+  //     });
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   isLoaded() &&
+  //     !data &&
+  //     params?.type &&
+  //     params?.id &&
+  //     api
+  //       .get(`/detail/${params.type}/${params.id}`)
+  //       .then((d) => {
+  //         setData(d.data);
+  //         getComment(params.id, params.type);
+  //       })
+  //       .catch((err) => {
+  //         console.error(err);
+  //         redirectError(err, history);
+  //       });
+  //   if (isLoaded() && profile.reviewStatus === "APPROVED") {
+  //     setTimeout(() => {
+  //       api.get(`/favorite/${params.type}/${params.id}`).then((resp) => {
+  //         setRelations(resp.data);
+  //       });
+  //     }, 100);
+  //   }
+  //   UIStore.update((e) => {
+  //     e.disclaimer = null;
+  //   });
+  //   window.scrollTo({ top: 0 });
+  // }, [profile, isLoaded]);
+
+  // const getComment = async (id, type) => {
+  //   let res = await api.get(
+  //     `/comment?resource_id=${id}&resource_type=${
+  //       type === "project" ? "initiative" : type
+  //     }`
+  //   );
+  //   if (res && res?.data) {
+  //     setComments(res.data?.comments);
+  //   }
+  // };
+
+  // const handleEditBtn = () => {
+  //   let form = null;
+  //   let type = null;
+  //   let link = null;
+  //   switch (params.type) {
+  //     case "project":
+  //       form = "initiative";
+  //       link = "edit-initiative";
+  //       type = "initiative";
+  //       break;
+  //     case "action_plan":
+  //       form = "actionPlan";
+  //       link = "edit-action-plan";
+  //       type = "action_plan";
+  //       break;
+  //     case "policy":
+  //       form = "policy";
+  //       link = "edit-policy";
+  //       type = "policy";
+  //       break;
+  //     case "technical_resource":
+  //       form = "technicalResource";
+  //       link = "edit-technical-resource";
+  //       type = "technical_resource";
+  //       break;
+  //     case "financing_resource":
+  //       form = "financingResource";
+  //       link = "edit-financing-resource";
+  //       type = "financing_resource";
+  //       break;
+  //     case "technology":
+  //       form = "technology";
+  //       link = "edit-technology";
+  //       type = "technology";
+  //       break;
+  //     case "event":
+  //       form = "event";
+  //       link = "edit-event";
+  //       type = "event";
+  //       break;
+  //     default:
+  //       form = "entity";
+  //       link = "edit-entity";
+  //       type = "initiative";
+  //       break;
+  //   }
+  //   UIStore.update((e) => {
+  //     e.formEdit = {
+  //       ...e.formEdit,
+  //       flexible: {
+  //         status: "edit",
+  //         id: params.id,
+  //       },
+  //     };
+  //     e.formStep = {
+  //       ...e.formStep,
+  //       flexible: 1,
+  //     };
+  //   });
+
+  //   history.push({
+  //     pathname: `/${link}/${params.id}`,
+  //     state: { type: type },
+  //   });
+  // };
+
+  // const handleVisible = () => {
+  //   setVisible(!visible);
+  // };
+
+  // const defaultFormSchema = {
+  //   title: { label: "Title", required: true },
+  //   description: { label: "Description", control: "textarea", required: true },
+  // };
+
+  // const formRef = useRef();
+  // const [formSchema, setFormSchema] = useState(defaultFormSchema);
+  // const [comment, setComment] = useState("");
+
+  // const onSubmit = (val) => {
+  //   const data = {
+  //     author_id: profile.id,
+  //     resource_id: parseInt(params.id),
+  //     resource_type: params?.type,
+  //     ...(val.parent_id && { parent_id: val.parent_id }),
+  //     title: val.title,
+  //     content: val.description,
+  //   };
+
+  //   setSending(true);
+  //   api
+  //     .post("/comment", data)
+  //     .then((data) => {
+  //       setSending(false);
+  //       getComment(params.id, params.type);
+  //     })
+  //     .catch(() => {
+  //       setSending(false);
+  //       // notification.error({ message: "An error occured" });
+  //     })
+  //     .finally(() => {
+  //       setSending(false);
+  //     });
+  // };
+
+  // const onReply = (id, title) => {
+  //   const val = {
+  //     parent_id: id,
+  //     title: title,
+  //     description: comment,
+  //   };
+  //   onSubmit(val);
+  // };
+
+  // const onEditComment = (id, title) => {
+  //   const val = {
+  //     id: id,
+  //     title: title,
+  //     content: comment,
+  //   };
+  //   api
+  //     .put("/comment", val)
+  //     .then((data) => {
+  //       getComment(params.id, params.type);
+  //     })
+  //     .catch(() => {})
+  //     .finally(() => {});
+  // };
+
+  // if (!data) {
+  //   return (
+  //     <div className="details-view">
+  //       <div className="loading">
+  //         <LoadingOutlined spin />
+  //         <i>Loading...</i>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
+  // let recordShow =
+  //   renderDetails(
+  //     {
+  //       countries,
+  //       languages,
+  //       regionOptions,
+  //       meaOptions,
+  //       transnationalOptions,
+  //     },
+  //     params,
+  //     data,
+  //     profile,
+  //     countries
+  //   )?.props?.children !== "There is no data to display";
+
+  // const responsive = {
+  //   superLargeDesktop: {
+  //     breakpoint: { max: 4000, min: 1200 },
+  //     items: 4,
+  //     slidesToSlide: 4,
+  //   },
+  //   desktop: {
+  //     breakpoint: { max: 1199, min: 992 },
+  //     items: 3,
+  //     slidesToSlide: 3,
+  //   },
+  //   tablet: {
+  //     breakpoint: { max: 991, min: 768 },
+  //     items: 3,
+  //     slidesToSlide: 3,
+  //   },
+  //   mobile2: {
+  //     breakpoint: { max: 767, min: 600 },
+  //     items: 2,
+  //     slidesToSlide: 2,
+  //   },
+  //   mobile: {
+  //     breakpoint: { max: 599, min: 0 },
+  //     items: 1,
+  //     slidesToSlide: 1,
+  //   },
+  // };
+
+  // return (
+  //   <div id="details">
+  //     <div className="section-header">
+  //       <div className="ui container">
+  //         <Row>
+  //           <Col xs={24} lg={24}>
+  //             <div className="header-wrapper">
+  //               <img src={ActionGreen} />
+  //               <div>
+  //                 <Title level={2}>{topicNames(params?.type)}</Title>
+  //                 <Title level={4}>{data?.title}</Title>
+  //               </div>
+  //             </div>
+  //           </Col>
+  //         </Row>
+  //       </div>
+  //     </div>
+
+  //     <div className="section-banner">
+  //       <div className="ui container">
+  //         <Row gutter={[16, 16]}>
+  //           {renderBannerSection(
+  //             data,
+  //             LeftImage,
+  //             profile,
+  //             isAuthenticated,
+  //             params,
+  //             handleEditBtn,
+  //             allowBookmark,
+  //             visible,
+  //             handleVisible,
+  //             showLess,
+  //             setShowLess,
+  //             placeholder,
+  //             { ...{ handleRelationChange, relation } }
+  //           )}
+  //         </Row>
+  //       </div>
+  //     </div>
+
+  //     <div className="section-info">
+  //       <div className="ui container">
+  //         <Row gutter={[16, 16]}>
+  //           <Col xs={6} lg={6}>
+  //             {/* <div className="views-container">
+  //               <List itemLayout="horizontal">
+  //                 <List.Item>
+  //                   <List.Item.Meta
+  //                     avatar={<Avatar src={ViewsImage} />}
+  //                     title={"123 views"}
+  //                   />
+  //                 </List.Item>
+  //               </List>
+  //             </div> */}
+
+  //             <CardComponent title="Location and Geo-coverage">
+  //               <div className="list geo-coverage">
+  //                 <List itemLayout="horizontal">
+  //                   <List.Item>
+  //                     <List.Item.Meta
+  //                       avatar={<Avatar src={TransnationalImage} />}
+  //                       title={data?.geoCoverageType}
+  //                     />
+  //                   </List.Item>
+  //                   {data?.geoCoverageType !== "sub-national" &&
+  //                     data?.geoCoverageType !== "national" && (
+  //                       <>
+  //                         {data?.geoCoverageCountryGroups &&
+  //                           data?.geoCoverageCountryGroups.length > 0 && (
+  //                             <List.Item>
+  //                               <List.Item.Meta
+  //                                 avatar={<Avatar src={LocationImage} />}
+  //                                 title={
+  //                                   <>
+  //                                     {renderGeoCoverageCountryGroups(
+  //                                       data,
+  //                                       countries,
+  //                                       transnationalOptions
+  //                                     )}
+  //                                   </>
+  //                                 }
+  //                               />
+  //                             </List.Item>
+  //                           )}
+  //                       </>
+  //                     )}
+  //                   {data?.geoCoverageType !== "sub-national" &&
+  //                     data?.geoCoverageType !== "national" && (
+  //                       <>
+  //                         {data?.geoCoverageCountries &&
+  //                           data?.geoCoverageCountries.length > 0 && (
+  //                             <List.Item>
+  //                               <List.Item.Meta
+  //                                 avatar={<Avatar src={LocationImage} />}
+  //                                 title={
+  //                                   <>
+  //                                     {renderCountries(
+  //                                       data,
+  //                                       countries,
+  //                                       transnationalOptions
+  //                                     )}
+  //                                   </>
+  //                                 }
+  //                               />
+  //                             </List.Item>
+  //                           )}
+  //                       </>
+  //                     )}
+  //                   {(data?.geoCoverageType === "sub-national" ||
+  //                     data?.geoCoverageType === "national") && (
+  //                     <>
+  //                       {data?.geoCoverageValues &&
+  //                         data?.geoCoverageValues.length > 0 && (
+  //                           <List.Item>
+  //                             <List.Item.Meta
+  //                               avatar={<Avatar src={LocationImage} />}
+  //                               title={renderCountries(
+  //                                 data,
+  //                                 countries,
+  //                                 transnationalOptions
+  //                               )}
+  //                             />
+  //                           </List.Item>
+  //                         )}
+  //                     </>
+  //                   )}
+  //                   {(data?.subnationalCity || data?.q24SubnationalCity) && (
+  //                     <List.Item>
+  //                       <List.Item.Meta
+  //                         avatar={<Avatar src={CityImage} />}
+  //                         title={
+  //                           data?.subnationalCity
+  //                             ? data?.subnationalCity
+  //                             : data?.q24SubnationalCity
+  //                         }
+  //                       />
+  //                     </List.Item>
+  //                   )}
+  //                 </List>
+  //               </div>
+  //             </CardComponent>
+  //             {data?.entityConnections.length +
+  //               data?.stakeholderConnections.filter(
+  //                 (x) =>
+  //                   x.stakeholderRole !== "ADMIN" || x.role === "interested in"
+  //               )?.length >
+  //               0 && (
+  //               <CardComponent
+  //                 title={`Connections (${
+  //                   data?.entityConnections.length +
+  //                   data?.stakeholderConnections.filter(
+  //                     (x) =>
+  //                       x.stakeholderRole !== "ADMIN" ||
+  //                       x.role === "interested in"
+  //                   )?.length
+  //                 })`}
+  //               >
+  //                 <div className="list connection-list">
+  //                   {data?.entityConnections.length > 0 && (
+  //                     <List itemLayout="horizontal">
+  //                       {data?.entityConnections.map((item) => (
+  //                         <List.Item>
+  //                           <List.Item.Meta
+  //                             avatar={
+  //                               <Avatar
+  //                                 size={50}
+  //                                 src={
+  //                                   item?.image ? (
+  //                                     item?.image
+  //                                   ) : (
+  //                                     <Avatar
+  //                                       style={{
+  //                                         backgroundColor: "#09689A",
+  //                                         verticalAlign: "middle",
+  //                                       }}
+  //                                       size={50}
+  //                                     >
+  //                                       {item.entity?.substring(0, 2)}
+  //                                     </Avatar>
+  //                                   )
+  //                                 }
+  //                               />
+  //                             }
+  //                             title={
+  //                               <Link to={`/organisation/${item.entityId}`}>
+  //                                 {item.entity}
+  //                               </Link>
+  //                             }
+  //                             description={"Entity"}
+  //                           />{" "}
+  //                           {/* <div className="see-more-button">See More</div> */}
+  //                         </List.Item>
+  //                       ))}
+  //                     </List>
+  //                   )}
+  //                   {data?.stakeholderConnections.filter(
+  //                     (x) =>
+  //                       x.stakeholderRole !== "ADMIN" ||
+  //                       x.role === "interested in"
+  //                   )?.length > 0 && (
+  //                     <List itemLayout="horizontal">
+  //                       {data?.stakeholderConnections
+  //                         .filter(
+  //                           (x) =>
+  //                             x.stakeholderRole !== "ADMIN" ||
+  //                             x.role === "interested in"
+  //                         )
+  //                         .map((item) => (
+  //                           <List.Item key={item?.id}>
+  //                             <List.Item.Meta
+  //                               avatar={<Avatar src={item.image} />}
+  //                               title={
+  //                                 <Link
+  //                                   to={`/stakeholder/${item.stakeholderId}`}
+  //                                 >
+  //                                   {item.stakeholder}
+  //                                 </Link>
+  //                               }
+  //                               description={item.role}
+  //                             />
+  //                           </List.Item>
+  //                         ))}
+  //                     </List>
+  //                   )}
+  //                   {/* <List itemLayout="horizontal">
+  //                   <List.Item>
+  //                     <List.Item.Meta
+  //                       avatar={
+  //                         <>
+  //                           <div className="count">+72</div>
+  //                         </>
+  //                       }
+  //                       title={"Scroll to see more"}
+  //                     />
+  //                   </List.Item>
+  //                 </List> */}
+  //                 </div>
+  //               </CardComponent>
+  //             )}
+  //           </Col>
+  //           <Col xs={18} lg={18}>
+  //             <TabComponent
+  //               style={{
+  //                 marginBottom: "30px",
+  //               }}
+  //               relatedRef={relatedContent}
+  //               recordRef={record}
+  //               documentRef={document}
+  //               tagRef={tag}
+  //               reviewsRef={reviews}
+  //               descriptionRef={description}
+  //               data={data}
+  //               recordShow={recordShow}
+  //               profile={profile}
+  //               params={params}
+  //             />
+  //             {params.type !== "technical_resource" &&
+  //               params.type !== "policy" &&
+  //               params.type !== "action_plan" && (
+  //                 <CardComponent title="Description" getRef={description}>
+  //                   <p className="summary">{data?.summary}</p>
+  //                 </CardComponent>
+  //               )}
+  //             {countries && recordShow && (
+  //               <CardComponent title="Record" getRef={record}>
+  //                 <div className="record-table">
+  //                   {countries &&
+  //                     renderDetails(
+  //                       {
+  //                         countries,
+  //                         languages,
+  //                         regionOptions,
+  //                         meaOptions,
+  //                         transnationalOptions,
+  //                       },
+  //                       params,
+  //                       data,
+  //                       profile,
+  //                       countries
+  //                     )}
+  //                 </div>
+  //               </CardComponent>
+  //             )}
+  //             {data?.infoDocs && (
+  //               <CardComponent title="Documents and info" getRef={document}>
+  //                 {data?.infoDocs && (
+  //                   <div
+  //                     className="list documents-list"
+  //                     dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
+  //                   />
+  //                 )}
+  //               </CardComponent>
+  //             )}
+  //             {data?.tags && data?.tags.length > 0 && (
+  //               <CardComponent title="Tags" getRef={tag}>
+  //                 <div className="list tag-list">
+  //                   <List itemLayout="horizontal">
+  //                     {data?.tags && (
+  //                       <List.Item>
+  //                         <List.Item.Meta
+  //                           avatar={<Avatar src={TagsImage} />}
+  //                           title={
+  //                             <ul>
+  //                               {data?.tags &&
+  //                                 data?.tags.map((tag) => (
+  //                                   <li key={tag.tag}>{tag.tag}</li>
+  //                                 ))}
+  //                             </ul>
+  //                           }
+  //                         />
+  //                       </List.Item>
+  //                     )}
+  //                   </List>
+  //                 </div>
+  //               </CardComponent>
+  //             )}
+  //             {data?.relatedContent &&
+  //               data?.relatedContent?.length > 0 &&
+  //               data?.relatedContent.length > 0 && (
+  //                 <RelatedContent
+  //                   data={data}
+  //                   responsive={responsive}
+  //                   isShownCount={false}
+  //                   title="Related content"
+  //                   relatedContent={data?.relatedContent}
+  //                   isShownPagination={false}
+  //                   dataCount={relatedContent?.length || 0}
+  //                 />
+  //               )}
+  //             {profile && (
+  //               <CardComponent title="Comments" getRef={reviews}>
+  //                 <div className="comments-container">
+  //                   {comments &&
+  //                     comments.length > 0 &&
+  //                     comments?.map((item) => (
+  //                       <div className="comment-list-container">
+  //                         <CommentList
+  //                           item={item}
+  //                           showReplyBox={showReplyBox}
+  //                           setShowReplyBox={setShowReplyBox}
+  //                           onReply={onReply}
+  //                           setComment={setComment}
+  //                           profile={profile}
+  //                           getComment={getComment}
+  //                           params={params}
+  //                           editComment={editComment}
+  //                           setEditComment={setEditComment}
+  //                           onEditComment={onEditComment}
+  //                         />
+  //                       </div>
+  //                     ))}
+  //                   {!isAuthenticated && (
+  //                     <p className="no-login">
+  //                       Please login to comment on this resource
+  //                     </p>
+  //                   )}
+  //                   {profile && profile.reviewStatus === "APPROVED" && (
+  //                     <Form layout="vertical">
+  //                       <FinalForm
+  //                         initialValues={{}}
+  //                         subscription={{}}
+  //                         mutators={{ ...arrayMutators }}
+  //                         onSubmit={onSubmit}
+  //                         render={({ handleSubmit, form, ...props }) => {
+  //                           formRef.current = form;
+  //                           return (
+  //                             <>
+  //                               <FieldsFromSchema schema={formSchema} />
+  //                               <Button
+  //                                 className="comment-submit"
+  //                                 size="large"
+  //                                 loading={sending}
+  //                                 onClick={() => {
+  //                                   handleSubmit();
+  //                                   form.reset();
+  //                                   form.resetFieldState("title");
+  //                                   form.resetFieldState("description");
+  //                                 }}
+  //                               >
+  //                                 Submit
+  //                               </Button>
+  //                             </>
+  //                           );
+  //                         }}
+  //                       />
+  //                     </Form>
+  //                   )}
+  //                 </div>
+  //               </CardComponent>
+  //             )}
+  //             {/* <CardComponent
+  //               title="Comments (0)"
+  //               style={{
+  //                 marginBottom: "30px",
+  //               }}
+  //             /> */}
+  //           </Col>
+  //         </Row>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 };
 
 export default DetailsView;
