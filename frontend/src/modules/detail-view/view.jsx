@@ -12,6 +12,7 @@ import {
   Tag,
   Tooltip,
   Comment,
+  Popover,
 } from "antd";
 import {
   EyeFilled,
@@ -22,6 +23,7 @@ import {
   SendOutlined,
   EnvironmentOutlined,
   HeartFilled,
+  InfoCircleOutlined,
 } from "@ant-design/icons";
 import TestImage from "../../images/landing-gpml.jpg";
 import moment from "moment";
@@ -430,14 +432,14 @@ const DetailView = ({
                     <>
                       {data?.geoCoverageCountryGroups &&
                         data?.geoCoverageCountryGroups.length > 0 && (
-                          <>
+                          <Row>
                             <LocationImage />{" "}
                             {renderGeoCoverageCountryGroups(
                               data,
                               countries,
                               transnationalOptions
                             )}
-                          </>
+                          </Row>
                         )}
                     </>
                   )}
@@ -447,14 +449,14 @@ const DetailView = ({
                     <>
                       {data?.geoCoverageCountries &&
                         data?.geoCoverageCountries.length > 0 && (
-                          <>
+                          <Row>
                             <LocationImage />{" "}
                             {renderCountries(
                               data,
                               countries,
                               transnationalOptions
                             )}
-                          </>
+                          </Row>
                         )}
                     </>
                   )}
@@ -464,14 +466,14 @@ const DetailView = ({
                   <>
                     {data?.geoCoverageValues &&
                       data?.geoCoverageValues.length > 0 && (
-                        <>
+                        <Row>
                           <LocationImage />{" "}
                           {renderCountries(
                             data,
                             countries,
                             transnationalOptions
                           )}
-                        </>
+                        </Row>
                       )}
                   </>
                 )}
@@ -533,19 +535,21 @@ const DetailView = ({
                         key={index}
                         src={
                           <Avatar
-                            avatar={<Avatar src={connection} />}
+                            avatar={<Avatar src={connection?.image} />}
                             style={{
                               backgroundColor: "#09689A",
                               verticalAlign: "middle",
                             }}
                             size={51}
                             title={
-                              <Link to={`/stakeholder/${connection}`}>
-                                {connection}
+                              <Link
+                                to={`/stakeholder/${connection?.stakeholderId}`}
+                              >
+                                {connection?.stakeholder}
                               </Link>
                             }
                           >
-                            {connection}
+                            {connection?.stakeholder}
                           </Avatar>
                         }
                       />
