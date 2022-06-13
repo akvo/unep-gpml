@@ -157,14 +157,16 @@ const ResourceList = ({
               setDataProperties={setDataProperties}
               getData={getData}
             />
-            <DetailViewModal
-              isShownModal={isShownModal}
-              setIsShownModal={setIsShownModal}
-              setData={setData}
-              resourceId={dataProperties.resourceId}
-              resourceType={dataProperties.resourceType}
-              data={data}
-            />
+            {isShownModal && (
+              <DetailViewModal
+                isShownModal={isShownModal}
+                setIsShownModal={setIsShownModal}
+                setData={setData}
+                resourceId={dataProperties.resourceId}
+                resourceType={dataProperties.resourceType}
+                data={data}
+              />
+            )}
           </>
         ) : (
           <h2 className="loading ">There is no data to display</h2>
