@@ -89,7 +89,6 @@
       padding: 0 !important;
 
       .description-holder {
-        display: none !important;
         transition: all ease-out 0.2s;
         position: absolute;
         display: flex;
@@ -102,8 +101,7 @@
         height: 100%;
         min-height: 200px;
         border-radius: 5px;
-        width: 170px;
-        margin-left: -20px;
+        width: 100%;
 
         h3 {
           font-style: normal;
@@ -143,10 +141,11 @@
 
     &:hover {
       border-radius: 5px;
-      margin: 0 20px 0 calc(40px + 19px) !important;
+      margin: 0 20px 0 calc(40px) !important;
       transform: scale(1.27) translateY(-12px);
       z-index: 9999;
       transition: all ease-out 0.2s;
+      margin-left: -20px;
 
       .description-holder {
         display: flex !important;
@@ -160,6 +159,11 @@
       }
       &:first-of-type {
         margin: 0 20px 0 40px !important;
+      }
+    }
+    &:nth-child(1) {
+      &:hover {
+        margin-left: 20px !important;
       }
     }
     .ant-col-12 {
