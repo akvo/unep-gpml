@@ -39,6 +39,7 @@ import { ReactComponent as LocationImage } from "../../images/location.svg";
 import { ReactComponent as TransnationalImage } from "../../images/transnational.svg";
 import { ReactComponent as CityImage } from "../../images/city-icn.svg";
 import { ReactComponent as TagsImage } from "../../images/tags.svg";
+import RelatedContent from "../../components/related-content/related-content";
 
 const DetailView = ({
   params,
@@ -384,6 +385,34 @@ const DetailView = ({
         ))}
       </Comment>
     );
+  };
+
+  const responsive = {
+    superLargeDesktop: {
+      breakpoint: { max: 4000, min: 1200 },
+      items: 5.5,
+      slidesToSlide: 5.5,
+    },
+    desktop: {
+      breakpoint: { max: 1199, min: 992 },
+      items: 4.5,
+      slidesToSlide: 4.5,
+    },
+    tablet: {
+      breakpoint: { max: 991, min: 768 },
+      items: 3.5,
+      slidesToSlide: 3.5,
+    },
+    mobile2: {
+      breakpoint: { max: 767, min: 600 },
+      items: 2.5,
+      slidesToSlide: 2.5,
+    },
+    mobile: {
+      breakpoint: { max: 599, min: 0 },
+      items: 1.5,
+      slidesToSlide: 1.5,
+    },
   };
 
   return (
@@ -823,6 +852,23 @@ const DetailView = ({
           </table>
         </div>
       </Col>
+      {/* RELATED CONTENT */}
+
+      {data?.relatedContent &&
+        data?.relatedContent?.length > 0 &&
+        data?.relatedContent.length > 0 && (
+          <Col>
+            <RelatedContent
+              data={data}
+              responsive={responsive}
+              isShownCount={false}
+              title="Related content"
+              relatedContent={data?.relatedContent}
+              isShownPagination={false}
+              dataCount={relatedContent?.length || 0}
+            />
+          </Col>
+        )}
 
       {/* COMMENTS */}
       <Col className="section comment-section">
