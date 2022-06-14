@@ -63,6 +63,11 @@
       .view-button {
         background-color: $green01;
         border: unset;
+        span {
+          display: flex;
+          min-height: 32px;
+          align-items: center;
+        }
       }
 
       .two-tone-button,
