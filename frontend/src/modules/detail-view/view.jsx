@@ -322,7 +322,7 @@ const DetailView = ({
       // title: val.title,
       content: val.target.value || "test",
     };
-console.log('params::::::',params);
+    console.log("params::::::", params);
     setSending(true);
     api
       .post("/comment", data)
@@ -538,10 +538,7 @@ console.log('params::::::',params);
           </Button>
 
           <Button
-            className={`bookmark-button ${
-              relation?.association?.indexOf("interested in") !== -1 &&
-              "two-tone-button"
-            }`}
+            className="bookmark-button two-tone-button"
             icon={
               relation?.association?.indexOf("interested in") !== -1 ? (
                 <HeartFilled />
@@ -569,9 +566,11 @@ console.log('params::::::',params);
         }}
       >
         {/* {data?.image && ( */}
-        <Col lg={12}>
-          <img className="resource-image" src={data?.image} alt="" />
-        </Col>
+        {data?.image && (
+          <Col lg={12}>
+            <img className="resource-image" src={data?.image} alt="" />
+          </Col>
+        )}
         {/* )} */}
         <Col lg={data?.image ? 12 : 24}>
           <Row>

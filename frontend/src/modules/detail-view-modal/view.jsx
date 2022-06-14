@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./style.scss";
-import isoConv from "iso-language-converter";
+// import isoConv from "iso-language-converter";
 import {
   Modal,
   Button,
@@ -192,13 +192,13 @@ const DetailViewModal = ({
                       .join(", ")}
                 </div>
 
-                {data?.languages && (
+                {/* {data?.languages && (
                   <span className="detail-item">
                     {data?.languages
                       .map((language) => isoConv(language?.isoCode) || "")
                       .join(", ")}
                   </span>
-                )}
+                )} */}
               </Col>
             </Row>
           </Col>

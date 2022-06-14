@@ -1,17 +1,1 @@
-[
-  "^ ",
-  "~:project-hash",
-  "",
-  "~:kondo-config-hash",
-  "3f31fea7d66b981a2879793a5df9a94853b42513996731db8ea6bfae4cffd5f5",
-  "~:project-analysis-type",
-  "~:project-and-deps",
-  "~:classpath",
-  null,
-  "~:stubs-generation-namespaces",
-  ["~#set", []],
-  "~:version",
-  1,
-  "~:project-root",
-  "/home/student/coding/projects/unep-gpml/frontend/src"
-]
+["^ ","~:classpath",["~#set",[]],"~:project-hash","","~:project-root","/home/student/coding/projects/unep-gpml/frontend/src","~:kondo-config-hash","89845ced3e1d397eb73f7c7567c36923be2ba170150b496c52baf604e86fe356","~:analysis",null,"~:analysis-checksums",["^ "],"~:project-analysis-type","~:project-and-deps","~:version",2,"~:stubs-generation-namespaces",["^1",[]]]
