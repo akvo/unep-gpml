@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import "./style.scss";
-import isoConv from "iso-language-converter";
 import {
-  Modal,
   Button,
   Row,
   Col,
@@ -21,11 +19,9 @@ import {
   MessageOutlined,
   PlayCircleTwoTone,
   SendOutlined,
-  EnvironmentOutlined,
   HeartFilled,
   InfoCircleOutlined,
 } from "@ant-design/icons";
-import TestImage from "../../images/landing-gpml.jpg";
 import moment from "moment";
 import { isEmpty } from "lodash";
 import api from "../../utils/api";
@@ -75,7 +71,7 @@ const DetailView = ({
     icons: s.icons,
     placeholder: s.placeholder,
   }));
-  console.log(UIStore.currentState);
+  console.log(UIStore.currentState, languages);
   const history = useHistory();
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
@@ -491,7 +487,12 @@ const DetailView = ({
               {data?.languages && (
                 <span className="detail-item">
                   {data?.languages
-                    .map((language) => isoConv(language?.isoCode) || "")
+                    .map((language) => {
+                      const langs =
+                        !isEmpty(languages) &&
+                        languages[language?.isoCode]?.name;
+                      return langs || "";
+                    })
                     .join(", ")}
                 </span>
               )}
@@ -630,7 +631,7 @@ const DetailView = ({
                     ? data?.currencyAmountInvested
                         .map((amount) => amount)
                         .join(", ")
-                    : "Not applicable"}
+                    : "USD 000"}
                 </td>
               </tr>
 
@@ -642,7 +643,7 @@ const DetailView = ({
                     ? data?.currencyInKindcontribution
                         .map((contribution) => contribution)
                         .join(", ")
-                    : "Not applicable"}
+                    : "USD 000"}
                 </td>
               </tr>
 
@@ -703,7 +704,9 @@ const DetailView = ({
 
               <tr className="record-row">
                 <td className="record-name">Initiative Term</td>
-                <td className="record-value">{data?.activityTerm || 'Not applicable'}</td>
+                <td className="record-value">
+                  {data?.activityTerm || "Not applicable"}
+                </td>
               </tr>
             </tbody>
           </table>
