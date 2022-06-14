@@ -107,7 +107,8 @@
    "Reviewed at"
    "Created"
    "Created by"
-   "Modified"])
+   "Modified"
+   "Platform Link"])
 
 (def ^:const entities-key-map
   {:id "ID"
@@ -132,7 +133,8 @@
    :reviewed_at "Reviewed at"
    :created_by "Created by"
    :created "Created"
-   :modified "Modified"})
+   :modified "Modified"
+   :platform-link "Platform Link"})
 
 (def ^:const sorted-tag-columns
   ["ID"
