@@ -608,40 +608,76 @@ const DetailView = ({
               </tr>
               <tr className="record-row">
                 <td className="record-name">Valid from</td>
-                <td className="record-value">2</td>
+                <td className="record-value">
+                  {data?.startDate
+                    ? moment.utc(data?.startDate).format("DD MMM YYYY")
+                    : ""}
+                </td>
               </tr>
               <tr className="record-row">
                 <td className="record-name">Valid until</td>
-                <td className="record-value">2</td>
+                <td className="record-value">
+                  {data?.endDate
+                    ? moment.utc(data?.endDate).format("DD MMM YYYY")
+                    : ""}
+                </td>
               </tr>
               <tr className="record-row">
                 <td className="record-name">Amount Invested</td>
-                <td className="record-value">2</td>
+                <td className="record-value">
+                  {data?.currencyAmountInvested &&
+                  data?.currencyAmountInvested?.length
+                    ? data?.currencyAmountInvested
+                        .map((amount) => amount)
+                        .join(", ")
+                    : "Not applicable"}
+                </td>
               </tr>
+
               <tr className="record-row">
                 <td className="record-name">In Kind Contributions</td>
-                <td className="record-value">2</td>
+                <td className="record-value">
+                  {data?.currencyInKindcontribution &&
+                  data?.currencyInKindcontribution?.length
+                    ? data?.currencyInKindcontribution
+                        .map((contribution) => contribution)
+                        .join(", ")
+                    : "Not applicable"}
+                </td>
               </tr>
+
               <tr className="record-row">
                 <td className="record-name">Funding Type</td>
                 <td className="record-value">
                   {data?.funding ? data?.funding?.type : "Not applicable"}
                 </td>
               </tr>
+
               <tr className="record-row">
                 <td className="record-name">Funding Name</td>
                 <td className="record-value">
                   {data?.funding ? data?.funding?.name : "Not applicable"}
                 </td>
               </tr>
+
               <tr className="record-row">
                 <td className="record-name">Focus Area:</td>
-                <td className="record-value">2</td>
+                <td className="record-value">
+                  {data?.focusArea && data?.focusArea?.length > 0
+                    ? data?.focusArea.map((area) => area).join(", ")
+                    : "Not applicable"}
+                </td>
               </tr>
+
               <tr className="record-row">
                 <td className="record-name">Lifecycle Phase</td>
-                <td className="record-value">2</td>
+                <td className="record-value">
+                  {data?.lifecyclePhase && data?.lifecyclePhase?.length
+                    ? data?.lifecyclePhase.map((phase) => phase).join(", ")
+                    : "Not applicable"}
+                </td>
               </tr>
+
               <tr className="record-row">
                 <td className="record-name">Sector</td>
                 <td className="record-value">
@@ -650,17 +686,24 @@ const DetailView = ({
                     : "Not applicable"}
                 </td>
               </tr>
+
               <tr className="record-row">
                 <td className="record-name">Initiative Owner</td>
-                <td className="record-value">2</td>
+                <td className="record-value">
+                  {data?.activityOwner && data?.activityOwner?.length
+                    ? data?.activityOwner.map((activity) => activity).join(", ")
+                    : "Not applicable"}
+                </td>
               </tr>
+
               <tr className="record-row">
                 <td className="record-name">Entity Type</td>
                 <td className="record-value">2</td>
               </tr>
+
               <tr className="record-row">
                 <td className="record-name">Initiative Term</td>
-                <td className="record-value">2</td>
+                <td className="record-value">{data?.activityTerm || 'Not applicable'}</td>
               </tr>
             </tbody>
           </table>
