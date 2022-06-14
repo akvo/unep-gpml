@@ -306,7 +306,7 @@ const DetailView = ({
     } else {
       association = association.filter((it) => it !== relationType);
     }
-    
+
     handleRelationChange({
       topicId: parseInt(params.id),
       association,
@@ -515,8 +515,10 @@ const DetailView = ({
           <Row>
             <Col>
               <h3 className="content-heading">Location & Geocoverage</h3>
-              <span className="detail-item">
-                <TransnationalImage />{" "}
+              <span className="detail-item geocoverage-item">
+                <div className="transnational-icon detail-item-icon">
+                  <TransnationalImage />
+                </div>
                 <span>{titleCase(data?.geoCoverageType || "")}</span>
               </span>
 
@@ -527,12 +529,16 @@ const DetailView = ({
                       {data?.geoCoverageCountryGroups &&
                         data?.geoCoverageCountryGroups.length > 0 && (
                           <Row>
-                            <LocationImage />{" "}
-                            {renderGeoCoverageCountryGroups(
-                              data,
-                              countries,
-                              transnationalOptions
-                            )}
+                            <div className="location-icon detail-item-icon">
+                              <LocationImage />
+                            </div>
+                            <div>
+                              {renderGeoCoverageCountryGroups(
+                                data,
+                                countries,
+                                transnationalOptions
+                              )}
+                            </div>
                           </Row>
                         )}
                     </>
@@ -544,12 +550,16 @@ const DetailView = ({
                       {data?.geoCoverageCountries &&
                         data?.geoCoverageCountries.length > 0 && (
                           <Row>
-                            <LocationImage />{" "}
-                            {renderCountries(
-                              data,
-                              countries,
-                              transnationalOptions
-                            )}
+                            <div className="location-icon detail-item-icon">
+                              <LocationImage />
+                            </div>
+                            <div>
+                              {renderCountries(
+                                data,
+                                countries,
+                                transnationalOptions
+                              )}
+                            </div>
                           </Row>
                         )}
                     </>
@@ -561,12 +571,16 @@ const DetailView = ({
                     {data?.geoCoverageValues &&
                       data?.geoCoverageValues.length > 0 && (
                         <Row>
-                          <LocationImage />{" "}
-                          {renderCountries(
-                            data,
-                            countries,
-                            transnationalOptions
-                          )}
+                          <div className="location-icon detail-item-icon">
+                            <LocationImage />
+                          </div>
+                          <div>
+                            {renderCountries(
+                              data,
+                              countries,
+                              transnationalOptions
+                            )}
+                          </div>
                         </Row>
                       )}
                   </>
@@ -574,10 +588,14 @@ const DetailView = ({
 
                 {(data?.subnationalCity || data?.q24SubnationalCity) && (
                   <>
-                    <CityImage />{" "}
-                    {data?.subnationalCity
-                      ? data?.subnationalCity
-                      : data?.q24SubnationalCity}
+                    <div className="city-icon detail-item-icon">
+                      <CityImage />
+                    </div>
+                    <div>
+                      {data?.subnationalCity
+                        ? data?.subnationalCity
+                        : data?.q24SubnationalCity}
+                    </div>
                   </>
                 )}
               </div>

@@ -89,6 +89,7 @@
   }
 
   padding: 0;
+
   .resource-info {
     margin-bottom: 28px;
     .resource-image {
@@ -96,6 +97,25 @@
       border: 5px solid rgba(0, 0, 0, 0.3);
     }
   }
+  .geocoverage-item,
+  .detail-item .ant-row {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-bottom: 24px;
+  }
+
+  .detail-item .ant-row {
+    flex-flow: row;
+  }
+  .transnational-icon,
+  .location-icon,
+  .city-icon {
+    display: flex;
+    width: 23.25px;
+    margin-right: 16px;
+  }
+
   .record-table {
     width: 100%;
     .record-row:not(:last-of-type) {
