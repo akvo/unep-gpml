@@ -417,184 +417,206 @@ const DetailView = ({
   };
 
   return (
-    <div id="detail-view">
-      <div className="detail-header">
-        <h3 className="detail-resource-type content-heading">
-          {topicNames(params?.type)}
-        </h3>
-        <h4 className="detail-resource-title">{data?.title}</h4>
-        <Col className="tool-buttons">
-          <Button
-            className="view-button "
-            icon={<EyeFilled />}
-            type="primary"
-            shape="round"
-            size="middle"
-            href={`${
-              data?.url && data?.url?.includes("https://")
-                ? data?.url
-                : data?.languages
-                ? data?.languages[0]?.url
-                : data?.url?.includes("http://")
-                ? data?.url
-                : "https://" + data?.url
-            }`}
-            target="_blank"
-          >
-            View
-          </Button>
-          <Button
-            className="recording-button two-tone-button"
-            icon={<PlayCircleTwoTone twoToneColor="#09689a" />}
-            type="primary"
-            shape="round"
-            size="middle"
-            ghost
-            onClick={() => {
-              window.open(
-                data?.recording.includes("https://")
-                  ? data?.recording
-                  : "https://" + data?.recording,
-                "_blank"
-              );
-            }}
-          >
-            Recording
-          </Button>
-          <Popover
-            placement="top"
-            overlayStyle={{
-              width: "22vw",
-            }}
-            overlayClassName="popover-share"
-            content={
-              <Input.Group compact>
-                <Input
-                  style={{ width: "calc(100% - 20%)" }}
-                  defaultValue={`${
-                    data?.url && data?.url?.includes("https://")
-                      ? data?.url
-                      : data?.languages
-                      ? data?.languages[0]?.url
-                      : data?.url?.includes("http://")
-                      ? data?.url
-                      : "https://" + data?.url
-                  }`}
-                  disabled
-                />
-                <Button
-                  style={{ width: "20%" }}
-                  type="primary"
-                  onClick={() => {
-                    navigator.clipboard.writeText(
+    <div className="detail-view-wrapper">
+      <div id="detail-view">
+        <div className="detail-header">
+          <h3 className="detail-resource-type content-heading">
+            {topicNames(params?.type)}
+          </h3>
+          <h4 className="detail-resource-title">{data?.title}</h4>
+          <Col className="tool-buttons">
+            <Button
+              className="view-button "
+              icon={<EyeFilled />}
+              type="primary"
+              shape="round"
+              size="middle"
+              href={`${
+                data?.url && data?.url?.includes("https://")
+                  ? data?.url
+                  : data?.languages
+                  ? data?.languages[0]?.url
+                  : data?.url?.includes("http://")
+                  ? data?.url
+                  : "https://" + data?.url
+              }`}
+              target="_blank"
+            >
+              View
+            </Button>
+            <Button
+              className="recording-button two-tone-button"
+              icon={<PlayCircleTwoTone twoToneColor="#09689a" />}
+              type="primary"
+              shape="round"
+              size="middle"
+              ghost
+              onClick={() => {
+                window.open(
+                  data?.recording.includes("https://")
+                    ? data?.recording
+                    : "https://" + data?.recording,
+                  "_blank"
+                );
+              }}
+            >
+              Recording
+            </Button>
+            <Popover
+              placement="top"
+              overlayStyle={{
+                width: "22vw",
+              }}
+              overlayClassName="popover-share"
+              content={
+                <Input.Group compact>
+                  <Input
+                    style={{ width: "calc(100% - 20%)" }}
+                    defaultValue={`${
                       data?.url && data?.url?.includes("https://")
-                        ? data?.languages
-                          ? data?.languages[0]?.url
-                          : data?.url
+                        ? data?.url
+                        : data?.languages
+                        ? data?.languages[0]?.url
+                        : data?.url?.includes("http://")
+                        ? data?.url
                         : "https://" + data?.url
-                    );
-                    setVisible(!visible);
-                  }}
+                    }`}
+                    disabled
+                  />
+                  <Button
+                    style={{ width: "20%" }}
+                    type="primary"
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        data?.url && data?.url?.includes("https://")
+                          ? data?.languages
+                            ? data?.languages[0]?.url
+                            : data?.url
+                          : "https://" + data?.url
+                      );
+                      setVisible(!visible);
+                    }}
+                  >
+                    Copy
+                  </Button>
+                </Input.Group>
+              }
+              trigger="click"
+              visible={visible}
+              onVisibleChange={() => setVisible(!visible)}
+              placement="left"
+            >
+              <div>
+                <Button
+                  className="share-button two-tone-button"
+                  icon={<MailTwoTone twoToneColor="#09689a" />}
+                  type="primary"
+                  shape="round"
+                  size="middle"
+                  ghost
+                  onClick={() => setVisible(!visible)}
                 >
-                  Copy
+                  Share
                 </Button>
-              </Input.Group>
-            }
-            trigger="click"
-            visible={visible}
-            onVisibleChange={() => setVisible(!visible)}
-            placement="left"
-          >
-            <div>
-              <Button
-                className="share-button two-tone-button"
-                icon={<MailTwoTone twoToneColor="#09689a" />}
-                type="primary"
-                shape="round"
-                size="middle"
-                ghost
-                onClick={() => setVisible(!visible)}
-              >
-                Share
-              </Button>
-            </div>
-          </Popover>
-          <Button
-            className="bookmark-button two-tone-button"
-            icon={
-              relation?.association?.indexOf("interested in") !== -1 ? (
-                <HeartFilled />
-              ) : (
-                <HeartTwoTone twoToneColor="#09689a" />
-              )
-            }
-            type="primary"
-            shape="round"
-            size="middle"
-            ghost
-            onClick={() => handleChangeRelation("interested in")}
-          >
-            Bookmark
-          </Button>
+              </div>
+            </Popover>
+            <Button
+              className="bookmark-button two-tone-button"
+              icon={
+                relation?.association?.indexOf("interested in") !== -1 ? (
+                  <HeartFilled />
+                ) : (
+                  <HeartTwoTone twoToneColor="#09689a" />
+                )
+              }
+              type="primary"
+              shape="round"
+              size="middle"
+              ghost
+              onClick={() => handleChangeRelation("interested in")}
+            >
+              Bookmark
+            </Button>
 
-          <Button onClick={handleEditBtn}>EDIT</Button>
-        </Col>
-      </div>
-
-      <Row
-        className="resource-info section"
-        gutter={{
-          lg: 24,
-        }}
-      >
-        {data?.image && (
-          <Col lg={12}>
-            <img className="resource-image" src={data?.image} alt="" />
+            <Button onClick={handleEditBtn}>EDIT</Button>
           </Col>
-        )}
+        </div>
 
-        <Col lg={data?.image ? 12 : 24}>
-          <Row>
-            <h3 className="content-heading">Description</h3>
-            <p className="content-paragraph">{data?.description}</p>
-          </Row>
-          <Row>
-            <Col>
-              <h3 className="content-heading">Location & Geocoverage</h3>
-              <span className="detail-item geocoverage-item">
-                <div className="transnational-icon detail-item-icon">
-                  <TransnationalImage />
-                </div>
-                <span>{titleCase(data?.geoCoverageType || "")}</span>
-              </span>
+        <Row
+          className="resource-info section"
+          gutter={{
+            lg: 24,
+          }}
+        >
+          {data?.image && (
+            <Col lg={12}>
+              <img className="resource-image" src={data?.image} alt="" />
+            </Col>
+          )}
 
-              <div className="detail-item">
-                {data?.geoCoverageType !== "sub-national" &&
-                  data?.geoCoverageType !== "national" && (
+          <Col lg={data?.image ? 12 : 24}>
+            <Row>
+              <h3 className="content-heading">Description</h3>
+              <p className="content-paragraph">{data?.description}</p>
+            </Row>
+            <Row>
+              <Col>
+                <h3 className="content-heading">Location & Geocoverage</h3>
+                <span className="detail-item geocoverage-item">
+                  <div className="transnational-icon detail-item-icon">
+                    <TransnationalImage />
+                  </div>
+                  <span>{titleCase(data?.geoCoverageType || "")}</span>
+                </span>
+
+                <div className="detail-item">
+                  {data?.geoCoverageType !== "sub-national" &&
+                    data?.geoCoverageType !== "national" && (
+                      <>
+                        {data?.geoCoverageCountryGroups &&
+                          data?.geoCoverageCountryGroups.length > 0 && (
+                            <Row>
+                              <div className="location-icon detail-item-icon">
+                                <LocationImage />
+                              </div>
+                              <div>
+                                {renderGeoCoverageCountryGroups(
+                                  data,
+                                  countries,
+                                  transnationalOptions
+                                )}
+                              </div>
+                            </Row>
+                          )}
+                      </>
+                    )}
+
+                  {data?.geoCoverageType !== "sub-national" &&
+                    data?.geoCoverageType !== "national" && (
+                      <>
+                        {data?.geoCoverageCountries &&
+                          data?.geoCoverageCountries.length > 0 && (
+                            <Row>
+                              <div className="location-icon detail-item-icon">
+                                <LocationImage />
+                              </div>
+                              <div>
+                                {renderCountries(
+                                  data,
+                                  countries,
+                                  transnationalOptions
+                                )}
+                              </div>
+                            </Row>
+                          )}
+                      </>
+                    )}
+
+                  {(data?.geoCoverageType === "sub-national" ||
+                    data?.geoCoverageType === "national") && (
                     <>
-                      {data?.geoCoverageCountryGroups &&
-                        data?.geoCoverageCountryGroups.length > 0 && (
-                          <Row>
-                            <div className="location-icon detail-item-icon">
-                              <LocationImage />
-                            </div>
-                            <div>
-                              {renderGeoCoverageCountryGroups(
-                                data,
-                                countries,
-                                transnationalOptions
-                              )}
-                            </div>
-                          </Row>
-                        )}
-                    </>
-                  )}
-
-                {data?.geoCoverageType !== "sub-national" &&
-                  data?.geoCoverageType !== "national" && (
-                    <>
-                      {data?.geoCoverageCountries &&
-                        data?.geoCoverageCountries.length > 0 && (
+                      {data?.geoCoverageValues &&
+                        data?.geoCoverageValues.length > 0 && (
                           <Row>
                             <div className="location-icon detail-item-icon">
                               <LocationImage />
@@ -611,357 +633,341 @@ const DetailView = ({
                     </>
                   )}
 
-                {(data?.geoCoverageType === "sub-national" ||
-                  data?.geoCoverageType === "national") && (
-                  <>
-                    {data?.geoCoverageValues &&
-                      data?.geoCoverageValues.length > 0 && (
-                        <Row>
-                          <div className="location-icon detail-item-icon">
-                            <LocationImage />
-                          </div>
-                          <div>
-                            {renderCountries(
-                              data,
-                              countries,
-                              transnationalOptions
-                            )}
-                          </div>
-                        </Row>
-                      )}
-                  </>
-                )}
+                  {(data?.subnationalCity || data?.q24SubnationalCity) && (
+                    <>
+                      <div className="city-icon detail-item-icon">
+                        <CityImage />
+                      </div>
+                      <div>
+                        {data?.subnationalCity
+                          ? data?.subnationalCity
+                          : data?.q24SubnationalCity}
+                      </div>
+                    </>
+                  )}
+                </div>
 
-                {(data?.subnationalCity || data?.q24SubnationalCity) && (
-                  <>
-                    <div className="city-icon detail-item-icon">
-                      <CityImage />
-                    </div>
-                    <div>
-                      {data?.subnationalCity
-                        ? data?.subnationalCity
-                        : data?.q24SubnationalCity}
-                    </div>
-                  </>
+                {data?.languages && (
+                  <span className="detail-item">
+                    {data?.languages
+                      .map((language) => {
+                        const langs =
+                          !isEmpty(languages) &&
+                          languages[language?.isoCode]?.name;
+                        return langs || "";
+                      })
+                      .join(", ")}
+                  </span>
                 )}
-              </div>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
 
-              {data?.languages && (
-                <span className="detail-item">
-                  {data?.languages
-                    .map((language) => {
-                      const langs =
-                        !isEmpty(languages) &&
-                        languages[language?.isoCode]?.name;
-                      return langs || "";
-                    })
-                    .join(", ")}
-                </span>
-              )}
+        <Col>
+          {/* CONNECTION */}
+          {data?.stakeholderConnections.filter(
+            (x) => x.stakeholderRole === "ADMIN" || x.role === "interested in"
+          )?.length > 0 && (
+            <Col className="section">
+              <h3 className="content-heading">Connections</h3>
+
+              <Avatar.Group
+                maxCount={2}
+                size="large"
+                maxStyle={{
+                  color: "#f56a00",
+                  backgroundColor: "#fde3cf",
+                  cursor: "pointer",
+                  height: 51,
+                  width: 51,
+                }}
+              >
+                {data?.owners.map((owner, index) => {
+                  const stakeholders = data?.stakeholderConnections.find(
+                    (stakeholder) =>
+                      Number(owner) === stakeholder?.stakeholderId
+                  );
+                  return (
+                    <Avatar
+                      className="related-content-avatar"
+                      style={{ border: "none", height: 51, width: 51 }}
+                      key={index}
+                      src={
+                        <Avatar
+                          avatar={<Avatar src={stakeholders?.image} />}
+                          style={{
+                            backgroundColor: "#09689A",
+                            verticalAlign: "middle",
+                          }}
+                          size={51}
+                          title={
+                            <Link
+                              to={`/stakeholder/${stakeholders?.stakeholderId}`}
+                            >
+                              {stakeholders?.stakeholder}
+                            </Link>
+                          }
+                        >
+                          {stakeholders?.stakeholder}
+                        </Avatar>
+                      }
+                    />
+                  );
+                })}
+              </Avatar.Group>
+
+              <Avatar.Group
+                maxCount={2}
+                size="large"
+                maxStyle={{
+                  color: "#f56a00",
+                  backgroundColor: "#fde3cf",
+                  cursor: "pointer",
+                  height: 51,
+                  width: 51,
+                }}
+              >
+                {data?.stakeholderConnections
+                  .filter(
+                    (x) =>
+                      x.stakeholderRole === "ADMIN" ||
+                      x.role === "interested in"
+                  )
+                  .map((connection, index) => (
+                    <Avatar
+                      className="related-content-avatar"
+                      style={{ border: "none", height: 51, width: 51 }}
+                      key={index}
+                      src={
+                        <Avatar
+                          avatar={<Avatar src={connection?.image} />}
+                          style={{
+                            backgroundColor: "#09689A",
+                            verticalAlign: "middle",
+                          }}
+                          size={51}
+                          title={
+                            <Link
+                              to={`/stakeholder/${connection?.stakeholderId}`}
+                            >
+                              {connection?.stakeholder}
+                            </Link>
+                          }
+                        >
+                          {connection?.stakeholder}
+                        </Avatar>
+                      }
+                    />
+                  ))}
+              </Avatar.Group>
             </Col>
-          </Row>
+          )}
+
+          {/* TAGS */}
+          {data?.tags && data?.tags?.length > 0 && (
+            <Col className="section">
+              <h3 className="content-heading">Tags</h3>
+              <List itemLayout="horizontal">
+                <List.Item>
+                  <List.Item.Meta
+                    title={
+                      <ul className="tag-list">
+                        {data?.tags &&
+                          data?.tags.map((tag) => (
+                            <li className="tag-list-item" key={tag?.tag}>
+                              <Tag className="resource-tag">
+                                {titleCase(tag?.tag || "")}
+                              </Tag>
+                            </li>
+                          ))}
+                      </ul>
+                    }
+                  />
+                </List.Item>
+              </List>
+            </Col>
+          )}
         </Col>
-      </Row>
 
-      <Col>
-        {/* CONNECTION */}
-        {data?.stakeholderConnections.filter(
-          (x) => x.stakeholderRole === "ADMIN" || x.role === "interested in"
-        )?.length > 0 && (
+        {/* DOCUMENTS AND INFO */}
+        {data?.infoDocs && (
           <Col className="section">
-            <h3 className="content-heading">Connections</h3>
-
-            <Avatar.Group
-              maxCount={2}
-              size="large"
-              maxStyle={{
-                color: "#f56a00",
-                backgroundColor: "#fde3cf",
-                cursor: "pointer",
-                height: 51,
-                width: 51,
-              }}
-            >
-              {data?.owners.map((owner, index) => {
-                const stakeholders = data?.stakeholderConnections.find(
-                  (stakeholder) => Number(owner) === stakeholder?.stakeholderId
-                );
-                return (
-                  <Avatar
-                    className="related-content-avatar"
-                    style={{ border: "none", height: 51, width: 51 }}
-                    key={index}
-                    src={
-                      <Avatar
-                        avatar={<Avatar src={stakeholders?.image} />}
-                        style={{
-                          backgroundColor: "#09689A",
-                          verticalAlign: "middle",
-                        }}
-                        size={51}
-                        title={
-                          <Link
-                            to={`/stakeholder/${stakeholders?.stakeholderId}`}
-                          >
-                            {stakeholders?.stakeholder}
-                          </Link>
-                        }
-                      >
-                        {stakeholders?.stakeholder}
-                      </Avatar>
-                    }
-                  />
-                );
-              })}
-            </Avatar.Group>
-
-            <Avatar.Group
-              maxCount={2}
-              size="large"
-              maxStyle={{
-                color: "#f56a00",
-                backgroundColor: "#fde3cf",
-                cursor: "pointer",
-                height: 51,
-                width: 51,
-              }}
-            >
-              {data?.stakeholderConnections
-                .filter(
-                  (x) =>
-                    x.stakeholderRole === "ADMIN" || x.role === "interested in"
-                )
-                .map((connection, index) => (
-                  <Avatar
-                    className="related-content-avatar"
-                    style={{ border: "none", height: 51, width: 51 }}
-                    key={index}
-                    src={
-                      <Avatar
-                        avatar={<Avatar src={connection?.image} />}
-                        style={{
-                          backgroundColor: "#09689A",
-                          verticalAlign: "middle",
-                        }}
-                        size={51}
-                        title={
-                          <Link
-                            to={`/stakeholder/${connection?.stakeholderId}`}
-                          >
-                            {connection?.stakeholder}
-                          </Link>
-                        }
-                      >
-                        {connection?.stakeholder}
-                      </Avatar>
-                    }
-                  />
-                ))}
-            </Avatar.Group>
+            <h3 className="content-heading">Documents and info</h3>
+            <div className="content-paragraph">
+              <div
+                className="list documents-list"
+                dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
+              />
+            </div>
           </Col>
         )}
 
-        {/* TAGS */}
-        {data?.tags && data?.tags?.length > 0 && (
-          <Col className="section">
-            <h3 className="content-heading">Tags</h3>
-            <List itemLayout="horizontal">
-              <List.Item>
-                <List.Item.Meta
-                  title={
-                    <ul className="tag-list">
-                      {data?.tags &&
-                        data?.tags.map((tag) => (
-                          <li className="tag-list-item" key={tag?.tag}>
-                            <Tag className="resource-tag">
-                              {titleCase(tag?.tag || "")}
-                            </Tag>
-                          </li>
-                        ))}
-                    </ul>
-                  }
-                />
-              </List.Item>
-            </List>
-          </Col>
-        )}
-      </Col>
-
-      {/* DOCUMENTS AND INFO */}
-      {data?.infoDocs && (
         <Col className="section">
-          <h3 className="content-heading">Documents and info</h3>
-          <div className="content-paragraph">
-            <div
-              className="list documents-list"
-              dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
-            />
+          <h3 className="content-heading">Records</h3>
+          <div>
+            <table className="record-table">
+              <tbody>
+                <tr className="record-row">
+                  <td className="record-name">Year</td>
+                  <td className="record-value">2</td>
+                </tr>
+                <tr className="record-row">
+                  <td className="record-name">Valid from</td>
+                  <td className="record-value">
+                    {data?.startDate
+                      ? moment.utc(data?.startDate).format("DD MMM YYYY")
+                      : ""}
+                  </td>
+                </tr>
+                <tr className="record-row">
+                  <td className="record-name">Valid until</td>
+                  <td className="record-value">
+                    {data?.endDate
+                      ? moment.utc(data?.endDate).format("DD MMM YYYY")
+                      : ""}
+                  </td>
+                </tr>
+                <tr className="record-row">
+                  <td className="record-name">Amount Invested</td>
+                  <td className="record-value">
+                    {data?.currencyAmountInvested &&
+                      data?.currencyAmountInvested?.length &&
+                      data?.currencyAmountInvested
+                        .map((amount) => {
+                          return `${amount?.name} ${data?.funds}`;
+                        })
+                        .join(", ")}
+                  </td>
+                </tr>
+
+                <tr className="record-row">
+                  <td className="record-name">In Kind Contributions</td>
+                  <td className="record-value">
+                    {data?.currencyInKindContribution &&
+                      data?.currencyInKindContribution?.length &&
+                      data?.currencyInKindContribution
+                        .map((contribution) => {
+                          return `${contribution?.name} ${data?.contribution}`;
+                        })
+                        .join(", ")}
+                  </td>
+                </tr>
+
+                <tr className="record-row">
+                  <td className="record-name">Funding Type</td>
+                  <td className="record-value">
+                    {data?.funding ? data?.funding?.type : "Not applicable"}
+                  </td>
+                </tr>
+
+                <tr className="record-row">
+                  <td className="record-name">Funding Name</td>
+                  <td className="record-value">
+                    {data?.funding ? data?.funding?.name : "Not applicable"}
+                  </td>
+                </tr>
+
+                <tr className="record-row">
+                  <td className="record-name">Focus Area:</td>
+                  <td className="record-value">
+                    {data?.focusArea &&
+                      data?.focusArea?.length > 0 &&
+                      data?.focusArea.map((area) => area?.name).join(", ")}
+                  </td>
+                </tr>
+
+                <tr className="record-row">
+                  <td className="record-name">Lifecycle Phase</td>
+                  <td className="record-value">
+                    {data?.lifecyclePhase &&
+                      data?.lifecyclePhase?.length &&
+                      data?.lifecyclePhase
+                        .map((phase) => phase?.name)
+                        .join(", ")}
+                  </td>
+                </tr>
+
+                <tr className="record-row">
+                  <td className="record-name">Sector</td>
+                  <td className="record-value">
+                    {data?.sector &&
+                      data?.sector?.length > 0 &&
+                      data?.sector.map((item) => item?.name).join(", ")}
+                  </td>
+                </tr>
+
+                <tr className="record-row">
+                  <td className="record-name">Initiative Owner</td>
+                  <td className="record-value">
+                    {data?.activityOwner &&
+                      data?.activityOwner?.length > 0 &&
+                      data?.activityOwner
+                        .map((activity) => activity?.name)
+                        .join(", ")}
+                  </td>
+                </tr>
+
+                <tr className="record-row">
+                  <td className="record-name">Entity Type</td>
+                  <td className="record-value">2</td>
+                </tr>
+
+                <tr className="record-row">
+                  <td className="record-name">Initiative Term</td>
+                  <td className="record-value">{data?.activityTerm?.name}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </Col>
-      )}
+        {/* RELATED CONTENT */}
 
-      <Col className="section">
-        <h3 className="content-heading">Records</h3>
-        <div>
-          <table className="record-table">
-            <tbody>
-              <tr className="record-row">
-                <td className="record-name">Year</td>
-                <td className="record-value">2</td>
-              </tr>
-              <tr className="record-row">
-                <td className="record-name">Valid from</td>
-                <td className="record-value">
-                  {data?.startDate
-                    ? moment.utc(data?.startDate).format("DD MMM YYYY")
-                    : ""}
-                </td>
-              </tr>
-              <tr className="record-row">
-                <td className="record-name">Valid until</td>
-                <td className="record-value">
-                  {data?.endDate
-                    ? moment.utc(data?.endDate).format("DD MMM YYYY")
-                    : ""}
-                </td>
-              </tr>
-              <tr className="record-row">
-                <td className="record-name">Amount Invested</td>
-                <td className="record-value">
-                  {data?.currencyAmountInvested &&
-                    data?.currencyAmountInvested?.length &&
-                    data?.currencyAmountInvested
-                      .map((amount) => {
-                        return `${amount?.name} ${data?.funds}`;
-                      })
-                      .join(", ")}
-                </td>
-              </tr>
-
-              <tr className="record-row">
-                <td className="record-name">In Kind Contributions</td>
-                <td className="record-value">
-                  {data?.currencyInKindContribution &&
-                    data?.currencyInKindContribution?.length &&
-                    data?.currencyInKindContribution
-                      .map((contribution) => {
-                        return `${contribution?.name} ${data?.contribution}`;
-                      })
-                      .join(", ")}
-                </td>
-              </tr>
-
-              <tr className="record-row">
-                <td className="record-name">Funding Type</td>
-                <td className="record-value">
-                  {data?.funding ? data?.funding?.type : "Not applicable"}
-                </td>
-              </tr>
-
-              <tr className="record-row">
-                <td className="record-name">Funding Name</td>
-                <td className="record-value">
-                  {data?.funding ? data?.funding?.name : "Not applicable"}
-                </td>
-              </tr>
-
-              <tr className="record-row">
-                <td className="record-name">Focus Area:</td>
-                <td className="record-value">
-                  {data?.focusArea &&
-                    data?.focusArea?.length > 0 &&
-                    data?.focusArea.map((area) => area?.name).join(", ")}
-                </td>
-              </tr>
-
-              <tr className="record-row">
-                <td className="record-name">Lifecycle Phase</td>
-                <td className="record-value">
-                  {data?.lifecyclePhase &&
-                    data?.lifecyclePhase?.length &&
-                    data?.lifecyclePhase.map((phase) => phase?.name).join(", ")}
-                </td>
-              </tr>
-
-              <tr className="record-row">
-                <td className="record-name">Sector</td>
-                <td className="record-value">
-                  {data?.sector &&
-                    data?.sector?.length > 0 &&
-                    data?.sector.map((item) => item?.name).join(", ")}
-                </td>
-              </tr>
-
-              <tr className="record-row">
-                <td className="record-name">Initiative Owner</td>
-                <td className="record-value">
-                  {data?.activityOwner &&
-                    data?.activityOwner?.length > 0 &&
-                    data?.activityOwner
-                      .map((activity) => activity?.name)
-                      .join(", ")}
-                </td>
-              </tr>
-
-              <tr className="record-row">
-                <td className="record-name">Entity Type</td>
-                <td className="record-value">2</td>
-              </tr>
-
-              <tr className="record-row">
-                <td className="record-name">Initiative Term</td>
-                <td className="record-value">{data?.activityTerm?.name}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </Col>
-      {/* RELATED CONTENT */}
-
-      {data?.relatedContent &&
-        data?.relatedContent?.length > 0 &&
-        data?.relatedContent.length > 0 && (
-          <Col>
-            <RelatedContent
-              data={data}
-              responsive={responsive}
-              isShownCount={false}
-              title="Related content"
-              relatedContent={data?.relatedContent}
-              isShownPagination={false}
-              dataCount={relatedContent?.length || 0}
-            />
-          </Col>
-        )}
-
-      {/* COMMENTS */}
-      <Col className="section comment-section">
-        <h3 className="content-heading">Discussion</h3>
-        {comments &&
-          comments.length > 0 &&
-          comments?.map((item) => {
-            return (
-              <CommentList
-                item={item}
-                setComment={setComment}
-                profile={profile}
-                getComment={getComment}
-                params={params}
+        {data?.relatedContent &&
+          data?.relatedContent?.length > 0 &&
+          data?.relatedContent.length > 0 && (
+            <Col>
+              <RelatedContent
+                data={data}
+                responsive={responsive}
+                isShownCount={false}
+                title="Related content"
+                relatedContent={data?.relatedContent}
+                isShownPagination={false}
+                dataCount={relatedContent?.length || 0}
               />
-            );
-          })}
-      </Col>
-      <Col className="input-wrapper">
-        <MessageOutlined className="message-icon" />
-        <Input
-          className="comment-input"
-          placeholder="Join the discussion..."
-          suffix={<SendOutlined />}
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          onPressEnter={onSubmit}
-        />
-      </Col>
+            </Col>
+          )}
+
+        {/* COMMENTS */}
+        <Col className="section comment-section">
+          <h3 className="content-heading">Discussion</h3>
+          {comments &&
+            comments.length > 0 &&
+            comments?.map((item) => {
+              return (
+                <CommentList
+                  item={item}
+                  setComment={setComment}
+                  profile={profile}
+                  getComment={getComment}
+                  params={params}
+                />
+              );
+            })}
+        </Col>
+        <Col className="input-wrapper">
+          <MessageOutlined className="message-icon" />
+          <Input
+            className="comment-input"
+            placeholder="Join the discussion..."
+            suffix={<SendOutlined />}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            onPressEnter={onSubmit}
+          />
+        </Col>
+      </div>
     </div>
   );
 };
