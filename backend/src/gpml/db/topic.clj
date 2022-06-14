@@ -45,7 +45,7 @@
        e.created,
        e.modified,
        btrim((e.q2)::text, '\"'::text) AS title,
-       jsonb_object_keys(e.q24) AS geo_coverage_type,
+       e.q24 AS geo_coverage_type,
        btrim((e.q3)::text, '\"'::text) AS summary,
        e.reviewed_at,
        e.reviewed_by,

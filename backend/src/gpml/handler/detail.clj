@@ -321,6 +321,7 @@
 (defmethod extra-details "project" [resource-type db project]
   (merge
    (add-extra-details db project resource-type {})
+   {:geo_coverage_type (-> project :geo_coverage_type ffirst)}
    (if (> (:id project) 10000)
      (db.initiative/initiative-detail-by-id db project)
      (details-for-project db project))))
