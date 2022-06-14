@@ -72,14 +72,14 @@
         (is (not-empty (db.topic/get-topics db {:geo-coverage country-id
                                                 :transnational transnationals})))))
     (testing "Filtering by topic"
-      (is (empty? (db.topic/get-topics db {:topic #{"policy"}}))))
+      (is (empty? (db.topic/get-topics db {:topic #{"policy"} :review-status "APPROVED"}))))
     (testing "Filtering of unapproved events"
-      (is (empty? (db.topic/get-topics db {:topic #{"event"}}))))
+      (is (empty? (db.topic/get-topics db {:topic #{"event"} :review-status "APPROVED"}))))
     (testing "Filtering of approved events"
       (is (not-empty (do
                        ;; Approve an event
                        (db.event/update-event-status db (merge event-id {:review_status "APPROVED"}))
-                       (db.topic/get-topics db {:topic #{"event"}})))))
+                       (db.topic/get-topics db {:topic #{"event"} :review-status "APPROVED"})))))
     (testing "Combination of 3 filters"
       (let [country-id (get-country-id db ["IND"])
             transnationals (set (map :id (get-country-group-ids db (first country-id))))]
