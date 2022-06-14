@@ -105,10 +105,28 @@
     padding: 0;
 
     .resource-info {
+      display: block;
       margin-bottom: 28px;
+      .resource-image-wrapper {
+        float: left;
+        // max-width: 50%;
+        display: block;
+        padding-right: 20px !important;
+        padding-bottom: 41px;
+      }
+      .details-content-wrapper {
+        display: block;
+        max-width: 100% !important;
+        & > .ant-row {
+          display: block;
+          max-width: 100% !important;
+        }
+      }
       .resource-image {
         width: 100%;
         border: 5px solid rgba(0, 0, 0, 0.3);
+        // float: left;
+        // max-width: 50%;
       }
     }
     .popover-share {
@@ -133,31 +151,33 @@
       width: 23.25px;
       margin-right: 16px;
     }
-
-    .record-table {
-      width: 100%;
-      .record-row:not(:last-of-type) {
-        border-bottom: 0.25px solid #a5b0c9;
-      }
-      .record-row {
-        td {
-          padding: 9px 0;
+    .record-section {
+      clear: both;
+      .record-table {
+        width: 100%;
+        .record-row:not(:last-of-type) {
+          border-bottom: 0.25px solid #a5b0c9;
         }
-        td:first-of-type {
-          width: 100%;
-          max-width: 30%;
-        }
+        .record-row {
+          td {
+            padding: 9px 0;
+          }
+          td:first-of-type {
+            width: 100%;
+            max-width: 30%;
+          }
 
-        .record-value {
-          font-weight: 600;
-          font-size: 14px;
-          line-height: 20px;
-          color: #181818;
-        }
+          .record-value {
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 20px;
+            color: #181818;
+          }
 
-        a {
-          color: #000000;
-          border-bottom: 2px solid #c5c5c5;
+          a {
+            color: #000000;
+            border-bottom: 2px solid #c5c5c5;
+          }
         }
       }
     }

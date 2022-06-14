@@ -47,11 +47,6 @@ const DetailView = ({
   setFilterMenu,
 }) => {
   const relatedContent = useRef(null);
-  const record = useRef(null);
-  const document = useRef(null);
-  const tag = useRef(null);
-  const description = useRef(null);
-  const reviews = useRef(null);
   const [showLess, setShowLess] = useState(true);
   const [sending, setSending] = useState(false);
 
@@ -549,15 +544,20 @@ const DetailView = ({
           }}
         >
           {data?.image && (
-            <Col lg={12}>
+            <Col
+              className="resource-image-wrapper"
+              style={data?.type !== "event" && { width: "50%" }}
+            >
               <img className="resource-image" src={data?.image} alt="" />
             </Col>
           )}
 
-          <Col lg={data?.image ? 12 : 24}>
+          <Col className="details-content-wrapper">
             <Row>
               <h3 className="content-heading">Description</h3>
-              <p className="content-paragraph">{data?.description}</p>
+              <p className="content-paragraph">
+                {data?.description ? data?.description : data?.summary}
+              </p>
             </Row>
             <Row>
               <Col>
@@ -667,7 +667,7 @@ const DetailView = ({
         <Col>
           {/* CONNECTION */}
           {data?.stakeholderConnections.filter(
-            (x) => x.stakeholderRole === "ADMIN" || x.role === "interested in"
+            (x) => x.stakeholderRole !== "ADMIN" || x.role === "interested in"
           )?.length > 0 && (
             <Col className="section">
               <h3 className="content-heading">Connections</h3>
@@ -731,7 +731,7 @@ const DetailView = ({
                 {data?.stakeholderConnections
                   .filter(
                     (x) =>
-                      x.stakeholderRole === "ADMIN" ||
+                      x.stakeholderRole !== "ADMIN" ||
                       x.role === "interested in"
                   )
                   .map((connection, index) => (
@@ -803,7 +803,7 @@ const DetailView = ({
           </Col>
         )}
 
-        <Col className="section">
+        <Col className="record-section section">
           <h3 className="content-heading">Records</h3>
           <div>
             <table className="record-table">
