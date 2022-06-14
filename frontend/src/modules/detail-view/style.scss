@@ -1,4 +1,8 @@
 @import "../../vars.scss";
+.popover-share {
+  width: 100% !important;
+  max-width: 300px;
+}
 
 #detail-view {
   .content-heading {
@@ -97,6 +101,10 @@
       border: 5px solid rgba(0, 0, 0, 0.3);
     }
   }
+  .popover-share {
+    width: 100%;
+  }
+
   .geocoverage-item,
   .detail-item .ant-row {
     display: flex;

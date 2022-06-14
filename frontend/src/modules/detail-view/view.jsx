@@ -461,18 +461,64 @@ const DetailView = ({
           >
             Recording
           </Button>
-          <Button
-            className="share-button two-tone-button"
-            icon={<MailTwoTone twoToneColor="#09689a" />}
-            type="primary"
-            shape="round"
-            size="middle"
-            ghost
-            onClick={() => setVisible(!visible)}
+          <Popover
+            placement="top"
+            overlayStyle={{
+              width: "22vw",
+            }}
+            overlayClassName="popover-share"
+            content={
+              <Input.Group compact>
+                <Input
+                  style={{ width: "calc(100% - 20%)" }}
+                  defaultValue={`${
+                    data?.url && data?.url?.includes("https://")
+                      ? data?.url
+                      : data?.languages
+                      ? data?.languages[0]?.url
+                      : data?.url?.includes("http://")
+                      ? data?.url
+                      : "https://" + data?.url
+                  }`}
+                  disabled
+                />
+                <Button
+                  style={{ width: "20%" }}
+                  type="primary"
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      data?.url && data?.url?.includes("https://")
+                        ? data?.languages
+                          ? data?.languages[0]?.url
+                          : data?.url
+                        : "https://" + data?.url
+                    );
+                    setVisible(!visible);
+                  }}
+                >
+                  Copy
+                </Button>
+              </Input.Group>
+            }
+            trigger="click"
+            visible={visible}
+            onVisibleChange={() => setVisible(!visible)}
+            placement="left"
           >
-            Share
-          </Button>
-
+            <div>
+              <Button
+                className="share-button two-tone-button"
+                icon={<MailTwoTone twoToneColor="#09689a" />}
+                type="primary"
+                shape="round"
+                size="middle"
+                ghost
+                onClick={() => setVisible(!visible)}
+              >
+                Share
+              </Button>
+            </div>
+          </Popover>
           <Button
             className="bookmark-button two-tone-button"
             icon={
