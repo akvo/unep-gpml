@@ -410,7 +410,7 @@ const DetailView = ({
       >
         {/* {data?.image && ( */}
         <Col lg={12}>
-          <img className="resource-image" src={TestImage} alt="" />
+          <img className="resource-image" src={data?.image} alt="" />
         </Col>
         {/* )} */}
         <Col lg={data?.image ? 12 : 24}>
