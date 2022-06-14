@@ -212,6 +212,7 @@
    "Publication reference"
    "SDG Initiative"
    "Reporting to"
+   "Entity Connections"
    "Q1_1"
    "Q1_1_1"
    "Q4"
@@ -269,7 +270,8 @@
    "Q41_1"])
 
 (def ^:const topics-key-map
-  {:q24_2 "Q24_2",
+  {:entity_connections "Entity Connections"
+   :q24_2 "Q24_2",
    :q37 "Q37",
    :remarks "Remarks",
    :q32 "Q32",
