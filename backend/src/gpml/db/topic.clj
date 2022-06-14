@@ -130,9 +130,10 @@
         geo-coverage-type-cond (if (= entity-name "initiative")
                                  "(select json_object_keys(q24::json) from initiative where id = e.id)::geo_coverage_type"
                                  "e.geo_coverage_type")
-        where-cond (cond-> (str "WHERE e.review_status = " (if-not (nil? review-status)
-                                                             ":review-status::REVIEW_STATUS"
-                                                             "'APPROVED'::REVIEW_STATUS"))
+        where-cond (cond-> "WHERE 1=1"
+                     (seq review-status)
+                     (str " AND e.review_status = :review-status::REVIEW_STATUS")
+
                      (seq entity)
                      (str " AND org.id IN (:v*:entity)")
 
