@@ -833,16 +833,10 @@ const DetailView = ({
             return (
               <CommentList
                 item={item}
-                showReplyBox={showReplyBox}
-                setShowReplyBox={setShowReplyBox}
-                // onReply={onReply}
                 setComment={setComment}
                 profile={profile}
                 getComment={getComment}
                 params={params}
-                editComment={editComment}
-                setEditComment={setEditComment}
-                // onEditComment={onEditComment}
               />
             );
           })}
@@ -854,7 +848,6 @@ const DetailView = ({
           placeholder="Join the discussion..."
           suffix={<SendOutlined />}
           value={comment}
-          // defaultValue={editComment && item.content}
           onChange={(e) => setComment(e.target.value)}
           onPressEnter={onSubmit}
         />
