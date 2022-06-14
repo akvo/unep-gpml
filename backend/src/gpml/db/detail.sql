@@ -3,7 +3,7 @@
 SELECT json::jsonb,
 COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners
  FROM (
-    --~ (#'gpml.db.topic/generate-topic-query {} gpml.db.topic/generic-cte-opts)
+    --~ (#'gpml.db.topic/generate-topic-query params {:tables [(:topic-type params)]})
     SELECT * FROM cte_topic
     ) t
    left join topic_stakeholder_auth authz ON authz.topic_type::text=t.topic AND authz.topic_id=(t.json->>'id')::int
@@ -16,7 +16,7 @@ COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL
 SELECT json::jsonb,
 COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners
  FROM (
-    --~ (#'gpml.db.topic/generate-entity-topic-query {} gpml.db.topic/generic-entity-cte-opts)
+ --~ (#'gpml.db.topic/generate-entity-topic-query params {:tables [(:topic-type params)]})
     SELECT * FROM cte_topic
     ) t
    left join topic_stakeholder_auth authz ON authz.topic_type::text=t.topic AND authz.topic_id=(t.json->>'id')::int

@@ -2,8 +2,8 @@
 -- :doc Gets the entity count per country.
 -- :require [gpml.db.topic]
 /*~ (if (= (:entity-group params) :topic)
-(#'gpml.db.topic/generate-topic-query {} gpml.db.topic/generic-cte-opts)
-(#'gpml.db.topic/generate-entity-topic-query {} gpml.db.topic/generic-entity-cte-opts))
+(#'gpml.db.topic/generate-topic-query params gpml.db.topic/generic-cte-opts)
+(#'gpml.db.topic/generate-entity-topic-query params gpml.db.topic/generic-entity-cte-opts))
 ~*/
 ,
 filtered_entities AS (
