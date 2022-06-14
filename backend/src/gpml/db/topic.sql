@@ -124,7 +124,7 @@ WITH flat_topic AS (
     NULL AS q1_1,
     NULL AS q35_1,
     NULL AS q1_1_1,
-    array_remove(array_agg(o.name), NULL) AS entity_connections
+    array_to_string(array_remove(array_agg(o.name), NULL), ', ') AS entity_connections
   FROM resource r
   LEFT JOIN related_content rc ON r.id = rc.resource_id AND resource_table_name = 'resource'::regclass
   LEFT JOIN organisation_resource oe ON oe.resource = r.id
@@ -245,7 +245,7 @@ UNION ALL
     NULL AS q1_1,
     NULL AS q35_1,
     NULL AS q1_1_1,
-    array_remove(array_agg(o.name), NULL) AS entity_connections
+    array_to_string(array_remove(array_agg(o.name), NULL), ', ') AS entity_connections
     FROM event e
     LEFT JOIN related_content rc ON e.id = rc.resource_id AND resource_table_name = 'event'::regclass
     LEFT JOIN organisation_event oe ON oe.event = e.id
@@ -366,7 +366,7 @@ UNION ALL
     i.q1_1::text,
     i.q35_1::text,
     i.q1_1_1::text,
-    array_remove(array_agg(o.name), NULL) AS entity_connections
+    array_to_string(array_remove(array_agg(o.name), NULL), ', ') AS entity_connections
     FROM initiative i
     LEFT JOIN related_content rc ON i.id = rc.resource_id AND resource_table_name = 'initiative'::regclass
     LEFT JOIN organisation_initiative oe ON oe.initiative = i.id
@@ -487,7 +487,7 @@ UNION ALL
     NULL AS q1_1,
     NULL AS q35_1,
     NULL AS q1_1_1,
-    array_remove(array_agg(o.name), NULL) AS entity_connections
+    array_to_string(array_remove(array_agg(o.name), NULL), ', ') AS entity_connections
   FROM policy p
   LEFT JOIN related_content rc ON p.id = rc.resource_id AND resource_table_name = 'policy'::regclass
   LEFT JOIN organisation_policy oe ON oe.policy = p.id
@@ -608,7 +608,7 @@ UNION ALL
     NULL AS q1_1,
     NULL AS q35_1,
     NULL AS q1_1_1,
-    array_remove(array_agg(o.name), NULL) AS entity_connections
+    array_to_string(array_remove(array_agg(o.name), NULL), ', ') AS entity_connections
   FROM technology t
   LEFT JOIN related_content rc ON t.id = rc.resource_id AND resource_table_name = 'technology'::regclass
   LEFT JOIN organisation_technology oe ON oe.technology = t.id
