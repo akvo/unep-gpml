@@ -7026,11 +7026,6 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
-iso-language-converter@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/iso-language-converter/-/iso-language-converter-1.1.0.tgz#29533b7744f6894d4706e98bcea06218ad858082"
-  integrity sha512-9M4ZR32zGapgB+TJIhvFfgpMKQwnGxZ83f+bAs7Z3ObXe51UFx0mbKL1+Sw6idCE5ehzuOwv1BXa//ndvxuvZA==
-
 isobject@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-2.1.0.tgz#f065561096a3f1da2ef46272f815c840d87e0c89"

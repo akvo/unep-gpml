@@ -503,61 +503,101 @@ const DetailView = ({
 
       <Col>
         {/* CONNECTION */}
-        {data?.stakeholderConnections &&
-          data?.stakeholderConnections?.length > 0 && (
-            <Col className="section">
-              <h3 className="content-heading">Connections</h3>
+        {data?.stakeholderConnections.filter(
+          (x) => x.stakeholderRole === "ADMIN" || x.role === "interested in"
+        )?.length > 0 && (
+          <Col className="section">
+            <h3 className="content-heading">Connections</h3>
 
-              <Avatar.Group
-                maxCount={2}
-                size="large"
-                maxStyle={{
-                  color: "#f56a00",
-                  backgroundColor: "#fde3cf",
-                  cursor: "pointer",
-                  height: 51,
-                  width: 51,
-                }}
-              >
-                {data?.stakeholderConnections.filter(
-                  (x) =>
-                    x.stakeholderRole !== "ADMIN" || x.role === "interested in"
-                )?.length > 0 &&
-                  data?.stakeholderConnections
-                    .filter(
-                      (x) =>
-                        x.stakeholderRole !== "ADMIN" ||
-                        x.role === "interested in"
-                    )
-                    .map((connection, index) => (
+            <Avatar.Group
+              maxCount={2}
+              size="large"
+              maxStyle={{
+                color: "#f56a00",
+                backgroundColor: "#fde3cf",
+                cursor: "pointer",
+                height: 51,
+                width: 51,
+              }}
+            >
+              {data?.owners.map((owner, index) => {
+                const stakeholders = data?.stakeholderConnections.find(
+                  (stakeholder) => Number(owner) === stakeholder?.stakeholderId
+                );
+                return (
+                  <Avatar
+                    className="related-content-avatar"
+                    style={{ border: "none", height: 51, width: 51 }}
+                    key={index}
+                    src={
                       <Avatar
-                        className="related-content-avatar"
-                        style={{ border: "none", height: 51, width: 51 }}
-                        key={index}
-                        src={
-                          <Avatar
-                            avatar={<Avatar src={connection?.image} />}
-                            style={{
-                              backgroundColor: "#09689A",
-                              verticalAlign: "middle",
-                            }}
-                            size={51}
-                            title={
-                              <Link
-                                to={`/stakeholder/${connection?.stakeholderId}`}
-                              >
-                                {connection?.stakeholder}
-                              </Link>
-                            }
+                        avatar={<Avatar src={stakeholders?.image} />}
+                        style={{
+                          backgroundColor: "#09689A",
+                          verticalAlign: "middle",
+                        }}
+                        size={51}
+                        title={
+                          <Link
+                            to={`/stakeholder/${stakeholders?.stakeholderId}`}
+                          >
+                            {stakeholders?.stakeholder}
+                          </Link>
+                        }
+                      >
+                        {stakeholders?.stakeholder}
+                      </Avatar>
+                    }
+                  />
+                );
+              })}
+            </Avatar.Group>
+
+            <Avatar.Group
+              maxCount={2}
+              size="large"
+              maxStyle={{
+                color: "#f56a00",
+                backgroundColor: "#fde3cf",
+                cursor: "pointer",
+                height: 51,
+                width: 51,
+              }}
+            >
+              {data?.stakeholderConnections
+                .filter(
+                  (x) =>
+                    x.stakeholderRole === "ADMIN" || x.role === "interested in"
+                )
+                .map((connection, index) => (
+                  <Avatar
+                    className="related-content-avatar"
+                    style={{ border: "none", height: 51, width: 51 }}
+                    key={index}
+                    src={
+                      <Avatar
+                        avatar={<Avatar src={connection?.image} />}
+                        style={{
+                          backgroundColor: "#09689A",
+                          verticalAlign: "middle",
+                        }}
+                        size={51}
+                        title={
+                          <Link
+                            to={`/stakeholder/${connection?.stakeholderId}`}
                           >
                             {connection?.stakeholder}
-                          </Avatar>
+                          </Link>
                         }
-                      />
-                    ))}
-              </Avatar.Group>
-            </Col>
-          )}
+                      >
+                        {connection?.stakeholder}
+                      </Avatar>
+                    }
+                  />
+                ))}
+            </Avatar.Group>
+          </Col>
+        )}
 
         {/* TAGS */}
         {data?.tags && data?.tags?.length > 0 && (
@@ -589,12 +629,12 @@ const DetailView = ({
       {data?.infoDocs && (
         <Col className="section">
           <h3 className="content-heading">Documents and info</h3>
-          <p className="content-paragraph">
+          <div className="content-paragraph">
             <div
               className="list documents-list"
               dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
             />
-          </p>
+          </div>
         </Col>
       )}
 
@@ -627,23 +667,25 @@ const DetailView = ({
                 <td className="record-name">Amount Invested</td>
                 <td className="record-value">
                   {data?.currencyAmountInvested &&
-                  data?.currencyAmountInvested?.length
-                    ? data?.currencyAmountInvested
-                        .map((amount) => amount)
-                        .join(", ")
-                    : "USD 000"}
+                    data?.currencyAmountInvested?.length &&
+                    data?.currencyAmountInvested
+                      .map((amount) => {
+                        return `${amount?.name} ${data?.funds}`;
+                      })
+                      .join(", ")}
                 </td>
               </tr>
 
               <tr className="record-row">
                 <td className="record-name">In Kind Contributions</td>
                 <td className="record-value">
-                  {data?.currencyInKindcontribution &&
-                  data?.currencyInKindcontribution?.length
-                    ? data?.currencyInKindcontribution
-                        .map((contribution) => contribution)
-                        .join(", ")
-                    : "USD 000"}
+                  {data?.currencyInKindContribution &&
+                    data?.currencyInKindContribution?.length &&
+                    data?.currencyInKindContribution
+                      .map((contribution) => {
+                        return `${contribution?.name} ${data?.contribution}`;
+                      })
+                      .join(", ")}
                 </td>
               </tr>
 
@@ -664,36 +706,38 @@ const DetailView = ({
               <tr className="record-row">
                 <td className="record-name">Focus Area:</td>
                 <td className="record-value">
-                  {data?.focusArea && data?.focusArea?.length > 0
-                    ? data?.focusArea.map((area) => area).join(", ")
-                    : "Not applicable"}
+                  {data?.focusArea &&
+                    data?.focusArea?.length > 0 &&
+                    data?.focusArea.map((area) => area?.name).join(", ")}
                 </td>
               </tr>
 
               <tr className="record-row">
                 <td className="record-name">Lifecycle Phase</td>
                 <td className="record-value">
-                  {data?.lifecyclePhase && data?.lifecyclePhase?.length
-                    ? data?.lifecyclePhase.map((phase) => phase).join(", ")
-                    : "Not applicable"}
+                  {data?.lifecyclePhase &&
+                    data?.lifecyclePhase?.length &&
+                    data?.lifecyclePhase.map((phase) => phase?.name).join(", ")}
                 </td>
               </tr>
 
               <tr className="record-row">
                 <td className="record-name">Sector</td>
                 <td className="record-value">
-                  {data?.sector && data?.sector?.length > 0
-                    ? data?.sector.map((item) => item)
-                    : "Not applicable"}
+                  {data?.sector &&
+                    data?.sector?.length > 0 &&
+                    data?.sector.map((item) => item?.name).join(", ")}
                 </td>
               </tr>
 
               <tr className="record-row">
                 <td className="record-name">Initiative Owner</td>
                 <td className="record-value">
-                  {data?.activityOwner && data?.activityOwner?.length
-                    ? data?.activityOwner.map((activity) => activity).join(", ")
-                    : "Not applicable"}
+                  {data?.activityOwner &&
+                    data?.activityOwner?.length > 0 &&
+                    data?.activityOwner
+                      .map((activity) => activity?.name)
+                      .join(", ")}
                 </td>
               </tr>
 
@@ -704,9 +748,7 @@ const DetailView = ({
 
               <tr className="record-row">
                 <td className="record-name">Initiative Term</td>
-                <td className="record-value">
-                  {data?.activityTerm || "Not applicable"}
-                </td>
+                <td className="record-value">{data?.activityTerm?.name}</td>
               </tr>
             </tbody>
           </table>
