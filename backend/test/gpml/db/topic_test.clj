@@ -1,6 +1,5 @@
 (ns gpml.db.topic-test
-  (:require [clojure.string :as str]
-            [clojure.test :refer [deftest testing is use-fixtures]]
+  (:require [clojure.test :refer [deftest testing is use-fixtures]]
             [gpml.db.country :as db.country]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.event :as db.event]
@@ -73,14 +72,14 @@
         (is (not-empty (db.topic/get-topics db {:geo-coverage country-id
                                                 :transnational transnationals})))))
     (testing "Filtering by topic"
-      (is (empty? (db.topic/get-topics db {:topic #{"policy"}}))))
+      (is (empty? (db.topic/get-topics db {:topic #{"policy"} :review-status "APPROVED"}))))
     (testing "Filtering of unapproved events"
-      (is (empty? (db.topic/get-topics db {:topic #{"event"}}))))
+      (is (empty? (db.topic/get-topics db {:topic #{"event"} :review-status "APPROVED"}))))
     (testing "Filtering of approved events"
       (is (not-empty (do
                        ;; Approve an event
                        (db.event/update-event-status db (merge event-id {:review_status "APPROVED"}))
-                       (db.topic/get-topics db {:topic #{"event"}})))))
+                       (db.topic/get-topics db {:topic #{"event"} :review-status "APPROVED"})))))
     (testing "Combination of 3 filters"
       (let [country-id (get-country-id db ["IND"])
             transnationals (set (map :id (get-country-group-ids db (first country-id))))]
@@ -88,38 +87,3 @@
                                                 :geo-coverage country-id
                                                 :transnational transnationals
                                                 :topic #{"policy" "technology"}})))))))
-
-(deftest test-generate-filter-topic-snippet
-  (testing "Testing filter-topic snippet with no params"
-    (let [snippet (str/trim (db.topic/generate-filter-topic-snippet nil))]
-      (is (str/starts-with? snippet "SELECT t.* FROM cte_topic t"))
-      (is (str/includes? snippet "WHERE t.json->>'review_status'='APPROVED'"))
-      (is (not (str/includes? snippet "JOIN")))))
-
-  (testing "Testing filter-topic snippet with favorites"
-    (let [params {:favorites true :user-id 1 :resource-types []}
-          snippet (str/trim (db.topic/generate-filter-topic-snippet params))]
-      (is (str/starts-with? snippet "SELECT t.* FROM cte_topic t"))
-      (is (str/includes? snippet "WHERE t.json->>'review_status'='APPROVED'"))
-      (is (str/includes? snippet "JOIN v_stakeholder_association"))))
-
-  (testing "Testing filter-topic snippet with tags"
-    (let [params {:tag ["waste management"]}
-          snippet (str/trim (db.topic/generate-filter-topic-snippet params))]
-      (is (str/starts-with? snippet "SELECT t.* FROM cte_topic t"))
-      (is (str/includes? snippet "AND t.json->>'tags'"))
-      (is (str/includes? snippet "JOIN json_array_elements"))))
-
-  (testing "Testing filter-topic snippet with geo-coverage"
-    (let [params {:geo-coverage [724]
-                  :transnational [151]}
-          snippet (str/trim (db.topic/generate-filter-topic-snippet params))]
-      (is (str/starts-with? snippet "SELECT t.* FROM cte_topic t"))
-      (is (not (str/includes? snippet "JOIN")))))
-
-  (testing "Testing filter-topic snippet with search-text"
-    (let [params {:search-text "marine litter"}
-          snippet (str/trim (db.topic/generate-filter-topic-snippet params))]
-      (is (str/starts-with? snippet "SELECT t.* FROM cte_topic t"))
-      (is (str/includes? snippet "AND t.search_text"))
-      (is (not (str/includes? snippet "JOIN"))))))
