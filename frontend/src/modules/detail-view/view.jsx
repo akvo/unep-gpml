@@ -86,7 +86,7 @@ const DetailView = ({
   const formRef = useRef();
 
   const [comment, setComment] = useState("");
-  console.log("comments::::::", comments, comment);
+
   const relation = relations.find(
     (it) =>
       it.topicId === parseInt(params.id) &&
@@ -144,8 +144,7 @@ const DetailView = ({
         type === "project" ? "initiative" : type
       }`
     );
-    console.log("res.data?.comments::::::", res.data?.comments);
-    console.log("res::::::", res);
+
     if (res && res?.data) {
       setComments(res?.data?.comments);
     }
@@ -319,10 +318,9 @@ const DetailView = ({
       resource_id: parseInt(params.id),
       resource_type: params?.type,
       ...(val.parent_id && { parent_id: val.parent_id }),
-      // title: val.title,
       content: val.target.value || "test",
     };
-    console.log("params::::::", params);
+
     setSending(true);
     api
       .post("/comment", data)
@@ -332,11 +330,12 @@ const DetailView = ({
       })
       .catch(() => {
         setSending(false);
-        // notification.error({ message: "An error occured" });
+        notification.error({ message: "An error occured" });
       })
       .finally(() => {
         setSending(false);
       });
+    setComment("");
   };
 
   const CommentList = ({
@@ -354,104 +353,11 @@ const DetailView = ({
   }) => {
     return (
       <Comment
+        className="comment-list"
+        itemLayout="horizontal"
         key={item.id}
-        actions={
-          profile &&
-          profile.reviewStatus === "APPROVED" && [
-            <>
-              {profile && profile.reviewStatus === "APPROVED" && (
-                <>
-                  <span
-                    key="comment-nested-reply-to"
-                    onClick={() =>
-                      item.id === showReplyBox
-                        ? setShowReplyBox("")
-                        : setShowReplyBox(item.id)
-                    }
-                  >
-                    Reply to
-                  </span>
-                  {profile.id === item.authorId && (
-                    <span
-                      key="comment-nested-edit"
-                      onClick={() =>
-                        item.id === editComment
-                          ? setEditComment("")
-                          : setEditComment(item.id)
-                      }
-                    >
-                      Edit
-                    </span>
-                  )}
-                  {profile.role === "ADMIN" && (
-                    <span
-                      key="comment-nested-delete"
-                      onClick={() => {
-                        Modal.error({
-                          className: "popup-delete",
-                          centered: true,
-                          closable: true,
-                          icon: <DeleteOutlined />,
-                          title:
-                            "Are you sure you want to delete this comment?",
-                          content:
-                            "Please be aware this action cannot be undone.",
-                          okText: "Delete",
-                          okType: "danger",
-                          async onOk() {
-                            try {
-                              const res = await api.delete(
-                                `/comment/${item.id}`
-                              );
-                              notification.success({
-                                message: "Comment deleted successfully",
-                              });
-
-                              getComment(params.id, params.type);
-                            } catch (err) {
-                              console.error(err);
-                              notification.error({
-                                message: "Oops, something went wrong",
-                              });
-                            }
-                          },
-                        });
-                      }}
-                    >
-                      Delete
-                    </span>
-                  )}
-                </>
-              )}
-              {(item.id === showReplyBox || item.id === editComment) && (
-                <>
-                  <Form.Item>
-                    <TextArea
-                      rows={2}
-                      defaultValue={editComment && item.content}
-                      onChange={(e) => setComment(e.target.value)}
-                    />
-                    <Button
-                      className="comment-reply"
-                      onClick={() => {
-                        if (showReplyBox) {
-                          setShowReplyBox("");
-                          onReply(item.id, item.title);
-                        } else {
-                          setEditComment("");
-                          onEditComment(item.id, item.title);
-                        }
-                      }}
-                    >
-                      {editComment ? "Update" : "Reply"}
-                    </Button>
-                  </Form.Item>
-                </>
-              )}
-            </>,
-          ]
-        }
-        author={moment(item?.createdAt).format("DD MMM YYYY")}
+        author={item?.authorName}
+        datetime={moment(item?.creatAt).fromNow()}
         avatar={<Avatar src={item.authorPicture} alt={"author"} />}
         content={
           <>
@@ -924,7 +830,6 @@ const DetailView = ({
         {comments &&
           comments.length > 0 &&
           comments?.map((item) => {
-            console.log(item, "FSDJFHSDJFSDHJH");
             return (
               <CommentList
                 item={item}
@@ -941,35 +846,6 @@ const DetailView = ({
               />
             );
           })}
-
-        {comments &&
-          comments.length > 0 &&
-          comments?.map((item) => {
-            console.log(item, "dfsfsdfsd");
-            return (
-              <Row>
-                <List
-                  className="comment-list"
-                  itemLayout="horizontal"
-                  dataSource={comment}
-                  renderItem={(item) => {
-                    return (
-                      <li>
-                        <Comment
-                          actions={""}
-                          // actions={item.actions}
-                          author={item.author}
-                          avatar={item.avatar}
-                          content={item.content}
-                          datetime={item.datetime}
-                        />
-                      </li>
-                    );
-                  }}
-                />
-              </Row>
-            );
-          })}
       </Col>
       <Col className="input-wrapper">
         <MessageOutlined className="message-icon" />
@@ -977,6 +853,7 @@ const DetailView = ({
           className="comment-input"
           placeholder="Join the discussion..."
           suffix={<SendOutlined />}
+          value={comment}
           // defaultValue={editComment && item.content}
           onChange={(e) => setComment(e.target.value)}
           onPressEnter={onSubmit}
