@@ -114,8 +114,10 @@
     "e.*"))
 
 (defn build-topic-data-query
-  [entity-name {:keys [entity tag representative-group
-                       geo-coverage-types sub-content-type search-text] :as _params}
+  [entity-name
+   {:keys [entity tag representative-group
+           geo-coverage-types sub-content-type
+           search-text review-status] :as _params}
    {:keys [search-text-fields] :as _opts}]
   (let [entity-connections-join (if-not (seq entity)
                                   ""
@@ -125,18 +127,23 @@
         table-specific-cols (get-table-specific-cols-exp entity-name)
         search-text-fields (get search-text-fields entity-name)
         tsvector-str (generate-tsvector-str entity-name search-text-fields)
-        where-cond (cond-> ""
+        geo-coverage-type-cond (if (= entity-name "initiative")
+                                 "(select json_object_keys(q24::json) from initiative where id = e.id)::geo_coverage_type"
+                                 "e.geo_coverage_type")
+        where-cond (cond-> (str "WHERE e.review_status = " (if-not (nil? review-status)
+                                                             ":review-status::REVIEW_STATUS"
+                                                             "'APPROVED'::REVIEW_STATUS"))
                      (seq entity)
                      (str " AND org.id IN (:v*:entity)")
 
                      (seq tag)
-                     (str " AND t.id IN (:v*:tag)")
+                     (str " AND LOWER(t.tag) IN (:v*:tag)")
 
                      (seq representative-group)
                      (str " AND org.type IN (:v*:representative-group)")
 
                      (seq geo-coverage-types)
-                     (str " AND e.geo_coverage_type IN (:v*:geo-coverage-types)")
+                     (str " AND " geo-coverage-type-cond " = any(array[:v*:geo-coverage-types]::geo_coverage_type[])")
 
                      (seq sub-content-type)
                      (str " AND e.sub_content_type IN (:v*:sub-content-type)")
@@ -155,7 +162,7 @@
    LEFT JOIN %s_tag et ON et.%s = e.id LEFT JOIN tag t ON et.tag = t.id
    %s
    LEFT JOIN %s_geo_coverage eg ON eg.%s = e.id
-   WHERE e.review_status = 'APPROVED' %s
+   %s
    GROUP BY e.id"
      (concat [table-specific-cols]
              (repeat 3 entity-name)
@@ -407,14 +414,14 @@
     (str/join
      " "
      (list
-      "SELECT t.* FROM cte_topic t
-       WHERE 1=1"
+      "SELECT t.* FROM cte_topic t"
       (when (and favorites user-id resource-types)
         "JOIN v_stakeholder_association a
          ON a.stakeholder = :user-id
          AND a.id = (t.json->>'id')::int
          AND (a.topic = t.topic OR (a.topic = 'resource'
               AND t.topic IN (:v*:resource-types)))")
+      " WHERE 1=1"
       (when (seq topic)
         " AND topic IN (:v*:topic)")
       (when (seq affiliation)
