@@ -188,19 +188,21 @@
         (is (= 403 (:status resp)))))
 
     (testing "Fetching detail of unapproved resource as different ADMIN"
-      (let [resp (handler (-> (mock/request :put "/")
+      (let [resp (handler (-> (mock/request :get "/")
                               (assoc
                                :user {:id 0 :role "ADMIN"}
                                :parameters
-                               {:path {:topic-type "project" :topic-id (:id initiative)}})))]
+                               {:path {:topic-type "project" :topic-id (:id initiative)}
+                                :query {:review-status "SUBMITTED"}})))]
         (is (= 200 (:status resp)))
         (is (= "Initiative Title." (-> resp :body :title)))))
 
     (testing "Fetching detail of unapproved resource as creator"
-      (let [resp (handler (-> (mock/request :put "/")
+      (let [resp (handler (-> (mock/request :get "/")
                               (assoc
                                :user creator
                                :parameters
-                               {:path {:topic-type "project" :topic-id (:id initiative)}})))]
+                               {:path {:topic-type "project" :topic-id (:id initiative)}
+                                :query {:review-status "SUBMITTED"}})))]
         (is (= 200 (:status resp)))
         (is (= "Initiative Title." (-> resp :body :title)))))))

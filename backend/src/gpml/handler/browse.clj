@@ -178,7 +178,10 @@
     (seq q)
     (assoc :search-text (->> (str/trim q)
                              (re-seq #"\w+")
-                             (str/join " & ")))))
+                             (str/join " & ")))
+
+    true
+    (assoc :review-status "APPROVED")))
 
 (defn- result->result-with-connections [db {:keys [type] :as result}]
   (let [resource-type (cond

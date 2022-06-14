@@ -321,6 +321,7 @@
 (defmethod extra-details "project" [resource-type db project]
   (merge
    (add-extra-details db project resource-type {})
+   {:geo_coverage_type (-> project :geo_coverage_type ffirst)}
    (if (> (:id project) 10000)
      (db.initiative/initiative-detail-by-id db project)
      (details-for-project db project))))
@@ -437,25 +438,26 @@
         util/unauthorized))))
 
 (defn- get-detail
-  [conn table-name id]
-  (let [{:keys [json] :as result}
+  [conn table-name id opts]
+  (let [opts (merge opts {:topic-type table-name :topic-id id})
+        {:keys [json] :as result}
         (if (some #{table-name} ["organisation" "stakeholder"])
-          (db.detail/get-entity-details conn {:topic-type table-name :topic-id id})
-          (db.detail/get-topic-details conn {:topic-type table-name :topic-id id}))]
+          (db.detail/get-entity-details conn opts)
+          (db.detail/get-topic-details conn opts))]
     (-> result
         (dissoc :json)
         (merge json))))
 
 (defmethod ig/init-key ::get [_ {:keys [db]}]
   (cache-hierarchies! (:spec db))
-  (fn [{{:keys [path]} :parameters approved? :approved? user :user}]
+  (fn [{{:keys [path query]} :parameters approved? :approved? user :user}]
     (let [conn (:spec db)
           topic (:topic-type path)
           id (:topic-id path)
           authorized? (and (or (model.topic/public? topic) approved?)
                            (some? (get-resource-if-allowed conn path user)))]
       (if authorized?
-        (if-let [data (get-detail conn topic id)]
+        (if-let [data (get-detail conn topic id query)]
           (resp/response (merge
                           (adapt (merge
                                   (case topic
