@@ -14,9 +14,8 @@ export const curr = (findData, path, existingData) => {
     const currProp = properties[index];
 
     acc[currProp] = findData?.[currProp];
-
     if (currProp === "project") {
-      return { ...acc, initiative: findData?.["initiative"] || 0 };
+      return { ...acc, initiative: findData?.["project"] || 0 };
     } else {
       return acc;
     }
@@ -27,20 +26,20 @@ export const curr = (findData, path, existingData) => {
     } else {
       if (path === "/knowledge/library") {
         return sumValues({
-          actionPlan: findData?.actionPlan,
-          event: findData?.event,
-          financingResource: findData?.financingResource,
-          policy: findData?.policy,
-          project: findData?.project,
-          technicalResource: findData?.technicalResource,
-          technology: findData?.technology,
+          actionPlan: findData?.actionPlan || 0,
+          event: findData?.event || 0,
+          financingResource: findData?.financingResource || 0,
+          policy: findData?.policy || 0,
+          project: findData?.project || 0,
+          technicalResource: findData?.technicalResource || 0,
+          technology: findData?.technology || 0,
           initiative: findData?.initiative || 0,
         });
       }
       if (path === "/connect/community") {
         return sumValues({
-          stakeholder: findData?.stakeholder,
-          organisation: findData?.organisation,
+          stakeholder: findData?.stakeholder || 0,
+          organisation: findData?.organisation || 0,
         });
       }
     }
