@@ -92,10 +92,8 @@ const DetailView = ({
   const isConnectStakeholders = ["organisation", "stakeholder"].includes(
     params?.type
   );
-  const breadcrumbLink = isConnectStakeholders ? "stakeholders" : "browse";
 
-  const allowBookmark =
-    params.type !== "stakeholder" || profile.id !== params.id;
+  const description = data?.description ? data?.description : data?.summary;
 
   const isLoaded = useCallback(
     () =>
@@ -532,8 +530,6 @@ const DetailView = ({
             >
               Bookmark
             </Button>
-
-            <Button onClick={handleEditBtn}>EDIT</Button>
           </Col>
         </div>
 
@@ -546,19 +542,20 @@ const DetailView = ({
           {data?.image && (
             <Col
               className="resource-image-wrapper"
-              style={data?.type !== "event" && { width: "50%" }}
+              style={data?.type !== "event" && { width: "50%", float: "left" }}
             >
               <img className="resource-image" src={data?.image} alt="" />
             </Col>
           )}
 
           <Col className="details-content-wrapper">
-            <Row>
-              <h3 className="content-heading">Description</h3>
-              <p className="content-paragraph">
-                {data?.description ? data?.description : data?.summary}
-              </p>
-            </Row>
+            {description && (
+              <Row>
+                <h3 className="content-heading">Description</h3>
+                <p className="content-paragraph">{description}</p>
+              </Row>
+            )}
+
             <Row>
               <Col>
                 <h3 className="content-heading">Location & Geocoverage</h3>
