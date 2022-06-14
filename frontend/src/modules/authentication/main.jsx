@@ -1,5 +1,15 @@
-import React from "react";
-import { Carousel, Col, Row, Typography, Button, Avatar } from "antd";
+import React, { useState } from "react";
+import {
+  Carousel,
+  Col,
+  Row,
+  Typography,
+  Button,
+  Avatar,
+  Form,
+  Input,
+  Divider,
+} from "antd";
 import { LinkedinOutlined, GoogleOutlined } from "@ant-design/icons";
 import DataHubIcon from "../../images/auth/data-hub.png";
 import NetworkIcon from "../../images/auth/network.png";
@@ -9,6 +19,9 @@ import { ReactComponent as EmailIcon } from "../../images/auth/email.svg";
 const { Title, Link } = Typography;
 
 function Main({ handleOnClickBtnNext }) {
+  const [singin, setSignIn] = useState(false);
+  const [form] = Form.useForm();
+
   return (
     <div className="ui container wave-background">
       <Row>
@@ -58,41 +71,95 @@ function Main({ handleOnClickBtnNext }) {
           </div>
         </Col>
         <Col span={12}>
-          <div className="login-container">
-            <div className="signin-button">
-              <Button type="text" onClick={handleOnClickBtnNext}>
-                SIGN IN
-              </Button>
-            </div>
-            <div className="auth-buttons">
-              <Button
-                type="primary"
-                shape="round"
-                icon={<LinkedinIcon />}
-                onClick={handleOnClickBtnNext}
-              >
-                CONTINUE WITH LINKEDIN
-              </Button>
-              <Button
-                type="primary"
-                shape="round"
-                icon={<GoogleIcon />}
-                onClick={handleOnClickBtnNext}
-              >
-                CONTINUE WITH GOOGLE
-              </Button>
-              <div className="separator">
-                <Title level={4}>or</Title>
+          <div className="auth-container">
+            {!singin ? (
+              <div className="signup-wrapper">
+                <div className="signin-button">
+                  <Button type="text" onClick={() => setSignIn(!singin)}>
+                    SIGN IN
+                  </Button>
+                </div>
+                <div className="auth-buttons">
+                  <Button
+                    type="primary"
+                    shape="round"
+                    icon={<LinkedinIcon />}
+                    onClick={handleOnClickBtnNext}
+                  >
+                    CONTINUE WITH LINKEDIN
+                  </Button>
+                  <Button
+                    type="primary"
+                    shape="round"
+                    icon={<GoogleIcon />}
+                    onClick={handleOnClickBtnNext}
+                  >
+                    CONTINUE WITH GOOGLE
+                  </Button>
+                  <div className="separator">
+                    <Title level={4}>or</Title>
+                  </div>
+                  <Button
+                    type="primary"
+                    shape="round"
+                    icon={<EmailIcon />}
+                    onClick={handleOnClickBtnNext}
+                  >
+                    CONTINUE WITH EMAIL
+                  </Button>
+                </div>
               </div>
-              <Button
-                type="primary"
-                shape="round"
-                icon={<EmailIcon />}
-                onClick={handleOnClickBtnNext}
-              >
-                CONTINUE WITH EMAIL
-              </Button>
-            </div>
+            ) : (
+              <div className="login-wrapper">
+                <div className="connect-button">
+                  <Button type="text">CONTINUE WITH EMAIL</Button>
+                  <Button
+                    type="text"
+                    className="connect-back-button"
+                    onClick={() => setSignIn(!singin)}
+                  >
+                    {"<"} Back to connect options
+                  </Button>
+                </div>
+                <div className="login-form">
+                  <Form form={form} layout="vertical">
+                    <Form.Item label="EMAIL">
+                      <Input placeholder="Enter your email" />
+                    </Form.Item>
+                    <Form.Item label="Password" name="password">
+                      <Input.Password placeholder="Enter your password" />
+                    </Form.Item>
+                    <Button
+                      type="primary"
+                      shape="round"
+                      className="login-button"
+                      onClick={handleOnClickBtnNext}
+                    >
+                      LOGIN WITH EMAIL
+                    </Button>{" "}
+                    <Button
+                      type="text"
+                      className="forgot-password"
+                      onClick={() => setSignIn(!singin)}
+                    >
+                      Forgot password?
+                    </Button>
+                  </Form>{" "}
+                  <Divider />
+                  <div className="join-wrapper">
+                    <Title level={2}>Don’t have an account yet?</Title>
+                    <Button
+                      type="primary"
+                      shape="round"
+                      className="login-button"
+                      onClick={() => setSignIn(!singin)}
+                    >
+                      JOIN WITH EMAIL
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
             <div className="terms">
               <Title level={4}>
                 By signing up you are agreeing to our terms and services.
