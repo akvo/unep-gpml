@@ -306,10 +306,11 @@ const DetailView = ({
     } else {
       association = association.filter((it) => it !== relationType);
     }
+    
     handleRelationChange({
       topicId: parseInt(params.id),
       association,
-      params: resourceTypeToTopicType(params.type),
+      topic: resourceTypeToTopicType(params.type),
     });
   };
 
@@ -500,13 +501,12 @@ const DetailView = ({
           lg: 24,
         }}
       >
-        {/* {data?.image && ( */}
         {data?.image && (
           <Col lg={12}>
             <img className="resource-image" src={data?.image} alt="" />
           </Col>
         )}
-        {/* )} */}
+
         <Col lg={data?.image ? 12 : 24}>
           <Row>
             <h3 className="content-heading">Description</h3>
