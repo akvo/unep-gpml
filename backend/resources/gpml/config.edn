@@ -664,7 +664,8 @@
   :gpml.handler.community/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.community/get-params {}
 
-  :gpml.handler.export/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.export/get {:db #ig/ref :duct.database/sql
+                            :app-domain #duct/env ["APP_DOMAIN" Str]}
   :gpml.handler.export/get-params {}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
