@@ -141,7 +141,10 @@
     (seq q)
     (assoc :search-text (->> (str/trim q)
                              (re-seq #"\w+")
-                             (str/join " & ")))))
+                             (str/join " & ")))
+
+    true
+    (assoc :review-status "APPROVED")))
 
 (defn landing-response [conn query]
   (let [opts (api-opts->opts query)
