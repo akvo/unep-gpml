@@ -19,6 +19,23 @@
   //     font-size: 16px;
   //   }
   // }
+
+  label {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #000000;
+    p {
+      margin-bottom: 0px;
+      span {
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 17px;
+        color: rgba(56, 78, 133, 0.6);
+        padding-left: 10px;
+      }
+    }
+  }
   .ant-input,
   .ant-input-number-input,
   .ant-picker,
@@ -26,17 +43,22 @@
   .ant-select-selector,
   .ant-input-affix-wrapper {
     background-color: #edf2f6;
-    height: 42px;
     border: none !important;
     border-radius: 5px;
     font-weight: 500;
     font-size: 16px;
+    padding: 0px 11px;
+    height: 42px;
     &::placeholder {
       color: #a5b0c9;
       font-size: 16px;
       font-weight: 500;
     }
     input {
+      height: 42px;
+    }
+    .ant-select,
+    .ant-select-selector {
       height: 42px;
     }
     .ant-select-selection-placeholder {
@@ -154,13 +176,32 @@
     z-index: 9;
     background: #fff;
     border-radius: 10px;
-    max-height: 700px;
+    max-height: 1200px;
     min-height: 600px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     overflow: hidden;
+    .ant-upload {
+      background: transparent;
+      padding: 15px 0px;
+      .ant-upload-text {
+        font-weight: 500;
+        font-size: 18px !important;
+        line-height: 26px;
+        color: #384e85 !important;
+      }
+      .ant-upload-hint {
+        span {
+          color: #384e85 !important;
+        }
+        font-weight: 500;
+        font-size: 18px !important;
+        line-height: 26px;
+        color: #34a6ff !important;
+      }
+    }
     .ant-row-center {
       width: 100%;
     }
@@ -320,6 +361,31 @@
       }
     }
   }
+  .step-form-final {
+    padding: 100px 0px 0px 0px;
+    .ant-form {
+      padding-bottom: 60px;
+      .ant-checkbox-wrapper {
+        span {
+          &:nth-child(2) {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 23px;
+            color: #384e85;
+          }
+        }
+      }
+      .ant-input-prefix {
+        svg {
+          width: 20px;
+          height: 20px;
+          path {
+            fill: #384e85;
+          }
+        }
+      }
+    }
+  }
   .slider-container {
     height: 100%;
     padding: 30px;
@@ -452,12 +518,12 @@
         padding: 30px 20px;
         .ant-form-item-label {
           padding-bottom: 5px;
-          label {
-            font-weight: 500;
-            font-size: 14px;
-            line-height: 20px;
-            color: #000000;
-          }
+          // label {
+          //   font-weight: 500;
+          //   font-size: 14px;
+          //   line-height: 20px;
+          //   color: #000000;
+          // }
         }
         .ant-input-password {
           border: none !important;

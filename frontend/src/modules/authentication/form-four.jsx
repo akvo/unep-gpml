@@ -1,11 +1,28 @@
 import React from "react";
-import { Col, Row, Button, Typography, Form, Input, Select } from "antd";
+import {
+  Col,
+  Row,
+  Button,
+  Typography,
+  Form,
+  Input,
+  Select,
+  Upload,
+  Checkbox,
+} from "antd";
 const { Title, Link } = Typography;
+const { Dragger } = Upload;
+const { TextArea } = Input;
+import {
+  LinkedinOutlined,
+  TwitterOutlined,
+  InboxOutlined,
+} from "@ant-design/icons";
 
 function FormFour({ handleOnClickBtnBack, handleOnClickBtnNext }) {
   const [form] = Form.useForm();
   return (
-    <div className="ui container step-form">
+    <div className="ui container step-form step-form-final">
       <Row justify="center" align="middle">
         <Col span={24}>
           <div className="text-wrapper">
@@ -14,19 +31,65 @@ function FormFour({ handleOnClickBtnBack, handleOnClickBtnNext }) {
             </Title>
           </div>
           <Form form={form} layout="vertical">
-            <Form.Item name="jobTitle" style={{ paddingBottom: 30 }}>
-              <Input placeholder="Enter job title" />
+            <Form.Item label="Bio" name="jobTitle">
+              <TextArea
+                placeholder="About yourself (Max 100 words)"
+                maxLength={100}
+                style={{ height: 120, padding: "10px 11px" }}
+              />
             </Form.Item>
-            <Form.Item name="entity">
-              <Select
-                placeholder="Enter the name of your entity"
-                allowClear
-                showSearch
-              >
-                <Option value="male">male</Option>
-                <Option value="female">female</Option>
-                <Option value="other">other</Option>
-              </Select>
+            <Form.Item
+              label={
+                <p>
+                  Linkedin <span>OPTIONAL</span>
+                </p>
+              }
+              name="linkedin"
+            >
+              <Input
+                placeholder="Your linkedin username"
+                prefix={<LinkedinOutlined />}
+              />
+            </Form.Item>
+            <Form.Item
+              label={
+                <p>
+                  Twitter <span>OPTIONAL</span>
+                </p>
+              }
+              name="linkedin"
+            >
+              <Input
+                placeholder="Your twitter username"
+                prefix={<TwitterOutlined />}
+              />
+            </Form.Item>
+            <Form.Item
+              label={
+                <p>
+                  CV / Portfolio <span>OPTIONAL</span>
+                </p>
+              }
+              name="photo"
+            >
+              <Dragger>
+                <p className="ant-upload-drag-icon">
+                  <InboxOutlined />
+                </p>
+                <p className="ant-upload-text">Drag file here</p>
+                <p className="ant-upload-hint">
+                  <span>or</span> Browse your computer
+                </p>
+              </Dragger>
+            </Form.Item>
+            <Form.Item style={{ paddingTop: 20 }}>
+              <Checkbox>
+                By submitting this form, I will be included in the public
+                database of GPML Digital Platform members and acknowledge that
+                the provided information will be made public and used to find
+                and connect via smart-matchmaking functionalities with other
+                stakeholders and resources.
+              </Checkbox>
             </Form.Item>
           </Form>
         </Col>
@@ -36,7 +99,7 @@ function FormFour({ handleOnClickBtnBack, handleOnClickBtnNext }) {
           {"<"} Back
         </Button>
         <Button className="step-button-next" onClick={handleOnClickBtnNext}>
-          Next {">"}
+          Submit {">"}
         </Button>
       </Row>
     </div>
