@@ -6,6 +6,11 @@ import common from "./common";
 const { Step } = Steps;
 import Main from "./main";
 import GettingStarted from "./getting-started";
+import AffiliationOption from "./affiliation-option";
+import FormOne from "./form-one";
+import FormTwo from "./form-two";
+import FormThree from "./form-three";
+import FormFour from "./form-four";
 
 function Authentication() {
   const { tabs, initialData, initialFormData } = common;
@@ -80,7 +85,42 @@ function Authentication() {
       case 0:
         return <Main handleOnClickBtnNext={handleOnClickBtnNext} />;
       case 1:
-        return <GettingStarted handleOnClickBtnBack={handleOnClickBtnBack} />;
+        return <GettingStarted handleOnClickBtnNext={handleOnClickBtnNext} />;
+      case 2:
+        return (
+          <AffiliationOption
+            handleOnClickBtnBack={handleOnClickBtnBack}
+            handleOnClickBtnNext={handleOnClickBtnNext}
+          />
+        );
+      case 3:
+        return (
+          <FormOne
+            handleOnClickBtnBack={handleOnClickBtnBack}
+            handleOnClickBtnNext={handleOnClickBtnNext}
+          />
+        );
+      case 4:
+        return (
+          <FormTwo
+            handleOnClickBtnBack={handleOnClickBtnBack}
+            handleOnClickBtnNext={handleOnClickBtnNext}
+          />
+        );
+      case 5:
+        return (
+          <FormThree
+            handleOnClickBtnBack={handleOnClickBtnBack}
+            handleOnClickBtnNext={handleOnClickBtnNext}
+          />
+        );
+      case 6:
+        return (
+          <FormFour
+            handleOnClickBtnBack={handleOnClickBtnBack}
+            handleOnClickBtnNext={handleOnClickBtnNext}
+          />
+        );
       default:
         return null;
     }

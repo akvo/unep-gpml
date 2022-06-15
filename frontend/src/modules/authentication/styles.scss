@@ -5,6 +5,53 @@
   background: url("../../images/auth/auth-background.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
+  // input {
+  //   height: 42px;
+  //   background: #edf2f7;
+  //   border-radius: 5px;
+  //   font-weight: 500;
+  //   font-size: 16px;
+  //   line-height: 23px;
+  //   color: #a5b0c9;
+  //   border: none !important;
+  //   &::placeholder {
+  //     color: #a5b0c9;
+  //     font-size: 16px;
+  //   }
+  // }
+  .ant-input,
+  .ant-input-number-input,
+  .ant-picker,
+  .ant-select,
+  .ant-select-selector,
+  .ant-input-affix-wrapper {
+    background-color: #edf2f6;
+    height: 42px;
+    border: none !important;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 16px;
+    &::placeholder {
+      color: #a5b0c9;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    input {
+      height: 42px;
+    }
+    .ant-select-selection-placeholder {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 42px;
+      color: #a5b0c9;
+    }
+    .ant-select-selection-item {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 42px;
+      color: #a5b0c9;
+    }
+  }
   .wave-background {
     position: relative;
     z-index: 9;
@@ -98,6 +145,177 @@
           border-color: $yellow-highlight;
           color: #fff;
           background: $yellow-highlight;
+        }
+      }
+    }
+  }
+  .step-form {
+    position: relative;
+    z-index: 9;
+    background: #fff;
+    border-radius: 10px;
+    max-height: 700px;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+    .ant-row-center {
+      width: 100%;
+    }
+    .ant-form {
+      width: 80%;
+      margin: 0 auto;
+    }
+    .ant-row {
+      &:first-child {
+        flex: 1;
+      }
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      background: url("../../images/auth/wave.png");
+      width: 100%;
+      height: 350px;
+      bottom: -10%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      mix-blend-mode: multiply;
+      opacity: 0.2;
+      background-position: center bottom;
+      z-index: -1;
+      border-bottom-right-radius: 10px;
+      border-bottom-left-radius: 10px;
+      @media screen and (max-width: 1600px) {
+        height: 250px;
+        bottom: 0px;
+        background-size: contain;
+      }
+    }
+    .text-wrapper {
+      h2 {
+        font-weight: 700;
+        font-size: 38px;
+        line-height: 55px;
+        text-align: center;
+        color: #18162f;
+      }
+    }
+    .button-bottom-panel {
+      width: 100%;
+      padding: 0px 40px 60px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .step-button-back {
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 22px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #18162f;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+      }
+      .step-button-next {
+        border: 2px solid #18162f;
+        border-radius: 23.5px;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 22px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #18162f;
+        padding: 20px 45px;
+        background: transparent;
+        &:hover {
+          border-color: $yellow-highlight;
+          color: #fff;
+          background: $yellow-highlight;
+        }
+      }
+    }
+    .tag-list {
+      width: 80%;
+      margin: 0 auto;
+      h5 {
+        font-weight: 400;
+        font-size: 14px;
+        text-transform: capitalize;
+        color: #3176ae;
+        margin-bottom: 0px;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        overflow: hidden;
+        padding: 0;
+        li {
+          background: transparent;
+          border-radius: 23px 5px 5px 23px;
+          border: 2px solid #3176ae;
+          color: #255b87;
+          display: inline-block;
+          padding: 5px 20px 5px 30px;
+          position: relative;
+          margin: 0 10px 10px 0;
+          text-decoration: none;
+          cursor: pointer;
+          &:before {
+            background: #3176ae;
+            border-radius: 10px;
+            box-shadow: inset 0 1px rgb(0 0 0 / 25%);
+            content: "";
+            position: absolute;
+            height: 12px;
+            width: 12px;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+        }
+      }
+    }
+    .buttons-wrapper {
+      display: flex;
+      justify-content: center;
+      button {
+        border: 2px solid #18162f;
+        border-radius: 23.5px;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 22px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #18162f;
+        margin: 0 auto;
+        justify-content: center;
+        padding: 20px 45px;
+        background: transparent;
+        width: 150px;
+        &:hover {
+          border-color: $yellow-highlight;
+          color: #fff;
+          background: $yellow-highlight;
+        }
+      }
+      div {
+        text-align: center;
+        h5 {
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 20px;
+          color: #000000;
+          margin-top: 5px;
+        }
+        &:first-child {
+          margin-right: 30px;
         }
       }
     }
@@ -248,20 +466,6 @@
           border-radius: 5px;
           .ant-form-item-has-success {
             border: none;
-          }
-        }
-        input {
-          height: 42px;
-          background: #edf2f7;
-          border-radius: 5px;
-          font-weight: 500;
-          font-size: 16px;
-          line-height: 23px;
-          color: #a5b0c9;
-          border: none !important;
-          &::placeholder {
-            color: #a5b0c9;
-            font-size: 16px;
           }
         }
         .login-button {

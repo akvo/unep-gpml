@@ -24,6 +24,18 @@ const initialData = {
     steps: 0,
     required: {},
   },
+  S6: {
+    steps: 0,
+    required: {},
+  },
+  S7: {
+    steps: 0,
+    required: {},
+  },
+  S8: {
+    steps: 0,
+    required: {},
+  },
 };
 
 const initialFormData = new Store({
@@ -53,6 +65,24 @@ const tabs = [
   {
     key: "S5",
     title: "Entity",
+    desc: "",
+    steps: [],
+  },
+  {
+    key: "S6",
+    title: "Offering",
+    desc: "",
+    steps: [],
+  },
+  {
+    key: "S7",
+    title: "Seeking",
+    desc: "",
+    steps: [],
+  },
+  {
+    key: "S8",
+    title: "About",
     desc: "",
     steps: [],
   },

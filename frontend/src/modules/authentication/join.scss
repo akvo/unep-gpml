@@ -8,11 +8,23 @@
   margin-right: auto;
   margin-left: auto;
   width: 80%;
-  h2 {
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 26px;
-    color: #09689a;
+  .join-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    h2 {
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 26px;
+      color: #09689a;
+      margin-bottom: 0px;
+    }
+    button {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+      color: #000000;
+    }
   }
   .ant-form {
     margin-top: 40px;

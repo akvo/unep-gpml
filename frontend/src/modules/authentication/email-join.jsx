@@ -31,13 +31,22 @@ const options = [
   },
 ];
 
-function EmailJoin() {
+function EmailJoin({ setJoinEmail }) {
   const [form] = Form.useForm();
   return (
     <div className="ui container wave-background bg-white">
       <Row className="join-form">
         <Col span={24}>
-          <Title level={2}>JOIN WITH EMAIL</Title>
+          <div className="join-button">
+            <Title level={2}>JOIN WITH EMAIL</Title>
+            <Button
+              type="text"
+              className="connect-back-button"
+              onClick={() => setJoinEmail(false)}
+            >
+              {"<"} Back to connect options
+            </Button>
+          </div>
           <Form form={form} layout="vertical">
             <Form.Item label="Email">
               <Input placeholder="Enter your email" />
@@ -49,14 +58,16 @@ function EmailJoin() {
             <Form.Item label="Password" name="password">
               <Input.Password placeholder="Choose your password" />
             </Form.Item>
-            <Form.Item label="Retype Password" name="password">
+            <Form.Item label="Retype Password" name="retypePassword">
               <Input.Password placeholder="Retype your password" />
             </Form.Item>
             <Input.Group compact className="title-group">
               <Form.Item label="Title" name={"title"}>
                 <Select placeholder="Title">
                   {["Mr", "Mrs", "Ms", "Dr", "Prof"].map((it) => (
-                    <Option value={it}>{it}</Option>
+                    <Select.Option value={it} key={it}>
+                      {it}
+                    </Select.Option>
                   ))}
                 </Select>
               </Form.Item>
@@ -86,9 +97,11 @@ function EmailJoin() {
               </Dragger>
             </Form.Item>
             <Form.Item label="Country" name="country">
-              <AutoComplete options={options}>
-                <Input placeholder="Search country" prefix={<SearchIcon />} />
-              </AutoComplete>
+              <Select placeholder="Search Country" allowClear showSearch>
+                <Option value="male">male</Option>
+                <Option value="female">female</Option>
+                <Option value="other">other</Option>
+              </Select>
             </Form.Item>
             <Button className="next-button">Next {">"}</Button>
           </Form>{" "}

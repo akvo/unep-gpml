@@ -25,7 +25,7 @@ function Main({ handleOnClickBtnNext }) {
   const [form] = Form.useForm();
 
   if (joinEmail) {
-    return <EmailJoin />;
+    return <EmailJoin setJoinEmail={setJoinEmail} />;
   }
 
   return (

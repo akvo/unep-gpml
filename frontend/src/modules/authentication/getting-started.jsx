@@ -3,7 +3,7 @@ import { Col, Row, Button, Typography } from "antd";
 import GettingStartedIcon from "../../images/auth/getting-started.png";
 const { Title, Link } = Typography;
 
-function GettingStarted({ handleOnClickBtnBack }) {
+function GettingStarted({ handleOnClickBtnNext }) {
   return (
     <div className="ui container getting-started">
       <Row justify="center" align="middle">
@@ -23,7 +23,7 @@ function GettingStarted({ handleOnClickBtnBack }) {
       </Row>
       <Row justify="center" align="middle" className="button-bottom-panel">
         <Col span={24}>
-          <Button className="step-button" onClick={handleOnClickBtnBack}>
+          <Button className="step-button" onClick={handleOnClickBtnNext}>
             Next {">"}
           </Button>
         </Col>
