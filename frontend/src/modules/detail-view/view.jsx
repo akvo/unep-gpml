@@ -556,7 +556,11 @@ const DetailView = ({
             {description && (
               <Row>
                 <h3 className="content-heading">Description</h3>
-                <p className="content-paragraph event-paragraph">
+                <p
+                  className={`content-paragraph ${
+                    data?.type === "event" && "event-paragraph"
+                  }`}
+                >
                   {description}
                 </p>
               </Row>
