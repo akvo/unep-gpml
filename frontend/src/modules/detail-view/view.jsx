@@ -683,6 +683,42 @@ const DetailView = ({
             <Col className="section">
               <h3 className="content-heading">Connections</h3>
 
+              <List itemLayout="horizontal">
+                {data?.entityConnections.map((item) => (
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={
+                        <Avatar
+                          size={50}
+                          src={
+                            item?.image ? (
+                              item?.image
+                            ) : (
+                              <Avatar
+                                style={{
+                                  backgroundColor: "#09689A",
+                                  verticalAlign: "middle",
+                                }}
+                                size={50}
+                              >
+                                {item.entity?.substring(0, 2)}
+                              </Avatar>
+                            )
+                          }
+                        />
+                      }
+                      title={
+                        <Link to={`/organisation/${item.entityId}`}>
+                          {item.entity}
+                        </Link>
+                      }
+                      description={"Entity"}
+                    />{" "}
+                    {/* <div className="see-more-button">See More</div> */}
+                  </List.Item>
+                ))}
+              </List>
+
               <Avatar.Group
                 maxCount={2}
                 size="large"
