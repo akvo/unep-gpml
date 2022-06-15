@@ -654,7 +654,7 @@ const DetailView = ({
                       )}
 
                       {(data?.subnationalCity || data?.q24SubnationalCity) && (
-                        <>
+                        <Row>
                           <div className="city-icon detail-item-icon">
                             <CityImage />
                           </div>
@@ -663,7 +663,7 @@ const DetailView = ({
                               ? data?.subnationalCity
                               : data?.q24SubnationalCity}
                           </div>
-                        </>
+                        </Row>
                       )}
                     </div>
                   )}
