@@ -22,6 +22,12 @@
       font-size: 14px;
       line-height: 24px;
     }
+    
+    @media (min-width: 900px) {
+      .event-paragraph {
+        columns: 2;
+      }
+    }
     .section {
       margin-top: 38px;
     }

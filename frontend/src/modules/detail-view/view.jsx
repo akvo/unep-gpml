@@ -556,7 +556,9 @@ const DetailView = ({
             {description && (
               <Row>
                 <h3 className="content-heading">Description</h3>
-                <p className="content-paragraph">{description}</p>
+                <p className="content-paragraph event-paragraph">
+                  {description}
+                </p>
               </Row>
             )}
 
