@@ -386,30 +386,40 @@ const DetailView = ({
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
-      items: 5.5,
-      slidesToSlide: 5.5,
+      items: 11,
+      slidesToSlide: 11,
     },
     desktop: {
       breakpoint: { max: 1199, min: 992 },
-      items: 4.5,
-      slidesToSlide: 4.5,
+      items: 9,
+      slidesToSlide: 9,
     },
     tablet: {
       breakpoint: { max: 991, min: 768 },
-      items: 3.5,
-      slidesToSlide: 3.5,
+      items: 7,
+      slidesToSlide: 7,
     },
     mobile2: {
       breakpoint: { max: 767, min: 600 },
-      items: 2.5,
-      slidesToSlide: 2.5,
+      items: 3,
+      slidesToSlide: 3,
     },
     mobile: {
       breakpoint: { max: 599, min: 0 },
-      items: 1.5,
-      slidesToSlide: 1.5,
+      items: 2,
+      slidesToSlide: 2,
     },
   };
+
+  const startDate = moment.utc(data?.endDate).format("YYYY");
+  const endDate = moment.utc(data?.startDate).format("YYYY");
+
+  const getYears = (start, end) =>
+    Array.from({ length: end.diff(start, "month") + 1 }).map((_, index) =>
+      moment(start).add(index, "month").format("YYYY")
+    );
+
+  const years = getYears(moment(startDate, "YYYY"), moment(endDate, "YYYY"));
 
   return (
     <div className="detail-view-wrapper">
@@ -534,6 +544,7 @@ const DetailView = ({
             >
               Bookmark
             </Button>
+            <Button onClick={handleEditBtn}>EDIT</Button>
           </Col>
         </div>
 
@@ -853,26 +864,36 @@ const DetailView = ({
           <div>
             <table className="record-table">
               <tbody>
-                <tr className="record-row">
-                  <td className="record-name">Year</td>
-                  <td className="record-value">2</td>
-                </tr>
-                <tr className="record-row">
-                  <td className="record-name">Valid from</td>
-                  <td className="record-value">
-                    {data?.startDate
-                      ? moment.utc(data?.startDate).format("DD MMM YYYY")
-                      : ""}
-                  </td>
-                </tr>
-                <tr className="record-row">
-                  <td className="record-name">Valid until</td>
-                  <td className="record-value">
-                    {data?.endDate
-                      ? moment.utc(data?.endDate).format("DD MMM YYYY")
-                      : ""}
-                  </td>
-                </tr>
+                {years && years?.length > 0 && (
+                  <tr className="record-row">
+                    <td className="record-name">Year</td>
+                    <td className="record-value">
+                      {years.map((year) => year).join(" - ")}
+                    </td>
+                  </tr>
+                )}
+
+                {data?.startDate && (
+                  <tr className="record-row">
+                    <td className="record-name">Valid from</td>
+                    <td className="record-value">
+                      {data?.startDate
+                        ? moment.utc(data?.startDate).format("DD MMM YYYY")
+                        : ""}
+                    </td>
+                  </tr>
+                )}
+
+                {data?.endDate && (
+                  <tr className="record-row">
+                    <td className="record-name">Valid until</td>
+                    <td className="record-value">
+                      {data?.endDate
+                        ? moment.utc(data?.endDate).format("DD MMM YYYY")
+                        : ""}
+                    </td>
+                  </tr>
+                )}
 
                 {data?.currencyAmountInvested &&
                 data?.currencyAmountInvested?.length ? (
@@ -1000,7 +1021,7 @@ const DetailView = ({
         {data?.relatedContent &&
           data?.relatedContent?.length > 0 &&
           data?.relatedContent.length > 0 && (
-            <Col>
+            <Col className="section section-related-content">
               <RelatedContent
                 data={data}
                 responsive={responsive}

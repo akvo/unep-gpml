@@ -10,7 +10,8 @@
   #detail-view {
     margin: 0 5%;
     background-color: #fff;
-    .content-heading {
+    .content-heading,
+    .related-content-title {
       font-weight: 500;
       font-size: 16px;
       line-height: 23px;
@@ -252,6 +253,86 @@
             border-radius: 50%;
           }
         }
+      }
+    }
+
+    .section-related-content {
+      padding: 0px 40px 0px calc(40px - 10px) !important;
+      margin-top: calc(38px - calc(40px - 23px));
+
+      .related-content {
+        padding: 0 !important;
+      }
+      .related-content-title,
+      .ant-card-head-title,
+      .ant-card-head {
+        padding: 0 !important;
+      }
+      .related-content-title {
+        padding-left: 10px !important;
+      }
+      .related-content-title {
+        margin-bottom: 0;
+      }
+      .related-content-wrapper {
+        min-height: 250px;
+        .ant-card-head {
+          min-height: 40px;
+          border-bottom: unset;
+          display: flex;
+          align-items: flex-end;
+        }
+      }
+      .slider-card {
+        display: flex;
+        justify-content: center;
+        max-width: 124px;
+        max-height: 153px;
+        box-shadow: 0px 0px 4px rgb(0 0 0 / 25%);
+        padding: 6px 5px;
+        border-radius: 5px !important;
+      }
+      .related-content-image {
+        max-width: 114px;
+        max-height: 141px;
+        border-radius: 0;
+      }
+      .description-holder {
+        max-width: 124px;
+        max-height: 153px;
+      }
+      .carousel-item .card {
+        width: 124px !important;
+        height: 153px !important;
+      }
+      .carousel-item:not(:first-of-type) .card {
+        margin-left: 0px;
+        .slider-card {
+          margin-left: 8px;
+        }
+      }
+
+      .carousel-item:hover {
+        &:hover {
+          margin: 0 20px 0 28px !important;
+        }
+      }
+
+      .carousel-item:first-of-type {
+        &:hover {
+          margin: 0 20px 0 18px !important;
+        }
+      }
+
+      .no-pagination {
+        min-height: 153px !important;
+      }
+      .custom-right-arrow,
+      .custom-left-arrow {
+        top: calc(50% - 16px);
+      }
+      .carousel-dot-list {
+        margin-top: 15px;
       }
     }
 
