@@ -170,6 +170,7 @@ const DetailView = ({
       e.disclaimer = null;
     });
     window.scrollTo({ top: 0 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile, isLoaded]);
 
   const handleEditBtn = () => {
@@ -437,24 +438,26 @@ const DetailView = ({
             >
               View
             </Button>
-            <Button
-              className="recording-button two-tone-button"
-              icon={<PlayCircleTwoTone twoToneColor="#09689a" />}
-              type="primary"
-              shape="round"
-              size="middle"
-              ghost
-              onClick={() => {
-                window.open(
-                  data?.recording.includes("https://")
-                    ? data?.recording
-                    : "https://" + data?.recording,
-                  "_blank"
-                );
-              }}
-            >
-              Recording
-            </Button>
+            {data?.recording && (
+              <Button
+                className="recording-button two-tone-button"
+                icon={<PlayCircleTwoTone twoToneColor="#09689a" />}
+                type="primary"
+                shape="round"
+                size="middle"
+                ghost
+                onClick={() => {
+                  window.open(
+                    data?.recording.includes("https://")
+                      ? data?.recording
+                      : "https://" + data?.recording,
+                    "_blank"
+                  );
+                }}
+              >
+                Recording
+              </Button>
+            )}
             <Popover
               placement="top"
               overlayStyle={{
@@ -566,33 +569,55 @@ const DetailView = ({
                   <span>{titleCase(data?.geoCoverageType || "")}</span>
                 </span>
 
-                <div className="detail-item">
-                  {data?.geoCoverageType !== "sub-national" &&
-                    data?.geoCoverageType !== "national" && (
-                      <>
-                        {data?.geoCoverageCountryGroups &&
-                          data?.geoCoverageCountryGroups.length > 0 && (
-                            <Row>
-                              <div className="location-icon detail-item-icon">
-                                <LocationImage />
-                              </div>
-                              <div>
-                                {renderGeoCoverageCountryGroups(
-                                  data,
-                                  countries,
-                                  transnationalOptions
-                                )}
-                              </div>
-                            </Row>
-                          )}
-                      </>
-                    )}
+                {data?.geoCoverageType !== "global" && (
+                  <div className="detail-item">
+                    {data?.geoCoverageType !== "sub-national" &&
+                      data?.geoCoverageType !== "national" && (
+                        <>
+                          {data?.geoCoverageCountryGroups &&
+                            data?.geoCoverageCountryGroups?.length > 0 && (
+                              <Row>
+                                <div className="location-icon detail-item-icon">
+                                  <LocationImage />
+                                </div>
+                                <div>
+                                  {renderGeoCoverageCountryGroups(
+                                    data,
+                                    countries,
+                                    transnationalOptions
+                                  )}
+                                </div>
+                              </Row>
+                            )}
+                        </>
+                      )}
 
-                  {data?.geoCoverageType !== "sub-national" &&
-                    data?.geoCoverageType !== "national" && (
+                    {data?.geoCoverageType !== "sub-national" &&
+                      data?.geoCoverageType !== "national" && (
+                        <>
+                          {data?.geoCoverageCountries &&
+                            data?.geoCoverageCountries?.length > 0 && (
+                              <Row>
+                                <div className="location-icon detail-item-icon">
+                                  <LocationImage />
+                                </div>
+                                <div>
+                                  {renderCountries(
+                                    data,
+                                    countries,
+                                    transnationalOptions
+                                  )}
+                                </div>
+                              </Row>
+                            )}
+                        </>
+                      )}
+
+                    {(data?.geoCoverageType === "sub-national" ||
+                      data?.geoCoverageType === "national") && (
                       <>
-                        {data?.geoCoverageCountries &&
-                          data?.geoCoverageCountries.length > 0 && (
+                        {data?.geoCoverageValues &&
+                          data?.geoCoverageValues.length > 0 && (
                             <Row>
                               <div className="location-icon detail-item-icon">
                                 <LocationImage />
@@ -609,40 +634,20 @@ const DetailView = ({
                       </>
                     )}
 
-                  {(data?.geoCoverageType === "sub-national" ||
-                    data?.geoCoverageType === "national") && (
-                    <>
-                      {data?.geoCoverageValues &&
-                        data?.geoCoverageValues.length > 0 && (
-                          <Row>
-                            <div className="location-icon detail-item-icon">
-                              <LocationImage />
-                            </div>
-                            <div>
-                              {renderCountries(
-                                data,
-                                countries,
-                                transnationalOptions
-                              )}
-                            </div>
-                          </Row>
-                        )}
-                    </>
-                  )}
-
-                  {(data?.subnationalCity || data?.q24SubnationalCity) && (
-                    <>
-                      <div className="city-icon detail-item-icon">
-                        <CityImage />
-                      </div>
-                      <div>
-                        {data?.subnationalCity
-                          ? data?.subnationalCity
-                          : data?.q24SubnationalCity}
-                      </div>
-                    </>
-                  )}
-                </div>
+                    {(data?.subnationalCity || data?.q24SubnationalCity) && (
+                      <>
+                        <div className="city-icon detail-item-icon">
+                          <CityImage />
+                        </div>
+                        <div>
+                          {data?.subnationalCity
+                            ? data?.subnationalCity
+                            : data?.q24SubnationalCity}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
 
                 {data?.languages && (
                   <span className="detail-item">
