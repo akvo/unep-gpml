@@ -567,43 +567,65 @@ const DetailView = ({
             )}
 
             <Row>
-              <Col>
-                <h3 className="content-heading">Location & Geocoverage</h3>
-                <span className="detail-item geocoverage-item">
-                  <div className="transnational-icon detail-item-icon">
-                    <TransnationalImage />
-                  </div>
-                  <span>{titleCase(data?.geoCoverageType || "")}</span>
-                </span>
+              {data?.geoCoverageType && (
+                <Col>
+                  <h3 className="content-heading">Location & Geocoverage</h3>
+                  <span className="detail-item geocoverage-item">
+                    <div className="transnational-icon detail-item-icon">
+                      <TransnationalImage />
+                    </div>
+                    <span>{titleCase(data?.geoCoverageType || "")}</span>
+                  </span>
 
-                {data?.geoCoverageType !== "global" && (
-                  <div className="detail-item">
-                    {data?.geoCoverageType !== "sub-national" &&
-                      data?.geoCoverageType !== "national" && (
-                        <>
-                          {data?.geoCoverageCountryGroups &&
-                            data?.geoCoverageCountryGroups?.length > 0 && (
-                              <Row>
-                                <div className="location-icon detail-item-icon">
-                                  <LocationImage />
-                                </div>
-                                <div>
-                                  {renderGeoCoverageCountryGroups(
-                                    data,
-                                    countries,
-                                    transnationalOptions
-                                  )}
-                                </div>
-                              </Row>
-                            )}
-                        </>
-                      )}
+                  {data?.geoCoverageType !== "global" && (
+                    <div className="detail-item">
+                      {data?.geoCoverageType !== "sub-national" &&
+                        data?.geoCoverageType !== "national" && (
+                          <>
+                            {data?.geoCoverageCountryGroups &&
+                              data?.geoCoverageCountryGroups?.length > 0 && (
+                                <Row>
+                                  <div className="location-icon detail-item-icon">
+                                    <LocationImage />
+                                  </div>
+                                  <div>
+                                    {renderGeoCoverageCountryGroups(
+                                      data,
+                                      countries,
+                                      transnationalOptions
+                                    )}
+                                  </div>
+                                </Row>
+                              )}
+                          </>
+                        )}
 
-                    {data?.geoCoverageType !== "sub-national" &&
-                      data?.geoCoverageType !== "national" && (
+                      {data?.geoCoverageType !== "sub-national" &&
+                        data?.geoCoverageType !== "national" && (
+                          <>
+                            {data?.geoCoverageCountries &&
+                              data?.geoCoverageCountries?.length > 0 && (
+                                <Row>
+                                  <div className="location-icon detail-item-icon">
+                                    <LocationImage />
+                                  </div>
+                                  <div>
+                                    {renderCountries(
+                                      data,
+                                      countries,
+                                      transnationalOptions
+                                    )}
+                                  </div>
+                                </Row>
+                              )}
+                          </>
+                        )}
+
+                      {(data?.geoCoverageType === "sub-national" ||
+                        data?.geoCoverageType === "national") && (
                         <>
-                          {data?.geoCoverageCountries &&
-                            data?.geoCoverageCountries?.length > 0 && (
+                          {data?.geoCoverageValues &&
+                            data?.geoCoverageValues.length > 0 && (
                               <Row>
                                 <div className="location-icon detail-item-icon">
                                   <LocationImage />
@@ -620,55 +642,35 @@ const DetailView = ({
                         </>
                       )}
 
-                    {(data?.geoCoverageType === "sub-national" ||
-                      data?.geoCoverageType === "national") && (
-                      <>
-                        {data?.geoCoverageValues &&
-                          data?.geoCoverageValues.length > 0 && (
-                            <Row>
-                              <div className="location-icon detail-item-icon">
-                                <LocationImage />
-                              </div>
-                              <div>
-                                {renderCountries(
-                                  data,
-                                  countries,
-                                  transnationalOptions
-                                )}
-                              </div>
-                            </Row>
-                          )}
-                      </>
-                    )}
+                      {(data?.subnationalCity || data?.q24SubnationalCity) && (
+                        <>
+                          <div className="city-icon detail-item-icon">
+                            <CityImage />
+                          </div>
+                          <div>
+                            {data?.subnationalCity
+                              ? data?.subnationalCity
+                              : data?.q24SubnationalCity}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  )}
 
-                    {(data?.subnationalCity || data?.q24SubnationalCity) && (
-                      <>
-                        <div className="city-icon detail-item-icon">
-                          <CityImage />
-                        </div>
-                        <div>
-                          {data?.subnationalCity
-                            ? data?.subnationalCity
-                            : data?.q24SubnationalCity}
-                        </div>
-                      </>
-                    )}
-                  </div>
-                )}
-
-                {data?.languages && (
-                  <span className="detail-item">
-                    {data?.languages
-                      .map((language) => {
-                        const langs =
-                          !isEmpty(languages) &&
-                          languages[language?.isoCode]?.name;
-                        return langs || "";
-                      })
-                      .join(", ")}
-                  </span>
-                )}
-              </Col>
+                  {data?.languages && (
+                    <span className="detail-item">
+                      {data?.languages
+                        .map((language) => {
+                          const langs =
+                            !isEmpty(languages) &&
+                            languages[language?.isoCode]?.name;
+                          return langs || "";
+                        })
+                        .join(", ")}
+                    </span>
+                  )}
+                </Col>
+              )}
             </Row>
           </Col>
         </Row>
