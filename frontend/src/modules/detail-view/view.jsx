@@ -260,7 +260,7 @@ const DetailView = ({
     return (
       <>
         {dataCountries.map((item, index) => (
-          <span id={index}>
+          <span key={index} id={index}>
             {(index ? ", " : " ") + item.name}{" "}
             {item.countries && item.countries.length > 0 && (
               <Popover
@@ -269,7 +269,9 @@ const DetailView = ({
                 content={
                   <ul className="list-country-group">
                     {item.countries.map((name) => (
-                      <li id={name.id}>{name.name}</li>
+                      <li key={name?.id} id={name?.id}>
+                        {name?.name}
+                      </li>
                     ))}
                   </ul>
                 }
@@ -350,14 +352,13 @@ const DetailView = ({
     return (
       <Comment
         className="comment-list"
-        itemLayout="horizontal"
         key={item.id}
         author={item?.authorName}
-        datetime={moment(item?.creatAt).fromNow()}
-        avatar={<Avatar src={item.authorPicture} alt={"author"} />}
+        datetime={moment(item?.createdAt).fromNow()}
+        avatar={<Avatar src={item?.authorPicture} alt={"author"} />}
         content={
           <>
-            {!item.parentId && <h5>{item.title}</h5>}
+            {!item.parentId && <h5>{item?.title}</h5>}
             <p>{item.content}</p>
           </>
         }
@@ -946,9 +947,10 @@ const DetailView = ({
           <h3 className="content-heading">Discussion</h3>
           {comments &&
             comments.length > 0 &&
-            comments?.map((item) => {
+            comments?.map((item, index) => {
               return (
                 <CommentList
+                  key={index}
                   item={item}
                   setComment={setComment}
                   profile={profile}
