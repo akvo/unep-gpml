@@ -8,11 +8,6 @@
   .wave-background {
     position: relative;
     z-index: 9;
-    background: linear-gradient(
-      to left,
-      #fff 50%,
-      rgba(255, 255, 255, 0.51) 50%
-    );
     border-radius: 10px;
     &::after {
       content: "";

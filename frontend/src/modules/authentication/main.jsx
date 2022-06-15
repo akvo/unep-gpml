@@ -17,13 +17,25 @@ import { ReactComponent as LinkedinIcon } from "../../images/auth/linkedin.svg";
 import { ReactComponent as GoogleIcon } from "../../images/auth/google.svg";
 import { ReactComponent as EmailIcon } from "../../images/auth/email.svg";
 const { Title, Link } = Typography;
+import EmailJoin from "./email-join";
 
 function Main({ handleOnClickBtnNext }) {
   const [singin, setSignIn] = useState(false);
+  const [joinEmail, setJoinEmail] = useState(false);
   const [form] = Form.useForm();
 
+  if (joinEmail) {
+    return <EmailJoin />;
+  }
+
   return (
-    <div className="ui container wave-background">
+    <div
+      className="ui container wave-background"
+      style={{
+        background:
+          "linear-gradient(to left,#fff 50%,rgba(255, 255, 255, 0.51) 50%)",
+      }}
+    >
       <Row>
         <Col span={12}>
           <div className="slider-container">
@@ -103,7 +115,7 @@ function Main({ handleOnClickBtnNext }) {
                     type="primary"
                     shape="round"
                     icon={<EmailIcon />}
-                    onClick={handleOnClickBtnNext}
+                    onClick={() => setSignIn(!singin)}
                   >
                     CONTINUE WITH EMAIL
                   </Button>
@@ -152,7 +164,7 @@ function Main({ handleOnClickBtnNext }) {
                       type="primary"
                       shape="round"
                       className="login-button"
-                      onClick={() => setSignIn(!singin)}
+                      onClick={() => setJoinEmail(!joinEmail)}
                     >
                       JOIN WITH EMAIL
                     </Button>
