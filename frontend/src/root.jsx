@@ -78,6 +78,9 @@ import AddContentButton from "./components/add-content-button/add-content-button
 import StakeholderOverview from "./modules/stakeholder-overview/view";
 import Partners from "./modules/partners/view";
 
+// Auth
+import Authentication from "./modules/authentication/view";
+
 let tmid;
 
 Promise.all([
@@ -713,6 +716,11 @@ const Root = () => {
             exact
             render={(props) => <StakeholderDetail {...props} />}
             path="/stakeholder-detail"
+          />
+          <Route
+            exact
+            render={(props) => <Authentication {...props} />}
+            path="/authentication"
           />
           <Route
             path="/connect"
