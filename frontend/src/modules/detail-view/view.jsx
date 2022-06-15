@@ -1036,10 +1036,10 @@ const DetailView = ({
           <Input
             className="comment-input"
             placeholder="Join the discussion..."
-            suffix={<SendOutlined />}
+            suffix={<SendOutlined onClick={onSubmit} />}
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            onPressEnter={onSubmit}
+            onPressEnter={(e) => e.ctrlKey && onSubmit(e)}
           />
         </Col>
       </div>
