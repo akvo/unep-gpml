@@ -34,7 +34,7 @@
     }
 
     .section {
-      padding: 0 45px;
+      padding: 0 40px;
     }
     .ant-avatar-circle {
       display: flex;
@@ -45,7 +45,7 @@
       position: sticky;
       top: 0;
       border-bottom: unset;
-      padding: 27px 20px 0 45px !important;
+      padding: 20px 40px calc(20px - 14px) 40px !important;
       background-color: #fff;
       z-index: 10;
       border-radius: 5px 5px 0 0;
@@ -56,7 +56,7 @@
       .tool-buttons {
         display: flex;
         flex-wrap: wrap;
-        margin-top: 23px;
+        margin-top: 13px;
         button,
         a {
           display: flex;
@@ -184,7 +184,7 @@
         }
       }
     }
-    .stakeholder-group {
+    .stakeholder-row {
       margin-top: 16px;
     }
     .stakeholder-detail {
@@ -294,7 +294,7 @@
       display: flex;
       align-items: center;
       background: #f3f3f3;
-      padding: 27px 28px 26px 39px;
+      padding: 26px 40px;
       border-radius: 0 0 5px 5px;
       .comment-input {
         height: 54px;
