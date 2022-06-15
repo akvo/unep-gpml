@@ -74,8 +74,9 @@
           }
         }
         .view-button {
-          background-color: $green01;
           border: unset;
+          background-color: $green01;
+          padding-top: 4px !important;
           span {
             display: flex;
             min-height: 32px;
@@ -93,6 +94,10 @@
         .share-button svg path:nth-of-type(2),
         .bookmark-button svg path:nth-of-type(2) {
           fill: #e6f7ff;
+        }
+        .anticon {
+          display: flex;
+          align-items: center;
         }
       }
 
