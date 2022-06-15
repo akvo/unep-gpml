@@ -5,8 +5,9 @@
 }
 .join-form {
   padding: 60px 0px 200px 0px;
-  max-width: 1200px;
-  margin: 0 auto;
+  margin-right: auto;
+  margin-left: auto;
+  width: 80%;
   h2 {
     font-weight: 600;
     font-size: 18px;
@@ -82,6 +83,7 @@
       width: 100%;
       display: flex;
       align-items: center;
+      padding-top: 20px;
       .ant-row {
         .ant-select-selector {
           background: #edf2f7;
