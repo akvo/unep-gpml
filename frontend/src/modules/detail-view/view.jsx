@@ -685,11 +685,12 @@ const DetailView = ({
 
               <List itemLayout="horizontal">
                 {data?.entityConnections.map((item) => (
-                  <List.Item>
+                  <List.Item className="stakeholder-row">
                     <List.Item.Meta
+                      className="stakeholder-detail"
                       avatar={
                         <Avatar
-                          size={50}
+                          size={40}
                           src={
                             item?.image ? (
                               item?.image
@@ -726,88 +727,85 @@ const DetailView = ({
                   color: "#f56a00",
                   backgroundColor: "#fde3cf",
                   cursor: "pointer",
-                  height: 51,
-                  width: 51,
+                  height: 40,
+                  width: 40,
                 }}
               >
-                {data?.owners.map((owner, index) => {
-                  const stakeholders = data?.stakeholderConnections.find(
-                    (stakeholder) =>
-                      Number(owner) === stakeholder?.stakeholderId
-                  );
-                  return (
-                    <Avatar
-                      className="related-content-avatar"
-                      style={{ border: "none", height: 51, width: 51 }}
-                      key={index}
-                      src={
-                        <Avatar
-                          avatar={<Avatar src={stakeholders?.image} />}
-                          style={{
-                            backgroundColor: "#09689A",
-                            verticalAlign: "middle",
-                          }}
-                          size={51}
-                          title={
-                            <Link
-                              to={`/stakeholder/${stakeholders?.stakeholderId}`}
-                            >
-                              {stakeholders?.stakeholder}
-                            </Link>
-                          }
-                        >
-                          {stakeholders?.stakeholder}
-                        </Avatar>
-                      }
-                    />
-                  );
-                })}
+                {data?.stakeholderConnections.filter(
+                  (x) =>
+                    x.stakeholderRole !== "ADMIN" || x.role === "interested in"
+                )?.length > 0 && (
+                  <List itemLayout="horizontal">
+                    {data?.stakeholderConnections
+                      .filter(
+                        (x) =>
+                          x.stakeholderRole !== "ADMIN" ||
+                          x.role === "interested in"
+                      )
+                      .map((item) => (
+                        <List.Item key={item?.id} className="stakeholder-row">
+                          <List.Item.Meta
+                            className="stakeholder-detail"
+                            avatar={<Avatar src={item?.image} />}
+                            title={
+                              <Link to={`/stakeholder/${item.stakeholderId}`}>
+                                {item.stakeholder}
+                              </Link>
+                            }
+                            description={item.role}
+                          />
+                        </List.Item>
+                      ))}
+                  </List>
+                )}
               </Avatar.Group>
 
-              <Avatar.Group
-                maxCount={2}
-                size="large"
-                maxStyle={{
-                  color: "#f56a00",
-                  backgroundColor: "#fde3cf",
-                  cursor: "pointer",
-                  height: 51,
-                  width: 51,
-                }}
-              >
-                {data?.stakeholderConnections
-                  .filter(
-                    (x) =>
-                      x.stakeholderRole !== "ADMIN" ||
-                      x.role === "interested in"
-                  )
-                  .map((connection, index) => (
-                    <Avatar
-                      className="related-content-avatar"
-                      style={{ border: "none", height: 51, width: 51 }}
-                      key={index}
-                      src={
-                        <Avatar
-                          avatar={<Avatar src={connection?.image} />}
-                          style={{
-                            backgroundColor: "#09689A",
-                            verticalAlign: "middle",
-                          }}
-                          size={51}
-                          title={
-                            <Link
-                              to={`/stakeholder/${connection?.stakeholderId}`}
-                            >
-                              {connection?.stakeholder}
-                            </Link>
-                          }
-                        >
-                          {connection?.stakeholder}
-                        </Avatar>
-                      }
-                    />
-                  ))}
-              </Avatar.Group>
+              <Row className="stakeholder-row stakeholder-group">
+                <Avatar.Group
+                  maxCount={2}
+                  size="large"
+                  maxStyle={{
+                    color: "#f56a00",
+                    backgroundColor: "#fde3cf",
+                    cursor: "pointer",
+                    height: 40,
+                    width: 40,
+                  }}
+                >
+                  {data?.stakeholderConnections
+                    .filter(
+                      (x) =>
+                        x.stakeholderRole !== "ADMIN" ||
+                        x.role === "interested in"
+                    )
+                    .map((connection, index) => (
+                      <Avatar
+                        className="related-content-avatar"
+                        style={{ border: "none", height: 40, width: 40 }}
+                        key={index}
+                        src={
+                          <Avatar
+                            avatar={<Avatar src={connection?.image} />}
+                            style={{
+                              backgroundColor: "#09689A",
+                              verticalAlign: "middle",
+                            }}
+                            size={40}
+                            title={
+                              <Link
+                                to={`/stakeholder/${connection?.stakeholderId}`}
+                              >
+                                {connection?.stakeholder}
+                              </Link>
+                            }
+                          >
+                            {connection?.stakeholder}
+                          </Avatar>
+                        }
+                      />
+                    ))}
+                </Avatar.Group>
+              </Row>
             </Col>
           )}
 

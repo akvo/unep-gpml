@@ -183,7 +183,31 @@
         }
       }
     }
+    .stakeholder-group {
+      margin-top: 16px;
+    }
+    .stakeholder-detail {
+      .ant-list-item-meta-title {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 20px;
+      }
 
+      .ant-list-item-meta-description {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        color: #a5b0c9;
+      }
+
+      .ant-list-item-meta-avatar {
+        place-self: center;
+      }
+      .ant-list-item-meta-content {
+        display: block;
+        width: 100%;
+      }
+    }
     .detail-item {
       font-weight: 500;
       font-size: 16px;
