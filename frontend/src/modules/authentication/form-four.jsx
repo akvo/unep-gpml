@@ -16,7 +16,7 @@ const { TextArea } = Input;
 import {
   LinkedinOutlined,
   TwitterOutlined,
-  InboxOutlined,
+  FileTextOutlined,
 } from "@ant-design/icons";
 
 function FormFour({ handleOnClickBtnBack, handleOnClickBtnNext }) {
@@ -74,7 +74,7 @@ function FormFour({ handleOnClickBtnBack, handleOnClickBtnNext }) {
             >
               <Dragger>
                 <p className="ant-upload-drag-icon">
-                  <InboxOutlined />
+                  <FileTextOutlined />
                 </p>
                 <p className="ant-upload-text">Drag file here</p>
                 <p className="ant-upload-hint">

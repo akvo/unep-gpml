@@ -19,13 +19,73 @@ import { ReactComponent as EmailIcon } from "../../images/auth/email.svg";
 const { Title, Link } = Typography;
 import EmailJoin from "./email-join";
 
+import { auth0Client } from "../../utils/misc";
+
 function Main({ handleOnClickBtnNext }) {
   const [singin, setSignIn] = useState(false);
   const [joinEmail, setJoinEmail] = useState(false);
   const [form] = Form.useForm();
 
+  const handleOnLogin = async () => {
+    const username = "navin@akvo.org";
+    const password = "Passcode@123";
+    auth0Client.client.login(
+      {
+        realm: "Username-Password-Authentication",
+        username,
+        password,
+      },
+      (err, authResult) => {
+        if (err) {
+          console.log(err);
+          alert("Error", err.description);
+          return;
+        }
+        if (authResult) {
+          console.log(authResult);
+          window.origin = window.location.origin;
+        }
+      }
+    );
+  };
+
+  const handleGoogleLogin = () => {
+    try {
+      auth0Client.authorize(
+        {
+          connection: "google-oauth2",
+        },
+        (error, response) => {
+          console.log(response);
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLinkedinLogin = () => {
+    try {
+      auth0Client.authorize(
+        {
+          connection: "linkedin",
+        },
+        (error, response) => {
+          console.log(response);
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (joinEmail) {
-    return <EmailJoin setJoinEmail={setJoinEmail} />;
+    return (
+      <EmailJoin
+        setJoinEmail={setJoinEmail}
+        handleOnClickBtnNext={handleOnClickBtnNext}
+      />
+    );
   }
 
   return (
@@ -87,16 +147,14 @@ function Main({ handleOnClickBtnNext }) {
             {!singin ? (
               <div className="signup-wrapper">
                 <div className="signin-button">
-                  <Button type="text" onClick={() => setSignIn(!singin)}>
-                    SIGN IN
-                  </Button>
+                  <Button type="text">SIGN IN</Button>
                 </div>
                 <div className="auth-buttons">
                   <Button
                     type="primary"
                     shape="round"
                     icon={<LinkedinIcon />}
-                    onClick={handleOnClickBtnNext}
+                    onClick={handleLinkedinLogin}
                   >
                     CONTINUE WITH LINKEDIN
                   </Button>
@@ -104,7 +162,7 @@ function Main({ handleOnClickBtnNext }) {
                     type="primary"
                     shape="round"
                     icon={<GoogleIcon />}
-                    onClick={handleOnClickBtnNext}
+                    onClick={handleGoogleLogin}
                   >
                     CONTINUE WITH GOOGLE
                   </Button>
@@ -145,7 +203,7 @@ function Main({ handleOnClickBtnNext }) {
                       type="primary"
                       shape="round"
                       className="login-button"
-                      onClick={handleOnClickBtnNext}
+                      onClick={() => handleOnLogin()}
                     >
                       LOGIN WITH EMAIL
                     </Button>{" "}

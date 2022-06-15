@@ -1,35 +1,19 @@
 import React from "react";
 import {
-  Carousel,
   Col,
   Row,
   Typography,
   Button,
-  Avatar,
   Form,
   Input,
   Upload,
   Switch,
   Select,
-  AutoComplete,
 } from "antd";
-const { Title, Link } = Typography;
+const { Title } = Typography;
 const { Dragger } = Upload;
 import "./join.scss";
-import { InboxOutlined } from "@ant-design/icons";
-import { ReactComponent as SearchIcon } from "../../images/auth/search.svg";
-
-const options = [
-  {
-    value: "Burns Bay Road",
-  },
-  {
-    value: "Downing Street",
-  },
-  {
-    value: "Wall Street",
-  },
-];
+import { FileTextOutlined } from "@ant-design/icons";
 
 function EmailJoin({ setJoinEmail }) {
   const [form] = Form.useForm();
@@ -88,7 +72,7 @@ function EmailJoin({ setJoinEmail }) {
             >
               <Dragger>
                 <p className="ant-upload-drag-icon">
-                  <InboxOutlined />
+                  <FileTextOutlined />
                 </p>
                 <p className="ant-upload-text">Drag file here</p>
                 <p className="ant-upload-hint">

@@ -49,6 +49,7 @@
     font-size: 16px;
     padding: 0px 11px;
     height: 42px;
+    color: #a5b0c9;
     &::placeholder {
       color: #a5b0c9;
       font-size: 16px;
@@ -191,6 +192,11 @@
         font-size: 18px !important;
         line-height: 26px;
         color: #384e85 !important;
+      }
+      .ant-upload-drag-icon {
+        path {
+          fill: #18162f;
+        }
       }
       .ant-upload-hint {
         span {

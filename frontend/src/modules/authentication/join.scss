@@ -136,6 +136,11 @@
         line-height: 26px;
         color: #384e85 !important;
       }
+      .ant-upload-drag-icon {
+        path {
+          fill: #18162f;
+        }
+      }
       .ant-upload-hint {
         span {
           color: #384e85 !important;
