@@ -78,6 +78,9 @@ import AddContentButton from "./components/add-content-button/add-content-button
 import StakeholderOverview from "./modules/stakeholder-overview/view";
 import Partners from "./modules/partners/view";
 
+// Auth
+import Onboarding from "./modules/onboarding/view";
+
 let tmid;
 
 Promise.all([
@@ -229,6 +232,7 @@ const Root = () => {
   useEffect(() => {
     (async function fetchData() {
       const response = await getIdTokenClaims();
+      console.log(response);
       if (isAuthenticated) {
         api.setToken(response.__raw);
       } else {
@@ -713,6 +717,11 @@ const Root = () => {
             exact
             render={(props) => <StakeholderDetail {...props} />}
             path="/stakeholder-detail"
+          />
+          <Route
+            exact
+            render={(props) => <Onboarding {...props} />}
+            path="/onboarding"
           />
           <Route
             path="/connect"
