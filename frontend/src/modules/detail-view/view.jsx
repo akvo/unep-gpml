@@ -742,7 +742,7 @@ const DetailView = ({
             </Col>
           )}
 
-          <Col className="details-content-wrapper">
+          <Col className="details-content-wrapper section-description">
             {description && (
               <Row>
                 <h3 className="content-heading">Description</h3>
@@ -1001,7 +1001,7 @@ const DetailView = ({
 
           {/* TAGS */}
           {data?.tags && data?.tags?.length > 0 && (
-            <Col className="section">
+            <Col className="section-tag section">
               <h3 className="content-heading">Tags</h3>
               <List itemLayout="horizontal">
                 <List.Item>

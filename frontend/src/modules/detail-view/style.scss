@@ -132,8 +132,7 @@
       margin-bottom: 28px;
       .resource-image-wrapper {
         display: block;
-        padding-right: 20px !important;
-        padding-bottom: 41px;
+        padding: 0 20px 20px 0 !important;
       }
       .details-content-wrapper {
         display: block;
@@ -148,6 +147,13 @@
         border: 5px solid rgba(0, 0, 0, 0.3);
       }
     }
+
+    .section-description {
+      p {
+        margin-bottom: 38px;
+      }
+    }
+
     .popover-share {
       width: 100%;
     }
@@ -232,6 +238,12 @@
     }
     .ant-list-item {
       padding: 0;
+    }
+
+    .section-tag {
+      .content-heading {
+        margin-bottom: 25px;
+      }
     }
 
     .tag-list {
