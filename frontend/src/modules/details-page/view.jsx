@@ -37,42 +37,34 @@ import {
   EditOutlined,
 } from "@ant-design/icons";
 
+import api from "../../utils/api";
 import { UIStore } from "../../store";
-
 import LeftImage from "../../images/sea-dark.jpg";
-
-import { ReactComponent as LocationImage } from "../../images/location.svg";
-import { ReactComponent as TransnationalImage } from "../../images/transnational.svg";
-import { ReactComponent as CityImage } from "../../images/city-icn.svg";
-
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useHistory } from "react-router-dom";
 import uniqBy from "lodash/uniqBy";
 import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
-import api from "../../utils/api";
-
 import { detailMaps } from "./mapping";
 import moment from "moment";
 import { topicNames, resourceTypeToTopicType } from "../../utils/misc";
 import { multicountryGroups } from "../knowledge-library/multicountry";
-
 import RelatedContent from "../../components/related-content/related-content";
-
 import { titleCase } from "../../utils/string";
+import { ReactComponent as LocationImage } from "../../images/location.svg";
+import { ReactComponent as TransnationalImage } from "../../images/transnational.svg";
+import { ReactComponent as CityImage } from "../../images/city-icn.svg";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
 const SharePanel = ({
   data,
-  canDelete,
   topic,
   handleEditBtn,
   canEdit,
   relation,
   handleRelationChange,
-  allowBookmark,
   visible,
   handleVisible,
 }) => {
@@ -308,12 +300,7 @@ const renderDetails = (
   );
 };
 
-const renderItemValues = (
-  { countries, languages, regionOptions, meaOptions, transnationalOptions },
-  params,
-  mapping,
-  data
-) => {
+const renderItemValues = ({ countries, languages }, params, mapping, data) => {
   let noData = false;
   mapping &&
     mapping.every((it) => {
@@ -476,11 +463,7 @@ const renderItemValues = (
   );
 };
 
-const renderGeoCoverageCountryGroups = (
-  data,
-  countries,
-  transnationalOptions
-) => {
+const renderGeoCoverageCountryGroups = (data, countries) => {
   let dataCountries = null;
   const subItems = [].concat(
     ...multicountryGroups.map(({ item }) => item || [])
@@ -521,7 +504,7 @@ const renderGeoCoverageCountryGroups = (
     </>
   );
 };
-const renderCountries = (data, countries, transnationalOptions) => {
+const renderCountries = (data, countries) => {
   let dataCountries = null;
   const newArray = [...new Set([...countries])];
   dataCountries = data["geoCoverageCountries"]
@@ -695,7 +678,6 @@ const CommentList = ({
 const DetailsView = ({
   match: { params },
   setStakeholderSignupModalVisible,
-  setFilterMenu,
 }) => {
   const relatedContent = useRef(null);
   const [showLess, setShowLess] = useState(true);
@@ -707,7 +689,6 @@ const DetailsView = ({
     regionOptions,
     meaOptions,
     transnationalOptions,
-    icons,
     placeholder,
   } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -724,7 +705,6 @@ const DetailsView = ({
   const [relations, setRelations] = useState([]);
   const [comments, setComments] = useState([]);
   const { isAuthenticated, loginWithPopup } = useAuth0();
-  const [warningVisible, setWarningVisible] = useState(false);
   const [visible, setVisible] = useState(false);
   const [showReplyBox, setShowReplyBox] = useState("");
   const [editComment, setEditComment] = useState("");
@@ -738,7 +718,6 @@ const DetailsView = ({
   const isConnectStakeholders = ["organisation", "stakeholder"].includes(
     params?.type
   );
-  const breadcrumbLink = isConnectStakeholders ? "stakeholders" : "browse";
 
   const allowBookmark =
     params.type !== "stakeholder" || profile.id !== params.id;
@@ -756,9 +735,7 @@ const DetailsView = ({
     if (!isAuthenticated) {
       loginWithPopup();
     }
-    if (profile.reviewStatus === "SUBMITTED") {
-      setWarningVisible(true);
-    }
+
     if (isAuthenticated && profile.reviewStatus === undefined) {
       setStakeholderSignupModalVisible(true);
     }
@@ -894,11 +871,8 @@ const DetailsView = ({
     description: { label: "Description", control: "textarea", required: true },
   };
 
-  const formRef = useRef();
-  const [formSchema, setFormSchema] = useState(defaultFormSchema);
   const [comment, setComment] = useState("");
   const [newComment, setNewComment] = useState("");
-  const [sending, setSending] = useState(false);
 
   const onSubmit = (val) => {
     const resourceType = (type) => {
@@ -917,20 +891,15 @@ const DetailsView = ({
       content: val.description,
     };
 
-    setSending(true);
     api
       .post("/comment", data)
       .then((data) => {
-        setSending(false);
         getComment(params.id, params.type);
       })
       .catch(() => {
-        setSending(false);
-        // notification.error({ message: "An error occured" });
+        notification.error({ message: "An error occured" });
       })
-      .finally(() => {
-        setSending(false);
-      });
+      .finally(() => {});
     setNewComment("");
   };
 
@@ -1214,8 +1183,7 @@ const DetailsView = ({
                         </Link>
                       }
                       description={"Entity"}
-                    />{" "}
-                    {/* <div className="see-more-button">See More</div> */}
+                    />
                   </List.Item>
                 ))}
               </List>
