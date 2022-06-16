@@ -1325,7 +1325,7 @@ const DetailsView = ({
         </Col>
         {/* DOCUMENTS AND INFO */}
         {data?.infoDocs && (
-          <Col className="section">
+          <Col className="section section-document">
             <h3 className="content-heading">Documents and info</h3>
             <div className="content-paragraph">
               <div
