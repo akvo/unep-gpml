@@ -178,6 +178,9 @@
 
     .record-section {
       clear: both;
+      .content-heading {
+        margin-bottom: calc(25px - 900px);
+      }
       .record-table {
         width: 100%;
         .record-row:not(:last-of-type) {
@@ -370,6 +373,9 @@
     }
 
     .comment-section {
+      .content-heading {
+        margin-bottom: 25px;
+      }
       .ant-comment-content-author-name,
       .ant-comment-content-author-time {
         font-size: 14px;
