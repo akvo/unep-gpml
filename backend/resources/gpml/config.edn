@@ -196,7 +196,8 @@
                                         ["/stakeholder" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
                                           {:get {:summary "List Stakeholders"
-                                                 :middleware [#ig/ref :gpml.auth/auth-middleware-ckan]
+                                                 :middleware [#ig/ref :gpml.auth/auth-middleware-ckan
+                                                              #ig/ref :gpml.auth/auth-middleware-auth0-actions]
                                                  :swagger {:tags ["stakeholder"]}
                                                  :parameters #ig/ref :gpml.handler.stakeholder/get-params
                                                  :handler #ig/ref :gpml.handler.stakeholder/get}}]
@@ -664,7 +665,8 @@
   :gpml.handler.community/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.community/get-params {}
 
-  :gpml.handler.export/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.export/get {:db #ig/ref :duct.database/sql
+                            :app-domain #duct/env ["APP_DOMAIN" Str]}
   :gpml.handler.export/get-params {}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
@@ -677,6 +679,11 @@
   :gpml.auth/auth-middleware-ckan {:issuer #duct/env "OIDC_ISSUER"
                                    :audience #duct/env "OIDC_AUDIENCE_CKAN"
                                    :db #ig/ref :duct.database/sql}
+
+  :gpml.auth/auth-middleware-auth0-actions {:issuer #duct/env "OIDC_ISSUER"
+                                            :audience #duct/env "OIDC_AUDIENCE_AUTH0_ACTIONS"
+                                            :db #ig/ref :duct.database/sql}
+
   :gpml.auth/auth-required {}
   :gpml.auth/restrict-to-admin-and-comment-author-middleware {:db #ig/ref :duct.database/sql}
   :gpml.auth/restrict-to-organisation-admin-or-owner {:db #ig/ref :duct.database/sql}

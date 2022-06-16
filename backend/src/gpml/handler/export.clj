@@ -33,46 +33,50 @@
        (map #(sort-result-map sorted-export-type-columns %)))
       (map #(sort-result-map sorted-export-type-columns %) exports-to-sort))))
 
-(defn export-users [db review-status]
-  (let [users (db.stakeholder/all-public-users db {:review-status review-status})
+(defn export-users [{:keys [db]} review-status]
+  (let [users (db.stakeholder/all-public-users (:spec db) {:review-status review-status})
         export-users (get-export-values users constants/users-key-map constants/sorted-user-columns)]
     (:csv-file (create-csv-file export-users))))
 
-(defn export-entities [db review-status]
-  (let [entities (db.organisation/all-public-entities db {:review-status review-status})
-        export-entities (get-export-values (map #(dissoc % :is_member) entities) constants/entities-key-map constants/sorted-entity-columns)]
+(defn export-entities [{:keys [db app-domain]} review-status]
+  (let [entities (->> (db.organisation/all-public-entities (:spec db) {:review-status review-status})
+                      (map #(dissoc % :is_member))
+                      (map #(assoc % :platform-link (str app-domain "/organisation/" (:id %)))))
+        export-entities (get-export-values entities constants/entities-key-map constants/sorted-entity-columns)]
     (:csv-file (create-csv-file export-entities))))
 
-(defn export-non-member-entities [db review-status]
-  (let [non-member-entities (db.organisation/all-public-non-member-entities db {:review-status review-status})
-        export-entities (get-export-values (map #(dissoc % :is_member) non-member-entities)
-                                           constants/entities-key-map constants/sorted-entity-columns)]
+(defn export-non-member-entities [{:keys [db app-domain]} review-status]
+  (let [non-member-entities
+        (->> (db.organisation/all-public-non-member-entities (:spec db) {:review-status review-status})
+             (map #(dissoc % :is_member))
+             (map #(assoc % :platform-link (str app-domain "/organisation/" (:id %)))))
+        export-entities
+        (get-export-values non-member-entities constants/entities-key-map constants/sorted-entity-columns)]
     (:csv-file (create-csv-file export-entities))))
 
-(defn export-tags [db review-status]
-  (let [tags (db.tag/get-flat-tags db {:review-status review-status})
+(defn export-tags [{:keys [db]} review-status]
+  (let [tags (db.tag/get-flat-tags (:spec db) {:review-status review-status})
         export-tags (get-export-values tags constants/tags-key-map constants/sorted-tag-columns)]
     (:csv-file (create-csv-file export-tags))))
 
-(defn export-topics [db review-status]
-  (let [topics (db.topic/get-flat-topics db {:review-status review-status})
+(defn export-topics [{:keys [db]} review-status]
+  (let [topics (db.topic/get-flat-topics (:spec db) {:review-status review-status})
         export-topics (get-export-values topics constants/topics-key-map constants/sorted-topic-columns)]
     (:csv-file (create-csv-file export-topics))))
 
-(defn export [db export-type review-status]
+(defn export [config export-type review-status]
   (case export-type
-    "users" (export-users db review-status)
-    "entities" (export-entities db review-status)
-    "non-member-entities" (export-non-member-entities db review-status)
-    "tags" (export-tags db review-status)
-    "topics" (export-topics db review-status)))
+    "users" (export-users config review-status)
+    "entities" (export-entities config review-status)
+    "non-member-entities" (export-non-member-entities config review-status)
+    "tags" (export-tags config review-status)
+    "topics" (export-topics config review-status)))
 
-(defmethod ig/init-key :gpml.handler.export/get [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.export/get [_ config]
   (fn [{{:keys [path query]} :parameters}]
-    (let [conn (:spec db)
-          export-type (:export-type path)
+    (let [export-type (:export-type path)
           review-status (:review_status query)]
-      (resp/response (export conn export-type review-status)))))
+      (resp/response (export config export-type review-status)))))
 
 (defmethod ig/init-key :gpml.handler.export/get-params [_ _]
   {:path [:map
