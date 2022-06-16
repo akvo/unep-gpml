@@ -896,6 +896,7 @@ const DetailsView = ({
   const [formSchema, setFormSchema] = useState(defaultFormSchema);
   const [comment, setComment] = useState("");
   const [newComment, setNewComment] = useState("");
+  const [sending, setSending] = useState(false);
 
   const onSubmit = (val) => {
     const data = {
@@ -921,6 +922,7 @@ const DetailsView = ({
       .finally(() => {
         setSending(false);
       });
+    setNewComment("");
   };
 
   const onReply = (id, title) => {
@@ -1397,25 +1399,31 @@ const DetailsView = ({
                   onEditComment={onEditComment}
                 />
               );
-            })}{" "}
-        </Col>{" "}
+            })}
+        </Col>
         <Col className="input-wrapper">
-          {" "}
-          <MessageOutlined className="message-icon" />{" "}
-          <Input
-            className="comment-input"
-            placeholder="Join the discussion..."
-            suffix={
-              <SendOutlined
-                onClick={() => onSubmit({ description: newComment })}
+          {!isAuthenticated && (
+            <p className="no-login">Please login to comment on this resource</p>
+          )}
+          {profile && profile.reviewStatus === "APPROVED" && (
+            <>
+              <MessageOutlined className="message-icon" />
+              <Input
+                className="comment-input"
+                placeholder="Join the discussion..."
+                suffix={
+                  <SendOutlined
+                    onClick={() => onSubmit({ description: newComment })}
+                  />
+                }
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                onPressEnter={(e) =>
+                  e.ctrlKey && onSubmit({ description: newComment })
+                }
               />
-            }
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            onPressEnter={(e) =>
-              e.ctrlKey && onSubmit({ description: newComment })
-            }
-          />{" "}
+            </>
+          )}
         </Col>
       </div>
     </div>
