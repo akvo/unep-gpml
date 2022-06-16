@@ -899,10 +899,17 @@ const DetailsView = ({
   const [sending, setSending] = useState(false);
 
   const onSubmit = (val) => {
+    const resourceType = (type) => {
+      if (type === "project") {
+        return "initiative";
+      } else {
+        return type;
+      }
+    };
     const data = {
       author_id: profile.id,
       resource_id: parseInt(params.id),
-      resource_type: params?.type,
+      resource_type: resourceType(params?.type),
       ...(val.parent_id && { parent_id: val.parent_id }),
       title: val.title,
       content: val.description,
