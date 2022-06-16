@@ -79,7 +79,7 @@ import StakeholderOverview from "./modules/stakeholder-overview/view";
 import Partners from "./modules/partners/view";
 
 // Auth
-import Authentication from "./modules/authentication/view";
+import Onboarding from "./modules/onboarding/view";
 
 let tmid;
 
@@ -232,6 +232,7 @@ const Root = () => {
   useEffect(() => {
     (async function fetchData() {
       const response = await getIdTokenClaims();
+      console.log(response);
       if (isAuthenticated) {
         api.setToken(response.__raw);
       } else {
@@ -719,8 +720,8 @@ const Root = () => {
           />
           <Route
             exact
-            render={(props) => <Authentication {...props} />}
-            path="/authentication"
+            render={(props) => <Onboarding {...props} />}
+            path="/onboarding"
           />
           <Route
             path="/connect"
