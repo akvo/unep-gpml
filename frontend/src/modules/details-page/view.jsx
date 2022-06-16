@@ -1409,11 +1409,17 @@ const DetailsView = ({
                 />
               );
             })}
+          {!isAuthenticated && (
+            <Button
+              className="login-button"
+              onClick={() => loginWithPopup({ action: "login" })}
+              icon={<MessageOutlined twoToneColor="#09689a" />}
+            >
+              Login to comment
+            </Button>
+          )}
         </Col>
         <Col className="input-wrapper">
-          {!isAuthenticated && (
-            <p className="no-login">Please login to comment on this resource</p>
-          )}
           {profile && profile.reviewStatus === "APPROVED" && (
             <>
               <MessageOutlined className="message-icon" />

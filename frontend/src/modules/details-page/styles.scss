@@ -16,6 +16,7 @@
   #detail-view {
     margin: 0 5%;
     background-color: #fff;
+    padding: 0;
     .content-heading,
     .related-content-title {
       font-weight: 500;
@@ -121,8 +122,6 @@
       }
     }
 
-    padding: 0;
-
     .resource-info {
       display: block;
       margin-bottom: 28px;
@@ -132,7 +131,6 @@
       }
       .details-content-wrapper {
         display: block;
-        // padding: 0;
         max-width: 100% !important;
         & > .ant-row {
           display: block;
@@ -417,6 +415,27 @@
       border: 1px solid #339cfe;
       input {
         background: hsl(199deg, 100%, 95%);
+      }
+    }
+
+    .login-button {
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      border: 2px solid #09689a;
+
+      margin-bottom: 45px;
+      color: #09689a;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+      svg {
+        width: 19px;
+        height: 19px;
+        color: #1890ff;
+      }
+      &:hover {
+        background-color: $yellow-highlight;
       }
     }
     .input-wrapper {
