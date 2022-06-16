@@ -105,6 +105,10 @@
           display: flex;
           align-items: center;
         }
+        .edit-button {
+          border-radius: 0;
+          text-transform: uppercase;
+        }
       }
 
       .detail-resource-type {

@@ -714,7 +714,16 @@ const DetailView = ({
             >
               Bookmark
             </Button>
-            <Button onClick={handleEditBtn}>EDIT</Button>
+            <Button
+              className="edit-button two-tone-button"
+              type="primary"
+              shape="default"
+              size="middle"
+              ghost
+              onClick={handleEditBtn}
+            >
+              Edit
+            </Button>
           </Col>
         </div>
 
