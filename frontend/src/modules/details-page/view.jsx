@@ -6,12 +6,11 @@ import React, {
   useCallback,
   useRef,
 } from "react";
-// import "./styles.scss";
+import "./styles.scss";
 import {
   Row,
   Col,
   Modal,
-  Typography,
   Card,
   List,
   Avatar,
@@ -23,7 +22,7 @@ import {
   Comment,
   Tag,
 } from "antd";
-import Carousel from "react-multi-carousel";
+
 import {
   EyeFilled,
   HeartTwoTone,
@@ -36,28 +35,15 @@ import {
   LoadingOutlined,
   DeleteOutlined,
   EditOutlined,
-  ArrowRightOutlined,
 } from "@ant-design/icons";
-const { Title } = Typography;
-const { TextArea } = Input;
+
 import { UIStore } from "../../store";
-import ActionGreen from "../../images/action-green.png";
+
 import LeftImage from "../../images/sea-dark.jpg";
-// import LocationImage from "../../images/location.svg";
-// import TransnationalImage from "../../images/transnational.svg";
-// import CityImage from "../../images/city-icn.svg";
-// import TagsImage from "../../images/tags.svg";
-import { ReactComponent as Recording } from "../../images/event-recording.svg";
-import { ReactComponent as ViewIcon } from "../../images/resource-detail/view-icn.svg";
-import { ReactComponent as EditIcon } from "../../images/resource-detail/edit-icn.svg";
-import { ReactComponent as ShareIcon } from "../../images/resource-detail/share-icn.svg";
-import { ReactComponent as TrashIcon } from "../../images/resource-detail/trash-icn.svg";
-import { ReactComponent as BookMarkIcon } from "../../images/resource-detail/bookmark-icn.svg";
 
 import { ReactComponent as LocationImage } from "../../images/location.svg";
 import { ReactComponent as TransnationalImage } from "../../images/transnational.svg";
 import { ReactComponent as CityImage } from "../../images/city-icn.svg";
-import { ReactComponent as TagsImage } from "../../images/tags.svg";
 
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -66,92 +52,17 @@ import uniqBy from "lodash/uniqBy";
 import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import api from "../../utils/api";
-import imageNotFound from "../../images/image-not-found.png";
+
 import { detailMaps } from "./mapping";
 import moment from "moment";
 import { topicNames, resourceTypeToTopicType } from "../../utils/misc";
 import { multicountryGroups } from "../knowledge-library/multicountry";
-import { Form as FinalForm, FormSpy, Field } from "react-final-form";
-import arrayMutators from "final-form-arrays";
-import { FieldsFromSchema } from "../../utils/form-utils";
+
 import RelatedContent from "../../components/related-content/related-content";
-import DetailView from "../detail-view/view";
+
 import { titleCase } from "../../utils/string";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
-
-const CardComponent = ({
-  title,
-  style,
-  children,
-  getRef,
-  specificClassName,
-}) => {
-  return (
-    <div className={`card-wrapper mb-10 ${specificClassName}`} ref={getRef}>
-      <Card title={title} bordered={false} style={style}>
-        {children}
-      </Card>
-    </div>
-  );
-};
-
-const TabComponent = ({
-  title,
-  style,
-  children,
-  relatedRef,
-  recordRef,
-  documentRef,
-  tagRef,
-  reviewsRef,
-  descriptionRef,
-  data,
-  recordShow,
-  profile,
-  params,
-}) => {
-  return (
-    <div className="tab-wrapper" style={style}>
-      <ul>
-        {params.type !== "technical_resource" &&
-          params.type !== "policy" &&
-          params.type !== "action_plan" && (
-            <li>
-              <a onClick={() => descriptionRef.current.scrollIntoView()}>
-                Description
-              </a>
-            </li>
-          )}
-        {recordShow && (
-          <li>
-            <a onClick={() => recordRef.current.scrollIntoView()}>Record</a>
-          </li>
-        )}
-        {data?.infoDocs && (
-          <li>
-            <a onClick={() => documentRef.current.scrollIntoView()}>
-              Documents And Info
-            </a>
-          </li>
-        )}
-        <li>
-          <a onClick={() => tagRef.current.scrollIntoView()}>Tags</a>
-        </li>
-        {data?.relatedContent && data?.relatedContent?.length > 0 && (
-          <li>
-            <a onClick={() => relatedRef.current.scrollIntoView()}>
-              Related Content
-            </a>
-          </li>
-        )}
-        <li>
-          <a onClick={() => reviewsRef.current.scrollIntoView()}>Comments</a>
-        </li>
-      </ul>
-    </div>
-  );
-};
 
 const SharePanel = ({
   data,
@@ -312,145 +223,6 @@ const SharePanel = ({
         Edit
       </Button>
     </Col>
-    // <div className="sticky-panel">
-    //   <div className="sticky-panel-item">
-    //     <a
-    //       href={`${
-    //         data?.url && data?.url?.includes("https://")
-    //           ? data?.url
-    //           : data.languages
-    //           ? data?.languages[0].url
-    //           : data?.url?.includes("http://")
-    //           ? data?.url
-    //           : "https://" + data?.url
-    //       }`}
-    //       target="_blank"
-    //     >
-    //       <ViewIcon className="recording-icon view-icon" />
-    //       <h2>View</h2>
-    //     </a>
-    //   </div>
-
-    //   <div
-    //     className="sticky-panel-item"
-    //     onClick={() => handleChangeRelation("interested in")}
-    //   >
-    //     {relation &&
-    //     relation.association &&
-    //     relation.association.indexOf("interested in") !== -1 ? (
-    //       <BookMarkIcon className="bookmark-icon bookmark-filled" />
-    //     ) : (
-    //       <BookMarkIcon className="bookmark-icon" />
-    //     )}
-    //     <h2>Bookmark</h2>
-    //   </div>
-    //   <Popover
-    //     overlayStyle={{
-    //       width: "22vw",
-    //     }}
-    //     overlayClassName="popover-multi-country"
-    //     content={
-    //       <Input.Group compact>
-    //         <Input
-    //           style={{ width: "calc(100% - 20%)" }}
-    //           defaultValue={`${
-    //             data?.url && data?.url?.includes("https://")
-    //               ? data?.url
-    //               : data.languages
-    //               ? data?.languages[0].url
-    //               : data?.url?.includes("http://")
-    //               ? data?.url
-    //               : "https://" + data?.url
-    //           }`}
-    //           disabled
-    //         />
-    //         <Button
-    //           style={{ width: "20%" }}
-    //           type="primary"
-    //           onClick={() => {
-    //             navigator.clipboard.writeText(
-    //               data?.url && data?.url?.includes("https://")
-    //                 ? data?.languages
-    //                   ? data?.languages[0]?.url
-    //                   : data?.url
-    //                 : "https://" + data?.url
-    //             );
-    //             handleVisibleChange();
-    //           }}
-    //         >
-    //           Copy
-    //         </Button>
-    //       </Input.Group>
-    //     }
-    //     trigger="click"
-    //     visible={visible}
-    //     onVisibleChange={handleVisibleChange}
-    //     placement="left"
-    //   >
-    //     <div className="sticky-panel-item" onClick={handleVisibleChange}>
-    //       <ShareIcon className="recording-icon" />
-    //       <h2>Share</h2>
-    //     </div>
-    //   </Popover>
-    //   {data?.recording && (
-    //     <div className="sticky-panel-item">
-    //       <a
-    //         onClick={() => {
-    //           window.open(
-    //             data?.recording.includes("https://")
-    //               ? data?.recording
-    //               : "https://" + data?.recording,
-    //             "_blank"
-    //           );
-    //         }}
-    //       >
-    //         <Recording className="recording-icon" />
-    //         <h2>Recording</h2>
-    //       </a>
-    //     </div>
-    //   )}
-    //   {canDelete() && (
-    //     <div
-    //       className="sticky-panel-item"
-    //       onClick={() => {
-    //         Modal.error({
-    //           className: "popup-delete",
-    //           centered: true,
-    //           closable: true,
-    //           icon: <DeleteOutlined />,
-    //           title: "Are you sure you want to delete this resource?",
-    //           content: "Please be aware this action cannot be undone.",
-    //           okText: "Delete",
-    //           okType: "danger",
-    //           onOk() {
-    //             return api
-    //               .delete(`/detail/${type}/${id}`)
-    //               .then((res) => {
-    //                 notification.success({
-    //                   message: "Resource deleted successfully",
-    //                 });
-    //               })
-    //               .catch((err) => {
-    //                 console.error(err);
-    //                 notification.error({
-    //                   message: "Oops, something went wrong",
-    //                 });
-    //               });
-    //           },
-    //         });
-    //       }}
-    //     >
-    //       <TrashIcon className="recording-icon" />
-    //       <h2>Delete</h2>
-    //     </div>
-    //   )}
-    //   {canEdit() && (
-    //     <div className="sticky-panel-item" onClick={() => handleEditBtn()}>
-    //       <EditIcon className="edit-icon" />
-    //       <h2>Update</h2>
-    //     </div>
-    //   )}
-    // </div>
   );
 };
 
@@ -609,9 +381,9 @@ const renderItemValues = (
       return (
         <Fragment key={`${params.type}-${name}`}>
           {displayEntry && (
-            <div key={name + index} className="record-table-wrapper">
-              <div className="title">{name}</div>
-              <div className="value">
+            <div key={name + index} className="record-row">
+              <div className="record-name">{name}</div>
+              <div className="record-value">
                 {key === null && type === "static" && value}
                 {value === key &&
                   type === "name" &&
@@ -651,10 +423,12 @@ const renderItemValues = (
                   type === "object" &&
                   data[key][customValue]}
                 {value === "custom" &&
-                  type === "startEndDate" &&
-                  moment.utc(data[arrayCustomValue[0]]).format("DD MMM YYYY") +
-                    " - " +
-                    moment.utc(data[arrayCustomValue[1]]).format("DD MMM YYYY")}
+                  type === "startDate" &&
+                  moment.utc(data[arrayCustomValue[0]]).format("DD MMM YYYY")}
+                {value === "custom" &&
+                  type === "endDate" &&
+                  moment.utc(data[arrayCustomValue[0]]).format("DD MMM YYYY")}
+
                 {data[key] &&
                   value === "isoCode" &&
                   type === "array" &&
@@ -922,13 +696,7 @@ const DetailsView = ({
   setFilterMenu,
 }) => {
   const relatedContent = useRef(null);
-  const record = useRef(null);
-  const document = useRef(null);
-  const tag = useRef(null);
-  // const description = useRef(null);
-  const reviews = useRef(null);
   const [showLess, setShowLess] = useState(true);
-  const [sending, setSending] = useState(false);
 
   const {
     profile,
@@ -1235,16 +1003,6 @@ const DetailsView = ({
 
   const description = data?.description ? data?.description : data?.summary;
 
-  const startDate = moment.utc(data?.endDate).format("YYYY");
-  const endDate = moment.utc(data?.startDate).format("YYYY");
-
-  const getYears = (start, end) =>
-    Array.from({ length: end.diff(start, "month") + 1 }).map((_, index) =>
-      moment(start).add(index, "month").format("YYYY")
-    );
-
-  const years = getYears(moment(startDate, "YYYY"), moment(endDate, "YYYY"));
-
   return (
     <div className="detail-view-wrapper">
       <div id="detail-view">
@@ -1416,7 +1174,7 @@ const DetailsView = ({
 
               <List itemLayout="horizontal">
                 {data?.entityConnections.map((item) => (
-                  <List.Item className="stakeholder-row">
+                  <List.Item key={item?.id} className="stakeholder-row">
                     <List.Item.Meta
                       className="stakeholder-detail"
                       avatar={
@@ -1580,158 +1338,24 @@ const DetailsView = ({
         <Col className="record-section section">
           <h3 className="content-heading">Records</h3>
           <div>
-            <table className="record-table">
-              <tbody>
-                {years && years?.length > 0 && (
-                  <tr className="record-row">
-                    <td className="record-name">Year</td>
-                    <td className="record-value">
-                      {years.map((year) => year).join(" - ")}
-                    </td>
-                  </tr>
-                )}
-
-                {data?.startDate && (
-                  <tr className="record-row">
-                    <td className="record-name">Valid from</td>
-                    <td className="record-value">
-                      {data?.startDate
-                        ? moment.utc(data?.startDate).format("DD MMM YYYY")
-                        : ""}
-                    </td>
-                  </tr>
-                )}
-
-                {data?.endDate && (
-                  <tr className="record-row">
-                    <td className="record-name">Valid until</td>
-                    <td className="record-value">
-                      {data?.endDate
-                        ? moment.utc(data?.endDate).format("DD MMM YYYY")
-                        : ""}
-                    </td>
-                  </tr>
-                )}
-
-                {data?.currencyAmountInvested &&
-                data?.currencyAmountInvested?.length ? (
-                  <tr className="record-row">
-                    <td className="record-name">Amount Invested</td>
-                    <td className="record-value">
-                      {data?.currencyAmountInvested &&
-                        data?.currencyAmountInvested?.length &&
-                        data?.currencyAmountInvested
-                          .map((amount) => {
-                            return `${amount?.name} ${data?.funds}`;
-                          })
-                          .join(", ")}
-                    </td>
-                  </tr>
-                ) : (
-                  ""
-                )}
-
-                {data?.currencyInKindContribution &&
-                data?.currencyInKindContribution?.length ? (
-                  <tr className="record-row">
-                    <td className="record-name">In Kind Contributions</td>
-                    <td className="record-value">
-                      {data?.currencyInKindContribution &&
-                        data?.currencyInKindContribution?.length &&
-                        data?.currencyInKindContribution
-                          .map((contribution) => {
-                            return `${contribution?.name} ${data?.contribution}`;
-                          })
-                          .join(", ")}
-                    </td>
-                  </tr>
-                ) : (
-                  ""
-                )}
-
-                {data?.funding ? (
-                  <>
-                    <tr className="record-row">
-                      <td className="record-name">Funding Type</td>
-                      <td className="record-value">
-                        {data?.funding && data?.funding?.type}
-                      </td>
-                    </tr>
-
-                    <tr className="record-row">
-                      <td className="record-name">Funding Name</td>
-                      <td className="record-value">
-                        {data?.funding && data?.funding?.name}
-                      </td>
-                    </tr>
-                  </>
-                ) : (
-                  ""
-                )}
-
-                {data?.focusArea && data?.focusArea?.length > 0 ? (
-                  <tr className="record-row">
-                    <td className="record-name">Focus Area:</td>
-                    <td className="record-value">
-                      {data?.focusArea.map((area) => area?.name).join(", ")}
-                    </td>
-                  </tr>
-                ) : (
-                  ""
-                )}
-
-                {data?.lifecyclePhase && data?.lifecyclePhase?.length ? (
-                  <tr className="record-row">
-                    <td className="record-name">Lifecycle Phase</td>
-                    <td className="record-value">
-                      {data?.lifecyclePhase
-                        .map((phase) => phase?.name)
-                        .join(", ")}
-                    </td>
-                  </tr>
-                ) : (
-                  ""
-                )}
-
-                {data?.sector && data?.sector?.length > 0 ? (
-                  <tr className="record-row">
-                    <td className="record-name">Sector</td>
-                    <td className="record-value">
-                      {data?.sector.map((item) => item?.name).join(", ")}
-                    </td>
-                  </tr>
-                ) : (
-                  ""
-                )}
-
-                {data?.activityOwner && data?.activityOwner?.length > 0 ? (
-                  <tr className="record-row">
-                    <td className="record-name">Initiative Owner</td>
-                    <td className="record-value">
-                      {data?.activityOwner
-                        .map((activity) => activity?.name)
-                        .join(", ")}
-                    </td>
-                  </tr>
-                ) : (
-                  ""
-                )}
-
-                {data?.entityType && (
-                  <tr className="record-row">
-                    <td className="record-name">Entity Type</td>
-                    <td className="record-value">{data?.entityType}</td>
-                  </tr>
-                )}
-
-                {data?.activityTerm && (
-                  <tr className="record-row">
-                    <td className="record-name">Initiative Term</td>
-                    <td className="record-value">{data?.activityTerm?.name}</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+            <div className="record-table">
+              <div>
+                {countries &&
+                  renderDetails(
+                    {
+                      countries,
+                      languages,
+                      regionOptions,
+                      meaOptions,
+                      transnationalOptions,
+                    },
+                    params,
+                    data,
+                    profile,
+                    countries
+                  )}
+              </div>
+            </div>
           </div>
         </Col>
         {/* RELATED CONTENT */}
@@ -1759,6 +1383,7 @@ const DetailsView = ({
             comments?.map((item, index) => {
               return (
                 <CommentList
+                  key={item?.id}
                   item={item}
                   showReplyBox={showReplyBox}
                   setShowReplyBox={setShowReplyBox}

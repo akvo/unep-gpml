@@ -185,10 +185,13 @@
           border-bottom: 0.25px solid #a5b0c9;
         }
         .record-row {
-          td {
+          display: flex;
+          align-items: center;
+          .record-name,
+          .record-value {
             padding: 9px 0;
           }
-          td:first-of-type {
+          .record-name:first-of-type {
             width: 100%;
             max-width: 30%;
           }
