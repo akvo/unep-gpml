@@ -212,16 +212,18 @@ const SharePanel = ({
       >
         Bookmark
       </Button>
-      <Button
-        className="edit-button two-tone-button"
-        type="primary"
-        shape="default"
-        size="middle"
-        ghost
-        onClick={handleEditBtn}
-      >
-        Edit
-      </Button>
+      {canEdit() && (
+        <Button
+          className="edit-button two-tone-button"
+          type="primary"
+          shape="round"
+          size="middle"
+          ghost
+          onClick={handleEditBtn}
+        >
+          Edit
+        </Button>
+      )}
     </Col>
   );
 };
