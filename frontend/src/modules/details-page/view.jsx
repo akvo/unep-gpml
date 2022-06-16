@@ -11,7 +11,6 @@ import {
   Row,
   Col,
   Modal,
-  Typography,
   Card,
   List,
   Avatar,
@@ -21,29 +20,31 @@ import {
   Button,
   Form,
   Comment,
+  Tag,
 } from "antd";
-import Carousel from "react-multi-carousel";
-import { InfoCircleOutlined } from "@ant-design/icons";
-const { Title } = Typography;
-const { TextArea } = Input;
-import { UIStore } from "../../store";
-import ActionGreen from "../../images/action-green.png";
-import LeftImage from "../../images/sea-dark.jpg";
-import LocationImage from "../../images/location.svg";
-import TransnationalImage from "../../images/transnational.svg";
-import CityImage from "../../images/city-icn.svg";
-import TagsImage from "../../images/tags.svg";
-import { ReactComponent as Recording } from "../../images/event-recording.svg";
-import { ReactComponent as ViewIcon } from "../../images/resource-detail/view-icn.svg";
-import { ReactComponent as EditIcon } from "../../images/resource-detail/edit-icn.svg";
-import { ReactComponent as ShareIcon } from "../../images/resource-detail/share-icn.svg";
-import { ReactComponent as TrashIcon } from "../../images/resource-detail/trash-icn.svg";
-import { ReactComponent as BookMarkIcon } from "../../images/resource-detail/bookmark-icn.svg";
+
 import {
-  DeleteOutlined,
-  ArrowRightOutlined,
+  EyeFilled,
+  HeartTwoTone,
+  MailTwoTone,
+  MessageOutlined,
+  PlayCircleTwoTone,
+  SendOutlined,
+  HeartFilled,
+  InfoCircleOutlined,
   LoadingOutlined,
+  DeleteOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
+
+import { UIStore } from "../../store";
+
+import LeftImage from "../../images/sea-dark.jpg";
+
+import { ReactComponent as LocationImage } from "../../images/location.svg";
+import { ReactComponent as TransnationalImage } from "../../images/transnational.svg";
+import { ReactComponent as CityImage } from "../../images/city-icn.svg";
+
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useHistory } from "react-router-dom";
@@ -51,90 +52,17 @@ import uniqBy from "lodash/uniqBy";
 import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import api from "../../utils/api";
-import imageNotFound from "../../images/image-not-found.png";
+
 import { detailMaps } from "./mapping";
 import moment from "moment";
 import { topicNames, resourceTypeToTopicType } from "../../utils/misc";
 import { multicountryGroups } from "../knowledge-library/multicountry";
-import { Form as FinalForm, FormSpy, Field } from "react-final-form";
-import arrayMutators from "final-form-arrays";
-import { FieldsFromSchema } from "../../utils/form-utils";
+
 import RelatedContent from "../../components/related-content/related-content";
 
+import { titleCase } from "../../utils/string";
+
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
-
-const CardComponent = ({
-  title,
-  style,
-  children,
-  getRef,
-  specificClassName,
-}) => {
-  return (
-    <div className={`card-wrapper mb-10 ${specificClassName}`} ref={getRef}>
-      <Card title={title} bordered={false} style={style}>
-        {children}
-      </Card>
-    </div>
-  );
-};
-
-const TabComponent = ({
-  title,
-  style,
-  children,
-  relatedRef,
-  recordRef,
-  documentRef,
-  tagRef,
-  reviewsRef,
-  descriptionRef,
-  data,
-  recordShow,
-  profile,
-  params,
-}) => {
-  return (
-    <div className="tab-wrapper" style={style}>
-      <ul>
-        {params.type !== "technical_resource" &&
-          params.type !== "policy" &&
-          params.type !== "action_plan" && (
-            <li>
-              <a onClick={() => descriptionRef.current.scrollIntoView()}>
-                Description
-              </a>
-            </li>
-          )}
-        {recordShow && (
-          <li>
-            <a onClick={() => recordRef.current.scrollIntoView()}>Record</a>
-          </li>
-        )}
-        {data?.infoDocs && (
-          <li>
-            <a onClick={() => documentRef.current.scrollIntoView()}>
-              Documents And Info
-            </a>
-          </li>
-        )}
-        <li>
-          <a onClick={() => tagRef.current.scrollIntoView()}>Tags</a>
-        </li>
-        {data?.relatedContent && data?.relatedContent?.length > 0 && (
-          <li>
-            <a onClick={() => relatedRef.current.scrollIntoView()}>
-              Related Content
-            </a>
-          </li>
-        )}
-        <li>
-          <a onClick={() => reviewsRef.current.scrollIntoView()}>Comments</a>
-        </li>
-      </ul>
-    </div>
-  );
-};
 
 const SharePanel = ({
   data,
@@ -158,9 +86,9 @@ const SharePanel = ({
       association = association.filter((it) => it !== relationType);
     }
     handleRelationChange({
-      topicId: parseInt(topic.id),
+      topicId: parseInt(id),
       association,
-      topic: resourceTypeToTopicType(topic.type),
+      topic: resourceTypeToTopicType(type),
     });
   };
 
@@ -169,43 +97,52 @@ const SharePanel = ({
   };
 
   return (
-    <div className="sticky-panel">
-      <div className="sticky-panel-item">
-        <a
-          href={`${
-            data?.url && data?.url?.includes("https://")
-              ? data?.url
-              : data.languages
-              ? data?.languages[0].url
-              : data?.url?.includes("http://")
-              ? data?.url
-              : "https://" + data?.url
-          }`}
-          target="_blank"
-        >
-          <ViewIcon className="recording-icon view-icon" />
-          <h2>View</h2>
-        </a>
-      </div>
-
-      <div
-        className="sticky-panel-item"
-        onClick={() => handleChangeRelation("interested in")}
+    <Col className="tool-buttons">
+      <Button
+        className="view-button "
+        icon={<EyeFilled />}
+        type="primary"
+        shape="round"
+        size="middle"
+        href={`${
+          data?.url && data?.url?.includes("https://")
+            ? data?.url
+            : data?.languages
+            ? data?.languages[0]?.url
+            : data?.url?.includes("http://")
+            ? data?.url
+            : "https://" + data?.url
+        }`}
+        target="_blank"
       >
-        {relation &&
-        relation.association &&
-        relation.association.indexOf("interested in") !== -1 ? (
-          <BookMarkIcon className="bookmark-icon bookmark-filled" />
-        ) : (
-          <BookMarkIcon className="bookmark-icon" />
-        )}
-        <h2>Bookmark</h2>
-      </div>
+        View
+      </Button>
+      {data?.recording && (
+        <Button
+          className="recording-button two-tone-button"
+          icon={<PlayCircleTwoTone twoToneColor="#09689a" />}
+          type="primary"
+          shape="round"
+          size="middle"
+          ghost
+          onClick={() => {
+            window.open(
+              data?.recording.includes("https://")
+                ? data?.recording
+                : "https://" + data?.recording,
+              "_blank"
+            );
+          }}
+        >
+          Recording
+        </Button>
+      )}
       <Popover
+        placement="top"
         overlayStyle={{
           width: "22vw",
         }}
-        overlayClassName="popover-multi-country"
+        overlayClassName="popover-share"
         content={
           <Input.Group compact>
             <Input
@@ -213,8 +150,8 @@ const SharePanel = ({
               defaultValue={`${
                 data?.url && data?.url?.includes("https://")
                   ? data?.url
-                  : data.languages
-                  ? data?.languages[0].url
+                  : data?.languages
+                  ? data?.languages[0]?.url
                   : data?.url?.includes("http://")
                   ? data?.url
                   : "https://" + data?.url
@@ -244,74 +181,52 @@ const SharePanel = ({
         onVisibleChange={handleVisibleChange}
         placement="left"
       >
-        <div className="sticky-panel-item" onClick={handleVisibleChange}>
-          <ShareIcon className="recording-icon" />
-          <h2>Share</h2>
+        <div>
+          <Button
+            className="share-button two-tone-button"
+            icon={<MailTwoTone twoToneColor="#09689a" />}
+            type="primary"
+            shape="round"
+            size="middle"
+            ghost
+            onClick={handleVisibleChange}
+          >
+            Share
+          </Button>
         </div>
       </Popover>
-      {data?.recording && (
-        <div className="sticky-panel-item">
-          <a
-            onClick={() => {
-              window.open(
-                data?.recording.includes("https://")
-                  ? data?.recording
-                  : "https://" + data?.recording,
-                "_blank"
-              );
-            }}
-          >
-            <Recording className="recording-icon" />
-            <h2>Recording</h2>
-          </a>
-        </div>
-      )}
-      {canDelete() && (
-        <div
-          className="sticky-panel-item"
-          onClick={() => {
-            Modal.error({
-              className: "popup-delete",
-              centered: true,
-              closable: true,
-              icon: <DeleteOutlined />,
-              title: "Are you sure you want to delete this resource?",
-              content: "Please be aware this action cannot be undone.",
-              okText: "Delete",
-              okType: "danger",
-              onOk() {
-                return api
-                  .delete(`/detail/${type}/${id}`)
-                  .then((res) => {
-                    notification.success({
-                      message: "Resource deleted successfully",
-                    });
-                  })
-                  .catch((err) => {
-                    console.error(err);
-                    notification.error({
-                      message: "Oops, something went wrong",
-                    });
-                  });
-              },
-            });
-          }}
-        >
-          <TrashIcon className="recording-icon" />
-          <h2>Delete</h2>
-        </div>
-      )}
-      {canEdit() && (
-        <div className="sticky-panel-item" onClick={() => handleEditBtn()}>
-          <EditIcon className="edit-icon" />
-          <h2>Update</h2>
-        </div>
-      )}
-    </div>
+      <Button
+        className="bookmark-button two-tone-button"
+        icon={
+          relation?.association?.indexOf("interested in") !== -1 ? (
+            <HeartFilled />
+          ) : (
+            <HeartTwoTone twoToneColor="#09689a" />
+          )
+        }
+        type="primary"
+        shape="round"
+        size="middle"
+        ghost
+        onClick={() => handleChangeRelation("interested in")}
+      >
+        Bookmark
+      </Button>
+      <Button
+        className="edit-button two-tone-button"
+        type="primary"
+        shape="default"
+        size="middle"
+        ghost
+        onClick={handleEditBtn}
+      >
+        Edit
+      </Button>
+    </Col>
   );
 };
 
-const renderBannerSection = (
+const toolButtons = (
   data,
   LeftImage,
   profile,
@@ -348,117 +263,20 @@ const renderBannerSection = (
     profile.reviewStatus === "APPROVED" &&
     profile.role === "ADMIN";
 
-  if (
-    params.type === "technical_resource" ||
-    params.type === "policy" ||
-    params.type === "action_plan"
-  ) {
-    return (
-      <>
-        <Col xs={6} lg={6}>
-          <div className="short-image">
-            <a
-              href={`${
-                data?.url && data?.url?.includes("https://")
-                  ? data?.url
-                  : data.languages
-                  ? data?.languages[0].url
-                  : data?.url?.includes("http://")
-                  ? data?.url
-                  : "https://" + data?.url
-              }`}
-              target="_blank"
-            >
-              <img
-                src={
-                  data.image
-                    ? data.image
-                    : require(`../../images/resource-detail/${
-                        placeholder[params.type]
-                      }`).default
-                }
-                className="resource-image"
-              />
-            </a>
-          </div>
-        </Col>
-        <Col xs={18} lg={18} style={{ display: "flex" }}>
-          <div className="banner-wrapper">
-            <CardComponent
-              title="Description"
-              style={{
-                height: "100%",
-                boxShadow: "none",
-                borderRadius: "none",
-              }}
-            >
-              <p>{data?.summary}</p>
-            </CardComponent>
-            <SharePanel
-              data={data}
-              canDelete={canDelete}
-              topic={{ ...data, ...params }}
-              handleEditBtn={handleEditBtn}
-              canEdit={canEdit}
-              relation={relation.relation}
-              handleRelationChange={relation.handleRelationChange}
-              allowBookmark={allowBookmark}
-              visible={visible}
-              handleVisible={handleVisible}
-            />
-          </div>
-        </Col>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <Col xs={24} lg={24} className="long-image-container">
-          <div className="banner-wrapper">
-            <div className="long-image">
-              <a
-                href={`${
-                  data?.url && data?.url?.includes("https://")
-                    ? data?.url
-                    : data.languages
-                    ? data?.languages[0].url
-                    : data?.url?.includes("http://")
-                    ? data?.url
-                    : "https://" + data?.url
-                }`}
-                target="_blank"
-              >
-                <img
-                  src={
-                    data.image
-                      ? data.image
-                      : data.qimage
-                      ? data.qimage
-                      : require(`../../images/resource-detail/${
-                          placeholder[params.type]
-                        }`).default
-                  }
-                  className="resource-image"
-                />
-              </a>
-            </div>
-            <SharePanel
-              data={data}
-              canDelete={canDelete}
-              topic={{ ...data, ...params }}
-              handleEditBtn={handleEditBtn}
-              canEdit={canEdit}
-              relation={relation.relation}
-              handleRelationChange={relation.handleRelationChange}
-              allowBookmark={allowBookmark}
-              visible={visible}
-              handleVisible={handleVisible}
-            />
-          </div>
-        </Col>
-      </>
-    );
-  }
+  return (
+    <SharePanel
+      data={data}
+      canDelete={canDelete}
+      topic={{ ...data, ...params }}
+      handleEditBtn={handleEditBtn}
+      canEdit={canEdit}
+      relation={relation.relation}
+      handleRelationChange={relation.handleRelationChange}
+      allowBookmark={allowBookmark}
+      visible={visible}
+      handleVisible={handleVisible}
+    />
+  );
 };
 
 const renderDetails = (
@@ -563,9 +381,9 @@ const renderItemValues = (
       return (
         <Fragment key={`${params.type}-${name}`}>
           {displayEntry && (
-            <div key={name + index} className="record-table-wrapper">
-              <div className="title">{name}</div>
-              <div className="value">
+            <div key={name + index} className="record-row">
+              <div className="record-name">{name}</div>
+              <div className="record-value">
                 {key === null && type === "static" && value}
                 {value === key &&
                   type === "name" &&
@@ -605,10 +423,12 @@ const renderItemValues = (
                   type === "object" &&
                   data[key][customValue]}
                 {value === "custom" &&
-                  type === "startEndDate" &&
-                  moment.utc(data[arrayCustomValue[0]]).format("DD MMM YYYY") +
-                    " - " +
-                    moment.utc(data[arrayCustomValue[1]]).format("DD MMM YYYY")}
+                  type === "startDate" &&
+                  moment.utc(data[arrayCustomValue[0]]).format("DD MMM YYYY")}
+                {value === "custom" &&
+                  type === "endDate" &&
+                  moment.utc(data[arrayCustomValue[0]]).format("DD MMM YYYY")}
+
                 {data[key] &&
                   value === "isoCode" &&
                   type === "array" &&
@@ -792,25 +612,49 @@ const CommentList = ({
             {(item.id === showReplyBox || item.id === editComment) && (
               <>
                 <Form.Item>
-                  <TextArea
+                  <Input
                     rows={2}
                     defaultValue={editComment && item.content}
                     onChange={(e) => setComment(e.target.value)}
-                  />
-                  <Button
-                    className="comment-reply"
-                    onClick={() => {
-                      if (showReplyBox) {
-                        setShowReplyBox("");
-                        onReply(item.id, item.title);
-                      } else {
-                        setEditComment("");
-                        onEditComment(item.id, item.title);
+                    onPressEnter={(e) => {
+                      if (e.ctrlKey) {
+                        if (showReplyBox) {
+                          setShowReplyBox("");
+                          onReply(item.id, item.title);
+                        } else {
+                          setEditComment("");
+                          onEditComment(item.id, item.title);
+                        }
                       }
                     }}
-                  >
-                    {editComment ? "Update" : "Reply"}
-                  </Button>
+                    suffix={
+                      editComment ? (
+                        <EditOutlined
+                          onClick={() => {
+                            if (showReplyBox) {
+                              setShowReplyBox("");
+                              onReply(item.id, item.title);
+                            } else {
+                              setEditComment("");
+                              onEditComment(item.id, item.title);
+                            }
+                          }}
+                        />
+                      ) : (
+                        <SendOutlined
+                          onClick={() => {
+                            if (showReplyBox) {
+                              setShowReplyBox("");
+                              onReply(item.id, item.title);
+                            } else {
+                              setEditComment("");
+                              onEditComment(item.id, item.title);
+                            }
+                          }}
+                        />
+                      )
+                    }
+                  />
                 </Form.Item>
               </>
             )}
@@ -852,13 +696,7 @@ const DetailsView = ({
   setFilterMenu,
 }) => {
   const relatedContent = useRef(null);
-  const record = useRef(null);
-  const document = useRef(null);
-  const tag = useRef(null);
-  const description = useRef(null);
-  const reviews = useRef(null);
   const [showLess, setShowLess] = useState(true);
-  const [sending, setSending] = useState(false);
 
   const {
     profile,
@@ -1057,6 +895,7 @@ const DetailsView = ({
   const formRef = useRef();
   const [formSchema, setFormSchema] = useState(defaultFormSchema);
   const [comment, setComment] = useState("");
+  const [newComment, setNewComment] = useState("");
 
   const onSubmit = (val) => {
     const data = {
@@ -1137,430 +976,447 @@ const DetailsView = ({
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
-      items: 4,
-      slidesToSlide: 4,
+      items: 11,
+      slidesToSlide: 11,
     },
     desktop: {
       breakpoint: { max: 1199, min: 992 },
-      items: 3,
-      slidesToSlide: 3,
+      items: 9,
+      slidesToSlide: 9,
     },
     tablet: {
       breakpoint: { max: 991, min: 768 },
-      items: 3,
-      slidesToSlide: 3,
+      items: 7,
+      slidesToSlide: 7,
     },
     mobile2: {
       breakpoint: { max: 767, min: 600 },
-      items: 2,
-      slidesToSlide: 2,
+      items: 3,
+      slidesToSlide: 3,
     },
     mobile: {
       breakpoint: { max: 599, min: 0 },
-      items: 1,
-      slidesToSlide: 1,
+      items: 2,
+      slidesToSlide: 2,
     },
   };
 
+  const description = data?.description ? data?.description : data?.summary;
+
   return (
-    <div id="details">
-      <div className="section-header">
-        <div className="ui container">
-          <Row>
-            <Col xs={24} lg={24}>
-              <div className="header-wrapper">
-                <img src={ActionGreen} />
-                <div>
-                  <Title level={2}>{topicNames(params?.type)}</Title>
-                  <Title level={4}>{data?.title}</Title>
-                </div>
-              </div>
+    <div className="detail-view-wrapper">
+      <div id="detail-view">
+        <div className="detail-header">
+          <h3 className="detail-resource-type content-heading">
+            {topicNames(params?.type)}
+          </h3>
+          <h4 className="detail-resource-title">{data?.title}</h4>
+          {toolButtons(
+            data,
+            LeftImage,
+            profile,
+            isAuthenticated,
+            params,
+            handleEditBtn,
+            allowBookmark,
+            visible,
+            handleVisible,
+            showLess,
+            setShowLess,
+            placeholder,
+            { ...{ handleRelationChange, relation } }
+          )}
+        </div>
+        <Row
+          className="resource-info section"
+          gutter={{
+            lg: 24,
+          }}
+        >
+          {data?.image && (
+            <Col
+              className="resource-image-wrapper"
+              style={data?.type !== "event" && { width: "50%", float: "left" }}
+            >
+              <img className="resource-image" src={data?.image} alt="" />
             </Col>
-          </Row>
-        </div>
-      </div>
+          )}
 
-      <div className="section-banner">
-        <div className="ui container">
-          <Row gutter={[16, 16]}>
-            {renderBannerSection(
-              data,
-              LeftImage,
-              profile,
-              isAuthenticated,
-              params,
-              handleEditBtn,
-              allowBookmark,
-              visible,
-              handleVisible,
-              showLess,
-              setShowLess,
-              placeholder,
-              { ...{ handleRelationChange, relation } }
+          <Col className="details-content-wrapper section-description">
+            {description && (
+              <Row>
+                <h3 className="content-heading">Description</h3>
+                <p
+                  className={`content-paragraph ${
+                    data?.type === "event" && "event-paragraph"
+                  }`}
+                >
+                  {description}
+                </p>
+              </Row>
             )}
-          </Row>
-        </div>
-      </div>
 
-      <div className="section-info">
-        <div className="ui container">
-          <Row gutter={[16, 16]}>
-            <Col xs={6} lg={6}>
-              {/* <div className="views-container">
-                <List itemLayout="horizontal">
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={<Avatar src={ViewsImage} />}
-                      title={"123 views"}
-                    />
-                  </List.Item>
-                </List>
-              </div> */}
+            <Row>
+              {data?.geoCoverageType && (
+                <Col>
+                  <h3 className="content-heading">Location & Geocoverage</h3>
+                  <span className="detail-item geocoverage-item">
+                    <div className="transnational-icon detail-item-icon">
+                      <TransnationalImage />
+                    </div>
+                    <span>{titleCase(data?.geoCoverageType || "")}</span>
+                  </span>
 
-              <CardComponent title="Location and Geo-coverage">
-                <div className="list geo-coverage">
-                  <List itemLayout="horizontal">
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={TransnationalImage} />}
-                        title={data?.geoCoverageType}
-                      />
-                    </List.Item>
-                    {data?.geoCoverageType !== "sub-national" &&
-                      data?.geoCoverageType !== "national" && (
+                  {data?.geoCoverageType !== "global" && (
+                    <div className="detail-item">
+                      {data?.geoCoverageType !== "sub-national" &&
+                        data?.geoCoverageType !== "national" && (
+                          <>
+                            {data?.geoCoverageCountryGroups &&
+                              data?.geoCoverageCountryGroups?.length > 0 && (
+                                <Row>
+                                  <div className="location-icon detail-item-icon">
+                                    <LocationImage />
+                                  </div>
+                                  <div>
+                                    {renderGeoCoverageCountryGroups(
+                                      data,
+                                      countries,
+                                      transnationalOptions
+                                    )}
+                                  </div>
+                                </Row>
+                              )}
+                          </>
+                        )}
+
+                      {data?.geoCoverageType !== "sub-national" &&
+                        data?.geoCoverageType !== "national" && (
+                          <>
+                            {data?.geoCoverageCountries &&
+                              data?.geoCoverageCountries?.length > 0 && (
+                                <Row>
+                                  <div className="location-icon detail-item-icon">
+                                    <LocationImage />
+                                  </div>
+                                  <div>
+                                    {renderCountries(
+                                      data,
+                                      countries,
+                                      transnationalOptions
+                                    )}
+                                  </div>
+                                </Row>
+                              )}
+                          </>
+                        )}
+
+                      {(data?.geoCoverageType === "sub-national" ||
+                        data?.geoCoverageType === "national") && (
                         <>
-                          {data?.geoCoverageCountryGroups &&
-                            data?.geoCoverageCountryGroups.length > 0 && (
-                              <List.Item>
-                                <List.Item.Meta
-                                  avatar={<Avatar src={LocationImage} />}
-                                  title={
-                                    <>
-                                      {renderGeoCoverageCountryGroups(
-                                        data,
-                                        countries,
-                                        transnationalOptions
-                                      )}
-                                    </>
-                                  }
-                                />
-                              </List.Item>
+                          {data?.geoCoverageValues &&
+                            data?.geoCoverageValues.length > 0 && (
+                              <Row>
+                                <div className="location-icon detail-item-icon">
+                                  <LocationImage />
+                                </div>
+                                <div>
+                                  {renderCountries(
+                                    data,
+                                    countries,
+                                    transnationalOptions
+                                  )}
+                                </div>
+                              </Row>
                             )}
                         </>
                       )}
-                    {data?.geoCoverageType !== "sub-national" &&
-                      data?.geoCoverageType !== "national" && (
-                        <>
-                          {data?.geoCoverageCountries &&
-                            data?.geoCoverageCountries.length > 0 && (
-                              <List.Item>
-                                <List.Item.Meta
-                                  avatar={<Avatar src={LocationImage} />}
-                                  title={
-                                    <>
-                                      {renderCountries(
-                                        data,
-                                        countries,
-                                        transnationalOptions
-                                      )}
-                                    </>
-                                  }
-                                />
-                              </List.Item>
-                            )}
-                        </>
-                      )}
-                    {(data?.geoCoverageType === "sub-national" ||
-                      data?.geoCoverageType === "national") && (
-                      <>
-                        {data?.geoCoverageValues &&
-                          data?.geoCoverageValues.length > 0 && (
-                            <List.Item>
-                              <List.Item.Meta
-                                avatar={<Avatar src={LocationImage} />}
-                                title={renderCountries(
-                                  data,
-                                  countries,
-                                  transnationalOptions
-                                )}
-                              />
-                            </List.Item>
-                          )}
-                      </>
-                    )}
-                    {(data?.subnationalCity || data?.q24SubnationalCity) && (
-                      <List.Item>
-                        <List.Item.Meta
-                          avatar={<Avatar src={CityImage} />}
-                          title={
-                            data?.subnationalCity
+
+                      {(data?.subnationalCity || data?.q24SubnationalCity) && (
+                        <Row>
+                          <div className="city-icon detail-item-icon">
+                            <CityImage />
+                          </div>
+                          <div>
+                            {data?.subnationalCity
                               ? data?.subnationalCity
-                              : data?.q24SubnationalCity
+                              : data?.q24SubnationalCity}
+                          </div>
+                        </Row>
+                      )}
+                    </div>
+                  )}
+
+                  {data?.languages && (
+                    <span className="detail-item">
+                      {data?.languages
+                        .map((language) => {
+                          const langs =
+                            !isEmpty(languages) &&
+                            languages[language?.isoCode]?.name;
+                          return langs || "";
+                        })
+                        .join(", ")}
+                    </span>
+                  )}
+                </Col>
+              )}
+            </Row>
+          </Col>
+        </Row>
+        <Col>
+          {/* CONNECTION */}
+          {data?.stakeholderConnections.filter(
+            (x) => x.stakeholderRole !== "ADMIN" || x.role === "interested in"
+          )?.length > 0 && (
+            <Col className="section">
+              <h3 className="content-heading">Connections</h3>
+
+              <List itemLayout="horizontal">
+                {data?.entityConnections.map((item) => (
+                  <List.Item key={item?.id} className="stakeholder-row">
+                    <List.Item.Meta
+                      className="stakeholder-detail"
+                      avatar={
+                        <Avatar
+                          size={40}
+                          src={
+                            item?.image ? (
+                              item?.image
+                            ) : (
+                              <Avatar
+                                style={{
+                                  backgroundColor: "#09689A",
+                                  verticalAlign: "middle",
+                                }}
+                                size={50}
+                              >
+                                {item.entity?.substring(0, 2)}
+                              </Avatar>
+                            )
                           }
                         />
-                      </List.Item>
-                    )}
-                  </List>
-                </div>
-              </CardComponent>
-              {data?.entityConnections.length +
-                data?.stakeholderConnections.filter(
+                      }
+                      title={
+                        <Link to={`/organisation/${item.entityId}`}>
+                          {item.entity}
+                        </Link>
+                      }
+                      description={"Entity"}
+                    />{" "}
+                    {/* <div className="see-more-button">See More</div> */}
+                  </List.Item>
+                ))}
+              </List>
+
+              <Avatar.Group
+                maxCount={2}
+                size="large"
+                maxStyle={{
+                  color: "#f56a00",
+                  backgroundColor: "#fde3cf",
+                  cursor: "pointer",
+                  height: 40,
+                  width: 40,
+                }}
+              >
+                {data?.stakeholderConnections.filter(
                   (x) =>
                     x.stakeholderRole !== "ADMIN" || x.role === "interested in"
-                )?.length >
-                0 && (
-                <CardComponent
-                  title={`Connections (${
-                    data?.entityConnections.length +
-                    data?.stakeholderConnections.filter(
-                      (x) =>
-                        x.stakeholderRole !== "ADMIN" ||
-                        x.role === "interested in"
-                    )?.length
-                  })`}
-                >
-                  <div className="list connection-list">
-                    {data?.entityConnections.length > 0 && (
-                      <List itemLayout="horizontal">
-                        {data?.entityConnections.map((item) => (
-                          <List.Item>
-                            <List.Item.Meta
-                              avatar={
-                                <Avatar
-                                  size={50}
-                                  src={
-                                    item?.image ? (
-                                      item?.image
-                                    ) : (
-                                      <Avatar
-                                        style={{
-                                          backgroundColor: "#09689A",
-                                          verticalAlign: "middle",
-                                        }}
-                                        size={50}
-                                      >
-                                        {item.entity?.substring(0, 2)}
-                                      </Avatar>
-                                    )
-                                  }
-                                />
-                              }
-                              title={
-                                <Link to={`/organisation/${item.entityId}`}>
-                                  {item.entity}
-                                </Link>
-                              }
-                              description={"Entity"}
-                            />{" "}
-                            {/* <div className="see-more-button">See More</div> */}
-                          </List.Item>
-                        ))}
-                      </List>
-                    )}
-                    {data?.stakeholderConnections.filter(
-                      (x) =>
-                        x.stakeholderRole !== "ADMIN" ||
-                        x.role === "interested in"
-                    )?.length > 0 && (
-                      <List itemLayout="horizontal">
-                        {data?.stakeholderConnections
-                          .filter(
-                            (x) =>
-                              x.stakeholderRole !== "ADMIN" ||
-                              x.role === "interested in"
-                          )
-                          .map((item) => (
-                            <List.Item key={item?.id}>
-                              <List.Item.Meta
-                                avatar={<Avatar src={item.image} />}
-                                title={
-                                  <Link
-                                    to={`/stakeholder/${item.stakeholderId}`}
-                                  >
-                                    {item.stakeholder}
-                                  </Link>
-                                }
-                                description={item.role}
-                              />
-                            </List.Item>
-                          ))}
-                      </List>
-                    )}
-                    {/* <List itemLayout="horizontal">
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={
-                          <>
-                            <div className="count">+72</div>
-                          </>
-                        }
-                        title={"Scroll to see more"}
-                      />
-                    </List.Item>
-                  </List> */}
-                  </div>
-                </CardComponent>
-              )}
-            </Col>
-            <Col xs={18} lg={18}>
-              <TabComponent
-                style={{
-                  marginBottom: "30px",
-                }}
-                relatedRef={relatedContent}
-                recordRef={record}
-                documentRef={document}
-                tagRef={tag}
-                reviewsRef={reviews}
-                descriptionRef={description}
-                data={data}
-                recordShow={recordShow}
-                profile={profile}
-                params={params}
-              />
-              {params.type !== "technical_resource" &&
-                params.type !== "policy" &&
-                params.type !== "action_plan" && (
-                  <CardComponent title="Description" getRef={description}>
-                    <p className="summary">{data?.summary}</p>
-                  </CardComponent>
-                )}
-              {countries && recordShow && (
-                <CardComponent title="Record" getRef={record}>
-                  <div className="record-table">
-                    {countries &&
-                      renderDetails(
-                        {
-                          countries,
-                          languages,
-                          regionOptions,
-                          meaOptions,
-                          transnationalOptions,
-                        },
-                        params,
-                        data,
-                        profile,
-                        countries
-                      )}
-                  </div>
-                </CardComponent>
-              )}
-              {data?.infoDocs && (
-                <CardComponent title="Documents and info" getRef={document}>
-                  {data?.infoDocs && (
-                    <div
-                      className="list documents-list"
-                      dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
-                    />
-                  )}
-                </CardComponent>
-              )}
-              {data?.tags && data?.tags.length > 0 && (
-                <CardComponent title="Tags" getRef={tag}>
-                  <div className="list tag-list">
-                    <List itemLayout="horizontal">
-                      {data?.tags && (
-                        <List.Item>
+                )?.length > 0 && (
+                  <List itemLayout="horizontal">
+                    {data?.stakeholderConnections
+                      .filter(
+                        (x) =>
+                          x.stakeholderRole !== "ADMIN" ||
+                          x.role === "interested in"
+                      )
+                      .map((item) => (
+                        <List.Item key={item?.id} className="stakeholder-row">
                           <List.Item.Meta
-                            avatar={<Avatar src={TagsImage} />}
+                            className="stakeholder-detail"
+                            avatar={<Avatar src={item?.image} />}
                             title={
-                              <ul>
-                                {data?.tags &&
-                                  data?.tags.map((tag) => (
-                                    <li key={tag.tag}>{tag.tag}</li>
-                                  ))}
-                              </ul>
+                              <Link to={`/stakeholder/${item.stakeholderId}`}>
+                                {item.stakeholder}
+                              </Link>
                             }
+                            description={item.role}
                           />
                         </List.Item>
-                      )}
-                    </List>
-                  </div>
-                </CardComponent>
-              )}
-              {data?.relatedContent &&
-                data?.relatedContent?.length > 0 &&
-                data?.relatedContent.length > 0 && (
-                  <RelatedContent
-                    data={data}
-                    responsive={responsive}
-                    isShownCount={false}
-                    title="Related content"
-                    relatedContent={data?.relatedContent}
-                    isShownPagination={false}
-                    dataCount={relatedContent?.length || 0}
-                  />
-                )}
-              {profile && (
-                <CardComponent title="Comments" getRef={reviews}>
-                  <div className="comments-container">
-                    {comments &&
-                      comments.length > 0 &&
-                      comments?.map((item) => (
-                        <div className="comment-list-container">
-                          <CommentList
-                            item={item}
-                            showReplyBox={showReplyBox}
-                            setShowReplyBox={setShowReplyBox}
-                            onReply={onReply}
-                            setComment={setComment}
-                            profile={profile}
-                            getComment={getComment}
-                            params={params}
-                            editComment={editComment}
-                            setEditComment={setEditComment}
-                            onEditComment={onEditComment}
-                          />
-                        </div>
                       ))}
-                    {!isAuthenticated && (
-                      <p className="no-login">
-                        Please login to comment on this resource
-                      </p>
-                    )}
-                    {profile && profile.reviewStatus === "APPROVED" && (
-                      <Form layout="vertical">
-                        <FinalForm
-                          initialValues={{}}
-                          subscription={{}}
-                          mutators={{ ...arrayMutators }}
-                          onSubmit={onSubmit}
-                          render={({ handleSubmit, form, ...props }) => {
-                            formRef.current = form;
-                            return (
-                              <>
-                                <FieldsFromSchema schema={formSchema} />
-                                <Button
-                                  className="comment-submit"
-                                  size="large"
-                                  loading={sending}
-                                  onClick={() => {
-                                    handleSubmit();
-                                    form.reset();
-                                    form.resetFieldState("title");
-                                    form.resetFieldState("description");
-                                  }}
-                                >
-                                  Submit
-                                </Button>
-                              </>
-                            );
-                          }}
-                        />
-                      </Form>
-                    )}
-                  </div>
-                </CardComponent>
-              )}
-              {/* <CardComponent
-                title="Comments (0)"
-                style={{
-                  marginBottom: "30px",
-                }}
-              /> */}
+                  </List>
+                )}
+              </Avatar.Group>
+
+              <Row className="stakeholder-row stakeholder-group">
+                <Avatar.Group
+                  maxCount={2}
+                  size="large"
+                  maxStyle={{
+                    color: "#f56a00",
+                    backgroundColor: "#fde3cf",
+                    cursor: "pointer",
+                    height: 40,
+                    width: 40,
+                  }}
+                >
+                  {data?.stakeholderConnections
+                    .filter(
+                      (x) =>
+                        x.stakeholderRole !== "ADMIN" ||
+                        x.role === "interested in"
+                    )
+                    .map((connection, index) => (
+                      <Avatar
+                        className="related-content-avatar"
+                        style={{ border: "none", height: 40, width: 40 }}
+                        key={index}
+                        src={
+                          <Avatar
+                            avatar={<Avatar src={connection?.image} />}
+                            style={{
+                              backgroundColor: "#09689A",
+                              verticalAlign: "middle",
+                            }}
+                            size={40}
+                            title={
+                              <Link
+                                to={`/stakeholder/${connection?.stakeholderId}`}
+                              >
+                                {connection?.stakeholder}
+                              </Link>
+                            }
+                          >
+                            {connection?.stakeholder}
+                          </Avatar>
+                        }
+                      />
+                    ))}
+                </Avatar.Group>
+              </Row>
             </Col>
-          </Row>
-        </div>
+          )}
+
+          {/* TAGS */}
+          {data?.tags && data?.tags?.length > 0 && (
+            <Col className="section-tag section">
+              <h3 className="content-heading">Tags</h3>
+              <List itemLayout="horizontal">
+                <List.Item>
+                  <List.Item.Meta
+                    title={
+                      <ul className="tag-list">
+                        {data?.tags &&
+                          data?.tags.map((tag) => (
+                            <li className="tag-list-item" key={tag?.tag}>
+                              <Tag className="resource-tag">
+                                {titleCase(tag?.tag || "")}
+                              </Tag>
+                            </li>
+                          ))}
+                      </ul>
+                    }
+                  />
+                </List.Item>
+              </List>
+            </Col>
+          )}
+        </Col>
+        {/* DOCUMENTS AND INFO */}
+        {data?.infoDocs && (
+          <Col className="section section-document">
+            <h3 className="content-heading">Documents and info</h3>
+            <div className="content-paragraph">
+              <div
+                className="list documents-list"
+                dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
+              />
+            </div>
+          </Col>
+        )}
+        <Col className="record-section section">
+          <h3 className="content-heading">Records</h3>
+          <div>
+            <div className="record-table">
+              <div>
+                {countries &&
+                  renderDetails(
+                    {
+                      countries,
+                      languages,
+                      regionOptions,
+                      meaOptions,
+                      transnationalOptions,
+                    },
+                    params,
+                    data,
+                    profile,
+                    countries
+                  )}
+              </div>
+            </div>
+          </div>
+        </Col>
+        {/* RELATED CONTENT */}
+        {data?.relatedContent &&
+          data?.relatedContent?.length > 0 &&
+          data?.relatedContent.length > 0 && (
+            <Col className="section section-related-content">
+              <RelatedContent
+                data={data}
+                responsive={responsive}
+                isShownCount={false}
+                title="Related content"
+                relatedContent={data?.relatedContent}
+                isShownPagination={false}
+                dataCount={relatedContent?.length || 0}
+              />
+            </Col>
+          )}
+        {/* COMMENTS */}{" "}
+        <Col className="section comment-section">
+          {" "}
+          <h3 className="content-heading">Discussion</h3>{" "}
+          {comments &&
+            comments.length > 0 &&
+            comments?.map((item, index) => {
+              return (
+                <CommentList
+                  key={item?.id}
+                  item={item}
+                  showReplyBox={showReplyBox}
+                  setShowReplyBox={setShowReplyBox}
+                  onReply={onReply}
+                  setComment={setComment}
+                  profile={profile}
+                  getComment={getComment}
+                  params={params}
+                  editComment={editComment}
+                  setEditComment={setEditComment}
+                  onEditComment={onEditComment}
+                />
+              );
+            })}{" "}
+        </Col>{" "}
+        <Col className="input-wrapper">
+          {" "}
+          <MessageOutlined className="message-icon" />{" "}
+          <Input
+            className="comment-input"
+            placeholder="Join the discussion..."
+            suffix={
+              <SendOutlined
+                onClick={() => onSubmit({ description: newComment })}
+              />
+            }
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            onPressEnter={(e) =>
+              e.ctrlKey && onSubmit({ description: newComment })
+            }
+          />{" "}
+        </Col>
       </div>
     </div>
   );
