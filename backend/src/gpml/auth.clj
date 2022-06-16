@@ -12,13 +12,6 @@
    [com.auth0.jwt.impl JsonNodeClaim]
    [com.auth0.utils.tokens SignatureVerifier PublicKeyProvider IdTokenVerifier]))
 
-(def ^:const ^:private synthetic-ckan-integration-user
-  "Ad-hoc user with the required permissions to access certain APIs such
-  as stakeholder. When a more generic approach is implemented we
-  should remove this."
-  {:role "ADMIN"
-   :id 99999999})
-
 (def verifier-opts
   [:map
    [:issuer [:re #"^https://\S+/$"]]
@@ -122,7 +115,8 @@
               user-info (check-approved conn auth-info)]
           (handler (merge request auth-info user-info)))))))
 
-(defmethod ig/init-key :gpml.auth/auth-middleware-ckan [_ opts]
+(defn- auth-middleware-programmatic
+  [opts]
   (fn [handler]
     (let [signature-verifier (signature-verifier (:issuer opts))]
       (fn [request]
@@ -130,8 +124,7 @@
                          request
                          (id-token-verifier signature-verifier opts)
                          :programmatic)
-              user-info {:approved? true
-                         :user synthetic-ckan-integration-user}]
+              user-info {:user {:role :programmatic-access}}]
           (cond
             (:authenticated? auth-info)
             (handler (merge request auth-info user-info))
@@ -141,6 +134,12 @@
 
             :else
             (handler request)))))))
+
+(defmethod ig/init-key :gpml.auth/auth-middleware-ckan [_ opts]
+  (auth-middleware-programmatic opts))
+
+(defmethod ig/init-key :gpml.auth/auth-middleware-auth0-actions [_ opts]
+  (auth-middleware-programmatic opts))
 
 (defmethod ig/init-key :gpml.auth/auth-required [_ _]
   (fn [handler]
