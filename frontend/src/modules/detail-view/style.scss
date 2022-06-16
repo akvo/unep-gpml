@@ -3,6 +3,12 @@
   width: 100% !important;
   max-width: 300px;
 }
+.popup-delete {
+  .ant-modal-body {
+    padding: 32px 32px 24px !important;
+  }
+}
+
 .detail-view-wrapper {
   background: #edf2f7;
   padding-top: 41px;
@@ -374,8 +380,20 @@
       .ant-comment-content-detail p {
         max-width: 670px;
       }
+      .ant-comment-actions {
+        span {
+          color: #339cfe;
+        }
+      }
     }
 
+    .edit-input {
+      background: hsl(199deg, 100%, 95%);
+      border: 1px solid #339cfe;
+      input {
+        background: hsl(199deg, 100%, 95%);
+      }
+    }
     .input-wrapper {
       display: flex;
       align-items: center;
