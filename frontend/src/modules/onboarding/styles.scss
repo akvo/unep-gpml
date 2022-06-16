@@ -47,7 +47,7 @@
     border-radius: 5px;
     font-weight: 500;
     font-size: 16px;
-    padding: 0px 11px;
+    // padding: 0px 11px;
     height: 42px;
     color: #a5b0c9;
     &::placeholder {
@@ -214,6 +214,9 @@
     .ant-form {
       width: 80%;
       margin: 0 auto;
+      .error {
+        color: red;
+      }
     }
     .ant-row {
       &:first-child {

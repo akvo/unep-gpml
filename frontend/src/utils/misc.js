@@ -152,7 +152,7 @@ export const auth0Client = new auth0.WebAuth({
   domain: domain,
   clientID: window.__ENV__.auth0.clientId,
   audience: "https://unep-gpml-test.eu.auth0.com/api/v2/",
-  redirectUri: window.location.origin,
+  redirectUri: `${window.location.origin}/onboarding/`,
   scope: "openid profile",
   responseType: "token id_token",
 });
