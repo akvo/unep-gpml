@@ -7,34 +7,16 @@ import React, {
   useRef,
 } from "react";
 import "./styles.scss";
-import {
-  Row,
-  Col,
-  Modal,
-  Card,
-  List,
-  Avatar,
-  notification,
-  Popover,
-  Input,
-  Button,
-  Form,
-  Comment,
-  Tag,
-} from "antd";
+import { Row, Col, List, Avatar, Popover, Input, Button, Tag } from "antd";
 
 import {
   EyeFilled,
   HeartTwoTone,
   MailTwoTone,
-  MessageOutlined,
   PlayCircleTwoTone,
-  SendOutlined,
   HeartFilled,
   InfoCircleOutlined,
   LoadingOutlined,
-  DeleteOutlined,
-  EditOutlined,
 } from "@ant-design/icons";
 
 import api from "../../utils/api";
@@ -59,7 +41,7 @@ import Comments from "./comment";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
-const SharePanel = ({
+const HeaderButtons = ({
   data,
   topic,
   handleEditBtn,
@@ -259,7 +241,7 @@ const toolButtons = (
     profile.role === "ADMIN";
 
   return (
-    <SharePanel
+    <HeaderButtons
       data={data}
       canDelete={canDelete}
       topic={{ ...data, ...params }}
