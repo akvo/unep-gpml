@@ -191,9 +191,9 @@ const SharePanel = ({
         className="bookmark-button two-tone-button"
         icon={
           relation?.association?.indexOf("interested in") !== -1 ? (
-            <HeartFilled />
+            <HeartFilled className='heart-filled' />
           ) : (
-            <HeartTwoTone twoToneColor="#09689a" />
+            <HeartTwoTone className='two-tone-heart' twoToneColor="#09689a" />
           )
         }
         type="primary"
