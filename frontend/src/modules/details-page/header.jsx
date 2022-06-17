@@ -1,10 +1,4 @@
-import React, {
-  Fragment,
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-} from "react";
+import React from "react";
 import "./styles.scss";
 import { Row, Col, List, Avatar, Popover, Input, Button, Tag } from "antd";
 
@@ -14,8 +8,6 @@ import {
   MailTwoTone,
   PlayCircleTwoTone,
   HeartFilled,
-  InfoCircleOutlined,
-  LoadingOutlined,
 } from "@ant-design/icons";
 import { resourceTypeToTopicType, topicNames } from "../../utils/misc";
 
