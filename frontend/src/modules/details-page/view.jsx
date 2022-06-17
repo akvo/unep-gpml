@@ -646,7 +646,8 @@ const CommentList = ({
           </>,
         ]
       }
-      author={moment(item?.createdAt).format("DD MMM YYYY")}
+      author={item?.authorName}
+      datetime={moment(item?.createdAt).fromNow()}
       avatar={<Avatar src={item.authorPicture} alt={"author"} />}
       content={
         <>
