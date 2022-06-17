@@ -30,6 +30,7 @@ import { ReactComponent as IconCaseStudies } from "../../images/capacity-buildin
 
 import Header from "./header";
 import moment from "moment";
+import DetailViewModal from "../detail-view-modal/view";
 
 const { Option } = Select;
 
