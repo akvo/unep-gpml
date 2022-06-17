@@ -297,7 +297,7 @@ const detailProject = [
   },
   {
     key: "sector",
-    name: "Sector:",
+    name: "Sector",
     value: "join",
     type: "array",
   },

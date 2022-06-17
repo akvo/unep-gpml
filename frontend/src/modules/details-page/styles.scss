@@ -12,6 +12,9 @@
 .detail-view-wrapper {
   background: #edf2f7;
   padding-top: 41px;
+  @media (max-width: 600px) {
+    padding-top: 5%;
+  }
 
   #detail-view {
     margin: 0 5%;
@@ -30,6 +33,7 @@
     .ant-comment-content-detail {
       font-size: 14px;
       line-height: 24px;
+      overflow-wrap: break-word;
     }
 
     @media (min-width: 900px) {
@@ -43,6 +47,9 @@
 
     .section {
       padding: 0 40px;
+      @media (max-width: 600px) {
+        padding: 0 32px;
+      }
     }
     .ant-avatar-circle {
       display: flex;
@@ -60,6 +67,9 @@
       font-weight: 500;
       border: 1px solid rgba(24, 22, 47, 0.03);
       box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+      @media (max-width: 600px) {
+        padding: 36px 32px calc(32px - 14px) 32px !important;
+      }
 
       .tool-buttons {
         display: flex;
@@ -225,9 +235,12 @@
           .record-value {
             padding: 9px 0;
           }
-          .record-name:first-of-type {
-            width: 100%;
-            max-width: 30%;
+          .record-name {
+            align-self: flex-start;
+            &:first-of-type {
+              width: 100%;
+              max-width: 30%;
+            }
           }
 
           .record-value {
@@ -487,8 +500,11 @@
       background: #f3f3f3;
       padding: 26px 40px;
       border-radius: 0 0 5px 5px;
+      @media (max-width: 600px) {
+        padding: 26px 32px;
+      }
       .comment-input {
-        height: 54px;
+        min-height: 54px;
         background: hsl(199, 100%, 95%);
         border: 1px solid #339cfe;
         border-radius: 5px;
@@ -504,6 +520,9 @@
         svg {
           width: 43px;
           height: 43px;
+        }
+        @media (max-width: 600px) {
+          margin-right: 9px;
         }
       }
       .ant-input-suffix {
