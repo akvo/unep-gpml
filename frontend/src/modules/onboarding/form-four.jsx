@@ -19,11 +19,11 @@ import {
   FileTextOutlined,
 } from "@ant-design/icons";
 
-function FormFour({ handleOnClickBtnBack, handleOnClickBtnNext }) {
+function FormFour({}) {
   const [form] = Form.useForm();
   return (
-    <div className="ui container step-form step-form-final">
-      <Row justify="center" align="middle">
+    <>
+      <Row justify="center" align="middle" style={{ paddingTop: 100 }}>
         <Col span={24}>
           <div className="text-wrapper">
             <Title level={2}>
@@ -94,15 +94,7 @@ function FormFour({ handleOnClickBtnBack, handleOnClickBtnNext }) {
           </Form>
         </Col>
       </Row>
-      <Row className="button-bottom-panel">
-        <Button className="step-button-back" onClick={handleOnClickBtnBack}>
-          {"<"} Back
-        </Button>
-        <Button className="step-button-next" onClick={handleOnClickBtnNext}>
-          Submit {">"}
-        </Button>
-      </Row>
-    </div>
+    </>
   );
 }
 

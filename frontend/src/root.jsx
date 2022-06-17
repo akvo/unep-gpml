@@ -234,7 +234,6 @@ const Root = () => {
   useEffect(() => {
     (async function fetchData() {
       const response = await getIdTokenClaims();
-      console.log(response);
       if (isAuthenticated) {
         api.setToken(response.__raw);
       } else {

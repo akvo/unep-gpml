@@ -3,7 +3,7 @@ import { UIStore } from "../../store";
 import { Col, Row, Button, Typography, Form, Input, Select, List } from "antd";
 const { Title, Link } = Typography;
 
-function FormThree({ handleOnClickBtnBack, handleOnClickBtnNext }) {
+function FormThree({}) {
   const [form] = Form.useForm();
 
   const storeData = UIStore.useState((s) => ({
@@ -13,7 +13,7 @@ function FormThree({ handleOnClickBtnBack, handleOnClickBtnNext }) {
   const { entitySuggestedTags } = storeData;
 
   return (
-    <div className="ui container step-form">
+    <>
       <Row justify="center" align="middle">
         <Col span={24}>
           <div className="text-wrapper">
@@ -48,15 +48,7 @@ function FormThree({ handleOnClickBtnBack, handleOnClickBtnNext }) {
           </div>
         </Col>
       </Row>
-      <Row className="button-bottom-panel">
-        <Button className="step-button-back" onClick={handleOnClickBtnBack}>
-          {"<"} Back
-        </Button>
-        <Button className="step-button-next" onClick={handleOnClickBtnNext}>
-          Next {">"}
-        </Button>
-      </Row>
-    </div>
+    </>
   );
 }
 

@@ -5,7 +5,7 @@ const { Title, Link } = Typography;
 
 function GettingStarted({ handleOnClickBtnNext }) {
   return (
-    <div className="ui container getting-started">
+    <>
       <Row justify="center" align="middle">
         <Col span={12}>
           <div className="text-wrapper">
@@ -21,14 +21,7 @@ function GettingStarted({ handleOnClickBtnNext }) {
           </div>
         </Col>
       </Row>
-      <Row justify="center" align="middle" className="button-bottom-panel">
-        <Col span={24}>
-          <Button className="step-button" onClick={handleOnClickBtnNext}>
-            Next {">"}
-          </Button>
-        </Col>
-      </Row>
-    </div>
+    </>
   );
 }
 

@@ -2,9 +2,9 @@ import React from "react";
 import { Col, Row, Button, Typography } from "antd";
 const { Title, Link } = Typography;
 
-function AffiliationOption({ handleOnClickBtnBack, handleOnClickBtnNext }) {
+function AffiliationOption({ handleAffiliationChange, next }) {
   return (
-    <div className="ui container step-form">
+    <>
       <Row justify="center" align="middle">
         <Col span={24}>
           <div className="text-wrapper">
@@ -12,23 +12,30 @@ function AffiliationOption({ handleOnClickBtnBack, handleOnClickBtnNext }) {
           </div>
           <div className="buttons-wrapper">
             <div>
-              <Button onClick={handleOnClickBtnNext}>Yes</Button>
+              <Button
+                onClick={() => {
+                  handleAffiliationChange(false);
+                  next(4);
+                }}
+              >
+                Yes
+              </Button>
             </div>
             <div>
-              <Button onClick={handleOnClickBtnNext}>No</Button>
+              <Button
+                onClick={() => {
+                  handleAffiliationChange(true);
+                  next(3);
+                }}
+              >
+                No
+              </Button>
               <Title level={5}>I’m a private citizen</Title>
             </div>
           </div>
         </Col>
       </Row>
-      <Row className="button-bottom-panel">
-        <Col span={24}>
-          <Button className="step-button-back" onClick={handleOnClickBtnBack}>
-            {"<"} Back
-          </Button>
-        </Col>
-      </Row>
-    </div>
+    </>
   );
 }
 

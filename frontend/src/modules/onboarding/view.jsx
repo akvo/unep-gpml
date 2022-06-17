@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./styles.scss";
 import { Carousel, Col, Row, Typography, Button, Steps, Avatar } from "antd";
 const { Title, Link } = Typography;
@@ -11,128 +11,66 @@ import FormOne from "./form-one";
 import FormTwo from "./form-two";
 import FormThree from "./form-three";
 import FormFour from "./form-four";
+import { Field } from "react-final-form";
+import Wizard from "../../components/form-wizard/Wizard";
 
 function Authentication() {
-  const { tabs, initialData, initialFormData } = common;
-  const tabsData = tabs;
-  const formData = initialFormData.useState();
-  const { editId, data } = formData;
+  const formRef = useRef();
+  const [affiliation, setAffiliation] = useState("");
+  const [currentStep, setCurrentStep] = useState(0);
 
-  const handleOnTabChange = (key) => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    const tabActive = tabsData.filter((x) => x.key === key);
-    initialFormData.update((e) => {
-      e.data = {
-        ...e.data,
-        tabs: [key],
-        steps: tabActive[0].steps,
-      };
-    });
+  const next = (steps) => {
+    setCurrentStep(Math.min(currentStep + 1, steps - 1));
+  };
+  const previous = () => {
+    setCurrentStep(Math.max(currentStep - 1, 0));
   };
 
-  const handleOnStepClick = (current, section) => {
-    initialFormData.update((e) => {
-      e.data = {
-        ...e.data,
-        [section]: {
-          ...e.data[section],
-          steps: current,
-        },
-      };
-    });
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const onSubmit = async (values) => {
+    await sleep(300);
+    window.alert(JSON.stringify(values, 0, 2));
   };
 
-  const handleOnClickBtnNext = (e) => {
-    window.scrollTo(0, 0);
-    const { tabIndex, stepIndex, steps } = getTabStepIndex();
-    if (stepIndex < steps.length - 1) {
-      // Next step, same section
-      handleOnStepClick(stepIndex + 1, tabsData[tabIndex].key);
-    } else if (tabIndex < tabsData.length - 1) {
-      // Next section, first step
-      handleOnTabChange(tabsData[tabIndex + 1].key);
-    } else {
-      // We shouldn't get here, since the button should be hidden
-      console.error("Last step:", tabIndex, stepIndex);
-    }
-  };
+  const Error = ({ name }) => (
+    <Field
+      name={name}
+      subscribe={{ touched: true, error: true }}
+      render={({ meta: { touched, error } }) =>
+        touched && error ? <span>{error}</span> : null
+      }
+    />
+  );
 
-  const handleOnClickBtnBack = (e) => {
-    window.scrollTo(0, 0);
-    const { tabIndex, stepIndex, steps } = getTabStepIndex();
-    if (stepIndex > 0 && steps.length > 0) {
-      // Prev step, same section
-      handleOnStepClick(stepIndex - 1, tabsData[tabIndex].key);
-    } else if (tabIndex > 0) {
-      // Prev section, first step
-      handleOnTabChange(tabsData[tabIndex - 1].key);
-    } else {
-      // We shouldn't get here, since the button should be hidden
-      console.error("Last step:", tabIndex, stepIndex);
-    }
-  };
+  const required = (value) => (value ? undefined : "Required");
 
-  const getTabStepIndex = () => {
-    const section = data.tabs[0];
-    const stepIndex = data[section].steps;
-    const tabIndex = tabsData.findIndex((tab) => tab.key === section);
-    const steps = tabsData[tabIndex]?.steps || [];
-    return { tabIndex, stepIndex, steps };
-  };
-
-  const renderStep = (step, handleOnClickBtnNext, handleOnClickBtnBack) => {
-    switch (step) {
-      case 0:
-        return <Main handleOnClickBtnNext={handleOnClickBtnNext} />;
-      case 1:
-        return <GettingStarted handleOnClickBtnNext={handleOnClickBtnNext} />;
-      case 2:
-        return (
-          <AffiliationOption
-            handleOnClickBtnBack={handleOnClickBtnBack}
-            handleOnClickBtnNext={handleOnClickBtnNext}
-          />
-        );
-      case 3:
-        return (
-          <FormOne
-            handleOnClickBtnBack={handleOnClickBtnBack}
-            handleOnClickBtnNext={handleOnClickBtnNext}
-          />
-        );
-      case 4:
-        return (
-          <FormTwo
-            handleOnClickBtnBack={handleOnClickBtnBack}
-            handleOnClickBtnNext={handleOnClickBtnNext}
-          />
-        );
-      case 5:
-        return (
-          <FormThree
-            handleOnClickBtnBack={handleOnClickBtnBack}
-            handleOnClickBtnNext={handleOnClickBtnNext}
-          />
-        );
-      case 6:
-        return (
-          <FormFour
-            handleOnClickBtnBack={handleOnClickBtnBack}
-            handleOnClickBtnNext={handleOnClickBtnNext}
-          />
-        );
-      default:
-        return null;
-    }
+  const handleAffiliationChange = (value) => {
+    setAffiliation(value);
+    formRef?.current?.change("privateCitizen", value);
   };
 
   return (
     <div id="authentication">
-      {renderStep(
-        getTabStepIndex().tabIndex,
-        handleOnClickBtnNext,
-        handleOnClickBtnBack
-      )}
+      <Wizard
+        initialValues={{}}
+        onSubmit={onSubmit}
+        formRef={formRef}
+        next={next}
+        previous={previous}
+        currentStep={currentStep}
+      >
+        <GettingStarted />
+        <AffiliationOption
+          handleAffiliationChange={handleAffiliationChange}
+          affiliation={affiliation}
+          next={next}
+        />
+        {!affiliation && <FormOne />}
+        <FormTwo />
+        <FormThree />
+        <FormFour />
+      </Wizard>
     </div>
   );
 }

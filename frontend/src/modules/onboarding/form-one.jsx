@@ -5,7 +5,7 @@ const { Title, Link } = Typography;
 function FormOne({ handleOnClickBtnBack, handleOnClickBtnNext }) {
   const [form] = Form.useForm();
   return (
-    <div className="ui container step-form">
+    <>
       <Row justify="center" align="middle">
         <Col span={24}>
           <div className="text-wrapper">
@@ -29,15 +29,7 @@ function FormOne({ handleOnClickBtnBack, handleOnClickBtnNext }) {
           </Form>
         </Col>
       </Row>
-      <Row className="button-bottom-panel">
-        <Button className="step-button-back" onClick={handleOnClickBtnBack}>
-          {"<"} Back
-        </Button>
-        <Button className="step-button-next" onClick={handleOnClickBtnNext}>
-          Next {">"}
-        </Button>
-      </Row>
-    </div>
+    </>
   );
 }
 
