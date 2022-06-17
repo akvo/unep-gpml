@@ -86,7 +86,10 @@ export const CommentList = ({
                               message: "Comment deleted successfully",
                             });
 
-                            getComment(params.id, params.type);
+                            getComment(
+                              params.id,
+                              params.type.replace("-", "_")
+                            );
                           } catch (err) {
                             console.error(err);
                             notification.error({
@@ -209,7 +212,7 @@ const Comments = ({
     const data = {
       author_id: profile.id,
       resource_id: parseInt(params.id),
-      resource_type: resourceType(params?.type),
+      resource_type: resourceType(params?.type.replace("-", "_")),
       ...(val.parent_id && { parent_id: val.parent_id }),
       title: val.title,
       content: val.description,
@@ -218,7 +221,7 @@ const Comments = ({
     api
       .post("/comment", data)
       .then((data) => {
-        getComment(params.id, params.type);
+        getComment(params.id, params.type.replace("-", "_"));
       })
       .catch(() => {
         notification.error({ message: "An error occured" });
@@ -245,7 +248,7 @@ const Comments = ({
     api
       .put("/comment", val)
       .then((data) => {
-        getComment(params.id, params.type);
+        getComment(params.id, params.type.replace("-", "_"));
       })
       .catch(() => {})
       .finally(() => {});
