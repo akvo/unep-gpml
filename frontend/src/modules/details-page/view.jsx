@@ -47,7 +47,7 @@ const renderDetails = (
   params,
   data
 ) => {
-  const details = detailMaps[params.type];
+  const details = detailMaps[params.type.replace("-", "_")];
   if (!details) {
     return;
   }
@@ -319,7 +319,7 @@ const DetailsView = ({
   const relation = relations.find(
     (it) =>
       it.topicId === parseInt(params.id) &&
-      it.topic === resourceTypeToTopicType(params.type)
+      it.topic === resourceTypeToTopicType(params.type.replace("-", "_"))
   );
 
   const isConnectStakeholders = ["organisation", "stakeholder"].includes(
@@ -370,10 +370,10 @@ const DetailsView = ({
       params?.type &&
       params?.id &&
       api
-        .get(`/detail/${params.type}/${params.id}`)
+        .get(`/detail/${params.type.replace("-", "_")}/${params.id}`)
         .then((d) => {
           setData(d.data);
-          getComment(params.id, params.type);
+          getComment(params.id, params.type.replace("-", "_"));
         })
         .catch((err) => {
           console.error(err);
@@ -381,9 +381,11 @@ const DetailsView = ({
         });
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
-        api.get(`/favorite/${params.type}/${params.id}`).then((resp) => {
-          setRelations(resp.data);
-        });
+        api
+          .get(`/favorite/${params.type.replace("-", "_")}/${params.id}`)
+          .then((resp) => {
+            setRelations(resp.data);
+          });
       }, 100);
     }
     UIStore.update((e) => {
@@ -395,7 +397,7 @@ const DetailsView = ({
   const getComment = async (id, type) => {
     let res = await api.get(
       `/comment?resource_id=${id}&resource_type=${
-        type === "project" ? "initiative" : type
+        type.replace("-", "_") === "project" ? "initiative" : type
       }`
     );
     if (res && res?.data) {
@@ -413,7 +415,7 @@ const DetailsView = ({
         link = "edit-initiative";
         type = "initiative";
         break;
-      case "action_plan":
+      case "action-plan":
         form = "actionPlan";
         link = "edit-action-plan";
         type = "action_plan";
@@ -423,12 +425,12 @@ const DetailsView = ({
         link = "edit-policy";
         type = "policy";
         break;
-      case "technical_resource":
+      case "technical-resource":
         form = "technicalResource";
         link = "edit-technical-resource";
         type = "technical_resource";
         break;
-      case "financing_resource":
+      case "financing-resource":
         form = "financingResource";
         link = "edit-financing-resource";
         type = "financing_resource";

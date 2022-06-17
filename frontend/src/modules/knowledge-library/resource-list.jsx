@@ -196,7 +196,7 @@ const ResourceItem = ({ results, view, stakeholders }) => {
       result.about ||
       result.remarks ||
       "";
-    const linkTo = `/${type}/${id}`;
+    const linkTo = `/${type.replace("_", "-")}/${id}`;
     const stakeholdersConnectionList = result?.stakeholderConnections.filter(
       (x) => x.stakeholderRole !== "ADMIN" || x.role === "interested in"
     );

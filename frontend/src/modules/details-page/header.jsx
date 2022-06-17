@@ -33,7 +33,7 @@ export const HeaderButtons = ({
     handleRelationChange({
       topicId: parseInt(id),
       association,
-      topic: resourceTypeToTopicType(type),
+      topic: resourceTypeToTopicType(type.replace("-", "_")),
     });
   };
 
