@@ -19,6 +19,7 @@ import {
 } from "@ant-design/icons";
 import api from "../../utils/api";
 import moment from "moment";
+import TextArea from "rc-textarea";
 
 export const CommentList = ({
   item,
@@ -104,7 +105,32 @@ export const CommentList = ({
             {(item.id === showReplyBox || item.id === editComment) && (
               <>
                 <Form.Item>
-                  <Input
+                  {editComment ? (
+                    <EditOutlined
+                      onClick={() => {
+                        if (showReplyBox) {
+                          setShowReplyBox("");
+                          onReply(item.id, item.title);
+                        } else {
+                          setEditComment("");
+                          onEditComment(item.id, item.title);
+                        }
+                      }}
+                    />
+                  ) : (
+                    <SendOutlined
+                      onClick={() => {
+                        if (showReplyBox) {
+                          setShowReplyBox("");
+                          onReply(item.id, item.title);
+                        } else {
+                          setEditComment("");
+                          onEditComment(item.id, item.title);
+                        }
+                      }}
+                    />
+                  )}
+                  <Input.TextArea
                     rows={2}
                     defaultValue={editComment && item.content}
                     onChange={(e) => setComment(e.target.value)}
@@ -119,33 +145,6 @@ export const CommentList = ({
                         }
                       }
                     }}
-                    suffix={
-                      editComment ? (
-                        <EditOutlined
-                          onClick={() => {
-                            if (showReplyBox) {
-                              setShowReplyBox("");
-                              onReply(item.id, item.title);
-                            } else {
-                              setEditComment("");
-                              onEditComment(item.id, item.title);
-                            }
-                          }}
-                        />
-                      ) : (
-                        <SendOutlined
-                          onClick={() => {
-                            if (showReplyBox) {
-                              setShowReplyBox("");
-                              onReply(item.id, item.title);
-                            } else {
-                              setEditComment("");
-                              onEditComment(item.id, item.title);
-                            }
-                          }}
-                        />
-                      )
-                    }
                   />
                 </Form.Item>
               </>
@@ -291,20 +290,20 @@ const Comments = ({
         {profile && profile.reviewStatus === "APPROVED" && (
           <>
             <MessageOutlined className="message-icon" />
-            <Input
-              className="comment-input"
-              placeholder="Join the discussion..."
-              suffix={
-                <SendOutlined
-                  onClick={() => onSubmit({ description: newComment })}
-                />
-              }
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              onPressEnter={(e) =>
-                e.ctrlKey && onSubmit({ description: newComment })
-              }
-            />
+            <div className="input">
+              <SendOutlined
+                onClick={() => onSubmit({ description: newComment })}
+              />
+              <Input.TextArea
+                className="comment-input"
+                placeholder="Join the discussion..."
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                onPressEnter={(e) =>
+                  e.ctrlKey && onSubmit({ description: newComment })
+                }
+              />
+            </div>
           </>
         )}
       </Col>

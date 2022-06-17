@@ -455,8 +455,23 @@
         margin-bottom: 0 !important;
       }
       .ant-comment-actions {
+        .ant-input {
+          min-height: 35px;
+          background: hsl(199deg, 100%, 95%);
+          border: 1px solid #339cfe;
+          padding-right: 25px;
+        }
         span {
           color: #339cfe;
+        }
+        .ant-form-item {
+          position: relative;
+          .anticon {
+            position: absolute;
+            z-index: 1;
+            right: 7px;
+            top: calc(50% - 7px);
+          }
         }
       }
     }
@@ -503,20 +518,40 @@
       @media (max-width: 600px) {
         padding: 26px 32px;
       }
-      .comment-input {
-        min-height: 54px;
-        background: hsl(199, 100%, 95%);
-        border: 1px solid #339cfe;
-        border-radius: 5px;
-        .ant-input {
+      .input {
+        position: relative;
+        width: 100%;
+        .anticon-send {
+          position: absolute;
+          z-index: 1;
+          right: 14px;
+          top: calc(50% - 12px);
+          width: 24px;
+          height: 24px;
+          svg {
+            color: #339cfe;
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .comment-input {
+          min-height: 54px;
           background: hsl(199, 100%, 95%);
+          border: 1px solid #339cfe;
+          border-radius: 5px;
+          .ant-input {
+            background: hsl(199, 100%, 95%);
+            padding-right: 50px;
+          }
         }
       }
+
       .message-icon {
         color: #339cfe;
         width: 43px;
         height: 43px;
         margin-right: 27px;
+
         svg {
           width: 43px;
           height: 43px;
@@ -536,6 +571,10 @@
             fill: #339cfe;
           }
         }
+      }
+      ::placeholder {
+        position: relative;
+        top: 10px;
       }
     }
   }
