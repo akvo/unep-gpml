@@ -43,24 +43,38 @@
   .ant-select-selector,
   .ant-input-affix-wrapper {
     background-color: #edf2f6;
-    border: none !important;
+    border: none;
     border-radius: 5px;
     font-weight: 500;
     font-size: 16px;
     // padding: 0px 11px;
     height: 42px;
     color: #a5b0c9;
+    width: 100%;
     &::placeholder {
       color: #a5b0c9;
       font-size: 16px;
       font-weight: 500;
     }
     input {
-      height: 42px;
+      height: 100%;
     }
     .ant-select,
     .ant-select-selector {
-      height: 42px;
+      height: 100%;
+      .ant-select-selection-overflow {
+        height: 100%;
+        .ant-select-selection-overflow-item {
+          height: 100%;
+          .ant-select-selection-search {
+            height: 100%;
+          }
+          .ant-select-selection-item {
+            height: 100%;
+            margin: 0px 5px;
+          }
+        }
+      }
     }
     .ant-select-selection-placeholder {
       font-weight: 500;
@@ -73,6 +87,14 @@
       font-size: 16px;
       line-height: 42px;
       color: #a5b0c9;
+    }
+    &.ant-input-status-error {
+      border: 1px solid #ff4d4f;
+    }
+  }
+  .ant-input-status-error {
+    .ant-checkbox-inner {
+      border: 1px solid #ff4d4f;
     }
   }
   .wave-background {
@@ -216,6 +238,22 @@
       margin: 0 auto;
       .error {
         color: red;
+        margin-bottom: 0;
+      }
+      .field-wrapper {
+        margin-bottom: 30px;
+        &.public-database {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          p {
+            padding-left: 20px;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 23px;
+            color: #384e85;
+          }
+        }
       }
     }
     .ant-row {
@@ -288,6 +326,23 @@
           color: #fff;
           background: $yellow-highlight;
         }
+      }
+    }
+    .input-field {
+      background-color: #edf2f6;
+      border: none !important;
+      border-radius: 5px;
+      font-weight: 500;
+      font-size: 16px;
+      padding: 0px 11px;
+      height: 42px;
+      color: #a5b0c9;
+      width: 100%;
+      margin-bottom: 40px;
+      &::placeholder {
+        color: #a5b0c9;
+        font-size: 16px;
+        font-weight: 500;
       }
     }
     .tag-list {

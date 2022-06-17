@@ -4,6 +4,7 @@ import { Col, Row, Button, Typography } from "antd";
 
 const Wizard = ({
   children,
+  initialValues,
   onSubmit,
   formRef,
   next,
@@ -26,12 +27,16 @@ const Wizard = ({
     if (isLastPage()) {
       return onSubmit(values);
     } else {
-      next();
+      next(steps.length);
     }
   };
 
   return (
-    <Form validate={validate} onSubmit={handleSubmit}>
+    <Form
+      initialValues={initialValues}
+      validate={validate}
+      onSubmit={handleSubmit}
+    >
       {({ handleSubmit, submitting, form }) => {
         formRef.current = form;
         return (
@@ -39,7 +44,7 @@ const Wizard = ({
             onSubmit={handleSubmit}
             className={`ui container ${
               currentStep === 0 ? "getting-started" : "step-form"
-            }`}
+            } ${isLastPage() ? "step-form-final" : ""}`}
           >
             {steps[currentStep]}
             {currentStep !== 0 && (
@@ -50,15 +55,16 @@ const Wizard = ({
                   </Button>
                 )}
                 {!isLastPage() && currentStep !== 1 && (
-                  <Button
-                    className="step-button-next"
-                    onClick={() => next(steps.length)}
-                  >
+                  <Button className="step-button-next" onClick={handleSubmit}>
                     Next {">"}
                   </Button>
                 )}
                 {isLastPage() && (
-                  <Button disabled={submitting} className="step-button-next">
+                  <Button
+                    disabled={submitting}
+                    onClick={handleSubmit}
+                    className="step-button-next"
+                  >
                     Submit {">"}
                   </Button>
                 )}

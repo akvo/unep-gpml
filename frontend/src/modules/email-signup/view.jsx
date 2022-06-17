@@ -58,22 +58,23 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
-    handleOnClickBtnNext();
-    // auth0Client.signup(
-    //   {
-    //     connection: "Username-Password-Authentication",
-    //     email: data.email,
-    //     password: data.password,
-    //   },
-    //   function (err) {
-    //     if (err) {
-    //       return err;
-    //     } else {
-    //       console.log("ASd");
-    //     }
-    //   }
-    // );
+    auth0Client.signup(
+      {
+        connection: "Username-Password-Authentication",
+        email: data.email,
+        password: data.password,
+      },
+      function (err) {
+        if (err) {
+          return err;
+        } else {
+          history.push({
+            pathname: "onboarding",
+            state: { data: data },
+          });
+        }
+      }
+    );
   };
 
   const handleFileChange = ({ file, fileList }) => {

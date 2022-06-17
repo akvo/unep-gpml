@@ -11,13 +11,18 @@ import FormOne from "./form-one";
 import FormTwo from "./form-two";
 import FormThree from "./form-three";
 import FormFour from "./form-four";
-import { Field } from "react-final-form";
+import { UIStore } from "../../store";
 import Wizard from "../../components/form-wizard/Wizard";
+import { useLocation } from "react-router-dom";
+import api from "../../utils/api";
 
 function Authentication() {
   const formRef = useRef();
+  const location = useLocation();
   const [affiliation, setAffiliation] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
+
+  const { tags } = UIStore.currentState;
 
   const next = (steps) => {
     setCurrentStep(Math.min(currentStep + 1, steps - 1));
@@ -26,28 +31,79 @@ function Authentication() {
     setCurrentStep(Math.max(currentStep - 1, 0));
   };
 
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
   const onSubmit = async (values) => {
-    await sleep(300);
-    window.alert(JSON.stringify(values, 0, 2));
+    let data = {
+      ...values,
+      ...location?.state?.data,
+    };
+    data.seeking = values?.seeking?.map((x) => {
+      return {
+        ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
+        tag:
+          Object.values(tags)
+            .flat()
+            .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
+        tag_category: "seeking",
+      };
+    });
+    data.offering = values?.offering?.map((x) => {
+      return {
+        ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
+        tag:
+          Object.values(tags)
+            .flat()
+            .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
+        tag_category: "offering",
+      };
+    });
+    data.tags = [...data.seeking, ...data.offering];
+    delete data.seeking;
+    delete data.offering;
+    delete data.confirm;
+    delete data.password;
+    delete data.privateCitizen;
+    api
+      .post("/profile", data)
+      .then((res) => {
+        window.scrollTo({ top: 0 });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  const Error = ({ name }) => (
-    <Field
-      name={name}
-      subscribe={{ touched: true, error: true }}
-      render={({ meta: { touched, error } }) =>
-        touched && error ? <span>{error}</span> : null
-      }
-    />
-  );
-
-  const required = (value) => (value ? undefined : "Required");
+  const required = (value, name) => {
+    if (name === "jobTitle" && !value) {
+      return "Please enter job title";
+    }
+    if (name === "orgName" && !value) {
+      return "Please enter the name of entity";
+    }
+    return value ? undefined : "Required";
+  };
 
   const handleAffiliationChange = (value) => {
     setAffiliation(value);
     formRef?.current?.change("privateCitizen", value);
+  };
+
+  const handleSeekingSuggestedTag = (value) => {
+    formRef?.current?.change("seeking", [
+      ...(formRef?.current?.getFieldState("seeking")?.value
+        ? formRef?.current?.getFieldState("seeking")?.value
+        : []),
+      value,
+    ]);
+  };
+
+  const handleOfferingSuggestedTag = (value) => {
+    console.log(formRef?.current?.getFieldState("offering"));
+    formRef?.current?.change("offering", [
+      ...(formRef?.current?.getFieldState("offering")?.value
+        ? formRef?.current?.getFieldState("offering")?.value
+        : []),
+      value,
+    ]);
   };
 
   return (
@@ -66,10 +122,16 @@ function Authentication() {
           affiliation={affiliation}
           next={next}
         />
-        {!affiliation && <FormOne />}
-        <FormTwo />
-        <FormThree />
-        <FormFour />
+        {!affiliation && <FormOne validate={required} />}
+        <FormTwo
+          handleOfferingSuggestedTag={handleOfferingSuggestedTag}
+          validate={required}
+        />
+        <FormThree
+          handleSeekingSuggestedTag={handleSeekingSuggestedTag}
+          validate={required}
+        />
+        <FormFour validate={required} />
       </Wizard>
     </div>
   );

@@ -1,16 +1,20 @@
 import React from "react";
 import { UIStore } from "../../store";
 import { Col, Row, Button, Typography, Form, Input, Select, List } from "antd";
+import { Field } from "react-final-form";
 const { Title, Link } = Typography;
 
-function FormTwo({ handleOnClickBtnBack, handleOnClickBtnNext }) {
-  const [form] = Form.useForm();
-
+function FormTwo({ handleOfferingSuggestedTag, validate }) {
   const storeData = UIStore.useState((s) => ({
     entitySuggestedTags: s.entitySuggestedTags,
+    tags: s.tags,
   }));
 
-  const { entitySuggestedTags } = storeData;
+  const { entitySuggestedTags, tags } = storeData;
+
+  const array = Object.keys(tags)
+    .map((k) => tags[k])
+    .flat();
 
   return (
     <>
@@ -19,16 +23,41 @@ function FormTwo({ handleOnClickBtnBack, handleOnClickBtnNext }) {
           <div className="text-wrapper">
             <Title level={2}>What are the expertises you can provide?</Title>
           </div>
-          <Form form={form} layout="vertical">
-            <Form.Item name="entity">
-              <Select placeholder="Search expertises" allowClear showSearch>
-                <Option value="male">male</Option>
-                <Option value="female">female</Option>
-                <Option value="other">other</Option>
-              </Select>
-            </Form.Item>
-          </Form>
-          <div className="list tag-list">
+          <div className="ant-form ant-form-vertical">
+            <Field
+              name="offering"
+              style={{ width: "100%" }}
+              validate={validate}
+            >
+              {({ input, meta }) => (
+                <>
+                  <Select
+                    placeholder="Search expertises"
+                    allowClear
+                    showSearch
+                    mode="tags"
+                    onChange={(value) => input.onChange(value)}
+                    value={input.value ? input.value : undefined}
+                    filterOption={(input, option) =>
+                      option.children
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
+                    className={`${
+                      meta.touched && meta.error ? "ant-input-status-error" : ""
+                    }`}
+                  >
+                    {array?.map((item) => (
+                      <Select.Option value={item.id} key={item.id}>
+                        {item.tag}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </>
+              )}
+            </Field>
+          </div>
+          <div className="list tag-list" style={{ marginTop: 20 }}>
             <h5>Suggested tags</h5>
             <List itemLayout="horizontal">
               <List.Item>
@@ -36,7 +65,14 @@ function FormTwo({ handleOnClickBtnBack, handleOnClickBtnNext }) {
                   title={
                     <ul>
                       {entitySuggestedTags.map((tag) => (
-                        <li key={tag}>{tag}</li>
+                        <li
+                          onClick={() =>
+                            handleOfferingSuggestedTag(tag.toLowerCase())
+                          }
+                          key={tag}
+                        >
+                          {tag}
+                        </li>
                       ))}
                     </ul>
                   }
