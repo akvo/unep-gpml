@@ -23,6 +23,8 @@ import Browse from "./modules/browse/view";
 import Stakeholders from "./modules/stakeholders/view";
 import AddEvent from "./modules/events/view";
 import SignupView from "./modules/signup/view";
+import SignupViewNew from "./modules/email-signup/view";
+import Login from "./modules/login/view";
 import LandingSignupView from "./modules/signup-old/view";
 import logo from "./images/gpml.svg";
 // add auth0 logo pop-up
@@ -77,6 +79,9 @@ import KnowledgeLibrary from "./modules/knowledge-library/view";
 import AddContentButton from "./components/add-content-button/add-content-button";
 import StakeholderOverview from "./modules/stakeholder-overview/view";
 import Partners from "./modules/partners/view";
+
+// Auth
+import Onboarding from "./modules/onboarding/view";
 
 let tmid;
 
@@ -229,6 +234,7 @@ const Root = () => {
   useEffect(() => {
     (async function fetchData() {
       const response = await getIdTokenClaims();
+      console.log(response);
       if (isAuthenticated) {
         api.setToken(response.__raw);
       } else {
@@ -684,6 +690,11 @@ const Root = () => {
             render={(props) => <SignupView {...props} formType="stakeholder" />}
           />
           <Route
+            path="/stakeholder-signup-new"
+            render={(props) => <SignupViewNew {...props} />}
+          />
+          <Route path="/login" render={(props) => <Login {...props} />} />
+          <Route
             path="/signup"
             render={(props) => (
               <LandingSignupView {...props} profile={profile} />
@@ -713,6 +724,11 @@ const Root = () => {
             exact
             render={(props) => <StakeholderDetail {...props} />}
             path="/stakeholder-detail"
+          />
+          <Route
+            exact
+            render={(props) => <Onboarding {...props} />}
+            path="/onboarding"
           />
           <Route
             path="/connect"
