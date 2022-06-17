@@ -23,6 +23,8 @@ import Browse from "./modules/browse/view";
 import Stakeholders from "./modules/stakeholders/view";
 import AddEvent from "./modules/events/view";
 import SignupView from "./modules/signup/view";
+import SignupViewNew from "./modules/email-signup/view";
+import Login from "./modules/login/view";
 import LandingSignupView from "./modules/signup-old/view";
 import logo from "./images/gpml.svg";
 // add auth0 logo pop-up
@@ -687,6 +689,11 @@ const Root = () => {
             path="/stakeholder-signup"
             render={(props) => <SignupView {...props} formType="stakeholder" />}
           />
+          <Route
+            path="/stakeholder-signup-new"
+            render={(props) => <SignupViewNew {...props} />}
+          />
+          <Route path="/login" render={(props) => <Login {...props} />} />
           <Route
             path="/signup"
             render={(props) => (
