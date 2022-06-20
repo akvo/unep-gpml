@@ -142,7 +142,7 @@ export const CommentList = ({
                     />
                   )}
                   <Input.TextArea
-                    rows={2}
+                    rows={1}
                     defaultValue={editComment && item.content}
                     onChange={(e) => setComment(e.target.value)}
                     onPressEnter={(e) => {
@@ -306,6 +306,7 @@ const Comments = ({
                 onClick={() => onSubmit({ description: newComment })}
               />
               <Input.TextArea
+                rows={1}
                 className="comment-input"
                 placeholder="Join the discussion..."
                 value={newComment}
