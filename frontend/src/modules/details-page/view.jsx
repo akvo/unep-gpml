@@ -607,7 +607,12 @@ const DetailsView = ({
                         data?.geoCoverageType !== "national" && (
                           <>
                             {data?.geoCoverageCountryGroups &&
-                              data?.geoCoverageCountryGroups?.length > 0 && (
+                              data?.geoCoverageCountryGroups?.length > 0 &&
+                              renderGeoCoverageCountryGroups(
+                                data,
+                                countries,
+                                transnationalOptions
+                              ) && (
                                 <Row>
                                   <div className="location-icon detail-item-icon">
                                     <LocationImage />
@@ -628,7 +633,12 @@ const DetailsView = ({
                         data?.geoCoverageType !== "national" && (
                           <>
                             {data?.geoCoverageCountries &&
-                              data?.geoCoverageCountries?.length > 0 && (
+                              data?.geoCoverageCountries?.length > 0 &&
+                              renderCountries(
+                                data,
+                                countries,
+                                transnationalOptions
+                              ) && (
                                 <Row>
                                   <div className="location-icon detail-item-icon">
                                     <LocationImage />
@@ -649,7 +659,12 @@ const DetailsView = ({
                         data?.geoCoverageType === "national") && (
                         <>
                           {data?.geoCoverageValues &&
-                            data?.geoCoverageValues.length > 0 && (
+                            data?.geoCoverageValues.length > 0 &&
+                            renderCountries(
+                              data,
+                              countries,
+                              transnationalOptions
+                            ) && (
                               <Row>
                                 <div className="location-icon detail-item-icon">
                                   <LocationImage />
