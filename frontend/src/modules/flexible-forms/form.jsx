@@ -317,13 +317,13 @@ const FlexibleForm = withRouter(
             });
             setDisabledBtn({ disabled: true, type: "default" });
             notification.success({ message: "Resource successfully updated" });
-            history.push(`/${type}/${id || params?.id}`);
+            history.push(`/${type.replace("_", "-")}/${id || params?.id}`);
           })
           .catch(() => {
             initialFormData.update((e) => {
               e.data = initialData;
             });
-            history.push(`/${type}/${id || params?.id}`);
+            history.push(`/${type.replace("_", "-")}/${id || params?.id}`);
             notification.error({ message: "An error occured" });
           })
           .finally(() => {
