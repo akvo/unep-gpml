@@ -15,11 +15,12 @@ import { UIStore } from "../../store";
 import Wizard from "../../components/form-wizard/Wizard";
 import { useLocation } from "react-router-dom";
 import api from "../../utils/api";
+import { useHistory } from "react-router-dom";
 
 function Authentication() {
   const formRef = useRef();
   const location = useLocation();
-  console.log(location);
+  let history = useHistory();
   const [affiliation, setAffiliation] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -96,6 +97,7 @@ function Authentication() {
       .post("/profile", data)
       .then((res) => {
         window.scrollTo({ top: 0 });
+        history.push("workspace");
       })
       .catch((err) => {
         console.log(err);
