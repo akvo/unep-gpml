@@ -789,7 +789,9 @@ const DetailsView = ({
                                 {item.stakeholder}
                               </Link>
                             }
-                            description={item.role}
+                            description={titleCase(
+                              item?.role?.replace("_", " ")
+                            )}
                           />
                         </List.Item>
                       ))}
