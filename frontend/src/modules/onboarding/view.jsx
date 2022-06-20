@@ -38,6 +38,13 @@ function Authentication() {
       ...(location?.state?.data &&
         !location?.state.data.hasOwnProperty("exp") &&
         location?.state?.data),
+      ...(location?.state?.data &&
+        location?.state.data.hasOwnProperty(
+          "https://digital.gpmarinelitter.org/user_metadata"
+        ) &&
+        location?.state?.data?.[
+          "https://digital.gpmarinelitter.org/user_metadata"
+        ]),
     };
     data.seeking = values?.seeking?.map((x) => {
       return {
@@ -77,6 +84,12 @@ function Authentication() {
     }
     if (location?.state?.data.hasOwnProperty("picture")) {
       data.photo = location?.state?.data.picture;
+    }
+    if (data.country) {
+      data.country = Number(data.country);
+    }
+    if (data.publicEmail) {
+      data.publicEmail = data.publicEmail === "true" ? true : false;
     }
 
     api

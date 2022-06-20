@@ -58,11 +58,16 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
   };
 
   const onSubmit = async (data) => {
-    auth0Client.signup(
+    auth0Client.redirect.signupAndLogin(
       {
         connection: "Username-Password-Authentication",
         email: data.email,
         password: data.password,
+        user_metadata: {
+          ...data,
+          publicEmail: data.publicEmail.toString(),
+          country: data.country.toString(),
+        },
       },
       function (err) {
         if (err) {
