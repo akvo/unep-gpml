@@ -883,29 +883,31 @@ const DetailsView = ({
             </div>
           </Col>
         )}
-        <Col className="record-section section">
-          <h3 className="content-heading">Records</h3>
-          <div>
-            <div className="record-table">
-              <div>
-                {countries &&
-                  renderDetails(
-                    {
-                      countries,
-                      languages,
-                      regionOptions,
-                      meaOptions,
-                      transnationalOptions,
-                    },
-                    params,
-                    data,
-                    profile,
-                    countries
-                  )}
+        {recordShow && (
+          <Col className="record-section section">
+            <h3 className="content-heading">Records</h3>
+            <div>
+              <div className="record-table">
+                <div>
+                  {countries &&
+                    renderDetails(
+                      {
+                        countries,
+                        languages,
+                        regionOptions,
+                        meaOptions,
+                        transnationalOptions,
+                      },
+                      params,
+                      data,
+                      profile,
+                      countries
+                    )}
+                </div>
               </div>
             </div>
-          </div>
-        </Col>
+          </Col>
+        )}
         {/* RELATED CONTENT */}
         {data?.relatedContent &&
           data?.relatedContent?.length > 0 &&
