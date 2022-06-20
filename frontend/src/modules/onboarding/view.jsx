@@ -19,6 +19,7 @@ import api from "../../utils/api";
 function Authentication() {
   const formRef = useRef();
   const location = useLocation();
+  console.log(location);
   const [affiliation, setAffiliation] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -34,7 +35,9 @@ function Authentication() {
   const onSubmit = async (values) => {
     let data = {
       ...values,
-      ...location?.state?.data,
+      ...(location?.state?.data &&
+        !location?.state.data.hasOwnProperty("exp") &&
+        location?.state?.data),
     };
     data.seeking = values?.seeking?.map((x) => {
       return {
@@ -56,12 +59,26 @@ function Authentication() {
         tag_category: "offering",
       };
     });
+
     data.tags = [...data.seeking, ...data.offering];
     delete data.seeking;
     delete data.offering;
     delete data.confirm;
     delete data.password;
     delete data.privateCitizen;
+    if (location?.state?.data.hasOwnProperty("given_name")) {
+      data.firstName = location?.state?.data.given_name;
+    }
+    if (location?.state?.data.hasOwnProperty("family_name")) {
+      data.lastName = location?.state?.data.family_name;
+    }
+    if (location?.state?.data.hasOwnProperty("email")) {
+      data.email = location?.state?.data.email;
+    }
+    if (location?.state?.data.hasOwnProperty("picture")) {
+      data.photo = location?.state?.data.picture;
+    }
+
     api
       .post("/profile", data)
       .then((res) => {

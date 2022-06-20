@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Carousel,
   Col,
@@ -18,7 +18,7 @@ import { ReactComponent as GoogleIcon } from "../../images/auth/google.svg";
 import { ReactComponent as EmailIcon } from "../../images/auth/email.svg";
 import { useHistory, useLocation } from "react-router-dom";
 const { Title, Link } = Typography;
-
+import { Form as FinalForm, Field } from "react-final-form";
 import { auth0Client } from "../../utils/misc";
 
 function Login({ handleOnClickBtnNext }) {
@@ -27,16 +27,20 @@ function Login({ handleOnClickBtnNext }) {
   const [singin, setSignIn] = useState(false);
   const [form] = Form.useForm();
 
+  const [initialValues, setInitialValues] = useState({});
+  const formRef = useRef();
+
   useEffect(() => {
     if (location?.state) {
       setSignIn(true);
     }
   }, [location]);
 
-  const handleOnLogin = async () => {
-    const username = "navin@akvo.org";
-    const password = "Passcode@123";
-    auth0Client.client.login(
+  const handleOnLogin = async (values) => {
+    const username = values.email;
+    const password = values.password;
+    console.log(auth0Client);
+    auth0Client.login(
       {
         realm: "Username-Password-Authentication",
         username,
@@ -49,8 +53,9 @@ function Login({ handleOnClickBtnNext }) {
           return;
         }
         if (authResult) {
-          console.log(authResult);
           window.origin = window.location.origin;
+          console.log(authResult);
+          //window.origin = window.location.origin;
         }
       }
     );
@@ -84,6 +89,17 @@ function Login({ handleOnClickBtnNext }) {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const checkValidation = (values) => {
+    const errors = {};
+    if (!values.email?.trim()) {
+      errors.email = "Please enter email address";
+    }
+    if (!values.password?.trim()) {
+      errors.password = "Please enter password";
+    }
+    return errors;
   };
 
   return (
@@ -191,29 +207,67 @@ function Login({ handleOnClickBtnNext }) {
                     </Button>
                   </div>
                   <div className="login-form">
-                    <Form form={form} layout="vertical">
-                      <Form.Item label="EMAIL">
-                        <Input placeholder="Enter your email" />
-                      </Form.Item>
-                      <Form.Item label="Password" name="password">
-                        <Input.Password placeholder="Enter your password" />
-                      </Form.Item>
-                      <Button
-                        type="primary"
-                        shape="round"
-                        className="login-button"
-                        onClick={() => handleOnLogin()}
-                      >
-                        LOGIN WITH EMAIL
-                      </Button>{" "}
-                      <Button
-                        type="text"
-                        className="forgot-password"
-                        onClick={() => setSignIn(!singin)}
-                      >
-                        Forgot password?
-                      </Button>
-                    </Form>{" "}
+                    <FinalForm
+                      initialValues={initialValues}
+                      validate={checkValidation}
+                      onSubmit={handleOnLogin}
+                      render={({ handleSubmit, submitting, form }) => {
+                        formRef.current = form;
+                        return (
+                          <Form layout="vertical">
+                            <Form.Item label="Email">
+                              <Field name="email">
+                                {({ input, meta }) => (
+                                  <>
+                                    <Input
+                                      {...input}
+                                      placeholder="Enter your email"
+                                    />
+                                    {meta.touched && meta.error && (
+                                      <p color="error" className="error">
+                                        {meta.error}
+                                      </p>
+                                    )}
+                                  </>
+                                )}
+                              </Field>
+                            </Form.Item>
+                            <Form.Item label="Password">
+                              <Field name="password">
+                                {({ input, meta }) => (
+                                  <>
+                                    <Input.Password
+                                      {...input}
+                                      placeholder="Enter your password"
+                                    />
+                                    {meta.touched && meta.error && (
+                                      <p color="error" className="error">
+                                        {meta.error}
+                                      </p>
+                                    )}
+                                  </>
+                                )}
+                              </Field>
+                            </Form.Item>
+                            <Button
+                              type="primary"
+                              shape="round"
+                              className="login-button"
+                              onClick={() => handleSubmit()}
+                            >
+                              LOGIN WITH EMAIL
+                            </Button>{" "}
+                            <Button
+                              type="text"
+                              className="forgot-password"
+                              onClick={() => setSignIn(!singin)}
+                            >
+                              Forgot password?
+                            </Button>
+                          </Form>
+                        );
+                      }}
+                    />
                     <Divider />
                     <div className="join-wrapper">
                       <Title level={2}>Don’t have an account yet?</Title>
