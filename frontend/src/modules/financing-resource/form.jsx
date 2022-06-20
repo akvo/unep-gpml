@@ -391,7 +391,7 @@ const AddResourceForm = withRouter(
               e.editId = null;
             });
             setDisabledBtn({ disabled: true, type: "default" });
-            history.push(`/financing_resource/${id || params?.id}`);
+            history.push(`/financing-resource/${id || params?.id}`);
           })
           .catch(() => {
             notification.error({ message: "An error occured" });
