@@ -23,6 +23,8 @@ import Browse from "./modules/browse/view";
 import Stakeholders from "./modules/stakeholders/view";
 import AddEvent from "./modules/events/view";
 import SignupView from "./modules/signup/view";
+import SignupViewNew from "./modules/email-signup/view";
+import Login from "./modules/login/view";
 import LandingSignupView from "./modules/signup-old/view";
 import logo from "./images/gpml.svg";
 // add auth0 logo pop-up
@@ -78,7 +80,14 @@ import AddContentButton from "./components/add-content-button/add-content-button
 import StakeholderOverview from "./modules/stakeholder-overview/view";
 import Partners from "./modules/partners/view";
 
+// Auth
+import Onboarding from "./modules/onboarding/view";
+
 let tmid;
+
+import auth0 from "auth0-js";
+
+import { auth0Client } from "./utils/misc";
 
 Promise.all([
   api.get("/tag"),
@@ -178,7 +187,7 @@ const { Header } = Layout;
 
 const Root = () => {
   const {
-    isAuthenticated,
+    // isAuthenticated,
     getIdTokenClaims,
     loginWithPopup,
     logout,
@@ -195,7 +204,7 @@ const Root = () => {
     nav: s.nav,
     tags: s.tags,
   }));
-
+  const domain = window.__ENV__.auth0.domain.replace(/(https:\/\/|\/)/gi, "");
   const [
     stakeholderSignupModalVisible,
     setStakeholderSignupModalVisible,
@@ -226,39 +235,82 @@ const Root = () => {
   const resourceCounts = filterNav(false);
   const stakeholderCounts = filterNav(true);
 
+  const isAuthenticated = () => {
+    return false;
+  };
+
   useEffect(() => {
-    (async function fetchData() {
-      const response = await getIdTokenClaims();
-      if (isAuthenticated) {
-        api.setToken(response.__raw);
-      } else {
-        api.setToken(null);
+    auth0Client.parseHash((err, authResult) => {
+      if (err) {
+        return console.log(err);
       }
-      if (isAuthenticated) {
-        let resp = await api.get("/profile");
-        if (!resp.data?.org?.isMember) {
-          resp.data.org = null;
-        } else if (resp?.data) {
-          resp.data.non_member_organisation = null;
-        }
-        if (Object.keys(resp.data).length === 0) {
-          UIStore.update((e) => {
-            e.profile = { email: response.email };
-          });
-          setTimeout(() => {
-            setStakeholderSignupModalVisible(
-              Object.keys(resp.data).length === 0
-            );
-          }, 100);
-        } else {
-          UIStore.update((e) => {
-            e.profile = { ...resp.data, email: response.email };
-          });
-          updateStatusProfile(resp.data);
+      if (authResult) {
+        history.replace("/");
+        api.setToken(authResult.idToken);
+        if (
+          authResult?.idTokenPayload?.hasOwnProperty(
+            "https://digital.gpmarinelitter.org/is_new"
+          )
+        ) {
+          if (
+            authResult?.idTokenPayload?.[
+              "https://digital.gpmarinelitter.org/is_new"
+            ]
+          ) {
+            history.push({
+              pathname: "onboarding",
+              state: { data: authResult?.idTokenPayload },
+            });
+          }
         }
       }
-    })();
-  }, [getIdTokenClaims, isAuthenticated]);
+    });
+  }, []);
+
+  useEffect(() => {
+    auth0Client.checkSession({}, (err, authResult) => {
+      if (err) {
+        console.log(err);
+      }
+      if (authResult) {
+      }
+      console.log(authResult);
+    });
+  }, []);
+
+  // useEffect(() => {
+  //   (async function fetchData() {
+  //     const response = await getIdTokenClaims();
+  //     if (isAuthenticated) {
+  //       api.setToken(response.__raw);
+  //     } else {
+  //       api.setToken(null);
+  //     }
+  //     if (isAuthenticated) {
+  //       let resp = await api.get("/profile");
+  //       if (!resp.data?.org?.isMember) {
+  //         resp.data.org = null;
+  //       } else if (resp?.data) {
+  //         resp.data.non_member_organisation = null;
+  //       }
+  //       if (Object.keys(resp.data).length === 0) {
+  //         UIStore.update((e) => {
+  //           e.profile = { email: response.email };
+  //         });
+  //         setTimeout(() => {
+  //           setStakeholderSignupModalVisible(
+  //             Object.keys(resp.data).length === 0
+  //           );
+  //         }, 100);
+  //       } else {
+  //         UIStore.update((e) => {
+  //           e.profile = { ...resp.data, email: response.email };
+  //         });
+  //         updateStatusProfile(resp.data);
+  //       }
+  //     }
+  //   })();
+  // }, [getIdTokenClaims, isAuthenticated]);
 
   // Here we retrieve the resources data
   const [results, setResults] = useState([]);
@@ -432,7 +484,7 @@ const Root = () => {
               </Route>
             </Switch>
             <div className="rightside">
-              {!isAuthenticated || !isRegistered(profile) ? (
+              {!isAuthenticated() ? (
                 <div className="rightside btn-wrapper">
                   <JoinGPMLButton loginWithPopup={loginWithPopup} />
                   {isAuthenticated && !isRegistered(profile) ? (
@@ -684,6 +736,11 @@ const Root = () => {
             render={(props) => <SignupView {...props} formType="stakeholder" />}
           />
           <Route
+            path="/stakeholder-signup-new"
+            render={(props) => <SignupViewNew {...props} />}
+          />
+          <Route path="/login" render={(props) => <Login {...props} />} />
+          <Route
             path="/signup"
             render={(props) => (
               <LandingSignupView {...props} profile={profile} />
@@ -713,6 +770,11 @@ const Root = () => {
             exact
             render={(props) => <StakeholderDetail {...props} />}
             path="/stakeholder-detail"
+          />
+          <Route
+            exact
+            render={(props) => <Onboarding {...props} />}
+            path="/onboarding"
           />
           <Route
             path="/connect"
@@ -864,7 +926,9 @@ const UserButton = withRouter(({ history, logout, isRegistered, profile }) => {
             Profile
           </Menu.Item>
           <Menu.Item
-            onClick={() => logout({ returnTo: window.location.origin })}
+            onClick={() =>
+              auth0Client.logout({ returnTo: window.location.origin })
+            }
           >
             Logout
           </Menu.Item>
