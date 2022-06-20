@@ -9,6 +9,7 @@ import {
   Form,
   Input,
   Divider,
+  notification,
 } from "antd";
 import "./styles.scss";
 import DataHubIcon from "../../images/auth/data-hub.png";
@@ -49,7 +50,9 @@ function Login({ handleOnClickBtnNext }) {
       (err, authResult) => {
         if (err) {
           console.log(err);
-          alert("Error", err.description);
+          notification.error({
+            message: err.description,
+          });
           return;
         }
         if (authResult) {
