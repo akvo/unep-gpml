@@ -386,25 +386,6 @@
         border-radius: 5px !important;
       }
 
-      .carousel-item:not(:first-of-type) .card {
-        margin-left: 0px;
-        .slider-card {
-          margin-left: 8px;
-        }
-      }
-
-      .carousel-item:hover {
-        &:hover {
-          margin: 0 20px 0 28px !important;
-        }
-      }
-
-      .carousel-item:first-of-type {
-        &:hover {
-          margin: 0 20px 0 18px !important;
-        }
-      }
-
       .no-pagination {
         min-height: 153px !important;
       }

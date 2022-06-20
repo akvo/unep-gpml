@@ -512,23 +512,23 @@ const DetailsView = ({
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
-      items: 6.5,
-      slidesToSlide: 6.5,
+      items: 6,
+      slidesToSlide: 6,
     },
     desktop: {
       breakpoint: { max: 1199, min: 992 },
-      items: 5.5,
-      slidesToSlide: 5.5,
+      items: 5,
+      slidesToSlide: 5,
     },
     tablet: {
       breakpoint: { max: 991, min: 768 },
-      items: 4.5,
-      slidesToSlide: 4.5,
+      items: 4,
+      slidesToSlide: 4,
     },
     largeMobile: {
       breakpoint: { max: 767, min: 600 },
-      items: 4,
-      slidesToSlide: 4,
+      items: 3,
+      slidesToSlide: 3,
     },
     mobile: {
       breakpoint: { max: 599, min: 361 },
