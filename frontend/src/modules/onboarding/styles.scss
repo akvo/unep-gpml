@@ -48,7 +48,8 @@
     font-weight: 500;
     font-size: 16px;
     // padding: 0px 11px;
-    height: 42px;
+    // height: 42px;
+    line-height: 38px;
     color: #a5b0c9;
     width: 100%;
     &::placeholder {
@@ -90,6 +91,17 @@
     }
     &.ant-input-status-error {
       border: 1px solid #ff4d4f;
+    }
+  }
+  .ant-select-selection-item {
+    background-color: #3176ae;
+    color: #fff !important;
+    border-radius: 4px;
+    line-height: 34px !important;
+    margin: 3px 2px !important;
+    padding: 0 10px;
+    .ant-select-selection-item-remove {
+      color: rgba(255, 255, 255, 0.5);
     }
   }
   .ant-input-status-error {
