@@ -158,9 +158,13 @@
         margin-bottom: 0;
       }
       .detail-resource-title {
-        font-size: 26px;
-        line-height: 38px;
+        font-size: 22px;
+        line-height: 32px;
         margin-bottom: 0;
+        @media (min-width: 900px) {
+          font-size: 26px;
+          line-height: 38px;
+        }
       }
     }
 
