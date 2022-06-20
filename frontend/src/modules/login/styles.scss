@@ -150,9 +150,9 @@
         padding: 20px 45px;
         background: transparent;
         &:hover {
-          border-color: $yellow-highlight;
+          border-color: $blue12;
           color: #fff;
-          background: $yellow-highlight;
+          background: $blue12;
         }
       }
     }
@@ -239,14 +239,14 @@
           width: 315px;
           background-color: transparent;
           margin-bottom: 20px;
-          border: 3px solid #18162f;
+          border: 2px solid #18162f;
           color: #18162f;
           display: flex;
           align-items: center;
           &:hover {
-            border-color: $yellow-highlight;
+            border-color: $blue12;
             color: #fff;
-            background: $yellow-highlight;
+            background: $blue12;
             path {
               fill: #fff;
               stroke: #fff;
@@ -319,9 +319,9 @@
           align-items: center;
           justify-content: center;
           &:hover {
-            border-color: $yellow-highlight;
+            border-color: $blue12;
             color: #fff;
-            background: $yellow-highlight;
+            background: $blue12;
             path {
               fill: #fff;
               stroke: #fff;
