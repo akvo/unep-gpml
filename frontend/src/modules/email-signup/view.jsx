@@ -21,7 +21,15 @@ import { auth0Client } from "../../utils/misc";
 import { UIStore } from "../../store";
 import { useHistory } from "react-router-dom";
 
-function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
+const mountedStyle = {
+  animation: "inAnimation 250ms ease-in",
+};
+const unmountedStyle = {
+  animation: "outAnimation 270ms ease-out",
+  animationFillMode: "forwards",
+};
+
+function EmailJoin({}) {
   let history = useHistory();
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -86,7 +94,7 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
     return errors;
   };
 
-  function passwordValidation(value) {
+  const passwordValidation = (value) => {
     const uppercaseRegExp = /(?=.*?[A-Z])/;
     const lowercaseRegExp = /(?=.*?[a-z])/;
     const digitsRegExp = /(?=.*?[0-9])/;
@@ -113,7 +121,7 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
     } else {
       return "";
     }
-  }
+  };
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -188,14 +196,20 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
                   <Form layout="vertical">
                     <Field name="email">
                       {({ input, meta }) => (
-                        <Form.Item label="Email" className={"asd"}>
+                        <Form.Item label="Email">
                           <Input {...input} placeholder="Enter your email" />
                           {meta.touched && meta.error && (
-                            <div className="ant-form-item-explain ant-form-item-explain-connected">
-                              <div className="ant-form-item-explain-error">
-                                {meta.error}
-                              </div>
-                            </div>
+                            <p
+                              color="error"
+                              className="error transitionDiv"
+                              style={
+                                meta.touched && meta.error
+                                  ? mountedStyle
+                                  : unmountedStyle
+                              }
+                            >
+                              {meta.error}
+                            </p>
                           )}
                           <div className="public-email-switch">
                             <Switch
@@ -220,7 +234,15 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
                               placeholder="Choose your password"
                             />
                             {meta.touched && meta.error && (
-                              <p color="error" className="error">
+                              <p
+                                color="error"
+                                className="error transitionDiv"
+                                style={
+                                  meta.touched && meta.error
+                                    ? mountedStyle
+                                    : unmountedStyle
+                                }
+                              >
                                 {meta.error}
                               </p>
                             )}
@@ -237,7 +259,15 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
                               placeholder="Retype your password"
                             />
                             {meta.touched && meta.error && (
-                              <p color="error" className="error">
+                              <p
+                                color="error"
+                                className="error transitionDiv"
+                                style={
+                                  meta.touched && meta.error
+                                    ? mountedStyle
+                                    : unmountedStyle
+                                }
+                              >
                                 {meta.error}
                               </p>
                             )}
@@ -264,7 +294,15 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
                                 ))}
                               </Select>
                               {meta.touched && meta.error && (
-                                <p color="error" className="error">
+                                <p
+                                  color="error"
+                                  className="error transitionDiv"
+                                  style={
+                                    meta.touched && meta.error
+                                      ? mountedStyle
+                                      : unmountedStyle
+                                  }
+                                >
                                   {meta.error}
                                 </p>
                               )}
@@ -278,7 +316,15 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
                             <>
                               <Input {...input} placeholder="Last Name" />
                               {meta.touched && meta.error && (
-                                <p color="error" className="error">
+                                <p
+                                  color="error"
+                                  className="error transitionDiv"
+                                  style={
+                                    meta.touched && meta.error
+                                      ? mountedStyle
+                                      : unmountedStyle
+                                  }
+                                >
                                   {meta.error}
                                 </p>
                               )}
@@ -293,7 +339,15 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
                           <>
                             <Input {...input} placeholder="First Name" />
                             {meta.touched && meta.error && (
-                              <p color="error" className="error">
+                              <p
+                                color="error"
+                                className="error transitionDiv"
+                                style={
+                                  meta.touched && meta.error
+                                    ? mountedStyle
+                                    : unmountedStyle
+                                }
+                              >
                                 {meta.error}
                               </p>
                             )}
@@ -349,7 +403,15 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
                                 ))}
                               </Select>
                               {meta.touched && meta.error && (
-                                <p color="error" className="error">
+                                <p
+                                  color="error"
+                                  className="error transitionDiv"
+                                  style={
+                                    meta.touched && meta.error
+                                      ? mountedStyle
+                                      : unmountedStyle
+                                  }
+                                >
                                   {meta.error}
                                 </p>
                               )}

@@ -21,7 +21,6 @@
       background-repeat: no-repeat;
       background-size: cover;
       mix-blend-mode: multiply;
-      opacity: 0.2;
       background-position: center bottom;
       z-index: -1;
       border-bottom-right-radius: 10px;
@@ -58,6 +57,27 @@
     }
     .ant-form {
       margin-top: 40px;
+      @keyframes inAnimation {
+        0% {
+          opacity: 0;
+          visibility: hidden;
+        }
+        100% {
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+
+      @keyframes outAnimation {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
+
       .error {
         color: red;
         margin-bottom: 0px;
@@ -127,7 +147,7 @@
       .title-group {
         width: 100%;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         padding-top: 20px;
       }
       .ant-row {
