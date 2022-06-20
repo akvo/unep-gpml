@@ -194,7 +194,14 @@
     .popover-share {
       width: 100%;
     }
-
+    .no-event-resource-image {
+      @media (min-width: 601px) {
+        width: 50%;
+        float: left;
+        margin-right: 20px;
+        padding-right: 0 !important;
+      }
+    }
     .geocoverage-item,
     .detail-item .ant-row {
       display: flex;

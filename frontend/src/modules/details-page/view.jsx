@@ -568,8 +568,9 @@ const DetailsView = ({
         >
           {data?.image && (
             <Col
-              className="resource-image-wrapper"
-              style={data?.type !== "event" && { width: "50%", float: "left" }}
+              className={`resource-image-wrapper ${
+                data?.type !== "event" && "no-event-resource-image"
+              }`}
             >
               <img className="resource-image" src={data?.image} alt="" />
             </Col>
