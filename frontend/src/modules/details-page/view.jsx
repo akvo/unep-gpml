@@ -850,6 +850,7 @@ const DetailsView = ({
   match: { params },
   setStakeholderSignupModalVisible,
   setFilterMenu,
+  isAuthenticated,
 }) => {
   const relatedContent = useRef(null);
   const record = useRef(null);
@@ -883,7 +884,7 @@ const DetailsView = ({
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const [comments, setComments] = useState([]);
-  const { isAuthenticated, loginWithPopup } = useAuth0();
+  const { loginWithPopup } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false);
   const [visible, setVisible] = useState(false);
   const [showReplyBox, setShowReplyBox] = useState("");
