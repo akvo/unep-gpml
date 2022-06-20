@@ -375,7 +375,7 @@
         .ant-card {
           min-height: 250px !important;
           .ant-card-body {
-            padding-bottom: 0 !important;
+            padding-bottom: 20px !important;
           }
         }
       }
@@ -396,6 +396,10 @@
       .carousel-dot-list {
         margin-top: 15px;
       }
+    }
+
+    .section-related-content + .section {
+      margin-top: calc(38px - 20px) !important;
     }
 
     .no-login {
