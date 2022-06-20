@@ -214,6 +214,9 @@ const Root = () => {
   const [filters, setFilters] = useState(null);
   const [filterMenu, setFilterMenu] = useState(null);
   const [showResponsiveMenu, setShowResponsiveMenu] = useState(false);
+  const [_expiresAt, setExpiresAt] = useState(null);
+  const [idToken, setIdToken] = useState(null);
+  const [authResult, setAuthResult] = useState(null);
 
   const topicsCount = tags?.topics ? tags.topics.length : 0;
   const excludeSummary = ["organisation", "stakeholder"];
@@ -235,8 +238,34 @@ const Root = () => {
   const resourceCounts = filterNav(false);
   const stakeholderCounts = filterNav(true);
 
-  const isAuthenticated = () => {
-    return false;
+  const isAuthenticated = new Date().getTime() < _expiresAt;
+
+  const setSession = (authResult) => {
+    setExpiresAt(authResult.expiresIn * 1000 + new Date().getTime());
+    setIdToken(authResult.idToken);
+    setAuthResult(authResult);
+    scheduleTokenRenewal();
+  };
+
+  const renewToken = (cb) => {
+    auth0Client.checkSession({}, (err, result) => {
+      if (err) {
+        console.log(`Error: ${err.error} - ${err.error_description}.`);
+      } else {
+        setSession(result);
+      }
+
+      if (cb) {
+        cb(err, result);
+      }
+    });
+  };
+
+  const scheduleTokenRenewal = () => {
+    const delay = _expiresAt - Date.now();
+    if (delay > 0) {
+      setTimeout(() => renewToken(), delay);
+    }
   };
 
   useEffect(() => {
@@ -246,6 +275,7 @@ const Root = () => {
       }
       if (authResult) {
         history.replace("/");
+        setSession(authResult);
         api.setToken(authResult.idToken);
         if (
           authResult?.idTokenPayload?.hasOwnProperty(
@@ -268,49 +298,41 @@ const Root = () => {
   }, []);
 
   useEffect(() => {
-    auth0Client.checkSession({}, (err, authResult) => {
+    auth0Client.checkSession({}, async (err, authResult) => {
       if (err) {
         console.log(err);
+        // history.push("/login");
       }
       if (authResult) {
+        setSession(authResult);
       }
-      console.log(authResult);
     });
   }, []);
 
-  // useEffect(() => {
-  //   (async function fetchData() {
-  //     const response = await getIdTokenClaims();
-  //     if (isAuthenticated) {
-  //       api.setToken(response.__raw);
-  //     } else {
-  //       api.setToken(null);
-  //     }
-  //     if (isAuthenticated) {
-  //       let resp = await api.get("/profile");
-  //       if (!resp.data?.org?.isMember) {
-  //         resp.data.org = null;
-  //       } else if (resp?.data) {
-  //         resp.data.non_member_organisation = null;
-  //       }
-  //       if (Object.keys(resp.data).length === 0) {
-  //         UIStore.update((e) => {
-  //           e.profile = { email: response.email };
-  //         });
-  //         setTimeout(() => {
-  //           setStakeholderSignupModalVisible(
-  //             Object.keys(resp.data).length === 0
-  //           );
-  //         }, 100);
-  //       } else {
-  //         UIStore.update((e) => {
-  //           e.profile = { ...resp.data, email: response.email };
-  //         });
-  //         updateStatusProfile(resp.data);
-  //       }
-  //     }
-  //   })();
-  // }, [getIdTokenClaims, isAuthenticated]);
+  useEffect(() => {
+    (async function fetchData() {
+      if (isAuthenticated && idToken) {
+        api.setToken(idToken);
+      } else {
+        api.setToken(null);
+      }
+      if (isAuthenticated && idToken && authResult) {
+        let resp = await api.get("/profile");
+        if (!resp.data?.org?.isMember) {
+          resp.data.org = null;
+        } else if (resp?.data) {
+          resp.data.non_member_organisation = null;
+        }
+        UIStore.update((e) => {
+          e.profile = {
+            ...resp.data,
+            email: authResult?.idTokenPayload?.email,
+          };
+        });
+        updateStatusProfile(resp.data);
+      }
+    })();
+  }, [isAuthenticated, idToken, authResult]);
 
   // Here we retrieve the resources data
   const [results, setResults] = useState([]);
@@ -484,19 +506,14 @@ const Root = () => {
               </Route>
             </Switch>
             <div className="rightside">
-              {!isAuthenticated() ? (
+              {!isAuthenticated ? (
                 <div className="rightside btn-wrapper">
                   <JoinGPMLButton loginWithPopup={loginWithPopup} />
-                  {isAuthenticated && !isRegistered(profile) ? (
+                  {isAuthenticated && isRegistered(profile) ? (
                     <UserButton {...{ logout, isRegistered, profile }} />
                   ) : (
                     <Button type="ghost" className="left">
-                      <Link
-                        to="/"
-                        onClick={() => loginWithPopup({ action: "login" })}
-                      >
-                        Sign in
-                      </Link>
+                      <Link to="/login">Sign in</Link>
                     </Button>
                   )}
                 </div>
@@ -752,7 +769,9 @@ const Root = () => {
           />
           <Route
             path="/details-view"
-            render={(props) => <NewDetailsView {...props} />}
+            render={(props) => (
+              <NewDetailsView {...props} isAuthenticated={isAuthenticated} />
+            )}
           />
           <Route
             path="/discourse-forum"
@@ -768,7 +787,9 @@ const Root = () => {
           />
           <Route
             exact
-            render={(props) => <StakeholderDetail {...props} />}
+            render={(props) => (
+              <StakeholderDetail {...props} isAuthenticated={isAuthenticated} />
+            )}
             path="/stakeholder-detail"
           />
           <Route
@@ -793,6 +814,7 @@ const Root = () => {
                       loginWithPopup={loginWithPopup}
                       filters={filters}
                       setFilters={setFilters}
+                      isAuthenticated={isAuthenticated}
                     />
                   )}
                 />
@@ -814,6 +836,7 @@ const Root = () => {
                   setStakeholderSignupModalVisible
                 }
                 setFilterMenu={setFilterMenu}
+                isAuthenticated={isAuthenticated}
               />
             )}
           />
@@ -826,6 +849,7 @@ const Root = () => {
                   setStakeholderSignupModalVisible
                 }
                 setFilterMenu={setFilterMenu}
+                isAuthenticated={isAuthenticated}
               />
             )}
           />
@@ -838,6 +862,7 @@ const Root = () => {
                   setStakeholderSignupModalVisible
                 }
                 setFilterMenu={setFilterMenu}
+                isAuthenticated={isAuthenticated}
               />
             )}
           />

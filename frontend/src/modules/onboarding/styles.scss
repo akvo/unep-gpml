@@ -73,6 +73,14 @@
           .ant-select-selection-item {
             height: 100%;
             margin: 0px 5px;
+            background: #3176ae;
+            color: #fff;
+            border-radius: 3px;
+            svg {
+              path {
+                fill: #fff;
+              }
+            }
           }
         }
       }
