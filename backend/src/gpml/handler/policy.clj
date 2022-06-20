@@ -13,8 +13,9 @@
    [gpml.handler.image :as handler.image]
    [gpml.handler.resource.related-content :as handler.resource.related-content]
    [gpml.handler.resource.tag :as handler.resource.tag]
-   [gpml.handler.util :as util]
+   [gpml.handler.util :as handler.util]
    [gpml.pg-util :as pg-util]
+   [gpml.util :as util]
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 
@@ -46,7 +47,7 @@
                              geo_coverage_value implementing_mea
                              geo_coverage_countries geo_coverage_country_groups
                              geo_coverage_value_subnational_city
-                             tags urls created_by image language
+                             tags urls created_by image thumbnail language
                              owners info_docs sub_content_type
                              document_preview related_content topics
                              attachments remarks entity_connections individual_connections]}]
@@ -67,6 +68,7 @@
               :document_preview document_preview
               :topics (pg-util/->JDBCArray topics "text")
               :image (handler.image/assoc-image conn image "policy")
+              :thumbnail (handler.image/assoc-image conn thumbnail "policy")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
               :geo_coverage_countries geo_coverage_countries
@@ -78,7 +80,7 @@
               :created_by created_by
               :review_status "SUBMITTED"}
         policy-id (->> data (db.policy/new-policy conn) :id)
-        api-individual-connections (util/individual-connections->api-individual-connections conn individual_connections created_by)
+        api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
@@ -154,7 +156,8 @@
      [:enum "global", "regional", "national", "transnational",
       "sub-national", "global with elements in specific areas"]]
     [:geo_coverage_value_subnational_city {:optional true} string?]
-    [:image {:optional true} string?]
+    [:image {:optional true} [:fn (comp util/base64? util/base64-headless)]]
+    [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
     [:implementing_mea {:optional true} integer?]
     [:tags {:optional true}
      [:vector {:optional true}
