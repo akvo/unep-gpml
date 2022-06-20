@@ -257,8 +257,7 @@ const Comments = ({
   return (
     <>
       <Col className="section comment-section">
-        {" "}
-        <h3 className="content-heading">Discussion</h3>{" "}
+        <h3 className="content-heading">Discussion</h3>
         {comments &&
           comments.length > 0 &&
           comments?.map((item, index) => {
@@ -284,6 +283,7 @@ const Comments = ({
             className="login-button"
             onClick={() => loginWithPopup({ action: "login" })}
             icon={<MessageOutlined twoToneColor="#09689a" />}
+            shape="round"
           >
             Login to comment
           </Button>
