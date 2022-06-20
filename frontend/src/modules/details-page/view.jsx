@@ -512,28 +512,33 @@ const DetailsView = ({
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
-      items: 11,
-      slidesToSlide: 11,
+      items: 6.5,
+      slidesToSlide: 6.5,
     },
     desktop: {
       breakpoint: { max: 1199, min: 992 },
-      items: 9,
-      slidesToSlide: 9,
+      items: 5.5,
+      slidesToSlide: 5.5,
     },
     tablet: {
       breakpoint: { max: 991, min: 768 },
-      items: 7,
-      slidesToSlide: 7,
+      items: 4.5,
+      slidesToSlide: 4.5,
     },
-    mobile2: {
+    largeMobile: {
       breakpoint: { max: 767, min: 600 },
-      items: 3,
-      slidesToSlide: 3,
+      items: 4,
+      slidesToSlide: 4,
     },
     mobile: {
-      breakpoint: { max: 599, min: 0 },
+      breakpoint: { max: 599, min: 361 },
       items: 2,
       slidesToSlide: 2,
+    },
+    extraSmallMobile: {
+      breakpoint: { max: 360, min: 0 },
+      items: 0.7,
+      slidesToSlide: 0.7,
     },
   };
 
