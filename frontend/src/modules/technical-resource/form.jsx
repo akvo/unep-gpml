@@ -344,7 +344,7 @@ const AddResourceForm = withRouter(
               e.editId = null;
             });
             setDisabledBtn({ disabled: true, type: "default" });
-            history.push(`/technical_resource/${id || params?.id}`);
+            history.push(`/technical-resource/${id || params?.id}`);
           })
           .catch(() => {
             notification.error({ message: "An error occured" });
