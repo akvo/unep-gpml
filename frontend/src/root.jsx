@@ -23,6 +23,8 @@ import Browse from "./modules/browse/view";
 import Stakeholders from "./modules/stakeholders/view";
 import AddEvent from "./modules/events/view";
 import SignupView from "./modules/signup/view";
+import SignupViewNew from "./modules/email-signup/view";
+import Login from "./modules/login/view";
 import LandingSignupView from "./modules/signup-old/view";
 import logo from "./images/gpml.svg";
 // add auth0 logo pop-up
@@ -78,7 +80,14 @@ import AddContentButton from "./components/add-content-button/add-content-button
 import StakeholderOverview from "./modules/stakeholder-overview/view";
 import Partners from "./modules/partners/view";
 
+// Auth
+import Onboarding from "./modules/onboarding/view";
+
 let tmid;
+
+import auth0 from "auth0-js";
+
+import { auth0Client } from "./utils/misc";
 
 Promise.all([
   api.get("/tag"),
@@ -178,7 +187,7 @@ const { Header } = Layout;
 
 const Root = () => {
   const {
-    isAuthenticated,
+    // isAuthenticated,
     getIdTokenClaims,
     loginWithPopup,
     logout,
@@ -195,7 +204,7 @@ const Root = () => {
     nav: s.nav,
     tags: s.tags,
   }));
-
+  const domain = window.__ENV__.auth0.domain.replace(/(https:\/\/|\/)/gi, "");
   const [
     stakeholderSignupModalVisible,
     setStakeholderSignupModalVisible,
@@ -205,6 +214,9 @@ const Root = () => {
   const [filters, setFilters] = useState(null);
   const [filterMenu, setFilterMenu] = useState(null);
   const [showResponsiveMenu, setShowResponsiveMenu] = useState(false);
+  const [_expiresAt, setExpiresAt] = useState(null);
+  const [idToken, setIdToken] = useState(null);
+  const [authResult, setAuthResult] = useState(null);
 
   const topicsCount = tags?.topics ? tags.topics.length : 0;
   const excludeSummary = ["organisation", "stakeholder"];
@@ -226,39 +238,101 @@ const Root = () => {
   const resourceCounts = filterNav(false);
   const stakeholderCounts = filterNav(true);
 
+  const isAuthenticated = new Date().getTime() < _expiresAt;
+
+  const setSession = (authResult) => {
+    setExpiresAt(authResult.expiresIn * 1000 + new Date().getTime());
+    setIdToken(authResult.idToken);
+    setAuthResult(authResult);
+    scheduleTokenRenewal();
+  };
+
+  const renewToken = (cb) => {
+    auth0Client.checkSession({}, (err, result) => {
+      if (err) {
+        console.log(`Error: ${err.error} - ${err.error_description}.`);
+      } else {
+        setSession(result);
+      }
+
+      if (cb) {
+        cb(err, result);
+      }
+    });
+  };
+
+  const scheduleTokenRenewal = () => {
+    const delay = _expiresAt - Date.now();
+    if (delay > 0) {
+      setTimeout(() => renewToken(), delay);
+    }
+  };
+
+  useEffect(() => {
+    auth0Client.parseHash((err, authResult) => {
+      if (err) {
+        return console.log(err);
+      }
+      if (authResult) {
+        history.replace("/");
+        setSession(authResult);
+        api.setToken(authResult.idToken);
+        if (
+          authResult?.idTokenPayload?.hasOwnProperty(
+            "https://digital.gpmarinelitter.org/is_new"
+          )
+        ) {
+          if (
+            authResult?.idTokenPayload?.[
+              "https://digital.gpmarinelitter.org/is_new"
+            ]
+          ) {
+            history.push({
+              pathname: "onboarding",
+              state: { data: authResult?.idTokenPayload },
+            });
+          }
+        }
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    auth0Client.checkSession({}, async (err, authResult) => {
+      if (err) {
+        console.log(err);
+        // history.push("/login");
+      }
+      if (authResult) {
+        setSession(authResult);
+      }
+    });
+  }, []);
+
   useEffect(() => {
     (async function fetchData() {
-      const response = await getIdTokenClaims();
-      if (isAuthenticated) {
-        api.setToken(response.__raw);
+      if (isAuthenticated && idToken) {
+        api.setToken(idToken);
       } else {
         api.setToken(null);
       }
-      if (isAuthenticated) {
+      if (isAuthenticated && idToken && authResult) {
         let resp = await api.get("/profile");
         if (!resp.data?.org?.isMember) {
           resp.data.org = null;
         } else if (resp?.data) {
           resp.data.non_member_organisation = null;
         }
-        if (Object.keys(resp.data).length === 0) {
-          UIStore.update((e) => {
-            e.profile = { email: response.email };
-          });
-          setTimeout(() => {
-            setStakeholderSignupModalVisible(
-              Object.keys(resp.data).length === 0
-            );
-          }, 100);
-        } else {
-          UIStore.update((e) => {
-            e.profile = { ...resp.data, email: response.email };
-          });
-          updateStatusProfile(resp.data);
-        }
+        UIStore.update((e) => {
+          e.profile = {
+            ...resp.data,
+            email: authResult?.idTokenPayload?.email,
+          };
+        });
+        updateStatusProfile(resp.data);
       }
     })();
-  }, [getIdTokenClaims, isAuthenticated]);
+  }, [isAuthenticated, idToken, authResult]);
 
   // Here we retrieve the resources data
   const [results, setResults] = useState([]);
@@ -432,19 +506,14 @@ const Root = () => {
               </Route>
             </Switch>
             <div className="rightside">
-              {!isAuthenticated || !isRegistered(profile) ? (
+              {!isAuthenticated ? (
                 <div className="rightside btn-wrapper">
                   <JoinGPMLButton loginWithPopup={loginWithPopup} />
-                  {isAuthenticated && !isRegistered(profile) ? (
+                  {isAuthenticated && isRegistered(profile) ? (
                     <UserButton {...{ logout, isRegistered, profile }} />
                   ) : (
                     <Button type="ghost" className="left">
-                      <Link
-                        to="/"
-                        onClick={() => loginWithPopup({ action: "login" })}
-                      >
-                        Sign in
-                      </Link>
+                      <Link to="/login">Sign in</Link>
                     </Button>
                   )}
                 </div>
@@ -684,6 +753,11 @@ const Root = () => {
             render={(props) => <SignupView {...props} formType="stakeholder" />}
           />
           <Route
+            path="/stakeholder-signup-new"
+            render={(props) => <SignupViewNew {...props} />}
+          />
+          <Route path="/login" render={(props) => <Login {...props} />} />
+          <Route
             path="/signup"
             render={(props) => (
               <LandingSignupView {...props} profile={profile} />
@@ -695,7 +769,9 @@ const Root = () => {
           />
           <Route
             path="/details-view"
-            render={(props) => <NewDetailsView {...props} />}
+            render={(props) => (
+              <NewDetailsView {...props} isAuthenticated={isAuthenticated} />
+            )}
           />
           <Route
             path="/discourse-forum"
@@ -711,8 +787,15 @@ const Root = () => {
           />
           <Route
             exact
-            render={(props) => <StakeholderDetail {...props} />}
+            render={(props) => (
+              <StakeholderDetail {...props} isAuthenticated={isAuthenticated} />
+            )}
             path="/stakeholder-detail"
+          />
+          <Route
+            exact
+            render={(props) => <Onboarding {...props} />}
+            path="/onboarding"
           />
           <Route
             path="/connect"
@@ -731,6 +814,7 @@ const Root = () => {
                       loginWithPopup={loginWithPopup}
                       filters={filters}
                       setFilters={setFilters}
+                      isAuthenticated={isAuthenticated}
                     />
                   )}
                 />
@@ -752,6 +836,7 @@ const Root = () => {
                   setStakeholderSignupModalVisible
                 }
                 setFilterMenu={setFilterMenu}
+                isAuthenticated={isAuthenticated}
               />
             )}
           />
@@ -764,6 +849,7 @@ const Root = () => {
                   setStakeholderSignupModalVisible
                 }
                 setFilterMenu={setFilterMenu}
+                isAuthenticated={isAuthenticated}
               />
             )}
           />
@@ -776,6 +862,7 @@ const Root = () => {
                   setStakeholderSignupModalVisible
                 }
                 setFilterMenu={setFilterMenu}
+                isAuthenticated={isAuthenticated}
               />
             )}
           />
@@ -864,7 +951,9 @@ const UserButton = withRouter(({ history, logout, isRegistered, profile }) => {
             Profile
           </Menu.Item>
           <Menu.Item
-            onClick={() => logout({ returnTo: window.location.origin })}
+            onClick={() =>
+              auth0Client.logout({ returnTo: window.location.origin })
+            }
           >
             Logout
           </Menu.Item>
