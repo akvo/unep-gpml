@@ -508,7 +508,6 @@ const Root = () => {
             <div className="rightside">
               {!isAuthenticated ? (
                 <div className="rightside btn-wrapper">
-                  <JoinGPMLButton loginWithPopup={loginWithPopup} />
                   {isAuthenticated && isRegistered(profile) ? (
                     <UserButton {...{ logout, isRegistered, profile }} />
                   ) : (
