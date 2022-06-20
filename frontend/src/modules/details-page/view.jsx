@@ -925,7 +925,7 @@ const DetailsView = ({
                 responsive={responsive}
                 isShownCount={false}
                 title="Related content"
-                relatedContent={data.relatedContent}
+                relatedContent={data?.relatedContent}
                 isShownPagination={false}
                 dataCount={relatedContent?.length || 0}
               />

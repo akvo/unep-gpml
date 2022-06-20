@@ -45,22 +45,30 @@ export const CommentList = ({
               <>
                 <span
                   key="comment-nested-reply-to"
-                  onClick={() =>
-                    item.id === showReplyBox
-                      ? setShowReplyBox("")
-                      : setShowReplyBox(item.id)
-                  }
+                  className={item.id === showReplyBox && `active`}
+                  onClick={() => {
+                    if (item.id === showReplyBox) {
+                      setShowReplyBox("");
+                    } else {
+                      setShowReplyBox(item.id);
+                    }
+                    setEditComment("");
+                  }}
                 >
                   Reply to
                 </span>
                 {profile.id === item.authorId && (
                   <span
                     key="comment-nested-edit"
-                    onClick={() =>
-                      item.id === editComment
-                        ? setEditComment("")
-                        : setEditComment(item.id)
-                    }
+                    className={item.id === editComment && `active`}
+                    onClick={() => {
+                      if (item.id === editComment) {
+                        setEditComment("");
+                      } else {
+                        setEditComment(item.id);
+                      }
+                      setShowReplyBox("");
+                    }}
                   >
                     Edit
                   </span>

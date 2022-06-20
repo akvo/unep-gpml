@@ -460,8 +460,12 @@
         span {
           color: #339cfe;
         }
+        .active {
+          color: rgb(255, 184, 0);
+        }
         .ant-form-item {
           position: relative;
+          margin-bottom: 0;
           .anticon {
             position: absolute;
             z-index: 1;
