@@ -355,7 +355,7 @@ const AddActionPlanForm = withRouter(
               e.data = {};
             });
             setDisabledBtn({ disabled: true, type: "default" });
-            history.push(`/action_plan/${id || params?.id}`);
+            history.push(`/action-plan/${id || params?.id}`);
           })
           .catch(() => {
             notification.error({ message: "An error occured" });
