@@ -186,34 +186,31 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
                 formRef.current = form;
                 return (
                   <Form layout="vertical">
-                    <Form.Item label="Email">
-                      <Field name="email">
-                        {({ input, meta }) => (
-                          <>
-                            <Input {...input} placeholder="Enter your email" />
-                            {meta.touched && meta.error && (
-                              <p color="error" className="error">
+                    <Field name="email">
+                      {({ input, meta }) => (
+                        <Form.Item label="Email" className={"asd"}>
+                          <Input {...input} placeholder="Enter your email" />
+                          {meta.touched && meta.error && (
+                            <div className="ant-form-item-explain ant-form-item-explain-connected">
+                              <div className="ant-form-item-explain-error">
                                 {meta.error}
-                              </p>
-                            )}
-                            <div className="public-email-switch">
-                              <Switch
-                                key="publicEmail"
-                                name="publicEmail"
-                                onChange={(checked) =>
-                                  formRef.current?.change(
-                                    "publicEmail",
-                                    checked
-                                  )
-                                }
-                              />
-                              &nbsp;&nbsp;&nbsp;
-                              {"Show my email address on public listing"}
+                              </div>
                             </div>
-                          </>
-                        )}
-                      </Field>
-                    </Form.Item>
+                          )}
+                          <div className="public-email-switch">
+                            <Switch
+                              key="publicEmail"
+                              name="publicEmail"
+                              onChange={(checked) =>
+                                formRef.current?.change("publicEmail", checked)
+                              }
+                            />
+                            &nbsp;&nbsp;&nbsp;
+                            {"Show my email address on public listing"}
+                          </div>
+                        </Form.Item>
+                      )}
+                    </Field>
                     <Form.Item label="Password" name="password">
                       <Field name="password" validate={passwordValidation}>
                         {({ input, meta }) => (
