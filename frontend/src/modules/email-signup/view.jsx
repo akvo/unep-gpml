@@ -10,6 +10,7 @@ import {
   Switch,
   Select,
   Tag,
+  notification,
 } from "antd";
 const { Title } = Typography;
 const { Dragger } = Upload;
@@ -25,8 +26,8 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
   }));
-
   const [initialValues, setInitialValues] = useState({ publicEmail: false });
+  const [loading, setLoading] = useState(false);
   const formRef = useRef();
 
   const checkValidation = (values) => {
@@ -47,7 +48,35 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
       errors.country = "Please select country";
     }
     if (!values.password) {
-      errors.password = "Required";
+      console.log(values);
+      const uppercaseRegExp = /(?=.*?[A-Z])/;
+      const lowercaseRegExp = /(?=.*?[a-z])/;
+      const digitsRegExp = /(?=.*?[0-9])/;
+      const specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
+      const minLengthRegExp = /.{8,}/;
+      const passwordLength = values?.password?.length;
+      const uppercasePassword = uppercaseRegExp.test(values.password);
+      const lowercasePassword = lowercaseRegExp.test(values.password);
+      const digitsPassword = digitsRegExp.test(values.password);
+      const specialCharPassword = specialCharRegExp.test(values.password);
+      const minLengthPassword = minLengthRegExp.test(values.password);
+      let errMsg = "";
+      if (passwordLength === 0) {
+        errMsg = "Password is empty";
+      } else if (!uppercasePassword) {
+        errMsg = "At least one Uppercase";
+      } else if (!lowercasePassword) {
+        errMsg = "At least one Lowercase";
+      } else if (!digitsPassword) {
+        errMsg = "At least one digit";
+      } else if (!specialCharPassword) {
+        errMsg = "At least one Special Characters";
+      } else if (!minLengthPassword) {
+        errMsg = "At least minumum 8 characters";
+      } else {
+        errMsg = "";
+      }
+      errors.password = errMsg;
     }
     if (!values.confirm) {
       errors.confirm = "Required";
@@ -57,7 +86,37 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
     return errors;
   };
 
+  function passwordValidation(value) {
+    const uppercaseRegExp = /(?=.*?[A-Z])/;
+    const lowercaseRegExp = /(?=.*?[a-z])/;
+    const digitsRegExp = /(?=.*?[0-9])/;
+    const specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
+    const minLengthRegExp = /.{8,}/;
+    const passwordLength = value?.length;
+    const uppercasePassword = uppercaseRegExp.test(value);
+    const lowercasePassword = lowercaseRegExp.test(value);
+    const digitsPassword = digitsRegExp.test(value);
+    const specialCharPassword = specialCharRegExp.test(value);
+    const minLengthPassword = minLengthRegExp.test(value);
+    if (passwordLength === 0) {
+      return "Password is empty";
+    } else if (!uppercasePassword) {
+      return "At least one Uppercase";
+    } else if (!lowercasePassword) {
+      return "At least one Lowercase";
+    } else if (!digitsPassword) {
+      return "At least one digit";
+    } else if (!specialCharPassword) {
+      return "At least one Special Characters";
+    } else if (!minLengthPassword) {
+      return "At least minumum 8 characters";
+    } else {
+      return "";
+    }
+  }
+
   const onSubmit = async (data) => {
+    setLoading(true);
     auth0Client.redirect.signupAndLogin(
       {
         connection: "Username-Password-Authentication",
@@ -71,8 +130,15 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
       },
       function (err) {
         if (err) {
+          setLoading(false);
+          if (err?.code === "invalid_signup") {
+            notification.error({
+              message: "user already exist",
+            });
+          }
           return err;
         } else {
+          setLoading(false);
           history.push({
             pathname: "onboarding",
             state: { data: data },
@@ -149,7 +215,7 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
                       </Field>
                     </Form.Item>
                     <Form.Item label="Password" name="password">
-                      <Field name="password">
+                      <Field name="password" validate={passwordValidation}>
                         {({ input, meta }) => (
                           <>
                             <Input.Password
@@ -297,6 +363,7 @@ function EmailJoin({ setJoinEmail, handleOnClickBtnNext }) {
                     </Form.Item>
                     <Button
                       disabled={submitting}
+                      loading={loading}
                       htmlType="submit"
                       className="next-button"
                       onClick={() => handleSubmit()}
