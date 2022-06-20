@@ -117,7 +117,17 @@ function Authentication() {
     formRef?.current?.change("privateCitizen", value);
   };
 
+  const array = Object.keys(tags)
+    .map((k) => tags[k])
+    .flat();
+
   const handleSeekingSuggestedTag = (value) => {
+    let find = array.find((o) => o.tag === value);
+    if (find) {
+      value = find.id;
+    } else {
+      value = value;
+    }
     formRef?.current?.change("seeking", [
       ...(formRef?.current?.getFieldState("seeking")?.value
         ? formRef?.current?.getFieldState("seeking")?.value
@@ -127,7 +137,12 @@ function Authentication() {
   };
 
   const handleOfferingSuggestedTag = (value) => {
-    console.log(formRef?.current?.getFieldState("offering"));
+    let find = array.find((o) => o.tag === value);
+    if (find) {
+      value = find.id;
+    } else {
+      value = value;
+    }
     formRef?.current?.change("offering", [
       ...(formRef?.current?.getFieldState("offering")?.value
         ? formRef?.current?.getFieldState("offering")?.value
