@@ -92,3 +92,15 @@
    (try
      (File/createTempFile prefix suffix)
      (catch Exception _ nil))))
+
+(defn base64?
+  "Check that `src` is a valid Base64 encoded String"
+  [src]
+  (or (= src "")
+      (and (re-matches #"[0-9a-zA-Z+/]+={0,2}" src)
+           (= 0 (rem (count src) 4)))))
+
+(defn base64-headless
+  "Returns the base64 encoded string without the header."
+  [src]
+  (last (re-find #"^data:(\S+);base64,(.*)$" src)))
