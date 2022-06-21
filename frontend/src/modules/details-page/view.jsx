@@ -42,195 +42,6 @@ import Header from "./header";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
-const renderDetails = (
-  { countries, languages, regionOptions, meaOptions, transnationalOptions },
-  params,
-  data
-) => {
-  const details = detailMaps[params.type.replace("-", "_")];
-  if (!details) {
-    return;
-  }
-  return (
-    <>
-      {renderItemValues(
-        {
-          countries,
-          languages,
-          regionOptions,
-          meaOptions,
-          transnationalOptions,
-        },
-        params,
-        details,
-        data
-      )}
-    </>
-  );
-};
-
-const renderItemValues = ({ countries, languages }, params, mapping, data) => {
-  let noData = false;
-  mapping &&
-    mapping.every((it) => {
-      const { key } = it;
-      if (data[key]) {
-        noData = false;
-        return false;
-      }
-      if (!data[key]) {
-        noData = true;
-        return true;
-      }
-      return true;
-    });
-
-  if (noData) {
-    return "There is no data to display";
-  }
-
-  if (countries.length === 0) {
-    return "";
-  }
-
-  return (
-    mapping &&
-    mapping.map((item, index) => {
-      const {
-        key,
-        name,
-        value,
-        type,
-        customValue,
-        arrayCustomValue,
-        currencyObject,
-      } = item;
-      // Set to true to display all country list for global
-      const showAllCountryList = false;
-      const displayEntry =
-        data[key] ||
-        data[key] === false ||
-        data[key] === true ||
-        data[key] === 0 ||
-        key === null;
-      // Calculate custom currency value to display
-      const [currency, amount, remarks] =
-        arrayCustomValue?.map((it) => data[it]) || [];
-
-      const customCurrency =
-        value === "custom" &&
-        type === "currency" &&
-        (remarks
-          ? currency
-            ? `${currency} ${currencyFormat(amount)} - ${remarks}`
-            : `${currencyFormat(amount)} - ${remarks}`
-          : currency
-          ? `${currency} ${currencyFormat(amount)}`
-          : `${amount}`);
-
-      if (
-        (key === "lifecyclePhase" && data[key]?.length === 0) ||
-        (key === "sector" && data[key]?.length === 0) ||
-        (key === "focusArea" && data[key]?.length === 0)
-      ) {
-        return false;
-      }
-
-      return (
-        <Fragment key={`${params.type}-${name}`}>
-          {displayEntry && (
-            <div key={name + index} className="record-row">
-              <div className="record-name">{name}</div>
-              <div className="record-value">
-                {key === null && type === "static" && value}
-                {value === key &&
-                  type === "name" &&
-                  data[key] === false &&
-                  "No"}
-                {value === key &&
-                  type === "name" &&
-                  data[key] === true &&
-                  "Yes"}
-                {value === key &&
-                  (type === "name" ||
-                    type === "string" ||
-                    type === "number" ||
-                    type === "object") &&
-                  (data[value].name || data[value])}
-                {currencyObject && data[currencyObject.name]
-                  ? `${data[currencyObject.name]?.[0]?.name?.toUpperCase()} `
-                  : ""}
-                {value === key &&
-                  type === "currency" &&
-                  currencyFormat(data[value])}
-                {value === key &&
-                  type === "date" &&
-                  data[key] !== "Ongoing" &&
-                  moment(data[key]).format("DD MMM YYYY")}
-                {value === key &&
-                  type === "date" &&
-                  data[key] === "Ongoing" &&
-                  data[key]}
-                {value === key &&
-                  type === "array" &&
-                  data[key].map((x) => x.name).join(", ")}
-                {value === key &&
-                  type === "country" &&
-                  countries.find((it) => it.id === data[key]).name}
-                {value === "custom" &&
-                  type === "object" &&
-                  data[key][customValue]}
-                {value === "custom" &&
-                  type === "startDate" &&
-                  moment.utc(data[arrayCustomValue[0]]).format("DD MMM YYYY")}
-                {value === "custom" &&
-                  type === "endDate" &&
-                  moment.utc(data[arrayCustomValue[0]]).format("DD MMM YYYY")}
-
-                {data[key] &&
-                  value === "isoCode" &&
-                  type === "array" &&
-                  uniqBy(data[key], "isoCode")
-                    .map((x, i) => languages[x.isoCode].name)
-                    .join(", ")}
-                {key === "tags" &&
-                  data[key] &&
-                  value === "join" &&
-                  type === "array" &&
-                  data[key].map((tag) => Object.values(tag)[0]).join(", ")}
-                {key !== "tags" &&
-                  params.type === "project" &&
-                  data[key] &&
-                  value === "join" &&
-                  type === "array" &&
-                  data[key]?.length !== 0 &&
-                  data[key]?.map((x) => x.name).join(", ")}
-                {key !== "tags" &&
-                  params.type !== "project" &&
-                  data[key] &&
-                  value === "join" &&
-                  type === "array" &&
-                  data[key].join(", ")}
-                {params.type === "project" &&
-                  value === "custom" &&
-                  type === "array" &&
-                  data[key][customValue] &&
-                  data[key][customValue]?.map((x) => x.name).join(", ")}
-                {params.type !== "project" &&
-                  value === "custom" &&
-                  type === "array" &&
-                  data[key][customValue] &&
-                  data[key][customValue].join(", ")}
-
-                {customCurrency}
-              </div>
-            </div>
-          )}
-        </Fragment>
-      );
-    })
-  );
-};
 
 const renderGeoCoverageCountryGroups = (data, countries) => {
   let dataCountries = null;
@@ -494,21 +305,7 @@ const DetailsView = ({
     );
   }
 
-  let recordShow =
-    renderDetails(
-      {
-        countries,
-        languages,
-        regionOptions,
-        meaOptions,
-        transnationalOptions,
-      },
-      params,
-      data,
-      profile,
-      countries
-    )?.props?.children !== "There is no data to display";
-
+  
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
@@ -893,31 +690,8 @@ const DetailsView = ({
             </div>
           </Col>
         )}
-        {recordShow && (
-          <Col className="record-section section">
-            <h3 className="content-heading">Records</h3>
-            <div>
-              <div className="record-table">
-                <div>
-                  {countries &&
-                    renderDetails(
-                      {
-                        countries,
-                        languages,
-                        regionOptions,
-                        meaOptions,
-                        transnationalOptions,
-                      },
-                      params,
-                      data,
-                      profile,
-                      countries
-                    )}
-                </div>
-              </div>
-            </div>
-          </Col>
-        )}
+        <Records {...{countries, languages, params, data, profile}} />
+        
         {/* RELATED CONTENT */}
         {data?.relatedContent &&
           data?.relatedContent?.length > 0 &&
@@ -957,5 +731,163 @@ const DetailsView = ({
     </div>
   );
 };
+
+
+
+
+
+const Records = ({ countries, languages, params, data }) => {
+  
+  const mapping = detailMaps[params.type.replace("-", "_")];
+  if (!mapping) {
+    return;
+  }
+  const renderRow = (item, index) => {
+    const {
+      key,
+      name,
+      value,
+      type,
+      customValue,
+      arrayCustomValue,
+      currencyObject,
+    } = item;
+    // Set to true to display all country list for global
+    const showAllCountryList = false;
+    const displayEntry =
+      data[key] ||
+      data[key] === false ||
+      data[key] === true ||
+      data[key] === 0 ||
+      key === null;
+    // Calculate custom currency value to display
+    const [currency, amount, remarks] =
+      arrayCustomValue?.map((it) => data[it]) || [];
+
+    const customCurrency =
+      value === "custom" &&
+      type === "currency" &&
+      (remarks
+        ? currency
+          ? `${currency} ${currencyFormat(amount)} - ${remarks}`
+          : `${currencyFormat(amount)} - ${remarks}`
+        : currency
+        ? `${currency} ${currencyFormat(amount)}`
+        : `${amount}`);
+
+    if (
+      (key === "lifecyclePhase" && data[key]?.length === 0) ||
+      (key === "sector" && data[key]?.length === 0) ||
+      (key === "focusArea" && data[key]?.length === 0)
+    ) {
+      return false;
+    }
+
+    return (
+      <Fragment key={`${params.type}-${name}`}>
+        {displayEntry && (
+          <div key={name + index} className="record-row">
+            <div className="record-name">{name}</div>
+            <div className="record-value">
+              {key === null && type === "static" && value}
+              {value === key &&
+                type === "name" &&
+                data[key] === false &&
+                "No"}
+              {value === key &&
+                type === "name" &&
+                data[key] === true &&
+                "Yes"}
+              {value === key &&
+                (type === "name" ||
+                  type === "string" ||
+                  type === "number" ||
+                  type === "object") &&
+                (data[value].name || data[value])}
+              {currencyObject && data[currencyObject.name]
+                ? `${data[currencyObject.name]?.[0]?.name?.toUpperCase()} `
+                : ""}
+              {value === key &&
+                type === "currency" &&
+                currencyFormat(data[value])}
+              {value === key &&
+                type === "date" &&
+                data[key] !== "Ongoing" &&
+                moment(data[key]).format("DD MMM YYYY")}
+              {value === key &&
+                type === "date" &&
+                data[key] === "Ongoing" &&
+                data[key]}
+              {value === key &&
+                type === "array" &&
+                data[key].map((x) => x.name).join(", ")}
+              {value === key &&
+                type === "country" &&
+                countries.find((it) => it.id === data[key]).name}
+              {value === "custom" &&
+                type === "object" &&
+                data[key][customValue]}
+              {value === "custom" &&
+                type === "startDate" &&
+                moment.utc(data[arrayCustomValue[0]]).format("DD MMM YYYY")}
+              {value === "custom" &&
+                type === "endDate" &&
+                moment.utc(data[arrayCustomValue[0]]).format("DD MMM YYYY")}
+
+              {data[key] &&
+                value === "isoCode" &&
+                type === "array" &&
+                uniqBy(data[key], "isoCode")
+                  .map((x, i) => languages[x.isoCode].name)
+                  .join(", ")}
+              {key === "tags" &&
+                data[key] &&
+                value === "join" &&
+                type === "array" &&
+                data[key].map((tag) => Object.values(tag)[0]).join(", ")}
+              {key !== "tags" &&
+                params.type === "project" &&
+                data[key] &&
+                value === "join" &&
+                type === "array" &&
+                data[key]?.length !== 0 &&
+                data[key]?.map((x) => x.name).join(", ")}
+              {key !== "tags" &&
+                params.type !== "project" &&
+                data[key] &&
+                value === "join" &&
+                type === "array" &&
+                data[key].join(", ")}
+              {params.type === "project" &&
+                value === "custom" &&
+                type === "array" &&
+                data[key][customValue] &&
+                data[key][customValue]?.map((x) => x.name).join(", ")}
+              {params.type !== "project" &&
+                value === "custom" &&
+                type === "array" &&
+                data[key][customValue] &&
+                data[key][customValue].join(", ")}
+
+              {customCurrency}
+            </div>
+          </div>
+        )}
+      </Fragment>
+    );
+  }
+  return (
+    <Col className="record-section section">
+      <h3 className="content-heading">Records</h3>
+      <div>
+        <div className="record-table">
+          <div>
+            {countries && mapping.map(renderRow)}
+          </div>
+        </div>
+      </div>
+    </Col>
+  )
+}
 
 export default DetailsView;
