@@ -566,7 +566,7 @@ const DetailsView = ({
           }}
         />
         <Row
-          className="resource-info section"
+          className="resource-info "
           gutter={{
             lg: 24,
           }}
@@ -581,7 +581,7 @@ const DetailsView = ({
             </Col>
           )}
 
-          <Col className="details-content-wrapper section-description">
+          <Col className="details-content-wrapper section-description section">
             {description && (
               <Row>
                 <h3 className="content-heading">Description</h3>
