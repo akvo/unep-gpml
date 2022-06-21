@@ -28,19 +28,23 @@ function FormThree({ handleSeekingSuggestedTag, validate }) {
           <div className="ant-form ant-form-vertical">
             <Field name="seeking" style={{ width: "100%" }} validate={validate}>
               {({ input, meta }) => {
+                const filteredOptions = array.filter((ad) =>
+                  input.value
+                    ? input.value.every((fd) => fd.value !== ad.id)
+                    : array
+                );
                 return (
                   <>
                     <Select
                       placeholder="Search expertises"
                       allowClear
+                      labelInValue
                       showSearch
                       mode="tags"
                       value={input.value ? input.value : undefined}
                       onChange={(value) => input.onChange(value)}
-                      filterOption={(input, option) =>
-                        option.children
-                          .toLowerCase()
-                          .includes(input.toLowerCase())
+                      filterOption={(i, option) =>
+                        option.children.toLowerCase().includes(i.toLowerCase())
                       }
                       className={`${
                         meta.touched && meta.error
@@ -48,7 +52,7 @@ function FormThree({ handleSeekingSuggestedTag, validate }) {
                           : ""
                       }`}
                     >
-                      {array?.map((item) => (
+                      {filteredOptions?.map((item) => (
                         <Select.Option value={item.id} key={item.id}>
                           {item.tag}
                         </Select.Option>

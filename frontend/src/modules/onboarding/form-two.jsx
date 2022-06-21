@@ -29,32 +29,40 @@ function FormTwo({ handleOfferingSuggestedTag, validate }) {
               style={{ width: "100%" }}
               validate={validate}
             >
-              {({ input, meta }) => (
-                <>
-                  <Select
-                    placeholder="Search expertises"
-                    allowClear
-                    showSearch
-                    mode="tags"
-                    onChange={(value) => input.onChange(value)}
-                    value={input.value ? input.value : undefined}
-                    filterOption={(input, option) =>
-                      option.children
-                        .toLowerCase()
-                        .includes(input.toLowerCase())
-                    }
-                    className={`${
-                      meta.touched && meta.error ? "ant-input-status-error" : ""
-                    }`}
-                  >
-                    {array?.map((item) => (
-                      <Select.Option value={item.id} key={item.id}>
-                        {item.tag}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </>
-              )}
+              {({ input, meta }) => {
+                const filteredOptions = array.filter((ad) =>
+                  input.value
+                    ? input.value.every((fd) => fd.value !== ad.id)
+                    : array
+                );
+                return (
+                  <>
+                    <Select
+                      placeholder="Search expertises"
+                      allowClear
+                      showSearch
+                      labelInValue
+                      mode="tags"
+                      onChange={(value) => input.onChange(value)}
+                      value={input.value ? input.value : undefined}
+                      filterOption={(i, option) =>
+                        option.children.toLowerCase().includes(i.toLowerCase())
+                      }
+                      className={`dont-show ${
+                        meta.touched && meta.error
+                          ? "ant-input-status-error"
+                          : ""
+                      }`}
+                    >
+                      {filteredOptions?.map((item) => (
+                        <Select.Option value={item.id} key={item.id}>
+                          {item.tag}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </>
+                );
+              }}
             </Field>
           </div>
           <div className="list tag-list" style={{ marginTop: 20 }}>

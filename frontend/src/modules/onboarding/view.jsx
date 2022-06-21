@@ -16,6 +16,7 @@ import Wizard from "../../components/form-wizard/Wizard";
 import { useLocation } from "react-router-dom";
 import api from "../../utils/api";
 import { useHistory } from "react-router-dom";
+import { SwitchTransition, CSSTransition } from "react-transition-group";
 
 function Authentication() {
   const formRef = useRef();
@@ -47,23 +48,30 @@ function Authentication() {
           "https://digital.gpmarinelitter.org/user_metadata"
         ]),
     };
+
     data.seeking = values?.seeking?.map((x) => {
       return {
-        ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
+        ...(Object.values(tags)
+          .flat()
+          .find((o) => o.id === parseInt(x.key)) && { id: parseInt(x.key) }),
         tag:
           Object.values(tags)
             .flat()
-            .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
+            .find((o) => o.id === parseInt(x.key))?.tag ||
+          x?.label?.toLowerCase(),
         tag_category: "seeking",
       };
     });
     data.offering = values?.offering?.map((x) => {
       return {
-        ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
+        ...(Object.values(tags)
+          .flat()
+          .find((o) => o.id === parseInt(x.key)) && { id: parseInt(x.key) }),
         tag:
           Object.values(tags)
             .flat()
-            .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
+            .find((o) => o.id === parseInt(x.key))?.tag ||
+          x?.label?.toLowerCase(),
         tag_category: "offering",
       };
     });
@@ -126,9 +134,17 @@ function Authentication() {
   const handleSeekingSuggestedTag = (value) => {
     let find = array.find((o) => o.tag === value);
     if (find) {
-      value = find.id;
+      value = {
+        id: find.id,
+        label: find.tag,
+        key: find.key,
+      };
     } else {
-      value = value;
+      value = {
+        id: Math.floor(Date.now() * 100),
+        label: value,
+        key: Math.floor(Date.now() * 100),
+      };
     }
     formRef?.current?.change("seeking", [
       ...(formRef?.current?.getFieldState("seeking")?.value
@@ -141,9 +157,17 @@ function Authentication() {
   const handleOfferingSuggestedTag = (value) => {
     let find = array.find((o) => o.tag === value);
     if (find) {
-      value = find.id;
+      value = {
+        id: find.id,
+        label: find.tag,
+        key: find.key,
+      };
     } else {
-      value = value;
+      value = {
+        id: Math.floor(Date.now() * 100),
+        label: value,
+        key: Math.floor(Date.now() * 100),
+      };
     }
     formRef?.current?.change("offering", [
       ...(formRef?.current?.getFieldState("offering")?.value
