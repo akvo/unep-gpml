@@ -155,10 +155,10 @@
      format
      "SELECT
        %s,
-       array_agg(DISTINCT COALESCE(eg.country_group, 0)) AS geo_coverage_country_groups,
-       array_agg(DISTINCT COALESCE(eg.country, 0)) AS geo_coverage_countries,
-       array_agg(DISTINCT COALESCE(eg.country, eg.country_group, 0)) AS geo_coverage_values,
-       json_agg(json_build_object('id', t.id, 'tag', t.tag)) AS tags
+       array_remove(array_agg(DISTINCT eg.country_group), NULL) AS geo_coverage_country_groups,
+       array_remove(array_agg(DISTINCT eg.country), NULL) AS geo_coverage_countries,
+       array_remove(array_agg(DISTINCT COALESCE(eg.country, eg.country_group)), NULL) AS geo_coverage_values,
+       json_agg(json_build_object('id', t.id, 'tag', t.tag)) FILTER (WHERE t.id IS NOT NULL) AS tags
    FROM %s e
    LEFT JOIN %s_tag et ON et.%s = e.id LEFT JOIN tag t ON et.tag = t.id
    %s
