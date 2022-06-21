@@ -13,26 +13,27 @@ body {
   display: none !important;
 }
 
-div::-webkit-scrollbar {
-  width: 19px;
-}
+@media screen and (min-width: 1260px) {
+  div::-webkit-scrollbar {
+    width: 19px;
+  }
+  div::-webkit-scrollbar-track {
+    background-color: #d3dee7;
+    border-radius: 60px;
+    border: 1px solid #edf2f7;
+  }
 
-div::-webkit-scrollbar-track {
-  background-color: #d3dee7;
-  border-radius: 60px;
-  border: 1px solid #edf2f7;
-}
+  div::-webkit-scrollbar-thumb {
+    border-radius: 90px;
+    border: 4px solid transparent;
+    background-clip: content-box;
+    background-color: #255b87;
+  }
 
-div::-webkit-scrollbar-thumb {
-  border-radius: 90px;
-  border: 4px solid transparent;
-  background-clip: content-box;
-  background-color: #255b87;
-}
-
-div:root {
-  scrollbar-color: #255b87 #edf2f7 !important;
-  scrollbar-width: thin !important;
+  div:root {
+    scrollbar-color: #255b87 #edf2f7 !important;
+    scrollbar-width: thin !important;
+  }
 }
 
 body,
