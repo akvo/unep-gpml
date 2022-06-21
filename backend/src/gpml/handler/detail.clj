@@ -419,7 +419,7 @@
           authorized? (and (or (model.topic/public? topic) approved?)
                            (some? (get-resource-if-allowed conn path user)))
           sqls (condp = topic
-                 "policy" (common-queries topic path true true true)
+                 "policy" (common-queries topic path true false true)
                  "event" (common-queries topic path true true true)
                  "technology" (common-queries topic path true true true)
                  "organisation" (common-queries topic path true false true)
@@ -638,7 +638,8 @@
       (update-resource-tags conn mailjet-config table id tags))
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn id table related-contents))
-    (update-resource-language-urls conn table id urls)
+    (when-not (= "policy" topic-type)
+      (update-resource-language-urls conn table id urls))
     (update-resource-geo-coverage-values conn table id updates)
     (when (contains? #{"resource"} table)
       (update-resource-organisation conn table id org-id))

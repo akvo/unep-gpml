@@ -25,7 +25,6 @@
    :latest_amendment_date "2021-04-01"
    :geo_coverage_type "regional"
    :geo_coverage_value (mapv :id (:country_groups data))
-   :urls [{:lang "id" :url "https://www.test.org"}]
    :url "https://akvo.org"
    :attachments nil
    :remarks nil

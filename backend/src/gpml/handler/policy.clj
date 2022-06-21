@@ -47,7 +47,7 @@
                              geo_coverage_value implementing_mea
                              geo_coverage_countries geo_coverage_country_groups
                              geo_coverage_value_subnational_city
-                             tags urls created_by image thumbnail language
+                             tags created_by image thumbnail language
                              owners info_docs sub_content_type
                              document_preview related_content topics
                              attachments remarks entity_connections individual_connections]}]
@@ -92,14 +92,6 @@
                                                                       :tag-category "general"
                                                                       :resource-name "policy"
                                                                       :resource-id policy-id}))
-    (when (not-empty urls)
-      (let [lang-urls (map #(vector policy-id
-                                    (->> % :lang
-                                         (assoc {} :iso_code)
-                                         (db.language/language-by-iso-code conn)
-                                         :id)
-                                    (:url %)) urls)]
-        (db.policy/add-policy-language-urls conn {:urls lang-urls})))
     (when (not-empty language)
       (let [lang-id (:id (db.language/language-by-iso-code conn (select-keys language [:iso_code])))]
         (if-not (nil? lang-id)

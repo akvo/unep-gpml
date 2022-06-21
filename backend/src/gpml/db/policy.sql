@@ -76,10 +76,6 @@ select
     image,
     created_by,
     document_preview,
-    (select json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
-        from policy_language_url plu
-        left join language l on l.id = plu.language
-        where plu.policy = :id) as urls,
     (select json_agg(tag) from policy_tag where policy = :id) as tags,
     (select json_agg(coalesce(country, country_group))
         from policy_geo_coverage where policy = :id) as geo_coverage_value
@@ -108,10 +104,6 @@ select
     url,
     image,
     document_preview,
-    (select json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
-        from policy_language_url plu
-        left join language l on l.id = plu.language
-        where plu.policy = :id) as urls,
     (select json_agg(tag)
         from policy_tag where policy = :id) as tags,
     (select created_by
@@ -128,11 +120,6 @@ values :t*:tags RETURNING id;
 -- :doc add policy geo
 insert into policy_geo_coverage(policy, country_group, country)
 values :t*:geo RETURNING id;
-
--- :name add-policy-language-urls :<! :1
--- :doc Add language URLs to a policy
-insert into policy_language_url(policy, language, url)
-values :t*:urls RETURNING id;
 
 -- :name all-policies
 -- :doc List all policies
