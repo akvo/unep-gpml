@@ -553,18 +553,6 @@
     (-update-blank-resource-picture conn image-type resource-id image-key)
     (-update-resource-picture conn image image-type resource-id image-key)))
 
-(defn -update-initiative-picture [conn image image-type initiative-id]
-  (let [url (handler.image/assoc-image conn image image-type)]
-    (when-not (and image (= image url))
-      (db.detail/update-resource-table
-       conn
-       {:table image-type :id initiative-id :updates {:qimage url}}))))
-
-(defn update-initiative-image [conn image image-type initiative-id]
-  (if (empty? image)
-    (-update-blank-resource-picture conn image-type initiative-id :qimage)
-    (-update-initiative-picture conn image image-type initiative-id)))
-
 (defn expand-associations
   [connections stakeholder-type topic topic-id]
   (vec (for [connection connections]
@@ -668,8 +656,8 @@
                    (handler.initiative/update-geo-initiative conn-tx id (handler.initiative/extract-geo-data params))
                    status))
         related-contents (:related_content data)]
-    (when (contains? data :qimage)
-      (update-initiative-image conn (:qimage data) "initiative" id))
+    (doseq [[image-key image-data] (select-keys data [:qimage :thumbnail])]
+      (update-resource-image conn image-data image-key "initiative" id))
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn id "initiative" related-contents))
     (when (seq tags)
