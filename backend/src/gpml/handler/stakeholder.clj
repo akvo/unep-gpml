@@ -45,7 +45,8 @@
 (defmethod ig/init-key :gpml.handler.stakeholder/get [_ {:keys [db]}]
   (fn [{{{:keys [page limit email-like roles] :as query} :query} :parameters
         user :user approved? :approved?}]
-    (resp/response (if (and approved? (= (:role user) "ADMIN"))
+    (resp/response (if (or (and approved? (= (:role user) "ADMIN"))
+                           (= (:role user) :programmatic-access))
                      ;; FIXME: Currently hard-coded to allow only for ADMINS.
                      (let [search (and email-like (format "%%%s%%" email-like))
                            roles (and roles (str/split roles #","))
