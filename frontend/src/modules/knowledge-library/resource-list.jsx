@@ -24,6 +24,9 @@ import humps from "humps";
 import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
+import DetailViewModal from "../detail-view-modal/view";
+import api from "../../utils/api";
+import { redirectError } from "../error/error-util";
 
 // Icons
 
@@ -44,7 +47,12 @@ const ResourceList = ({
   }));
 
   const [didMount, setDidMount] = useState(false);
-
+  const [isShownModal, setIsShownModal] = useState(false);
+  const [dataProperties, setDataProperties] = useState({
+    resourceType: null,
+    resourceId: null,
+  });
+  const [data, setData] = useState(null);
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
 
   const topics = query?.topic;
@@ -90,6 +98,18 @@ const ResourceList = ({
     return () => setDidMount(false);
   }, []);
 
+  // const getData = ({ type, id }) => {
+  //   api
+  //     .get(`/detail/${type}/${id}`)
+  //     .then((d) => {
+  //       setData(d.data);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //       redirectError(err, history);
+  //     });
+  // };
+
   return (
     <Row style={{ postion: "relative" }}>
       <Col
@@ -127,11 +147,17 @@ const ResourceList = ({
             <LoadingOutlined spin /> Loading
           </h2>
         ) : !loading && !isEmpty(allResults) ? (
-          <ResourceItem
-            view={view}
-            results={allResults}
-            stakeholders={stakeholders}
-          />
+          <>
+            <ResourceItem
+              view={view}
+              results={allResults}
+              stakeholders={stakeholders}
+              setIsShownModal={setIsShownModal}
+              setData={setData}
+              setDataProperties={setDataProperties}
+              // getData={getData}
+            />
+          </>
         ) : (
           <h2 className="loading ">There is no data to display</h2>
         )}
@@ -170,7 +196,7 @@ const ResourceItem = ({ results, view, stakeholders }) => {
       result.about ||
       result.remarks ||
       "";
-    const linkTo = `/${type}/${id}`;
+    const linkTo = `/${type.replace("_", "-")}/${id}`;
     const stakeholdersConnectionList = result?.stakeholderConnections.filter(
       (x) => x.stakeholderRole !== "ADMIN" || x.role === "interested in"
     );
@@ -199,7 +225,7 @@ const ResourceItem = ({ results, view, stakeholders }) => {
     };
 
     return (
-      <Link className="resource-item-wrapper" key={`${type}-${id}`} to={linkTo}>
+      <Link to={linkTo} className="resource-item-wrapper" key={`${type}-${id}`}>
         <Card
           className="resource-item"
           style={
