@@ -42,7 +42,8 @@
                                                         cheshire
                                                         medley
                                                         clj-time]]
-                 [clojure.java-time "0.3.3"]]
+                 [clojure.java-time "0.3.3"]
+                 [ns-tracker "0.4.0"]]
   :plugins [[duct/lein-duct "0.12.1"]]
   :main ^:skip-aot gpml.main
   :resource-paths ["resources" "target/resources"]
