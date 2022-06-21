@@ -58,7 +58,10 @@ const Wizard = ({
                 >
                   <div className="animation-container">
                     <div className="animate">{steps[currentStep]}</div>
-                    <div className="wave" />
+                    <div
+                      className="wave"
+                      style={{ backgroundPosition: "0px 0px" }}
+                    />
                   </div>
                 </CSSTransition>
               </SwitchTransition>

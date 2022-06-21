@@ -253,41 +253,16 @@
       flex-direction: column;
       flex: 1;
       .wave {
-        // background: url("../../images/auth/wavePurple.svg");
-        // width: 100%;
-        // height: 350px;
-        // bottom: 0;
-        // background-repeat: no-repeat;
-        // background-size: cover;
-        // mix-blend-mode: multiply;
-        // background-position: center bottom;
-        // z-index: -1;
-        // position: absolute;
-        background: url("../../images/auth/wavePurple.svg") repeat-x;
+        background: url("../../images/auth/wave.png");
+        width: 100%;
+        height: 350px;
+        bottom: 0;
+        background-repeat: no-repeat;
+        background-size: cover;
+        mix-blend-mode: multiply;
+        background-position: center bottom;
+        z-index: -1;
         position: absolute;
-        bottom: -10px;
-        width: 6400px;
-        height: 198px;
-        animation: wave 12s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite,
-          swell 8s ease -1.25s infinite;
-        transform: translate3d(0, 0, 0);
-        @keyframes wave {
-          0% {
-            margin-left: 0;
-          }
-          100% {
-            margin-left: -1600px;
-          }
-        }
-        @keyframes swell {
-          0%,
-          100% {
-            transform: translate3d(0, -10px, 0);
-          }
-          50% {
-            transform: translate3d(0, -10px, 0);
-          }
-        }
         @media screen and (max-width: 1600px) {
           height: 250px;
           bottom: 0px;
