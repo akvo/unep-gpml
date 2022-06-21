@@ -14,7 +14,8 @@
    [gpml.handler.image :as handler.image]
    [gpml.handler.resource.related-content :as handler.resource.related-content]
    [gpml.handler.resource.tag :as handler.resource.tag]
-   [gpml.handler.util :as util]
+   [gpml.handler.util :as handler.util]
+   [gpml.util :as util]
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 
@@ -48,7 +49,7 @@
                                  tags url urls created_by image owners info_docs
                                  sub_content_type related_content
                                  headquarter document_preview
-                                 logo attachments remarks
+                                 logo thumbnail attachments remarks
                                  entity_connections individual_connections]}]
   (let [data {:name name
               :year_founded year_founded
@@ -60,6 +61,7 @@
               :country country
               :image (handler.image/assoc-image conn image "technology")
               :logo (handler.image/assoc-image conn logo "technology")
+              :thumbnail (handler.image/assoc-image conn thumbnail "technology")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
               :geo_coverage_countries geo_coverage_countries
@@ -75,7 +77,7 @@
               :document_preview document_preview
               :review_status "SUBMITTED"}
         technology-id (->> data (db.technology/new-technology conn) :id)
-        api-individual-connections (util/individual-connections->api-individual-connections conn individual_connections created_by)
+        api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
@@ -144,7 +146,8 @@
           [:enum "global", "regional", "national", "transnational",
            "sub-national", "global with elements in specific areas"]]
          [:geo_coverage_value_subnational_city {:optional true} string?]
-         [:image {:optional true} string?]
+         [:image {:optional true} [:fn (comp util/base64? util/base64-headless)]]
+         [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
          [:logo {:optional true} string?]
          [:tags {:optional true}
           [:vector {:optional true}

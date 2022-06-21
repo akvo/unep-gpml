@@ -70,10 +70,11 @@
          new-tags)))))
 
 (defn create-initiative [conn {:keys [mailjet-config tags owners related_content created_by
-                                      entity_connections individual_connections qimage] :as initiative}]
+                                      entity_connections individual_connections qimage thumbnail] :as initiative}]
   (let [data (-> initiative
                  (dissoc :tags :owners :mailjet-config :entity_connections :individual_connections :related_content)
-                 (assoc :qimage (handler.image/assoc-image conn qimage "initiative")))
+                 (assoc :qimage (handler.image/assoc-image conn qimage "initiative")
+                        :thumbnail (handler.image/assoc-image conn thumbnail "initiative")))
         initiative-id (:id (db.initiative/new-initiative conn data))
         api-individual-connections (util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
