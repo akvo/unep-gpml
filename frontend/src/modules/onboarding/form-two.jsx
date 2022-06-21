@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { UIStore } from "../../store";
 import { Col, Row, Button, Typography, Form, Input, Select, List } from "antd";
 import { Field } from "react-final-form";
 const { Title, Link } = Typography;
 
 function FormTwo({ handleOfferingSuggestedTag, validate }) {
+  const [selectedItems, setSelectedItems] = useState([]);
   const storeData = UIStore.useState((s) => ({
     entitySuggestedTags: s.entitySuggestedTags,
     tags: s.tags,
@@ -43,7 +44,10 @@ function FormTwo({ handleOfferingSuggestedTag, validate }) {
                       showSearch
                       labelInValue
                       mode="tags"
-                      onChange={(value) => input.onChange(value)}
+                      onChange={(value) => {
+                        setSelectedItems(value.map((item) => item.label));
+                        input.onChange(value);
+                      }}
                       value={input.value ? input.value : undefined}
                       filterOption={(i, option) =>
                         option.children.toLowerCase().includes(i.toLowerCase())
@@ -72,16 +76,26 @@ function FormTwo({ handleOfferingSuggestedTag, validate }) {
                 <List.Item.Meta
                   title={
                     <ul>
-                      {entitySuggestedTags.map((tag) => (
-                        <li
-                          onClick={() =>
-                            handleOfferingSuggestedTag(tag.toLowerCase())
-                          }
-                          key={tag}
-                        >
-                          {tag}
-                        </li>
-                      ))}
+                      {entitySuggestedTags
+                        ?.filter(
+                          (item) => !selectedItems.includes(item.toLowerCase())
+                        )
+                        .map((tag) => (
+                          <li
+                            onClick={() => {
+                              if (!selectedItems.includes(tag.toLowerCase())) {
+                                setSelectedItems([
+                                  ...selectedItems,
+                                  tag.toLowerCase(),
+                                ]);
+                              }
+                              handleOfferingSuggestedTag(tag.toLowerCase());
+                            }}
+                            key={tag}
+                          >
+                            {tag}
+                          </li>
+                        ))}
                     </ul>
                   }
                 />

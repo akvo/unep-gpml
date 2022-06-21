@@ -137,7 +137,7 @@ function Authentication() {
       value = {
         id: find.id,
         label: find.tag,
-        key: find.key,
+        key: find.id,
       };
     } else {
       value = {
@@ -160,7 +160,7 @@ function Authentication() {
       value = {
         id: find.id,
         label: find.tag,
-        key: find.key,
+        key: find.id,
       };
     } else {
       value = {
