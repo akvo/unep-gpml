@@ -21,11 +21,13 @@ import { useHistory, useLocation } from "react-router-dom";
 const { Title, Link } = Typography;
 import { Form as FinalForm, Field } from "react-final-form";
 import { auth0Client } from "../../utils/misc";
+import ForgotPassword from "./forgot-password";
 
 function Login({ handleOnClickBtnNext }) {
   const history = useHistory();
   const location = useLocation();
   const [singin, setSignIn] = useState(false);
+  const [forgotPassword, setForgotPassword] = useState(false);
   const [form] = Form.useForm();
 
   const [initialValues, setInitialValues] = useState({});
@@ -161,137 +163,148 @@ function Login({ handleOnClickBtnNext }) {
             </div>
           </Col>
           <Col span={12}>
-            <div className="auth-container">
-              {!singin ? (
-                <div className="signup-wrapper">
-                  <div className="signin-button">
-                    <Button type="text">SIGN IN</Button>
-                  </div>
-                  <div className="auth-buttons">
-                    <Button
-                      type="primary"
-                      shape="round"
-                      icon={<LinkedinIcon />}
-                      onClick={handleOnClickBtnNext}
-                    >
-                      CONTINUE WITH LINKEDIN
-                    </Button>
-                    <Button
-                      type="primary"
-                      shape="round"
-                      icon={<GoogleIcon />}
-                      onClick={handleGoogleLogin}
-                    >
-                      CONTINUE WITH GOOGLE
-                    </Button>
-                    <div className="separator">
-                      <Title level={4}>or</Title>
+            {!forgotPassword ? (
+              <div className="auth-container">
+                {!singin ? (
+                  <div className="signup-wrapper">
+                    <div className="signin-button">
+                      <Button type="text">SIGN IN</Button>
                     </div>
-                    <Button
-                      type="primary"
-                      shape="round"
-                      icon={<EmailIcon />}
-                      onClick={() => setSignIn(!singin)}
-                    >
-                      CONTINUE WITH EMAIL
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                <div className="login-wrapper">
-                  <div className="connect-button">
-                    <Button type="text">CONTINUE WITH EMAIL</Button>
-                    <Button
-                      type="text"
-                      className="connect-back-button"
-                      onClick={() => setSignIn(!singin)}
-                    >
-                      {"<"} Back to connect options
-                    </Button>
-                  </div>
-                  <div className="login-form">
-                    <FinalForm
-                      initialValues={initialValues}
-                      validate={checkValidation}
-                      onSubmit={handleOnLogin}
-                      render={({ handleSubmit, submitting, form }) => {
-                        formRef.current = form;
-                        return (
-                          <Form layout="vertical">
-                            <Form.Item label="Email">
-                              <Field name="email">
-                                {({ input, meta }) => (
-                                  <>
-                                    <Input
-                                      {...input}
-                                      placeholder="Enter your email"
-                                    />
-                                    {meta.touched && meta.error && (
-                                      <p color="error" className="error">
-                                        {meta.error}
-                                      </p>
-                                    )}
-                                  </>
-                                )}
-                              </Field>
-                            </Form.Item>
-                            <Form.Item label="Password">
-                              <Field name="password">
-                                {({ input, meta }) => (
-                                  <>
-                                    <Input.Password
-                                      {...input}
-                                      placeholder="Enter your password"
-                                    />
-                                    {meta.touched && meta.error && (
-                                      <p color="error" className="error">
-                                        {meta.error}
-                                      </p>
-                                    )}
-                                  </>
-                                )}
-                              </Field>
-                            </Form.Item>
-                            <Button
-                              type="primary"
-                              shape="round"
-                              className="login-button"
-                              onClick={() => handleSubmit()}
-                            >
-                              LOGIN WITH EMAIL
-                            </Button>{" "}
-                            <Button
-                              type="text"
-                              className="forgot-password"
-                              onClick={() => setSignIn(!singin)}
-                            >
-                              Forgot password?
-                            </Button>
-                          </Form>
-                        );
-                      }}
-                    />
-                    <Divider />
-                    <div className="join-wrapper">
-                      <Title level={2}>Don’t have an account yet?</Title>
+                    <div className="auth-buttons">
                       <Button
                         type="primary"
                         shape="round"
-                        className="login-button"
-                        onClick={() => history.push("/stakeholder-signup-new")}
+                        icon={<LinkedinIcon />}
+                        onClick={handleOnClickBtnNext}
                       >
-                        JOIN WITH EMAIL
+                        CONTINUE WITH LINKEDIN
+                      </Button>
+                      <Button
+                        type="primary"
+                        shape="round"
+                        icon={<GoogleIcon />}
+                        onClick={handleGoogleLogin}
+                      >
+                        CONTINUE WITH GOOGLE
+                      </Button>
+                      <div className="separator">
+                        <Title level={4}>or</Title>
+                      </div>
+                      <Button
+                        type="primary"
+                        shape="round"
+                        icon={<EmailIcon />}
+                        onClick={() => setSignIn(!singin)}
+                      >
+                        CONTINUE WITH EMAIL
                       </Button>
                     </div>
                   </div>
+                ) : (
+                  <div className="login-wrapper">
+                    <div className="connect-button">
+                      <Button type="text">CONTINUE WITH EMAIL</Button>
+                      <Button
+                        type="text"
+                        className="connect-back-button"
+                        onClick={() => setSignIn(!singin)}
+                      >
+                        {"<"} Back to connect options
+                      </Button>
+                    </div>
+                    <div className="login-form">
+                      <FinalForm
+                        initialValues={initialValues}
+                        validate={checkValidation}
+                        onSubmit={handleOnLogin}
+                        render={({ handleSubmit, submitting, form }) => {
+                          formRef.current = form;
+                          return (
+                            <Form layout="vertical">
+                              <Form.Item label="Email">
+                                <Field name="email">
+                                  {({ input, meta }) => (
+                                    <>
+                                      <Input
+                                        {...input}
+                                        placeholder="Enter your email"
+                                      />
+                                      {meta.touched && meta.error && (
+                                        <p color="error" className="error">
+                                          {meta.error}
+                                        </p>
+                                      )}
+                                    </>
+                                  )}
+                                </Field>
+                              </Form.Item>
+                              <Form.Item label="Password">
+                                <Field name="password">
+                                  {({ input, meta }) => (
+                                    <>
+                                      <Input.Password
+                                        {...input}
+                                        placeholder="Enter your password"
+                                      />
+                                      {meta.touched && meta.error && (
+                                        <p color="error" className="error">
+                                          {meta.error}
+                                        </p>
+                                      )}
+                                    </>
+                                  )}
+                                </Field>
+                              </Form.Item>
+                              <Button
+                                type="primary"
+                                shape="round"
+                                className="login-button"
+                                onClick={() => handleSubmit()}
+                              >
+                                LOGIN WITH EMAIL
+                              </Button>{" "}
+                              <Button
+                                type="text"
+                                className="forgot-password"
+                                onClick={() =>
+                                  setForgotPassword(!forgotPassword)
+                                }
+                              >
+                                Forgot password?
+                              </Button>
+                            </Form>
+                          );
+                        }}
+                      />
+                      <Divider />
+                      <div className="join-wrapper">
+                        <Title level={2}>Don’t have an account yet?</Title>
+                        <Button
+                          type="primary"
+                          shape="round"
+                          className="login-button"
+                          onClick={() =>
+                            history.push("/stakeholder-signup-new")
+                          }
+                        >
+                          JOIN WITH EMAIL
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div className="terms">
+                  <Title level={4}>
+                    By signing up you are agreeing to our terms and services.
+                  </Title>
                 </div>
-              )}
-              <div className="terms">
-                <Title level={4}>
-                  By signing up you are agreeing to our terms and services.
-                </Title>
               </div>
-            </div>
+            ) : (
+              <ForgotPassword
+                setSignIn={setSignIn}
+                setForgotPassword={setForgotPassword}
+              />
+            )}
           </Col>
         </Row>
       </div>
