@@ -20,6 +20,27 @@
   //   }
   // }
 
+  .fade-enter .animate {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  .fade-enter-active .animate {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  .fade-exit .animate {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  .fade-exit-active .animate {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  .fade-enter-active .animate,
+  .fade-exit-active .animate {
+    transition: opacity 500ms, transform 500ms;
+  }
+
   label {
     font-weight: 500;
     font-size: 14px;
@@ -121,27 +142,27 @@
     position: relative;
     z-index: 9;
     border-radius: 10px;
-    &::after {
-      content: "";
-      position: absolute;
-      background: url("../../images/auth/wave.png");
-      width: 100%;
-      height: 350px;
-      bottom: 0;
-      background-repeat: no-repeat;
-      background-size: cover;
-      mix-blend-mode: multiply;
-      opacity: 0.2;
-      background-position: center bottom;
-      z-index: -1;
-      border-bottom-right-radius: 10px;
-      border-bottom-left-radius: 10px;
-      @media screen and (max-width: 1600px) {
-        height: 250px;
-        bottom: 0px;
-        background-size: contain;
-      }
-    }
+    // &::after {
+    //   content: "";
+    //   position: absolute;
+    //   background: url("../../images/auth/wave.png");
+    //   width: 100%;
+    //   height: 350px;
+    //   bottom: 0;
+    //   background-repeat: no-repeat;
+    //   background-size: cover;
+    //   mix-blend-mode: multiply;
+    //   opacity: 0.2;
+    //   background-position: center bottom;
+    //   z-index: -1;
+    //   border-bottom-right-radius: 10px;
+    //   border-bottom-left-radius: 10px;
+    //   @media screen and (max-width: 1600px) {
+    //     height: 250px;
+    //     bottom: 0px;
+    //     background-size: contain;
+    //   }
+    // }
   }
   .getting-started {
     position: relative;
@@ -225,6 +246,55 @@
     justify-content: center;
     flex-direction: column;
     overflow: hidden;
+    .animation-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      flex: 1;
+      .wave {
+        // background: url("../../images/auth/wavePurple.svg");
+        // width: 100%;
+        // height: 350px;
+        // bottom: 0;
+        // background-repeat: no-repeat;
+        // background-size: cover;
+        // mix-blend-mode: multiply;
+        // background-position: center bottom;
+        // z-index: -1;
+        // position: absolute;
+        background: url("../../images/auth/wavePurple.svg") repeat-x;
+        position: absolute;
+        bottom: -10px;
+        width: 6400px;
+        height: 198px;
+        animation: wave 12s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite,
+          swell 8s ease -1.25s infinite;
+        transform: translate3d(0, 0, 0);
+        @keyframes wave {
+          0% {
+            margin-left: 0;
+          }
+          100% {
+            margin-left: -1600px;
+          }
+        }
+        @keyframes swell {
+          0%,
+          100% {
+            transform: translate3d(0, -10px, 0);
+          }
+          50% {
+            transform: translate3d(0, -10px, 0);
+          }
+        }
+        @media screen and (max-width: 1600px) {
+          height: 250px;
+          bottom: 0px;
+          background-size: contain;
+        }
+      }
+    }
     .ant-upload {
       background: transparent;
       padding: 15px 0px;
@@ -280,26 +350,26 @@
         flex: 1;
       }
     }
-    &::after {
-      content: "";
-      position: absolute;
-      background: url("../../images/auth/wave.png");
-      width: 100%;
-      height: 350px;
-      bottom: -10%;
-      background-repeat: no-repeat;
-      background-size: cover;
-      mix-blend-mode: multiply;
-      background-position: center bottom;
-      z-index: -1;
-      border-bottom-right-radius: 10px;
-      border-bottom-left-radius: 10px;
-      @media screen and (max-width: 1600px) {
-        height: 250px;
-        bottom: 0px;
-        background-size: contain;
-      }
-    }
+    // &::after {
+    //   content: "";
+    //   position: absolute;
+    //   background: url("../../images/auth/wave.png");
+    //   width: 100%;
+    //   height: 350px;
+    //   bottom: -10%;
+    //   background-repeat: no-repeat;
+    //   background-size: cover;
+    //   mix-blend-mode: multiply;
+    //   background-position: center bottom;
+    //   z-index: -1;
+    //   border-bottom-right-radius: 10px;
+    //   border-bottom-left-radius: 10px;
+    //   @media screen and (max-width: 1600px) {
+    //     height: 250px;
+    //     bottom: 0px;
+    //     background-size: contain;
+    //   }
+    // }
     .text-wrapper {
       h2 {
         font-weight: 700;

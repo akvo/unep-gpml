@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form } from "react-final-form";
 import { Col, Row, Button, Typography } from "antd";
+import { SwitchTransition, CSSTransition } from "react-transition-group";
 
 const Wizard = ({
   children,
@@ -46,7 +47,24 @@ const Wizard = ({
               currentStep === 0 ? "getting-started" : "step-form"
             } ${isLastPage() ? "step-form-final" : ""}`}
           >
-            {steps[currentStep]}
+            {currentStep !== 0 ? (
+              <SwitchTransition mode="out-in">
+                <CSSTransition
+                  key={currentStep}
+                  addEndListener={(node, done) => {
+                    node.addEventListener("transitionend", done, false);
+                  }}
+                  classNames="fade"
+                >
+                  <div className="animation-container">
+                    <div className="animate">{steps[currentStep]}</div>
+                    <div className="wave" />
+                  </div>
+                </CSSTransition>
+              </SwitchTransition>
+            ) : (
+              <>{steps[currentStep]}</>
+            )}
             {currentStep !== 0 && (
               <Row className="button-bottom-panel">
                 {currentStep > 0 && (
