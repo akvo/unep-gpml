@@ -1,4 +1,5 @@
 (ns gpml.db.community
+  {:ns-tracker/resource-deps ["community.sql"]}
   (:require [hugsql.core :as hugsql]))
 
 (declare get-community-members)

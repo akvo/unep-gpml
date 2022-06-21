@@ -1,4 +1,5 @@
 (ns gpml.db.tag
+  {:ns-tracker/resource-deps ["tag.sql"]}
   (:require [clojure.string :as str]
             [gpml.constants :as constants]
             [hugsql.core :as hugsql]))

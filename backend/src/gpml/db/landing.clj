@@ -1,4 +1,5 @@
 (ns gpml.db.landing
+  {:ns-tracker/resource-deps ["landing.sql"]}
   (:require [clojure.set :as set]
             [hugsql.core :as hugsql]
             [gpml.constants :as constants]

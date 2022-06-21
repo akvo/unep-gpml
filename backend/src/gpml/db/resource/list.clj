@@ -1,4 +1,5 @@
 (ns gpml.db.resource.list
+  {:ns-tracker/resource-deps ["resource/list.sql"]}
   (:require
    [clojure.string :as str]
    [gpml.constants :as constants]
