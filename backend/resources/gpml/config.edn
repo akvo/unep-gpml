@@ -669,7 +669,9 @@
                             :app-domain #duct/env ["APP_DOMAIN" Str]}
   :gpml.handler.export/get-params {}
 
-  :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources}
+  :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources
+                          :logger #ig/ref :duct/logger
+                          :strategy :raise-error}
   :duct.migrator.ragtime/resources {:path "migrations"}
 
   :gpml.auth/auth-middleware {:issuer #duct/env "OIDC_ISSUER"
@@ -702,7 +704,7 @@
 
   :duct.database.sql/hikaricp
   {:jdbc-url #duct/env ["DATABASE_URL" Str]
-   :logger nil ;; We don't want log entries for sql sentences (not event ragtime ones!)
+   :logger false ;; We don't want log entries for sql sentences (not event ragtime ones!)
    :minimum-idle 10
    :maximum-pool-size 25}}
 
@@ -714,6 +716,7 @@
   :duct.server.http/jetty {:configurator #ig/ref :gpml.handler.monitoring/jetty-configurator}
   :duct.logger/timbre
   {:min-level     :warn
+   :level         :info
    :set-root-config? true
    :appenders {:out #ig/ref :duct.logger.timbre/println
                :sentry #ig/ref :gpml.handler.monitoring/sentry-logger}}
