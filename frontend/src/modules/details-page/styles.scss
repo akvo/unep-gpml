@@ -79,12 +79,22 @@
         flex-wrap: wrap;
         margin-top: 13px;
         transition: all 0.15s ease-out;
+        @media screen and (max-width: 768px) {
+          flex-wrap: nowrap;
+          margin-left: -30px;
+          width: calc(100vw);
+          max-width: calc(100vw + 30px);
+          padding-left: 30px;
+          padding-right: 30px;
+          overflow: scroll;
+          overflow-y: hidden;
+        }
         button,
         a {
           display: flex;
           align-items: center;
           color: $blue02;
-          margin: 0 14px 14px 0;
+          margin: 0 10px 10px 0;
           border: 2px solid $blue02;
           svg {
             width: 22px;
@@ -195,7 +205,9 @@
       }
       .resource-image {
         width: 100%;
-        border: 5px solid rgba(0, 0, 0, 0.3);
+        @media screen and (min-width: 1024px) {
+          border: 5px solid rgba(0, 0, 0, 0.3);
+        }
       }
     }
 
