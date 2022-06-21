@@ -546,7 +546,10 @@ const DetailsView = ({
 
   return (
     <div className="detail-view-wrapper">
-      <div id="detail-view">
+      <div
+        id="detail-view"
+        style={!isAuthenticated ? { paddingBottom: "1px" } : { padding: 0 }}
+      >
         <Header
           {...{
             data,

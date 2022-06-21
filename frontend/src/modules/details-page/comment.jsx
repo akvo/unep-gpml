@@ -297,28 +297,26 @@ const Comments = ({
           </Button>
         )}
       </Col>
-      <Col className="input-wrapper">
-        {profile && profile.reviewStatus === "APPROVED" && (
-          <>
-            <MessageOutlined className="message-icon" />
-            <div className="input">
-              <SendOutlined
-                onClick={() => onSubmit({ description: newComment })}
-              />
-              <Input.TextArea
-                rows={1}
-                className="comment-input"
-                placeholder="Join the discussion..."
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                onPressEnter={(e) =>
-                  e.ctrlKey && onSubmit({ description: newComment })
-                }
-              />
-            </div>
-          </>
-        )}
-      </Col>
+      {isAuthenticated && (
+        <Col className="input-wrapper">
+          <MessageOutlined className="message-icon" />
+          <div className="input">
+            <SendOutlined
+              onClick={() => onSubmit({ description: newComment })}
+            />
+            <Input.TextArea
+              rows={1}
+              className="comment-input"
+              placeholder="Join the discussion..."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              onPressEnter={(e) =>
+                e.ctrlKey && onSubmit({ description: newComment })
+              }
+            />
+          </div>
+        </Col>
+      )}
     </>
   );
 };
