@@ -53,6 +53,7 @@ const defaultFormSchema = {
         order: 3,
         control: "select",
         showSearch: true,
+        allowClear: true,
         options: [],
         autoComplete: "on",
       },
