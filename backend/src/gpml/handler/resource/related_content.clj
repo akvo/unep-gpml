@@ -6,7 +6,7 @@
    [gpml.db.resource.related-content :as db.resource.related-content]))
 
 (def ^:const ^:private related-content-shared-keys
-  [:id :title :description :image])
+  [:id :title :description :image :thumbnail])
 
 (def ^:const ^:private related-content-non-shared-keys-mapping
   {:initiative {:q2 :title
