@@ -541,35 +541,17 @@
    conn
    {:table image-type :id resource-id :updates {image-key ""}}))
 
-(defn -update-resource-picture [conn image image-type resource-id logo?]
-  (let [url (handler.image/assoc-image conn image image-type)
-        image-key (if logo? :logo :image)]
+(defn -update-resource-picture [conn image image-type resource-id image-key]
+  (let [url (handler.image/assoc-image conn image image-type)]
     (when-not (and image (= image url))
       (db.detail/update-resource-table
        conn
        {:table image-type :id resource-id :updates {image-key url}}))))
 
-(defn update-resource-image [conn image image-type resource-id]
+(defn update-resource-image [conn image image-key image-type resource-id]
   (if (empty? image)
-    (-update-blank-resource-picture conn image-type resource-id :image)
-    (-update-resource-picture conn image image-type resource-id false)))
-
-(defn -update-initiative-picture [conn image image-type initiative-id]
-  (let [url (handler.image/assoc-image conn image image-type)]
-    (when-not (and image (= image url))
-      (db.detail/update-resource-table
-       conn
-       {:table image-type :id initiative-id :updates {:qimage url}}))))
-
-(defn update-initiative-image [conn image image-type initiative-id]
-  (if (empty? image)
-    (-update-blank-resource-picture conn image-type initiative-id :qimage)
-    (-update-initiative-picture conn image image-type initiative-id)))
-
-(defn update-resource-logo [conn image image-type resource-id]
-  (if (empty? image)
-    (-update-blank-resource-picture conn image-type resource-id :logo)
-    (-update-resource-picture conn image image-type resource-id true)))
+    (-update-blank-resource-picture conn image-type resource-id image-key)
+    (-update-resource-picture conn image image-type resource-id image-key)))
 
 (defn expand-associations
   [connections stakeholder-type topic topic-id]
@@ -628,7 +610,7 @@
         table-columns (-> updates
                           (dissoc
                            :tags :urls :geo_coverage_value :org
-                           :image :photo :logo :language
+                           :image :photo :logo :language :thumbnail
                            :geo_coverage_country_groups
                            :geo_coverage_countries
                            :entity_connections :related_content
@@ -650,12 +632,8 @@
         related-contents (:related_content updates)]
     (when (and (contains? updates :language) (= topic-type "policy"))
       (update-policy-language conn (:language updates) id))
-    (when (contains? updates :image)
-      (update-resource-image conn (:image updates) table id))
-    (when (contains? updates :photo)
-      (update-resource-image conn (:photo updates) table id))
-    (when (contains? updates :logo)
-      (update-resource-logo conn (:logo updates) table id))
+    (doseq [[image-key image-data] (select-keys updates [:image :thumbnail :photo :logo])]
+      (update-resource-image conn image-data image-key table id))
     (when (seq tags)
       (update-resource-tags conn mailjet-config table id tags))
     (when (seq related-contents)
@@ -678,8 +656,8 @@
                    (handler.initiative/update-geo-initiative conn-tx id (handler.initiative/extract-geo-data params))
                    status))
         related-contents (:related_content data)]
-    (when (contains? data :qimage)
-      (update-initiative-image conn (:qimage data) "initiative" id))
+    (doseq [[image-key image-data] (select-keys data [:qimage :thumbnail])]
+      (update-resource-image conn image-data image-key "initiative" id))
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn id "initiative" related-contents))
     (when (seq tags)
