@@ -19,7 +19,10 @@
     .slide {
       width: 100%;
       min-width: 100%;
-      padding: 0 100px;
+      padding: 0 60px;
+      @media screen and (min-width: 1024px) {
+        padding: 0 100px;
+      }
       position: relative;
       z-index: 1;
     }
@@ -42,7 +45,7 @@
       justify-content: center;
     }
   }
-  .getting-started {
+  .getting-started.slide {
     position: relative;
     transition: margin 0.47s ease-in-out;
     .text-wrapper {
@@ -94,6 +97,26 @@
       justify-content: center;
       left: 0;
     }
+    @media screen and (max-width: 840px) {
+      flex-direction: column;
+      position: relative;
+      z-index: 2;
+      padding-bottom: 100px !important;
+      .text-wrapper {
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        h2 {
+          font-size: 28px;
+          line-height: 38px;
+        }
+      }
+      .image-wrapper {
+        img {
+          max-height: 270px;
+        }
+      }
+    }
   }
 
   @media screen and (max-width: 1024px) {
@@ -108,23 +131,6 @@
       padding: 0 30px 60px;
     }
     .getting-started.slide {
-      flex-direction: column;
-      position: relative;
-      z-index: 2;
-      padding-bottom: 100px;
-      .text-wrapper {
-        justify-content: center;
-        display: flex;
-        align-items: center;
-      }
-      h2 {
-        font-size: 28px;
-        line-height: 38px;
-      }
-    }
-    .last.slide {
-      .ant-row {
-      }
     }
   }
 
@@ -310,7 +316,7 @@
     }
     .ant-form {
       width: 100%;
-      @media screen and (min-width: 1024px) {
+      @media screen and (min-width: 840px) {
         width: 80%;
       }
       margin: 0 auto;
@@ -452,7 +458,7 @@
           margin-right: 30px;
         }
       }
-      @media screen and (max-width: 1024px) {
+      @media screen and (max-width: 840px) {
         flex-direction: column;
         width: 100%;
         button {

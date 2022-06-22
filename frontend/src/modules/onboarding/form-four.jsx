@@ -36,12 +36,12 @@ function FormFour({ validate }) {
                 <div className="field-wrapper">
                   <div class="ant-col ant-form-item-label">
                     <label for="about" class="" title="">
-                      Bio
+                      Short Bio
                     </label>
                   </div>
                   <TextArea
                     onChange={(e) => input.onChange(e.target.value)}
-                    placeholder="About yourself (Max 100 words)"
+                    placeholder="Max 100 words"
                     maxLength={100}
                     className={`${
                       meta.touched && meta.error ? "ant-input-status-error" : ""
