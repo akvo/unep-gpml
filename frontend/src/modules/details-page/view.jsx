@@ -42,7 +42,6 @@ import Header from "./header";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
-
 const renderGeoCoverageCountryGroups = (data, countries) => {
   let dataCountries = null;
   const subItems = [].concat(
@@ -305,7 +304,6 @@ const DetailsView = ({
     );
   }
 
-  
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
@@ -690,8 +688,8 @@ const DetailsView = ({
             </div>
           </Col>
         )}
-        <Records {...{countries, languages, params, data, profile}} />
-        
+        <Records {...{ countries, languages, params, data, profile }} />
+
         {/* RELATED CONTENT */}
         {data?.relatedContent &&
           data?.relatedContent?.length > 0 &&
@@ -732,12 +730,7 @@ const DetailsView = ({
   );
 };
 
-
-
-
-
 const Records = ({ countries, languages, params, data }) => {
-  
   const mapping = detailMaps[params.type.replace("-", "_")];
   if (!mapping) {
     return;
@@ -790,14 +783,8 @@ const Records = ({ countries, languages, params, data }) => {
             <div className="record-name">{name}</div>
             <div className="record-value">
               {key === null && type === "static" && value}
-              {value === key &&
-                type === "name" &&
-                data[key] === false &&
-                "No"}
-              {value === key &&
-                type === "name" &&
-                data[key] === true &&
-                "Yes"}
+              {value === key && type === "name" && data[key] === false && "No"}
+              {value === key && type === "name" && data[key] === true && "Yes"}
               {value === key &&
                 (type === "name" ||
                   type === "string" ||
@@ -875,19 +862,17 @@ const Records = ({ countries, languages, params, data }) => {
         )}
       </Fragment>
     );
-  }
+  };
   return (
     <Col className="record-section section">
       <h3 className="content-heading">Records</h3>
       <div>
         <div className="record-table">
-          <div>
-            {countries && mapping.map(renderRow)}
-          </div>
+          <div>{countries && mapping.map(renderRow)}</div>
         </div>
       </div>
     </Col>
-  )
-}
+  );
+};
 
 export default DetailsView;
