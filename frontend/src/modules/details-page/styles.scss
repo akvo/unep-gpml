@@ -94,6 +94,7 @@
           display: flex;
           align-items: center;
           color: $blue02;
+          font-weight: 500;
           margin: 0 10px 10px 0;
           border: 2px solid $blue02;
           svg {
@@ -135,6 +136,7 @@
         .anticon {
           display: flex;
           align-items: center;
+          margin-left: -4px;
         }
         .two-tone-button:hover {
           background-color: #09689a !important;
