@@ -51,7 +51,7 @@ function FormFour({ validate }) {
               )}
             </Field>
             <Row gutter={16}>
-              <Col span={12}>
+              <Col sm={24} md={12}>
                 <Field name="linkedin">
                   {({ input, meta }) => (
                     <div className="field-wrapper">
@@ -64,14 +64,14 @@ function FormFour({ validate }) {
                       </div>
                       <Input
                         onChange={(e) => input.onChange(e.target.value)}
-                        placeholder="Your linkedin username"
+                        placeholder="Username"
                         prefix={<LinkedinOutlined />}
                       />
                     </div>
                   )}
                 </Field>
               </Col>
-              <Col span={12} >
+              <Col sm={24} md={12} >
                 <Field name="twitter">
                   {({ input, meta }) => (
                     <div className="field-wrapper">
@@ -84,7 +84,7 @@ function FormFour({ validate }) {
                       </div>
                       <Input
                         onChange={(e) => input.onChange(e.target.value)}
-                        placeholder="Your twitter username"
+                        placeholder="Username"
                         prefix={<TwitterOutlined />}
                       />
                     </div>

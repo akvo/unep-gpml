@@ -190,8 +190,8 @@ function Authentication() {
             onSubmit={onSubmit}
             className="step-form"
           >
-            <div className="waveboard">
-              <div className="slide getting-started" style={{ marginLeft: -(currentStep * (window.innerWidth - 2 * (window.innerWidth < 1024 ? 30 : 170))) }}>
+            <div className={`waveboard s${currentStep}`}>
+              <div className="slide getting-started" style={{ marginLeft: -(currentStep * (window.innerWidth - 2 * (window.innerWidth < 1024 ? 20 : 170))) }}>
                 <div className="text-wrapper">
                   <h2>
                     You’re almost set! <br /> We need to ask a few more questions to
@@ -225,7 +225,7 @@ function Authentication() {
                   validate={required}
                 />
               </div>
-              <div className="slide">
+              <div className="slide last">
                 <FormFour validate={required} />
               </div>
               <Wave step={currentStep} />

@@ -67,31 +67,33 @@ function FormThree({ handleSeekingSuggestedTag, validate }) {
       </div>
       <div className="list tag-list" style={{ marginTop: 20 }}>
         <h5>Suggested tags</h5>
-        <List itemLayout="horizontal">
-          <List.Item>
-            <List.Item.Meta
-              title={
-                <ul>
-                  {entitySuggestedTags
-                    ?.filter((item) => !selectedItems.includes(item))
-                    .map((tag) => (
-                      <li
-                        key={tag}
-                        onClick={() => {
-                          if (!selectedItems.includes(tag)) {
-                            setSelectedItems([...selectedItems, tag]);
-                          }
-                          handleSeekingSuggestedTag(tag);
-                        }}
-                      >
-                        {tag}
-                      </li>
-                    ))}
-                </ul>
-              }
-            />
-          </List.Item>
-        </List>
+        <div className="tags-container">
+          <List itemLayout="horizontal">
+            <List.Item>
+              <List.Item.Meta
+                title={
+                  <ul>
+                    {entitySuggestedTags
+                      ?.filter((item) => !selectedItems.includes(item))
+                      .map((tag) => (
+                        <li
+                          key={tag}
+                          onClick={() => {
+                            if (!selectedItems.includes(tag)) {
+                              setSelectedItems([...selectedItems, tag]);
+                            }
+                            handleSeekingSuggestedTag(tag);
+                          }}
+                        >
+                          {tag}
+                        </li>
+                      ))}
+                  </ul>
+                }
+              />
+            </List.Item>
+          </List>
+        </div>
       </div>
     </>
   );
