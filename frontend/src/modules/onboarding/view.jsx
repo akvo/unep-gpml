@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./styles.scss";
-import { Carousel, Col, Row, Typography, Button, Steps, Avatar } from "antd";
+import { Button, Typography, Steps } from "antd";
+import { Form } from "react-final-form";
 const { Title, Link } = Typography;
 import common from "./common";
 const { Step } = Steps;
 import Main from "./main";
-import GettingStarted from "./getting-started";
 import AffiliationOption from "./affiliation-option";
 import FormOne from "./form-one";
 import FormTwo from "./form-two";
@@ -17,6 +17,8 @@ import { useLocation } from "react-router-dom";
 import api from "../../utils/api";
 import { useHistory } from "react-router-dom";
 import { SwitchTransition, CSSTransition } from "react-transition-group";
+import GettingStartedIcon from "../../images/auth/getting-started.png";
+import waveSvg from "../../images/auth/wave.svg";
 
 function Authentication() {
   const formRef = useRef();
@@ -27,8 +29,8 @@ function Authentication() {
 
   const { tags } = UIStore.currentState;
 
-  const next = (steps) => {
-    setCurrentStep(Math.min(currentStep + 1, steps - 1));
+  const next = (skip = 0) => {
+    setCurrentStep(currentStep + 1 + skip);
   };
   const previous = () => {
     setCurrentStep(Math.max(currentStep - 1, 0));
@@ -176,34 +178,65 @@ function Authentication() {
       value,
     ]);
   };
-
+  console.log(currentStep)
   return (
-    <div id="authentication">
-      <Wizard
-        initialValues={{}}
-        onSubmit={onSubmit}
-        formRef={formRef}
-        next={next}
-        previous={previous}
-        currentStep={currentStep}
-      >
-        <GettingStarted />
-        <AffiliationOption
-          handleAffiliationChange={handleAffiliationChange}
-          affiliation={affiliation}
-          next={next}
-        />
-        {!affiliation && <FormOne validate={required} />}
-        <FormTwo
-          handleOfferingSuggestedTag={handleOfferingSuggestedTag}
-          validate={required}
-        />
-        <FormThree
-          handleSeekingSuggestedTag={handleSeekingSuggestedTag}
-          validate={required}
-        />
-        <FormFour validate={required} />
-      </Wizard>
+    <div id="onboarding">
+      <Form onSubmit={onSubmit}>
+        {() => (
+          <form
+            onSubmit={onSubmit}
+            className="step-form"
+          >
+            <div className="waveboard">
+              <div className="slide getting-started" style={{ marginLeft: -(currentStep * (window.innerWidth - 2 * (window.innerWidth < 1024 ? 30 : 170))) }}>
+                <div className="text-wrapper">
+                  <h2>
+                    You’re almost set! <br /> We need to ask a few more questions to
+                    make the platform relevant to you.
+                  </h2>
+                </div>
+                <div className="image-wrapper">
+                  <img src={GettingStartedIcon} alt="getting-started" />
+                </div>
+                <div className="button-bottom-panel">
+                  <Button className="step-button-next" onClick={() => next()}>
+                    Next {">"}
+                  </Button>
+                </div>
+              </div>
+              <div className="slide">
+                <AffiliationOption {...{ handleAffiliationChange, affiliation, next }} />
+              </div>
+              <div className="slide">
+                <FormOne validate={required} />
+              </div>
+              <div className="slide">
+                <FormTwo
+                  handleOfferingSuggestedTag={handleOfferingSuggestedTag}
+                  validate={required}
+                />
+              </div>
+              <div className="slide">
+                <FormThree
+                  handleSeekingSuggestedTag={handleSeekingSuggestedTag}
+                  validate={required}
+                />
+              </div>
+              <div className="slide">
+                <FormFour validate={required} />
+              </div>
+              <div className="wave" style={{ left: -(currentStep * (window.innerWidth + 200))}}>
+                <img src={waveSvg} />
+              </div>
+              {currentStep > 0 &&
+              <Button className="step-button-back" onClick={previous}>
+                {"<"} Back
+              </Button>
+              }
+            </div>
+          </form>
+        )}
+      </Form>
     </div>
   );
 }

@@ -5,23 +5,17 @@ const { Title, Link } = Typography;
 
 function GettingStarted({ handleOnClickBtnNext }) {
   return (
-    <>
-      <Row justify="center" align="middle">
-        <Col span={12}>
-          <div className="text-wrapper">
-            <Title level={2}>
-              You’re almost set! <br /> We need to ask a few more questions to
-              make the platform relevant to you.
-            </Title>
-          </div>
-        </Col>
-        <Col span={12}>
-          <div className="image-wrapper">
-            <img src={GettingStartedIcon} alt="getting-started" />
-          </div>
-        </Col>
-      </Row>
-    </>
+    <div className="getting-started">
+      <div className="text-wrapper">
+        <Title level={2}>
+          You’re almost set! <br /> We need to ask a few more questions to
+          make the platform relevant to you.
+        </Title>
+      </div>
+      <div className="image-wrapper">
+        <img src={GettingStartedIcon} alt="getting-started" />
+      </div>
+    </div>
   );
 }
 
