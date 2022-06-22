@@ -77,19 +77,14 @@ function FormTwo({ handleOfferingSuggestedTag, validate }) {
                   title={
                     <ul>
                       {entitySuggestedTags
-                        ?.filter(
-                          (item) => !selectedItems.includes(item.toLowerCase())
-                        )
+                        ?.filter((item) => !selectedItems.includes(item))
                         .map((tag) => (
                           <li
                             onClick={() => {
-                              if (!selectedItems.includes(tag.toLowerCase())) {
-                                setSelectedItems([
-                                  ...selectedItems,
-                                  tag.toLowerCase(),
-                                ]);
+                              if (!selectedItems.includes(tag)) {
+                                setSelectedItems([...selectedItems, tag]);
                               }
-                              handleOfferingSuggestedTag(tag.toLowerCase());
+                              handleOfferingSuggestedTag(tag);
                             }}
                             key={tag}
                           >

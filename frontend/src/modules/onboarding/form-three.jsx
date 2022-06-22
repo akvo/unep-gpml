@@ -75,20 +75,15 @@ function FormThree({ handleSeekingSuggestedTag, validate }) {
                   title={
                     <ul>
                       {entitySuggestedTags
-                        ?.filter(
-                          (item) => !selectedItems.includes(item.toLowerCase())
-                        )
+                        ?.filter((item) => !selectedItems.includes(item))
                         .map((tag) => (
                           <li
                             key={tag}
                             onClick={() => {
-                              if (!selectedItems.includes(tag.toLowerCase())) {
-                                setSelectedItems([
-                                  ...selectedItems,
-                                  tag.toLowerCase(),
-                                ]);
+                              if (!selectedItems.includes(tag)) {
+                                setSelectedItems([...selectedItems, tag]);
                               }
-                              handleSeekingSuggestedTag(tag.toLowerCase());
+                              handleSeekingSuggestedTag(tag);
                             }}
                           >
                             {tag}

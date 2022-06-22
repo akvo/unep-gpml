@@ -57,8 +57,8 @@ function Authentication() {
         tag:
           Object.values(tags)
             .flat()
-            .find((o) => o.id === parseInt(x.key))?.tag ||
-          x?.label?.toLowerCase(),
+            .find((o) => o.id === parseInt(x.key))
+            ?.tag.toLowerCase() || x?.label?.toLowerCase(),
         tag_category: "seeking",
       };
     });
@@ -70,8 +70,8 @@ function Authentication() {
         tag:
           Object.values(tags)
             .flat()
-            .find((o) => o.id === parseInt(x.key))?.tag ||
-          x?.label?.toLowerCase(),
+            .find((o) => o.id === parseInt(x.key))
+            ?.tag.toLowerCase() || x?.label?.toLowerCase(),
         tag_category: "offering",
       };
     });
