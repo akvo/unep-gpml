@@ -621,7 +621,10 @@
                           (set/rename-keys {:geo_coverage_value_subnational_city :subnational_city}))
         tags (remove nil? (:tags updates))
         urls (remove nil? (:urls updates))
-        params {:table table :id id :updates table-columns}
+        params {:table table
+                :id id
+                :updates table-columns
+                :entity-type topic-type}
         status (db.detail/update-resource-table conn params)
         org (:org updates)
         org-id (and org

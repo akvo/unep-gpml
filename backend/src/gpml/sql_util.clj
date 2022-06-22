@@ -50,7 +50,14 @@
             (format "= to_jsonb(:v%s)" k)
             (format "= %s" k))))))
 
-(defn generate-update-resource [params]
+(defn generate-update-resource
+  "Generic resource update
+
+   We check for entity-type argument in params to avoid parsing some date fields as timestamps, since
+   in some entity those fields are just dates and we need a different parsing in that case.
+
+   In case we have text column types timestamptz is still fine, so checking a single entity is good enough."
+  [{:keys [entity-type] :as params}]
   ;; Code adapted from the HugSql example for generic update (https://www.hugsql.org/)
   (str/join
    ",\n"
@@ -63,8 +70,18 @@
               (= key "geo_coverage_type")
               (str value "::geo_coverage_type")
 
-              (contains? #{"first_publication_date" "latest_amendment_date" "end_date" "start_date"} key)
+              (contains? #{"end_date" "start_date"} key)
               (str value "::timestamptz")
+
+              (and
+               (contains? #{"first_publication_date" "latest_amendment_date"} key)
+               (not (= "policy" entity-type)))
+              (str value "::timestamptz")
+
+              (and
+               (contains? #{"first_publication_date" "latest_amendment_date"} key)
+               (= "policy" entity-type))
+              (str value "::date")
 
               :else value))))))
 
