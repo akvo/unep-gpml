@@ -103,7 +103,7 @@ const RelatedContent = ({
   };
 
   const defaultImage = (item) => {
-    if (!item?.image) {
+    if (!item?.thumbnail) {
       if (
         item?.type === "action_plan" ||
         item?.type?.toLowerCase() === "action plan"
@@ -177,7 +177,7 @@ const RelatedContent = ({
                 }`}
                 style={{
                   backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${
-                    item?.image ? item?.image : defaultImage(item)
+                    item?.thumbnail ? item?.thumbnail : defaultImage(item)
                   })`,
                   backgroundPosition: "center",
                   backgroundSize: "cover",
@@ -235,7 +235,7 @@ const RelatedContent = ({
               <div className="slider-card">
                 <img
                   className="related-content-image"
-                  src={item?.image ? item?.image : defaultImage(item)}
+                  src={item?.thumbnail ? item?.thumbnail : defaultImage(item)}
                   alt={item?.type}
                 />
               </div>
