@@ -1,6 +1,6 @@
 import React from "react";
 import "./styles.scss";
-import { Row, Col, List, Avatar, Popover, Input, Button, Tag } from "antd";
+import { Col, Popover, Input, Button } from "antd";
 
 import {
   EyeFilled,
@@ -15,7 +15,9 @@ export const HeaderButtons = ({
   data,
   topic,
   handleEditBtn,
+  handleDeleteBtn,
   canEdit,
+  canDelete,
   relation,
   handleRelationChange,
   visible,
@@ -169,6 +171,18 @@ export const HeaderButtons = ({
           Edit
         </Button>
       )}
+      {canDelete() && (
+        <Button
+          className="delete-button two-tone-button"
+          type="primary"
+          shape="round"
+          size="middle"
+          ghost
+          onClick={handleDeleteBtn}
+        >
+          Delete
+        </Button>
+      )}
     </Col>
   );
 };
@@ -180,6 +194,7 @@ const Header = ({
   isAuthenticated,
   params,
   handleEditBtn,
+  handleDeleteBtn,
   allowBookmark,
   visible,
   handleVisible,
@@ -196,6 +211,7 @@ const Header = ({
     isAuthenticated,
     params,
     handleEditBtn,
+    handleDeleteBtn,
     allowBookmark,
     visible,
     handleVisible,
@@ -229,6 +245,7 @@ const Header = ({
     return (
       <HeaderButtons
         data={data}
+        handleDeleteBtn={handleDeleteBtn}
         canDelete={canDelete}
         topic={{ ...data, ...params }}
         handleEditBtn={handleEditBtn}
@@ -255,6 +272,7 @@ const Header = ({
         isAuthenticated,
         params,
         handleEditBtn,
+        handleDeleteBtn,
         allowBookmark,
         visible,
         handleVisible,

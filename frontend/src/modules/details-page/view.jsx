@@ -7,7 +7,18 @@ import React, {
   useRef,
 } from "react";
 import "./styles.scss";
-import { Row, Col, List, Avatar, Popover, Input, Button, Tag } from "antd";
+import {
+  Row,
+  Col,
+  List,
+  Avatar,
+  Popover,
+  Input,
+  Button,
+  Tag,
+  Modal,
+  notification,
+} from "antd";
 
 import {
   EyeFilled,
@@ -17,6 +28,7 @@ import {
   HeartFilled,
   InfoCircleOutlined,
   LoadingOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 
 import api from "../../utils/api";
@@ -281,13 +293,37 @@ const DetailsView = ({
     });
   };
 
-  const handleVisible = () => {
-    setVisible(!visible);
+  const handleDeleteBtn = () => {
+    Modal.error({
+      className: "popup-delete",
+      centered: true,
+      closable: true,
+      icon: <DeleteOutlined />,
+      title: "Are you sure you want to delete this resource?",
+      content: "Please be aware this action cannot be undone.",
+      okText: "Delete",
+      okType: "danger",
+      onOk() {
+        console.log("params?.type::::::", params?.type);
+        return api
+          .delete(`/detail/${params?.type.replace("-", "_")}/${params?.id}`)
+          .then((res) => {
+            notification.success({
+              message: "Resource deleted successfully",
+            });
+          })
+          .catch((err) => {
+            console.error(err);
+            notification.error({
+              message: "Oops, something went wrong",
+            });
+          });
+      },
+    });
   };
 
-  const defaultFormSchema = {
-    title: { label: "Title", required: true },
-    description: { label: "Description", control: "textarea", required: true },
+  const handleVisible = () => {
+    setVisible(!visible);
   };
 
   const [comment, setComment] = useState("");
@@ -353,6 +389,7 @@ const DetailsView = ({
             isAuthenticated,
             params,
             handleEditBtn,
+            handleDeleteBtn,
             allowBookmark,
             visible,
             handleVisible,
