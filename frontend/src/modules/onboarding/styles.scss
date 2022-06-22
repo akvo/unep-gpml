@@ -41,6 +41,30 @@
     transition: opacity 500ms, transform 500ms;
   }
 
+  .slide-enter {
+    transform: translateX(100%);
+  }
+  .slide-enter-active {
+    transform: translateX(0%);
+    transition: transform 1000ms ease-in-out;
+  }
+  .slide-exit {
+    transform: translateX(0%);
+  }
+  .slide-exit-active {
+    transform: translateX(-100%);
+    transition: transform 1000ms ease-in-out;
+  }
+  .background {
+    width: 100%;
+    height: 350px;
+    z-index: -1;
+    position: absolute;
+    bottom: -75px;
+    left: 0;
+    opacity: 0.2;
+  }
+
   label {
     font-weight: 500;
     font-size: 14px;
@@ -252,23 +276,24 @@
       justify-content: center;
       flex-direction: column;
       flex: 1;
-      .wave {
-        background: url("../../images/auth/wave.png");
-        width: 100%;
-        height: 350px;
-        bottom: 0;
-        background-repeat: no-repeat;
-        background-size: cover;
-        mix-blend-mode: multiply;
-        background-position: center bottom;
-        z-index: -1;
-        position: absolute;
-        // @media screen and (max-width: 1600px) {
-        //   height: 250px;
-        //   bottom: 0px;
-        //   background-size: contain;
-        // }
-      }
+    }
+    .wave {
+      background: url("../../images/auth/wave.png");
+      width: 100%;
+      height: 350px;
+      bottom: 0;
+      background-repeat: no-repeat;
+      background-size: cover;
+      mix-blend-mode: multiply;
+      background-position: center bottom;
+      z-index: -1;
+      position: absolute;
+      left: 0;
+      // @media screen and (max-width: 1600px) {
+      //   height: 250px;
+      //   bottom: 0px;
+      //   background-size: contain;
+      // }
     }
     .ant-upload {
       background: transparent;
@@ -356,7 +381,7 @@
     }
     .button-bottom-panel {
       width: 100%;
-      padding: 0px 40px 60px 40px;
+      padding: 0px 40px 40px 35px;
       display: flex;
       align-items: center;
       justify-content: space-between;

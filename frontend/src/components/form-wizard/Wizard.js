@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import { Form } from "react-final-form";
 import { Col, Row, Button, Typography } from "antd";
-import { SwitchTransition, CSSTransition } from "react-transition-group";
+import {
+  SwitchTransition,
+  CSSTransition,
+  TransitionGroup,
+} from "react-transition-group";
+import WaveOneImage from "../../images/auth/wave-one.png";
+import WaveTwoImage from "../../images/auth/wave-two.png";
+import WaveThreeImage from "../../images/auth/wave-three.png";
+import WaveFourImage from "../../images/auth/wave-four.png";
+import WaveFiveImage from "../../images/auth/wave-five.png";
 
 const Wizard = ({
   children,
@@ -32,6 +41,31 @@ const Wizard = ({
     }
   };
 
+  const backgrounds = [
+    {
+      currentStep: 1,
+      src: WaveOneImage,
+    },
+    {
+      currentStep: 2,
+      src: WaveTwoImage,
+    },
+    {
+      currentStep: 3,
+      src: WaveFourImage,
+    },
+    {
+      currentStep: 4,
+      src: WaveFourImage,
+    },
+    {
+      currentStep: 5,
+      src: WaveFiveImage,
+    },
+  ];
+
+  const background = backgrounds.find((bg) => bg.currentStep === currentStep);
+
   return (
     <Form
       initialValues={initialValues}
@@ -48,23 +82,35 @@ const Wizard = ({
             } ${isLastPage() ? "step-form-final" : ""}`}
           >
             {currentStep !== 0 ? (
-              <SwitchTransition mode="out-in">
-                <CSSTransition
-                  key={currentStep}
-                  addEndListener={(node, done) => {
-                    node.addEventListener("transitionend", done, false);
-                  }}
-                  classNames="fade"
-                >
-                  <div className="animation-container">
-                    <div className="animate">{steps[currentStep]}</div>
-                    <div
-                      className="wave"
-                      style={{ backgroundPosition: "0px 0px" }}
+              <>
+                <SwitchTransition mode="out-in">
+                  <CSSTransition
+                    key={currentStep}
+                    addEndListener={(node, done) => {
+                      node.addEventListener("transitionend", done, false);
+                    }}
+                    classNames="fade"
+                  >
+                    <div className="animation-container">
+                      <div className="animate">{steps[currentStep]}</div>
+                    </div>
+                  </CSSTransition>
+                </SwitchTransition>
+                <TransitionGroup>
+                  <CSSTransition
+                    classNames="slide"
+                    timeout={{ enter: 5000, exit: 5000 }}
+                    key={currentStep}
+                  >
+                    <img
+                      className="background"
+                      src={background.src}
+                      alt={background.src}
                     />
-                  </div>
-                </CSSTransition>
-              </SwitchTransition>
+                    {/* <div className="wave" /> */}
+                  </CSSTransition>
+                </TransitionGroup>
+              </>
             ) : (
               <>{steps[currentStep]}</>
             )}
