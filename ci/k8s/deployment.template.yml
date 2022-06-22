@@ -109,12 +109,12 @@ spec:
           httpGet:
             path: /
             port: 3000
-          initialDelaySeconds: 30
+          initialDelaySeconds: 60
         livenessProbe:
           httpGet:
             path: /
             port: 3000
-          initialDelaySeconds: 30
+          initialDelaySeconds: 60
         volumeMounts:
           - name: unep-gpml-secrets
             mountPath: "/secrets/cloudsql/credentials.json"
