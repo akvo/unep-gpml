@@ -178,7 +178,10 @@ function Authentication() {
       value,
     ]);
   };
-  console.log(currentStep)
+
+  const handleNextClick = () => {
+    next()
+  }
   return (
     <div id="onboarding">
       <Form onSubmit={onSubmit}>
@@ -225,20 +228,45 @@ function Authentication() {
               <div className="slide">
                 <FormFour validate={required} />
               </div>
-              <div className="wave" style={{ left: -(currentStep * (window.innerWidth + 200))}}>
-                <img src={waveSvg} />
-              </div>
+              <Wave step={currentStep} />
               {currentStep > 0 &&
               <Button className="step-button-back" onClick={previous}>
                 {"<"} Back
               </Button>
               }
+              {(currentStep < 5 && currentStep > 1) && (
+                <Button className="step-button-next abs" onClick={handleNextClick}>
+                  Next {">"}
+                </Button>
+              )}
+              {(currentStep === 5) && (
+                <Button className="step-button-next abs" onClick={handleNextClick}>
+                  Submit {">"}
+                </Button>
+              )}
             </div>
           </form>
         )}
       </Form>
     </div>
   );
+}
+
+const Wave = ({ step }) => {
+  const ref = useRef()
+  useEffect(() => {
+    document.addEventListener('mousemove', (e) => {
+      const axx = (window.innerWidth/2 - e.x)/(window.innerWidth/2)
+      const axy = Math.max(0, (window.innerHeight/1.2 - e.y)/(window.innerHeight/1.2))
+      ref.current.style.marginLeft = `${axx * 100}px`
+      ref.current.style.marginBottom = `${-axy * 100}px`
+    })
+  }, [])
+  return (
+    <div className="wave" style={{ left: -(step * (window.innerWidth + 200))}}>
+      <img src={waveSvg} ref={ref} />
+    </div>
+  )
 }
 
 export default Authentication;
