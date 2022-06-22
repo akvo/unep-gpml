@@ -13,6 +13,7 @@ import financingResource from "../../images/placeholders/financing-resource-plac
 import technology from "../../images/placeholders/technology-placeholder.png";
 import initiative from "../../images/placeholders/initiative-placeholder.png";
 import event from "../../images/placeholders/initiative-placeholder.png";
+import { topicNames } from "../../utils/misc";
 
 const RelatedContent = ({
   url,
@@ -187,7 +188,11 @@ const RelatedContent = ({
                 <div>
                   <h3>{item.title}</h3>
                   <h4>
-                    {data?.type ? data.type : item?.type ? item?.type : ""}
+                    {data?.type
+                      ? topicNames(data?.type)
+                      : item?.type
+                      ? topicNames(item?.type)
+                      : ""}
                   </h4>
                 </div>
                 <div className="bottom-panel">
