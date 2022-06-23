@@ -194,7 +194,9 @@
         display: block;
         padding: 0 0 20px 0;
         @media (min-width: 900px) {
-          padding: 0 20px 20px 0;
+          .no-event-resource-image {
+            padding: 0 20px 20px 0;
+          }
         }
       }
       .details-content-wrapper {
@@ -214,7 +216,7 @@
     }
 
     .section-description {
-      padding: 0 0 40px;
+      padding: 0;
       @media (max-width: 600px) {
         padding: 0 30px !important;
       }
