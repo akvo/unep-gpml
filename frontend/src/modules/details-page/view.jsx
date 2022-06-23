@@ -555,63 +555,64 @@ const DetailsView = ({
         </Row>
         <Col>
           {/* CONNECTION */}
-          {data?.stakeholderConnections.filter(
-            (x) => x.stakeholderRole !== "ADMIN" || x.role === "interested in"
-          )?.length > 0 && (
+          {(data?.entityConnections?.length > 0 ||
+            data?.stakeholderConnections.filter(
+              (x) => x.stakeholderRole !== "ADMIN" || x.role === "interested in"
+            )?.length > 0) && (
             <Col className="section">
               <h3 className="content-heading">Connections</h3>
-
-              <List itemLayout="horizontal">
-                {data?.entityConnections.map((item) => (
-                  <List.Item key={item?.id} className="stakeholder-row">
-                    <List.Item.Meta
-                      className="stakeholder-detail"
-                      avatar={
-                        <Avatar
-                          size={40}
-                          src={
-                            item?.image ? (
-                              item?.image
-                            ) : (
-                              <Avatar
-                                style={{
-                                  backgroundColor: "#09689A",
-                                  verticalAlign: "middle",
-                                }}
-                                size={50}
-                              >
-                                {item.entity?.substring(0, 2)}
-                              </Avatar>
-                            )
-                          }
-                        />
-                      }
-                      title={
-                        <Link to={`/organisation/${item.entityId}`}>
-                          {item.entity}
-                        </Link>
-                      }
-                      description={"Entity"}
-                    />
-                  </List.Item>
-                ))}
-              </List>
-
-              <Avatar.Group
-                maxCount={2}
-                size="large"
-                maxStyle={{
-                  color: "#f56a00",
-                  backgroundColor: "#fde3cf",
-                  cursor: "pointer",
-                  height: 40,
-                  width: 40,
-                }}
-              >
-                {data?.stakeholderConnections.filter(
-                  (x) =>
-                    x.stakeholderRole !== "ADMIN" || x.role === "interested in"
-                )?.length > 0 && (
+              {data?.entityConnections?.length > 0 && (
+                <List itemLayout="horizontal">
+                  {data?.entityConnections?.map((item) => (
+                    <List.Item key={item?.id} className="stakeholder-row">
+                      <List.Item.Meta
+                        className="stakeholder-detail"
+                        avatar={
+                          <Avatar
+                            size={40}
+                            src={
+                              item?.image ? (
+                                item?.image
+                              ) : (
+                                <Avatar
+                                  style={{
+                                    backgroundColor: "#09689A",
+                                    verticalAlign: "middle",
+                                  }}
+                                  size={50}
+                                >
+                                  {item.entity?.substring(0, 2)}
+                                </Avatar>
+                              )
+                            }
+                          />
+                        }
+                        title={
+                          <Link to={`/organisation/${item.entityId}`}>
+                            {item.entity}
+                          </Link>
+                        }
+                        description={"Entity"}
+                      />
+                    </List.Item>
+                  ))}
+                </List>
+              )}
+              {data?.stakeholderConnections.filter(
+                (x) =>
+                  x.stakeholderRole !== "ADMIN" || x.role === "interested in"
+              )?.length > 0 && (
+                <Avatar.Group
+                  maxCount={2}
+                  size="large"
+                  maxStyle={{
+                    color: "#f56a00",
+                    backgroundColor: "#fde3cf",
+                    cursor: "pointer",
+                    height: 40,
+                    width: 40,
+                  }}
+                >
                   <List itemLayout="horizontal">
                     {data?.stakeholderConnections
                       .filter(
@@ -636,8 +637,8 @@ const DetailsView = ({
                         </List.Item>
                       ))}
                   </List>
-                )}
-              </Avatar.Group>
+                </Avatar.Group>
+              )}
 
               <Row className="stakeholder-row stakeholder-group">
                 <Avatar.Group
