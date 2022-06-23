@@ -3,9 +3,7 @@ import "./styles.scss";
 import { Button, Typography, Steps } from "antd";
 import { Form } from "react-final-form";
 const { Title, Link } = Typography;
-import common from "./common";
 const { Step } = Steps;
-import Main from "./main";
 import AffiliationOption from "./affiliation-option";
 import FormOne from "./form-one";
 import FormTwo from "./form-two";
@@ -16,7 +14,6 @@ import Wizard from "../../components/form-wizard/Wizard";
 import { useLocation } from "react-router-dom";
 import api from "../../utils/api";
 import { useHistory } from "react-router-dom";
-import { SwitchTransition, CSSTransition } from "react-transition-group";
 import GettingStartedIcon from "../../images/auth/getting-started.png";
 import waveSvg from "../../images/auth/wave.svg";
 
@@ -27,11 +24,24 @@ function Authentication() {
   const [affiliation, setAffiliation] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
   const [initialValues, setInitialValues] = useState({});
+  const [error, setError] = useState(false);
 
   const { tags } = UIStore.currentState;
 
   const next = (skip = 0) => {
-    setCurrentStep(currentStep + 1 + skip);
+    if (
+      formRef?.current?.getFieldState("jobTitle").valid &&
+      formRef?.current?.getFieldState("orgName").valid &&
+      formRef?.current?.getFieldState("offering").valid &&
+      formRef?.current?.getFieldState("seeking").valid &&
+      formRef?.current?.getFieldState("publicDatabase").valid &&
+      formRef?.current?.getFieldState("about").valid
+    ) {
+      setError(false);
+      setCurrentStep(currentStep + 1 + skip);
+    } else {
+      setError(true);
+    }
   };
   const previous = () => {
     setCurrentStep(Math.max(currentStep - 1, 0));
@@ -130,6 +140,9 @@ function Authentication() {
       return "Please enter job title";
     }
     if (name === "orgName" && !value) {
+      return "Please enter the name of entity";
+    }
+    if (name === "offering" && !value) {
       return "Please enter the name of entity";
     }
     return value ? undefined : "Required";
@@ -233,22 +246,30 @@ function Authentication() {
                   />
                 </div>
                 <div className="slide">
-                  <FormOne validate={currentStep === 2 ? required : null} />
+                  <FormOne
+                    validate={currentStep === 2 ? required : null}
+                    error={error}
+                  />
                 </div>
                 <div className="slide">
                   <FormTwo
                     handleOfferingSuggestedTag={handleOfferingSuggestedTag}
                     validate={currentStep === 3 ? required : null}
+                    error={error}
                   />
                 </div>
                 <div className="slide">
                   <FormThree
                     handleSeekingSuggestedTag={handleSeekingSuggestedTag}
                     validate={currentStep === 4 ? required : null}
+                    error={error}
                   />
                 </div>
                 <div className="slide last">
-                  <FormFour validate={currentStep === 5 ? required : null} />
+                  <FormFour
+                    validate={currentStep === 5 ? required : null}
+                    error={error}
+                  />
                 </div>
                 <Wave step={currentStep} />
                 {currentStep > 0 && (
@@ -259,7 +280,7 @@ function Authentication() {
                 {currentStep < 5 && currentStep > 1 && (
                   <Button
                     className="step-button-next abs"
-                    onClick={handleSubmit}
+                    onClick={() => next()}
                   >
                     Next {">"}
                   </Button>

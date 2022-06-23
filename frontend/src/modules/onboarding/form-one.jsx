@@ -1,11 +1,10 @@
 import React from "react";
 import { UIStore } from "../../store";
-import { Col, Row, Button, Typography, Form, Input, Select } from "antd";
+import { Col, Row, Button, Typography, Input, Select } from "antd";
 import { Field } from "react-final-form";
 const { Title, Link } = Typography;
 
-function FormOne({ validate }) {
-  const [form] = Form.useForm();
+function FormOne({ validate, error }) {
   const storeData = UIStore.useState((s) => ({
     organisations: s.organisations,
     nonMemberOrganisations: s.nonMemberOrganisations,
@@ -21,17 +20,20 @@ function FormOne({ validate }) {
       <div className="ant-form ant-form-vertical">
         <div className="field-wrapper">
           <Field name="jobTitle" validate={validate}>
-            {({ input, meta }) => (
-              <>
-                <Input
-                  onChange={(e) => input.onChange(e.target.value)}
-                  placeholder="Enter job title"
-                  className={`${
-                    meta.touched && meta.error ? "ant-input-status-error" : ""
-                  }`}
-                />
-              </>
-            )}
+            {({ input, meta }) => {
+              console.log(meta);
+              return (
+                <>
+                  <Input
+                    onChange={(e) => input.onChange(e.target.value)}
+                    placeholder="Enter job title"
+                    className={`${
+                      error && !meta.valid ? "ant-input-status-error" : ""
+                    }`}
+                  />
+                </>
+              );
+            }}
           </Field>
         </div>
         <Field name="orgName" style={{ width: "100%" }} validate={validate}>
@@ -47,7 +49,7 @@ function FormOne({ validate }) {
                   option.children.toLowerCase().includes(input.toLowerCase())
                 }
                 className={`${
-                  meta.touched && meta.error ? "ant-input-status-error" : ""
+                  error && !meta.valid ? "ant-input-status-error" : ""
                 }`}
               >
                 {[...organisations, ...nonMemberOrganisations]?.map((item) => (

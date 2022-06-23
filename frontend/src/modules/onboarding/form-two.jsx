@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { UIStore } from "../../store";
 import { Col, Row, Button, Typography, Form, Input, Select, List } from "antd";
 import { Field } from "react-final-form";
 const { Title, Link } = Typography;
 
-function FormTwo({ handleOfferingSuggestedTag, validate }) {
+function FormTwo({ handleOfferingSuggestedTag, validate, error }) {
   const [selectedItems, setSelectedItems] = useState([]);
   const storeData = UIStore.useState((s) => ({
     entitySuggestedTags: s.entitySuggestedTags,
@@ -23,12 +23,9 @@ function FormTwo({ handleOfferingSuggestedTag, validate }) {
         <Title level={2}>What are the expertises you can provide?</Title>
       </div>
       <div className="ant-form ant-form-vertical">
-        <Field
-          name="offering"
-          style={{ width: "100%" }}
-          validate={validate}
-        >
+        <Field name="offering" style={{ width: "100%" }} validate={validate}>
           {({ input, meta }) => {
+            console.log(meta);
             const filteredOptions = array.filter((ad) =>
               input.value
                 ? input.value.every((fd) => fd.value !== ad.id)
@@ -51,9 +48,7 @@ function FormTwo({ handleOfferingSuggestedTag, validate }) {
                     option.children.toLowerCase().includes(i.toLowerCase())
                   }
                   className={`dont-show ${
-                    meta.touched && meta.error
-                      ? "ant-input-status-error"
-                      : ""
+                    error && !meta.valid ? "ant-input-status-error" : ""
                   }`}
                 >
                   {filteredOptions?.map((item) => (

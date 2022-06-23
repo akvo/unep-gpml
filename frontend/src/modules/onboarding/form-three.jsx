@@ -4,7 +4,7 @@ import { Col, Row, Typography, Select, List } from "antd";
 import { Field } from "react-final-form";
 const { Title, Link } = Typography;
 
-function FormThree({ handleSeekingSuggestedTag, validate }) {
+function FormThree({ handleSeekingSuggestedTag, validate, error }) {
   const [selectedItems, setSelectedItems] = useState([]);
   const storeData = UIStore.useState((s) => ({
     entitySuggestedTags: s.entitySuggestedTags,
@@ -20,9 +20,7 @@ function FormThree({ handleSeekingSuggestedTag, validate }) {
   return (
     <>
       <div className="text-wrapper">
-        <Title level={2}>
-          What are the expertises you are looking for?
-        </Title>
+        <Title level={2}>What are the expertises you are looking for?</Title>
       </div>
       <div className="ant-form ant-form-vertical">
         <Field name="seeking" style={{ width: "100%" }} validate={validate}>
@@ -49,9 +47,7 @@ function FormThree({ handleSeekingSuggestedTag, validate }) {
                     option.children.toLowerCase().includes(i.toLowerCase())
                   }
                   className={`${
-                    meta.touched && meta.error
-                      ? "ant-input-status-error"
-                      : ""
+                    error && !meta.valid ? "ant-input-status-error" : ""
                   }`}
                 >
                   {filteredOptions?.map((item) => (
