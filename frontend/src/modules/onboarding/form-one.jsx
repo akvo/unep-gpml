@@ -20,30 +20,21 @@ function FormOne({ validate }) {
       </div>
       <div className="ant-form ant-form-vertical">
         <div className="field-wrapper">
-          <Field
-            name="jobTitle"
-            validate={(value) => validate(value, "jobTitle")}
-          >
+          <Field name="jobTitle" validate={validate}>
             {({ input, meta }) => (
               <>
                 <Input
                   onChange={(e) => input.onChange(e.target.value)}
                   placeholder="Enter job title"
                   className={`${
-                    meta.touched && meta.error
-                      ? "ant-input-status-error"
-                      : ""
+                    meta.touched && meta.error ? "ant-input-status-error" : ""
                   }`}
                 />
               </>
             )}
           </Field>
         </div>
-        <Field
-          name="orgName"
-          style={{ width: "100%" }}
-          validate={(value) => validate(value)}
-        >
+        <Field name="orgName" style={{ width: "100%" }} validate={validate}>
           {({ input, meta }) => (
             <>
               <Select
@@ -53,21 +44,17 @@ function FormOne({ validate }) {
                 name="orgName"
                 onChange={(value) => input.onChange(value)}
                 filterOption={(input, option) =>
-                  option.children
-                    .toLowerCase()
-                    .includes(input.toLowerCase())
+                  option.children.toLowerCase().includes(input.toLowerCase())
                 }
                 className={`${
                   meta.touched && meta.error ? "ant-input-status-error" : ""
                 }`}
               >
-                {[...organisations, ...nonMemberOrganisations]?.map(
-                  (item) => (
-                    <Select.Option value={item.id} key={item.id}>
-                      {item.name}
-                    </Select.Option>
-                  )
-                )}
+                {[...organisations, ...nonMemberOrganisations]?.map((item) => (
+                  <Select.Option value={item.id} key={item.id}>
+                    {item.name}
+                  </Select.Option>
+                ))}
               </Select>
             </>
           )}
