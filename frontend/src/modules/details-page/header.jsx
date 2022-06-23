@@ -99,15 +99,18 @@ export const HeaderButtons = ({
                   ? data?.url
                   : data?.languages
                   ? data?.languages[0]?.url
-                  : data?.url?.includes("http://")
+                  : data?.url && data?.url?.includes("http://")
                   ? data?.url
-                  : "https://" + data?.url
+                  : data?.url
+                  ? "https://" + data?.url
+                  : "https://"
               }`}
               disabled
             />
             <Button
               style={{ width: "20%" }}
               type="primary"
+              disabled={!data?.url}
               onClick={() => {
                 navigator.clipboard.writeText(
                   data?.url && data?.url?.includes("https://")
@@ -136,7 +139,16 @@ export const HeaderButtons = ({
             shape="round"
             size="middle"
             ghost
-            onClick={handleVisibleChange}
+            onClick={() => {
+              navigator.clipboard.writeText(
+                data?.url && data?.url?.includes("https://")
+                  ? data?.languages
+                    ? data?.languages[0]?.url
+                    : data?.url
+                  : "https://" + data?.url
+              );
+              handleVisibleChange();
+            }}
           >
             Share
           </Button>
