@@ -13,26 +13,27 @@ body {
   display: none !important;
 }
 
-::-webkit-scrollbar {
-  width: 19px;
-}
+@media screen and (min-width: 1260px) {
+  div::-webkit-scrollbar {
+    width: 19px;
+  }
+  div::-webkit-scrollbar-track {
+    background-color: #d3dee7;
+    border-radius: 60px;
+    border: 1px solid #edf2f7;
+  }
 
-::-webkit-scrollbar-track {
-  background-color: #d3dee7;
-  border-radius: 60px;
-  border: 1px solid #edf2f7;
-}
+  div::-webkit-scrollbar-thumb {
+    border-radius: 90px;
+    border: 4px solid transparent;
+    background-clip: content-box;
+    background-color: #255b87;
+  }
 
-::-webkit-scrollbar-thumb {
-  border-radius: 90px;
-  border: 4px solid transparent;
-  background-clip: content-box;
-  background-color: #255b87;
-}
-
-:root {
-  scrollbar-color: #255b87 #edf2f7 !important;
-  scrollbar-width: thin !important;
+  div:root {
+    scrollbar-color: #255b87 #edf2f7 !important;
+    scrollbar-width: thin !important;
+  }
 }
 
 body,
@@ -52,59 +53,39 @@ h1 {
   font-weight: 900;
   letter-spacing: -0.06rem;
   line-height: 4.4rem;
-  @-moz-document url-prefix() {
-    font-size: 2.9rem;
-  }
 }
 
 h2 {
   font-size: 1.9rem;
   font-weight: 600;
   line-height: 2.5rem;
-  @-moz-document url-prefix() {
-    font-size: 1.7rem;
-  }
 }
 
 h3 {
   font-size: 1.3rem;
   font-weight: 600;
   line-height: 1.25rem;
-  @-moz-document url-prefix() {
-    font-size: 1.1rem;
-  }
 }
 
 h4 {
   font-size: 1.4rem;
-  @-moz-document url-prefix() {
-    font-size: 1.2rem;
-  }
 }
 
 .nav-link {
   font-size: 1rem;
   line-height: 1.9rem;
-  @-moz-document url-prefix() {
-    font-size: 0.9rem !important;
-  }
 }
 
 .see-more-link {
   font-size: 1rem;
   font-weight: bold;
   line-height: 1.25rem;
-  @-moz-document url-prefix() {
-    font-size: 0.9rem !important;
-  }
 }
 
 .resource-label {
   font-size: 1rem;
   font-weight: bold;
-  @-moz-document url-prefix() {
-    font-size: 0.9rem !important;
-  }
+
   &.upper {
     text-transform: uppercase;
   }
@@ -116,9 +97,7 @@ h4 {
 }
 .txt-emphasis {
   font-size: 1.5rem;
-  @-moz-document url-prefix() {
-    font-size: 1.3rem !important;
-  }
+
   @media (max-width: 540px) {
     font-size: 18px !important;
   }
@@ -127,18 +106,11 @@ h4 {
   font-size: 1.3rem;
   font-weight: 500;
   line-height: 1.56rem;
-  @-moz-document url-prefix() {
-    font-size: 1.2rem !important;
-  }
 }
 
 .copy-right {
   font-size: 0.85rem;
   line-height: 0.8rem;
-
-  @-moz-document url-prefix() {
-    font-size: 10px !important;
-  }
 }
 
 .text-green {
@@ -384,11 +356,6 @@ h4 {
         }
       }
     }
-    @-moz-document url-prefix() {
-      .ant-btn {
-        font-size: 14px;
-      }
-    }
   }
 
   .menu-btn {
@@ -413,9 +380,7 @@ h4 {
       background-color: rgba(24, 22, 47, 0.2);
       color: rgba(255, 184, 0, 1);
     }
-    @-moz-document url-prefix() {
-      padding: 2px 7.5px;
-    }
+
     &.selected {
       color: rgba(255, 184, 0, 1);
     }
@@ -489,9 +454,9 @@ h4 {
         border: 2px solid rgba(0, 255, 127, 1);
         font-size: 16px;
         font-weight: 700;
-        height: 42px;
+        height: 38px;
         padding: 0 13px;
-        line-height: 39px;
+        line-height: 35px;
         &:hover {
           background: $yellow-highlight;
           border-color: #fff;
@@ -592,11 +557,6 @@ button.ant-btn.ant-btn-link.ant-dropdown-trigger.menu-btn.nav-link {
   height: 50px;
 }
 .menu-dropdown .ant-btn-link {
-  @-moz-document url-prefix() {
-    span {
-      font-size: 0.9rem !important;
-    }
-  }
 }
 
 .add-dropdown-wrapper,
@@ -676,9 +636,6 @@ footer {
   background-color: #2d6796;
   color: #fff;
   padding: 50px 0 0 0;
-  @-moz-document url-prefix() {
-    padding: 40px 0 0 0;
-  }
 
   a {
     color: #fff;
@@ -691,9 +648,6 @@ footer {
   h4 {
     color: #fff;
     font-size: 1.2rem;
-    @-moz-document url-prefix() {
-      font-size: 1rem;
-    }
   }
 
   .ui.container {
@@ -711,9 +665,6 @@ footer {
             span {
               display: block;
               padding-left: 0 !important;
-              @-moz-document url-prefix() {
-                font-size: 12px;
-              }
             }
             &.list-inside-list {
               list-style-type: circle;
@@ -726,14 +677,6 @@ footer {
             }
           }
         }
-        @-moz-document url-prefix() {
-          nav {
-            margin-bottom: 1.8rem;
-            &.list-inside-list {
-              padding-left: 7px;
-            }
-          }
-        }
       }
     }
 
@@ -741,9 +684,7 @@ footer {
       padding: 1rem 0;
       display: flex;
       align-items: center;
-      @-moz-document url-prefix() {
-        padding: 14px 0;
-      }
+
       img.uneplogo {
         width: 10%;
         margin: 0;
@@ -755,10 +696,6 @@ footer {
           color: white;
           font-size: 0.95rem;
           font-weight: 400;
-          @-moz-document url-prefix() {
-            font-size: 12px;
-            line-height: 1.4rem;
-          }
         }
       }
       @media (max-width: 540px) {
@@ -808,9 +745,6 @@ footer {
             a {
               font-size: 1.5rem;
               margin-left: 0;
-              @-moz-document url-prefix() {
-                font-size: 18px !important;
-              }
             }
           }
         }
@@ -818,12 +752,6 @@ footer {
     }
   }
 }
-
-// .ant-select-item-option-active:not(.ant-select-item-option-disabled),
-// .ant-dropdown-menu-item:hover {
-//   background-color: #ffb800 !important;
-//   color: #fff !important;
-// }
 
 /* User Warning Modal */
 

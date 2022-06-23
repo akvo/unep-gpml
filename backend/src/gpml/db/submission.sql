@@ -76,6 +76,7 @@ SELECT json_build_object(
 --~ (when (= "non-member-entities" (:only params)) " AND  type IN ( 'organisation') AND topic IN ('non_member_organisation')")
 --~ (when (= "stakeholders" (:only params)) " AND type IN ('stakeholder') ")
 --~ (when (= "resources" (:only params)) " AND type NOT IN ('stakeholder', 'organisation', 'tag') ")
+--~ (when (= "tags" (:only params)) " AND type IN ('tag') ")
 --~ (when (:title params) (str " AND title ILIKE '%" (:title params) "%' ") )
     ),
     'page', :page,
@@ -86,6 +87,7 @@ SELECT json_build_object(
 --~ (when (= "non-member-entities" (:only params)) " AND  type IN ( 'organisation') AND topic IN ('non_member_organisation')")
 --~ (when (= "stakeholders" (:only params)) " AND type IN ('stakeholder') ")
 --~ (when (= "resources" (:only params)) " AND type NOT IN ('stakeholder', 'organisation', 'tag') ")
+--~ (when (= "tags" (:only params)) " AND type IN ('tag') ")
 --~ (when (:title params) (str " AND title ILIKE '%" (:title params) "%' ") )
     ) / :limit,
     'limit', :limit) as result;

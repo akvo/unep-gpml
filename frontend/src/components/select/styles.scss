@@ -2,11 +2,6 @@
 
 .multiselection-filter,
 .country-filter-tab .ant-select-multiple {
-  @-moz-document url-prefix() {
-    padding-top: 5px !important;
-    padding-bottom: 5px !important;
-  }
-
   .ant-select-multiple {
     width: 100%;
   }
@@ -16,10 +11,7 @@
     font-size: 18px;
     font-weight: 500;
     margin-bottom: 16px;
-    @-moz-document url-prefix() {
-      font-size: 14px;
-      margin-bottom: 8px;
-    }
+
     @media (max-width: 540px) {
       font-size: 16px;
     }
@@ -33,21 +25,15 @@
   .ant-select-selection-placeholder {
     font-size: 16px;
     color: $grey04;
-    @-moz-document url-prefix() {
-      font-size: 12px;
-    }
+
     @media (max-width: 540px) {
       font-size: 14px;
     }
   }
 
   .ant-select-selection-placeholder {
-    // font-style: italic;
     font-weight: 700;
     padding-left: 30px;
-    @-moz-document url-prefix() {
-      padding-left: 25px;
-    }
   }
 
   .ant-select-selector {
@@ -58,9 +44,6 @@
       url("../../images/knowledge-library/chevron-down-grey.svg") !important;
     background-repeat: no-repeat !important;
     background-position: calc(15px) center, calc(100% - 10px) center !important;
-    @-moz-document url-prefix() {
-      background-size: 15px !important;
-    }
   }
 
   .ant-space-item {
@@ -75,16 +58,10 @@
     padding-left: 35px;
     padding-top: 4px;
     padding-bottom: 4px;
-    @-moz-document url-prefix() {
-      height: 22px;
-      padding-left: calc(33px - 4.5px);
-    }
+
     .ant-select-selection-item {
       background-color: #c3dbe7;
       border-radius: 4px;
-      @-moz-document url-prefix() {
-        line-height: 15px;
-      }
     }
   }
 
@@ -101,11 +78,9 @@
     font-weight: 700;
     font-size: 16px;
     color: $blue06;
-    // font-style: italic;
+
     overflow: visible;
-    @-moz-document url-prefix() {
-      font-size: 12px;
-    }
+
     @media (max-width: 540px) {
       font-size: 14px;
     }
@@ -133,9 +108,6 @@
   width: 100%;
   .ant-select-selection-placeholder {
     padding-left: 30px;
-    @-moz-document url-prefix() {
-      padding-left: 25px;
-    }
   }
 
   .country-filter-tab {
@@ -143,9 +115,6 @@
     border-radius: 3px;
     background-color: #fff;
     margin-bottom: 1.5rem;
-    @-moz-document url-prefix() {
-      margin-bottom: 1.1rem;
-    }
 
     .ant-tabs-tab {
       display: flex;
@@ -162,9 +131,6 @@
       div {
         color: #000000;
         font-size: 16px;
-        @-moz-document url-prefix() {
-          font-size: 12px;
-        }
       }
     }
 
@@ -200,9 +166,6 @@
 
     .country-filter-tab-pane {
       padding: 0.5rem 1rem;
-      @-moz-document url-prefix() {
-        padding: 0.1rem 0.6rem;
-      }
     }
 
     .ant-select-item.ant-select-item-group {
@@ -212,20 +175,11 @@
     .ant-select-selection-placeholder {
       font-size: 16px;
       color: $grey04;
-      @-moz-document url-prefix() {
-        font-size: 12px;
-      }
-    }
-
-    .ant-select-selection-overflow {
     }
 
     .ant-select {
       width: 100%;
       margin-bottom: 10px;
-      @-moz-document url-prefix() {
-        margin-bottom: 5px;
-      }
     }
 
     // css for select suffix
@@ -235,9 +189,6 @@
         font-size: 14px;
         top: 48%;
         color: $blue07;
-        @-moz-document url-prefix() {
-          font-size: 12px;
-        }
       }
     }
   }

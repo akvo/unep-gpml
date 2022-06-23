@@ -766,7 +766,7 @@ const Root = () => {
             )}
           />
           <Route
-            path="/:type(project|action_plan|policy|technical_resource|financing_resource|technology|event)/:id"
+            path="/:type(project|action-plan|policy|technical-resource|financing-resource|technology|event)/:id"
             render={(props) => (
               <NewDetailsView
                 {...props}

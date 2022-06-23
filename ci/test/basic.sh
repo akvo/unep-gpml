@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-wait4ports -q -s 1 -t 60 tcp://localhost:80 tcp://localhost:3000 tcp://db:5432
+wait4ports -q -s 1 -t 120 tcp://localhost:80 tcp://localhost:3000 tcp://db:5432
 
 http_get() {
     url="${1}"

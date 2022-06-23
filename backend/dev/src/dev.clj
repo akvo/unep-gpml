@@ -1,17 +1,18 @@
 (ns dev
   (:refer-clojure :exclude [test])
-  (:require [clojure.repl :refer :all]
-            [clojure.tools.namespace.repl :refer [refresh]]
+  (:require [clojure.java.io :as io]
             [clojure.java.jdbc :as jdbc]
-            [clojure.java.io :as io]
             clojure.pprint
+            [clojure.repl :refer :all]
+            [clojure.tools.namespace.repl :refer [refresh]]
             [duct.core :as duct]
             [duct.core.repl :as duct-repl]
             [eftest.runner :as eftest]
+            [gpml.seeder.main :as seeder]
             [integrant.core :as ig]
             [integrant.repl :refer [clear halt go init prep reset]]
             [integrant.repl.state :refer [config system]]
-            [gpml.seeder.main :as seeder]
+            [ns-tracker.core :refer [ns-tracker]]
             [portal.api :as portal]))
 
 (duct/load-hierarchy)
@@ -54,6 +55,15 @@
   (portal/tap)
   (portal/open {:portal.colors/theme
                 :portal.colors/solarized-light}))
+
+(def modified-namespaces
+  (ns-tracker ["src/gpml/db"]))
+
+(defn refresh-all
+  []
+  (doseq [ns-sym (modified-namespaces)]
+    (require ns-sym :reload))
+  (refresh))
 
 (comment
 

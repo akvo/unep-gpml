@@ -2,6 +2,7 @@
   (:require
    [clojure.java.jdbc :as jdbc]
    [gpml.auth :as auth]
+   [gpml.constants :as constants]
    [gpml.db.country :as db.country]
    [gpml.db.favorite :as db.favorite]
    [gpml.db.language :as db.language]
@@ -11,9 +12,10 @@
    [gpml.handler.auth :as h.auth]
    [gpml.handler.geo :as handler.geo]
    [gpml.handler.image :as handler.image]
+   [gpml.handler.resource.related-content :as handler.resource.related-content]
    [gpml.handler.resource.tag :as handler.resource.tag]
-   [gpml.handler.util :as util]
-   [gpml.pg-util :as pg-util]
+   [gpml.handler.util :as handler.util]
+   [gpml.util :as util]
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 
@@ -47,7 +49,7 @@
                                  tags url urls created_by image owners info_docs
                                  sub_content_type related_content
                                  headquarter document_preview
-                                 logo attachments remarks
+                                 logo thumbnail attachments remarks
                                  entity_connections individual_connections]}]
   (let [data {:name name
               :year_founded year_founded
@@ -59,6 +61,7 @@
               :country country
               :image (handler.image/assoc-image conn image "technology")
               :logo (handler.image/assoc-image conn logo "technology")
+              :thumbnail (handler.image/assoc-image conn thumbnail "technology")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
               :geo_coverage_countries geo_coverage_countries
@@ -72,14 +75,15 @@
               :sub_content_type sub_content_type
               :headquarter headquarter
               :document_preview document_preview
-              :related_content (pg-util/->JDBCArray related_content "integer")
               :review_status "SUBMITTED"}
         technology-id (->> data (db.technology/new-technology conn) :id)
-        api-individual-connections (util/individual-connections->api-individual-connections conn individual_connections created_by)
+        api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
                                                           api-individual-connections)))))]
+    (when (seq related_content)
+      (handler.resource.related-content/create-related-contents conn technology-id "technology" related_content))
     (when headquarter
       (db.country/add-country-headquarter conn {:id country :headquarter headquarter}))
     (doseq [stakeholder-id owners]
@@ -142,7 +146,8 @@
           [:enum "global", "regional", "national", "transnational",
            "sub-national", "global with elements in specific areas"]]
          [:geo_coverage_value_subnational_city {:optional true} string?]
-         [:image {:optional true} string?]
+         [:image {:optional true} [:fn (comp util/base64? util/base64-headless)]]
+         [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
          [:logo {:optional true} string?]
          [:tags {:optional true}
           [:vector {:optional true}
@@ -152,7 +157,10 @@
          [:url {:optional true} string?]
          [:info_docs {:optional true} string?]
          [:related_content {:optional true}
-          [:vector {:optional true} integer?]]
+          [:vector {:optional true}
+           [:map {:optional true}
+            [:id [:int]]
+            [:type (vec (conj constants/resources :enum))]]]]
          [:sub_content_type {:optional true} string?]
          [:headquarter {:optional true} string?]
          [:document_preview {:optional true} boolean?]

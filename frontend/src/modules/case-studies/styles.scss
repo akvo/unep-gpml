@@ -3,22 +3,6 @@
 $green-primary: #4dffa5;
 
 #case-study {
-  .ui-header {
-    @-moz-document url-prefix() {
-      padding: 4px calc(44px - 14px) 4px 37px;
-      .ant-select-selector {
-        height: 36px;
-      }
-      .ant-select-selection-item {
-        font-size: 14px;
-        line-height: 30px;
-      }
-      .ant-select-arrow {
-        top: 9px !important;
-        right: 22px !important;
-      }
-    }
-  }
   .ant-btn-link {
     &.green-border {
       border: 2px solid $green-primary;
@@ -26,20 +10,7 @@ $green-primary: #4dffa5;
       width: 154px;
       height: 41px;
       line-height: 36px;
-      @-moz-document url-prefix() {
-        width: 139px;
-        height: 37px;
-        line-height: 32px;
-        border: 1px solid $green-primary;
-        span {
-          font-size: 13px;
-        }
-        @media (max-width: 768px) {
-          width: 119px !important;
-          height: 29px !important;
-          line-height: 30px !important;
-        }
-      }
+
       @media (max-width: 768px) {
         width: 135px !important;
         height: 33px !important;
@@ -177,10 +148,6 @@ $green-primary: #4dffa5;
           width: 100%;
           max-width: 160px;
           height: 33px !important;
-          @-moz-document url-prefix() {
-            max-width: 144pxs;
-            height: 30px !important;
-          }
         }
       }
     }
@@ -268,11 +235,6 @@ $green-primary: #4dffa5;
       width: 190px;
       height: 50px;
 
-      @-moz-document url-prefix() {
-        max-width: 172px;
-        height: 46px !important;
-        font-size: 13px;
-      }
       &:hover {
         border-color: $yellow-highlight !important;
         background-color: $yellow-highlight;
@@ -308,10 +270,7 @@ $green-primary: #4dffa5;
       line-height: 22px;
       text-transform: capitalize;
       color: $green-primary;
-      @-moz-document url-prefix() {
-        font-size: 16px;
-        line-height: 20px;
-      }
+
       @media (max-width: 540px) {
         font-size: 16px !important;
       }
@@ -319,9 +278,6 @@ $green-primary: #4dffa5;
     .p-4 {
       padding: 4%;
       padding-top: 56px;
-      @-moz-document url-prefix() {
-        padding-top: 46px;
-      }
     }
     .content-text {
       .ant-typography {
@@ -360,9 +316,7 @@ $green-primary: #4dffa5;
       position: relative;
       margin: 0 5px 5px 0;
       text-decoration: none;
-      @-moz-document url-prefix() {
-        font-size: 12px;
-      }
+
       @media (max-width: 540px) {
         font-size: 12px !important;
       }
@@ -510,9 +464,6 @@ $green-primary: #4dffa5;
         font-weight: 600;
         font-size: 40px;
         line-height: 60px;
-        @-moz-document url-prefix() {
-          font-size: 37px;
-        }
       }
       .content-text {
         .ant-typography {
@@ -545,10 +496,7 @@ $green-primary: #4dffa5;
         font-weight: 600;
         font-size: 38px;
         line-height: 58px;
-        @-moz-document url-prefix() {
-          font-size: 38px;
-          line-height: 50px;
-        }
+
         @media (max-width: 540px) {
           font-size: 32px !important;
           line-height: 38px !important;
@@ -560,16 +508,10 @@ $green-primary: #4dffa5;
       .content-text {
         .title {
           font-size: 16px;
-          @-moz-document url-prefix() {
-            font-size: 14px;
-          }
         }
         .ant-typography {
           font-size: 14px;
           line-height: 17px;
-          @-moz-document url-prefix() {
-            font-size: 12px;
-          }
         }
         @media (max-width: 540px) {
           .title {
@@ -597,19 +539,11 @@ $green-primary: #4dffa5;
       .title {
         font-size: 20px;
         line-height: 30px;
-        @-moz-document url-prefix() {
-          font-size: 18px;
-          line-height: 38px;
-        }
       }
       .content-text {
         .ant-typography {
           font-size: 16px !important;
           line-height: 20px !important;
-          @-moz-document url-prefix() {
-            font-size: 14px !important;
-            line-height: 18px !important;
-          }
         }
       }
     }
@@ -627,19 +561,11 @@ $green-primary: #4dffa5;
       .title {
         font-size: 22px;
         line-height: 32px;
-        @-moz-document url-prefix() {
-          font-size: 20px;
-          line-height: 18px;
-        }
       }
       .content-text {
         .ant-typography {
           font-size: 16px !important;
           line-height: 22px !important;
-          @-moz-document url-prefix() {
-            font-size: 14px !important;
-            line-height: 20px !important;
-          }
         }
       }
     }
@@ -684,10 +610,7 @@ $green-primary: #4dffa5;
           height: 42px;
           font-size: 18px !important;
           line-height: 38px !important;
-          @-moz-document url-prefix() {
-            font-size: 16px !important;
-            line-height: 36px !important;
-          }
+
           &::before {
             border-radius: 10px;
             top: 45%;
@@ -725,19 +648,11 @@ $green-primary: #4dffa5;
       .title {
         font-size: 32px !important;
         line-height: 42px !important;
-        @-moz-document url-prefix() {
-          font-size: 30px !important;
-          line-height: 42px !important;
-        }
       }
       .content-text {
         .ant-typography {
           font-size: 24px !important;
           line-height: 32px !important;
-          @-moz-document url-prefix() {
-            font-size: 22px !important;
-            line-height: 30px !important;
-          }
         }
       }
       .tags {
@@ -745,11 +660,7 @@ $green-primary: #4dffa5;
           height: 50px;
           font-size: 22px !important;
           line-height: 50px !important;
-          @-moz-document url-prefix() {
-            height: 40px;
-            font-size: 20px !important;
-            line-height: 48px !important;
-          }
+
           &::before {
             top: 45%;
           }

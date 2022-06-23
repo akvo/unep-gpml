@@ -2,6 +2,7 @@
   (:require
    [clojure.java.jdbc :as jdbc]
    [gpml.auth :as auth]
+   [gpml.constants :as constants]
    [gpml.db.activity :as db.activity]
    [gpml.db.favorite :as db.favorite]
    [gpml.db.language :as db.language]
@@ -11,9 +12,9 @@
    [gpml.handler.auth :as h.auth]
    [gpml.handler.geo :as handler.geo]
    [gpml.handler.image :as handler.image]
+   [gpml.handler.resource.related-content :as handler.resource.related-content]
    [gpml.handler.resource.tag :as handler.resource.tag]
-   [gpml.handler.util :as api-util]
-   [gpml.pg-util :as pg-util]
+   [gpml.handler.util :as handler.util]
    [gpml.util :as util]
    [integrant.core :as ig]
    [ring.util.response :as resp]))
@@ -38,17 +39,18 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn create-resource [conn mailjet-config
-                       {:keys [resource_type title publish_year
-                               summary value value_currency
-                               value_remarks valid_from valid_to image
-                               geo_coverage_type geo_coverage_value
-                               geo_coverage_countries geo_coverage_country_groups
-                               geo_coverage_value_subnational_city
-                               attachments country urls tags remarks
-                               created_by url owners info_docs sub_content_type related_content
-                               first_publication_date latest_amendment_date document_preview
-                               entity_connections individual_connections]}]
+(defn create-resource
+  [conn mailjet-config
+   {:keys [resource_type title publish_year
+           summary value value_currency
+           value_remarks valid_from valid_to image
+           geo_coverage_type geo_coverage_value
+           geo_coverage_countries geo_coverage_country_groups
+           geo_coverage_value_subnational_city
+           attachments country urls tags remarks thumbnail
+           created_by url owners info_docs sub_content_type related_content
+           first_publication_date latest_amendment_date document_preview
+           entity_connections individual_connections]}]
   (let [data {:type resource_type
               :title title
               :publish_year publish_year
@@ -59,6 +61,7 @@
               :valid_from valid_from
               :valid_to valid_to
               :image (handler.image/assoc-image conn image "resource")
+              :thumbnail (handler.image/assoc-image conn thumbnail "resource")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
               :geo_coverage_countries geo_coverage_countries
@@ -71,16 +74,17 @@
               :url url
               :info_docs info_docs
               :sub_content_type sub_content_type
-              :related_content (pg-util/->JDBCArray related_content "integer")
               :first_publication_date first_publication_date
               :latest_amendment_date latest_amendment_date
               :document_preview document_preview}
         resource-id (:id (db.resource/new-resource conn data))
-        api-individual-connections (api-util/individual-connections->api-individual-connections conn individual_connections created_by)
+        api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
                                                           api-individual-connections)))))]
+    (when (seq related_content)
+      (handler.resource.related-content/create-related-contents conn resource-id "resource" related_content))
     (doseq [stakeholder-id owners]
       (h.auth/grant-topic-to-stakeholder! conn {:topic-id resource-id
                                                 :topic-type "resource"
@@ -166,7 +170,8 @@
            [:enum "global", "regional", "national", "transnational",
             "sub-national", "global with elements in specific areas"]]
           [:geo_coverage_value_subnational_city {:optional true} string?]
-          [:image {:optional true} string?]
+          [:image {:optional true} [:fn (comp util/base64? util/base64-headless)]]
+          [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
           [:remarks {:optional true} string?]
           [:urls {:optional true}
            [:vector {:optional true}
@@ -180,7 +185,10 @@
           [:is_member {:optional true} boolean?]
           [:sub_content_type {:optional true} string?]
           [:related_content {:optional true}
-           [:vector {:optional true} integer?]]
+           [:vector {:optional true}
+            [:map {:optional true}
+             [:id [:int]]
+             [:type (vec (conj constants/resources :enum))]]]]
           [:first_publication_date {:optional true} string?]
           [:latest_amendment_date {:optional true} string?]
           [:document_preview {:optional true} boolean?]

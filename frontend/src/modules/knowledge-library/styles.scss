@@ -10,9 +10,6 @@
 
 .info-resources {
   padding-left: 20px;
-  @-moz-document url-prefix() {
-    padding-left: 15px;
-  }
 }
 
 #knowledge-library {
@@ -46,13 +43,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    @-moz-document url-prefix() {
-      max-width: 30px;
-      max-height: 30px;
-      min-width: 15px;
-      min-height: 15px;
-      height: 22px;
-    }
   }
 
   span.ant-input-affix-wrapper.input-src {
@@ -83,19 +73,10 @@
     position: absolute;
     min-width: calc(100% - 100px);
     overflow: hidden;
-    @-moz-document url-prefix() {
-      top: 90px !important;
-    }
 
     @media (min-width: 750px) {
       top: 0 !important;
       left: 100px !important;
-      @-moz-document url-prefix() {
-        & {
-          top: 0 !important;
-          left: 90px !important;
-        }
-      }
     }
 
     .ant-tabs-nav-operations {
@@ -106,28 +87,19 @@
     .ant-drawer-mask {
       background-color: unset;
     }
-    .ant-drawer-left.ant-drawer-open {
-      @-moz-document url-prefix() {
-        left: 0px;
-      }
-    }
 
     .ant-drawer-content-wrapper {
       box-shadow: none;
       height: 700px;
       max-width: 550px;
       width: 100% !important;
-      @-moz-document url-prefix() {
-        max-width: 360px;
-      }
+
       @media (max-width: 510px) {
         height: 100% !important;
       }
       .ant-drawer-header {
         background: $blue05;
-        @-moz-document url-prefix() {
-          padding: 8px 14px;
-        }
+
         .apply-button {
           width: auto;
           color: #ffffff;
@@ -139,13 +111,7 @@
           font-size: 14px;
           font-weight: bold;
           height: auto;
-          @-moz-document url-prefix() {
-            top: -12px;
-            font-size: 10px;
-            padding: 2px 5.5px 2px 5.5px;
-            border: 1px solid #ffffff;
-            line-height: 14px;
-          }
+
           @media (max-width: 540px) {
             font-size: 12px;
           }
@@ -157,19 +123,13 @@
 
       .favorites-checkbox {
         margin-bottom: 21px;
-        @-moz-document url-prefix() {
-          margin-bottom: 16px;
-        }
+
         .ant-checkbox-inner {
           width: 26px;
           height: 26px;
           border: 1px solid $grey04;
           border-radius: 5px;
           background-color: $grey05;
-          @-moz-document url-prefix() {
-            width: 21px;
-            height: 21px;
-          }
         }
 
         .ant-checkbox-checked .ant-checkbox-inner {
@@ -182,9 +142,7 @@
 
         .ant-checkbox + span {
           font-size: 16px;
-          @-moz-document url-prefix() {
-            font-size: 12px;
-          }
+
           @media (max-width: 540px) {
             font-size: 14px;
           }
@@ -201,25 +159,14 @@
         color: #fff;
         font-weight: 400;
         font-size: 16px;
-        @-moz-document url-prefix() {
-          font-size: 12px;
-        }
+
         @media (max-width: 540px) {
           font-size: 14px;
         }
       }
       .drawer-close-icon {
         border-radius: 50%;
-        @-moz-document url-prefix() {
-          display: content;
-          padding: 0;
-          width: 15px !important;
-          height: 15px !important;
-          svg {
-            width: 15px !important;
-            height: 15px !important;
-          }
-        }
+
         &:hover {
           background-color: $yellow-highlight;
         }
@@ -236,9 +183,7 @@
       .date-picker-container .ant-picker ::placeholder {
         font-size: 16px;
         color: $grey04;
-        @-moz-document url-prefix() {
-          font-size: 12px;
-        }
+
         @media (max-width: 540px) {
           font-size: 14px;
         }
@@ -274,9 +219,7 @@
           background-position-x: 100%;
           background-repeat: no-repeat;
           width: 20px;
-          @-moz-document url-prefix() {
-            width: 15px;
-          }
+
           span {
             opacity: 0;
           }
@@ -293,9 +236,7 @@
         font-size: 16px;
         color: $blue06;
         font-style: italic;
-        @-moz-document url-prefix() {
-          font-size: 12px;
-        }
+
         @media (max-width: 540px) {
           font-size: 14px;
         }
@@ -306,18 +247,12 @@
 
       .ant-drawer-close {
         top: -5px;
-        @-moz-document url-prefix() {
-          top: -9px !important;
-        }
+
         span,
         svg {
           display: block;
           width: 23px;
           height: 23px;
-          @-moz-document url-prefix() {
-            width: 18px;
-            width: 18px;
-          }
         }
       }
 
@@ -326,10 +261,7 @@
         font-size: 18px;
         font-weight: 500;
         margin-bottom: 16px;
-        @-moz-document url-prefix() {
-          font-size: 14px;
-          margin-bottom: 8px;
-        }
+
         @media (max-width: 540px) {
           font-size: 16px;
         }
@@ -355,10 +287,7 @@
         font-size: 14px;
         font-weight: bold;
         background-color: unset;
-        @-moz-document url-prefix() {
-          line-height: 20px;
-          font-size: 10px;
-        }
+
         @media (max-width: 540px) {
           font-size: 12px;
         }
@@ -375,17 +304,14 @@
         align-items: center;
         align-self: baseline;
         color: $blue04;
-        // border: 1px solid $blue04;
+
         border: none;
         font-size: 16px;
-        // text-transform: uppercase;
-        // border-radius: 20px;
+
         margin-bottom: 8px;
         transform: translateY(2px);
         cursor: pointer;
-        @-moz-document url-prefix() {
-          margin-bottom: 4px;
-        }
+
         &:hover {
           background-color: transparent;
         }
@@ -416,11 +342,7 @@
         width: 100%;
         max-width: 100px !important;
         margin-bottom: 17px;
-        @-moz-document url-prefix() {
-          height: 73px;
-          max-width: 73px !important;
-          margin-bottom: 8.5px;
-        }
+
         @media (max-width: 510px) {
           margin-bottom: 5px;
         }
@@ -438,26 +360,15 @@
         text-align: center;
         border: 1px solid $grey03;
         border-radius: 4px;
-        @-moz-document url-prefix() {
-          height: 73px;
-          width: 73px;
-          padding: 2px;
-        }
+
         .ant-card-body {
           padding: 0;
           .ant-space {
             gap: 4px;
-            @-moz-document url-prefix() {
-              gap: 2px;
-            }
 
             svg {
               width: 80px;
               height: 55px;
-              @-moz-document url-prefix() {
-                width: 65px;
-                height: 40px;
-              }
             }
             // SVG
             .event-flexible {
@@ -465,9 +376,6 @@
                 fill: none;
                 stroke: currentColor;
                 stroke-width: 4px;
-                @-moz-document url-prefix() {
-                  stroke-width: 2px;
-                }
               }
             }
 
@@ -490,9 +398,6 @@
 
               .cls-3 {
                 stroke-width: 4px;
-                @-moz-document url-prefix() {
-                  stroke-width: 2px;
-                }
               }
             }
 
@@ -514,9 +419,6 @@
               .cls-4 {
                 fill: #fff;
                 stroke-width: 4px;
-                @-moz-document url-prefix() {
-                  stroke-width: 2px;
-                }
               }
             }
 
@@ -546,18 +448,11 @@
         .topic-count {
           font-size: 12px;
           text-transform: uppercase;
-          @-moz-document url-prefix() {
-            font-size: 9px;
-          }
         }
 
         .topic-text {
           font-size: 12px;
           line-height: 14px;
-          @-moz-document url-prefix() {
-            font-size: 9px;
-            line-height: 10px;
-          }
         }
 
         .topic-count {
@@ -583,9 +478,7 @@
     width: 100%;
     background-color: white;
     max-width: 442px;
-    @-moz-document url-prefix() {
-      max-width: 350px;
-    }
+
     @media (max-width: 950px) {
       position: unset;
       max-width: 100%;
@@ -639,10 +532,6 @@
     z-index: 999;
     & span {
       font-size: 12px;
-      @-moz-document url-prefix() {
-        font-size: 9px;
-        padding: 2px 14px;
-      }
     }
 
     .ant-page-header-heading-title,
@@ -668,9 +557,6 @@
 
     .ant-page-header-heading-sub-title {
       margin-right: 33px;
-      @-moz-document url-prefix() {
-        margin-right: 28px;
-      }
     }
 
     .ant-page-header-heading-left {
@@ -687,9 +573,6 @@
 
     .ant-page-header-back {
       margin-right: 10px;
-      @-moz-document url-prefix() {
-        margin-right: 5px;
-      }
     }
     .invisible-content {
       min-height: 18.75px;
@@ -711,9 +594,6 @@
       box-shadow: unset;
       img {
         margin-right: 7px;
-        @-moz-document url-prefix() {
-          padding-left: 12px;
-        }
       }
     }
   }
@@ -735,10 +615,7 @@
     gap: 5px;
     align-items: center;
     padding-bottom: 120px;
-    @-moz-document url-prefix() {
-      padding: 5px;
-      padding-bottom: 110px;
-    }
+
     @media (max-width: 950px) {
       padding: 10px 24px;
     }
@@ -756,12 +633,10 @@
         box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
         text-align: left;
         color: $black;
+        cursor: pointer;
 
         .ant-card-body {
           padding: 5px !important;
-          @-moz-document url-prefix() {
-            padding: 2.5px !important;
-          }
         }
 
         .topic {
@@ -769,9 +644,6 @@
           font-size: 12px;
           text-transform: uppercase;
           font-weight: 500;
-          @-moz-document url-prefix() {
-            font-size: 10px;
-          }
         }
 
         .item-body {
@@ -809,9 +681,6 @@
           .avatar-count {
             font-size: 13px;
             margin-left: 25px;
-            @-moz-document url-prefix() {
-              font-size: 9.5px;
-            }
           }
         }
         .item-footer {
@@ -821,9 +690,7 @@
           .read-more {
             font-size: 14px;
             margin-left: auto;
-            @-moz-document url-prefix() {
-              font-size: 12px;
-            }
+
             @media (max-width: 540px) {
               font-size: 12px;
             }
@@ -880,9 +747,7 @@
     bottom: 0;
     background-color: #ffffff;
     border-top: 1px solid #ccc;
-    @-moz-document url-prefix() {
-      max-width: 350px !important;
-    }
+
     @media (max-width: 950px) {
       position: unset;
       padding: 1rem 24px 1rem 24px;
@@ -891,9 +756,6 @@
     .ant-pagination-item a {
       font-weight: bold;
       font-size: 12px;
-      @-moz-document url-prefix() {
-        font-size: 11px;
-      }
     }
 
     .result-number {
@@ -945,9 +807,7 @@
       background-repeat: no-repeat;
       background-position: center;
       background-size: 8px;
-      @-moz-document url-prefix() {
-        background-size: 6px;
-      }
+
       svg {
         display: none;
       }
@@ -1047,12 +907,6 @@
     }
 
     .site-drawer-render-in-current-wrapper {
-      .ant-drawer-body {
-        @-moz-document url-prefix() {
-          padding: 7px;
-          padding-top: 14px;
-        }
-      }
       .ant-drawer-content-wrapper {
         .filter-title,
         .favorites-checkbox {
@@ -1061,16 +915,10 @@
         .resources-card-filter {
           padding-top: 5px !important;
           padding-bottom: 5px !important;
-          @-moz-document url-prefix() {
-            padding-top: 2.5px !important;
-            padding-bottom: 2.5px !important;
-          }
         }
         .resource-type-card {
           height: 100px;
-          @-moz-document url-prefix() {
-            height: 73px;
-          }
+
           .ant-card-body {
             .ant-space {
               gap: 1px;
@@ -1080,10 +928,6 @@
             svg {
               width: 40px;
               height: 40px;
-              @-moz-document url-prefix() {
-                width: 30px;
-                height: 30px;
-              }
             }
           }
         }
@@ -1092,11 +936,6 @@
       @media (max-width: 510px) {
         .ant-drawer-content-wrapper {
           width: 100%;
-          @-moz-document url-prefix() {
-            width: 100% !important;
-            max-width: 100% !important;
-            transform: unset !important;
-          }
         }
       }
     }
@@ -1108,33 +947,21 @@
   background-color: rgb(37, 91, 135);
   .ant-page-header {
     padding: 2px 24px;
-    @-moz-document url-prefix() {
-      padding: 2px 14px;
-    }
   }
   .resource-list {
     gap: 5px;
     padding-bottom: 120px;
-    @-moz-document url-prefix() {
-      padding-bottom: 110px;
-    }
+
     .resource-item-wrapper {
       .ant-card-body {
         padding-top: 5px;
         padding-bottom: 5px;
-        @-moz-document url-prefix() {
-          padding-top: 2.5px;
-          padding-bottom: 2.5px;
-        }
       }
       .item-body {
         margin-top: 0px;
       }
       .item-footer {
         margin-top: 5px;
-        @-moz-document url-prefix() {
-          margin-top: 2.5px;
-        }
       }
     }
   }
@@ -1145,10 +972,6 @@
     .resource-list {
       padding-left: 20px;
       padding-right: 20px;
-      @-moz-document url-prefix() {
-        padding-left: 15px;
-        padding-right: 15px;
-      }
     }
   }
 

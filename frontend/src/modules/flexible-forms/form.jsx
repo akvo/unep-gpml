@@ -258,9 +258,18 @@ const FlexibleForm = withRouter(
         delete data.info;
       }
 
-      if (data?.related) {
-        data.relatedContent = data?.related.map((x) => parseInt(x));
+      data.summary = data?.summary?.replace(/(?:\r\n|\r|\n)/g, " ");
+
+      if (data?.type?.length > 0) {
+        data.relatedContent = data?.type.map((x) => {
+          return {
+            id: parseInt(x.value),
+            type: x.label,
+          };
+        });
         delete data.related;
+        delete data.type;
+        delete data.id;
       }
 
       if (status === "add" && !params?.id) {
@@ -308,13 +317,13 @@ const FlexibleForm = withRouter(
             });
             setDisabledBtn({ disabled: true, type: "default" });
             notification.success({ message: "Resource successfully updated" });
-            history.push(`/${type}/${id || params?.id}`);
+            history.push(`/${type.replace("_", "-")}/${id || params?.id}`);
           })
           .catch(() => {
             initialFormData.update((e) => {
               e.data = initialData;
             });
-            history.push(`/${type}/${id || params?.id}`);
+            history.push(`/${type.replace("_", "-")}/${id || params?.id}`);
             notification.error({ message: "An error occured" });
           })
           .finally(() => {
@@ -358,6 +367,7 @@ const FlexibleForm = withRouter(
         });
 
       delete data.qtags;
+      delete data.qid;
 
       data.url = data.qurl;
       delete data.qurl;
@@ -384,7 +394,7 @@ const FlexibleForm = withRouter(
       data.q2 = data.qtitle;
       delete data.qtitle;
 
-      data.q3 = data.qsummary;
+      data.q3 = data?.qsummary.replace(/(?:\r\n|\r|\n)/g, " ");
       delete data.qsummary;
 
       data.q24 = data.qgeoCoverageType;
@@ -432,10 +442,17 @@ const FlexibleForm = withRouter(
         delete data.qgeoCoverageValueSubnationalCity;
       }
 
-      if (data?.qrelated) {
-        data.related_content = data?.qrelated.map((x) => parseInt(x));
+      if (data?.qtype?.length > 0) {
+        data.related_content = data?.qtype.map((x) => {
+          return {
+            id: parseInt(x.value),
+            type: x.label,
+          };
+        });
         delete data.qrelated;
+        delete data.qtype;
       }
+
       delete data.tagsList;
       delete data.qtagsList;
 
@@ -617,13 +634,20 @@ const FlexibleForm = withRouter(
         delete data.info;
       }
 
-      if (data?.related) {
-        data.relatedContent = data?.related.map((x) => parseInt(x));
+      if (data?.type?.length > 0) {
+        data.relatedContent = data?.type.map((x) => {
+          return {
+            id: parseInt(x.value),
+            type: x.label,
+          };
+        });
         delete data.related;
+        delete data.type;
+        delete data.id;
       }
 
       if (data?.summary) {
-        data.abstract = data?.summary;
+        data.abstract = data?.summary?.replace(/(?:\r\n|\r|\n)/g, " ");
         delete data.summary;
       }
 
@@ -807,13 +831,20 @@ const FlexibleForm = withRouter(
         delete data.info;
       }
 
-      if (data?.related) {
-        data.relatedContent = data?.related.map((x) => parseInt(x));
+      if (data?.type?.length > 0) {
+        data.relatedContent = data?.type.map((x) => {
+          return {
+            id: parseInt(x.value),
+            type: x.label,
+          };
+        });
         delete data.related;
+        delete data.type;
+        delete data.id;
       }
 
       if (data?.summary) {
-        data.description = data?.summary;
+        data.description = data?.summary?.replace(/(?:\r\n|\r|\n)/g, " ");
         delete data.summary;
       }
 
@@ -986,13 +1017,20 @@ const FlexibleForm = withRouter(
         delete data.info;
       }
 
-      if (data?.related) {
-        data.relatedContent = data?.related.map((x) => parseInt(x));
+      if (data?.type?.length > 0) {
+        data.relatedContent = data?.type.map((x) => {
+          return {
+            id: parseInt(x.value),
+            type: x.label,
+          };
+        });
         delete data.related;
+        delete data.type;
+        delete data.id;
       }
 
       if (data?.summary) {
-        data.remarks = data?.summary;
+        data.remarks = data?.summary?.replace(/(?:\r\n|\r|\n)/g, " ");
         delete data.summary;
       }
 

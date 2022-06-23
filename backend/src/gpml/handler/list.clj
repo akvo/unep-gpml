@@ -45,4 +45,5 @@
                [:maybe
                 [:map
                  [:id [:int]]
-                 [:title [:string]]]]]}})
+                 [:title [:string]]
+                 [:type [:string]]]]]}})

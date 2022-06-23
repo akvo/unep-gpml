@@ -10,6 +10,7 @@
   (apply conj topic-tables ["organisation" "stakeholder" "non_member_organisation"]))
 
 (def resource-types #{"financing_resource" "technical_resource" "action_plan"})
+(def ^:const resources (concat resource-types (butlast topic-tables)))
 (def approved-user-topics #{"stakeholder"})
 (def stakeholder-types #{"individual" "entity"})
 (def topics
@@ -106,7 +107,8 @@
    "Reviewed at"
    "Created"
    "Created by"
-   "Modified"])
+   "Modified"
+   "Platform Link"])
 
 (def ^:const entities-key-map
   {:id "ID"
@@ -131,7 +133,8 @@
    :reviewed_at "Reviewed at"
    :created_by "Created by"
    :created "Created"
-   :modified "Modified"})
+   :modified "Modified"
+   :platform-link "Platform Link"})
 
 (def ^:const sorted-tag-columns
   ["ID"
@@ -211,6 +214,7 @@
    "Publication reference"
    "SDG Initiative"
    "Reporting to"
+   "Entity Connections"
    "Q1_1"
    "Q1_1_1"
    "Q4"
@@ -268,7 +272,8 @@
    "Q41_1"])
 
 (def ^:const topics-key-map
-  {:q24_2 "Q24_2",
+  {:entity_connections "Entity Connections"
+   :q24_2 "Q24_2",
    :q37 "Q37",
    :remarks "Remarks",
    :q32 "Q32",
