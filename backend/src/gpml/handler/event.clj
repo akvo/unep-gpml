@@ -41,7 +41,7 @@
 (defn create-event [conn mailjet-config
                     {:keys [tags urls title start_date end_date
                             description remarks geo_coverage_type
-                            country city geo_coverage_value photo thumbnail
+                            country city geo_coverage_value image thumbnail
                             geo_coverage_countries geo_coverage_country_groups
                             geo_coverage_value_subnational_city
                             created_by owners url info_docs sub_content_type
@@ -52,7 +52,7 @@
               :end_date end_date
               :description (or description "")
               :remarks remarks
-              :image (handler.image/assoc-image conn photo "event")
+              :image (handler.image/assoc-image conn image "event")
               :thumbnail (handler.image/assoc-image conn thumbnail "event")
               :geo_coverage_type geo_coverage_type
               :geo_coverage_value geo_coverage_value
@@ -120,7 +120,7 @@
     [:start_date {:optional true} string?]
     [:end_date {:optional true} string?]
     [:description {:optional true} string?]
-    [:photo {:optional true} [:fn (comp util/base64? util/base64-headless)]]
+    [:image {:optional true} [:fn (comp util/base64? util/base64-headless)]]
     [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
     [:remarks {:optional true} string?]
     [:geo_coverage_type
