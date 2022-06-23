@@ -13,6 +13,7 @@ import financingResource from "../../images/placeholders/financing-resource-plac
 import technology from "../../images/placeholders/technology-placeholder.png";
 import initiative from "../../images/placeholders/initiative-placeholder.png";
 import event from "../../images/placeholders/initiative-placeholder.png";
+import { topicNames } from "../../utils/misc";
 
 const RelatedContent = ({
   url,
@@ -171,7 +172,7 @@ const RelatedContent = ({
           return (
             <Col key={item?.id} className="card" span={12}>
               <a
-                href={`/${getType(item?.type)}/${item.id}`}
+                href={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
                 className={`description-holder ${
                   isShownPagination ? "with-pagination" : "no-pagination"
                 }`}
@@ -187,7 +188,11 @@ const RelatedContent = ({
                 <div>
                   <h3>{item.title}</h3>
                   <h4>
-                    {data?.type ? data.type : item?.type ? item?.type : ""}
+                    {data?.type
+                      ? topicNames(data.type)
+                      : item?.type
+                      ? topicNames(item?.type)
+                      : ""}
                   </h4>
                 </div>
                 <div className="bottom-panel">
