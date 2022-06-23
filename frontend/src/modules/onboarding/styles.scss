@@ -238,7 +238,15 @@
             margin: 0px 5px;
             background: #3176ae;
             color: #fff;
-            border-radius: 3px;
+
+            background-color: #3176ae;
+            border-radius: 4px;
+            line-height: 34px !important;
+            margin: 3px 2px !important;
+            padding: 0 10px;
+            .ant-select-selection-item-remove {
+              color: rgba(255, 255, 255, 0.5);
+            }
             svg {
               path {
                 fill: #fff;
@@ -258,7 +266,6 @@
       font-weight: 500;
       font-size: 16px;
       line-height: 42px;
-      color: #a5b0c9;
     }
     &.ant-input-status-error {
       border: 1px solid #ff4d4f;
@@ -271,15 +278,6 @@
     padding: 10px;
   }
   .ant-select-selection-item {
-    background-color: #3176ae;
-    color: #fff !important;
-    border-radius: 4px;
-    line-height: 34px !important;
-    margin: 3px 2px !important;
-    padding: 0 10px;
-    .ant-select-selection-item-remove {
-      color: rgba(255, 255, 255, 0.5);
-    }
   }
   .ant-input-status-error {
     .ant-checkbox-inner {
