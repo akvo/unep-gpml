@@ -17,11 +17,12 @@ import { useLocation } from "react-router-dom";
 import api from "../../utils/api";
 import { useHistory } from "react-router-dom";
 import { SwitchTransition, CSSTransition } from "react-transition-group";
-import GettingStartedIcon from "../../images/auth/getting-started.png";
+import GettingStartedIcon from "../../images/auth/surfer.svg";
 import waveSvg from "../../images/auth/wave.svg";
 
 function Authentication() {
   const formRef = useRef();
+  const surferRef = useRef()
   const location = useLocation();
   let history = useHistory();
   const [affiliation, setAffiliation] = useState("");
@@ -219,7 +220,7 @@ function Authentication() {
                     </h2>
                   </div>
                   <div className="image-wrapper">
-                    <img src={GettingStartedIcon} alt="getting-started" />
+                    <img src={GettingStartedIcon} alt="getting-started" ref={surferRef} />
                   </div>
                   <div className="button-bottom-panel">
                     <Button className="step-button-next" onClick={() => next()}>
@@ -250,7 +251,7 @@ function Authentication() {
                 <div className="slide last">
                   <FormFour validate={currentStep === 5 ? required : null} />
                 </div>
-                <Wave step={currentStep} />
+                <Wave step={currentStep} surferRef={surferRef} />
                 {currentStep > 0 && (
                   <Button className="step-button-back" onClick={previous}>
                     {"<"} Back
@@ -281,7 +282,7 @@ function Authentication() {
   );
 }
 
-const Wave = ({ step }) => {
+const Wave = ({ step, surferRef }) => {
   const ref = useRef();
   useEffect(() => {
     document.addEventListener("mousemove", (e) => {
@@ -292,6 +293,7 @@ const Wave = ({ step }) => {
       );
       ref.current.style.marginLeft = `${axx * 100}px`;
       ref.current.style.marginBottom = `${-axy * 100}px`;
+      surferRef.current.style.transform = `translate(${axx * 70}px, ${axy * 200 - 50}px)`;
     });
   }, []);
   return (
