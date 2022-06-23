@@ -233,22 +233,26 @@ function Authentication() {
                   />
                 </div>
                 <div className="slide">
-                  <FormOne validate={currentStep === 2 ? required : null} />
+                  {currentStep === 2 && <FormOne validate={required} />}
                 </div>
                 <div className="slide">
-                  <FormTwo
-                    handleOfferingSuggestedTag={handleOfferingSuggestedTag}
-                    validate={currentStep === 3 ? required : null}
-                  />
+                  {currentStep === 3 && (
+                    <FormTwo
+                      handleOfferingSuggestedTag={handleOfferingSuggestedTag}
+                      validate={required}
+                    />
+                  )}
                 </div>
                 <div className="slide">
-                  <FormThree
-                    handleSeekingSuggestedTag={handleSeekingSuggestedTag}
-                    validate={currentStep === 4 ? required : null}
-                  />
+                  {currentStep === 4 && (
+                    <FormThree
+                      handleSeekingSuggestedTag={handleSeekingSuggestedTag}
+                      validate={required}
+                    />
+                  )}
                 </div>
                 <div className="slide last">
-                  <FormFour validate={currentStep === 5 ? required : null} />
+                  {currentStep === 5 && <FormFour validate={required} />}
                 </div>
                 <Wave step={currentStep} />
                 {currentStep > 0 && (
