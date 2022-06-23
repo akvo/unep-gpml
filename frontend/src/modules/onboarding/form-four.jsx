@@ -21,8 +21,7 @@ import {
 } from "@ant-design/icons";
 import { Field } from "react-final-form";
 
-function FormFour({ validate, error }) {
-  const [form] = Form.useForm();
+function FormFour({ validate }) {
   return (
     <>
       <div className="text-wrapper">
@@ -42,7 +41,7 @@ function FormFour({ validate, error }) {
                 placeholder="Max 100 words"
                 maxLength={100}
                 className={`${
-                  error && !meta.valid ? "ant-input-status-error" : ""
+                  meta.touched && meta.error ? "ant-input-status-error" : ""
                 }`}
               />
             </div>
@@ -113,7 +112,7 @@ function FormFour({ validate, error }) {
               <Checkbox
                 onChange={(checked) => input.onChange(checked)}
                 className={`${
-                  error && !meta.valid ? "ant-input-status-error" : ""
+                  meta.touched && meta.error ? "ant-input-status-error" : ""
                 }`}
               >
                 <p>

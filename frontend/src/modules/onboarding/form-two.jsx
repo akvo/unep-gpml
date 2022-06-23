@@ -25,7 +25,6 @@ function FormTwo({ handleOfferingSuggestedTag, validate, error }) {
       <div className="ant-form ant-form-vertical">
         <Field name="offering" style={{ width: "100%" }} validate={validate}>
           {({ input, meta }) => {
-            console.log(meta);
             const filteredOptions = array.filter((ad) =>
               input.value
                 ? input.value.every((fd) => fd.value !== ad.id)

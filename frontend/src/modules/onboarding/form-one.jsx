@@ -21,7 +21,6 @@ function FormOne({ validate, error }) {
         <div className="field-wrapper">
           <Field name="jobTitle" validate={validate}>
             {({ input, meta }) => {
-              console.log(meta);
               return (
                 <>
                   <Input
