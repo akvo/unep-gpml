@@ -10,6 +10,7 @@ import {
   useHistory,
   NavLink,
 } from "react-router-dom";
+import ReactGA from "react-ga";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Input, Button, Menu, Dropdown, Layout } from "antd";
 import {
@@ -79,6 +80,8 @@ import StakeholderOverview from "./modules/stakeholder-overview/view";
 import Partners from "./modules/partners/view";
 
 let tmid;
+
+const TRACKING_ID = "UA-225649296-2";
 
 Promise.all([
   api.get("/tag"),
@@ -259,6 +262,13 @@ const Root = () => {
       }
     })();
   }, [getIdTokenClaims, isAuthenticated]);
+
+  useEffect(() => {
+    if (window.location.host === "digital.gpmarinelitter.org") {
+      ReactGA.initialize(TRACKING_ID);
+      ReactGA.pageview(window.location.pathname + window.location.search);
+    }
+  }, []);
 
   // Here we retrieve the resources data
   const [results, setResults] = useState([]);
