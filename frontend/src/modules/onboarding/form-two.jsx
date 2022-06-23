@@ -23,11 +23,7 @@ function FormTwo({ handleOfferingSuggestedTag, validate }) {
         <Title level={2}>What are the expertises you can provide?</Title>
       </div>
       <div className="ant-form ant-form-vertical">
-        <Field
-          name="offering"
-          style={{ width: "100%" }}
-          validate={validate}
-        >
+        <Field name="offering" style={{ width: "100%" }} validate={validate}>
           {({ input, meta }) => {
             const filteredOptions = array.filter((ad) =>
               input.value
@@ -51,9 +47,7 @@ function FormTwo({ handleOfferingSuggestedTag, validate }) {
                     option.children.toLowerCase().includes(i.toLowerCase())
                   }
                   className={`dont-show ${
-                    meta.touched && meta.error
-                      ? "ant-input-status-error"
-                      : ""
+                    meta.touched && meta.error ? "ant-input-status-error" : ""
                   }`}
                 >
                   {filteredOptions?.map((item) => (
