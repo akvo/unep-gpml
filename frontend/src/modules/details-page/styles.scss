@@ -589,7 +589,8 @@
           }
         }
         .comment-input {
-          min-height: 54px;
+          padding-top: calc(calc(54px - 32px) / 2);
+          padding-bottom: calc(calc(54px - 32px) / 2);
           background: hsl(199, 100%, 95%);
           border: 1px solid #339cfe;
           border-radius: 5px;
@@ -627,8 +628,6 @@
         }
       }
       ::placeholder {
-        position: relative;
-        top: 10px;
         color: #1890ff;
       }
     }
