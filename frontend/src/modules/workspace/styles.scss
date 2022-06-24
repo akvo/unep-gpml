@@ -103,6 +103,17 @@ $bg-green-primary: #10f9b7;
       height: 100%;
       .ant-carousel {
         height: 100%;
+        .slick-slider {
+          .slick-dots {
+            li {
+              width: 33px;
+            }
+            button {
+              background: #00585f;
+              height: 5px;
+            }
+          }
+        }
         .slick-dots-bottom {
           bottom: -10;
         }
