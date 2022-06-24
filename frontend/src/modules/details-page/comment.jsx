@@ -273,7 +273,16 @@ const Comments = ({
   return (
     <>
       <Col className="section comment-section">
-        <h3 className="content-heading">Discussion</h3>
+        <h3
+          className="content-heading"
+          style={
+            comments && comments.length > 0
+              ? { marginBottom: "0" }
+              : { marginBottom: "16px" }
+          }
+        >
+          Discussion
+        </h3>
         {comments &&
           comments.length > 0 &&
           comments?.map((item, index) => {
