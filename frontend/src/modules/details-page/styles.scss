@@ -215,6 +215,9 @@
 
     .section-description {
       padding: 0;
+      .content-heading {
+        margin-bottom: calc(16px - 7px);
+      }
       @media (max-width: 600px) {
         padding: 0 30px !important;
       }
@@ -246,6 +249,10 @@
       margin-right: 16px;
     }
 
+    .location-icon svg {
+      height: 30px;
+    }
+
     .section-document {
       margin-top: calc(38px - 12px);
     }
@@ -253,7 +260,7 @@
     .record-section {
       clear: both;
       .content-heading {
-        margin-bottom: calc(25px - 9px);
+        margin-bottom: calc(16px - 9px);
       }
       .record-table {
         width: 100%;
@@ -263,6 +270,7 @@
         .record-row {
           display: flex;
           align-items: center;
+
           .record-name,
           .record-value {
             padding: 9px 0;
@@ -289,6 +297,18 @@
             a {
               color: #000000;
               border-bottom: 2px solid #c5c5c5;
+            }
+          }
+          &:first-of-type {
+            .record-name,
+            .record-value {
+              padding-top: 5px;
+            }
+          }
+          &:last-of-type {
+            .record-name,
+            .record-value {
+              padding-bottom: 0;
             }
           }
         }
@@ -333,7 +353,10 @@
 
     .section-tag {
       .content-heading {
-        margin-bottom: 25px;
+        margin-bottom: 16px;
+      }
+      .ant-list-item-meta-title {
+        margin-bottom: 0;
       }
     }
 
@@ -372,6 +395,10 @@
           }
         }
       }
+    }
+
+    .section-tag + .section {
+      margin-top: calc(38px - 12px);
     }
 
     .section-related-content {
@@ -436,7 +463,7 @@
 
     .comment-section {
       .content-heading {
-        margin-bottom: 25px;
+        margin-bottom: 0;
       }
 
       .default-comment-avatar {
