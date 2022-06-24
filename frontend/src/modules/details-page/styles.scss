@@ -39,11 +39,6 @@
       overflow-wrap: break-word;
     }
 
-    @media (min-width: 900px) {
-      .event-paragraph {
-        columns: 2;
-      }
-    }
     .section {
       margin-top: 38px;
     }
@@ -192,11 +187,11 @@
       }
       .resource-image-wrapper {
         display: block;
-        padding: 0 0 20px 0;
-        @media (min-width: 900px) {
-          .no-event-resource-image {
-            padding: 0 20px 20px 0;
-          }
+        @media (min-width: 601px) {
+          width: 40%;
+          float: left;
+          margin: 0 20px 20px 0;
+          padding-right: 0 !important;
         }
       }
       .details-content-wrapper {
@@ -205,6 +200,9 @@
         & > .ant-row {
           display: block;
           max-width: 100% !important;
+        }
+        @media (min-width: 601px) {
+          margin-top: 20px;
         }
       }
       .resource-image {
@@ -217,6 +215,9 @@
 
     .section-description {
       padding: 0;
+      .content-heading {
+        margin-bottom: calc(16px - 7px);
+      }
       @media (max-width: 600px) {
         padding: 0 30px !important;
       }
@@ -228,14 +229,7 @@
     .popover-share {
       width: 100%;
     }
-    .no-event-resource-image {
-      @media (min-width: 601px) {
-        width: 50%;
-        float: left;
-        margin-right: 20px;
-        padding-right: 0 !important;
-      }
-    }
+
     .geocoverage-item,
     .detail-item .ant-row {
       display: flex;
@@ -255,6 +249,10 @@
       margin-right: 16px;
     }
 
+    .location-icon svg {
+      height: 30px;
+    }
+
     .section-document {
       margin-top: calc(38px - 12px);
     }
@@ -262,7 +260,7 @@
     .record-section {
       clear: both;
       .content-heading {
-        margin-bottom: calc(25px - 9px);
+        margin-bottom: calc(16px - 9px);
       }
       .record-table {
         width: 100%;
@@ -272,6 +270,7 @@
         .record-row {
           display: flex;
           align-items: center;
+
           .record-name,
           .record-value {
             padding: 9px 0;
@@ -300,12 +299,26 @@
               border-bottom: 2px solid #c5c5c5;
             }
           }
+          &:first-of-type {
+            .record-name,
+            .record-value {
+              padding-top: 5px;
+            }
+          }
+          &:last-of-type {
+            .record-name,
+            .record-value {
+              padding-bottom: 0;
+            }
+          }
         }
       }
     }
     .stakeholder-row {
-      margin-top: 16px;
       border-bottom: unset !important;
+      &:not(:first-of-type) {
+        margin-top: 16px;
+      }
     }
     .stakeholder-detail {
       .ant-list-item-meta-title {
@@ -340,7 +353,10 @@
 
     .section-tag {
       .content-heading {
-        margin-bottom: 25px;
+        margin-bottom: 16px;
+      }
+      .ant-list-item-meta-title {
+        margin-bottom: 0;
       }
     }
 
@@ -379,6 +395,10 @@
           }
         }
       }
+    }
+
+    .section-tag + .section {
+      margin-top: calc(38px - 12px);
     }
 
     .section-related-content {
@@ -443,8 +463,14 @@
 
     .comment-section {
       .content-heading {
-        margin-bottom: 25px;
+        margin-bottom: 0;
       }
+
+      .default-comment-avatar {
+        display: flex;
+        justify-content: center;
+      }
+
       .ant-comment-content-author-name,
       .ant-comment-content-author-time {
         font-size: 14px;
@@ -563,7 +589,8 @@
           }
         }
         .comment-input {
-          min-height: 54px;
+          padding-top: calc(calc(54px - 32px) / 2);
+          padding-bottom: calc(calc(54px - 32px) / 2);
           background: hsl(199, 100%, 95%);
           border: 1px solid #339cfe;
           border-radius: 5px;
@@ -601,8 +628,6 @@
         }
       }
       ::placeholder {
-        position: relative;
-        top: 10px;
         color: #1890ff;
       }
     }
