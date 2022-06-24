@@ -16,6 +16,7 @@ import {
   SendOutlined,
   DeleteOutlined,
   EditOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import api from "../../utils/api";
 import moment from "moment";
@@ -34,6 +35,7 @@ export const CommentList = ({
   setEditComment,
   onEditComment,
 }) => {
+  console.log(item);
   return (
     <Comment
       key={item.id}
@@ -165,7 +167,13 @@ export const CommentList = ({
       }
       author={item?.authorName}
       datetime={moment(item?.createdAt).fromNow()}
-      avatar={<Avatar src={item.authorPicture} alt={"author"} />}
+      avatar={
+        item?.authorPicture ? (
+          <Avatar src={item.authorPicture} alt={"author"} />
+        ) : (
+          <Avatar className="default-comment-avatar" icon={<UserOutlined />} />
+        )
+      }
       content={
         <>
           {!item.parentId && <h5>{item.title}</h5>}

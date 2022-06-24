@@ -438,6 +438,12 @@
       .content-heading {
         margin-bottom: 25px;
       }
+
+      .default-comment-avatar {
+        display: flex;
+        justify-content: center;
+      }
+
       .ant-comment-content-author-name,
       .ant-comment-content-author-time {
         font-size: 14px;
