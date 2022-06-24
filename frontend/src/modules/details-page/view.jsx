@@ -423,47 +423,74 @@ const DetailsView = ({
             <Row>
               {data?.geoCoverageType && (
                 <Col>
-                  <h3 className="content-heading">Location & Geocoverage</h3>
-                  <span className="detail-item geocoverage-item">
-                    <div className="transnational-icon detail-item-icon">
-                      <TransnationalImage />
-                    </div>
-                    <span>{titleCase(data?.geoCoverageType || "")}</span>
-                  </span>
+                  <div className="extra-wrapper">
+                    <h3 className="content-heading">Location & Geocoverage</h3>
+                    <span className="detail-item geocoverage-item">
+                      <div className="transnational-icon detail-item-icon">
+                        <TransnationalImage />
+                      </div>
+                      <span>{titleCase(data?.geoCoverageType || "")}</span>
+                    </span>
 
-                  {data?.geoCoverageType !== "global" && (
-                    <div className="detail-item">
-                      {data?.geoCoverageType !== "sub-national" &&
-                        data?.geoCoverageType !== "national" && (
-                          <>
-                            {data?.geoCoverageCountryGroups &&
-                              data?.geoCoverageCountryGroups?.length > 0 &&
-                              renderGeoCoverageCountryGroups(
-                                data,
-                                countries,
-                                transnationalOptions
-                              ) && (
-                                <Row>
-                                  <div className="location-icon detail-item-icon">
-                                    <LocationImage />
-                                  </div>
-                                  <div>
-                                    {renderGeoCoverageCountryGroups(
-                                      data,
-                                      countries,
-                                      transnationalOptions
-                                    )}
-                                  </div>
-                                </Row>
-                              )}
-                          </>
-                        )}
+                    {data?.geoCoverageType !== "global" && (
+                      <div className="detail-item">
+                        {data?.geoCoverageType !== "sub-national" &&
+                          data?.geoCoverageType !== "national" && (
+                            <>
+                              {data?.geoCoverageCountryGroups &&
+                                data?.geoCoverageCountryGroups?.length > 0 &&
+                                renderGeoCoverageCountryGroups(
+                                  data,
+                                  countries,
+                                  transnationalOptions
+                                ) && (
+                                  <Row>
+                                    <div className="location-icon detail-item-icon">
+                                      <LocationImage />
+                                    </div>
+                                    <div>
+                                      {renderGeoCoverageCountryGroups(
+                                        data,
+                                        countries,
+                                        transnationalOptions
+                                      )}
+                                    </div>
+                                  </Row>
+                                )}
+                            </>
+                          )}
 
-                      {data?.geoCoverageType !== "sub-national" &&
-                        data?.geoCoverageType !== "national" && (
+                        {data?.geoCoverageType !== "sub-national" &&
+                          data?.geoCoverageType !== "national" && (
+                            <>
+                              {data?.geoCoverageCountries &&
+                                data?.geoCoverageCountries?.length > 0 &&
+                                renderCountries(
+                                  data,
+                                  countries,
+                                  transnationalOptions
+                                ) && (
+                                  <Row>
+                                    <div className="location-icon detail-item-icon">
+                                      <LocationImage />
+                                    </div>
+                                    <div>
+                                      {renderCountries(
+                                        data,
+                                        countries,
+                                        transnationalOptions
+                                      )}
+                                    </div>
+                                  </Row>
+                                )}
+                            </>
+                          )}
+
+                        {(data?.geoCoverageType === "sub-national" ||
+                          data?.geoCoverageType === "national") && (
                           <>
-                            {data?.geoCoverageCountries &&
-                              data?.geoCoverageCountries?.length > 0 &&
+                            {data?.geoCoverageValues &&
+                              data?.geoCoverageValues.length > 0 &&
                               renderCountries(
                                 data,
                                 countries,
@@ -485,59 +512,35 @@ const DetailsView = ({
                           </>
                         )}
 
-                      {(data?.geoCoverageType === "sub-national" ||
-                        data?.geoCoverageType === "national") && (
-                        <>
-                          {data?.geoCoverageValues &&
-                            data?.geoCoverageValues.length > 0 &&
-                            renderCountries(
-                              data,
-                              countries,
-                              transnationalOptions
-                            ) && (
-                              <Row>
-                                <div className="location-icon detail-item-icon">
-                                  <LocationImage />
-                                </div>
-                                <div>
-                                  {renderCountries(
-                                    data,
-                                    countries,
-                                    transnationalOptions
-                                  )}
-                                </div>
-                              </Row>
-                            )}
-                        </>
-                      )}
+                        {(data?.subnationalCity ||
+                          data?.q24SubnationalCity) && (
+                          <Row>
+                            <div className="city-icon detail-item-icon">
+                              <CityImage />
+                            </div>
+                            <div>
+                              {data?.subnationalCity
+                                ? data?.subnationalCity
+                                : data?.q24SubnationalCity}
+                            </div>
+                          </Row>
+                        )}
+                      </div>
+                    )}
 
-                      {(data?.subnationalCity || data?.q24SubnationalCity) && (
-                        <Row>
-                          <div className="city-icon detail-item-icon">
-                            <CityImage />
-                          </div>
-                          <div>
-                            {data?.subnationalCity
-                              ? data?.subnationalCity
-                              : data?.q24SubnationalCity}
-                          </div>
-                        </Row>
-                      )}
-                    </div>
-                  )}
-
-                  {data?.languages && (
-                    <span className="detail-item">
-                      {data?.languages
-                        .map((language) => {
-                          const langs =
-                            !isEmpty(languages) &&
-                            languages[language?.isoCode]?.name;
-                          return langs || "";
-                        })
-                        .join(", ")}
-                    </span>
-                  )}
+                    {data?.languages && (
+                      <span className="detail-item">
+                        {data?.languages
+                          .map((language) => {
+                            const langs =
+                              !isEmpty(languages) &&
+                              languages[language?.isoCode]?.name;
+                            return langs || "";
+                          })
+                          .join(", ")}
+                      </span>
+                    )}
+                  </div>
                 </Col>
               )}
             </Row>
@@ -550,90 +553,49 @@ const DetailsView = ({
               (x) => x.stakeholderRole !== "ADMIN" || x.role === "interested in"
             )?.length > 0) && (
             <Col className="section">
-              <h3 className="content-heading">Connections</h3>
-              {data?.entityConnections?.length > 0 && (
-                <List itemLayout="horizontal">
-                  {data?.entityConnections?.map((item) => (
-                    <List.Item key={item?.id} className="stakeholder-row">
-                      <List.Item.Meta
-                        className="stakeholder-detail"
-                        avatar={
-                          <Avatar
-                            size={40}
-                            src={
-                              item?.image ? (
-                                item?.image
-                              ) : (
-                                <Avatar
-                                  style={{
-                                    backgroundColor: "#09689A",
-                                    verticalAlign: "middle",
-                                  }}
-                                  size={50}
-                                >
-                                  {item.entity?.substring(0, 2)}
-                                </Avatar>
-                              )
-                            }
-                          />
-                        }
-                        title={
-                          <Link to={`/organisation/${item.entityId}`}>
-                            {item.entity}
-                          </Link>
-                        }
-                        description={"Entity"}
-                      />
-                    </List.Item>
-                  ))}
-                </List>
-              )}
-              {data?.stakeholderConnections.filter(
-                (x) =>
-                  x.stakeholderRole !== "ADMIN" || x.role === "interested in"
-              )?.length > 0 && (
-                <Avatar.Group
-                  maxCount={2}
-                  size="large"
-                  maxStyle={{
-                    color: "#f56a00",
-                    backgroundColor: "#fde3cf",
-                    cursor: "pointer",
-                    height: 40,
-                    width: 40,
-                  }}
-                >
+              <div className="extra-wrapper">
+                <h3 className="content-heading">Connections</h3>
+                {data?.entityConnections?.length > 0 && (
                   <List itemLayout="horizontal">
-                    {data?.stakeholderConnections
-                      .filter(
-                        (x) =>
-                          x.stakeholderRole !== "ADMIN" ||
-                          x.role === "interested in"
-                      )
-                      .map((item) => (
-                        <List.Item key={item?.id} className="stakeholder-row">
-                          <List.Item.Meta
-                            className="stakeholder-detail"
-                            avatar={<Avatar src={item?.image} />}
-                            title={
-                              <Link to={`/stakeholder/${item.stakeholderId}`}>
-                                {item.stakeholder}
-                              </Link>
-                            }
-                            description={titleCase(
-                              item?.role?.replace("_", " ")
-                            )}
-                          />
-                        </List.Item>
-                      ))}
+                    {data?.entityConnections?.map((item) => (
+                      <List.Item key={item?.id} className="stakeholder-row">
+                        <List.Item.Meta
+                          className="stakeholder-detail"
+                          avatar={
+                            <Avatar
+                              size={40}
+                              src={
+                                item?.image ? (
+                                  item?.image
+                                ) : (
+                                  <Avatar
+                                    style={{
+                                      backgroundColor: "#09689A",
+                                      verticalAlign: "middle",
+                                    }}
+                                    size={50}
+                                  >
+                                    {item.entity?.substring(0, 2)}
+                                  </Avatar>
+                                )
+                              }
+                            />
+                          }
+                          title={
+                            <Link to={`/organisation/${item.entityId}`}>
+                              {item.entity}
+                            </Link>
+                          }
+                          description={"Entity"}
+                        />
+                      </List.Item>
+                    ))}
                   </List>
-                </Avatar.Group>
-              )}
-              {data?.stakeholderConnections.filter(
-                (x) =>
-                  x.stakeholderRole !== "ADMIN" || x.role === "interested in"
-              ).length > 0 && (
-                <Row className="stakeholder-row stakeholder-group">
+                )}
+                {data?.stakeholderConnections.filter(
+                  (x) =>
+                    x.stakeholderRole !== "ADMIN" || x.role === "interested in"
+                )?.length > 0 && (
                   <Avatar.Group
                     maxCount={2}
                     size="large"
@@ -645,77 +607,124 @@ const DetailsView = ({
                       width: 40,
                     }}
                   >
-                    {data?.stakeholderConnections
-                      .filter(
-                        (x) =>
-                          x.stakeholderRole !== "ADMIN" ||
-                          x.role === "interested in"
-                      )
-                      .map((connection, index) => (
-                        <Avatar
-                          className="related-content-avatar"
-                          style={{ border: "none", height: 40, width: 40 }}
-                          key={index}
-                          src={
-                            <Avatar
-                              avatar={<Avatar src={connection?.image} />}
-                              style={{
-                                backgroundColor: "#09689A",
-                                verticalAlign: "middle",
-                              }}
-                              size={40}
+                    <List itemLayout="horizontal">
+                      {data?.stakeholderConnections
+                        .filter(
+                          (x) =>
+                            x.stakeholderRole !== "ADMIN" ||
+                            x.role === "interested in"
+                        )
+                        .map((item) => (
+                          <List.Item key={item?.id} className="stakeholder-row">
+                            <List.Item.Meta
+                              className="stakeholder-detail"
+                              avatar={<Avatar src={item?.image} />}
                               title={
-                                <Link
-                                  to={`/stakeholder/${connection?.stakeholderId}`}
-                                >
-                                  {connection?.stakeholder}
+                                <Link to={`/stakeholder/${item.stakeholderId}`}>
+                                  {item.stakeholder}
                                 </Link>
                               }
-                            >
-                              {connection?.stakeholder}
-                            </Avatar>
-                          }
-                        />
-                      ))}
+                              description={titleCase(
+                                item?.role?.replace("_", " ")
+                              )}
+                            />
+                          </List.Item>
+                        ))}
+                    </List>
                   </Avatar.Group>
-                </Row>
-              )}
+                )}
+                {data?.stakeholderConnections.filter(
+                  (x) =>
+                    x.stakeholderRole !== "ADMIN" || x.role === "interested in"
+                ).length > 0 && (
+                  <Row className="stakeholder-row stakeholder-group">
+                    <Avatar.Group
+                      maxCount={2}
+                      size="large"
+                      maxStyle={{
+                        color: "#f56a00",
+                        backgroundColor: "#fde3cf",
+                        cursor: "pointer",
+                        height: 40,
+                        width: 40,
+                      }}
+                    >
+                      {data?.stakeholderConnections
+                        .filter(
+                          (x) =>
+                            x.stakeholderRole !== "ADMIN" ||
+                            x.role === "interested in"
+                        )
+                        .map((connection, index) => (
+                          <Avatar
+                            className="related-content-avatar"
+                            style={{ border: "none", height: 40, width: 40 }}
+                            key={index}
+                            src={
+                              <Avatar
+                                avatar={<Avatar src={connection?.image} />}
+                                style={{
+                                  backgroundColor: "#09689A",
+                                  verticalAlign: "middle",
+                                }}
+                                size={40}
+                                title={
+                                  <Link
+                                    to={`/stakeholder/${connection?.stakeholderId}`}
+                                  >
+                                    {connection?.stakeholder}
+                                  </Link>
+                                }
+                              >
+                                {connection?.stakeholder}
+                              </Avatar>
+                            }
+                          />
+                        ))}
+                    </Avatar.Group>
+                  </Row>
+                )}
+              </div>
             </Col>
           )}
         </Col>
         {/* TAGS */}
         {data?.tags && data?.tags?.length > 0 && (
           <Col className="section-tag section">
-            <h3 className="content-heading">Tags</h3>
-            <List itemLayout="horizontal">
-              <List.Item>
-                <List.Item.Meta
-                  title={
-                    <ul className="tag-list">
-                      {data?.tags &&
-                        data?.tags.map((tag) => (
-                          <li className="tag-list-item" key={tag?.tag}>
-                            <Tag className="resource-tag">
-                              {titleCase(tag?.tag || "")}
-                            </Tag>
-                          </li>
-                        ))}
-                    </ul>
-                  }
-                />
-              </List.Item>
-            </List>
+            <div className="extra-wrapper">
+              <h3 className="content-heading">Tags</h3>
+              <List itemLayout="horizontal">
+                <List.Item>
+                  <List.Item.Meta
+                    title={
+                      <ul className="tag-list">
+                        {data?.tags &&
+                          data?.tags.map((tag) => (
+                            <li className="tag-list-item" key={tag?.tag}>
+                              <Tag className="resource-tag">
+                                {titleCase(tag?.tag || "")}
+                              </Tag>
+                            </li>
+                          ))}
+                      </ul>
+                    }
+                  />
+                </List.Item>
+              </List>
+            </div>
           </Col>
         )}
         {/* DOCUMENTS AND INFO */}
         {data?.infoDocs && (
           <Col className="section section-document">
-            <h3 className="content-heading">Documents and info</h3>
-            <div className="content-paragraph">
-              <div
-                className="list documents-list"
-                dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
-              />
+            <div className="extra-wrapper">
+              <h3 className="content-heading">Documents and info</h3>
+              <div className="content-paragraph">
+                <div
+                  className="list documents-list"
+                  dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
+                />
+              </div>
             </div>
           </Col>
         )}

@@ -35,7 +35,6 @@ export const CommentList = ({
   setEditComment,
   onEditComment,
 }) => {
-  console.log(item);
   return (
     <Comment
       key={item.id}

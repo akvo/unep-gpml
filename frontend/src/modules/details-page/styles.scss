@@ -396,7 +396,10 @@
         }
       }
     }
-
+    .extra-wrapper {
+      display: flex;
+      flex-direction: column;
+    }
     .section-tag + .section {
       margin-top: calc(38px - 12px);
     }
@@ -417,7 +420,7 @@
         padding-left: 10px !important;
       }
       .related-content-title {
-        margin-bottom: 2px;
+        margin-bottom: 0;
       }
       .related-content-wrapper {
         min-height: 250px !important;
