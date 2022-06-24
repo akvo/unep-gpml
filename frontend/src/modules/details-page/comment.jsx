@@ -45,7 +45,7 @@ export const CommentList = ({
               <>
                 <span
                   key="comment-nested-reply-to"
-                  className={item.id === showReplyBox && `active`}
+                  className={item.id === showReplyBox ? "active" : ""}
                   onClick={() => {
                     if (item.id === showReplyBox) {
                       setShowReplyBox("");
@@ -60,7 +60,7 @@ export const CommentList = ({
                 {profile.id === item.authorId && (
                   <span
                     key="comment-nested-edit"
-                    className={item.id === editComment && `active`}
+                    className={item.id === editComment ? "active" : ""}
                     onClick={() => {
                       if (item.id === editComment) {
                         setEditComment("");
@@ -307,7 +307,11 @@ const Comments = ({
             <Input.TextArea
               rows={1}
               className="comment-input"
-              placeholder="Join the discussion..."
+              placeholder={
+                comments && comments.length > 0
+                  ? "Join the discussion..."
+                  : "Be the first to comment..."
+              }
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               onPressEnter={(e) =>

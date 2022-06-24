@@ -375,15 +375,6 @@ const DetailsView = ({
 
   const description = data?.description ? data?.description : data?.summary;
 
-  const isLandScapeImage = (type) => {
-    return (
-      type === "event" ||
-      type === "initiative" ||
-      type === "project" ||
-      type === "technology"
-    );
-  };
-
   return (
     <div className="detail-view-wrapper">
       <div
@@ -416,11 +407,7 @@ const DetailsView = ({
           }}
         >
           {data?.image && (
-            <Col
-              className={`resource-image-wrapper ${
-                !isLandScapeImage(data?.type) && "no-event-resource-image"
-              }`}
-            >
+            <Col className="resource-image-wrapper">
               <img className="resource-image" src={data?.image} alt="" />
             </Col>
           )}
@@ -429,13 +416,7 @@ const DetailsView = ({
             {description && (
               <Row>
                 <h3 className="content-heading">Description</h3>
-                <p
-                  className={`content-paragraph ${
-                    isLandScapeImage(data?.type) && "event-paragraph"
-                  }`}
-                >
-                  {description}
-                </p>
+                <p className="content-paragraph">{description}</p>
               </Row>
             )}
 
@@ -735,6 +716,7 @@ const DetailsView = ({
             </div>
           </Col>
         )}
+
         <Records {...{ countries, languages, params, data, profile }} />
 
         {/* RELATED CONTENT */}
