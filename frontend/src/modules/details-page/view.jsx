@@ -375,15 +375,6 @@ const DetailsView = ({
 
   const description = data?.description ? data?.description : data?.summary;
 
-  const isLandScapeImage = (type) => {
-    return (
-      type === "event" ||
-      type === "initiative" ||
-      type === "project" ||
-      type === "technology"
-    );
-  };
-
   return (
     <div className="detail-view-wrapper">
       <div
@@ -416,11 +407,7 @@ const DetailsView = ({
           }}
         >
           {data?.image && (
-            <Col
-              className={`resource-image-wrapper ${
-                !isLandScapeImage(data?.type) && "no-event-resource-image"
-              }`}
-            >
+            <Col className="resource-image-wrapper">
               <img className="resource-image" src={data?.image} alt="" />
             </Col>
           )}
@@ -429,13 +416,7 @@ const DetailsView = ({
             {description && (
               <Row>
                 <h3 className="content-heading">Description</h3>
-                <p
-                  className={`content-paragraph ${
-                    isLandScapeImage(data?.type) && "event-paragraph"
-                  }`}
-                >
-                  {description}
-                </p>
+                <p className="content-paragraph">{description}</p>
               </Row>
             )}
 
@@ -648,81 +629,84 @@ const DetailsView = ({
                   </List>
                 </Avatar.Group>
               )}
-
-              <Row className="stakeholder-row stakeholder-group">
-                <Avatar.Group
-                  maxCount={2}
-                  size="large"
-                  maxStyle={{
-                    color: "#f56a00",
-                    backgroundColor: "#fde3cf",
-                    cursor: "pointer",
-                    height: 40,
-                    width: 40,
-                  }}
-                >
-                  {data?.stakeholderConnections
-                    .filter(
-                      (x) =>
-                        x.stakeholderRole !== "ADMIN" ||
-                        x.role === "interested in"
-                    )
-                    .map((connection, index) => (
-                      <Avatar
-                        className="related-content-avatar"
-                        style={{ border: "none", height: 40, width: 40 }}
-                        key={index}
-                        src={
-                          <Avatar
-                            avatar={<Avatar src={connection?.image} />}
-                            style={{
-                              backgroundColor: "#09689A",
-                              verticalAlign: "middle",
-                            }}
-                            size={40}
-                            title={
-                              <Link
-                                to={`/stakeholder/${connection?.stakeholderId}`}
-                              >
-                                {connection?.stakeholder}
-                              </Link>
-                            }
-                          >
-                            {connection?.stakeholder}
-                          </Avatar>
-                        }
-                      />
-                    ))}
-                </Avatar.Group>
-              </Row>
-            </Col>
-          )}
-
-          {/* TAGS */}
-          {data?.tags && data?.tags?.length > 0 && (
-            <Col className="section-tag section">
-              <h3 className="content-heading">Tags</h3>
-              <List itemLayout="horizontal">
-                <List.Item>
-                  <List.Item.Meta
-                    title={
-                      <ul className="tag-list">
-                        {data?.tags &&
-                          data?.tags.map((tag) => (
-                            <li className="tag-list-item" key={tag?.tag}>
-                              <Tag className="resource-tag">
-                                {titleCase(tag?.tag || "")}
-                              </Tag>
-                            </li>
-                          ))}
-                      </ul>
-                    }
-                  />
-                </List.Item>
-              </List>
+              {data?.stakeholderConnections.filter(
+                (x) =>
+                  x.stakeholderRole !== "ADMIN" || x.role === "interested in"
+              ).length > 0 && (
+                <Row className="stakeholder-row stakeholder-group">
+                  <Avatar.Group
+                    maxCount={2}
+                    size="large"
+                    maxStyle={{
+                      color: "#f56a00",
+                      backgroundColor: "#fde3cf",
+                      cursor: "pointer",
+                      height: 40,
+                      width: 40,
+                    }}
+                  >
+                    {data?.stakeholderConnections
+                      .filter(
+                        (x) =>
+                          x.stakeholderRole !== "ADMIN" ||
+                          x.role === "interested in"
+                      )
+                      .map((connection, index) => (
+                        <Avatar
+                          className="related-content-avatar"
+                          style={{ border: "none", height: 40, width: 40 }}
+                          key={index}
+                          src={
+                            <Avatar
+                              avatar={<Avatar src={connection?.image} />}
+                              style={{
+                                backgroundColor: "#09689A",
+                                verticalAlign: "middle",
+                              }}
+                              size={40}
+                              title={
+                                <Link
+                                  to={`/stakeholder/${connection?.stakeholderId}`}
+                                >
+                                  {connection?.stakeholder}
+                                </Link>
+                              }
+                            >
+                              {connection?.stakeholder}
+                            </Avatar>
+                          }
+                        />
+                      ))}
+                  </Avatar.Group>
+                </Row>
+              )}
             </Col>
           )}
         </Col>
+        {/* TAGS */}
+        {data?.tags && data?.tags?.length > 0 && (
+          <Col className="section-tag section">
+            <h3 className="content-heading">Tags</h3>
+            <List itemLayout="horizontal">
+              <List.Item>
+                <List.Item.Meta
+                  title={
+                    <ul className="tag-list">
+                      {data?.tags &&
+                        data?.tags.map((tag) => (
+                          <li className="tag-list-item" key={tag?.tag}>
+                            <Tag className="resource-tag">
+                              {titleCase(tag?.tag || "")}
+                            </Tag>
+                          </li>
+                        ))}
+                    </ul>
+                  }
+                />
+              </List.Item>
+            </List>
+          </Col>
+        )}
         {/* DOCUMENTS AND INFO */}
         {data?.infoDocs && (
           <Col className="section section-document">
@@ -735,6 +719,7 @@ const DetailsView = ({
             </div>
           </Col>
         )}
+
         <Records {...{ countries, languages, params, data, profile }} />
 
         {/* RELATED CONTENT */}
