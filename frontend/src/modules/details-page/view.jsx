@@ -422,10 +422,17 @@ const DetailsView = ({
 
             <Row>
               {data?.geoCoverageType && (
-                <Col>
+                <Col className="section-geo-coverage">
                   <div className="extra-wrapper">
                     <h3 className="content-heading">Location & Geocoverage</h3>
-                    <span className="detail-item geocoverage-item">
+                    <span
+                      style={
+                        data?.geoCoverageType === "global" && {
+                          marginBottom: 0,
+                        }
+                      }
+                      className="detail-item geocoverage-item"
+                    >
                       <div className="transnational-icon detail-item-icon">
                         <TransnationalImage />
                       </div>

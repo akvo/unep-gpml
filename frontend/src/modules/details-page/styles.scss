@@ -241,6 +241,7 @@
     .detail-item .ant-row {
       flex-flow: row;
     }
+
     .transnational-icon,
     .location-icon,
     .city-icon {
@@ -346,6 +347,9 @@
       font-weight: 500;
       font-size: 16px;
       line-height: 33px;
+      & .ant-row:last-of-type {
+        margin-bottom: 0;
+      }
     }
     .ant-list-item {
       padding: 0;
