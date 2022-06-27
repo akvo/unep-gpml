@@ -203,6 +203,10 @@ function Authentication() {
     ]);
   };
 
+  const setEntity = (res) => {
+    formRef?.current?.change("orgName", res.id);
+  };
+
   return (
     <div id="onboarding">
       <Form
@@ -253,6 +257,7 @@ function Authentication() {
                   <FormOne
                     validate={currentStep === 2 ? required : null}
                     error={error}
+                    setEntity={setEntity}
                   />
                 </div>
                 <div className="slide">
