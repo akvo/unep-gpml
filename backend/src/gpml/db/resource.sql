@@ -56,15 +56,10 @@ values(
 )
 returning id;
 
--- :name add-resource-tags :<! :1
--- :doc add resource tags
-insert into resource_tag(resource, tag)
-values :t*:tags RETURNING id;
-
 -- :name add-resource-geo :<! :1
 -- :doc add resource geo
 insert into resource_geo_coverage(resource, country_group, country)
-values :t*:geo RETURNING id;
+values :t*:geo RETURNING *;
 
 -- :name add-resource-language-urls :<! :1
 -- :doc Add language URLs to a resource

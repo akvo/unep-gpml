@@ -119,15 +119,10 @@ select
 from v_policy_data
 where id = :id
 
--- :name add-policy-tags :<! :1
--- :doc add policy tags
-insert into policy_tag(policy, tag)
-values :t*:tags RETURNING id;
-
 -- :name add-policy-geo :<! :1
 -- :doc add policy geo
 insert into policy_geo_coverage(policy, country_group, country)
-values :t*:geo RETURNING id;
+values :t*:geo RETURNING *;
 
 -- :name add-policy-language-urls :<! :1
 -- :doc Add language URLs to a policy

@@ -45,11 +45,6 @@ values(
 --~ (when (contains? params :document_preview) ", :document_preview")
 ) RETURNING id;
 
--- :name add-event-tags :<! :1
--- :doc Add specified tags to an event
-insert into event_tag(event, tag)
-values :t*:tags RETURNING id;
-
 -- :name add-event-language-urls :<! :1
 -- :doc Add language URLs to an event
 insert into event_language_url(event, language, url)
@@ -58,7 +53,7 @@ values :t*:urls RETURNING id;
 -- :name add-event-geo-coverage :<! :1
 -- :doc Add specified countries or country groups to an event
 insert into event_geo_coverage(event, country_group, country)
-values :t*:geo RETURNING id;
+values :t*:geo RETURNING *;
 
 
 -- :name pending-events :? :*

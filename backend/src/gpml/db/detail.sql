@@ -51,11 +51,6 @@ where id = :id
 -- :doc Delete the data related to a specified resource
 delete from :i:table where :i:resource_type = :id
 
--- :name add-resource-related-tags :<! :*
--- :doc Add tags to a resource
-insert into :i:table (:i:resource_type, tag)
-values :t*:tags RETURNING id;
-
 -- :name add-resource-related-language-urls :<! :*
 -- :doc Add language URLs to a resource
 insert into :i:table (:i:resource_type, language, url)
@@ -64,7 +59,7 @@ values :t*:urls RETURNING id;
 -- :name add-resource-related-geo :<! :*
 -- :doc Add geo coverage values to a resource
 insert into :i:table (:i:resource_type, country_group, country)
-values :t*:geo RETURNING id;
+values :t*:geo RETURNING *;
 
 -- :name add-resource-related-org :<! :1
 -- :doc Add an organisation related to a resource

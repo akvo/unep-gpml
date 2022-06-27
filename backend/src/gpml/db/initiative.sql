@@ -70,7 +70,7 @@ jsonb_build_object('name', STRING_AGG(DISTINCT donor_names.value,', '), 'types',
 -- :name add-initiative-geo-coverage :<! :1
 -- :doc Add specified countries or country groups to an initiative
 insert into initiative_geo_coverage(initiative, country_group, country)
-values :t*:geo RETURNING id;
+values :t*:geo RETURNING *;
 
 -- :name delete-initiative-geo-coverage :! :n
 -- :doc Remove specified countries or country groups from an initiative
@@ -84,4 +84,4 @@ select id, q2 as title
 -- :name add-initiative-tags :<! :1
 -- :doc add initiative tags
 insert into initiative_tag(initiative, tag)
-values :t*:tags RETURNING id;
+values :t*:tags RETURNING *;

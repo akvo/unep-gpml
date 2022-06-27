@@ -118,7 +118,7 @@ select id, country, country_group from organisation_geo_coverage where organisat
 -- :name add-geo-coverage :<! :1
 -- :doc add organisation geo coverage
 insert into organisation_geo_coverage(organisation, country_group, country)
-values :t*:geo RETURNING id;
+values :t*:geo RETURNING *;
 
 -- :name delete-geo-coverage :! :n
 -- :doc remove geo coverage
@@ -136,7 +136,7 @@ group by tc.category;
 -- :name add-organisation-tags :<! :1
 -- :doc add organisation tags
 insert into organisation_tag(organisation, tag)
-values :t*:tags RETURNING id;
+values :t*:tags RETURNING *;
 
 -- :name delete-organisation-tags :! :n
 -- :doc remove organisation-tags
