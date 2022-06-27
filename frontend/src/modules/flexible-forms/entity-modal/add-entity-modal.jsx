@@ -64,7 +64,7 @@ export const entityData = new Store({
   editId: null,
 });
 
-const ModalAddEntity = ({ visible, close }) => {
+const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
   const {
     countries,
     organisations,
@@ -142,7 +142,11 @@ const ModalAddEntity = ({ visible, close }) => {
   };
 
   const handleOnSubmit = ({ formData }) => {
-    let data = { ...formData, stakeholder: "", isMember: false };
+    let data = {
+      ...formData,
+      stakeholder: "",
+      isMember: isMember ? true : false,
+    };
     data = handleGeoCoverageValue(data, formData, countries);
 
     if (data.geoCoverageType === "transnational") {
@@ -184,7 +188,8 @@ const ModalAddEntity = ({ visible, close }) => {
 
     api
       .post("/organisation", data)
-      .then(() => {
+      .then((res) => {
+        setEntity(res.data);
         UIStore.update((e) => {
           e.formStep = {
             ...e.formStep,
