@@ -75,6 +75,9 @@
       .highlight {
         font-weight: 500;
       }
+      .submit-button {
+        border-radius: 50px;
+      }
     }
 
     .form-meta.submitted {
@@ -392,6 +395,7 @@
     .ant-select,
     .ant-select-selector,
     .ant-input-affix-wrapper {
+      width: 100%;
       background-color: #edf2f6;
     }
     .photo-upload-border {
