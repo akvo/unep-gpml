@@ -12,7 +12,7 @@ import policy from "../../images/placeholders/policy-placeholder.png";
 import financingResource from "../../images/placeholders/financing-resource-placeholder.png";
 import technology from "../../images/placeholders/technology-placeholder.png";
 import initiative from "../../images/placeholders/initiative-placeholder.png";
-import event from "../../images/placeholders/initiative-placeholder.png";
+import event from "../../images/placeholders/event-placeholder.png";
 import { topicNames } from "../../utils/misc";
 
 const RelatedContent = ({
