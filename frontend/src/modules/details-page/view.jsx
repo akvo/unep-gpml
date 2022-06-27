@@ -426,11 +426,9 @@ const DetailsView = ({
                   <div className="extra-wrapper">
                     <h3 className="content-heading">Location & Geocoverage</h3>
                     <span
-                      style={
-                        data?.geoCoverageType === "global" && {
-                          marginBottom: 0,
-                        }
-                      }
+                      style={{
+                        marginBottom: data?.geoCoverageType === "global" && 0,
+                      }}
                       className="detail-item geocoverage-item"
                     >
                       <div className="transnational-icon detail-item-icon">
