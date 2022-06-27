@@ -10,11 +10,9 @@ import FormTwo from "./form-two";
 import FormThree from "./form-three";
 import FormFour from "./form-four";
 import { UIStore } from "../../store";
-import Wizard from "../../components/form-wizard/Wizard";
 import { useLocation } from "react-router-dom";
 import api from "../../utils/api";
 import { useHistory } from "react-router-dom";
-import { SwitchTransition, CSSTransition } from "react-transition-group";
 import GettingStartedIcon from "../../images/auth/surfer.svg";
 import waveSvg from "../../images/auth/wave.svg";
 
