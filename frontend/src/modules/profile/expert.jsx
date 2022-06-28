@@ -179,7 +179,7 @@ function Expert() {
                     <div className="buttons">
                       <Button
                         className="submit"
-                        disabled={submitting || pristine}
+                        disabled={submitting}
                         onClick={() => handleSubmit()}
                       >
                         Send invites
