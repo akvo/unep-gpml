@@ -641,7 +641,7 @@ const DetailsView = ({
                 {data?.stakeholderConnections.filter(
                   (x) =>
                     x.stakeholderRole !== "ADMIN" || x.role === "interested in"
-                ).length > 0 && (
+                ).length > 4 && (
                   <Row className="stakeholder-row stakeholder-group">
                     <Avatar.Group
                       maxCount={2}
