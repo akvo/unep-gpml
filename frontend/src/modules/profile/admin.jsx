@@ -35,6 +35,7 @@ import {
   FilterOutlined,
 } from "@ant-design/icons";
 import Avatar from "antd/lib/avatar/avatar";
+import Expert from "./expert";
 
 const { Search } = Input;
 const { TabPane } = Tabs;
@@ -903,7 +904,6 @@ const AdminSection = ({
       </div> */}
       <Tabs
         onChange={(key) => setTab(key)}
-        type="card"
         size="large"
         className="profile-tab-menu"
       >
@@ -913,6 +913,9 @@ const AdminSection = ({
           className="profile-tab-pane"
         >
           {renderList(stakeholdersListOpts, setStakeholdersListOpts)}
+        </TabPane>
+        <TabPane tab="Experts" key="experts" className="profile-tab-pane">
+          <Expert />
         </TabPane>
         <TabPane tab="Entities" key="entities" className="profile-tab-pane">
           <>
