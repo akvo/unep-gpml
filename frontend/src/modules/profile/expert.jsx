@@ -1,17 +1,30 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Typography, Row, Col, Input, Select, Button } from "antd";
 const { Title } = Typography;
 import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
 import { Form, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import { FieldArray } from "react-final-form-arrays";
+import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
 
 function Expert() {
+  const formRef = useRef();
   const onSubmit = async (values) => {
     window.alert(JSON.stringify(values, 0, 2));
   };
 
   const required = (value) => (value ? undefined : "Required");
+
+  const handleExpert = (value) => {
+    formRef?.current?.change("offering", [
+      ...(formRef?.current?.getFieldState("offering")?.value
+        ? formRef?.current?.getFieldState("offering")?.value
+        : []),
+      value,
+    ]);
+  };
+
+  const handleExpertRemove = (value) => {};
 
   return (
     <>
@@ -40,6 +53,7 @@ function Expert() {
                 submitting,
                 values,
               }) => {
+                formRef.current = form;
                 return (
                   <form onSubmit={handleSubmit}>
                     <FieldArray name="invites">
@@ -117,36 +131,40 @@ function Expert() {
                               >
                                 {({ input, meta }) => {
                                   return (
-                                    <Select
-                                      placeholder="Enter the name of your entity"
-                                      allowClear
-                                      showSearch
-                                      name={`${name}.expertises`}
-                                      onChange={(value) =>
-                                        input.onChange(value)
+                                    <CatTagSelect
+                                      handleChange={(value) => {
+                                        formRef?.current?.change(
+                                          `${name}.expertises`,
+                                          [
+                                            ...(formRef?.current?.getFieldState(
+                                              `${name}.expertises`
+                                            )?.value
+                                              ? formRef?.current?.getFieldState(
+                                                  `${name}.expertises`
+                                                )?.value
+                                              : []),
+                                            value,
+                                          ]
+                                        );
+                                      }}
+                                      meta={meta}
+                                      error={meta.touched && meta.error}
+                                      value={
+                                        input.value ? input.value : undefined
                                       }
-                                      filterOption={(input, option) =>
-                                        option.children
-                                          .toLowerCase()
-                                          .includes(input.toLowerCase())
-                                      }
-                                      className={`${
-                                        meta.touched && meta.error
-                                          ? "ant-input-status-error"
-                                          : ""
-                                      }`}
-                                    >
-                                      {[{ id: "2", name: "test" }]?.map(
-                                        (item) => (
-                                          <Select.Option
-                                            value={item.id}
-                                            key={item.id}
-                                          >
-                                            {item.name}
-                                          </Select.Option>
-                                        )
-                                      )}
-                                    </Select>
+                                      handleRemove={(v) => {
+                                        formRef?.current?.change(
+                                          `${name}.expertises`,
+                                          formRef?.current
+                                            ?.getFieldState(
+                                              `${name}.expertises`
+                                            )
+                                            ?.value.filter(function (item) {
+                                              return item !== v;
+                                            })
+                                        );
+                                      }}
+                                    />
                                   );
                                 }}
                               </Field>
