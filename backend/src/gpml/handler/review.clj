@@ -5,7 +5,7 @@
    [clojure.java.jdbc :as jdbc]
    [gpml.constants :as constants]
    [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.email-util :as email]
+   [gpml.util.email :as email]
    [gpml.db.review :as db.review]
    [gpml.handler.util :as util]
    [integrant.core :as ig]
