@@ -223,7 +223,7 @@ export const schema = {
                 format: "data-url",
               },
               thumbnail: {
-                title: "Thumbnail",
+                title: "Thumbnail (300x400)",
                 type: "string",
                 format: "data-url",
               },
