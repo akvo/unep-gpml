@@ -12,7 +12,7 @@ import policy from "../../images/placeholders/policy-placeholder.png";
 import financingResource from "../../images/placeholders/financing-resource-placeholder.png";
 import technology from "../../images/placeholders/technology-placeholder.png";
 import initiative from "../../images/placeholders/initiative-placeholder.png";
-import event from "../../images/placeholders/initiative-placeholder.png";
+import event from "../../images/placeholders/event-placeholder.png";
 import { topicNames } from "../../utils/misc";
 
 const RelatedContent = ({
@@ -172,7 +172,7 @@ const RelatedContent = ({
           return (
             <Col key={item?.id} className="card" span={12}>
               <a
-                href={`/${getType(item?.type)}/${item.id}`}
+                href={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
                 className={`description-holder ${
                   isShownPagination ? "with-pagination" : "no-pagination"
                 }`}
