@@ -190,7 +190,6 @@ const RoleSelect = ({
 }) => {
   return (
     <div
-      style={{ width: "20%" }}
       onClick={(e) => {
         e.stopPropagation();
       }}
@@ -198,7 +197,6 @@ const RoleSelect = ({
       <div style={{ width: "100%" }}>User role</div>
       <Select
         showSearch={false}
-        style={{ width: "50%" }}
         onChange={(role) =>
           onChangeRole(stakeholder, role, listOpts, setListOpts)
         }
@@ -758,7 +756,7 @@ const AdminSection = ({
               {item.reviewStatus === "SUBMITTED" && (
                 <ResourceSubmittedActions />
               )}
-              {item.reviewStatus === "APPROVED" && <ResourceApprovedActions />}
+              {/* {item.reviewStatus === "APPROVED" && <ResourceApprovedActions />} */}
             </div>
           ) : (
             <div className="row">

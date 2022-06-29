@@ -10,6 +10,7 @@ import { topicNames, resourceSubTypes } from "../../utils/misc";
 import { Input, Button, notification } from "antd";
 import api from "../../utils/api";
 import { fetchSubmissionData } from "./utils";
+import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
 
 const currencyFormat = (cur) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: cur });
@@ -550,6 +551,18 @@ export const ProfilePreview = ({ item }) => {
           </li>
           <li className="has-border">
             <p className="section-title">Expertise and Activities</p>
+          </li>
+          <li>
+            <div className="detail-title">Expertise</div>:
+            <div className="detail-content" style={{ width: "100%" }}>
+              <CatTagSelect
+                handleChange={(value) => console.log("")}
+                meta={"meta"}
+                error={false}
+                value={undefined}
+                handleRemove={(v) => console.log("Asd")}
+              />
+            </div>
           </li>
           <li>
             <div className="detail-title">Seeking</div>:
