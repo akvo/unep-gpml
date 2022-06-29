@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { UIStore } from "../../store";
 import { Col, Row, Button, Typography, Form, Input, Select, List } from "antd";
 import { Field } from "react-final-form";
+import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
 const { Title, Link } = Typography;
 
 function FormTwo({ handleOfferingSuggestedTag, validate, error }) {
@@ -32,8 +33,10 @@ function FormTwo({ handleOfferingSuggestedTag, validate, error }) {
             );
             return (
               <>
+                <CatTagSelect />
+                <div style={{ marginTop: 20, color: '#A5B0C9' }}>Can't see what you're looking for?</div>
                 <Select
-                  placeholder="Search expertises"
+                  placeholder="Suggest categories"
                   allowClear
                   showSearch
                   labelInValue
@@ -61,38 +64,10 @@ function FormTwo({ handleOfferingSuggestedTag, validate, error }) {
           }}
         </Field>
       </div>
-      <div className="list tag-list" style={{ marginTop: 20 }}>
-        <h5>Suggested tags</h5>
-        <div className="tags-container">
-          <List itemLayout="horizontal">
-            <List.Item>
-              <List.Item.Meta
-                title={
-                  <ul>
-                    {entitySuggestedTags
-                      ?.filter((item) => !selectedItems.includes(item))
-                      .map((tag) => (
-                        <li
-                          onClick={() => {
-                            if (!selectedItems.includes(tag)) {
-                              setSelectedItems([...selectedItems, tag]);
-                            }
-                            handleOfferingSuggestedTag(tag);
-                          }}
-                          key={tag}
-                        >
-                          {tag}
-                        </li>
-                      ))}
-                  </ul>
-                }
-              />
-            </List.Item>
-          </List>
-        </div>
-      </div>
     </>
   );
 }
+
+
 
 export default FormTwo;
