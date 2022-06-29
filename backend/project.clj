@@ -19,6 +19,7 @@
                  [metosin/reitit-malli "0.5.13" :exclusions [org.clojure/tools.reader]]
                  [metosin/reitit-swagger "0.5.13"]
                  [metosin/reitit-swagger-ui "0.5.13" :exclusions [ring/ring-core]]
+                 [metosin/jsonista "0.3.3"]
                  [com.layerware/hugsql "0.5.1"]
                  [com.auth0/auth0 "1.25.0" :exclusions [org.jetbrains.kotlin/kotlin-stdlib-common
                                                         com.fasterxml.jackson.core/jackson-databind]]
@@ -43,7 +44,8 @@
                                                         medley
                                                         clj-time]]
                  [clojure.java-time "0.3.3"]
-                 [ns-tracker "0.4.0"]]
+                 [ns-tracker "0.4.0"]
+                 [twarc "0.1.15"]]
   :plugins [[duct/lein-duct "0.12.1"]]
   :main ^:skip-aot gpml.main
   :resource-paths ["resources" "target/resources"]

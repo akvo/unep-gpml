@@ -510,6 +510,10 @@
                                     :client-id #duct/env ["AUTH0_BACKEND_CLIENT_ID" Str]
                                     :secret #duct/env ["AUTH0_BACKEND_SECRET" Str]}
 
+  [:duct/const :gpml.config/common]
+  {:db #ig/ref :duct.database/sql
+   :logger #ig/ref :duct/logger
+   :scheduler #ig/ref :gpml/scheduler}
   ;; Handlers
 
   :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
@@ -704,7 +708,15 @@
   {:jdbc-url #duct/env ["DATABASE_URL" Str]
    :logger nil ;; We don't want log entries for sql sentences (not event ragtime ones!)
    :minimum-idle 10
-   :maximum-pool-size 25}}
+   :maximum-pool-size 25}
+
+  :gpml/scheduler {:thread-count #duct/env ["SCHEDULER_THREAD_COUNT" Int :or 50]}
+
+  :gpml.scheduler/leap-api-policy-importer
+  {:config #ig/ref :gpml.config/common
+   :scheduler-config {:time-zone #duct/env ["SCHEDULER_TIME_ZONE" Str :or "Europe/Madrid"]
+                      :identity "leap-api-policy-importer"
+                      :cron #duct/env ["SCHEDULER_LEAP_API_POLICY_IMPORTER_CRON" Str :or "0 0 2 1/14 * ? *"]}}}
 
  :duct.profile/dev   #duct/include "dev"
  :duct.profile/local #duct/include "local"

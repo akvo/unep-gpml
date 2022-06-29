@@ -54,6 +54,11 @@ values(
 )
 returning id;
 
+-- :name create-policies :returning-execute :many
+-- :doc Create new policies
+insert into policy (:i*:insert-cols)
+values :t*:policies returning id;
+
 -- :name policy-by-id :? :1
 -- :doc returns policy data
 select
@@ -125,6 +130,15 @@ values :t*:geo RETURNING id;
 -- :doc List all policies
 select id, title
   from policy;
+
+-- :name filtered-policies :? :*
+-- :doc List all policies with filtering support (will replace 'all-policies' soon)
+select *
+  from policy
+--~ (when (seq params) " where")
+--~ (when (contains? params :ids) " id in (:v*:ids)")
+--~ (when (> (-> params keys count) 2) " AND ")
+--~ (when (contains? params :leap_api_ids) " leap_api_id in (:v*:leap_api_ids)")
 
 -- :name add-language-to-policy :! :n
 -- :doc Add language to policy
