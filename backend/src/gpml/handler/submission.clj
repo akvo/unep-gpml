@@ -3,7 +3,7 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.detail :as db.detail]
             [gpml.db.organisation :as db.organisation]
-            [gpml.email-util :as email]
+            [gpml.util.email :as email]
             [gpml.constants :as constants]
             [integrant.core :as ig]
             [gpml.auth0-util :as auth0]
@@ -52,11 +52,7 @@
 
 (defn- submission-detail [conn params]
   (let [data (db.submission/detail conn params)
-        table (:table-name params)
-        creator-id (if (or (= table "stakeholder")
-                           (= table "v_stakeholder_data"))
-                     (:id data)
-                     (:created_by data))
+        creator-id (:id data)
         creator (db.stakeholder/stakeholder-by-id conn {:id creator-id})]
     (assoc data
            :created_by_email (:email creator)
