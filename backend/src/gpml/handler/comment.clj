@@ -4,7 +4,7 @@
    [gpml.db.comment :as db.comment]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.db.stakeholder-association :as db.stakeholder-association]
-   [gpml.email-util :as email]
+   [gpml.util.email :as email]
    [gpml.util :as util]
    [gpml.util.regular-expressions :as util.regex]
    [integrant.core :as ig]
