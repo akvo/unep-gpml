@@ -56,16 +56,7 @@
      {:optional false
       :swagger {:description "Stakeholder's email address."}}
      [:string {:min 1}]]
-    [:tags
-     [:vector
-      [:map
-       [:id
-        {:optional true}
-        [:int {:min 0}]]
-       [:tag
-        [:string {:min 1}]]
-       [:tag_category
-        [:string {:min 1}]]]]]]])
+    [:expertise {:optional true} [:vector [:string {:min 1}]]]]])
 
 (def invite-experts-response
   [:map
@@ -146,10 +137,12 @@
             experts-by-email (group-by :email experts)
             invitations (->> (db.invitation/create-invitations conn {:values invitation-values})
                              (map #(merge % (get-in experts-by-email [(:email %) 0]))))]
-        (doseq [{:keys [email tags]} body
+        (doseq [{:keys [email expertise]} body
                 :let [stakeholder-id (get-in (group-by :email expert-stakeholders) [email 0 :id])]]
-          (handler.stakeholder/save-stakeholder-tags conn mailjet-config {:tags tags
-                                                                          :stakeholder-id stakeholder-id}))
+          (handler.stakeholder/save-stakeholder-tags conn
+                                                     mailjet-config
+                                                     {:tags (handler.stakeholder/prep-stakeholder-tags {:expertise expertise})
+                                                      :stakeholder-id stakeholder-id}))
         (future (send-invitation-emails config invitations))
         (resp/response {:success? true
                         :invited-experts (map #(update % :id str) invitations)})))

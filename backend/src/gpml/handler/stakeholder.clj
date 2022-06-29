@@ -212,7 +212,7 @@
       (assoc profile :affiliation (-> profile :org :id) :non_member_organisation nil)
       (assoc profile :non_member_organisation (-> profile :org :id) :affiliation nil))))
 
-(defn- prep-stakeholder-tags
+(defn prep-stakeholder-tags
   [stakeholder]
   (reduce (fn [acc [category tags]]
             (concat acc (map (fn [tag] {:tag tag :tag_category (name category)}) tags)))
