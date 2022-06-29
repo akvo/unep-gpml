@@ -355,14 +355,13 @@ filtered_experts AS (
   --~(when (seq (get-in params [:filters :tags])) " AND LOWER(t.tag) IN (:v*:tags)")
   GROUP BY s.id
 )
-SELECT
 /*~ (if (:count-only? params) */
-count(*)
+SELECT count(*) FROM filtered_experts;
 /*~*/
-*
+SELECT * FROM filtered_experts
+LIMIT :page-size
+OFFSET :offset
 /*~ ) ~*/
-FROM filtered_experts;
-
 -- :name create-stakeholders :<! :*
 -- :doc Creates N stakeholders. Type conversions needs to be handled before calling this funtions.
 INSERT INTO stakeholder(:i*:cols)

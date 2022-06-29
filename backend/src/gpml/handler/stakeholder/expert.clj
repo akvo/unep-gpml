@@ -86,7 +86,7 @@
     (assoc :page-size page_size)
 
     page_n
-    (assoc :page-n page_n)
+    (assoc :page-n page_n :offset (* page_size page_n))
 
     (seq tags)
     (assoc-in [:filters :tags] (map str/lower-case (str/split tags #",")))
