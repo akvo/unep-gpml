@@ -1,11 +1,16 @@
 @import "../../vars.scss";
 
 .dropdown-content {
-  display: flex;
-  align-items: center;
   & > div {
     margin-right: 10px;
   }
+  span {
+    margin-left: 20px;
+  }
+}
+
+.ant-select-item-option-content {
+  white-space: initial;
 }
 
 .info-resources {
@@ -90,7 +95,6 @@
 
     .ant-drawer-content-wrapper {
       box-shadow: none;
-      height: 700px;
       max-width: 550px;
       width: 100% !important;
 

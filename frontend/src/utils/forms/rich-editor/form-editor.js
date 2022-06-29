@@ -1,6 +1,6 @@
 /* eslint-disable no-else-return */
 import { UIStore } from "../../../store";
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import RichTextEditor from "react-rte";
 
 const RichWidget = ({
@@ -20,25 +20,20 @@ const RichWidget = ({
   value,
   rawErrors,
 }) => {
-  const { readonlyAsDisabled = true } = formContext;
-
-  const { enumOptions, enumDisabled } = options;
-
   const handleChange = (value) => {
     setEditorValue(value);
     onChange(value === "" ? options.emptyValue : value.toString("html"));
   };
 
-  const handleBlur = (value) => onBlur(id, value.toString("html"));
-
-  const handleFocus = (value) => onFocus(id, value.toString("html"));
-
-  // custom
-  const highlight = UIStore.useState((s) => s.highlight);
-
   const [editorValue, setEditorValue] = useState(
-    RichTextEditor.createValueFromString(value ? value : "", "html")
+    RichTextEditor.createValueFromString("", "html")
   );
+
+  useEffect(() => {
+    setEditorValue(
+      RichTextEditor.createValueFromString(value ? value : "", "html")
+    );
+  }, [value]);
 
   const toolbarConfig = {
     // Optionally specify the groups to display (displayed in the order listed).

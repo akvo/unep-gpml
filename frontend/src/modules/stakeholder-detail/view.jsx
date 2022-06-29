@@ -427,7 +427,7 @@ const StakeholderDetail = ({
                             }}
                             size={145}
                           >
-                            {data?.firstName?.substring(0, 2)}
+                            {data?.firstName?.substring(0, 1)}
                           </Avatar>
                         )
                       }
@@ -447,7 +447,7 @@ const StakeholderDetail = ({
                                 }}
                                 size={50}
                               >
-                                {data?.affiliation?.name?.substring(0, 2)}
+                                {data?.affiliation?.name?.substring(0, 1)}
                               </Avatar>
                             )
                           }
@@ -508,7 +508,7 @@ const StakeholderDetail = ({
                                     }}
                                     size={55}
                                   >
-                                    {data?.affiliation?.name?.substring(0, 2)}
+                                    {data?.affiliation?.name?.substring(0, 1)}
                                   </Avatar>
                                 )
                               }
