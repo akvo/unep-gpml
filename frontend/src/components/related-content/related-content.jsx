@@ -12,7 +12,8 @@ import policy from "../../images/placeholders/policy-placeholder.png";
 import financingResource from "../../images/placeholders/financing-resource-placeholder.png";
 import technology from "../../images/placeholders/technology-placeholder.png";
 import initiative from "../../images/placeholders/initiative-placeholder.png";
-import event from "../../images/placeholders/initiative-placeholder.png";
+import event from "../../images/placeholders/event-placeholder.png";
+import { topicNames } from "../../utils/misc";
 
 const RelatedContent = ({
   url,
@@ -102,9 +103,10 @@ const RelatedContent = ({
     return t;
   };
 
-  const defaultImage = (item) => {
-    if (!item?.image) {
-      if (
+  const getThumbnail = (item) => {
+    if(item?.thumbnail) return item.thumbnail
+    if(item?.image) return item.image
+    if (
         item?.type === "action_plan" ||
         item?.type?.toLowerCase() === "action plan"
       ) {
@@ -137,7 +139,6 @@ const RelatedContent = ({
       ) {
         return financingResource;
       }
-    }
   };
 
   return (
@@ -171,13 +172,13 @@ const RelatedContent = ({
           return (
             <Col key={item?.id} className="card" span={12}>
               <a
-                href={`/${getType(item?.type)}/${item.id}`}
+                href={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
                 className={`description-holder ${
                   isShownPagination ? "with-pagination" : "no-pagination"
                 }`}
                 style={{
                   backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${
-                    item?.image ? item?.image : defaultImage(item)
+                    getThumbnail(item)
                   })`,
                   backgroundPosition: "center",
                   backgroundSize: "cover",
@@ -187,7 +188,11 @@ const RelatedContent = ({
                 <div>
                   <h3>{item.title}</h3>
                   <h4>
-                    {data?.type ? data.type : item?.type ? item?.type : ""}
+                    {data?.type
+                      ? topicNames(data?.type)
+                      : item?.type
+                      ? topicNames(item?.type)
+                      : ""}
                   </h4>
                 </div>
                 <div className="bottom-panel">
@@ -235,7 +240,7 @@ const RelatedContent = ({
               <div className="slider-card">
                 <img
                   className="related-content-image"
-                  src={item?.image ? item?.image : defaultImage(item)}
+                  src={getThumbnail(item)}
                   alt={item?.type}
                 />
               </div>
