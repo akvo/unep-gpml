@@ -1,0 +1,32 @@
+    [
+      {
+        "title": "Environment & Biota Impact",
+        "topics": [
+          "Ocean & Coast", "Freshwater", "Soil", "Atmosphere", "Microplastics", "GHG emissions", "Natural resources", "Biota", "Chemicals", "Wastewater"
+        ]
+      },
+      {
+        "title": "Socio-Economic Impact",
+        "topics": ["Behavioural Change", "Cost of Damage", "Environmental Justice", "Gender", "Human Health", "Livelihoods", "Quality of Life"]
+      },
+      {
+        "title": "Life Cycle & Safe Circularity",
+        "topics": ["Consumption", "Raw Materials", "Production", "Circularity", "Waste Management"]
+      },
+      {
+        "title": "Governance",
+        "topics": ["Cooperation", "Monitoring & Evaluation", "Policy"]
+      },
+      {
+        "title": "Technology & Innovation",
+        "topics": ["Development Stage", "Company Type", "Sectors", "Technology Type"]
+      },
+      {
+        "title": "Capacity Building",
+        "topics": ["Education Awareness", "Training", "Best Practices"]
+      },
+      {
+        "title": "Financing",
+        "topics": ["Investment & Infrastructure", "R&D", "Risk Models"]
+      }
+    ]

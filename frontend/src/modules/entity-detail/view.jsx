@@ -172,6 +172,7 @@ const StakeholderDetail = ({
   match: { params },
   setStakeholderSignupModalVisible,
   setFilterMenu,
+  isAuthenticated,
 }) => {
   const {
     profile,
@@ -190,7 +191,7 @@ const StakeholderDetail = ({
     transnationalOptions: s.transnationalOptions,
     icons: s.icons,
   }));
-  const { isAuthenticated, loginWithPopup } = useAuth0();
+  const { loginWithPopup } = useAuth0();
   const history = useHistory();
   const [data, setData] = useState(null);
   const [color, setColor] = useState([colour(), colour(), colour()]);
