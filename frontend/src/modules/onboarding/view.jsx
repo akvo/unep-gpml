@@ -72,37 +72,13 @@ function Authentication() {
         ]),
     };
 
-    data.seeking = values?.seeking?.map((x) => {
-      return {
-        ...(Object.values(tags)
-          .flat()
-          .find((o) => o.id === parseInt(x.key)) && { id: parseInt(x.key) }),
-        tag:
-          Object.values(tags)
-            .flat()
-            .find((o) => o.id === parseInt(x.key))
-            ?.tag.toLowerCase() || x?.label?.toLowerCase(),
-        tag_category: "seeking",
-      };
-    });
-    data.offering = values?.offering?.map((x) => {
-      return {
-        ...(Object.values(tags)
-          .flat()
-          .find((o) => o.id === parseInt(x.key)) && { id: parseInt(x.key) }),
-        tag:
-          Object.values(tags)
-            .flat()
-            .find((o) => o.id === parseInt(x.key))
-            ?.tag.toLowerCase() || x?.label?.toLowerCase(),
-        tag_category: "offering",
-      };
-    });
-
-    data.tags = [...data.seeking, ...data.offering];
-    delete data.seeking;
-    delete data.offering;
+    data.seeking = values?.seeking?.map((item) => item.label);
+    data.offering = [
+      ...values?.offering,
+      ...values?.offeringSuggested?.map((item) => item.label),
+    ];
     delete data.confirm;
+    delete data.offeringSuggested;
     delete data.password;
     delete data.privateCitizen;
     if (location?.state?.data.hasOwnProperty("given_name")) {
@@ -181,26 +157,23 @@ function Authentication() {
   };
 
   const handleOfferingSuggestedTag = (value) => {
-    let find = array.find((o) => o.tag === value);
-    if (find) {
-      value = {
-        id: find.id,
-        label: find.tag,
-        key: find.id,
-      };
-    } else {
-      value = {
-        id: Math.floor(Date.now() * 100),
-        label: value,
-        key: Math.floor(Date.now() * 100),
-      };
-    }
     formRef?.current?.change("offering", [
       ...(formRef?.current?.getFieldState("offering")?.value
         ? formRef?.current?.getFieldState("offering")?.value
         : []),
       value,
     ]);
+  };
+
+  const handleRemove = (v) => {
+    formRef?.current?.change(
+      "offering",
+      formRef?.current
+        ?.getFieldState("offering")
+        ?.value.filter(function (item) {
+          return item !== v;
+        })
+    );
   };
 
   const setEntity = (res) => {
@@ -265,6 +238,7 @@ function Authentication() {
                     handleOfferingSuggestedTag={handleOfferingSuggestedTag}
                     validate={currentStep === 3 ? required : null}
                     error={error}
+                    handleRemove={handleRemove}
                   />
                 </div>
                 <div className="slide">

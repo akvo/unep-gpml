@@ -5,7 +5,12 @@ import { Field } from "react-final-form";
 import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
 const { Title, Link } = Typography;
 
-function FormTwo({ handleOfferingSuggestedTag, validate, error }) {
+function FormTwo({
+  handleOfferingSuggestedTag,
+  validate,
+  error,
+  handleRemove,
+}) {
   const [selectedItems, setSelectedItems] = useState([]);
   const storeData = UIStore.useState((s) => ({
     entitySuggestedTags: s.entitySuggestedTags,
@@ -26,6 +31,25 @@ function FormTwo({ handleOfferingSuggestedTag, validate, error }) {
       <div className="ant-form ant-form-vertical">
         <Field name="offering" style={{ width: "100%" }} validate={validate}>
           {({ input, meta }) => {
+            return (
+              <>
+                <CatTagSelect
+                  handleChange={handleOfferingSuggestedTag}
+                  meta={meta}
+                  error={error}
+                  value={input.value ? input.value : undefined}
+                  handleRemove={handleRemove}
+                />
+              </>
+            );
+          }}
+        </Field>
+        <Field
+          name="offeringSuggested"
+          style={{ width: "100%" }}
+          validate={validate}
+        >
+          {({ input, meta }) => {
             const filteredOptions = array.filter((ad) =>
               input.value
                 ? input.value.every((fd) => fd.value !== ad.id)
@@ -33,8 +57,9 @@ function FormTwo({ handleOfferingSuggestedTag, validate, error }) {
             );
             return (
               <>
-                <CatTagSelect />
-                <div style={{ marginTop: 20, color: '#A5B0C9' }}>Can't see what you're looking for?</div>
+                <div style={{ marginTop: 20, color: "#A5B0C9" }}>
+                  Can't see what you're looking for?
+                </div>
                 <Select
                   placeholder="Suggest categories"
                   allowClear
@@ -67,7 +92,5 @@ function FormTwo({ handleOfferingSuggestedTag, validate, error }) {
     </>
   );
 }
-
-
 
 export default FormTwo;
