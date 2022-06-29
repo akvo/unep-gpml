@@ -1,14 +1,15 @@
 (ns gpml.handler.organisation
   (:require
-   [gpml.db.invitation :as db.invitation]
    [gpml.db.organisation :as db.organisation]
    [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.email-util :as email]
    [gpml.geo-util :as geo]
    [gpml.handler.geo :as handler.geo]
    [gpml.handler.resource.tag :as handler.resource.tag]
+   [gpml.pg-util :as pg-util]
    [integrant.core :as ig]
-   [ring.util.response :as resp]))
+   [ring.util.response :as resp])
+  (:import
+   [java.sql SQLException]))
 
 (defn create [conn mailjet-config org]
   (let [org-id (:id (db.organisation/new-organisation conn org))
@@ -62,26 +63,19 @@
 
 (defmethod ig/init-key :gpml.handler.organisation/post [_ {:keys [db mailjet-config]}]
   (fn [{:keys [body-params referrer jwt-claims]}]
-    (let [first-contact (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)
-          org-id (let [params (assoc body-params :created_by (:id first-contact))
-                       second-contact-email (:stakeholder body-params)]
-                   (if-let [second-contact (db.stakeholder/stakeholder-by-email (:spec db) {:email second-contact-email})]
-                     (->> (assoc params :second_contact (:id second-contact))
-                          (create (:spec db) mailjet-config))
-                     (let [org-id (create (:spec db) mailjet-config params)]
-                       (db.invitation/new-invitation (:spec db) {:stakeholder-id (:id first-contact)
-                                                                 :organisation-id org-id
-                                                                 :email second-contact-email
-                                                                 :accepted nil})
-                       (let [full-contact-details (format "%s. %s %s" (:title first-contact) (:first_name first-contact) (:last_name first-contact))]
-                         (email/send-email mailjet-config
-                                           email/unep-sender
-                                           (email/notify-user-invitation-subject full-contact-details)
-                                           (list {:Name second-contact-email :Email second-contact-email})
-                                           (list (email/notify-user-invitation-text full-contact-details (:app-domain mailjet-config) (:name body-params)))
-                                           (list nil)))
-                       org-id)))]
-      (resp/created referrer (assoc body-params :id org-id)))))
+    (try
+      (let [org-creator (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)
+            org-id (create (:spec db) mailjet-config (assoc body-params :created_by (:id org-creator)))]
+        (resp/created referrer {:success? true
+                                :org (assoc body-params :id org-id)}))
+      (catch Exception e
+        (if (instance? SQLException e)
+          {:success? false
+           :reason (pg-util/get-sql-state e)
+           :error-details (.getMessage e)}
+          {:success? false
+           :reason :could-not-create-org
+           :error-details {:message (.getMessage e)}})))))
 
 (defmethod ig/init-key :gpml.handler.organisation/post-params [_ _]
   (into [:map
