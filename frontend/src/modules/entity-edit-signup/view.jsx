@@ -470,6 +470,18 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
             editId !== dataId)
         ) {
           api.get(`/stakeholder/${dataId}`).then((d) => {
+            if (d.data.tags) {
+              d.data = {
+                ...d.data,
+                seeking: d?.data?.tags
+                  ?.filter((item) => item.tagRelationCategory === "seeking")
+                  ?.map((item) => item.id),
+                offering: d?.data?.tags
+                  ?.filter((item) => item.tagRelationCategory === "offering")
+                  ?.map((item) => item.id),
+              };
+              console.log(d.data);
+            }
             if (!d.data.affiliation) {
               d.data = {
                 ...d.data,
@@ -685,6 +697,7 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
                       loading={sending}
                       type={disabledBtn.type}
                       size="large"
+                      className="submit-button"
                       onClick={(e) => handleOnClickBtnSubmit(e)}
                     >
                       SUBMIT

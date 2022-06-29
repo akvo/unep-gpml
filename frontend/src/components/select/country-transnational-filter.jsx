@@ -161,11 +161,7 @@ const CountryTransnationalFilter = ({
                     return (
                       <Option key={transnational.id} value={transnational.id}>
                         <div className="dropdown-content">
-                          <TrimText
-                            className="dropdown-text"
-                            text={transnational.name}
-                            max={25}
-                          />{" "}
+                          {transnational.name}
                           <MultiCountryInfo
                             data={landing}
                             multiCountryCountries={
