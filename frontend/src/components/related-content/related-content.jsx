@@ -103,9 +103,10 @@ const RelatedContent = ({
     return t;
   };
 
-  const defaultImage = (item) => {
-    if (!item?.image) {
-      if (
+  const getThumbnail = (item) => {
+    if(item?.thumbnail) return item.thumbnail
+    if(item?.image) return item.image
+    if (
         item?.type === "action_plan" ||
         item?.type?.toLowerCase() === "action plan"
       ) {
@@ -138,7 +139,6 @@ const RelatedContent = ({
       ) {
         return financingResource;
       }
-    }
   };
 
   return (
@@ -178,7 +178,7 @@ const RelatedContent = ({
                 }`}
                 style={{
                   backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${
-                    item?.image ? item?.image : defaultImage(item)
+                    getThumbnail(item)
                   })`,
                   backgroundPosition: "center",
                   backgroundSize: "cover",
@@ -188,10 +188,10 @@ const RelatedContent = ({
                 <div>
                   <h3>{item.title}</h3>
                   <h4>
-                    {item?.type
-                      ? topicNames(item.type)
-                      : data?.type
+                    {data?.type
                       ? topicNames(data?.type)
+                      : item?.type
+                      ? topicNames(item?.type)
                       : ""}
                   </h4>
                 </div>
@@ -240,7 +240,7 @@ const RelatedContent = ({
               <div className="slider-card">
                 <img
                   className="related-content-image"
-                  src={item?.image ? item?.image : defaultImage(item)}
+                  src={getThumbnail(item)}
                   alt={item?.type}
                 />
               </div>
