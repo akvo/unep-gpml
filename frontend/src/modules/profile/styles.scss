@@ -120,6 +120,11 @@
     justify-content: space-between;
   }
 
+  .ant-select-selection-item-content,
+  .ant-select-selection-item-remove {
+    width: auto !important;
+  }
+
   @media (max-width: 540px) {
     .approval-bold-text,
     .ant-btn {
@@ -418,6 +423,13 @@
           margin-left: 5px;
           flex: 1;
           display: flex;
+          .ant-input-status-error {
+            border: 1px solid #ff4d4f;
+          }
+        }
+
+        .update-button {
+          margin-top: 20px;
         }
 
         p.section-title {
@@ -426,9 +438,9 @@
         }
 
         span {
-          color: #707070;
-          width: 160px;
-          display: inline-block;
+          // color: #707070;
+          // width: 160px;
+          // display: inline-block;
         }
 
         ul.ul-children {
@@ -685,8 +697,6 @@
       }
       .ant-select-selection-placeholder {
         color: #a5b0c9;
-      }
-      .ant-select-selection-placeholder {
         line-height: 38px;
       }
     }
