@@ -180,7 +180,6 @@
 
     .resource-info {
       display: block;
-      margin-bottom: 28px;
       padding: 0 40px;
       @media (max-width: 600px) {
         padding: 0 0 !important;
@@ -235,7 +234,9 @@
       display: flex;
       align-items: center;
       flex-direction: row;
-      margin-bottom: 24px;
+      &:not(:last-child) {
+        margin-bottom: 24px;
+      }
     }
 
     .detail-item .ant-row {
