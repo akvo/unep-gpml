@@ -35,8 +35,8 @@ const Workspace = ({ profile }) => {
   return (
     <div id="workspace">
       <Row type="flex">
-        <LeftSidebar profile={profile} sidebar={sidebar}>
-          <Header userName={userName} />
+        <LeftSidebar profile={profile}>
+          {/* <Header userName={userName} /> */}
           <div className="workspace-content-wrapper">
             <div className="workspace-container">
               <Row className="bg-white">
@@ -157,12 +157,12 @@ const Workspace = ({ profile }) => {
                           description="A communi observantia non est recedendum."
                         />
                       </List.Item>
-                      <List.Item>
+                      {/* <List.Item>
                         <List.Item.Meta
                           title={`Suggest an expert >`}
                           description="Tu quoque, Brute, fili mi, nihil timor populi, nihil!"
                         />
-                      </List.Item>
+                      </List.Item> */}
                       <List.Item>
                         <List.Item.Meta
                           title={`Network and collaborate >`}
@@ -182,11 +182,7 @@ const Workspace = ({ profile }) => {
                       <Title level={2}>
                         If you are getting started, watch this video
                       </Title>
-                      <img
-                        src={Video}
-                        alt="video"
-                        style={{ width: "100%", height: 400 }}
-                      />
+                      <iframe width="100%" height="390px" src="https://www.youtube.com/embed/xSYkLgoHqVQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                   </Col>
                   <Col lg={10} sm={24}>
