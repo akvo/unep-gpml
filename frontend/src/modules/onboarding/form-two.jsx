@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { UIStore } from "../../store";
-import { Col, Row, Button, Typography, Form, Input, Select, List } from "antd";
+import { Typography, Select } from "antd";
 import { Field } from "react-final-form";
 import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
-const { Title, Link } = Typography;
+const { Title } = Typography;
 
 function FormTwo({
   handleOfferingSuggestedTag,
@@ -11,18 +11,16 @@ function FormTwo({
   error,
   handleRemove,
 }) {
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [filteredOptions, setFilteredOptions] = useState([])
   const storeData = UIStore.useState((s) => ({
-    entitySuggestedTags: s.entitySuggestedTags,
     tags: s.tags,
   }));
 
-  const { entitySuggestedTags, tags } = storeData;
+  const { tags } = storeData;
 
-  const array = Object.keys(tags)
+  const allOptions = Object.keys(tags)
     .map((k) => tags[k])
-    .flat();
-
+    .flat().map(it => it.tag);
   return (
     <>
       <div className="text-wrapper">
@@ -50,11 +48,17 @@ function FormTwo({
           validate={validate}
         >
           {({ input, meta }) => {
-            const filteredOptions = array.filter((ad) =>
-              input.value
-                ? input.value.every((fd) => fd.value !== ad.id)
-                : array
-            );
+            const handleSearch = (value) => {
+              if(value.length < 2) {
+                setFilteredOptions([])
+              } else {
+                const filtered = allOptions
+                  .filter((item) => (
+                    item.toLowerCase().indexOf(value.toLowerCase()) > -1
+                  ))
+                setFilteredOptions(filtered.filter((it, index) => filtered.indexOf(it) === index))
+              }
+            }
             return (
               <>
                 <div style={{ marginTop: 20, color: "#A5B0C9" }}>
@@ -66,21 +70,17 @@ function FormTwo({
                   showSearch
                   labelInValue
                   mode="tags"
-                  onChange={(value) => {
-                    setSelectedItems(value.map((item) => item.label));
-                    input.onChange(value);
-                  }}
+                  notFoundContent={null}
+                  onChange={(value) => input.onChange(value)}
+                  onSearch={handleSearch}
                   value={input.value ? input.value : undefined}
-                  filterOption={(i, option) =>
-                    option.children.toLowerCase().includes(i.toLowerCase())
-                  }
                   className={`dont-show ${
                     error && !meta.valid ? "ant-input-status-error" : ""
                   }`}
                 >
                   {filteredOptions?.map((item) => (
-                    <Select.Option value={item.id} key={item.id}>
-                      {item.tag}
+                    <Select.Option value={item} key={item}>
+                      {item}
                     </Select.Option>
                   ))}
                 </Select>
