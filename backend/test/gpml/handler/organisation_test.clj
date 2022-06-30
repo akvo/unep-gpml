@@ -1,6 +1,5 @@
 (ns gpml.handler.organisation-test
   (:require [clojure.test :refer [deftest testing is use-fixtures]]
-            [gpml.db.invitation :as db.invitation]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
             [gpml.handler.organisation :as organisation]
@@ -41,15 +40,12 @@
           _               (profile-handler (-> (mock/request :post "/")
                                                (assoc :jwt-claims jwt-claims)
                                                (assoc :body-params profile)))
-          _               (is (nil? (db.invitation/invitation-by-email db {:email stakeholder})))
           resp            (org-handler (-> (mock/request :post "/")
                                            (assoc :jwt-claims jwt-claims)
-                                           (assoc :body-params body-params)))
-;;          mails           @fixtures/mails-sent
-          ]
+                                           (assoc :body-params body-params)))]
       (is (= 201 (:status resp)))
-      (is (some? (db.invitation/invitation-by-email db {:email stakeholder})))
-      (is (= (assoc body-params :id 10001) (:body resp)))
+      (is (:success? (:body resp)))
+      (is (= (assoc body-params :id 10001) (-> resp :body :org)))
       ;; (is (= 1 (count mails)))
       ;; (is (= (-> mails first :receivers) (list {:Name stakeholder, :Email stakeholder})))
       ;; (is (= (-> mails first :subject) "Mr. John Doe has invited you to join UNEP GPML Digital Platform"))
