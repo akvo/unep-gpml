@@ -16,6 +16,7 @@ import { useHistory } from "react-router-dom";
 import GettingStartedIcon from "../../images/auth/surfer.svg";
 import waveSvg from "../../images/auth/wave.svg";
 
+
 function Authentication() {
   const formRef = useRef();
   const surferRef = useRef();
@@ -23,7 +24,9 @@ function Authentication() {
   let history = useHistory();
   const [affiliation, setAffiliation] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
-  const [initialValues, setInitialValues] = useState({});
+  const [initialValues, setInitialValues] = useState({
+    offering: [], offeringSuggested: [], seeking: [], seekingSuggested: []
+  });
   const [error, setError] = useState(false);
 
   const { tags } = UIStore.currentState;
@@ -72,13 +75,17 @@ function Authentication() {
         ]),
     };
 
-    data.seeking = values?.seeking?.map((item) => item.label);
     data.offering = [
       ...values?.offering,
-      ...values?.offeringSuggested?.map((item) => item.label),
+      ...values?.offeringSuggested,
+    ];
+    data.seeking = [
+      ...values?.seeking,
+      ...values?.seekingSuggested,
     ];
     delete data.confirm;
     delete data.offeringSuggested;
+    delete data.seekingSuggested;
     delete data.password;
     delete data.privateCitizen;
     if (location?.state?.data.hasOwnProperty("given_name")) {
@@ -134,20 +141,6 @@ function Authentication() {
     .flat();
 
   const handleSeekingSuggestedTag = (value) => {
-    let find = array.find((o) => o.tag === value);
-    if (find) {
-      value = {
-        id: find.id,
-        label: find.tag,
-        key: find.id,
-      };
-    } else {
-      value = {
-        id: Math.floor(Date.now() * 100),
-        label: value,
-        key: Math.floor(Date.now() * 100),
-      };
-    }
     formRef?.current?.change("seeking", [
       ...(formRef?.current?.getFieldState("seeking")?.value
         ? formRef?.current?.getFieldState("seeking")?.value
@@ -287,8 +280,7 @@ function Authentication() {
 
 const Wave = ({ step, surferRef }) => {
   const ref = useRef();
-  useEffect(() => {
-    document.addEventListener("mousemove", (e) => {
+  const listener = (e) => {
       const axx = (window.innerWidth / 2 - e.x) / (window.innerWidth / 2);
       const axy = Math.max(
         0,
@@ -299,7 +291,12 @@ const Wave = ({ step, surferRef }) => {
       surferRef.current.style.transform = `translate(${axx * 70}px, ${
         axy * 200 - 50
       }px)`;
-    });
+    }
+  useEffect(() => {
+    document.addEventListener("mousemove", listener);
+    return () => {
+      document.removeEventListener("mousemove", listener)
+    }
   }, []);
   return (
     <div className="wave" style={{ left: -(step * (window.innerWidth + 200)) }}>
