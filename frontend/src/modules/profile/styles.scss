@@ -118,6 +118,9 @@
     width: 100%;
     align-items: center;
     justify-content: space-between;
+    .expert-checkbox {
+      margin-left: 10px;
+    }
   }
 
   .ant-select-selection-item-content,

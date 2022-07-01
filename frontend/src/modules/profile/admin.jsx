@@ -11,6 +11,7 @@ import {
   Input,
   Tabs,
   Typography,
+  Checkbox,
 } from "antd";
 const { Title } = Typography;
 import React from "react";
@@ -648,7 +649,6 @@ const AdminSection = ({
     );
 
     const RenderRow = ({ item, setListOpts, listOpts }) => {
-      console.log(item);
       const ResourceAvatar = () => (
         <div className="col content">
           <Avatar
@@ -784,7 +784,12 @@ const AdminSection = ({
         {(listOpts.reviewStatus || listOpts.title) && (
           <div>
             <div className="export-wrapper">
-              <b className="approval-bold-text">Filtering by:</b>
+              <div>
+                <b className="approval-bold-text">Filtering by:</b>
+                {listOpts.type === "stakeholders" && (
+                  <Checkbox className="expert-checkbox">Experts</Checkbox>
+                )}
+              </div>
               {title !== "Tags" && (
                 <div>
                   <ExportButton
