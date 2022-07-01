@@ -3,6 +3,7 @@ BEGIN;
 WITH category AS (INSERT INTO tag_category(category) VALUES('environment & biota impact') RETURNING id)
 INSERT INTO tag(tag, tag_category, review_status)
 VALUES
+('ocean & coast', (SELECT id FROM category), 'APPROVED'),
 ('soil', (SELECT id FROM category), 'APPROVED') ,
 ('atmosphere', (SELECT id FROM category), 'APPROVED') ,
 ('ghg emissions', (SELECT id FROM category), 'APPROVED') ,
