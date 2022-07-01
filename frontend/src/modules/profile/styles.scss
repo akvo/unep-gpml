@@ -409,6 +409,15 @@
         font-size: 12px;
       }
 
+      .update-button-group {
+        margin-top: 20px;
+        button {
+          &:first-child {
+            margin-right: 10px;
+          }
+        }
+      }
+
       li {
         display: flex;
         flex-wrap: wrap;
@@ -426,10 +435,6 @@
           .ant-input-status-error {
             border: 1px solid #ff4d4f;
           }
-        }
-
-        .update-button {
-          margin-top: 20px;
         }
 
         p.section-title {

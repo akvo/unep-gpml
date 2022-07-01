@@ -611,14 +611,15 @@ export const ProfilePreview = ({ item }) => {
             <div className="detail-title">Tags</div>:
             <div className="detail-content">{item.general || "-"}</div>
           </li>
-          <li>
+          <li className="update-button-group">
             <Button
               type="ghost"
-              className="black update-button"
+              className="black"
               onClick={() => updateStakeholderExpertise()}
             >
               Update
             </Button>
+            {item.unpublishButton}
           </li>
         </ul>
       </div>
@@ -749,10 +750,15 @@ export const InitiativePreview = ({ item }) => {
   );
 };
 
-export const DetailCollapse = ({ data, item, getPreviewContent }) => {
+export const DetailCollapse = ({
+  data,
+  item,
+  getPreviewContent,
+  unpublishButton,
+}) => {
   switch (item.type) {
     case "stakeholder":
-      return <ProfilePreview item={{ ...data, ...item }} />;
+      return <ProfilePreview item={{ ...data, ...item, unpublishButton }} />;
     case "project":
       return <InitiativePreview item={{ ...data, ...item }} />;
     case "tag":
