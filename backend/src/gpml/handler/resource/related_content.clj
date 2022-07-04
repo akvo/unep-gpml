@@ -30,7 +30,7 @@
                 (select-keys related-content-shared-keys)
                 (merge (set/rename-keys (select-keys resource_data (keys non-shared-keys-mapping)) non-shared-keys-mapping))
                 (assoc :type resource-type)))))
-       (sort (fn [el1 el2] (if (or (:thumbnail el1) (:image el1)) true false)))))
+       (sort (fn [el1 _] (if (or (:thumbnail el1) (:image el1)) true false)))))
 
 (defn create-related-contents
   "Creates related contents records for a given `resource-id` and `resource-table-name`"
