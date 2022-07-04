@@ -103,41 +103,41 @@ const RelatedContent = ({
     return t;
   };
 
-  const defaultImage = (item) => {
-    if (!item?.image) {
-      if (
-        item?.type === "action_plan" ||
-        item?.type?.toLowerCase() === "action plan"
-      ) {
-        return actionPlan;
-      }
-      if (item?.type?.toLowerCase() === "policy") {
-        return policy;
-      }
-      if (item?.type?.toLowerCase() === "technology") {
-        return technology;
-      }
-      if (item?.type?.toLowerCase() === "event") {
-        return event;
-      }
-      if (
-        item?.type?.toLowerCase() === "initiative" ||
-        item?.type?.toLowerCase() === "project"
-      ) {
-        return initiative;
-      }
-      if (
-        item?.type === "technical_resource" ||
-        item?.type?.toLowerCase() === "technical resource"
-      ) {
-        return technicalResource;
-      }
-      if (
-        item?.type === "financing_resource" ||
-        item?.type?.toLowerCase() === "financing resource"
-      ) {
-        return financingResource;
-      }
+  const getThumbnail = (item) => {
+    if (item?.thumbnail) return item.thumbnail;
+    if (item?.image) return item.image;
+    if (
+      item?.type === "action_plan" ||
+      item?.type?.toLowerCase() === "action plan"
+    ) {
+      return actionPlan;
+    }
+    if (item?.type?.toLowerCase() === "policy") {
+      return policy;
+    }
+    if (item?.type?.toLowerCase() === "technology") {
+      return technology;
+    }
+    if (item?.type?.toLowerCase() === "event") {
+      return event;
+    }
+    if (
+      item?.type?.toLowerCase() === "initiative" ||
+      item?.type?.toLowerCase() === "project"
+    ) {
+      return initiative;
+    }
+    if (
+      item?.type === "technical_resource" ||
+      item?.type?.toLowerCase() === "technical resource"
+    ) {
+      return technicalResource;
+    }
+    if (
+      item?.type === "financing_resource" ||
+      item?.type?.toLowerCase() === "financing resource"
+    ) {
+      return financingResource;
     }
   };
 
@@ -177,9 +177,9 @@ const RelatedContent = ({
                   isShownPagination ? "with-pagination" : "no-pagination"
                 }`}
                 style={{
-                  backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${
-                    item?.image ? item?.image : defaultImage(item)
-                  })`,
+                  backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${getThumbnail(
+                    item
+                  )})`,
                   backgroundPosition: "center",
                   backgroundSize: "cover",
                   backgroundRepeat: "no-repeat",
@@ -189,7 +189,7 @@ const RelatedContent = ({
                   <h3>{item.title}</h3>
                   <h4>
                     {data?.type
-                      ? topicNames(data.type)
+                      ? topicNames(data?.type)
                       : item?.type
                       ? topicNames(item?.type)
                       : ""}
@@ -240,7 +240,7 @@ const RelatedContent = ({
               <div className="slider-card">
                 <img
                   className="related-content-image"
-                  src={item?.image ? item?.image : defaultImage(item)}
+                  src={getThumbnail(item)}
                   alt={item?.type}
                 />
               </div>

@@ -611,7 +611,7 @@ const StakeholderDetail = ({
                                           xxl: 145,
                                         }}
                                       >
-                                        {item?.name?.substring(0, 2)}
+                                        {item?.name?.substring(0, 1)}
                                       </Avatar>
                                     )
                                   }

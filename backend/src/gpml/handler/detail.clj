@@ -3,6 +3,7 @@
    [clojure.java.jdbc :as jdbc]
    [clojure.set :as set]
    [clojure.string :as string]
+   [clojure.walk :as w]
    [gpml.constants :as constants]
    [gpml.db.action :as db.action]
    [gpml.db.action-detail :as db.action-detail]
@@ -12,6 +13,7 @@
    [gpml.db.favorite :as db.favorite]
    [gpml.db.initiative :as db.initiative]
    [gpml.db.language :as db.language]
+   [gpml.db.organisation :as db.organisation]
    [gpml.db.policy :as db.policy]
    [gpml.db.project :as db.project]
    [gpml.db.resource.connection :as db.resource.connection]
@@ -292,10 +294,11 @@
      related-contents)))
 
 (defn- add-extra-details
-  [db {:keys [id] :as resource} resource-type
-   {:keys [tags? entity-connections? stakeholder-connections? related-content?]
+  [db {:keys [id affiliation] :as resource} resource-type
+   {:keys [tags? entity-connections? stakeholder-connections? related-content? affiliation?]
     :or {tags? true entity-connections? true
-         stakeholder-connections? true related-content? true}}]
+         stakeholder-connections? true related-content? true
+         affiliation? false}}]
   (cond-> resource
     tags?
     (assoc :tags (db.resource.tag/get-resource-tags db {:table (str (resolve-resource-type resource-type) "_tag")
@@ -312,6 +315,9 @@
 
     related-content?
     (assoc :related_content (expand-related-content db id (resolve-resource-type resource-type)))
+
+    (and affiliation? affiliation)
+    (assoc :affiliation (db.organisation/organisation-by-id db {:id affiliation}))
 
     true
     (assoc :type resource-type)))
@@ -358,10 +364,17 @@
                                                     :related-content? false}))
 
 (defmethod extra-details "stakeholder" [resource-type db stakeholder]
-  (add-extra-details db stakeholder resource-type {:tags? true
-                                                   :entity-connections? false
-                                                   :stakeholder-connections? false
-                                                   :related-content? false}))
+  (let [details (add-extra-details db stakeholder resource-type {:tags? true
+                                                                 :entity-connections? false
+                                                                 :stakeholder-connections? false
+                                                                 :related-content? false
+                                                                 :affiliation? true})]
+    (merge details (reduce (fn [acc [k v]]
+                             (assoc acc k (map :tag v)))
+                           {}
+                           (-> (group-by :tag_relation_category (:tags details))
+                               (w/keywordize-keys)
+                               (select-keys [:seeking :offering :expertise]))))))
 
 (defmethod extra-details :nothing [_ _ _]
   nil)

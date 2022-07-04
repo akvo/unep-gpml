@@ -3,7 +3,7 @@
             [clojure.string :as str]
             [duct.core :as duct]
             [duct.database.sql :as sql]
-            [gpml.email-util :as email]
+            [gpml.util.email :as email]
             [integrant.core :as ig])
   (:import [java.util UUID]))
 

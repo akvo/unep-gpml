@@ -248,6 +248,14 @@ const formDataMapping = [
     question: "image",
   },
   {
+    key: "thumbnail",
+    name: "thumbnail",
+    type: "thumbnail",
+    section: "S4",
+    group: "S4_G4",
+    question: "thumbnail",
+  },
+  {
     key: "originalTitle",
     name: "originalTitle",
     group: null,
