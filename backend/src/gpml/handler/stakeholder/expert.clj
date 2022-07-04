@@ -21,6 +21,11 @@
      :swagger {:description "Comma separated list of tags."
                :type "string"}}
     [:string {:min 1}]]
+   [:countries
+    {:optional true
+     :swagger {:description "Comma separated list of countries' IDs."
+               :type "string"}}
+    [:string {:min 1}]]
    [:page_size
     {:optional true
      :default 12
@@ -81,7 +86,7 @@
        [:string {:min 1}]]]]]])
 
 (defn- api-opts->opts
-  [{:keys [page_size page_n tags]}]
+  [{:keys [page_size page_n tags countries]}]
   (cond-> {}
     page_size
     (assoc :page-size page_size)
@@ -91,6 +96,9 @@
 
     (seq tags)
     (assoc-in [:filters :tags] (map str/lower-case (str/split tags #",")))
+
+    (seq countries)
+    (assoc-in [:filters :countries] (map (comp #(Integer/parseInt %) str/lower-case) (str/split tags #",")))
 
     true
     (assoc-in [:filters :experts?] true)))
