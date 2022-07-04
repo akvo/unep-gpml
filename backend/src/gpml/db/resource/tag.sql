@@ -4,7 +4,7 @@
 -- Technical, Action Plan, Organization and Stakeholder. That is, it
 -- is not about 'resource' table solely.
 
--- :name create-resource-tags :<!
+-- :name create-resource-tags :<! :*
 -- :doc Creates a relation for <resource>_tag.
 INSERT INTO :i:table (:i:resource-col, tag
 --~(when (= (:table params) "stakeholder_tag") ", tag_relation_category")

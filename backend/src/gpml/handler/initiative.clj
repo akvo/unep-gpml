@@ -7,7 +7,7 @@
    [gpml.db.resource.tag :as db.resource.tag]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.db.tag :as db.tag]
-   [gpml.email-util :as email]
+   [gpml.util.email :as email]
    [gpml.handler.auth :as h.auth]
    [gpml.handler.geo :as handler.geo]
    [gpml.handler.image :as handler.image]

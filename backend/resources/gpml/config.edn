@@ -201,6 +201,22 @@
                                                  :swagger {:tags ["stakeholder"]}
                                                  :parameters #ig/ref :gpml.handler.stakeholder/get-params
                                                  :handler #ig/ref :gpml.handler.stakeholder/get}}]
+                                         ["/expert"
+                                          ["/list"
+                                           {:get {:summary "Get the list of expert stakeholders"
+                                                  :swagger {:tags ["stakeholder" "expert"]}
+                                                  :parameters #ig/ref :gpml.handler.stakeholder.expert/get-params
+                                                  :responses #ig/ref :gpml.handler.stakeholder.expert/get-response
+                                                  :handler #ig/ref :gpml.handler.stakeholder.expert/get}}]
+                                          ["/invite"
+                                           {:post {:summary "Invite an expert"
+                                                   :middleware [#ig/ref :gpml.auth/auth-required
+                                                                #ig/ref :gpml.auth/approved-user
+                                                                #ig/ref :gpml.auth/admin-required-middleware]
+                                                   :swagger {:tags ["stakeholder" "expert"]}
+                                                   :parameters #ig/ref :gpml.handler.stakeholder.expert/post-params
+                                                   :responses #ig/ref :gpml.handler.stakeholder.expert/post-response
+                                                   :handler #ig/ref :gpml.handler.stakeholder.expert/post}}]]
                                          ["/:id"
                                           [""
                                            {:get {:middleware [#ig/ref :gpml.auth/auth-required
@@ -234,6 +250,7 @@
                                         ["/landing"
                                          [""
                                           {:get {:summary "End-point for the landing page"
+                                                 :middleware [#ig/ref :gpml.auth/auth-middleware]
                                                  :swagger {:tags ["landing"]}
                                                  :parameters {:query #ig/ref :gpml.handler.landing/get-query-params}
                                                  :handler #ig/ref :gpml.handler.landing/get}}]]
@@ -496,7 +513,21 @@
                                                     :swagger {:tags ["comment"] :security [{:id_token []}]}
                                                     :responses #ig/ref :gpml.handler.comment/delete-response
                                                     :parameters #ig/ref :gpml.handler.comment/delete-params
-                                                    :handler #ig/ref :gpml.handler.comment/delete}}]]]]
+                                                    :handler #ig/ref :gpml.handler.comment/delete}}]]
+                                        ["/invitation" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                     #ig/ref :gpml.auth/auth-required]}
+                                         [""
+                                          {:get {:summary "Get invitations"
+                                                 :middleware [#ig/ref :gpml.auth/approved-user
+                                                              #ig/ref :gpml.auth/admin-required-middleware]
+                                                 :swagger {:tags ["invitation"]}
+                                                 :parameters #ig/ref :gpml.handler.invitation/get-params
+                                                 :handler #ig/ref :gpml.handler.invitation/get}}]
+                                         ["/:id"
+                                          {:put {:summary "Accept invitation"
+                                                 :swagger {:tags ["invitation"]}
+                                                 :parameters #ig/ref :gpml.handler.invitation/put-params
+                                                 :handler #ig/ref :gpml.handler.invitation/put}}]]]]
                               :logger #ig/ref :duct.logger/timbre}
 
   ;; Consts
@@ -595,6 +626,17 @@
 
   :gpml.handler.stakeholder/suggested-profiles {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder/suggested-profiles-params {}
+
+  :gpml.handler.stakeholder.expert/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder.expert/get-params {}
+  :gpml.handler.stakeholder.expert/get-response {}
+  :gpml.handler.stakeholder.expert/post {:db #ig/ref :duct.database/sql
+                                         :mailjet-config #ig/ref :gpml.config/mailjet
+                                         :app-domain #duct/env ["APP_DOMAIN" Str]
+                                         :logger #ig/ref :duct/logger}
+  :gpml.handler.stakeholder.expert/post-params {}
+  :gpml.handler.stakeholder.expert/post-response {}
+
   :gpml.handler.currency/all {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.tag/by-topic {:db #ig/ref :duct.database/sql}
@@ -672,6 +714,13 @@
   :gpml.handler.export/get {:db #ig/ref :duct.database/sql
                             :app-domain #duct/env ["APP_DOMAIN" Str]}
   :gpml.handler.export/get-params {}
+
+  :gpml.handler.invitation/get {:db #ig/ref :duct.database/sql
+                                :logger #ig/ref :duct/logger}
+  :gpml.handler.invitation/get-params {}
+  :gpml.handler.invitation/put {:db #ig/ref :duct.database/sql
+                                :logger #ig/ref :duct/logger}
+  :gpml.handler.invitation/put-params {}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources
                           :logger #ig/ref :duct/logger

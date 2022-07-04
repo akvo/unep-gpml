@@ -1,4 +1,4 @@
-(ns gpml.email-util
+(ns gpml.util.email
   (:require [clj-http.client :as client]
             [clojure.string :as str]
             [jsonista.core :as j]
@@ -21,6 +21,8 @@
                   :throw-exceptions false
                   :body (j/write-value-as-string {:Messages messages})})))
 
+;; FIXME: this shouldn't be hardcoded here. We'll be moving to
+;; mailchimp soon so we'll refactor everything here.
 (def unep-sender
   {:Name "UNEP GPML Digital Platform" :Email "no-reply@gpmarinelitter.org"})
 
@@ -38,6 +40,15 @@ A new %s (%s) is awaiting your approval. Please visit %s/profile to approve or d
 %s commented on your resource %s. For more details visit your resource's detail page %s.
 
 - UNEP GPML Digital Platform" resource-owner comment-author resource-title app-domain))
+
+(defn notify-expert-invitation-text [first-name last-name invitation-id app-domain]
+  (let [platform-link (str app-domain "/login?invite=" invitation-id)
+        user-full-name (get-user-full-name {:first_name first-name :last_name last-name})]
+    (format "Dear %s,
+
+You have been invited to join the UNEP GPML Digital Platform as an expert.
+
+Please, click on the link to accept the invitation: %s" user-full-name platform-link)))
 
 (defn notify-reviewer-pending-review-text [reviewer-name app-domain topic-type topic-title]
   (format "Dear %s,
