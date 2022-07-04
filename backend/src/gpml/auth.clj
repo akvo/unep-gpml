@@ -147,7 +147,7 @@
       (if (:authenticated? request)
         (handler request)
         {:status (:status request)
-         :message (:auth-error-message request)}))))
+         :body {:message (:auth-error-message request)}}))))
 
 (defmethod ig/init-key :gpml.auth/approved-user [_ _]
   (fn [handler]
