@@ -131,9 +131,15 @@ const Workspace = ({ profile }) => {
                           Creation Workflow.
                         </p>
                       </div>
-                      <div>
-                        <img src={DownloadPdf} alt="download-pdf-document" />
-                      </div>
+                      <a
+                        href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y"
+                        target="_blank"
+                        className="download-link"
+                      >
+                        <div>
+                          <img src={DownloadPdf} alt="download-pdf-document" />
+                        </div>
+                      </a>
                     </div>
                   </div>
                 </Col>
@@ -182,7 +188,15 @@ const Workspace = ({ profile }) => {
                       <Title level={2}>
                         If you are getting started, watch this video
                       </Title>
-                      <iframe width="100%" height="390px" src="https://www.youtube.com/embed/xSYkLgoHqVQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                      <iframe
+                        width="100%"
+                        height="390px"
+                        src="https://www.youtube.com/embed/xSYkLgoHqVQ"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                      ></iframe>
                     </div>
                   </Col>
                   <Col lg={10} sm={24}>
