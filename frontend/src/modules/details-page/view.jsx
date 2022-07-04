@@ -607,6 +607,10 @@ const DetailsView = ({
                       height: 40,
                       width: 40,
                     }}
+                    style={{
+                      marginTop:
+                        data?.entityConnections?.length > 0 ? "16px" : 0,
+                    }}
                   >
                     <List itemLayout="horizontal">
                       {data?.stakeholderConnections
