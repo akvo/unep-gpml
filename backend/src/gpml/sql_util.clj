@@ -136,13 +136,21 @@
   (map #(select-values % insert-keys) coll))
 
 (defn entity-col->persistence-entity-col
-  "FIXME: Add docstring"
-  [entity-col]
-  (let [insert-keys (keys (first entity-col))]
+  "Given `entity-col` collection of entity maps, return insert values as a sequence of value sequences
+   based on the entity columns and the number of entities to insert.
+
+   Optionally allow `insert-keys` param to enforce the order and which columns will be used in the
+   generated values for insertion."
+  [entity-col & {:keys [insert-keys]}]
+  (let [insert-keys (or insert-keys
+                        (keys (first entity-col)))]
     (get-insert-values insert-keys entity-col)))
 
 (defn get-insert-columns-from-entity-col
-  "FIXME: Add docstring"
+  "Given a `entity-col` collection of same entity types as maps, return a vector of represented entity's keys
+
+   The keys are assumed to be used under an insert sql statement context, so that is why the entities should
+   share exactly the same keys."
   [entity-col]
   (let [insert-cols (->> entity-col
                          first

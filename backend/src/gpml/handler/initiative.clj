@@ -60,7 +60,9 @@
       (let [tag-category (:id (db.tag/tag-category-by-category-name conn {:category "general"}))
             new-tags (filter #(not (contains? % :id)) tags)
             tags-to-db (map #(vector % tag-category) (vec (map #(:tag %) new-tags)))
-            new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags tags-to-db}))]
+            tag-entity-columns ["tag" "tag_category"]
+            new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags tags-to-db
+                                                             :insert-cols tag-entity-columns}))]
         (db.initiative/add-initiative-tags conn {:tags (map #(vector initiative-id %) (concat (remove nil? tag-ids) new-tag-ids))})
         (map
          #(email/notify-admins-pending-approval
