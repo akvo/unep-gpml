@@ -104,3 +104,14 @@
   "Returns the base64 encoded string without the header."
   [src]
   (last (re-find #"^data:(\S+);base64,(.*)$" src)))
+
+(defn select-values
+  "Same as select-keys but for values and respecting the order of `ks`.
+   `nil` values are removed from the final output."
+  [m ks]
+  (remove nil? (map #(get m %) ks)))
+
+(defn apply-select-values
+  "Applies the `select-values` function to a collection of maps `coll`."
+  [coll ks]
+  (map #(select-values % ks) coll))
