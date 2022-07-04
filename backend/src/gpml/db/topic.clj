@@ -364,10 +364,12 @@
   "SELECT topic, COUNT(*) FROM cte_results GROUP BY topic")
 
 (def ^:const ^:private tags-count-aggregate-hugsql
-  "SELECT tags->>'tag' AS topic, COUNT(*)
+  "SELECT tags.tag AS topic, COUNT(*)
    FROM cte_results t
-   JOIN json_array_elements(CASE WHEN (t.json->>'tags'::TEXT = '') IS NOT FALSE THEN '[]'::JSON
-                            ELSE (t.json->>'tags')::JSON END) tags ON LOWER(tags->>'tag') IN (:v*:tags-to-count)
+   JOIN (SELECT DISTINCT tag
+         FROM cte_results t
+         JOIN json_populate_recordset(null::record,CASE WHEN (t.json->>'tags'::TEXT = '') IS NOT FALSE THEN '[]'::JSON
+                            ELSE (t.json->>'tags')::JSON END) AS (id INT, tag TEXT) ON TRUE) tags ON LOWER(tags.tag) IN (:v*:tags-to-count)
    GROUP BY 1")
 
 (defn- generate-count-aggregate-query
