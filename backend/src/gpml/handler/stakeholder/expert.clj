@@ -54,7 +54,8 @@
      [:string {:min 1}]]
     [:email
      {:optional false
-      :swagger {:description "Stakeholder's email address."}}
+      :swagger {:description "Stakeholder's email address."
+                :type "string"}}
      [:string {:min 1}]]
     [:expertise {:optional true} [:vector [:string {:min 1}]]]]])
 
