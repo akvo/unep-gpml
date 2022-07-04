@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Typography, Row, Col, Input, Select, Button } from "antd";
+import { Typography, Row, Col, Input, notification, Button } from "antd";
 const { Title } = Typography;
 import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
 import { Form, Field } from "react-final-form";
@@ -14,16 +14,30 @@ function Expert() {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (values) => {
-    console.log(values);
     setLoading(true);
+
+    values = values.invites.map((item, index) => {
+      return {
+        ...(item.name.split(" ").length > 1 && {
+          firstName: item.name.split(" ")[0],
+          lastName: item.name.split(" ")[1],
+        }),
+        email: item.email,
+        expertise: item.expertise,
+      };
+    });
+
     api
-      .post("/stakeholder/expert/invite", values.invites)
+      .post("/stakeholder/expert/invite", values)
       .then((res) => {
         window.scrollTo({ top: 0 });
         setLoading(false);
+        notification.success({ message: "Invites successfully sent" });
+        loadExperts();
       })
       .catch((err) => {
         setLoading(false);
+        notification.error({ message: "An error occured" });
         console.log(err);
       });
   };
@@ -31,11 +45,14 @@ function Expert() {
   const required = (value) => (value ? undefined : "Required");
 
   useEffect(() => {
-    api.get("/stakeholder/expert/list").then((res) => {
-      console.log(res.data);
-      setPendingInvites(res.experts);
-    });
+    loadExperts();
   }, []);
+
+  const loadExperts = () => {
+    api.get("/stakeholder/expert/list").then((res) => {
+      setPendingInvites(res.data.experts);
+    });
+  };
 
   return (
     <>
@@ -70,7 +87,7 @@ function Expert() {
                     <FieldArray name="invites">
                       {({ fields }) =>
                         fields.map((name, index) => (
-                          <Row key={name} gutter={[16, 16]}>
+                          <Row key={index} gutter={[16, 16]}>
                             <Col span={8}>
                               {index === 0 && (
                                 <div className="ant-col ant-form-item-label">
@@ -229,15 +246,17 @@ function Expert() {
                 Pending invitations
               </Title>
               {pendingInvites.map((item) => (
-                <Row>
+                <Row key={item.id}>
                   <Col span={8}>
-                    <p>Ivan Bogdanov</p>
+                    <p>
+                      {item.firstName} {item.lastName}
+                    </p>
                   </Col>
                   <Col span={8}>
-                    <p>ivan.bogdanov@gmail.com</p>
+                    <p>{item.email}</p>
                   </Col>
                   <Col span={8}>
-                    <p>Ocean & coast Soil, Atmosphere Biota</p>
+                    <p>{item.tags.map((item) => item.tag).join(", ")}</p>
                   </Col>
                 </Row>
               ))}
