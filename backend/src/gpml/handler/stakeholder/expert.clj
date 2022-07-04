@@ -98,7 +98,7 @@
     (assoc-in [:filters :tags] (map str/lower-case (str/split tags #",")))
 
     (seq countries)
-    (assoc-in [:filters :countries] (map (comp #(Integer/parseInt %) str/lower-case) (str/split tags #",")))
+    (assoc-in [:filters :countries] (map #(Integer/parseInt %) (str/split countries #",")))
 
     true
     (assoc-in [:filters :experts?] true)))
