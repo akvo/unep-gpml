@@ -81,39 +81,7 @@ const Wizard = ({
               currentStep === 0 ? "getting-started" : "step-form"
             } ${isLastPage() ? "step-form-final" : ""}`}
           >
-            {currentStep !== 0 ? (
-              <>
-                <SwitchTransition mode="out-in">
-                  <CSSTransition
-                    key={currentStep}
-                    addEndListener={(node, done) => {
-                      node.addEventListener("transitionend", done, false);
-                    }}
-                    classNames="fade"
-                  >
-                    <div className="animation-container">
-                      <div className="animate">{steps[currentStep]}</div>
-                    </div>
-                  </CSSTransition>
-                </SwitchTransition>
-                <TransitionGroup>
-                  <CSSTransition
-                    classNames="slide"
-                    timeout={{ enter: 5000, exit: 5000 }}
-                    key={currentStep}
-                  >
-                    <img
-                      className="background"
-                      src={background.src}
-                      alt={background.src}
-                    />
-                    {/* <div className="wave" /> */}
-                  </CSSTransition>
-                </TransitionGroup>
-              </>
-            ) : (
-              <>{steps[currentStep]}</>
-            )}
+            <>{steps[currentStep]}</>
             {currentStep !== 0 && (
               <Row className="button-bottom-panel">
                 {currentStep > 0 && (

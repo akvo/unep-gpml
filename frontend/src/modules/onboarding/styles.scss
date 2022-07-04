@@ -9,6 +9,8 @@
   .waveboard {
     background-color: #fff;
     height: calc(100vh - 200px);
+    min-height: 600px;
+    transition: min-height 0.3s ease-out;
     margin: 0 170px;
     overflow: hidden;
     display: flex;
@@ -17,7 +19,10 @@
     .slide {
       width: 100%;
       min-width: 100%;
-      padding: 0 100px;
+      padding: 0 60px;
+      @media screen and (min-width: 1024px) {
+        padding: 0 100px;
+      }
       position: relative;
       z-index: 1;
     }
@@ -40,7 +45,7 @@
       justify-content: center;
     }
   }
-  .getting-started {
+  .getting-started.slide {
     position: relative;
     transition: margin 0.47s ease-in-out;
     .text-wrapper {
@@ -92,30 +97,40 @@
       justify-content: center;
       left: 0;
     }
+    @media screen and (max-width: 840px) {
+      flex-direction: column;
+      position: relative;
+      z-index: 2;
+      padding-bottom: 100px !important;
+      .text-wrapper {
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        h2 {
+          font-size: 28px;
+          line-height: 38px;
+        }
+      }
+      .image-wrapper {
+        img {
+          max-height: 270px;
+        }
+      }
+    }
   }
 
   @media screen and (max-width: 1024px) {
     padding: 30px 0;
     .waveboard {
-      margin: 0 30px;
+      margin: 0 20px;
+      &.s5 {
+        min-height: 840px;
+      }
     }
     .waveboard .slide {
-      padding: 0 30px;
+      padding: 0 30px 60px;
     }
     .getting-started.slide {
-      flex-direction: column;
-      position: relative;
-      z-index: 2;
-      padding-bottom: 100px;
-      .text-wrapper {
-        justify-content: center;
-        display: flex;
-        align-items: center;
-      }
-      h2 {
-        font-size: 28px;
-        line-height: 38px;
-      }
     }
   }
 
@@ -223,7 +238,15 @@
             margin: 0px 5px;
             background: #3176ae;
             color: #fff;
-            border-radius: 3px;
+
+            background-color: #3176ae;
+            border-radius: 4px;
+            line-height: 34px !important;
+            margin: 3px 2px !important;
+            padding: 0 10px;
+            .ant-select-selection-item-remove {
+              color: rgba(255, 255, 255, 0.5);
+            }
             svg {
               path {
                 fill: #fff;
@@ -243,7 +266,6 @@
       font-weight: 500;
       font-size: 16px;
       line-height: 42px;
-      color: #a5b0c9;
     }
     &.ant-input-status-error {
       border: 1px solid #ff4d4f;
@@ -256,15 +278,6 @@
     padding: 10px;
   }
   .ant-select-selection-item {
-    background-color: #3176ae;
-    color: #fff !important;
-    border-radius: 4px;
-    line-height: 34px !important;
-    margin: 3px 2px !important;
-    padding: 0 10px;
-    .ant-select-selection-item-remove {
-      color: rgba(255, 255, 255, 0.5);
-    }
   }
   .ant-input-status-error {
     .ant-checkbox-inner {
@@ -300,7 +313,10 @@
       width: 100%;
     }
     .ant-form {
-      width: 80%;
+      width: 100%;
+      @media screen and (min-width: 840px) {
+        width: 80%;
+      }
       margin: 0 auto;
       .error {
         color: red;
@@ -345,8 +361,12 @@
         font-weight: 500;
       }
     }
+
     .tag-list {
-      width: 80%;
+      width: 100%;
+      @media screen and (min-width: 1024px) {
+        width: 80%;
+      }
       margin: 0 auto;
       h5 {
         font-weight: 400;
@@ -354,6 +374,18 @@
         text-transform: capitalize;
         color: #3176ae;
         margin-bottom: 0px;
+      }
+      .tags-container {
+        @media screen and (max-width: 1024px) {
+          overflow-x: scroll;
+          overflow-y: hidden;
+          width: calc(100% + 60px);
+          margin-left: -30px;
+          padding-left: 30px;
+          ul {
+            min-width: 800px;
+          }
+        }
       }
       ul {
         list-style: none;
@@ -389,6 +421,7 @@
     .buttons-wrapper {
       display: flex;
       justify-content: center;
+
       button {
         border: 2px solid #18162f;
         border-radius: 23.5px;
@@ -421,6 +454,17 @@
         }
         &:first-child {
           margin-right: 30px;
+        }
+      }
+      @media screen and (max-width: 840px) {
+        flex-direction: column;
+        width: 100%;
+        button {
+          width: 100%;
+          margin-top: 15px;
+        }
+        div:first-child {
+          margin: 0;
         }
       }
     }

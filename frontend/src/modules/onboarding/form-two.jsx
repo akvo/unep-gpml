@@ -1,64 +1,86 @@
 import React, { useState } from "react";
 import { UIStore } from "../../store";
-import { Col, Row, Button, Typography, Form, Input, Select, List } from "antd";
+import { Typography, Select } from "antd";
 import { Field } from "react-final-form";
-const { Title, Link } = Typography;
+import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
+const { Title } = Typography;
 
-function FormTwo({ handleOfferingSuggestedTag, validate }) {
-  const [selectedItems, setSelectedItems] = useState([]);
+function FormTwo({
+  handleOfferingSuggestedTag,
+  validate,
+  error,
+  handleRemove,
+}) {
+  const [filteredOptions, setFilteredOptions] = useState([])
   const storeData = UIStore.useState((s) => ({
-    entitySuggestedTags: s.entitySuggestedTags,
     tags: s.tags,
   }));
 
-  const { entitySuggestedTags, tags } = storeData;
+  const { tags } = storeData;
 
-  const array = Object.keys(tags)
+  const allOptions = Object.keys(tags)
     .map((k) => tags[k])
-    .flat();
-
+    .flat().map(it => it.tag);
   return (
     <>
       <div className="text-wrapper">
         <Title level={2}>What are the expertises you can provide?</Title>
       </div>
       <div className="ant-form ant-form-vertical">
+        <Field name="offering" style={{ width: "100%" }} validate={validate}>
+          {({ input, meta }) => {
+            return (
+              <>
+                <CatTagSelect
+                  handleChange={handleOfferingSuggestedTag}
+                  meta={meta}
+                  error={error}
+                  value={input.value ? input.value : undefined}
+                  handleRemove={handleRemove}
+                />
+              </>
+            );
+          }}
+        </Field>
         <Field
-          name="offering"
+          name="offeringSuggested"
           style={{ width: "100%" }}
           validate={validate}
         >
           {({ input, meta }) => {
-            const filteredOptions = array.filter((ad) =>
-              input.value
-                ? input.value.every((fd) => fd.value !== ad.id)
-                : array
-            );
+            const handleSearch = (value) => {
+              if(value.length < 2) {
+                setFilteredOptions([])
+              } else {
+                const filtered = allOptions
+                  .filter((item) => (
+                    item.toLowerCase().indexOf(value.toLowerCase()) > -1
+                  ))
+                setFilteredOptions(filtered.filter((it, index) => filtered.indexOf(it) === index))
+              }
+            }
             return (
               <>
+                <div style={{ marginTop: 20, color: "#A5B0C9" }}>
+                  Can't see what you're looking for?
+                </div>
                 <Select
-                  placeholder="Search expertises"
+                  placeholder="Suggest categories"
                   allowClear
                   showSearch
                   labelInValue
                   mode="tags"
-                  onChange={(value) => {
-                    setSelectedItems(value.map((item) => item.label));
-                    input.onChange(value);
-                  }}
+                  notFoundContent={null}
+                  onChange={(value) => input.onChange(value)}
+                  onSearch={handleSearch}
                   value={input.value ? input.value : undefined}
-                  filterOption={(i, option) =>
-                    option.children.toLowerCase().includes(i.toLowerCase())
-                  }
                   className={`dont-show ${
-                    meta.touched && meta.error
-                      ? "ant-input-status-error"
-                      : ""
+                    error && !meta.valid ? "ant-input-status-error" : ""
                   }`}
                 >
                   {filteredOptions?.map((item) => (
-                    <Select.Option value={item.id} key={item.id}>
-                      {item.tag}
+                    <Select.Option value={item} key={item}>
+                      {item}
                     </Select.Option>
                   ))}
                 </Select>
@@ -66,34 +88,6 @@ function FormTwo({ handleOfferingSuggestedTag, validate }) {
             );
           }}
         </Field>
-      </div>
-      <div className="list tag-list" style={{ marginTop: 20 }}>
-        <h5>Suggested tags</h5>
-        <List itemLayout="horizontal">
-          <List.Item>
-            <List.Item.Meta
-              title={
-                <ul>
-                  {entitySuggestedTags
-                    ?.filter((item) => !selectedItems.includes(item))
-                    .map((tag) => (
-                      <li
-                        onClick={() => {
-                          if (!selectedItems.includes(tag)) {
-                            setSelectedItems([...selectedItems, tag]);
-                          }
-                          handleOfferingSuggestedTag(tag);
-                        }}
-                        key={tag}
-                      >
-                        {tag}
-                      </li>
-                    ))}
-                </ul>
-              }
-            />
-          </List.Item>
-        </List>
       </div>
     </>
   );
