@@ -100,7 +100,6 @@ function FormOne({ validate, error, setEntity }) {
         <ModalAddEntity
           visible={showModal}
           close={() => setShowModal(!showModal)}
-          isMember={true}
           setEntity={setOrg}
         />
       )}
