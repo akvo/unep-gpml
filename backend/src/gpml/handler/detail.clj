@@ -3,6 +3,7 @@
    [clojure.java.jdbc :as jdbc]
    [clojure.set :as set]
    [clojure.string :as string]
+   [clojure.walk :as w]
    [gpml.constants :as constants]
    [gpml.db.action :as db.action]
    [gpml.db.action-detail :as db.action-detail]
@@ -363,11 +364,17 @@
                                                     :related-content? false}))
 
 (defmethod extra-details "stakeholder" [resource-type db stakeholder]
-  (add-extra-details db stakeholder resource-type {:tags? true
-                                                   :entity-connections? false
-                                                   :stakeholder-connections? false
-                                                   :related-content? false
-                                                   :affiliation? true}))
+  (let [details (add-extra-details db stakeholder resource-type {:tags? true
+                                                                 :entity-connections? false
+                                                                 :stakeholder-connections? false
+                                                                 :related-content? false
+                                                                 :affiliation? true})]
+    (merge details (reduce (fn [acc [k v]]
+                             (assoc acc k (map :tag v)))
+                           {}
+                           (-> (group-by :tag_relation_category (:tags details))
+                               (w/keywordize-keys)
+                               (select-keys [:seeking :offering :expertise]))))))
 
 (defmethod extra-details :nothing [_ _ _]
   nil)

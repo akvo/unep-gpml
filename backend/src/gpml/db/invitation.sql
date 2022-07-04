@@ -1,23 +1,17 @@
--- :name all-invitations :? :*
--- :doc Get all invitations
-select * from invitation order by id
+-- :name create-invitations :<! :*
+INSERT INTO invitation(id, stakeholder_id, email)
+VALUES :t*:values RETURNING *;
 
--- :name invitation-by-id :? :1
--- :doc Get invitation by id
-select * from invitation where id = :id;
-
--- :name invitation-by-email :? :1
--- :doc Get invitation by email
-select * from invitation where lower(email) = lower(:email)
-
--- :name invitation-by-entity :? :*
--- :doc Get invitation by organisation-id
-select * from invitation where entity = :organisation-id
-
--- :name new-invitation :<! :1
-INSERT INTO invitation (stakeholder, organisation, email, accepted)
-VALUES (:stakeholder-id, :organisation-id, :email, :accepted) returning id;
+-- :name get-invitations
+SELECT * FROM invitation
+WHERE 1=1
+--~ (when (seq (get-in params [:filters :emails])) " AND email IN (:v*:filters.emails)")
+--~ (when (seq (get-in params [:filters :stakeholders-ids])) " AND stakeholder_id IN (:v*:filters.stakeholders-ids)")
+--~ (when (seq (get-in params [:filters :ids])) " AND id IN (:v*:filters.ids)")
+--~ (when (true? (get-in params [:filters :pending?])) " AND accepted_at IS NULL")
+--~ (when (false? (get-in params [:filters :pending?])) " AND accepted_at IS NOT NULL")
 
 -- :name accept-invitation :! :n
--- :doc accept invitation
-update invitation set accepted = :accepted where email = :email
+UPDATE invitation
+SET accepted_at = :accepted-at
+WHERE id = :id

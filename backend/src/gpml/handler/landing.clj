@@ -164,9 +164,10 @@
                     :summary summary-data})))
 
 (defmethod ig/init-key :gpml.handler.landing/get [_ {:keys [db]}]
-  (fn [{{:keys [query]} :parameters}]
+  (fn [{{:keys [query]} :parameters
+        user :user}]
     (let [conn (:spec db)]
-      (landing-response conn query))))
+      (landing-response conn (assoc query :user-id (:id user))))))
 
 (defmethod ig/init-key :gpml.handler.landing/get-query-params [_ _]
   query-params)
