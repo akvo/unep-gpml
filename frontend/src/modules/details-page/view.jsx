@@ -406,9 +406,21 @@ const DetailsView = ({
           }}
         >
           {data?.image && (
-            <Col className="resource-image-wrapper">
+            <a
+              className="resource-image-wrapper"
+              href={`${
+                data?.url && data?.url?.includes("https://")
+                  ? data?.url
+                  : data.languages
+                  ? data?.languages[0].url
+                  : data?.url?.includes("http://")
+                  ? data?.url
+                  : "https://" + data?.url
+              }`}
+              target="_blank"
+            >
               <img className="resource-image" src={data?.image} alt="" />
-            </Col>
+            </a>
           )}
 
           <Col className="details-content-wrapper section-description section">
