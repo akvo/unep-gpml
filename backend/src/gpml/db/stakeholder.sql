@@ -352,7 +352,8 @@ filtered_experts AS (
   JOIN tag t ON st.tag = t.id
   JOIN tag_category tg ON t.tag_category = tg.id
   WHERE 1=1
-  --~(when (seq (get-in params [:filters :tags])) " AND LOWER(t.tag) IN (:v*:tags)")
+  --~(when (seq (get-in params [:filters :tags])) " AND LOWER(t.tag) IN (:v*:filters.tags)")
+  --~(when (seq (get-in params [:filters :ids])) " AND s.id IN (:v*:filters.ids)")
   GROUP BY s.id
 )
 /*~ (if (:count-only? params) */
@@ -362,6 +363,7 @@ SELECT * FROM filtered_experts
 LIMIT :page-size
 OFFSET :offset
 /*~ ) ~*/
+
 -- :name create-stakeholders :<! :*
 -- :doc Creates N stakeholders. Type conversions needs to be handled before calling this funtions.
 INSERT INTO stakeholder(:i*:cols)

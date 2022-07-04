@@ -316,11 +316,18 @@
                                               (:cv body-params))
                                       :picture (handler.image/assoc-image db (:photo body-params) "profile")))
          stakeholder-id (if-let [current-stakeholder (db.stakeholder/stakeholder-by-email db {:email (:email profile)})]
-                          (let [idp-usernames (vec (-> current-stakeholder :idp_usernames (concat (:idp_usernames profile))))]
-                            (db.stakeholder/update-stakeholder db (assoc (select-keys profile [:affiliation])
-                                                                         :id (:id current-stakeholder)
-                                                                         :idp_usernames idp-usernames
-                                                                         :non_member_organisation nil))
+                          (let [idp-usernames (vec (-> current-stakeholder :idp_usernames (concat (:idp_usernames profile))))
+                                expert? (seq (db.stakeholder/get-experts db {:filters {:ids [(:id current-stakeholder)]}
+                                                                             :page-size 0
+                                                                             :offset 0}))]
+                            (db.stakeholder/update-stakeholder db (merge
+                                                                   (assoc (select-keys profile [:affiliation])
+                                                                          :id (:id current-stakeholder)
+                                                                          :idp_usernames idp-usernames
+                                                                          :non_member_organisation nil)
+                                                                   (when (and expert?
+                                                                              (= (:review_status current-stakeholder) "SUBMITTED"))
+                                                                     {:review_status "APPROVED"})))
                             (:id current-stakeholder))
                           (let [new-stakeholder (db.stakeholder/new-stakeholder db profile)]
                             (email/notify-admins-pending-approval db mailjet-config
