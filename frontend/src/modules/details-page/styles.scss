@@ -214,6 +214,13 @@
       }
     }
 
+    .section-document,
+    .record-section,
+    .section-related-content,
+    .comment-section {
+      clear: both;
+    }
+
     .section-description {
       padding: 0;
       .content-heading {
@@ -262,7 +269,6 @@
     }
 
     .record-section {
-      clear: both;
       .content-heading {
         margin-bottom: calc(16px - 9px);
       }
