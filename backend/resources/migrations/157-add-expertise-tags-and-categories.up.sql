@@ -8,7 +8,7 @@ VALUES
 ('atmosphere', (SELECT id FROM category), 'APPROVED') ,
 ('ghg emissions', (SELECT id FROM category), 'APPROVED') ,
 ('natural resources', (SELECT id FROM category), 'APPROVED');
-
+--;;
 WITH category AS (INSERT INTO tag_category(category) VALUES('socio-economic impact') RETURNING id)
 INSERT INTO tag(tag, tag_category, review_status)
 VALUES
@@ -16,20 +16,20 @@ VALUES
 ('cost of damage', (SELECT id FROM category), 'APPROVED') ,
 ('livelihoods', (SELECT id FROM category), 'APPROVED') ,
 ('quality of life', (SELECT id FROM category), 'APPROVED') ;
-
+--;;
 WITH category AS (INSERT INTO tag_category(category) VALUES('life cycle & safe circularity') RETURNING id)
 INSERT INTO tag(tag, tag_category, review_status)
 VALUES
 ('consumption', (SELECT id FROM category), 'APPROVED') ,
 ('raw materials', (SELECT id FROM category), 'APPROVED') ,
 ('production', (SELECT id FROM category), 'APPROVED');
-
+--;;
 WITH category AS (INSERT INTO tag_category(category) VALUES('governance') RETURNING id)
 INSERT INTO tag(tag, tag_category, review_status)
 VALUES
 ('cooperation', (SELECT id FROM category), 'APPROVED') ,
 ('monitoring & evaluation', (SELECT id FROM category), 'APPROVED');
-
+--;;
 WITH category AS (INSERT INTO tag_category(category) VALUES('technology & innovation') RETURNING id)
 INSERT INTO tag(tag, tag_category, review_status)
 VALUES
@@ -37,12 +37,14 @@ VALUES
 ('establishment - company type', (SELECT id FROM category), 'APPROVED') ,
 ('sectors', (SELECT id FROM category), 'APPROVED') ,
 ('technology type', (SELECT id FROM category), 'APPROVED') ;
-
+--;;
 WITH category AS (INSERT INTO tag_category(category) VALUES('financing') RETURNING id)
 INSERT INTO tag(tag, tag_category, review_status)
 VALUES
 ('investment & infrastructure', (SELECT id FROM category), 'APPROVED') ,
 ('r&d', (SELECT id FROM category), 'APPROVED') ,
 ('risk models', (SELECT id FROM category), 'APPROVED') ;
+--;;
+INSERT INTO tag_category(category) VALUES('expertise');
 --;;
 COMMIT;
