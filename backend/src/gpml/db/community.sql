@@ -38,7 +38,7 @@ community_members AS (
         s.picture,
         s.created,
         row_to_json(a.*) AS affiliation,
-        s.representation AS representative_group,
+        NULL AS representative_group,
         json_agg(json_build_object(t.id, t.tag)) FILTER (WHERE t.id IS NOT NULL) AS tags,
         s.review_status,
         to_tsvector('english'::regconfig, COALESCE(s.first_name, '') || ' ' || COALESCE(s.last_name, '') || ' ' || COALESCE(s.about, '')) AS search_text,

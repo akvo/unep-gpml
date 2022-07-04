@@ -2,12 +2,11 @@
   (:require
    [clojure.java.jdbc :as jdbc]
    [clojure.string :as str]
-   [gpml.auth0-util :as auth0]
    [gpml.constants :as constants]
    [gpml.db.organisation :as db.organisation]
    [gpml.db.resource.tag :as db.resource.tag]
    [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.email-util :as email]
+   [gpml.db.tag :as db.tag]
    [gpml.geo-util :as geo]
    [gpml.handler.geo :as handler.geo]
    [gpml.handler.image :as handler.image]
@@ -17,6 +16,7 @@
    [gpml.handler.util :as handler.util]
    [gpml.pg-util :as pg-util]
    [gpml.util :as util]
+   [gpml.util.email :as email]
    [integrant.core :as ig]
    [ring.util.response :as resp])
   (:import
@@ -28,9 +28,24 @@
                    (format "^(%1$s)((,(%1$s))+)?$")
                    re-pattern))
 
-(defn- save-stakeholder-tags
-  [conn mailjet-config tags stakeholder-id update?]
-  (let [grouped-tags (group-by :tag_category tags)]
+(defn- add-tags-ids-for-categories
+  [conn tags categories]
+  (if-let [filtered-tags (seq (filter #(some #{(:tag_category %)} categories) tags))]
+    (let [result (db.tag/tag-by-tags conn {:tags (map (comp str/lower-case :tag) filtered-tags)})]
+      (map (fn [{tag-name :tag :as tag}]
+             (let [grouped-result-tags (->> result
+                                            (map #(update % :tag str/lower-case))
+                                            (group-by :tag))]
+               (assoc tag :id (get-in grouped-result-tags [(str/lower-case tag-name) 0 :id]))))
+           tags))
+    tags))
+
+(defn save-stakeholder-tags
+  [conn mailjet-config
+   {:keys [tags stakeholder-id update?]
+    :or {update? false}}]
+  (let [categories (->> tags (group-by :tag_category) keys)
+        grouped-tags (group-by :tag_category (add-tags-ids-for-categories conn tags categories))]
     (when update?
       (db.resource.tag/delete-resource-tags conn {:table "stakeholder_tag"
                                                   :resource-col "stakeholder"
@@ -103,7 +118,6 @@
    :about             about
    :country           country
    :public_email      (boolean public_email)
-   :representation    ""
    :public_database   public_database
    :affiliation       (or affiliation (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation))
    :job_title job_title})
@@ -114,39 +128,44 @@
            non_member_organisation
            last_name idp_usernames
            linked_in cv twitter email
-           affiliation job_title representation
+           affiliation job_title
            country geo_coverage_type
            reviewed_at reviewed_by review_status
            organisation_role public_email]}
    tags
    geo
    org]
-  {:id id
-   :title title
-   :affiliation (or affiliation (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation))
-   :job_title job_title
-   :first_name first_name
-   :last_name last_name
-   :email email
-   :idp_usernames idp_usernames
-   :linked_in linked_in
-   :twitter twitter
-   :photo photo
-   :picture picture
-   :cv cv
-   :country country
-   :representation representation
-   :tags tags
-   :geo_coverage_type geo_coverage_type
-   :geo_coverage_value geo
-   :org org
-   :about about
-   :role role
-   :organisation_role organisation_role
-   :reviewed_at reviewed_at
-   :reviewed_by reviewed_by
-   :review_status review_status
-   :public_email public_email})
+  (let [{:keys [seeking offering expertise]} (->> tags
+                                                  (group-by :tag_relation_category)
+                                                  (reduce-kv (fn [m k v] (assoc m (keyword k) (map :tag v))) {}))]
+    {:id id
+     :title title
+     :affiliation (or affiliation (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation))
+     :job_title job_title
+     :first_name first_name
+     :last_name last_name
+     :email email
+     :idp_usernames idp_usernames
+     :linked_in linked_in
+     :twitter twitter
+     :photo photo
+     :picture picture
+     :cv cv
+     :country country
+     :seeking seeking
+     :offering offering
+     :expertise expertise
+     :tags tags
+     :geo_coverage_type geo_coverage_type
+     :geo_coverage_value geo
+     :org org
+     :about about
+     :role role
+     :organisation_role organisation_role
+     :reviewed_at reviewed_at
+     :reviewed_by reviewed_by
+     :review_status review_status
+     :public_email public_email}))
 
 (defn create-new-profile [db mailjet-config new-profile body-params org]
   (cond-> new-profile
@@ -175,16 +194,6 @@
     (nil? org)
     (assoc :affiliation nil)))
 
-(defn pending-profiles-response [conn auth0-config]
-  (let [profiles (db.stakeholder/pending-approval conn)
-        verified-emails (set (auth0/list-auth0-verified-emails auth0-config))
-        profiles-with-verified-flag (map
-                                     #(merge %
-                                             {:email_verified
-                                              (contains? verified-emails (:email %))})
-                                     profiles)]
-    (resp/response profiles-with-verified-flag)))
-
 (defn get-stakeholder-profile [db stakeholder]
   (let [conn (:spec db)
         tags (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
@@ -203,14 +212,22 @@
       (assoc profile :affiliation (-> profile :org :id) :non_member_organisation nil)
       (assoc profile :non_member_organisation (-> profile :org :id) :affiliation nil))))
 
-(defn update-stakeholder [db mailjet-config {:keys [id] :as body-params} old-profile]
-  (let [tags (:tags body-params)
-        org (:org body-params)
+(defn prep-stakeholder-tags
+  [stakeholder]
+  (reduce (fn [acc [category tags]]
+            (concat acc (map (fn [tag] {:tag tag :tag_category (name category)}) tags)))
+          []
+          (select-keys stakeholder [:seeking :offering :expertise])))
+
+(defn update-stakeholder
+  [db mailjet-config {:keys [body-params old-profile]}]
+  (let [{:keys [id org]} body-params
         new-profile (merge (dissoc old-profile :non_member_organisation)
                            (if (:non_member_organisation body-params)
                              (-> body-params (assoc :affiliation (:non_member_organisation body-params)) (dissoc :non_member_organisation))
                              body-params))
-        profile (create-new-profile db mailjet-config new-profile body-params org)]
+        profile (create-new-profile db mailjet-config new-profile body-params org)
+        tags (prep-stakeholder-tags body-params)]
     (db.stakeholder/update-stakeholder db profile)
     (db.stakeholder/delete-stakeholder-geo db body-params)
     (db.stakeholder/delete-stakeholder-tags db body-params)
@@ -226,7 +243,9 @@
       (let [old-cv (-> (str/split (:cv old-profile) #"/cv/profile/") second Integer/parseInt)]
         (db.stakeholder/delete-stakeholder-cv-by-id db {:id old-cv})))
     (when (not-empty tags)
-      (save-stakeholder-tags db mailjet-config tags id true))
+      (save-stakeholder-tags db mailjet-config {:tags tags
+                                                :stakeholder-id id
+                                                :update? true}))
     (if (or (some? (:geo_coverage_country_groups body-params))
             (some? (:geo_coverage_countries body-params)))
       (let [geo-data (handler.geo/get-geo-vector-v2 id body-params)]
@@ -307,11 +326,13 @@
                             (email/notify-admins-pending-approval db mailjet-config
                                                                   (merge profile {:type "stakeholder"}))
                             (:id new-stakeholder)))
-         profile (db.stakeholder/stakeholder-by-id db {:id stakeholder-id})]
+         profile (db.stakeholder/stakeholder-by-id db {:id stakeholder-id})
+         tags (prep-stakeholder-tags body-params)]
      (when new-org?
        (handler.org/update-org db mailjet-config {:id org-id :created_by stakeholder-id}))
-     (when-let [tags (seq (:tags body-params))]
-       (save-stakeholder-tags db mailjet-config tags stakeholder-id false))
+     (when (seq tags)
+       (save-stakeholder-tags db mailjet-config {:tags tags
+                                                 :stakeholder-id stakeholder-id}))
      (resp/created (:referer headers) (-> (merge body-params profile)
                                           (dissoc :affiliation :picture)
                                           (assoc :org (db.organisation/organisation-by-id db {:id (:affiliation profile)})))))))
@@ -341,7 +362,8 @@
   (fn [{:keys [jwt-claims body-params]}]
     (jdbc/with-db-transaction [tx (:spec db)]
       (let [old-profile (db.stakeholder/stakeholder-by-email tx jwt-claims)]
-        (update-stakeholder tx mailjet-config body-params old-profile)
+        (update-stakeholder tx mailjet-config {:body-params body-params
+                                               :old-profile old-profile})
         (resp/status 204)))))
 
 (def ^:const suggested-profiles-per-page 5)
@@ -446,6 +468,8 @@
    [:public_database boolean?]
    [:non-org {:optional true} int?]
    [:geo_coverage_type {:optional true} map?]
+   [:seeking {:optional true} [:vector [:string {:min 1}]]]
+   [:offering {:optional true} [:vector [:string {:min 1}]]]
    [:tags {:optional true}
     [:vector {:optional true}
      [:map {:optional true}
@@ -493,7 +517,8 @@
   (fn [{{:keys [path body]} :parameters}]
     (jdbc/with-db-transaction [tx (:spec db)]
       (let [old-profile (db.stakeholder/stakeholder-by-id tx path)]
-        (update-stakeholder tx mailjet-config (assoc body :id (:id path)) old-profile)
+        (update-stakeholder tx mailjet-config {:body-params (assoc body :id (:id path))
+                                               :old-profile old-profile})
         (resp/status 204)))))
 
 (defmethod ig/init-key ::put-by-admin-params [_ _]
@@ -513,6 +538,9 @@
           [:public_email {:optional true} boolean?]
           [:non-org {:optional true} int?]
           [:geo_coverage_type {:optional true} map?]
+          [:seeking {:optional true} [:vector [:string {:min 1}]]]
+          [:offering {:optional true} [:vector [:string {:min 1}]]]
+          [:expertise {:optional true} [:vector [:string {:min 1}]]]
           [:tags {:optional true}
            [:vector {:optional true}
             [:map {:optional true}
