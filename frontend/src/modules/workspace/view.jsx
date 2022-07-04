@@ -5,7 +5,7 @@ import "./styles.scss";
 import Header from "./header";
 import LeftSidebar from "../../components/left-sidebar/left-sidebar";
 import ActionPlan from "./action-plan";
-
+import { useHistory } from "react-router-dom";
 // Icons
 import { ReactComponent as IconHome } from "../../images/workspace/home-icon.svg";
 import { ReactComponent as IconAdmin } from "../../images/workspace/admin-icon.svg";
@@ -16,6 +16,7 @@ import Video from "../../images/workspace/video.png";
 import FAQ from "../../images/workspace/faq.png";
 
 const Workspace = ({ profile }) => {
+  const history = useHistory();
   const [isFocal, setIsFocal] = useState(false);
 
   const userName =
@@ -56,8 +57,9 @@ const Workspace = ({ profile }) => {
                       <p className="recommend-text">RECOMMENDED</p>
                       <Title level={2}>GPML Partnership​</Title>
                       <p className="registration-text">
-                        Hello, It looks like your entity: <b>{profile.name},</b>{" "}
-                        is not yet part <br /> of the GPML partnership.
+                        Hello, It looks like your entity:{" "}
+                        <b>{profile.org.name},</b> is not yet part <br /> of the
+                        GPML partnership.
                         <br /> If you are the focal point, submit your
                         application below
                       </p>
@@ -75,6 +77,12 @@ const Workspace = ({ profile }) => {
                             className="join-button"
                             type="primary"
                             shape="round"
+                            onClick={() =>
+                              history.push({
+                                pathname: "entity-signup",
+                                state: { data: profile.org },
+                              })
+                            }
                           >
                             JOIN GPML
                           </Button>

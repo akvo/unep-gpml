@@ -130,6 +130,7 @@
         font-size: 16px;
         line-height: 23px;
         color: #a5b0c9;
+        background-color: #edf2f7;
         border: none !important;
         &::placeholder {
           color: #a5b0c9;
@@ -149,6 +150,14 @@
         display: flex;
         align-items: flex-start;
         padding-top: 20px;
+        .ant-row {
+          flex: 1;
+          &:first-child {
+            width: 200px;
+            margin-right: 30px;
+            flex: initial;
+          }
+        }
       }
       .ant-row {
         .ant-select-selector {
@@ -170,6 +179,7 @@
           }
           input {
             height: 42px;
+            background-color: transparent;
           }
         }
       }

@@ -11,7 +11,7 @@ import {
 import "./styles.scss";
 import SignUpForm from "./form";
 import StickyBox from "react-sticky-box";
-
+import { useLocation } from "react-router-dom";
 import cloneDeep from "lodash/cloneDeep";
 import isEmpty from "lodash/isEmpty";
 import xor from "lodash/xor";
@@ -22,6 +22,7 @@ import stakeholder from "./stakeholder";
 const { Step } = Steps;
 
 const SignUp = ({ match: { params }, ...props }) => {
+  const location = useLocation();
   const isEntityType = props.formType === "entity" ? true : false;
   const isStakeholderType = !isEntityType;
   const {
@@ -120,6 +121,20 @@ const SignUp = ({ match: { params }, ...props }) => {
   const isLoaded = useCallback(() => {
     return Boolean(!isEmpty(profile));
   }, [profile]);
+
+  useEffect(() => {
+    if (location.state.data.id) {
+      signUpData.update((e) => {
+        e.data = {
+          ...e.data,
+          S3: {
+            ...e.data.S3,
+            ["org.name"]: location.state.data.name,
+          },
+        };
+      });
+    }
+  }, [formData, location]);
 
   useEffect(() => {
     const dataId = Number(params?.id || id);

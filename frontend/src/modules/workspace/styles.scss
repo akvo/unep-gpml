@@ -85,6 +85,11 @@ $bg-green-primary: #10f9b7;
               display: block;
               margin: 20px auto 10px;
             }
+            &:hover {
+              border-color: $blue12;
+              color: #fff;
+              background: $blue12;
+            }
           }
           .focal-point {
             border: none;
