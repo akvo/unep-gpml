@@ -290,11 +290,9 @@
                   {:success? true
                    :org-id (make-affiliation* db mailjet-config org)})
                 {:success? false
-                 :reason reason
-                 :error-details {:message (.getMessage e)}})
+                 :reason reason})
               {:success? false
-               :reason reason
-               :error-details {:message (.getMessage e)}}))
+               :reason reason}))
           {:success? false
            :reason :could-not-create-org
            :error-details {:message (.getMessage e)}})))
