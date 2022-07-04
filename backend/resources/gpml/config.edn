@@ -210,6 +210,9 @@
                                                   :handler #ig/ref :gpml.handler.stakeholder.expert/get}}]
                                           ["/invite"
                                            {:post {:summary "Invite an expert"
+                                                   :middleware [#ig/ref :gpml.auth/auth-required
+                                                                #ig/ref :gpml.auth/approved-user
+                                                                #ig/ref :gpml.auth/admin-required-middleware]
                                                    :swagger {:tags ["stakeholder" "expert"]}
                                                    :parameters #ig/ref :gpml.handler.stakeholder.expert/post-params
                                                    :responses #ig/ref :gpml.handler.stakeholder.expert/post-response
