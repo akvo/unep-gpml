@@ -186,6 +186,8 @@
       }
       .resource-image-wrapper {
         display: block;
+        position: relative;
+        z-index: 2;
         @media (min-width: 601px) {
           width: 40%;
           float: left;
