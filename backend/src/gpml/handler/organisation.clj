@@ -71,8 +71,9 @@
       (catch Exception e
         (if (instance? SQLException e)
           {:success? false
-           :reason (pg-util/get-sql-state e)
-           :error-details (.getMessage e)}
+           :reason (if (= :unique-constraint-violation (pg-util/get-sql-state e))
+                     :organisation-name-already-exists
+                     (pg-util/get-sql-state e))}
           {:success? false
            :reason :could-not-create-org
            :error-details {:message (.getMessage e)}})))))
