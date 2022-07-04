@@ -160,7 +160,9 @@
       (if (instance? SQLException e)
         {:status 500
          :body {:success? false
-                :reason (pg-util/get-sql-state e)}}
+                :reason (if (= :unique-constraint-violation (pg-util/get-sql-state e))
+                          :stakeholder-email-already-exists
+                          (pg-util/get-sql-state e))}}
         {:status 500
          :body {:success? false
                 :reason :could-not-create-expert}}))))
