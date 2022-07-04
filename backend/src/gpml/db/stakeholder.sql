@@ -354,6 +354,7 @@ filtered_experts AS (
   WHERE 1=1
   --~(when (seq (get-in params [:filters :tags])) " AND LOWER(t.tag) IN (:v*:filters.tags)")
   --~(when (seq (get-in params [:filters :ids])) " AND s.id IN (:v*:filters.ids)")
+  --~(when (seq (get-in params [:filters :countries])) " AND s.country IN (:v*:filters.countries)")
   GROUP BY s.id
 )
 /*~ (if (:count-only? params) */
