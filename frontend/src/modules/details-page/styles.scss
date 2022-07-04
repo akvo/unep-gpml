@@ -186,6 +186,8 @@
       }
       .resource-image-wrapper {
         display: block;
+        position: relative;
+        z-index: 2;
         @media (min-width: 601px) {
           width: 40%;
           float: left;
@@ -210,6 +212,13 @@
           border: 5px solid rgba(0, 0, 0, 0.3);
         }
       }
+    }
+
+    .section-document,
+    .record-section,
+    .section-related-content,
+    .comment-section {
+      clear: both;
     }
 
     .section-description {
@@ -260,7 +269,6 @@
     }
 
     .record-section {
-      clear: both;
       .content-heading {
         margin-bottom: calc(16px - 9px);
       }
