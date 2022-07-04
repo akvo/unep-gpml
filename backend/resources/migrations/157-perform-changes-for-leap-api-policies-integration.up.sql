@@ -40,4 +40,7 @@ CREATE TYPE related_content_relation_type AS ENUM (
 ALTER TABLE IF EXISTS related_content
   ADD COLUMN IF NOT EXISTS related_content_relation_type related_content_relation_type;
 --;;
+--;; Add tag category for LEAP API incoming tags
+INSERT INTO tag_category (category) VALUES ('leap api');
+--;;
 COMMIT;

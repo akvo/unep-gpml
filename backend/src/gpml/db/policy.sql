@@ -57,7 +57,7 @@ returning id;
 -- :name create-policies :returning-execute :many
 -- :doc Create new policies
 insert into policy (:i*:insert-cols)
-values :t*:policies returning id;
+values :t*:policies returning id, leap_api_id;
 
 -- :name policy-by-id :? :1
 -- :doc returns policy data
