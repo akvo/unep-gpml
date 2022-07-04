@@ -10,7 +10,7 @@
             [gpml.db.policy :as db.policy]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.tag :as db.tag]
-            [gpml.pg-util :as pg-util]                      ;; TODO: Merge this ns with sql-util one.
+            [gpml.sql-util :as sql-util]
             [gpml.util :as util]
             [integrant.core :as ig]
             [java-time :as jt]
@@ -18,7 +18,6 @@
             [java-time.local]
             [java-time.temporal]
             [jsonista.core :as j]
-            [gpml.sql-util :as sql-util]
             [twarc.core :refer [defjob]]))
 
 (defonce ^:private leap-api-base-url "https://leap.unep.org/informea/api/2.0/legislation")
@@ -195,23 +194,6 @@
 (defn- is-repealed-policy?
   [{:keys [isRepealed]}]
   isRepealed)
-
-;; TODO: Move this to db/policy.clj ns, as it belongs there.
-(defn- policy->db-policy
-  "Transform policy to be ready to be persisted in DB
-
-   We want to have a specific function for this, since thus we can keep untouched
-   the canonical entity representation."
-  [policy]
-  (-> policy
-      (util/update-if-exists :geo_coverage_type #(sql-util/keyword->pg-enum % "geo_coverage_type"))
-      (util/update-if-exists :review_status #(sql-util/keyword->pg-enum % "review_status"))
-      (util/update-if-exists :leap_api_modified #(sql-util/instant->sql-timestamp %))
-      (util/update-if-exists :first_publication_date jt/sql-date)
-      (util/update-if-exists :latest_amendment_date jt/sql-date)
-      (util/update-if-exists :attachments sql-util/coll->pg-jsonb)
-      (util/update-if-exists :topics #(pg-util/->JDBCArray % "text"))
-      (dissoc :tags)))
 
 (defn- build-policy-item-data
   "Given a batch policy item (from LEAP API) and options return the data needed for
@@ -421,7 +403,7 @@
         new-tags-by-norm-name (when (seq created-tags)
                                 (group-by #(str/lower-case (:tag %)) created-tags))
         processed-new-policies (:policies processed-new-policies-data)
-        processed-new-db-policies (mapv policy->db-policy processed-new-policies)
+        processed-new-db-policies (mapv db.policy/policy->db-policy processed-new-policies)
         policy-columns (sql-util/get-insert-columns-from-entity-col processed-new-db-policies)
         processed-new-policies-vals (when (seq processed-new-db-policies)
                                       (sql-util/entity-col->persistence-entity-col processed-new-db-policies))]
@@ -461,7 +443,7 @@
                                       policies-to-update
                                       policy-batch-lookup
                                       opts)
-        processed-db-policies-to-update (mapv policy->db-policy processed-policies-to-update)]
+        processed-db-policies-to-update (mapv db.policy/policy->db-policy processed-policies-to-update)]
     (when (seq processed-db-policies-to-update)
       (update-policies-batch db-conn processed-db-policies-to-update))
     (count processed-db-policies-to-update)))
