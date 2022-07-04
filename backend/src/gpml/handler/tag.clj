@@ -102,7 +102,7 @@
   [conn tags tag-category]
   (let [tag-category ((comp :id first) (db.tag/get-tag-categories conn {:filters {:categories [tag-category]}}))
         new-tags (filter (comp not :id) tags)
-        tags-to-create (map #(vector % tag-category) (map :tag new-tags))]
+        tags-to-create (map #(vector (str/lower-case %) tag-category) (map :tag new-tags))]
     (map :id (db.tag/new-tags conn {:tags tags-to-create}))))
 
 (defn all-tags
