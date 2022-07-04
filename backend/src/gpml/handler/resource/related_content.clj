@@ -18,18 +18,19 @@
 
 (defn- unwrap-related-contents
   [related-contents]
-  (map
-   (fn [{:keys [resource_type resource_data]}]
-     (let [resource-type (case resource_type
-                           "resource" (str/replace (str/lower-case (:type resource_data)) #" " "_")
-                           "initiative" "project"
-                           resource_type)
-           non-shared-keys-mapping (get related-content-non-shared-keys-mapping (keyword resource_type))]
-       (-> resource_data
-           (select-keys related-content-shared-keys)
-           (merge (set/rename-keys (select-keys resource_data (keys non-shared-keys-mapping)) non-shared-keys-mapping))
-           (assoc :type resource-type))))
-   related-contents))
+  (->> related-contents
+       (map
+        (fn [{:keys [resource_type resource_data]}]
+          (let [resource-type (case resource_type
+                                "resource" (str/replace (str/lower-case (:type resource_data)) #" " "_")
+                                "initiative" "project"
+                                resource_type)
+                non-shared-keys-mapping (get related-content-non-shared-keys-mapping (keyword resource_type))]
+            (-> resource_data
+                (select-keys related-content-shared-keys)
+                (merge (set/rename-keys (select-keys resource_data (keys non-shared-keys-mapping)) non-shared-keys-mapping))
+                (assoc :type resource-type)))))
+       (sort (fn [el1 el2] (if (or (:thumbnail el1) (:image el1)) true false)))))
 
 (defn create-related-contents
   "Creates related contents records for a given `resource-id` and `resource-table-name`"
