@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Carousel, Avatar, Typography, Button, List } from "antd";
-const { Title, Link } = Typography;
+const { Title } = Typography;
 import "./styles.scss";
 import Header from "./header";
 import LeftSidebar from "../../components/left-sidebar/left-sidebar";
-import ActionPlan from "./action-plan";
-import { useHistory } from "react-router-dom";
-// Icons
-import { ReactComponent as IconHome } from "../../images/workspace/home-icon.svg";
-import { ReactComponent as IconAdmin } from "../../images/workspace/admin-icon.svg";
+import { useHistory, Link } from "react-router-dom";
 // import DownloadPdf from "../../images/workspace/download-pdf.svg";
 import DownloadPdf from "../../images/workspace/pdf.png";
 import NetworkIcon from "../../images/auth/network.png";
@@ -35,96 +31,98 @@ const Workspace = ({ profile }) => {
           {/* <Header userName={userName} /> */}
           <div className="workspace-content-wrapper">
             <div className="workspace-container">
-              {profile && ((profile.org && !profile?.org?.isMember) || !isFocal) && (
-                <Row className="bg-white gpml-section">
-                  <Col lg={12} sm={24}>
-                    <div className="content-container">
-                      <p className="recommend-text">RECOMMENDED</p>
-                      <Title level={2}>GPML Partnership​</Title>
-                      <p className="registration-text">
-                        Hello, It looks like your entity:{" "}
-                        <b>{profile?.org?.name},</b> is not yet part <br /> of the
-                        GPML partnership.
-                        <br /> If you are the focal point, submit your
-                        application below
-                      </p>
-                      <div className="join-box">
-                        <div>
-                          <p>
-                            By completing this form I confirm that I have the
-                            authorization to submit an application on behalf of
-                            this Entity to become a member of the Global
-                            Partnership on Marine Litter (GPML)​.
-                          </p>
-                        </div>
-                        <div className="button-container">
-                          <Button
-                            className="join-button"
-                            type="primary"
-                            shape="round"
-                            onClick={() =>
-                              history.push({
-                                pathname: "entity-signup",
-                                state: { data: profile.org },
-                              })
-                            }
-                          >
-                            JOIN GPML
-                          </Button>
-                          {!isFocal && (
+              {profile &&
+                ((profile.org && !profile?.org?.isMember) || !isFocal) && (
+                  <Row className="bg-white gpml-section">
+                    <Col lg={12} sm={24}>
+                      <div className="content-container">
+                        <p className="recommend-text">RECOMMENDED</p>
+                        <Title level={2}>GPML Partnership​</Title>
+                        <p className="registration-text">
+                          Hello, It looks like your entity:{" "}
+                          <b>{profile?.org?.name},</b> is not yet part <br /> of
+                          the GPML partnership.
+                          <br /> If you are the focal point, submit your
+                          application below
+                        </p>
+                        <div className="join-box">
+                          <div>
+                            <p>
+                              By completing this form I confirm that I have the
+                              authorization to submit an application on behalf
+                              of this Entity to become a member of the Global
+                              Partnership on Marine Litter (GPML)​.
+                            </p>
+                          </div>
+                          <div className="button-container">
                             <Button
-                              className="focal-point"
-                              onClick={() => handleFocalPoint()}
+                              className="join-button"
+                              type="primary"
+                              shape="round"
+                              onClick={() =>
+                                history.push({
+                                  pathname: "entity-signup",
+                                  state: { data: profile.org },
+                                })
+                              }
                             >
-                              I AM NOT THE FOCAL POINT
+                              JOIN GPML
                             </Button>
-                          )}
+                            {!isFocal && (
+                              <Button
+                                className="focal-point"
+                                onClick={() => handleFocalPoint()}
+                              >
+                                I AM NOT THE FOCAL POINT
+                              </Button>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Col>
-                  <Col lg={12} sm={24}>
-                    <div className="slider-container">
-                      <Carousel effect="fade">
-                        <div>
-                          <div className="slider-wrapper">
-                            <Avatar
-                              src={NetworkIcon}
-                              style={{
-                                borderRadius: "initial",
-                                margin: "0 auto 40px auto",
-                                display: "block",
-                                width: 160,
-                                height: 140,
-                              }}
-                            />
-                            <Title level={2}>
-                              Tap into a global network of like-minded members​
-                            </Title>
+                    </Col>
+                    <Col lg={12} sm={24}>
+                      <div className="slider-container">
+                        <Carousel effect="fade">
+                          <div>
+                            <div className="slider-wrapper">
+                              <Avatar
+                                src={NetworkIcon}
+                                style={{
+                                  borderRadius: "initial",
+                                  margin: "0 auto 40px auto",
+                                  display: "block",
+                                  width: 160,
+                                  height: 140,
+                                }}
+                              />
+                              <Title level={2}>
+                                Tap into a global network of like-minded
+                                members​
+                              </Title>
+                            </div>
                           </div>
-                        </div>
-                        <div>
-                          <div className="slider-wrapper">
-                            <Avatar
-                              src={NetworkIcon}
-                              style={{
-                                borderRadius: "initial",
-                                margin: "0 auto 40px auto",
-                                display: "block",
-                                width: 160,
-                                height: 140,
-                              }}
-                            />
-                            <Title level={2}>
-                              Network with other stakeholders
-                            </Title>
+                          <div>
+                            <div className="slider-wrapper">
+                              <Avatar
+                                src={NetworkIcon}
+                                style={{
+                                  borderRadius: "initial",
+                                  margin: "0 auto 40px auto",
+                                  display: "block",
+                                  width: 160,
+                                  height: 140,
+                                }}
+                              />
+                              <Title level={2}>
+                                Network with other stakeholders
+                              </Title>
+                            </div>
                           </div>
-                        </div>
-                      </Carousel>
-                    </div>
-                  </Col>
-                </Row>
-              )}
+                        </Carousel>
+                      </div>
+                    </Col>
+                  </Row>
+                )}
               <Row gutter={[8, 16]} className="action-plan-container">
                 <Col lg={12} sm={24}>
                   <div className="content-container">
@@ -163,12 +161,12 @@ const Workspace = ({ profile }) => {
                     <List itemLayout="horizontal">
                       <List.Item>
                         <List.Item.Meta
-                          title={`Add data >`}
+                          title={<Link to="/">Add data {">"}</Link>}
                         />
                       </List.Item>
                       <List.Item>
                         <List.Item.Meta
-                          title={`Add resources >`}
+                          title={<Link to="/">Add resources {">"}</Link>}
                         />
                       </List.Item>
                       {/* <List.Item>
@@ -179,7 +177,9 @@ const Workspace = ({ profile }) => {
                       </List.Item> */}
                       <List.Item>
                         <List.Item.Meta
-                          title={`Network and collaborate >`}
+                          title={
+                            <Link to="/">Network and collaborate {">"}</Link>
+                          }
                           // description="Fictum, deserunt mollit anim laborum astutumque!"
                         />
                       </List.Item>
@@ -191,9 +191,7 @@ const Workspace = ({ profile }) => {
             <div className="video-panel">
               <div className="workspace-container">
                 <div>
-                  <Title level={2}>
-                    Watch this video to get started
-                  </Title>
+                  <Title level={2}>Watch this video to get started</Title>
                   <iframe
                     width="100%"
                     height="640px"
