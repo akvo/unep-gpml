@@ -80,7 +80,6 @@
             {:status 500
              :body {:success? false
                     :reason :could-not-create-org}})
-
           {:status 500
            :body {:success? false
                   :reason :could-not-create-org
