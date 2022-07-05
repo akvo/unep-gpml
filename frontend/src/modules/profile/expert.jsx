@@ -256,7 +256,7 @@ function Expert() {
                     <p>{item.email}</p>
                   </Col>
                   <Col span={8}>
-                    <p>{item.tags.map((item) => item.tag).join(", ")}</p>
+                    <p>{item.expertise.map((item) => item).join(", ")}</p>
                   </Col>
                 </Row>
               ))}
