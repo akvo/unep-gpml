@@ -35,15 +35,15 @@ const Workspace = ({ profile }) => {
           {/* <Header userName={userName} /> */}
           <div className="workspace-content-wrapper">
             <div className="workspace-container">
-              {((profile.org && !profile?.org?.isMember) || !isFocal) && (
-                <Row className="bg-white">
+              {profile && ((profile.org && !profile?.org?.isMember) || !isFocal) && (
+                <Row className="bg-white gpml-section">
                   <Col lg={12} sm={24}>
                     <div className="content-container">
                       <p className="recommend-text">RECOMMENDED</p>
                       <Title level={2}>GPML Partnership​</Title>
                       <p className="registration-text">
                         Hello, It looks like your entity:{" "}
-                        <b>{profile.org.name},</b> is not yet part <br /> of the
+                        <b>{profile?.org?.name},</b> is not yet part <br /> of the
                         GPML partnership.
                         <br /> If you are the focal point, submit your
                         application below
@@ -164,13 +164,11 @@ const Workspace = ({ profile }) => {
                       <List.Item>
                         <List.Item.Meta
                           title={`Add data >`}
-                          description="Curabitur est gravida et libero vitae dictum."
                         />
                       </List.Item>
                       <List.Item>
                         <List.Item.Meta
                           title={`Add resources >`}
-                          description="A communi observantia non est recedendum."
                         />
                       </List.Item>
                       {/* <List.Item>
@@ -182,7 +180,7 @@ const Workspace = ({ profile }) => {
                       <List.Item>
                         <List.Item.Meta
                           title={`Network and collaborate >`}
-                          description="Fictum, deserunt mollit anim laborum astutumque!"
+                          // description="Fictum, deserunt mollit anim laborum astutumque!"
                         />
                       </List.Item>
                     </List>
@@ -192,43 +190,20 @@ const Workspace = ({ profile }) => {
             </div>
             <div className="video-panel">
               <div className="workspace-container">
-                <Row gutter={[10, 16]} style={{ marginBottom: 0 }}>
-                  <Col lg={14} sm={24}>
-                    <div>
-                      <Title level={2}>
-                        If you are getting started, watch this video
-                      </Title>
-                      <iframe
-                        width="100%"
-                        height="390px"
-                        src="https://www.youtube.com/embed/xSYkLgoHqVQ"
-                        title="YouTube video player"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                      ></iframe>
-                    </div>
-                  </Col>
-                  <Col lg={10} sm={24}>
-                    <div className="faq-section-container">
-                      <Title level={2}>
-                        If you are getting started, watch this video
-                      </Title>
-                      <div className="faq-section">
-                        <div className="faq-section-content">
-                          <p>
-                            All FAQs, tutorials and more on the GPML digital
-                            platform.
-                          </p>
-                          <div>
-                            <img src={FAQ} alt="FAQ" />
-                          </div>
-                        </div>
-                        <Button>Find your answers {">"}</Button>
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
+                <div>
+                  <Title level={2}>
+                    Watch this video to get started
+                  </Title>
+                  <iframe
+                    width="100%"
+                    height="640px"
+                    src="https://www.youtube.com/embed/xSYkLgoHqVQ"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  ></iframe>
+                </div>
               </div>
             </div>
           </div>
