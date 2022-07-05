@@ -19,21 +19,6 @@ const Workspace = ({ profile }) => {
   const history = useHistory();
   const [isFocal, setIsFocal] = useState(false);
 
-  const userName =
-    profile?.firstName !== undefined &&
-    profile?.lastName !== undefined &&
-    `${profile.firstName} ${profile.lastName}`;
-
-  const sidebar = [
-    { id: 1, title: "Home", url: "/workspace", icon: <IconHome /> },
-    {
-      id: 4,
-      title: "Admin",
-      url: profile.role !== "USER" ? "/profile/admin-section" : "",
-      icon: <IconAdmin />,
-    },
-  ];
-
   const handleFocalPoint = () => {
     setIsFocal(true);
     localStorage.setItem("is_focal", true);
@@ -50,7 +35,7 @@ const Workspace = ({ profile }) => {
           {/* <Header userName={userName} /> */}
           <div className="workspace-content-wrapper">
             <div className="workspace-container">
-              {profile.org && !profile?.org?.isMember && (
+              {((profile.org && !profile?.org?.isMember) || !isFocal) && (
                 <Row className="bg-white">
                   <Col lg={12} sm={24}>
                     <div className="content-container">
