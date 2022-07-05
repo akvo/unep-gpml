@@ -28,6 +28,7 @@ import ForgotPassword from "./forgot-password";
 function Login({ handleOnClickBtnNext, visible, close }) {
   const history = useHistory();
   const location = useLocation();
+  const [loading, setLoading] = useState(false);
   const [singin, setSignIn] = useState(false);
   const [forgotPassword, setForgotPassword] = useState(false);
   const [form] = Form.useForm();
@@ -42,9 +43,9 @@ function Login({ handleOnClickBtnNext, visible, close }) {
   }, [location]);
 
   const handleOnLogin = async (values) => {
+    setLoading(true);
     const username = values.email;
     const password = values.password;
-    console.log(auth0Client);
     auth0Client.login(
       {
         realm: "Username-Password-Authentication",
@@ -54,6 +55,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
       (err, authResult) => {
         if (err) {
           console.log(err);
+          setLoading(false);
           notification.error({
             message: err.description,
           });
@@ -62,6 +64,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
         if (authResult) {
           window.origin = window.location.origin;
           console.log(authResult);
+          setLoading(false);
           //window.origin = window.location.origin;
         }
       }
@@ -245,6 +248,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                                 type="primary"
                                 shape="round"
                                 className="login-button"
+                                loading={loading}
                                 onClick={() => handleSubmit()}
                               >
                                 LOGIN WITH EMAIL
