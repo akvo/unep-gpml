@@ -764,7 +764,11 @@ const Root = () => {
           <Route
             path="/signup"
             render={(props) => (
-              <LandingSignupView {...props} profile={profile} />
+              <LandingSignupView
+                {...props}
+                profile={profile}
+                setLoginVisible={setLoginVisible}
+              />
             )}
           />
           <Route
@@ -815,7 +819,7 @@ const Root = () => {
                   render={(props) => (
                     <StakeholderOverview
                       {...props}
-                      loginWithPopup={loginWithPopup}
+                      setLoginVisible={setLoginVisible}
                       filters={filters}
                       setFilters={setFilters}
                       isAuthenticated={isAuthenticated}
@@ -888,6 +892,7 @@ const Root = () => {
           isAuthenticated={isAuthenticated}
           loginWithPopup={loginWithPopup}
           setFilterMenu={setFilterMenu}
+          setLoginVisible={setLoginVisible}
         />
       </div>
       <ModalWarningUser
