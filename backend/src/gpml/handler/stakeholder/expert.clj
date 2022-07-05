@@ -6,6 +6,7 @@
    [gpml.db.invitation :as db.invitation]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.handler.stakeholder :as handler.stakeholder]
+   [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
    [gpml.pg-util :as pg-util]
    [gpml.util :as util]
    [gpml.util.email :as email]
@@ -104,16 +105,29 @@
     true
     (assoc-in [:filters :experts?] true)))
 
+(defn- expert->api-expert
+  [expert]
+  (merge expert (handler.stakeholder.tag/unwrap-tags expert)))
+
 (defn- get-experts
   [{:keys [db]}
    {{:keys [query]} :parameters :as _req}]
-  (let [opts (api-opts->opts query)
-        experts (db.stakeholder/get-experts (:spec db) opts)
-        experts-count (-> (db.stakeholder/get-experts (:spec db) (assoc opts :count-only? true))
-                          first
-                          :count)]
-    (resp/response {:experts experts
-                    :count experts-count})))
+  (try
+    (let [opts (api-opts->opts query)
+          experts (db.stakeholder/get-experts (:spec db) opts)
+          experts-count (-> (db.stakeholder/get-experts (:spec db) (assoc opts :count-only? true))
+                            first
+                            :count)]
+      (resp/response {:experts (map expert->api-expert experts)
+                      :count experts-count}))
+    (catch Exception e
+      (if (instance? SQLException e)
+        {:status 500
+         :body {:success? false
+                :reason (pg-util/get-sql-state e)}}
+        {:status 500
+         :reason :could-not-get-experts
+         :error-details {:exception-message (.getMessage e)}}))))
 
 (defn- send-invitation-emails
   [{:keys [mailjet-config app-domain logger]} invitations]
