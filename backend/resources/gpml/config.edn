@@ -250,6 +250,7 @@
                                         ["/landing"
                                          [""
                                           {:get {:summary "End-point for the landing page"
+                                                 :middleware [#ig/ref :gpml.auth/auth-middleware]
                                                  :swagger {:tags ["landing"]}
                                                  :parameters {:query #ig/ref :gpml.handler.landing/get-query-params}
                                                  :handler #ig/ref :gpml.handler.landing/get}}]]
