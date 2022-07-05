@@ -1,15 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Carousel, Avatar, Typography, Button, List } from "antd";
-const { Title, Link } = Typography;
-
+const { Title } = Typography;
 import "./styles.scss";
 import Header from "./header";
 import LeftSidebar from "../../components/left-sidebar/left-sidebar";
-import ActionPlan from "./action-plan";
-
-// Icons
-import { ReactComponent as IconHome } from "../../images/workspace/home-icon.svg";
-import { ReactComponent as IconAdmin } from "../../images/workspace/admin-icon.svg";
+import { useHistory, Link } from "react-router-dom";
 // import DownloadPdf from "../../images/workspace/download-pdf.svg";
 import DownloadPdf from "../../images/workspace/pdf.png";
 import NetworkIcon from "../../images/auth/network.png";
@@ -17,20 +12,17 @@ import Video from "../../images/workspace/video.png";
 import FAQ from "../../images/workspace/faq.png";
 
 const Workspace = ({ profile }) => {
-  const userName =
-    profile?.firstName !== undefined &&
-    profile?.lastName !== undefined &&
-    `${profile.firstName} ${profile.lastName}`;
+  const history = useHistory();
+  const [isFocal, setIsFocal] = useState(false);
 
-  const sidebar = [
-    { id: 1, title: "Home", url: "/workspace", icon: <IconHome /> },
-    {
-      id: 4,
-      title: "Admin",
-      url: profile.role !== "USER" ? "/profile/admin-section" : "",
-      icon: <IconAdmin />,
-    },
-  ];
+  const handleFocalPoint = () => {
+    setIsFocal(true);
+    localStorage.setItem("is_focal", true);
+  };
+
+  useEffect(() => {
+    setIsFocal(localStorage.getItem("is_focal"));
+  }, []);
 
   return (
     <div id="workspace">
@@ -39,84 +31,98 @@ const Workspace = ({ profile }) => {
           {/* <Header userName={userName} /> */}
           <div className="workspace-content-wrapper">
             <div className="workspace-container">
-              {profile.org && (
-                <Row className="bg-white">
-                  <Col lg={12} sm={24}>
-                    <div className="content-container">
-                      <p className="recommend-text">RECOMMENDED</p>
-                      <Title level={2}>GPML Partnership​</Title>
-                      <p className="registration-text">
-                        Hello, It looks like your entity: <b>Entity Name,</b> is
-                        not yet part <br /> of the GPML partnership.
-                        <br /> If you are the focal point, submit your
-                        application below
-                      </p>
-                      <div className="join-box">
-                        <div>
-                          <p>
-                            By completing this form I confirm that I have the
-                            authorization to submit an application on behalf of
-                            this Entity to become a member of the Global
-                            Partnership on Marine Litter (GPML)​.
-                          </p>
-                        </div>
-                        <div className="button-container">
-                          <Button
-                            className="join-button"
-                            type="primary"
-                            shape="round"
-                          >
-                            JOIN GPML
-                          </Button>
-                          <Button className="focal-point">
-                            I AM NOT THE FOCAL POINT
-                          </Button>
+              {profile &&
+                ((profile.org && !profile?.org?.isMember) || !isFocal) && (
+                  <Row className="bg-white gpml-section">
+                    <Col lg={12} sm={24}>
+                      <div className="content-container">
+                        <p className="recommend-text">RECOMMENDED</p>
+                        <Title level={2}>GPML Partnership​</Title>
+                        <p className="registration-text">
+                          Hello, It looks like your entity:{" "}
+                          <b>{profile?.org?.name},</b> is not yet part <br /> of
+                          the GPML partnership.
+                          <br /> If you are the focal point, submit your
+                          application below
+                        </p>
+                        <div className="join-box">
+                          <div>
+                            <p>
+                              By completing this form I confirm that I have the
+                              authorization to submit an application on behalf
+                              of this Entity to become a member of the Global
+                              Partnership on Marine Litter (GPML)​.
+                            </p>
+                          </div>
+                          <div className="button-container">
+                            <Button
+                              className="join-button"
+                              type="primary"
+                              shape="round"
+                              onClick={() =>
+                                history.push({
+                                  pathname: "entity-signup",
+                                  state: { data: profile.org },
+                                })
+                              }
+                            >
+                              JOIN GPML
+                            </Button>
+                            {!isFocal && (
+                              <Button
+                                className="focal-point"
+                                onClick={() => handleFocalPoint()}
+                              >
+                                I AM NOT THE FOCAL POINT
+                              </Button>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Col>
-                  <Col lg={12} sm={24}>
-                    <div className="slider-container">
-                      <Carousel effect="fade">
-                        <div>
-                          <div className="slider-wrapper">
-                            <Avatar
-                              src={NetworkIcon}
-                              style={{
-                                borderRadius: "initial",
-                                margin: "0 auto 40px auto",
-                                display: "block",
-                                width: 160,
-                                height: 140,
-                              }}
-                            />
-                            <Title level={2}>
-                              Tap into a global network of like-minded members​
-                            </Title>
+                    </Col>
+                    <Col lg={12} sm={24}>
+                      <div className="slider-container">
+                        <Carousel effect="fade">
+                          <div>
+                            <div className="slider-wrapper">
+                              <Avatar
+                                src={NetworkIcon}
+                                style={{
+                                  borderRadius: "initial",
+                                  margin: "0 auto 40px auto",
+                                  display: "block",
+                                  width: 160,
+                                  height: 140,
+                                }}
+                              />
+                              <Title level={2}>
+                                Tap into a global network of like-minded
+                                members​
+                              </Title>
+                            </div>
                           </div>
-                        </div>
-                        <div>
-                          <div className="slider-wrapper">
-                            <Avatar
-                              src={NetworkIcon}
-                              style={{
-                                borderRadius: "initial",
-                                margin: "0 auto 40px auto",
-                                display: "block",
-                                width: 160,
-                                height: 140,
-                              }}
-                            />
-                            <Title level={2}>
-                              Network with other stakeholders
-                            </Title>
+                          <div>
+                            <div className="slider-wrapper">
+                              <Avatar
+                                src={NetworkIcon}
+                                style={{
+                                  borderRadius: "initial",
+                                  margin: "0 auto 40px auto",
+                                  display: "block",
+                                  width: 160,
+                                  height: 140,
+                                }}
+                              />
+                              <Title level={2}>
+                                Network with other stakeholders
+                              </Title>
+                            </div>
                           </div>
-                        </div>
-                      </Carousel>
-                    </div>
-                  </Col>
-                </Row>
-              )}
+                        </Carousel>
+                      </div>
+                    </Col>
+                  </Row>
+                )}
               <Row gutter={[8, 16]} className="action-plan-container">
                 <Col lg={12} sm={24}>
                   <div className="content-container">
@@ -155,14 +161,12 @@ const Workspace = ({ profile }) => {
                     <List itemLayout="horizontal">
                       <List.Item>
                         <List.Item.Meta
-                          title={`Add data >`}
-                          description="Curabitur est gravida et libero vitae dictum."
+                          title={<Link to="/">Add data {">"}</Link>}
                         />
                       </List.Item>
                       <List.Item>
                         <List.Item.Meta
-                          title={`Add resources >`}
-                          description="A communi observantia non est recedendum."
+                          title={<Link to="/">Add resources {">"}</Link>}
                         />
                       </List.Item>
                       {/* <List.Item>
@@ -173,8 +177,10 @@ const Workspace = ({ profile }) => {
                       </List.Item> */}
                       <List.Item>
                         <List.Item.Meta
-                          title={`Network and collaborate >`}
-                          description="Fictum, deserunt mollit anim laborum astutumque!"
+                          title={
+                            <Link to="/">Network and collaborate {">"}</Link>
+                          }
+                          // description="Fictum, deserunt mollit anim laborum astutumque!"
                         />
                       </List.Item>
                     </List>
@@ -184,43 +190,18 @@ const Workspace = ({ profile }) => {
             </div>
             <div className="video-panel">
               <div className="workspace-container">
-                <Row gutter={[10, 16]} style={{ marginBottom: 0 }}>
-                  <Col lg={14} sm={24}>
-                    <div>
-                      <Title level={2}>
-                        If you are getting started, watch this video
-                      </Title>
-                      <iframe
-                        width="100%"
-                        height="390px"
-                        src="https://www.youtube.com/embed/xSYkLgoHqVQ"
-                        title="YouTube video player"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                      ></iframe>
-                    </div>
-                  </Col>
-                  <Col lg={10} sm={24}>
-                    <div className="faq-section-container">
-                      <Title level={2}>
-                        If you are getting started, watch this video
-                      </Title>
-                      <div className="faq-section">
-                        <div className="faq-section-content">
-                          <p>
-                            All FAQs, tutorials and more on the GPML digital
-                            platform.
-                          </p>
-                          <div>
-                            <img src={FAQ} alt="FAQ" />
-                          </div>
-                        </div>
-                        <Button>Find your answers {">"}</Button>
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
+                <div>
+                  <Title level={2}>Watch this video to get started</Title>
+                  <iframe
+                    width="100%"
+                    height="640px"
+                    src="https://www.youtube.com/embed/xSYkLgoHqVQ"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  ></iframe>
+                </div>
               </div>
             </div>
           </div>

@@ -393,6 +393,10 @@
     .ant-select-selector,
     .ant-input-affix-wrapper {
       background-color: #edf2f6;
+      width: 100%;
+    }
+    .ant-form-item-explain {
+      min-height: 0 !important;
     }
     .photo-upload-border {
       background-color: #edf2f6;

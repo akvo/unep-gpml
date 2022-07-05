@@ -16,7 +16,6 @@ import { useHistory } from "react-router-dom";
 import GettingStartedIcon from "../../images/auth/surfer.svg";
 import waveSvg from "../../images/auth/wave.svg";
 
-
 function Authentication() {
   const formRef = useRef();
   const surferRef = useRef();
@@ -25,7 +24,10 @@ function Authentication() {
   const [affiliation, setAffiliation] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
   const [initialValues, setInitialValues] = useState({
-    offering: [], offeringSuggested: [], seeking: [], seekingSuggested: []
+    offering: [],
+    offeringSuggested: [],
+    seeking: [],
+    seekingSuggested: [],
   });
   const [error, setError] = useState(false);
 
@@ -77,12 +79,18 @@ function Authentication() {
 
     data.offering = [
       ...values?.offering,
-      ...values?.offeringSuggested,
+      ...(values?.offeringSuggested
+        ? values?.offeringSuggested.map((item) => item.label)
+        : []),
     ];
+
     data.seeking = [
       ...values?.seeking,
-      ...values?.seekingSuggested,
+      ...(values?.seekingSuggested
+        ? values?.seekingSuggested.map((item) => item.label)
+        : []),
     ];
+
     delete data.confirm;
     delete data.offeringSuggested;
     delete data.seekingSuggested;
@@ -281,22 +289,22 @@ function Authentication() {
 const Wave = ({ step, surferRef }) => {
   const ref = useRef();
   const listener = (e) => {
-      const axx = (window.innerWidth / 2 - e.x) / (window.innerWidth / 2);
-      const axy = Math.max(
-        0,
-        (window.innerHeight / 1.2 - e.y) / (window.innerHeight / 1.2)
-      );
-      ref.current.style.marginLeft = `${axx * 100}px`;
-      ref.current.style.marginBottom = `${-axy * 100}px`;
-      surferRef.current.style.transform = `translate(${axx * 70}px, ${
-        axy * 200 - 50
-      }px)`;
-    }
+    const axx = (window.innerWidth / 2 - e.x) / (window.innerWidth / 2);
+    const axy = Math.max(
+      0,
+      (window.innerHeight / 1.2 - e.y) / (window.innerHeight / 1.2)
+    );
+    ref.current.style.marginLeft = `${axx * 100}px`;
+    ref.current.style.marginBottom = `${-axy * 100}px`;
+    surferRef.current.style.transform = `translate(${axx * 70}px, ${
+      axy * 200 - 50
+    }px)`;
+  };
   useEffect(() => {
     document.addEventListener("mousemove", listener);
     return () => {
-      document.removeEventListener("mousemove", listener)
-    }
+      document.removeEventListener("mousemove", listener);
+    };
   }, []);
   return (
     <div className="wave" style={{ left: -(step * (window.innerWidth + 200)) }}>

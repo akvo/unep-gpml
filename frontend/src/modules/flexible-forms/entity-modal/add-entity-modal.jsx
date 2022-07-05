@@ -145,7 +145,7 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
     let data = {
       ...formData,
       stakeholder: "",
-      isMember: isMember ? true : false,
+      isMember: false,
     };
     data = handleGeoCoverageValue(data, formData, countries);
 

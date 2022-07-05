@@ -65,6 +65,7 @@ const AutoCompleteWidget = ({
         filterOption={(inputValue, option) =>
           option?.value?.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
         }
+        value={value ? value : undefined}
       />
     </>
   );
