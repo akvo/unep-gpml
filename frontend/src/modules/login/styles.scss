@@ -1,10 +1,67 @@
 @import "../../vars.scss";
 
-#login {
-  padding: 60px 0px;
-  background: url("../../images/auth/auth-background.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
+.login {
+  .ant-modal-content {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    padding: 5px 5px;
+  }
+  .ant-modal-body {
+    padding: 0;
+    .register-text {
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 26px;
+      text-align: center;
+      color: #a5b0c9;
+      padding: 0 2vw;
+    }
+    .terms {
+      background: #bbedda;
+      padding: 6px 0px;
+      h4 {
+        margin-bottom: 0px;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 23px;
+        color: #18162f;
+        text-align: center;
+      }
+    }
+  }
+  .ant-modal-header {
+    border: none;
+    .signin-button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .header-text {
+        color: #09689a;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 26px;
+        padding: 0;
+        margin-bottom: 0;
+      }
+      div {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        p {
+          margin-bottom: 0;
+          padding-right: 5px;
+          line-height: 1.5715;
+        }
+      }
+    }
+    .connect-back-button {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+      color: #000000;
+      padding: 0;
+    }
+  }
   label {
     font-weight: 500;
     font-size: 14px;
@@ -207,7 +264,6 @@
   }
   .auth-container {
     opacity: 1;
-    padding: 20px 6px 6px 6px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -216,14 +272,7 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      .signin-button {
-        button {
-          color: #09689a;
-          font-weight: 500;
-          font-size: 18px;
-          line-height: 26px;
-        }
-      }
+      padding: 40px 0px;
       .auth-buttons {
         height: 100%;
         display: flex;
@@ -277,12 +326,6 @@
           font-weight: 500;
           font-size: 18px;
           line-height: 26px;
-        }
-        .connect-back-button {
-          font-weight: 500;
-          font-size: 14px;
-          line-height: 20px;
-          color: #000000;
         }
       }
       .login-form {
@@ -342,6 +385,7 @@
         }
         .join-wrapper {
           text-align: center;
+          padding-bottom: 30px;
           h2 {
             font-weight: 700;
             font-size: 24px;
@@ -353,18 +397,6 @@
           color: red;
           margin-bottom: 0px;
         }
-      }
-    }
-    .terms {
-      background: rgb(109 181 176 / 31%);
-      padding: 6px 0px;
-      h4 {
-        margin-bottom: 0px;
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 23px;
-        color: #18162f;
-        text-align: center;
       }
     }
   }

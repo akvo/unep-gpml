@@ -343,6 +343,7 @@ const Root = () => {
   // Here we retrieve the resources data
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loginVisible, setLoginVisible] = useState(false);
   const [filterCountries, setFilterCountries] = useState([]);
   const [relations, setRelations] = useState([]);
   const { isLoading } = useAuth0();
@@ -517,8 +518,12 @@ const Root = () => {
                   {isAuthenticated && isRegistered(profile) ? (
                     <UserButton {...{ logout, isRegistered, profile }} />
                   ) : (
-                    <Button type="ghost" className="left">
-                      <Link to="/login">Sign in</Link>
+                    <Button
+                      type="ghost"
+                      className="left"
+                      onClick={() => setLoginVisible(true)}
+                    >
+                      Sign in
                     </Button>
                   )}
                 </div>
@@ -761,7 +766,6 @@ const Root = () => {
             path="/stakeholder-signup-new"
             render={(props) => <SignupViewNew {...props} />}
           />
-          <Route path="/login" render={(props) => <Login {...props} />} />
           <Route
             path="/signup"
             render={(props) => (
@@ -895,6 +899,9 @@ const Root = () => {
         visible={warningModalVisible}
         close={() => setWarningModalVisible(false)}
       />
+      {loginVisible && (
+        <Login visible={loginVisible} close={() => setLoginVisible(false)} />
+      )}
       <ResponsiveMenu
         {...{
           profile,

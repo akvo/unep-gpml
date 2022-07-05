@@ -10,7 +10,9 @@ import {
   Input,
   Divider,
   notification,
+  Modal,
 } from "antd";
+import { CloseCircleOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import DataHubIcon from "../../images/auth/data-hub.png";
 import NetworkIcon from "../../images/auth/network.png";
@@ -23,7 +25,7 @@ import { Form as FinalForm, Field } from "react-final-form";
 import { auth0Client } from "../../utils/misc";
 import ForgotPassword from "./forgot-password";
 
-function Login({ handleOnClickBtnNext }) {
+function Login({ handleOnClickBtnNext, visible, close }) {
   const history = useHistory();
   const location = useLocation();
   const [singin, setSignIn] = useState(false);
@@ -108,68 +110,58 @@ function Login({ handleOnClickBtnNext }) {
   };
 
   return (
-    <div id="login">
-      <div
-        className="ui container wave-background"
-        style={{
-          background:
-            "linear-gradient(to left,#fff 50%,rgba(255, 255, 255, 0.51) 50%)",
-        }}
-      >
-        <Row>
-          <Col span={12}>
-            <div className="slider-container">
-              <Carousel effect="fade">
-                <div>
-                  <div className="slider-wrapper">
-                    <Avatar
-                      src={DataHubIcon}
-                      size={100}
-                      style={{
-                        borderRadius: "initial",
-                        margin: "0 auto 40px auto",
-                        display: "block",
-                      }}
-                    />
-                    <Title level={2}>
-                      Access a data hub to guide efforts towards SDGs and more
-                    </Title>
-                  </div>
-                </div>
-                <div>
-                  <div className="slider-wrapper">
-                    <Avatar
-                      src={NetworkIcon}
-                      size={100}
-                      style={{
-                        borderRadius: "initial",
-                        margin: "0 auto 40px auto",
-                        display: "block",
-                      }}
-                    />
-                    <Title level={2}>Network with other stakeholders</Title>
-                  </div>
-                </div>
-              </Carousel>
-              <div className="slider-bottom-panel">
-                <Title level={2}>
-                  Once you have an account you can register your organisation
-                  and apply for the GPML membership
-                </Title>
-                <Link href="https://ant.design" target="_blank">
-                  FIND OUT MORE {">"}
-                </Link>
+    <Modal
+      title={
+        <>
+          <div className="signin-button">
+            <p className="header-text">
+              {!singin
+                ? "SIGN IN"
+                : forgotPassword
+                ? "FORGOT PASSWORD"
+                : "CONTINUE WITH EMAIL"}
+            </p>
+            {!singin ? (
+              <div onClick={close}>
+                <p>CANCEL</p>
+                <CloseCircleOutlined />
               </div>
-            </div>
-          </Col>
-          <Col span={12}>
+            ) : forgotPassword ? (
+              <Button
+                type="text"
+                className="connect-back-button"
+                onClick={() => {
+                  setSignIn(true);
+                  setForgotPassword(false);
+                }}
+              >
+                {"<"} Back to connect options
+              </Button>
+            ) : (
+              <Button
+                type="text"
+                className="connect-back-button"
+                onClick={() => setSignIn(!singin)}
+              >
+                {"<"} Back to connect options
+              </Button>
+            )}
+          </div>
+        </>
+      }
+      centered
+      visible={visible}
+      footer={false}
+      className="login"
+      closable={false}
+    >
+      <div>
+        <Row>
+          <Col span={24}>
             {!forgotPassword ? (
               <div className="auth-container">
                 {!singin ? (
                   <div className="signup-wrapper">
-                    <div className="signin-button">
-                      <Button type="text">SIGN IN</Button>
-                    </div>
                     <div className="auth-buttons">
                       <Button
                         type="primary"
@@ -199,19 +191,13 @@ function Login({ handleOnClickBtnNext }) {
                         CONTINUE WITH EMAIL
                       </Button>
                     </div>
+                    <p className="register-text">
+                      Once you have an account you can register your
+                      organisation and apply for GPML membership
+                    </p>
                   </div>
                 ) : (
                   <div className="login-wrapper">
-                    <div className="connect-button">
-                      <Button type="text">CONTINUE WITH EMAIL</Button>
-                      <Button
-                        type="text"
-                        className="connect-back-button"
-                        onClick={() => setSignIn(!singin)}
-                      >
-                        {"<"} Back to connect options
-                      </Button>
-                    </div>
                     <div className="login-form">
                       <FinalForm
                         initialValues={initialValues}
@@ -283,9 +269,10 @@ function Login({ handleOnClickBtnNext }) {
                           type="primary"
                           shape="round"
                           className="login-button"
-                          onClick={() =>
-                            history.push("/stakeholder-signup-new")
-                          }
+                          onClick={() => {
+                            close();
+                            history.push("/stakeholder-signup-new");
+                          }}
                         >
                           JOIN WITH EMAIL
                         </Button>
@@ -293,11 +280,6 @@ function Login({ handleOnClickBtnNext }) {
                     </div>
                   </div>
                 )}
-                <div className="terms">
-                  <Title level={4}>
-                    By signing up you are agreeing to our terms and services.
-                  </Title>
-                </div>
               </div>
             ) : (
               <ForgotPassword
@@ -307,8 +289,13 @@ function Login({ handleOnClickBtnNext }) {
             )}
           </Col>
         </Row>
+        <div className="terms">
+          <Title level={4}>
+            By signing up you are agreeing to our terms and services.
+          </Title>
+        </div>
       </div>
-    </div>
+    </Modal>
   );
 }
 

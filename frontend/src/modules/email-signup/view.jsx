@@ -171,7 +171,7 @@ function EmailJoin({}) {
           <Col span={24}>
             <div className="join-button">
               <Title level={2}>JOIN WITH EMAIL</Title>
-              <Button
+              {/* <Button
                 type="text"
                 className="connect-back-button"
                 onClick={() => {
@@ -184,7 +184,7 @@ function EmailJoin({}) {
                 }}
               >
                 {"<"} Back to connect options
-              </Button>
+              </Button> */}
             </div>
             <FinalForm
               initialValues={initialValues}

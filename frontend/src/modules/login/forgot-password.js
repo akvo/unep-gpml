@@ -55,21 +55,8 @@ function ForgotPassword({ setSignIn, setForgotPassword }) {
   };
 
   return (
-    <div className="auth-container">
+    <div className="auth-container" style={{ paddingBottom: 40 }}>
       <div className="login-wrapper">
-        <div className="connect-button">
-          <Button type="text">FORGOT PASSWORD</Button>
-          <Button
-            type="text"
-            className="connect-back-button"
-            onClick={() => {
-              setSignIn(true);
-              setForgotPassword(false);
-            }}
-          >
-            {"<"} Back to connect options
-          </Button>
-        </div>
         <div className="login-form">
           <FinalForm
             initialValues={initialValues}
