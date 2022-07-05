@@ -340,7 +340,7 @@ LIMIT :limit;
 -- :name get-experts :? :*
 -- :doc Get stakeholders based on the passed filters.
 WITH experts AS (
-  SELECT s.*
+  SELECT DISTINCT ON (s.id) s.*
   FROM stakeholder s
   JOIN stakeholder_tag st ON s.id = st.stakeholder AND st.tag_relation_category = 'expertise'
 ),
@@ -348,7 +348,7 @@ filtered_experts AS (
   SELECT s.*, json_agg(json_build_object('id', t.id, 'tag', t.tag, 'tag_relation_category', st.tag_relation_category, 'tag_category', tg.category)) FILTER (WHERE t.id IS NOT NULL) AS tags
   FROM stakeholder s
   JOIN experts e ON e.id = s.id
-  JOIN stakeholder_tag st ON e.id = st.stakeholder
+  JOIN stakeholder_tag st ON s.id = st.stakeholder
   JOIN tag t ON st.tag = t.id
   JOIN tag_category tg ON t.tag_category = tg.id
   WHERE 1=1
