@@ -646,7 +646,8 @@
   :gpml.handler.non-member-organisation/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.organisation/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.organisation/post {:db #ig/ref :duct.database/sql
-                                   :mailjet-config #ig/ref :gpml.config/mailjet}
+                                   :mailjet-config #ig/ref :gpml.config/mailjet
+                                   :logger #ig/ref :duct/logger}
   :gpml.handler.organisation/put {:db #ig/ref :gpml.db/spec}
   :gpml.handler.organisation/post-params {}
   :gpml.handler.organisation/put-params {}
