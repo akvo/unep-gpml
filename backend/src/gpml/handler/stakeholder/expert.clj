@@ -10,6 +10,7 @@
    [gpml.util :as util]
    [gpml.util.email :as email]
    [integrant.core :as ig]
+   [jsonista.core :as json]
    [ring.util.response :as resp])
   (:import
    [java.sql SQLException]))
@@ -117,15 +118,22 @@
 (defn- send-invitation-emails
   [{:keys [mailjet-config app-domain logger]} invitations]
   (try
-    (doseq [{invitation-id :id first-name :first_name last-name :last_name email :email} invitations
+    (doseq [{invitation-id :id
+             first-name :first_name
+             last-name :last_name
+             email :email :as invitation} invitations
             :let [msg (email/notify-expert-invitation-text first-name last-name invitation-id app-domain)]]
-      (email/send-email mailjet-config
-                        email/unep-sender
-                        "Join the UNEP GPML Platform"
-                        [{:Name (str first-name " " last-name)
-                          :Email email}]
-                        [msg]
-                        []))
+      (let [{:keys [status body]} (email/send-email mailjet-config
+                                                    email/unep-sender
+                                                    "Join the UNEP GPML Platform"
+                                                    [{:Name (str first-name " " last-name)
+                                                      :Email email}]
+                                                    [msg]
+                                                    [])]
+        (when-not (<= 200 status 299)
+          (log logger :error ::send-invitation-email-failed {:context-data invitation
+                                                             :email-msg msg
+                                                             :response-body (json/read-value body json/keyword-keys-object-mapper)}))))
     (catch Exception e
       (log logger :error ::send-invitation-emails-failed {:exception-message (.getMessage e)
                                                           :context-data {:invitations invitations}}))))
