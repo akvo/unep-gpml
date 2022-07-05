@@ -102,11 +102,11 @@
            `:tags` --> Get a collection of tags indicated by `target-prop-key` param, filtering empty values
            and building some metadata for each tag item in order to be able to identify its related policy once that is
            created (leap-api-id), be able to compare the name with existing tags (normalized-tag-name), adding its
-           id in case the tag already exists, to be handled properly."
+           id in case the tag already exists, to be handled properly.
+
+           In this function duplicated tags are also removed."
   (fn [field-type _ & _] field-type))
 
-;; TODO: Currently this get only default translation, but we will need to see if we are going to keep it like that
-;; or store all the translations somehow (which requires quite more effort but it looks to be what is needed).
 (defmethod parse-policy-leap-api-field :translated-field
   [_ field-value & {:keys [target-lang]}]
   (let [value (or (get field-value target-lang)
@@ -176,11 +176,18 @@
 
 (defmethod parse-policy-leap-api-field :tags
   [_ field-value & {:keys [target-prop-key leap-api-id tags-by-normalized-name]}]
-  (->> field-value
-       (mapv #(get % target-prop-key))
-       (remove #(empty? %))
-       distinct
-       (mapv #(parse-leap-api-policy-tag leap-api-id tags-by-normalized-name %))))
+  (reduce (fn [tags-acc field-value-item]
+            (let [registered-tags-set (->> tags-acc
+                                           (mapv #(get % :normalized-tag-name))
+                                           set)
+                  parsed-val (get field-value-item target-prop-key)
+                  parsed-tag (when (seq parsed-val)
+                               (parse-leap-api-policy-tag leap-api-id tags-by-normalized-name parsed-val))]
+              (if-not (get registered-tags-set (:normalized-tag-name parsed-tag))
+                (vec (conj tags-acc parsed-tag))
+                tags-acc)))
+          []
+          field-value))
 
 (defmethod parse-policy-leap-api-field :nilable-str
   [_ field-value & _]
@@ -282,7 +289,12 @@
           tags-by-normalized-name)})
 
 (defn- processed-new-policies-from-batch
-  "Process each batch item to generate policies data for creation"
+  "Process each batch item to generate policies data for creation
+
+   Regarding the policies data, new tags are registered for creation, as well as policy-tags (the relationships
+   between policy and tag entities), skipping duplicated data, by comparing normalized tag names to detect those.
+
+   In order to detect the new tags to be created we filter all the collection to get the ones that do not have an id."
   [policies-batch-items opts]
   (let [policies-data-acc {:new-tags []
                            :policy-tags []
@@ -290,8 +302,13 @@
     (reduce (fn [policies-acc policy-batch-item]
               (let [policy (build-policy-item-data policy-batch-item opts)
                     tags (:tags policy)
-                    new-tags (filter #(nil? (:tag-id %))
-                                     tags)
+                    registered-tags-set (->> policies-acc
+                                             :new-tags
+                                             (mapv #(get % :normalized-tag-name))
+                                             set)
+                    new-tags (->> tags
+                                  (filter #(nil? (:tag-id %)))
+                                  (filter #(not (get registered-tags-set (:normalized-tag-name %)))))
                     updated-policies-acc (-> policies-acc
                                              (update :policy-tags #(vec (concat % tags)))
                                              (update :policies #(vec (conj % policy))))]
@@ -304,16 +321,34 @@
 (defn- processed-policies-to-update-from-batch
   "Process each existing policy to add the respective batch item info
 
-   Only existing policy id is needed to be kept for the update as no more data is going to be updated."
+   Only existing policy id is needed to be kept for the update as no more data is going to be updated.
+
+   In order to build new tags and policy-tags data we use the same strategy as when creating policies."
   [existing-policies policies-batch-items-lookup opts]
-  (reduce (fn [policies-acc {:keys [leap_api_id] :as existing-policy}]
-            (let [str-leap-api-id (str leap_api_id)
-                  policy-batch-item (get-in policies-batch-items-lookup [str-leap-api-id 0])
-                  policy-to-update (merge (select-keys existing-policy [:id])
-                                          (build-policy-item-data policy-batch-item opts))]
-              (vec (conj policies-acc policy-to-update))))
-          []
-          existing-policies))
+  (let [policies-data-acc {:new-tags []
+                           :policy-tags []
+                           :policies []}]
+    (reduce (fn [policies-acc {:keys [leap_api_id] :as existing-policy}]
+              (let [str-leap-api-id (str leap_api_id)
+                    policy-batch-item (get-in policies-batch-items-lookup [str-leap-api-id 0])
+                    policy-to-update (merge (select-keys existing-policy [:id])
+                                            (build-policy-item-data policy-batch-item opts))
+                    tags (:tags policy-to-update)
+                    registered-tags-set (->> policies-acc
+                                             :new-tags
+                                             (mapv #(get % :normalized-tag-name))
+                                             set)
+                    new-tags (->> tags
+                                  (filter #(nil? (:tag-id %)))
+                                  (filter #(not (get registered-tags-set (:normalized-tag-name %)))))
+                    updated-policies-acc (-> policies-acc
+                                             (update :policy-tags #(vec (concat % tags)))
+                                             (update :policies #(vec (conj % policy-to-update))))]
+                (if (seq new-tags)
+                  (update updated-policies-acc :new-tags #(vec (concat % new-tags)))
+                  updated-policies-acc)))
+            policies-data-acc
+            existing-policies)))
 
 (defn- update-policies-batch
   "Update policies batch one by one
@@ -385,7 +420,8 @@
    It returns a map with generated policy ids and new tags (as map indexed by normalized tag name).
 
    The operation is atomic in the sense that either all the policies are persisted or no one, as that is more performant
-   and easier to handle."
+   and easier to handle. However, tags are anyway created, since there is no point on rolling back that, as eventually
+   those tags will be used by the incoming policies."
   [db-conn new-policies {:keys [policy-tag-category-id] :as opts}]
   (let [processed-new-policies-data (processed-new-policies-from-batch new-policies opts)
         processed-new-tags (mapv (fn [{:keys [tag-name]}]
@@ -414,6 +450,67 @@
      new-tags-by-norm-name
      (:policy-tags processed-new-policies-data))))
 
+(defn- handle-policy-and-policy-tags-update
+  "Handle atomically the update of policy and creation of new policy-tag entities
+
+   The strategy is similar as when creating policy and policy-tags, but in this case, we only
+   add policy-tag entities that have been not created already.
+   For this process, we ignore the row's ids that have no meaning and we consider only what it really
+   represents a row in a policy-tag table: the unique combination of policy and tag ids (FKs). We need to
+   do it in this way, since we are going to remove soon the artificial id that is the current PK of the table,
+   so this function is prepared already for that. Besides, we don't have such Unique constraint yet.
+
+   At the end the number of updated policies and created tags is returned, so we can use the updated tags map
+   to be used in subsequent batch imports without querying all the existing tags again.
+
+   All the policy-tags are created in one go in order to re-use existing code and make the process more perfomant
+   and simpler."
+  [main-conn processed-db-policies-to-update new-tags-by-norm-name policy-tags]
+  (jdbc/with-db-transaction
+    [trans-conn main-conn]
+    (let [policies-by-leap-api-id (when (seq processed-db-policies-to-update)
+                                    (group-by :leap_api_id processed-db-policies-to-update))
+          processed-policy-tags (mapv (fn [{:keys [leap-api-id normalized-tag-name tag-id]}]
+                                        (let [target-policy (get-in policies-by-leap-api-id [leap-api-id 0])
+                                              target-tag (when (nil? tag-id)
+                                                           (get-in new-tags-by-norm-name [normalized-tag-name 0]))
+                                              resolved-tag-id (or tag-id
+                                                                  (:id target-tag))]
+                                          {:policy (:id target-policy)
+                                           :tag resolved-tag-id}))
+                                      policy-tags)
+          existing-policy-tags (when (seq processed-policy-tags)
+                                 (db.resource.tag/get-tags-from-resources
+                                  trans-conn
+                                  {:table "policy_tag"
+                                   :resource-col "policy"
+                                   :resource-ids (mapv #(get % :policy)
+                                                       processed-policy-tags)}))
+          existing-policy-tags-set (->> existing-policy-tags
+                                        (mapv #(vector (get % :policy)
+                                                       (get % :tag)))
+                                        set)
+          not-existing-processed-policy-tags (filter #(not (get existing-policy-tags-set [(:policy %)
+                                                                                          (:tag %)]))
+                                                     processed-policy-tags)
+          policy-tag-insert-keys [:policy :tag]
+          processed-policy-tag-values (when (seq not-existing-processed-policy-tags)
+                                        (sql-util/entity-col->persistence-entity-col
+                                         not-existing-processed-policy-tags
+                                         :insert-keys
+                                         policy-tag-insert-keys))]
+      (when (seq not-existing-processed-policy-tags)
+        (db.resource.tag/create-resource-tags
+         trans-conn
+         {:table "policy_tag"
+          :resource-col "policy"
+          :tags processed-policy-tag-values}))
+      (when (seq processed-db-policies-to-update)
+        (update-policies-batch trans-conn processed-db-policies-to-update))
+      {:num-updated-policies (count processed-db-policies-to-update)
+       :new-tags-by-norm-name new-tags-by-norm-name})))
+
+;; TODO: Extract duplicated code to a shared function (tags creation for example).
 (defn- handle-policy-update-batch
   "Update policies from a batch, given their reference from DB
 
@@ -421,8 +518,11 @@
    they were modified. We check that with a field that is coming for each batch item, so we compare the value stored in
    the DB with the one coming from the batch (API): `updated`.
 
-   Before we can persist the data we need to apply some transformations to give it the right shape for the DB layer."
-  [db-conn batch-items existing-policies opts]
+   Before we can persist the data we need to apply some transformations to give it the right shape for the DB layer.
+
+   Apart than updating policy entities, we also handle the addition of related policy-tag entities, creating new tag
+   entities as well, in a similar way as we do when creating the policies."
+  [db-conn batch-items existing-policies {:keys [policy-tag-category-id] :as opts}]
   (let [batch-items-parsed-modif-dates (mapv #(update
                                                %
                                                :updated
@@ -439,16 +539,34 @@
                                             (jt/after? leap-api-new-modif
                                                        (sql-util/sql-timestamp->instant leap_api_modified)))))
                                    existing-policies)
-        processed-policies-to-update (processed-policies-to-update-from-batch
-                                      policies-to-update
-                                      policy-batch-lookup
-                                      opts)
+        processed-policies-to-update-data (processed-policies-to-update-from-batch
+                                           policies-to-update
+                                           policy-batch-lookup
+                                           opts)
+        processed-policies-to-update (:policies processed-policies-to-update-data)
+        ;; New tags creation code start marker
+        processed-new-tags (mapv (fn [{:keys [tag-name]}]
+                                   {:tag tag-name
+                                    :tag_category policy-tag-category-id
+                                    :review_status :SUBMITTED})
+                                 (:new-tags processed-policies-to-update-data))
+        processed-new-db-tags (mapv db.tag/tag->db-tag processed-new-tags)
+        tags-columns (sql-util/get-insert-columns-from-entity-col processed-new-db-tags)
+        processed-new-tag-vals (when (seq processed-new-db-tags)
+                                 (sql-util/entity-col->persistence-entity-col processed-new-db-tags))
+        created-tags (when (seq processed-new-db-tags)
+                       (db.tag/new-tags db-conn {:insert-cols tags-columns
+                                                 :tags processed-new-tag-vals}))
+        new-tags-by-norm-name (when (seq created-tags)
+                                (group-by #(str/lower-case (:tag %)) created-tags))
+        ;; New tags creation code end marker
         processed-db-policies-to-update (mapv db.policy/policy->db-policy processed-policies-to-update)]
-    (when (seq processed-db-policies-to-update)
-      (update-policies-batch db-conn processed-db-policies-to-update))
-    (count processed-db-policies-to-update)))
+    (handle-policy-and-policy-tags-update
+     db-conn
+     processed-db-policies-to-update
+     new-tags-by-norm-name
+     (:policy-tags processed-policies-to-update-data))))
 
-;; TODO: Add Update support for adding new tags in results return.
 (defn- handle-policy-import-batch
   "Handle creation and update of policies based on given batch
 
@@ -457,7 +575,13 @@
 
    The way to know which policies need to be created and which ones updated is by trying to match the policies
    coming from the LEAP API batch, using the `leap_api_id` (as batch item id) field to find them in the DB.
-   Once the existing ones are found, we know that the policies to create are the remaining ones."
+   Once the existing ones are found, we know that the policies to create are the remaining ones.
+
+   Regarding the created tags handling, once the creation of policies is processed for a given batch, we merge
+   the generated new tags info back into the original existing tags map passed to the update policies handling
+   function, so we can use this info without querying the existing tags again from the DB.
+   At the end we return the merged finally created tags map, so it can be merged with existing tags for the next
+   batches."
   [{:keys [db]} batch-items opts]
   (let [conn (:spec db)
         batch-item-ids (mapv #(util/uuid (:id %))
@@ -469,10 +593,13 @@
                                               (-> % :id util/uuid)))
                              batch-items)
         created-policies-data (handle-policy-creation-batch conn new-policies opts)
-        num-policies-to-update (handle-policy-update-batch conn batch-items existing-policies opts)]
+        new-tags-from-policy-creation (:new-tags-by-norm-name created-policies-data)
+        updated-opts (update opts :tags-by-normalized-name #(merge % new-tags-from-policy-creation))
+        updated-policies-data (handle-policy-update-batch conn batch-items existing-policies updated-opts)
+        new-tags-from-policy-update (:new-tags-by-norm-name updated-policies-data)]
     {:created-policies (count (:created-policies created-policies-data))
-     :created-tags (:new-tags-by-norm-name created-policies-data)
-     :updated-policies num-policies-to-update}))
+     :created-tags (merge new-tags-from-policy-creation new-tags-from-policy-update)
+     :updated-policies (:num-updated-policies updated-policies-data)}))
 
 ;; TODO: Handle retrials in smart way, as it is not worth to implement simplistic retrial since it is unlikely
 ;; that we get a different result without any additional delay if we just make subsequent attempts.
