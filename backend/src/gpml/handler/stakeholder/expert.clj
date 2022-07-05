@@ -143,7 +143,7 @@
                                                     [{:Name (str first-name " " last-name)
                                                       :Email email}]
                                                     [msg]
-                                                    [])]
+                                                    [nil])]
         (when-not (<= 200 status 299)
           (log logger :error ::send-invitation-email-failed {:context-data invitation
                                                              :email-msg msg
