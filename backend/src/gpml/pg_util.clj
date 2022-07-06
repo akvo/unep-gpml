@@ -45,6 +45,14 @@
           jdbc-array (.createArrayOf (.getConnection stmt) type-name as-array)]
       (.setArray stmt ix jdbc-array))))
 
+(deftype PGEnum [value type-name]
+  jdbc/ISQLParameter
+  (set-parameter [_ stmt ix]
+    (let [pg-object (doto (PGobject.)
+                      (.setType type-name)
+                      (.setValue (name value)))]
+      (.setObject stmt ix pg-object))))
+
 (extend-protocol jdbc/IResultSetReadColumn
   PGobject
   (result-set-read-column [value _ _]
