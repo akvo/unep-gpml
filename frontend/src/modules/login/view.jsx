@@ -24,12 +24,14 @@ const { Title, Link } = Typography;
 import { Form as FinalForm, Field } from "react-final-form";
 import { auth0Client } from "../../utils/misc";
 import ForgotPassword from "./forgot-password";
+import SignUp from "../email-signup/view";
 
 function Login({ handleOnClickBtnNext, visible, close }) {
   const history = useHistory();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
-  const [singin, setSignIn] = useState(false);
+  const [signin, setSignIn] = useState(false);
+  const [signup, setSignUp] = useState(false);
   const [forgotPassword, setForgotPassword] = useState(false);
   const [form] = Form.useForm();
 
@@ -118,13 +120,15 @@ function Login({ handleOnClickBtnNext, visible, close }) {
         <>
           <div className="signin-button">
             <p className="header-text">
-              {!singin
+              {!signin
                 ? "SIGN IN"
                 : forgotPassword
                 ? "FORGOT PASSWORD"
+                : signup
+                ? "JOIN WITH EMAIL"
                 : "CONTINUE WITH EMAIL"}
             </p>
-            {!singin ? (
+            {!signin ? (
               <div onClick={close}>
                 <p>CANCEL</p>
                 <CloseCircleOutlined />
@@ -140,11 +144,19 @@ function Login({ handleOnClickBtnNext, visible, close }) {
               >
                 {"<"} Back to connect options
               </Button>
+            ) : signup ? (
+              <Button
+                type="text"
+                className="connect-back-button"
+                onClick={() => setSignUp(!signup)}
+              >
+                {"<"} Back to connect options
+              </Button>
             ) : (
               <Button
                 type="text"
                 className="connect-back-button"
-                onClick={() => setSignIn(!singin)}
+                onClick={() => setSignIn(!signin)}
               >
                 {"<"} Back to connect options
               </Button>
@@ -161,9 +173,16 @@ function Login({ handleOnClickBtnNext, visible, close }) {
       <div>
         <Row>
           <Col span={24}>
-            {!forgotPassword ? (
+            {forgotPassword ? (
+              <ForgotPassword
+                setSignIn={setSignIn}
+                setForgotPassword={setForgotPassword}
+              />
+            ) : signup ? (
+              <SignUp setSignUp={setSignUp} />
+            ) : (
               <div className="auth-container">
-                {!singin ? (
+                {!signin ? (
                   <div className="signup-wrapper">
                     <div className="auth-buttons">
                       <Button
@@ -189,7 +208,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                         type="primary"
                         shape="round"
                         icon={<EmailIcon />}
-                        onClick={() => setSignIn(!singin)}
+                        onClick={() => setSignIn(!signin)}
                       >
                         CONTINUE WITH EMAIL
                       </Button>
@@ -273,10 +292,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                           type="primary"
                           shape="round"
                           className="login-button"
-                          onClick={() => {
-                            close();
-                            history.push("/stakeholder-signup-new");
-                          }}
+                          onClick={() => setSignUp(true)}
                         >
                           JOIN WITH EMAIL
                         </Button>
@@ -285,11 +301,6 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                   </div>
                 )}
               </div>
-            ) : (
-              <ForgotPassword
-                setSignIn={setSignIn}
-                setForgotPassword={setForgotPassword}
-              />
             )}
           </Col>
         </Row>
