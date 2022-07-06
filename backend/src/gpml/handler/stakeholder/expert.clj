@@ -6,10 +6,12 @@
    [gpml.db.invitation :as db.invitation]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.handler.stakeholder :as handler.stakeholder]
+   [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
    [gpml.pg-util :as pg-util]
    [gpml.util :as util]
    [gpml.util.email :as email]
    [integrant.core :as ig]
+   [jsonista.core :as json]
    [ring.util.response :as resp])
   (:import
    [java.sql SQLException]))
@@ -103,29 +105,49 @@
     true
     (assoc-in [:filters :experts?] true)))
 
+(defn- expert->api-expert
+  [expert]
+  (merge expert (handler.stakeholder.tag/unwrap-tags expert)))
+
 (defn- get-experts
   [{:keys [db]}
    {{:keys [query]} :parameters :as _req}]
-  (let [opts (api-opts->opts query)
-        experts (db.stakeholder/get-experts (:spec db) opts)
-        experts-count (-> (db.stakeholder/get-experts (:spec db) (assoc opts :count-only? true))
-                          first
-                          :count)]
-    (resp/response {:experts experts
-                    :count experts-count})))
+  (try
+    (let [opts (api-opts->opts query)
+          experts (db.stakeholder/get-experts (:spec db) opts)
+          experts-count (-> (db.stakeholder/get-experts (:spec db) (assoc opts :count-only? true))
+                            first
+                            :count)]
+      (resp/response {:experts (map expert->api-expert experts)
+                      :count experts-count}))
+    (catch Exception e
+      (if (instance? SQLException e)
+        {:status 500
+         :body {:success? false
+                :reason (pg-util/get-sql-state e)}}
+        {:status 500
+         :reason :could-not-get-experts
+         :error-details {:exception-message (.getMessage e)}}))))
 
 (defn- send-invitation-emails
   [{:keys [mailjet-config app-domain logger]} invitations]
   (try
-    (doseq [{invitation-id :id first-name :first_name last-name :last_name email :email} invitations
+    (doseq [{invitation-id :id
+             first-name :first_name
+             last-name :last_name
+             email :email :as invitation} invitations
             :let [msg (email/notify-expert-invitation-text first-name last-name invitation-id app-domain)]]
-      (email/send-email mailjet-config
-                        email/unep-sender
-                        "Join the UNEP GPML Platform"
-                        [{:Name (str first-name " " last-name)
-                          :Email email}]
-                        [msg]
-                        []))
+      (let [{:keys [status body]} (email/send-email mailjet-config
+                                                    email/unep-sender
+                                                    "Join the UNEP GPML Platform"
+                                                    [{:Name (str first-name " " last-name)
+                                                      :Email email}]
+                                                    [msg]
+                                                    [nil])]
+        (when-not (<= 200 status 299)
+          (log logger :error ::send-invitation-email-failed {:context-data invitation
+                                                             :email-msg msg
+                                                             :response-body (json/read-value body json/keyword-keys-object-mapper)}))))
     (catch Exception e
       (log logger :error ::send-invitation-emails-failed {:exception-message (.getMessage e)
                                                           :context-data {:invitations invitations}}))))

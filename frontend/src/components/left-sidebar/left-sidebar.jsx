@@ -9,43 +9,45 @@ const LeftSidebar = ({ children, active = 1, sidebar }) => {
 
   return (
     <div id="siteWrapper">
-      <aside id="mainNavigation">
-        <ul className="sidebar">
-          {sidebar?.map((s, sx) => (
-            <li
-              className={classNames("item-sidebar", {
-                active: activeMenu === s?.id,
-              })}
-              key={sx}
-            >
-              {s?.url ? (
-                <Link
-                  to={s.url}
-                  className="item-menu"
-                  onClick={() => setActiveMenu(s?.id)}
-                >
-                  {s.icon}
-                  <p>{s?.title}</p>
-                </Link>
-              ) : s.title.toLowerCase() === "forums" ? (
-                <a
-                  href="https://communities.gpmarinelitter.org/"
-                  className="item-menu"
-                  onClick={() => setActiveMenu(s?.id)}
-                >
-                  {s.icon}
-                  <p>{s?.title}</p>
-                </a>
-              ) : (
-                <div className="item-menu disabled">
-                  {s.icon}
-                  <p>{s?.title}</p>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
-      </aside>
+      {sidebar != null && (
+        <aside id="mainNavigation">
+          <ul className="sidebar">
+            {sidebar?.map((s, sx) => (
+              <li
+                className={classNames("item-sidebar", {
+                  active: activeMenu === s?.id,
+                })}
+                key={sx}
+              >
+                {s?.url ? (
+                  <Link
+                    to={s.url}
+                    className="item-menu"
+                    onClick={() => setActiveMenu(s?.id)}
+                  >
+                    {s.icon}
+                    <p>{s?.title}</p>
+                  </Link>
+                ) : s.title.toLowerCase() === "forums" ? (
+                  <a
+                    href="https://communities.gpmarinelitter.org/"
+                    className="item-menu"
+                    onClick={() => setActiveMenu(s?.id)}
+                  >
+                    {s.icon}
+                    <p>{s?.title}</p>
+                  </a>
+                ) : (
+                  <div className="item-menu disabled">
+                    {s.icon}
+                    <p>{s?.title}</p>
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )}
       <div id="appWrapper">
         <div id="appInnerWrapper">
           <div id="bodyContent">

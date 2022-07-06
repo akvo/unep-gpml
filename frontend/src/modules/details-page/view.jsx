@@ -107,6 +107,8 @@ const renderCountries = (data, countries) => {
 const DetailsView = ({
   match: { params },
   setStakeholderSignupModalVisible,
+  setFilterMenu,
+  isAuthenticated,
 }) => {
   const relatedContent = useRef(null);
   const [showLess, setShowLess] = useState(true);
@@ -133,7 +135,8 @@ const DetailsView = ({
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const [comments, setComments] = useState([]);
-  const { isAuthenticated, loginWithPopup } = useAuth0();
+  const { loginWithPopup } = useAuth0();
+  const [warningVisible, setWarningVisible] = useState(false);
   const [visible, setVisible] = useState(false);
   const [showReplyBox, setShowReplyBox] = useState("");
   const [editComment, setEditComment] = useState("");
@@ -406,9 +409,21 @@ const DetailsView = ({
           }}
         >
           {data?.image && (
-            <Col className="resource-image-wrapper">
+            <a
+              className="resource-image-wrapper"
+              href={`${
+                data?.url && data?.url?.includes("https://")
+                  ? data?.url
+                  : data.languages
+                  ? data?.languages[0].url
+                  : data?.url?.includes("http://")
+                  ? data?.url
+                  : "https://" + data?.url
+              }`}
+              target="_blank"
+            >
               <img className="resource-image" src={data?.image} alt="" />
-            </Col>
+            </a>
           )}
 
           <Col className="details-content-wrapper section-description section">
@@ -606,6 +621,10 @@ const DetailsView = ({
                       cursor: "pointer",
                       height: 40,
                       width: 40,
+                    }}
+                    style={{
+                      marginTop:
+                        data?.entityConnections?.length > 0 ? "16px" : 0,
                     }}
                   >
                     <List itemLayout="horizontal">

@@ -3,7 +3,6 @@
    [clojure.java.jdbc :as jdbc]
    [clojure.set :as set]
    [clojure.string :as string]
-   [clojure.walk :as w]
    [gpml.constants :as constants]
    [gpml.db.action :as db.action]
    [gpml.db.action-detail :as db.action-detail]
@@ -26,6 +25,7 @@
    [gpml.handler.organisation :as handler.org]
    [gpml.handler.resource.related-content :as handler.resource.related-content]
    [gpml.handler.resource.tag :as handler.resource.tag]
+   [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
    [gpml.handler.util :as util]
    [gpml.model.topic :as model.topic]
    [gpml.pg-util :as pg-util]
@@ -369,12 +369,7 @@
                                                                  :stakeholder-connections? false
                                                                  :related-content? false
                                                                  :affiliation? true})]
-    (merge details (reduce (fn [acc [k v]]
-                             (assoc acc k (map :tag v)))
-                           {}
-                           (-> (group-by :tag_relation_category (:tags details))
-                               (w/keywordize-keys)
-                               (select-keys [:seeking :offering :expertise]))))))
+    (merge details (handler.stakeholder.tag/unwrap-tags details))))
 
 (defmethod extra-details :nothing [_ _ _]
   nil)
