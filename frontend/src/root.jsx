@@ -78,6 +78,7 @@ import KnowledgeLibrary from "./modules/knowledge-library/view";
 import AddContentButton from "./components/add-content-button/add-content-button";
 import StakeholderOverview from "./modules/stakeholder-overview/view";
 import Partners from "./modules/partners/view";
+import Experts from "./modules/experts/view";
 
 let tmid;
 
@@ -748,6 +749,11 @@ const Root = () => {
                   exact
                   render={(props) => <Partners {...props} />}
                   path="/connect/partners"
+                />
+                <Route
+                  exact
+                  render={(props) => <Experts {...props} />}
+                  path="/connect/experts"
                 />
               </Switch>
             )}
