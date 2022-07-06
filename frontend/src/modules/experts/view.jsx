@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Row, Card, Image } from "antd";
 import Carousel from "react-multi-carousel";
 import { AppstoreOutlined } from "@ant-design/icons";
@@ -17,6 +17,7 @@ import { ReactComponent as PartnerBadge } from "../../images/stakeholder-overvie
 import { ReactComponent as GPMLMemberBadge } from "../../images/stakeholder-overview/member-of-gpml-badge.svg";
 import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
 import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
+import api from "../../utils/api";
 
 const Experts = () => {
   const sidebar = [
@@ -44,6 +45,10 @@ const Experts = () => {
   ];
 
   const [view, setView] = useState("map");
+  const [experts, setExperts] = useState({
+    experts: [],
+    count: 0,
+  });
   const [isAscending, setIsAscending] = useState(null);
 
   const expert = [
@@ -175,6 +180,26 @@ const Experts = () => {
     );
   };
 
+  const getExpert = () => {
+    const url = `/stakeholder/expert/list`;
+    api
+      .get(url)
+      .then((resp) => {
+        const data = resp?.data;
+        setExperts({
+          experts: data.experts,
+          count: data.count,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  useEffect(() => {
+    getExpert();
+  }, []);
+  console.log("experts::::::", experts);
   return (
     <div id="experts">
       <Row type="flex" className="body-wrapper">
