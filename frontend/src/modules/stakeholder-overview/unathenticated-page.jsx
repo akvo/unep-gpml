@@ -3,7 +3,7 @@ import { UserOutlined } from "@ant-design/icons";
 import "./unathenticated-page.scss";
 import { Link } from "react-router-dom";
 
-const UnathenticatedPage = ({ loginWithPopup }) => {
+const UnathenticatedPage = ({ setLoginVisible }) => {
   return (
     <div className="unathenticated-page">
       <p>
@@ -31,7 +31,7 @@ const UnathenticatedPage = ({ loginWithPopup }) => {
         />
         Once you are successfully registered log in below.
       </p>
-      <a className="login-button" onClick={loginWithPopup}>
+      <a className="login-button" onClick={() => setLoginVisible(true)}>
         <UserOutlined /> <span>Log in</span>
       </a>
     </div>

@@ -1,5 +1,6 @@
 (ns gpml.handler.organisation
   (:require
+   [duct.logger :refer [log]]
    [gpml.db.organisation :as db.organisation]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.geo-util :as geo]
@@ -61,29 +62,48 @@
                           :geo_coverage_country_groups (vec (filter some? (mapv :country_group data)))})]
       (resp/response (merge (assoc organisation :expertise seeks) geo-coverage)))))
 
-(defmethod ig/init-key :gpml.handler.organisation/post [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.organisation/post
+  [_ {:keys [db mailjet-config logger]}]
   (fn [{:keys [body-params referrer jwt-claims]}]
     (try
-      (let [org-creator (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)
-            org-id (create (:spec db) mailjet-config (assoc body-params :created_by (:id org-creator)))]
-        (resp/created referrer {:success? true
-                                :org (assoc body-params :id org-id)}))
+      (let [org-creator (when (seq (:email jwt-claims))
+                          (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims))
+            gpml-member? (:is_member body-params)]
+        (cond
+          (and gpml-member? (not (:id org-creator)))
+          {:status 400
+           :body {:success? false
+                  :reason :can-not-create-member-org-if-user-does-not-exist}}
+
+          (and gpml-member? (= "REJECTED" (:review_status org-creator)))
+          {:status 400
+           :body {:success? false
+                  :reason :can-not-create-member-org-if-user-is-in-rejected-state}}
+
+          :else
+          (let [org-id (create (:spec db) mailjet-config (assoc body-params :created_by (:id org-creator)))]
+            (resp/created referrer {:success? true
+                                    :org (assoc body-params :id org-id)}))))
       (catch Exception e
+        (log logger :error ::create-org-failed {:exception-message (.getMessage e)})
         (if (instance? SQLException e)
-          {:success? false
-           :reason (if (= :unique-constraint-violation (pg-util/get-sql-state e))
-                     :organisation-name-already-exists
-                     (pg-util/get-sql-state e))}
-          {:success? false
-           :reason :could-not-create-org
-           :error-details {:message (.getMessage e)}})))))
+          (if (= :unique-constraint-violation (pg-util/get-sql-state e))
+            {:status 409
+             :body {:success? false
+                    :reason :organisation-name-already-exists}}
+            {:status 500
+             :body {:success? false
+                    :reason :could-not-create-org}})
+          {:status 500
+           :body {:success? false
+                  :reason :could-not-create-org
+                  :error-details {:message (.getMessage e)}}})))))
 
 (defmethod ig/init-key :gpml.handler.organisation/post-params [_ _]
   (into [:map
          [:name string?]
          [:url string?]
          [:is_member boolean?]
-         [:stakeholder string?]
          [:country int?]
          [:geo_coverage_type geo/coverage_type]
          [:tags {:optional true}
