@@ -5,6 +5,7 @@
             [clojure.walk :as w]
             [duct.logger :refer [log]]
             [gpml.db.country :as db.country]
+            [gpml.db.country-group :as db.country-group]
             [gpml.db.detail :as db.detail]
             [gpml.db.language :as db.language]
             [gpml.db.policy :as db.policy]
@@ -106,7 +107,13 @@
    policy once that is created (leap-api-id) and be able to compare the name with existing tags
    (normalized-tag-name), adding its id in case the tag already exists, to be handled properly.
 
-   In this function duplicated/empty tags are also removed."
+   In this function duplicated/empty tags are also removed.
+
+   `:implementing-meas` --> Given implementing meas collection grouped by name, it returns the value of an option using
+    the name as the field value to find it among all the options. Then its id is used as replacement for the value.
+
+    For now only the first value found is stored since the model and the function will need to be changed to support
+    storing multiple values."
   (fn [field-type _ & _] field-type))
 
 (defmethod parse-policy-leap-api-field :translated-field
@@ -116,13 +123,20 @@
     (when (seq value)
       value)))
 
-;; TODO: Make sure we also populate "policy_geo_coverage" linking the policy and the country (not really to be done here but).
 (defmethod parse-policy-leap-api-field :iso-code
   [_ field-value & {:keys [opts-by-iso-code single-item-array-val?]}]
   (let [iso-val (if single-item-array-val?
                   (first field-value)
                   field-value)]
     (get-in opts-by-iso-code [iso-val 0 :id])))
+
+;; TODO: Extend this to support storing multiple values.
+;; TODO: Improve this by checking normalized values.
+;; Right now the model doesn't support it so we get only the first value from the collection.
+(defmethod parse-policy-leap-api-field :implementing-meas
+  [_ field-value & {:keys [opts-by-name]}]
+  (let [implementing-mea-name (first field-value)]
+    (get-in opts-by-name [implementing-mea-name 0 :id])))
 
 (defmethod parse-policy-leap-api-field :predefined-opt
   [_ field-value & {:keys [available-opts single-item-array-val? capitalize? coercion]}]
@@ -241,11 +255,12 @@
     flow, so that is why we apply a conditional transformation there."
   [{:keys [title originalTitle source country abstract type
            dateOfText lastAmendmentDate status files link regulatoryApproach
-           topics language id updated] :as policy-raw}
+           topics language id updated implementingMeas] :as policy-raw}
    {:keys [default-lang
            countries-by-iso-code
            languages-by-iso-code
            tags-by-normalized-name
+           mea-country-groups-by-name
            policy-types-of-law
            policy-status-opts
            policy-sub-content-types]}]
@@ -288,7 +303,7 @@
                  true)
    :review_status :APPROVED
    :url (parse-policy-leap-api-field :nilable-str link)
-   :sub_content_type (parse-policy-leap-api-field ;; TODO: Check expected format when we get something!
+   :sub_content_type (parse-policy-leap-api-field
                       :predefined-opt
                       regulatoryApproach
                       :available-opts
@@ -313,7 +328,12 @@
           :leap-api-id
           id
           :tags-by-normalized-name
-          tags-by-normalized-name)})
+          tags-by-normalized-name)
+   :implementing_mea (parse-policy-leap-api-field
+                      :implementing-meas
+                      implementingMeas
+                      :opts-by-name
+                      mea-country-groups-by-name)})
 
 (defn- processed-new-policies-from-batch
   "Process each batch item to generate policies data for creation
@@ -711,8 +731,8 @@
   [{:keys [logger] :as config}
    {:keys [leap-api-base-url leap-api-conn-timeout-ms leap-api-max-items-per-page
            leap-api-max-pages-to-process default-lang countries-by-iso-code
-           languages-by-iso-code tags-by-normalized-name policy-types-of-law
-           policy-status-opts policy-sub-content-types policy-tag-category-id]}]
+           languages-by-iso-code tags-by-normalized-name mea-country-groups-by-name
+           policy-types-of-law policy-status-opts policy-sub-content-types policy-tag-category-id]}]
   (loop [batch-data-acc {:batch-idx 0
                          :tags-by-normalized-name tags-by-normalized-name
                          :operation-result {:created-policies 0
@@ -737,6 +757,7 @@
                                       :countries-by-iso-code countries-by-iso-code
                                       :languages-by-iso-code languages-by-iso-code
                                       :tags-by-normalized-name (:tags-by-normalized-name batch-data-acc)
+                                      :mea-country-groups-by-name mea-country-groups-by-name
                                       :policy-types-of-law policy-types-of-law
                                       :policy-status-opts policy-status-opts
                                       :policy-sub-content-types policy-sub-content-types
@@ -778,7 +799,12 @@
                                     all-tags)
           tags-by-normalized-name (when (seq all-tags-normalized)
                                     (group-by :normalized-tag all-tags-normalized))
-          policy-tag-category (db.tag/tag-category-by-category-name conn {:category policy-tag-category-name})]
+          policy-tag-category (db.tag/tag-category-by-category-name conn {:category policy-tag-category-name})
+          all-mea-country-groups (db.country-group/get-country-groups-by-type
+                                  conn
+                                  {:type (sql-util/keyword->pg-enum :mea "country_group_type")})
+          mea-country-groups-by-name (when (seq all-mea-country-groups)
+                                       (group-by :name all-mea-country-groups))]
       (handle-policy-import-batches config {:leap-api-base-url leap-api-base-url
                                             :leap-api-conn-timeout-ms leap-api-conn-timeout-ms
                                             :leap-api-max-items-per-page leap-api-max-items-per-page
@@ -787,6 +813,7 @@
                                             :countries-by-iso-code countries-by-iso-code
                                             :languages-by-iso-code languages-by-iso-code
                                             :tags-by-normalized-name tags-by-normalized-name
+                                            :mea-country-groups-by-name mea-country-groups-by-name
                                             :policy-types-of-law policy-types-of-law
                                             :policy-status-opts policy-status-opts
                                             :policy-sub-content-types policy-sub-content-types
