@@ -144,6 +144,9 @@
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
+            li {
+              height: 28px;
+            }
           }
         }
       }
