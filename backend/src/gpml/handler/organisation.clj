@@ -67,9 +67,22 @@
   (fn [{:keys [body-params referrer jwt-claims]}]
     (try
       (let [org-creator (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)
-            org-id (create (:spec db) mailjet-config (assoc body-params :created_by (:id org-creator)))]
-        (resp/created referrer {:success? true
-                                :org (assoc body-params :id org-id)}))
+            gpml-member? (:is_member body-params)]
+        (cond
+          (and gpml-member? (not (:id org-creator)))
+          {:status 400
+           :body {:success? false
+                  :reason :can-not-create-member-org-if-user-does-not-exist}}
+
+          (and gpml-member? (= "REJECTED" (:review_status org-creator)))
+          {:status 400
+           :body {:success? false
+                  :reason :can-not-create-member-org-if-user-is-in-rejected-state}}
+
+          :else
+          (let [org-id (create (:spec db) mailjet-config (assoc body-params :created_by (:id org-creator)))]
+            (resp/created referrer {:success? true
+                                    :org (assoc body-params :id org-id)}))))
       (catch Exception e
         (log logger :error ::create-org-failed {:exception-message (.getMessage e)})
         (if (instance? SQLException e)
@@ -90,7 +103,6 @@
          [:name string?]
          [:url string?]
          [:is_member boolean?]
-         [:stakeholder string?]
          [:country int?]
          [:geo_coverage_type geo/coverage_type]
          [:tags {:optional true}
