@@ -5,8 +5,13 @@ import { Field } from "react-final-form";
 const { Title, Link } = Typography;
 import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
 
-function FormThree({ handleSeekingSuggestedTag, validate, error, handleRemove }) {
-  const [filteredOptions, setFilteredOptions] = useState([])
+function FormThree({
+  handleSeekingSuggestedTag,
+  validate,
+  error,
+  handleRemove,
+}) {
+  const [filteredOptions, setFilteredOptions] = useState([]);
   const storeData = UIStore.useState((s) => ({
     tags: s.tags,
   }));
@@ -15,7 +20,8 @@ function FormThree({ handleSeekingSuggestedTag, validate, error, handleRemove })
 
   const allOptions = Object.keys(tags)
     .map((k) => tags[k])
-    .flat().map(it => it.tag);
+    .flat()
+    .map((it) => it.tag);
 
   return (
     <>
@@ -45,16 +51,17 @@ function FormThree({ handleSeekingSuggestedTag, validate, error, handleRemove })
         >
           {({ input, meta }) => {
             const handleSearch = (value) => {
-              if(value.length < 2) {
-                setFilteredOptions([])
+              if (value.length < 2) {
+                setFilteredOptions([]);
               } else {
-                const filtered = allOptions
-                  .filter((item) => (
-                    item.toLowerCase().indexOf(value.toLowerCase()) > -1
-                  ))
-                setFilteredOptions(filtered.filter((it, index) => filtered.indexOf(it) === index))
+                const filtered = allOptions.filter(
+                  (item) => item.toLowerCase().indexOf(value.toLowerCase()) > -1
+                );
+                setFilteredOptions(
+                  filtered.filter((it, index) => filtered.indexOf(it) === index)
+                );
               }
-            }
+            };
             return (
               <>
                 <div style={{ marginTop: 20, color: "#A5B0C9" }}>

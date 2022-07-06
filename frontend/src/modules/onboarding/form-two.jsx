@@ -11,7 +11,7 @@ function FormTwo({
   error,
   handleRemove,
 }) {
-  const [filteredOptions, setFilteredOptions] = useState([])
+  const [filteredOptions, setFilteredOptions] = useState([]);
   const storeData = UIStore.useState((s) => ({
     tags: s.tags,
   }));
@@ -20,7 +20,8 @@ function FormTwo({
 
   const allOptions = Object.keys(tags)
     .map((k) => tags[k])
-    .flat().map(it => it.tag);
+    .flat()
+    .map((it) => it.tag);
   return (
     <>
       <div className="text-wrapper">
@@ -49,16 +50,17 @@ function FormTwo({
         >
           {({ input, meta }) => {
             const handleSearch = (value) => {
-              if(value.length < 2) {
-                setFilteredOptions([])
+              if (value.length < 2) {
+                setFilteredOptions([]);
               } else {
-                const filtered = allOptions
-                  .filter((item) => (
-                    item.toLowerCase().indexOf(value.toLowerCase()) > -1
-                  ))
-                setFilteredOptions(filtered.filter((it, index) => filtered.indexOf(it) === index))
+                const filtered = allOptions.filter(
+                  (item) => item.toLowerCase().indexOf(value.toLowerCase()) > -1
+                );
+                setFilteredOptions(
+                  filtered.filter((it, index) => filtered.indexOf(it) === index)
+                );
               }
-            }
+            };
             return (
               <>
                 <div style={{ marginTop: 20, color: "#A5B0C9" }}>
