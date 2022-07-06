@@ -55,6 +55,11 @@ const Footer = ({
               <li>
                 <h4>GPML Digital platform</h4>
               </li>
+              {profile && profile.org && !profile?.org?.isMember &&
+              <li>
+                <Link to="/entity-signup">Join GPML</Link>
+              </li>
+              }
               <li>
                 <Link to="/knowledge/library"> Knowledge Exchange</Link>
               </li>

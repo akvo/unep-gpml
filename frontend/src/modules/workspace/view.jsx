@@ -32,7 +32,7 @@ const Workspace = ({ profile }) => {
           <div className="workspace-content-wrapper">
             <div className="workspace-container">
               {profile &&
-                ((profile.org && !profile?.org?.isMember) || !isFocal) && (
+                ((profile.org && !profile?.org?.isMember) && isFocal !== false) && (
                   <Row className="bg-white gpml-section">
                     <Col lg={12} sm={24}>
                       <div className="content-container">
@@ -161,12 +161,14 @@ const Workspace = ({ profile }) => {
                     <List itemLayout="horizontal">
                       <List.Item>
                         <List.Item.Meta
-                          title={<Link to="/">Add data {">"}</Link>}
+                          title={<a href="https://datahub.gpmarinelitter.org/" target="_blank">Add data {">"}</a>}
+                          description="Contribute to the DataHub maps & dashboard"
                         />
                       </List.Item>
                       <List.Item>
                         <List.Item.Meta
-                          title={<Link to="/">Add resources {">"}</Link>}
+                          title={<Link to="/flexible-forms">Share your knowledge {">"}</Link>}
+                          description="Contribute to the global library of initiatives, action plans, financing & tech resources & more"
                         />
                       </List.Item>
                       {/* <List.Item>
@@ -178,7 +180,7 @@ const Workspace = ({ profile }) => {
                       <List.Item>
                         <List.Item.Meta
                           title={
-                            <Link to="/">Network and collaborate {">"}</Link>
+                            <Link to="/connect/community">Match with new opportunities {">"}</Link>
                           }
                           // description="Fictum, deserunt mollit anim laborum astutumque!"
                         />
