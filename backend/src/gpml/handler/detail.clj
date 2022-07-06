@@ -3,6 +3,7 @@
    [clojure.java.jdbc :as jdbc]
    [clojure.set :as set]
    [clojure.string :as string]
+   [duct.logger :refer [log]]
    [gpml.constants :as constants]
    [gpml.db.action :as db.action]
    [gpml.db.action-detail :as db.action-detail]
@@ -31,7 +32,9 @@
    [gpml.pg-util :as pg-util]
    [integrant.core :as ig]
    [medley.core :as medley]
-   [ring.util.response :as resp]))
+   [ring.util.response :as resp])
+  (:import
+   [java.sql SQLException]))
 
 (defn other-or-name [action]
   (when-let [actual-name (or
@@ -409,41 +412,59 @@
       (update :activity_term (fn [x] (when (:name x) x)))
       (update :is_action_being_reported #(when (:reports %) %))))
 
-(defn- common-queries [table path & [geo url tags]]
+(defn- common-queries
+  [table {:keys [topic-id]} & [geo url tags related-content]]
   (filter some?
-          [(when geo [(format "delete from %s_geo_coverage where %s = ?" table table) (:topic-id path)])
-           (when url [(format "delete from %s_language_url where %s = ?" table table) (:topic-id path)])
-           (when tags [(format "delete from %s_tag where %s = ?" table table) (:topic-id path)])
+          [(when geo [(format "delete from %s_geo_coverage where %s = ?" table table) topic-id])
+           (when url [(format "delete from %s_language_url where %s = ?" table table) topic-id])
+           (when tags [(format "delete from %s_tag where %s = ?" table table) topic-id])
+           (when related-content ["delete from related_content
+            where (resource_id = ? and resource_table_name = ?::regclass)
+            or (related_resource_id = ? and related_resource_table_name = ?::regclass)"
+                                  topic-id table topic-id table])
            (when (= "organisation" table)
-             ["delete from resource_organisation where organisation=?" (:topic-id path)])
+             ["delete from resource_organisation where organisation=?" topic-id])
            (when (= "resource" table)
-             ["delete from resource_organisation where resource=?" (:topic-id path)])
-           [(format "delete from %s where id = ?" table) (:topic-id path)]]))
+             ["delete from resource_organisation where resource=?" topic-id])
+           [(format "delete from %s where id = ?" table) topic-id]]))
 
-(defmethod ig/init-key ::delete [_ {:keys [db]}]
+(defmethod ig/init-key ::delete [_ {:keys [db logger]}]
   (fn [{{:keys [path]} :parameters approved? :approved? user :user}]
-    (let [conn        (:spec db)
-          topic       (:topic-type path)
-          authorized? (and (or (model.topic/public? topic) approved?)
-                           (some? (get-resource-if-allowed conn path user)))
-          sqls (condp = topic
-                 "policy" (common-queries topic path true true true)
-                 "event" (common-queries topic path true true true)
-                 "technology" (common-queries topic path true true true)
-                 "organisation" (common-queries topic path true false true)
-                 "stakeholder" [["delete from stakeholder where id = ?" (:topic-id path)]]
-                 "project" [["delete from initiative where id = ?"  (:topic-id path)]]
-                 "action_plan" (common-queries "resource" path true true true)
-                 "technical_resource" (common-queries "resource" path true true true)
-                 "financing_resource" (common-queries "resource" path true true true))]
-      (if authorized?
-        (resp/response (do
-                         (jdbc/with-db-transaction [tx-conn conn]
-                           (doseq [s sqls]
-                             (jdbc/execute! tx-conn s)))
-                         {:deleted {:topic-id (:topic-id path)
-                                    :topic topic}}))
-        util/unauthorized))))
+    (try
+      (let [conn        (:spec db)
+            topic       (resolve-resource-type (:topic-type path))
+            authorized? (and (or (model.topic/public? topic) approved?)
+                             (some? (get-resource-if-allowed conn path user)))
+            sqls (condp = topic
+                   "policy" (common-queries topic path true true true true)
+                   "event" (common-queries topic path true true true true)
+                   "technology" (common-queries topic path true true true true)
+                   "organisation" (common-queries topic path true false true false)
+                   "stakeholder" [["delete from stakeholder where id = ?" (:topic-id path)]]
+                   "initiative" (common-queries topic path true false true true)
+                   "action_plan" (common-queries "resource" path true true true true)
+                   "technical_resource" (common-queries "resource" path true true true true)
+                   "financing_resource" (common-queries "resource" path true true true true))]
+        (if authorized?
+          (resp/response (do
+                           (jdbc/with-db-transaction [tx-conn conn]
+                             (doseq [s sqls]
+                               (jdbc/execute! tx-conn s)))
+                           {:deleted {:topic-id (:topic-id path)
+                                      :topic topic}}))
+          util/unauthorized))
+      (catch Exception e
+        (log logger :error ::delete-resource-failed {:exception-message (.getMessage e)
+                                                     :context-data path})
+        (if (instance? SQLException e)
+          {:status 500
+           :body {:success? false
+                  :reason :could-not-delete-resource
+                  :error-details {:error-type (pg-util/get-sql-state e)}}}
+          {:status 500
+           :body {:success? false
+                  :reason :could-not-delete-resource
+                  :error-details {:error-message (.getMessage e)}}})))))
 
 (defn- get-detail
   [conn table-name id opts]
