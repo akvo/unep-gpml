@@ -3,7 +3,7 @@
 #experts {
   .expert-list-section {
     background: rgba(211, 222, 231, 0.15);
-    padding: 20px 16px;
+    padding: 20px 16px 40px 16px;
     .expert-top-tools {
       display: flex;
       justify-content: space-between;
@@ -73,6 +73,7 @@
         }
       }
     }
+
     .expert-carousel {
       .react-multi-carousel-item:not(:last-of-type) {
         margin-right: 10px;
@@ -93,7 +94,6 @@
           .expert-detail-list {
             img {
               width: 100%;
-              max-width: 128px;
               border-radius: 5px;
             }
             .expert-location {
@@ -108,6 +108,7 @@
                 }
               }
             }
+
             .expert-name {
               font-weight: 700;
               font-size: 14px;
@@ -123,6 +124,37 @@
             justify-content: space-between;
           }
         }
+      }
+    }
+
+    .expert-carousel-arrow {
+      top: calc(calc(330px - calc(42px / 2)) / 2);
+      background: unset !important;
+      z-index: 1;
+      svg {
+        width: 24px;
+        height: 38px;
+      }
+      &:hover {
+        svg path {
+          fill: $yellow-highlight;
+          fill-opacity: 1;
+        }
+      }
+    }
+
+    .custom-left-arrow.expert-carousel-arrow {
+      left: -10px;
+    }
+
+    .custom-right-arrow.expert-carousel-arrow {
+      right: -10px;
+    }
+
+    .expert-carousel-dots {
+      bottom: 19.5px;
+      button {
+        height: 2px;
       }
     }
   }

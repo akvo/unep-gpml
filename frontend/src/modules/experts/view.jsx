@@ -15,6 +15,8 @@ import { ReactComponent as LocationIcon } from "../../images/location.svg";
 import { ReactComponent as ExpertBadge } from "../../images/stakeholder-overview/expert-badge.svg";
 import { ReactComponent as PartnerBadge } from "../../images/stakeholder-overview/partner-badge.svg";
 import { ReactComponent as GPMLMemberBadge } from "../../images/stakeholder-overview/member-of-gpml-badge.svg";
+import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
+import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
 
 const Experts = () => {
   const sidebar = [
@@ -84,20 +86,39 @@ const Experts = () => {
       location: "France",
       activity: "Marine biologist",
       isExpert: true,
-
+      isPartner: true,
+    },
+    {
+      id: 5,
+      name: "Misa",
+      entity: "Akvo",
+      image: "/image/profile/2",
+      location: "France",
+      activity: "Marine biologist",
+      isExpert: true,
+      isPartner: true,
+    },
+    {
+      id: 6,
+      name: "Misa",
+      entity: "Akvo",
+      image: "/image/profile/2",
+      location: "France",
+      activity: "Marine biologist",
+      isExpert: true,
       isPartner: true,
     },
   ];
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
-      items: 6,
-      slidesToSlide: 6,
+      items: 7,
+      slidesToSlide: 7,
     },
     desktop: {
       breakpoint: { max: 1199, min: 992 },
-      items: 5,
-      slidesToSlide: 5,
+      items: 6,
+      slidesToSlide: 6,
     },
     tablet: {
       breakpoint: { max: 991, min: 768 },
@@ -116,10 +137,43 @@ const Experts = () => {
     },
     extraSmallMobile: {
       breakpoint: { max: 360, min: 0 },
-      items: 0.7,
-      slidesToSlide: 0.7,
+      items: 1,
+      slidesToSlide: 1,
     },
   };
+
+  const CustomRightArrow = ({ onClick, ...rest }) => {
+    const {
+      onMove,
+      carouselState: { currentSlide },
+    } = rest;
+
+    return (
+      <button
+        className="react-multiple-carousel__arrow custom-right-arrow expert-carousel-arrow"
+        onClick={() => onClick()}
+      >
+        <RightArrow />
+      </button>
+    );
+  };
+
+  const CustomLeftArrow = ({ onClick, ...rest }) => {
+    const {
+      onMove,
+      carouselState: { currentSlide },
+    } = rest;
+
+    return (
+      <button
+        className="react-multiple-carousel__arrow custom-left-arrow expert-carousel-arrow"
+        onClick={() => onClick()}
+      >
+        <LeftArrow />
+      </button>
+    );
+  };
+
   return (
     <div id="experts">
       <Row type="flex" className="body-wrapper">
@@ -139,7 +193,15 @@ const Experts = () => {
                 </div>
               </button>
             </div>
-            <Carousel responsive={responsive} containerClass="expert-carousel">
+            <Carousel
+              responsive={responsive}
+              dotListClass="expert-carousel-dots"
+              showDots={true}
+              renderDotsOutside={true}
+              customLeftArrow={<CustomLeftArrow />}
+              customRightArrow={<CustomRightArrow />}
+              containerClass="expert-carousel"
+            >
               {expert.map((item) => {
                 return (
                   <Card key={item?.id}>
