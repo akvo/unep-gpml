@@ -126,6 +126,11 @@ values :t*:tags RETURNING id;
 insert into policy_geo_coverage (:i*:insert-cols)
 values :t*:geo RETURNING id;
 
+-- :name delete-policies-geo :execute :affected
+-- :doc delete policies geo by policy ids
+delete from policy_geo_coverage
+  where policy IN (:v*:policies);
+
 -- :name all-policies
 -- :doc List all policies
 select id, title

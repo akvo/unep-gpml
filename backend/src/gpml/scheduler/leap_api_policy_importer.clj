@@ -320,6 +320,7 @@
 
    Regarding the policies data, new tags are registered for creation, as well as policy-tags (the relationships
    between policy and tag entities), skipping duplicated data, by comparing normalized tag names to detect those.
+   Besides, we also register policy-geo-coverage data, that are relationships similar to policy-tags ones.
 
    In order to detect the new tags to be created we filter all the collection to get the ones that do not have an id."
   [policies-batch-items opts]
@@ -359,12 +360,14 @@
 
    Only existing policy id is needed to be kept for the update as no more data is going to be updated.
 
-   In order to build new tags and policy-tags data we use the same strategy as when creating policies."
+   In order to build new tags, policy-tags and policy-geo-coverage data we use the same strategy as when creating
+   policies."
   [existing-policies policies-batch-items-lookup opts]
   (let [policies-data-acc {:new-tags []
                            :policy-tags []
-                           :policies []}]
-    (reduce (fn [policies-acc {:keys [leap_api_id] :as existing-policy}]
+                           :policies []
+                           :policy-geo-coverage []}]
+    (reduce (fn [policies-acc {:keys [country leap_api_id] :as existing-policy}]
               (let [str-leap-api-id (str leap_api_id)
                     policy-batch-item (get-in policies-batch-items-lookup [str-leap-api-id 0])
                     policy-to-update (merge (select-keys existing-policy [:id])
@@ -377,7 +380,15 @@
                     new-tags (->> tags
                                   (filter #(nil? (:tag-id %)))
                                   (filter #(not (get registered-tags-set (:normalized-tag-name %)))))
-                    updated-policies-acc (-> policies-acc
+
+                    policies-acc-with-geo-coverage (if-not (nil? country)
+                                                     (update
+                                                      policies-acc
+                                                      :policy-geo-coverage
+                                                      #(vec (conj % {:country-id country
+                                                                     :leap-api-id leap_api_id})))
+                                                     policies-acc)
+                    updated-policies-acc (-> policies-acc-with-geo-coverage
                                              (update :policy-tags #(vec (concat % tags)))
                                              (update :policies #(vec (conj % policy-to-update))))]
                 (if (seq new-tags)
@@ -508,11 +519,15 @@
      (:policy-tags processed-new-policies-data)
      processed-policies-geo-coverage)))
 
-(defn- handle-policy-and-policy-tags-update
-  "Handle atomically the update of policy and creation of new policy-tag entities
+(defn- handle-policy-and-dependent-entities-update
+  "Handle atomically the update of policy and creation of dependent entities, like policy-tags and
+   policy-geo-coverage.
 
-   The strategy is similar as when creating policy and policy-tags, but in this case, we only
-   add policy-tag entities that have been not created already.
+   The strategy is similar as when creating policy, policy-tags and policy-geo-coverage entities, but in this case,
+   we only add policy-tag entities that have been not created already.
+   For updating policy-geo-coverage entities, we just delete the previous entries and re-create all again, including
+   updated values, since Leap API is the only source of truth for this field.
+
    For this process, we ignore the row's ids that have no meaning and we consider only what it really
    represents a row in a policy-tag table: the unique combination of policy and tag ids (FKs). We need to
    do it in this way, since we are going to remove soon the artificial id that is the current PK of the table,
@@ -523,7 +538,7 @@
 
    All the policy-tags are created in one go in order to re-use existing code and make the process more perfomant
    and simpler."
-  [main-conn processed-db-policies-to-update new-tags-by-norm-name policy-tags]
+  [main-conn processed-db-policies-to-update new-tags-by-norm-name policy-tags processed-policies-geo-coverage]
   (jdbc/with-db-transaction
     [trans-conn main-conn]
     (let [policies-by-leap-api-id (when (seq processed-db-policies-to-update)
@@ -556,13 +571,30 @@
                                         (sql-util/entity-col->persistence-entity-col
                                          not-existing-processed-policy-tags
                                          :insert-keys
-                                         policy-tag-insert-keys))]
+                                         policy-tag-insert-keys))
+          policies-geo-coverage (mapv (fn [{:keys [leap-api-id country-id]}]
+                                        (let [target-policy (get-in policies-by-leap-api-id [leap-api-id 0])]
+                                          {:policy (:id target-policy)
+                                           :country country-id}))
+                                      processed-policies-geo-coverage)
+          policy-geo-cov-columns (sql-util/get-insert-columns-from-entity-col policies-geo-coverage)
+          policy-geo-cov-vals (when (seq policies-geo-coverage)
+                                (sql-util/entity-col->persistence-entity-col policies-geo-coverage))]
       (when (seq not-existing-processed-policy-tags)
         (db.resource.tag/create-resource-tags
          trans-conn
          {:table "policy_tag"
           :resource-col "policy"
           :tags processed-policy-tag-values}))
+      (when (seq policy-geo-cov-vals)
+        (db.policy/delete-policies-geo
+         trans-conn
+         {:policies (mapv #(get % :policy)
+                          policies-geo-coverage)})
+        (db.policy/add-policies-geo
+         trans-conn
+         {:insert-cols policy-geo-cov-columns
+          :geo policy-geo-cov-vals}))
       (when (seq processed-db-policies-to-update)
         (update-policies-batch trans-conn processed-db-policies-to-update))
       {:num-updated-policies (count processed-db-policies-to-update)
@@ -618,12 +650,14 @@
         new-tags-by-norm-name (when (seq created-tags)
                                 (group-by #(str/lower-case (:tag %)) created-tags))
         ;; New tags creation code end marker
-        processed-db-policies-to-update (mapv db.policy/policy->db-policy processed-policies-to-update)]
-    (handle-policy-and-policy-tags-update
+        processed-db-policies-to-update (mapv db.policy/policy->db-policy processed-policies-to-update)
+        processed-policies-geo-coverage (:policy-geo-coverage processed-policies-to-update-data)]
+    (handle-policy-and-dependent-entities-update
      db-conn
      processed-db-policies-to-update
      new-tags-by-norm-name
-     (:policy-tags processed-policies-to-update-data))))
+     (:policy-tags processed-policies-to-update-data)
+     processed-policies-geo-coverage)))
 
 (defn- handle-policy-import-batch
   "Handle creation and update of policies based on given batch
