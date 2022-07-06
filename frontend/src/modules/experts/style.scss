@@ -1,0 +1,128 @@
+@import "../../vars.scss";
+
+#experts {
+  .expert-list-section {
+    background: rgba(211, 222, 231, 0.15);
+    padding: 20px 16px;
+    .expert-top-tools {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      .page-label {
+        background-color: rgba(211, 222, 231, 0.5);
+        border-radius: 10px;
+        color: #18162f;
+        font-size: 12px;
+        padding: 9px;
+      }
+      .view-button {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border-radius: 30px;
+        font-weight: 500;
+        font-size: 10px;
+        line-height: 10px;
+        text-align: center;
+        color: $blue06;
+        max-width: 98px;
+        background-color: unset;
+        border: 1px solid $blue06;
+        min-height: 32px;
+        cursor: pointer;
+        &:hover {
+          background-color: $yellow-highlight;
+          color: #fff;
+          border: 1px solid #fff;
+        }
+        .view-button-text {
+          margin-right: 7.11px;
+          text-transform: uppercase;
+          word-wrap: break-word;
+        }
+        svg {
+          width: 22px;
+          height: 22px;
+        }
+        .transnational-icon {
+          width: 100%;
+          max-width: 22px;
+          path {
+            stroke-width: 3px;
+          }
+        }
+      }
+      .sort-by-button {
+        display: flex;
+        align-items: center;
+        color: $blue06;
+        font-weight: 400;
+        font-size: 12px;
+        border: unset;
+        background-color: unset;
+        cursor: pointer;
+        svg {
+          width: 32px;
+          height: 32px;
+          margin-right: 7px;
+        }
+        .sort-button-text {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
+    .expert-carousel {
+      .react-multi-carousel-item:not(:last-of-type) {
+        margin-right: 10px;
+      }
+      .react-multi-carousel-item {
+        width: 100%s;
+        max-width: 180px;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
+        .ant-card {
+          border-radius: 5px;
+          border: unset;
+          .ant-card-body {
+            height: 330px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          }
+          .expert-detail-list {
+            img {
+              width: 100%;
+              max-width: 128px;
+            }
+            .expert-location {
+              display: flex;
+              align-items: center;
+              svg {
+                width: 13px;
+                margin-right: 6px;
+                path,
+                line {
+                  stroke: #d3dee7;
+                }
+              }
+            }
+            .expert-name {
+              font-weight: 700;
+              font-size: 14px;
+              line-height: 20px;
+              color: $blue06;
+            }
+          }
+
+          .badge-list {
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+          }
+        }
+      }
+    }
+  }
+}
