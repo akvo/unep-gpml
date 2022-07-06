@@ -436,7 +436,7 @@
             authorized? (and (or (model.topic/public? topic) approved?)
                              (some? (get-resource-if-allowed conn path user)))
             sqls (condp = topic
-                   "policy" (common-queries topic path true true true true)
+                   "policy" (common-queries topic path true false true true)
                    "event" (common-queries topic path true true true true)
                    "technology" (common-queries topic path true true true true)
                    "organisation" (common-queries topic path true false true false)
@@ -650,7 +650,10 @@
                           (set/rename-keys {:geo_coverage_value_subnational_city :subnational_city}))
         tags (remove nil? (:tags updates))
         urls (remove nil? (:urls updates))
-        params {:table table :id id :updates table-columns}
+        params {:table table
+                :id id
+                :updates table-columns
+                :entity-type topic-type}
         status (db.detail/update-resource-table conn params)
         org (:org updates)
         org-id (and org
@@ -667,7 +670,8 @@
       (update-resource-tags conn mailjet-config table id tags))
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn id table related-contents))
-    (update-resource-language-urls conn table id urls)
+    (when-not (= "policy" topic-type)
+      (update-resource-language-urls conn table id urls))
     (update-resource-geo-coverage-values conn table id updates)
     (when (contains? #{"resource"} table)
       (update-resource-organisation conn table id org-id))

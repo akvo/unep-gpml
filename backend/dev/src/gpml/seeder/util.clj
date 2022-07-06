@@ -76,7 +76,6 @@
                            :table "policy"
                            :json "policies.json"
                            :child ["policy_geo_coverage"
-                                   "policy_language_url"
                                    "policy_tag"]}))
 
 (defn drop-constraint-resource [db cache-id]
