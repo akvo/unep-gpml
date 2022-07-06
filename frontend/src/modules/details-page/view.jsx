@@ -107,6 +107,8 @@ const renderCountries = (data, countries) => {
 const DetailsView = ({
   match: { params },
   setStakeholderSignupModalVisible,
+  setFilterMenu,
+  isAuthenticated,
 }) => {
   const relatedContent = useRef(null);
   const [showLess, setShowLess] = useState(true);
@@ -133,7 +135,8 @@ const DetailsView = ({
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const [comments, setComments] = useState([]);
-  const { isAuthenticated, loginWithPopup } = useAuth0();
+  const { loginWithPopup } = useAuth0();
+  const [warningVisible, setWarningVisible] = useState(false);
   const [visible, setVisible] = useState(false);
   const [showReplyBox, setShowReplyBox] = useState("");
   const [editComment, setEditComment] = useState("");

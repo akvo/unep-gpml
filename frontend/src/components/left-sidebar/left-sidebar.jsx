@@ -9,6 +9,7 @@ const LeftSidebar = ({ children, active = 1, sidebar }) => {
 
   return (
     <div id="siteWrapper">
+      {sidebar != null &&
       <aside id="mainNavigation">
         <ul className="sidebar">
           {sidebar?.map((s, sx) => (
@@ -46,6 +47,7 @@ const LeftSidebar = ({ children, active = 1, sidebar }) => {
           ))}
         </ul>
       </aside>
+      }
       <div id="appWrapper">
         <div id="appInnerWrapper">
           <div id="bodyContent">
