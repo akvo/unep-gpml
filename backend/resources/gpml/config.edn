@@ -687,6 +687,7 @@
   :gpml.handler.detail/topics {}
   :gpml.handler.detail/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.detail/delete {:db #ig/ref :duct.database/sql
+                               :logger #ig/ref :duct/logger
                                :app-user-admin #duct/env "APP_USER_ADMIN"}
   :gpml.handler.detail/put {:db #ig/ref :duct.database/sql
                             :mailjet-config #ig/ref :gpml.config/mailjet}
