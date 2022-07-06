@@ -106,6 +106,7 @@ const HeaderFilter = ({
   reviewers,
   setListOpts,
   initialReviewStatus,
+  expert,
 }) => {
   const [selectedValue, setSelectedValue] = useState(
     (listOpts.reviewStatus && statusDictToHuman[listOpts.reviewStatus]) ||
@@ -124,7 +125,7 @@ const HeaderFilter = ({
             const data = await fetchSubmissionData(
               1,
               10,
-              listOpts.type,
+              expert ? "experts" : listOpts.type,
               listOpts.title
             );
             setListOpts((opts) => ({
@@ -142,7 +143,7 @@ const HeaderFilter = ({
             const data = await fetchSubmissionData(
               1,
               10,
-              listOpts.type,
+              expert ? "experts" : listOpts.type,
               reviewStatus,
               listOpts.title
             );
@@ -289,6 +290,7 @@ const AdminSection = ({
   const [loadingAssignReviewer, setLoadingAssignReviewer] = useState(false);
   const [loading, setLoading] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
+  const [expert, setExpert] = useState(false);
 
   const [tab, setTab] = useState("stakeholders");
   const [stakeholdersListOpts, setStakeholdersListOpts] = useState({
@@ -793,7 +795,32 @@ const AdminSection = ({
               <div>
                 <b className="approval-bold-text">Filtering by:</b>
                 {listOpts.type === "stakeholders" && (
-                  <Checkbox className="expert-checkbox">Experts</Checkbox>
+                  <Checkbox
+                    className="expert-checkbox"
+                    onChange={(e) => {
+                      setExpert(e.target.checked);
+                      const reviewStatus = listOpts.reviewStatus;
+                      setListOpts((opts) => ({ ...opts, reviewStatus }));
+                      (async () => {
+                        const data = await fetchSubmissionData(
+                          1,
+                          10,
+                          e.target.checked ? "experts" : "stakeholders",
+                          reviewStatus,
+                          listOpts.title
+                        );
+                        setListOpts((opts) => ({
+                          ...opts,
+                          reviewStatus,
+                          data,
+                          current: 1,
+                          size: 10,
+                        }));
+                      })();
+                    }}
+                  >
+                    Experts
+                  </Checkbox>
                 )}
               </div>
               {title !== "Tags" && (
@@ -827,6 +854,7 @@ const AdminSection = ({
               setListOpts={setListOpts}
               listOpts={listOpts}
               initialReviewStatus="Pending"
+              expert={expert}
             />
           </div>
           <Collapse onChange={getPreviewContent}>
