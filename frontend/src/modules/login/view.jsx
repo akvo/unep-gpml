@@ -157,6 +157,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
       footer={false}
       className="login"
       closable={false}
+      onCancel={close}
     >
       <div>
         <Row>

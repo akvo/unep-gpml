@@ -899,9 +899,7 @@ const Root = () => {
         visible={warningModalVisible}
         close={() => setWarningModalVisible(false)}
       />
-      {loginVisible && (
-        <Login visible={loginVisible} close={() => setLoginVisible(false)} />
-      )}
+      <Login visible={loginVisible} close={() => setLoginVisible(false)} />
       <ResponsiveMenu
         {...{
           profile,
