@@ -3,7 +3,7 @@
 #experts {
   .expert-list-section {
     background: rgba(211, 222, 231, 0.15);
-    padding: 20px 16px 40px 16px;
+    padding: 20px 16px;
     .expert-top-tools {
       display: flex;
       justify-content: space-between;
@@ -174,7 +174,8 @@
     }
 
     .expert-carousel-dots {
-      bottom: 19.5px;
+      position: unset;
+      margin-top: 20px;
       button {
         height: 2px;
       }
