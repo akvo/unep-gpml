@@ -66,7 +66,8 @@
   [_ {:keys [db mailjet-config logger]}]
   (fn [{:keys [body-params referrer jwt-claims]}]
     (try
-      (let [org-creator (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)
+      (let [org-creator (when (seq (:email jwt-claims))
+                          (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims))
             gpml-member? (:is_member body-params)]
         (cond
           (and gpml-member? (not (:id org-creator)))
