@@ -105,14 +105,38 @@
                 width: 100%;
               }
               .expert-image {
+                width: 100%;
+                max-width: 128px;
+                height: 100%;
+                display: flex;
+                place-items: center;
                 border-radius: 5px;
+
+                .ant-avatar-string {
+                  display: flex;
+                  flex-direction: column;
+                  place-items: center;
+                  svg {
+                    width: 28px;
+                    height: 28px;
+                  }
+                  span {
+                    font-size: 30px;
+                    font-weight: 700;
+                    line-height: 30px;
+                  }
+                }
+              }
+              .no-image {
+                height: 128px;
               }
               .entity-logo {
                 position: absolute;
+                z-index: 1;
                 top: -5px;
                 left: -5px;
                 border-radius: 50%;
-                max-width: 31px;
+                width: 31px;
                 height: 31px;
                 border: 1px solid #edf2f7;
               }
@@ -143,9 +167,11 @@
             height: 100%;
             display: flex;
             align-items: flex-end;
-            justify-content: space-between;
             li {
               height: 28px;
+            }
+            li:not(:last-of-type) {
+              margin-right: 21px;
             }
           }
         }

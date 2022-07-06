@@ -1,6 +1,7 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import { Auth0Provider } from "@auth0/auth0-react";
+import { Auth0Client } from "@auth0/auth0-spa-js";
 import React from "react";
 import ReactDOM from "react-dom";
 import "./main.scss";

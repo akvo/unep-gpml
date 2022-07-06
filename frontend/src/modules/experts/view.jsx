@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Button, Row, Card, Image } from "antd";
+import { Button, Row, Card, Avatar } from "antd";
 import Carousel from "react-multi-carousel";
 import { AppstoreOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 import "./style.scss";
+import api from "../../utils/api";
+import { UIStore } from "../../store";
+import { colors } from "../../utils/misc";
 import LeftSidebar from "../../components/left-sidebar/left-sidebar";
 import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg";
 import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
@@ -17,9 +21,16 @@ import { ReactComponent as PartnerBadge } from "../../images/stakeholder-overvie
 import { ReactComponent as GPMLMemberBadge } from "../../images/stakeholder-overview/member-of-gpml-badge.svg";
 import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
 import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
-import api from "../../utils/api";
+import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
+
+const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
 const Experts = () => {
+  const { countries, organisations } = UIStore.useState((s) => ({
+    countries: s.countries,
+    organisations: s.organisations,
+  }));
+
   const sidebar = [
     { id: 1, title: "Events", url: "/connect/events", icon: <IconEvent /> },
     {
@@ -51,70 +62,6 @@ const Experts = () => {
   });
   const [isAscending, setIsAscending] = useState(null);
 
-  const expert = [
-    {
-      id: 1,
-      name: "Kaneki Ken",
-      entity: "Akvo",
-      image: "/image/profile/2",
-      location: "France",
-      activity: "Marine biologist",
-      isExpert: true,
-      isGPMLMember: true,
-    },
-    {
-      id: 2,
-      name: "Daniel",
-      entity: "Akvo",
-      image: "/image/profile/2",
-      location: "France",
-      activity: "Marine biologist",
-      isExpert: true,
-      isGPMLMember: true,
-      isPartner: true,
-    },
-    {
-      id: 3,
-      name: "Light Yagami",
-      entity: "Akvo",
-      image: "/image/profile/2",
-      location: "France",
-      activity: "Marine biologist",
-      isExpert: true,
-      isGPMLMember: true,
-      isPartner: true,
-    },
-    {
-      id: 4,
-      name: "Misa",
-      entity: "Akvo",
-      image: "/image/profile/2",
-      location: "France",
-      activity: "Marine biologist",
-      isExpert: true,
-      isPartner: true,
-    },
-    {
-      id: 5,
-      name: "Misa",
-      entity: "Akvo",
-      image: "/image/profile/2",
-      location: "France",
-      activity: "Marine biologist",
-      isExpert: true,
-      isPartner: true,
-    },
-    {
-      id: 6,
-      name: "Misa",
-      entity: "Akvo",
-      image: "/image/profile/2",
-      location: "France",
-      activity: "Marine biologist",
-      isExpert: true,
-      isPartner: true,
-    },
-  ];
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
@@ -199,7 +146,7 @@ const Experts = () => {
   useEffect(() => {
     getExpert();
   }, []);
-  console.log("experts::::::", experts);
+
   return (
     <div id="experts">
       <Row type="flex" className="body-wrapper">
@@ -247,43 +194,79 @@ const Experts = () => {
               customRightArrow={<CustomRightArrow />}
               containerClass="expert-carousel"
             >
-              {expert.map((item) => {
-                return (
-                  <Card key={item?.id}>
-                    <ul className="expert-detail-list">
-                      <li className="list-item expert-image-wrapper">
-                        <img
-                          src="https://storage.googleapis.com/akvo-unep-gpml/images/organisation_010_logo.PNG"
-                          className="entity-logo"
-                        />
-                        <img
-                          className="expert-image"
-                          src={item?.image}
-                          alt={item?.name}
-                        />
-                      </li>
+              {experts.experts.map((expert) => {
+                const country = countries.find(
+                  (country) => country.id === expert.country
+                )?.name;
 
-                      <li className="list-item expert-name">{item?.name}</li>
-                      <li className="list-item expert-location">
-                        <LocationIcon />
-                        <span> {item?.location}</span>
-                      </li>
-                      <li className="list-item expert-activity">
-                        {item?.activity}
-                      </li>
-                    </ul>
-                    <ul className="badge-list">
-                      <li>
-                        <GPMLMemberBadge />
-                      </li>
-                      <li>
-                        <PartnerBadge />
-                      </li>
-                      <li>
-                        <ExpertBadge />
-                      </li>
-                    </ul>
-                  </Card>
+                const entity = organisations.find(
+                  (organisation) => organisation.id === expert.affiliation
+                );
+
+                return (
+                  <Link to={`/stakeholder/${expert?.id}`}>
+                    <Card key={expert?.id}>
+                      <ul className="expert-detail-list">
+                        <li className="list-item expert-image-wrapper">
+                          {expert?.affiliation && (
+                            <Avatar
+                              className="entity-logo"
+                              style={{
+                                backgroundColor: colour(),
+                                verticalAlign: "middle",
+                              }}
+                              size={32}
+                            >
+                              {entity?.name?.substring(0, 2)}
+                            </Avatar>
+                          )}
+
+                          <Avatar
+                            className={`expert-image ${
+                              !expert.picture && "no-image"
+                            }`}
+                            src={expert.picture}
+                            style={{ backgroundColor: colour() }}
+                            alt={
+                              expert?.firstName
+                                ? expert?.firstName
+                                : expert?.name
+                            }
+                          >
+                            {!expert.picture && <CircledUserIcon />}
+                            <span>
+                              {`${expert?.firstName?.substring(
+                                0,
+                                1
+                              )}${expert?.lastName?.substring(0, 1)}`}
+                            </span>
+                          </Avatar>
+                        </li>
+
+                        <li className="list-item expert-name">
+                          {`${expert?.firstName} ${expert?.lastName}`}
+                        </li>
+                        <li className="list-item expert-location">
+                          <LocationIcon />
+                          <span>{country}</span>
+                        </li>
+                        <li className="list-item expert-activity">
+                          {expert?.jobTitle}
+                        </li>
+                      </ul>
+                      <ul className="badge-list">
+                        <li>
+                          <GPMLMemberBadge />
+                        </li>
+                        {/* <li>
+                          <PartnerBadge />
+                        </li> */}
+                        <li>
+                          <ExpertBadge />
+                        </li>
+                      </ul>
+                    </Card>
+                  </Link>
                 );
               })}
             </Carousel>

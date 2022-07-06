@@ -10,6 +10,7 @@ import { topicNames, resourceSubTypes } from "../../utils/misc";
 import { Input, Button, notification } from "antd";
 import api from "../../utils/api";
 import { fetchSubmissionData } from "./utils";
+import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
 
 const currencyFormat = (cur) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: cur });
@@ -469,6 +470,37 @@ export const ProfilePreview = ({ item }) => {
     transnationalOptions: s.transnationalOptions,
   }));
   const country = countries.find((x) => x.id === item.country)?.name || "-";
+  const [expertise, setExpertise] = useState([]);
+  const [error, setError] = useState("");
+
+  const handleExpertise = (value) => {
+    setError("");
+    expertise.indexOf(value) === -1 &&
+      setExpertise((oldItem) => [...oldItem, value]);
+  };
+
+  const handleRemove = (v) => {
+    setExpertise(expertise.filter((item) => item !== v));
+  };
+
+  const updateStakeholderExpertise = () => {
+    if (expertise.length > 0) {
+      let vals = {
+        expertise: expertise,
+      };
+      api
+        .put(`/stakeholder/${item.id}`, vals)
+        .then(() => {
+          notification.success({ message: "Profile updated" });
+        })
+        .catch(() => {
+          notification.error({ message: "An error occured" });
+        });
+    } else {
+      setError("Required");
+    }
+  };
+
   return (
     <div className="stakeholder-info">
       <div className="left">
@@ -552,6 +584,18 @@ export const ProfilePreview = ({ item }) => {
             <p className="section-title">Expertise and Activities</p>
           </li>
           <li>
+            <div className="detail-title">Expertise</div>:
+            <div className="detail-content" style={{ width: "100%" }}>
+              <CatTagSelect
+                handleChange={(value) => handleExpertise(value)}
+                meta={"meta"}
+                error={error}
+                value={expertise ? expertise : undefined}
+                handleRemove={(v) => handleRemove(v)}
+              />
+            </div>
+          </li>
+          <li>
             <div className="detail-title">Seeking</div>:
             <div className="detail-content">{item.seeking || "-"}</div>
           </li>
@@ -566,6 +610,16 @@ export const ProfilePreview = ({ item }) => {
           <li>
             <div className="detail-title">Tags</div>:
             <div className="detail-content">{item.general || "-"}</div>
+          </li>
+          <li className="update-button-group">
+            <Button
+              type="ghost"
+              className="black"
+              onClick={() => updateStakeholderExpertise()}
+            >
+              Update
+            </Button>
+            {item.unpublishButton}
           </li>
         </ul>
       </div>
@@ -696,10 +750,15 @@ export const InitiativePreview = ({ item }) => {
   );
 };
 
-export const DetailCollapse = ({ data, item, getPreviewContent }) => {
+export const DetailCollapse = ({
+  data,
+  item,
+  getPreviewContent,
+  unpublishButton,
+}) => {
   switch (item.type) {
     case "stakeholder":
-      return <ProfilePreview item={{ ...data, ...item }} />;
+      return <ProfilePreview item={{ ...data, ...item, unpublishButton }} />;
     case "project":
       return <InitiativePreview item={{ ...data, ...item }} />;
     case "tag":

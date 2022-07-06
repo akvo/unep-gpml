@@ -11,6 +11,7 @@ import {
   Input,
   Tabs,
   Typography,
+  Checkbox,
 } from "antd";
 const { Title } = Typography;
 import React from "react";
@@ -35,6 +36,7 @@ import {
   FilterOutlined,
 } from "@ant-design/icons";
 import Avatar from "antd/lib/avatar/avatar";
+import Expert from "./expert";
 
 const { Search } = Input;
 const { TabPane } = Tabs;
@@ -189,15 +191,14 @@ const RoleSelect = ({
 }) => {
   return (
     <div
-      style={{ width: "20%" }}
       onClick={(e) => {
         e.stopPropagation();
       }}
     >
       <div style={{ width: "100%" }}>User role</div>
       <Select
+        style={{ width: "200px" }}
         showSearch={false}
-        style={{ width: "50%" }}
         onChange={(role) =>
           onChangeRole(stakeholder, role, listOpts, setListOpts)
         }
@@ -560,7 +561,8 @@ const AdminSection = ({
     setListOpts,
   }) => (
     <Button
-      type={type}
+      type={"text"}
+      danger
       className={className}
       disabled={disabled}
       onClick={reject(
@@ -625,8 +627,28 @@ const AdminSection = ({
       })();
     };
 
+    const ResourceApprovedActions = ({ item }) => (
+      <div
+        className="col action"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <Space size="small">
+          <UnpublishButton
+            item={item}
+            type="ghost"
+            className="black"
+            uiTitle="UNAPPROVE"
+            action="UNAPPROVED"
+            listOpts={listOpts}
+            setListOpts={setListOpts}
+          />
+        </Space>
+      </div>
+    );
+
     const RenderRow = ({ item, setListOpts, listOpts }) => {
-      console.log(item);
       const ResourceAvatar = () => (
         <div className="col content">
           <Avatar
@@ -700,26 +722,7 @@ const AdminSection = ({
           </Space>
         </div>
       );
-      const ResourceApprovedActions = () => (
-        <div
-          className="col action"
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <Space size="small">
-            <UnpublishButton
-              item={item}
-              type="ghost"
-              className="black"
-              uiTitle="UNAPPROVE"
-              action="UNAPPROVED"
-              listOpts={listOpts}
-              setListOpts={setListOpts}
-            />
-          </Space>
-        </div>
-      );
+
       return (
         <>
           {item.type !== "tag" ? (
@@ -757,7 +760,7 @@ const AdminSection = ({
               {item.reviewStatus === "SUBMITTED" && (
                 <ResourceSubmittedActions />
               )}
-              {item.reviewStatus === "APPROVED" && <ResourceApprovedActions />}
+              {/* {item.reviewStatus === "APPROVED" && <ResourceApprovedActions />} */}
             </div>
           ) : (
             <div className="row">
@@ -781,7 +784,12 @@ const AdminSection = ({
         {(listOpts.reviewStatus || listOpts.title) && (
           <div>
             <div className="export-wrapper">
-              <b className="approval-bold-text">Filtering by:</b>
+              <div>
+                <b className="approval-bold-text">Filtering by:</b>
+                {listOpts.type === "stakeholders" && (
+                  <Checkbox className="expert-checkbox">Experts</Checkbox>
+                )}
+              </div>
               {title !== "Tags" && (
                 <div>
                   <ExportButton
@@ -864,6 +872,7 @@ const AdminSection = ({
                     data={previewContent?.[item.preview] || {}}
                     item={item}
                     getPreviewContent={getPreviewContent}
+                    unpublishButton={<ResourceApprovedActions item={item} />}
                   />
                 </Collapse.Panel>
               ))
@@ -903,7 +912,6 @@ const AdminSection = ({
       </div> */}
       <Tabs
         onChange={(key) => setTab(key)}
-        type="card"
         size="large"
         className="profile-tab-menu"
       >
@@ -913,6 +921,9 @@ const AdminSection = ({
           className="profile-tab-pane"
         >
           {renderList(stakeholdersListOpts, setStakeholdersListOpts)}
+        </TabPane>
+        <TabPane tab="Experts" key="experts" className="profile-tab-pane">
+          <Expert />
         </TabPane>
         <TabPane tab="Entities" key="entities" className="profile-tab-pane">
           <>

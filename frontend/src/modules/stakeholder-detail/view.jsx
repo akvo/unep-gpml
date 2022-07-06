@@ -88,6 +88,7 @@ const SharePanel = ({
   history,
   handleRelationChange,
 }) => {
+  console.log(isAuthenticated);
   const canEdit = () =>
     isAuthenticated &&
     profile.reviewStatus === "APPROVED" &&
@@ -205,6 +206,7 @@ const StakeholderDetail = ({
   match: { params },
   setStakeholderSignupModalVisible,
   setFilterMenu,
+  isAuthenticated,
 }) => {
   const {
     profile,
@@ -223,7 +225,6 @@ const StakeholderDetail = ({
     transnationalOptions: s.transnationalOptions,
     icons: s.icons,
   }));
-  const { isAuthenticated, loginWithPopup } = useAuth0();
   const history = useHistory();
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
