@@ -77,34 +77,36 @@
 (defmulti parse-policy-leap-api-field
   "Parse a policy field from LEAP API for the canonical domain representation, by `field-type`
 
-           `:translated-field` --> Given a language it tries to get the value out of a map, falling back to getting
-           the first value from that map. It returns the value or nil if it is not there or it is empty.
+   `:translated-field` --> Given a language it tries to get the value out of a map, falling back to getting
+   the first value from that map. It returns the value or nil if it is not there or it is empty.
 
-           `:iso-code` --> Given options collection grouped by iso-code, it returns the value of an option using the
-           iso-code as the field value to find it among all the options.
-           The field value can be put inside a single-element array, sometimes, so there is a flag to indicate that.
+   `:iso-code` --> Given options collection grouped by iso-code, it returns the value of an option using the
+   iso-code as the field value to find it among all the options.
+   The field value can be put inside a single-element array, sometimes, so there is a flag to indicate that.
 
-           `:predefined-opt` --> Given a set of options it tries to match one of those given the field value.
-           The field value can be put inside a single-item array and it might need to be normalized as well.
-           There is an extra functionality to coerce a value depending on a condition.
+   `:predefined-opt` --> Given a set of options it tries to match one of those given the field value.
+   The field value can be put inside a single-item array and it might need to be normalized as well.
+   There is an extra functionality to coerce a value depending on a condition.
 
-           `:date` --> Parse a string-formatted date into a local java date.
+   `:date` --> Parse a string-formatted date into a local java date.
 
-           `:timestamp` --> Parse a string-formatted timestamp into a java time instant (UTC).
+   `:timestamp` --> Parse a string-formatted timestamp into a java time instant (UTC).
 
-           `:collection` --> Parses a collection as field value, mapping a specific property for the collection,
-           dealing with outputting empty or nil value depending on the options given as well.
+   `:collection` --> Parses a collection as field value, mapping a specific property for the collection,
+   dealing with outputting empty or nil value depending on the options given as well.
 
-           `:nilable-str` --> Returns either the input string or `nil` if the string was empty.
+   `:nilable-str` --> Returns either the input string or `nil` if the string was empty.
 
-           `:uuid` --> Returns a native UUID from a given string field representing a UUID.
+   `:uuid` --> Returns a native UUID from a given string field representing a UUID.
 
-           `:tags` --> Get a collection of tags indicated by `target-prop-key` param, filtering empty values
-           and building some metadata for each tag item in order to be able to identify its related policy once that is
-           created (leap-api-id), be able to compare the name with existing tags (normalized-tag-name), adding its
-           id in case the tag already exists, to be handled properly.
+   `:tags` --> Get a collection of tags from different properties provided as `tag-groups`.
+   Each tag group can use `target-prop-key` param to access each tag item content.
 
-           In this function duplicated tags are also removed."
+   In this function, we build some metadata for each tag item in order to be able to identify its related
+   policy once that is created (leap-api-id) and be able to compare the name with existing tags
+   (normalized-tag-name), adding its id in case the tag already exists, to be handled properly.
+
+   In this function duplicated/empty tags are also removed."
   (fn [field-type _ & _] field-type))
 
 (defmethod parse-policy-leap-api-field :translated-field
@@ -174,20 +176,43 @@
      :tag-id tag-id
      :leap-api-id (util/uuid leap-api-id)}))
 
-(defmethod parse-policy-leap-api-field :tags
-  [_ field-value & {:keys [target-prop-key leap-api-id tags-by-normalized-name]}]
-  (reduce (fn [tags-acc field-value-item]
-            (let [registered-tags-set (->> tags-acc
+(defn- add-policy-field-tags
+  "Add policy field tags to accumulator from a given tag group
+
+   Given the values as a collection of the tag group involved (a specific raw policy's property), it adds
+   the parsed tags to the accumulator, checking no duplicates are added.
+
+   In order to parse the different tags for the group, it uses provided `target-prop-key` if present, in order
+   to access the target property where the tag content is. Some tag groups do have this and others not."
+  [tags-acc tag-group-vals leap-api-id tags-by-normalized-name target-prop-key]
+  (reduce (fn [current-tags-acc field-value-item]
+            (let [registered-tags-set (->> current-tags-acc
                                            (mapv #(get % :normalized-tag-name))
                                            set)
-                  parsed-val (get field-value-item target-prop-key)
+                  parsed-val (if target-prop-key
+                               (get field-value-item target-prop-key)
+                               field-value-item)
                   parsed-tag (when (seq parsed-val)
                                (parse-leap-api-policy-tag leap-api-id tags-by-normalized-name parsed-val))]
-              (if-not (get registered-tags-set (:normalized-tag-name parsed-tag))
-                (vec (conj tags-acc parsed-tag))
-                tags-acc)))
+              (if (and (not (get registered-tags-set (:normalized-tag-name parsed-tag)))
+                       (seq parsed-tag))
+                (vec (conj current-tags-acc parsed-tag))
+                current-tags-acc)))
+          tags-acc
+          tag-group-vals))
+
+(defmethod parse-policy-leap-api-field :tags
+  [_ field-value & {:keys [tag-groups leap-api-id tags-by-normalized-name]}]
+  (reduce (fn [tags-acc {:keys [policy-item-key target-prop-key]}]
+            (let [tag-group-vals (get field-value policy-item-key [])]
+              (add-policy-field-tags
+               tags-acc
+               tag-group-vals
+               leap-api-id
+               tags-by-normalized-name
+               target-prop-key)))
           []
-          field-value))
+          tag-groups))
 
 (defmethod parse-policy-leap-api-field :nilable-str
   [_ field-value & _]
@@ -216,7 +241,7 @@
     flow, so that is why we apply a conditional transformation there."
   [{:keys [title originalTitle source country abstract type
            dateOfText lastAmendmentDate status files link regulatoryApproach
-           topics language id updated keywords] :as policy-raw}
+           topics language id updated] :as policy-raw}
    {:keys [default-lang
            countries-by-iso-code
            languages-by-iso-code
@@ -280,9 +305,11 @@
                         updated)
    :tags (parse-policy-leap-api-field
           :tags
-          keywords
-          :target-prop-key
-          :term
+          policy-raw
+          :tag-groups
+          [{:policy-item-key :keywords
+            :target-prop-key :term}
+           {:policy-item-key :plasticToolkitTags}]
           :leap-api-id
           id
           :tags-by-normalized-name
