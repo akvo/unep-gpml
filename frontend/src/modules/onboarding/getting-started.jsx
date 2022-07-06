@@ -8,8 +8,8 @@ function GettingStarted({ handleOnClickBtnNext }) {
     <div className="getting-started">
       <div className="text-wrapper">
         <Title level={2}>
-          You’re almost set! <br /> We need to ask a few more questions to
-          make the platform relevant to you.
+          You’re almost set! <br /> We need to ask a few more questions to make
+          the platform relevant to you.
         </Title>
       </div>
       <div className="image-wrapper">
