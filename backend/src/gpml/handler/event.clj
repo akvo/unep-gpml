@@ -7,7 +7,6 @@
    [gpml.db.favorite :as db.favorite]
    [gpml.db.language :as db.language]
    [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.email-util :as email]
    [gpml.handler.auth :as h.auth]
    [gpml.handler.geo :as handler.geo]
    [gpml.handler.image :as handler.image]
@@ -15,6 +14,7 @@
    [gpml.handler.resource.tag :as handler.resource.tag]
    [gpml.handler.util :as handler.util]
    [gpml.util :as util]
+   [gpml.util.email :as email]
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 

@@ -1,14 +1,16 @@
 (ns gpml.handler.submission
-  (:require [gpml.db.submission :as db.submission]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.detail :as db.detail]
-            [gpml.db.organisation :as db.organisation]
-            [gpml.email-util :as email]
-            [gpml.constants :as constants]
-            [integrant.core :as ig]
-            [gpml.auth0-util :as auth0]
-            [clojure.set :as set]
-            [ring.util.response :as resp]))
+  (:require
+   [clojure.set :as set]
+   [clojure.walk :as w]
+   [gpml.auth0-util :as auth0]
+   [gpml.constants :as constants]
+   [gpml.db.organisation :as db.organisation]
+   [gpml.db.resource.tag :as db.resource.tag]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.db.submission :as db.submission]
+   [gpml.util.email :as email]
+   [integrant.core :as ig]
+   [ring.util.response :as resp]))
 
 (defn remap-initiative [{:keys [q1 q1_1 q16 q18
                                 q20 q23 q24 q24_1 q24_2
@@ -52,11 +54,7 @@
 
 (defn- submission-detail [conn params]
   (let [data (db.submission/detail conn params)
-        table (:table-name params)
-        creator-id (if (or (= table "stakeholder")
-                           (= table "v_stakeholder_data"))
-                     (:id data)
-                     (:created_by data))
+        creator-id (:id data)
         creator (db.stakeholder/stakeholder-by-id conn {:id creator-id})]
     (assoc data
            :created_by_email (:email creator)
@@ -89,6 +87,15 @@
                         (list nil))
       (assoc (resp/status 200) :body {:message "Successfuly Updated" :data detail}))))
 
+(defn- prep-stakeholder-tags
+  [tags]
+  (reduce (fn [acc [k v]]
+            (assoc acc k (map :tag v)))
+          {}
+          (-> (group-by :tag_relation_category tags)
+              (w/keywordize-keys)
+              (select-keys [:seeking :offering :expertise]))))
+
 (defmethod ig/init-key :gpml.handler.submission/get-detail [_ {:keys [db]}]
   (fn [{{:keys [path]} :parameters}]
     (let [conn (:spec db)
@@ -106,7 +113,10 @@
           detail (if (= submission "stakeholder")
                    (merge detail
                           (select-keys (db.stakeholder/stakeholder-by-id conn path) [:email])
-                          (:data (db.detail/get-stakeholder-tags conn path)))
+                          (->> (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
+                                                                        :resource-col "stakeholder"
+                                                                        :resource-id (:id path)})
+                               (prep-stakeholder-tags)))
                    detail)
           detail (if initiative? (remap-initiative detail conn)
                      detail)]

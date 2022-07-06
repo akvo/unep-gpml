@@ -25,6 +25,7 @@
    [gpml.handler.organisation :as handler.org]
    [gpml.handler.resource.related-content :as handler.resource.related-content]
    [gpml.handler.resource.tag :as handler.resource.tag]
+   [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
    [gpml.handler.util :as util]
    [gpml.model.topic :as model.topic]
    [gpml.pg-util :as pg-util]
@@ -363,11 +364,12 @@
                                                     :related-content? false}))
 
 (defmethod extra-details "stakeholder" [resource-type db stakeholder]
-  (add-extra-details db stakeholder resource-type {:tags? true
-                                                   :entity-connections? false
-                                                   :stakeholder-connections? false
-                                                   :related-content? false
-                                                   :affiliation? true}))
+  (let [details (add-extra-details db stakeholder resource-type {:tags? true
+                                                                 :entity-connections? false
+                                                                 :stakeholder-connections? false
+                                                                 :related-content? false
+                                                                 :affiliation? true})]
+    (merge details (handler.stakeholder.tag/unwrap-tags details))))
 
 (defmethod extra-details :nothing [_ _ _]
   nil)

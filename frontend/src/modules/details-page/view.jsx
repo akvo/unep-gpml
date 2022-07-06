@@ -409,9 +409,21 @@ const DetailsView = ({
           }}
         >
           {data?.image && (
-            <Col className="resource-image-wrapper">
+            <a
+              className="resource-image-wrapper"
+              href={`${
+                data?.url && data?.url?.includes("https://")
+                  ? data?.url
+                  : data.languages
+                  ? data?.languages[0].url
+                  : data?.url?.includes("http://")
+                  ? data?.url
+                  : "https://" + data?.url
+              }`}
+              target="_blank"
+            >
               <img className="resource-image" src={data?.image} alt="" />
-            </Col>
+            </a>
           )}
 
           <Col className="details-content-wrapper section-description section">
@@ -442,27 +454,27 @@ const DetailsView = ({
                     {data?.geoCoverageType !== "global" && (
                       <>
                         {data?.geoCoverageType !== "sub-national" &&
-                          data?.geoCoverageType !== "national" && 
-                              data?.geoCoverageCountryGroups?.length > 0 &&
-                              renderGeoCoverageCountryGroups(
-                                data,
-                                countries,
-                                transnationalOptions
-                                ) && (
-                                <div className="detail-item">
-                                  <Row>
-                                    <div className="location-icon detail-item-icon">
-                                      <LocationImage />
-                                    </div>
-                                    <div>
-                                      {renderGeoCoverageCountryGroups(
-                                        data,
-                                        countries,
-                                        transnationalOptions
-                                      )}
-                                    </div>
-                                  </Row>
+                          data?.geoCoverageType !== "national" &&
+                          data?.geoCoverageCountryGroups?.length > 0 &&
+                          renderGeoCoverageCountryGroups(
+                            data,
+                            countries,
+                            transnationalOptions
+                          ) && (
+                            <div className="detail-item">
+                              <Row>
+                                <div className="location-icon detail-item-icon">
+                                  <LocationImage />
                                 </div>
+                                <div>
+                                  {renderGeoCoverageCountryGroups(
+                                    data,
+                                    countries,
+                                    transnationalOptions
+                                  )}
+                                </div>
+                              </Row>
+                            </div>
                           )}
 
                         {data?.geoCoverageType !== "sub-national" &&
@@ -492,28 +504,29 @@ const DetailsView = ({
                           )}
 
                         {(data?.geoCoverageType === "sub-national" ||
-                          data?.geoCoverageType === "national") && data?.geoCoverageValues &&
-                              data?.geoCoverageValues.length > 0 &&
-                              renderCountries(
-                                data,
-                                countries,
-                                transnationalOptions
-                                ) && (
-                                <div className="detail-item">
-                                <Row>
-                                  <div className="location-icon detail-item-icon">
-                                    <LocationImage />
-                                  </div>
-                                  <div>
-                                    {renderCountries(
-                                      data,
-                                      countries,
-                                      transnationalOptions
-                                    )}
-                                  </div>
-                                </Row>
-                              </div>
-                            )}
+                          data?.geoCoverageType === "national") &&
+                          data?.geoCoverageValues &&
+                          data?.geoCoverageValues.length > 0 &&
+                          renderCountries(
+                            data,
+                            countries,
+                            transnationalOptions
+                          ) && (
+                            <div className="detail-item">
+                              <Row>
+                                <div className="location-icon detail-item-icon">
+                                  <LocationImage />
+                                </div>
+                                <div>
+                                  {renderCountries(
+                                    data,
+                                    countries,
+                                    transnationalOptions
+                                  )}
+                                </div>
+                              </Row>
+                            </div>
+                          )}
 
                         {(data?.subnationalCity ||
                           data?.q24SubnationalCity) && (
@@ -608,6 +621,10 @@ const DetailsView = ({
                       cursor: "pointer",
                       height: 40,
                       width: 40,
+                    }}
+                    style={{
+                      marginTop:
+                        data?.entityConnections?.length > 0 ? "16px" : 0,
                     }}
                   >
                     <List itemLayout="horizontal">
