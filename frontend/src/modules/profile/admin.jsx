@@ -37,6 +37,7 @@ import {
 } from "@ant-design/icons";
 import Avatar from "antd/lib/avatar/avatar";
 import Expert from "./expert";
+import { ReactComponent as IconExpert } from "../../images/expert-icon.svg";
 
 const { Search } = Input;
 const { TabPane } = Tabs;
@@ -734,6 +735,11 @@ const AdminSection = ({
                   listOpts={listOpts}
                   setListOpts={setListOpts}
                 />
+              )}
+              {item.type === "stakeholder" && item?.expertise?.length > 0 && (
+                <div className="expert-icon">
+                  <IconExpert />
+                </div>
               )}
               {item.reviewStatus === "APPROVED" &&
                 item.type === "stakeholder" && (
