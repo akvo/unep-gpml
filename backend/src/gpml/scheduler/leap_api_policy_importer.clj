@@ -325,9 +325,11 @@
   [policies-batch-items opts]
   (let [policies-data-acc {:new-tags []
                            :policy-tags []
-                           :policies []}]
+                           :policies []
+                           :policy-geo-coverage []}]
     (reduce (fn [policies-acc policy-batch-item]
               (let [policy (build-policy-item-data policy-batch-item opts)
+                    {:keys [country leap_api_id]} policy
                     tags (:tags policy)
                     registered-tags-set (->> policies-acc
                                              :new-tags
@@ -336,7 +338,14 @@
                     new-tags (->> tags
                                   (filter #(nil? (:tag-id %)))
                                   (filter #(not (get registered-tags-set (:normalized-tag-name %)))))
-                    updated-policies-acc (-> policies-acc
+                    policies-acc-with-geo-coverage (if-not (nil? country)
+                                                     (update
+                                                      policies-acc
+                                                      :policy-geo-coverage
+                                                      #(vec (conj % {:country-id country
+                                                                     :leap-api-id leap_api_id})))
+                                                     policies-acc)
+                    updated-policies-acc (-> policies-acc-with-geo-coverage
                                              (update :policy-tags #(vec (concat % tags)))
                                              (update :policies #(vec (conj % policy))))]
                 (if (seq new-tags)
@@ -399,13 +408,20 @@
       :updates (dissoc policy-to-update :id :leap_api_id)})))
 
 ;; TODO: Split a bit this function.
-(defn- handle-policy-and-policy-tags-creation
-  "Handle atomically the creation of policy and policy_tags entities
+(defn- handle-policy-and-dependent-entities-creation
+  "Handle atomically the creation of policy and dependent entities
 
-   We use a DB transaction to ensure both target entities are persisted or none of them.
+   We use a DB transaction to ensure that all the target entities are persisted or none of them.
    It returns a map with created policies and tags (as we need to share this info to avoid additional
-   queries to the DB)."
-  [main-conn processed-new-policies-vals policy-columns new-tags-by-norm-name policy-tags]
+   queries to the DB).
+
+   For now the dependent entities are tags and geo-coverage related data."
+  [main-conn
+   processed-new-policies-vals
+   policy-columns
+   new-tags-by-norm-name
+   policy-tags
+   processed-policies-geo-coverage]
   (jdbc/with-db-transaction
     [trans-conn main-conn]
     (let [created-policies (when (seq processed-new-policies-vals)
@@ -422,6 +438,14 @@
                                           {:policy (:id target-policy)
                                            :tag resolved-tag-id}))
                                       policy-tags)
+          policies-geo-coverage (mapv (fn [{:keys [leap-api-id country-id]}]
+                                        (let [target-policy (get-in policies-by-leap-api-id [leap-api-id 0])]
+                                          {:policy (:id target-policy)
+                                           :country country-id}))
+                                      processed-policies-geo-coverage)
+          policy-geo-cov-columns (sql-util/get-insert-columns-from-entity-col policies-geo-coverage)
+          policy-geo-cov-vals (when (seq policies-geo-coverage)
+                                (sql-util/entity-col->persistence-entity-col policies-geo-coverage))
           policy-tag-insert-keys [:policy :tag]
           processed-policy-tag-values (when (seq processed-policy-tags)
                                         (sql-util/entity-col->persistence-entity-col
@@ -434,6 +458,11 @@
          {:table "policy_tag"
           :resource-col "policy"
           :tags processed-policy-tag-values}))
+      (when (seq policy-geo-cov-vals)
+        (db.policy/add-policies-geo
+         trans-conn
+         {:insert-cols policy-geo-cov-columns
+          :geo policy-geo-cov-vals}))
       {:created-policies created-policies
        :new-tags-by-norm-name new-tags-by-norm-name})))
 
@@ -469,13 +498,15 @@
         processed-new-db-policies (mapv db.policy/policy->db-policy processed-new-policies)
         policy-columns (sql-util/get-insert-columns-from-entity-col processed-new-db-policies)
         processed-new-policies-vals (when (seq processed-new-db-policies)
-                                      (sql-util/entity-col->persistence-entity-col processed-new-db-policies))]
-    (handle-policy-and-policy-tags-creation
+                                      (sql-util/entity-col->persistence-entity-col processed-new-db-policies))
+        processed-policies-geo-coverage (:policy-geo-coverage processed-new-policies-data)]
+    (handle-policy-and-dependent-entities-creation
      db-conn
      processed-new-policies-vals
      policy-columns
      new-tags-by-norm-name
-     (:policy-tags processed-new-policies-data))))
+     (:policy-tags processed-new-policies-data)
+     processed-policies-geo-coverage)))
 
 (defn- handle-policy-and-policy-tags-update
   "Handle atomically the update of policy and creation of new policy-tag entities

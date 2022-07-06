@@ -121,9 +121,9 @@ where id = :id
 insert into policy_tag(policy, tag)
 values :t*:tags RETURNING id;
 
--- :name add-policy-geo :<! :1
--- :doc add policy geo
-insert into policy_geo_coverage(policy, country_group, country)
+-- :name add-policies-geo :returning-execute :many
+-- :doc add policies geo
+insert into policy_geo_coverage (:i*:insert-cols)
 values :t*:geo RETURNING id;
 
 -- :name all-policies

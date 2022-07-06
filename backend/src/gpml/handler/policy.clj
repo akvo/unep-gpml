@@ -79,6 +79,7 @@
               :remarks remarks
               :created_by created_by
               :review_status "SUBMITTED"}
+        policy-geo-coverage-insert-cols ["policy" "country_group" "country"]
         policy-id (->> data (db.policy/new-policy conn) :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
@@ -112,10 +113,12 @@
     (if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
       (let [geo-data (handler.geo/get-geo-vector-v2 policy-id data)]
-        (db.policy/add-policy-geo conn {:geo geo-data}))
+        (db.policy/add-policies-geo conn {:geo geo-data
+                                          :insert-cols policy-geo-coverage-insert-cols}))
       (when (not-empty geo_coverage_value)
         (let [geo-data (handler.geo/get-geo-vector policy-id data)]
-          (db.policy/add-policy-geo conn {:geo geo-data}))))
+          (db.policy/add-policies-geo conn {:geo geo-data
+                                            :insert-cols policy-geo-coverage-insert-cols}))))
     (email/notify-admins-pending-approval
      conn
      mailjet-config
