@@ -92,10 +92,25 @@
             justify-content: space-between;
           }
           .expert-detail-list {
-            img {
-              width: 100%;
-              border-radius: 5px;
+            .expert-image-wrapper {
+              position: relative;
+              img {
+                width: 100%;
+              }
+              .expert-image {
+                border-radius: 5px;
+              }
+              .entity-logo {
+                position: absolute;
+                top: -5px;
+                left: -5px;
+                border-radius: 50%;
+                max-width: 31px;
+                height: 31px;
+                border: 1px solid #edf2f7;
+              }
             }
+
             .expert-location {
               display: flex;
               align-items: center;

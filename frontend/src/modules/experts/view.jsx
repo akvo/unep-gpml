@@ -206,18 +206,26 @@ const Experts = () => {
                 return (
                   <Card key={item?.id}>
                     <ul className="expert-detail-list">
-                      <img
-                        className="expert-image"
-                        src={item?.image}
-                        alt={item?.name}
-                      />
+                      <li className="list-item expert-image-wrapper">
+                        <img
+                          src="https://storage.googleapis.com/akvo-unep-gpml/images/organisation_010_logo.PNG"
+                          className="entity-logo"
+                        />
+                        <img
+                          className="expert-image"
+                          src={item?.image}
+                          alt={item?.name}
+                        />
+                      </li>
 
-                      <li className="expert-name">{item?.name}</li>
-                      <li className="expert-location">
+                      <li className="list-item expert-name">{item?.name}</li>
+                      <li className="list-item expert-location">
                         <LocationIcon />
                         <span> {item?.location}</span>
                       </li>
-                      <li className="expert-activity">{item?.activity}</li>
+                      <li className="list-item expert-activity">
+                        {item?.activity}
+                      </li>
                     </ul>
                     <ul className="badge-list">
                       <li>
