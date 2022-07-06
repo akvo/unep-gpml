@@ -8,6 +8,7 @@
    [gpml.db.resource.tag :as db.resource.tag]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.db.submission :as db.submission]
+   [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
    [gpml.util.email :as email]
    [integrant.core :as ig]
    [ring.util.response :as resp]))
@@ -60,13 +61,26 @@
            :created_by_email (:email creator)
            :creator creator)))
 
+(defn- add-stakeholder-tags
+  [conn submission-data]
+  (map
+   (fn [item]
+     (if-not (= "stakeholder" (:topic item))
+       item
+       (let [tags (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
+                                                           :resource-col "stakeholder"
+                                                           :resource-id (:id item)})]
+         (merge item (handler.stakeholder.tag/unwrap-tags (assoc item :tags tags))))))
+   submission-data))
+
 (defmethod ig/init-key :gpml.handler.submission/get [_ {:keys [db auth0]}]
   (fn [{{:keys [query]} :parameters}]
     (let [submission (-> (db.submission/pages (:spec db) query) :result)
           profiles (filter #(= "profile" (:type %)) (:data submission))
-          submission (if (not-empty profiles)
-                       (assoc submission :data (pending-profiles-response (:data submission) auth0))
-                       submission)]
+          submission (-> (if (not-empty profiles)
+                           (assoc submission :data (pending-profiles-response (:data submission) auth0))
+                           submission)
+                         (update :data #(add-stakeholder-tags (:spec db) %)))]
       (resp/response submission))))
 
 (defmethod ig/init-key :gpml.handler.submission/put [_ {:keys [db mailjet-config]}]
@@ -121,6 +135,20 @@
           detail (if initiative? (remap-initiative detail conn)
                      detail)]
       (resp/response detail))))
+
+(defmethod ig/init-key :gpml.handler.submission/get-params [_ _]
+  {:query
+   [:map
+    [:only {:optional true}
+     [:enum "resources" "stakeholders" "experts" "tags" "entities" "non-member-entities"]]
+    [:review_status
+     {:optional true :default "SUBMITTED"}
+     [:enum "SUBMITTED" "APPROVED" "REJECTED" "INVITED"]]
+    [:title {:optional true} string?]
+    [:page {:optional true
+            :default 1} int?]
+    [:limit {:optional true
+             :default 10} int?]]})
 
 (defmethod ig/init-key :gpml.handler.submission/put-params [_ _]
   [:map

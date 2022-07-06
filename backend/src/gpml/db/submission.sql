@@ -2,8 +2,9 @@
 -- :doc Get paginated submission contents
 WITH
 submission AS (
-    SELECT id, 'stakeholder' AS type, 'stakeholder' AS topic, CONCAT(title, '. ', last_name,' ', first_name) as title, id as created_by, created, role, review_status, picture as image
-    FROM stakeholder
+    SELECT s.id, 'stakeholder' AS type, 'stakeholder' AS topic, CONCAT(s.title, '. ', s.last_name,' ', s.first_name) as title, s.id as created_by, s.created, s.role, s.review_status, s.picture as image
+    FROM stakeholder s
+--~ (when (= "experts" (:only params)) " JOIN stakeholder_tag st ON s.id = st.stakeholder AND st.tag_relation_category = 'expertise' ")
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
     SELECT id, 'organisation' AS type, 'organisation' AS topic, name as title, id as created_by, created, 'USER' as role, review_status, logo as image
@@ -59,7 +60,7 @@ data AS (
     WHERE 1=1
 --~ (when (= "entities" (:only params)) " AND  s.type IN ( 'organisation') AND s.topic IN ('organisation')")
 --~ (when (= "non-member-entities" (:only params)) " AND  s.type IN ( 'organisation') AND s.topic IN ('non_member_organisation')")
---~ (when (= "stakeholders" (:only params)) " AND  s.type IN ('stakeholder') ")
+--~ (when (get #{"stakeholders" "experts"} (:only params)) " AND s.type IN ('stakeholder') ")
 --~ (when (= "tags" (:only params)) " AND  s.type IN ('tag') ")
 --~ (when (= "resources" (:only params)) " AND  s.type NOT IN ('stakeholder', 'organisation', 'tag') ")
 --~ (when (:title params) (str " AND s.title ILIKE '%" (:title params) "%' ") )
@@ -74,7 +75,7 @@ SELECT json_build_object(
     WHERE 1=1
 --~ (when (= "entities" (:only params)) " AND type IN ('organisation') AND topic IN ('organisation')")
 --~ (when (= "non-member-entities" (:only params)) " AND  type IN ( 'organisation') AND topic IN ('non_member_organisation')")
---~ (when (= "stakeholders" (:only params)) " AND type IN ('stakeholder') ")
+--~ (when (get #{"stakeholders" "experts"} (:only params)) " AND  type IN ('stakeholder') ")
 --~ (when (= "resources" (:only params)) " AND type NOT IN ('stakeholder', 'organisation', 'tag') ")
 --~ (when (= "tags" (:only params)) " AND type IN ('tag') ")
 --~ (when (:title params) (str " AND title ILIKE '%" (:title params) "%' ") )
@@ -85,7 +86,7 @@ SELECT json_build_object(
     WHERE 1=1
 --~ (when (= "entities" (:only params)) " AND type IN ( 'organisation') AND topic IN ('organisation')")
 --~ (when (= "non-member-entities" (:only params)) " AND  type IN ( 'organisation') AND topic IN ('non_member_organisation')")
---~ (when (= "stakeholders" (:only params)) " AND type IN ('stakeholder') ")
+--~ (when (get #{"stakeholders" "experts"} (:only params)) " AND  type IN ('stakeholder') ")
 --~ (when (= "resources" (:only params)) " AND type NOT IN ('stakeholder', 'organisation', 'tag') ")
 --~ (when (= "tags" (:only params)) " AND type IN ('tag') ")
 --~ (when (:title params) (str " AND title ILIKE '%" (:title params) "%' ") )

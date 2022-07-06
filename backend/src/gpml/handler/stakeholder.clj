@@ -324,7 +324,7 @@
                                                                           :idp_usernames idp-usernames
                                                                           :non_member_organisation nil)
                                                                    (when (and expert?
-                                                                              (= (:review_status current-stakeholder) "SUBMITTED"))
+                                                                              (= (:review_status current-stakeholder) "INVITED"))
                                                                      {:review_status "APPROVED"})))
                             (:id current-stakeholder))
                           (let [new-stakeholder (db.stakeholder/new-stakeholder db profile)]
