@@ -69,7 +69,7 @@ const detailActionPlan = [
   },
   {
     key: "publishYear",
-    name: "Year",
+    name: "Publication Year",
     value: "publishYear",
     type: "number",
   },
