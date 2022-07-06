@@ -35,6 +35,9 @@
           background-color: $yellow-highlight;
           color: #fff;
           border: 1px solid #fff;
+          .transnational-icon path {
+            stroke: #fff;
+          }
         }
         .view-button-text {
           margin-right: 7.11px;
@@ -66,10 +69,12 @@
           width: 32px;
           height: 32px;
           margin-right: 7px;
+          transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
         }
         .sort-button-text {
           display: flex;
           flex-direction: column;
+          text-transform: uppercase;
         }
       }
     }

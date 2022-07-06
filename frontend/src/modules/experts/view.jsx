@@ -44,6 +44,7 @@ const Experts = () => {
   ];
 
   const [view, setView] = useState("map");
+  const [isAscending, setIsAscending] = useState(null);
 
   const expert = [
     {
@@ -181,15 +182,34 @@ const Experts = () => {
           <div className="expert-list-section">
             <div className="expert-top-tools">
               <div className="page-label">Showing 7 Of 16</div>
-              <button className="view-button" shape="round" size="large">
-                <div className="view-button-text ">Switch to grid view</div>
+              <button
+                className="view-button"
+                shape="round"
+                size="large"
+                onClick={() => {
+                  view === "map" ? setView("grid") : setView("map");
+                }}
+              >
+                <div className="view-button-text ">
+                  Switch to {`${view === "map" ? "grid" : "map"}`} view
+                </div>
                 {view === "map" ? <AppstoreOutlined /> : <GlobeIcon />}
               </button>
-              <button className="sort-by-button">
-                <SortIcon />
+              <button
+                className="sort-by-button"
+                onClick={() => setIsAscending(!isAscending)}
+              >
+                <SortIcon
+                  style={{
+                    transform:
+                      isAscending || isAscending === null
+                        ? "initial"
+                        : "rotate(180deg)",
+                  }}
+                />
                 <div className="sort-button-text">
                   <span>Sort by:</span>
-                  <b>{`A>Z`}</b>
+                  <b>{isAscending ? `A>Z` : "Z>A"}</b>
                 </div>
               </button>
             </div>
