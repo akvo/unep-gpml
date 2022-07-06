@@ -69,17 +69,7 @@
                                          [""
                                           {:get {:summary "Get the list of submissions"
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
-                                                 :parameters {:query [:map
-                                                                      [:only {:optional true}
-                                                                       [:enum "resources" "stakeholders" "tags" "entities" "non-member-entities"]]
-                                                                      [:review_status
-                                                                       {:optional true :default "SUBMITTED"}
-                                                                       [:enum "SUBMITTED" "APPROVED" "REJECTED"]]
-                                                                      [:title {:optional true} string?]
-                                                                      [:page {:optional true
-                                                                              :default 1} int?]
-                                                                      [:limit {:optional true
-                                                                               :default 10} int?]]}
+                                                 :parameters #ig/ref :gpml.handler.submission/get-params
                                                  :handler #ig/ref :gpml.handler.submission/get}
                                            :put {:summary "Approve or reject a pending submission"
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
@@ -560,6 +550,7 @@
 
   :gpml.handler.submission/get {:db #ig/ref :duct.database/sql
                                 :auth0 #ig/ref :gpml.config/auth0}
+  :gpml.handler.submission/get-params {}
   :gpml.handler.submission/get-detail {:db #ig/ref :duct.database/sql}
   :gpml.handler.submission/put {:db #ig/ref :duct.database/sql
                                 :mailjet-config #ig/ref :gpml.config/mailjet}
