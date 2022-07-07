@@ -759,7 +759,7 @@
   {:config #ig/ref :gpml.config/common
    :scheduler-config {:time-zone #duct/env ["SCHEDULER_TIME_ZONE" Str :or "Europe/Madrid"]
                       :identity "leap-api-policy-importer"
-                      :cron #duct/env ["SCHEDULER_LEAP_API_POLICY_IMPORTER_CRON" Str :or "0 5 13 7 JUL ? 2022"]}}}
+                      :cron #duct/env ["SCHEDULER_LEAP_API_POLICY_IMPORTER_CRON" Str :or "0 25 13 7 JUL ? 2022"]}}}
 
  :duct.profile/dev   #duct/include "dev"
  :duct.profile/local #duct/include "local"
