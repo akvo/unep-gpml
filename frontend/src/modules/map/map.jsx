@@ -444,7 +444,11 @@ const Maps = ({
   const existingResources =
     path === KNOWLEDGE_LIBRARY ? resourceCount.map((data) => data.topic) : [];
   const existingData =
-    path === KNOWLEDGE_LIBRARY ? existingResources : existingStakeholders;
+    path === KNOWLEDGE_LIBRARY
+      ? existingResources
+      : path === STAKEHOLDER_OVERVIEW
+      ? existingStakeholders
+      : [];
 
   const country =
     !isEmpty(countries) &&
@@ -489,7 +493,9 @@ const Maps = ({
   const legendTitle =
     path === KNOWLEDGE_LIBRARY
       ? "Total resources per country"
-      : "Total stakeholders per country";
+      : path === STAKEHOLDER_OVERVIEW
+      ? "Total stakeholders per country"
+      : "Total experts per country";
 
   useEffect(() => {
     setCountryToSelect(isFilteredCountry.map((x) => Number(x)));

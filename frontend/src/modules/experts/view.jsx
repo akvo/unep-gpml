@@ -22,14 +22,21 @@ import { ReactComponent as GPMLMemberBadge } from "../../images/stakeholder-over
 import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
 import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
 import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
+import Maps from "../map/map";
+import { isEmpty } from "lodash";
 
 const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
 const Experts = () => {
-  const { countries, organisations } = UIStore.useState((s) => ({
+  const { countries, organisations, landing } = UIStore.useState((s) => ({
     countries: s.countries,
     organisations: s.organisations,
+    landing: s.landing,
   }));
+
+  console.log("landing::::::", landing);
+
+  const box = document.getElementsByClassName("experts");
 
   const sidebar = [
     { id: 1, title: "Events", url: "/connect/events", icon: <IconEvent /> },
@@ -61,6 +68,7 @@ const Experts = () => {
     count: 0,
   });
   const [isAscending, setIsAscending] = useState(null);
+  const isLoaded = () => !isEmpty(landing?.map);
 
   const responsive = {
     superLargeDesktop: {
@@ -145,10 +153,16 @@ const Experts = () => {
 
   useEffect(() => {
     getExpert();
+
+    api.get(`/landing`).then((resp) => {
+      UIStore.update((e) => {
+        e.landing = resp.data;
+      });
+    });
   }, []);
 
   return (
-    <div id="experts">
+    <div id="experts" className="experts">
       <Row type="flex" className="body-wrapper">
         <LeftSidebar active={5} sidebar={sidebar}>
           <div className="expert-list-section">
@@ -271,6 +285,21 @@ const Experts = () => {
               })}
             </Carousel>
           </div>
+          <Maps
+            box={box}
+            query={[]}
+            isFilteredCountry={[]}
+            isDisplayedList={false}
+            listVisible={false}
+            multiCountryCountries={[]}
+            countData={5}
+            data={[]}
+            countryGroupCounts={[]}
+            clickEvents={() => null}
+            isLoaded={isLoaded}
+            multiCountries={[]}
+            useVerticalLegend
+          />
         </LeftSidebar>
       </Row>
     </div>
