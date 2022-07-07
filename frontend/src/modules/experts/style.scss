@@ -4,6 +4,10 @@
   .expert-list-section {
     background: rgba(211, 222, 231, 0.15);
     padding: 20px 16px;
+    #expert-loading {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
     .expert-top-tools {
       display: flex;
       justify-content: space-between;
