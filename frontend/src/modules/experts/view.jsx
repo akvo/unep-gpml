@@ -81,6 +81,26 @@ const Experts = () => {
       });
   };
 
+  const sortExperts = (ascending) => {
+    const sortedExperts = experts?.experts?.sort((a, b) => {
+      if (ascending) {
+        if (a?.firstName) {
+          return a?.firstName?.trim().localeCompare(b?.firstName?.trim());
+        } else {
+          return a?.name?.trim().localeCompare(b?.name?.trim());
+        }
+      } else {
+        if (b?.firstName) {
+          return b?.firstName?.trim().localeCompare(a?.firstName?.trim());
+        } else {
+          return b?.name?.trim().localeCompare(a?.name?.trim());
+        }
+      }
+    });
+    setIsAscending(ascending);
+    setExperts({ ...experts, experts: sortedExperts });
+  };
+
   useEffect(() => {
     setLoading(true);
     getExpert();
@@ -159,7 +179,7 @@ const Experts = () => {
               </button>
               <button
                 className="sort-by-button"
-                onClick={() => setIsAscending(!isAscending)}
+                onClick={() => sortExperts(!isAscending)}
               >
                 <SortIcon
                   style={{
