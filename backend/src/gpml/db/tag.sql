@@ -30,9 +30,9 @@ select id from tag_category where category = :category
 insert into tag (tag, tag_category)
 values (:tag, :tag_category) returning id
 
--- :name new-tags :? :*
+-- :name new-tags :query :many
 -- :doc Insert new tag
-insert into tag (tag, tag_category)
+insert into tag (:i*:insert-cols)
 values :t*:tags RETURNING *;
 
 -- :name tag-by-category :? :* :1

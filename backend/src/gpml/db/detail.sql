@@ -40,7 +40,7 @@ UPDATE initiative SET
 --~ (#'gpml.sql-util/generate-update-initiative params)
 WHERE id = :id;
 
--- :name update-resource-table :! :n
+-- :name update-resource-table :execute :affected
 -- :doc Update the resource specified by table and id
 -- :require [gpml.sql-util]
 update :i:table set
