@@ -9,7 +9,14 @@
             [java-time.local]
             [java-time.temporal]))
 
-(declare policy->db-policy)
+(declare language-by-policy-id
+         add-language-to-policy
+         new-policy
+         add-policies-geo
+         create-policies
+         delete-policies-geo
+         filtered-policies
+         policy-by-id)
 
 (hugsql/def-db-fns "gpml/db/policy.sql")
 
