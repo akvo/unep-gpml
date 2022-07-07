@@ -165,7 +165,7 @@ const Workspace = ({ profile }) => {
                         <List.Item.Meta
                           title={
                             <a
-                              href="https://datahub.gpmarinelitter.org/"
+                              href="https://unep-gpml.eu.auth0.com/authorize?response_type=code&client_id=lmdxuDGdQjUsbLbMFpjDCulTP1w5Z4Gi&redirect_uri=https%3A//apps.unep.org/data-catalog/oauth2/callback&scope=openid+profile+email&state=eyJjYW1lX2Zyb20iOiAiL2Rhc2hib2FyZCJ9"
                               target="_blank"
                             >
                               Add data {">"}

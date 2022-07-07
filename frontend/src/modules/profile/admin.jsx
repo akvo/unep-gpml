@@ -626,7 +626,6 @@ const AdminSection = ({
     };
 
     const RenderRow = ({ item, setListOpts, listOpts }) => {
-      console.log(item);
       const ResourceAvatar = () => (
         <div className="col content">
           <Avatar
