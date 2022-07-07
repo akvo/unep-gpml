@@ -304,10 +304,20 @@
       // end of css for filter by status
     }
 
+    .actions-container {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      justify-content: end;
+    }
+    .review-status-container {
+      flex: 0 0 70%;
+    }
+
     .col {
       color: #2d6796;
       &.content {
-        flex: 2;
+        flex: 0 0 30%;
         display: flex;
         justify-content: flex-start;
         align-items: center;

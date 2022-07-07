@@ -491,7 +491,7 @@ const AdminSection = ({
   const ReviewStatus = ({ item, listOpts, setListOpts }) => {
     return (
       <div
-        style={{ width: "50%" }}
+        className="review-status-container"
         onClick={(e) => {
           e.stopPropagation();
         }}
@@ -731,43 +731,45 @@ const AdminSection = ({
           {item.type !== "tag" ? (
             <div className="row">
               <ResourceAvatar />
-              {item.reviewStatus === "SUBMITTED" && (
-                <ReviewStatus
-                  item={item}
-                  listOpts={listOpts}
-                  setListOpts={setListOpts}
-                />
-              )}
-              {item.type === "stakeholder" && item?.expertise?.length > 0 && (
-                <div className="expert-icon">
-                  <IconExpert />
-                </div>
-              )}
-              {item.reviewStatus === "APPROVED" &&
-                item.type === "stakeholder" && (
-                  <RoleSelect
-                    stakeholder={item}
-                    onChangeRole={changeRole}
-                    loading={loading}
-                    listOpts={listOpts}
-                    setListOpts={setListOpts}
-                  />
-                )}
-              {item.reviewStatus === "APPROVED" &&
-                item.type !== "stakeholder" && (
-                  <OwnerSelect
+              <div className="actions-container">
+                {item.reviewStatus === "SUBMITTED" && (
+                  <ReviewStatus
                     item={item}
-                    reviewers={reviewers}
-                    setListOpts={setListOpts}
                     listOpts={listOpts}
-                    resource={item}
-                    onChangeOwner={changeOwner}
-                    loading={loading}
+                    setListOpts={setListOpts}
                   />
                 )}
-              {item.reviewStatus === "SUBMITTED" && (
-                <ResourceSubmittedActions />
-              )}
+                {item.type === "stakeholder" && item?.expertise?.length > 0 && (
+                  <div className="expert-icon">
+                    <IconExpert />
+                  </div>
+                )}
+                {item.reviewStatus === "APPROVED" &&
+                  item.type === "stakeholder" && (
+                    <RoleSelect
+                      stakeholder={item}
+                      onChangeRole={changeRole}
+                      loading={loading}
+                      listOpts={listOpts}
+                      setListOpts={setListOpts}
+                    />
+                  )}
+                {item.reviewStatus === "APPROVED" &&
+                  item.type !== "stakeholder" && (
+                    <OwnerSelect
+                      item={item}
+                      reviewers={reviewers}
+                      setListOpts={setListOpts}
+                      listOpts={listOpts}
+                      resource={item}
+                      onChangeOwner={changeOwner}
+                      loading={loading}
+                    />
+                  )}
+                {item.reviewStatus === "SUBMITTED" && (
+                  <ResourceSubmittedActions />
+                )}
+              </div>
               {/* {item.reviewStatus === "APPROVED" && <ResourceApprovedActions />} */}
             </div>
           ) : (
