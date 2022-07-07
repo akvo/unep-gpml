@@ -150,7 +150,10 @@ const domain = window.__ENV__.auth0.domain.replace(/(https:\/\/|\/)/gi, "");
 
 export const auth0Client = new auth0.WebAuth({
   domain: domain,
-  clientID: window.__ENV__.auth0.clientId,
+  clientID:
+    process.env.NODE_ENV !== "production"
+      ? "dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J"
+      : "mSuWoeUEN3Z8XWZMbUqiOIOHwdk0R6dm",
   audience:
     process.env.NODE_ENV !== "production"
       ? "https://unep-gpml-test.eu.auth0.com/api/v2/"
