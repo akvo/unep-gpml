@@ -104,8 +104,11 @@ const findCountries = (
 const GpmlLinkLi = ({ item }) => {
   return (
     <li className="has-border">
-      <Link to={`/${item.type}/${item.id}`} className="browse-card">
-        GPML LINK: /{item.type}/{item.id}{" "}
+      <Link
+        to={`/${item.type.replace("_", "-")}/${item.id}`}
+        className="browse-card"
+      >
+        GPML LINK: /{item.type.replace("_", "-")}/{item.id}{" "}
       </Link>
     </li>
   );
