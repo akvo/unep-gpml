@@ -45,6 +45,7 @@ const unsettledTerritoryIsoCode = [
 const higlightColor = "#255B87";
 export const KNOWLEDGE_LIBRARY = "/knowledge/library";
 export const STAKEHOLDER_OVERVIEW = "/connect/community";
+export const EXPERTS = "/connect/experts";
 
 const StakeholderTooltipContent = ({
   data,
@@ -304,6 +305,10 @@ const KnowledgeLibraryToolTipContent = ({
       </table>
     </div>
   );
+};
+
+const ExpertsTooltipContent = ({}) => {
+  return <b>0</b>;
 };
 
 const Legend = ({ data, setFilterColor, selected }) => {
@@ -841,6 +846,17 @@ const Maps = ({
                                     data={findData}
                                     geo={geo.properties}
                                     existingResources={existingResources}
+                                    query={query}
+                                  />
+                                );
+                              }
+
+                              if (path === EXPERTS) {
+                                setContent(
+                                  <ExpertsTooltipContent
+                                    data={findData}
+                                    geo={geo.properties}
+                                    existingStakeholders={existingStakeholders}
                                     query={query}
                                   />
                                 );

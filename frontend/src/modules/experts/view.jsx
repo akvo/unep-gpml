@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Button, Row, Card, Avatar } from "antd";
 import Carousel from "react-multi-carousel";
 import { AppstoreOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "./style.scss";
 import api from "../../utils/api";
 import { UIStore } from "../../store";
 import { colors } from "../../utils/misc";
+import { isEmpty } from "lodash";
+import { useQuery } from "./common";
 import LeftSidebar from "../../components/left-sidebar/left-sidebar";
 import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg";
 import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
@@ -23,7 +25,6 @@ import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
 import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
 import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
 import Maps from "../map/map";
-import { isEmpty } from "lodash";
 
 const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
@@ -34,9 +35,19 @@ const Experts = () => {
     landing: s.landing,
   }));
 
-  console.log("landing::::::", landing);
-
   const box = document.getElementsByClassName("experts");
+  const history = useHistory();
+  const query = useQuery();
+
+  const [view, setView] = useState("map");
+  const [experts, setExperts] = useState({
+    experts: [],
+    count: 0,
+  });
+  const [isAscending, setIsAscending] = useState(null);
+  const isLoaded = () => !isEmpty(landing?.map);
+  const [loading, setLoading] = useState(true);
+  const [filterCountries, setFilterCountries] = useState([]);
 
   const sidebar = [
     { id: 1, title: "Events", url: "/connect/events", icon: <IconEvent /> },
@@ -61,14 +72,6 @@ const Experts = () => {
       icon: <ExpertIcon />,
     },
   ];
-
-  const [view, setView] = useState("map");
-  const [experts, setExperts] = useState({
-    experts: [],
-    count: 0,
-  });
-  const [isAscending, setIsAscending] = useState(null);
-  const isLoaded = () => !isEmpty(landing?.map);
 
   const responsive = {
     superLargeDesktop: {
@@ -160,6 +163,51 @@ const Experts = () => {
       });
     });
   }, []);
+
+  const updateQuery = (param, value) => {
+    const topScroll = window.innerWidth < 640 ? 996 : 207;
+    window.scrollTo({
+      top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
+    });
+    setLoading(true);
+    const newQuery = { ...query };
+    newQuery[param] = value;
+
+    if (param !== "offset") {
+      newQuery["offset"] = 0;
+    }
+
+    // Remove empty query
+    const arrayOfQuery = Object.entries(newQuery)?.filter(
+      (item) => item[1]?.length !== 0
+    );
+
+    const pureQuery = Object.fromEntries(arrayOfQuery);
+
+    const newParams = new URLSearchParams(pureQuery);
+
+    history.push(`/connect/experts?${newParams.toString()}`);
+
+    if (param === "country") {
+      setFilterCountries(value);
+    }
+  };
+
+  const clickCountry = (value) => {
+    const val = query["country"];
+
+    let updateVal = [];
+
+    if (isEmpty(val)) {
+      updateVal = [value];
+    } else if (val.includes(value)) {
+      updateVal = val.filter((x) => x !== value);
+    } else {
+      updateVal = [...val, value];
+    }
+
+    updateQuery("country", updateVal);
+  };
 
   return (
     <div id="experts" className="experts">
@@ -287,16 +335,17 @@ const Experts = () => {
           </div>
           <Maps
             box={box}
-            query={[]}
-            isFilteredCountry={[]}
-            isDisplayedList={false}
-            listVisible={false}
-            multiCountryCountries={[]}
-            countData={5}
-            data={[]}
-            countryGroupCounts={[]}
-            clickEvents={() => null}
+            query={query}
+            clickEvents={clickCountry}
+            stakeholderCount={[]}
+            listVisible={[]}
+            isDisplayedList={[]}
+            dataToDisplay={[]}
+            isFilteredCountry={filterCountries}
+            data={landing?.map || []}
+            countryGroupCounts={landing?.countryGroupCounts || []}
             isLoaded={isLoaded}
+            multiCountryCountries={[]}
             multiCountries={[]}
             useVerticalLegend
           />
