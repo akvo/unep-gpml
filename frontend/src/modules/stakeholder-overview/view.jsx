@@ -33,7 +33,7 @@ import DownArrow from "../../images/knowledge-library/chevron-down.svg";
 
 let tmid;
 
-const StakeholderOverview = ({ history, isAuthenticated, setLoginVisible }) => {
+const StakeholderOverview = ({ history, loginWithPopup }) => {
   const {
     tags,
     profile,
@@ -55,7 +55,7 @@ const StakeholderOverview = ({ history, isAuthenticated, setLoginVisible }) => {
 
   const [filterCountries, setFilterCountries] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
-  const { isLoading } = useAuth0();
+  const { isAuthenticated, isLoading } = useAuth0();
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const hasProfile = profile?.reviewStatus;
   const isValidUser = isAuthenticated && isApprovedUser && hasProfile;
@@ -432,7 +432,7 @@ const StakeholderOverview = ({ history, isAuthenticated, setLoginVisible }) => {
   return (
     <div id="stakeholder-overview" className="stakeholder-overview">
       {!isValidUser && !scroll && (
-        <UnathenticatedPage setLoginVisible={setLoginVisible} />
+        <UnathenticatedPage loginWithPopup={loginWithPopup} />
       )}
       <div className={!isValidUser && !scroll ? "blur" : ""}>
         {isValidUser && (

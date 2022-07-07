@@ -73,7 +73,7 @@ const SignupView = ({ ...props }) => {
                       onClick={() => {
                         setTypeSignUp("entity");
                         if (!isAuthenticated) {
-                          setLoginVisible(true);
+                          loginWithPopup({ action: "mixed" });
                         } else {
                           history.push("/entity-signup");
                         }
@@ -103,7 +103,7 @@ const SignupView = ({ ...props }) => {
                         onClick={() => {
                           setTypeSignUp("stakeholder");
                           if (!isAuthenticated) {
-                            setLoginVisible(true);
+                            loginWithPopup({ action: "signup" });
                           } else {
                             history.push("/stakeholder-signup");
                           }
@@ -129,7 +129,10 @@ const SignupView = ({ ...props }) => {
                 <br />
                 <br />
                 <div>
-                  <Button type="ghost" onClick={() => setLoginVisible(true)}>
+                  <Button
+                    type="ghost"
+                    onClick={() => loginWithPopup({ action: "login" })}
+                  >
                     Sign In
                   </Button>
                 </div>
