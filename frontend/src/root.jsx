@@ -223,6 +223,8 @@ const Root = () => {
   const topicsCount = tags?.topics ? tags.topics.length : 0;
   const excludeSummary = ["organisation", "stakeholder"];
 
+  console.log(process.env.NODE_ENV);
+
   const filterNav = (include) => {
     return nav?.resourceCounts
       ?.filter((x) =>
