@@ -113,12 +113,12 @@ export const reviewCommentPlaceholder = {
 };
 
 export const publishStatusUIText = {
-  APPROVED: "Published",
-  APPROVE: "Publish",
+  APPROVED: "Approved",
+  APPROVE: "Approve",
   REJECTED: "Declined",
   REJECT: "Decline",
-  UNAPPROVED: "Unpublished",
-  UNAPPROVE: "Unpublish",
+  UNAPPROVED: "Unapproved",
+  UNAPPROVE: "Unapprove",
 };
 
 export const colors = [
@@ -146,18 +146,20 @@ export const tagsMap = (array, category, tags) => {
   });
 };
 
+export const toTitleCase = (phrase) => {
+  return phrase
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
 const domain = window.__ENV__.auth0.domain.replace(/(https:\/\/|\/)/gi, "");
 
 export const auth0Client = new auth0.WebAuth({
   domain: domain,
-  clientID:
-    process.env.NODE_ENV !== "production"
-      ? "dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J"
-      : "mSuWoeUEN3Z8XWZMbUqiOIOHwdk0R6dm",
-  audience:
-    process.env.NODE_ENV !== "production"
-      ? "https://unep-gpml-test.eu.auth0.com/api/v2/"
-      : "https://unep-gpml.eu.auth0.com/api/v2/",
+  clientID: window.__ENV__.auth0.clientId,
+  audience: "https://unep-gpml-test.eu.auth0.com/api/v2/",
   redirectUri: window.location.origin,
   scope: "openid profile email",
   responseType: "token id_token",
