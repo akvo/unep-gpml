@@ -70,8 +70,8 @@ const Experts = () => {
     },
     desktop: {
       breakpoint: { max: 1199, min: 992 },
-      items: 6,
-      slidesToSlide: 6,
+      items: 4.5,
+      slidesToSlide: 4.5,
     },
     tablet: {
       breakpoint: { max: 991, min: 768 },
@@ -80,8 +80,8 @@ const Experts = () => {
     },
     largeMobile: {
       breakpoint: { max: 767, min: 600 },
-      items: 3,
-      slidesToSlide: 3,
+      items: 2.5,
+      slidesToSlide: 2.5,
     },
     mobile: {
       breakpoint: { max: 599, min: 361 },
