@@ -75,8 +75,8 @@ const Experts = () => {
     },
     tablet: {
       breakpoint: { max: 991, min: 768 },
-      items: 4,
-      slidesToSlide: 4,
+      items: 3.5,
+      slidesToSlide: 3.5,
     },
     largeMobile: {
       breakpoint: { max: 767, min: 600 },
@@ -85,8 +85,8 @@ const Experts = () => {
     },
     mobile: {
       breakpoint: { max: 599, min: 361 },
-      items: 2,
-      slidesToSlide: 2,
+      items: 1.5,
+      slidesToSlide: 1.5,
     },
     extraSmallMobile: {
       breakpoint: { max: 360, min: 0 },
@@ -153,7 +153,7 @@ const Experts = () => {
         <LeftSidebar active={5} sidebar={sidebar}>
           <div className="expert-list-section">
             <div className="expert-top-tools">
-              <div className="page-label">Showing 7 Of 16</div>
+              <div className="page-label">Showing 7 Of {experts?.count}</div>
               <button
                 className="view-button"
                 shape="round"
