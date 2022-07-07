@@ -190,7 +190,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                         type="primary"
                         shape="round"
                         icon={<LinkedinIcon />}
-                        onClick={handleOnClickBtnNext}
+                        onClick={handleLinkedinLogin}
                       >
                         CONTINUE WITH LINKEDIN
                       </Button>
