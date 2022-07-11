@@ -51,6 +51,7 @@ import { ReactComponent as TransnationalImage } from "../../images/transnational
 import { ReactComponent as CityImage } from "../../images/city-icn.svg";
 import Comments from "./comment";
 import Header from "./header";
+import StakeholderCarousel from "./stakeholder-carousel";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
@@ -750,6 +751,8 @@ const DetailsView = ({
         )}
 
         <Records {...{ countries, languages, params, data, profile }} />
+
+        <StakeholderCarousel />
 
         {/* RELATED CONTENT */}
         {data?.relatedContent &&
