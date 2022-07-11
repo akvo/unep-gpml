@@ -35,8 +35,8 @@ values(
     :type_of_law,
     :record_number,
     :implementing_mea,
-    :v:first_publication_date::timestamptz,
-    :v:latest_amendment_date::timestamptz,
+    :v:first_publication_date::date,
+    :v:latest_amendment_date::date,
     :status,
     :v:geo_coverage_type::geo_coverage_type,
     :v:attachments::jsonb,
@@ -53,6 +53,11 @@ values(
 --~ (when (contains? params :document_preview) ", :document_preview")
 )
 returning id;
+
+-- :name create-policies :returning-execute :many
+-- :doc Create new policies
+insert into policy (:i*:insert-cols)
+values :t*:policies returning id, leap_api_id;
 
 -- :name policy-by-id :? :1
 -- :doc returns policy data
@@ -76,10 +81,6 @@ select
     image,
     created_by,
     document_preview,
-    (select json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
-        from policy_language_url plu
-        left join language l on l.id = plu.language
-        where plu.policy = :id) as urls,
     (select json_agg(tag) from policy_tag where policy = :id) as tags,
     (select json_agg(coalesce(country, country_group))
         from policy_geo_coverage where policy = :id) as geo_coverage_value
@@ -108,10 +109,6 @@ select
     url,
     image,
     document_preview,
-    (select json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
-        from policy_language_url plu
-        left join language l on l.id = plu.language
-        where plu.policy = :id) as urls,
     (select json_agg(tag)
         from policy_tag where policy = :id) as tags,
     (select created_by
@@ -124,20 +121,29 @@ where id = :id
 insert into policy_tag(policy, tag)
 values :t*:tags RETURNING id;
 
--- :name add-policy-geo :<! :1
--- :doc add policy geo
-insert into policy_geo_coverage(policy, country_group, country)
+-- :name add-policies-geo :returning-execute :many
+-- :doc add policies geo
+insert into policy_geo_coverage (:i*:insert-cols)
 values :t*:geo RETURNING id;
 
--- :name add-policy-language-urls :<! :1
--- :doc Add language URLs to a policy
-insert into policy_language_url(policy, language, url)
-values :t*:urls RETURNING id;
+-- :name delete-policies-geo :execute :affected
+-- :doc delete policies geo by policy ids
+delete from policy_geo_coverage
+  where policy IN (:v*:policies);
 
 -- :name all-policies
 -- :doc List all policies
 select id, title
   from policy;
+
+-- :name filtered-policies :? :*
+-- :doc List all policies with filtering support (will replace 'all-policies' soon)
+select *
+  from policy
+--~ (when (seq params) " where")
+--~ (when (contains? params :ids) " id in (:v*:ids)")
+--~ (when (> (-> params keys count) 2) " AND ")
+--~ (when (contains? params :leap_api_ids) " leap_api_id in (:v*:leap_api_ids)")
 
 -- :name add-language-to-policy :! :n
 -- :doc Add language to policy

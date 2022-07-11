@@ -9,6 +9,7 @@ const Footer = ({
   setStakeholderSignupModalVisible,
   setWarningModalVisible,
   setFilterMenu,
+  setLoginVisible,
 }) => {
   const profile = UIStore.useState((s) => s.profile);
   return (
@@ -54,6 +55,11 @@ const Footer = ({
               <li>
                 <h4>GPML Digital platform</h4>
               </li>
+              {profile && profile.org && !profile?.org?.isMember && (
+                <li>
+                  <Link to="/entity-signup">Join GPML</Link>
+                </li>
+              )}
               <li>
                 <Link to="/knowledge/library"> Knowledge Exchange</Link>
               </li>
@@ -75,7 +81,7 @@ const Footer = ({
                         ? setWarningModalVisible(true)
                         : isAuthenticated
                         ? setStakeholderSignupModalVisible(true)
-                        : loginWithPopup();
+                        : setLoginVisible(true);
                     }}
                   >
                     Connect Stakeholders
@@ -200,7 +206,7 @@ const Footer = ({
                         ? setWarningModalVisible(true)
                         : isAuthenticated
                         ? setStakeholderSignupModalVisible(true)
-                        : loginWithPopup();
+                        : setLoginVisible(true);
                     }}
                   >
                     Sign up to the GPML Digital Platform (For All Individuals)

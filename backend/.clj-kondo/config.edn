@@ -1,0 +1,3 @@
+{:linters {:unresolved-symbol
+           {:exclude [(twarc.core/defjob)
+                      (gpml.scheduler.leap-api-policy-importer/handle-leap-api-policy-import-job)]}}}

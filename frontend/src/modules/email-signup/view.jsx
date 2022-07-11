@@ -29,7 +29,7 @@ const unmountedStyle = {
   animationFillMode: "forwards",
 };
 
-function EmailJoin({}) {
+function EmailJoin({ setSignUp }) {
   let history = useHistory();
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -169,23 +169,6 @@ function EmailJoin({}) {
       <div className="ui container wave-background bg-white">
         <Row className="join-form">
           <Col span={24}>
-            <div className="join-button">
-              <Title level={2}>JOIN WITH EMAIL</Title>
-              <Button
-                type="text"
-                className="connect-back-button"
-                onClick={() => {
-                  history.push({
-                    pathname: "login",
-                    state: {
-                      login: true,
-                    },
-                  });
-                }}
-              >
-                {"<"} Back to connect options
-              </Button>
-            </div>
             <FinalForm
               initialValues={initialValues}
               validate={checkValidation}

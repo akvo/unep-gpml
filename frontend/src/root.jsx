@@ -87,6 +87,7 @@ import Onboarding from "./modules/onboarding/view";
 
 let tmid;
 
+const TRACKING_ID = "UA-225649296-2";
 import auth0 from "auth0-js";
 
 import { auth0Client } from "./utils/misc";
@@ -223,6 +224,8 @@ const Root = () => {
   const topicsCount = tags?.topics ? tags.topics.length : 0;
   const excludeSummary = ["organisation", "stakeholder"];
 
+  console.log(process.env.NODE_ENV);
+
   const filterNav = (include) => {
     return nav?.resourceCounts
       ?.filter((x) =>
@@ -326,11 +329,6 @@ const Root = () => {
             state: { data: authResult?.idTokenPayload },
           });
         }
-        if (!resp.data?.org?.isMember) {
-          resp.data.org = null;
-        } else if (resp?.data) {
-          resp.data.non_member_organisation = null;
-        }
         UIStore.update((e) => {
           e.profile = {
             ...resp.data,
@@ -352,6 +350,7 @@ const Root = () => {
   // Here we retrieve the resources data
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loginVisible, setLoginVisible] = useState(false);
   const [filterCountries, setFilterCountries] = useState([]);
   const [relations, setRelations] = useState([]);
   const { isLoading } = useAuth0();
@@ -526,8 +525,12 @@ const Root = () => {
                   {isAuthenticated && isRegistered(profile) ? (
                     <UserButton {...{ logout, isRegistered, profile }} />
                   ) : (
-                    <Button type="ghost" className="left">
-                      <Link to="/login">Sign in</Link>
+                    <Button
+                      type="ghost"
+                      className="left"
+                      onClick={() => setLoginVisible(true)}
+                    >
+                      Sign in
                     </Button>
                   )}
                 </div>
@@ -770,11 +773,14 @@ const Root = () => {
             path="/stakeholder-signup-new"
             render={(props) => <SignupViewNew {...props} />}
           />
-          <Route path="/login" render={(props) => <Login {...props} />} />
           <Route
             path="/signup"
             render={(props) => (
-              <LandingSignupView {...props} profile={profile} />
+              <LandingSignupView
+                {...props}
+                profile={profile}
+                setLoginVisible={setLoginVisible}
+              />
             )}
           />
           <Route
@@ -825,7 +831,7 @@ const Root = () => {
                   render={(props) => (
                     <StakeholderOverview
                       {...props}
-                      loginWithPopup={loginWithPopup}
+                      setLoginVisible={setLoginVisible}
                       filters={filters}
                       setFilters={setFilters}
                       isAuthenticated={isAuthenticated}
@@ -903,12 +909,14 @@ const Root = () => {
           isAuthenticated={isAuthenticated}
           loginWithPopup={loginWithPopup}
           setFilterMenu={setFilterMenu}
+          setLoginVisible={setLoginVisible}
         />
       </div>
       <ModalWarningUser
         visible={warningModalVisible}
         close={() => setWarningModalVisible(false)}
       />
+      <Login visible={loginVisible} close={() => setLoginVisible(false)} />
       <ResponsiveMenu
         {...{
           profile,

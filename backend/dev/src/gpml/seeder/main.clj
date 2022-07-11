@@ -290,10 +290,6 @@
                 (assoc x :geo_coverage (get-ids (get-country db country)))
                 x)))
        (map (fn [x]
-              (if-let [language-url (:resource_language_url x)]
-                (assoc x :resource_language_url (get-language db language-url))
-                x)))
-       (map (fn [x]
               (if-let [date (:latest_amendment_date x)]
                 (assoc x :latest_amendment_date (parse-date date))
                 x)))
@@ -313,14 +309,10 @@
     (try
       (let [po-id (:id (db.policy/new-policy db data))
             data-geo (:geo_coverage data)
-            data-lang (:resource_language_url data)
             data-tag (:tags data)]
         (when (not-empty data-geo)
           (let [po-geo (mapv #(assoc {} :policy po-id :country %) data-geo)]
             (jdbc/insert-multi! db :policy_geo_coverage po-geo)))
-        (when (not-empty data-lang)
-          (let [po-lang (map (fn [x] (assoc x :policy po-id)) data-lang)]
-            (jdbc/insert-multi! db :policy_language_url po-lang)))
         (when (not-empty data-tag)
           (let [po-tag (mapv #(assoc {} :policy po-id :tag %) data-tag)]
             (jdbc/insert-multi! db :policy_tag po-tag))))

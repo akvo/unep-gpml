@@ -52,6 +52,10 @@ select names from country_group where name in (:v*:ids)
 -- :doc Get country group by id
 select * from country_group where id = :id
 
+-- :name get-country-groups-by-type :query :many
+-- :doc Get country groups by type
+select * from country_group where type = :type
+
 -- :name new-country-group-country :! :1
 -- :doc Insert new country group <-> country
 insert into country_group_country (country_group, country)

@@ -146,6 +146,14 @@ export const tagsMap = (array, category, tags) => {
   });
 };
 
+export const toTitleCase = (phrase) => {
+  return phrase
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
 const domain = window.__ENV__.auth0.domain.replace(/(https:\/\/|\/)/gi, "");
 
 export const auth0Client = new auth0.WebAuth({

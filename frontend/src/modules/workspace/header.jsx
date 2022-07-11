@@ -9,9 +9,7 @@ const Header = ({ userName }) => {
           title={
             <span className="header-text text-white">
               {userName !== false && (
-                <>
-                  Welcome back, <b className="user-name">{userName}</b>
-                </>
+                <>Hi {userName}, welcome to your workspace</>
               )}
             </span>
           }
