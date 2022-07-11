@@ -91,6 +91,18 @@ const StakeholderCarousel = () => {
 
         return (
           <Card className="connection-card">
+            <Avatar
+              className={`connection-small-image ${
+                !stakeholder?.image && "connection-no-image"
+              }`}
+              src={stakeholder.image}
+              style={{ backgroundColor: colour() }}
+              alt={stakeholder?.stakeholder}
+            >
+              {!stakeholder?.image && <CircledUserIcon />}
+              <span>{`${stakeholder?.stakeholder?.substring(0, 1)}`}</span>
+            </Avatar>
+
             <ul className="connection-detail-list">
               <li className="list-item connection-image-wrapper">
                 <Avatar
