@@ -9,8 +9,8 @@ import { ReactComponent as LocationIcon } from "../../images/location.svg";
 import { ReactComponent as ExpertBadge } from "../../images/stakeholder-overview/expert-badge.svg";
 import { ReactComponent as PartnerBadge } from "../../images/stakeholder-overview/partner-badge.svg";
 import { ReactComponent as GPMLMemberBadge } from "../../images/stakeholder-overview/member-of-gpml-badge.svg";
-// import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
-// import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
+import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
+import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
 // import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
 
 const colour = () => colors[Math.floor(Math.random() * colors.length)];
@@ -35,7 +35,7 @@ const StakeholderCarousel = () => {
     },
     {
       id: 3,
-      image: "/image/profile/4",
+      image: "/image/profile/5",
       role: "resource_editor",
       stakeholder: "Yagami Light",
       stakeholderId: 10005,
@@ -44,7 +44,7 @@ const StakeholderCarousel = () => {
     },
     {
       id: 4,
-      image: "/image/profile/4",
+      image: "/image/profile/5",
       role: "resource_editor",
       stakeholder: "Yagami Light",
       stakeholderId: 10005,
@@ -53,7 +53,205 @@ const StakeholderCarousel = () => {
     },
     {
       id: 5,
-      image: "/image/profile/4",
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 7,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
+      role: "resource_editor",
+      stakeholder: "Yagami Light",
+      stakeholderId: 10005,
+      stakeholderRole: "USER",
+      country: 840,
+    },
+    {
+      id: 5,
+      image: "/image/profile/5",
       role: "resource_editor",
       stakeholder: "Yagami Light",
       stakeholderId: 10005,
@@ -82,8 +280,50 @@ const StakeholderCarousel = () => {
     },
   };
 
+  const CustomRightArrow = ({ onClick, ...rest }) => {
+    const {
+      onMove,
+      carouselState: { currentSlide },
+    } = rest;
+
+    return (
+      <button
+        className="react-multiple-carousel__arrow custom-connection-right-arrow"
+        onClick={() => onClick()}
+      >
+        <RightArrow />
+      </button>
+    );
+  };
+
+  const CustomLeftArrow = ({ onClick, ...rest }) => {
+    const {
+      onMove,
+      carouselState: { currentSlide },
+    } = rest;
+
+    return (
+      <button
+        className="react-multiple-carousel__arrow custom-connection-left-arrow"
+        onClick={() => onClick()}
+      >
+        <LeftArrow />
+      </button>
+    );
+  };
+
   return (
-    <Carousel responsive={responsive} containerClass="connection-carousel">
+    <Carousel
+      responsive={responsive}
+      containerClass="connection-carousel"
+      centerMode={true}
+      responsive={responsive}
+      dotListClass="connection-dot-list"
+      showDots={true}
+      renderDotsOutside={true}
+      customLeftArrow={<CustomLeftArrow />}
+      customRightArrow={<CustomRightArrow />}
+    >
       {stakeholders.map((stakeholder) => {
         const country = countries.find(
           (country) => country.id === stakeholder?.country

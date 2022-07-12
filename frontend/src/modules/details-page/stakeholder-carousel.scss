@@ -1,6 +1,26 @@
 @import "../../vars.scss";
 
 .connection-carousel {
+  .custom-connection-left-arrow,
+  .custom-connection-right-arrow {
+    top: calc(64px / 2 - 29.25px / 2);
+    svg {
+      width: 27px;
+      path {
+        fill-opacity: 1;
+        fill: #d1d0d5;
+      }
+    }
+  }
+
+  .custom-connection-left-arrow {
+    left: -7px;
+  }
+
+  .custom-connection-right-arrow {
+    right: -10px;
+  }
+
   .react-multi-carousel-item:not(:last-of-type) {
     margin-right: 3px;
   }
