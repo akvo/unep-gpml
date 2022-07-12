@@ -1,5 +1,15 @@
 @import "../../vars.scss";
 
+.connection-wrapper {
+  padding: 0 40px;
+  .connection-dot-list {
+    position: relative;
+    margin-top: 31px;
+    button {
+      height: 2px;
+    }
+  }
+}
 .connection-carousel {
   .custom-connection-left-arrow,
   .custom-connection-right-arrow {

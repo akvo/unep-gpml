@@ -313,7 +313,8 @@ const StakeholderCarousel = () => {
   };
 
   return (
-    <Carousel
+   <div className="connection-wrapper">
+      <Carousel
       responsive={responsive}
       containerClass="connection-carousel"
       centerMode={true}
@@ -384,6 +385,7 @@ const StakeholderCarousel = () => {
         );
       })}
     </Carousel>
+   </div>
   );
 };
 
