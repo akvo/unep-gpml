@@ -31,7 +31,7 @@ function Authentication() {
   });
   const [error, setError] = useState(false);
 
-  const { tags, nonMemberOrganisations } = UIStore.currentState;
+  const { tags, nonMemberOrganisations, organisations } = UIStore.currentState;
 
   const next = (skip = 0) => {
     if (
@@ -118,7 +118,7 @@ function Authentication() {
     if (data.orgName) {
       data.org.id = data.orgName;
       data.orgName = {
-        [data.orgName]: nonMemberOrganisations.find(
+        [data.orgName]: [...organisations, ...nonMemberOrganisations].find(
           (item) => item.id === data.orgName
         )?.name,
       };
