@@ -32,6 +32,32 @@ const Workspace = ({ profile }) => {
           <div className="workspace-content-wrapper">
             <div className="workspace-container">
               {profile &&
+                profile?.emailVerified &&
+                profile?.reviewStatus === "SUBMITTED" && (
+                  <Row>
+                    <Col lg={24} sm={24}>
+                      <div className="pending-stripe">
+                        <Title level={4}>
+                          Your account is pending reviewal. You can still
+                          explore the platform.
+                        </Title>
+                      </div>
+                    </Col>
+                  </Row>
+                )}
+              {profile && !profile?.emailVerified && (
+                <Row>
+                  <Col lg={24} sm={24}>
+                    <div className="pending-stripe">
+                      <Title level={4}>
+                        We sent you a confirmation email, Please take a moment
+                        and validate your address to confirm your account.
+                      </Title>
+                    </div>
+                  </Col>
+                </Row>
+              )}
+              {profile &&
                 profile.org &&
                 !profile?.org?.isMember &&
                 isFocal !== false && (

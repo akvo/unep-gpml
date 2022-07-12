@@ -291,6 +291,11 @@ const Root = () => {
               "https://digital.gpmarinelitter.org/is_new"
             ]
           ) {
+            UIStore.update((e) => {
+              e.profile = {
+                emailVerified: authResult?.idTokenPayload?.email_verified,
+              };
+            });
             history.push({
               pathname: "onboarding",
               state: { data: authResult?.idTokenPayload },
@@ -332,6 +337,7 @@ const Root = () => {
           e.profile = {
             ...resp.data,
             email: authResult?.idTokenPayload?.email,
+            emailVerified: authResult?.idTokenPayload?.email_verified,
           };
         });
         updateStatusProfile(resp.data);

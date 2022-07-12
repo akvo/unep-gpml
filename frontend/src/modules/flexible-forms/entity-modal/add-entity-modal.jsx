@@ -189,7 +189,7 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
     api
       .post("/organisation", data)
       .then((res) => {
-        setEntity(res.data);
+        setEntity(res.data.org);
         UIStore.update((e) => {
           e.formStep = {
             ...e.formStep,
