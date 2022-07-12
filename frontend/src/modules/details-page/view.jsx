@@ -564,6 +564,7 @@ const DetailsView = ({
           </Col>
         </Row>
         <Col>
+          <StakeholderCarousel />
           {/* CONNECTION */}
           {(data?.entityConnections?.length > 0 ||
             data?.stakeholderConnections.filter(
@@ -751,8 +752,6 @@ const DetailsView = ({
         )}
 
         <Records {...{ countries, languages, params, data, profile }} />
-
-        <StakeholderCarousel />
 
         {/* RELATED CONTENT */}
         {data?.relatedContent &&

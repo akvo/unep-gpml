@@ -358,46 +358,48 @@ const StakeholderCarousel = () => {
                 <span>{`${stakeholder?.stakeholder?.substring(0, 1)}`}</span>
               </Avatar>
 
-              <ul className="connection-detail-list">
-                <li className="list-item connection-image-wrapper">
-                  <Avatar
-                    className={`connection-image ${
-                      !stakeholder?.image && "connection-no-image"
-                    }`}
-                    src={stakeholder.image}
-                    style={{ backgroundColor: colour() }}
-                    alt={stakeholder?.stakeholder}
-                  >
-                    {!stakeholder?.image && <CircledUserIcon />}
-                    <span>{`${stakeholder?.stakeholder?.substring(
-                      0,
-                      1
-                    )}`}</span>
-                  </Avatar>
-                </li>
+              <div className="connection-details-wrapper">
+                <ul className="connection-detail-list">
+                  <li className="list-item connection-image-wrapper">
+                    <Avatar
+                      className={`connection-image ${
+                        !stakeholder?.image && "connection-no-image"
+                      }`}
+                      src={stakeholder.image}
+                      style={{ backgroundColor: colour() }}
+                      alt={stakeholder?.stakeholder}
+                    >
+                      {!stakeholder?.image && <CircledUserIcon />}
+                      <span>{`${stakeholder?.stakeholder?.substring(
+                        0,
+                        1
+                      )}`}</span>
+                    </Avatar>
+                  </li>
 
-                <li className="list-item connection-name">
-                  {`${stakeholder?.stakeholder}`}
-                </li>
-                <li className="list-item connection-location">
-                  <LocationIcon />
-                  <span>{country}</span>
-                </li>
-                <li className="list-item connection-activity">
-                  {stakeholder?.jobTitle}
-                </li>
-              </ul>
-              <ul className="badge-list">
-                <li>
-                  <GPMLMemberBadge />
-                </li>
-                {/* <li>
+                  <li className="list-item connection-name">
+                    {`${stakeholder?.stakeholder}`}
+                  </li>
+                  <li className="list-item connection-location">
+                    <LocationIcon />
+                    <span>{country}</span>
+                  </li>
+                  <li className="list-item connection-activity">
+                    {stakeholder?.jobTitle}
+                  </li>
+                </ul>
+                <ul className="badge-list">
+                  <li>
+                    <GPMLMemberBadge />
+                  </li>
+                  {/* <li>
               <PartnerBadge />
             </li> */}
-                {/* <li>
+                  {/* <li>
               <ExpertBadge />
             </li> */}
-              </ul>
+                </ul>
+              </div>
             </Card>
           );
         })}
