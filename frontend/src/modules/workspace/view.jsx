@@ -32,7 +32,35 @@ const Workspace = ({ profile }) => {
           <div className="workspace-content-wrapper">
             <div className="workspace-container">
               {profile &&
-                ((profile.org && !profile?.org?.isMember) && isFocal !== false) && (
+                profile?.emailVerified &&
+                profile?.reviewStatus === "SUBMITTED" && (
+                  <Row>
+                    <Col lg={24} sm={24}>
+                      <div className="pending-stripe">
+                        <Title level={4}>
+                          Your account is pending reviewal. You can still
+                          explore the platform.
+                        </Title>
+                      </div>
+                    </Col>
+                  </Row>
+                )}
+              {profile && !profile?.emailVerified && (
+                <Row>
+                  <Col lg={24} sm={24}>
+                    <div className="pending-stripe">
+                      <Title level={4}>
+                        We sent you a confirmation email, Please take a moment
+                        and validate your address to confirm your account.
+                      </Title>
+                    </div>
+                  </Col>
+                </Row>
+              )}
+              {profile &&
+                profile.org &&
+                !profile?.org?.isMember &&
+                isFocal !== false && (
                   <Row className="bg-white gpml-section">
                     <Col lg={12} sm={24}>
                       <div className="content-container">
@@ -161,13 +189,24 @@ const Workspace = ({ profile }) => {
                     <List itemLayout="horizontal">
                       <List.Item>
                         <List.Item.Meta
-                          title={<a href="https://datahub.gpmarinelitter.org/" target="_blank">Add data {">"}</a>}
+                          title={
+                            <a
+                              href="https://datahub.gpmarinelitter.org/"
+                              target="_blank"
+                            >
+                              Add data {">"}
+                            </a>
+                          }
                           description="Contribute to the DataHub maps & dashboard"
                         />
                       </List.Item>
                       <List.Item>
                         <List.Item.Meta
-                          title={<Link to="/flexible-forms">Share your knowledge {">"}</Link>}
+                          title={
+                            <Link to="/flexible-forms">
+                              Share your knowledge {">"}
+                            </Link>
+                          }
                           description="Contribute to the global library of initiatives, action plans, financing & tech resources & more"
                         />
                       </List.Item>
@@ -180,7 +219,9 @@ const Workspace = ({ profile }) => {
                       <List.Item>
                         <List.Item.Meta
                           title={
-                            <Link to="/connect/community">Match with new opportunities {">"}</Link>
+                            <Link to="/connect/community">
+                              Match with new opportunities {">"}
+                            </Link>
                           }
                           // description="Fictum, deserunt mollit anim laborum astutumque!"
                         />
