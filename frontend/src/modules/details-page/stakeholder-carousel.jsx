@@ -262,21 +262,34 @@ const StakeholderCarousel = () => {
 
   const responsive = {
     superLargeDesktop: {
-      // the naming can be any, depends on you.
-      breakpoint: { max: 4000, min: 3000 },
-      items: 5,
+      breakpoint: { max: 4000, min: 1200 },
+      items: 14,
+      slidesToSlide: 14,
     },
     desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3,
+      breakpoint: { max: 1199, min: 992 },
+      items: 12,
+      slidesToSlide: 12,
     },
     tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2,
+      breakpoint: { max: 991, min: 768 },
+      items: 10,
+      slidesToSlide: 10,
+    },
+    largeMobile: {
+      breakpoint: { max: 767, min: 600 },
+      items: 5,
+      slidesToSlide: 5,
     },
     mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
+      breakpoint: { max: 599, min: 361 },
+      items: 3,
+      slidesToSlide: 3,
+    },
+    extraSmallMobile: {
+      breakpoint: { max: 360, min: 0 },
+      items: 2,
+      slidesToSlide: 2,
     },
   };
 
@@ -313,79 +326,83 @@ const StakeholderCarousel = () => {
   };
 
   return (
-   <div className="connection-wrapper">
+    <div className="connection-wrapper">
       <Carousel
-      responsive={responsive}
-      containerClass="connection-carousel"
-      centerMode={true}
-      responsive={responsive}
-      dotListClass="connection-dot-list"
-      showDots={true}
-      renderDotsOutside={true}
-      customLeftArrow={<CustomLeftArrow />}
-      customRightArrow={<CustomRightArrow />}
-    >
-      {stakeholders.map((stakeholder) => {
-        const country = countries.find(
-          (country) => country.id === stakeholder?.country
-        )?.name;
+        responsive={responsive}
+        containerClass="connection-carousel"
+        centerMode={true}
+        responsive={responsive}
+        dotListClass="connection-dot-list"
+        showDots={true}
+        renderDotsOutside={true}
+        customLeftArrow={<CustomLeftArrow />}
+        customRightArrow={<CustomRightArrow />}
+        autoPlay={false}
+      >
+        {stakeholders.map((stakeholder) => {
+          const country = countries.find(
+            (country) => country.id === stakeholder?.country
+          )?.name;
 
-        return (
-          <Card className="connection-card">
-            <Avatar
-              className={`connection-small-image ${
-                !stakeholder?.image && "connection-no-image"
-              }`}
-              src={stakeholder.image}
-              style={{ backgroundColor: colour() }}
-              alt={stakeholder?.stakeholder}
-            >
-              {!stakeholder?.image && <CircledUserIcon />}
-              <span>{`${stakeholder?.stakeholder?.substring(0, 1)}`}</span>
-            </Avatar>
+          return (
+            <Card className="connection-card">
+              <Avatar
+                className={`connection-small-image ${
+                  !stakeholder?.image && "connection-no-image"
+                }`}
+                src={stakeholder.image}
+                style={{ backgroundColor: colour() }}
+                alt={stakeholder?.stakeholder}
+              >
+                {!stakeholder?.image && <CircledUserIcon />}
+                <span>{`${stakeholder?.stakeholder?.substring(0, 1)}`}</span>
+              </Avatar>
 
-            <ul className="connection-detail-list">
-              <li className="list-item connection-image-wrapper">
-                <Avatar
-                  className={`connection-image ${
-                    !stakeholder?.image && "connection-no-image"
-                  }`}
-                  src={stakeholder.image}
-                  style={{ backgroundColor: colour() }}
-                  alt={stakeholder?.stakeholder}
-                >
-                  {!stakeholder?.image && <CircledUserIcon />}
-                  <span>{`${stakeholder?.stakeholder?.substring(0, 1)}`}</span>
-                </Avatar>
-              </li>
+              <ul className="connection-detail-list">
+                <li className="list-item connection-image-wrapper">
+                  <Avatar
+                    className={`connection-image ${
+                      !stakeholder?.image && "connection-no-image"
+                    }`}
+                    src={stakeholder.image}
+                    style={{ backgroundColor: colour() }}
+                    alt={stakeholder?.stakeholder}
+                  >
+                    {!stakeholder?.image && <CircledUserIcon />}
+                    <span>{`${stakeholder?.stakeholder?.substring(
+                      0,
+                      1
+                    )}`}</span>
+                  </Avatar>
+                </li>
 
-              <li className="list-item connection-name">
-                {`${stakeholder?.stakeholder}`}
-              </li>
-              <li className="list-item connection-location">
-                <LocationIcon />
-                <span>{country}</span>
-              </li>
-              <li className="list-item connection-activity">
-                {stakeholder?.jobTitle}
-              </li>
-            </ul>
-            <ul className="badge-list">
-              <li>
-                <GPMLMemberBadge />
-              </li>
-              {/* <li>
+                <li className="list-item connection-name">
+                  {`${stakeholder?.stakeholder}`}
+                </li>
+                <li className="list-item connection-location">
+                  <LocationIcon />
+                  <span>{country}</span>
+                </li>
+                <li className="list-item connection-activity">
+                  {stakeholder?.jobTitle}
+                </li>
+              </ul>
+              <ul className="badge-list">
+                <li>
+                  <GPMLMemberBadge />
+                </li>
+                {/* <li>
               <PartnerBadge />
             </li> */}
-              {/* <li>
+                {/* <li>
               <ExpertBadge />
             </li> */}
-            </ul>
-          </Card>
-        );
-      })}
-    </Carousel>
-   </div>
+              </ul>
+            </Card>
+          );
+        })}
+      </Carousel>
+    </div>
   );
 };
 
