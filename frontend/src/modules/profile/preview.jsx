@@ -105,10 +105,13 @@ const GpmlLinkLi = ({ item }) => {
   return (
     <li className="has-border">
       <Link
-        to={`/${item.type.replace("_", "-")}/${item.id}`}
+        to={`/${item.type.replace("_", "-")}/${
+          item.reviewStatus === "PENDING" ? item.topicId : item.id
+        }`}
         className="browse-card"
       >
-        GPML LINK: /{item.type.replace("_", "-")}/{item.id}{" "}
+        GPML LINK: /{item.type.replace("_", "-")}/
+        {item.reviewStatus === "PENDING" ? item.topicId : item.id}{" "}
       </Link>
     </li>
   );

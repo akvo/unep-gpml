@@ -140,6 +140,14 @@
     border: 1px solid #cbd8e2;
     box-sizing: border-box;
     border-radius: 5px;
+    .request-collapse-panel-item {
+      .ant-collapse-header {
+        align-items: center;
+      }
+      .ant-collapse-header-text {
+        flex: 1;
+      }
+    }
 
     @media (max-width: 540px) {
       .ant-select-selection-item,
