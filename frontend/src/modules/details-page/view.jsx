@@ -564,7 +564,6 @@ const DetailsView = ({
           </Col>
         </Row>
         <Col>
-          <StakeholderCarousel />
           {/* CONNECTION */}
           {(data?.entityConnections?.length > 0 ||
             data?.stakeholderConnections.filter(
@@ -573,6 +572,7 @@ const DetailsView = ({
             <Col className="section">
               <div className="extra-wrapper">
                 <h3 className="content-heading">Connections</h3>
+                <StakeholderCarousel />
                 {data?.entityConnections?.length > 0 && (
                   <List itemLayout="horizontal">
                     {data?.entityConnections?.map((item) => (
