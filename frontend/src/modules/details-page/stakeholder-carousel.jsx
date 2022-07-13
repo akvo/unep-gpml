@@ -21,244 +21,6 @@ const StakeholderCarousel = ({ stakeholders }) => {
     landing: s.landing,
   }));
 
-  const test = [
-    {
-      id: 2,
-      image:
-        "https://directory.growasia.org/wp-content/uploads/solution_logos/0.jpg",
-      role: "resource_editor",
-      stakeholder: "Testing Profile",
-      stakeholderId: 10003,
-      stakeholderRole: "ADMIN",
-      country: 380,
-    },
-    {
-      id: 3,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 4,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 380,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 7,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-    {
-      id: 5,
-      image: "/image/profile/5",
-      role: "resource_editor",
-      stakeholder: "Yagami Light",
-      stakeholderId: 10005,
-      stakeholderRole: "USER",
-      country: 840,
-    },
-  ];
-
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
@@ -330,7 +92,6 @@ const StakeholderCarousel = ({ stakeholders }) => {
         responsive={responsive}
         containerClass="connection-carousel"
         centerMode={true}
-        responsive={responsive}
         dotListClass="connection-dot-list"
         showDots={true}
         renderDotsOutside={true}
@@ -338,7 +99,7 @@ const StakeholderCarousel = ({ stakeholders }) => {
         customRightArrow={<CustomRightArrow />}
         autoPlay={false}
       >
-        {[...test, ...stakeholders]
+        {stakeholders
           .filter((x) => x.stakeholderRole !== "ADMIN")
           .map((stakeholder) => {
             const country = countries.find(
@@ -384,10 +145,12 @@ const StakeholderCarousel = ({ stakeholders }) => {
                     <li className="list-item connection-name">
                       {`${stakeholder?.stakeholder}`}
                     </li>
-                    <li className="list-item connection-location">
-                      <LocationIcon />
-                      <span>{country}</span>
-                    </li>
+                    {country && (
+                      <li className="list-item connection-location">
+                        <LocationIcon />
+                        <span>{country}</span>
+                      </li>
+                    )}
                     <li className="list-item connection-activity">
                       {stakeholder?.jobTitle}
                     </li>
