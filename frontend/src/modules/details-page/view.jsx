@@ -576,8 +576,11 @@ const DetailsView = ({
                   data?.entityConnections?.length > 0 && (
                     <List itemLayout="horizontal">
                       {data?.entityConnections?.map((item) => (
-                        <Link to={`/organisation/${item.entityId}`}>
-                          <List.Item key={item?.id} className="stakeholder-row">
+                        <Link
+                          to={`/organisation/${item.entityId}`}
+                          className="stakeholder-row"
+                        >
+                          <List.Item key={item?.id}>
                             <List.Item.Meta
                               className="stakeholder-detail"
                               avatar={
@@ -634,11 +637,11 @@ const DetailsView = ({
                               x.role === "owner"
                           )
                           .map((item) => (
-                            <Link to={`/stakeholder/${item.stakeholderId}`}>
-                              <List.Item
-                                key={item?.id}
-                                className="stakeholder-row"
-                              >
+                            <Link
+                              to={`/stakeholder/${item.stakeholderId}`}
+                              className="stakeholder-row"
+                            >
+                              <List.Item key={item?.id}>
                                 <List.Item.Meta
                                   className="stakeholder-detail"
                                   avatar={<Avatar src={item?.image} />}

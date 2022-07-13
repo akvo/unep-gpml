@@ -327,6 +327,7 @@
 
     .section-connection-stakeholder {
       .stakeholder-row {
+        display: block;
         border-bottom: unset !important;
         &:not(:first-of-type) {
           margin-top: 16px;
