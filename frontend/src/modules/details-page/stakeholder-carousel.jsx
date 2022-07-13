@@ -1,7 +1,7 @@
 import React from "react";
 import "./stakeholder-carousel.scss";
-import { Button, Row, Card, Avatar } from "antd";
-import { Link, useHistory } from "react-router-dom";
+import { Card, Avatar } from "antd";
+import { Link } from "react-router-dom";
 import { UIStore } from "../../store";
 import Carousel from "react-multi-carousel";
 import { colors } from "../../utils/misc";
@@ -11,7 +11,6 @@ import { ReactComponent as PartnerBadge } from "../../images/stakeholder-overvie
 import { ReactComponent as GPMLMemberBadge } from "../../images/stakeholder-overview/member-of-gpml-badge.svg";
 import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
 import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
-// import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
 
 const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
@@ -358,7 +357,10 @@ const StakeholderCarousel = () => {
                 <span>{`${stakeholder?.stakeholder?.substring(0, 1)}`}</span>
               </Avatar>
 
-              <div className="connection-details-wrapper">
+              <Link
+                to={`/stakeholder/${stakeholder?.stakeholderId}`}
+                className="connection-details-wrapper"
+              >
                 <ul className="connection-detail-list">
                   <li className="list-item connection-image-wrapper">
                     <Avatar
@@ -399,7 +401,7 @@ const StakeholderCarousel = () => {
               <ExpertBadge />
             </li> */}
                 </ul>
-              </div>
+              </Link>
             </Card>
           );
         })}
