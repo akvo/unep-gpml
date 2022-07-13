@@ -569,143 +569,94 @@ const DetailsView = ({
             data?.stakeholderConnections.filter(
               (x) => x.stakeholderRole !== "ADMIN" || x.role === "interested in"
             )?.length > 0) && (
-            <Col className="section">
+            <Col className="section section-connection-stakeholder">
               <div className="extra-wrapper">
                 <h3 className="content-heading">Connections</h3>
-                <StakeholderCarousel />
-                {data?.entityConnections?.length > 0 && (
-                  <List itemLayout="horizontal">
-                    {data?.entityConnections?.map((item) => (
-                      <List.Item key={item?.id} className="stakeholder-row">
-                        <List.Item.Meta
-                          className="stakeholder-detail"
-                          avatar={
-                            <Avatar
-                              size={40}
-                              src={
-                                item?.image ? (
-                                  item?.image
-                                ) : (
-                                  <Avatar
-                                    style={{
-                                      backgroundColor: "#09689A",
-                                      verticalAlign: "middle",
-                                    }}
-                                    size={50}
-                                  >
-                                    {item.entity?.substring(0, 2)}
-                                  </Avatar>
-                                )
-                              }
-                            />
-                          }
-                          title={
-                            <Link to={`/organisation/${item.entityId}`}>
-                              {item.entity}
-                            </Link>
-                          }
-                          description={"Entity"}
-                        />
-                      </List.Item>
-                    ))}
-                  </List>
-                )}
-                {data?.stakeholderConnections.filter(
-                  (x) =>
-                    x.stakeholderRole !== "ADMIN" || x.role === "interested in"
-                )?.length > 0 && (
-                  <Avatar.Group
-                    maxCount={2}
-                    size="large"
-                    maxStyle={{
-                      color: "#f56a00",
-                      backgroundColor: "#fde3cf",
-                      cursor: "pointer",
-                      height: 40,
-                      width: 40,
-                    }}
-                    style={{
-                      marginTop:
-                        data?.entityConnections?.length > 0 ? "16px" : 0,
-                    }}
-                  >
+                {data?.entityConnections &&
+                  data?.entityConnections?.length > 0 && (
                     <List itemLayout="horizontal">
-                      {data?.stakeholderConnections
-                        .filter(
-                          (x) =>
-                            x.stakeholderRole !== "ADMIN" ||
-                            x.role === "interested in"
-                        )
-                        .map((item) => (
+                      {data?.entityConnections?.map((item) => (
+                        <Link to={`/organisation/${item.entityId}`}>
                           <List.Item key={item?.id} className="stakeholder-row">
                             <List.Item.Meta
                               className="stakeholder-detail"
-                              avatar={<Avatar src={item?.image} />}
-                              title={
-                                <Link to={`/stakeholder/${item.stakeholderId}`}>
-                                  {item.stakeholder}
-                                </Link>
+                              avatar={
+                                <Avatar
+                                  size={64}
+                                  src={
+                                    item?.image ? (
+                                      item?.image
+                                    ) : (
+                                      <Avatar
+                                        style={{
+                                          backgroundColor: "#09689A",
+                                          verticalAlign: "middle",
+                                        }}
+                                        size={64}
+                                      >
+                                        {item.entity?.substring(0, 2)}
+                                      </Avatar>
+                                    )
+                                  }
+                                />
                               }
-                              description={titleCase(
-                                item?.role?.replace("_", " ")
-                              )}
+                              title={item.entity}
+                              description={"Entity"}
                             />
                           </List.Item>
-                        ))}
+                        </Link>
+                      ))}
                     </List>
-                  </Avatar.Group>
-                )}
-                {data?.stakeholderConnections.filter(
-                  (x) =>
-                    x.stakeholderRole !== "ADMIN" || x.role === "interested in"
-                ).length > 4 && (
-                  <Row className="stakeholder-row stakeholder-group">
+                  )}
+                {data?.stakeholderConnections &&
+                  data?.stakeholderConnections.filter(
+                    (x) => x.stakeholderRole !== "ADMIN" && x.role === "owner"
+                  )?.length > 0 && (
                     <Avatar.Group
-                      maxCount={2}
-                      size="large"
+                      size={64}
                       maxStyle={{
                         color: "#f56a00",
                         backgroundColor: "#fde3cf",
                         cursor: "pointer",
-                        height: 40,
-                        width: 40,
+                        height: 64,
+                        width: 64,
+                      }}
+                      style={{
+                        marginTop:
+                          data?.entityConnections?.length > 0 ? "16px" : 0,
                       }}
                     >
-                      {data?.stakeholderConnections
-                        .filter(
-                          (x) =>
-                            x.stakeholderRole !== "ADMIN" ||
-                            x.role === "interested in"
-                        )
-                        .map((connection, index) => (
-                          <Avatar
-                            className="related-content-avatar"
-                            style={{ border: "none", height: 40, width: 40 }}
-                            key={index}
-                            src={
-                              <Avatar
-                                avatar={<Avatar src={connection?.image} />}
-                                style={{
-                                  backgroundColor: "#09689A",
-                                  verticalAlign: "middle",
-                                }}
-                                size={40}
-                                title={
-                                  <Link
-                                    to={`/stakeholder/${connection?.stakeholderId}`}
-                                  >
-                                    {connection?.stakeholder}
-                                  </Link>
-                                }
+                      <List itemLayout="horizontal">
+                        {data?.stakeholderConnections
+                          .filter(
+                            (x) =>
+                              x.stakeholderRole !== "ADMIN" &&
+                              x.role === "owner"
+                          )
+                          .map((item) => (
+                            <Link to={`/stakeholder/${item.stakeholderId}`}>
+                              <List.Item
+                                key={item?.id}
+                                className="stakeholder-row"
                               >
-                                {connection?.stakeholder}
-                              </Avatar>
-                            }
-                          />
-                        ))}
+                                <List.Item.Meta
+                                  className="stakeholder-detail"
+                                  avatar={<Avatar src={item?.image} />}
+                                  title={item.stakeholder}
+                                  description={titleCase(
+                                    item?.role?.replace("_", " ")
+                                  )}
+                                />
+                              </List.Item>
+                            </Link>
+                          ))}
+                      </List>
                     </Avatar.Group>
-                  </Row>
-                )}
+                  )}
+
+                <StakeholderCarousel
+                  stakeholders={data?.stakeholderConnections}
+                />
               </div>
             </Col>
           )}
