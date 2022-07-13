@@ -1,177 +1,174 @@
 @import "../../vars.scss";
 
-.connection-carousel {
-  overflow: visible;
-  position: relative;
-  z-index: 2;
-}
-
 .connection-wrapper {
   z-index: 2;
+  .connection-carousel {
+    overflow: visible;
+    position: relative;
+    z-index: 2;
+
+    .react-multi-carousel-item:not(:last-of-type) {
+      margin-right: 3px;
+    }
+
+    .react-multi-carousel-item {
+      position: relative;
+      width: 64px !important;
+      box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5);
+      border-radius: 2px;
+
+      .connection-card {
+        width: 64px;
+        border: unset;
+        border-radius: 2px;
+
+        .ant-card-body {
+          width: 64px;
+          height: 100%;
+          max-height: 64px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: 0;
+        }
+
+        .connection-small-image {
+          display: block;
+          width: 64px;
+          max-height: 64px;
+          height: 100%;
+          border-radius: 2px;
+        }
+
+        .connection-details-wrapper {
+          position: absolute;
+          width: 64px;
+          height: 64px;
+          padding: 0;
+          border-radius: 5px;
+          background-color: #fff;
+          z-index: -1;
+          opacity: 0;
+          transform: scale(0.5);
+          transition: all ease-out 0.2s;
+          overflow: hidden;
+          .connection-name {
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 20px;
+            color: $blue06;
+          }
+
+          .connection-location {
+            display: flex;
+            align-items: center;
+            svg {
+              min-width: 13px;
+              max-width: 13px;
+              margin-right: 6px;
+              path,
+              line {
+                stroke: #d3dee7;
+              }
+            }
+          }
+
+          .connection-image-wrapper {
+            position: relative;
+            img {
+              width: 100%;
+            }
+            .connection-image {
+              display: flex;
+              place-items: center;
+              width: 128px;
+              height: 100%;
+              max-height: 128px;
+              border-radius: 5px;
+
+              .ant-avatar-string {
+                display: flex;
+                flex-direction: column;
+                place-items: center;
+                svg {
+                  width: 28px;
+                  height: 28px;
+                }
+                span {
+                  font-size: 30px;
+                  font-weight: 700;
+                  line-height: 30px;
+                }
+              }
+            }
+            .no-image {
+              height: 128px;
+            }
+          }
+
+          .badge-list {
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            li {
+              height: 28px;
+            }
+            li:not(:last-of-type) {
+              margin-right: 21px;
+            }
+          }
+        }
+      }
+
+      &:hover {
+        width: 180px !important;
+        border-radius: 5px;
+
+        .connection-details-wrapper {
+          top: calc(calc(-330px / 2) - calc(-64px / 2));
+          display: flex;
+          flex-direction: column;
+          width: 180px;
+          height: 330px;
+          padding: 24px;
+          z-index: 2;
+          opacity: 1;
+          transform: scale(1);
+          box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5);
+          transition: all ease-out 0.2s;
+        }
+        .connection-small-image {
+          display: none;
+        }
+      }
+    }
+
+    .custom-connection-left-arrow,
+    .custom-connection-right-arrow {
+      top: calc(64px / 2 - 29.25px / 2);
+      svg {
+        width: 27px;
+        path {
+          fill-opacity: 1;
+          fill: #d1d0d5;
+        }
+      }
+    }
+
+    .custom-connection-left-arrow {
+      left: -7px;
+    }
+
+    .custom-connection-right-arrow {
+      right: -10px;
+    }
+  }
+
   .connection-dot-list {
     position: relative;
     margin-top: 31px;
     button {
       height: 2px;
-    }
-  }
-}
-.connection-carousel {
-  .custom-connection-left-arrow,
-  .custom-connection-right-arrow {
-    top: calc(64px / 2 - 29.25px / 2);
-    svg {
-      width: 27px;
-      path {
-        fill-opacity: 1;
-        fill: #d1d0d5;
-      }
-    }
-  }
-
-  .custom-connection-left-arrow {
-    left: -7px;
-  }
-
-  .custom-connection-right-arrow {
-    right: -10px;
-  }
-
-  .react-multi-carousel-item:not(:last-of-type) {
-    margin-right: 3px;
-  }
-
-  .react-multi-carousel-item {
-    position: relative;
-    width: 64px !important;
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
-    border-radius: 2px;
-
-    .connection-card {
-      width: 64px;
-      border: unset;
-      border-radius: 2px;
-
-      .ant-card-body {
-        width: 64px;
-        height: 100%;
-        max-height: 64px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 0;
-      }
-
-      .connection-small-image {
-        display: block;
-        width: 64px;
-        height: 100%;
-        max-height: 64px;
-        border-radius: 2px;
-      }
-
-      .connection-details-wrapper {
-        // top: calc(calc(-330px / 2) - calc(-64px / 2));
-        position: absolute;
-        transform: scale(0.5);
-        opacity: 0;
-        width: 64px;
-        height: 64px;
-        padding: 0;
-        border-radius: 5px;
-        // background-color: #fff;
-        background-color: violet;
-        z-index: -1;
-        transition: transform ease-out 0.2s;
-        overflow: hidden;
-        .connection-name {
-          font-weight: 700;
-          font-size: 14px;
-          line-height: 20px;
-          color: $blue06;
-        }
-
-        .connection-location {
-          display: flex;
-          align-items: center;
-          svg {
-            width: 13px;
-            margin-right: 6px;
-            path,
-            line {
-              stroke: #d3dee7;
-            }
-          }
-        }
-
-        .badge-list {
-          height: 100%;
-          display: flex;
-          align-items: flex-end;
-          li {
-            height: 28px;
-          }
-          li:not(:last-of-type) {
-            margin-right: 21px;
-          }
-        }
-
-        .connection-image-wrapper {
-          position: relative;
-          img {
-            width: 100%;
-          }
-          .connection-image {
-            width: 128px;
-            height: 100%;
-            max-height: 128px;
-            display: flex;
-            place-items: center;
-            border-radius: 5px;
-
-            .ant-avatar-string {
-              display: flex;
-              flex-direction: column;
-              place-items: center;
-              svg {
-                width: 28px;
-                height: 28px;
-              }
-              span {
-                font-size: 30px;
-                font-weight: 700;
-                line-height: 30px;
-              }
-            }
-          }
-          .no-image {
-            height: 128px;
-          }
-        }
-      }
-    }
-
-    &:hover {
-      width: 180px !important;
-      box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
-      border-radius: 5px;
-
-      .connection-details-wrapper {
-        display: flex;
-        flex-direction: column;
-        width: 180px;
-        height: 330px;
-        padding: 24px;
-        z-index: 2;
-        opacity: 1;
-        top: calc(calc(-330px / 2) - calc(-64px / 2));
-        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
-        transform: scale(1);
-        transition: transform ease-out 0.2s;
-      }
-      .connection-small-image {
-        display: none;
-      }
     }
   }
 }
