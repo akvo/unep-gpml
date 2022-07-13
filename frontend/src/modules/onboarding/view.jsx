@@ -97,6 +97,7 @@ function Authentication() {
     delete data.seekingSuggested;
     delete data.password;
     delete data.privateCitizen;
+
     if (location?.state?.data.hasOwnProperty("given_name")) {
       data.firstName = location?.state?.data.given_name;
     }
