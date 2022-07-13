@@ -11,6 +11,7 @@ import { ReactComponent as PartnerBadge } from "../../images/stakeholder-overvie
 import { ReactComponent as GPMLMemberBadge } from "../../images/stakeholder-overview/member-of-gpml-badge.svg";
 import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
 import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
+import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
 
 const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
@@ -106,6 +107,10 @@ const StakeholderCarousel = ({ stakeholders }) => {
               (country) => country.id === stakeholder?.country
             )?.name;
 
+            const name = stakeholder?.stakeholder?.split(" ");
+            const firstInitial = name[0]?.substring(0, 1);
+            const secondInitial = name[1]?.substring(0, 1);
+            const initial = `${firstInitial}${secondInitial}`;
             return (
               <Card
                 className="connection-card"
@@ -113,14 +118,14 @@ const StakeholderCarousel = ({ stakeholders }) => {
               >
                 <Avatar
                   className={`connection-small-image ${
-                    !stakeholder?.image && "connection-no-image"
+                    !stakeholder?.image && "connection-small-no-image"
                   }`}
                   src={stakeholder.image}
                   style={{ backgroundColor: colour() }}
                   alt={stakeholder?.stakeholder}
                 >
                   {!stakeholder?.image && <CircledUserIcon />}
-                  <span>{`${stakeholder?.stakeholder?.substring(0, 1)}`}</span>
+                  <span>{initial}</span>
                 </Avatar>
 
                 <Link
@@ -128,20 +133,19 @@ const StakeholderCarousel = ({ stakeholders }) => {
                   className="connection-details-wrapper"
                 >
                   <ul className="connection-detail-list">
-                    <li className="list-item connection-image-wrapper">
+                    <li
+                      className={`list-item connection-image-wrapper ${
+                        !stakeholder?.image && "connection-no-image-wrapper"
+                      }`}
+                    >
                       <Avatar
-                        className={`connection-image ${
-                          !stakeholder?.image && "connection-no-image"
-                        }`}
+                        className="connection-image"
                         src={stakeholder.image}
                         style={{ backgroundColor: colour() }}
                         alt={stakeholder?.stakeholder}
                       >
                         {!stakeholder?.image && <CircledUserIcon />}
-                        <span>{`${stakeholder?.stakeholder?.substring(
-                          0,
-                          1
-                        )}`}</span>
+                        <span>{initial}</span>
                       </Avatar>
                     </li>
 

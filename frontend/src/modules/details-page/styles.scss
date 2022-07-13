@@ -326,6 +326,23 @@
     }
 
     .section-connection-stakeholder {
+      .stakeholder-detail-no-image .ant-list-item-meta-avatar .avatar-wrapper {
+        width: 64px;
+        height: 64px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 20px;
+        color: #fff;
+        border-radius: 5px;
+        svg {
+          width: 14px;
+          height: 14px;
+        }
+      }
       .stakeholder-row {
         display: block;
         border-bottom: unset !important;

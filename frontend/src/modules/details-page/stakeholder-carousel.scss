@@ -35,12 +35,29 @@
           padding: 0;
         }
 
+        .connection-small-no-image,
         .connection-small-image {
           display: block;
           width: 64px;
           max-height: 64px;
           height: 100%;
           border-radius: 2px;
+        }
+        .connection-small-no-image {
+          height: 64px;
+          .ant-avatar-string {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 20px;
+          }
+          svg {
+            width: 14px;
+            height: 14px;
+          }
         }
 
         .connection-details-wrapper {
@@ -55,6 +72,7 @@
           transform: scale(0.5);
           transition: transform ease-out 0.2s, opacity ease-out 0.2s;
           overflow: hidden;
+
           .connection-name {
             font-weight: 700;
             font-size: 14px;
@@ -77,11 +95,17 @@
             }
           }
 
+          .connection-no-image-wrapper {
+            width: 128px;
+            height: 128px;
+          }
+
           .connection-image-wrapper {
             position: relative;
             img {
               width: 100%;
             }
+
             .connection-image {
               display: flex;
               place-items: center;

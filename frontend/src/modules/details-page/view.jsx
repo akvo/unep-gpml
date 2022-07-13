@@ -13,19 +13,12 @@ import {
   List,
   Avatar,
   Popover,
-  Input,
-  Button,
   Tag,
   Modal,
   notification,
 } from "antd";
 
 import {
-  EyeFilled,
-  HeartTwoTone,
-  MailTwoTone,
-  PlayCircleTwoTone,
-  HeartFilled,
   InfoCircleOutlined,
   LoadingOutlined,
   DeleteOutlined,
@@ -33,6 +26,8 @@ import {
 
 import api from "../../utils/api";
 import { UIStore } from "../../store";
+import { titleCase } from "../../utils/string";
+import { colors } from "../../utils/misc";
 import LeftImage from "../../images/sea-dark.jpg";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -45,13 +40,15 @@ import moment from "moment";
 import { topicNames, resourceTypeToTopicType } from "../../utils/misc";
 import { multicountryGroups } from "../knowledge-library/multicountry";
 import RelatedContent from "../../components/related-content/related-content";
-import { titleCase } from "../../utils/string";
-import { ReactComponent as LocationImage } from "../../images/location.svg";
-import { ReactComponent as TransnationalImage } from "../../images/transnational.svg";
-import { ReactComponent as CityImage } from "../../images/city-icn.svg";
 import Comments from "./comment";
 import Header from "./header";
 import StakeholderCarousel from "./stakeholder-carousel";
+import { ReactComponent as LocationImage } from "../../images/location.svg";
+import { ReactComponent as TransnationalImage } from "../../images/transnational.svg";
+import { ReactComponent as CityImage } from "../../images/city-icn.svg";
+import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
+
+const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
@@ -593,7 +590,9 @@ const DetailsView = ({
                                     ) : (
                                       <Avatar
                                         style={{
-                                          backgroundColor: "#09689A",
+                                          fontSize: "14px",
+                                          fontWeight: 700,
+                                          backgroundColor: colour(),
                                           verticalAlign: "middle",
                                         }}
                                         size={64}
@@ -637,24 +636,45 @@ const DetailsView = ({
                               x.stakeholderRole !== "ADMIN" &&
                               x.role === "owner"
                           )
-                          .map((item) => (
-                            <Link
-                              key={item?.id}
-                              to={`/stakeholder/${item.stakeholderId}`}
-                              className="stakeholder-row"
-                            >
-                              <List.Item>
-                                <List.Item.Meta
-                                  className="stakeholder-detail"
-                                  avatar={<Avatar src={item?.image} />}
-                                  title={item.stakeholder}
-                                  description={titleCase(
-                                    item?.role?.replace("_", " ")
-                                  )}
-                                />
-                              </List.Item>
-                            </Link>
-                          ))}
+                          .map((item) => {
+                            const name = item?.stakeholder?.split(" ");
+                            const firstInitial = name[0]?.substring(0, 1);
+                            const secondInitial = name[1]?.substring(0, 1);
+                            const initial = `${firstInitial}${secondInitial}`;
+                            return (
+                              <Link
+                                key={item?.id}
+                                to={`/stakeholder/${item.stakeholderId}`}
+                                className="stakeholder-row"
+                              >
+                                <List.Item>
+                                  <List.Item.Meta
+                                    className={`stakeholder-detail ${
+                                      !item?.image &&
+                                      "stakeholder-detail-no-image"
+                                    }`}
+                                    avatar={
+                                      !item?.image ? (
+                                        <div
+                                          className="avatar-wrapper"
+                                          style={{ backgroundColor: colour() }}
+                                        >
+                                          <CircledUserIcon />
+                                          <span>{initial}</span>
+                                        </div>
+                                      ) : (
+                                        <Avatar src={item?.image} />
+                                      )
+                                    }
+                                    title={item.stakeholder}
+                                    description={titleCase(
+                                      item?.role?.replace("_", " ")
+                                    )}
+                                  />
+                                </List.Item>
+                              </Link>
+                            );
+                          })}
                       </List>
                     </Avatar.Group>
                   )}
