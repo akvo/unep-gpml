@@ -43,6 +43,7 @@
 
         .connection-details-wrapper {
           position: absolute;
+          left: 0;
           width: 64px;
           height: 64px;
           padding: 0;
@@ -122,9 +123,7 @@
       }
 
       &:hover {
-        width: 180px !important;
-        border-radius: 5px;
-
+        margin-right: calc(180px - 64px + 3px);
         .connection-details-wrapper {
           top: calc(calc(-330px / 2) - calc(-64px / 2));
           display: flex;
@@ -137,9 +136,6 @@
           transform: scale(1);
           box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5);
           transition: transform ease-out 0.2s, opacity ease-out 0.2s;
-        }
-        .connection-small-image {
-          display: none;
         }
       }
     }
