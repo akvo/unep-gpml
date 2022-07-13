@@ -577,10 +577,11 @@ const DetailsView = ({
                     <List itemLayout="horizontal">
                       {data?.entityConnections?.map((item) => (
                         <Link
+                          key={item?.id}
                           to={`/organisation/${item.entityId}`}
                           className="stakeholder-row"
                         >
-                          <List.Item key={item?.id}>
+                          <List.Item>
                             <List.Item.Meta
                               className="stakeholder-detail"
                               avatar={
@@ -638,10 +639,11 @@ const DetailsView = ({
                           )
                           .map((item) => (
                             <Link
+                              key={item?.id}
                               to={`/stakeholder/${item.stakeholderId}`}
                               className="stakeholder-row"
                             >
-                              <List.Item key={item?.id}>
+                              <List.Item>
                                 <List.Item.Meta
                                   className="stakeholder-detail"
                                   avatar={<Avatar src={item?.image} />}

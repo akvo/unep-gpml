@@ -107,7 +107,10 @@ const StakeholderCarousel = ({ stakeholders }) => {
             )?.name;
 
             return (
-              <Card className="connection-card">
+              <Card
+                className="connection-card"
+                key={stakeholder?.stakeholderId}
+              >
                 <Avatar
                   className={`connection-small-image ${
                     !stakeholder?.image && "connection-no-image"
@@ -160,11 +163,11 @@ const StakeholderCarousel = ({ stakeholders }) => {
                       <GPMLMemberBadge />
                     </li>
                     {/* <li>
-              <PartnerBadge />
-            </li> */}
+                          <PartnerBadge />
+                        </li> */}
                     {/* <li>
-              <ExpertBadge />
-            </li> */}
+                          <ExpertBadge />
+                        </li> */}
                   </ul>
                 </Link>
               </Card>
