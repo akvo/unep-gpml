@@ -189,7 +189,7 @@ const { Header } = Layout;
 
 const Root = () => {
   const {
-    isAuthenticated,
+    // isAuthenticated,
     getIdTokenClaims,
     loginWithPopup,
     logout,
@@ -223,6 +223,8 @@ const Root = () => {
   const topicsCount = tags?.topics ? tags.topics.length : 0;
   const excludeSummary = ["organisation", "stakeholder"];
 
+  console.log(process.env.NODE_ENV);
+
   const filterNav = (include) => {
     return nav?.resourceCounts
       ?.filter((x) =>
@@ -240,136 +242,108 @@ const Root = () => {
   const resourceCounts = filterNav(false);
   const stakeholderCounts = filterNav(true);
 
-  // const isAuthenticated = new Date().getTime() < _expiresAt;
+  const isAuthenticated = new Date().getTime() < _expiresAt;
 
-  // const setSession = (authResult) => {
-  //   setExpiresAt(authResult.expiresIn * 1000 + new Date().getTime());
-  //   setIdToken(authResult.idToken);
-  //   setAuthResult(authResult);
-  //   scheduleTokenRenewal();
-  // };
+  const setSession = (authResult) => {
+    setExpiresAt(authResult.expiresIn * 1000 + new Date().getTime());
+    setIdToken(authResult.idToken);
+    setAuthResult(authResult);
+    scheduleTokenRenewal();
+  };
 
-  // const renewToken = (cb) => {
-  //   auth0Client.checkSession({}, (err, result) => {
-  //     if (err) {
-  //       console.log(`Error: ${err.error} - ${err.error_description}.`);
-  //     } else {
-  //       setSession(result);
-  //     }
+  const renewToken = (cb) => {
+    auth0Client.checkSession({}, (err, result) => {
+      if (err) {
+        console.log(`Error: ${err.error} - ${err.error_description}.`);
+      } else {
+        setSession(result);
+      }
 
-  //     if (cb) {
-  //       cb(err, result);
-  //     }
-  //   });
-  // };
+      if (cb) {
+        cb(err, result);
+      }
+    });
+  };
 
-  // const scheduleTokenRenewal = () => {
-  //   const delay = _expiresAt - Date.now();
-  //   if (delay > 0) {
-  //     setTimeout(() => renewToken(), delay);
-  //   }
-  // };
+  const scheduleTokenRenewal = () => {
+    const delay = _expiresAt - Date.now();
+    if (delay > 0) {
+      setTimeout(() => renewToken(), delay);
+    }
+  };
 
-  // useEffect(() => {
-  //   auth0Client.parseHash((err, authResult) => {
-  //     if (err) {
-  //       return console.log(err);
-  //     }
-  //     if (authResult) {
-  //       history.replace("/");
-  //       setSession(authResult);
-  //       api.setToken(authResult.idToken);
-  //       if (
-  //         authResult?.idTokenPayload?.hasOwnProperty(
-  //           "https://digital.gpmarinelitter.org/is_new"
-  //         )
-  //       ) {
-  //         if (
-  //           authResult?.idTokenPayload?.[
-  //             "https://digital.gpmarinelitter.org/is_new"
-  //           ]
-  //         ) {
-  //           history.push({
-  //             pathname: "onboarding",
-  //             state: { data: authResult?.idTokenPayload },
-  //           });
-  //         }
-  //       }
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    auth0Client.parseHash((err, authResult) => {
+      if (err) {
+        return console.log(err);
+      }
+      if (authResult) {
+        history.replace("/");
+        setSession(authResult);
+        api.setToken(authResult.idToken);
+        if (
+          authResult?.idTokenPayload?.hasOwnProperty(
+            "https://digital.gpmarinelitter.org/is_new"
+          )
+        ) {
+          if (
+            authResult?.idTokenPayload?.[
+              "https://digital.gpmarinelitter.org/is_new"
+            ]
+          ) {
+            UIStore.update((e) => {
+              e.profile = {
+                emailVerified: authResult?.idTokenPayload?.email_verified,
+              };
+            });
+            history.push({
+              pathname: "onboarding",
+              state: { data: authResult?.idTokenPayload },
+            });
+          }
+        }
+      }
+    });
+  }, []);
 
-  // useEffect(() => {
-  //   auth0Client.checkSession({}, async (err, authResult) => {
-  //     if (err) {
-  //       console.log(err);
-  //       // history.push("/login");
-  //     }
-  //     if (authResult) {
-  //       setSession(authResult);
-  //     }
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   (async function fetchData() {
-  //     if (isAuthenticated && idToken) {
-  //       api.setToken(idToken);
-  //     } else {
-  //       api.setToken(null);
-  //     }
-  //     if (isAuthenticated && idToken && authResult) {
-  //       let resp = await api.get("/profile");
-  //       if (resp.data && Object.keys(resp.data).length === 0) {
-  //         history.push({
-  //           pathname: "onboarding",
-  //           state: { data: authResult?.idTokenPayload },
-  //         });
-  //       }
-  //       UIStore.update((e) => {
-  //         e.profile = {
-  //           ...resp.data,
-  //           email: authResult?.idTokenPayload?.email,
-  //         };
-  //       });
-  //       updateStatusProfile(resp.data);
-  //     }
-  //   })();
-  // }, [isAuthenticated, idToken, authResult]);
+  useEffect(() => {
+    auth0Client.checkSession({}, async (err, authResult) => {
+      if (err) {
+        console.log(err);
+        // history.push("/login");
+      }
+      if (authResult) {
+        setSession(authResult);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     (async function fetchData() {
-      const response = await getIdTokenClaims();
-      if (isAuthenticated) {
-        api.setToken(response.__raw);
+      if (isAuthenticated && idToken) {
+        api.setToken(idToken);
       } else {
         api.setToken(null);
       }
-      if (isAuthenticated) {
+      if (isAuthenticated && idToken && authResult) {
         let resp = await api.get("/profile");
-        if (!resp.data?.org?.isMember) {
-          resp.data.org = null;
-        } else if (resp?.data) {
-          resp.data.non_member_organisation = null;
-        }
-        if (Object.keys(resp.data).length === 0) {
-          UIStore.update((e) => {
-            e.profile = { email: response.email };
+        if (resp.data && Object.keys(resp.data).length === 0) {
+          history.push({
+            pathname: "onboarding",
+            state: { data: authResult?.idTokenPayload },
           });
-          setTimeout(() => {
-            setStakeholderSignupModalVisible(
-              Object.keys(resp.data).length === 0
-            );
-          }, 100);
-        } else {
-          UIStore.update((e) => {
-            e.profile = { ...resp.data, email: response.email };
-          });
-          updateStatusProfile(resp.data);
         }
+        UIStore.update((e) => {
+          e.profile = {
+            ...resp.data,
+            email: authResult?.idTokenPayload?.email,
+            emailVerified: authResult?.idTokenPayload?.email_verified,
+          };
+        });
+        updateStatusProfile(resp.data);
       }
     })();
-  }, [getIdTokenClaims, isAuthenticated]);
+  }, [isAuthenticated, idToken, authResult]);
 
   useEffect(() => {
     if (window.location.host === "digital.gpmarinelitter.org") {
@@ -551,19 +525,17 @@ const Root = () => {
               </Route>
             </Switch>
             <div className="rightside">
-              {!isAuthenticated || !isRegistered(profile) ? (
+              {!isAuthenticated ? (
                 <div className="rightside btn-wrapper">
-                  <JoinGPMLButton loginWithPopup={loginWithPopup} />
-                  {isAuthenticated && !isRegistered(profile) ? (
+                  {isAuthenticated && isRegistered(profile) ? (
                     <UserButton {...{ logout, isRegistered, profile }} />
                   ) : (
-                    <Button type="ghost" className="left">
-                      <Link
-                        to="/"
-                        onClick={() => loginWithPopup({ action: "login" })}
-                      >
-                        Sign in
-                      </Link>
+                    <Button
+                      type="ghost"
+                      className="left"
+                      onClick={() => setLoginVisible(true)}
+                    >
+                      Sign in
                     </Button>
                   )}
                 </div>
@@ -809,7 +781,11 @@ const Root = () => {
           <Route
             path="/signup"
             render={(props) => (
-              <LandingSignupView {...props} profile={profile} />
+              <LandingSignupView
+                {...props}
+                profile={profile}
+                setLoginVisible={setLoginVisible}
+              />
             )}
           />
           <Route
@@ -860,7 +836,7 @@ const Root = () => {
                   render={(props) => (
                     <StakeholderOverview
                       {...props}
-                      loginWithPopup={loginWithPopup}
+                      setLoginVisible={setLoginVisible}
                       filters={filters}
                       setFilters={setFilters}
                       isAuthenticated={isAuthenticated}

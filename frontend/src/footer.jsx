@@ -81,7 +81,7 @@ const Footer = ({
                         ? setWarningModalVisible(true)
                         : isAuthenticated
                         ? setStakeholderSignupModalVisible(true)
-                        : loginWithPopup();
+                        : setLoginVisible(true);
                     }}
                   >
                     Connect Stakeholders
@@ -206,7 +206,7 @@ const Footer = ({
                         ? setWarningModalVisible(true)
                         : isAuthenticated
                         ? setStakeholderSignupModalVisible(true)
-                        : loginWithPopup();
+                        : setLoginVisible(true);
                     }}
                   >
                     Sign up to the GPML Digital Platform (For All Individuals)
