@@ -4,7 +4,8 @@
   margin-top: 27px;
   z-index: 2;
   .connection-carousel {
-    overflow: visible;
+    overflow-y: visible;
+    overflow-x: clip;
     position: relative;
     z-index: 2;
 
@@ -125,6 +126,9 @@
 
       &:hover {
         margin-right: calc(180px - 64px + 3px);
+        &:first-of-type {
+          left: 1px;
+        }
         .connection-details-wrapper {
           top: calc(calc(-330px / 2) - calc(-64px / 2));
           display: flex;
