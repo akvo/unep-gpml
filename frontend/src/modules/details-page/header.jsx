@@ -1,7 +1,7 @@
 import React from "react";
 import "./styles.scss";
 import { Col, Popover, Input, Button } from "antd";
-
+import { eventTrack } from "../../utils/misc";
 import {
   EyeFilled,
   HeartTwoTone,
@@ -45,25 +45,33 @@ export const HeaderButtons = ({
 
   return (
     <Col className="tool-buttons">
-      <Button
-        className="view-button "
-        icon={<EyeFilled />}
-        type="primary"
-        shape="round"
-        size="middle"
-        href={`${
-          data?.url && data?.url?.includes("https://")
-            ? data?.url
-            : data?.languages
-            ? data?.languages[0]?.url
-            : data?.url?.includes("http://")
-            ? data?.url
-            : "https://" + data?.url
-        }`}
-        target="_blank"
-      >
-        View
-      </Button>
+      {data?.url && (
+        <Button
+          className="view-button "
+          icon={<EyeFilled />}
+          type="primary"
+          shape="round"
+          size="middle"
+          onClick={(e) => {
+            e.preventDefault();
+            eventTrack("Resource view", "View Url", "Button");
+            window.open(
+              `${
+                data?.url && data?.url?.includes("https://")
+                  ? data?.url
+                  : data?.languages
+                  ? data?.languages[0]?.url
+                  : data?.url?.includes("http://")
+                  ? data?.url
+                  : "https://" + data?.url
+              }`,
+              "_blank"
+            );
+          }}
+        >
+          View
+        </Button>
+      )}
       {data?.recording && (
         <Button
           className="recording-button two-tone-button"
@@ -84,30 +92,61 @@ export const HeaderButtons = ({
           Recording
         </Button>
       )}
-      <Popover
-        placement="top"
-        overlayStyle={{
-          width: "22vw",
-        }}
-        overlayClassName="popover-share"
-        content={
-          <Input.Group compact>
-            <Input
-              style={{ width: "calc(100% - 20%)" }}
-              defaultValue={`${
-                data?.url && data?.url?.includes("https://")
-                  ? data?.url
-                  : data?.languages
-                  ? data?.languages[0]?.url
-                  : data?.url?.includes("http://")
-                  ? data?.url
-                  : "https://" + data?.url
-              }`}
-              disabled
-            />
+      {data?.url && (
+        <Popover
+          placement="top"
+          overlayStyle={{
+            width: "22vw",
+          }}
+          overlayClassName="popover-share"
+          content={
+            <Input.Group compact>
+              <Input
+                style={{ width: "calc(100% - 20%)" }}
+                defaultValue={`${
+                  data?.url && data?.url?.includes("https://")
+                    ? data?.url
+                    : data?.languages
+                    ? data?.languages[0]?.url
+                    : data?.url && data?.url?.includes("http://")
+                    ? data?.url
+                    : data?.url
+                    ? "https://" + data?.url
+                    : "https://"
+                }`}
+                disabled
+              />
+              <Button
+                style={{ width: "20%" }}
+                type="primary"
+                disabled={!data?.url}
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    data?.url && data?.url?.includes("https://")
+                      ? data?.languages
+                        ? data?.languages[0]?.url
+                        : data?.url
+                      : "https://" + data?.url
+                  );
+                  handleVisibleChange();
+                }}
+              >
+                Copy
+              </Button>
+            </Input.Group>
+          }
+          trigger="click"
+          visible={visible}
+          onVisibleChange={handleVisibleChange}
+        >
+          <div>
             <Button
-              style={{ width: "20%" }}
+              className="share-button two-tone-button"
+              icon={<MailTwoTone twoToneColor="#09689a" />}
               type="primary"
+              shape="round"
+              size="middle"
+              ghost
               onClick={() => {
                 navigator.clipboard.writeText(
                   data?.url && data?.url?.includes("https://")
@@ -116,32 +155,15 @@ export const HeaderButtons = ({
                       : data?.url
                     : "https://" + data?.url
                 );
+                eventTrack("Resource view", "Share", "Button");
                 handleVisibleChange();
               }}
             >
-              Copy
+              Share
             </Button>
-          </Input.Group>
-        }
-        trigger="click"
-        visible={visible}
-        onVisibleChange={handleVisibleChange}
-        placement="left"
-      >
-        <div>
-          <Button
-            className="share-button two-tone-button"
-            icon={<MailTwoTone twoToneColor="#09689a" />}
-            type="primary"
-            shape="round"
-            size="middle"
-            ghost
-            onClick={handleVisibleChange}
-          >
-            Share
-          </Button>
-        </div>
-      </Popover>
+          </div>
+        </Popover>
+      )}
       <Button
         className="bookmark-button two-tone-button"
         icon={
@@ -155,7 +177,10 @@ export const HeaderButtons = ({
         shape="round"
         size="middle"
         ghost
-        onClick={() => handleChangeRelation("interested in")}
+        onClick={() => {
+          eventTrack("Resource view", "Bookmark", "Button");
+          handleChangeRelation("interested in");
+        }}
       >
         Bookmark
       </Button>

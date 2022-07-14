@@ -1,4 +1,6 @@
 import humps from "humps";
+import auth0 from "auth0-js";
+import ReactGA from "react-ga";
 
 export const tTypes = [
   "project",
@@ -142,5 +144,33 @@ export const tagsMap = (array, category, tags) => {
           .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
       tag_category: category,
     };
+  });
+};
+
+export const toTitleCase = (phrase) => {
+  return phrase
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
+const domain = window.__ENV__.auth0.domain.replace(/(https:\/\/|\/)/gi, "");
+
+export const auth0Client = new auth0.WebAuth({
+  domain: domain,
+  clientID: window.__ENV__.auth0.clientId,
+  audience: `${window.__ENV__.auth0.domain}api/v2/`,
+  redirectUri: window.location.origin,
+  scope: "openid profile email",
+  responseType: "token id_token",
+});
+
+export const eventTrack = (category, action, label) => {
+  console.log("GA event:", category, ":", action, ":", label);
+  ReactGA.event({
+    category: category,
+    action: action,
+    label: label,
   });
 };
