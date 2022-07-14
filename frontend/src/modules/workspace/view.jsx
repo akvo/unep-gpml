@@ -191,6 +191,18 @@ const Workspace = ({ profile }) => {
                     <List itemLayout="horizontal">
                       <List.Item>
                         <List.Item.Meta
+                          className={`${
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                              ? "disabled"
+                              : ""
+                          }`}
+                          disabled={
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                          }
                           title={
                             <a
                               href="https://datahub.gpmarinelitter.org/"
@@ -204,6 +216,18 @@ const Workspace = ({ profile }) => {
                       </List.Item>
                       <List.Item>
                         <List.Item.Meta
+                          className={`${
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                              ? "disabled"
+                              : ""
+                          }`}
+                          disabled={
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                          }
                           title={
                             <Link to="/flexible-forms">
                               Share your knowledge {">"}
@@ -220,6 +244,18 @@ const Workspace = ({ profile }) => {
                       </List.Item> */}
                       <List.Item>
                         <List.Item.Meta
+                          className={`${
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                              ? "disabled"
+                              : ""
+                          }`}
+                          disabled={
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                          }
                           title={
                             <Link to="/connect/community">
                               Match with new opportunities {">"}
