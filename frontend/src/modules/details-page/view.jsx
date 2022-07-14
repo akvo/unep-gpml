@@ -13,19 +13,12 @@ import {
   List,
   Avatar,
   Popover,
-  Input,
-  Button,
   Tag,
   Modal,
   notification,
 } from "antd";
 
 import {
-  EyeFilled,
-  HeartTwoTone,
-  MailTwoTone,
-  PlayCircleTwoTone,
-  HeartFilled,
   InfoCircleOutlined,
   LoadingOutlined,
   DeleteOutlined,
@@ -33,6 +26,8 @@ import {
 
 import api from "../../utils/api";
 import { UIStore } from "../../store";
+import { titleCase } from "../../utils/string";
+import { colors } from "../../utils/misc";
 import LeftImage from "../../images/sea-dark.jpg";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -45,12 +40,15 @@ import moment from "moment";
 import { topicNames, resourceTypeToTopicType } from "../../utils/misc";
 import { multicountryGroups } from "../knowledge-library/multicountry";
 import RelatedContent from "../../components/related-content/related-content";
-import { titleCase } from "../../utils/string";
+import Comments from "./comment";
+import Header from "./header";
+import StakeholderCarousel from "./stakeholder-carousel";
 import { ReactComponent as LocationImage } from "../../images/location.svg";
 import { ReactComponent as TransnationalImage } from "../../images/transnational.svg";
 import { ReactComponent as CityImage } from "../../images/city-icn.svg";
-import Comments from "./comment";
-import Header from "./header";
+import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
+
+const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
@@ -568,142 +566,122 @@ const DetailsView = ({
             data?.stakeholderConnections.filter(
               (x) => x.stakeholderRole !== "ADMIN" || x.role === "interested in"
             )?.length > 0) && (
-            <Col className="section">
+            <Col className="section section-connection-stakeholder">
               <div className="extra-wrapper">
                 <h3 className="content-heading">Connections</h3>
-                {data?.entityConnections?.length > 0 && (
-                  <List itemLayout="horizontal">
-                    {data?.entityConnections?.map((item) => (
-                      <List.Item key={item?.id} className="stakeholder-row">
-                        <List.Item.Meta
-                          className="stakeholder-detail"
-                          avatar={
-                            <Avatar
-                              size={40}
-                              src={
-                                item?.image ? (
-                                  item?.image
-                                ) : (
-                                  <Avatar
-                                    style={{
-                                      backgroundColor: "#09689A",
-                                      verticalAlign: "middle",
-                                    }}
-                                    size={50}
-                                  >
-                                    {item.entity?.substring(0, 2)}
-                                  </Avatar>
-                                )
-                              }
-                            />
-                          }
-                          title={
-                            <Link to={`/organisation/${item.entityId}`}>
-                              {item.entity}
-                            </Link>
-                          }
-                          description={"Entity"}
-                        />
-                      </List.Item>
-                    ))}
-                  </List>
-                )}
-                {data?.stakeholderConnections.filter(
-                  (x) =>
-                    x.stakeholderRole !== "ADMIN" || x.role === "interested in"
-                )?.length > 0 && (
-                  <Avatar.Group
-                    maxCount={2}
-                    size="large"
-                    maxStyle={{
-                      color: "#f56a00",
-                      backgroundColor: "#fde3cf",
-                      cursor: "pointer",
-                      height: 40,
-                      width: 40,
-                    }}
-                    style={{
-                      marginTop:
-                        data?.entityConnections?.length > 0 ? "16px" : 0,
-                    }}
-                  >
+                {data?.entityConnections &&
+                  data?.entityConnections?.length > 0 && (
                     <List itemLayout="horizontal">
-                      {data?.stakeholderConnections
-                        .filter(
-                          (x) =>
-                            x.stakeholderRole !== "ADMIN" ||
-                            x.role === "interested in"
-                        )
-                        .map((item) => (
-                          <List.Item key={item?.id} className="stakeholder-row">
+                      {data?.entityConnections?.map((item) => (
+                        <Link
+                          key={item?.id}
+                          to={`/organisation/${item.entityId}`}
+                          className="stakeholder-row"
+                        >
+                          <List.Item>
                             <List.Item.Meta
                               className="stakeholder-detail"
-                              avatar={<Avatar src={item?.image} />}
-                              title={
-                                <Link to={`/stakeholder/${item.stakeholderId}`}>
-                                  {item.stakeholder}
-                                </Link>
+                              avatar={
+                                <Avatar
+                                  size={64}
+                                  src={
+                                    item?.image ? (
+                                      item?.image
+                                    ) : (
+                                      <Avatar
+                                        style={{
+                                          fontSize: "14px",
+                                          fontWeight: 700,
+                                          backgroundColor: colour(),
+                                          verticalAlign: "middle",
+                                        }}
+                                        size={64}
+                                      >
+                                        {item.entity?.substring(0, 2)}
+                                      </Avatar>
+                                    )
+                                  }
+                                />
                               }
-                              description={titleCase(
-                                item?.role?.replace("_", " ")
-                              )}
+                              title={item.entity}
+                              description={"Entity"}
                             />
                           </List.Item>
-                        ))}
+                        </Link>
+                      ))}
                     </List>
-                  </Avatar.Group>
-                )}
-                {data?.stakeholderConnections.filter(
-                  (x) =>
-                    x.stakeholderRole !== "ADMIN" || x.role === "interested in"
-                ).length > 4 && (
-                  <Row className="stakeholder-row stakeholder-group">
+                  )}
+                {data?.stakeholderConnections &&
+                  data?.stakeholderConnections.filter(
+                    (x) => x.stakeholderRole !== "ADMIN" && x.role === "owner"
+                  )?.length > 0 && (
                     <Avatar.Group
-                      maxCount={2}
-                      size="large"
+                      size={64}
                       maxStyle={{
                         color: "#f56a00",
                         backgroundColor: "#fde3cf",
                         cursor: "pointer",
-                        height: 40,
-                        width: 40,
+                        height: 64,
+                        width: 64,
+                      }}
+                      style={{
+                        marginTop:
+                          data?.entityConnections?.length > 0 ? "16px" : 0,
                       }}
                     >
-                      {data?.stakeholderConnections
-                        .filter(
-                          (x) =>
-                            x.stakeholderRole !== "ADMIN" ||
-                            x.role === "interested in"
-                        )
-                        .map((connection, index) => (
-                          <Avatar
-                            className="related-content-avatar"
-                            style={{ border: "none", height: 40, width: 40 }}
-                            key={index}
-                            src={
-                              <Avatar
-                                avatar={<Avatar src={connection?.image} />}
-                                style={{
-                                  backgroundColor: "#09689A",
-                                  verticalAlign: "middle",
-                                }}
-                                size={40}
-                                title={
-                                  <Link
-                                    to={`/stakeholder/${connection?.stakeholderId}`}
-                                  >
-                                    {connection?.stakeholder}
-                                  </Link>
-                                }
+                      <List itemLayout="horizontal">
+                        {data?.stakeholderConnections
+                          .filter(
+                            (x) =>
+                              x.stakeholderRole !== "ADMIN" &&
+                              x.role === "owner"
+                          )
+                          .map((item) => {
+                            const name = item?.stakeholder?.split(" ");
+                            const firstInitial = name[0]?.substring(0, 1);
+                            const secondInitial = name[1]?.substring(0, 1);
+                            const initial = `${firstInitial}${secondInitial}`;
+                            return (
+                              <Link
+                                key={item?.id}
+                                to={`/stakeholder/${item.stakeholderId}`}
+                                className="stakeholder-row"
                               >
-                                {connection?.stakeholder}
-                              </Avatar>
-                            }
-                          />
-                        ))}
+                                <List.Item>
+                                  <List.Item.Meta
+                                    className={`stakeholder-detail ${
+                                      !item?.image &&
+                                      "stakeholder-detail-no-image"
+                                    }`}
+                                    avatar={
+                                      !item?.image ? (
+                                        <div
+                                          className="avatar-wrapper"
+                                          style={{ backgroundColor: colour() }}
+                                        >
+                                          <CircledUserIcon />
+                                          <span>{initial}</span>
+                                        </div>
+                                      ) : (
+                                        <Avatar src={item?.image} />
+                                      )
+                                    }
+                                    title={item.stakeholder}
+                                    description={titleCase(
+                                      item?.role?.replace("_", " ")
+                                    )}
+                                  />
+                                </List.Item>
+                              </Link>
+                            );
+                          })}
+                      </List>
                     </Avatar.Group>
-                  </Row>
-                )}
+                  )}
+
+                <StakeholderCarousel
+                  stakeholders={data?.stakeholderConnections}
+                />
               </div>
             </Col>
           )}
