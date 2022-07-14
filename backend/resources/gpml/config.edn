@@ -62,21 +62,23 @@
                                                  :handler #ig/ref :gpml.handler.archive/get}}]]
                                         ["/submission" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                      #ig/ref :gpml.auth/auth-required
-                                                                     #ig/ref :gpml.auth/approved-user
-                                                                     #ig/ref :gpml.auth/admin-required-middleware]
+                                                                     #ig/ref :gpml.auth/approved-user]
                                                         :responses {401 {:description "Need authentication"}
                                                                     403 {:description "Insufficient permissions"}}}
                                          [""
                                           {:get {:summary "Get the list of submissions"
+                                                 :middleware [#ig/ref :gpml.auth/admin-required-middleware]
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters #ig/ref :gpml.handler.submission/get-params
                                                  :handler #ig/ref :gpml.handler.submission/get}
                                            :put {:summary "Approve or reject a pending submission"
+                                                 :middleware [#ig/ref :gpml.auth/admin-required-middleware]
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters {:body #ig/ref :gpml.handler.submission/put-params}
                                                  :handler #ig/ref :gpml.handler.submission/put}}]
                                          ["/{submission}/{id}"
                                           {:get {:summary "Get the details of a submission"
+                                                 :middleware [#ig/ref :gpml.auth/admin-or-reviewer-required-middleware]
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters {:path [:map [:submission string?] [:id int?]]}
                                                  :handler #ig/ref :gpml.handler.submission/get-detail}}]]
@@ -94,7 +96,7 @@
                                                                  #ig/ref :gpml.auth/approved-user]}
                                          [""
                                           {:get {:summary "Get list of reviews assigned to current user"
-                                                 :middleware [#ig/ref :gpml.auth/reviewer-required-middleware]
+                                                 :middleware [#ig/ref :gpml.auth/admin-or-reviewer-required-middleware]
                                                  :swagger {:tags ["review"]
                                                            :security [{:id_token []}]}
                                                  :parameters #ig/ref :gpml.handler.review/list-user-reviews-params
@@ -119,7 +121,7 @@
                                                                       [:reviewers [:vector int?]]]}
                                                   :handler #ig/ref :gpml.handler.review/new-multiple-review}
                                            :patch {:summary "Update review for a submission"
-                                                   :middleware [#ig/ref :gpml.auth/reviewer-required-middleware]
+                                                   :middleware [#ig/ref :gpml.auth/admin-or-reviewer-required-middleware]
                                                    :swagger {:tags ["review"]
                                                              :security [{:id_token []}]}
                                                    :parameters {:path [:map
@@ -555,7 +557,7 @@
   :gpml.handler.submission/get {:db #ig/ref :duct.database/sql
                                 :auth0 #ig/ref :gpml.config/auth0}
   :gpml.handler.submission/get-params {}
-  :gpml.handler.submission/get-detail {:db #ig/ref :duct.database/sql}
+  :gpml.handler.submission/get-detail #ig/ref :gpml.config/common
   :gpml.handler.submission/put {:db #ig/ref :duct.database/sql
                                 :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.submission/put-params {}
@@ -736,7 +738,7 @@
   :gpml.auth/restrict-to-organisation-admin-or-owner {:db #ig/ref :duct.database/sql}
   :gpml.auth/approved-user {:db #ig/ref :duct.database/sql}
   :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}
-  :gpml.auth/reviewer-required-middleware {:db #ig/ref :duct.database/sql}
+  :gpml.auth/admin-or-reviewer-required-middleware {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.monitoring/collector {}
 
