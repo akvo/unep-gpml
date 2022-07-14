@@ -18,6 +18,7 @@
    [gpml.db.project :as db.project]
    [gpml.db.resource.connection :as db.resource.connection]
    [gpml.db.resource.tag :as db.resource.tag]
+   [gpml.db.review :as db.review]
    [gpml.db.submission :as db.submission]
    [gpml.db.topic-stakeholder-auth :as db.topic-stakeholder-auth]
    [gpml.handler.geo :as handler.geo]
@@ -381,10 +382,12 @@
   (let [topic (:topic-type path)
         submission (->> {:table-name (util/get-internal-topic-type topic) :id (:topic-id path)}
                         (db.submission/detail conn))
+        review (first (db.review/reviews-filter conn (update path :topic-type resolve-resource-type)))
         user-auth-roles (:roles (db.topic-stakeholder-auth/get-auth-by-topic-and-stakeholder conn {:topic-id (:topic-id path)
                                                                                                    :topic-type (util/get-internal-topic-type topic)
                                                                                                    :stakeholder (:id user)}))
         access-allowed? (or (= (:review_status submission) "APPROVED")
+                            (and (= (:role user) "REVIEWER") (= (:id user) (:reviewer review)))
                             (contains? (set user-auth-roles) "owner")
                             (= (:role user) "ADMIN")
                             (and (not (nil? (:id user)))
