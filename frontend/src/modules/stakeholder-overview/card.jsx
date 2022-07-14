@@ -29,8 +29,9 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
     <Link
       className="card-wrapper-link"
       onClick={() => {
-        profile.type !== "organisation" &&
-          eventTrack("Stakeholder view", "Open Url", "Button");
+        profile.type !== "organisation"
+          ? eventTrack("Stakeholder view", "Open Url", "Button")
+          : eventTrack("Entity view", "Open Url", "Button");
       }}
       to={
         isValidUser
