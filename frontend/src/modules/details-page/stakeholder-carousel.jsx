@@ -166,12 +166,18 @@ const StakeholderCarousel = ({ stakeholders }) => {
                     <li>
                       <GPMLMemberBadge />
                     </li>
-                    {/* <li>
+                    {stakeholder?.role?.toLowerCase() === "donor" ||
+                      (stakeholder?.role?.toLowerCase() === "partner" && (
+                        <li>
                           <PartnerBadge />
-                        </li> */}
-                    {/* <li>
+                        </li>
+                      ))}
+                    {stakeholder?.expertise &&
+                      stakeholder?.expertise.length > 0 && (
+                        <li>
                           <ExpertBadge />
-                        </li> */}
+                        </li>
+                      )}
                   </ul>
                 </Link>
               </Card>
