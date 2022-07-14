@@ -24,6 +24,9 @@ services:
       - AUTH0_BACKEND_SECRET
       - MAILJET_API_KEY
       - MAILJET_SECRET_KEY
+      - SCHEDULER_THREAD_COUNT=50
+      - SCHEDULER_TIME_ZONE=Europe/Madrid
+      - SCHEDULER_LEAP_API_POLICY_IMPORTER_CRON=0 0 2 1/14 * ? *
   frontend:
     environment:
       - PORT=3001

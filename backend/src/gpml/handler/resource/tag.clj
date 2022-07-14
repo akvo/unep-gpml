@@ -5,7 +5,7 @@
   Stakeholder) shares in common."
   (:require
    [gpml.db.resource.tag :as db.resource.tag]
-   [gpml.email-util :as email]
+   [gpml.util.email :as email]
    [gpml.handler.tag :as handler.tag]))
 
 (defn send-new-tags-admins-pending-approval-notification
@@ -21,10 +21,10 @@
    new-tags))
 
 (defn- prep-resource-tags
-  [resource-name resource-id tags tag-category]
+  [resource-name resource-id tags-ids tag-category]
   (if (= resource-name "stakeholder")
-    (map #(vector resource-id % tag-category) tags)
-    (map (partial vector resource-id) tags)))
+    (map #(vector resource-id % tag-category) tags-ids)
+    (map (partial vector resource-id) tags-ids)))
 
 (defn create-resource-tags
   "Creates the relation between a resource `resource-name` and tags. If

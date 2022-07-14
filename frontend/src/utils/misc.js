@@ -114,12 +114,12 @@ export const reviewCommentPlaceholder = {
 };
 
 export const publishStatusUIText = {
-  APPROVED: "Published",
-  APPROVE: "Publish",
+  APPROVED: "Approved",
+  APPROVE: "Approve",
   REJECTED: "Declined",
   REJECT: "Decline",
-  UNAPPROVED: "Unpublished",
-  UNAPPROVE: "Unpublish",
+  UNAPPROVED: "Unapproved",
+  UNAPPROVE: "Unapprove",
 };
 
 export const colors = [

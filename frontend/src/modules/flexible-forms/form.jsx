@@ -460,6 +460,7 @@ const FlexibleForm = withRouter(
 
       if (status === "add" && !params?.id) {
         data?.qimage && data?.qimage === "" && delete data.qimage;
+        data?.thumbnail && data?.thumbnail === "" && delete data.thumbnail;
       }
 
       if (status === "edit" || params?.id) {
@@ -467,8 +468,15 @@ const FlexibleForm = withRouter(
           data?.qimage.match(customFormats.url) &&
           delete data.qimage;
 
+        data?.thumbnail &&
+          data?.thumbnail.match(customFormats.url) &&
+          delete data.thumbnail;
+
         if (formData?.S4["S4_G4"].image === "") {
           data.qimage = "";
+        }
+        if (formData?.S4["S4_G4"].thumbnail === "") {
+          data.thumbnail = "";
         }
       }
 
@@ -852,6 +860,7 @@ const FlexibleForm = withRouter(
 
       if (status === "add" && !params?.id) {
         data?.image && data?.image === "" && delete data.image;
+        data?.thumbnail && data?.thumbnail === "" && delete data.thumbnail;
       }
 
       if (status === "edit" || params?.id) {
@@ -859,8 +868,15 @@ const FlexibleForm = withRouter(
           data?.image.match(customFormats.url) &&
           delete data.image;
 
+        data?.thumbnail &&
+          data?.thumbnail.match(customFormats.url) &&
+          delete data.thumbnail;
+
         if (formData?.S4["S4_G4"].image === "") {
           data.image = "";
+        }
+        if (formData?.S4["S4_G4"].thumbnail === "") {
+          data.thumbnail = "";
         }
       }
 
@@ -1038,6 +1054,7 @@ const FlexibleForm = withRouter(
 
       if (status === "add" && !params?.id) {
         data?.image && data?.image === "" && delete data.image;
+        data?.thumbnail && data?.thumbnail === "" && delete data.thumbnail;
       }
 
       if (status === "edit" || params?.id) {
@@ -1045,8 +1062,15 @@ const FlexibleForm = withRouter(
           data?.image.match(customFormats.url) &&
           delete data.image;
 
+        data?.thumbnail &&
+          data?.thumbnail.match(customFormats.url) &&
+          delete data.thumbnail;
+
         if (formData?.S4["S4_G4"].image === "") {
           data.image = "";
+        }
+        if (formData?.S4["S4_G4"].thumbnail === "") {
+          data.thumbnail = "";
         }
       }
 

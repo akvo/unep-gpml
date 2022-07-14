@@ -62,31 +62,23 @@
                                                  :handler #ig/ref :gpml.handler.archive/get}}]]
                                         ["/submission" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                      #ig/ref :gpml.auth/auth-required
-                                                                     #ig/ref :gpml.auth/approved-user
-                                                                     #ig/ref :gpml.auth/admin-required-middleware]
+                                                                     #ig/ref :gpml.auth/approved-user]
                                                         :responses {401 {:description "Need authentication"}
                                                                     403 {:description "Insufficient permissions"}}}
                                          [""
                                           {:get {:summary "Get the list of submissions"
+                                                 :middleware [#ig/ref :gpml.auth/admin-required-middleware]
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
-                                                 :parameters {:query [:map
-                                                                      [:only {:optional true}
-                                                                       [:enum "resources" "stakeholders" "tags" "entities" "non-member-entities"]]
-                                                                      [:review_status
-                                                                       {:optional true :default "SUBMITTED"}
-                                                                       [:enum "SUBMITTED" "APPROVED" "REJECTED"]]
-                                                                      [:title {:optional true} string?]
-                                                                      [:page {:optional true
-                                                                              :default 1} int?]
-                                                                      [:limit {:optional true
-                                                                               :default 10} int?]]}
+                                                 :parameters #ig/ref :gpml.handler.submission/get-params
                                                  :handler #ig/ref :gpml.handler.submission/get}
                                            :put {:summary "Approve or reject a pending submission"
+                                                 :middleware [#ig/ref :gpml.auth/admin-required-middleware]
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters {:body #ig/ref :gpml.handler.submission/put-params}
                                                  :handler #ig/ref :gpml.handler.submission/put}}]
                                          ["/{submission}/{id}"
                                           {:get {:summary "Get the details of a submission"
+                                                 :middleware [#ig/ref :gpml.auth/admin-or-reviewer-required-middleware]
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters {:path [:map [:submission string?] [:id int?]]}
                                                  :handler #ig/ref :gpml.handler.submission/get-detail}}]]
@@ -104,7 +96,7 @@
                                                                  #ig/ref :gpml.auth/approved-user]}
                                          [""
                                           {:get {:summary "Get list of reviews assigned to current user"
-                                                 :middleware [#ig/ref :gpml.auth/reviewer-required-middleware]
+                                                 :middleware [#ig/ref :gpml.auth/admin-or-reviewer-required-middleware]
                                                  :swagger {:tags ["review"]
                                                            :security [{:id_token []}]}
                                                  :parameters #ig/ref :gpml.handler.review/list-user-reviews-params
@@ -129,7 +121,7 @@
                                                                       [:reviewers [:vector int?]]]}
                                                   :handler #ig/ref :gpml.handler.review/new-multiple-review}
                                            :patch {:summary "Update review for a submission"
-                                                   :middleware [#ig/ref :gpml.auth/reviewer-required-middleware]
+                                                   :middleware [#ig/ref :gpml.auth/admin-or-reviewer-required-middleware]
                                                    :swagger {:tags ["review"]
                                                              :security [{:id_token []}]}
                                                    :parameters {:path [:map
@@ -201,6 +193,22 @@
                                                  :swagger {:tags ["stakeholder"]}
                                                  :parameters #ig/ref :gpml.handler.stakeholder/get-params
                                                  :handler #ig/ref :gpml.handler.stakeholder/get}}]
+                                         ["/expert"
+                                          ["/list"
+                                           {:get {:summary "Get the list of expert stakeholders"
+                                                  :swagger {:tags ["stakeholder" "expert"]}
+                                                  :parameters #ig/ref :gpml.handler.stakeholder.expert/get-params
+                                                  :responses #ig/ref :gpml.handler.stakeholder.expert/get-response
+                                                  :handler #ig/ref :gpml.handler.stakeholder.expert/get}}]
+                                          ["/invite"
+                                           {:post {:summary "Invite an expert"
+                                                   :middleware [#ig/ref :gpml.auth/auth-required
+                                                                #ig/ref :gpml.auth/approved-user
+                                                                #ig/ref :gpml.auth/admin-required-middleware]
+                                                   :swagger {:tags ["stakeholder" "expert"]}
+                                                   :parameters #ig/ref :gpml.handler.stakeholder.expert/post-params
+                                                   :responses #ig/ref :gpml.handler.stakeholder.expert/post-response
+                                                   :handler #ig/ref :gpml.handler.stakeholder.expert/post}}]]
                                          ["/:id"
                                           [""
                                            {:get {:middleware [#ig/ref :gpml.auth/auth-required
@@ -234,6 +242,7 @@
                                         ["/landing"
                                          [""
                                           {:get {:summary "End-point for the landing page"
+                                                 :middleware [#ig/ref :gpml.auth/auth-middleware]
                                                  :swagger {:tags ["landing"]}
                                                  :parameters {:query #ig/ref :gpml.handler.landing/get-query-params}
                                                  :handler #ig/ref :gpml.handler.landing/get}}]]
@@ -305,8 +314,7 @@
                                                   :swagger {:tags ["organisation"]
                                                             :security [{:id_token []}]}
                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                               #ig/ref :gpml.auth/auth-required
-                                                               #ig/ref :gpml.auth/approved-user]
+                                                               #ig/ref :gpml.auth/auth-required]
                                                   :parameters {:body #ig/ref :gpml.handler.organisation/post-params}
                                                   :handler #ig/ref :gpml.handler.organisation/post}}]
                                          ["/{id}"
@@ -496,7 +504,21 @@
                                                     :swagger {:tags ["comment"] :security [{:id_token []}]}
                                                     :responses #ig/ref :gpml.handler.comment/delete-response
                                                     :parameters #ig/ref :gpml.handler.comment/delete-params
-                                                    :handler #ig/ref :gpml.handler.comment/delete}}]]]]
+                                                    :handler #ig/ref :gpml.handler.comment/delete}}]]
+                                        ["/invitation" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                     #ig/ref :gpml.auth/auth-required]}
+                                         [""
+                                          {:get {:summary "Get invitations"
+                                                 :middleware [#ig/ref :gpml.auth/approved-user
+                                                              #ig/ref :gpml.auth/admin-required-middleware]
+                                                 :swagger {:tags ["invitation"]}
+                                                 :parameters #ig/ref :gpml.handler.invitation/get-params
+                                                 :handler #ig/ref :gpml.handler.invitation/get}}]
+                                         ["/:id"
+                                          {:put {:summary "Accept invitation"
+                                                 :swagger {:tags ["invitation"]}
+                                                 :parameters #ig/ref :gpml.handler.invitation/put-params
+                                                 :handler #ig/ref :gpml.handler.invitation/put}}]]]]
                               :logger #ig/ref :duct.logger/timbre}
 
   ;; Consts
@@ -510,6 +532,10 @@
                                     :client-id #duct/env ["AUTH0_BACKEND_CLIENT_ID" Str]
                                     :secret #duct/env ["AUTH0_BACKEND_SECRET" Str]}
 
+  [:duct/const :gpml.config/common]
+  {:db #ig/ref :duct.database/sql
+   :logger #ig/ref :duct/logger
+   :scheduler #ig/ref :gpml/scheduler}
   ;; Handlers
 
   :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
@@ -530,7 +556,8 @@
 
   :gpml.handler.submission/get {:db #ig/ref :duct.database/sql
                                 :auth0 #ig/ref :gpml.config/auth0}
-  :gpml.handler.submission/get-detail {:db #ig/ref :duct.database/sql}
+  :gpml.handler.submission/get-params {}
+  :gpml.handler.submission/get-detail #ig/ref :gpml.config/common
   :gpml.handler.submission/put {:db #ig/ref :duct.database/sql
                                 :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.submission/put-params {}
@@ -591,6 +618,17 @@
 
   :gpml.handler.stakeholder/suggested-profiles {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder/suggested-profiles-params {}
+
+  :gpml.handler.stakeholder.expert/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder.expert/get-params {}
+  :gpml.handler.stakeholder.expert/get-response {}
+  :gpml.handler.stakeholder.expert/post {:db #ig/ref :duct.database/sql
+                                         :mailjet-config #ig/ref :gpml.config/mailjet
+                                         :app-domain #duct/env ["APP_DOMAIN" Str]
+                                         :logger #ig/ref :duct/logger}
+  :gpml.handler.stakeholder.expert/post-params {}
+  :gpml.handler.stakeholder.expert/post-response {}
+
   :gpml.handler.currency/all {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.tag/by-topic {:db #ig/ref :duct.database/sql}
@@ -604,7 +642,8 @@
   :gpml.handler.non-member-organisation/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.organisation/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.organisation/post {:db #ig/ref :duct.database/sql
-                                   :mailjet-config #ig/ref :gpml.config/mailjet}
+                                   :mailjet-config #ig/ref :gpml.config/mailjet
+                                   :logger #ig/ref :duct/logger}
   :gpml.handler.organisation/put {:db #ig/ref :gpml.db/spec}
   :gpml.handler.organisation/post-params {}
   :gpml.handler.organisation/put-params {}
@@ -645,6 +684,7 @@
   :gpml.handler.detail/topics {}
   :gpml.handler.detail/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.detail/delete {:db #ig/ref :duct.database/sql
+                               :logger #ig/ref :duct/logger
                                :app-user-admin #duct/env "APP_USER_ADMIN"}
   :gpml.handler.detail/put {:db #ig/ref :duct.database/sql
                             :mailjet-config #ig/ref :gpml.config/mailjet}
@@ -669,6 +709,13 @@
                             :app-domain #duct/env ["APP_DOMAIN" Str]}
   :gpml.handler.export/get-params {}
 
+  :gpml.handler.invitation/get {:db #ig/ref :duct.database/sql
+                                :logger #ig/ref :duct/logger}
+  :gpml.handler.invitation/get-params {}
+  :gpml.handler.invitation/put {:db #ig/ref :duct.database/sql
+                                :logger #ig/ref :duct/logger}
+  :gpml.handler.invitation/put-params {}
+
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources
                           :logger #ig/ref :duct/logger
                           :strategy :raise-error}
@@ -691,7 +738,7 @@
   :gpml.auth/restrict-to-organisation-admin-or-owner {:db #ig/ref :duct.database/sql}
   :gpml.auth/approved-user {:db #ig/ref :duct.database/sql}
   :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}
-  :gpml.auth/reviewer-required-middleware {:db #ig/ref :duct.database/sql}
+  :gpml.auth/admin-or-reviewer-required-middleware {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.monitoring/collector {}
 
@@ -706,7 +753,15 @@
   {:jdbc-url #duct/env ["DATABASE_URL" Str]
    :logger false ;; We don't want log entries for sql sentences (not event ragtime ones!)
    :minimum-idle 10
-   :maximum-pool-size 25}}
+   :maximum-pool-size 25}
+
+  :gpml/scheduler {:thread-count #duct/env ["SCHEDULER_THREAD_COUNT" Int :or 50]}
+
+  :gpml.scheduler/leap-api-policy-importer
+  {:config #ig/ref :gpml.config/common
+   :scheduler-config {:time-zone #duct/env ["SCHEDULER_TIME_ZONE" Str :or "Europe/Madrid"]
+                      :identity "leap-api-policy-importer"
+                      :cron #duct/env ["SCHEDULER_LEAP_API_POLICY_IMPORTER_CRON" Str :or "0 0 2 1/14 * ? *"]}}}
 
  :duct.profile/dev   #duct/include "dev"
  :duct.profile/local #duct/include "local"

@@ -2,4 +2,4 @@
   {:ns-tracker/resource-deps ["favorite.sql"]}
   (:require [hugsql.core :as hugsql]))
 
-(hugsql/def-db-fns "gpml/db/favorite.sql")
+(hugsql/def-db-fns "gpml/db/favorite.sql" {:quoting :ansi})

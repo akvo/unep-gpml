@@ -39,12 +39,12 @@ AND is_bookmark = false;
 DELETE FROM :i:topic WHERE id = :id
 
 -- :name delete-associations :! :n
---~ (for [id (:ids params)] (format "DELETE FROM %1s WHERE id =  %2s" (:table params) id))
+DELETE FROM :i:table WHERE id IN (:v*:ids)
 
 -- :name update-stakeholder-association :! :n
--- :require [gpml.sql-util]
+-- :require [gpml.util.sql]
 UPDATE :i:table SET modified=now(),
---~ (#'gpml.sql-util/generate-update-stakeholder-association params)
+--~ (#'gpml.util.sql/generate-update-stakeholder-association params)
  WHERE id = :id;
 
 -- :name new-organisation-association :!
@@ -62,4 +62,3 @@ DO UPDATE SET modified = now(), remarks = EXCLUDED.remarks
 SELECT id
  FROM :i:table
  WHERE :i:column_name = :topic_id
-

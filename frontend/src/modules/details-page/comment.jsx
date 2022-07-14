@@ -16,6 +16,7 @@ import {
   SendOutlined,
   DeleteOutlined,
   EditOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import api from "../../utils/api";
 import moment from "moment";
@@ -45,7 +46,7 @@ export const CommentList = ({
               <>
                 <span
                   key="comment-nested-reply-to"
-                  className={item.id === showReplyBox && `active`}
+                  className={item.id === showReplyBox ? "active" : ""}
                   onClick={() => {
                     if (item.id === showReplyBox) {
                       setShowReplyBox("");
@@ -60,7 +61,7 @@ export const CommentList = ({
                 {profile.id === item.authorId && (
                   <span
                     key="comment-nested-edit"
-                    className={item.id === editComment && `active`}
+                    className={item.id === editComment ? "active" : ""}
                     onClick={() => {
                       if (item.id === editComment) {
                         setEditComment("");
@@ -165,7 +166,13 @@ export const CommentList = ({
       }
       author={item?.authorName}
       datetime={moment(item?.createdAt).fromNow()}
-      avatar={<Avatar src={item.authorPicture} alt={"author"} />}
+      avatar={
+        item?.authorPicture ? (
+          <Avatar src={item.authorPicture} alt={"author"} />
+        ) : (
+          <Avatar className="default-comment-avatar" icon={<UserOutlined />} />
+        )
+      }
       content={
         <>
           {!item.parentId && <h5>{item.title}</h5>}
@@ -265,7 +272,16 @@ const Comments = ({
   return (
     <>
       <Col className="section comment-section">
-        <h3 className="content-heading">Discussion</h3>
+        <h3
+          className="content-heading"
+          style={
+            comments && comments.length > 0
+              ? { marginBottom: "0" }
+              : { marginBottom: "16px" }
+          }
+        >
+          Discussion
+        </h3>
         {comments &&
           comments.length > 0 &&
           comments?.map((item, index) => {
@@ -310,7 +326,11 @@ const Comments = ({
             <Input.TextArea
               rows={1}
               className="comment-input"
-              placeholder="Join the discussion..."
+              placeholder={
+                comments && comments.length > 0
+                  ? "Join the discussion..."
+                  : "Be the first to comment..."
+              }
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               onPressEnter={(e) =>

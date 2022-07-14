@@ -7,15 +7,15 @@
    [gpml.db.language :as db.language]
    [gpml.db.policy :as db.policy]
    [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.email-util :as email]
    [gpml.handler.auth :as h.auth]
    [gpml.handler.geo :as handler.geo]
    [gpml.handler.image :as handler.image]
    [gpml.handler.resource.related-content :as handler.resource.related-content]
    [gpml.handler.resource.tag :as handler.resource.tag]
    [gpml.handler.util :as handler.util]
-   [gpml.pg-util :as pg-util]
+   [gpml.util.postgresql :as pg-util]
    [gpml.util :as util]
+   [gpml.util.email :as email]
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 
@@ -47,7 +47,7 @@
                              geo_coverage_value implementing_mea
                              geo_coverage_countries geo_coverage_country_groups
                              geo_coverage_value_subnational_city
-                             tags urls created_by image thumbnail language
+                             tags created_by image thumbnail language
                              owners info_docs sub_content_type
                              document_preview related_content topics
                              attachments remarks entity_connections individual_connections]}]
@@ -79,6 +79,7 @@
               :remarks remarks
               :created_by created_by
               :review_status "SUBMITTED"}
+        policy-geo-coverage-insert-cols ["policy" "country_group" "country"]
         policy-id (->> data (db.policy/new-policy conn) :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
@@ -92,14 +93,6 @@
                                                                       :tag-category "general"
                                                                       :resource-name "policy"
                                                                       :resource-id policy-id}))
-    (when (not-empty urls)
-      (let [lang-urls (map #(vector policy-id
-                                    (->> % :lang
-                                         (assoc {} :iso_code)
-                                         (db.language/language-by-iso-code conn)
-                                         :id)
-                                    (:url %)) urls)]
-        (db.policy/add-policy-language-urls conn {:urls lang-urls})))
     (when (not-empty language)
       (let [lang-id (:id (db.language/language-by-iso-code conn (select-keys language [:iso_code])))]
         (if-not (nil? lang-id)
@@ -120,10 +113,12 @@
     (if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
       (let [geo-data (handler.geo/get-geo-vector-v2 policy-id data)]
-        (db.policy/add-policy-geo conn {:geo geo-data}))
+        (db.policy/add-policies-geo conn {:geo geo-data
+                                          :insert-cols policy-geo-coverage-insert-cols}))
       (when (not-empty geo_coverage_value)
         (let [geo-data (handler.geo/get-geo-vector policy-id data)]
-          (db.policy/add-policy-geo conn {:geo geo-data}))))
+          (db.policy/add-policies-geo conn {:geo geo-data
+                                            :insert-cols policy-geo-coverage-insert-cols}))))
     (email/notify-admins-pending-approval
      conn
      mailjet-config

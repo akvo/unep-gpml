@@ -4,7 +4,7 @@
 -- Technical, Action Plan, Organization and Stakeholder. That is, it
 -- is not about 'resource' table solely.
 
--- :name create-resource-tags :<!
+-- :name create-resource-tags :<! :*
 -- :doc Creates a relation for <resource>_tag.
 INSERT INTO :i:table (:i:resource-col, tag
 --~(when (= (:table params) "stakeholder_tag") ", tag_relation_category")
@@ -24,3 +24,9 @@ JOIN tag t ON rt.tag = t.id
 JOIN tag_category tg ON t.tag_category = tg.id
 WHERE rt.:i:resource-col = :resource-id
 AND t.review_status = 'APPROVED';
+
+-- :name get-tags-from-resources :query :many
+-- :doc Get all the tags for all the resources
+SELECT rt.:i:resource-col, rt.tag
+FROM :i:table rt
+WHERE rt.:i:resource-col in (:v*:resource-ids);

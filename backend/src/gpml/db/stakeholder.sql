@@ -52,7 +52,6 @@ select
     s.picture as photo,
     s.linked_in,
     s.twitter,
-    s.representation,
     s.about,
     s.role,
     s.job_title,
@@ -78,7 +77,6 @@ select
     s.picture as photo,
     s.linked_in,
     s.twitter,
-    s.representation,
     s.about,
     s.role,
     s.job_title,
@@ -113,7 +111,6 @@ select
     s.picture as photo,
     s.linked_in,
     s.twitter,
-    s.representation,
     to_json(o.*) AS org,
     s.organisation_role,
     s.about,
@@ -157,14 +154,13 @@ where id = :id;
 -- :name new-stakeholder :<! :1
 -- :doc Insert a new stakeholder
 insert into stakeholder(
-    picture,
-    title,
     first_name,
     last_name,
-    email,
-    country,
-    representation,
-    idp_usernames
+    email
+--~ (when (contains? params :title) ", title")
+--~ (when (contains? params :picture) ", picture")
+--~ (when (contains? params :country) ", country")
+--~ (when (contains? params :idp_usernames) ", idp_usernames")
 --~ (when (contains? params :affiliation) ",affiliation")
 --~ (when (contains? params :linked_in) ",linked_in")
 --~ (when (contains? params :twitter) ",twitter")
@@ -176,14 +172,13 @@ insert into stakeholder(
 --~ (when (contains? params :job_title) ",job_title")
 --~ (when (contains? params :id) ",id")
 ) values(
-    :picture,
-    :title,
     :first_name,
     :last_name,
-    :email,
-    :country::integer,
-    :representation,
-    :idp_usernames::jsonb
+    :email
+--~ (when (contains? params :title) ", :title")
+--~ (when (contains? params :picture) ", :picture")
+--~ (when (contains? params :country) ", :country::integer")
+--~ (when (contains? params :idp_usernames) ", :idp_usernames::jsonb")
 --~ (when (contains? params :affiliation) ",:affiliation")
 --~ (when (contains? params :linked_in) ",:linked_in")
 --~ (when (contains? params :twitter) ",:twitter")
@@ -218,7 +213,6 @@ update stakeholder set
 --~ (when (contains? params :picture) "picture= :picture,")
 --~ (when (contains? params :cv) "cv= :cv, ")
 --~ (when (contains? params :country) "country= :v:country::integer,")
---~ (when (contains? params :representation) "representation= :representation,")
 --~ (when (contains? params :organisation_role) "organisation_role= :organisation_role,")
 --~ (when (contains? params :geo_coverage_type) "geo_coverage_type= :v:geo_coverage_type::geo_coverage_type,")
 --~ (when (contains? params :about) "about= :about,")
@@ -342,3 +336,36 @@ ORDER BY
     s.id,
     a.created_at DESC
 LIMIT :limit;
+
+-- :name get-experts :? :*
+-- :doc Get stakeholders based on the passed filters.
+WITH experts AS (
+  SELECT DISTINCT ON (s.id) s.*
+  FROM stakeholder s
+  JOIN stakeholder_tag st ON s.id = st.stakeholder AND st.tag_relation_category = 'expertise'
+),
+filtered_experts AS (
+  SELECT s.*, json_agg(json_build_object('id', t.id, 'tag', t.tag, 'tag_relation_category', st.tag_relation_category, 'tag_category', tg.category)) FILTER (WHERE t.id IS NOT NULL) AS tags
+  FROM stakeholder s
+  JOIN experts e ON e.id = s.id
+  JOIN stakeholder_tag st ON s.id = st.stakeholder
+  JOIN tag t ON st.tag = t.id
+  JOIN tag_category tg ON t.tag_category = tg.id
+  WHERE 1=1
+  --~(when (seq (get-in params [:filters :tags])) " AND LOWER(t.tag) IN (:v*:filters.tags)")
+  --~(when (seq (get-in params [:filters :ids])) " AND s.id IN (:v*:filters.ids)")
+  --~(when (seq (get-in params [:filters :countries])) " AND s.country IN (:v*:filters.countries)")
+  GROUP BY s.id
+)
+/*~ (if (:count-only? params) */
+SELECT count(*) FROM filtered_experts;
+/*~*/
+SELECT * FROM filtered_experts
+LIMIT :page-size
+OFFSET :offset
+/*~ ) ~*/
+
+-- :name create-stakeholders :<! :*
+-- :doc Creates N stakeholders. Type conversions needs to be handled before calling this funtions.
+INSERT INTO stakeholder(:i*:cols)
+VALUES :t*:values RETURNING id, email;

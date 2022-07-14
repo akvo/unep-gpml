@@ -7,7 +7,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const SignupView = ({ ...props }) => {
   const { isAuthenticated, loginWithPopup } = useAuth0();
-  const { profile, history } = props;
+  const { profile, history, setLoginVisible } = props;
   const [typeSignUp, setTypeSignUp] = useState(null);
   useEffect(() => {
     UIStore.update((e) => {
@@ -73,7 +73,7 @@ const SignupView = ({ ...props }) => {
                       onClick={() => {
                         setTypeSignUp("entity");
                         if (!isAuthenticated) {
-                          loginWithPopup({ action: "mixed" });
+                          setLoginVisible(true);
                         } else {
                           history.push("/entity-signup");
                         }
@@ -103,7 +103,7 @@ const SignupView = ({ ...props }) => {
                         onClick={() => {
                           setTypeSignUp("stakeholder");
                           if (!isAuthenticated) {
-                            loginWithPopup({ action: "signup" });
+                            setLoginVisible(true);
                           } else {
                             history.push("/stakeholder-signup");
                           }
@@ -129,10 +129,7 @@ const SignupView = ({ ...props }) => {
                 <br />
                 <br />
                 <div>
-                  <Button
-                    type="ghost"
-                    onClick={() => loginWithPopup({ action: "login" })}
-                  >
+                  <Button type="ghost" onClick={() => setLoginVisible(true)}>
                     Sign In
                   </Button>
                 </div>

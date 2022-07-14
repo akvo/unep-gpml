@@ -9,6 +9,7 @@
    [gpml.db.tag :as db.tag]
    [gpml.fixtures :as fixtures]
    [gpml.handler.stakeholder :as stakeholder]
+   [gpml.util.sql :as sql-util]
    [integrant.core :as ig]
    [ring.mock.request :as mock]))
 
@@ -28,7 +29,6 @@
    :last_name "Doe"
    :linked_in "johndoe"
    :twitter "johndoe"
-   :representation ""
    :org {:id org}
    :affiliation org
    :job_title "Developer"
@@ -45,8 +45,16 @@
   (:id (db.stakeholder/stakeholder-by-email conn {:email email})))
 
 (defn seed-important-database [db]
-  (let [tag-category (db.tag/new-tag-category db {:category "general"})]
-    {:tags (db.tag/new-tags db {:tags (map #(vector % (:id tag-category)) ["Tag 1" "Tag 2" "Tag 3"])})
+  (let [tag-category (db.tag/new-tag-category db {:category "general"})
+        tags [{:tag "Tag 1"
+               :tag_category (:id tag-category)}
+              {:tag "Tag 2"
+               :tag_category (:id tag-category)}
+              {:tag "Tag 3"
+               :tag_category (:id tag-category)}]
+        tag-entity-columns (sql-util/get-insert-columns-from-entity-col tags)]
+    {:tags (db.tag/new-tags db {:tags (sql-util/entity-col->persistence-entity-col tags)
+                                :insert-cols tag-entity-columns})
      :org (db.organisation/new-organisation
            db {:id 1
                :name "Akvo"
@@ -93,7 +101,6 @@
               :linked_in "johndoe"
               :photo "/image/profile/1"
               :cv "/cv/profile/1"
-              :representation ""
               :title "Mr"
               :job_title "Developer"
               :role "USER"
@@ -140,7 +147,6 @@
               :linked_in "johndoe"
               :photo "/image/profile/1"
               :cv "/cv/profile/1"
-              :representation ""
               :title "Mr"
               :job_title "Developer"
               :role "USER"
@@ -223,7 +229,6 @@
             :twitter "johndoe"
             :photo "/image/profile/2"
             :cv "/cv/profile/2"
-            :representation ""
             :role "USER"
             :job_title "Developer"
             :about "Dolor sit Amet"
@@ -273,7 +278,6 @@
             :linked_in "johndoe"
             :twitter "johndoe"
             :photo "https://lh3.googleusercontent.com"
-            :representation ""
             :role "USER"
             :job_title "Developer"
             :about "Dolor sit Amet"
