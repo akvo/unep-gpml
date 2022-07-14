@@ -356,9 +356,28 @@ filtered_experts AS (
   --~(when (seq (get-in params [:filters :ids])) " AND s.id IN (:v*:filters.ids)")
   --~(when (seq (get-in params [:filters :countries])) " AND s.country IN (:v*:filters.countries)")
   GROUP BY s.id
+),
+experts_by_country AS (
+  SELECT country AS country_id, count(*) AS counts
+  FROM filtered_experts
+  WHERE country IS NOT NULL
+  GROUP BY country
+),
+experts_by_country_aggregate AS (
+  SELECT 'countries' AS count_of, COALESCE(json_agg(json_build_object('country_id', country_id, 'counts', counts)), '[]'::json) AS counts
+  FROM experts_by_country
+)
+,
+experts_count AS (
+  SELECT 'experts' AS count_of, count(*) AS counts
+  FROM filtered_experts
 )
 /*~ (if (:count-only? params) */
-SELECT count(*) FROM filtered_experts;
+SELECT row_to_json(ec.*) AS count_results
+FROM experts_count ec
+UNION ALL
+SELECT row_to_json(eca.*) AS count_results
+FROM experts_by_country_aggregate eca
 /*~*/
 SELECT * FROM filtered_experts
 LIMIT :page-size
