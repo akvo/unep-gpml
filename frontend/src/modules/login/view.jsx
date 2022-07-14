@@ -25,6 +25,7 @@ import { Form as FinalForm, Field } from "react-final-form";
 import { auth0Client } from "../../utils/misc";
 import ForgotPassword from "./forgot-password";
 import SignUp from "../email-signup/view";
+import { eventTrack } from "../../utils/misc";
 
 function Login({ handleOnClickBtnNext, visible, close }) {
   const history = useHistory();
@@ -45,6 +46,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
   }, [location]);
 
   const handleOnLogin = async (values) => {
+    eventTrack("Authentication", "Email", "Button");
     setLoading(true);
     const username = values.email;
     const password = values.password;
@@ -74,6 +76,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
   };
 
   const handleGoogleLogin = () => {
+    eventTrack("Authentication", "Google", "Button");
     try {
       auth0Client.authorize(
         {
@@ -89,6 +92,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
   };
 
   const handleLinkedinLogin = () => {
+    eventTrack("Authentication", "Linkedin", "Button");
     try {
       auth0Client.authorize(
         {
