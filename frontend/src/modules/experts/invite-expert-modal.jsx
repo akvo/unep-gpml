@@ -16,7 +16,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
       visible={isShownModal}
       onCancel={() => setIsShownModal(false)}
     >
-      <p>
+      <p className="paragraph">
         Thank you for suggesting an expert!
         <br /> Please give us some basic details about this person below. Don?t
         worry all details will be kept anonymous.

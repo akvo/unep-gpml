@@ -1,5 +1,31 @@
 @import "../../vars.scss";
 .invite-expert-modal {
+  width: 100% !important;
+  max-width: 823px;
+  .ant-modal-header,
+  .ant-modal-body {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  .ant-modal-header {
+    padding-top: 14px;
+    padding-bottom: 14px;
+    .ant-modal-title {
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 26px;
+      color: #a5b0c9;
+      text-transform: uppercase;
+    }
+  }
+  .ant-modal-body {
+    padding-top: 17px;
+  }
+  .paragraph {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
   .invite-expert-form {
     .invite-expert-input {
       .invite-label-wrapper {
