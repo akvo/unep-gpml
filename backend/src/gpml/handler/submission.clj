@@ -2,16 +2,21 @@
   (:require
    [clojure.set :as set]
    [clojure.walk :as w]
-   [gpml.auth0-util :as auth0]
+   [duct.logger :refer [log]]
    [gpml.constants :as constants]
    [gpml.db.organisation :as db.organisation]
    [gpml.db.resource.tag :as db.resource.tag]
+   [gpml.db.review :as db.review]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.db.submission :as db.submission]
    [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
+   [gpml.util.auth0 :as auth0]
    [gpml.util.email :as email]
+   [gpml.util.postgresql :as pg-util]
    [integrant.core :as ig]
-   [ring.util.response :as resp]))
+   [ring.util.response :as resp])
+  (:import
+   [java.sql SQLException]))
 
 (defn remap-initiative [{:keys [q1 q1_1 q16 q18
                                 q20 q23 q24 q24_1 q24_2
@@ -110,31 +115,59 @@
               (w/keywordize-keys)
               (select-keys [:seeking :offering :expertise]))))
 
-(defmethod ig/init-key :gpml.handler.submission/get-detail [_ {:keys [db]}]
-  (fn [{{:keys [path]} :parameters}]
-    (let [conn (:spec db)
-          submission (:submission path)
-          initiative? (and (= submission "project") (> (:id path) 10000))
-          table-name (cond
-                       (contains? constants/resource-types submission)
-                       "resource"
-                       initiative?
-                       "initiative"
-                       :else
-                       submission)
-          params (conj path {:table-name table-name})
-          detail (submission-detail conn params)
-          detail (if (= submission "stakeholder")
-                   (merge detail
-                          (select-keys (db.stakeholder/stakeholder-by-id conn path) [:email])
-                          (->> (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
-                                                                        :resource-col "stakeholder"
-                                                                        :resource-id (:id path)})
-                               (prep-stakeholder-tags)))
-                   detail)
-          detail (if initiative? (remap-initiative detail conn)
-                     detail)]
-      (resp/response detail))))
+(defn- get-detail
+  [{:keys [db]} params]
+  (let [conn (:spec db)
+        submission (:submission params)
+        initiative? (and (= submission "project") (> (:id params) 10000))
+        table-name (cond
+                     (contains? constants/resource-types submission)
+                     "resource"
+                     initiative?
+                     "initiative"
+                     :else
+                     submission)
+        params (conj params {:table-name table-name})
+        detail (submission-detail conn params)
+        detail (if (= submission "stakeholder")
+                 (merge detail
+                        (select-keys (db.stakeholder/stakeholder-by-id conn params) [:email])
+                        (->> (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
+                                                                      :resource-col "stakeholder"
+                                                                      :resource-id (:id params)})
+                             (prep-stakeholder-tags)))
+                 detail)
+        detail (if initiative? (remap-initiative detail conn)
+                   detail)]
+    (resp/response detail)))
+
+(defmethod ig/init-key :gpml.handler.submission/get-detail
+  [_ {:keys [db logger] :as config}]
+  (fn [{{:keys [path]} :parameters user :user}]
+    (try
+      (if-not (= "REVIEWER" (:role user))
+        (get-detail config path)
+        (let [topic-type (:submission path)
+              topic-id (:id path)
+              review (first (db.review/reviews-filter (:spec db) {:topic-type topic-type
+                                                                  :topic-id topic-id}))]
+          (if (= (:id user) (:reviewer review))
+            (get-detail config path)
+            {:status 403
+             :body {:success? false
+                    :reason :unauthorized}})))
+      (catch Exception e
+        (log logger :error ::failed-to-get-submission-detail {:exception-message (.getMessage e)
+                                                              :context-data {:params path
+                                                                             :user user}})
+        (if (instance? SQLException e)
+          {:status 500
+           :body {:success? false
+                  :reason (pg-util/get-sql-state e)}}
+          {:status 500
+           :body {:success? false
+                  :reason :could-not-submission-get-details
+                  :error-details {:error (.getMessage e)}}})))))
 
 (defmethod ig/init-key :gpml.handler.submission/get-params [_ _]
   {:query

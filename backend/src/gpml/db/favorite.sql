@@ -42,9 +42,9 @@ DELETE FROM :i:topic WHERE id = :id
 DELETE FROM :i:table WHERE id IN (:v*:ids)
 
 -- :name update-stakeholder-association :! :n
--- :require [gpml.sql-util]
+-- :require [gpml.util.sql]
 UPDATE :i:table SET modified=now(),
---~ (#'gpml.sql-util/generate-update-stakeholder-association params)
+--~ (#'gpml.util.sql/generate-update-stakeholder-association params)
  WHERE id = :id;
 
 -- :name new-organisation-association :!

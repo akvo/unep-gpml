@@ -1,13 +1,16 @@
 -- :name get-resource-stakeholder-connections
 -- :doc Get stakeholder connections to a specific resource type and id
-SELECT sc.id, sc.association AS role, s.id AS stakeholder_id, concat_ws(' ', s.first_name, s.last_name) AS stakeholder, s.picture AS image, s.role AS stakeholder_role
+SELECT sc.id, sc.association AS role, s.id AS stakeholder_id, concat_ws(' ', s.first_name, s.last_name) AS stakeholder, s.picture AS image, s.role AS stakeholder_role, s.country, json_agg(json_build_object('id', t.id, 'tag', t.tag, 'tag_relation_category', st.tag_relation_category)) AS tags
 FROM stakeholder_:i:resource-type sc
 JOIN stakeholder s
 ON sc.stakeholder = s.id
+LEFT JOIN stakeholder_tag st ON st.stakeholder = s.id
+LEFT JOIN tag t ON t.id = st.tag
 WHERE sc.:i:resource-type = :resource-id
 -- TODO: remove the following line once we refactor association and
 -- favorites schema.
-AND sc.is_bookmark IS FALSE;
+AND sc.is_bookmark IS FALSE
+GROUP BY sc.id, s.id
 
 -- :name get-resource-entity-connections
 -- :doc Get entity connections to a specific resource type and id

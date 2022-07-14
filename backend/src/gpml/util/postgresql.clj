@@ -1,4 +1,4 @@
-(ns gpml.pg-util
+(ns gpml.util.postgresql
   (:require [clojure.java.jdbc :as jdbc]
             [jsonista.core :as j])
   (:import org.postgresql.util.PGobject))
