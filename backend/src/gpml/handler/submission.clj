@@ -10,9 +10,9 @@
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.db.submission :as db.submission]
    [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
-   [gpml.pg-util :as pg-util]
    [gpml.util.auth0 :as auth0]
    [gpml.util.email :as email]
+   [gpml.util.postgresql :as pg-util]
    [integrant.core :as ig]
    [ring.util.response :as resp])
   (:import
