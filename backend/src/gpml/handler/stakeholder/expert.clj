@@ -7,7 +7,7 @@
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.handler.stakeholder :as handler.stakeholder]
    [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
-   [gpml.pg-util :as pg-util]
+   [gpml.util.postgresql :as pg-util]
    [gpml.util :as util]
    [gpml.util.email :as email]
    [integrant.core :as ig]

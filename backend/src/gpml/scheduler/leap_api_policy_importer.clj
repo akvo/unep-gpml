@@ -11,7 +11,7 @@
             [gpml.db.policy :as db.policy]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.tag :as db.tag]
-            [gpml.sql-util :as sql-util]
+            [gpml.util.sql :as sql-util]
             [gpml.util :as util]
             [integrant.core :as ig]
             [java-time :as jt]
