@@ -3,7 +3,7 @@
 #experts {
   .expert-list-section {
     background: rgba(211, 222, 231, 0.15);
-    padding: 20px 16px;
+    padding: 15px 25px;
     #expert-loading {
       padding-top: 0;
       padding-bottom: 0;
@@ -214,5 +214,60 @@
   }
   .map-container svg {
     outline: unset;
+  }
+  #map-landing {
+    height: 550px;
+  }
+  .filter-bar {
+    background-color: #06496c;
+    height: 95px;
+    padding-left: 5px;
+    .level-0 {
+      display: flex;
+      flex-direction: column;
+      small {
+        background-color: #005376;
+        display: inline-block;
+        color: #d3dee7;
+        padding: 0px 10px 0;
+        margin-top: 4px;
+      }
+      ul {
+        display: flex;
+        background-color: #005376;
+        padding: 5px 0px 4px 5px;
+        float: left;
+        margin-top: -4px;
+        li {
+          height: 63px;
+          border-radius: 5px;
+          display: flex;
+          align-items: center;
+          font-weight: 600;
+          font-size: 14px;
+          color: #67bea1;
+          background-color: #004768;
+          margin-right: 5px;
+          padding: 0 10px;
+          cursor: pointer;
+          img {
+            margin-right: 7px;
+          }
+          span {
+            width: min-content;
+            line-height: 16px;
+          }
+          &:hover {
+            background-color: #053553;
+          }
+          &:nth-child(3) span {
+            min-width: 99px;
+          }
+          &:nth-child(5) span {
+            min-width: 90px;
+          }
+        }
+      }
+    }
   }
 }
