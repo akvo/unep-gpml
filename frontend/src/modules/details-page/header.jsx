@@ -1,7 +1,7 @@
 import React from "react";
 import "./styles.scss";
 import { Col, Popover, Input, Button } from "antd";
-
+import { eventTrack } from "../../utils/misc";
 import {
   EyeFilled,
   HeartTwoTone,
@@ -52,16 +52,22 @@ export const HeaderButtons = ({
           type="primary"
           shape="round"
           size="middle"
-          href={`${
-            data?.url && data?.url?.includes("https://")
-              ? data?.url
-              : data?.languages
-              ? data?.languages[0]?.url
-              : data?.url?.includes("http://")
-              ? data?.url
-              : "https://" + data?.url
-          }`}
-          target="_blank"
+          onClick={(e) => {
+            e.preventDefault();
+            eventTrack("Resource view", "View Url", "Button");
+            window.open(
+              `${
+                data?.url && data?.url?.includes("https://")
+                  ? data?.url
+                  : data?.languages
+                  ? data?.languages[0]?.url
+                  : data?.url?.includes("http://")
+                  ? data?.url
+                  : "https://" + data?.url
+              }`,
+              "_blank"
+            );
+          }}
         >
           View
         </Button>
@@ -132,7 +138,6 @@ export const HeaderButtons = ({
           trigger="click"
           visible={visible}
           onVisibleChange={handleVisibleChange}
-          placement="left"
         >
           <div>
             <Button
@@ -150,6 +155,7 @@ export const HeaderButtons = ({
                       : data?.url
                     : "https://" + data?.url
                 );
+                eventTrack("Resource view", "Share", "Button");
                 handleVisibleChange();
               }}
             >
@@ -171,7 +177,10 @@ export const HeaderButtons = ({
         shape="round"
         size="middle"
         ghost
-        onClick={() => handleChangeRelation("interested in")}
+        onClick={() => {
+          eventTrack("Resource view", "Bookmark", "Button");
+          handleChangeRelation("interested in");
+        }}
       >
         Bookmark
       </Button>
