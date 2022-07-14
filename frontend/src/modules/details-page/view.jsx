@@ -51,6 +51,7 @@ import { ReactComponent as TransnationalImage } from "../../images/transnational
 import { ReactComponent as CityImage } from "../../images/city-icn.svg";
 import Comments from "./comment";
 import Header from "./header";
+import { eventTrack } from "../../utils/misc";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
@@ -231,6 +232,7 @@ const DetailsView = ({
   };
 
   const handleEditBtn = () => {
+    eventTrack("Resource view", "Update", "Button");
     let form = null;
     let type = null;
     let link = null;

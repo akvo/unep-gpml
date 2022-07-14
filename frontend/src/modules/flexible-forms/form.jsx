@@ -19,6 +19,7 @@ import {
 } from "../initiative/form";
 import { checkRequiredFieldFilledIn, customFormats } from "../../utils/forms";
 import api from "../../utils/api";
+import { eventTrack } from "../../utils/misc";
 
 const Form = withTheme(AntDTheme);
 
@@ -79,6 +80,7 @@ const FlexibleForm = withRouter(
     }, [formSchema, prevSchema]);
 
     const handleOnSubmit = ({ formData }) => {
+      eventTrack("Resource", "Submitted", "Button");
       if (mainType === "Policy") {
         handleOnSubmitPolicy(formData);
         return false;
