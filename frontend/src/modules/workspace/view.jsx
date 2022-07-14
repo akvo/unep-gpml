@@ -191,6 +191,18 @@ const Workspace = ({ profile }) => {
                     <List itemLayout="horizontal">
                       <List.Item>
                         <List.Item.Meta
+                          className={`${
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                              ? "disabled"
+                              : ""
+                          }`}
+                          disabled={
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                          }
                           title={
                             <a
                               href="https://unep-gpml.eu.auth0.com/authorize?response_type=code&client_id=lmdxuDGdQjUsbLbMFpjDCulTP1w5Z4Gi&redirect_uri=https%3A//apps.unep.org/data-catalog/oauth2/callback&scope=openid+profile+email&state=eyJjYW1lX2Zyb20iOiAiL2Rhc2hib2FyZCJ9"
@@ -204,6 +216,18 @@ const Workspace = ({ profile }) => {
                       </List.Item>
                       <List.Item>
                         <List.Item.Meta
+                          className={`${
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                              ? "disabled"
+                              : ""
+                          }`}
+                          disabled={
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                          }
                           title={
                             <Link to="/flexible-forms">
                               Share your knowledge {">"}
@@ -220,6 +244,18 @@ const Workspace = ({ profile }) => {
                       </List.Item> */}
                       <List.Item>
                         <List.Item.Meta
+                          className={`${
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                              ? "disabled"
+                              : ""
+                          }`}
+                          disabled={
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                          }
                           title={
                             <Link to="/connect/community">
                               Match with new opportunities {">"}
