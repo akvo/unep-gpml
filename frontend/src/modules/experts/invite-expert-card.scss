@@ -1,0 +1,43 @@
+@import "../../vars.scss";
+.invite-expert-card {
+  padding: 8px;
+  height: 330px;
+  .ant-card-body {
+    padding: 0 !important;
+    justify-content: unset !important;
+  }
+  .invite-expert-image-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    background-color: #fafbfd;
+    width: 100%;
+    max-width: 181.5px;
+    height: 165px;
+    clip-path: polygon(0 1%, 100% 0, 100% 100%, 0 68%);
+    img {
+      padding: 41px;
+    }
+  }
+  .invite-expert-text {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    text-transform: uppercase;
+    color: #a5b0c9;
+    margin-bottom: 0;
+  }
+  .invite-expert-button {
+    display: flex;
+    justify-content: center;
+    place-items: center;
+    border: 2px solid #67bea1;
+    font-weight: 600;
+    font-size: 14px;
+    color: #67bea1;
+    margin-top: 24px;
+    &:hover {
+      background-color: $yellow-highlight;
+    }
+  }
+}
