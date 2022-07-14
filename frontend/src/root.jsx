@@ -26,6 +26,7 @@ import AddEvent from "./modules/events/view";
 import SignupView from "./modules/signup/view";
 import SignupViewNew from "./modules/email-signup/view";
 import Login from "./modules/login/view";
+import LoginView from "./modules/login/login-view";
 import LandingSignupView from "./modules/signup-old/view";
 import logo from "./images/gpml.svg";
 // add auth0 logo pop-up
@@ -788,6 +789,7 @@ const Root = () => {
               />
             )}
           />
+          <Route path="/login" render={(props) => <LoginView {...props} />} />
           <Route
             path="/flexible-forms"
             render={(props) => <FlexibleForms {...props} />}

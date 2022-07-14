@@ -3,6 +3,18 @@
   .bg-white {
     background-color: #fff;
   }
+  .connect-button {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px 5px 0px;
+    button {
+      color: #09689a;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 26px;
+    }
+  }
   .wave-background {
     position: relative;
     z-index: 9;
