@@ -37,6 +37,7 @@ import {
 } from "@ant-design/icons";
 import Avatar from "antd/lib/avatar/avatar";
 import Expert from "./expert";
+import { ReactComponent as IconExpert } from "../../images/expert-icon.svg";
 
 const { Search } = Input;
 const { TabPane } = Tabs;
@@ -105,6 +106,7 @@ const HeaderFilter = ({
   reviewers,
   setListOpts,
   initialReviewStatus,
+  expert,
 }) => {
   const [selectedValue, setSelectedValue] = useState(
     (listOpts.reviewStatus && statusDictToHuman[listOpts.reviewStatus]) ||
@@ -123,7 +125,7 @@ const HeaderFilter = ({
             const data = await fetchSubmissionData(
               1,
               10,
-              listOpts.type,
+              expert ? "experts" : listOpts.type,
               listOpts.title
             );
             setListOpts((opts) => ({
@@ -141,7 +143,7 @@ const HeaderFilter = ({
             const data = await fetchSubmissionData(
               1,
               10,
-              listOpts.type,
+              expert ? "experts" : listOpts.type,
               reviewStatus,
               listOpts.title
             );
@@ -288,6 +290,7 @@ const AdminSection = ({
   const [loadingAssignReviewer, setLoadingAssignReviewer] = useState(false);
   const [loading, setLoading] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
+  const [expert, setExpert] = useState(false);
 
   const [tab, setTab] = useState("stakeholders");
   const [stakeholdersListOpts, setStakeholdersListOpts] = useState({
@@ -488,7 +491,7 @@ const AdminSection = ({
   const ReviewStatus = ({ item, listOpts, setListOpts }) => {
     return (
       <div
-        style={{ width: "50%" }}
+        className="review-status-container"
         onClick={(e) => {
           e.stopPropagation();
         }}
@@ -728,38 +731,45 @@ const AdminSection = ({
           {item.type !== "tag" ? (
             <div className="row">
               <ResourceAvatar />
-              {item.reviewStatus === "SUBMITTED" && (
-                <ReviewStatus
-                  item={item}
-                  listOpts={listOpts}
-                  setListOpts={setListOpts}
-                />
-              )}
-              {item.reviewStatus === "APPROVED" &&
-                item.type === "stakeholder" && (
-                  <RoleSelect
-                    stakeholder={item}
-                    onChangeRole={changeRole}
-                    loading={loading}
-                    listOpts={listOpts}
-                    setListOpts={setListOpts}
-                  />
-                )}
-              {item.reviewStatus === "APPROVED" &&
-                item.type !== "stakeholder" && (
-                  <OwnerSelect
+              <div className="actions-container">
+                {item.reviewStatus === "SUBMITTED" && (
+                  <ReviewStatus
                     item={item}
-                    reviewers={reviewers}
-                    setListOpts={setListOpts}
                     listOpts={listOpts}
-                    resource={item}
-                    onChangeOwner={changeOwner}
-                    loading={loading}
+                    setListOpts={setListOpts}
                   />
                 )}
-              {item.reviewStatus === "SUBMITTED" && (
-                <ResourceSubmittedActions />
-              )}
+                {item.type === "stakeholder" && item?.expertise?.length > 0 && (
+                  <div className="expert-icon">
+                    <IconExpert />
+                  </div>
+                )}
+                {item.reviewStatus === "APPROVED" &&
+                  item.type === "stakeholder" && (
+                    <RoleSelect
+                      stakeholder={item}
+                      onChangeRole={changeRole}
+                      loading={loading}
+                      listOpts={listOpts}
+                      setListOpts={setListOpts}
+                    />
+                  )}
+                {item.reviewStatus === "APPROVED" &&
+                  item.type !== "stakeholder" && (
+                    <OwnerSelect
+                      item={item}
+                      reviewers={reviewers}
+                      setListOpts={setListOpts}
+                      listOpts={listOpts}
+                      resource={item}
+                      onChangeOwner={changeOwner}
+                      loading={loading}
+                    />
+                  )}
+                {item.reviewStatus === "SUBMITTED" && (
+                  <ResourceSubmittedActions />
+                )}
+              </div>
               {/* {item.reviewStatus === "APPROVED" && <ResourceApprovedActions />} */}
             </div>
           ) : (
@@ -787,7 +797,32 @@ const AdminSection = ({
               <div>
                 <b className="approval-bold-text">Filtering by:</b>
                 {listOpts.type === "stakeholders" && (
-                  <Checkbox className="expert-checkbox">Experts</Checkbox>
+                  <Checkbox
+                    className="expert-checkbox"
+                    onChange={(e) => {
+                      setExpert(e.target.checked);
+                      const reviewStatus = listOpts.reviewStatus;
+                      setListOpts((opts) => ({ ...opts, reviewStatus }));
+                      (async () => {
+                        const data = await fetchSubmissionData(
+                          1,
+                          10,
+                          e.target.checked ? "experts" : "stakeholders",
+                          reviewStatus,
+                          listOpts.title
+                        );
+                        setListOpts((opts) => ({
+                          ...opts,
+                          reviewStatus,
+                          data,
+                          current: 1,
+                          size: 10,
+                        }));
+                      })();
+                    }}
+                  >
+                    Experts
+                  </Checkbox>
                 )}
               </div>
               {title !== "Tags" && (
@@ -821,6 +856,7 @@ const AdminSection = ({
               setListOpts={setListOpts}
               listOpts={listOpts}
               initialReviewStatus="Pending"
+              expert={expert}
             />
           </div>
           <Collapse onChange={getPreviewContent}>

@@ -121,10 +121,6 @@ const Experts = () => {
     const newQuery = { ...query };
     newQuery[param] = value;
 
-    if (param !== "offset") {
-      newQuery["offset"] = 0;
-    }
-
     // Remove empty query
     const arrayOfQuery = Object.entries(newQuery)?.filter(
       (item) => item[1]?.length !== 0

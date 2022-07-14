@@ -6,7 +6,7 @@ import values from "lodash/values";
 import { UIStore } from "../../store";
 import imageNotFound from "../../images/image-not-found.png";
 import { languages } from "countries-list";
-import { topicNames, resourceSubTypes } from "../../utils/misc";
+import { topicNames, resourceSubTypes, toTitleCase } from "../../utils/misc";
 import { Input, Button, notification } from "antd";
 import api from "../../utils/api";
 import { fetchSubmissionData } from "./utils";
@@ -106,10 +106,13 @@ const GpmlLinkLi = ({ item }) => {
   return (
     <li className="has-border">
       <Link
-        to={`/${item.type.replace("_", "-")}/${item.id}`}
+        to={`/${item.type.replace("_", "-")}/${
+          item.reviewStatus === "PENDING" ? item.topicId : item.id
+        }`}
         className="browse-card"
       >
-        GPML LINK: /{item.type.replace("_", "-")}/{item.id}{" "}
+        GPML LINK: /{item.type.replace("_", "-")}/
+        {item.reviewStatus === "PENDING" ? item.topicId : item.id}{" "}
       </Link>
     </li>
   );
@@ -503,6 +506,12 @@ export const ProfilePreview = ({ item }) => {
       setError("Required");
     }
   };
+
+  useEffect(() => {
+    if (item.expertise) {
+      setExpertise(item.expertise.map((item) => toTitleCase(item)));
+    }
+  }, [item]);
 
   return (
     <div className="stakeholder-info">

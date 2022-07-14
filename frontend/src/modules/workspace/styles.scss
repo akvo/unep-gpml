@@ -17,8 +17,27 @@ $bg-green-primary: #10f9b7;
     background-size: 100% 100%;
     padding: 30px 0px 0px;
     .workspace-container {
-      width: 90%;
-      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      .ant-row {
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .pending-stripe {
+        background: rgb(242 242 242 / 80%);
+        box-shadow: 0px 0px 4px rgba(24, 22, 47, 0.15);
+        border-radius: 7px;
+        text-align: center;
+        padding: 15px 0px;
+        h4 {
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 23px;
+          color: #3176ae;
+          margin-bottom: 0px;
+        }
+      }
     }
     .bg-white {
       box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15);
@@ -29,6 +48,7 @@ $bg-green-primary: #10f9b7;
     }
     .gpml-section {
       margin-bottom: 20px;
+      margin-top: 20px;
     }
     .content-container {
       padding: 20px 40px 20px 30px;
@@ -160,9 +180,15 @@ $bg-green-primary: #10f9b7;
       }
     }
     .action-plan-container {
-      padding-top: 10px;
-      padding-bottom: 20px;
+      padding-top: 20px;
+      padding-bottom: 40px;
       .ant-col {
+        &:first-child {
+          padding-right: 5px !important;
+        }
+        &:nth-child(2) {
+          padding-left: 5px !important;
+        }
         @media only screen and (max-width: 474px) {
           width: 100%;
         }
@@ -214,7 +240,8 @@ $bg-green-primary: #10f9b7;
     }
     .video-panel {
       background: rgb(37 91 135 / 50%);
-      padding: 30px 0px;
+      padding: 30px 5%;
+      width: 100% !important;
       h2 {
         font-weight: 500;
         font-size: 24px;
