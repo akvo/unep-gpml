@@ -19,6 +19,7 @@ import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
 
 import Maps from "../map/map";
 import ExpertCarousel from "./expert-carousel";
+import InviteExpertModal from "./invite-expert-modal";
 
 const Experts = () => {
   const { countries, organisations, landing } = UIStore.useState((s) => ({
@@ -40,7 +41,8 @@ const Experts = () => {
   const isLoaded = () => !isEmpty(landing?.map);
   const [loading, setLoading] = useState(true);
   const [filterCountries, setFilterCountries] = useState([]);
-
+  const [isShownModal, setIsShownModal] = useState(false);
+  console.log("isShownModal::::::", isShownModal);
   const sidebar = [
     { id: 1, title: "Events", url: "/connect/events", icon: <IconEvent /> },
     {
@@ -196,7 +198,11 @@ const Experts = () => {
                 <LoadingOutlined spin /> Loading
               </h2>
             ) : (
-              <ExpertCarousel {...{ experts, countries, organisations }} />
+              <>
+                <ExpertCarousel
+                  {...{ experts, countries, organisations, setIsShownModal }}
+                />
+              </>
             )}
           </div>
           <Maps
@@ -215,6 +221,9 @@ const Experts = () => {
             multiCountries={[]}
             useVerticalLegend
           />
+          {isShownModal && (
+            <InviteExpertModal {...{ setIsShownModal, isShownModal }} />
+          )}
         </LeftSidebar>
       </Row>
     </div>

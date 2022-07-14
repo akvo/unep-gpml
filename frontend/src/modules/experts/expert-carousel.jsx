@@ -14,7 +14,12 @@ import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-over
 import InviteExpertCard from "./invite-expert-card";
 
 const colour = () => colors[Math.floor(Math.random() * colors.length)];
-const ExpertCarousel = ({ experts, countries, organisations }) => {
+const ExpertCarousel = ({
+  experts,
+  countries,
+  organisations,
+  setIsShownModal,
+}) => {
   const CustomRightArrow = ({ onClick, ...rest }) => {
     const {
       onMove,
@@ -159,7 +164,7 @@ const ExpertCarousel = ({ experts, countries, organisations }) => {
           </Link>
         );
       })}
-      <InviteExpertCard />
+      <InviteExpertCard {...{ setIsShownModal }} />
     </Carousel>
   );
 };

@@ -3,7 +3,7 @@ import "./invite-expert-card.scss";
 import { Card, Button } from "antd";
 import MegaphoneIcon from "../../images/stakeholder-overview/megaphone-icon.svg";
 
-const InviteExpertCard = () => {
+const InviteExpertCard = ({ setIsShownModal }) => {
   return (
     <Card className="invite-expert-card">
       <div className="invite-expert-image-wrapper">
@@ -14,7 +14,7 @@ const InviteExpertCard = () => {
         shape="round"
         size="medium"
         className="invite-expert-button"
-        onClick={() => alert("Show modal")}
+        onClick={() => setIsShownModal(true)}
       >
         Suggest an expert
       </Button>
