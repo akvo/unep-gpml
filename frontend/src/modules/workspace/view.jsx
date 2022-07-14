@@ -15,14 +15,17 @@ const Workspace = ({ profile }) => {
   const history = useHistory();
   const [isFocal, setIsFocal] = useState(false);
 
-  const handleFocalPoint = () => {
+  const handleFocalPoint = (id) => {
     setIsFocal(true);
-    localStorage.setItem("is_focal", true);
+    localStorage.setItem("is_focal", JSON.stringify({ id: id, status: true }));
   };
 
   useEffect(() => {
-    setIsFocal(localStorage.getItem("is_focal"));
-  }, []);
+    const item = localStorage.getItem("is_focal");
+    if (item && profile) {
+      setIsFocal(profile?.org?.id === JSON.parse(item).id ? true : false);
+    }
+  }, [profile]);
 
   return (
     <div id="workspace">
@@ -32,100 +35,125 @@ const Workspace = ({ profile }) => {
           <div className="workspace-content-wrapper">
             <div className="workspace-container">
               {profile &&
-                profile.org &&
-                !profile?.org?.isMember &&
-                isFocal !== false && (
-                  <Row className="bg-white gpml-section">
-                    <Col lg={12} sm={24}>
-                      <div className="content-container">
-                        <p className="recommend-text">RECOMMENDED</p>
-                        <Title level={2}>GPML Partnership​</Title>
-                        <p className="registration-text">
-                          Hello, It looks like your entity:{" "}
-                          <b>{profile?.org?.name},</b> is not yet part <br /> of
-                          the GPML partnership.
-                          <br /> If you are the focal point, submit your
-                          application below
-                        </p>
-                        <div className="join-box">
-                          <div>
-                            <p>
-                              By completing this form I confirm that I have the
-                              authorization to submit an application on behalf
-                              of this Entity to become a member of the Global
-                              Partnership on Marine Litter (GPML)​.
-                            </p>
-                          </div>
-                          <div className="button-container">
-                            <Button
-                              className="join-button"
-                              type="primary"
-                              shape="round"
-                              onClick={() =>
-                                history.push({
-                                  pathname: "entity-signup",
-                                  state: { data: profile.org },
-                                })
-                              }
-                            >
-                              JOIN GPML
-                            </Button>
-                            {!isFocal && (
-                              <Button
-                                className="focal-point"
-                                onClick={() => handleFocalPoint()}
-                              >
-                                I AM NOT THE FOCAL POINT
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </Col>
-                    <Col lg={12} sm={24}>
-                      <div className="slider-container">
-                        <Carousel effect="fade">
-                          <div>
-                            <div className="slider-wrapper">
-                              <Avatar
-                                src={NetworkIcon}
-                                style={{
-                                  borderRadius: "initial",
-                                  margin: "0 auto 40px auto",
-                                  display: "block",
-                                  width: 160,
-                                  height: 140,
-                                }}
-                              />
-                              <Title level={2}>
-                                Tap into a global network of like-minded
-                                members​
-                              </Title>
-                            </div>
-                          </div>
-                          <div>
-                            <div className="slider-wrapper">
-                              <Avatar
-                                src={NetworkIcon}
-                                style={{
-                                  borderRadius: "initial",
-                                  margin: "0 auto 40px auto",
-                                  display: "block",
-                                  width: 160,
-                                  height: 140,
-                                }}
-                              />
-                              <Title level={2}>
-                                Network with other stakeholders
-                              </Title>
-                            </div>
-                          </div>
-                        </Carousel>
+                profile?.emailVerified &&
+                profile?.reviewStatus === "SUBMITTED" && (
+                  <Row>
+                    <Col lg={24} sm={24}>
+                      <div className="pending-stripe">
+                        <Title level={4}>
+                          Your account is pending reviewal. You can still
+                          explore the platform.
+                        </Title>
                       </div>
                     </Col>
                   </Row>
                 )}
-              <Row gutter={[8, 16]} className="action-plan-container">
+              {profile && !profile?.emailVerified && (
+                <Row>
+                  <Col lg={24} sm={24}>
+                    <div className="pending-stripe">
+                      <Title level={4}>
+                        We sent you a confirmation email, Please take a moment
+                        and validate your address to confirm your account.
+                      </Title>
+                    </div>
+                  </Col>
+                </Row>
+              )}
+              {profile && profile.org && !profile?.org?.isMember && (
+                <Row
+                  className="bg-white gpml-section"
+                  style={{ order: isFocal && 2 }}
+                >
+                  <Col lg={12} sm={24}>
+                    <div className="content-container">
+                      <p className="recommend-text">RECOMMENDED</p>
+                      <Title level={2}>GPML Partnership​</Title>
+                      <p className="registration-text">
+                        Hello, It looks like your entity:{" "}
+                        <b>{profile?.org?.name},</b> is not yet part <br /> of
+                        the GPML partnership.
+                        <br /> If you are the focal point, submit your
+                        application below
+                      </p>
+                      <div className="join-box">
+                        <div>
+                          <p>
+                            By completing this form I confirm that I have the
+                            authorization to submit an application on behalf of
+                            this Entity to become a member of the Global
+                            Partnership on Marine Litter (GPML)​.
+                          </p>
+                        </div>
+                        <div className="button-container">
+                          <Button
+                            className="join-button"
+                            type="primary"
+                            shape="round"
+                            onClick={() =>
+                              history.push({
+                                pathname: "entity-signup",
+                                state: { data: profile.org },
+                              })
+                            }
+                          >
+                            JOIN GPML
+                          </Button>
+                          {!isFocal && (
+                            <Button
+                              className="focal-point"
+                              onClick={() => handleFocalPoint(profile?.org?.id)}
+                            >
+                              I AM NOT THE FOCAL POINT
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </Col>
+                  <Col lg={12} sm={24}>
+                    <div className="slider-container">
+                      <Carousel effect="fade">
+                        <div>
+                          <div className="slider-wrapper">
+                            <Avatar
+                              src={NetworkIcon}
+                              style={{
+                                borderRadius: "initial",
+                                margin: "0 auto 40px auto",
+                                display: "block",
+                                width: 160,
+                                height: 140,
+                              }}
+                            />
+                            <Title level={2}>
+                              Tap into a global network of like-minded members​
+                            </Title>
+                          </div>
+                        </div>
+                        <div>
+                          <div className="slider-wrapper">
+                            <Avatar
+                              src={NetworkIcon}
+                              style={{
+                                borderRadius: "initial",
+                                margin: "0 auto 40px auto",
+                                display: "block",
+                                width: 160,
+                                height: 140,
+                              }}
+                            />
+                            <Title level={2}>
+                              Network with other stakeholders
+                            </Title>
+                          </div>
+                        </div>
+                      </Carousel>
+                    </div>
+                  </Col>
+                </Row>
+              )}
+              <Row className="action-plan-container">
                 <Col lg={12} sm={24}>
                   <div className="content-container">
                     <p className="recommend-text">Download</p>
@@ -163,6 +191,18 @@ const Workspace = ({ profile }) => {
                     <List itemLayout="horizontal">
                       <List.Item>
                         <List.Item.Meta
+                          className={`${
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                              ? "disabled"
+                              : ""
+                          }`}
+                          disabled={
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                          }
                           title={
                             <a
                               href="https://unep-gpml.eu.auth0.com/authorize?response_type=code&client_id=lmdxuDGdQjUsbLbMFpjDCulTP1w5Z4Gi&redirect_uri=https%3A//apps.unep.org/data-catalog/oauth2/callback&scope=openid+profile+email&state=eyJjYW1lX2Zyb20iOiAiL2Rhc2hib2FyZCJ9"
@@ -176,6 +216,18 @@ const Workspace = ({ profile }) => {
                       </List.Item>
                       <List.Item>
                         <List.Item.Meta
+                          className={`${
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                              ? "disabled"
+                              : ""
+                          }`}
+                          disabled={
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                          }
                           title={
                             <Link to="/flexible-forms">
                               Share your knowledge {">"}
@@ -192,6 +244,18 @@ const Workspace = ({ profile }) => {
                       </List.Item> */}
                       <List.Item>
                         <List.Item.Meta
+                          className={`${
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                              ? "disabled"
+                              : ""
+                          }`}
+                          disabled={
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === "SUBMITTED")
+                          }
                           title={
                             <Link to="/connect/community">
                               Match with new opportunities {">"}
@@ -204,10 +268,8 @@ const Workspace = ({ profile }) => {
                   </div>
                 </Col>
               </Row>
-            </div>
-            <div className="video-panel">
-              <div className="workspace-container">
-                <div>
+              <Row className="video-panel">
+                <Col lg={24} sm={24}>
                   <Title level={2}>Watch this video to get started</Title>
                   <iframe
                     width="100%"
@@ -218,8 +280,8 @@ const Workspace = ({ profile }) => {
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen
                   ></iframe>
-                </div>
-              </div>
+                </Col>
+              </Row>
             </div>
           </div>
           {/* <Col lg={24} md={24} xs={24} order={2}>

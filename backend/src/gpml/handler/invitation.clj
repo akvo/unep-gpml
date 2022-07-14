@@ -3,7 +3,7 @@
    [clojure.string :as str]
    [duct.logger :refer [log]]
    [gpml.db.invitation :as db.invitation]
-   [gpml.pg-util :as pg-util]
+   [gpml.util.postgresql :as pg-util]
    [gpml.util :as util]
    [gpml.util.regular-expressions :as util.regex]
    [integrant.core :as ig]

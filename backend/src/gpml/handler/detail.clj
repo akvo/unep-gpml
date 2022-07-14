@@ -18,6 +18,7 @@
    [gpml.db.project :as db.project]
    [gpml.db.resource.connection :as db.resource.connection]
    [gpml.db.resource.tag :as db.resource.tag]
+   [gpml.db.review :as db.review]
    [gpml.db.submission :as db.submission]
    [gpml.db.topic-stakeholder-auth :as db.topic-stakeholder-auth]
    [gpml.handler.geo :as handler.geo]
@@ -29,7 +30,7 @@
    [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
    [gpml.handler.util :as util]
    [gpml.model.topic :as model.topic]
-   [gpml.pg-util :as pg-util]
+   [gpml.util.postgresql :as pg-util]
    [integrant.core :as ig]
    [medley.core :as medley]
    [ring.util.response :as resp])
@@ -180,7 +181,7 @@
    })
 (defonce cached-hierarchies (atom {}))
 
-(defmethod ig/init-key ::topics [_ _]
+(defmethod ig/init-key :gpml.handler.detail/topics [_ _]
   (apply conj [:enum] constants/topics))
 
 (declare get-action-hierarchy)
@@ -289,8 +290,9 @@
              (db.resource.connection/get-resource-entity-connections db {:resource-id id
                                                                          :resource-type resource-type})
              stakeholder-connections
-             (db.resource.connection/get-resource-stakeholder-connections db {:resource-id id
-                                                                              :resource-type resource-type})]
+             (->> (db.resource.connection/get-resource-stakeholder-connections db {:resource-id id
+                                                                                   :resource-type resource-type})
+                  (map (fn [sc] (dissoc (merge sc (handler.stakeholder.tag/unwrap-tags sc)) :tags))))]
          (conj acc (merge related-content {:entity_connections entity-connections
                                            :stakeholder_connections stakeholder-connections}))))
      []
@@ -313,8 +315,9 @@
                                                                                            :resource-type (resolve-resource-type resource-type)}))
 
     stakeholder-connections?
-    (assoc :stakeholder_connections (db.resource.connection/get-resource-stakeholder-connections db {:resource-id id
-                                                                                                     :resource-type (resolve-resource-type resource-type)}))
+    (assoc :stakeholder_connections (->> (db.resource.connection/get-resource-stakeholder-connections db {:resource-id id
+                                                                                                          :resource-type (resolve-resource-type resource-type)})
+                                         (map (fn [sc] (dissoc (merge sc (handler.stakeholder.tag/unwrap-tags sc)) :tags)))))
 
     related-content?
     (assoc :related_content (expand-related-content db id (resolve-resource-type resource-type)))
@@ -381,10 +384,12 @@
   (let [topic (:topic-type path)
         submission (->> {:table-name (util/get-internal-topic-type topic) :id (:topic-id path)}
                         (db.submission/detail conn))
+        review (first (db.review/reviews-filter conn (update path :topic-type resolve-resource-type)))
         user-auth-roles (:roles (db.topic-stakeholder-auth/get-auth-by-topic-and-stakeholder conn {:topic-id (:topic-id path)
                                                                                                    :topic-type (util/get-internal-topic-type topic)
                                                                                                    :stakeholder (:id user)}))
         access-allowed? (or (= (:review_status submission) "APPROVED")
+                            (and (= (:role user) "REVIEWER") (= (:id user) (:reviewer review)))
                             (contains? (set user-auth-roles) "owner")
                             (= (:role user) "ADMIN")
                             (and (not (nil? (:id user)))
@@ -428,7 +433,7 @@
              ["delete from resource_organisation where resource=?" topic-id])
            [(format "delete from %s where id = ?" table) topic-id]]))
 
-(defmethod ig/init-key ::delete [_ {:keys [db logger]}]
+(defmethod ig/init-key :gpml.handler.detail/delete [_ {:keys [db logger]}]
   (fn [{{:keys [path]} :parameters approved? :approved? user :user}]
     (try
       (let [conn        (:spec db)
@@ -477,25 +482,39 @@
         (dissoc :json)
         (merge json))))
 
-(defmethod ig/init-key ::get [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.detail/get
+  [_ {:keys [db logger]}]
   (cache-hierarchies! (:spec db))
   (fn [{{:keys [path query]} :parameters approved? :approved? user :user}]
-    (let [conn (:spec db)
-          topic (:topic-type path)
-          id (:topic-id path)
-          authorized? (and (or (model.topic/public? topic) approved?)
-                           (some? (get-resource-if-allowed conn path user)))]
-      (if authorized?
-        (if-let [data (get-detail conn topic id query)]
-          (resp/response (merge
-                          (adapt (merge
-                                  (case topic
-                                    "technology" (dissoc data :tags :remarks :name)
-                                    (dissoc data :tags :abstract :description))
-                                  (extra-details topic conn data)))
-                          {:owners (:owners data)}))
-          util/not-found)
-        util/unauthorized))))
+    (try
+      (let [conn (:spec db)
+            topic (:topic-type path)
+            id (:topic-id path)
+            authorized? (and (or (model.topic/public? topic) approved?)
+                             (some? (get-resource-if-allowed conn path user)))]
+        (if authorized?
+          (if-let [data (get-detail conn topic id query)]
+            (resp/response (merge
+                            (adapt (merge
+                                    (case topic
+                                      "technology" (dissoc data :tags :remarks :name)
+                                      (dissoc data :tags :abstract :description))
+                                    (extra-details topic conn data)))
+                            {:owners (:owners data)}))
+            util/not-found)
+          util/unauthorized))
+      (catch Exception e
+        (log logger :error ::failed-to-get-resource-details {:exception-message (.getMessage e)
+                                                             :context-data {:path-params path
+                                                                            :user user}})
+        (if (instance? SQLException e)
+          {:status 500
+           :body {:success? true
+                  :reason (pg-util/get-sql-state e)}}
+          {:status 500
+           :body {:success? true
+                  :reason :could-not-get-resource-details
+                  :error-details {:error (.getMessage e)}}})))))
 
 (def put-params
   ;; FIXME: Add validation
@@ -698,7 +717,7 @@
     (update-resource-connections conn (:entity_connections data) (:individual_connections data) "initiative" id)
     status))
 
-(defmethod ig/init-key ::put [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.detail/put [_ {:keys [db mailjet-config]}]
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
     (let [submission (get-resource-if-allowed (:spec db) path user)
@@ -717,7 +736,7 @@
           (resp/response {:status (if (= status 1) "success" "failure")}))
         util/unauthorized))))
 
-(defmethod ig/init-key ::put-params [_ _]
+(defmethod ig/init-key :gpml.handler.detail/put-params [_ _]
   put-params)
 
 #_:clj-kondo/ignore

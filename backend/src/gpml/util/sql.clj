@@ -1,4 +1,4 @@
-(ns gpml.sql-util
+(ns gpml.util.sql
   (:require [clojure.string :as str]
             [jsonista.core :as json]
             [hugsql.parameters :refer [identifier-param-quote]]

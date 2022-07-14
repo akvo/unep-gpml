@@ -35,16 +35,16 @@ GROUP BY tc.category) AS data;
 
 -- :name update-initiative :! :n
 -- :doc Update the specified initiative row
--- :require [gpml.sql-util]
+-- :require [gpml.util.sql]
 UPDATE initiative SET
---~ (#'gpml.sql-util/generate-update-initiative params)
+--~ (#'gpml.util.sql/generate-update-initiative params)
 WHERE id = :id;
 
 -- :name update-resource-table :execute :affected
 -- :doc Update the resource specified by table and id
--- :require [gpml.sql-util]
+-- :require [gpml.util.sql]
 update :i:table set
---~ (#'gpml.sql-util/generate-update-resource params)
+--~ (#'gpml.util.sql/generate-update-resource params)
 where id = :id
 
 -- :name delete-resource-related-data :! :n

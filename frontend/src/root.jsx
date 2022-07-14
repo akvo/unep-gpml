@@ -26,6 +26,7 @@ import AddEvent from "./modules/events/view";
 import SignupView from "./modules/signup/view";
 import SignupViewNew from "./modules/email-signup/view";
 import Login from "./modules/login/view";
+import LoginView from "./modules/login/login-view";
 import LandingSignupView from "./modules/signup-old/view";
 import logo from "./images/gpml.svg";
 // add auth0 logo pop-up
@@ -291,6 +292,11 @@ const Root = () => {
               "https://digital.gpmarinelitter.org/is_new"
             ]
           ) {
+            UIStore.update((e) => {
+              e.profile = {
+                emailVerified: authResult?.idTokenPayload?.email_verified,
+              };
+            });
             history.push({
               pathname: "onboarding",
               state: { data: authResult?.idTokenPayload },
@@ -332,6 +338,7 @@ const Root = () => {
           e.profile = {
             ...resp.data,
             email: authResult?.idTokenPayload?.email,
+            emailVerified: authResult?.idTokenPayload?.email_verified,
           };
         });
         updateStatusProfile(resp.data);
@@ -782,6 +789,7 @@ const Root = () => {
               />
             )}
           />
+          <Route path="/login" render={(props) => <LoginView {...props} />} />
           <Route
             path="/flexible-forms"
             render={(props) => <FlexibleForms {...props} />}

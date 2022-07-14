@@ -123,7 +123,7 @@ const SignUp = ({ match: { params }, ...props }) => {
   }, [profile]);
 
   useEffect(() => {
-    if (location.state.data.id) {
+    if (location?.state?.data?.id) {
       signUpData.update((e) => {
         e.data = {
           ...e.data,

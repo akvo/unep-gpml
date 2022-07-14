@@ -22,7 +22,7 @@
             [gpml.seeder.db :as seeder.db]
             [gpml.db.initiative :as db.initiative]
             gpml.handler.detail
-            gpml.pg-util
+            gpml.util.postgresql
             [integrant.core :as ig]
             [jsonista.core :as j]))
 
