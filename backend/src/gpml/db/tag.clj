@@ -2,7 +2,7 @@
   {:ns-tracker/resource-deps ["tag.sql"]}
   (:require [clojure.string :as str]
             [gpml.constants :as constants]
-            [gpml.sql-util :as sql-util]
+            [gpml.util.sql :as sql-util]
             [gpml.util :as util]
             [hugsql.core :as hugsql]))
 

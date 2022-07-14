@@ -1,4 +1,4 @@
-(ns gpml.geo-util)
+(ns gpml.util.geo)
 
 (def coverage_type
   [:enum

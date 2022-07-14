@@ -3,10 +3,10 @@
    [duct.logger :refer [log]]
    [gpml.db.organisation :as db.organisation]
    [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.geo-util :as geo]
+   [gpml.util.geo :as geo]
    [gpml.handler.geo :as handler.geo]
    [gpml.handler.resource.tag :as handler.resource.tag]
-   [gpml.pg-util :as pg-util]
+   [gpml.util.postgresql :as pg-util]
    [integrant.core :as ig]
    [ring.util.response :as resp])
   (:import
