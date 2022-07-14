@@ -30,7 +30,7 @@
    [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
    [gpml.handler.util :as util]
    [gpml.model.topic :as model.topic]
-   [gpml.pg-util :as pg-util]
+   [gpml.util.postgresql :as pg-util]
    [integrant.core :as ig]
    [medley.core :as medley]
    [ring.util.response :as resp])

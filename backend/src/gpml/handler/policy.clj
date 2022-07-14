@@ -13,7 +13,7 @@
    [gpml.handler.resource.related-content :as handler.resource.related-content]
    [gpml.handler.resource.tag :as handler.resource.tag]
    [gpml.handler.util :as handler.util]
-   [gpml.pg-util :as pg-util]
+   [gpml.util.postgresql :as pg-util]
    [gpml.util :as util]
    [gpml.util.email :as email]
    [integrant.core :as ig]

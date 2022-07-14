@@ -1,10 +1,10 @@
 -- :name new-initiative :<! :1
 -- :doc Insert a new initiative
--- :require [gpml.sql-util]
+-- :require [gpml.util.sql]
 insert into initiative(
---~ (#'gpml.sql-util/generate-insert params)
+--~ (#'gpml.util.sql/generate-insert params)
 ) values (
---~ (#'gpml.sql-util/generate-jsonb params)
+--~ (#'gpml.util.sql/generate-jsonb params)
 ) returning id;
 
 -- :name initiative-by-id :? :1
@@ -16,7 +16,7 @@ GROUP BY initiative.id
 
 -- :name update-initiative :! :n
 UPDATE initiative SET
---~ (#'gpml.sql-util/generate-update params)
+--~ (#'gpml.util.sql/generate-update params)
 WHERE id = :id;
 
 -- :name initiative-detail-by-id :? :1

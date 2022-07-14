@@ -4,7 +4,7 @@
             [hugsql.core :as hugsql]
             [gpml.constants :as constants]
             [gpml.db.country :as db.country]
-            [gpml.pg-util]))
+            [gpml.util.postgresql]))
 
 (def ^:const ^:private non-transnational-geo-coverage-types ["regional" "national" "sub-national"])
 (def ^:const ^:private transnational-geo-coverage-types ["transnational"])
