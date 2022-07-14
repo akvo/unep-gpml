@@ -17,7 +17,7 @@ const { Title, Link } = Typography;
 import { Form as FinalForm, Field } from "react-final-form";
 import { auth0Client } from "../../utils/misc";
 
-function ForgotPassword({ setSignIn, setForgotPassword }) {
+function ForgotPassword({ setSignIn, setForgotPassword, children }) {
   const [form] = Form.useForm();
 
   const [initialValues, setInitialValues] = useState({});
@@ -57,6 +57,7 @@ function ForgotPassword({ setSignIn, setForgotPassword }) {
   return (
     <div className="auth-container" style={{ paddingBottom: 40 }}>
       <div className="login-wrapper">
+        {children && children}
         <div className="login-form">
           <FinalForm
             initialValues={initialValues}

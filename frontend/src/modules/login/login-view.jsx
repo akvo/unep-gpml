@@ -13,7 +13,7 @@ import {
   Modal,
 } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import "./styles.scss";
+import "./login-style.scss";
 import DataHubIcon from "../../images/auth/data-hub.png";
 import NetworkIcon from "../../images/auth/network.png";
 import { ReactComponent as LinkedinIcon } from "../../images/auth/linkedin.svg";
@@ -115,76 +115,49 @@ function Login({ handleOnClickBtnNext, visible, close }) {
   };
 
   return (
-    <Modal
-      title={
-        <>
-          <div className="signin-button">
-            <p className="header-text">
-              {!signin
-                ? "SIGN IN"
-                : forgotPassword
-                ? "FORGOT PASSWORD"
-                : signup
-                ? "JOIN WITH EMAIL"
-                : "CONTINUE WITH EMAIL"}
-            </p>
-            {!signin ? (
-              <div onClick={close}>
-                <p>CANCEL</p>
-                <CloseCircleOutlined />
-              </div>
-            ) : forgotPassword ? (
-              <Button
-                type="text"
-                className="connect-back-button"
-                onClick={() => {
-                  setSignIn(true);
-                  setForgotPassword(false);
-                }}
-              >
-                {"<"} Back to connect options
-              </Button>
-            ) : signup ? (
-              <Button
-                type="text"
-                className="connect-back-button"
-                onClick={() => setSignUp(!signup)}
-              >
-                {"<"} Back to connect options
-              </Button>
-            ) : (
-              <Button
-                type="text"
-                className="connect-back-button"
-                onClick={() => setSignIn(!signin)}
-              >
-                {"<"} Back to connect options
-              </Button>
-            )}
-          </div>
-        </>
-      }
-      centered
-      visible={visible}
-      footer={false}
-      className="login"
-      closable={false}
-      onCancel={close}
-    >
-      <div>
+    <div id="login">
+      <div className="ui container wave-background">
         <Row>
           <Col span={24}>
             {forgotPassword ? (
               <ForgotPassword
                 setSignIn={setSignIn}
                 setForgotPassword={setForgotPassword}
-              />
+              >
+                <div className="connect-button">
+                  <Button type="text">FORGOT PASSWORD</Button>
+                  <Button
+                    type="text"
+                    className="connect-back-button"
+                    onClick={() => {
+                      setSignIn(true);
+                      setForgotPassword(false);
+                    }}
+                  >
+                    {"<"} Back to connect options
+                  </Button>
+                </div>
+              </ForgotPassword>
             ) : signup ? (
-              <SignUp setSignUp={setSignUp} />
+              <SignUp setSignUp={setSignUp}>
+                <div className="connect-button">
+                  <Button type="text">SIGN UP</Button>
+                  <Button
+                    type="text"
+                    className="connect-back-button"
+                    onClick={() => setSignUp(!signup)}
+                  >
+                    {"<"} Back to connect options
+                  </Button>
+                </div>
+              </SignUp>
             ) : (
               <div className="auth-container">
                 {!signin ? (
                   <div className="signup-wrapper">
+                    <div className="signin-button">
+                      <Button type="text">SIGN IN</Button>
+                    </div>
                     <div className="auth-buttons">
                       <Button
                         type="primary"
@@ -221,6 +194,16 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                   </div>
                 ) : (
                   <div className="login-wrapper">
+                    <div className="connect-button">
+                      <Button type="text">CONTINUE WITH EMAIL</Button>
+                      <Button
+                        type="text"
+                        className="connect-back-button"
+                        onClick={() => setSignIn(!signin)}
+                      >
+                        {"<"} Back to connect options
+                      </Button>
+                    </div>
                     <div className="login-form">
                       <FinalForm
                         initialValues={initialValues}
@@ -269,7 +252,6 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                                 type="primary"
                                 shape="round"
                                 className="login-button"
-                                loading={loading}
                                 onClick={() => handleSubmit()}
                               >
                                 LOGIN WITH EMAIL
@@ -312,7 +294,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
           </Title>
         </div>
       </div>
-    </Modal>
+    </div>
   );
 }
 
