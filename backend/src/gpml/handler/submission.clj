@@ -2,7 +2,7 @@
   (:require
    [clojure.set :as set]
    [clojure.walk :as w]
-   [gpml.auth0-util :as auth0]
+   [gpml.util.auth0 :as auth0]
    [gpml.constants :as constants]
    [gpml.db.organisation :as db.organisation]
    [gpml.db.resource.tag :as db.resource.tag]

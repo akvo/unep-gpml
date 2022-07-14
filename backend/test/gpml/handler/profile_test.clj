@@ -9,7 +9,7 @@
    [gpml.db.tag :as db.tag]
    [gpml.fixtures :as fixtures]
    [gpml.handler.stakeholder :as stakeholder]
-   [gpml.sql-util :as sql-util]
+   [gpml.util.sql :as sql-util]
    [integrant.core :as ig]
    [ring.mock.request :as mock]))
 

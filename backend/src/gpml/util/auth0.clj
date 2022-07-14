@@ -1,4 +1,4 @@
-(ns gpml.auth0-util
+(ns gpml.util.auth0
   (:require [clj-http.client :as client]
             [clojure.walk :as w]
             [jsonista.core :as j]))
