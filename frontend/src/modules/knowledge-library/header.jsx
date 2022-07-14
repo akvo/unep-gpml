@@ -7,11 +7,13 @@ import FilterIcon from "../../images/knowledge-library/filter-icon.svg";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 import { withRouter, useHistory } from "react-router-dom";
 import { KNOWLEDGE_LIBRARY } from "../map/map";
+import { eventTrack } from "../../utils/misc";
 
 const KnowledgeLibrarySearch = withRouter(
   ({ history, updateQuery, isShownForm, setIsShownForm }) => {
     const [search, setSearch] = useState("");
     const handleSearch = (src) => {
+      eventTrack("Communities", "Search", "Button");
       if (src) {
         history.push(`?q=${src.trim()}`);
         updateQuery("q", src.trim());
@@ -53,6 +55,7 @@ const StakeholderOverviewSearch = withRouter(
   ({ history, updateQuery, setView, isShownForm, setIsShownForm }) => {
     const [search, setSearch] = useState("");
     const handleSearch = (src) => {
+      eventTrack("Knowledge library", "Search", "Button");
       if (src) {
         history.push(`?q=${src.trim()}`);
         updateQuery("q", src.trim());
@@ -156,7 +159,12 @@ const Header = ({
                   />
                 )}
                 <Button
-                  onClick={() => setFilterVisible(!filterVisible)}
+                  onClick={() => {
+                    setFilterVisible(!filterVisible);
+                    path === KNOWLEDGE_LIBRARY
+                      ? eventTrack("Knowledge library", "Filter", "Button")
+                      : eventTrack("Communities", "Filter", "Button");
+                  }}
                   className="filter-icon-button"
                   type="link"
                 >
