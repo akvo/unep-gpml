@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import "./invite-expert-modal.scss";
 import { Modal, Button, Col, Row, Input } from "antd";
 import { Form, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
@@ -53,10 +54,10 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                   {({ fields }) =>
                     fields.map((name, index) => (
                       <div key={index}>
-                        <div>
+                        <div className="invite-expert-input" key="name">
                           {index === 0 && (
                             <div className="invite-label-wrapper">
-                              <label for="name" className="" title="">
+                              <label htmlFor="name" className="" title="">
                                 Full Name
                               </label>
                             </div>
@@ -82,10 +83,10 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                           </Field>
                         </div>
 
-                        <div>
+                        <div className="invite-expert-input" key="email">
                           {index === 0 && (
                             <div className="invite-label-wrapper">
-                              <label for="email" className="" title="">
+                              <label htmlFor="email" className="" title="">
                                 Email
                               </label>
                             </div>
@@ -114,10 +115,10 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                           </Field>
                         </div>
 
-                        <div>
+                        <div className="invite-expert-input" key="expertise">
                           {index === 0 && (
                             <div className="invite-label-wrapper">
-                              <label for="Expertises" className="" title="">
+                              <label htmlFor="Expertises" className="" title="">
                                 Expertise category
                               </label>
                             </div>
@@ -165,10 +166,10 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                           </Field>
                         </div>
 
-                        <div>
+                        <div className="invite-expert-input" key="category">
                           {index === 0 && (
                             <div className="invite-label-wrapper">
-                              <label for="Expertises" className="" title="">
+                              <label htmlFor="Expertises" className="" title="">
                                 Can't see the categories you're looking for,
                                 type them in:
                               </label>

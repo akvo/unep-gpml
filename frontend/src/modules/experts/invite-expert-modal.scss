@@ -1,5 +1,29 @@
 @import "../../vars.scss";
 .invite-expert-modal {
   .invite-expert-form {
+    .invite-expert-input {
+      .invite-label-wrapper {
+        label {
+          font-size: 16px;
+          line-height: 23px;
+          color: #18162f;
+        }
+      }
+      .ant-input::placeholder,
+      .ant-select-selection-placeholder {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 23px;
+        color: #a5b0c9;
+      }
+      .ant-input,
+      .ant-select,
+      .ant-select-selector {
+        height: 40px;
+      }
+      &:not(:last-of-type) {
+        margin-bottom: 23px;
+      }
+    }
   }
 }
