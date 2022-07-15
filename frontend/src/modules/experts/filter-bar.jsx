@@ -1,5 +1,6 @@
 import React from "react";
 import catTags from "../../utils/cat-tags.json";
+import { Icon } from "../../components/svg-icon/svg-icon";
 
 function slug(text) {
   return text.toLowerCase().replaceAll("&", "n").replaceAll(" ", "-");
@@ -21,6 +22,7 @@ const FilterBar = ({ filter, setFilter }) => {
     }
     setFilter([filter[0], tagfilters]);
   };
+
   return (
     <div className="filter-bar">
       {filter.length === 0 && (
@@ -33,12 +35,7 @@ const FilterBar = ({ filter, setFilter }) => {
               {catTags.map((cat, index) => {
                 return (
                   <li onClick={handleClick0(index)}>
-                    <img
-                      src={
-                        require(`../../images/cat-tags/${slug(cat.title)}.svg`)
-                          .default
-                      }
-                    />
+                    <Icon name={slug(cat.title)} fill="#67BEA1" />
                     <span>{cat.title}</span>
                   </li>
                 );
