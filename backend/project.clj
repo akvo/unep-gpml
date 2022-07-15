@@ -75,10 +75,21 @@
                                    [eftest "0.5.9"]
                                    [kerodon "0.9.1"]
                                    [djblue/portal "0.8.0"]]
-                  :plugins [[jonase/eastwood "0.4.3"]
+                  :plugins [[jonase/eastwood "1.2.3"]
                             [lein-eftest "0.5.9"]
                             [lein-cljfmt "0.8.0"]]
-                  :eastwood {:config-files ["eastwood_cfg.clj"]}
+                  :eastwood {:linters [:all]
+                             :source-paths ["src"]
+                             :test-paths ["test"]
+                             :config-files ["eastwood_cfg.clj"]
+                             :exclude-linters [:keyword-typos
+                                               :boxed-math
+                                               :unused-locals
+                                               :non-clojure-file
+                                               :unused-namespaces
+                                               :performance]
+                             :ignored-faults {:unused-namespaces {dev true}}
+                             :debug [:progress :time]}
                   :eftest {:thread-count 4
                            :multithread :vars
                            :fail-fast? true
