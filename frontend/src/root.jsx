@@ -319,7 +319,10 @@ const Root = () => {
       }
       if (isAuthenticated && idToken && authResult) {
         let resp = await api.get("/profile");
-        if (resp.data && Object.keys(resp.data).length === 0) {
+        if (
+          (resp.data && Object.keys(resp.data).length === 0) ||
+          resp?.data?.reviewStatus === "INVITED"
+        ) {
           history.push({
             pathname: "onboarding",
             state: { data: authResult?.idTokenPayload },
