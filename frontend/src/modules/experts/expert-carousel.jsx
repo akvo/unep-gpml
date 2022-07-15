@@ -23,9 +23,11 @@ const ExpertCarousel = ({
   setIsShownModal,
 }) => {
   const [bgColor, setBgColor] = useState([]);
+  const [bgColorSmall, setBgColorSmall] = useState([]);
 
   useEffect(() => {
     setBgColor(experts?.experts?.map(() => colour()));
+    setBgColorSmall(experts?.experts?.map(() => colour()));
   }, [experts]);
 
   const CustomRightArrow = ({ onClick, ...rest }) => {
@@ -121,7 +123,7 @@ const ExpertCarousel = ({
                     <Avatar
                       className="entity-logo"
                       style={{
-                        backgroundColor: bgColor[index],
+                        backgroundColor: bgColorSmall[index],
                         verticalAlign: "middle",
                       }}
                       size={32}
