@@ -2,6 +2,8 @@
   {:ns-tracker/resource-deps ["tag.sql"]}
   (:require [clojure.string :as str]
             [gpml.constants :as constants]
+            [gpml.util.sql :as sql-util]
+            [gpml.util :as util]
             [hugsql.core :as hugsql]))
 
 (declare all-countries
@@ -18,7 +20,8 @@
          get-popular-topics-tags-subset
          get-more-popular-topics-tags
          get-tag-categories
-         update-tag)
+         update-tag
+         tag->db-tag)
 
 (hugsql/def-db-fns "gpml/db/tag.sql" {:quoting :ansi})
 
@@ -105,6 +108,15 @@
            ""
            constants/topic-tables)
    ")"))
+
+(defn tag->db-tag
+  "Transform tag to be ready to be persisted in DB
+
+   We want to have a specific function for this, since thus we can keep untouched
+   the canonical entity representation."
+  [tag]
+  (-> tag
+      (util/update-if-exists :review_status #(sql-util/keyword->pg-enum % "review_status"))))
 
 (comment
   (require 'dev)

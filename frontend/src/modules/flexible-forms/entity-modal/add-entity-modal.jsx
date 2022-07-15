@@ -145,7 +145,7 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
     let data = {
       ...formData,
       stakeholder: "",
-      isMember: isMember ? true : false,
+      isMember: false,
     };
     data = handleGeoCoverageValue(data, formData, countries);
 
@@ -189,7 +189,7 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
     api
       .post("/organisation", data)
       .then((res) => {
-        setEntity(res.data);
+        setEntity(res.data.org);
         UIStore.update((e) => {
           e.formStep = {
             ...e.formStep,

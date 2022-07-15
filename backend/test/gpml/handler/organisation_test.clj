@@ -6,7 +6,7 @@
    [gpml.fixtures :as fixtures]
    [gpml.handler.organisation :as organisation]
    [gpml.handler.stakeholder :as stakeholder]
-   [gpml.pg-util :as pg-util]
+   [gpml.util.postgresql :as pg-util]
    [integrant.core :as ig]
    [ring.mock.request :as mock]))
 

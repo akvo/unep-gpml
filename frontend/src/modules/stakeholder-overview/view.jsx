@@ -34,8 +34,7 @@ import DownArrow from "../../images/knowledge-library/chevron-down.svg";
 
 let tmid;
 
-const StakeholderOverview = ({ history, loginWithPopup, isAuthenticated }) => {
-  console.log(isAuthenticated);
+const StakeholderOverview = ({ history, isAuthenticated, setLoginVisible }) => {
   const {
     tags,
     profile,
@@ -440,7 +439,7 @@ const StakeholderOverview = ({ history, loginWithPopup, isAuthenticated }) => {
   return (
     <div id="stakeholder-overview" className="stakeholder-overview">
       {!isValidUser && !scroll && (
-        <UnathenticatedPage loginWithPopup={loginWithPopup} />
+        <UnathenticatedPage setLoginVisible={setLoginVisible} />
       )}
       <div className={!isValidUser && !scroll ? "blur" : ""}>
         {isValidUser && (

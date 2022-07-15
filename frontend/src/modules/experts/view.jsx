@@ -20,6 +20,7 @@ import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
 import Maps from "../map/map";
 import ExpertCarousel from "./expert-carousel";
 import FilterBar from "./filter-bar";
+import InviteExpertModal from "./invite-expert-modal";
 
 const Experts = () => {
   const { countries, organisations, landing } = UIStore.useState((s) => ({
@@ -42,7 +43,9 @@ const Experts = () => {
   const [loading, setLoading] = useState(true);
   const [filterCountries, setFilterCountries] = useState([]);
   const [filter, setFilter] = useState([])
-
+  const [isShownModal, setIsShownModal] = useState(false);
+  console.log("isShownModal::::::", isShownModal);
+  
   const sidebar = [
     { id: 1, title: "Events", url: "/connect/events", icon: <IconEvent /> },
     {
@@ -123,10 +126,6 @@ const Experts = () => {
     const newQuery = { ...query };
     newQuery[param] = value;
 
-    if (param !== "offset") {
-      newQuery["offset"] = 0;
-    }
-
     // Remove empty query
     const arrayOfQuery = Object.entries(newQuery)?.filter(
       (item) => item[1]?.length !== 0
@@ -203,7 +202,11 @@ const Experts = () => {
                 <LoadingOutlined spin /> Loading
               </h2>
             ) : (
-              <ExpertCarousel {...{ experts, countries, organisations }} />
+              <>
+                <ExpertCarousel
+                  {...{ experts, countries, organisations, setIsShownModal }}
+                />
+              </>
             )}
           </div>
           <Maps
@@ -222,6 +225,9 @@ const Experts = () => {
             multiCountries={[]}
             useVerticalLegend
           />
+          {isShownModal && (
+            <InviteExpertModal {...{ setIsShownModal, isShownModal }} />
+          )}
         </LeftSidebar>
       </Row>
     </div>

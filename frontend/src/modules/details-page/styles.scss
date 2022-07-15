@@ -256,7 +256,8 @@
     .location-icon,
     .city-icon {
       display: flex;
-      width: 23.25px;
+      min-width: 23.25px;
+      max-width: 23.25px;
       margin-right: 16px;
     }
 

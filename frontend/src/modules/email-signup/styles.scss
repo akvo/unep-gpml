@@ -1,11 +1,19 @@
 @import "../../vars.scss";
 #signup {
-  padding: 60px 0px;
-  background: url("../../images/auth/auth-background.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
   .bg-white {
     background-color: #fff;
+  }
+  .connect-button {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px 5px 0px;
+    button {
+      color: #09689a;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 26px;
+    }
   }
   .wave-background {
     position: relative;
@@ -33,10 +41,7 @@
     }
   }
   .join-form {
-    padding: 60px 0px 200px 0px;
-    margin-right: auto;
-    margin-left: auto;
-    width: 80%;
+    padding: 30px 20px;
     .join-button {
       display: flex;
       align-items: center;
@@ -56,7 +61,6 @@
       }
     }
     .ant-form {
-      margin-top: 40px;
       @keyframes inAnimation {
         0% {
           opacity: 0;
@@ -85,8 +89,8 @@
       .ant-form-item-label {
         padding-bottom: 5px;
         label {
-          font-weight: 400;
-          font-size: 18px;
+          font-weight: 500;
+          font-size: 14px;
           line-height: 20px;
           color: #000000;
           p {
@@ -130,6 +134,7 @@
         font-size: 16px;
         line-height: 23px;
         color: #a5b0c9;
+        background-color: #edf2f7;
         border: none !important;
         &::placeholder {
           color: #a5b0c9;
@@ -149,6 +154,14 @@
         display: flex;
         align-items: flex-start;
         padding-top: 20px;
+        .ant-row {
+          flex: 1;
+          &:first-child {
+            width: 150px;
+            margin-right: 30px;
+            flex: initial;
+          }
+        }
       }
       .ant-row {
         .ant-select-selector {
@@ -170,6 +183,7 @@
           }
           input {
             height: 42px;
+            background-color: transparent;
           }
         }
       }
@@ -207,7 +221,7 @@
         align-items: center;
         text-align: center;
         color: #18162f;
-        margin: 60px auto 0 auto;
+        margin: 40px auto 10px auto;
         justify-content: center;
         padding: 20px 45px;
         background: transparent;

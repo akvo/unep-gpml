@@ -148,6 +148,14 @@
     border: 1px solid #cbd8e2;
     box-sizing: border-box;
     border-radius: 5px;
+    .request-collapse-panel-item {
+      .ant-collapse-header {
+        align-items: center;
+      }
+      .ant-collapse-header-text {
+        flex: 1;
+      }
+    }
 
     @media (max-width: 540px) {
       .ant-select-selection-item,
@@ -200,13 +208,21 @@
     width: 100%;
     line-height: 30px;
     color: #046799;
-
+    .expert-icon {
+      position: relative;
+      margin-right: 40px;
+      svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
     &.stakeholder-row {
       display: flex;
       align-items: center;
       padding: 0.5rem 1rem;
       border-bottom: 1px solid #cbd8e2;
-
       .col {
         &.content {
           margin: 0.5rem;
@@ -296,13 +312,24 @@
       // end of css for filter by status
     }
 
+    .actions-container {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      justify-content: end;
+    }
+    .review-status-container {
+      flex: 0 0 70%;
+    }
+
     .col {
       color: #2d6796;
       &.content {
-        flex: 2;
+        flex: 0 0 30%;
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        padding-right: 10px;
         .content-img {
           width: 50px;
           margin-right: 0.85rem;

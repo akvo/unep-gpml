@@ -307,8 +307,16 @@ const KnowledgeLibraryToolTipContent = ({
   );
 };
 
-const ExpertsTooltipContent = ({}) => {
-  return <b>0</b>;
+const ExpertsTooltipContent = ({ geo }) => {
+  return (
+    <div
+      key={`${geo.ISO3CD}-tooltip`}
+      style={{ paddingRight: "16px" }}
+      className="map-tooltip"
+    >
+      <h3>{geo.MAP_LABEL}</h3>
+    </div>
+  );
 };
 
 const Legend = ({ data, setFilterColor, selected }) => {

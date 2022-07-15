@@ -11,9 +11,15 @@ import { ReactComponent as GPMLMemberBadge } from "../../images/stakeholder-over
 import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
 import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
 import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
+import InviteExpertCard from "./invite-expert-card";
 
 const colour = () => colors[Math.floor(Math.random() * colors.length)];
-const ExpertCarousel = ({ experts, countries, organisations }) => {
+const ExpertCarousel = ({
+  experts,
+  countries,
+  organisations,
+  setIsShownModal,
+}) => {
   const CustomRightArrow = ({ onClick, ...rest }) => {
     const {
       onMove,
@@ -74,8 +80,8 @@ const ExpertCarousel = ({ experts, countries, organisations }) => {
     },
     extraSmallMobile: {
       breakpoint: { max: 360, min: 0 },
-      items: 1,
-      slidesToSlide: 1,
+      items: 1.5,
+      slidesToSlide: 1.5,
     },
   };
 
@@ -158,6 +164,7 @@ const ExpertCarousel = ({ experts, countries, organisations }) => {
           </Link>
         );
       })}
+      <InviteExpertCard {...{ setIsShownModal }} />
     </Carousel>
   );
 };

@@ -7,7 +7,7 @@
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.handler.stakeholder :as handler.stakeholder]
    [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
-   [gpml.pg-util :as pg-util]
+   [gpml.util.postgresql :as pg-util]
    [gpml.util :as util]
    [gpml.util.email :as email]
    [integrant.core :as ig]
@@ -109,6 +109,12 @@
   [expert]
   (merge expert (handler.stakeholder.tag/unwrap-tags expert)))
 
+(defn- api-expert->expert
+  [api-expert]
+  (-> api-expert
+      (select-keys [:first_name :last_name :email])
+      (assoc :review_status (pg-util/->PGEnum "INVITED" "review_status"))))
+
 (defn- get-experts
   [{:keys [db]}
    {{:keys [query]} :parameters :as _req}]
@@ -157,7 +163,7 @@
    {{:keys [body]} :parameters}]
   (try
     (jdbc/with-db-transaction [conn (:spec db)]
-      (let [experts (map #(select-keys % [:first_name :last_name :email]) body)
+      (let [experts (map api-expert->expert body)
             expert-cols (-> experts first keys)
             expert-values (util/apply-select-values experts expert-cols)
             expert-stakeholders (db.stakeholder/create-stakeholders conn {:cols (map name expert-cols)

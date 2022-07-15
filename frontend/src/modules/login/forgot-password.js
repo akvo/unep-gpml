@@ -17,7 +17,7 @@ const { Title, Link } = Typography;
 import { Form as FinalForm, Field } from "react-final-form";
 import { auth0Client } from "../../utils/misc";
 
-function ForgotPassword({ setSignIn, setForgotPassword }) {
+function ForgotPassword({ setSignIn, setForgotPassword, children }) {
   const [form] = Form.useForm();
 
   const [initialValues, setInitialValues] = useState({});
@@ -55,21 +55,9 @@ function ForgotPassword({ setSignIn, setForgotPassword }) {
   };
 
   return (
-    <div className="auth-container">
+    <div className="auth-container" style={{ paddingBottom: 40 }}>
       <div className="login-wrapper">
-        <div className="connect-button">
-          <Button type="text">FORGOT PASSWORD</Button>
-          <Button
-            type="text"
-            className="connect-back-button"
-            onClick={() => {
-              setSignIn(true);
-              setForgotPassword(false);
-            }}
-          >
-            {"<"} Back to connect options
-          </Button>
-        </div>
+        {children && children}
         <div className="login-form">
           <FinalForm
             initialValues={initialValues}

@@ -1,0 +1,88 @@
+@import "../../vars.scss";
+.invite-expert-modal {
+  width: 100% !important;
+  max-width: 823px;
+  .ant-modal-header,
+  .ant-modal-body {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  .ant-modal-header {
+    padding-top: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #a5b0c9;
+    .ant-modal-title {
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 26px;
+      color: #a5b0c9;
+      text-transform: uppercase;
+    }
+  }
+  .ant-modal-body {
+    padding-top: 17px;
+  }
+  .paragraph {
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 31px;
+  }
+
+  .invite-expert-form {
+    .invite-expert-input {
+      .invite-label-wrapper {
+        label {
+          font-size: 16px;
+          line-height: 23px;
+          color: #18162f;
+        }
+      }
+      .ant-input::placeholder,
+      .ant-select-selection-placeholder {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 23px;
+        color: #a5b0c9;
+      }
+      .ant-input,
+      .ant-select,
+      .ant-select-selector {
+        height: 40px;
+        border: unset;
+      }
+      &:not(:last-of-type) {
+        margin-bottom: 23px;
+      }
+    }
+  }
+
+  .invite-expert-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 65px;
+    button {
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 22px;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: #18162f;
+      transition: all 0.15s ease-out;
+      &:hover {
+        background-color: $yellow-highlight;
+        transition: all 0.15s ease-out;
+      }
+    }
+    .invite-submit-button {
+      margin-right: 16px;
+      border: 2px solid #18162f;
+    }
+    .invite-cancel-button {
+      border: unset;
+    }
+  }
+  .ant-modal-footer {
+    display: none;
+  }
+}

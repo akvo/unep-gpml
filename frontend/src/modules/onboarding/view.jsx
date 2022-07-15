@@ -31,7 +31,7 @@ function Authentication() {
   });
   const [error, setError] = useState(false);
 
-  const { tags } = UIStore.currentState;
+  const { tags, nonMemberOrganisations, organisations } = UIStore.currentState;
 
   const next = (skip = 0) => {
     if (
@@ -91,6 +91,7 @@ function Authentication() {
         : []),
     ];
 
+    data.org = {};
     delete data.confirm;
     delete data.offeringSuggested;
     delete data.seekingSuggested;
@@ -115,11 +116,25 @@ function Authentication() {
     if (data.publicEmail) {
       data.publicEmail = data.publicEmail === "true" ? true : false;
     }
+    if (data.orgName) {
+      data.org.id = data.orgName;
+      data.orgName = {
+        [data.orgName]: [...organisations, ...nonMemberOrganisations].find(
+          (item) => item.id === data.orgName
+        )?.name,
+      };
+    }
 
     api
       .post("/profile", data)
       .then((res) => {
         window.scrollTo({ top: 0 });
+        UIStore.update((e) => {
+          e.profile = {
+            ...res.data,
+            emailVerified: location?.state.data.email_verified,
+          };
+        });
         history.push("workspace");
       })
       .catch((err) => {
@@ -179,6 +194,7 @@ function Authentication() {
   };
 
   const setEntity = (res) => {
+    console.log(res);
     formRef?.current?.change("orgName", res.id);
   };
 

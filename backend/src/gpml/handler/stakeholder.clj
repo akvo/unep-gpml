@@ -7,14 +7,14 @@
    [gpml.db.resource.tag :as db.resource.tag]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.db.tag :as db.tag]
-   [gpml.geo-util :as geo]
+   [gpml.util.geo :as geo]
    [gpml.handler.geo :as handler.geo]
    [gpml.handler.image :as handler.image]
    [gpml.handler.organisation :as handler.org]
    [gpml.handler.resource.tag :as handler.resource.tag]
    [gpml.handler.tag :as handler.tag]
    [gpml.handler.util :as handler.util]
-   [gpml.pg-util :as pg-util]
+   [gpml.util.postgresql :as pg-util]
    [gpml.util :as util]
    [gpml.util.email :as email]
    [integrant.core :as ig]
@@ -324,7 +324,7 @@
                                                                           :idp_usernames idp-usernames
                                                                           :non_member_organisation nil)
                                                                    (when (and expert?
-                                                                              (= (:review_status current-stakeholder) "SUBMITTED"))
+                                                                              (= (:review_status current-stakeholder) "INVITED"))
                                                                      {:review_status "APPROVED"})))
                             (:id current-stakeholder))
                           (let [new-stakeholder (db.stakeholder/new-stakeholder db profile)]

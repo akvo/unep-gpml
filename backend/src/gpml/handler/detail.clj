@@ -3,6 +3,7 @@
    [clojure.java.jdbc :as jdbc]
    [clojure.set :as set]
    [clojure.string :as string]
+   [duct.logger :refer [log]]
    [gpml.constants :as constants]
    [gpml.db.action :as db.action]
    [gpml.db.action-detail :as db.action-detail]
@@ -17,6 +18,7 @@
    [gpml.db.project :as db.project]
    [gpml.db.resource.connection :as db.resource.connection]
    [gpml.db.resource.tag :as db.resource.tag]
+   [gpml.db.review :as db.review]
    [gpml.db.submission :as db.submission]
    [gpml.db.topic-stakeholder-auth :as db.topic-stakeholder-auth]
    [gpml.handler.geo :as handler.geo]
@@ -28,10 +30,12 @@
    [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
    [gpml.handler.util :as util]
    [gpml.model.topic :as model.topic]
-   [gpml.pg-util :as pg-util]
+   [gpml.util.postgresql :as pg-util]
    [integrant.core :as ig]
    [medley.core :as medley]
-   [ring.util.response :as resp]))
+   [ring.util.response :as resp])
+  (:import
+   [java.sql SQLException]))
 
 (defn other-or-name [action]
   (when-let [actual-name (or
@@ -177,7 +181,7 @@
    })
 (defonce cached-hierarchies (atom {}))
 
-(defmethod ig/init-key ::topics [_ _]
+(defmethod ig/init-key :gpml.handler.detail/topics [_ _]
   (apply conj [:enum] constants/topics))
 
 (declare get-action-hierarchy)
@@ -286,8 +290,9 @@
              (db.resource.connection/get-resource-entity-connections db {:resource-id id
                                                                          :resource-type resource-type})
              stakeholder-connections
-             (db.resource.connection/get-resource-stakeholder-connections db {:resource-id id
-                                                                              :resource-type resource-type})]
+             (->> (db.resource.connection/get-resource-stakeholder-connections db {:resource-id id
+                                                                                   :resource-type resource-type})
+                  (map (fn [sc] (dissoc (merge sc (handler.stakeholder.tag/unwrap-tags sc)) :tags))))]
          (conj acc (merge related-content {:entity_connections entity-connections
                                            :stakeholder_connections stakeholder-connections}))))
      []
@@ -310,8 +315,9 @@
                                                                                            :resource-type (resolve-resource-type resource-type)}))
 
     stakeholder-connections?
-    (assoc :stakeholder_connections (db.resource.connection/get-resource-stakeholder-connections db {:resource-id id
-                                                                                                     :resource-type (resolve-resource-type resource-type)}))
+    (assoc :stakeholder_connections (->> (db.resource.connection/get-resource-stakeholder-connections db {:resource-id id
+                                                                                                          :resource-type (resolve-resource-type resource-type)})
+                                         (map (fn [sc] (dissoc (merge sc (handler.stakeholder.tag/unwrap-tags sc)) :tags)))))
 
     related-content?
     (assoc :related_content (expand-related-content db id (resolve-resource-type resource-type)))
@@ -378,10 +384,12 @@
   (let [topic (:topic-type path)
         submission (->> {:table-name (util/get-internal-topic-type topic) :id (:topic-id path)}
                         (db.submission/detail conn))
+        review (first (db.review/reviews-filter conn (update path :topic-type resolve-resource-type)))
         user-auth-roles (:roles (db.topic-stakeholder-auth/get-auth-by-topic-and-stakeholder conn {:topic-id (:topic-id path)
                                                                                                    :topic-type (util/get-internal-topic-type topic)
                                                                                                    :stakeholder (:id user)}))
         access-allowed? (or (= (:review_status submission) "APPROVED")
+                            (and (= (:role user) "REVIEWER") (= (:id user) (:reviewer review)))
                             (contains? (set user-auth-roles) "owner")
                             (= (:role user) "ADMIN")
                             (and (not (nil? (:id user)))
@@ -409,41 +417,59 @@
       (update :activity_term (fn [x] (when (:name x) x)))
       (update :is_action_being_reported #(when (:reports %) %))))
 
-(defn- common-queries [table path & [geo url tags]]
+(defn- common-queries
+  [table {:keys [topic-id]} & [geo url tags related-content]]
   (filter some?
-          [(when geo [(format "delete from %s_geo_coverage where %s = ?" table table) (:topic-id path)])
-           (when url [(format "delete from %s_language_url where %s = ?" table table) (:topic-id path)])
-           (when tags [(format "delete from %s_tag where %s = ?" table table) (:topic-id path)])
+          [(when geo [(format "delete from %s_geo_coverage where %s = ?" table table) topic-id])
+           (when url [(format "delete from %s_language_url where %s = ?" table table) topic-id])
+           (when tags [(format "delete from %s_tag where %s = ?" table table) topic-id])
+           (when related-content ["delete from related_content
+            where (resource_id = ? and resource_table_name = ?::regclass)
+            or (related_resource_id = ? and related_resource_table_name = ?::regclass)"
+                                  topic-id table topic-id table])
            (when (= "organisation" table)
-             ["delete from resource_organisation where organisation=?" (:topic-id path)])
+             ["delete from resource_organisation where organisation=?" topic-id])
            (when (= "resource" table)
-             ["delete from resource_organisation where resource=?" (:topic-id path)])
-           [(format "delete from %s where id = ?" table) (:topic-id path)]]))
+             ["delete from resource_organisation where resource=?" topic-id])
+           [(format "delete from %s where id = ?" table) topic-id]]))
 
-(defmethod ig/init-key ::delete [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.detail/delete [_ {:keys [db logger]}]
   (fn [{{:keys [path]} :parameters approved? :approved? user :user}]
-    (let [conn        (:spec db)
-          topic       (:topic-type path)
-          authorized? (and (or (model.topic/public? topic) approved?)
-                           (some? (get-resource-if-allowed conn path user)))
-          sqls (condp = topic
-                 "policy" (common-queries topic path true true true)
-                 "event" (common-queries topic path true true true)
-                 "technology" (common-queries topic path true true true)
-                 "organisation" (common-queries topic path true false true)
-                 "stakeholder" [["delete from stakeholder where id = ?" (:topic-id path)]]
-                 "project" [["delete from initiative where id = ?"  (:topic-id path)]]
-                 "action_plan" (common-queries "resource" path true true true)
-                 "technical_resource" (common-queries "resource" path true true true)
-                 "financing_resource" (common-queries "resource" path true true true))]
-      (if authorized?
-        (resp/response (do
-                         (jdbc/with-db-transaction [tx-conn conn]
-                           (doseq [s sqls]
-                             (jdbc/execute! tx-conn s)))
-                         {:deleted {:topic-id (:topic-id path)
-                                    :topic topic}}))
-        util/unauthorized))))
+    (try
+      (let [conn        (:spec db)
+            topic       (resolve-resource-type (:topic-type path))
+            authorized? (and (or (model.topic/public? topic) approved?)
+                             (some? (get-resource-if-allowed conn path user)))
+            sqls (condp = topic
+                   "policy" (common-queries topic path true false true true)
+                   "event" (common-queries topic path true true true true)
+                   "technology" (common-queries topic path true true true true)
+                   "organisation" (common-queries topic path true false true false)
+                   "stakeholder" [["delete from stakeholder where id = ?" (:topic-id path)]]
+                   "initiative" (common-queries topic path true false true true)
+                   "action_plan" (common-queries "resource" path true true true true)
+                   "technical_resource" (common-queries "resource" path true true true true)
+                   "financing_resource" (common-queries "resource" path true true true true))]
+        (if authorized?
+          (resp/response (do
+                           (jdbc/with-db-transaction [tx-conn conn]
+                             (doseq [s sqls]
+                               (jdbc/execute! tx-conn s)))
+                           {:deleted {:topic-id (:topic-id path)
+                                      :topic topic}}))
+          util/unauthorized))
+      (catch Exception e
+        (log logger :error ::delete-resource-failed {:exception-message (.getMessage e)
+                                                     :context-data path})
+        (if (instance? SQLException e)
+          {:status 500
+           :body {:success? false
+                  :reason :could-not-delete-resource
+                  :error-details {:error-type (pg-util/get-sql-state e)}}}
+          {:status 500
+           :body {:success? false
+                  :reason :could-not-delete-resource
+                  :error-details {:error-message (.getMessage e)}}})))))
 
 (defn- get-detail
   [conn table-name id opts]
@@ -456,25 +482,39 @@
         (dissoc :json)
         (merge json))))
 
-(defmethod ig/init-key ::get [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.detail/get
+  [_ {:keys [db logger]}]
   (cache-hierarchies! (:spec db))
   (fn [{{:keys [path query]} :parameters approved? :approved? user :user}]
-    (let [conn (:spec db)
-          topic (:topic-type path)
-          id (:topic-id path)
-          authorized? (and (or (model.topic/public? topic) approved?)
-                           (some? (get-resource-if-allowed conn path user)))]
-      (if authorized?
-        (if-let [data (get-detail conn topic id query)]
-          (resp/response (merge
-                          (adapt (merge
-                                  (case topic
-                                    "technology" (dissoc data :tags :remarks :name)
-                                    (dissoc data :tags :abstract :description))
-                                  (extra-details topic conn data)))
-                          {:owners (:owners data)}))
-          util/not-found)
-        util/unauthorized))))
+    (try
+      (let [conn (:spec db)
+            topic (:topic-type path)
+            id (:topic-id path)
+            authorized? (and (or (model.topic/public? topic) approved?)
+                             (some? (get-resource-if-allowed conn path user)))]
+        (if authorized?
+          (if-let [data (get-detail conn topic id query)]
+            (resp/response (merge
+                            (adapt (merge
+                                    (case topic
+                                      "technology" (dissoc data :tags :remarks :name)
+                                      (dissoc data :tags :abstract :description))
+                                    (extra-details topic conn data)))
+                            {:owners (:owners data)}))
+            util/not-found)
+          util/unauthorized))
+      (catch Exception e
+        (log logger :error ::failed-to-get-resource-details {:exception-message (.getMessage e)
+                                                             :context-data {:path-params path
+                                                                            :user user}})
+        (if (instance? SQLException e)
+          {:status 500
+           :body {:success? true
+                  :reason (pg-util/get-sql-state e)}}
+          {:status 500
+           :body {:success? true
+                  :reason :could-not-get-resource-details
+                  :error-details {:error (.getMessage e)}}})))))
 
 (def put-params
   ;; FIXME: Add validation
@@ -629,7 +669,10 @@
                           (set/rename-keys {:geo_coverage_value_subnational_city :subnational_city}))
         tags (remove nil? (:tags updates))
         urls (remove nil? (:urls updates))
-        params {:table table :id id :updates table-columns}
+        params {:table table
+                :id id
+                :updates table-columns
+                :entity-type topic-type}
         status (db.detail/update-resource-table conn params)
         org (:org updates)
         org-id (and org
@@ -646,7 +689,8 @@
       (update-resource-tags conn mailjet-config table id tags))
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn id table related-contents))
-    (update-resource-language-urls conn table id urls)
+    (when-not (= "policy" topic-type)
+      (update-resource-language-urls conn table id urls))
     (update-resource-geo-coverage-values conn table id updates)
     (when (contains? #{"resource"} table)
       (update-resource-organisation conn table id org-id))
@@ -673,7 +717,7 @@
     (update-resource-connections conn (:entity_connections data) (:individual_connections data) "initiative" id)
     status))
 
-(defmethod ig/init-key ::put [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.detail/put [_ {:keys [db mailjet-config]}]
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
     (let [submission (get-resource-if-allowed (:spec db) path user)
@@ -692,7 +736,7 @@
           (resp/response {:status (if (= status 1) "success" "failure")}))
         util/unauthorized))))
 
-(defmethod ig/init-key ::put-params [_ _]
+(defmethod ig/init-key :gpml.handler.detail/put-params [_ _]
   put-params)
 
 #_:clj-kondo/ignore

@@ -1,4 +1,6 @@
 (ns gpml.db.resource.connection
-  (:require [hugsql.core :as hugsql]))
+  {:ns-tracker/resource-deps ["resource/connection.sql"]}
+  (:require
+   [hugsql.core :as hugsql]))
 
 (hugsql/def-db-fns "gpml/db/resource/connection.sql")
