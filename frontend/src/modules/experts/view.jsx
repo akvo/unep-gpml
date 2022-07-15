@@ -19,6 +19,7 @@ import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
 
 import Maps from "../map/map";
 import ExpertCarousel from "./expert-carousel";
+import FilterBar from "./filter-bar";
 import InviteExpertModal from "./invite-expert-modal";
 
 const Experts = () => {
@@ -41,6 +42,7 @@ const Experts = () => {
   const isLoaded = () => !isEmpty(landing?.map);
   const [loading, setLoading] = useState(true);
   const [filterCountries, setFilterCountries] = useState([]);
+  const [filter, setFilter] = useState([]);
   const [isShownModal, setIsShownModal] = useState(false);
 
   const sidebar = [
@@ -159,6 +161,7 @@ const Experts = () => {
     <div id="experts" className="experts">
       <Row type="flex" className="body-wrapper">
         <LeftSidebar active={5} sidebar={sidebar}>
+          <FilterBar {...{ filter, setFilter }} />
           <div className="expert-list-section">
             <div className="expert-top-tools">
               <div className="page-label">Showing 7 Of {experts?.count}</div>
