@@ -141,10 +141,12 @@ const ExpertCarousel = ({
                 <li className="list-item expert-name">
                   {`${expert?.firstName} ${expert?.lastName}`}
                 </li>
-                <li className="list-item expert-location">
-                  <LocationIcon />
-                  <span>{country}</span>
-                </li>
+                {expert?.country && (
+                  <li className="list-item expert-location">
+                    <LocationIcon />
+                    <span>{country}</span>
+                  </li>
+                )}
                 <li className="list-item expert-activity">
                   {expert?.jobTitle}
                 </li>
