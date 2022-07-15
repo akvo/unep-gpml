@@ -3,10 +3,9 @@
   the functionality every platform resource (Policy, Event,
   Technology, Financing, Technical, Action, Organization and
   Stakeholder) shares in common."
-  (:require
-   [gpml.db.resource.tag :as db.resource.tag]
-   [gpml.util.email :as email]
-   [gpml.handler.tag :as handler.tag]))
+  (:require [gpml.db.resource.tag :as db.resource.tag]
+            [gpml.handler.tag :as handler.tag]
+            [gpml.util.email :as email]))
 
 (defn send-new-tags-admins-pending-approval-notification
   "Send notifications about new created tags that needs approval.

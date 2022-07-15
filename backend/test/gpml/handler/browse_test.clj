@@ -1,6 +1,6 @@
 (ns gpml.handler.browse-test
   (:require [clojure.string :as str]
-            [clojure.test :refer [deftest testing is are use-fixtures]]
+            [clojure.test :refer [are deftest is testing use-fixtures]]
             [gpml.constants :refer [topics]]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.stakeholder :as db.stakeholder]

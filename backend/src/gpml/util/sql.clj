@@ -1,9 +1,9 @@
 (ns gpml.util.sql
   (:require [clojure.string :as str]
-            [jsonista.core :as json]
             [hugsql.parameters :refer [identifier-param-quote]]
             [java-time :as jt]
-            [java-time.pre-java8 :as jt-pre-j8])
+            [java-time.pre-java8 :as jt-pre-j8]
+            [jsonista.core :as json])
   (:import org.postgresql.util.PGobject))
 
 (defn is-jsonb [n]

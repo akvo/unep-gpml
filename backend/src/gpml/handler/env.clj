@@ -1,6 +1,6 @@
 (ns gpml.handler.env
-  (:require [jsonista.core :as j]
-            [integrant.core :as ig]
+  (:require [integrant.core :as ig]
+            [jsonista.core :as j]
             [ring.util.response :as resp]))
 
 (defn make-env

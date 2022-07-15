@@ -10,7 +10,7 @@
             [eftest.runner :as eftest]
             [gpml.seeder.main :as seeder]
             [integrant.core :as ig]
-            [integrant.repl :refer [clear halt go init prep reset]]
+            [integrant.repl :refer [clear go halt init prep reset]]
             [integrant.repl.state :refer [config system]]
             [ns-tracker.core :refer [ns-tracker]]
             [portal.api :as portal]))

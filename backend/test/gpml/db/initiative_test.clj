@@ -1,8 +1,8 @@
 (ns gpml.db.initiative-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
-            [gpml.seeder.dummy :as dummy]
+  (:require [clojure.test :refer [deftest is testing use-fixtures]]
             [gpml.db.initiative :as db.initiative]
             [gpml.fixtures :as fixtures]
+            [gpml.seeder.dummy :as dummy]
             [gpml.test-util :as test-util]))
 
 (use-fixtures :each fixtures/with-test-system)

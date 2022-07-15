@@ -1,20 +1,19 @@
 (ns gpml.handler.initiative
-  (:require
-   [clojure.java.jdbc :as jdbc]
-   [gpml.db.favorite :as db.favorite]
-   [gpml.db.initiative :as db.initiative]
-   [gpml.db.resource.connection :as db.resource.connection]
-   [gpml.db.resource.tag :as db.resource.tag]
-   [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.db.tag :as db.tag]
-   [gpml.util.email :as email]
-   [gpml.handler.auth :as h.auth]
-   [gpml.handler.geo :as handler.geo]
-   [gpml.handler.image :as handler.image]
-   [gpml.handler.resource.related-content :as handler.resource.related-content]
-   [gpml.handler.util :as util]
-   [integrant.core :as ig]
-   [ring.util.response :as resp]))
+  (:require [clojure.java.jdbc :as jdbc]
+            [gpml.db.favorite :as db.favorite]
+            [gpml.db.initiative :as db.initiative]
+            [gpml.db.resource.connection :as db.resource.connection]
+            [gpml.db.resource.tag :as db.resource.tag]
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.tag :as db.tag]
+            [gpml.handler.auth :as h.auth]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.image :as handler.image]
+            [gpml.handler.resource.related-content :as handler.resource.related-content]
+            [gpml.handler.util :as util]
+            [gpml.util.email :as email]
+            [integrant.core :as ig]
+            [ring.util.response :as resp]))
 
 (defn- add-geo-initiative [conn initiative-id {:keys [geo_coverage_country_groups geo_coverage_countries] :as data}]
   (when (or (not-empty geo_coverage_country_groups)

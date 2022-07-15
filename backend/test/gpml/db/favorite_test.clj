@@ -1,8 +1,8 @@
 (ns gpml.db.favorite-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
+  (:require [clojure.test :refer [deftest is testing use-fixtures]]
+            [gpml.db.country :as db.country]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.country :as db.country]
             [gpml.fixtures :as fixtures]
             [gpml.seeder.main :as seeder]
             [gpml.test-util :as test-util]))
