@@ -55,8 +55,8 @@ const ExpertCarousel = ({
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
-      items: 7,
-      slidesToSlide: 7,
+      items: 6,
+      slidesToSlide: 6,
     },
     desktop: {
       breakpoint: { max: 1199, min: 992 },
