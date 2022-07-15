@@ -43,8 +43,15 @@
 
 (def get-experts-response
   [:map
+   [:success? [:boolean]]
    [:experts [:fn coll?]]
-   [:count [:int {:min 0}]]])
+   [:count [:int {:min 0}]]
+   [:count_by_country
+    [:vector
+     [:maybe
+      [:map
+       [:counts [:int {:min 0}]]
+       [:country_id [:int {:min 0}]]]]]]])
 
 (def invite-experts-params
   [:vector
@@ -121,11 +128,14 @@
   (try
     (let [opts (api-opts->opts query)
           experts (db.stakeholder/get-experts (:spec db) opts)
-          experts-count (-> (db.stakeholder/get-experts (:spec db) (assoc opts :count-only? true))
-                            first
-                            :count)]
-      (resp/response {:experts (map expert->api-expert experts)
-                      :count experts-count}))
+          experts-count (->> (db.stakeholder/get-experts (:spec db) (assoc opts :count-only? true))
+                             (map vals)
+                             (flatten)
+                             (group-by :count_of))]
+      (resp/response {:success? true
+                      :experts (map expert->api-expert experts)
+                      :count (get-in experts-count ["experts" 0 :counts])
+                      :count_by_country (get-in experts-count ["countries" 0 :counts])}))
     (catch Exception e
       (if (instance? SQLException e)
         {:status 500
