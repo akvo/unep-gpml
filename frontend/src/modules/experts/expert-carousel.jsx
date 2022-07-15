@@ -12,6 +12,7 @@ import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
 import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
 import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
 import InviteExpertCard from "./invite-expert-card";
+import { titleCase } from "../../utils/string";
 
 const colour = () => colors[Math.floor(Math.random() * colors.length)];
 const ExpertCarousel = ({
@@ -130,16 +131,19 @@ const ExpertCarousel = ({
                   >
                     {!expert.picture && <CircledUserIcon />}
                     <span>
-                      {`${expert?.firstName?.substring(
-                        0,
-                        1
-                      )}${expert?.lastName?.substring(0, 1)}`}
+                      {`${expert?.firstName
+                        ?.substring(0, 1)
+                        ?.toUpperCase()}${expert?.lastName
+                        ?.substring(0, 1)
+                        ?.toUpperCase()}`}
                     </span>
                   </Avatar>
                 </li>
 
                 <li className="list-item expert-name">
-                  {`${expert?.firstName} ${expert?.lastName}`}
+                  {`${titleCase(expert?.firstName)} ${titleCase(
+                    expert?.lastName
+                  )}`}
                 </li>
                 {expert?.country && (
                   <li className="list-item expert-location">
