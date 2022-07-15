@@ -345,20 +345,40 @@ WITH experts AS (
   JOIN stakeholder_tag st ON s.id = st.stakeholder AND st.tag_relation_category = 'expertise'
 ),
 filtered_experts AS (
-  SELECT s.*, json_agg(json_build_object('id', t.id, 'tag', t.tag, 'tag_relation_category', st.tag_relation_category, 'tag_category', tg.category)) FILTER (WHERE t.id IS NOT NULL) AS tags
+  SELECT s.*, row_to_json(o.*) AS affiliation, json_agg(json_build_object('id', t.id, 'tag', t.tag, 'tag_relation_category', st.tag_relation_category, 'tag_category', tg.category)) FILTER (WHERE t.id IS NOT NULL) AS tags
   FROM stakeholder s
   JOIN experts e ON e.id = s.id
   JOIN stakeholder_tag st ON s.id = st.stakeholder
   JOIN tag t ON st.tag = t.id
   JOIN tag_category tg ON t.tag_category = tg.id
+  LEFT JOIN organisation o ON o.id = s.affiliation
   WHERE 1=1
   --~(when (seq (get-in params [:filters :tags])) " AND LOWER(t.tag) IN (:v*:filters.tags)")
   --~(when (seq (get-in params [:filters :ids])) " AND s.id IN (:v*:filters.ids)")
   --~(when (seq (get-in params [:filters :countries])) " AND s.country IN (:v*:filters.countries)")
-  GROUP BY s.id
+  GROUP BY s.id, o.id
+),
+experts_by_country AS (
+  SELECT country AS country_id, count(*) AS counts
+  FROM filtered_experts
+  WHERE country IS NOT NULL
+  GROUP BY country
+),
+experts_by_country_aggregate AS (
+  SELECT 'countries' AS count_of, COALESCE(json_agg(json_build_object('country_id', country_id, 'counts', counts)), '[]'::json) AS counts
+  FROM experts_by_country
+)
+,
+experts_count AS (
+  SELECT 'experts' AS count_of, count(*) AS counts
+  FROM filtered_experts
 )
 /*~ (if (:count-only? params) */
-SELECT count(*) FROM filtered_experts;
+SELECT row_to_json(ec.*) AS count_results
+FROM experts_count ec
+UNION ALL
+SELECT row_to_json(eca.*) AS count_results
+FROM experts_by_country_aggregate eca
 /*~*/
 SELECT * FROM filtered_experts
 LIMIT :page-size
