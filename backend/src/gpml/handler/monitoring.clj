@@ -1,18 +1,18 @@
 (ns gpml.handler.monitoring
-  (:require [iapetos.core :as prometheus]
-            [iapetos.collector.jvm :as jvm]
-            [iapetos.collector.ring :as ring]
-            [integrant.core :as ig]
-            [iapetos.collector.exceptions :as ex]
-            [iapetos.registry :as registry]
+  (:require [hugsql.adapter :as adapter]
             [hugsql.adapter.clojure-java-jdbc :as adp]
             [hugsql.core :as hugsql]
-            [hugsql.adapter :as adapter]
+            [iapetos.collector.exceptions :as ex]
+            [iapetos.collector.jvm :as jvm]
+            [iapetos.collector.ring :as ring]
+            [iapetos.core :as prometheus]
+            [iapetos.registry :as registry]
+            [integrant.core :as ig]
             [taoensso.timbre :as timbre]
             [taoensso.timbre.appenders.3rd-party.sentry :as sentry])
   (:import [com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory]
-           [org.eclipse.jetty.server.handler StatisticsHandler]
-           [io.prometheus.client.jetty JettyStatisticsCollector QueuedThreadPoolStatisticsCollector]))
+           [io.prometheus.client.jetty JettyStatisticsCollector QueuedThreadPoolStatisticsCollector]
+           [org.eclipse.jetty.server.handler StatisticsHandler]))
 
 (defmethod ig/init-key ::collector [_ _]
   (->

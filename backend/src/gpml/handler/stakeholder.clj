@@ -1,26 +1,24 @@
 (ns gpml.handler.stakeholder
-  (:require
-   [clojure.java.jdbc :as jdbc]
-   [clojure.string :as str]
-   [gpml.constants :as constants]
-   [gpml.db.organisation :as db.organisation]
-   [gpml.db.resource.tag :as db.resource.tag]
-   [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.db.tag :as db.tag]
-   [gpml.util.geo :as geo]
-   [gpml.handler.geo :as handler.geo]
-   [gpml.handler.image :as handler.image]
-   [gpml.handler.organisation :as handler.org]
-   [gpml.handler.resource.tag :as handler.resource.tag]
-   [gpml.handler.tag :as handler.tag]
-   [gpml.handler.util :as handler.util]
-   [gpml.util.postgresql :as pg-util]
-   [gpml.util :as util]
-   [gpml.util.email :as email]
-   [integrant.core :as ig]
-   [ring.util.response :as resp])
-  (:import
-   [java.sql SQLException]))
+  (:require [clojure.java.jdbc :as jdbc]
+            [clojure.string :as str]
+            [gpml.constants :as constants]
+            [gpml.db.organisation :as db.organisation]
+            [gpml.db.resource.tag :as db.resource.tag]
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.tag :as db.tag]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.image :as handler.image]
+            [gpml.handler.organisation :as handler.org]
+            [gpml.handler.resource.tag :as handler.resource.tag]
+            [gpml.handler.tag :as handler.tag]
+            [gpml.handler.util :as handler.util]
+            [gpml.util :as util]
+            [gpml.util.email :as email]
+            [gpml.util.geo :as geo]
+            [gpml.util.postgresql :as pg-util]
+            [integrant.core :as ig]
+            [ring.util.response :as resp])
+  (:import [java.sql SQLException]))
 
 (def roles-re (->> constants/user-roles
                    (map name)

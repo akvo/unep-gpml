@@ -1,7 +1,7 @@
 (ns gpml.handler.util
   (:require [clojure.string :as str]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.constants :as constants]))
+            [gpml.constants :as constants]
+            [gpml.db.stakeholder :as db.stakeholder]))
 
 (def unauthorized {:status 403 :body {:message "Unauthorized"}})
 (def not-found {:status 404 :body {:message "Not Found"}})

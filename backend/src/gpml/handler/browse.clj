@@ -1,14 +1,13 @@
 (ns gpml.handler.browse
-  (:require
-   [clojure.string :as str]
-   [duct.logger :refer [log]]
-   [gpml.constants :refer [resource-types topics]]
-   [gpml.db.country-group :as db.country-group]
-   [gpml.db.resource.connection :as db.resource.connection]
-   [gpml.db.topic :as db.topic]
-   [gpml.util.regular-expressions :as util.regex]
-   [integrant.core :as ig]
-   [ring.util.response :as resp]))
+  (:require [clojure.string :as str]
+            [duct.logger :refer [log]]
+            [gpml.constants :refer [resource-types topics]]
+            [gpml.db.country-group :as db.country-group]
+            [gpml.db.resource.connection :as db.resource.connection]
+            [gpml.db.topic :as db.topic]
+            [gpml.util.regular-expressions :as util.regex]
+            [integrant.core :as ig]
+            [ring.util.response :as resp]))
 
 (def ^:const topic-re (util.regex/comma-separated-enums-re topics))
 (def ^:const order-by-fields ["title" "description" "id"])

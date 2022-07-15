@@ -1,17 +1,17 @@
 (ns gpml.handler.resource-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
-            [gpml.fixtures :as fixtures]
-            [gpml.handler.image :as image]
-            [gpml.handler.resource :as resource]
-            [gpml.handler.profile-test :as profile-test]
-            [gpml.db.tag :as db.tag]
+  (:require [clojure.string :as s]
+            [clojure.test :refer [deftest is testing use-fixtures]]
             [gpml.db.language :as db.language]
             [gpml.db.resource :as db.resource]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.tag :as db.tag]
             [gpml.db.topic-stakeholder-auth :as db.ts-auth]
+            [gpml.fixtures :as fixtures]
+            [gpml.handler.image :as image]
+            [gpml.handler.profile-test :as profile-test]
+            [gpml.handler.resource :as resource]
             [integrant.core :as ig]
-            [ring.mock.request :as mock]
-            [clojure.string :as s]))
+            [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 

@@ -1,10 +1,8 @@
 (ns gpml.seeder.util
-  (:require [gpml.seeder.db :as seeder.db]
+  (:require [clojure.java.io :as io]
             [gpml.db.initiative :as db.initiative]
-            [jsonista.core :as j]
-            [clojure.java.jdbc :as jdbc]
-            [clojure.java.jdbc :as jdbc]
-            [clojure.java.io :as io]))
+            [gpml.seeder.db :as seeder.db]
+            [jsonista.core :as j]))
 
 (def ^:private json-path "dev/resources/files/")
 (def ^:private cache-path "dev/resources/cache/")

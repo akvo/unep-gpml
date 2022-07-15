@@ -1,7 +1,7 @@
 (ns gpml.handler.stakeholder-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
-            [gpml.fixtures :as fixtures]
+  (:require [clojure.test :refer [deftest is testing use-fixtures]]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.fixtures :as fixtures]
             [gpml.handler.stakeholder :as stakeholder]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))

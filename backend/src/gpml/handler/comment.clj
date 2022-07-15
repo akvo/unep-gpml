@@ -1,17 +1,16 @@
 (ns gpml.handler.comment
-  (:require
-   [clojure.string :as str]
-   [gpml.db.comment :as db.comment]
-   [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.db.stakeholder-association :as db.stakeholder-association]
-   [gpml.util.email :as email]
-   [gpml.util :as util]
-   [gpml.util.regular-expressions :as util.regex]
-   [integrant.core :as ig]
-   [java-time :as time]
-   [java-time.pre-java8 :as time-pre-j8]
-   [java-time.temporal]
-   [ring.util.response :as resp]))
+  (:require [clojure.string :as str]
+            [gpml.db.comment :as db.comment]
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.stakeholder-association :as db.stakeholder-association]
+            [gpml.util :as util]
+            [gpml.util.email :as email]
+            [gpml.util.regular-expressions :as util.regex]
+            [integrant.core :as ig]
+            [java-time :as time]
+            [java-time.pre-java8 :as time-pre-j8]
+            [java-time.temporal]
+            [ring.util.response :as resp]))
 
 (def ^:const resource-types
   [:policy :event :financing_resource :technical_resource :action_plan :initiative :technology])

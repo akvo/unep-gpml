@@ -1,9 +1,8 @@
 (ns gpml.handler.resource.related-content
-  (:require
-   [clojure.set :as set]
-   [clojure.string :as str]
-   [gpml.constants :as constants]
-   [gpml.db.resource.related-content :as db.resource.related-content]))
+  (:require [clojure.set :as set]
+            [clojure.string :as str]
+            [gpml.constants :as constants]
+            [gpml.db.resource.related-content :as db.resource.related-content]))
 
 (def ^:const ^:private related-content-shared-keys
   [:id :title :description :image :thumbnail])

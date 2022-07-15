@@ -1,14 +1,14 @@
 (ns gpml.handler.initiative-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
+  (:require [clojure.java.io :as io]
+            [clojure.test :refer [deftest is testing use-fixtures]]
+            [gpml.db.initiative :as db.initiative]
+            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
             [gpml.handler.initiative :as initiative]
             [gpml.handler.profile-test :as profile-test]
-            [gpml.db.initiative :as db.initiative]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.seeder.main :as seeder]
             [integrant.core :as ig]
-            [ring.mock.request :as mock]
-            [clojure.java.io :as io]))
+            [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 

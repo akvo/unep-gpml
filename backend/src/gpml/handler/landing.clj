@@ -1,6 +1,6 @@
 (ns gpml.handler.landing
   (:require [clojure.string :as str]
-            [gpml.constants :refer [topics resource-types]]
+            [gpml.constants :refer [resource-types topics]]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.landing :as db.landing]
             [gpml.util.regular-expressions :as util.regex]

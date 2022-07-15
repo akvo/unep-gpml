@@ -1,16 +1,16 @@
 (ns gpml.handler.image
-  (:require [integrant.core :as ig]
+  (:require [clj-gcp.storage.core :as sut]
             [clojure.string :as str]
             [gpml.constants :as constants]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.event :as db.event]
-            [ring.util.response :as resp]
-            [clj-gcp.storage.core :as sut]
-            [medley.core :as m])
+            [gpml.db.stakeholder :as db.stakeholder]
+            [integrant.core :as ig]
+            [medley.core :as m]
+            [ring.util.response :as resp])
 
-  (:import java.util.Base64
-           java.io.ByteArrayInputStream
-           java.nio.ByteBuffer))
+  (:import java.io.ByteArrayInputStream
+           java.nio.ByteBuffer
+           java.util.Base64))
 
 (defn b64-image-to-byte-stream [data]
   (let [[_ content-type b64image] (re-find #"^data:(\S+);base64,(.*)$" data)

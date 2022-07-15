@@ -1,14 +1,13 @@
 (ns gpml.handler.organisation-test
-  (:require
-   [clojure.test :refer [deftest is testing use-fixtures]]
-   [gpml.db.organisation :as db.organisation]
-   [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.fixtures :as fixtures]
-   [gpml.handler.organisation :as organisation]
-   [gpml.handler.stakeholder :as stakeholder]
-   [gpml.util.postgresql :as pg-util]
-   [integrant.core :as ig]
-   [ring.mock.request :as mock]))
+  (:require [clojure.test :refer [deftest is testing use-fixtures]]
+            [gpml.db.organisation :as db.organisation]
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.fixtures :as fixtures]
+            [gpml.handler.organisation :as organisation]
+            [gpml.handler.stakeholder :as stakeholder]
+            [gpml.util.postgresql :as pg-util]
+            [integrant.core :as ig]
+            [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 

@@ -1,12 +1,12 @@
 (ns gpml.handler.technology-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
-            [gpml.fixtures :as fixtures]
-            [gpml.handler.technology :as technology]
-            [gpml.handler.profile-test :as profile-test]
-            [gpml.db.tag :as db.tag]
+  (:require [clojure.test :refer [deftest is testing use-fixtures]]
             [gpml.db.language :as db.language]
-            [gpml.db.technology :as db.technology]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.tag :as db.tag]
+            [gpml.db.technology :as db.technology]
+            [gpml.fixtures :as fixtures]
+            [gpml.handler.profile-test :as profile-test]
+            [gpml.handler.technology :as technology]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
 

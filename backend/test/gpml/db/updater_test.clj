@@ -1,15 +1,15 @@
 (ns gpml.db.updater-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
-            [clojure.java.io :as io]
+  (:require [clojure.java.io :as io]
             [clojure.string :as str]
+            [clojure.test :refer [deftest is testing use-fixtures]]
+            [gpml.db.country :as db.country]
+            [gpml.db.initiative :as db.initiative]
+            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
             [gpml.seeder.db :as db.seeder]
-            [gpml.seeder.main :as seeder]
             [gpml.seeder.dummy :as dummy]
-            [gpml.test-util :as test-util]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.initiative :as db.initiative]
-            [gpml.db.country :as db.country]))
+            [gpml.seeder.main :as seeder]
+            [gpml.test-util :as test-util]))
 
 (use-fixtures :each fixtures/with-test-system)
 
