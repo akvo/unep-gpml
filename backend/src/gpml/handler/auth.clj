@@ -1,12 +1,11 @@
 (ns gpml.handler.auth
-  (:require
-   [clojure.java.jdbc :as jdbc]
-   [clojure.set :as set]
-   [gpml.db.topic-stakeholder-auth :as db.ts-auth]
-   [gpml.handler.util :as util]
-   [gpml.auth :as auth]
-   [integrant.core :as ig]
-   [ring.util.response :as resp]))
+  (:require [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
+            [gpml.auth :as auth]
+            [gpml.db.topic-stakeholder-auth :as db.ts-auth]
+            [gpml.handler.util :as util]
+            [integrant.core :as ig]
+            [ring.util.response :as resp]))
 
 (defn grant-topic-to-stakeholder! [conn {:keys [topic-id topic-type stakeholder-id roles]}]
   {:pre [(empty? (set/difference (set roles)  auth/authz-roles))]}

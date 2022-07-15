@@ -1,6 +1,5 @@
 (ns gpml.handler.stakeholder.tag
-  (:require
-   [clojure.walk :as w]))
+  (:require [clojure.walk :as w]))
 
 (defn unwrap-tags
   "Unwrap `:tags` key into three different keys `seeking`, `offering`

@@ -1,5 +1,5 @@
 (ns gpml.handler.util-test
-  (:require [clojure.test :refer [deftest testing is]]
+  (:require [clojure.test :refer [deftest is testing]]
             [gpml.handler.util :as util]))
 
 (deftest page-count-test

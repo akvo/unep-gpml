@@ -1,7 +1,7 @@
 (ns gpml.db.signup-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
-            [gpml.db.stakeholder :as db.stakeholder]
+  (:require [clojure.test :refer [deftest is testing use-fixtures]]
             [gpml.db.country :as db.country]
+            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
             [integrant.core :as ig]))
 

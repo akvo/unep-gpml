@@ -1,17 +1,17 @@
 (ns gpml.handler.detail-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
-            [gpml.fixtures :as fixtures]
-            [gpml.handler.detail :as detail]
+  (:require [clojure.java.io :as io]
+            [clojure.test :refer [deftest is testing use-fixtures]]
+            [gpml.db.country :as db.country]
+            [gpml.db.event :as db.event]
             [gpml.db.initiative :as db.initiative]
             [gpml.db.policy :as db.policy]
-            [gpml.db.country :as db.country]
-            [gpml.db.technology :as db.technology]
             [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.event :as db.event]
+            [gpml.db.technology :as db.technology]
+            [gpml.fixtures :as fixtures]
+            [gpml.handler.detail :as detail]
             [gpml.seeder.main :as seeder]
             [integrant.core :as ig]
-            [ring.mock.request :as mock]
-            [clojure.java.io :as io]))
+            [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 

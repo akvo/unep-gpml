@@ -1,7 +1,8 @@
 (ns gpml.util.postgresql
   (:require [clojure.java.jdbc :as jdbc]
             [jsonista.core :as j])
-  (:import org.postgresql.util.PGobject))
+  (:import [java.sql PreparedStatement SQLException]
+           [org.postgresql.util PGobject]))
 
 (defn get-sql-state
   "Gets the SQL state from a SQLException object and returns the keyword
@@ -9,7 +10,7 @@
   PostgreSQL[1].
 
   [1] - https://www.postgresql.org/docs/12/errcodes-appendix.html"
-  [sql-exception]
+  [^SQLException sql-exception]
   (if-let [sql-state (.getSQLState sql-exception)]
     (case sql-state
       "23000" :integrity-constraint-violation
@@ -42,7 +43,7 @@
   jdbc/ISQLParameter
   (set-parameter [_ stmt ix]
     (let [as-array (into-array Object elements)
-          jdbc-array (.createArrayOf (.getConnection stmt) type-name as-array)]
+          jdbc-array (.createArrayOf (.getConnection ^PreparedStatement stmt) type-name as-array)]
       (.setArray stmt ix jdbc-array))))
 
 (deftype PGEnum [value type-name]
@@ -51,7 +52,7 @@
     (let [pg-object (doto (PGobject.)
                       (.setType type-name)
                       (.setValue (name value)))]
-      (.setObject stmt ix pg-object))))
+      (.setObject ^PreparedStatement stmt ix pg-object))))
 
 (extend-protocol jdbc/IResultSetReadColumn
   PGobject
