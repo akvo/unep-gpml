@@ -1,18 +1,17 @@
 (ns gpml.handler.comment-test
-  (:require
-   [clojure.test :refer [deftest is testing use-fixtures]]
-   [gpml.db.comment :as db.comment]
-   [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.fixtures :as fixtures]
-   [gpml.handler.comment :as sut]
-   [gpml.seeder.main :as seeder]
-   [gpml.test-util :as test-util]
-   [gpml.util :as util]
-   [integrant.core :as ig]
-   [java-time :as time]
-   [java-time.pre-java8 :as time-pre-j8]
-   [malli.core :as m]
-   [ring.mock.request :as mock]))
+  (:require [clojure.test :refer [deftest is testing use-fixtures]]
+            [gpml.db.comment :as db.comment]
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.fixtures :as fixtures]
+            [gpml.handler.comment :as sut]
+            [gpml.seeder.main :as seeder]
+            [gpml.test-util :as test-util]
+            [gpml.util :as util]
+            [integrant.core :as ig]
+            [java-time :as time]
+            [java-time.pre-java8 :as time-pre-j8]
+            [malli.core :as m]
+            [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 

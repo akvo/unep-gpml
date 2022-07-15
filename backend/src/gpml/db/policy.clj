@@ -1,9 +1,9 @@
 (ns gpml.db.policy
   {:ns-tracker/resource-deps ["policy.sql"]}
-  (:require [hugsql.core :as hugsql]
+  (:require [gpml.util :as util]
             [gpml.util.postgresql :as pg-util] ;; TODO: Merge this ns with sql-util one.
             [gpml.util.sql :as sql-util]
-            [gpml.util :as util]
+            [hugsql.core :as hugsql]
             [java-time :as jt]
             [java-time.core]
             [java-time.local]
