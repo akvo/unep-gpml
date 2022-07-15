@@ -48,13 +48,7 @@ const FilterBar = ({ filter, setFilter }) => {
         <div className="level-1">
           <div className={`selected-btn s${filter[0]}`} onClick={handleBack}>
             <small>&lt; Back to categories</small>
-            <img
-              src={
-                require(`../../images/cat-tags/${slug(
-                  catTags[filter[0]].title
-                )}.svg`).default
-              }
-            />
+            <Icon name={slug(catTags[filter[0]].title)} fill="#67BEA1" />
             <div>
               <strong>{catTags[filter[0]].title}</strong>
               <small>Sub-topics</small>
@@ -69,11 +63,7 @@ const FilterBar = ({ filter, setFilter }) => {
                 }
               >
                 <div className="img-container">
-                  <img
-                    src={
-                      require(`../../images/cat-tags/${slug(tag)}.svg`).default
-                    }
-                  />
+                  <Icon name={slug(tag)} fill="#67BEA1" />
                 </div>
                 <div className="label-container">
                   <span>{tag}</span>
