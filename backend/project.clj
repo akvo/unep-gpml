@@ -75,7 +75,7 @@
                                    [eftest "0.5.9"]
                                    [kerodon "0.9.1"]
                                    [djblue/portal "0.8.0"]]
-                  :plugins [[jonase/eastwood "1.2.3"]
+                  :plugins [[jonase/eastwood "1.2.4"]
                             [lein-eftest "0.5.9"]
                             [lein-cljfmt "0.8.0"]]
                   :eastwood {:linters [:all]
