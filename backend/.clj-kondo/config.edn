@@ -1,3 +1,37 @@
-{:linters {:unresolved-symbol
-           {:exclude [(twarc.core/defjob)
-                      (gpml.scheduler.leap-api-policy-importer/handle-leap-api-policy-import-job)]}}}
+{:skip-comments
+ true
+
+ :config-in-ns
+ {dev
+  {:linters
+   {:refer-all
+    {:exclude #{clojure.repl}}
+    :unsorted-required-namespaces
+    {:level :off}
+    :unused-referred-var
+    {:level :off}
+    :unused-namespace
+    {:level :off}}}}
+
+ :linters
+ {:unsorted-required-namespaces
+  {:level :warning}
+
+  :refer-all
+  {:exclude #{clojure.test}}
+
+  :unresolved-symbol
+  {:exclude [(twarc.core/defjob)
+             (gpml.scheduler.leap-api-policy-importer/handle-leap-api-policy-import-job)]}
+
+  :single-key-in
+  {:level :warning}
+
+  :used-underscored-binding
+  {:level :warning}
+
+  :redundant-fn-wrapper
+  {:level :warning}
+
+  :missing-docstring
+  {:level :info}}}
