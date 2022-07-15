@@ -197,6 +197,23 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                     ))
                   }
                 </FieldArray>
+                <div className="invite-expert-buttons">
+                  <Button
+                    className="invite-submit-button"
+                    size="large"
+                    shape="round"
+                  >
+                    Submit
+                  </Button>
+                  <Button
+                    className="invite-cancel-button"
+                    size="large"
+                    shape="round"
+                    onClick={() => setIsShownModal(false)}
+                  >
+                    Cancel
+                  </Button>
+                </div>
               </form>
             );
           }}

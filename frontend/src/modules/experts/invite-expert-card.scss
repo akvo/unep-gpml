@@ -36,8 +36,10 @@
     font-size: 14px;
     color: #67bea1;
     margin-top: 24px;
+    transition: all 0.15s ease-out;
     &:hover {
       background-color: $yellow-highlight;
+      transition: all 0.15s ease-out;
     }
   }
 }

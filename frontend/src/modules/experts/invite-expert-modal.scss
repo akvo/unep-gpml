@@ -10,7 +10,7 @@
   .ant-modal-header {
     padding-top: 14px;
     padding-bottom: 14px;
-    border-bottom: 1px solid #A5B0C9;
+    border-bottom: 1px solid #a5b0c9;
     .ant-modal-title {
       font-weight: 600;
       font-size: 18px;
@@ -53,5 +53,35 @@
         margin-bottom: 23px;
       }
     }
+  }
+
+  .invite-expert-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 65px;
+    button {
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 22px;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: #18162f;
+      transition: all 0.15s ease-out;
+      &:hover {
+        background-color: $yellow-highlight;
+        transition: all 0.15s ease-out;
+      }
+    }
+    .invite-submit-button {
+      margin-right: 16px;
+      border: 2px solid #18162f;
+    }
+    .invite-cancel-button {
+      border: unset;
+    }
+  }
+  .ant-modal-footer {
+    display: none;
   }
 }
