@@ -1,5 +1,6 @@
 (ns gpml.handler.technology
   (:require [clojure.java.jdbc :as jdbc]
+            [duct.logger :refer [log]]
             [gpml.auth :as auth]
             [gpml.constants :as constants]
             [gpml.db.country :as db.country]
@@ -16,7 +17,8 @@
             [gpml.util :as util]
             [gpml.util.email :as email]
             [integrant.core :as ig]
-            [ring.util.response :as resp]))
+            [ring.util.response :as resp])
+  (:import [java.sql SQLException]))
 
 (defn expand-entity-associations
   [entity-connections resource-id]
@@ -122,13 +124,26 @@
      (merge data {:type "technology"}))
     technology-id))
 
-(defmethod ig/init-key :gpml.handler.technology/post [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.technology/post
+  [_ {:keys [db logger mailjet-config]}]
   (fn [{:keys [jwt-claims body-params] :as req}]
-    (jdbc/with-db-transaction [conn (:spec db)]
-      (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-            technology-id (create-technology conn mailjet-config (assoc body-params
-                                                                        :created_by (:id user)))]
-        (resp/created (:referrer req) {:message "New technology created" :id technology-id})))))
+    (try
+      (jdbc/with-db-transaction [conn (:spec db)]
+        (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
+              technology-id (create-technology conn mailjet-config (assoc body-params
+                                                                          :created_by (:id user)))]
+          (resp/created (:referrer req) {:success? true
+                                         :message "New technology created"
+                                         :id technology-id})))
+      (catch Exception e
+        (log logger :error ::failed-to-create-technology {:exception-message (.getMessage e)})
+        (let [response {:status 500
+                        :body {:success? false
+                               :reason :could-not-create-event}}]
+
+          (if (instance? SQLException e)
+            response
+            (assoc response :error-details {:error (.getMessage e)})))))))
 
 (def post-params
   (into [:map
