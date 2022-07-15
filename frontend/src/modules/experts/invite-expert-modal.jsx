@@ -19,22 +19,22 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
     .flat()
     .map((it) => it.tag);
   const formRef = useRef();
+
   const required = (value) => (value ? undefined : "Required");
+
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  console.log("loading::::::", loading);
 
   const onSubmit = async (values) => {
     setLoading(true);
     values = values.invites.map((item) => {
       return {
         ...(item.name.split(" ").length > 1 && {
-          firstName: item.name.split(" ")[0],
-          lastName: item.name.split(" ")[1],
+          firstName: item?.name?.split(" ")[0],
+          lastName: item?.name?.split(" ")[1],
         }),
-        email: item.email,
-        expertise: item.expertise,
+        email: item?.email,
+        expertise: item?.expertise,
       };
     });
 

@@ -56,6 +56,12 @@
         height: 40px;
         border: unset;
       }
+      .ant-input.ant-input-status-error,
+      .ant-input-status-error .ant-select-selector {
+        border: 1px solid #ff4d4f;
+        background-color: #fff !important;
+      }
+
       &:not(:last-of-type) {
         margin-bottom: 23px;
       }
