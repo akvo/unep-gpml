@@ -63,7 +63,14 @@ const FilterBar = ({ filter, setFilter }) => {
                 }
               >
                 <div className="img-container">
-                  <Icon name={slug(tag)} fill="#67BEA1" />
+                  <Icon
+                    name={slug(tag)}
+                    fill={
+                      filter[1] && filter[1].indexOf(tag) > -1
+                        ? "#fff"
+                        : "#D3DEE7"
+                    }
+                  />
                 </div>
                 <div className="label-container">
                   <span>{tag}</span>
