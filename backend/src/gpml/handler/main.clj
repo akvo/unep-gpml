@@ -1,5 +1,6 @@
 (ns gpml.handler.main
   (:require [duct.logger :as log]
+            [iapetos.collector.ring :as prometheus-ring]
             [integrant.core :as ig]
             [malli.util :as mu]
             [muuntaja.core :as m]
@@ -9,11 +10,10 @@
             [reitit.ring.middleware.exception :as exception]
             [reitit.ring.middleware.muuntaja :as muuntaja]
             [reitit.ring.middleware.parameters :as parameters]
-            [iapetos.collector.ring :as prometheus-ring]
-            [taoensso.timbre :as timbre]
             [reitit.swagger :as swagger]
             [reitit.swagger-ui :as swagger-ui]
-            [ring.util.response :as resp]))
+            [ring.util.response :as resp]
+            [taoensso.timbre :as timbre]))
 
 (defn root
   [_]

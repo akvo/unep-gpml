@@ -1,5 +1,5 @@
 (ns gpml.handler.activity-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
+  (:require [clojure.test :refer [deftest is testing use-fixtures]]
             [gpml.fixtures :as fixtures]
             [gpml.handler.activity :as sut]
             [integrant.core :as ig]

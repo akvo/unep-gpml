@@ -1,16 +1,14 @@
 (ns gpml.handler.organisation
-  (:require
-   [duct.logger :refer [log]]
-   [gpml.db.organisation :as db.organisation]
-   [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.util.geo :as geo]
-   [gpml.handler.geo :as handler.geo]
-   [gpml.handler.resource.tag :as handler.resource.tag]
-   [gpml.util.postgresql :as pg-util]
-   [integrant.core :as ig]
-   [ring.util.response :as resp])
-  (:import
-   [java.sql SQLException]))
+  (:require [duct.logger :refer [log]]
+            [gpml.db.organisation :as db.organisation]
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.resource.tag :as handler.resource.tag]
+            [gpml.util.geo :as geo]
+            [gpml.util.postgresql :as pg-util]
+            [integrant.core :as ig]
+            [ring.util.response :as resp])
+  (:import [java.sql SQLException]))
 
 (defn create [conn mailjet-config org]
   (let [org-id (:id (db.organisation/new-organisation conn org))

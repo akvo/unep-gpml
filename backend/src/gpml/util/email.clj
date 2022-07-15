@@ -1,9 +1,9 @@
 (ns gpml.util.email
   (:require [clj-http.client :as client]
             [clojure.string :as str]
-            [jsonista.core :as j]
             [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.handler.util :as util]))
+            [gpml.handler.util :as util]
+            [jsonista.core :as j]))
 
 (defn make-message [sender receiver subject text html]
   {:From sender :To [receiver] :Subject subject :TextPart text :HTMLPart html})

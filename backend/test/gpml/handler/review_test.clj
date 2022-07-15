@@ -1,8 +1,8 @@
 (ns gpml.handler.review-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
-            [gpml.fixtures :as fixtures]
-            [gpml.db.stakeholder :as db.stakeholder]
+  (:require [clojure.test :refer [deftest is testing use-fixtures]]
             [gpml.db.review :as db.review]
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.fixtures :as fixtures]
             [gpml.handler.review :as review]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))

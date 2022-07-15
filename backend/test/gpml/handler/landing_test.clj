@@ -1,5 +1,5 @@
 (ns gpml.handler.landing-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
+  (:require [clojure.test :refer [deftest is testing use-fixtures]]
             [gpml.fixtures :as fixtures]
             [gpml.handler.landing :as landing]
             [integrant.core :as ig]
