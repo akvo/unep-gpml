@@ -13,7 +13,7 @@
            java.util.Base64))
 
 (defn b64-image-to-byte-stream [data]
-  (let [[_ content-type b64image] (re-find #"^data:(\S+);base64,(.*)$" data)
+  (let [[_ ^String content-type ^String b64image] (re-find #"^data:(\S+);base64,(.*)$" data)
         decoder (Base64/getDecoder)
         stream (and b64image
                     (-> (.decode decoder b64image)

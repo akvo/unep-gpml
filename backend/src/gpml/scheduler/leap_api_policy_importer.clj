@@ -828,7 +828,7 @@
   (import-policies-from-leap-api config))
 
 (defn- schedule-job [{:keys [scheduler logger] :as config} scheduler-config]
-  (let [time-zone (java.util.TimeZone/getTimeZone (:time-zone scheduler-config))]
+  (let [time-zone (java.util.TimeZone/getTimeZone ^String (:time-zone scheduler-config))]
     (log logger :info :handle-leap-api-policy-import scheduler-config)
     (handle-leap-api-policy-import-job scheduler
                                        [config]

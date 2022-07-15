@@ -10,8 +10,10 @@
             [integrant.core :as ig]
             [taoensso.timbre :as timbre]
             [taoensso.timbre.appenders.3rd-party.sentry :as sentry])
-  (:import [com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory]
+  (:import [com.zaxxer.hikari HikariDataSource]
+           [com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory]
            [io.prometheus.client.jetty JettyStatisticsCollector QueuedThreadPoolStatisticsCollector]
+           [org.eclipse.jetty.server Server]
            [org.eclipse.jetty.server.handler StatisticsHandler]))
 
 (defmethod ig/init-key ::collector [_ _]
@@ -77,19 +79,18 @@
 
 (defmethod ig/init-key ::hikaricp
   [_ {:keys [hikari-cp metrics-collector]}]
-  (-> hikari-cp
-      :spec
-      :datasource
-      (.unwrap javax.sql.DataSource)
-      (.setMetricsTrackerFactory
-       (PrometheusMetricsTrackerFactory. (registry/raw metrics-collector))))
-  (hugsql/set-adapter!
-   (MetricsAdapter.
-    metrics-collector
-    (adp/hugsql-adapter-clojure-java-jdbc)))
-  hikari-cp)
+  (let [datasource ^HikariDataSource (get-in hikari-cp [:spec :datasource])]
+    (-> datasource
+        (.unwrap javax.sql.DataSource)
+        (.setMetricsTrackerFactory
+         (PrometheusMetricsTrackerFactory. (registry/raw metrics-collector))))
+    (hugsql/set-adapter!
+     (MetricsAdapter.
+      metrics-collector
+      (adp/hugsql-adapter-clojure-java-jdbc)))
+    hikari-cp))
 
-(defn configure-stats [jetty-server collector]
+(defn configure-stats [^Server jetty-server collector]
   (let [raw-collector (registry/raw collector)
         stats-handler (doto
                        (StatisticsHandler.)
@@ -100,6 +101,7 @@
 
 (defmethod ig/init-key ::jetty-configurator [_ {:keys [collector]}]
   (fn [jetty-server]
+    (prn (class jetty-server))
     (configure-stats jetty-server collector)))
 
 (defmethod ig/init-key ::sentry-logger [_ {:keys [dsn version host env]}]
