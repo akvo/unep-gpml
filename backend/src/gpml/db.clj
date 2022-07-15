@@ -8,5 +8,5 @@
 
 (extend-protocol jdbc/IResultSetReadColumn
   PgArray
-  (result-set-read-column [pgobj metadata i]
+  (result-set-read-column [pgobj _metadata _i]
     (vec (.getArray pgobj))))
