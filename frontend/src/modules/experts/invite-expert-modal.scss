@@ -2,14 +2,18 @@
 .invite-expert-modal {
   width: 100% !important;
   max-width: 823px;
-  .ant-modal-header,
-  .ant-modal-body {
-    padding-left: 40px;
-    padding-right: 40px;
+  .ant-modal-close {
+    right: 20px;
+    .ant-modal-close-x {
+      display: block;
+      background-image: url("../../images/stakeholder-overview/close-icon.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
   }
+
   .ant-modal-header {
-    padding-top: 14px;
-    padding-bottom: 14px;
+    padding: 14px 40px;
     border-bottom: 1px solid #a5b0c9;
     .ant-modal-title {
       font-weight: 600;
@@ -20,7 +24,7 @@
     }
   }
   .ant-modal-body {
-    padding-top: 17px;
+    padding: 17px 40px 63px 40px;
   }
   .paragraph {
     font-size: 14px;
