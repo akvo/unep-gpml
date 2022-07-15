@@ -48,6 +48,7 @@
       .ant-select,
       .ant-select-selector {
         height: 40px;
+        border: unset;
       }
       &:not(:last-of-type) {
         margin-bottom: 23px;
