@@ -1,14 +1,58 @@
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 import "./invite-expert-modal.scss";
-import { Modal, Button, Col, Row, Input } from "antd";
+import { Modal, Button, Input, Select, notification } from "antd";
 import { Form, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import { FieldArray } from "react-final-form-arrays";
 import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
+import api from "../../utils/api";
+import { UIStore } from "../../store";
 
 const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
+  const storeData = UIStore.useState((s) => ({
+    tags: s.tags,
+  }));
+  const { tags } = storeData;
+
+  const allOptions = Object.keys(tags)
+    .map((k) => tags[k])
+    .flat()
+    .map((it) => it.tag);
   const formRef = useRef();
   const required = (value) => (value ? undefined : "Required");
+  const [filteredOptions, setFilteredOptions] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  console.log("loading::::::", loading);
+
+  const onSubmit = async (values) => {
+    setLoading(true);
+    values = values.invites.map((item) => {
+      return {
+        ...(item.name.split(" ").length > 1 && {
+          firstName: item.name.split(" ")[0],
+          lastName: item.name.split(" ")[1],
+        }),
+        email: item.email,
+        expertise: item.expertise,
+      };
+    });
+
+    api
+      .post("/stakeholder/expert/invite", values)
+      .then((res) => {
+        console.log(res, "RES");
+        window.scrollTo({ top: 0 });
+        setLoading(false);
+        notification.success({ message: "Invites successfully sent" });
+      })
+      .catch((err) => {
+        setLoading(false);
+        notification.error({ message: "An error occured" });
+        console.log(err);
+      });
+  };
+
   return (
     <Modal
       className="invite-expert-modal"
@@ -23,30 +67,20 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
       </p>
       <div>
         <Form
-          onSubmit={() => null}
+          onSubmit={onSubmit}
           mutators={{
             ...arrayMutators,
           }}
           initialValues={{
             invites: [
               {
-                fullName: "",
+                name: "",
                 email: "",
-                expertiseCategory: "",
-                suggestCategory: "",
+                expertise: "",
               },
             ],
           }}
-          render={({
-            handleSubmit,
-            form: {
-              mutators: { push, pop },
-            },
-            pristine,
-            form,
-            submitting,
-            values,
-          }) => {
+          render={({ handleSubmit, form, submitting }) => {
             formRef.current = form;
             return (
               <form className="invite-expert-form" onSubmit={handleSubmit}>
@@ -62,7 +96,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                               </label>
                             </div>
                           )}
-                          <Field name={`${name}.full-name`} validate={required}>
+                          <Field name={`${name}.name`} validate={required}>
                             {({ input, meta }) => {
                               return (
                                 <>
@@ -91,10 +125,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                               </label>
                             </div>
                           )}
-                          <Field
-                            name={`${name}.invitation-email`}
-                            validate={required}
-                          >
+                          <Field name={`${name}.email`} validate={required}>
                             {({ input, meta }) => {
                               return (
                                 <>
@@ -124,7 +155,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                             </div>
                           )}
                           <Field
-                            name={`${name}.invitation-expertise`}
+                            name={`${name}.expertise`}
                             style={{ width: "100%" }}
                             placeholder="Pick categories"
                             validate={required}
@@ -179,15 +210,51 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                             name={`${name}.suggest-category`}
                             validate={required}
                           >
-                            {({ input }) => {
+                            {({ input, meta, error }) => {
+                              const handleSearch = (value) => {
+                                if (value.length < 2) {
+                                  setFilteredOptions([]);
+                                } else {
+                                  const filtered = allOptions.filter(
+                                    (item) =>
+                                      item
+                                        .toLowerCase()
+                                        .indexOf(value.toLowerCase()) > -1
+                                  );
+                                  setFilteredOptions(
+                                    filtered.filter(
+                                      (it, index) =>
+                                        filtered.indexOf(it) === index
+                                    )
+                                  );
+                                }
+                              };
                               return (
                                 <>
-                                  <Input
-                                    onChange={(e) =>
-                                      input.onChange(e.target.value)
-                                    }
+                                  <Select
                                     placeholder="Suggest categories"
-                                  />
+                                    allowClear
+                                    showSearch
+                                    labelInValue
+                                    mode="tags"
+                                    notFoundContent={null}
+                                    onChange={(value) => input.onChange(value)}
+                                    onSearch={handleSearch}
+                                    value={
+                                      input.value ? input.value : undefined
+                                    }
+                                    className={`dont-show ${
+                                      error && !meta.valid
+                                        ? "ant-input-status-error"
+                                        : ""
+                                    }`}
+                                  >
+                                    {filteredOptions?.map((item) => (
+                                      <Select.Option value={item} key={item}>
+                                        {item}
+                                      </Select.Option>
+                                    ))}
+                                  </Select>
                                 </>
                               );
                             }}
@@ -199,11 +266,14 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                 </FieldArray>
                 <div className="invite-expert-buttons">
                   <Button
+                    loading={loading}
+                    disabled={submitting}
+                    onClick={handleSubmit}
                     className="invite-submit-button"
                     size="large"
                     shape="round"
                   >
-                    Submit
+                    Submit &gt;
                   </Button>
                   <Button
                     className="invite-cancel-button"
