@@ -87,6 +87,7 @@
                                                :unused-locals
                                                :non-clojure-file
                                                :unused-namespaces
+                                               :reflection
                                                :performance]
                              :ignored-faults {:unused-namespaces {dev true}}
                              :debug [:progress :time]}
