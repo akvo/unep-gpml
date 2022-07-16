@@ -166,7 +166,7 @@ const ExpertCarousel = ({
           </Link>
         );
       })}
-      <InviteExpertCard {...{ setIsShownModal }} />
+      {/* <InviteExpertCard {...{ setIsShownModal }} /> */}
     </Carousel>
   );
 };

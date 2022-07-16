@@ -1,4 +1,6 @@
 import React from "react";
+import { Button, Dropdown, Menu } from "antd";
+import { UIStore } from "../../store";
 import catTags from "../../utils/cat-tags.json";
 import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
 
@@ -7,6 +9,10 @@ function slug(text) {
 }
 
 const FilterBar = ({ filter, setFilter, updateQuery }) => {
+  const { countries } = UIStore.useState((s) => ({
+    countries: s.countries,
+  }));
+  console.log("countries::::::", countries);
   const handleClick0 = (catIndex) => () => {
     setFilter([catIndex]);
   };
@@ -25,6 +31,21 @@ const FilterBar = ({ filter, setFilter, updateQuery }) => {
     updateQuery("expertise", tag);
   };
 
+  const menu = (
+    <Menu
+      items={countries.map((country) => {
+        return {
+          key: country?.id,
+          label: (
+            <div onClick={() => updateQuery("country", country?.id)}>
+              {country?.name}
+            </div>
+          ),
+        };
+      })}
+    />
+  );
+
   return (
     <div className="filter-bar">
       {filter.length === 0 && (
@@ -32,7 +53,7 @@ const FilterBar = ({ filter, setFilter, updateQuery }) => {
           <div>
             <small>Choose an expert category</small>
           </div>
-          <div className='filter-tools'>
+          <div className="filter-tools">
             <ul>
               {catTags.map((cat, index) => {
                 return (
@@ -48,10 +69,17 @@ const FilterBar = ({ filter, setFilter, updateQuery }) => {
                 );
               })}
             </ul>
-            <button className='location-filter'>
-              <GlobeIcon />
-              <span>Location</span>
-            </button> 
+
+            <Dropdown
+              className="location-filter"
+              overlay={menu}
+              placement="bottom"
+            >
+              <Button>
+                <GlobeIcon />
+                <span>Location</span>
+              </Button>
+            </Dropdown>
           </div>
         </div>
       )}
