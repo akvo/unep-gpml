@@ -1,5 +1,6 @@
 import React from "react";
 import catTags from "../../utils/cat-tags.json";
+import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
 
 function slug(text) {
   return text.toLowerCase().replaceAll("&", "n").replaceAll(" ", "-");
@@ -31,7 +32,7 @@ const FilterBar = ({ filter, setFilter, updateQuery }) => {
           <div>
             <small>Choose an expert category</small>
           </div>
-          <div>
+          <div className='filter-tools'>
             <ul>
               {catTags.map((cat, index) => {
                 return (
@@ -47,6 +48,10 @@ const FilterBar = ({ filter, setFilter, updateQuery }) => {
                 );
               })}
             </ul>
+            <button className='location-filter'>
+              <GlobeIcon />
+              <span>Location</span>
+            </button> 
           </div>
         </div>
       )}
