@@ -5,13 +5,14 @@ function slug(text) {
   return text.toLowerCase().replaceAll("&", "n").replaceAll(" ", "-");
 }
 
-const FilterBar = ({ filter, setFilter }) => {
+const FilterBar = ({ filter, setFilter, updateQuery }) => {
   const handleClick0 = (catIndex) => () => {
     setFilter([catIndex]);
   };
   const handleBack = () => {
     setFilter([]);
   };
+
   const handleClick1 = (tag) => () => {
     let tagfilters = [...(filter[1] || [])];
     if (tagfilters.findIndex((it) => it === tag) > -1) {
@@ -20,7 +21,9 @@ const FilterBar = ({ filter, setFilter }) => {
       tagfilters = [...tagfilters, tag];
     }
     setFilter([filter[0], tagfilters]);
+    updateQuery("expertise", tag);
   };
+
   return (
     <div className="filter-bar">
       {filter.length === 0 && (

@@ -161,7 +161,7 @@ const Experts = () => {
     <div id="experts" className="experts">
       <Row type="flex" className="body-wrapper">
         <LeftSidebar active={5} sidebar={sidebar}>
-          <FilterBar {...{ filter, setFilter }} />
+          <FilterBar {...{ filter, setFilter, updateQuery }} />
           <div className="expert-list-section">
             <div className="expert-top-tools">
               <div className="page-label">Showing 7 Of {experts?.count}</div>
