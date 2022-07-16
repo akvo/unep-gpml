@@ -1,16 +1,15 @@
 import React from "react";
-import { Button, Row, Card, Avatar } from "antd";
-import { Link, useHistory } from "react-router-dom";
+import { Card, Avatar } from "antd";
+import { Link } from "react-router-dom";
 import Carousel from "react-multi-carousel";
 import { colors } from "../../utils/misc";
 
 import { ReactComponent as LocationIcon } from "../../images/location.svg";
 import { ReactComponent as ExpertBadge } from "../../images/stakeholder-overview/expert-badge.svg";
-import { ReactComponent as PartnerBadge } from "../../images/stakeholder-overview/partner-badge.svg";
-import { ReactComponent as GPMLMemberBadge } from "../../images/stakeholder-overview/member-of-gpml-badge.svg";
 import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
 import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
 import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
+import { ReactComponent as StarOutlined } from "../../images/stakeholder-overview/star-outlined.svg";
 import InviteExpertCard from "./invite-expert-card";
 import { titleCase } from "../../utils/string";
 
@@ -56,38 +55,40 @@ const ExpertCarousel = ({
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
-      items: 6,
-      slidesToSlide: 6,
-    },
-    desktop: {
-      breakpoint: { max: 1199, min: 992 },
-      items: 4.5,
-      slidesToSlide: 4.5,
-    },
-    tablet: {
-      breakpoint: { max: 991, min: 768 },
-      items: 3.5,
-      slidesToSlide: 3.5,
-    },
-    largeMobile: {
-      breakpoint: { max: 767, min: 600 },
       items: 2.5,
       slidesToSlide: 2.5,
     },
-    mobile: {
-      breakpoint: { max: 599, min: 361 },
+    desktop: {
+      breakpoint: { max: 1199, min: 992 },
+      items: 2,
+      slidesToSlide: 2,
+    },
+    tablet: {
+      breakpoint: { max: 991, min: 768 },
       items: 1.5,
       slidesToSlide: 1.5,
     },
+    largeMobile: {
+      breakpoint: { max: 767, min: 600 },
+      items: 1,
+      slidesToSlide: 1,
+    },
+    mobile: {
+      breakpoint: { max: 599, min: 361 },
+      items: 1,
+      slidesToSlide: 1,
+    },
     extraSmallMobile: {
       breakpoint: { max: 360, min: 0 },
-      items: 1.5,
-      slidesToSlide: 1.5,
+      items: 1,
+      slidesToSlide: 1,
     },
   };
 
   return (
     <Carousel
+      centerMode={true}
+      itemClass="expert-carousel-item"
       responsive={responsive}
       dotListClass="expert-carousel-dots"
       showDots={true}
@@ -108,8 +109,8 @@ const ExpertCarousel = ({
         return (
           <Link to={`/stakeholder/${expert?.id}`}>
             <Card key={expert?.id}>
-              <ul className="expert-detail-list">
-                <li className="list-item expert-image-wrapper">
+              <div className="expert-detail-list">
+                <div className="list-item expert-image-wrapper">
                   {expert?.affiliation && (
                     <Avatar
                       className="entity-logo"
@@ -122,7 +123,9 @@ const ExpertCarousel = ({
                       {entity?.name?.substring(0, 2)}
                     </Avatar>
                   )}
-
+                  <li className="expert-badge">
+                    <ExpertBadge />
+                  </li>
                   <Avatar
                     className={`expert-image ${!expert.picture && "no-image"}`}
                     src={expert.picture}
@@ -138,34 +141,27 @@ const ExpertCarousel = ({
                         ?.toUpperCase()}`}
                     </span>
                   </Avatar>
-                </li>
-
-                <li className="list-item expert-name">
-                  {`${titleCase(expert?.firstName)} ${titleCase(
-                    expert?.lastName
-                  )}`}
-                </li>
-                {expert?.country && (
-                  <li className="list-item expert-location">
-                    <LocationIcon />
-                    <span>{country}</span>
+                </div>
+                <div>
+                  <li className="list-item expert-name">
+                    {`${titleCase(expert?.firstName)} ${titleCase(
+                      expert?.lastName
+                    )}`}
                   </li>
-                )}
-                <li className="list-item expert-activity">
-                  {expert?.jobTitle}
-                </li>
-              </ul>
-              <ul className="badge-list">
-                <li>
-                  <GPMLMemberBadge />
-                </li>
-                {/* <li>
-                    <PartnerBadge />
-                  </li> */}
-                <li>
-                  <ExpertBadge />
-                </li>
-              </ul>
+                  {expert?.country && (
+                    <li className="list-item expert-location">
+                      <LocationIcon />
+                      <span>{country}</span>
+                    </li>
+                  )}
+                  {expert?.jobTitle && (
+                    <li className="list-item expert-activity">
+                      <StarOutlined />
+                      {expert?.jobTitle}
+                    </li>
+                  )}
+                </div>
+              </div>
             </Card>
           </Link>
         );

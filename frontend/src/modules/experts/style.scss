@@ -90,29 +90,33 @@
         margin-right: 10px;
       }
       .react-multi-carousel-item {
-        width: 180px !important;
+        width: 320px !important;
+        height: 153px;
         box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
         .ant-card {
           border-radius: 5px;
           border: unset;
           .ant-card-body {
-            height: 330px;
             display: flex;
+            padding: 12px 15px;
             flex-direction: column;
             justify-content: space-between;
           }
           .expert-detail-list {
+            display: flex;
             .expert-image-wrapper {
               position: relative;
               img {
                 width: 100%;
               }
               .expert-image {
-                width: 100%;
+                width: 128px;
                 height: 100%;
+                max-width: 128px;
                 display: flex;
                 place-items: center;
                 border-radius: 5px;
+                margin-right: 22px;
 
                 .ant-avatar-string {
                   display: flex;
@@ -132,15 +136,22 @@
               .no-image {
                 height: 128px;
               }
-              .entity-logo {
+              .entity-logo,
+              .expert-badge {
                 position: absolute;
+                bottom: -10px;
                 z-index: 1;
-                top: -5px;
-                left: -5px;
+              }
+              .entity-logo {
+                left: -10px;
+                bottom: -4px;
                 border-radius: 50%;
-                width: 31px;
-                height: 31px;
+                width: 36px;
+                height: 36px;
                 border: 1px solid #edf2f7;
+              }
+              .expert-badge {
+                right: 10px;
               }
             }
 
@@ -149,19 +160,30 @@
               align-items: center;
               svg {
                 width: 13px;
-                margin-right: 6px;
+                margin-right: 5px;
                 path,
                 line {
                   stroke: #d3dee7;
                 }
               }
             }
-
+            .expert-name,
+            .expert-location svg {
+              margin-left: 2px;
+            }
             .expert-name {
               font-weight: 700;
               font-size: 14px;
               line-height: 20px;
               color: $blue06;
+            }
+
+            .expert-activity {
+              display: flex;
+              align-items: center;
+              svg {
+                margin-right: 5px;
+              }
             }
           }
 
