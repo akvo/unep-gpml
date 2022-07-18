@@ -30,6 +30,7 @@ import api from "../../utils/api";
 import TopicChart from "../chart/topic-chart";
 import EventCalendar from "../../components/event-calendar/view";
 import TopicBar from "../chart/topic-bar";
+import { eventTrack } from "../../utils/misc";
 
 const cardSvg = [
   {
@@ -328,7 +329,10 @@ const Landing = withRouter(
                     <Card
                       key={`fc-${i}`}
                       className="item"
-                      onClick={() => history.push(link)}
+                      onClick={() => {
+                        history.push(link);
+                        eventTrack("Featured Content", "View Url", "Button");
+                      }}
                     >
                       <img
                         className="item-img"
@@ -671,7 +675,10 @@ const FeaturedContent = ({ history }) => {
         <Card
           key={`fc-${i}`}
           className="item"
-          onClick={() => history.push(link)}
+          onClick={() => {
+            history.push(link);
+            eventTrack("Featured Content", "View Url", "Button");
+          }}
         >
           <div className="item-header">
             <span className="resource-label upper">
@@ -736,7 +743,10 @@ const FeaturedContentMobile = ({ history }) => {
             <Card
               key={`fc-${i}`}
               className="item"
-              onClick={() => history.push(link)}
+              onClick={() => {
+                history.push(link);
+                eventTrack("Featured Content", "View Url", "Button");
+              }}
             >
               <div className="item-header">
                 <span className="resource-label upper">

@@ -28,6 +28,7 @@ import { ReactComponent as IconLibrary } from "../../images/capacity-building/ic
 import { ReactComponent as IconLearning } from "../../images/capacity-building/ic-capacity-building.svg";
 import { ReactComponent as IconExchange } from "../../images/capacity-building/ic-exchange.svg";
 import { ReactComponent as IconCaseStudies } from "../../images/capacity-building/ic-case-studies.svg";
+import { eventTrack } from "../../utils/misc";
 
 const CapacityBuilding = () => {
   const slider = useRef();
@@ -134,6 +135,11 @@ const CapacityBuilding = () => {
                               <a
                                 href={item.platform_link}
                                 target="_blank"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  eventTrack("Learning", "View Url", "Button");
+                                  window.open(item.platform_link, "_blank");
+                                }}
                                 rel="noopener noreferrer"
                               >
                                 <CapacityCard {...item} />

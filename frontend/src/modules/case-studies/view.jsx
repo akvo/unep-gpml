@@ -13,6 +13,7 @@ import { ReactComponent as IconLibrary } from "../../images/capacity-building/ic
 import { ReactComponent as IconLearning } from "../../images/capacity-building/ic-capacity-building.svg";
 import { ReactComponent as IconExchange } from "../../images/capacity-building/ic-exchange.svg";
 import { ReactComponent as IconCaseStudies } from "../../images/capacity-building/ic-case-studies.svg";
+import { eventTrack } from "../../utils/misc";
 
 const { Header, Content } = Layout;
 
@@ -128,10 +129,14 @@ const CaseStudies = () => {
                 Learn More
               </Button>
               <a
-                target="_blank"
-                href={
-                  "https://wedocs.unep.org/bitstream/handle/20.500.11822/38223/Case-studies.pdf?sequence=1&isAllowed=y"
-                }
+                onClick={(e) => {
+                  e.preventDefault();
+                  eventTrack("Case studies", "Download", "Button");
+                  window.open(
+                    "https://wedocs.unep.org/bitstream/handle/20.500.11822/38223/Case-studies.pdf?sequence=1&isAllowed=y",
+                    "_blank"
+                  );
+                }}
               >
                 <Button className="btn-download ml-1">
                   Download as pdf&nbsp;

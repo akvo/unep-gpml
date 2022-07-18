@@ -1,5 +1,6 @@
 (ns gpml.handler.resource
   (:require [clojure.java.jdbc :as jdbc]
+            [duct.logger :refer [log]]
             [gpml.auth :as auth]
             [gpml.constants :as constants]
             [gpml.db.activity :as db.activity]
@@ -16,7 +17,8 @@
             [gpml.util :as util]
             [gpml.util.email :as email]
             [integrant.core :as ig]
-            [ring.util.response :as resp]))
+            [ring.util.response :as resp])
+  (:import [java.sql SQLException]))
 
 (defn expand-entity-associations
   [entity-connections resource-id]
@@ -121,19 +123,32 @@
      (merge data {:type resource_type}))
     resource-id))
 
-(defmethod ig/init-key :gpml.handler.resource/post [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.resource/post
+  [_ {:keys [db logger mailjet-config]}]
   (fn [{:keys [jwt-claims body-params] :as req}]
-    (jdbc/with-db-transaction [conn (:spec db)]
-      (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-            resource-id (create-resource conn mailjet-config (assoc body-params
-                                                                    :created_by (:id user)))
-            activity {:id (util/uuid)
-                      :type "create_resource"
-                      :owner_id (:id user)
-                      :metadata {:resource_id resource-id
-                                 :resource_type (:resource_type body-params)}}]
-        (db.activity/create-activity conn activity)
-        (resp/created (:referrer req) {:message "New resource created" :id resource-id})))))
+    (try
+      (jdbc/with-db-transaction [conn (:spec db)]
+        (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
+              resource-id (create-resource conn mailjet-config (assoc body-params
+                                                                      :created_by (:id user)))
+              activity {:id (util/uuid)
+                        :type "create_resource"
+                        :owner_id (:id user)
+                        :metadata {:resource_id resource-id
+                                   :resource_type (:resource_type body-params)}}]
+          (db.activity/create-activity conn activity)
+          (resp/created (:referrer req) {:success? true
+                                         :message "New resource created"
+                                         :id resource-id})))
+      (catch Exception e
+        (log logger :error ::failed-to-create-resource {:exception-message (.getMessage e)})
+        (let [response {:status 500
+                        :body {:success? false
+                               :reason :could-not-create-event}}]
+
+          (if (instance? SQLException e)
+            response
+            (assoc response :error-details {:error (.getMessage e)})))))))
 
 (defn or-and [resource_type validator]
   (or (= "Action Plan" resource_type)

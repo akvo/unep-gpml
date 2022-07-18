@@ -581,27 +581,22 @@
   :gpml.handler.landing/get-query-params {}
   :gpml.handler.nav/get {:db #ig/ref :duct.database/sql}
 
-  :gpml.handler.event/post {:db #ig/ref :duct.database/sql
-                            :mailjet-config #ig/ref :gpml.config/mailjet}
+  :gpml.handler.event/post #ig/ref :gpml.config/common
 
   :gpml.handler.event/post-params {}
 
-  :gpml.handler.resource/post {:db #ig/ref :duct.database/sql
-                               :mailjet-config #ig/ref :gpml.config/mailjet}
+  :gpml.handler.resource/post #ig/ref :gpml.config/common
 
   :gpml.handler.resource/post-params {}
 
-  :gpml.handler.policy/post {:db #ig/ref :duct.database/sql
-                             :mailjet-config #ig/ref :gpml.config/mailjet}
+  :gpml.handler.policy/post #ig/ref :gpml.config/common
   :gpml.handler.policy/post-params {}
 
-  :gpml.handler.technology/post {:db #ig/ref :duct.database/sql
-                                 :mailjet-config #ig/ref :gpml.config/mailjet}
+  :gpml.handler.technology/post #ig/ref :gpml.config/common
   :gpml.handler.technology/post-params {}
 
   :gpml.handler.initiative/get {:db #ig/ref :duct.database/sql}
-  :gpml.handler.initiative/post {:db #ig/ref :duct.database/sql
-                                 :mailjet-config #ig/ref :gpml.config/mailjet}
+  :gpml.handler.initiative/post #ig/ref :gpml.config/common
   :gpml.handler.initiative/post-params {}
 
   :gpml.handler.stakeholder/get-params {}
