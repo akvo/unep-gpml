@@ -377,6 +377,7 @@ const DetailsView = ({
   };
 
   const description = data?.description ? data?.description : data?.summary;
+
   return (
     <div className="detail-view-wrapper">
       <div
@@ -422,7 +423,12 @@ const DetailsView = ({
               }`}
               target="_blank"
             >
-              <img className="resource-image" src={data?.image} alt="" />
+              <img
+                className="resource-image"
+                id="detail-resource-image"
+                src={data?.image}
+                alt={data?.title}
+              />
             </a>
           )}
 
