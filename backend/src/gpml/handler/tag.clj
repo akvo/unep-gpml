@@ -1,9 +1,8 @@
 (ns gpml.handler.tag
-  (:require
-   [clojure.string :as str]
-   [gpml.db.tag :as db.tag]
-   [integrant.core :as ig]
-   [ring.util.response :as resp]))
+  (:require [clojure.string :as str]
+            [gpml.db.tag :as db.tag]
+            [integrant.core :as ig]
+            [ring.util.response :as resp]))
 
 (def ^:const review-status [:APPROVED :SUBMITED :REJECTED])
 

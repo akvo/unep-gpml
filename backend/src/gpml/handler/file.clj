@@ -1,9 +1,9 @@
 (ns gpml.handler.file
-  (:require [integrant.core :as ig]
-            [gpml.db.stakeholder :as db.stakeholder]
+  (:require [gpml.db.stakeholder :as db.stakeholder]
+            [integrant.core :as ig]
             [ring.util.response :as resp])
-  (:import java.util.Base64
-           java.io.ByteArrayInputStream))
+  (:import java.io.ByteArrayInputStream
+           java.util.Base64))
 
 (defmethod ig/init-key :gpml.handler.file/profile-cv [_ {:keys [db]}]
   (fn [{{{:keys [id]} :path} :parameters :as req}]

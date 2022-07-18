@@ -1,20 +1,18 @@
 (ns gpml.handler.stakeholder.expert
-  (:require
-   [clojure.java.jdbc :as jdbc]
-   [clojure.string :as str]
-   [duct.logger :refer [log]]
-   [gpml.db.invitation :as db.invitation]
-   [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.handler.stakeholder :as handler.stakeholder]
-   [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
-   [gpml.util.postgresql :as pg-util]
-   [gpml.util :as util]
-   [gpml.util.email :as email]
-   [integrant.core :as ig]
-   [jsonista.core :as json]
-   [ring.util.response :as resp])
-  (:import
-   [java.sql SQLException]))
+  (:require [clojure.java.jdbc :as jdbc]
+            [clojure.string :as str]
+            [duct.logger :refer [log]]
+            [gpml.db.invitation :as db.invitation]
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.handler.stakeholder :as handler.stakeholder]
+            [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
+            [gpml.util :as util]
+            [gpml.util.email :as email]
+            [gpml.util.postgresql :as pg-util]
+            [integrant.core :as ig]
+            [jsonista.core :as json]
+            [ring.util.response :as resp])
+  (:import [java.sql SQLException]))
 
 (def get-experts-params
   [:map
@@ -43,8 +41,15 @@
 
 (def get-experts-response
   [:map
+   [:success? [:boolean]]
    [:experts [:fn coll?]]
-   [:count [:int {:min 0}]]])
+   [:count [:int {:min 0}]]
+   [:count_by_country
+    [:vector
+     [:maybe
+      [:map
+       [:counts [:int {:min 0}]]
+       [:country_id [:int {:min 0}]]]]]]])
 
 (def invite-experts-params
   [:vector
@@ -121,11 +126,14 @@
   (try
     (let [opts (api-opts->opts query)
           experts (db.stakeholder/get-experts (:spec db) opts)
-          experts-count (-> (db.stakeholder/get-experts (:spec db) (assoc opts :count-only? true))
-                            first
-                            :count)]
-      (resp/response {:experts (map expert->api-expert experts)
-                      :count experts-count}))
+          experts-count (->> (db.stakeholder/get-experts (:spec db) (assoc opts :count-only? true))
+                             (map vals)
+                             (flatten)
+                             (group-by :count_of))]
+      (resp/response {:success? true
+                      :experts (map expert->api-expert experts)
+                      :count (get-in experts-count ["experts" 0 :counts])
+                      :count_by_country (get-in experts-count ["countries" 0 :counts])}))
     (catch Exception e
       (if (instance? SQLException e)
         {:status 500

@@ -98,6 +98,7 @@ const statusDictToHuman = {
   APPROVED: "Published",
   SUBMITTED: "Pending",
   REJECTED: "Declined",
+  INVITED: "Invited",
 };
 const statusDictToAPI = invert(statusDictToHuman);
 
@@ -167,7 +168,10 @@ const HeaderFilter = ({
         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
     >
-      {reviewStatusOrderedList.map((x, i) => (
+      {[
+        ...reviewStatusOrderedList,
+        ...(listOpts.type === "stakeholders" ? ["Invited"] : []),
+      ].map((x, i) => (
         <Option
           key={`${x}-${i}`}
           value={x}
