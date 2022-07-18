@@ -1,5 +1,5 @@
 (ns gpml.auth-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures are]]
+  (:require [clojure.test :refer [are deftest is testing use-fixtures]]
             [gpml.auth :as auth]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]

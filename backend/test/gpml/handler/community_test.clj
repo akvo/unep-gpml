@@ -1,5 +1,5 @@
 (ns gpml.handler.community-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
+  (:require [clojure.test :refer [deftest is testing use-fixtures]]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.topic-test :as db.topic-test]
             [gpml.fixtures :as fixtures]

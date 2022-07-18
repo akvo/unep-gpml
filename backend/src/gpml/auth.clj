@@ -1,16 +1,14 @@
 (ns gpml.auth
-  (:require
-   [gpml.db.comment :as db.comment]
-   [gpml.db.organisation :as db.organisation]
-   [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.util :as util]
-   [integrant.core :as ig]
-   [malli.core :as malli])
-  (:import
-   [com.auth0.jwk JwkProvider JwkProviderBuilder]
-   [com.auth0.jwt JWT]
-   [com.auth0.jwt.impl JsonNodeClaim]
-   [com.auth0.utils.tokens SignatureVerifier PublicKeyProvider IdTokenVerifier]))
+  (:require [gpml.db.comment :as db.comment]
+            [gpml.db.organisation :as db.organisation]
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.util :as util]
+            [integrant.core :as ig]
+            [malli.core :as malli])
+  (:import [com.auth0.jwk JwkProvider JwkProviderBuilder]
+           [com.auth0.jwt JWT]
+           [com.auth0.jwt.impl JsonNodeClaim]
+           [com.auth0.utils.tokens IdTokenVerifier PublicKeyProvider SignatureVerifier]))
 
 (def verifier-opts
   [:map

@@ -1,14 +1,14 @@
 (ns gpml.handler.event-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
+  (:require [clojure.test :refer [deftest is testing use-fixtures]]
+            [gpml.db.event :as db.event]
+            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
             [gpml.handler.event :as event]
             [gpml.handler.profile-test :as profile-test]
-            [gpml.db.event :as db.event]
-            [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
             [ring.mock.request :as mock])
-  (:import [java.time Instant]
-           [java.sql Timestamp]))
+  (:import [java.sql Timestamp]
+           [java.time Instant]))
 
 (use-fixtures :each fixtures/with-test-system)
 

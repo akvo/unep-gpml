@@ -11,8 +11,8 @@
             [gpml.db.policy :as db.policy]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.tag :as db.tag]
-            [gpml.util.sql :as sql-util]
             [gpml.util :as util]
+            [gpml.util.sql :as sql-util]
             [integrant.core :as ig]
             [java-time :as jt]
             [java-time.core]
@@ -828,7 +828,7 @@
   (import-policies-from-leap-api config))
 
 (defn- schedule-job [{:keys [scheduler logger] :as config} scheduler-config]
-  (let [time-zone (java.util.TimeZone/getTimeZone (:time-zone scheduler-config))]
+  (let [time-zone (java.util.TimeZone/getTimeZone ^String (:time-zone scheduler-config))]
     (log logger :info :handle-leap-api-policy-import scheduler-config)
     (handle-leap-api-policy-import-job scheduler
                                        [config]

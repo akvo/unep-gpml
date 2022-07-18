@@ -1,20 +1,17 @@
 (ns gpml.handler.stakeholder.expert
-  (:require
-   [clojure.java.jdbc :as jdbc]
-   [clojure.string :as str]
-   [duct.logger :refer [log]]
-   [gpml.db.invitation :as db.invitation]
-   [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.handler.stakeholder :as handler.stakeholder]
-   [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
-   [gpml.util.postgresql :as pg-util]
-   [gpml.util :as util]
-   [gpml.util.email :as email]
-   [integrant.core :as ig]
-   [jsonista.core :as json]
-   [ring.util.response :as resp])
-  (:import
-   [java.sql SQLException]))
+  (:require [clojure.java.jdbc :as jdbc]
+            [clojure.string :as str]
+            [duct.logger :refer [log]]
+            [gpml.db.invitation :as db.invitation]
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
+            [gpml.util :as util]
+            [gpml.util.email :as email]
+            [gpml.util.postgresql :as pg-util]
+            [integrant.core :as ig]
+            [jsonista.core :as json]
+            [ring.util.response :as resp])
+  (:import [java.sql SQLException]))
 
 (def get-experts-params
   [:map
@@ -186,10 +183,10 @@
                              (map #(merge % (get-in experts-by-email [(:email %) 0]))))]
         (doseq [{:keys [email expertise]} body
                 :let [stakeholder-id (get-in (group-by :email expert-stakeholders) [email 0 :id])]]
-          (handler.stakeholder/save-stakeholder-tags conn
-                                                     mailjet-config
-                                                     {:tags (handler.stakeholder/prep-stakeholder-tags {:expertise expertise})
-                                                      :stakeholder-id stakeholder-id}))
+          (handler.stakeholder.tag/save-stakeholder-tags conn
+                                                         mailjet-config
+                                                         {:tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags {:expertise expertise})
+                                                          :stakeholder-id stakeholder-id}))
         (future (send-invitation-emails config invitations))
         (resp/response {:success? true
                         :invited-experts (map #(update % :id str) invitations)})))

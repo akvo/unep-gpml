@@ -1,22 +1,19 @@
 (ns gpml.handler.submission
-  (:require
-   [clojure.set :as set]
-   [clojure.walk :as w]
-   [duct.logger :refer [log]]
-   [gpml.constants :as constants]
-   [gpml.db.organisation :as db.organisation]
-   [gpml.db.resource.tag :as db.resource.tag]
-   [gpml.db.review :as db.review]
-   [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.db.submission :as db.submission]
-   [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
-   [gpml.util.auth0 :as auth0]
-   [gpml.util.email :as email]
-   [gpml.util.postgresql :as pg-util]
-   [integrant.core :as ig]
-   [ring.util.response :as resp])
-  (:import
-   [java.sql SQLException]))
+  (:require [clojure.set :as set]
+            [duct.logger :refer [log]]
+            [gpml.constants :as constants]
+            [gpml.db.organisation :as db.organisation]
+            [gpml.db.resource.tag :as db.resource.tag]
+            [gpml.db.review :as db.review]
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.submission :as db.submission]
+            [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
+            [gpml.util.auth0 :as auth0]
+            [gpml.util.email :as email]
+            [gpml.util.postgresql :as pg-util]
+            [integrant.core :as ig]
+            [ring.util.response :as resp])
+  (:import [java.sql SQLException]))
 
 (defn remap-initiative [{:keys [q1 q1_1 q16 q18
                                 q20 q23 q24 q24_1 q24_2
@@ -106,14 +103,22 @@
                         (list nil))
       (assoc (resp/status 200) :body {:message "Successfuly Updated" :data detail}))))
 
-(defn- prep-stakeholder-tags
-  [tags]
-  (reduce (fn [acc [k v]]
-            (assoc acc k (map :tag v)))
-          {}
-          (-> (group-by :tag_relation_category tags)
-              (w/keywordize-keys)
-              (select-keys [:seeking :offering :expertise]))))
+(defn- add-stakeholder-extra-details
+  [conn stakeholder]
+  (let [email (:email (db.stakeholder/stakeholder-by-id conn {:id (:id stakeholder)}))
+        org (db.organisation/organisation-by-id conn {:id (:affiliation stakeholder)})
+        tags (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
+                                                      :resource-col "stakeholder"
+                                                      :resource-id (:id stakeholder)})]
+    (cond-> stakeholder
+      (seq org)
+      (assoc :affiliation org)
+
+      (seq tags)
+      (merge (handler.stakeholder.tag/stakeholder-tags->api-stakeholder-tags tags))
+
+      true
+      (assoc :email email))))
 
 (defn- get-detail
   [{:keys [db]} params]
@@ -130,12 +135,7 @@
         params (conj params {:table-name table-name})
         detail (submission-detail conn params)
         detail (if (= submission "stakeholder")
-                 (merge detail
-                        (select-keys (db.stakeholder/stakeholder-by-id conn params) [:email])
-                        (->> (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
-                                                                      :resource-col "stakeholder"
-                                                                      :resource-id (:id params)})
-                             (prep-stakeholder-tags)))
+                 (add-stakeholder-extra-details conn detail)
                  detail)
         detail (if initiative? (remap-initiative detail conn)
                    detail)]

@@ -1,15 +1,14 @@
 (ns gpml.handler.review
-  (:require
-   [clojure.string :as str]
-   [clojure.set :as set]
-   [clojure.java.jdbc :as jdbc]
-   [gpml.constants :as constants]
-   [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.util.email :as email]
-   [gpml.db.review :as db.review]
-   [gpml.handler.util :as util]
-   [integrant.core :as ig]
-   [ring.util.response :as resp]))
+  (:require [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
+            [clojure.string :as str]
+            [gpml.constants :as constants]
+            [gpml.db.review :as db.review]
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.handler.util :as util]
+            [gpml.util.email :as email]
+            [integrant.core :as ig]
+            [ring.util.response :as resp]))
 
 (defn reviews-by-reviewer-id [conn opts]
   (map (fn [{:keys [details] :as review}]

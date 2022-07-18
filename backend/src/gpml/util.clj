@@ -1,10 +1,8 @@
 (ns gpml.util
-  (:require
-   [clojure.string :as str]
-   [clojure.walk :as w])
-  (:import
-   [java.io File]
-   [java.util UUID]))
+  (:require [clojure.string :as str]
+            [clojure.walk :as w])
+  (:import [java.io File]
+           [java.util UUID]))
 
 (defn uuid
   "If no argument is passed, creates a random UUID. If the passed

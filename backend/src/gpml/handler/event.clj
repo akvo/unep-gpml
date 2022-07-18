@@ -1,22 +1,23 @@
 (ns gpml.handler.event
-  (:require
-   [clojure.java.jdbc :as jdbc]
-   [gpml.auth :as auth]
-   [gpml.constants :as constants]
-   [gpml.db.event :as db.event]
-   [gpml.db.favorite :as db.favorite]
-   [gpml.db.language :as db.language]
-   [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.handler.auth :as h.auth]
-   [gpml.handler.geo :as handler.geo]
-   [gpml.handler.image :as handler.image]
-   [gpml.handler.resource.related-content :as handler.resource.related-content]
-   [gpml.handler.resource.tag :as handler.resource.tag]
-   [gpml.handler.util :as handler.util]
-   [gpml.util :as util]
-   [gpml.util.email :as email]
-   [integrant.core :as ig]
-   [ring.util.response :as resp]))
+  (:require [clojure.java.jdbc :as jdbc]
+            [duct.logger :refer [log]]
+            [gpml.auth :as auth]
+            [gpml.constants :as constants]
+            [gpml.db.event :as db.event]
+            [gpml.db.favorite :as db.favorite]
+            [gpml.db.language :as db.language]
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.handler.auth :as h.auth]
+            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.image :as handler.image]
+            [gpml.handler.resource.related-content :as handler.resource.related-content]
+            [gpml.handler.resource.tag :as handler.resource.tag]
+            [gpml.handler.util :as handler.util]
+            [gpml.util :as util]
+            [gpml.util.email :as email]
+            [integrant.core :as ig]
+            [ring.util.response :as resp])
+  (:import [java.sql SQLException]))
 
 (defn expand-entity-associations
   [entity-connections resource-id]
@@ -166,13 +167,26 @@
        [:tag string?]]]]]
    (into handler.geo/params-payload)))
 
-(defmethod ig/init-key :gpml.handler.event/post [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.event/post
+  [_ {:keys [db logger mailjet-config]}]
   (fn [{:keys [jwt-claims body-params] :as req}]
-    (jdbc/with-db-transaction [conn (:spec db)]
-      (let [result (create-event conn mailjet-config (assoc body-params
-                                                            :created_by
-                                                            (-> (db.stakeholder/stakeholder-by-email conn jwt-claims) :id)))]
-        (resp/created (:referrer req) {:message "New event created" :id (:id result)})))))
+    (try
+      (jdbc/with-db-transaction [conn (:spec db)]
+        (let [result (create-event conn mailjet-config (assoc body-params
+                                                              :created_by
+                                                              (-> (db.stakeholder/stakeholder-by-email conn jwt-claims) :id)))]
+          (resp/created (:referrer req) {:success? true
+                                         :message "New event created"
+                                         :id (:id result)})))
+      (catch Exception e
+        (log logger :error ::failed-to-create-event {:exception-message (.getMessage e)})
+        (let [response {:status 500
+                        :body {:success? false
+                               :reason :could-not-create-event}}]
+
+          (if (instance? SQLException e)
+            response
+            (assoc response :error-details {:error (.getMessage e)})))))))
 
 (defmethod ig/init-key :gpml.handler.event/post-params [_ _]
   post-params)

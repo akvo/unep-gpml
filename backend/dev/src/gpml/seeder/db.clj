@@ -1,6 +1,6 @@
 (ns gpml.seeder.db
-  (:require [hugsql.core :as hugsql]
-            [clojure.java.jdbc :as jdbc]))
+  (:require [clojure.java.jdbc :as jdbc]
+            [hugsql.core :as hugsql]))
 
 (hugsql/def-db-fns "gpml/seeder/db.sql")
 

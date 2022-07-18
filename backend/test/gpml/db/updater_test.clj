@@ -1,15 +1,15 @@
 (ns gpml.db.updater-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
-            [clojure.java.io :as io]
+  (:require [clojure.java.io :as io]
             [clojure.string :as str]
+            [clojure.test :refer [deftest is testing use-fixtures]]
+            [gpml.db.country :as db.country]
+            [gpml.db.initiative :as db.initiative]
+            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
             [gpml.seeder.db :as db.seeder]
-            [gpml.seeder.main :as seeder]
             [gpml.seeder.dummy :as dummy]
-            [gpml.test-util :as test-util]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.initiative :as db.initiative]
-            [gpml.db.country :as db.country]))
+            [gpml.seeder.main :as seeder]
+            [gpml.test-util :as test-util]))
 
 (use-fixtures :each fixtures/with-test-system)
 
@@ -51,11 +51,11 @@
               new-map-deleted ["Ascencion (UK)" "Gough (UK)" "Tristan da Cunha (UK)"]]
           (is (or
                ;; countries which are not available on the new json
-               (.contains new-map-deleted (:name country-old))
+               (.contains ^clojure.lang.PersistentVector new-map-deleted (:name country-old))
                ;; old country is an empty string
                (empty? (str/trim (:name country-old)))
                ;; old country is available on the new_countries_mapping.json
-               (.contains old-ids (:id country-old)))))))))
+               (.contains ^clojure.lang.PersistentVector old-ids (:id country-old)))))))))
 
 (deftest country-table-foreign-key-checks
   (let [db (test-util/db-test-conn)
@@ -67,9 +67,9 @@
                    "policy" "resource"
                    "stakeholder" "technology"]]
       (testing (str "foreign " topic " is available")
-        (is (.contains fkey topic)))
+        (is (.contains ^clojure.lang.PersistentVector fkey topic)))
       (testing (str "foreign " topic "_geo_coverage is available")
-        (is (.contains fkey (str topic "_geo_coverage")))))))
+        (is (.contains ^clojure.lang.PersistentVector fkey (str topic "_geo_coverage")))))))
 
 (deftest update-country-test
   (let [db (test-util/db-test-conn)]

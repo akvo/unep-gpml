@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Row, Card, Avatar } from "antd";
 import { Link } from "react-router-dom";
-
+import { eventTrack } from "../../utils/misc";
 import { UIStore } from "../../store";
 import unionIcon from "../../images/stakeholder-overview/union-icon.svg";
 import communityIcon from "../../images/stakeholder-overview/union-2-icon.svg";
@@ -28,6 +28,11 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
   return (
     <Link
       className="card-wrapper-link"
+      onClick={() => {
+        profile.type !== "organisation"
+          ? eventTrack("Stakeholder view", "Open Url", "Button")
+          : eventTrack("Entity view", "Open Url", "Button");
+      }}
       to={
         isValidUser
           ? profile.type === "organisation"

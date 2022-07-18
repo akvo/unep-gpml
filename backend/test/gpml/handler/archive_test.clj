@@ -1,9 +1,9 @@
 (ns gpml.handler.archive-test
-  (:require [clojure.test :refer [deftest testing is use-fixtures]]
-            [gpml.handler.archive :as archive]
+  (:require [clojure.test :refer [deftest is testing use-fixtures]]
             [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.handler.profile-test :as profile-test]
             [gpml.fixtures :as fixtures]
+            [gpml.handler.archive :as archive]
+            [gpml.handler.profile-test :as profile-test]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
 

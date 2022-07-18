@@ -51,6 +51,7 @@ import { ReactComponent as TransnationalImage } from "../../images/transnational
 import { ReactComponent as CityImage } from "../../images/city-icn.svg";
 import Comments from "./comment";
 import Header from "./header";
+import { eventTrack } from "../../utils/misc";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
@@ -231,6 +232,7 @@ const DetailsView = ({
   };
 
   const handleEditBtn = () => {
+    eventTrack("Resource view", "Update", "Button");
     let form = null;
     let type = null;
     let link = null;
@@ -377,6 +379,7 @@ const DetailsView = ({
   };
 
   const description = data?.description ? data?.description : data?.summary;
+
   return (
     <div className="detail-view-wrapper">
       <div
@@ -422,7 +425,12 @@ const DetailsView = ({
               }`}
               target="_blank"
             >
-              <img className="resource-image" src={data?.image} alt="" />
+              <img
+                className="resource-image"
+                id="detail-resource-image"
+                src={data?.image}
+                alt={data?.title}
+              />
             </a>
           )}
 
@@ -439,7 +447,7 @@ const DetailsView = ({
                 <Col className="section-geo-coverage">
                   <div className="extra-wrapper">
                     <h3 className="content-heading">Location & Geocoverage</h3>
-                    <span
+                    <div
                       style={{
                         marginBottom: data?.geoCoverageType === "global" && 0,
                       }}
@@ -449,7 +457,7 @@ const DetailsView = ({
                         <TransnationalImage />
                       </div>
                       <span>{titleCase(data?.geoCoverageType || "")}</span>
-                    </span>
+                    </div>
 
                     {data?.geoCoverageType !== "global" && (
                       <>
@@ -475,32 +483,6 @@ const DetailsView = ({
                                 </div>
                               </Row>
                             </div>
-                          )}
-
-                        {data?.geoCoverageType !== "sub-national" &&
-                          data?.geoCoverageType !== "national" && (
-                            <>
-                              {data?.geoCoverageCountries &&
-                                data?.geoCoverageCountries?.length > 0 &&
-                                renderCountries(
-                                  data,
-                                  countries,
-                                  transnationalOptions
-                                ) && (
-                                  <Row>
-                                    <div className="location-icon detail-item-icon">
-                                      <LocationImage />
-                                    </div>
-                                    <div>
-                                      {renderCountries(
-                                        data,
-                                        countries,
-                                        transnationalOptions
-                                      )}
-                                    </div>
-                                  </Row>
-                                )}
-                            </>
                           )}
 
                         {(data?.geoCoverageType === "sub-national" ||
@@ -530,16 +512,18 @@ const DetailsView = ({
 
                         {(data?.subnationalCity ||
                           data?.q24SubnationalCity) && (
-                          <Row>
-                            <div className="city-icon detail-item-icon">
-                              <CityImage />
-                            </div>
-                            <div>
-                              {data?.subnationalCity
-                                ? data?.subnationalCity
-                                : data?.q24SubnationalCity}
-                            </div>
-                          </Row>
+                          <div className="detail-item">
+                            <Row>
+                              <div className="city-icon detail-item-icon">
+                                <CityImage />
+                              </div>
+                              <div>
+                                {data?.subnationalCity
+                                  ? data?.subnationalCity
+                                  : data?.q24SubnationalCity}
+                              </div>
+                            </Row>
+                          </div>
                         )}
                       </>
                     )}

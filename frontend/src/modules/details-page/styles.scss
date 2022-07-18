@@ -188,8 +188,16 @@
         display: block;
         position: relative;
         z-index: 2;
+        display: flex;
+        place-content: center;
+        background-color: #fafafa;
+        img {
+          width: 100%;
+          max-width: max-content;
+          max-height: 437px;
+        }
         @media (min-width: 601px) {
-          width: 40%;
+          width: 50%;
           float: left;
           margin: 0 20px 20px 0;
           padding-right: 0 !important;
@@ -243,9 +251,9 @@
       display: flex;
       align-items: center;
       flex-direction: row;
-      &:not(:last-child) {
-        margin-bottom: 24px;
-      }
+    }
+    .detail-item {
+      margin-bottom: 15px;
     }
 
     .detail-item .ant-row {

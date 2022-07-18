@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Row,
-  Col,
-  PageHeader,
-  Card,
-  Space,
-  Avatar,
-  Button,
-  Tooltip,
-  Pagination,
-} from "antd";
+import { Row, Col, Card, Space, Avatar, Tooltip, Pagination } from "antd";
 import { ArrowRightOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
@@ -24,9 +14,6 @@ import humps from "humps";
 import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
-import DetailViewModal from "../detail-view-modal/view";
-import api from "../../utils/api";
-import { redirectError } from "../error/error-util";
 
 // Icons
 
@@ -98,18 +85,6 @@ const ResourceList = ({
     return () => setDidMount(false);
   }, []);
 
-  // const getData = ({ type, id }) => {
-  //   api
-  //     .get(`/detail/${type}/${id}`)
-  //     .then((d) => {
-  //       setData(d.data);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //       redirectError(err, history);
-  //     });
-  // };
-
   return (
     <Row style={{ postion: "relative" }}>
       <Col
@@ -155,7 +130,6 @@ const ResourceList = ({
               setIsShownModal={setIsShownModal}
               setData={setData}
               setDataProperties={setDataProperties}
-              // getData={getData}
             />
           </>
         ) : (
