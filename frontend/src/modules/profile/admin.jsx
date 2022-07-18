@@ -502,7 +502,48 @@ const AdminSection = ({
       >
         <div style={{ width: "100%" }}>Reviewers</div>
         <Select
-          style={{ width: "50%" }}
+          style={{ width: "100%" }}
+          mode="multiple"
+          showSearch={true}
+          className="select-reviewer"
+          placeholder="Assign reviewers"
+          onChange={(data) => assignReviewer(item, data, listOpts, setListOpts)}
+          value={item?.reviewers.map((x) => x.id)}
+          loading={item?.id === loading}
+          optionFilterProp="children"
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          filterSort={(optionA, optionB) =>
+            optionA.children
+              .toLowerCase()
+              .localeCompare(optionB.children.toLowerCase())
+          }
+          // FIXME: Disallow changing roles of other admins?
+          // stakeholder?.role === "ADMIN"
+          disabled={item?.id === loading}
+        >
+          {reviewers.map((r) => (
+            <Select.Option key={r.email} value={r.id}>
+              {r.email}
+            </Select.Option>
+          ))}
+        </Select>
+      </div>
+    );
+  };
+
+  const FocalPoint = ({ item, listOpts, setListOpts }) => {
+    return (
+      <div
+        className="review-status-container"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <div style={{ width: "100%" }}>Focal point</div>
+        <Select
+          style={{ width: "100%" }}
           mode="multiple"
           showSearch={true}
           className="select-reviewer"
@@ -730,6 +771,8 @@ const AdminSection = ({
         </div>
       );
 
+      console.log(item.type);
+
       return (
         <>
           {item.type !== "tag" ? (
@@ -758,18 +801,27 @@ const AdminSection = ({
                       setListOpts={setListOpts}
                     />
                   )}
-                {item.reviewStatus === "APPROVED" &&
-                  item.type !== "stakeholder" && (
-                    <OwnerSelect
+                <>
+                  {item.reviewStatus === "APPROVED" &&
+                    item.type !== "stakeholder" && (
+                      <OwnerSelect
+                        item={item}
+                        reviewers={reviewers}
+                        setListOpts={setListOpts}
+                        listOpts={listOpts}
+                        resource={item}
+                        onChangeOwner={changeOwner}
+                        loading={loading}
+                      />
+                    )}
+                  {item.type === "organisation" && (
+                    <FocalPoint
                       item={item}
-                      reviewers={reviewers}
-                      setListOpts={setListOpts}
                       listOpts={listOpts}
-                      resource={item}
-                      onChangeOwner={changeOwner}
-                      loading={loading}
+                      setListOpts={setListOpts}
                     />
                   )}
+                </>
                 {item.reviewStatus === "SUBMITTED" && (
                   <ResourceSubmittedActions />
                 )}
