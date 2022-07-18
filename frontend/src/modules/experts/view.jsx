@@ -80,11 +80,11 @@ const Experts = () => {
           experts: data.experts,
           count: data.count,
         });
-        setLoading(false)
+        setLoading(false);
       })
       .catch((err) => {
         console.error(err);
-        setLoading(false)
+        setLoading(false);
       });
   };
 
@@ -117,8 +117,6 @@ const Experts = () => {
     });
   }, []);
 
- 
-
   const clickCountry = (value) => {
     let updateVal = [];
     if (isEmpty(filterCountries)) {
@@ -128,29 +126,33 @@ const Experts = () => {
     } else {
       updateVal = [...filterCountries, value];
     }
-    setFilterCountries(updateVal)
+    setFilterCountries(updateVal);
   };
 
   useEffect(() => {
-    setLoading(true)
-    const params = {}
-    if(filter.length > 1 && filter[1].length > 0){
-      params.tags = filter[1].join(',')
+    setLoading(true);
+    const params = {};
+    if (filter.length > 1 && filter[1].length > 0) {
+      params.tags = filter[1].join(",");
+    } else if (
+      filter.length === 1 ||
+      (filter.length === 2 && filter[1].length === 0)
+    ) {
+      params.tags = catTags[filter[0]].topics.join(",");
     }
-    else if(filter.length === 1 || (filter.length === 2 && filter[1].length === 0)){
-      params.tags = catTags[filter[0]].topics.join(',')
+    if (filterCountries.length > 0) {
+      params.countries = filterCountries.join(",");
     }
-    if(filterCountries.length > 0){
-      params.countries = filterCountries.join(',')
-    }
-    fetchExperts(params)
-  }, [filter, filterCountries])
+    fetchExperts(params);
+  }, [filter, filterCountries]);
 
   return (
     <div id="experts" className="experts">
       <Row type="flex" className="body-wrapper">
         <LeftSidebar active={5} sidebar={sidebar}>
-          <FilterBar {...{ filter, setFilter, filterCountries, setFilterCountries }} />
+          <FilterBar
+            {...{ filter, setFilter, filterCountries, setFilterCountries }}
+          />
           <div className="expert-list-section">
             <div className="expert-top-tools">
               <div className="page-label">Total {experts?.count}</div>
@@ -185,15 +187,17 @@ const Experts = () => {
                 </div>
               </button>
             </div>
-            {loading &&
+            {loading && (
               <div className="loading">
                 <LoadingOutlined spin />
               </div>
-            }
-            {(experts.experts.length === 0 && !loading) && <div className="noresults">No matches</div>}
+            )}
+            {experts.experts.length === 0 && !loading && (
+              <div className="noresults">No matches</div>
+            )}
             <ExpertCarousel
-                {...{ experts, countries, organisations, setIsShownModal }}
-              />
+              {...{ experts, countries, organisations, setIsShownModal }}
+            />
           </div>
           <Maps
             box={box}

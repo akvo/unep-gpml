@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Dropdown, Menu } from "antd";
 import { UIStore } from "../../store";
 import catTags from "../../utils/cat-tags.json";
@@ -21,7 +21,8 @@ const FilterBar = ({
   const [country, setCountry] = useState([]);
   const [multiCountry, setMultiCountry] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
-  const [dropdownVisible, setDropdownVisible] = useState(false)
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
   }));
@@ -45,13 +46,21 @@ const FilterBar = ({
 
   const updateQuery = (param, value) => {
     if (param === "country") {
-      console.log(value, "value");
       setCountry(value);
+      setFilterCountries(value);
     }
     if (param === "transnational") {
       setMultiCountry(value);
     }
   };
+
+  useEffect(() => {
+    if (filterCountries && filterCountries.length > 0) {
+      setCountry(filterCountries.map((item) => parseInt(item)));
+    } else {
+      setCountry([]);
+    }
+  }, [filterCountries]);
 
   const countryList = (
     <CountryTransnationalFilter
@@ -129,7 +138,9 @@ const FilterBar = ({
         placement="bottomLeft"
         trigger={["click"]}
         visible={dropdownVisible}
-        onVisibleChange={(visible) => { setDropdownVisible(visible) }}
+        onVisibleChange={(visible) => {
+          setDropdownVisible(visible);
+        }}
       >
         <Button>
           <GlobeIcon />
