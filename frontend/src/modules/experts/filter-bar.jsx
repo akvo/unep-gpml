@@ -47,7 +47,7 @@ const FilterBar = ({
   const updateQuery = (param, value) => {
     if (param === "country") {
       setCountry(value);
-      setFilterCountries(value);
+      setFilterCountries(value.map((item) => item.toString()));
     }
     if (param === "transnational") {
       setMultiCountry(value);
