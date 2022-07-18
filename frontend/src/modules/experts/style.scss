@@ -384,12 +384,26 @@
           color: #d3dee7;
           cursor: pointer;
           transition: all 0.2s ease-out;
+          &.selected {
+            .img-container {
+              svg {
+                path {
+                  fill: #ffffff;
+                }
+              }
+            }
+          }
           .img-container {
             margin-top: 3px;
             display: flex;
             flex: 1;
             align-items: center;
             justify-content: center;
+            svg {
+              path {
+                fill: #d3dee7;
+              }
+            }
           }
           img {
             max-height: 38px;
