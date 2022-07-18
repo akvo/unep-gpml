@@ -48,10 +48,17 @@ const CountryTransnationalFilter = ({
   };
 
   const handleChangeCountry = (val) => {
+    if (isExpert) {
+      updateQuery("country", val);
+      return;
+    }
     updateQuery("country", query?.country && val);
   };
 
   const handleDeselectCountry = (val) => {
+    if (isExpert) {
+      return false;
+    }
     updateQuery(
       "country",
       query?.country ? query?.country.filter((x) => x != val) : []

@@ -45,6 +45,7 @@ const FilterBar = ({
 
   const updateQuery = (param, value) => {
     if (param === "country") {
+      console.log(value, "value");
       setCountry(value);
     }
     if (param === "transnational") {
@@ -120,7 +121,9 @@ const FilterBar = ({
         </div>
       )}
       <Dropdown
-        className="location-filter"
+        className={`location-filter ${
+          country.length > 0 || multiCountry.length > 0 ? "selected" : ""
+        }`}
         overlayClassName="location-filter-dropdown"
         overlay={countryList}
         placement="bottomLeft"
@@ -130,7 +133,11 @@ const FilterBar = ({
       >
         <Button>
           <GlobeIcon />
-          <span>Location</span>
+          <span>
+            {(country.length > 0 || multiCountry.length > 0) &&
+              multiCountry?.length + country?.length}{" "}
+            Location
+          </span>
         </Button>
       </Dropdown>
     </div>
