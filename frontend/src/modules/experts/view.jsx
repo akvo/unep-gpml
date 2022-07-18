@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import "./style.scss";
 import api from "../../utils/api";
 import { UIStore } from "../../store";
+import catTags from "../../utils/cat-tags.json";
 
 import { isEmpty } from "lodash";
 import { useQuery } from "./common";
@@ -69,19 +70,21 @@ const Experts = () => {
     },
   ];
 
-  const getExpert = () => {
+  const fetchExperts = (params) => {
     const url = `/stakeholder/expert/list`;
     api
-      .get(url)
+      .get(url, params)
       .then((resp) => {
         const data = resp?.data;
         setExperts({
           experts: data.experts,
           count: data.count,
         });
+        setLoading(false)
       })
       .catch((err) => {
         console.error(err);
+        setLoading(false)
       });
   };
 
@@ -106,9 +109,7 @@ const Experts = () => {
   };
 
   useEffect(() => {
-    setLoading(true);
-    getExpert();
-    setLoading(false);
+    fetchExperts();
     api.get(`/landing`).then((resp) => {
       UIStore.update((e) => {
         e.landing = resp.data;
@@ -116,55 +117,43 @@ const Experts = () => {
     });
   }, []);
 
-  const updateQuery = (param, value) => {
-    const topScroll = window.innerWidth < 640 ? 996 : 207;
-    window.scrollTo({
-      top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
-    });
-    setLoading(true);
-    const newQuery = { ...query };
-    newQuery[param] = value;
-
-    // Remove empty query
-    const arrayOfQuery = Object.entries(newQuery)?.filter(
-      (item) => item[1]?.length !== 0
-    );
-
-    const pureQuery = Object.fromEntries(arrayOfQuery);
-
-    const newParams = new URLSearchParams(pureQuery);
-
-    history.push(`/connect/experts?${newParams.toString()}`);
-
-    if (param === "country") {
-      setFilterCountries(value);
-    }
-  };
+ 
 
   const clickCountry = (value) => {
-    const val = query["country"];
-
     let updateVal = [];
-
-    if (isEmpty(val)) {
+    if (isEmpty(filterCountries)) {
       updateVal = [value];
-    } else if (val.includes(value)) {
-      updateVal = val.filter((x) => x !== value);
+    } else if (filterCountries.includes(value)) {
+      updateVal = filterCountries.filter((x) => x !== value);
     } else {
-      updateVal = [...val, value];
+      updateVal = [...filterCountries, value];
     }
-
-    updateQuery("country", updateVal);
+    setFilterCountries(updateVal)
   };
+
+  useEffect(() => {
+    setLoading(true)
+    const params = {}
+    if(filter.length > 1 && filter[1].length > 0){
+      params.tags = filter[1].join(',')
+    }
+    else if(filter.length === 1 || (filter.length === 2 && filter[1].length === 0)){
+      params.tags = catTags[filter[0]].topics.join(',')
+    }
+    if(filterCountries.length > 0){
+      params.countries = filterCountries.join(',')
+    }
+    fetchExperts(params)
+  }, [filter, filterCountries])
 
   return (
     <div id="experts" className="experts">
       <Row type="flex" className="body-wrapper">
         <LeftSidebar active={5} sidebar={sidebar}>
-          <FilterBar {...{ filter, setFilter, updateQuery }} />
+          <FilterBar {...{ filter, setFilter, filterCountries, setFilterCountries }} />
           <div className="expert-list-section">
             <div className="expert-top-tools">
-              <div className="page-label">Showing 7 Of {experts?.count}</div>
+              <div className="page-label">Total {experts?.count}</div>
               <button
                 className="view-button"
                 shape="round"

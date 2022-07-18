@@ -9,7 +9,7 @@ function slug(text) {
   return text.toLowerCase().replaceAll("&", "n").replaceAll(" ", "-");
 }
 
-const FilterBar = ({ filter, setFilter, updateQuery }) => {
+const FilterBar = ({ filter, setFilter, filterCountries, setFilterCountries }) => {
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
   }));
@@ -29,7 +29,6 @@ const FilterBar = ({ filter, setFilter, updateQuery }) => {
       tagfilters = [...tagfilters, tag];
     }
     setFilter([filter[0], tagfilters]);
-    updateQuery("expertise", tag);
   };
 
   const countryList = (
@@ -38,7 +37,7 @@ const FilterBar = ({ filter, setFilter, updateQuery }) => {
         return {
           key: country?.id,
           label: (
-            <div onClick={() => updateQuery("country", country?.id)}>
+            <div>
               {country?.name}
             </div>
           ),
