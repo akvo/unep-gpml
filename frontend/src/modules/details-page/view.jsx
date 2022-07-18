@@ -445,7 +445,7 @@ const DetailsView = ({
                 <Col className="section-geo-coverage">
                   <div className="extra-wrapper">
                     <h3 className="content-heading">Location & Geocoverage</h3>
-                    <span
+                    <div
                       style={{
                         marginBottom: data?.geoCoverageType === "global" && 0,
                       }}
@@ -455,7 +455,7 @@ const DetailsView = ({
                         <TransnationalImage />
                       </div>
                       <span>{titleCase(data?.geoCoverageType || "")}</span>
-                    </span>
+                    </div>
 
                     {data?.geoCoverageType !== "global" && (
                       <>
@@ -510,16 +510,18 @@ const DetailsView = ({
 
                         {(data?.subnationalCity ||
                           data?.q24SubnationalCity) && (
-                          <Row>
-                            <div className="city-icon detail-item-icon">
-                              <CityImage />
-                            </div>
-                            <div>
-                              {data?.subnationalCity
-                                ? data?.subnationalCity
-                                : data?.q24SubnationalCity}
-                            </div>
-                          </Row>
+                          <div className="detail-item">
+                            <Row>
+                              <div className="city-icon detail-item-icon">
+                                <CityImage />
+                              </div>
+                              <div>
+                                {data?.subnationalCity
+                                  ? data?.subnationalCity
+                                  : data?.q24SubnationalCity}
+                              </div>
+                            </Row>
+                          </div>
                         )}
                       </>
                     )}
