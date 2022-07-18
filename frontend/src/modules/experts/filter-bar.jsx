@@ -18,6 +18,8 @@ const FilterBar = ({
   setFilterCountries,
 }) => {
   const query = useQuery();
+  const [country, setCountry] = useState([]);
+  const [multiCountry, setMultiCountry] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -40,8 +42,13 @@ const FilterBar = ({
     setFilter([filter[0], tagfilters]);
   };
 
-  const updateQuery = (param, value, paramValueArr) => {
-    console.log("hello");
+  const updateQuery = (param, value) => {
+    if (param === "country") {
+      setCountry(value);
+    }
+    if (param === "transnational") {
+      setMultiCountry(value);
+    }
   };
 
   const countryList = (
@@ -52,11 +59,12 @@ const FilterBar = ({
         multiCountryCountries,
         setMultiCountryCountries,
       }}
-      country={query?.country?.map((x) => parseInt(x)) || []}
-      multiCountry={query?.transnational?.map((x) => parseInt(x)) || []}
+      country={country || []}
+      multiCountry={multiCountry || []}
       multiCountryLabelCustomIcon={true}
       countrySelectMode="multiple"
       multiCountrySelectMode="multiple"
+      isExpert={true}
     />
   );
 
