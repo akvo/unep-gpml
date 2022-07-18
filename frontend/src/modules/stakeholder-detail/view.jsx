@@ -58,7 +58,7 @@ import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
 import { TrimText } from "../../utils/string";
-import { colors } from "../../utils/misc";
+import { colors, eventTrack } from "../../utils/misc";
 const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
 const usePrevious = (value) => {
@@ -118,6 +118,7 @@ const SharePanel = ({
     profile.role === "ADMIN";
 
   const handleEditBtn = () => {
+    eventTrack("Stakeholder view", "Update", "Button");
     UIStore.update((e) => {
       e.formEdit = {
         ...e.formEdit,
@@ -141,7 +142,14 @@ const SharePanel = ({
     <div className="sticky-panel">
       <div
         className="sticky-panel-item"
-        onClick={() => handleChangeRelation("interested in")}
+        onClick={() => {
+          handleChangeRelation("interested in");
+          relation &&
+          relation.association &&
+          relation.association.indexOf("interested in") !== -1
+            ? eventTrack("Stakeholder view", "Unfollow", "Button")
+            : eventTrack("Stakeholder view", "Follow", "Button");
+        }}
       >
         <FollowIcon className="svg-icon" />
         {relation &&
@@ -174,6 +182,7 @@ const SharePanel = ({
               okText: "Delete",
               okType: "danger",
               onOk() {
+                eventTrack("Stakeholder view", "Delete", "Button");
                 return api
                   .delete(`/detail/${params.type}/${params.id}`)
                   .then((res) => {

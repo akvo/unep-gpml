@@ -1,5 +1,6 @@
 (ns gpml.handler.event
   (:require [clojure.java.jdbc :as jdbc]
+            [duct.logger :refer [log]]
             [gpml.auth :as auth]
             [gpml.constants :as constants]
             [gpml.db.event :as db.event]
@@ -15,7 +16,8 @@
             [gpml.util :as util]
             [gpml.util.email :as email]
             [integrant.core :as ig]
-            [ring.util.response :as resp]))
+            [ring.util.response :as resp])
+  (:import [java.sql SQLException]))
 
 (defn expand-entity-associations
   [entity-connections resource-id]
@@ -165,13 +167,26 @@
        [:tag string?]]]]]
    (into handler.geo/params-payload)))
 
-(defmethod ig/init-key :gpml.handler.event/post [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.event/post
+  [_ {:keys [db logger mailjet-config]}]
   (fn [{:keys [jwt-claims body-params] :as req}]
-    (jdbc/with-db-transaction [conn (:spec db)]
-      (let [result (create-event conn mailjet-config (assoc body-params
-                                                            :created_by
-                                                            (-> (db.stakeholder/stakeholder-by-email conn jwt-claims) :id)))]
-        (resp/created (:referrer req) {:message "New event created" :id (:id result)})))))
+    (try
+      (jdbc/with-db-transaction [conn (:spec db)]
+        (let [result (create-event conn mailjet-config (assoc body-params
+                                                              :created_by
+                                                              (-> (db.stakeholder/stakeholder-by-email conn jwt-claims) :id)))]
+          (resp/created (:referrer req) {:success? true
+                                         :message "New event created"
+                                         :id (:id result)})))
+      (catch Exception e
+        (log logger :error ::failed-to-create-event {:exception-message (.getMessage e)})
+        (let [response {:status 500
+                        :body {:success? false
+                               :reason :could-not-create-event}}]
+
+          (if (instance? SQLException e)
+            response
+            (assoc response :error-details {:error (.getMessage e)})))))))
 
 (defmethod ig/init-key :gpml.handler.event/post-params [_ _]
   post-params)

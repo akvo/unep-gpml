@@ -12,6 +12,7 @@ import { ReactComponent as GPMLMemberBadge } from "../../images/stakeholder-over
 import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
 import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
 import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
+import { TrimText } from "../../utils/string";
 
 const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
@@ -25,33 +26,28 @@ const StakeholderCarousel = ({ stakeholders }) => {
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 1200 },
-      items: 14,
-      slidesToSlide: 14,
+      items: 4,
+      slidesToSlide: 4,
     },
     desktop: {
       breakpoint: { max: 1199, min: 992 },
-      items: 12,
-      slidesToSlide: 12,
-    },
-    tablet: {
-      breakpoint: { max: 991, min: 768 },
-      items: 10,
-      slidesToSlide: 10,
-    },
-    largeMobile: {
-      breakpoint: { max: 767, min: 600 },
-      items: 5,
-      slidesToSlide: 5,
-    },
-    mobile: {
-      breakpoint: { max: 599, min: 361 },
       items: 3,
       slidesToSlide: 3,
     },
-    extraSmallMobile: {
-      breakpoint: { max: 360, min: 0 },
+    tablet: {
+      breakpoint: { max: 991, min: 768 },
       items: 2,
       slidesToSlide: 2,
+    },
+    largeMobile: {
+      breakpoint: { max: 767, min: 600 },
+      items: 1.5,
+      slidesToSlide: 1.5,
+    },
+    mobile: {
+      breakpoint: { max: 599, min: 0 },
+      items: 1,
+      slidesToSlide: 1,
     },
   };
 
@@ -107,80 +103,66 @@ const StakeholderCarousel = ({ stakeholders }) => {
               (country) => country.id === stakeholder?.country
             )?.name;
 
-            const name = stakeholder?.stakeholder?.split(" ");
-            const firstInitial = name[0]?.substring(0, 1);
-            const secondInitial = name[1]?.substring(0, 1);
+            const name = stakeholder?.name?.split(" ");
+            const firstInitial = name[0]?.substring(0, 1) || "";
+            const secondInitial = name[1]?.substring(0, 1) || "";
             const initial = `${firstInitial}${secondInitial}`;
+
             return (
-              <Card
-                className="connection-card"
-                key={stakeholder?.stakeholderId}
+              <Link
+                to={`/${
+                  stakeholder?.type === "entity"
+                    ? "organisation"
+                    : "stakeholder"
+                }/${stakeholder?.id}`}
               >
-                <Avatar
-                  className={`connection-small-image ${
-                    !stakeholder?.image && "connection-small-no-image"
-                  }`}
-                  src={stakeholder.image}
-                  style={{ backgroundColor: colour() }}
-                  alt={stakeholder?.stakeholder}
+                <Card
+                  className="connection-card"
+                  key={stakeholder?.stakeholderId}
                 >
-                  {!stakeholder?.image && <CircledUserIcon />}
-                  <span>{initial}</span>
-                </Avatar>
-
-                <Link
-                  to={`/stakeholder/${stakeholder?.stakeholderId}`}
-                  className="connection-details-wrapper"
-                >
-                  <ul className="connection-detail-list">
-                    <li
-                      className={`list-item connection-image-wrapper ${
-                        !stakeholder?.image && "connection-no-image-wrapper"
-                      }`}
+                  <div
+                    className={`connection-image-wrapper ${
+                      !stakeholder?.image && "connection-no-image-wrapper"
+                    }`}
+                  >
+                    <Avatar
+                      className="connection-image"
+                      src={stakeholder.image}
+                      style={{ backgroundColor: colour() }}
+                      alt={stakeholder?.name}
                     >
-                      <Avatar
-                        className="connection-image"
-                        src={stakeholder.image}
-                        style={{ backgroundColor: colour() }}
-                        alt={stakeholder?.stakeholder}
-                      >
-                        {!stakeholder?.image && <CircledUserIcon />}
-                        <span>{initial}</span>
-                      </Avatar>
-                    </li>
-
+                      {!stakeholder?.image && <CircledUserIcon />}
+                      <span>{initial}</span>
+                    </Avatar>
+                  </div>
+                  <ul className="connection-detail-list">
                     <li className="list-item connection-name">
-                      {`${stakeholder?.stakeholder}`}
+                      <TrimText text={stakeholder?.name} max={25} />
                     </li>
-                    {country && (
+                    {stakeholder?.type !== "entity" && country && (
                       <li className="list-item connection-location">
                         <LocationIcon />
                         <span>{country}</span>
                       </li>
                     )}
-                    <li className="list-item connection-activity">
-                      {stakeholder?.jobTitle}
-                    </li>
-                  </ul>
-                  <ul className="badge-list">
-                    <li>
-                      <GPMLMemberBadge />
-                    </li>
-                    {stakeholder?.role?.toLowerCase() === "donor" ||
-                      (stakeholder?.role?.toLowerCase() === "partner" && (
-                        <li>
-                          <PartnerBadge />
-                        </li>
-                      ))}
-                    {stakeholder?.expertise &&
-                      stakeholder?.expertise.length > 0 && (
-                        <li>
-                          <ExpertBadge />
+                    {stakeholder?.type !== "entity" &&
+                      stakeholder?.jobTitle && (
+                        <li className="list-item connection-job-title">
+                          {stakeholder?.jobTitle}
                         </li>
                       )}
+                    {stakeholder?.role && (
+                      <li className="list-item  connection-role">
+                        {stakeholder?.type === "entity"
+                          ? "Entity"
+                          : stakeholder?.role?.toLowerCase() === "owner"
+                          ? stakeholder?.role?.replace("_", " ")
+                          : ""}
+                      </li>
+                    )}
                   </ul>
-                </Link>
-              </Card>
+                </Card>
+              </Link>
             );
           })}
       </Carousel>
