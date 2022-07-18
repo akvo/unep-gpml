@@ -1,12 +1,35 @@
 @import "../../vars.scss";
 
 #experts {
+  .loading {
+    font-size: 36px;
+  }
   .expert-list-section {
     background: rgba(211, 222, 231, 0.15);
     padding: 15px 0px;
-    #expert-loading {
-      padding-top: 0;
-      padding-bottom: 0;
+    height: 267px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    .loading {
+      padding: 0;
+      flex: 1;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      height: 200px;
+      top: 55px;
+      position: absolute;
+      width: 100%;
+      background-color: rgba(249, 250, 251, 0.5);
+      z-index: 2;
+      color: #027975;
+    }
+    .noresults {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      justify-content: center;
     }
     .expert-top-tools {
       display: flex;
@@ -141,7 +164,7 @@
               .entity-logo,
               .expert-badge {
                 position: absolute;
-                bottom: -10px;
+                bottom: -12px;
                 z-index: 1;
               }
               .entity-logo {
@@ -153,7 +176,7 @@
                 border: 1px solid #edf2f7;
               }
               .expert-badge {
-                right: 10px;
+                right: 15px;
               }
             }
 

@@ -185,17 +185,15 @@ const Experts = () => {
                 </div>
               </button>
             </div>
-            {loading ? (
-              <h2 className="loading" id="expert-loading">
-                <LoadingOutlined spin /> Loading
-              </h2>
-            ) : (
-              <>
-                <ExpertCarousel
-                  {...{ experts, countries, organisations, setIsShownModal }}
-                />
-              </>
-            )}
+            {loading &&
+              <div className="loading">
+                <LoadingOutlined spin />
+              </div>
+            }
+            {(experts.experts.length === 0 && !loading) && <div className="noresults">No matches</div>}
+            <ExpertCarousel
+                {...{ experts, countries, organisations, setIsShownModal }}
+              />
           </div>
           <Maps
             box={box}
@@ -208,7 +206,7 @@ const Experts = () => {
             isFilteredCountry={filterCountries}
             data={landing?.map || []}
             countryGroupCounts={landing?.countryGroupCounts || []}
-            isLoaded={isLoaded}
+            isLoaded={() => true}
             multiCountryCountries={[]}
             multiCountries={[]}
             useVerticalLegend

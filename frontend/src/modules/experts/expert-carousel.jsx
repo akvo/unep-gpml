@@ -136,9 +136,9 @@ const ExpertCarousel = ({
                       {entity?.name?.substring(0, 2)}
                     </Avatar>
                   )}
-                  <li className="expert-badge">
+                  <div className="expert-badge">
                     <ExpertBadge />
-                  </li>
+                  </div>
                   <Avatar
                     className={`expert-image ${!expert.picture && "no-image"}`}
                     src={expert.picture}
