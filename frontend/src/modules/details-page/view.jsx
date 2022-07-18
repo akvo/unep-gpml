@@ -378,17 +378,6 @@ const DetailsView = ({
 
   const description = data?.description ? data?.description : data?.summary;
 
-  // Check image ratio
-  let imageRatio = "";
-  const resourceImage = document.getElementById("detail-resource-image");
-  if (resourceImage?.naturalWidth > resourceImage?.naturalHeight) {
-    imageRatio = "image-landscape";
-  } else if (resourceImage?.naturalWidth < resourceImage?.naturalHeight) {
-    imageRatio = "image-portrait";
-  } else {
-    imageRatio = "image-square";
-  }
-
   return (
     <div className="detail-view-wrapper">
       <div
@@ -435,7 +424,7 @@ const DetailsView = ({
               target="_blank"
             >
               <img
-                className={`resource-image ${imageRatio}`}
+                className="resource-image"
                 id="detail-resource-image"
                 src={data?.image}
                 alt={data?.title}
