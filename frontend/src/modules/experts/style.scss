@@ -3,7 +3,7 @@
 #experts {
   .expert-list-section {
     background: rgba(211, 222, 231, 0.15);
-    padding: 15px 25px;
+    padding: 15px 0px;
     #expert-loading {
       padding-top: 0;
       padding-bottom: 0;
@@ -13,6 +13,7 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+      padding: 0 25px;
       .page-label {
         background-color: rgba(211, 222, 231, 0.5);
         border-radius: 10px;
@@ -86,6 +87,7 @@
     }
 
     .expert-carousel {
+      padding-left: 25px;
       .react-multi-carousel-item:not(:last-of-type) {
         margin-right: 10px;
       }
@@ -201,7 +203,32 @@
         }
       }
     }
-
+    .react-multiple-carousel__arrow {
+      top: 0;
+      height: 100%;
+      border-radius: 0;
+      width: 60px;
+      background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.6) 35%,
+        rgba(0, 0, 0, 0) 100%
+      );
+      &:before {
+        margin-left: -20px;
+      }
+      &--right {
+        background: linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0) 0%,
+          rgba(0, 0, 0, 0.6) 65%,
+          rgba(0, 0, 0, 0.6) 100%
+        );
+        &:before {
+          margin-left: 20px;
+        }
+      }
+    }
     .expert-carousel-arrow {
       top: calc(calc(153px - calc(42px / 2)) / 2);
       background: unset !important;
@@ -287,10 +314,10 @@
             background-color: #053553;
           }
           &:nth-child(3) span {
-            min-width: 99px;
+            min-width: 107px;
           }
           &:nth-child(5) span {
-            min-width: 85px;
+            min-width: 91px;
           }
         }
       }

@@ -103,8 +103,12 @@ const ExpertCarousel = ({
       dotListClass="expert-carousel-dots"
       showDots={true}
       renderDotsOutside={true}
-      customLeftArrow={<CustomLeftArrow />}
-      customRightArrow={<CustomRightArrow />}
+      autoPlaySpeed={100000}
+      arrows
+      draggable
+      swipeable
+      // customLeftArrow={<CustomLeftArrow />}
+      // customRightArrow={<CustomRightArrow />}
     >
       {experts.experts.map((expert, index) => {
         const country = countries.find(
