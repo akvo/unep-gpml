@@ -282,7 +282,7 @@
         display: inline-block;
         color: #d3dee7;
         padding: 0px 10px 0;
-        margin-top: 4px;
+        margin-top: 12px;
       }
       ul {
         display: flex;
@@ -326,7 +326,6 @@
       display: flex;
       transform: translateY(7px);
       .selected-btn {
-        // background-color: #053553;
         height: 70px;
         padding-top: 20px;
         display: flex;
@@ -343,7 +342,7 @@
           position: absolute;
           top: 0;
         }
-        img {
+        svg {
           height: 27px;
           margin-right: 7px;
           margin-top: 2px;

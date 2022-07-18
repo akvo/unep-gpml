@@ -43,7 +43,7 @@ export const Icon = ({ name, onCompleted, onError, ...rest }) => {
     return error.message;
   }
   if (loading) {
-    return "Loading...";
+    return null;
   }
   if (SvgIcon) {
     return <SvgIcon {...rest} />;
