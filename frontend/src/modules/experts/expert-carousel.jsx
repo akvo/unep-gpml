@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Avatar } from "antd";
 import { Link } from "react-router-dom";
 import Carousel from "react-multi-carousel";
@@ -14,12 +14,21 @@ import InviteExpertCard from "./invite-expert-card";
 import { titleCase } from "../../utils/string";
 
 const colour = () => colors[Math.floor(Math.random() * colors.length)];
+
 const ExpertCarousel = ({
   experts,
   countries,
   organisations,
   setIsShownModal,
 }) => {
+  const [bgColor, setBgColor] = useState([]);
+  const [bgColorSmall, setBgColorSmall] = useState([]);
+
+  useEffect(() => {
+    setBgColor(experts?.experts?.map(() => colour()));
+    setBgColorSmall(experts?.experts?.map(() => colour()));
+  }, [experts]);
+
   const CustomRightArrow = ({ onClick, ...rest }) => {
     const {
       onMove,
@@ -97,7 +106,7 @@ const ExpertCarousel = ({
       customRightArrow={<CustomRightArrow />}
       containerClass="expert-carousel"
     >
-      {experts.experts.map((expert) => {
+      {experts.experts.map((expert, index) => {
         const country = countries.find(
           (country) => country.id === expert.country
         )?.name;
@@ -115,7 +124,7 @@ const ExpertCarousel = ({
                     <Avatar
                       className="entity-logo"
                       style={{
-                        backgroundColor: colour(),
+                        backgroundColor: bgColorSmall[index],
                         verticalAlign: "middle",
                       }}
                       size={32}
@@ -129,7 +138,9 @@ const ExpertCarousel = ({
                   <Avatar
                     className={`expert-image ${!expert.picture && "no-image"}`}
                     src={expert.picture}
-                    style={{ backgroundColor: colour() }}
+                    style={{
+                      backgroundColor: bgColor[index],
+                    }}
                     alt={expert?.firstName ? expert?.firstName : expert?.name}
                   >
                     {!expert.picture && <CircledUserIcon />}

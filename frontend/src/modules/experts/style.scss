@@ -269,7 +269,6 @@
           font-size: 14px;
           color: #67bea1;
           background-color: #004063;
-          border: 1px solid #00757d;
           margin-right: 5px;
           padding: 0 10px;
           cursor: pointer;
@@ -279,6 +278,7 @@
           span {
             width: min-content;
             line-height: 16px;
+            padding-left: 10px;
           }
           &:hover {
             background-color: #053553;
