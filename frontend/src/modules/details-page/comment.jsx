@@ -10,7 +10,7 @@ import {
   Form,
   Comment,
 } from "antd";
-
+import { eventTrack } from "../../utils/misc";
 import {
   MessageOutlined,
   SendOutlined,
@@ -318,7 +318,10 @@ const Comments = ({
           <MessageOutlined className="message-icon" />
           <div className="input">
             <SendOutlined
-              onClick={() => onSubmit({ description: newComment })}
+              onClick={() => {
+                eventTrack("Resource view", "Comment", "Button");
+                onSubmit({ description: newComment });
+              }}
             />
             <Input.TextArea
               rows={1}
