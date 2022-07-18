@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Dropdown, Menu } from "antd";
 import { UIStore } from "../../store";
 import catTags from "../../utils/cat-tags.json";
 import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
 import { Icon } from "../../components/svg-icon/svg-icon";
+import { useQuery } from "./common";
+import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
 
 function slug(text) {
   return text.toLowerCase().replaceAll("&", "n").replaceAll(" ", "-");
 }
 
-const FilterBar = ({ filter, setFilter, filterCountries, setFilterCountries }) => {
+const FilterBar = ({
+  filter,
+  setFilter,
+  filterCountries,
+  setFilterCountries,
+}) => {
+  const query = useQuery();
+  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
   }));
@@ -31,18 +40,23 @@ const FilterBar = ({ filter, setFilter, filterCountries, setFilterCountries }) =
     setFilter([filter[0], tagfilters]);
   };
 
+  const updateQuery = (param, value, paramValueArr) => {
+    console.log("hello");
+  };
+
   const countryList = (
-    <Menu
-      items={countries.map((country) => {
-        return {
-          key: country?.id,
-          label: (
-            <div>
-              {country?.name}
-            </div>
-          ),
-        };
-      })}
+    <CountryTransnationalFilter
+      {...{
+        query,
+        updateQuery,
+        multiCountryCountries,
+        setMultiCountryCountries,
+      }}
+      country={query?.country?.map((x) => parseInt(x)) || []}
+      multiCountry={query?.transnational?.map((x) => parseInt(x)) || []}
+      multiCountryLabelCustomIcon={true}
+      countrySelectMode="multiple"
+      multiCountrySelectMode="multiple"
     />
   );
 
@@ -100,7 +114,7 @@ const FilterBar = ({ filter, setFilter, filterCountries, setFilterCountries }) =
         className="location-filter"
         overlayClassName="location-filter-dropdown"
         overlay={countryList}
-        placement="bottom"
+        placement="bottomLeft"
         trigger={["click"]}
       >
         <Button>
