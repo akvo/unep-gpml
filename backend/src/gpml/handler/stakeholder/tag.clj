@@ -39,7 +39,7 @@
 (defn stakeholder-tags->api-stakeholder-tags
   "Transforms the `tags` data structure into three separate tag key
   types `seeking`, `offering` and `expertise`. Basically, the inverse
-  operation of `api-tags->stakeholder-tags`."
+  operation of `api-stakeholder-tags->stakeholder-tags`."
   [tags]
   (reduce (fn [acc [k v]]
             (assoc acc k (map :tag v)))
