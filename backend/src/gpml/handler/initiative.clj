@@ -1,5 +1,6 @@
 (ns gpml.handler.initiative
   (:require [clojure.java.jdbc :as jdbc]
+            [duct.logger :refer [log]]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.initiative :as db.initiative]
             [gpml.db.resource.connection :as db.resource.connection]
@@ -13,7 +14,8 @@
             [gpml.handler.util :as util]
             [gpml.util.email :as email]
             [integrant.core :as ig]
-            [ring.util.response :as resp]))
+            [ring.util.response :as resp])
+  (:import [java.sql SQLException]))
 
 (defn- add-geo-initiative [conn initiative-id {:keys [geo_coverage_country_groups geo_coverage_countries] :as data}]
   (when (or (not-empty geo_coverage_country_groups)
@@ -104,14 +106,27 @@
      {:type "initiative" :title (:q2 data)})
     initiative-id))
 
-(defmethod ig/init-key :gpml.handler.initiative/post [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.initiative/post
+  [_ {:keys [db logger mailjet-config]}]
   (fn [{:keys [jwt-claims body-params] :as req}]
-    (jdbc/with-db-transaction [conn (:spec db)]
-      (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-            initiative-id (create-initiative conn (assoc body-params
-                                                         :created_by (:id user)
-                                                         :mailjet-config mailjet-config))]
-        (resp/created (:referrer req) {:message "New initiative created" :id initiative-id})))))
+    (try
+      (jdbc/with-db-transaction [conn (:spec db)]
+        (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
+              initiative-id (create-initiative conn (assoc body-params
+                                                           :created_by (:id user)
+                                                           :mailjet-config mailjet-config))]
+          (resp/created (:referrer req) {:success? true
+                                         :message "New initiative created"
+                                         :id initiative-id})))
+      (catch Exception e
+        (log logger :error ::failed-to-create-initiative {:exception-message (.getMessage e)})
+        (let [response {:status 500
+                        :body {:success? false
+                               :reason :could-not-create-event}}]
+
+          (if (instance? SQLException e)
+            response
+            (assoc response :error-details {:error (.getMessage e)})))))))
 
 (defn expand-related-initiative-content [conn initiative-id]
   (let [related_content (handler.resource.related-content/get-related-contents conn initiative-id "initiative")]
