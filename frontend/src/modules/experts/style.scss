@@ -244,6 +244,9 @@
     background-color: #06496c;
     height: 95px;
     padding-left: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     .level-0 {
       display: flex;
       flex-direction: column;
@@ -385,40 +388,36 @@
         }
       }
     }
-    .filter-tools {
+
+    .location-filter {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      .location-filter {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        top: -15px;
-        right: 15px;
-        width: 73px;
-        height: 73px;
-        background-color: #004063;
-        border: unset;
-        border-radius: 4px;
-        cursor: pointer;
-        svg {
-          width: 21px;
-          height: 21px;
-          margin-bottom: 11px;
-          path {
-            stroke: #fff;
-          }
+      position: relative;
+      top: 0;
+      right: 15px;
+      width: 73px;
+      height: 73px;
+      background-color: #004063;
+      border: unset;
+      border-radius: 4px;
+      cursor: pointer;
+      svg {
+        width: 21px;
+        height: 21px;
+        margin-bottom: 11px;
+        path {
+          stroke: #fff;
         }
-        span {
-          font-weight: 400;
-          font-size: 10px;
-          line-height: 11px;
-          text-align: center;
-          text-transform: capitalize;
-          color: #ffffff;
-        }
+      }
+      span {
+        font-weight: 400;
+        font-size: 10px;
+        line-height: 11px;
+        text-align: center;
+        text-transform: capitalize;
+        color: #ffffff;
       }
     }
   }

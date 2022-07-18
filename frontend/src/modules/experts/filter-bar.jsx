@@ -65,17 +65,6 @@ const FilterBar = ({ filter, setFilter, updateQuery }) => {
                 );
               })}
             </ul>
-
-            <Dropdown
-              className="location-filter"
-              overlay={menu}
-              placement="bottom"
-            >
-              <Button>
-                <GlobeIcon />
-                <span>Location</span>
-              </Button>
-            </Dropdown>
           </div>
         </div>
       )}
@@ -115,6 +104,12 @@ const FilterBar = ({ filter, setFilter, updateQuery }) => {
           </ul>
         </div>
       )}
+      <Dropdown className="location-filter" overlay={menu} placement="bottom">
+        <Button>
+          <GlobeIcon />
+          <span>Location</span>
+        </Button>
+      </Dropdown>
     </div>
   );
 };
