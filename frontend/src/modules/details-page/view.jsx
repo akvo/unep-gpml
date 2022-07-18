@@ -483,32 +483,6 @@ const DetailsView = ({
                             </div>
                           )}
 
-                        {data?.geoCoverageType !== "sub-national" &&
-                          data?.geoCoverageType !== "national" && (
-                            <>
-                              {data?.geoCoverageCountries &&
-                                data?.geoCoverageCountries?.length > 0 &&
-                                renderCountries(
-                                  data,
-                                  countries,
-                                  transnationalOptions
-                                ) && (
-                                  <Row>
-                                    <div className="location-icon detail-item-icon">
-                                      <LocationImage />
-                                    </div>
-                                    <div>
-                                      {renderCountries(
-                                        data,
-                                        countries,
-                                        transnationalOptions
-                                      )}
-                                    </div>
-                                  </Row>
-                                )}
-                            </>
-                          )}
-
                         {(data?.geoCoverageType === "sub-national" ||
                           data?.geoCoverageType === "national") &&
                           data?.geoCoverageValues &&
