@@ -377,6 +377,7 @@ const DetailsView = ({
   };
 
   const description = data?.description ? data?.description : data?.summary;
+
   return (
     <div className="detail-view-wrapper">
       <div
@@ -422,7 +423,12 @@ const DetailsView = ({
               }`}
               target="_blank"
             >
-              <img className="resource-image" src={data?.image} alt="" />
+              <img
+                className="resource-image"
+                id="detail-resource-image"
+                src={data?.image}
+                alt={data?.title}
+              />
             </a>
           )}
 
@@ -475,32 +481,6 @@ const DetailsView = ({
                                 </div>
                               </Row>
                             </div>
-                          )}
-
-                        {data?.geoCoverageType !== "sub-national" &&
-                          data?.geoCoverageType !== "national" && (
-                            <>
-                              {data?.geoCoverageCountries &&
-                                data?.geoCoverageCountries?.length > 0 &&
-                                renderCountries(
-                                  data,
-                                  countries,
-                                  transnationalOptions
-                                ) && (
-                                  <Row>
-                                    <div className="location-icon detail-item-icon">
-                                      <LocationImage />
-                                    </div>
-                                    <div>
-                                      {renderCountries(
-                                        data,
-                                        countries,
-                                        transnationalOptions
-                                      )}
-                                    </div>
-                                  </Row>
-                                )}
-                            </>
                           )}
 
                         {(data?.geoCoverageType === "sub-national" ||
