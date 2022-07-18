@@ -1,15 +1,16 @@
 (ns gpml.handler.stakeholder
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.string :as str]
+            [duct.logger :refer [log]]
             [gpml.constants :as constants]
             [gpml.db.organisation :as db.organisation]
+            [gpml.db.resource.geo-coverage :as db.resource.geo-coverage]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.tag :as db.tag]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
             [gpml.handler.organisation :as handler.org]
-            [gpml.handler.resource.tag :as handler.resource.tag]
+            [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.handler.tag :as handler.tag]
             [gpml.handler.util :as handler.util]
             [gpml.util :as util]
@@ -25,35 +26,6 @@
                    (str/join "|")
                    (format "^(%1$s)((,(%1$s))+)?$")
                    re-pattern))
-
-(defn- add-tags-ids-for-categories
-  [conn tags categories]
-  (if-let [filtered-tags (seq (filter #(some #{(:tag_category %)} categories) tags))]
-    (let [result (db.tag/tag-by-tags conn {:tags (map (comp str/lower-case :tag) filtered-tags)})]
-      (map (fn [{tag-name :tag :as tag}]
-             (let [grouped-result-tags (->> result
-                                            (map #(update % :tag str/lower-case))
-                                            (group-by :tag))]
-               (assoc tag :id (get-in grouped-result-tags [(str/lower-case tag-name) 0 :id]))))
-           tags))
-    tags))
-
-(defn save-stakeholder-tags
-  [conn mailjet-config
-   {:keys [tags stakeholder-id update?]
-    :or {update? false}}]
-  (let [categories (->> tags (group-by :tag_category) keys)
-        grouped-tags (group-by :tag_category (add-tags-ids-for-categories conn tags categories))]
-    (when update?
-      (db.resource.tag/delete-resource-tags conn {:table "stakeholder_tag"
-                                                  :resource-col "stakeholder"
-                                                  :resource-id stakeholder-id}))
-    (doseq [[tag-category tags] grouped-tags
-            :let [opts {:tags tags
-                        :tag-category tag-category
-                        :resource-name "stakeholder"
-                        :resource-id stakeholder-id}]]
-      (handler.resource.tag/create-resource-tags conn mailjet-config opts))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/get [_ {:keys [db]}]
   (fn [{{{:keys [page limit email-like roles] :as query} :query} :parameters
@@ -165,32 +137,47 @@
      :review_status review_status
      :public_email public_email}))
 
-(defn create-new-profile [db mailjet-config new-profile body-params org]
-  (cond-> new-profile
-    (:photo body-params)
-    (assoc :picture
-           (cond
-             (re-find #"^\/image|^http" (:photo body-params))
-             (:photo body-params)
-             (re-find #"^data:" (:photo body-params))
-             (handler.image/assoc-image db (:photo body-params) "profile")))
-    (= (:photo body-params) nil)
-    (assoc :picture nil)
-    (:cv body-params)
-    (assoc :cv
-           (if (re-find #"^\/cv" (:cv body-params))
-             (:cv body-params)
-             (assoc-cv db (:cv body-params))))
-    (= (:cv body-params) nil)
-    (assoc :cv nil)
-    (and (:id org) (not= -1 (:id org)))
-    (assoc :affiliation (:id org))
-    (= -1 (:id org))
-    (assoc :affiliation (if (= -1 (:id org))
-                          (handler.org/create db mailjet-config org)
-                          (:id org)))
-    (nil? org)
-    (assoc :affiliation nil)))
+(defn- create-new-profile
+  [db mailjet-config new-profile body-params]
+  (let [{:keys [org]} body-params]
+    (cond-> new-profile
+      (:photo body-params)
+      (assoc :picture
+             (cond
+               (re-find #"^\/image|^http" (:photo body-params))
+               (:photo body-params)
+               (re-find #"^data:" (:photo body-params))
+               (handler.image/assoc-image db (:photo body-params) "profile")))
+
+      (and
+       (contains? body-params :photo)
+       (nil? (get body-params :photo)))
+      (assoc :picture nil)
+
+      (:cv body-params)
+      (assoc :cv
+             (if (re-find #"^\/cv" (:cv body-params))
+               (:cv body-params)
+               (assoc-cv db (:cv body-params))))
+
+      (and
+       (contains? body-params :cv)
+       (nil? (get body-params :cv)))
+      (assoc :cv nil)
+
+      (and
+       (:id org)
+       (not= -1 (:id org)))
+      (assoc :affiliation (:id org))
+
+      (= -1 (:id org))
+      (assoc :affiliation (if (= -1 (:id org))
+                            (handler.org/create db mailjet-config org)
+                            (:id org)))
+      (and
+       (contains? body-params :org)
+       (nil? (get body-params :org)))
+      (assoc :affiliation nil))))
 
 (defn get-stakeholder-profile [db stakeholder]
   (let [conn (:spec db)
@@ -210,25 +197,16 @@
       (assoc profile :affiliation (-> profile :org :id) :non_member_organisation nil)
       (assoc profile :non_member_organisation (-> profile :org :id) :affiliation nil))))
 
-(defn prep-stakeholder-tags
-  [stakeholder]
-  (reduce (fn [acc [category tags]]
-            (concat acc (map (fn [tag] {:tag tag :tag_category (name category)}) tags)))
-          []
-          (select-keys stakeholder [:seeking :offering :expertise])))
-
 (defn update-stakeholder
   [db mailjet-config {:keys [body-params old-profile]}]
-  (let [{:keys [id org]} body-params
+  (let [{:keys [id]} body-params
         new-profile (merge (dissoc old-profile :non_member_organisation)
                            (if (:non_member_organisation body-params)
                              (-> body-params (assoc :affiliation (:non_member_organisation body-params)) (dissoc :non_member_organisation))
                              body-params))
-        profile (create-new-profile db mailjet-config new-profile body-params org)
-        tags (prep-stakeholder-tags body-params)]
+        profile (create-new-profile db mailjet-config new-profile body-params)
+        tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body-params)]
     (db.stakeholder/update-stakeholder db profile)
-    (db.stakeholder/delete-stakeholder-geo db body-params)
-    (db.stakeholder/delete-stakeholder-tags db body-params)
     (when (and (some? (:photo old-profile))
                (not= (:photo old-profile) (:picture profile))
                (not= "http" (re-find #"^http" (:photo old-profile))))
@@ -241,13 +219,16 @@
       (let [old-cv (-> (str/split (:cv old-profile) #"/cv/profile/") second Integer/parseInt)]
         (db.stakeholder/delete-stakeholder-cv-by-id db {:id old-cv})))
     (when (not-empty tags)
-      (save-stakeholder-tags db mailjet-config {:tags tags
-                                                :stakeholder-id id
-                                                :update? true}))
+      (handler.stakeholder.tag/save-stakeholder-tags db mailjet-config {:tags tags
+                                                                        :stakeholder-id id
+                                                                        :update? true}))
     (if (or (some? (:geo_coverage_country_groups body-params))
             (some? (:geo_coverage_countries body-params)))
       (let [geo-data (handler.geo/get-geo-vector-v2 id body-params)]
-        (db.stakeholder/add-stakeholder-geo db {:geo geo-data}))
+        (db.resource.geo-coverage/delete-resource-geo-coverage {:table "stakeholder_geo_coverage"
+                                                                :resource-col "stakeholder"
+                                                                :resource-id id})
+        (db.resource.geo-coverage/create-resource-geo-coverage db {:geo-coverage geo-data}))
       (when (some? (:geo_coverage_value body-params))
         (let [geo-data (handler.geo/get-geo-vector id body-params)]
           (db.stakeholder/add-stakeholder-geo db {:geo geo-data}))))))
@@ -330,12 +311,12 @@
                                                                   (merge profile {:type "stakeholder"}))
                             (:id new-stakeholder)))
          profile (db.stakeholder/stakeholder-by-id db {:id stakeholder-id})
-         tags (prep-stakeholder-tags body-params)]
+         tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body-params)]
      (when new-org?
        (handler.org/update-org db mailjet-config {:id org-id :created_by stakeholder-id}))
      (when (seq tags)
-       (save-stakeholder-tags db mailjet-config {:tags tags
-                                                 :stakeholder-id stakeholder-id}))
+       (handler.stakeholder.tag/save-stakeholder-tags db mailjet-config {:tags tags
+                                                                         :stakeholder-id stakeholder-id}))
      (resp/created (:referer headers) (-> (merge body-params profile)
                                           (dissoc :affiliation :picture)
                                           (assoc :org (db.organisation/organisation-by-id db {:id (:affiliation profile)})))))))
@@ -361,13 +342,23 @@
       :else
       (save-stakeholder config req nil false))))
 
-(defmethod ig/init-key :gpml.handler.stakeholder/put [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.stakeholder/put
+  [_ {:keys [db logger mailjet-config]}]
   (fn [{:keys [jwt-claims body-params]}]
-    (jdbc/with-db-transaction [tx (:spec db)]
-      (let [old-profile (db.stakeholder/stakeholder-by-email tx jwt-claims)]
-        (update-stakeholder tx mailjet-config {:body-params body-params
-                                               :old-profile old-profile})
-        (resp/status 204)))))
+    (try
+      (jdbc/with-db-transaction [tx (:spec db)]
+        (let [old-profile (db.stakeholder/stakeholder-by-email tx jwt-claims)]
+          (update-stakeholder tx mailjet-config {:body-params body-params
+                                                 :old-profile old-profile})
+          (resp/status {:success? true} 204)))
+      (catch Exception e
+        (log logger :error ::failed-to-update-stakeholder {:exception-message (.getMessage e)})
+        (let [response {:status 500
+                        :body {:success? false
+                               :reason :could-not-update-stakeholder}}]
+          (if (instance? SQLException e)
+            response
+            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (def ^:const suggested-profiles-per-page 5)
 
@@ -505,24 +496,34 @@
           count (db.stakeholder/update-stakeholder-role (:spec db) params)]
       (resp/response {:status (if (= count 1) "success" "failed")}))))
 
-(defmethod ig/init-key ::patch-params [_ _]
+(defmethod ig/init-key :gpml.handler.stakeholder/patch-params [_ _]
   {:path [:map [:id int?]]
    :body [:map [:role
                 (apply conj [:enum] (->> constants/user-roles (map name)))]]})
 
-(defmethod ig/init-key ::get-by-id [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.stakeholder/get-by-id [_ {:keys [db]}]
   (fn [{{:keys [path]} :parameters}]
     (let [stakeholder (db.stakeholder/get-stakeholder-by-id (:spec db) path)]
       (resp/response
        (get-stakeholder-profile db stakeholder)))))
 
-(defmethod ig/init-key ::put-by-admin [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.stakeholder/put-by-admin
+  [_ {:keys [db logger mailjet-config]}]
   (fn [{{:keys [path body]} :parameters}]
-    (jdbc/with-db-transaction [tx (:spec db)]
-      (let [old-profile (db.stakeholder/stakeholder-by-id tx path)]
-        (update-stakeholder tx mailjet-config {:body-params (assoc body :id (:id path))
-                                               :old-profile old-profile})
-        (resp/status 204)))))
+    (try
+      (jdbc/with-db-transaction [tx (:spec db)]
+        (let [old-profile (db.stakeholder/stakeholder-by-id tx path)]
+          (update-stakeholder tx mailjet-config {:body-params (assoc body :id (:id path))
+                                                 :old-profile old-profile})
+          (resp/status {:success? true} 204)))
+      (catch Exception e
+        (log logger :error ::failed-to-update-stakeholder {:exception-message (.getMessage e)})
+        (let [response {:status 500
+                        :body {:success? false
+                               :reason :could-not-update-stakeholder}}]
+          (if (instance? SQLException e)
+            response
+            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defmethod ig/init-key ::put-by-admin-params [_ _]
   {:path [:map [:id int?]]

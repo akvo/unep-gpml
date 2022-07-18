@@ -1,6 +1,5 @@
 (ns gpml.handler.submission
   (:require [clojure.set :as set]
-            [clojure.walk :as w]
             [duct.logger :refer [log]]
             [gpml.constants :as constants]
             [gpml.db.organisation :as db.organisation]
@@ -104,14 +103,22 @@
                         (list nil))
       (assoc (resp/status 200) :body {:message "Successfuly Updated" :data detail}))))
 
-(defn- prep-stakeholder-tags
-  [tags]
-  (reduce (fn [acc [k v]]
-            (assoc acc k (map :tag v)))
-          {}
-          (-> (group-by :tag_relation_category tags)
-              (w/keywordize-keys)
-              (select-keys [:seeking :offering :expertise]))))
+(defn- add-stakeholder-extra-details
+  [conn stakeholder]
+  (let [email (:email (db.stakeholder/stakeholder-by-id conn {:id (:id stakeholder)}))
+        org (db.organisation/organisation-by-id conn {:id (:affiliation stakeholder)})
+        tags (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
+                                                      :resource-col "stakeholder"
+                                                      :resource-id (:id stakeholder)})]
+    (cond-> stakeholder
+      (seq org)
+      (assoc :affiliation org)
+
+      (seq tags)
+      (merge (handler.stakeholder.tag/stakeholder-tags->api-stakeholder-tags tags))
+
+      true
+      (assoc :email email))))
 
 (defn- get-detail
   [{:keys [db]} params]
@@ -128,12 +135,7 @@
         params (conj params {:table-name table-name})
         detail (submission-detail conn params)
         detail (if (= submission "stakeholder")
-                 (merge detail
-                        (select-keys (db.stakeholder/stakeholder-by-id conn params) [:email])
-                        (->> (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
-                                                                      :resource-col "stakeholder"
-                                                                      :resource-id (:id params)})
-                             (prep-stakeholder-tags)))
+                 (add-stakeholder-extra-details conn detail)
                  detail)
         detail (if initiative? (remap-initiative detail conn)
                    detail)]
