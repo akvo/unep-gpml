@@ -21,6 +21,7 @@ const FilterBar = ({
   const [country, setCountry] = useState([]);
   const [multiCountry, setMultiCountry] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
+  const [dropdownVisible, setDropdownVisible] = useState(false)
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
   }));
@@ -124,6 +125,8 @@ const FilterBar = ({
         overlay={countryList}
         placement="bottomLeft"
         trigger={["click"]}
+        visible={dropdownVisible}
+        onVisibleChange={(visible) => { setDropdownVisible(visible) }}
       >
         <Button>
           <GlobeIcon />
