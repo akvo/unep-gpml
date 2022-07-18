@@ -32,7 +32,7 @@ const FilterBar = ({ filter, setFilter, updateQuery }) => {
     updateQuery("expertise", tag);
   };
 
-  const menu = (
+  const countryList = (
     <Menu
       items={countries.map((country) => {
         return {
@@ -104,7 +104,13 @@ const FilterBar = ({ filter, setFilter, updateQuery }) => {
           </ul>
         </div>
       )}
-      <Dropdown className="location-filter" overlay={menu} placement="bottom">
+      <Dropdown
+        className="location-filter"
+        overlayClassName="location-filter-dropdown"
+        overlay={countryList}
+        placement="bottom"
+        trigger={["click"]}
+      >
         <Button>
           <GlobeIcon />
           <span>Location</span>
