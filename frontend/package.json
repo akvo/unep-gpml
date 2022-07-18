@@ -73,6 +73,9 @@
       "last 1 safari version"
     ]
   },
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
+  },
   "devDependencies": {
     "eslint-config-prettier": "8.1.0",
     "http-proxy-middleware": "^1.0.6",
