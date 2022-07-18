@@ -97,14 +97,14 @@ const ExpertCarousel = ({
   return (
     <Carousel
       centerMode={true}
-      itemClass="expert-carousel-item"
       responsive={responsive}
+      containerClass="expert-carousel"
+      itemClass="expert-carousel-item"
       dotListClass="expert-carousel-dots"
       showDots={true}
       renderDotsOutside={true}
       customLeftArrow={<CustomLeftArrow />}
       customRightArrow={<CustomRightArrow />}
-      containerClass="expert-carousel"
     >
       {experts.experts.map((expert, index) => {
         const country = countries.find(
@@ -177,7 +177,7 @@ const ExpertCarousel = ({
           </Link>
         );
       })}
-      <InviteExpertCard {...{ setIsShownModal }} />
+      {/* <InviteExpertCard {...{ setIsShownModal }} /> */}
     </Carousel>
   );
 };

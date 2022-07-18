@@ -13,7 +13,7 @@ const FilterBar = ({ filter, setFilter, updateQuery }) => {
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
   }));
-  console.log("countries::::::", countries);
+
   const handleClick0 = (catIndex) => () => {
     setFilter([catIndex]);
   };
