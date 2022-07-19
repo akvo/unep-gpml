@@ -119,7 +119,7 @@ const ExpertCarousel = ({
                       className="entity-logo"
                       style={{
                         backgroundColor: randomColor(
-                          entity?.name.substring(0, 1)
+                          entity?.name?.substring(0, 1)
                         ),
                         verticalAlign: "middle",
                       }}
@@ -136,7 +136,7 @@ const ExpertCarousel = ({
                     src={expert.picture}
                     style={{
                       backgroundColor: randomColor(
-                        expert?.firstName.substring(0, 1)
+                        expert?.firstName?.substring(0, 1)
                       ),
                     }}
                     alt={expert?.firstName ? expert?.firstName : expert?.name}
@@ -164,7 +164,7 @@ const ExpertCarousel = ({
                     </li>
                   )}
                   <li className="expert-activity">
-                    {expert.expertise.join(', ')}
+                    {expert.expertise.join(", ")}
                   </li>
                 </ul>
               </div>
