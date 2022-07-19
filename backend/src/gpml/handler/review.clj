@@ -2,15 +2,19 @@
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.set :as set]
             [clojure.string :as str]
+            [duct.logger :refer [log]]
             [gpml.constants :as constants]
             [gpml.db.review :as db.review]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.domain.stakeholder :as dom.stakeholder]
             [gpml.handler.util :as util]
             [gpml.util.email :as email]
             [integrant.core :as ig]
-            [ring.util.response :as resp]))
+            [malli.util :as mu]
+            [ring.util.response :as resp])
+  (:import [java.sql SQLException]))
 
-(defn reviews-by-reviewer-id [conn opts]
+(defn- reviews-by-reviewer-id [conn opts]
   (map (fn [{:keys [details] :as review}]
          (let [[title picture] details]
            (-> review
@@ -19,17 +23,46 @@
                (dissoc :details))))
        (db.review/reviews-by-reviewer-id conn opts)))
 
-(def review-status-re (->> constants/reviewer-review-status
-                           (map symbol)
-                           (str/join "|")
-                           (format "^(%1$s)((,(%1$s))+)?$")
-                           re-pattern))
+(def ^:private review-status-re
+  (->> constants/reviewer-review-status
+       (map symbol)
+       (str/join "|")
+       (format "^(%1$s)((,(%1$s))+)?$")
+       re-pattern))
 
-(defn get-reviewers [db]
-  (let [conn (:spec db)]
-    (resp/response (db.stakeholder/get-reviewers conn))))
+(defn- api-opts->opts
+  [{:keys [roles q]}]
+  (cond-> {}
+    (seq roles)
+    (assoc-in [:filters :roles] (str/split roles #","))
 
-(defn new-review* [{:keys [conn mailjet-config topic-type topic-id assigned-by]} c reviewer-id]
+    (seq q)
+    (assoc-in [:filters :search-text] (str/lower-case q))))
+
+(defn- reviewer->api-reviewer
+  [reviewer]
+  (select-keys reviewer [:id :first_name :last_name :email :role]))
+
+(defn- get-reviewers
+  [{:keys [db logger]} query]
+  (try
+    (let [opts (api-opts->opts query)
+          conn (:spec db)
+          reviewers (db.stakeholder/get-stakeholders conn opts)]
+      (resp/response {:success? true
+                      :reviewers (map reviewer->api-reviewer reviewers)}))
+    (catch Exception e
+      (log logger :error ::failed-to-get-reviewers {:exception-message (.getMessage e)})
+      (let [response {:status 500
+                      :body {:success? false
+                             :reason :could-not-get-reviewers}}]
+
+        (if (instance? SQLException e)
+          response
+          (assoc response :error-details {:error (.getMessage e)}))))))
+
+(defn- new-review*
+  [{:keys [conn mailjet-config topic-type topic-id assigned-by]} c reviewer-id]
   (let [params {:topic-type topic-type
                 :topic-id topic-id
                 :assigned-by assigned-by
@@ -46,7 +79,8 @@
                       (list nil))
     (conj c review)))
 
-(defn new-multiple-review [db mailjet-config topic-type topic-id reviewers assigned-by]
+(defn- new-multiple-review
+  [db mailjet-config topic-type topic-id reviewers assigned-by]
   (let [topic-type* (util/get-internal-topic-type topic-type)]
     (jdbc/with-db-transaction [conn (:spec db)]
       (db.review/delete-reviews conn {:topic-type topic-type* :topic-id topic-id})
@@ -58,7 +92,8 @@
                                        []
                                        reviewers)}))))
 
-(defn change-reviewers [db mailjet-config topic-type topic-id reviewers admin]
+(defn- change-reviewers
+  [db mailjet-config topic-type topic-id reviewers admin]
   (let [topic-type* (util/get-internal-topic-type topic-type)
         assigned-by (:id admin)]
     (if (= "ADMIN" (:role admin))
@@ -85,7 +120,8 @@
 
 (def resp403 {:status 403 :body {:message "Cannot update review for this topic"}})
 
-(defn update-review-status [db mailjet-config topic-type topic-id review-status review-comment reviewer]
+(defn- update-review-status
+  [db mailjet-config topic-type topic-id review-status review-comment reviewer]
   (let [topic-type* (util/get-internal-topic-type topic-type)]
     (jdbc/with-db-transaction [conn (:spec db)]
       (if-let [review (first (db.review/reviews-filter
@@ -110,7 +146,8 @@
           resp403)
         resp403))))
 
-(defn list-reviews [db reviewer page limit status only]
+(defn- list-reviews
+  [db reviewer page limit status only]
   (let [conn (:spec db)
         review-status (and status (str/split status #","))
         params {:reviewer (:id reviewer) :page page :limit limit :review-status review-status
@@ -120,45 +157,18 @@
         pages (util/page-count count limit)]
     (resp/response {:reviews reviews :page page :limit limit :pages pages :count count})))
 
-(defmethod ig/init-key ::get-reviewers [_ {:keys [db]}]
-  (fn [_]
-    (get-reviewers db)))
+(defmethod ig/init-key :gpml.handler.review/get-reviewers
+  [_ config]
+  (fn [{{:keys [query]} :parameters}]
+    (get-reviewers config query)))
 
-(defmethod ig/init-key ::new-multiple-review [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.review/new-multiple-review [_ {:keys [db mailjet-config]}]
   (fn [{{{:keys [topic-type topic-id]} :path
          {:keys [reviewers]} :body} :parameters
         admin :admin}]
     (new-multiple-review db mailjet-config topic-type topic-id reviewers (:id admin))))
 
-(defmethod ig/init-key ::update-review [_ {:keys [db mailjet-config]}]
-  (fn [{{{:keys [topic-type topic-id]} :path
-         {:keys [review-status review-comment reviewers]} :body} :parameters
-        current-user :reviewer}]
-    (if reviewers
-      (change-reviewers db mailjet-config topic-type topic-id reviewers current-user)
-      (update-review-status db mailjet-config topic-type topic-id review-status review-comment current-user))))
-
-(defmethod ig/init-key ::list-user-reviews [_ {:keys [db]}]
-  (fn [{{{:keys [page limit review-status only]} :query} :parameters
-        reviewer :reviewer}]
-    (list-reviews db reviewer page limit review-status only)))
-
-(defmethod ig/init-key ::review-status-params [_ _]
-  (apply conj [:enum] (map name constants/reviewer-review-status)))
-
-(defmethod ig/init-key ::list-user-reviews-params [_ _]
-  {:query [:map
-           [:page {:optional true
-                   :default 1}
-            int?]
-           [:limit {:optional true
-                    :default 10}
-            int?]
-           [:only {:optional true} [:enum "resources" "stakeholders"]]
-           [:review-status {:optional true}
-            [:re review-status-re]]]})
-
-(defn get-reviews [db topic-type topic-id]
+(defn- get-reviews [db topic-type topic-id]
   (let [conn (:spec db)
         topic-type (util/get-internal-topic-type topic-type)
         reviews (db.review/reviews-filter
@@ -166,6 +176,65 @@
                  {:topic-type topic-type :topic-id topic-id})]
     (resp/response reviews)))
 
-(defmethod ig/init-key ::get-reviews [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.review/update-review [_ {:keys [db mailjet-config]}]
+  (fn [{{{:keys [topic-type topic-id]} :path
+         {:keys [review-status review-comment reviewers]} :body} :parameters
+        current-user :reviewer}]
+    (if reviewers
+      (change-reviewers db mailjet-config topic-type topic-id reviewers current-user)
+      (update-review-status db mailjet-config topic-type topic-id review-status review-comment current-user))))
+
+(defmethod ig/init-key :gpml.handler.review/get-reviews [_ {:keys [db]}]
   (fn [{{{:keys [topic-type topic-id]} :path} :parameters}]
     (get-reviews db topic-type topic-id)))
+
+(defmethod ig/init-key :gpml.handler.review/list-user-reviews [_ {:keys [db]}]
+  (fn [{{{:keys [page limit review-status only]} :query} :parameters
+        reviewer :reviewer}]
+    (list-reviews db reviewer page limit review-status only)))
+
+(defmethod ig/init-key :gpml.handler.review/get-reviewers-params [_ _]
+  (let [role-types-as-str (map name dom.stakeholder/role-types)
+        possible-roles-txt (str/join "|" role-types-as-str)]
+    {:query
+     [:map
+      [:roles {:optional true
+               :error/message (str "Allowed values: " possible-roles-txt)
+               :swagger {:description (str "Comma separated list of user roles. Possible values: " possible-roles-txt)
+                         :type "string"}}
+       (vec (apply conj [:enum] role-types-as-str))]
+      [:q {:optional true
+           :swagger {:description "Search text query."
+                     :type "string"}}
+       [:string {:min 1}]]]}))
+
+(defmethod ig/init-key :gpml.handler.review/list-user-reviews-params [_ _]
+  {:query
+   [:map
+    [:page {:optional true
+            :default 1}
+     int?]
+    [:limit {:optional true
+             :default 10}
+     int?]
+    [:only {:optional true} [:enum "resources" "stakeholders"]]
+    [:review-status {:optional true}
+     [:re review-status-re]]]})
+
+(defmethod ig/init-key :gpml.handler.review/review-status-params [_ _]
+  (apply conj [:enum] (map name constants/reviewer-review-status)))
+
+(defmethod ig/init-key :gpml.handler.review/get-reviewers-responses [_ _]
+  {200 {:body
+        [:map
+         [:success? boolean?]
+         [:reviewers
+          [:sequential
+           (mu/select-keys dom.stakeholder/Stakeholder [:id :first_name :last_name :email :role])]]]}
+   500 {:body
+        [:map
+         [:success? boolean?]
+         [:reason keyword?]
+         [:error-details {:optional true}
+          [:map
+           [:error [:string]]]]]}})
