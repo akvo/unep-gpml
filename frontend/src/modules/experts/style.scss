@@ -206,6 +206,19 @@
             .expert-activity {
               display: flex;
               align-items: center;
+              padding-left: 20px;
+              position: relative;
+              line-height: 18px;
+              padding-top: 2px;
+              &:before {
+                position: absolute;
+                content: " ";
+                background: url(../../images/stakeholder-overview/star-outlined.svg);
+                width: 17px;
+                height: 16px;
+                left: 0;
+                top: 3px;
+              }
               svg {
                 margin-right: 5px;
               }

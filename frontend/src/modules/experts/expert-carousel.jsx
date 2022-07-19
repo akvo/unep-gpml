@@ -151,25 +151,22 @@ const ExpertCarousel = ({
                     </span>
                   </Avatar>
                 </div>
-                <div>
-                  <li className="list-item expert-name">
+                <ul>
+                  <li className="expert-name">
                     {`${titleCase(expert?.firstName)} ${titleCase(
                       expert?.lastName
                     )}`}
                   </li>
                   {expert?.country && (
-                    <li className="list-item expert-location">
+                    <li className="expert-location">
                       <LocationIcon />
                       <span>{country}</span>
                     </li>
                   )}
-                  {expert?.jobTitle && (
-                    <li className="list-item expert-activity">
-                      <StarOutlined />
-                      {expert?.jobTitle}
-                    </li>
-                  )}
-                </div>
+                  <li className="expert-activity">
+                    {expert.expertise.join(', ')}
+                  </li>
+                </ul>
               </div>
             </Card>
           </Link>
