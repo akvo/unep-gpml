@@ -22,6 +22,7 @@ const CountryTransnationalFilter = ({
   countrySelectMode,
   multiCountrySelectMode,
   setMultiCountryCountries,
+  isExpert,
 }) => {
   const { countries, transnationalOptions, landing } = UIStore.useState(
     (s) => ({
@@ -47,10 +48,17 @@ const CountryTransnationalFilter = ({
   };
 
   const handleChangeCountry = (val) => {
+    if (isExpert) {
+      updateQuery("country", val);
+      return;
+    }
     updateQuery("country", query?.country && val);
   };
 
   const handleDeselectCountry = (val) => {
+    if (isExpert) {
+      return false;
+    }
     updateQuery(
       "country",
       query?.country ? query?.country.filter((x) => x != val) : []
@@ -58,6 +66,11 @@ const CountryTransnationalFilter = ({
   };
 
   const handleChangeMultiCountry = (val) => {
+    if (isExpert) {
+      updateQuery("transnational", val);
+      return;
+    }
+
     updateQuery("transnational", [val]);
 
     // Fetch transnational countries
@@ -76,7 +89,11 @@ const CountryTransnationalFilter = ({
   const handleDeselectMultiCountry = (val) => {
     updateQuery(
       "transnational",
-      query?.transnational ? query?.transnational.filter((x) => x != val) : []
+      query?.transnational
+        ? query?.transnational.filter((x) => x != val)
+        : isExpert
+        ? multiCountry?.filter((x) => x != val)
+        : []
     );
   };
 

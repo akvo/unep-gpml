@@ -1,18 +1,42 @@
 @import "../../vars.scss";
 
 #experts {
+  .loading {
+    font-size: 36px;
+  }
   .expert-list-section {
     background: rgba(211, 222, 231, 0.15);
-    padding: 15px 25px;
-    #expert-loading {
-      padding-top: 0;
-      padding-bottom: 0;
+    padding: 15px 0px;
+    height: 267px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    .loading {
+      padding: 0;
+      flex: 1;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      height: 200px;
+      top: 55px;
+      position: absolute;
+      width: 100%;
+      background-color: rgba(249, 250, 251, 0.5);
+      z-index: 2;
+      color: #027975;
+    }
+    .noresults {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      justify-content: center;
     }
     .expert-top-tools {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+      padding: 0 25px;
       .page-label {
         background-color: rgba(211, 222, 231, 0.5);
         border-radius: 10px;
@@ -86,6 +110,7 @@
     }
 
     .expert-carousel {
+      padding-left: 25px;
       .react-multi-carousel-item:not(:last-of-type) {
         margin-right: 10px;
       }
@@ -139,7 +164,7 @@
               .entity-logo,
               .expert-badge {
                 position: absolute;
-                bottom: -10px;
+                bottom: -12px;
                 z-index: 1;
               }
               .entity-logo {
@@ -151,7 +176,7 @@
                 border: 1px solid #edf2f7;
               }
               .expert-badge {
-                right: 10px;
+                right: 15px;
               }
             }
 
@@ -181,6 +206,19 @@
             .expert-activity {
               display: flex;
               align-items: center;
+              padding-left: 20px;
+              position: relative;
+              line-height: 18px;
+              padding-top: 2px;
+              &:before {
+                position: absolute;
+                content: " ";
+                background: url(../../images/stakeholder-overview/star-outlined.svg);
+                width: 17px;
+                height: 16px;
+                left: 0;
+                top: 3px;
+              }
               svg {
                 margin-right: 5px;
               }
@@ -201,7 +239,32 @@
         }
       }
     }
-
+    .react-multiple-carousel__arrow {
+      top: 0;
+      height: 100%;
+      border-radius: 0;
+      width: 60px;
+      background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.6) 35%,
+        rgba(0, 0, 0, 0) 100%
+      );
+      &:before {
+        margin-left: -20px;
+      }
+      &--right {
+        background: linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0) 0%,
+          rgba(0, 0, 0, 0.6) 65%,
+          rgba(0, 0, 0, 0.6) 100%
+        );
+        &:before {
+          margin-left: 20px;
+        }
+      }
+    }
     .expert-carousel-arrow {
       top: calc(calc(153px - calc(42px / 2)) / 2);
       background: unset !important;
@@ -255,7 +318,7 @@
         display: inline-block;
         color: #d3dee7;
         padding: 0px 10px 0;
-        margin-top: 4px;
+        margin-top: 12px;
       }
       ul {
         display: flex;
@@ -272,6 +335,7 @@
           font-size: 14px;
           color: #67bea1;
           background-color: #004063;
+          border: 1px solid #00757d;
           margin-right: 5px;
           padding: 0 10px;
           cursor: pointer;
@@ -287,10 +351,10 @@
             background-color: #053553;
           }
           &:nth-child(3) span {
-            min-width: 99px;
+            min-width: 107px;
           }
           &:nth-child(5) span {
-            min-width: 85px;
+            min-width: 91px;
           }
         }
       }
@@ -299,7 +363,6 @@
       display: flex;
       transform: translateY(7px);
       .selected-btn {
-        // background-color: #053553;
         height: 70px;
         padding-top: 20px;
         display: flex;
@@ -316,7 +379,7 @@
           position: absolute;
           top: 0;
         }
-        img {
+        svg {
           height: 27px;
           margin-right: 7px;
           margin-top: 2px;
@@ -358,12 +421,26 @@
           color: #d3dee7;
           cursor: pointer;
           transition: all 0.2s ease-out;
+          &.selected {
+            .img-container {
+              svg {
+                path {
+                  fill: #ffffff;
+                }
+              }
+            }
+          }
           .img-container {
             margin-top: 3px;
             display: flex;
             flex: 1;
             align-items: center;
             justify-content: center;
+            svg {
+              path {
+                fill: #d3dee7;
+              }
+            }
           }
           img {
             max-height: 38px;
@@ -419,11 +496,81 @@
         text-transform: capitalize;
         color: #ffffff;
       }
+      &.selected {
+        svg {
+          path {
+            stroke: #ffa800;
+          }
+        }
+        span {
+          color: #ffa800;
+        }
+      }
+      &.ant-dropdown-open {
+        background: rgba(24, 22, 47, 0.65);
+        span {
+          color: #ffa800;
+        }
+        svg {
+          path {
+            stroke: #ffa800;
+          }
+        }
+      }
     }
   }
 }
 
 .location-filter-dropdown {
   max-height: 300px;
-  overflow-y: scroll;
+  background-color: #ffffff;
+  width: 400px;
+  padding: 20px;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  .ant-tabs {
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0px 0px 4px rgb(0 0 0 / 25%);
+    border-radius: 5px;
+    .ant-tabs-nav-list {
+      width: 100%;
+      .ant-tabs-tab {
+        flex: 0 0 50%;
+        margin-left: 0 !important;
+        border: none;
+        background: #d9e7f0;
+        padding: 10px 16px;
+        border-radius: 0px;
+        &:first-child {
+          border-radius: 5px 0px 0px 0px;
+        }
+        &:nth-child(2) {
+          border-radius: 0px 5px 0px 0px;
+        }
+        &.ant-tabs-tab-active {
+          background-color: #ffffff;
+        }
+        .ant-tabs-tab-btn {
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 14px;
+          color: #000000;
+        }
+      }
+    }
+    .ant-tabs-nav {
+      &::before {
+        border: none;
+      }
+      padding-bottom: 10px;
+      margin-bottom: 0px;
+    }
+    .ant-select {
+      width: 100%;
+    }
+    .ant-tabs-content-holder {
+      padding: 10px;
+    }
+  }
 }

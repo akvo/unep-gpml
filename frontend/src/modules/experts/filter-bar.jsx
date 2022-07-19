@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Dropdown, Menu } from "antd";
 import { UIStore } from "../../store";
 import catTags from "../../utils/cat-tags.json";
 import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
 import { Icon } from "../../components/svg-icon/svg-icon";
+import { useQuery } from "./common";
+import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
 
 function slug(text) {
   return text.toLowerCase().replaceAll("&", "n").replaceAll(" ", "-");
 }
 
-const FilterBar = ({ filter, setFilter, updateQuery }) => {
+const FilterBar = ({
+  filter,
+  setFilter,
+  filterCountries,
+  setFilterCountries,
+}) => {
+  const query = useQuery();
+  const [country, setCountry] = useState([]);
+  const [multiCountry, setMultiCountry] = useState([]);
+  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
   }));
@@ -29,21 +42,40 @@ const FilterBar = ({ filter, setFilter, updateQuery }) => {
       tagfilters = [...tagfilters, tag];
     }
     setFilter([filter[0], tagfilters]);
-    updateQuery("expertise", tag);
   };
 
+  const updateQuery = (param, value) => {
+    if (param === "country") {
+      setCountry(value);
+      setFilterCountries(value.map((item) => item.toString()));
+    }
+    if (param === "transnational") {
+      setMultiCountry(value);
+    }
+  };
+
+  useEffect(() => {
+    if (filterCountries && filterCountries.length > 0) {
+      setCountry(filterCountries.map((item) => parseInt(item)));
+    } else {
+      setCountry([]);
+    }
+  }, [filterCountries]);
+
   const countryList = (
-    <Menu
-      items={countries.map((country) => {
-        return {
-          key: country?.id,
-          label: (
-            <div onClick={() => updateQuery("country", country?.id)}>
-              {country?.name}
-            </div>
-          ),
-        };
-      })}
+    <CountryTransnationalFilter
+      {...{
+        query,
+        updateQuery,
+        multiCountryCountries,
+        setMultiCountryCountries,
+      }}
+      country={country || []}
+      multiCountry={multiCountry || []}
+      multiCountryLabelCustomIcon={true}
+      countrySelectMode="multiple"
+      multiCountrySelectMode="multiple"
+      isExpert={true}
     />
   );
 
@@ -87,14 +119,7 @@ const FilterBar = ({ filter, setFilter, updateQuery }) => {
                 }
               >
                 <div className="img-container">
-                  <Icon
-                    name={slug(tag)}
-                    fill={
-                      filter[1] && filter[1].indexOf(tag) > -1
-                        ? "#fff"
-                        : "#D3DEE7"
-                    }
-                  />
+                  <Icon name={slug(tag)} fill="#67BEA1" />
                 </div>
                 <div className="label-container">
                   <span>{tag}</span>
@@ -105,15 +130,25 @@ const FilterBar = ({ filter, setFilter, updateQuery }) => {
         </div>
       )}
       <Dropdown
-        className="location-filter"
+        className={`location-filter ${
+          country.length > 0 || multiCountry.length > 0 ? "selected" : ""
+        }`}
         overlayClassName="location-filter-dropdown"
         overlay={countryList}
-        placement="bottom"
+        placement="bottomLeft"
         trigger={["click"]}
+        visible={dropdownVisible}
+        onVisibleChange={(visible) => {
+          setDropdownVisible(visible);
+        }}
       >
         <Button>
           <GlobeIcon />
-          <span>Location</span>
+          <span>
+            {(country.length > 0 || multiCountry.length > 0) &&
+              multiCountry?.length + country?.length}{" "}
+            Location
+          </span>
         </Button>
       </Dropdown>
     </div>

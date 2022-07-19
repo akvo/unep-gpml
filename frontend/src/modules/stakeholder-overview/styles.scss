@@ -607,6 +607,16 @@
       }
       .ant-space-item {
         margin-bottom: 0 !important;
+        .filter-title {
+          color: #000;
+          font-size: 18px;
+          font-weight: 500;
+          margin-bottom: 5px;
+
+          @media (max-width: 540px) {
+            font-size: 16px;
+          }
+        }
       }
 
       .ant-drawer-close {

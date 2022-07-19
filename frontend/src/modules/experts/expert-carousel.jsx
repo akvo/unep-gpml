@@ -103,8 +103,12 @@ const ExpertCarousel = ({
       dotListClass="expert-carousel-dots"
       showDots={true}
       renderDotsOutside={true}
-      customLeftArrow={<CustomLeftArrow />}
-      customRightArrow={<CustomRightArrow />}
+      autoPlaySpeed={100000}
+      arrows
+      draggable
+      swipeable
+      // customLeftArrow={<CustomLeftArrow />}
+      // customRightArrow={<CustomRightArrow />}
     >
       {experts.experts.map((expert, index) => {
         const country = countries.find(
@@ -132,9 +136,9 @@ const ExpertCarousel = ({
                       {entity?.name?.substring(0, 2)}
                     </Avatar>
                   )}
-                  <li className="expert-badge">
+                  <div className="expert-badge">
                     <ExpertBadge />
-                  </li>
+                  </div>
                   <Avatar
                     className={`expert-image ${!expert.picture && "no-image"}`}
                     src={expert.picture}
@@ -153,25 +157,22 @@ const ExpertCarousel = ({
                     </span>
                   </Avatar>
                 </div>
-                <div>
-                  <li className="list-item expert-name">
+                <ul>
+                  <li className="expert-name">
                     {`${titleCase(expert?.firstName)} ${titleCase(
                       expert?.lastName
                     )}`}
                   </li>
                   {expert?.country && (
-                    <li className="list-item expert-location">
+                    <li className="expert-location">
                       <LocationIcon />
                       <span>{country}</span>
                     </li>
                   )}
-                  {expert?.jobTitle && (
-                    <li className="list-item expert-activity">
-                      <StarOutlined />
-                      {expert?.jobTitle}
-                    </li>
-                  )}
-                </div>
+                  <li className="expert-activity">
+                    {expert.expertise.join(', ')}
+                  </li>
+                </ul>
               </div>
             </Card>
           </Link>
