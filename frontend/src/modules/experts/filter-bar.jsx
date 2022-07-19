@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import api from "../../utils/api";
 import { Button, Dropdown, Menu } from "antd";
 import { UIStore } from "../../store";
 import catTags from "../../utils/cat-tags.json";
@@ -22,6 +23,10 @@ const FilterBar = ({
   const [multiCountry, setMultiCountry] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [disable, setDisable] = useState({
+    country: false,
+    multiCountry: false,
+  });
 
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -46,21 +51,49 @@ const FilterBar = ({
 
   const updateQuery = (param, value) => {
     if (param === "country") {
+      setDisable({
+        ...disable,
+        ...(value.length > 0
+          ? { multiCountry: true }
+          : { multiCountry: false }),
+      });
       setCountry(value);
       setFilterCountries(value.map((item) => item.toString()));
     }
     if (param === "transnational") {
+      setDisable({
+        ...disable,
+        ...(value.length > 0 ? { country: true } : { country: false }),
+      });
+      if (value.length === 0) {
+        setFilterCountries([]);
+      }
       setMultiCountry(value);
+
+      value.forEach((id) => {
+        const check = filterCountries.find((x) => x === id.toString());
+        !check &&
+          api.get(`/country-group/${id}`).then((resp) => {
+            setFilterCountries([
+              ...filterCountries,
+              ...resp.data?.[0]?.countries.map((item) => item.id.toString()),
+            ]);
+          });
+      });
     }
   };
 
   useEffect(() => {
-    if (filterCountries && filterCountries.length > 0) {
+    if (
+      filterCountries &&
+      filterCountries.length > 0 &&
+      multiCountry.length === 0
+    ) {
       setCountry(filterCountries.map((item) => parseInt(item)));
     } else {
       setCountry([]);
     }
-  }, [filterCountries]);
+  }, [filterCountries, multiCountry]);
 
   const countryList = (
     <CountryTransnationalFilter
@@ -76,6 +109,7 @@ const FilterBar = ({
       countrySelectMode="multiple"
       multiCountrySelectMode="multiple"
       isExpert={true}
+      disable={disable}
     />
   );
 
