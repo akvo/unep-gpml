@@ -379,6 +379,141 @@ const DetailsView = ({
 
   const description = data?.description ? data?.description : data?.summary;
 
+  const test = [
+    {
+      description:
+        "COVE ? Where the best ideas in ocean technology come to life!Located in what was once the Canadian Coast Guard facility on Halifax Harbour, COVE is home to local and global ocean technology businesses, post-secondary institutions, and marine-based and service businesses that support the ocean sector. The COVE site features extensive marine facilities with two large, deep-water piers, office space, an incubator and space for shops and labs.COVE is a community that brings together the best and the brightest to push ocean tech advances to market. Its a space that fosters innovation and cross-pollinates expertise, ideas, and resources among members, COVE is where business growth, opportunity, and technical advances happen.On June 8 and June 10, 2021, attendees of the H2O Conference will have the opportunity to watch the latest in ocean technology highlighted on the Halifax Harbour. One registration to the H2O Conference also gets you access to COVE Demo Day broadcasts, too!",
+      entityConnections: [],
+      id: 37,
+      image:
+        "https://storage.googleapis.com/akvo-unep-gpml/images/events_037.png",
+      stakeholderConnections: [],
+      thumbnail: null,
+      title: "COVE Demo Day ? Virtual",
+      type: "event",
+    },
+    {
+      description:
+        "COVE ? Where the best ideas in ocean technology come to life!Located in what was once the Canadian Coast Guard facility on Halifax Harbour, COVE is home to local and global ocean technology businesses, post-secondary institutions, and marine-based and service businesses that support the ocean sector. The COVE site features extensive marine facilities with two large, deep-water piers, office space, an incubator and space for shops and labs.COVE is a community that brings together the best and the brightest to push ocean tech advances to market. Its a space that fosters innovation and cross-pollinates expertise, ideas, and resources among members, COVE is where business growth, opportunity, and technical advances happen.On June 8 and June 10, 2021, attendees of the H2O Conference will have the opportunity to watch the latest in ocean technology highlighted on the Halifax Harbour. One registration to the H2O Conference also gets you access to COVE Demo Day broadcasts, too!",
+      entityConnections: [],
+      id: 37,
+      image:
+        "https://storage.googleapis.com/akvo-unep-gpml/images/events_037.png",
+      stakeholderConnections: [],
+      thumbnail: null,
+      title: "COVE Demo Day ? Virtual",
+      type: "event",
+    },
+    {
+      description:
+        "COVE ? Where the best ideas in ocean technology come to life!Located in what was once the Canadian Coast Guard facility on Halifax Harbour, COVE is home to local and global ocean technology businesses, post-secondary institutions, and marine-based and service businesses that support the ocean sector. The COVE site features extensive marine facilities with two large, deep-water piers, office space, an incubator and space for shops and labs.COVE is a community that brings together the best and the brightest to push ocean tech advances to market. Its a space that fosters innovation and cross-pollinates expertise, ideas, and resources among members, COVE is where business growth, opportunity, and technical advances happen.On June 8 and June 10, 2021, attendees of the H2O Conference will have the opportunity to watch the latest in ocean technology highlighted on the Halifax Harbour. One registration to the H2O Conference also gets you access to COVE Demo Day broadcasts, too!",
+      entityConnections: [],
+      id: 37,
+      image:
+        "https://storage.googleapis.com/akvo-unep-gpml/images/events_037.png",
+      stakeholderConnections: [],
+      thumbnail: null,
+      title: "COVE Demo Day ? Virtual",
+      type: "event",
+    },
+    {
+      description:
+        "COVE ? Where the best ideas in ocean technology come to life!Located in what was once the Canadian Coast Guard facility on Halifax Harbour, COVE is home to local and global ocean technology businesses, post-secondary institutions, and marine-based and service businesses that support the ocean sector. The COVE site features extensive marine facilities with two large, deep-water piers, office space, an incubator and space for shops and labs.COVE is a community that brings together the best and the brightest to push ocean tech advances to market. Its a space that fosters innovation and cross-pollinates expertise, ideas, and resources among members, COVE is where business growth, opportunity, and technical advances happen.On June 8 and June 10, 2021, attendees of the H2O Conference will have the opportunity to watch the latest in ocean technology highlighted on the Halifax Harbour. One registration to the H2O Conference also gets you access to COVE Demo Day broadcasts, too!",
+      entityConnections: [],
+      id: 37,
+      image:
+        "https://storage.googleapis.com/akvo-unep-gpml/images/events_037.png",
+      stakeholderConnections: [],
+      thumbnail: null,
+      title: "COVE Demo Day ? Virtual",
+      type: "event",
+    },
+    {
+      description:
+        "COVE ? Where the best ideas in ocean technology come to life!Located in what was once the Canadian Coast Guard facility on Halifax Harbour, COVE is home to local and global ocean technology businesses, post-secondary institutions, and marine-based and service businesses that support the ocean sector. The COVE site features extensive marine facilities with two large, deep-water piers, office space, an incubator and space for shops and labs.COVE is a community that brings together the best and the brightest to push ocean tech advances to market. Its a space that fosters innovation and cross-pollinates expertise, ideas, and resources among members, COVE is where business growth, opportunity, and technical advances happen.On June 8 and June 10, 2021, attendees of the H2O Conference will have the opportunity to watch the latest in ocean technology highlighted on the Halifax Harbour. One registration to the H2O Conference also gets you access to COVE Demo Day broadcasts, too!",
+      entityConnections: [],
+      id: 37,
+      image:
+        "https://storage.googleapis.com/akvo-unep-gpml/images/events_037.png",
+      stakeholderConnections: [],
+      thumbnail: null,
+      title: "COVE Demo Day ? Virtual",
+      type: "event",
+    },
+    {
+      description:
+        "COVE ? Where the best ideas in ocean technology come to life!Located in what was once the Canadian Coast Guard facility on Halifax Harbour, COVE is home to local and global ocean technology businesses, post-secondary institutions, and marine-based and service businesses that support the ocean sector. The COVE site features extensive marine facilities with two large, deep-water piers, office space, an incubator and space for shops and labs.COVE is a community that brings together the best and the brightest to push ocean tech advances to market. Its a space that fosters innovation and cross-pollinates expertise, ideas, and resources among members, COVE is where business growth, opportunity, and technical advances happen.On June 8 and June 10, 2021, attendees of the H2O Conference will have the opportunity to watch the latest in ocean technology highlighted on the Halifax Harbour. One registration to the H2O Conference also gets you access to COVE Demo Day broadcasts, too!",
+      entityConnections: [],
+      id: 37,
+      image:
+        "https://storage.googleapis.com/akvo-unep-gpml/images/events_037.png",
+      stakeholderConnections: [],
+      thumbnail: null,
+      title: "COVE Demo Day ? Virtual",
+      type: "event",
+    },
+    {
+      description:
+        "COVE ? Where the best ideas in ocean technology come to life!Located in what was once the Canadian Coast Guard facility on Halifax Harbour, COVE is home to local and global ocean technology businesses, post-secondary institutions, and marine-based and service businesses that support the ocean sector. The COVE site features extensive marine facilities with two large, deep-water piers, office space, an incubator and space for shops and labs.COVE is a community that brings together the best and the brightest to push ocean tech advances to market. Its a space that fosters innovation and cross-pollinates expertise, ideas, and resources among members, COVE is where business growth, opportunity, and technical advances happen.On June 8 and June 10, 2021, attendees of the H2O Conference will have the opportunity to watch the latest in ocean technology highlighted on the Halifax Harbour. One registration to the H2O Conference also gets you access to COVE Demo Day broadcasts, too!",
+      entityConnections: [],
+      id: 37,
+      image:
+        "https://storage.googleapis.com/akvo-unep-gpml/images/events_037.png",
+      stakeholderConnections: [],
+      thumbnail: null,
+      title: "COVE Demo Day ? Virtual",
+      type: "event",
+    },
+    {
+      description:
+        "COVE ? Where the best ideas in ocean technology come to life!Located in what was once the Canadian Coast Guard facility on Halifax Harbour, COVE is home to local and global ocean technology businesses, post-secondary institutions, and marine-based and service businesses that support the ocean sector. The COVE site features extensive marine facilities with two large, deep-water piers, office space, an incubator and space for shops and labs.COVE is a community that brings together the best and the brightest to push ocean tech advances to market. Its a space that fosters innovation and cross-pollinates expertise, ideas, and resources among members, COVE is where business growth, opportunity, and technical advances happen.On June 8 and June 10, 2021, attendees of the H2O Conference will have the opportunity to watch the latest in ocean technology highlighted on the Halifax Harbour. One registration to the H2O Conference also gets you access to COVE Demo Day broadcasts, too!",
+      entityConnections: [],
+      id: 37,
+      image:
+        "https://storage.googleapis.com/akvo-unep-gpml/images/events_037.png",
+      stakeholderConnections: [],
+      thumbnail: null,
+      title: "COVE Demo Day ? Virtual",
+      type: "event",
+    },
+    {
+      description:
+        "COVE ? Where the best ideas in ocean technology come to life!Located in what was once the Canadian Coast Guard facility on Halifax Harbour, COVE is home to local and global ocean technology businesses, post-secondary institutions, and marine-based and service businesses that support the ocean sector. The COVE site features extensive marine facilities with two large, deep-water piers, office space, an incubator and space for shops and labs.COVE is a community that brings together the best and the brightest to push ocean tech advances to market. Its a space that fosters innovation and cross-pollinates expertise, ideas, and resources among members, COVE is where business growth, opportunity, and technical advances happen.On June 8 and June 10, 2021, attendees of the H2O Conference will have the opportunity to watch the latest in ocean technology highlighted on the Halifax Harbour. One registration to the H2O Conference also gets you access to COVE Demo Day broadcasts, too!",
+      entityConnections: [],
+      id: 37,
+      image:
+        "https://storage.googleapis.com/akvo-unep-gpml/images/events_037.png",
+      stakeholderConnections: [],
+      thumbnail: null,
+      title: "COVE Demo Day ? Virtual",
+      type: "event",
+    },
+    {
+      description:
+        "COVE ? Where the best ideas in ocean technology come to life!Located in what was once the Canadian Coast Guard facility on Halifax Harbour, COVE is home to local and global ocean technology businesses, post-secondary institutions, and marine-based and service businesses that support the ocean sector. The COVE site features extensive marine facilities with two large, deep-water piers, office space, an incubator and space for shops and labs.COVE is a community that brings together the best and the brightest to push ocean tech advances to market. Its a space that fosters innovation and cross-pollinates expertise, ideas, and resources among members, COVE is where business growth, opportunity, and technical advances happen.On June 8 and June 10, 2021, attendees of the H2O Conference will have the opportunity to watch the latest in ocean technology highlighted on the Halifax Harbour. One registration to the H2O Conference also gets you access to COVE Demo Day broadcasts, too!",
+      entityConnections: [],
+      id: 37,
+      image:
+        "https://storage.googleapis.com/akvo-unep-gpml/images/events_037.png",
+      stakeholderConnections: [],
+      thumbnail: null,
+      title: "COVE Demo Day ? Virtual",
+      type: "event",
+    },
+    {
+      description:
+        "COVE ? Where the best ideas in ocean technology come to life!Located in what was once the Canadian Coast Guard facility on Halifax Harbour, COVE is home to local and global ocean technology businesses, post-secondary institutions, and marine-based and service businesses that support the ocean sector. The COVE site features extensive marine facilities with two large, deep-water piers, office space, an incubator and space for shops and labs.COVE is a community that brings together the best and the brightest to push ocean tech advances to market. Its a space that fosters innovation and cross-pollinates expertise, ideas, and resources among members, COVE is where business growth, opportunity, and technical advances happen.On June 8 and June 10, 2021, attendees of the H2O Conference will have the opportunity to watch the latest in ocean technology highlighted on the Halifax Harbour. One registration to the H2O Conference also gets you access to COVE Demo Day broadcasts, too!",
+      entityConnections: [],
+      id: 37,
+      image:
+        "https://storage.googleapis.com/akvo-unep-gpml/images/events_037.png",
+      stakeholderConnections: [],
+      thumbnail: null,
+      title: "COVE Demo Day ? Virtual",
+      type: "event",
+    },
+  ];
+
   return (
     <div className="detail-view-wrapper">
       <div
