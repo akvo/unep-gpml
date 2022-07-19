@@ -111,7 +111,6 @@ const DetailsView = ({
   setFilterMenu,
   isAuthenticated,
 }) => {
-  const relatedContent = useRef(null);
   const [showLess, setShowLess] = useState(true);
 
   const {
@@ -747,7 +746,7 @@ const DetailsView = ({
                 title="Related content"
                 relatedContent={data?.relatedContent}
                 isShownPagination={false}
-                dataCount={relatedContent?.length || 0}
+                dataCount={data?.relatedContent?.length || 0}
               />
             </Col>
           )}
