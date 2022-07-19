@@ -126,7 +126,7 @@
 
           (if (instance? SQLException e)
             response
-            (assoc response :error-details {:error (.getMessage e)})))))))
+            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defn expand-related-initiative-content [conn initiative-id]
   (let [related_content (handler.resource.related-content/get-related-contents conn initiative-id "initiative")]

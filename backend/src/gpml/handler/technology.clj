@@ -143,7 +143,7 @@
 
           (if (instance? SQLException e)
             response
-            (assoc response :error-details {:error (.getMessage e)})))))))
+            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (def post-params
   (into [:map
