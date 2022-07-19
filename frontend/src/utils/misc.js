@@ -121,17 +121,28 @@ export const publishStatusUIText = {
   UNAPPROVE: "Unapprove",
 };
 
-export const colors = [
-  "#FFB800",
-  "#98B527",
-  "#38A259",
-  "#008776",
-  "#006776",
-  "#2F4858",
-  "#FFC1B4",
-  "#FE8A7F",
-  "#C1554E",
-];
+export const randomColor = (string) => {
+  const colors = [
+    "#FFB800",
+    "#98B527",
+    "#38A259",
+    "#008776",
+    "#006776",
+    "#2F4858",
+    "#FFC1B4",
+    "#FE8A7F",
+    "#C1554E",
+  ];
+
+  let hash = 0;
+  if (string.length === 0) return hash;
+  for (let i = 0; i < string.length; i++) {
+    hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    hash = hash & hash;
+  }
+  hash = ((hash % colors.length) + colors.length) % colors.length;
+  return colors[hash];
+};
 
 export const tagsMap = (array, category, tags) => {
   return array.map((x) => {

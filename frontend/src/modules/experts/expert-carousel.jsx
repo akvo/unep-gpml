@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Avatar } from "antd";
 import { Link } from "react-router-dom";
 import Carousel from "react-multi-carousel";
-import { colors } from "../../utils/misc";
+import { randomColor } from "../../utils/misc";
 
 import { ReactComponent as LocationIcon } from "../../images/location.svg";
 import { ReactComponent as ExpertBadge } from "../../images/stakeholder-overview/expert-badge.svg";
@@ -13,22 +13,12 @@ import { ReactComponent as StarOutlined } from "../../images/stakeholder-overvie
 import InviteExpertCard from "./invite-expert-card";
 import { titleCase } from "../../utils/string";
 
-const colour = () => colors[Math.floor(Math.random() * colors.length)];
-
 const ExpertCarousel = ({
   experts,
   countries,
   organisations,
   setIsShownModal,
 }) => {
-  const [bgColor, setBgColor] = useState([]);
-  const [bgColorSmall, setBgColorSmall] = useState([]);
-
-  useEffect(() => {
-    setBgColor(experts?.experts?.map(() => colour()));
-    setBgColorSmall(experts?.experts?.map(() => colour()));
-  }, [experts]);
-
   const CustomRightArrow = ({ onClick, ...rest }) => {
     const {
       onMove,
@@ -128,7 +118,9 @@ const ExpertCarousel = ({
                     <Avatar
                       className="entity-logo"
                       style={{
-                        backgroundColor: bgColorSmall[index],
+                        backgroundColor: randomColor(
+                          entity?.name.substring(0, 1)
+                        ),
                         verticalAlign: "middle",
                       }}
                       size={32}
@@ -143,7 +135,9 @@ const ExpertCarousel = ({
                     className={`expert-image ${!expert.picture && "no-image"}`}
                     src={expert.picture}
                     style={{
-                      backgroundColor: bgColor[index],
+                      backgroundColor: randomColor(
+                        expert?.firstName.substring(0, 1)
+                      ),
                     }}
                     alt={expert?.firstName ? expert?.firstName : expert?.name}
                   >
