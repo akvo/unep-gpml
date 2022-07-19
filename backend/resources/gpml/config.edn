@@ -90,7 +90,9 @@
                                           {:get {:summary "Get list of reviewers"
                                                  :swagger {:tags ["reviewer"]
                                                            :security [{:id_token []}]}
-                                                 :handler #ig/ref :gpml.handler.review/get-reviewers}}]]
+                                                 :handler #ig/ref :gpml.handler.review/get-reviewers
+                                                 :parameters #ig/ref :gpml.handler.review/get-reviewers-params
+                                                 :responses #ig/ref :gpml.handler.review/get-reviewers-responses}}]]
                                         ["/review" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                  #ig/ref :gpml.auth/auth-required
                                                                  #ig/ref :gpml.auth/approved-user]}
@@ -567,7 +569,9 @@
                                 :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.submission/put-params {}
 
-  :gpml.handler.review/get-reviewers {:db #ig/ref :duct.database/sql}
+  :gpml.handler.review/get-reviewers #ig/ref :gpml.config/common
+  :gpml.handler.review/get-reviewers-params {}
+  :gpml.handler.review/get-reviewers-responses {}
   :gpml.handler.review/get-reviews {:db #ig/ref :duct.database/sql}
   :gpml.handler.review/new-multiple-review {:db #ig/ref :duct.database/sql
                                             :mailjet-config #ig/ref :gpml.config/mailjet}
