@@ -379,7 +379,6 @@ const DetailsView = ({
   const description = data?.description ? data?.description : data?.summary;
 
   const entityConnections =
-    data?.entityConnections?.length &&
     data?.entityConnections.map((entity) => {
       return {
         ...entity,
@@ -392,8 +391,7 @@ const DetailsView = ({
       };
     });
 
-  const stakeholderConnection =
-    data?.stakeholderConnections.length > 0 &&
+  const stakeholderConnections =
     data?.stakeholderConnections
       .sort((a, b) => {
         if (a?.role?.toLowerCase() === "owner") {
@@ -578,26 +576,6 @@ const DetailsView = ({
             </Row>
           </Col>
         </Row>
-        <Col>
-          {/* CONNECTION */}
-          {(data?.entityConnections?.length > 0 ||
-            data?.stakeholderConnections.filter(
-              (x) => x.stakeholderRole !== "ADMIN" || x.role === "interested in"
-            )?.length > 0) && (
-            <Col className="section section-connection-stakeholder">
-              <div className="extra-wrapper">
-                <h3 className="content-heading">Connections</h3>
-
-                <StakeholderCarousel
-                  stakeholders={[
-                    ...entityConnections,
-                    ...stakeholderConnection,
-                  ]}
-                />
-              </div>
-            </Col>
-          )}
-        </Col>
         {/* TAGS */}
         {data?.tags && data?.tags?.length > 0 && (
           <Col className="section-tag section">
@@ -624,6 +602,26 @@ const DetailsView = ({
             </div>
           </Col>
         )}
+        <Col>
+          {/* CONNECTION */}
+          {(data?.entityConnections?.length > 0 ||
+            data?.stakeholderConnections.filter(
+              (x) => x.stakeholderRole !== "ADMIN" || x.role === "interested in"
+            )?.length > 0) && (
+            <Col className="section section-connection-stakeholder">
+              <div className="extra-wrapper">
+                <h3 className="content-heading">Connections</h3>
+
+                <StakeholderCarousel
+                  stakeholders={[
+                    ...entityConnections,
+                    ...stakeholderConnections,
+                  ]}
+                />
+              </div>
+            </Col>
+          )}
+        </Col>
         {/* DOCUMENTS AND INFO */}
         {data?.infoDocs && (
           <Col className="section section-document">
