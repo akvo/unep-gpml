@@ -621,13 +621,10 @@
   :gpml.handler.stakeholder/suggested-profiles {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder/suggested-profiles-params {}
 
-  :gpml.handler.stakeholder.expert/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder.expert/get #ig/ref :gpml.config/common
   :gpml.handler.stakeholder.expert/get-params {}
   :gpml.handler.stakeholder.expert/get-response {}
-  :gpml.handler.stakeholder.expert/post {:db #ig/ref :duct.database/sql
-                                         :mailjet-config #ig/ref :gpml.config/mailjet
-                                         :app-domain #duct/env ["APP_DOMAIN" Str]
-                                         :logger #ig/ref :duct/logger}
+  :gpml.handler.stakeholder.expert/post #ig/ref :gpml.config/common
   :gpml.handler.stakeholder.expert/post-params {}
   :gpml.handler.stakeholder.expert/post-response {}
 

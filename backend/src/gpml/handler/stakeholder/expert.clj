@@ -2,6 +2,7 @@
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.string :as str]
             [duct.logger :refer [log]]
+            [gpml.db.country-group :as db.country-group]
             [gpml.db.invitation :as db.invitation]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
@@ -13,7 +14,7 @@
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
-(def get-experts-params
+(def ^:private get-experts-params
   [:map
    [:tags
     {:optional true
@@ -23,6 +24,11 @@
    [:countries
     {:optional true
      :swagger {:description "Comma separated list of countries' IDs."
+               :type "string"}}
+    [:string {:min 1}]]
+   [:country_groups
+    {:optional true
+     :swagger {:description "Comma separated list of country groups' IDs."
                :type "string"}}
     [:string {:min 1}]]
    [:page_size
@@ -38,7 +44,7 @@
                :type "integer"}}
     [:int {:min 0}]]])
 
-(def get-experts-response
+(def ^:private get-experts-response
   [:map
    [:success? [:boolean]]
    [:experts [:fn coll?]]
@@ -50,7 +56,7 @@
        [:counts [:int {:min 0}]]
        [:country_id [:int {:min 0}]]]]]]])
 
-(def invite-experts-params
+(def ^:private invite-experts-params
   [:vector
    [:map
     [:first_name
@@ -70,7 +76,7 @@
      [:string {:min 1}]]
     [:expertise {:optional true} [:vector [:string {:min 1}]]]]])
 
-(def invite-experts-response
+(def ^:private invite-experts-response
   [:map
    [:success?
     [:boolean]]
@@ -92,7 +98,7 @@
        [:string {:min 1}]]]]]])
 
 (defn- api-opts->opts
-  [{:keys [page_size page_n tags countries]}]
+  [{:keys [page_size page_n tags countries country_groups]}]
   (cond-> {}
     page_size
     (assoc :page-size page_size)
@@ -105,6 +111,9 @@
 
     (seq countries)
     (assoc-in [:filters :countries] (map #(Integer/parseInt %) (str/split countries #",")))
+
+    (seq country_groups)
+    (assoc-in [:filters :country-groups] (map #(Integer/parseInt %) (str/split country_groups #",")))
 
     true
     (assoc-in [:filters :experts?] true)))
@@ -120,12 +129,14 @@
       (assoc :review_status (pg-util/->PGEnum "INVITED" "review_status"))))
 
 (defn- get-experts
-  [{:keys [db]}
+  [{:keys [logger] {:keys [spec]} :db}
    {{:keys [query]} :parameters :as _req}]
   (try
     (let [opts (api-opts->opts query)
-          experts (db.stakeholder/get-experts (:spec db) opts)
-          experts-count (->> (db.stakeholder/get-experts (:spec db) (assoc opts :count-only? true))
+          country-groups-countries (when (seq (get-in opts [:filters :country-groups]))
+                                     (map :id (db.country-group/get-country-groups-countries spec opts)))
+          experts (db.stakeholder/get-experts spec (update-in opts [:filters :countries] #(set (concat % country-groups-countries))))
+          experts-count (->> (db.stakeholder/get-experts spec (assoc opts :count-only? true))
                              (map vals)
                              (flatten)
                              (group-by :count_of))]
@@ -134,13 +145,13 @@
                       :count (get-in experts-count ["experts" 0 :counts])
                       :count_by_country (get-in experts-count ["countries" 0 :counts])}))
     (catch Exception e
-      (if (instance? SQLException e)
-        {:status 500
-         :body {:success? false
-                :reason (pg-util/get-sql-state e)}}
-        {:status 500
-         :reason :could-not-get-experts
-         :error-details {:exception-message (.getMessage e)}}))))
+      (log logger :error ::failed-to-get-experts {:exception-message (.getMessage e)})
+      (let [response {:status 500
+                      :body {:success? false
+                             :reason :could-not-get-experts}}]
+        (if (instance? SQLException e)
+          response
+          (assoc-in response [:body :error-details :error] (.getMessage e)))))))
 
 (defn- send-invitation-emails
   [{:keys [mailjet-config app-domain logger]} invitations]
