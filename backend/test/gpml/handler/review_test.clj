@@ -42,8 +42,9 @@
           resp (handler (mock/request :get "/"))
           body (:body resp)]
       (is (= 200 (:status resp)))
-      (is (= 2 (count body)))
-      (is (= #{"ADMIN" "REVIEWER"} (set (map :role body)))))))
+      (is (:success? body))
+      (is (= 3 (count (:reviewers body))))
+      (is (= #{"USER" "ADMIN" "REVIEWER"} (set (map :role (:reviewers body))))))))
 
 (deftest get-topic-review
   (let [system (ig/init fixtures/*system* [::review/get-reviews])
