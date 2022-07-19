@@ -156,6 +156,8 @@ const StakeholderCarousel = ({ stakeholders }) => {
                         {stakeholder?.type === "entity"
                           ? "Entity"
                           : stakeholder?.role?.toLowerCase() === "owner"
+                          ? stakeholder?.role
+                          : stakeholder?.role !== null
                           ? stakeholder?.role?.replace("_", " ")
                           : ""}
                       </li>

@@ -394,17 +394,23 @@ const DetailsView = ({
 
   const stakeholderConnection =
     data?.stakeholderConnections.length > 0 &&
-    data?.stakeholderConnections.map((stakeholder) => {
-      return {
-        ...stakeholder,
-        name: stakeholder?.stakeholder,
-        country: stakeholder?.country,
-        id: stakeholder?.stakeholderId,
-        image: stakeholder?.image,
-        type: "stakeholder",
-        role: stakeholder?.stakeholderRole,
-      };
-    });
+    data?.stakeholderConnections
+      .sort((a, b) => {
+        if (a?.role?.toLowerCase() === "owner") {
+          return -1;
+        }
+      })
+      .map((stakeholder) => {
+        return {
+          ...stakeholder,
+          name: stakeholder?.stakeholder,
+          country: stakeholder?.country,
+          id: stakeholder?.stakeholderId,
+          image: stakeholder?.image,
+          type: "stakeholder",
+          role: stakeholder?.stakeholderRole,
+        };
+      });
 
   return (
     <div className="detail-view-wrapper">
