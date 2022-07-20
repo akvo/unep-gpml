@@ -192,8 +192,8 @@
         place-content: center;
         background-color: #fafafa;
         img {
-          width: 100%;
-          max-width: max-content;
+          width: auto;
+          max-width: 100%;
           max-height: 437px;
         }
         @media (min-width: 601px) {
