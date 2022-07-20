@@ -42,6 +42,11 @@ export const curr = (findData, path, existingData) => {
           organisation: findData?.organisation || 0,
         });
       }
+      if (path === "/connect/experts") {
+        return sumValues({
+          experts: findData?.experts || 0,
+        });
+      }
     }
   }
 };
