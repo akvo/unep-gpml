@@ -50,11 +50,25 @@
 
 (defn- tag-diff
   [new-tags old-tags]
-  (let [old-tags (map (comp #(set/rename-keys % {:tag_relation_category :tag_category})
-                            #(select-keys % [:tag :tag_relation_category]))
-                      old-tags)
-        new-tags (map #(update % :tag str/lower-case) new-tags)]
-    (dt/diff old-tags new-tags)))
+  (let [old-tags (->> old-tags
+                      (map (comp #(set/rename-keys % {:tag_relation_category :tag_category})
+                                 #(select-keys % [:tag :tag_relation_category])))
+                      (group-by :tag_category))
+        new-tags (->> new-tags
+                      (map #(update % :tag str/lower-case))
+                      (group-by :tag_category))]
+    (->> (reduce (fn [acc [category tags]]
+                   (let [old-tags (map :tag (get acc category))
+                         new-tags (map :tag tags)
+                         [to-add _to-delete to-keep] (dt/diff new-tags old-tags)
+                         tags-to-create (into [] (comp (map #(assoc {} :tag % :tag_category category))
+                                                       (filter #(not (nil? (:tag %)))))
+                                              (concat to-add to-keep))]
+                     (assoc acc category tags-to-create)))
+                 old-tags
+                 new-tags)
+         (vals)
+         (apply concat))))
 
 (defn save-stakeholder-tags
   "Saves the stakeholder tags. Tag resolution is done by name to check
@@ -67,8 +81,7 @@
                    :resource-col "stakeholder"
                    :resource-id stakeholder-id}
         old-tags (db.resource.tag/get-resource-tags conn db-params)
-        [_to-delete to-update-or-create to-keep] (tag-diff tags old-tags)
-        tags (when (seq to-update-or-create) (concat to-keep to-update-or-create))]
+        tags (tag-diff tags old-tags)]
     (when (seq tags)
       (let [categories (->> tags (group-by :tag_category) keys)
             grouped-tags (group-by :tag_category (add-tags-ids-for-categories conn tags categories))]
