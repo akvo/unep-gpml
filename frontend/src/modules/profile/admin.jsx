@@ -12,10 +12,11 @@ import {
   Tabs,
   Typography,
   Checkbox,
+  Spin,
 } from "antd";
 const { Title } = Typography;
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import api from "../../utils/api";
 import { fetchSubmissionData } from "./utils";
 import moment from "moment";
@@ -38,6 +39,7 @@ import {
 import Avatar from "antd/lib/avatar/avatar";
 import Expert from "./expert";
 import { ReactComponent as IconExpert } from "../../images/expert-icon.svg";
+import debouce from "lodash.debounce";
 
 const { Search } = Input;
 const { TabPane } = Tabs;
@@ -339,10 +341,25 @@ const AdminSection = ({
   });
 
   const [reviewers, setReviewers] = useState([]);
+  const [focalPoints, setFocalPoints] = useState([]);
+  const [fetching, setFetching] = useState(false);
+
   useEffect(() => {
-    api.get("/reviewer").then((res) => {
-      setReviewers(res.data);
+    api.get(`/reviewer?roles=ADMIN`).then((res) => {
+      setReviewers(res?.data?.reviewers);
     });
+  }, []);
+
+  const handleSearch = (newValue) => {
+    setFetching(true);
+    api.get(`/reviewer?q=${newValue}`).then((res) => {
+      setFocalPoints(res?.data?.reviewers);
+      setFetching(false);
+    });
+  };
+
+  const debouncedResults = useMemo(() => {
+    return debouce(handleSearch, 300);
   }, []);
 
   const changeRole = (stakeholder, role, listOpts, setListOpts) => {
@@ -502,7 +519,7 @@ const AdminSection = ({
       >
         <div style={{ width: "100%" }}>Reviewers</div>
         <Select
-          style={{ width: "50%" }}
+          style={{ width: "100%" }}
           mode="multiple"
           showSearch={true}
           className="select-reviewer"
@@ -528,6 +545,42 @@ const AdminSection = ({
               {r.email}
             </Select.Option>
           ))}
+        </Select>
+      </div>
+    );
+  };
+
+  const FocalPoint = ({ item, listOpts, setListOpts }) => {
+    return (
+      <div
+        className="review-status-container"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <div style={{ width: "100%" }}>Focal point</div>
+        <Select
+          labelInValue
+          style={{ width: "100%" }}
+          mode="multiple"
+          showSearch
+          className="select-reviewer"
+          placeholder="Assign focal point"
+          onChange={(data) => assignReviewer(item, data, listOpts, setListOpts)}
+          value={item?.reviewers.map((x) => x.id)}
+          filterOption={false}
+          onSearch={(e, event) => {
+            debouncedResults(e);
+          }}
+          notFoundContent={fetching ? <Spin size="small" /> : null}
+          getPopupContainer={(triggerNode) => triggerNode.parentElement}
+        >
+          {focalPoints &&
+            focalPoints.map((r) => (
+              <Select.Option key={r.email} value={r.id}>
+                {r.email}
+              </Select.Option>
+            ))}
         </Select>
       </div>
     );
@@ -758,18 +811,27 @@ const AdminSection = ({
                       setListOpts={setListOpts}
                     />
                   )}
-                {item.reviewStatus === "APPROVED" &&
-                  item.type !== "stakeholder" && (
-                    <OwnerSelect
+                <>
+                  {item.reviewStatus === "APPROVED" &&
+                    item.type !== "stakeholder" && (
+                      <OwnerSelect
+                        item={item}
+                        reviewers={reviewers}
+                        setListOpts={setListOpts}
+                        listOpts={listOpts}
+                        resource={item}
+                        onChangeOwner={changeOwner}
+                        loading={loading}
+                      />
+                    )}
+                  {/* {item.type === "organisation" && (
+                    <FocalPoint
                       item={item}
-                      reviewers={reviewers}
-                      setListOpts={setListOpts}
                       listOpts={listOpts}
-                      resource={item}
-                      onChangeOwner={changeOwner}
-                      loading={loading}
+                      setListOpts={setListOpts}
                     />
-                  )}
+                  )} */}
+                </>
                 {item.reviewStatus === "SUBMITTED" && (
                   <ResourceSubmittedActions />
                 )}
