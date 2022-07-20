@@ -5,7 +5,7 @@ import { randomColor } from "../../utils/misc";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
-import 'swiper/swiper.min.css'
+import "swiper/swiper.min.css";
 import { Pagination, Navigation } from "swiper";
 
 import { ReactComponent as LocationIcon } from "../../images/location.svg";
@@ -61,7 +61,7 @@ const ExpertCarousel = ({
       slidesPerGroup={4}
       slidesPerView={"auto"}
       pagination={{
-        clickable: true
+        clickable: true,
       }}
       navigation={true}
       modules={[Pagination, Navigation]}
@@ -100,7 +100,9 @@ const ExpertCarousel = ({
                       <ExpertBadge />
                     </div>
                     <Avatar
-                      className={`expert-image ${!expert.picture && "no-image"}`}
+                      className={`expert-image ${
+                        !expert.picture && "no-image"
+                      }`}
                       src={expert.picture}
                       style={{
                         backgroundColor: randomColor(

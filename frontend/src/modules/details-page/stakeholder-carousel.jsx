@@ -15,13 +15,14 @@ import "swiper/modules/pagination/pagination.min.css";
 import "swiper/modules/thumbs/thumbs.min.css";
 
 import Carousel from "react-multi-carousel";
-import { colors } from "../../utils/misc";
+import { randomColor } from "../../utils/misc";
 import { ReactComponent as LocationIcon } from "../../images/location.svg";
 import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
 import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
 import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
 
-const colour = () => colors[Math.floor(Math.random() * colors.length)];
+const colour = () =>
+  randomColor[Math.floor(Math.random() * randomColor.length)];
 
 const StakeholderCarousel = ({ stakeholders }) => {
   const { countries } = UIStore.useState((s) => ({

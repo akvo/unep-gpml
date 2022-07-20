@@ -27,7 +27,6 @@ import {
 import api from "../../utils/api";
 import { UIStore } from "../../store";
 import { titleCase } from "../../utils/string";
-import { colors } from "../../utils/misc";
 import { eventTrack } from "../../utils/misc";
 import LeftImage from "../../images/sea-dark.jpg";
 import { Link } from "react-router-dom";
@@ -48,8 +47,6 @@ import { ReactComponent as LocationImage } from "../../images/location.svg";
 import { ReactComponent as TransnationalImage } from "../../images/transnational.svg";
 import { ReactComponent as CityImage } from "../../images/city-icn.svg";
 import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
-
-const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
