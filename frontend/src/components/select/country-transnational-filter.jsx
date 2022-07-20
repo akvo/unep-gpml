@@ -23,6 +23,7 @@ const CountryTransnationalFilter = ({
   multiCountrySelectMode,
   setMultiCountryCountries,
   isExpert,
+  disable,
 }) => {
   const { countries, transnationalOptions, landing } = UIStore.useState(
     (s) => ({
@@ -111,6 +112,7 @@ const CountryTransnationalFilter = ({
         tab="Countries"
         key="country"
         className="country-filter-tab-pane country"
+        disabled={disable?.country}
       >
         <Select
           showSearch
@@ -135,6 +137,7 @@ const CountryTransnationalFilter = ({
         className={`country-filter-tab-pane ${
           multiCountry ? "multi-country-info" : "multi-country"
         }`}
+        disabled={disable?.multiCountry}
       >
         <Select
           dropdownClassName="multiselection-dropdown multiselection-filter"
