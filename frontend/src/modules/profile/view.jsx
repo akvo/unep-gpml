@@ -255,7 +255,7 @@ const ProfileView = ({ relations }) => {
   }, [profile]); // eslint-disable-line
 
   const onSubmit = (vals) => {
-    setSaving(true);
+    // setSaving(true);
     if (!vals?.publicEmail) {
       vals = { ...vals, publicEmail: false };
     }
@@ -286,26 +286,16 @@ const ProfileView = ({ relations }) => {
       vals.org.geoCoverageValue = null;
     }
 
-    vals.seeking = tagsMap(vals?.seeking, "seeking", tags);
+    vals.seeking = vals.seeking.map((item) => item.toString());
+    vals.offering = vals.offering.map((item) => item.toString());
 
-    vals.offering = tagsMap(vals?.offering, "offering", tags);
-
-    vals.tags = [...vals.seeking, ...vals.offering];
-
-    delete vals.seeking;
-    delete vals.offering;
+    console.log(vals);
 
     api
       .put("/profile", vals)
       .then(() => {
         let data = {
           ...vals,
-          tags: vals?.tags.map((x) => ({
-            id: x.id,
-            tag: x.tag,
-            tagRelationCategory: x.tag_category,
-            tagCategory: x.tag_category,
-          })),
         };
         UIStore.update((e) => {
           e.profile = data;
