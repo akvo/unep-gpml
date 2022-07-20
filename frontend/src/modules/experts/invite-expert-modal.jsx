@@ -157,12 +157,12 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                           <Field
                             name={`${name}.expertise`}
                             style={{ width: "100%" }}
-                            placeholder="Pick categories"
                             validate={required}
                           >
                             {({ input, meta }) => {
                               return (
                                 <CatTagSelect
+                                  placeholder="Pick"
                                   handleChange={(value) => {
                                     formRef?.current?.change(
                                       `${name}.expertise`,
