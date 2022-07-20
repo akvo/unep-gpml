@@ -58,7 +58,7 @@ import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
 import { TrimText } from "../../utils/string";
-import { colors, eventTrack } from "../../utils/misc";
+import { colors, eventTrack, randomColor } from "../../utils/misc";
 const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
 const usePrevious = (value) => {
@@ -88,7 +88,6 @@ const SharePanel = ({
   history,
   handleRelationChange,
 }) => {
-  console.log(isAuthenticated);
   const canEdit = () =>
     isAuthenticated &&
     profile.reviewStatus === "APPROVED" &&
@@ -244,7 +243,6 @@ const StakeholderDetail = ({
   const [ownedResourcesPage, setOwnedResourcesPage] = useState(0);
   const [bookedResourcesPage, setBookedResourcesPage] = useState(0);
   const [warningVisible, setWarningVisible] = useState(false);
-  const [color, setColor] = useState([colour(), colour(), colour()]);
 
   const prevValue = usePrevious(data);
 
@@ -429,7 +427,9 @@ const StakeholderDetail = ({
                         ) : (
                           <Avatar
                             style={{
-                              backgroundColor: color[1],
+                              backgroundColor: randomColor(
+                                data?.firstName?.substring(0, 1)
+                              ),
                               verticalAlign: "middle",
                               border: "4px solid #fff",
                               fontSize: "62px",
@@ -452,7 +452,9 @@ const StakeholderDetail = ({
                             ) : (
                               <Avatar
                                 style={{
-                                  backgroundColor: color[0],
+                                  backgroundColor: randomColor(
+                                    data?.affiliation?.name?.substring(0, 1)
+                                  ),
                                   verticalAlign: "middle",
                                 }}
                                 size={50}
@@ -513,7 +515,9 @@ const StakeholderDetail = ({
                                 ) : (
                                   <Avatar
                                     style={{
-                                      backgroundColor: color[0],
+                                      backgroundColor: randomColor(
+                                        data?.affiliation?.name
+                                      ),
                                       verticalAlign: "middle",
                                     }}
                                     size={55}
@@ -613,7 +617,7 @@ const StakeholderDetail = ({
                   >
                     <div className="bio">
                       <ReadMoreReact
-                        text={data?.about}
+                        text={data?.about ? data?.about : ""}
                         lines={5}
                         readMoreText="Read more"
                         readLessText="Read less"

@@ -50,9 +50,8 @@ import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
 import { TrimText } from "../../utils/string";
-import { colors, eventTrack } from "../../utils/misc";
+import { randomColor, eventTrack } from "../../utils/misc";
 import RelatedContent from "../../components/related-content/related-content";
-const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
 const CardComponent = ({ title, style, children, getRef }) => {
   return (
@@ -202,7 +201,6 @@ const StakeholderDetail = ({
   const { loginWithPopup } = useAuth0();
   const history = useHistory();
   const [data, setData] = useState(null);
-  const [color, setColor] = useState([colour(), colour(), colour()]);
   const [relations, setRelations] = useState([]);
   const [ownedResources, setOwnedResources] = useState([]);
   const [bookedResources, setBookedResources] = useState([]);
@@ -411,7 +409,9 @@ const StakeholderDetail = ({
                         ) : (
                           <Avatar
                             style={{
-                              backgroundColor: color[0],
+                              backgroundColor: randomColor(
+                                data?.name?.substring(0, 1)
+                              ),
                               fontSize: "62px",
                               fontWeight: "bold",
                               verticalAlign: "middle",
@@ -608,7 +608,9 @@ const StakeholderDetail = ({
                                     ) : (
                                       <Avatar
                                         style={{
-                                          backgroundColor: color[2],
+                                          backgroundColor: randomColor(
+                                            item?.name?.substring(0, 1)
+                                          ),
                                           verticalAlign: "middle",
                                           fontSize: "62px",
                                           fontWeight: "bold",

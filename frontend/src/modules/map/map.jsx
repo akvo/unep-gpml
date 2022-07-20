@@ -45,6 +45,7 @@ const unsettledTerritoryIsoCode = [
 const higlightColor = "#255B87";
 export const KNOWLEDGE_LIBRARY = "/knowledge/library";
 export const STAKEHOLDER_OVERVIEW = "/connect/community";
+export const EXPERTS = "/connect/experts";
 
 const StakeholderTooltipContent = ({
   data,
@@ -306,6 +307,26 @@ const KnowledgeLibraryToolTipContent = ({
   );
 };
 
+const ExpertsTooltipContent = ({ data, geo }) => {
+  return (
+    <div
+      key={`${geo.ISO3CD}-tooltip`}
+      style={{ paddingRight: "16px" }}
+      className="map-tooltip"
+    >
+      <h3>{geo.MAP_LABEL}</h3>
+      <div className="entity-row">
+        <b className="entity-type">Experts</b>
+        <div className="tooltip-count-wrapper">
+          <b className="tooltip-counts">
+            {data?.counts?.experts ? data?.counts?.experts : 0}
+          </b>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Legend = ({ data, setFilterColor, selected }) => {
   data = Array.from(new Set(data.map((x) => Math.floor(x))));
   data = data.filter((x) => x !== 0);
@@ -444,7 +465,13 @@ const Maps = ({
   const existingResources =
     path === KNOWLEDGE_LIBRARY ? resourceCount.map((data) => data.topic) : [];
   const existingData =
-    path === KNOWLEDGE_LIBRARY ? existingResources : existingStakeholders;
+    path === KNOWLEDGE_LIBRARY
+      ? existingResources
+      : path === STAKEHOLDER_OVERVIEW
+      ? existingStakeholders
+      : path === EXPERTS
+      ? ["experts"]
+      : [];
 
   const country =
     !isEmpty(countries) &&
@@ -489,7 +516,9 @@ const Maps = ({
   const legendTitle =
     path === KNOWLEDGE_LIBRARY
       ? "Total resources per country"
-      : "Total stakeholders per country";
+      : path === STAKEHOLDER_OVERVIEW
+      ? "Total stakeholders per country"
+      : "Total experts per country";
 
   useEffect(() => {
     setCountryToSelect(isFilteredCountry.map((x) => Number(x)));
@@ -633,7 +662,7 @@ const Maps = ({
                 vertical: useVerticalLegend,
               })}
             >
-              {isShownLegend && (
+              {isShownLegend && path !== EXPERTS && (
                 <>
                   {useVerticalLegend ? (
                     existingData.length !== 0 ? (
@@ -835,6 +864,17 @@ const Maps = ({
                                     data={findData}
                                     geo={geo.properties}
                                     existingResources={existingResources}
+                                    query={query}
+                                  />
+                                );
+                              }
+
+                              if (path === EXPERTS) {
+                                setContent(
+                                  <ExpertsTooltipContent
+                                    data={findData}
+                                    geo={geo.properties}
+                                    existingStakeholders={existingStakeholders}
                                     query={query}
                                   />
                                 );
