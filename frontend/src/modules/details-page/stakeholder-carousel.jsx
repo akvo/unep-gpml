@@ -6,13 +6,9 @@ import { UIStore } from "../../store";
 import Carousel from "react-multi-carousel";
 import { colors } from "../../utils/misc";
 import { ReactComponent as LocationIcon } from "../../images/location.svg";
-import { ReactComponent as ExpertBadge } from "../../images/stakeholder-overview/expert-badge.svg";
-import { ReactComponent as PartnerBadge } from "../../images/stakeholder-overview/partner-badge.svg";
-import { ReactComponent as GPMLMemberBadge } from "../../images/stakeholder-overview/member-of-gpml-badge.svg";
 import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
 import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
 import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
-import { TrimText } from "../../utils/string";
 
 const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
@@ -137,7 +133,7 @@ const StakeholderCarousel = ({ stakeholders }) => {
                   </div>
                   <ul className="connection-detail-list">
                     <li className="list-item connection-name">
-                      <TrimText text={stakeholder?.name} max={25} />
+                      {stakeholder?.name}
                     </li>
                     {stakeholder?.type !== "entity" && country && (
                       <li className="list-item connection-location">
@@ -145,23 +141,14 @@ const StakeholderCarousel = ({ stakeholders }) => {
                         <span>{country}</span>
                       </li>
                     )}
-                    {stakeholder?.type !== "entity" &&
-                      stakeholder?.jobTitle && (
-                        <li className="list-item connection-job-title">
-                          {stakeholder?.jobTitle}
-                        </li>
-                      )}
-                    {stakeholder?.role && (
-                      <li className="list-item  connection-role">
-                        {stakeholder?.type === "entity"
-                          ? "Entity"
-                          : stakeholder?.role?.toLowerCase() === "owner"
-                          ? stakeholder?.role
-                          : stakeholder?.role !== null
-                          ? stakeholder?.role?.replace("_", " ")
-                          : ""}
-                      </li>
+                    {stakeholder?.type === 'entity' ? (
+                      <li className="list-item  connection-role">ENTITY</li>
+                    ) : stakeholder?.role === 'owner' ?
+                      <li className="list-item  connection-role">OWNER</li>
+                    : stakeholder?.jobTitle && (
+                      <li className="list-item connection-job-title">{stakeholder?.jobTitle}</li>
                     )}
+                    
                   </ul>
                 </Card>
               </Link>

@@ -393,6 +393,7 @@ const DetailsView = ({
 
   const stakeholderConnections =
     data?.stakeholderConnections
+      .filter((it, ind) => data.stakeholderConnections.findIndex(_it => _it.stakeholderId === it.stakeholderId) === ind) // filter out diplicates
       .sort((a, b) => {
         if (a?.role?.toLowerCase() === "owner") {
           return -1;
@@ -402,11 +403,6 @@ const DetailsView = ({
         return {
           ...stakeholder,
           name: stakeholder?.stakeholder,
-          country: stakeholder?.country,
-          id: stakeholder?.stakeholderId,
-          image: stakeholder?.image,
-          type: "stakeholder",
-          role: stakeholder?.stakeholderRole,
         };
       });
 
