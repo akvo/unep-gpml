@@ -206,10 +206,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                               </label>
                             </div>
                           )}
-                          <Field
-                            name={`${name}.suggest-category`}
-                            validate={required}
-                          >
+                          <Field name={`${name}.suggest-category`}>
                             {({ input, meta, error }) => {
                               const handleSearch = (value) => {
                                 if (value.length < 2) {
