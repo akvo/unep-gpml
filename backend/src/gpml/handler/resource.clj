@@ -148,7 +148,7 @@
 
           (if (instance? SQLException e)
             response
-            (assoc response :error-details {:error (.getMessage e)})))))))
+            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defn or-and [resource_type validator]
   (or (= "Action Plan" resource_type)
