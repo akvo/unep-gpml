@@ -562,6 +562,7 @@ const StakeholderDetail = ({
                 relatedContentPage={ownedResourcesPage}
                 relatedContentCount={ownedResourcesCount}
                 getRelatedContent={getOwnedResources}
+                sliderItemCount={5.5}
               />
             )}
           </div>

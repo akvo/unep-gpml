@@ -22,6 +22,7 @@ import "swiper/swiper.min.css";
 
 import "swiper/modules/free-mode/free-mode.min.css";
 import "swiper/modules/navigation/navigation.scss";
+import "swiper/modules/pagination/pagination.min.css";
 import "swiper/modules/thumbs/thumbs.min.css";
 
 const RelatedContent = ({
@@ -36,6 +37,7 @@ const RelatedContent = ({
   relatedContentPage,
   getRelatedContent,
   responsive,
+  sliderItemCount,
 }) => {
   const CardComponent = ({ title, style, children, getRef }) => {
     return (
@@ -163,15 +165,17 @@ const RelatedContent = ({
       getRef={relatedContent}
     >
       <Swiper
-        slidesPerView={6}
+        slidesPerView={sliderItemCount}
         spaceBetween={0}
-        slidesPerGroup={6}
+        slidesPerGroup={sliderItemCount}
         pagination={{
           clickable: true,
         }}
         navigation={true}
         modules={[SwiperPagination, Navigation]}
-        className="related-content-carousel related-content"
+        className={`related-content-carousel related-content ${
+          dataCount > 20 && "carousel-with-extra-card"
+        }`}
       >
         {relatedContent.map((item) => {
           return (
