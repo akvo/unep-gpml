@@ -58,8 +58,7 @@ import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
 import { TrimText } from "../../utils/string";
-import { colors, eventTrack, randomColor } from "../../utils/misc";
-const colour = () => colors[Math.floor(Math.random() * colors.length)];
+import { eventTrack, randomColor } from "../../utils/misc";
 
 const usePrevious = (value) => {
   const ref = useRef();
