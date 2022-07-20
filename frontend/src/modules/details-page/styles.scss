@@ -191,6 +191,12 @@
         display: flex;
         place-content: center;
         background-color: #fafafa;
+        @media screen and (min-width: 1024px) {
+          min-height: 400px;
+        }
+        display: flex;
+        align-items: center;
+        justify-content: center;
         img {
           width: auto;
           max-width: 100%;
