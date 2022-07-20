@@ -1,0 +1,140 @@
+@import "../../vars.scss";
+
+.connection-wrapper {
+  margin-top: 27px;
+  z-index: 2;
+  .connection-carousel {
+    overflow-y: visible;
+    overflow-x: clip;
+    position: relative;
+    z-index: 2;
+
+    .react-multi-carousel-item:not(:last-of-type) {
+      margin-right: 10px;
+    }
+    .react-multi-carousel-item:first-of-type {
+      margin-left: 2px;
+    }
+
+    .react-multi-carousel-item {
+      width: 210px !important;
+      position: relative;
+      cursor: pointer;
+
+      .connection-card {
+        height: 84px;
+        border: unset;
+        .ant-card-body {
+          display: flex;
+          align-items: flex-start;
+          padding: 10px;
+          box-shadow: 0px 0px 3.5px rgba(24, 22, 47, 0.2);
+          border-radius: 5px;
+
+          .connection-image {
+            width: 64px;
+            height: 64px;
+            border-radius: 5px;
+            margin-right: 12px;
+            .ant-avatar-string {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              font-weight: 700;
+              font-size: 14px;
+              line-height: 20px;
+            }
+            svg {
+              width: 14px;
+              height: 14px;
+            }
+          }
+
+          li {
+            font-size: 14px;
+            line-height: 16px;
+            &:not(:last-of-type) {
+              margin-bottom: 5px;
+            }
+          }
+
+          .connection-name {
+            font-weight: 700;
+            color: #255b87;
+          }
+
+          .connection-location {
+            color: #18162f;
+            margin-top: -3px;
+            svg {
+              width: 13px;
+              height: 17px;
+              margin-right: 6px;
+              transform: translateY(3px);
+              path,
+              line {
+                stroke: #d3dee7;
+              }
+            }
+          }
+          ul {
+            overflow: hidden;
+            margin-top: 1px;
+            li {
+              line-height: 18px;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              &.connection-name {
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                display: -webkit-box;
+                white-space: normal;
+              }
+            }
+          }
+          .connection-job-title {
+            color: #18162f;
+          }
+
+          .connection-role {
+            color: #a5b0c9;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+
+    .custom-connection-left-arrow,
+    .custom-connection-right-arrow {
+      top: calc(84px / 2 - 30.19px / 2);
+      height: 42.5px;
+      svg {
+        width: 26.71px;
+        path {
+          fill-opacity: 1;
+          fill: #d1d0d5;
+        }
+      }
+    }
+
+    .custom-connection-left-arrow {
+      left: -7px;
+    }
+
+    .custom-connection-right-arrow {
+      right: -10px;
+    }
+  }
+
+  .connection-dot-list {
+    position: relative;
+    margin-top: 20px;
+    button {
+      height: 2px;
+    }
+  }
+}
