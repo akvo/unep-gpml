@@ -235,12 +235,12 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                                     labelInValue
                                     mode="tags"
                                     notFoundContent={null}
-                                    onChange={(value) => input.onChange(value)}
+                                    onChange={(value) => input?.onChange(value)}
                                     onSearch={handleSearch}
                                     value={
-                                      input.value ? input.value : undefined
+                                      input?.value ? input?.value : undefined
                                     }
-                                    className={`dont-show ${
+                                    className={`dont-show modal-suggest-category ${
                                       error && !meta.valid
                                         ? "ant-input-status-error"
                                         : ""

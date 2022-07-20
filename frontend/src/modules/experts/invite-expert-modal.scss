@@ -65,6 +65,28 @@
       &:not(:last-of-type) {
         margin-bottom: 23px;
       }
+
+      .cat-tag-select .ant-select-selector {
+        background-image: url("../../images/stakeholder-overview/search-icon.svg"),
+          url("../../images/knowledge-library/chevron-down-grey.svg");
+        background-repeat: no-repeat;
+        background-position: 14px center, calc(100% - 17px) center;
+        padding-left: 45px;
+        .ant-select-selection-search {
+          margin-left: 0;
+        }
+        .ant-select-selection-placeholder {
+          padding-left: calc(13.88px + 17.77px);
+        }
+      }
+
+      .modal-suggest-category {
+        .ant-select-selector {
+          background-image: url("../../images/knowledge-library/chevron-down-grey.svg");
+          background-repeat: no-repeat;
+          background-position: calc(100% - 17px) center;
+        }
+      }
     }
   }
 
