@@ -1,6 +1,6 @@
 -- :name get-resource-stakeholder-connections
 -- :doc Get stakeholder connections to a specific resource type and id
-SELECT sc.id, sc.association AS role, s.id AS stakeholder_id, concat_ws(' ', s.first_name, s.last_name) AS stakeholder, s.picture AS image, s.role AS stakeholder_role, s.country, json_agg(json_build_object('id', t.id, 'tag', t.tag, 'tag_relation_category', st.tag_relation_category)) AS tags
+SELECT sc.id, sc.association AS role, s.id AS stakeholder_id, concat_ws(' ', s.first_name, s.last_name) AS stakeholder, s.picture AS image, s.role AS stakeholder_role, s.country, s.job_title,json_agg(json_build_object('id', t.id, 'tag', t.tag, 'tag_relation_category', st.tag_relation_category)) AS tags
 FROM stakeholder_:i:resource-type sc
 JOIN stakeholder s
 ON sc.stakeholder = s.id

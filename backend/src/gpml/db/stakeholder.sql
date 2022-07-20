@@ -286,12 +286,6 @@ select id, first_name, last_name, email from stakeholder
  where role = 'ADMIN'
    and review_status = 'APPROVED';
 
--- :name get-reviewers :?
--- :doc Get information of all reviewers & admins
-select id, first_name, last_name, email, role from stakeholder
- where (role = 'ADMIN' OR role = 'REVIEWER')
-   and review_status = 'APPROVED';
-
 -- :name get-suggested-stakeholders :?
 -- :doc Get stakeholder based on matching seeking, offerings and location
 WITH suggested_stakeholders AS (
@@ -389,3 +383,11 @@ OFFSET :offset
 -- :doc Creates N stakeholders. Type conversions needs to be handled before calling this funtions.
 INSERT INTO stakeholder(:i*:cols)
 VALUES :t*:values RETURNING id, email;
+
+-- :name get-stakeholders :query :many
+-- :doc Get stakeholders with filters
+SELECT *
+FROM stakeholder
+WHERE review_status = 'APPROVED'
+--~(when (seq (get-in params [:filters :roles])) " AND role = any(array[:v*:filters.roles]::stakeholder_role[])")
+--~(when (seq (get-in params [:filters :search-text])) " AND (LOWER(first_name) ILIKE '%' || :filters.search-text || '%' OR LOWER(last_name) ILIKE '%' || :filters.search-text || '%' OR LOWER(email) ILIKE '%' || :filters.search-text || '%')")
