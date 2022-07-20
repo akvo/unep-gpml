@@ -164,7 +164,7 @@ const ExpertCarousel = ({
                     </li>
                   )}
                   <li className="expert-activity">
-                    {expert.expertise.join(", ")}
+                    {expert?.expertise.join(", ")}
                   </li>
                 </ul>
               </div>

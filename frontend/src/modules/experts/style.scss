@@ -61,10 +61,9 @@
         cursor: pointer;
         transition: all 0.15s ease-out;
         &:hover {
-          transition: all 0.15s ease-out;
-          background-color: $yellow-highlight;
+          background-color: $blue06;
           color: #fff;
-          border: 1px solid #fff;
+          // border: 1px solid #fff;
           .transnational-icon path {
             stroke: #fff;
           }
