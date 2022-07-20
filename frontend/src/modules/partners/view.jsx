@@ -6,6 +6,7 @@ import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg"
 import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
 import { ReactComponent as IconCommunity } from "../../images/events/community-icon.svg";
 import { ReactComponent as IconPartner } from "../../images/stakeholder-overview/partner-icon.svg";
+import { ReactComponent as ExpertIcon } from "../../images/stakeholder-overview/expert-icon.svg";
 
 function Partners() {
   const sidebar = [
@@ -22,6 +23,12 @@ function Partners() {
       title: "Partners",
       url: "/connect/partners",
       icon: <IconPartner />,
+    },
+    {
+      id: 5,
+      title: "Experts",
+      url: "/connect/experts",
+      icon: <ExpertIcon />,
     },
   ];
 
