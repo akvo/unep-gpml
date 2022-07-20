@@ -38,6 +38,7 @@ const Experts = () => {
   const [experts, setExperts] = useState({
     experts: [],
     count: 0,
+    countryGroupCounts: [],
   });
   const [isAscending, setIsAscending] = useState(null);
   const isLoaded = () => !isEmpty(landing?.map);
@@ -79,6 +80,7 @@ const Experts = () => {
         setExperts({
           experts: data.experts,
           count: data.count,
+          countryGroupCounts: data.countByCountry,
         });
         setLoading(false);
       })
@@ -208,8 +210,17 @@ const Experts = () => {
             isDisplayedList={[]}
             dataToDisplay={[]}
             isFilteredCountry={filterCountries}
-            data={landing?.map || []}
-            countryGroupCounts={landing?.countryGroupCounts || []}
+            data={
+              (experts &&
+                experts?.countryGroupCounts?.map((item) => {
+                  return {
+                    countryId: item.countryId,
+                    counts: { experts: item.counts },
+                  };
+                })) ||
+              []
+            }
+            countryGroupCounts={experts?.countryGroupCounts || []}
             isLoaded={() => true}
             multiCountryCountries={[]}
             multiCountries={[]}

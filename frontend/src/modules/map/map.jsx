@@ -307,7 +307,7 @@ const KnowledgeLibraryToolTipContent = ({
   );
 };
 
-const ExpertsTooltipContent = ({ geo }) => {
+const ExpertsTooltipContent = ({ data, geo }) => {
   return (
     <div
       key={`${geo.ISO3CD}-tooltip`}
@@ -315,6 +315,14 @@ const ExpertsTooltipContent = ({ geo }) => {
       className="map-tooltip"
     >
       <h3>{geo.MAP_LABEL}</h3>
+      <div className="entity-row">
+        <b className="entity-type">Experts</b>
+        <div className="tooltip-count-wrapper">
+          <b className="tooltip-counts">
+            {data?.counts?.experts ? data?.counts?.experts : 0}
+          </b>
+        </div>
+      </div>
     </div>
   );
 };
@@ -461,6 +469,8 @@ const Maps = ({
       ? existingResources
       : path === STAKEHOLDER_OVERVIEW
       ? existingStakeholders
+      : path === EXPERTS
+      ? ["experts"]
       : [];
 
   const country =
@@ -652,7 +662,7 @@ const Maps = ({
                 vertical: useVerticalLegend,
               })}
             >
-              {isShownLegend && (
+              {isShownLegend && path !== EXPERTS && (
                 <>
                   {useVerticalLegend ? (
                     existingData.length !== 0 ? (
