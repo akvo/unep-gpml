@@ -646,6 +646,7 @@ const DetailsView = ({
                 title="Related content"
                 relatedContent={data?.relatedContent}
                 isShownPagination={false}
+                sliderItemCount={6}
                 dataCount={data?.relatedContent?.length || 0}
               />
             </Col>

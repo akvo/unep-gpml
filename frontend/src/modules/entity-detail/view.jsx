@@ -50,7 +50,7 @@ import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
 import { TrimText } from "../../utils/string";
-import { randomColor } from "../../utils/misc";
+import { randomColor, eventTrack } from "../../utils/misc";
 import RelatedContent from "../../components/related-content/related-content";
 
 const CardComponent = ({ title, style, children, getRef }) => {
@@ -562,6 +562,7 @@ const StakeholderDetail = ({
                 relatedContentPage={ownedResourcesPage}
                 relatedContentCount={ownedResourcesCount}
                 getRelatedContent={getOwnedResources}
+                sliderItemCount={5.5}
               />
             )}
           </div>
