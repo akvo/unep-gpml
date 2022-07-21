@@ -14,7 +14,7 @@ const ExpertCarousel = ({
   countries,
   organisations,
   setIsShownModal,
-  loading
+  loading,
 }) => {
   return (
     <Swiper

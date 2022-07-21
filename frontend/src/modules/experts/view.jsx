@@ -191,7 +191,13 @@ const Experts = () => {
             )} */}
             {view === 'map' ?
             <ExpertCarousel
-              {...{ experts, countries, organisations, setIsShownModal, loading }}
+              {...{
+                experts,
+                countries,
+                organisations,
+                setIsShownModal,
+                loading,
+              }}
             />
             :
             <div className="grid">
