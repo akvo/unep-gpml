@@ -1,11 +1,8 @@
 import React from "react";
 import "./style.scss";
 import { Col, Avatar, Card, Pagination } from "antd";
-import Carousel from "react-multi-carousel";
 import { Link } from "react-router-dom";
 import { ArrowRightOutlined } from "@ant-design/icons";
-import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
-import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
 import technicalResource from "../../images/placeholders/technical-resource-placeholder.png";
 import actionPlan from "../../images/placeholders/action-plan-placeholder.png";
 import policy from "../../images/placeholders/policy-placeholder.png";

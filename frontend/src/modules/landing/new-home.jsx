@@ -9,8 +9,6 @@ import {
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 
-import Carousel from "react-multi-carousel";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper";
 // swiper bundle styles
@@ -22,7 +20,6 @@ import "swiper/modules/pagination/pagination.min.css";
 import "swiper/modules/thumbs/thumbs.min.css";
 
 import "./new-styles.scss";
-import "react-multi-carousel/lib/styles.css";
 import moment from "moment";
 import imageNotFound from "../../images/image-not-found.png";
 

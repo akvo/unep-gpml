@@ -14,7 +14,6 @@ import "swiper/modules/navigation/navigation.scss";
 import "swiper/modules/pagination/pagination.min.css";
 import "swiper/modules/thumbs/thumbs.min.css";
 
-import Carousel from "react-multi-carousel";
 import { randomColor } from "../../utils/misc";
 import { ReactComponent as LocationIcon } from "../../images/location.svg";
 import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
