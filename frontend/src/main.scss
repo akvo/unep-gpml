@@ -1051,3 +1051,11 @@ path {
     opacity: 0 !important;
   }
 }
+
+.swiper-pagination-bullet-active {
+  background-color: #ffb800 !important;
+}
+.swiper-button-prev,
+.swiper-button-next {
+  color: #ffb800 !important;
+}
