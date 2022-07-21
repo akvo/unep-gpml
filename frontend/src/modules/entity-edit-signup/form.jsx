@@ -289,8 +289,12 @@ const SignUpForm = withRouter(
               }`
             );
           })
-          .catch(() => {
-            notification.error({ message: "An error occured" });
+          .catch((error) => {
+            notification.error({
+              message: error?.response?.data?.reason
+                ? error?.response?.data?.reason
+                : "An error occured",
+            });
           })
           .finally(() => {
             setSending(false);
