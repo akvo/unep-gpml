@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Row } from "antd";
 import { AppstoreOutlined, LoadingOutlined } from "@ant-design/icons";
-import { useHistory } from "react-router-dom";
 import "./style.scss";
 import api from "../../utils/api";
 import { UIStore } from "../../store";
@@ -22,16 +21,15 @@ import Maps from "../map/map";
 import ExpertCarousel from "./expert-carousel";
 import FilterBar from "./filter-bar";
 import InviteExpertModal from "./invite-expert-modal";
+import ExpertCard from "./expert-card";
 
 const Experts = () => {
-  const { countries, organisations, landing } = UIStore.useState((s) => ({
+  const { countries, organisations } = UIStore.useState((s) => ({
     countries: s.countries,
     organisations: s.organisations,
-    landing: s.landing,
   }));
 
   const box = document.getElementsByClassName("experts");
-  const history = useHistory();
   const query = useQuery();
 
   const [view, setView] = useState("map");
@@ -41,7 +39,6 @@ const Experts = () => {
     countryGroupCounts: [],
   });
   const [isAscending, setIsAscending] = useState(null);
-  const isLoaded = () => !isEmpty(landing?.map);
   const [loading, setLoading] = useState(true);
   const [filterCountries, setFilterCountries] = useState([]);
   const [filter, setFilter] = useState([]);
@@ -74,7 +71,7 @@ const Experts = () => {
   const fetchExperts = (params) => {
     const url = `/stakeholder/expert/list`;
     api
-      .get(url, { page_size: 12, page_n: 0, ...params })
+      .get(url, { page_size: 100, page_n: 0, ...params})
       .then((resp) => {
         const data = resp?.data;
         setExperts({
@@ -112,11 +109,6 @@ const Experts = () => {
 
   useEffect(() => {
     fetchExperts();
-    api.get(`/landing`).then((resp) => {
-      UIStore.update((e) => {
-        e.landing = resp.data;
-      });
-    });
   }, []);
 
   const clickCountry = (value) => {
@@ -197,6 +189,7 @@ const Experts = () => {
             {/* {experts.experts.length === 0 && !loading && (
               <div className="noresults">No matches</div>
             )} */}
+            {view === 'map' ?
             <ExpertCarousel
               {...{
                 experts,
@@ -206,7 +199,15 @@ const Experts = () => {
                 loading,
               }}
             />
+            :
+            <div className="grid">
+              {experts.experts.map(expert =>
+                <ExpertCard {...{ expert, countries, organisations }} />
+              )}
+            </div>
+            }
           </div>
+          {view === 'map' &&
           <Maps
             box={box}
             query={query}
@@ -232,6 +233,7 @@ const Experts = () => {
             multiCountries={[]}
             useVerticalLegend
           />
+          }
           <InviteExpertModal {...{ setIsShownModal, isShownModal }} />
         </LeftSidebar>
       </Row>
