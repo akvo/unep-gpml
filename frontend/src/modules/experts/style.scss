@@ -109,19 +109,10 @@
     }
     .swiper {
       width: 100%;
-      padding-bottom: 33px;
       padding-left: 25px;
       padding-right: 25px;
       .swiper-pagination {
-        position: absolute;
-        bottom: -5px;
-      }
-      .swiper-button-next,
-      .swiper-button-prev {
-        transform: translateY(-10px);
-      }
-      .swiper-button-disabled {
-        opacity: 0;
+        bottom: -5px !important;
       }
     }
     .swiper-slide {

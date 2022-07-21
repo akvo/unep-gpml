@@ -1034,3 +1034,20 @@ path {
 /* End of Responsive menu style */
 
 @import "./container.scss";
+
+.swiper {
+  padding-bottom: 33px !important;
+  padding-left: 25px;
+  padding-right: 25px;
+  .swiper-pagination {
+    position: absolute;
+    bottom: 0px !important;
+  }
+  .swiper-button-next,
+  .swiper-button-prev {
+    transform: translateY(-10px);
+  }
+  .swiper-button-disabled {
+    opacity: 0 !important;
+  }
+}

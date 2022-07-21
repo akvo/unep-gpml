@@ -36,8 +36,6 @@ const RelatedContent = ({
   isShownPagination,
   relatedContentPage,
   getRelatedContent,
-  responsive,
-  sliderItemCount,
 }) => {
   const CardComponent = ({ title, style, children, getRef }) => {
     return (
@@ -49,38 +47,6 @@ const RelatedContent = ({
           {children}
         </Card>
       </div>
-    );
-  };
-
-  const CustomRightArrow = ({ onClick, ...rest }) => {
-    const {
-      onMove,
-      carouselState: { currentSlide },
-    } = rest;
-
-    return (
-      <button
-        className="react-multiple-carousel__arrow custom-right-arrow"
-        onClick={() => onClick()}
-      >
-        <RightArrow />
-      </button>
-    );
-  };
-
-  const CustomLeftArrow = ({ onClick, ...rest }) => {
-    const {
-      onMove,
-      carouselState: { currentSlide },
-    } = rest;
-
-    return (
-      <button
-        className="react-multiple-carousel__arrow custom-left-arrow"
-        onClick={() => onClick()}
-      >
-        <LeftArrow />
-      </button>
     );
   };
 
@@ -165,9 +131,9 @@ const RelatedContent = ({
       getRef={relatedContent}
     >
       <Swiper
-        slidesPerView={sliderItemCount}
         spaceBetween={0}
-        slidesPerGroup={sliderItemCount}
+        slidesPerGroup={4}
+        slidesPerView={"auto"}
         pagination={{
           clickable: true,
         }}
