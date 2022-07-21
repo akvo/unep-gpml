@@ -533,6 +533,13 @@
         }
       }
     }
+    @media screen and (max-width: 960px) {
+      overflow-x: scroll;
+      .level-1 ul {
+        flex-wrap: nowrap;
+        margin-right: 15px;
+      }
+    }
   }
 }
 

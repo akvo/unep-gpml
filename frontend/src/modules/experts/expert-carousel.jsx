@@ -59,7 +59,7 @@ const ExpertCarousel = ({
   return (
     <Swiper
       spaceBetween={20}
-      slidesPerGroup={4}
+      slidesPerGroup={window.innerWidth > 1024 ? 4 : 1}
       slidesPerView={"auto"}
       pagination={{
         clickable: true,
