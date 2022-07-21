@@ -2,11 +2,18 @@ import { Select } from "antd";
 import catTags from "../../utils/cat-tags.json";
 import "./style.scss";
 
-const CatTagSelect = ({ handleChange, meta, error, value, handleRemove }) => (
+const CatTagSelect = ({
+  handleChange,
+  meta,
+  error,
+  value,
+  handleRemove,
+  placeholder,
+}) => (
   <div className="cat-tag-select">
     <Select
       mode="multiple"
-      placeholder="Choose categories"
+      placeholder={`${placeholder ? placeholder : "Choose"} categories`}
       dropdownRender={(menu) => (
         <CategorisedTags handleChange={handleChange} value={value} />
       )}
