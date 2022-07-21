@@ -18,7 +18,7 @@ const ExpertCard = ({ expert, countries, organisations }) => {
     );
   return (
     <Link to={`/stakeholder/${expert?.id}`}>
-      <Card key={expert?.id}>
+      <Card key={expert?.id} className="expert-card">
         <div className="expert-detail-list">
           <div className="list-item expert-image-wrapper">
             {expert?.affiliation && (

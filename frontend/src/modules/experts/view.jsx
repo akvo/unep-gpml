@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Row } from "antd";
 import { AppstoreOutlined, LoadingOutlined } from "@ant-design/icons";
-import { useHistory } from "react-router-dom";
 import "./style.scss";
 import api from "../../utils/api";
 import { UIStore } from "../../store";
@@ -22,6 +21,7 @@ import Maps from "../map/map";
 import ExpertCarousel from "./expert-carousel";
 import FilterBar from "./filter-bar";
 import InviteExpertModal from "./invite-expert-modal";
+import ExpertCard from "./expert-card";
 
 const Experts = () => {
   const { countries, organisations } = UIStore.useState((s) => ({
@@ -194,7 +194,11 @@ const Experts = () => {
               {...{ experts, countries, organisations, setIsShownModal, loading }}
             />
             :
-            <div>Grid here</div>
+            <div className="grid">
+              {experts.experts.map(expert =>
+                <ExpertCard {...{ expert, countries, organisations }} />
+              )}
+            </div>
             }
           </div>
           {view === 'map' &&
