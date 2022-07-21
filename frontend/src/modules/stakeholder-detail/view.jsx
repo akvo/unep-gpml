@@ -335,7 +335,7 @@ const StakeholderDetail = ({
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
-      // loginWithPopup(); TODO NAVIN 
+      // loginWithPopup(); TODO NAVIN
     }
     if (profile.reviewStatus === "SUBMITTED") {
       setWarningVisible(true);

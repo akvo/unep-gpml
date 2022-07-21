@@ -35,6 +35,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
         }),
         email: item?.email,
         expertise: item?.expertise,
+        suggestedCategory: item?.suggestedCategory,
       };
     });
 
@@ -76,7 +77,8 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
               {
                 name: "",
                 email: "",
-                expertise: "",
+                expertise: [],
+                suggestedCategory: [],
               },
             ],
           }}
@@ -206,7 +208,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                               </label>
                             </div>
                           )}
-                          <Field name={`${name}.suggest-category`}>
+                          <Field name={`${name}.suggestedCategory`}>
                             {({ input, meta, error }) => {
                               const handleSearch = (value) => {
                                 if (value.length < 2) {
