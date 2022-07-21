@@ -345,7 +345,7 @@ const AdminSection = ({
   const [fetching, setFetching] = useState(false);
 
   useEffect(() => {
-    api.get(`/reviewer?roles=ADMIN`).then((res) => {
+    api.get(`/reviewer`).then((res) => {
       setReviewers(res?.data?.reviewers);
     });
   }, []);

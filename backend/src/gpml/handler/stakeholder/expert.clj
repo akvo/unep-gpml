@@ -34,9 +34,9 @@
    [:page_size
     {:optional true
      :default 12
-     :swagger {:description "Maximum number of elements per page. (Max: 12)"
+     :swagger {:description "Maximum number of elements per page."
                :type "integer"}}
-    [:int {:min 1 :max 12}]]
+    [:int {:min 1}]]
    [:page_n
     {:optional true
      :default 0
