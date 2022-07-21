@@ -9,9 +9,17 @@ import {
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 
-import Carousel from "react-multi-carousel";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Navigation } from "swiper";
+// swiper bundle styles
+import "swiper/swiper.min.css";
+
+// import "swiper/modules/free-mode/free-mode.min.css";
+import "swiper/modules/navigation/navigation.scss";
+import "swiper/modules/pagination/pagination.min.css";
+import "swiper/modules/thumbs/thumbs.min.css";
+
 import "./new-styles.scss";
-import "react-multi-carousel/lib/styles.css";
 import moment from "moment";
 import imageNotFound from "../../images/image-not-found.png";
 
@@ -542,15 +550,16 @@ const Landing = withRouter(
               </div>
             </div>
             <div className="body">
-              <Carousel
-                centerMode={true}
-                responsive={responsive}
-                containerClass="carousel-container"
-                itemClass="carousel-item"
-                dotListClass="carousel-dot-list"
-                showDots={true}
-                renderDotsOutside={true}
-                removeArrowOnDeviceType={["tablet", "mobile"]}
+              <Swiper
+                slidesPerView={4}
+                spaceBetween={12}
+                slidesPerGroup={4}
+                pagination={{
+                  clickable: true,
+                }}
+                navigation={true}
+                modules={[Pagination, Navigation]}
+                className="community-carousel"
               >
                 {sortBy(ourCommunity, "name").map((x, i) => {
                   const index = i > 3 ? i - 4 : i;
@@ -561,57 +570,59 @@ const Landing = withRouter(
                       : "#"
                     : "#";
                   return (
-                    <Link
-                      key={`oc-card-link-${i}`}
-                      to={link}
-                      onClick={() => {
-                        !isApprovedUser && handleOurCommunityProfileClick();
-                      }}
-                    >
-                      <div key={`oc-card-${i}`}>
-                        <div className="type-wrapper">
-                          <span className="mark">
-                            {topicNames(humps.camelizeKeys(type))}
-                          </span>
+                    <SwiperSlide>
+                      <Link
+                        key={`oc-card-link-${i}`}
+                        to={link}
+                        onClick={() => {
+                          !isApprovedUser && handleOurCommunityProfileClick();
+                        }}
+                      >
+                        <div key={`oc-card-${i}`}>
+                          <div className="type-wrapper">
+                            <span className="mark">
+                              {topicNames(humps.camelizeKeys(type))}
+                            </span>
+                          </div>
+                          <div
+                            className="about"
+                            style={{ color: cardSvg[index]?.color }}
+                          >
+                            {about.length > 105 ? (
+                              <Tooltip
+                                title={about}
+                                overlayClassName="our-community-tooltip"
+                              >
+                                {TrimText({ text: about, max: 105 })}
+                              </Tooltip>
+                            ) : (
+                              <q>{about}</q>
+                            )}
+                          </div>
+                          {cardSvg[index]?.svg}
+                          <div className="detail">
+                            <Avatar
+                              className="photo"
+                              size={{
+                                xs: 85,
+                                sm: 95,
+                                md: 105,
+                                lg: 110,
+                                xl: 115,
+                                xxl: 125,
+                              }}
+                              src={image || imageNotFound}
+                              alt={name}
+                            />
+                            <h4>{name}</h4>
+                            <p className="role">{role || ""}</p>
+                          </div>
                         </div>
-                        <div
-                          className="about"
-                          style={{ color: cardSvg[index]?.color }}
-                        >
-                          {about.length > 105 ? (
-                            <Tooltip
-                              title={about}
-                              overlayClassName="our-community-tooltip"
-                            >
-                              {TrimText({ text: about, max: 105 })}
-                            </Tooltip>
-                          ) : (
-                            <q>{about}</q>
-                          )}
-                        </div>
-                        {cardSvg[index]?.svg}
-                        <div className="detail">
-                          <Avatar
-                            className="photo"
-                            size={{
-                              xs: 85,
-                              sm: 95,
-                              md: 105,
-                              lg: 110,
-                              xl: 115,
-                              xxl: 125,
-                            }}
-                            src={image || imageNotFound}
-                            alt={name}
-                          />
-                          <h4>{name}</h4>
-                          <p className="role">{role || ""}</p>
-                        </div>
-                      </div>
-                    </Link>
+                      </Link>
+                    </SwiperSlide>
                   );
                 })}
-              </Carousel>
+              </Swiper>
             </div>
           </div>
         </div>
@@ -725,14 +736,16 @@ const FeaturedContent = ({ history }) => {
 
 const FeaturedContentMobile = ({ history }) => {
   return (
-    <Carousel
-      centerMode={true}
-      responsive={responsive}
-      containerClass="feature-content"
-      itemClass="feature-content-carousel-item"
-      showDots={false}
-      renderDotsOutside={true}
-      removeArrowOnDeviceType={["tablet", "mobile"]}
+    <Swiper
+      slidesPerView={1}
+      spaceBetween={2}
+      slidesPerGroup={1}
+      pagination={{
+        clickable: true,
+      }}
+      navigation={true}
+      modules={[Pagination, Navigation]}
+      className="feature-content"
     >
       {featuredContents
         .filter((x) => x.id !== 196)
@@ -740,56 +753,62 @@ const FeaturedContentMobile = ({ history }) => {
           const { id, image, type, title, description, bookmark } = x;
           const link = `/${humps.decamelize(type)}/${id}`;
           return (
-            <Card
-              key={`fc-${i}`}
-              className="item"
-              onClick={() => {
-                history.push(link);
-                eventTrack("Featured Content", "View Url", "Button");
-              }}
-            >
-              <div className="item-header">
-                <span className="resource-label upper">
-                  {topicNames(humps.camelizeKeys(type))}
-                </span>
-                <span className="mark">
-                  <RiseOutlined />
-                  Trending
-                </span>
-              </div>
-              <div className="item-body">
-                <div className="asset-title">{title}</div>
-                <div className="body-text">
-                  {TrimText({ text: description, max: 100 })}
+            <SwiperSlide>
+              <Card
+                key={`fc-${i}`}
+                className="item"
+                onClick={() => {
+                  history.push(link);
+                  eventTrack("Featured Content", "View Url", "Button");
+                }}
+              >
+                <div className="item-header">
+                  <span className="resource-label upper">
+                    {topicNames(humps.camelizeKeys(type))}
+                  </span>
+                  <span className="mark">
+                    <RiseOutlined />
+                    Trending
+                  </span>
                 </div>
-              </div>
-              <div className="item-footer">
-                <Avatar.Group
-                  maxCount={3}
-                  maxStyle={{
-                    color: "#f56a00",
-                    backgroundColor: "#fde3cf",
-                  }}
-                >
-                  {bookmark.map((b, i) => (
-                    <Tooltip key={`avatar-${i}`} title={b.name} placement="top">
-                      <Avatar
-                        style={{ backgroundColor: "#FFB800" }}
-                        icon={<UserOutlined />}
-                      />
-                    </Tooltip>
-                  ))}
-                </Avatar.Group>
-                <span className="read-more">
-                  <Link to={link}>
-                    Read more <ArrowRightOutlined />
-                  </Link>
-                </span>
-              </div>
-            </Card>
+                <div className="item-body">
+                  <div className="asset-title">{title}</div>
+                  <div className="body-text">
+                    {TrimText({ text: description, max: 100 })}
+                  </div>
+                </div>
+                <div className="item-footer">
+                  <Avatar.Group
+                    maxCount={3}
+                    maxStyle={{
+                      color: "#f56a00",
+                      backgroundColor: "#fde3cf",
+                    }}
+                  >
+                    {bookmark.map((b, i) => (
+                      <Tooltip
+                        key={`avatar-${i}`}
+                        title={b.name}
+                        placement="top"
+                      >
+                        <Avatar
+                          style={{ backgroundColor: "#FFB800" }}
+                          icon={<UserOutlined />}
+                        />
+                      </Tooltip>
+                    ))}
+                  </Avatar.Group>
+                  <span className="read-more">
+                    <Link to={link}>
+                      Read more <ArrowRightOutlined />
+                    </Link>
+                  </span>
+                </div>
+              </Card>
+            </SwiperSlide>
           );
         })}
-    </Carousel>
+    </Swiper>
   );
 };
 

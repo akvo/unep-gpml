@@ -24,13 +24,7 @@ import {
 import StickyBox from "react-sticky-box";
 import ReadMoreReact from "read-more-less-react";
 import "read-more-less-react/dist/index.css";
-import AvatarImage from "../../images/stakeholder/Avatar.png";
-import StakeholderRating from "../../images/stakeholder/stakeholder-rating.png";
 import LocationImage from "../../images/location.svg";
-import EntityImage from "../../images/entity.png";
-import FollowImage from "../../images/stakeholder/follow.png";
-import ResourceImage from "../../images/stakeholder/resource.png";
-import EditImage from "../../images/stakeholder/edit.png";
 import { ReactComponent as TrashIcon } from "../../images/resource-detail/trash-icn.svg";
 import { ReactComponent as EditIcon } from "../../images/resource-detail/edit-icn.svg";
 import { ReactComponent as FollowIcon } from "../../images/resource-detail/follow-icn.svg";
@@ -55,11 +49,7 @@ import {
 } from "../../utils/misc";
 import uniqBy from "lodash/uniqBy";
 import isEmpty from "lodash/isEmpty";
-import { redirectError } from "../error/error-util";
-import { useAuth0 } from "@auth0/auth0-react";
-import { TrimText } from "../../utils/string";
-import { colors, eventTrack } from "../../utils/misc";
-const colour = () => colors[Math.floor(Math.random() * colors.length)];
+import { eventTrack, randomColor } from "../../utils/misc";
 
 const usePrevious = (value) => {
   const ref = useRef();
@@ -88,7 +78,6 @@ const SharePanel = ({
   history,
   handleRelationChange,
 }) => {
-  console.log(isAuthenticated);
   const canEdit = () =>
     isAuthenticated &&
     profile.reviewStatus === "APPROVED" &&
@@ -244,7 +233,6 @@ const StakeholderDetail = ({
   const [ownedResourcesPage, setOwnedResourcesPage] = useState(0);
   const [bookedResourcesPage, setBookedResourcesPage] = useState(0);
   const [warningVisible, setWarningVisible] = useState(false);
-  const [color, setColor] = useState([colour(), colour(), colour()]);
 
   const prevValue = usePrevious(data);
 
@@ -347,7 +335,7 @@ const StakeholderDetail = ({
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
-      loginWithPopup();
+      // loginWithPopup(); TODO NAVIN 
     }
     if (profile.reviewStatus === "SUBMITTED") {
       setWarningVisible(true);
@@ -384,34 +372,6 @@ const StakeholderDetail = ({
     );
   }
 
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 1200 },
-      items: 5.5,
-      slidesToSlide: 5.5,
-    },
-    desktop: {
-      breakpoint: { max: 1199, min: 992 },
-      items: 4.5,
-      slidesToSlide: 4.5,
-    },
-    tablet: {
-      breakpoint: { max: 991, min: 768 },
-      items: 3.5,
-      slidesToSlide: 3.5,
-    },
-    mobile2: {
-      breakpoint: { max: 767, min: 600 },
-      items: 2.5,
-      slidesToSlide: 2.5,
-    },
-    mobile: {
-      breakpoint: { max: 599, min: 0 },
-      items: 1.5,
-      slidesToSlide: 1.5,
-    },
-  };
-
   return (
     <div id="stakeholder-detail">
       <StickyBox style={{ zIndex: 10 }}>
@@ -429,7 +389,9 @@ const StakeholderDetail = ({
                         ) : (
                           <Avatar
                             style={{
-                              backgroundColor: color[1],
+                              backgroundColor: randomColor(
+                                data?.firstName?.substring(0, 1)
+                              ),
                               verticalAlign: "middle",
                               border: "4px solid #fff",
                               fontSize: "62px",
@@ -452,7 +414,9 @@ const StakeholderDetail = ({
                             ) : (
                               <Avatar
                                 style={{
-                                  backgroundColor: color[0],
+                                  backgroundColor: randomColor(
+                                    data?.affiliation?.name?.substring(0, 1)
+                                  ),
                                   verticalAlign: "middle",
                                 }}
                                 size={50}
@@ -513,7 +477,9 @@ const StakeholderDetail = ({
                                 ) : (
                                   <Avatar
                                     style={{
-                                      backgroundColor: color[0],
+                                      backgroundColor: randomColor(
+                                        data?.affiliation?.name
+                                      ),
                                       verticalAlign: "middle",
                                     }}
                                     size={55}
@@ -613,7 +579,7 @@ const StakeholderDetail = ({
                   >
                     <div className="bio">
                       <ReadMoreReact
-                        text={data?.about}
+                        text={data?.about ? data?.about : ""}
                         lines={5}
                         readMoreText="Read more"
                         readLessText="Read less"
@@ -720,7 +686,6 @@ const StakeholderDetail = ({
               <RelatedContent
                 data={[]}
                 url={""}
-                responsive={responsive}
                 isShownCount={false}
                 dataCount={ownedResourcesCount}
                 relatedContent={ownedResources || []}
@@ -737,7 +702,6 @@ const StakeholderDetail = ({
               <RelatedContent
                 data={[]}
                 url={""}
-                responsive={responsive}
                 isShownCount={false}
                 dataCount={bookedResourcesCount}
                 relatedContent={bookedResources || []}
