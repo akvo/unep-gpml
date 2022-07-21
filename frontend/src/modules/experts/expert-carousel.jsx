@@ -22,6 +22,7 @@ const ExpertCarousel = ({
   countries,
   organisations,
   setIsShownModal,
+  loading
 }) => {
   const CustomRightArrow = ({ onClick, ...rest }) => {
     const {
@@ -134,7 +135,7 @@ const ExpertCarousel = ({
                       </li>
                     )}
                     <li className="expert-activity">
-                      {expert?.expertise.join(", ")}
+                      {expert?.expertise?.join(", ")}
                     </li>
                   </ul>
                 </div>
@@ -143,9 +144,11 @@ const ExpertCarousel = ({
           </SwiperSlide>
         );
       })}
+      {(!loading || experts.length > 0) &&
       <SwiperSlide>
         <InviteExpertCard {...{ setIsShownModal }} />
       </SwiperSlide>
+      }
     </Swiper>
   );
 };
