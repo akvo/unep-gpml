@@ -226,9 +226,7 @@ const Experts = () => {
             multiCountries={[]}
             useVerticalLegend
           />
-          {isShownModal && (
-            <InviteExpertModal {...{ setIsShownModal, isShownModal }} />
-          )}
+          <InviteExpertModal {...{ setIsShownModal, isShownModal }} />
         </LeftSidebar>
       </Row>
     </div>

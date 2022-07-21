@@ -2,20 +2,8 @@
 .invite-expert-modal {
   width: 100% !important;
   max-width: 823px;
-  .ant-modal-close {
-    right: 20px;
-    .ant-modal-close-x {
-      display: block;
-      background-image: url("../../images/stakeholder-overview/close-icon.svg");
-      background-repeat: no-repeat;
-      background-position: center;
-      text-indent: -999px;
-    }
-  }
 
   .ant-modal-header {
-    padding: 14px 40px;
-    border-bottom: 1px solid #a5b0c9;
     .ant-modal-title {
       font-weight: 600;
       font-size: 18px;
@@ -25,7 +13,7 @@
     }
   }
   .ant-modal-body {
-    padding: 17px 40px 63px 40px;
+    padding: 17px 40px 50px 40px;
   }
   .paragraph {
     font-size: 14px;
@@ -103,14 +91,18 @@
       text-align: center;
       color: #18162f;
       transition: all 0.15s ease-out;
-      &:hover {
-        background-color: $yellow-highlight;
-        transition: all 0.15s ease-out;
-      }
+      // &:hover {
+      //   background-color: $yellow-highlight;
+      //   transition: all 0.15s ease-out;
+      // }
     }
     .invite-submit-button {
       margin-right: 16px;
       border: 2px solid #18162f;
+      &:hover {
+        background-color: #18162f;
+        color: #fff;
+      }
     }
     .invite-cancel-button {
       border: unset;

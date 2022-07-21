@@ -143,7 +143,9 @@ const ExpertCarousel = ({
           </SwiperSlide>
         );
       })}
-      <InviteExpertCard {...{ setIsShownModal }} />
+      <SwiperSlide>
+        <InviteExpertCard {...{ setIsShownModal }} />
+      </SwiperSlide>
     </Swiper>
   );
 };

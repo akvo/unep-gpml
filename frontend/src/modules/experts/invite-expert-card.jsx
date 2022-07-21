@@ -10,7 +10,7 @@ const InviteExpertCard = ({ setIsShownModal }) => {
         <img src={MegaphoneIcon} alt="" />
       </div>
       <div>
-        <h3 className="invite-expert-text">Do you know any expert?</h3>
+        <h3 className="invite-expert-text">Do you know an expert?</h3>
         <Button
           shape="round"
           size="medium"
