@@ -74,7 +74,7 @@ const Experts = () => {
   const fetchExperts = (params) => {
     const url = `/stakeholder/expert/list`;
     api
-      .get(url, { page_size: 12, page_n: 0, ...params})
+      .get(url, { page_size: 12, page_n: 0, ...params })
       .then((resp) => {
         const data = resp?.data;
         setExperts({
@@ -198,7 +198,13 @@ const Experts = () => {
               <div className="noresults">No matches</div>
             )} */}
             <ExpertCarousel
-              {...{ experts, countries, organisations, setIsShownModal, loading }}
+              {...{
+                experts,
+                countries,
+                organisations,
+                setIsShownModal,
+                loading,
+              }}
             />
           </div>
           <Maps

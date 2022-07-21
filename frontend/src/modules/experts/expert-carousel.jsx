@@ -10,10 +10,7 @@ import { Pagination, Navigation } from "swiper";
 
 import { ReactComponent as LocationIcon } from "../../images/location.svg";
 import { ReactComponent as ExpertBadge } from "../../images/stakeholder-overview/expert-badge.svg";
-import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
-import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
 import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
-import { ReactComponent as StarOutlined } from "../../images/stakeholder-overview/star-outlined.svg";
 import InviteExpertCard from "./invite-expert-card";
 import { titleCase } from "../../utils/string";
 
@@ -22,40 +19,8 @@ const ExpertCarousel = ({
   countries,
   organisations,
   setIsShownModal,
-  loading
+  loading,
 }) => {
-  const CustomRightArrow = ({ onClick, ...rest }) => {
-    const {
-      onMove,
-      carouselState: { currentSlide },
-    } = rest;
-
-    return (
-      <button
-        className="react-multiple-carousel__arrow custom-right-arrow expert-carousel-arrow"
-        onClick={() => onClick()}
-      >
-        <RightArrow />
-      </button>
-    );
-  };
-
-  const CustomLeftArrow = ({ onClick, ...rest }) => {
-    const {
-      onMove,
-      carouselState: { currentSlide },
-    } = rest;
-
-    return (
-      <button
-        className="react-multiple-carousel__arrow custom-left-arrow expert-carousel-arrow"
-        onClick={() => onClick()}
-      >
-        <LeftArrow />
-      </button>
-    );
-  };
-
   return (
     <Swiper
       spaceBetween={20}
@@ -68,7 +33,7 @@ const ExpertCarousel = ({
       modules={[Pagination, Navigation]}
       className="mySwiper"
     >
-      {experts.experts.map((expert, index) => {
+      {experts.experts.map((expert) => {
         const country = countries.find(
           (country) => country.id === expert.country
         )?.name;
@@ -79,8 +44,8 @@ const ExpertCarousel = ({
 
         return (
           <SwiperSlide>
-            <Link to={`/stakeholder/${expert?.id}`}>
-              <Card key={expert?.id}>
+            <Link to={`/stakeholder/${expert?.id}`} key={expert?.id}>
+              <Card>
                 <div className="expert-detail-list">
                   <div className="list-item expert-image-wrapper">
                     {expert?.affiliation && (
@@ -144,11 +109,11 @@ const ExpertCarousel = ({
           </SwiperSlide>
         );
       })}
-      {(!loading || experts.length > 0) &&
-      <SwiperSlide>
-        <InviteExpertCard {...{ setIsShownModal }} />
-      </SwiperSlide>
-      }
+      {(!loading || experts.length > 0) && (
+        <SwiperSlide>
+          <InviteExpertCard {...{ setIsShownModal }} />
+        </SwiperSlide>
+      )}
     </Swiper>
   );
 };
