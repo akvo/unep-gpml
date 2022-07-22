@@ -1,11 +1,8 @@
 import React from "react";
 import "./style.scss";
 import { Col, Avatar, Card, Pagination } from "antd";
-import Carousel from "react-multi-carousel";
 import { Link } from "react-router-dom";
 import { ArrowRightOutlined } from "@ant-design/icons";
-import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
-import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
 import technicalResource from "../../images/placeholders/technical-resource-placeholder.png";
 import actionPlan from "../../images/placeholders/action-plan-placeholder.png";
 import policy from "../../images/placeholders/policy-placeholder.png";
@@ -36,8 +33,6 @@ const RelatedContent = ({
   isShownPagination,
   relatedContentPage,
   getRelatedContent,
-  responsive,
-  sliderItemCount,
 }) => {
   const CardComponent = ({ title, style, children, getRef }) => {
     return (
@@ -49,38 +44,6 @@ const RelatedContent = ({
           {children}
         </Card>
       </div>
-    );
-  };
-
-  const CustomRightArrow = ({ onClick, ...rest }) => {
-    const {
-      onMove,
-      carouselState: { currentSlide },
-    } = rest;
-
-    return (
-      <button
-        className="react-multiple-carousel__arrow custom-right-arrow"
-        onClick={() => onClick()}
-      >
-        <RightArrow />
-      </button>
-    );
-  };
-
-  const CustomLeftArrow = ({ onClick, ...rest }) => {
-    const {
-      onMove,
-      carouselState: { currentSlide },
-    } = rest;
-
-    return (
-      <button
-        className="react-multiple-carousel__arrow custom-left-arrow"
-        onClick={() => onClick()}
-      >
-        <LeftArrow />
-      </button>
     );
   };
 
@@ -165,9 +128,9 @@ const RelatedContent = ({
       getRef={relatedContent}
     >
       <Swiper
-        slidesPerView={sliderItemCount}
         spaceBetween={0}
-        slidesPerGroup={sliderItemCount}
+        slidesPerGroup={4}
+        slidesPerView={"auto"}
         pagination={{
           clickable: true,
         }}

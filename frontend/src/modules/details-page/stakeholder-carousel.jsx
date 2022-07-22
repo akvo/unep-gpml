@@ -14,11 +14,8 @@ import "swiper/modules/navigation/navigation.scss";
 import "swiper/modules/pagination/pagination.min.css";
 import "swiper/modules/thumbs/thumbs.min.css";
 
-import Carousel from "react-multi-carousel";
 import { randomColor } from "../../utils/misc";
 import { ReactComponent as LocationIcon } from "../../images/location.svg";
-import { ReactComponent as LeftArrow } from "../../images/left-arrow.svg";
-import { ReactComponent as RightArrow } from "../../images/right-arrow.svg";
 import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
 
 const colour = () =>
@@ -30,66 +27,6 @@ const StakeholderCarousel = ({ stakeholders }) => {
     organisations: s.organisations,
     landing: s.landing,
   }));
-
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 1200 },
-      items: 4,
-      slidesToSlide: 4,
-    },
-    desktop: {
-      breakpoint: { max: 1199, min: 992 },
-      items: 3,
-      slidesToSlide: 3,
-    },
-    tablet: {
-      breakpoint: { max: 991, min: 768 },
-      items: 2,
-      slidesToSlide: 2,
-    },
-    largeMobile: {
-      breakpoint: { max: 767, min: 600 },
-      items: 1.5,
-      slidesToSlide: 1.5,
-    },
-    mobile: {
-      breakpoint: { max: 599, min: 0 },
-      items: 1,
-      slidesToSlide: 1,
-    },
-  };
-
-  const CustomRightArrow = ({ onClick, ...rest }) => {
-    const {
-      onMove,
-      carouselState: { currentSlide },
-    } = rest;
-
-    return (
-      <button
-        className="react-multiple-carousel__arrow custom-connection-right-arrow"
-        onClick={() => onClick()}
-      >
-        <RightArrow />
-      </button>
-    );
-  };
-
-  const CustomLeftArrow = ({ onClick, ...rest }) => {
-    const {
-      onMove,
-      carouselState: { currentSlide },
-    } = rest;
-
-    return (
-      <button
-        className="react-multiple-carousel__arrow custom-connection-left-arrow"
-        onClick={() => onClick()}
-      >
-        <LeftArrow />
-      </button>
-    );
-  };
 
   return (
     <div className="connection-wrapper">

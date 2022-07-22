@@ -35,6 +35,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
         }),
         email: item?.email,
         expertise: item?.expertise,
+        suggestedCategory: item?.suggestedCategory,
       };
     });
 
@@ -55,6 +56,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
 
   return (
     <Modal
+      centered
       className="invite-expert-modal"
       title="Suggest an expert"
       visible={isShownModal}
@@ -76,7 +78,8 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
               {
                 name: "",
                 email: "",
-                expertise: "",
+                expertise: [],
+                suggestedCategory: [],
               },
             ],
           }}
@@ -157,12 +160,12 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                           <Field
                             name={`${name}.expertise`}
                             style={{ width: "100%" }}
-                            placeholder="Pick categories"
                             validate={required}
                           >
                             {({ input, meta }) => {
                               return (
                                 <CatTagSelect
+                                  placeholder="Pick"
                                   handleChange={(value) => {
                                     formRef?.current?.change(
                                       `${name}.expertise`,
@@ -206,10 +209,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                               </label>
                             </div>
                           )}
-                          <Field
-                            name={`${name}.suggest-category`}
-                            validate={required}
-                          >
+                          <Field name={`${name}.suggestedCategory`}>
                             {({ input, meta, error }) => {
                               const handleSearch = (value) => {
                                 if (value.length < 2) {
@@ -238,12 +238,12 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                                     labelInValue
                                     mode="tags"
                                     notFoundContent={null}
-                                    onChange={(value) => input.onChange(value)}
+                                    onChange={(value) => input?.onChange(value)}
                                     onSearch={handleSearch}
                                     value={
-                                      input.value ? input.value : undefined
+                                      input?.value ? input?.value : undefined
                                     }
-                                    className={`dont-show ${
+                                    className={`dont-show modal-suggest-category ${
                                       error && !meta.valid
                                         ? "ant-input-status-error"
                                         : ""
