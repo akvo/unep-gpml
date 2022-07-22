@@ -202,11 +202,11 @@ const SignupForm = ({
     .flat();
 
   newSchema["expertiesActivities"].offering.options = array?.map((x) => ({
-    value: x.id,
+    value: x.tag,
     label: x.tag,
   }));
   newSchema["expertiesActivities"].seeking.options = array?.map((x) => ({
-    value: x.id,
+    value: x.tag,
     label: x.tag,
   }));
 
@@ -278,12 +278,8 @@ const SignupForm = ({
   useEffect(() => {
     setInitialValues({
       ...initialValues,
-      seeking: initialValues?.tags
-        ?.filter((item) => item.tagRelationCategory === "seeking")
-        .map((x) => x.id),
-      offering: initialValues?.tags
-        ?.filter((item) => item.tagRelationCategory === "offering")
-        .map((x) => x.id),
+      seeking: initialValues?.seeking.map((x) => x),
+      offering: initialValues?.offering.map((x) => x),
     });
   }, [initialValues]);
 

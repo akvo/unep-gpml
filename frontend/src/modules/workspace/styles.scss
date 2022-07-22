@@ -224,6 +224,7 @@ $bg-green-primary: #10f9b7;
             .ant-list-item-meta {
               &.disabled {
                 opacity: 0.2;
+                pointer-events: none;
               }
             }
           }
