@@ -551,9 +551,9 @@ const Landing = withRouter(
             </div>
             <div className="body">
               <Swiper
-                slidesPerView={4}
                 spaceBetween={12}
-                slidesPerGroup={4}
+                slidesPerGroup={window.innerWidth > 1024 ? 4 : 1}
+                slidesPerView={"auto"}
                 pagination={{
                   clickable: true,
                 }}
