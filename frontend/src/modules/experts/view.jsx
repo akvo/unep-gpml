@@ -71,7 +71,7 @@ const Experts = () => {
   const fetchExperts = (params) => {
     const url = `/stakeholder/expert/list`;
     api
-      .get(url, { page_size: 100, page_n: 0, ...params})
+      .get(url, { page_size: 100, page_n: 0, ...params })
       .then((resp) => {
         const data = resp?.data;
         setExperts({
@@ -189,51 +189,51 @@ const Experts = () => {
             {/* {experts.experts.length === 0 && !loading && (
               <div className="noresults">No matches</div>
             )} */}
-            {view === 'map' ?
-            <ExpertCarousel
-              {...{
-                experts,
-                countries,
-                organisations,
-                setIsShownModal,
-                loading,
-              }}
-            />
-            :
-            <div className="grid">
-              {experts.experts.map(expert =>
-                <ExpertCard {...{ expert, countries, organisations }} />
-              )}
-            </div>
-            }
+            {view === "map" ? (
+              <ExpertCarousel
+                {...{
+                  experts,
+                  countries,
+                  organisations,
+                  setIsShownModal,
+                  loading,
+                }}
+              />
+            ) : (
+              <div className="grid">
+                {experts.experts.map((expert) => (
+                  <ExpertCard {...{ expert, countries, organisations }} />
+                ))}
+              </div>
+            )}
           </div>
-          {view === 'map' &&
-          <Maps
-            box={box}
-            query={query}
-            clickEvents={clickCountry}
-            stakeholderCount={[]}
-            listVisible={[]}
-            isDisplayedList={[]}
-            dataToDisplay={[]}
-            isFilteredCountry={filterCountries}
-            data={
-              (experts &&
-                experts?.countryGroupCounts?.map((item) => {
-                  return {
-                    countryId: item.countryId,
-                    counts: { experts: item.counts },
-                  };
-                })) ||
-              []
-            }
-            countryGroupCounts={experts?.countryGroupCounts || []}
-            isLoaded={() => true}
-            multiCountryCountries={[]}
-            multiCountries={[]}
-            useVerticalLegend
-          />
-          }
+          {view === "map" && (
+            <Maps
+              box={box}
+              query={query}
+              clickEvents={clickCountry}
+              stakeholderCount={[]}
+              listVisible={[]}
+              isDisplayedList={[]}
+              dataToDisplay={[]}
+              isFilteredCountry={filterCountries}
+              data={
+                (experts &&
+                  experts?.countryGroupCounts?.map((item) => {
+                    return {
+                      countryId: item.countryId,
+                      counts: { experts: item.counts },
+                    };
+                  })) ||
+                []
+              }
+              countryGroupCounts={experts?.countryGroupCounts || []}
+              isLoaded={() => true}
+              multiCountryCountries={[]}
+              multiCountries={[]}
+              useVerticalLegend
+            />
+          )}
           <InviteExpertModal {...{ setIsShownModal, isShownModal }} />
         </LeftSidebar>
       </Row>

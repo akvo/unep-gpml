@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { Card, Avatar } from "antd";
 import { Link } from "react-router-dom";
 import { randomColor } from "../../utils/misc";
@@ -7,15 +7,13 @@ import { ReactComponent as ExpertBadge } from "../../images/stakeholder-overview
 import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
 import { titleCase } from "../../utils/string";
 
-
 const ExpertCard = ({ expert, countries, organisations }) => {
-  const country = countries.find(
-      (country) => country.id === expert.country
-    )?.name;
+  const country = countries.find((country) => country.id === expert.country)
+    ?.name;
 
-    const entity = organisations.find(
-      (organisation) => organisation.id === expert.affiliation
-    );
+  const entity = organisations.find(
+    (organisation) => organisation.id === expert.affiliation
+  );
   return (
     <Link to={`/stakeholder/${expert?.id}`}>
       <Card key={expert?.id} className="expert-card">
@@ -25,9 +23,7 @@ const ExpertCard = ({ expert, countries, organisations }) => {
               <Avatar
                 className="entity-logo"
                 style={{
-                  backgroundColor: randomColor(
-                    entity?.name?.substring(0, 1)
-                  ),
+                  backgroundColor: randomColor(entity?.name?.substring(0, 1)),
                   verticalAlign: "middle",
                 }}
                 size={32}
@@ -39,9 +35,7 @@ const ExpertCard = ({ expert, countries, organisations }) => {
               <ExpertBadge />
             </div>
             <Avatar
-              className={`expert-image ${
-                !expert.picture && "no-image"
-              }`}
+              className={`expert-image ${!expert.picture && "no-image"}`}
               src={expert.picture}
               style={{
                 backgroundColor: randomColor(
@@ -62,9 +56,7 @@ const ExpertCard = ({ expert, countries, organisations }) => {
           </div>
           <ul>
             <li className="expert-name">
-              {`${titleCase(expert?.firstName)} ${titleCase(
-                expert?.lastName
-              )}`}
+              {`${titleCase(expert?.firstName)} ${titleCase(expert?.lastName)}`}
             </li>
             {expert?.country && (
               <li className="expert-location">
@@ -72,14 +64,12 @@ const ExpertCard = ({ expert, countries, organisations }) => {
                 <span>{country}</span>
               </li>
             )}
-            <li className="expert-activity">
-              {expert?.expertise?.join(", ")}
-            </li>
+            <li className="expert-activity">{expert?.expertise?.join(", ")}</li>
           </ul>
         </div>
       </Card>
     </Link>
-  )
-}
+  );
+};
 
-export default ExpertCard
+export default ExpertCard;

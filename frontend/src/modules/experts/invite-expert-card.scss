@@ -3,6 +3,7 @@
   padding: 8px;
   height: 153px;
   .ant-card-body {
+    display: flex;
     height: calc(153px - calc(8px * 2));
     flex-direction: row !important;
     padding: 0 !important;

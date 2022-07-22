@@ -28,16 +28,16 @@ const ExpertCarousel = ({
       modules={[Pagination, Navigation]}
       className="mySwiper"
     >
-      {experts.experts.map((expert) => 
+      {experts.experts.map((expert) => (
         <SwiperSlide>
           <ExpertCard {...{ countries, organisations, expert }} />
         </SwiperSlide>
+      ))}
+      {(!loading || experts.length > 0) && (
+        <SwiperSlide>
+          <InviteExpertCard {...{ setIsShownModal }} />
+        </SwiperSlide>
       )}
-      {(!loading || experts.length > 0) &&
-      <SwiperSlide>
-        <InviteExpertCard {...{ setIsShownModal }} />
-      </SwiperSlide>
-      }
     </Swiper>
   );
 };
