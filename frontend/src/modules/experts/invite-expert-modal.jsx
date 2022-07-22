@@ -56,6 +56,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
 
   return (
     <Modal
+      centered
       className="invite-expert-modal"
       title="Suggest an expert"
       visible={isShownModal}

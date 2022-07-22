@@ -1,7 +1,10 @@
 @import "../../vars.scss";
 .invite-expert-modal {
   width: 100% !important;
-  max-width: 823px;
+
+  @media screen and (min-width: 840px) {
+    max-width: 823px;
+  }
 
   .ant-modal-header {
     .ant-modal-title {
@@ -110,5 +113,18 @@
   }
   .ant-modal-footer {
     display: none;
+  }
+
+  @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    .ant-modal-body {
+      padding: 17px 20px 30px 20px;
+    }
+
+    .invite-expert-buttons {
+      margin-top: 30px;
+    }
+    .ant-modal-header {
+      padding: 10px 20px;
+    }
   }
 }
