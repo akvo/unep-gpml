@@ -31,9 +31,9 @@ const StakeholderCarousel = ({ stakeholders }) => {
   return (
     <div className="connection-wrapper">
       <Swiper
-        slidesPerView={5}
         spaceBetween={0}
-        slidesPerGroup={5}
+        slidesPerGroup={window.innerWidth > 1024 ? 5 : 1}
+        slidesPerView={"auto"}
         pagination={{
           clickable: true,
         }}

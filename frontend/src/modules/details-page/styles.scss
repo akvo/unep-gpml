@@ -342,6 +342,9 @@
 
     .section-connection-stakeholder {
       clear: both;
+      .content-heading {
+        margin-bottom: 0;
+      }
       .stakeholder-detail-no-image .ant-list-item-meta-avatar .avatar-wrapper {
         width: 64px;
         height: 64px;
