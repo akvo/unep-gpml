@@ -49,8 +49,8 @@ function Expert() {
   }, []);
 
   const loadExperts = () => {
-    api.get("/stakeholder/expert/list").then((res) => {
-      setPendingInvites(res.data.experts);
+    api.get("/invitation").then((res) => {
+      setPendingInvites(res.data);
     });
   };
 
@@ -248,15 +248,13 @@ function Expert() {
               {pendingInvites.map((item) => (
                 <Row key={item.id}>
                   <Col span={8}>
-                    <p>
-                      {item.firstName} {item.lastName}
-                    </p>
+                    <p>{/* {item.firstName} {item.lastName} */}</p>
                   </Col>
                   <Col span={8}>
                     <p>{item.email}</p>
                   </Col>
                   <Col span={8}>
-                    <p>{item.expertise.map((item) => item).join(", ")}</p>
+                    {/* <p>{item.expertise.map((item) => item).join(", ")}</p> */}
                   </Col>
                 </Row>
               ))}
