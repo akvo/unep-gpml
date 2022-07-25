@@ -50,9 +50,8 @@ import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
 import { TrimText } from "../../utils/string";
-import { colors, eventTrack } from "../../utils/misc";
+import { randomColor, eventTrack } from "../../utils/misc";
 import RelatedContent from "../../components/related-content/related-content";
-const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
 const CardComponent = ({ title, style, children, getRef }) => {
   return (
@@ -202,7 +201,6 @@ const StakeholderDetail = ({
   const { loginWithPopup } = useAuth0();
   const history = useHistory();
   const [data, setData] = useState(null);
-  const [color, setColor] = useState([colour(), colour(), colour()]);
   const [relations, setRelations] = useState([]);
   const [ownedResources, setOwnedResources] = useState([]);
   const [bookedResources, setBookedResources] = useState([]);
@@ -359,34 +357,6 @@ const StakeholderDetail = ({
     );
   }
 
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 1200 },
-      items: 5.5,
-      slidesToSlide: 5.5,
-    },
-    desktop: {
-      breakpoint: { max: 1199, min: 992 },
-      items: 4.5,
-      slidesToSlide: 4.5,
-    },
-    tablet: {
-      breakpoint: { max: 991, min: 768 },
-      items: 3.5,
-      slidesToSlide: 3.5,
-    },
-    mobile2: {
-      breakpoint: { max: 767, min: 600 },
-      items: 2.5,
-      slidesToSlide: 2.5,
-    },
-    mobile: {
-      breakpoint: { max: 599, min: 0 },
-      items: 1.5,
-      slidesToSlide: 1.5,
-    },
-  };
-
   return (
     <div id="entity-detail">
       <StickyBox style={{ zIndex: 10 }}>
@@ -411,7 +381,9 @@ const StakeholderDetail = ({
                         ) : (
                           <Avatar
                             style={{
-                              backgroundColor: color[0],
+                              backgroundColor: randomColor(
+                                data?.name?.substring(0, 1)
+                              ),
                               fontSize: "62px",
                               fontWeight: "bold",
                               verticalAlign: "middle",
@@ -553,7 +525,6 @@ const StakeholderDetail = ({
               <RelatedContent
                 url={`?entity=${data.id}`}
                 data={[]}
-                responsive={responsive}
                 isShownCount={true}
                 relatedContent={ownedResources}
                 title="Content on the platform"
@@ -562,6 +533,7 @@ const StakeholderDetail = ({
                 relatedContentPage={ownedResourcesPage}
                 relatedContentCount={ownedResourcesCount}
                 getRelatedContent={getOwnedResources}
+                sliderItemCount={5.5}
               />
             )}
           </div>
@@ -607,7 +579,9 @@ const StakeholderDetail = ({
                                     ) : (
                                       <Avatar
                                         style={{
-                                          backgroundColor: color[2],
+                                          backgroundColor: randomColor(
+                                            item?.name?.substring(0, 1)
+                                          ),
                                           verticalAlign: "middle",
                                           fontSize: "62px",
                                           fontWeight: "bold",
