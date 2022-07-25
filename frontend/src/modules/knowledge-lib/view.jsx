@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import api from '../../utils/api'
-import FilterBar from './filter-bar'
-import './style.scss'
+import React, { useEffect, useState } from "react";
+import api from "../../utils/api";
+import FilterBar from "./filter-bar";
+import "./style.scss";
+import FilterModal from "./filter-modal";
 
 const KnowledgeLib = () => {
-  const [view, setView] = useState('map') // to be changed to 'overview' later
+  const [view, setView] = useState("map"); // to be changed to 'overview' later
   const [isAscending, setIsAscending] = useState(null);
   const [loading, setLoading] = useState(true);
   const [filterCountries, setFilterCountries] = useState([]);
   const [filter, setFilter] = useState([]);
-  const [data, setData] = useState({})
+  const [data, setData] = useState({});
+  const [isShownModal, setIsShownModal] = useState(false);
 
   const fetchData = (params) => {
     api
-      .get('/browse', { page_size: 30, page_n: 0, ...params })
+      .get("/browse", { page_size: 30, page_n: 0, ...params })
       .then((resp) => {
-        setData(resp.data)
+        setData(resp.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -25,14 +27,25 @@ const KnowledgeLib = () => {
   };
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   return (
     <div id="knowledge-lib">
-      <FilterBar {...{ view, setView, filterCountries, setFilterCountries, filter, setFilter }} />
+      <FilterBar
+        {...{
+          view,
+          setView,
+          filterCountries,
+          setFilterCountries,
+          filter,
+          setFilter,
+          setIsShownModal,
+        }}
+      />
+      <FilterModal {...{ setIsShownModal, isShownModal }} />
     </div>
-  )
-}
+  );
+};
 
-export default KnowledgeLib
+export default KnowledgeLib;

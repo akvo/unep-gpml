@@ -18,7 +18,7 @@ const resourceTypes = [
   { key: "financing-resource", label: "Financing Resources" },
 ];
 
-const FilterBar = ({ view, setView, filter, setFilter }) => {
+const FilterBar = ({ view, setView, filter, setFilter, setIsShownModal }) => {
   const query = useQuery();
   const [country, setCountry] = useState([]);
   const [multiCountry, setMultiCountry] = useState([]);
@@ -107,7 +107,7 @@ const FilterBar = ({ view, setView, filter, setFilter }) => {
           </li>
         ))}
       </ul>
-      <Button>
+      <Button onClick={() => setIsShownModal(true)}>
         <FilterIcon />
         <span>More Filters</span>
       </Button>

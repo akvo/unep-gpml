@@ -100,7 +100,9 @@
             stroke: #ffa800;
           }
         }
-        color: #ffa800;
+        span {
+          color: #ffa800;
+        }
       }
       &.ant-dropdown-open {
         background: rgba(24, 22, 47, 0.65);

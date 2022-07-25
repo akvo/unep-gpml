@@ -1,0 +1,99 @@
+@import "../../vars.scss";
+.filter-modal {
+  width: 100% !important;
+
+  @media screen and (min-width: 840px) {
+    max-width: 823px;
+  }
+
+  .ant-modal-header {
+    .ant-modal-title {
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 26px;
+      color: #a5b0c9;
+      text-transform: uppercase;
+    }
+  }
+  .ant-modal-body {
+    padding: 17px 40px 50px 40px;
+    .filter-title {
+      color: #000;
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 5px;
+
+      @media (max-width: 540px) {
+        font-size: 16px;
+      }
+    }
+    .resources-card-filter {
+      &.ant-col {
+        max-width: 100%;
+      }
+      @media (max-width: 650px) {
+        .ant-row-space-between {
+          justify-content: unset !important;
+          .resource-card-wrapper {
+            margin-right: 5px !important;
+          }
+        }
+      }
+      .resource-type {
+        border: none;
+        color: $blue06;
+      }
+
+      .resource-type,
+      .clear-selection {
+        display: block;
+        line-height: 30px;
+        font-size: 14px;
+        font-weight: bold;
+        background-color: unset;
+
+        @media (max-width: 540px) {
+          font-size: 12px;
+        }
+      }
+      .resource-card-wrapper {
+        .resource-type-card {
+          color: $grey03;
+          text-align: center;
+          .ant-space {
+            svg {
+              width: 80px;
+              height: 55px;
+            }
+          }
+          .ant-card-body {
+            padding: 10px 0px;
+            .topic-count {
+              font-weight: bold;
+              position: absolute;
+              top: 5px;
+              left: 5px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .ant-modal-footer {
+    display: none;
+  }
+
+  @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    .ant-modal-body {
+      padding: 17px 20px 30px 20px;
+    }
+
+    .invite-expert-buttons {
+      margin-top: 30px;
+    }
+    .ant-modal-header {
+      padding: 10px 20px;
+    }
+  }
+}
