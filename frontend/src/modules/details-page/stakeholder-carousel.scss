@@ -9,14 +9,15 @@
     position: relative;
     z-index: 2;
 
-    .react-multi-carousel-item:not(:last-of-type) {
+    .swiper-slide:not(:last-of-type) {
       margin-right: 10px;
     }
-    .react-multi-carousel-item:first-of-type {
+
+    .swiper-slide:first-of-type {
       margin-left: 2px;
     }
 
-    .react-multi-carousel-item {
+    .swiper-slide {
       width: 210px !important;
       position: relative;
       cursor: pointer;
@@ -25,6 +26,7 @@
         height: 84px;
         border: unset;
         .ant-card-body {
+          max-height: 84px;
           display: flex;
           align-items: flex-start;
           padding: 10px;
