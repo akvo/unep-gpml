@@ -8,12 +8,6 @@ import catTags from "../../utils/cat-tags.json";
 
 import { isEmpty } from "lodash";
 import { useQuery } from "./common";
-import LeftSidebar from "../../components/left-sidebar/left-sidebar";
-import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg";
-import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
-import { ReactComponent as IconCommunity } from "../../images/events/community-icon.svg";
-import { ReactComponent as IconPartner } from "../../images/stakeholder-overview/partner-icon.svg";
-import { ReactComponent as ExpertIcon } from "../../images/stakeholder-overview/expert-icon.svg";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
 
@@ -43,30 +37,6 @@ const Experts = () => {
   const [filterCountries, setFilterCountries] = useState([]);
   const [filter, setFilter] = useState([]);
   const [isShownModal, setIsShownModal] = useState(false);
-
-  const sidebar = [
-    { id: 1, title: "Events", url: "/connect/events", icon: <IconEvent /> },
-    {
-      id: 2,
-      title: "Community",
-      url: "/connect/community",
-      icon: <IconCommunity />,
-    },
-
-    { id: 3, title: "Forums", url: null, icon: <IconForum /> },
-    {
-      id: 4,
-      title: "Partners",
-      url: "/connect/partners",
-      icon: <IconPartner />,
-    },
-    {
-      id: 5,
-      title: "Experts",
-      url: "/connect/experts",
-      icon: <ExpertIcon />,
-    },
-  ];
 
   const fetchExperts = (params) => {
     const url = `/stakeholder/expert/list`;
@@ -142,101 +112,97 @@ const Experts = () => {
 
   return (
     <div id="experts" className="experts">
-      <Row type="flex" className="body-wrapper">
-        <LeftSidebar active={5} sidebar={sidebar}>
-          <FilterBar
-            {...{ filter, setFilter, filterCountries, setFilterCountries }}
-          />
-          <div className="expert-list-section">
-            <div className="expert-top-tools">
-              <div className="page-label">Total {experts?.count}</div>
-              <button
-                className="view-button"
-                shape="round"
-                size="large"
-                onClick={() => {
-                  view === "map" ? setView("grid") : setView("map");
-                }}
-              >
-                <div className="view-button-text ">
-                  Switch to {`${view === "map" ? "grid" : "map"}`} view
-                </div>
-                {view === "map" ? <AppstoreOutlined /> : <GlobeIcon />}
-              </button>
-              <button
-                className="sort-by-button"
-                onClick={() => sortExperts(!isAscending)}
-              >
-                <SortIcon
-                  style={{
-                    transform:
-                      isAscending || isAscending === null
-                        ? "initial"
-                        : "rotate(180deg)",
-                  }}
-                />
-                <div className="sort-button-text">
-                  <span>Sort by:</span>
-                  <b>{isAscending ? `A>Z` : "Z>A"}</b>
-                </div>
-              </button>
+      <FilterBar
+        {...{ filter, setFilter, filterCountries, setFilterCountries }}
+      />
+      <div className="expert-list-section">
+        <div className="expert-top-tools">
+          <div className="page-label">Total {experts?.count}</div>
+          <button
+            className="view-button"
+            shape="round"
+            size="large"
+            onClick={() => {
+              view === "map" ? setView("grid") : setView("map");
+            }}
+          >
+            <div className="view-button-text ">
+              Switch to {`${view === "map" ? "grid" : "map"}`} view
             </div>
-            {loading && (
-              <div className="loading">
-                <LoadingOutlined spin />
-              </div>
-            )}
-            {/* {experts.experts.length === 0 && !loading && (
+            {view === "map" ? <AppstoreOutlined /> : <GlobeIcon />}
+          </button>
+          <button
+            className="sort-by-button"
+            onClick={() => sortExperts(!isAscending)}
+          >
+            <SortIcon
+              style={{
+                transform:
+                  isAscending || isAscending === null
+                    ? "initial"
+                    : "rotate(180deg)",
+              }}
+            />
+            <div className="sort-button-text">
+              <span>Sort by:</span>
+              <b>{isAscending ? `A>Z` : "Z>A"}</b>
+            </div>
+          </button>
+        </div>
+        {loading && (
+          <div className="loading">
+            <LoadingOutlined spin />
+          </div>
+        )}
+        {/* {experts.experts.length === 0 && !loading && (
               <div className="noresults">No matches</div>
             )} */}
-            {view === "map" ? (
-              <ExpertCarousel
-                {...{
-                  experts,
-                  countries,
-                  organisations,
-                  setIsShownModal,
-                  loading,
-                }}
-              />
-            ) : (
-              <div className="grid">
-                {experts.experts.map((expert) => (
-                  <ExpertCard {...{ expert, countries, organisations }} />
-                ))}
-              </div>
-            )}
+        {view === "map" ? (
+          <ExpertCarousel
+            {...{
+              experts,
+              countries,
+              organisations,
+              setIsShownModal,
+              loading,
+            }}
+          />
+        ) : (
+          <div className="grid">
+            {experts.experts.map((expert) => (
+              <ExpertCard {...{ expert, countries, organisations }} />
+            ))}
           </div>
-          {view === "map" && (
-            <Maps
-              box={box}
-              query={query}
-              clickEvents={clickCountry}
-              stakeholderCount={[]}
-              listVisible={[]}
-              isDisplayedList={[]}
-              dataToDisplay={[]}
-              isFilteredCountry={filterCountries}
-              data={
-                (experts &&
-                  experts?.countryGroupCounts?.map((item) => {
-                    return {
-                      countryId: item.countryId,
-                      counts: { experts: item.counts },
-                    };
-                  })) ||
-                []
-              }
-              countryGroupCounts={experts?.countryGroupCounts || []}
-              isLoaded={() => true}
-              multiCountryCountries={[]}
-              multiCountries={[]}
-              useVerticalLegend
-            />
-          )}
-          <InviteExpertModal {...{ setIsShownModal, isShownModal }} />
-        </LeftSidebar>
-      </Row>
+        )}
+      </div>
+      {view === "map" && (
+        <Maps
+          box={box}
+          query={query}
+          clickEvents={clickCountry}
+          stakeholderCount={[]}
+          listVisible={[]}
+          isDisplayedList={[]}
+          dataToDisplay={[]}
+          isFilteredCountry={filterCountries}
+          data={
+            (experts &&
+              experts?.countryGroupCounts?.map((item) => {
+                return {
+                  countryId: item.countryId,
+                  counts: { experts: item.counts },
+                };
+              })) ||
+            []
+          }
+          countryGroupCounts={experts?.countryGroupCounts || []}
+          isLoaded={() => true}
+          multiCountryCountries={[]}
+          multiCountries={[]}
+          useVerticalLegend
+        />
+      )}
+      <InviteExpertModal {...{ setIsShownModal, isShownModal }} />
     </div>
   );
 };
