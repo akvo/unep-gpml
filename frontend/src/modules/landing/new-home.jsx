@@ -662,7 +662,7 @@ const FeaturedContent = ({ history }) => {
     .filter((x) => x.id !== 196)
     .map((x, i) => {
       const { id, image, type, title, description, bookmark } = x;
-      const link = `/${humps.decamelize(type)}/${id}`;
+      const link = `/${type.replace("_", "-")}/${id}`;
       return (
         <Card
           key={`fc-${i}`}
@@ -732,7 +732,7 @@ const FeaturedContentMobile = ({ history }) => {
         .filter((x) => x.id !== 196)
         .map((x, i) => {
           const { id, image, type, title, description, bookmark } = x;
-          const link = `/${humps.decamelize(type)}/${id}`;
+          const link = `/${type.replace("_", "-")}/${id}`;
           return (
             <SwiperSlide>
               <Card
