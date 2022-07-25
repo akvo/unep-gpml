@@ -942,7 +942,9 @@ const UserButton = withRouter(({ history, logout, isRegistered, profile }) => {
         <Menu className="user-btn-dropdown">
           <Menu.Item
             onClick={() => {
-              history.push(`/${isRegistered(profile) ? "profile" : "signup"}`);
+              history.push(
+                `/${isRegistered(profile) ? "profile" : "onboarding"}`
+              );
             }}
           >
             Profile

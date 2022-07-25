@@ -57,7 +57,7 @@ const Footer = ({
               </li>
               {profile && profile.org && !profile?.org?.isMember && (
                 <li>
-                  <Link to="/entity-signup">Join GPML</Link>
+                  <Link to="/onboarding">Join GPML</Link>
                 </li>
               )}
               <li>
@@ -77,7 +77,7 @@ const Footer = ({
                   <span
                     style={{ cursor: "pointer" }}
                     onClick={(e) => {
-                      Object.keys(profile).length > 1
+                      profile && profile.hasOwnProperty("reviewStatus")
                         ? setWarningModalVisible(true)
                         : isAuthenticated
                         ? setStakeholderSignupModalVisible(true)
@@ -189,7 +189,7 @@ const Footer = ({
                 <h4>Join Us</h4>
               </li>
               <li>
-                <Link to="/signup">
+                <Link to="/onboarding">
                   Join the GPML Partnership (Entities Only)
                 </Link>
               </li>
@@ -202,7 +202,7 @@ const Footer = ({
                   <span
                     style={{ cursor: "pointer" }}
                     onClick={(e) => {
-                      Object.keys(profile).length > 1
+                      profile && profile.hasOwnProperty("reviewStatus")
                         ? setWarningModalVisible(true)
                         : isAuthenticated
                         ? setStakeholderSignupModalVisible(true)

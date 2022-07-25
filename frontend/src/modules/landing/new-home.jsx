@@ -154,7 +154,7 @@ const Landing = withRouter(
         return loginWithPopup();
       }
       if (isAuthenticated && !hasProfile) {
-        return history.push("/signup");
+        return history.push("/onboarding");
       }
       return setWarningModalVisible(true);
     };
@@ -649,7 +649,7 @@ const JoinGPMLButton = withRouter(({ history, loginWithPopup }) => {
     <Button
       type="primary"
       onClick={() => {
-        history.push("/signup");
+        history.push("/onboarding");
       }}
     >
       Join GPML
