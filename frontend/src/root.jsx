@@ -59,6 +59,7 @@ import Workspace from "./modules/workspace/view";
 import EventPage from "./modules/event-page/view";
 import StakeholderDetail from "./modules/stakeholder-detail/view";
 import EntityDetail from "./modules/entity-detail/view";
+import Connect from "./modules/connect/view";
 
 // Menu dropdown
 import ExploreDropdownMenu from "./modules/dropdown-menu/explore";
@@ -81,6 +82,7 @@ import KnowledgeLibrary from "./modules/knowledge-library/view";
 import AddContentButton from "./components/add-content-button/add-content-button";
 import StakeholderOverview from "./modules/stakeholder-overview/view";
 import Partners from "./modules/partners/view";
+import Experts from "./modules/experts/view";
 
 // Auth
 import Onboarding from "./modules/onboarding/view";
@@ -824,33 +826,17 @@ const Root = () => {
             render={(props) => <Onboarding {...props} />}
             path="/onboarding"
           />
+
           <Route
             path="/connect"
-            render={() => (
-              <Switch>
-                <Route
-                  exact
-                  render={(props) => <EventPage {...props} />}
-                  path="/connect/events"
-                />
-                <Route
-                  path="/connect/community"
-                  render={(props) => (
-                    <StakeholderOverview
-                      {...props}
-                      setLoginVisible={setLoginVisible}
-                      filters={filters}
-                      setFilters={setFilters}
-                      isAuthenticated={isAuthenticated}
-                    />
-                  )}
-                />
-                <Route
-                  exact
-                  render={(props) => <Partners {...props} />}
-                  path="/connect/partners"
-                />
-              </Switch>
+            render={(props) => (
+              <Connect
+                {...props}
+                setLoginVisible={setLoginVisible}
+                filters={filters}
+                setFilters={setFilters}
+                isAuthenticated={isAuthenticated}
+              />
             )}
           />
 
