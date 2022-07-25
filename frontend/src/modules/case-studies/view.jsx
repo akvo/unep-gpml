@@ -5,14 +5,8 @@ import { DownloadOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import datastudies from "./json/case-studies.json";
 import CaseStudy from "./CaseStudy";
-import LeftSidebar from "../../components/left-sidebar/left-sidebar";
 import { ReactComponent as DropdownIcon } from "../../images/case-studies/ic-dropdown.svg";
 import { titleCase } from "../../utils/string";
-
-import { ReactComponent as IconLibrary } from "../../images/capacity-building/ic-knowledge-library.svg";
-import { ReactComponent as IconLearning } from "../../images/capacity-building/ic-capacity-building.svg";
-import { ReactComponent as IconExchange } from "../../images/capacity-building/ic-exchange.svg";
-import { ReactComponent as IconCaseStudies } from "../../images/capacity-building/ic-case-studies.svg";
 import { eventTrack } from "../../utils/misc";
 
 const { Header, Content } = Layout;
@@ -21,27 +15,6 @@ const CaseStudies = () => {
   const [isShownDropdown, setIsShownDropdown] = useState(false);
   const [indexSlide, setIndexSlide] = useState(0);
   const caseStudyReff = useRef();
-
-  const sidebar = [
-    {
-      id: 1,
-      title: "Library",
-      url: "/knowledge/library",
-      icon: <IconLibrary />,
-    },
-    {
-      id: 2,
-      title: "Learning",
-      url: "/knowledge/capacity-building",
-      icon: <IconLearning />,
-    },
-    {
-      id: 4,
-      title: "Case studies",
-      url: "/knowledge/case-studies",
-      icon: <IconCaseStudies />,
-    },
-  ];
 
   const slider = useRef();
   const prev = () => {
@@ -149,26 +122,24 @@ const CaseStudies = () => {
       </Col>
       <Col span={24}>
         <div className="">
-          <LeftSidebar active={4} sidebar={sidebar}>
-            <Carousel
-              dots={false}
-              ref={slider}
-              afterChange={(index) => setIndexSlide(index)}
-            >
-              {datastudies?.map((c, cx) => (
-                <CaseStudy {...c} key={cx} />
-              ))}
-            </Carousel>
-            <div className="carousel-control">
-              <button className="carousel-prev" onClick={prev}>
-                <DropdownIcon />
-              </button>
+          <Carousel
+            dots={false}
+            ref={slider}
+            afterChange={(index) => setIndexSlide(index)}
+          >
+            {datastudies?.map((c, cx) => (
+              <CaseStudy {...c} key={cx} />
+            ))}
+          </Carousel>
+          <div className="carousel-control">
+            <button className="carousel-prev" onClick={prev}>
+              <DropdownIcon />
+            </button>
 
-              <button className="carousel-next" onClick={next}>
-                <DropdownIcon />
-              </button>
-            </div>
-          </LeftSidebar>
+            <button className="carousel-next" onClick={next}>
+              <DropdownIcon />
+            </button>
+          </div>
         </div>
       </Col>
     </Row>
