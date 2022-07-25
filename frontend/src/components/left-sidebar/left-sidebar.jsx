@@ -3,38 +3,9 @@ import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
-import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg";
-import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
-import { ReactComponent as IconCommunity } from "../../images/events/community-icon.svg";
-import { ReactComponent as IconPartner } from "../../images/stakeholder-overview/partner-icon.svg";
-import { ReactComponent as ExpertIcon } from "../../images/stakeholder-overview/expert-icon.svg";
-
 import "./styles.scss";
 
-const sidebar = [
-  { id: 1, title: "Events", url: "/connect/events", icon: <IconEvent /> },
-  {
-    id: 2,
-    title: "Community",
-    url: "/connect/community",
-    icon: <IconCommunity />,
-  },
-  { id: 3, title: "Forums", url: null, icon: <IconForum /> },
-  {
-    id: 4,
-    title: "Partners",
-    url: "/connect/partners",
-    icon: <IconPartner />,
-  },
-  {
-    id: 5,
-    title: "Experts",
-    url: "/connect/experts",
-    icon: <ExpertIcon />,
-  },
-];
-
-const LeftSidebar = ({ children, active = 1 }) => {
+const LeftSidebar = ({ sidebar, active = 1 }) => {
   const [activeMenu, setActiveMenu] = useState(active);
   const location = useLocation();
 

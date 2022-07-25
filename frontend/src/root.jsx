@@ -60,6 +60,7 @@ import EventPage from "./modules/event-page/view";
 import StakeholderDetail from "./modules/stakeholder-detail/view";
 import EntityDetail from "./modules/entity-detail/view";
 import Connect from "./modules/connect/view";
+import Knowledge from "./modules/knowledge/view";
 
 // Menu dropdown
 import ExploreDropdownMenu from "./modules/dropdown-menu/explore";
@@ -80,9 +81,6 @@ import KnowledgeLibrary from "./modules/knowledge-library/view";
 
 // Buttons
 import AddContentButton from "./components/add-content-button/add-content-button";
-import StakeholderOverview from "./modules/stakeholder-overview/view";
-import Partners from "./modules/partners/view";
-import Experts from "./modules/experts/view";
 
 // Auth
 import Onboarding from "./modules/onboarding/view";
@@ -595,59 +593,43 @@ const Root = () => {
           />
           <Route
             path="/knowledge"
-            render={() => (
-              <Switch>
-                <Route
-                  path="/knowledge/library"
-                  render={(props) => (
-                    <KnowledgeLibrary
-                      {...{
-                        history,
-                        query,
-                        results,
-                        countData,
-                        pageSize,
-                        loading,
-                        filters,
-                        filterMenu,
-                        filterCountries,
-                        isAuthenticated,
-                        loginWithPopup,
-                        multiCountryCountries,
-                        isLoading,
-                        setLoading,
-                        landingQuery,
+            render={(props) => (
+              <Knowledge
+                {...{
+                  history,
+                  query,
+                  results,
+                  countData,
+                  pageSize,
+                  loading,
+                  filters,
+                  filterMenu,
+                  filterCountries,
+                  isAuthenticated,
+                  loginWithPopup,
+                  multiCountryCountries,
+                  isLoading,
+                  setLoading,
+                  landingQuery,
 
-                        //Functions
-                        getResults,
-                        updateQuery,
-                        setFilters,
-                        setRelations,
-                        setFilterCountries,
-                        setMultiCountryCountries,
-                        setWarningModalVisible,
-                        setStakeholderSignupModalVisible,
-                        ...props,
-                      }}
-                      setStakeholderSignupModalVisible={
-                        setStakeholderSignupModalVisible
-                      }
-                      filters={filters}
-                      setFilters={setFilters}
-                      filterMenu={filterMenu}
-                    />
-                  )}
-                />
-                <Route
-                  path="/knowledge/capacity-building"
-                  render={(props) => <CapacityBuilding {...props} />}
-                />
-                <Route
-                  exact
-                  path="/knowledge/case-studies"
-                  render={(props) => <CaseStudies {...props} />}
-                />
-              </Switch>
+                  //Functions
+                  getResults,
+                  updateQuery,
+                  setFilters,
+                  setRelations,
+                  setFilterCountries,
+                  setMultiCountryCountries,
+                  setWarningModalVisible,
+                  setStakeholderSignupModalVisible,
+                  ...props,
+                }}
+                setStakeholderSignupModalVisible={
+                  setStakeholderSignupModalVisible
+                }
+                filters={filters}
+                setFilters={setFilters}
+                filterMenu={filterMenu}
+              />
             )}
           />
 
