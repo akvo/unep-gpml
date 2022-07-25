@@ -59,7 +59,7 @@ const renderGeoCoverageCountryGroups = (data, countries) => {
     ...multicountryGroups.map(({ item }) => item || [])
   );
   const newArray = [...new Set([...subItems, ...countries])];
-  dataCountries = data["geoCoverageValues"]?.map((x) => {
+  dataCountries = data["geoCoverageCountryGroups"]?.map((x) => {
     return {
       name: newArray.find((it) => it.id === x)?.name,
       countries: newArray.find((it) => it.id === x)?.countries
@@ -377,33 +377,36 @@ const DetailsView = ({
 
   const description = data?.description ? data?.description : data?.summary;
 
-  const entityConnections =
-    data?.entityConnections.map((entity) => {
+  const entityConnections = data?.entityConnections.map((entity) => {
+    return {
+      ...entity,
+      name: entity?.entity,
+      country: entity?.country || null,
+      id: entity?.entityId,
+      image: entity?.image,
+      type: "entity",
+      role: entity?.role,
+    };
+  });
+
+  const stakeholderConnections = data?.stakeholderConnections
+    .filter(
+      (it, ind) =>
+        data.stakeholderConnections.findIndex(
+          (_it) => _it.stakeholderId === it.stakeholderId
+        ) === ind
+    ) // filter out diplicates
+    .sort((a, b) => {
+      if (a?.role?.toLowerCase() === "owner") {
+        return -1;
+      }
+    })
+    .map((stakeholder) => {
       return {
-        ...entity,
-        name: entity?.entity,
-        country: entity?.country || null,
-        id: entity?.entityId,
-        image: entity?.image,
-        type: "entity",
-        role: entity?.role,
+        ...stakeholder,
+        name: stakeholder?.stakeholder,
       };
     });
-
-  const stakeholderConnections =
-    data?.stakeholderConnections
-      .filter((it, ind) => data.stakeholderConnections.findIndex(_it => _it.stakeholderId === it.stakeholderId) === ind) // filter out diplicates
-      .sort((a, b) => {
-        if (a?.role?.toLowerCase() === "owner") {
-          return -1;
-        }
-      })
-      .map((stakeholder) => {
-        return {
-          ...stakeholder,
-          name: stakeholder?.stakeholder,
-        };
-      });
 
   return (
     <div className="detail-view-wrapper">
@@ -505,6 +508,17 @@ const DetailsView = ({
                                     countries,
                                     transnationalOptions
                                   )}
+                                  {renderCountries(
+                                    data,
+                                    countries,
+                                    transnationalOptions
+                                  ) &&
+                                    ", " +
+                                      renderCountries(
+                                        data,
+                                        countries,
+                                        transnationalOptions
+                                      )}
                                 </div>
                               </Row>
                             </div>
