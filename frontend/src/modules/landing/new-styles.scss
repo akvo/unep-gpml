@@ -319,6 +319,10 @@
       url("../../images/our-community.png"), #ffffff;
     background-repeat: no-repeat;
     background-size: cover;
+    .ui.container {
+      width: 1127px;
+      overflow: hidden;
+    }
     .see-more-link {
       color: $green01 !important;
       svg {
@@ -326,17 +330,21 @@
       }
     }
     .body {
-      .carousel-container {
+      .swiper-wrapper {
         display: flex;
         // justify-content: center; // use this if our-community content less than 5 items
         align-items: center;
-        .carousel-item {
+        .swiper-slide {
+          width: 225px !important;
+          position: relative;
           background-color: #fff;
-          margin-right: 0.85rem;
           border-radius: 10px;
           min-height: 23rem;
           @media (max-width: 540px) {
             width: 300px !important;
+          }
+          & > a > div {
+            width: 225px;
           }
           .type-wrapper {
             padding: 20px 20px 0px 20px;
@@ -383,25 +391,6 @@
             }
           }
         }
-      }
-      .carousel-dot-list {
-        position: relative;
-        margin-top: 15px;
-        .react-multi-carousel-dot button {
-          border-color: #fff;
-          background: transparent;
-        }
-        .react-multi-carousel-dot--active button {
-          background: #fff;
-        }
-      }
-      .react-multiple-carousel__arrow--right {
-        right: calc(1% + 1px);
-        z-index: 1;
-      }
-      .react-multiple-carousel__arrow--left {
-        left: calc(1% + 1px);
-        z-index: 1;
       }
     }
   }

@@ -184,7 +184,8 @@
               flex: 0 0 50% !important;
               max-width: 50% !important;
             }
-            .related-content .carousel-item .ant-col-12 {
+            .related-content .carousel-item .ant-col-12,
+            .related-content .card {
               max-width: 100% !important;
             }
           }
