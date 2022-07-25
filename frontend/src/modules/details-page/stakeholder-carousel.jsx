@@ -141,14 +141,17 @@ const StakeholderCarousel = ({ stakeholders }) => {
                         <span>{country}</span>
                       </li>
                     )}
-                    {stakeholder?.type === 'entity' ? (
+                    {stakeholder?.type === "entity" ? (
                       <li className="list-item  connection-role">ENTITY</li>
-                    ) : stakeholder?.role === 'owner' ?
+                    ) : stakeholder?.role === "owner" ? (
                       <li className="list-item  connection-role">OWNER</li>
-                    : stakeholder?.jobTitle && (
-                      <li className="list-item connection-job-title">{stakeholder?.jobTitle}</li>
+                    ) : (
+                      stakeholder?.jobTitle && (
+                        <li className="list-item connection-job-title">
+                          {stakeholder?.jobTitle}
+                        </li>
+                      )
                     )}
-                    
                   </ul>
                 </Card>
               </Link>

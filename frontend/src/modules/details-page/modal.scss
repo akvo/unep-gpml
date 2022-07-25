@@ -1,0 +1,21 @@
+@import "../../vars.scss";
+
+.detail-modal {
+  width: 1024px !important;
+  .ant-modal-close {
+    z-index: 999;
+  }
+  .detail-view-wrapper {
+    padding-top: 0;
+
+    #detail-view {
+      margin: 0;
+    }
+  }
+  .ant-modal-body {
+    padding: 0;
+  }
+  .ant-modal-footer {
+    display: none;
+  }
+}
