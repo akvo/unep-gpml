@@ -194,7 +194,6 @@ function Authentication() {
   };
 
   const setEntity = (res) => {
-    console.log(res);
     formRef?.current?.change("orgName", res.id);
   };
 
