@@ -14,7 +14,6 @@ import isEmpty from "lodash/isEmpty";
 import UnathenticatedPage from "./unathenticated-page";
 
 // Components
-import LeftSidebar from "../../components/left-sidebar/left-sidebar";
 import ProfileCard from "./card";
 import Header from "../knowledge-library/header";
 import FilterDrawer from "./filter-drawer";
@@ -22,10 +21,6 @@ import MapView from "./map-view";
 
 // Icons
 import topicViewIcon from "../../images/knowledge-library/topic-view-icon.svg";
-import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg";
-import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
-import { ReactComponent as IconCommunity } from "../../images/events/community-icon.svg";
-import { ReactComponent as IconPartner } from "../../images/stakeholder-overview/partner-icon.svg";
 import StakeholderList from "./stakeholder-list";
 import { multicountryGroups } from "../knowledge-library/multicountry";
 import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
@@ -89,24 +84,6 @@ const StakeholderOverview = ({ history, isAuthenticated, setLoginVisible }) => {
 
   const resultCounts =
     results.length + ((pageNumber && pageSize * pageNumber) || 0);
-
-  const sidebar = [
-    { id: 1, title: "Events", url: "/connect/events", icon: <IconEvent /> },
-    {
-      id: 2,
-      title: "Community",
-      url: "/connect/community",
-      icon: <IconCommunity />,
-    },
-
-    { id: 3, title: "Forums", url: null, icon: <IconForum /> },
-    {
-      id: 4,
-      title: "Partners",
-      url: "/connect/partners",
-      icon: <IconPartner />,
-    },
-  ];
 
   const selectionValue = (
     <div className="selection-value">
@@ -469,125 +446,118 @@ const StakeholderOverview = ({ history, isAuthenticated, setLoginVisible }) => {
               entities={entityRoleOptions}
             />
 
-            <LeftSidebar isValidUser={isValidUser} active={2} sidebar={sidebar}>
-              <Col lg={24} xs={24} order={2}>
-                {view === "card" ? (
-                  <div>
-                    {/* Suggested profiles */}
-                    {isValidUser && !isEmpty(suggestedProfiles) && (
-                      <Col className="card-container green">
-                        <h3
-                          id="title"
-                          className="title text-white ui container"
-                        >
-                          Suggested profiles
-                        </h3>
+            <Col lg={24} xs={24} order={2}>
+              {view === "card" ? (
+                <div>
+                  {/* Suggested profiles */}
+                  {isValidUser && !isEmpty(suggestedProfiles) && (
+                    <Col className="card-container green">
+                      <h3 id="title" className="title text-white ui container">
+                        Suggested profiles
+                      </h3>
 
-                        {isEmpty(suggestedProfiles) ? (
-                          <h2 className="loading" id="stakeholder-loading">
-                            <LoadingOutlined spin /> Loading
-                          </h2>
-                        ) : !isEmpty(suggestedProfiles) ? (
-                          <div className="card-wrapper ui container">
-                            {suggestedProfiles.length > 0 &&
-                              suggestedProfiles
-                                .slice(0, 4)
-                                .map((profile) => (
-                                  <ProfileCard
-                                    key={profile?.id}
-                                    profile={profile}
-                                    isValidUser={isValidUser}
-                                    profileType="suggested-profiles"
-                                  />
-                                ))}
-                          </div>
-                        ) : (
-                          <h2 className="loading">
-                            There is no data to display
-                          </h2>
-                        )}
-                      </Col>
-                    )}
-                    {/* All profiles */}
-                    <Col className="all-profiles">
-                      {!isLoaded() || loading ? (
+                      {isEmpty(suggestedProfiles) ? (
                         <h2 className="loading" id="stakeholder-loading">
                           <LoadingOutlined spin /> Loading
                         </h2>
-                      ) : isLoaded() && !loading && !isEmpty(results) ? (
-                        <>
-                          <div className="result-number">
-                            {resultCount > pageSize + pageNumber
-                              ? resultCounts
-                              : itemCount}{" "}
-                            of {resultCount || 0} result
-                            {resultCount > 1 ? "s" : ""}
-                          </div>
-                          <div className="card-wrapper ui container">
-                            {results.map((profile) => (
-                              <ProfileCard
-                                key={profile?.id}
-                                profile={profile}
-                                isValidUser={isValidUser}
-                                profileType="all-profiles"
-                              />
-                            ))}
-                          </div>
-                        </>
+                      ) : !isEmpty(suggestedProfiles) ? (
+                        <div className="card-wrapper ui container">
+                          {suggestedProfiles.length > 0 &&
+                            suggestedProfiles
+                              .slice(0, 4)
+                              .map((profile) => (
+                                <ProfileCard
+                                  key={profile?.id}
+                                  profile={profile}
+                                  isValidUser={isValidUser}
+                                  profileType="suggested-profiles"
+                                />
+                              ))}
+                        </div>
                       ) : (
                         <h2 className="loading">There is no data to display</h2>
                       )}
-                      {/* Pagination */}
-                      <div className="page">
-                        {!isEmpty(results) && isValidUser && (
-                          <Pagination
-                            defaultCurrent={1}
-                            current={
-                              1 +
-                              (query?.page.length !== 0
-                                ? Number(query?.page[0])
-                                : 0)
-                            }
-                            pageSize={pageSize}
-                            total={resultCount}
-                            showSizeChanger={false}
-                            onChange={(n) => {
-                              updateQuery("page", n - 1);
-                            }}
-                          />
-                        )}
-                      </div>
                     </Col>
-                  </div>
-                ) : (
-                  <div className="stakeholder-map-wrapper">
-                    <MapView
-                      updateQuery={updateQuery}
-                      landingQuery={landingQuery}
-                      isFilteredCountry={filterCountries}
-                      multiCountryCountries={multiCountryCountries}
-                      stakeholderCount={stakeholderCount}
-                    />
-                    <StakeholderList
-                      {...{
-                        view,
-                        results,
-                        sortResults,
-                        pageSize,
-                        filters,
-                        itemCount,
-                        loading,
-                        updateQuery,
-                        isLoaded,
-                        resultCount,
-                        resultCounts,
-                        query,
-                      }}
-                    />
-                  </div>
-                )}
-              </Col>
-            </LeftSidebar>
+                  )}
+                  {/* All profiles */}
+                  <Col className="all-profiles">
+                    {!isLoaded() || loading ? (
+                      <h2 className="loading" id="stakeholder-loading">
+                        <LoadingOutlined spin /> Loading
+                      </h2>
+                    ) : isLoaded() && !loading && !isEmpty(results) ? (
+                      <>
+                        <div className="result-number">
+                          {resultCount > pageSize + pageNumber
+                            ? resultCounts
+                            : itemCount}{" "}
+                          of {resultCount || 0} result
+                          {resultCount > 1 ? "s" : ""}
+                        </div>
+                        <div className="card-wrapper ui container">
+                          {results.map((profile) => (
+                            <ProfileCard
+                              key={profile?.id}
+                              profile={profile}
+                              isValidUser={isValidUser}
+                              profileType="all-profiles"
+                            />
+                          ))}
+                        </div>
+                      </>
+                    ) : (
+                      <h2 className="loading">There is no data to display</h2>
+                    )}
+                    {/* Pagination */}
+                    <div className="page">
+                      {!isEmpty(results) && isValidUser && (
+                        <Pagination
+                          defaultCurrent={1}
+                          current={
+                            1 +
+                            (query?.page.length !== 0
+                              ? Number(query?.page[0])
+                              : 0)
+                          }
+                          pageSize={pageSize}
+                          total={resultCount}
+                          showSizeChanger={false}
+                          onChange={(n) => {
+                            updateQuery("page", n - 1);
+                          }}
+                        />
+                      )}
+                    </div>
+                  </Col>
+                </div>
+              ) : (
+                <div className="stakeholder-map-wrapper">
+                  <MapView
+                    updateQuery={updateQuery}
+                    landingQuery={landingQuery}
+                    isFilteredCountry={filterCountries}
+                    multiCountryCountries={multiCountryCountries}
+                    stakeholderCount={stakeholderCount}
+                  />
+                  <StakeholderList
+                    {...{
+                      view,
+                      results,
+                      sortResults,
+                      pageSize,
+                      filters,
+                      itemCount,
+                      loading,
+                      updateQuery,
+                      isLoaded,
+                      resultCount,
+                      resultCounts,
+                      query,
+                    }}
+                  />
+                </div>
+              )}
+            </Col>
           </div>
         </Col>
       </div>
