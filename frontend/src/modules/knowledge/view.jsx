@@ -7,6 +7,7 @@ import LeftSidebar from "../../components/left-sidebar/left-sidebar";
 import { ReactComponent as IconLibrary } from "../../images/capacity-building/ic-knowledge-library.svg";
 import { ReactComponent as IconLearning } from "../../images/capacity-building/ic-capacity-building.svg";
 import { ReactComponent as IconCaseStudies } from "../../images/capacity-building/ic-case-studies.svg";
+import KnowledgeLib from "../knowledge-lib/view";
 
 const sidebar = [
   {
@@ -66,6 +67,7 @@ function Knowledge({
               <Route exact path="/knowledge">
                 <Redirect to="/knowledge/library" exact={true} />
               </Route>
+              <Route path="/knowledge/lib" render={props => <KnowledgeLib {...props} />} />
               <Route
                 path="/knowledge/library"
                 render={(props) => (
