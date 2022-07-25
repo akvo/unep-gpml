@@ -42,7 +42,6 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
     api
       .post("/stakeholder/expert/invite", values)
       .then((res) => {
-        console.log(res, "RES");
         window.scrollTo({ top: 0 });
         setLoading(false);
         notification.success({ message: "Invites successfully sent" });
