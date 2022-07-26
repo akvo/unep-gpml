@@ -23,12 +23,7 @@ function Authentication() {
   let history = useHistory();
   const [affiliation, setAffiliation] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
-  const [initialValues, setInitialValues] = useState({
-    offering: [],
-    offeringSuggested: [],
-    seeking: [],
-    seekingSuggested: [],
-  });
+  const [initialValues, setInitialValues] = useState({});
   const [error, setError] = useState(false);
 
   const { tags, nonMemberOrganisations, organisations } = UIStore.currentState;
@@ -48,6 +43,7 @@ function Authentication() {
       setError(true);
     }
   };
+
   const previous = () => {
     setCurrentStep(Math.max(currentStep - 1, 0));
   };
@@ -194,7 +190,6 @@ function Authentication() {
   };
 
   const setEntity = (res) => {
-    console.log(res);
     formRef?.current?.change("orgName", res.id);
   };
 
