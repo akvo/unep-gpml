@@ -2,8 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import "./styles.scss";
 import { Button, Typography, Steps } from "antd";
 import { Form } from "react-final-form";
-const { Title, Link } = Typography;
-const { Step } = Steps;
 import AffiliationOption from "./affiliation-option";
 import FormOne from "./form-one";
 import FormTwo from "./form-two";
@@ -155,10 +153,6 @@ function Authentication() {
     setAffiliation(value);
     formRef?.current?.change("privateCitizen", value);
   };
-
-  const array = Object.keys(tags)
-    .map((k) => tags[k])
-    .flat();
 
   const handleSeekingSuggestedTag = (value) => {
     formRef?.current?.change("seeking", [
