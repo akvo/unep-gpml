@@ -30,7 +30,7 @@
 (defn- max-focal-points?
   "Checks whether a resource has reached the maximum amount of focal
   points roles assignment."
-  [{:keys [db]} {:keys [topic-type topic-id] :as params}]
+  [{:keys [db]} {:keys [topic-type topic-id]}]
   (let [stakeholder-auths
         (db.ts-auth/get-topic-stakeholder-auths db
                                                 {:filters {:roles ["focal-point"]
