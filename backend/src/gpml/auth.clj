@@ -195,10 +195,13 @@
   [_ {:keys [db]}]
   (fn [handler]
     (fn [{{:keys [path]} :parameters user :user :as request}]
-      (let [stakeholder-auth (db.ts-auth/get-auth-by-topic-and-stakeholder (:spec db)
-                                                                           {:topic-type "organisation"
-                                                                            :topic-id (:id path)
-                                                                            :stakeholder (:id user)})
+      (let [stakeholder-auth
+            (->> (db.ts-auth/get-topic-stakeholder-auths (:spec db)
+                                                         {:topic-type "organisation"
+                                                          :topic-id (:id path)
+                                                          :stakeholder (:id user)})
+                 (first)
+                 (set))
             organisation (first (db.organisation/get-organisations (:spec db)
                                                                    {:filters {:created_by (:id user)}}))
             org-creator? (= (:id user) (:created_by organisation))]
