@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Switch, Route } from "react-router-dom";
+import { Redirect, Switch, Route, useHistory } from "react-router-dom";
 import EventPage from "../event-page/view";
 import StakeholderOverview from "../stakeholder-overview/view";
 import Partners from "../partners/view";
@@ -35,6 +35,7 @@ const sidebar = [
 ];
 
 function Connect({ filters, setFilters, isAuthenticated, setLoginVisible }) {
+  const history = useHistory();
   return (
     <div id="siteWrapper">
       <LeftSidebar sidebar={sidebar} />
@@ -52,6 +53,7 @@ function Connect({ filters, setFilters, isAuthenticated, setLoginVisible }) {
                   filters={filters}
                   setFilters={setFilters}
                   isAuthenticated={isAuthenticated}
+                  history={history}
                 />
               </Route>
               <Route path="/connect/partners" component={Partners} />
