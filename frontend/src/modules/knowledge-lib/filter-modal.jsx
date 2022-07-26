@@ -192,60 +192,6 @@ const InviteExpertModal = ({
       onCancel={() => setIsShownModal(false)}
     >
       <Row type="flex" gutter={[0, 24]}>
-        <Col span={24} className="resources-card-filter">
-          <Space align="middle">
-            <div className="filter-title">Resources type</div>
-            {isEmpty(query?.topic) ? (
-              <Tag className="resource-type">All (default)</Tag>
-            ) : (
-              <Tag
-                className="clear-selection"
-                closable={true}
-                onClick={clearTopicFilter}
-                onClose={clearTopicFilter}
-              >
-                Clear selection
-              </Tag>
-            )}
-          </Space>
-          <Row
-            type="flex"
-            gutter={[10, 10]}
-            justify="space-between"
-            style={{ width: "100%" }}
-          >
-            {topicTypes.map((type) => {
-              const topic = humps.decamelize(type);
-              const count =
-                countData?.find((it) => it?.topic === topic)?.count || 0;
-
-              return (
-                <Col span={6} key={type} className="resource-card-wrapper">
-                  <Card
-                    onClick={() =>
-                      topic === "capacity_building"
-                        ? handleChangeResourceType("tag", "capacity building")
-                        : handleChangeResourceType("topic", topic)
-                    }
-                    className={classNames("resource-type-card", {
-                      active:
-                        topic === "capacity_building"
-                          ? query?.tag?.includes("capacity building")
-                          : query?.topic?.includes(topic),
-                    })}
-                  >
-                    <Space direction="vertical" align="center">
-                      {topicIcons(type)}
-                      <div className="topic-text">{topicNames(type)}</div>
-                      <div className="topic-count">{count}</div>
-                    </Space>
-                  </Card>
-                </Col>
-              );
-            })}
-          </Row>
-        </Col>
-
         {/* Sub-content type */}
         <MultipleSelectFilter
           title="Sub-content type"
@@ -288,102 +234,51 @@ const InviteExpertModal = ({
           </Col>
         )}
 
-        {/* Location */}
-        <Col span={24}>
-          <Space align="middle">
-            <div className="filter-title">Location</div>
-            {!isEmpty(query?.country) ? (
-              <Tag
-                className="clear-selection"
-                closable
-                onClick={() => {
-                  updateQuery("country", []);
-                }}
-                onClose={() => updateQuery("country", [])}
-              >
-                Clear Country Selection
-              </Tag>
-            ) : (
-              ""
-            )}
-            {!isEmpty(query?.transnational) ? (
-              <Tag
-                className="clear-selection"
-                closable
-                onClick={() => {
-                  updateQuery("transnational", []);
-                  setMultiCountryCountries([]);
-                }}
-                onClose={() => updateQuery("transnational", [])}
-              >
-                Clear Multi-Country Selection
-              </Tag>
-            ) : (
-              ""
-            )}
-          </Space>
-          <div className="country-filter-tab-wrapper">
-            <CountryTransnationalFilter
-              {...{
-                query,
-                updateQuery,
-                multiCountryCountries,
-                setMultiCountryCountries,
-              }}
-              country={query?.country?.map((x) => parseInt(x)) || []}
-              multiCountry={query?.transnational?.map((x) => parseInt(x)) || []}
-              multiCountryLabelCustomIcon={true}
-              countrySelectMode="multiple"
-              multiCountrySelectMode="multiple"
-            />
-          </div>
-        </Col>
-        <div>
-          {/* Tags */}
-          <MultipleSelectFilter
-            title="Tags"
-            options={tagOpts || []}
-            value={query?.tag?.map((x) => x) || []}
-            flag="tag"
-            query={query}
-            updateQuery={updateQuery}
-          />
+        {/* Tags */}
+        <MultipleSelectFilter
+          title="Tags"
+          options={tagOpts || []}
+          value={query?.tag?.map((x) => x) || []}
+          flag="tag"
+          query={query}
+          updateQuery={updateQuery}
+        />
 
-          <MultipleSelectFilter
-            title="Entities"
-            options={
-              !isEmpty(organisations)
-                ? organisations
-                    ?.map((x) => ({ value: x.id, label: x.name }))
-                    .filter(
-                      (organisation) =>
-                        organisation?.value > -1 ||
-                        organisation?.label?.length === 0
-                    )
-                : []
-            }
-            value={query?.entity?.map((x) => parseInt(x)) || []}
-            flag="entity"
-            query={query}
-            updateQuery={updateQuery}
-          />
+        <MultipleSelectFilter
+          title="Entities"
+          options={
+            !isEmpty(organisations)
+              ? organisations
+                  ?.map((x) => ({ value: x.id, label: x.name }))
+                  .filter(
+                    (organisation) =>
+                      organisation?.value > -1 ||
+                      organisation?.label?.length === 0
+                  )
+              : []
+          }
+          value={query?.entity?.map((x) => parseInt(x)) || []}
+          flag="entity"
+          query={query}
+          updateQuery={updateQuery}
+        />
 
-          <MultipleSelectFilter
-            title="Representative group"
-            options={
-              !isEmpty(representativeGroup)
-                ? representativeOpts.map((x) => ({
-                    value: x?.value,
-                    label: x.label,
-                  }))
-                : []
-            }
-            value={query?.representativeGroup || []}
-            flag="representativeGroup"
-            query={query}
-            updateQuery={updateQuery}
-          />
-        </div>
+        <MultipleSelectFilter
+          title="Representative group"
+          options={
+            !isEmpty(representativeGroup)
+              ? representativeOpts.map((x) => ({
+                  value: x?.value,
+                  label: x.label,
+                }))
+              : []
+          }
+          value={query?.representativeGroup || []}
+          flag="representativeGroup"
+          query={query}
+          updateQuery={updateQuery}
+        />
+
         {/* Date Filter */}
         <Col
           span={24}
