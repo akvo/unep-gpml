@@ -27,56 +27,9 @@
         font-size: 16px;
       }
     }
-    .resources-card-filter {
-      &.ant-col {
-        max-width: 100%;
-      }
-      @media (max-width: 650px) {
-        .ant-row-space-between {
-          justify-content: unset !important;
-          .resource-card-wrapper {
-            margin-right: 5px !important;
-          }
-        }
-      }
-      .resource-type {
-        border: none;
-        color: $blue06;
-      }
-
-      .resource-type,
-      .clear-selection {
-        display: block;
-        line-height: 30px;
-        font-size: 14px;
-        font-weight: bold;
-        background-color: unset;
-
-        @media (max-width: 540px) {
-          font-size: 12px;
-        }
-      }
-      .resource-card-wrapper {
-        .resource-type-card {
-          color: $grey03;
-          text-align: center;
-          .ant-space {
-            svg {
-              width: 80px;
-              height: 55px;
-            }
-          }
-          .ant-card-body {
-            padding: 10px 0px;
-            .topic-count {
-              font-weight: bold;
-              position: absolute;
-              top: 5px;
-              left: 5px;
-            }
-          }
-        }
-      }
+    .ant-picker {
+      width: 100%;
+      border: none;
     }
   }
 

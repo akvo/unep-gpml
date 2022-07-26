@@ -94,14 +94,14 @@
         text-transform: capitalize;
         color: #ffffff;
       }
+      &:hover {
+        // color: #ffffff;
+      }
       &.selected {
         svg {
           path {
             stroke: #ffa800;
           }
-        }
-        span {
-          color: #ffa800;
         }
       }
       &.ant-dropdown-open {
@@ -112,6 +112,13 @@
         svg {
           path {
             stroke: #ffa800;
+          }
+        }
+      }
+      &.location-filter {
+        &.selected {
+          span {
+            color: #ffa800;
           }
         }
       }
