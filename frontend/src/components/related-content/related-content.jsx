@@ -218,7 +218,7 @@ const RelatedContent = ({
           );
         })}
         {dataCount > 20 && (
-          <SwiperSlide>
+          <SwiperSlide className="show-more-card">
             <a
               href={`/knowledge/library${url ? url : ""}`}
               className="card"

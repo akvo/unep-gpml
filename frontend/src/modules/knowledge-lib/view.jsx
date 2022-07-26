@@ -4,6 +4,7 @@ import FilterBar from "./filter-bar";
 import "./style.scss";
 import FilterModal from "./filter-modal";
 import ResourceCards from "../../components/resource-cards/resource-cards";
+import { ArrowRightOutlined } from "@ant-design/icons";
 
 const KnowledgeLib = () => {
   const [view, setView] = useState("map"); // to be changed to 'overview' later
@@ -44,7 +45,18 @@ const KnowledgeLib = () => {
           setIsShownModal,
         }}
       />
-      <ResourceCards items={data?.results} />
+      {view === 'map' &&
+        <ResourceCards
+          items={data?.results}
+          showMoreCardAfter={20}
+          showMoreCardClick={() => { setView('grid') }}
+        />
+      }
+      {view === 'grid' && (
+        <div className="grid">
+          grid here
+        </div>
+      )}
       <FilterModal {...{ setIsShownModal, isShownModal }} />
     </div>
   );

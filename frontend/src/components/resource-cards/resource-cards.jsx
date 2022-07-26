@@ -19,10 +19,28 @@ import "swiper/swiper.min.css";
 import "swiper/modules/free-mode/free-mode.min.css";
 import "swiper/modules/navigation/navigation.scss";
 import "swiper/modules/pagination/pagination.min.css";
+import { Link } from "react-router-dom";
+
+const Card = ({
+  showMoreCardClick,
+  showMoreCardHref,
+  children
+}) => {
+  if(showMoreCardClick){
+    return <div className="card" onClick={showMoreCardClick}>{children}</div> 
+  }
+  if(showMoreCardHref){
+    return <Link className="card" to={showMoreCardHref}>{children}</Link>
+  }
+  return children
+}
 
 const ResourceCards = ({
   items,
-  lastCard
+  showMoreCard,
+  showMoreCardAfter = 0,
+  showMoreCardClick,
+  showMoreCardHref
 }) => {
 
   const getType = (type) => {
@@ -92,6 +110,22 @@ const ResourceCards = ({
       return financingResource;
     }
   };
+  if(showMoreCardAfter > 0){
+    if(showMoreCardAfter < items?.length){
+      showMoreCard = (
+        <Card {...{showMoreCardClick, showMoreCardHref}}>
+          <div className="resources-count">
+            <span className="count">+{items.length - showMoreCardAfter}</span>
+            <p>resources</p>
+          </div>
+
+          <div className="read-more">
+            View All <ArrowRightOutlined />
+          </div>
+        </Card>
+      )
+    }
+  }
 
   return (
     <Swiper
@@ -103,9 +137,9 @@ const ResourceCards = ({
       }}
       navigation={true}
       modules={[SwiperPagination, Navigation]}
-      className={classNames('resource-cards', { 'carousel-with-extra-card': lastCard != null })}
+      className="resource-cards"
     >
-      {items?.map((item) => {
+      {items?.slice(0, showMoreCardAfter).map((item) => {
         return (
           <SwiperSlide>
             <Col key={item?.id} className="card" span={12}>
@@ -181,9 +215,9 @@ const ResourceCards = ({
           </SwiperSlide>
         );
       })}
-      {lastCard && (
-        <SwiperSlide>
-          {lastCard}
+      {showMoreCard && (
+        <SwiperSlide className="show-more-card">
+          {showMoreCard}
         </SwiperSlide>
       )}
     </Swiper>
