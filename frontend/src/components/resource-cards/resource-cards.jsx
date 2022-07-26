@@ -1,7 +1,7 @@
 import React from "react";
 import "../related-content/style.scss";
 import { Col, Avatar } from "antd";
-import classNames from 'classnames'
+import classNames from "classnames";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import technicalResource from "../../images/placeholders/technical-resource-placeholder.png";
 import actionPlan from "../../images/placeholders/action-plan-placeholder.png";
@@ -21,28 +21,31 @@ import "swiper/modules/navigation/navigation.scss";
 import "swiper/modules/pagination/pagination.min.css";
 import { Link } from "react-router-dom";
 
-const Card = ({
-  showMoreCardClick,
-  showMoreCardHref,
-  children
-}) => {
-  if(showMoreCardClick){
-    return <div className="card" onClick={showMoreCardClick}>{children}</div> 
+const Card = ({ showMoreCardClick, showMoreCardHref, children }) => {
+  if (showMoreCardClick) {
+    return (
+      <div className="card" onClick={showMoreCardClick}>
+        {children}
+      </div>
+    );
   }
-  if(showMoreCardHref){
-    return <Link className="card" to={showMoreCardHref}>{children}</Link>
+  if (showMoreCardHref) {
+    return (
+      <Link className="card" to={showMoreCardHref}>
+        {children}
+      </Link>
+    );
   }
-  return children
-}
+  return children;
+};
 
 const ResourceCards = ({
   items,
   showMoreCard,
   showMoreCardAfter = 0,
   showMoreCardClick,
-  showMoreCardHref
+  showMoreCardHref,
 }) => {
-
   const getType = (type) => {
     let t = "";
     switch (type) {
@@ -110,10 +113,10 @@ const ResourceCards = ({
       return financingResource;
     }
   };
-  if(showMoreCardAfter > 0){
-    if(showMoreCardAfter < items?.length){
+  if (showMoreCardAfter > 0) {
+    if (showMoreCardAfter < items?.length) {
       showMoreCard = (
-        <Card {...{showMoreCardClick, showMoreCardHref}}>
+        <Card {...{ showMoreCardClick, showMoreCardHref }}>
           <div className="resources-count">
             <span className="count">+{items.length - showMoreCardAfter}</span>
             <p>resources</p>
@@ -123,7 +126,7 @@ const ResourceCards = ({
             View All <ArrowRightOutlined />
           </div>
         </Card>
-      )
+      );
     }
   }
 
@@ -157,11 +160,7 @@ const ResourceCards = ({
               >
                 <div>
                   <h3>{item.title}</h3>
-                  <h4>
-                    {item?.type
-                      ? topicNames(item?.type)
-                      : ""}
-                  </h4>
+                  <h4>{item?.type ? topicNames(item?.type) : ""}</h4>
                 </div>
                 <div className="bottom-panel">
                   <div>
@@ -206,19 +205,14 @@ const ResourceCards = ({
                 </div>
               </a>
               <div className="slider-card">
-                <img
-                  src={getThumbnail(item)}
-                  alt={item?.type}
-                />
+                <img src={getThumbnail(item)} alt={item?.type} />
               </div>
             </Col>
           </SwiperSlide>
         );
       })}
       {showMoreCard && (
-        <SwiperSlide className="show-more-card">
-          {showMoreCard}
-        </SwiperSlide>
+        <SwiperSlide className="show-more-card">{showMoreCard}</SwiperSlide>
       )}
     </Swiper>
   );

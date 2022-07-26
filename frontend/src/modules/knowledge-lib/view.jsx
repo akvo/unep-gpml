@@ -48,6 +48,12 @@ const KnowledgeLib = () => {
   }, []);
 
   useEffect(() => {
+    if (filterCountries.length > 0) {
+      fetchData({ country: filterCountries.toString() });
+    }
+  }, [filterCountries]);
+
+  useEffect(() => {
     api.get(`/landing?entityGroup=topic`).then((resp) => {
       UIStore.update((e) => {
         e.landing = resp.data;

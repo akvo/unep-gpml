@@ -6,6 +6,7 @@ import { ReactComponent as FilterIcon } from "../../images/knowledge-library/fil
 import { ReactComponent as OverviewIcon } from "../../images/overview.svg";
 import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
 import LocationDropdown from "../../components/location-dropdown/location-dropdown";
+import api from "../../utils/api";
 
 const resourceTypes = [
   { key: "technical-resource", label: "Technical Resources" },
@@ -18,7 +19,15 @@ const resourceTypes = [
   { key: "financing-resource", label: "Financing Resources" },
 ];
 
-const FilterBar = ({ view, setView, filter, setFilter, setIsShownModal }) => {
+const FilterBar = ({
+  view,
+  setView,
+  filter,
+  setFilter,
+  setIsShownModal,
+  filterCountries,
+  setFilterCountries,
+}) => {
   const query = useQuery();
   const [country, setCountry] = useState([]);
   const [multiCountry, setMultiCountry] = useState([]);
@@ -54,14 +63,28 @@ const FilterBar = ({ view, setView, filter, setFilter, setIsShownModal }) => {
           : { multiCountry: false }),
       });
       setCountry(value);
+      setFilterCountries(value.map((item) => item.toString()));
     }
-
     if (param === "transnational") {
       setDisable({
         ...disable,
         ...(value.length > 0 ? { country: true } : { country: false }),
       });
+      if (value.length === 0) {
+        setFilterCountries([]);
+      }
       setMultiCountry(value);
+
+      value.forEach((id) => {
+        const check = filterCountries.find((x) => x === id.toString());
+        !check &&
+          api.get(`/country-group/${id}`).then((resp) => {
+            setFilterCountries([
+              ...filterCountries,
+              ...resp.data?.[0]?.countries.map((item) => item.id.toString()),
+            ]);
+          });
+      });
     }
   };
 

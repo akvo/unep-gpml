@@ -282,7 +282,7 @@ const KnowledgeLibraryToolTipContent = ({
                 </td>
               </tr>
             ) : (
-              resourceToShow.includes(tooltipChecker()) && (
+              resourceToShow?.includes(tooltipChecker()) && (
                 <tr key={topic}>
                   <td className="tooltip-topic">{topicNames(topic)}</td>
                   <td className="tooltip-count-wrapper">
@@ -479,7 +479,7 @@ const Maps = ({
   const country =
     !isEmpty(countries) &&
     countries.find((x) => {
-      if (countryToSelect.includes(x.id)) {
+      if (countryToSelect?.includes(x.id)) {
         return x;
       }
     });
@@ -735,7 +735,7 @@ const Maps = ({
 
                     const isLake =
                       typeof geo.properties?.ISO3CD === "undefined";
-                    const isUnsettled = unsettledTerritoryIsoCode.includes(
+                    const isUnsettled = unsettledTerritoryIsoCode?.includes(
                       geo.properties.MAP_COLOR
                     );
                     const isPattern = geo.properties.MAP_COLOR === "xAC";
@@ -803,7 +803,7 @@ const Maps = ({
                           Number(it)
                         );
                         return (
-                          countryToFilter.includes(mapProps) ||
+                          countryToFilter?.includes(mapProps) ||
                           (multiselection && multiselection.includes(mapProps))
                         );
                       }
@@ -844,7 +844,7 @@ const Maps = ({
                             } = geo.properties;
                             if (!isLake && MAP_LABEL !== null) {
                               if (
-                                !isFilteredCountry.includes(M49Code) &&
+                                !isFilteredCountry?.includes(M49Code) &&
                                 !selectionCondition()
                               ) {
                                 setSelected(M49Code);
