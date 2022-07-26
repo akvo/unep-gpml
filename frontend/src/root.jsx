@@ -59,6 +59,8 @@ import Workspace from "./modules/workspace/view";
 import EventPage from "./modules/event-page/view";
 import StakeholderDetail from "./modules/stakeholder-detail/view";
 import EntityDetail from "./modules/entity-detail/view";
+import Connect from "./modules/connect/view";
+import Knowledge from "./modules/knowledge/view";
 
 // Menu dropdown
 import ExploreDropdownMenu from "./modules/dropdown-menu/explore";
@@ -79,8 +81,6 @@ import KnowledgeLibrary from "./modules/knowledge-library/view";
 
 // Buttons
 import AddContentButton from "./components/add-content-button/add-content-button";
-import StakeholderOverview from "./modules/stakeholder-overview/view";
-import Partners from "./modules/partners/view";
 
 // Auth
 import Onboarding from "./modules/onboarding/view";
@@ -593,59 +593,43 @@ const Root = () => {
           />
           <Route
             path="/knowledge"
-            render={() => (
-              <Switch>
-                <Route
-                  path="/knowledge/library"
-                  render={(props) => (
-                    <KnowledgeLibrary
-                      {...{
-                        history,
-                        query,
-                        results,
-                        countData,
-                        pageSize,
-                        loading,
-                        filters,
-                        filterMenu,
-                        filterCountries,
-                        isAuthenticated,
-                        loginWithPopup,
-                        multiCountryCountries,
-                        isLoading,
-                        setLoading,
-                        landingQuery,
+            render={(props) => (
+              <Knowledge
+                {...{
+                  history,
+                  query,
+                  results,
+                  countData,
+                  pageSize,
+                  loading,
+                  filters,
+                  filterMenu,
+                  filterCountries,
+                  isAuthenticated,
+                  loginWithPopup,
+                  multiCountryCountries,
+                  isLoading,
+                  setLoading,
+                  landingQuery,
 
-                        //Functions
-                        getResults,
-                        updateQuery,
-                        setFilters,
-                        setRelations,
-                        setFilterCountries,
-                        setMultiCountryCountries,
-                        setWarningModalVisible,
-                        setStakeholderSignupModalVisible,
-                        ...props,
-                      }}
-                      setStakeholderSignupModalVisible={
-                        setStakeholderSignupModalVisible
-                      }
-                      filters={filters}
-                      setFilters={setFilters}
-                      filterMenu={filterMenu}
-                    />
-                  )}
-                />
-                <Route
-                  path="/knowledge/capacity-building"
-                  render={(props) => <CapacityBuilding {...props} />}
-                />
-                <Route
-                  exact
-                  path="/knowledge/case-studies"
-                  render={(props) => <CaseStudies {...props} />}
-                />
-              </Switch>
+                  //Functions
+                  getResults,
+                  updateQuery,
+                  setFilters,
+                  setRelations,
+                  setFilterCountries,
+                  setMultiCountryCountries,
+                  setWarningModalVisible,
+                  setStakeholderSignupModalVisible,
+                  ...props,
+                }}
+                setStakeholderSignupModalVisible={
+                  setStakeholderSignupModalVisible
+                }
+                filters={filters}
+                setFilters={setFilters}
+                filterMenu={filterMenu}
+              />
             )}
           />
 
@@ -824,33 +808,17 @@ const Root = () => {
             render={(props) => <Onboarding {...props} />}
             path="/onboarding"
           />
+
           <Route
             path="/connect"
-            render={() => (
-              <Switch>
-                <Route
-                  exact
-                  render={(props) => <EventPage {...props} />}
-                  path="/connect/events"
-                />
-                <Route
-                  path="/connect/community"
-                  render={(props) => (
-                    <StakeholderOverview
-                      {...props}
-                      setLoginVisible={setLoginVisible}
-                      filters={filters}
-                      setFilters={setFilters}
-                      isAuthenticated={isAuthenticated}
-                    />
-                  )}
-                />
-                <Route
-                  exact
-                  render={(props) => <Partners {...props} />}
-                  path="/connect/partners"
-                />
-              </Switch>
+            render={(props) => (
+              <Connect
+                {...props}
+                setLoginVisible={setLoginVisible}
+                filters={filters}
+                setFilters={setFilters}
+                isAuthenticated={isAuthenticated}
+              />
             )}
           />
 
@@ -974,7 +942,9 @@ const UserButton = withRouter(({ history, logout, isRegistered, profile }) => {
         <Menu className="user-btn-dropdown">
           <Menu.Item
             onClick={() => {
-              history.push(`/${isRegistered(profile) ? "profile" : "signup"}`);
+              history.push(
+                `/${isRegistered(profile) ? "profile" : "onboarding"}`
+              );
             }}
           >
             Profile

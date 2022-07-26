@@ -27,7 +27,6 @@ import {
 import api from "../../utils/api";
 import { UIStore } from "../../store";
 import { titleCase } from "../../utils/string";
-import { colors } from "../../utils/misc";
 import { eventTrack } from "../../utils/misc";
 import LeftImage from "../../images/sea-dark.jpg";
 import { Link } from "react-router-dom";
@@ -48,8 +47,6 @@ import { ReactComponent as LocationImage } from "../../images/location.svg";
 import { ReactComponent as TransnationalImage } from "../../images/transnational.svg";
 import { ReactComponent as CityImage } from "../../images/city-icn.svg";
 import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
-
-const colour = () => colors[Math.floor(Math.random() * colors.length)];
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
@@ -108,6 +105,7 @@ const DetailsView = ({
   setStakeholderSignupModalVisible,
   setFilterMenu,
   isAuthenticated,
+  onCloseModal,
 }) => {
   const [showLess, setShowLess] = useState(true);
 
@@ -342,39 +340,6 @@ const DetailsView = ({
     );
   }
 
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 1200 },
-      items: 6,
-      slidesToSlide: 6,
-    },
-    desktop: {
-      breakpoint: { max: 1199, min: 992 },
-      items: 5,
-      slidesToSlide: 5,
-    },
-    tablet: {
-      breakpoint: { max: 991, min: 768 },
-      items: 4,
-      slidesToSlide: 4,
-    },
-    largeMobile: {
-      breakpoint: { max: 767, min: 600 },
-      items: 3,
-      slidesToSlide: 3,
-    },
-    mobile: {
-      breakpoint: { max: 599, min: 361 },
-      items: 2,
-      slidesToSlide: 2,
-    },
-    extraSmallMobile: {
-      breakpoint: { max: 360, min: 0 },
-      items: 0.7,
-      slidesToSlide: 0.7,
-    },
-  };
-
   const description = data?.description ? data?.description : data?.summary;
 
   const entityConnections = data?.entityConnections.map((entity) => {
@@ -431,6 +396,7 @@ const DetailsView = ({
             placeholder,
             handleRelationChange,
             relation,
+            onCloseModal,
           }}
         />
         <Row
@@ -655,11 +621,11 @@ const DetailsView = ({
             <Col className="section section-related-content">
               <RelatedContent
                 data={data}
-                responsive={responsive}
                 isShownCount={false}
                 title="Related content"
                 relatedContent={data?.relatedContent}
                 isShownPagination={false}
+                sliderItemCount={6}
                 dataCount={data?.relatedContent?.length || 0}
               />
             </Col>

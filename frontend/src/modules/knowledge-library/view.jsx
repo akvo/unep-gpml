@@ -15,7 +15,6 @@ import { topicNames } from "../../utils/misc";
 import { multicountryGroups } from "./multicountry";
 import MapLanding from "./map-landing";
 import TopicView from "./topic-view";
-import LeftSidebar from "../../components/left-sidebar/left-sidebar";
 import ResourceList from "./resource-list";
 import FilterDrawer from "./filter-drawer";
 
@@ -23,10 +22,7 @@ import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
 import TooltipOutlined from "../../images/knowledge-library/tooltip-outlined.svg";
 import { ReactComponent as DownArrow } from "../../images/knowledge-library/chevron-down.svg";
 import topicViewIcon from "../../images/knowledge-library/topic-view-icon.svg";
-import { ReactComponent as IconLibrary } from "../../images/capacity-building/ic-knowledge-library.svg";
-import { ReactComponent as IconLearning } from "../../images/capacity-building/ic-capacity-building.svg";
 import { ReactComponent as IconExchange } from "../../images/capacity-building/ic-exchange.svg";
-import { ReactComponent as IconCaseStudies } from "../../images/capacity-building/ic-case-studies.svg";
 
 import Header from "./header";
 import moment from "moment";
@@ -68,43 +64,6 @@ const KnowledgeLibrary = ({
   const [isAscending, setIsAscending] = useState(null);
   const [allResults, setAllResults] = useState([]);
   const [view, setView] = useState("map");
-
-  const sidebar = [
-    {
-      id: 1,
-      title: "Library",
-      url: "/knowledge/library",
-      icon: <IconLibrary />,
-    },
-    {
-      id: 2,
-      title: "Learning",
-      url: "/knowledge/capacity-building",
-      icon: <IconLearning />,
-    },
-    {
-      id: 4,
-      title: "Case studies",
-      url: "/knowledge/case-studies",
-      icon: <IconCaseStudies />,
-    },
-  ];
-
-  const selectionValue = (
-    <div className="selection-value">
-      <button className="select-button">
-        <div className="selection-arrow">
-          <DownArrow />
-        </div>
-      </button>
-      <span className="label text-white">{`${view} view`}</span>
-      {view === "map" ? (
-        <img src={GlobeOutlined} alt="globe-icon" className="filter-img" />
-      ) : (
-        <img src={topicViewIcon} alt="globe-icon" className="filter-img" />
-      )}
-    </div>
-  );
 
   const {
     tags,
@@ -347,113 +306,111 @@ const KnowledgeLibrary = ({
             updateQuery={(flag, val) => updateQuery(flag, val)}
           />
 
-          <LeftSidebar active={1} sidebar={sidebar}>
-            <Header
-              {...{
-                updateQuery,
-                filterVisible,
-                setFilterVisible,
-                filterTagValue,
-                renderFilterTag,
-                selectionValue,
-                setView,
-              }}
-            />
-            <Row
-              className={
-                view === "map"
-                  ? "resource-main-container"
-                  : `resource-main-container topic-main-container`
-              }
-            >
-              {/* Resource Main Content */}
-              {listVisible && (
-                <Col
-                  lg={10}
-                  md={9}
-                  sm={12}
-                  xs={24}
-                  className={
-                    view === "map"
-                      ? "resource-list-container"
-                      : `resource-list-container topic-view-resource`
-                  }
-                >
-                  {/* Resource List */}
-                  <ResourceList
-                    {...{
-                      view,
-                      query,
-                      allResults,
-                      countData,
-                      loading,
-                      pageSize,
-                      updateQuery,
-                      sortResults,
-                      isAscending,
-                    }}
-                    hideListButtonVisible={view === "map"}
-                  />
-                </Col>
-              )}
-
-              {view === "map" ? (
-                <Col
-                  lg={14}
-                  md={15}
-                  sm={12}
-                  xs={24}
-                  align="center"
-                  className="render-map-container map-main-wrapper"
-                  style={{
-                    background: view === "topic" ? "#255B87" : "#fff",
-                    flex: view === "topic" && "auto",
+          <Header
+            {...{
+              updateQuery,
+              filterVisible,
+              setFilterVisible,
+              filterTagValue,
+              renderFilterTag,
+              view,
+              setView,
+            }}
+          />
+          <Row
+            className={
+              view === "map"
+                ? "resource-main-container"
+                : `resource-main-container topic-main-container`
+            }
+          >
+            {/* Resource Main Content */}
+            {listVisible && (
+              <Col
+                lg={10}
+                md={9}
+                sm={12}
+                xs={24}
+                className={
+                  view === "map"
+                    ? "resource-list-container"
+                    : `resource-list-container topic-view-resource`
+                }
+              >
+                {/* Resource List */}
+                <ResourceList
+                  {...{
+                    view,
+                    query,
+                    allResults,
+                    countData,
+                    loading,
+                    pageSize,
+                    updateQuery,
+                    sortResults,
+                    isAscending,
                   }}
-                >
-                  <MapLanding
-                    {...{
-                      query,
-                      countData,
-                      filters,
-                      setFilters,
-                      setWarningModalVisible,
-                      setStakeholderSignupModalVisible,
-                      loginWithPopup,
-                      isAuthenticated,
-                      setToggleButton,
-                      updateQuery,
-                      multiCountryCountries,
-                      setMultiCountryCountries,
-                      setListVisible,
-                      landingQuery,
-                    }}
-                    isFilteredCountry={filterCountries}
-                    isDisplayedList={listVisible}
-                  />
-                </Col>
-              ) : (
-                <Col
-                  lg={14}
-                  md={15}
-                  sm={12}
-                  xs={24}
-                  align="center"
-                  className={
-                    view === "topic"
-                      ? `render-map-container topic-view`
-                      : `render-map-container`
-                  }
-                >
-                  <TopicView
-                    {...{ updateQuery, query, results }}
-                    countData={countData.filter(
-                      (count) => count.topic !== "gpml_member_entities"
-                    )}
-                  />
-                </Col>
-              )}
-            </Row>
-          </LeftSidebar>
+                  hideListButtonVisible={view === "map"}
+                />
+              </Col>
+            )}
+
+            {view === "map" ? (
+              <Col
+                lg={14}
+                md={15}
+                sm={12}
+                xs={24}
+                align="center"
+                className="render-map-container map-main-wrapper"
+                style={{
+                  background: view === "topic" ? "#255B87" : "#fff",
+                  flex: view === "topic" && "auto",
+                }}
+              >
+                <MapLanding
+                  {...{
+                    query,
+                    countData,
+                    filters,
+                    setFilters,
+                    setWarningModalVisible,
+                    setStakeholderSignupModalVisible,
+                    loginWithPopup,
+                    isAuthenticated,
+                    setToggleButton,
+                    updateQuery,
+                    multiCountryCountries,
+                    setMultiCountryCountries,
+                    setListVisible,
+                    landingQuery,
+                  }}
+                  isFilteredCountry={filterCountries}
+                  isDisplayedList={listVisible}
+                />
+              </Col>
+            ) : (
+              <Col
+                lg={14}
+                md={15}
+                sm={12}
+                xs={24}
+                align="center"
+                className={
+                  view === "topic"
+                    ? `render-map-container topic-view`
+                    : `render-map-container`
+                }
+              >
+                <TopicView
+                  {...{ updateQuery, query, results }}
+                  countData={countData.filter(
+                    (count) => count.topic !== "gpml_member_entities"
+                  )}
+                />
+              </Col>
+            )}
+          </Row>
         </div>
       </Col>
     </Row>

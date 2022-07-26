@@ -12,12 +12,9 @@ const DetailModal = ({
   setIsShowModal,
 }) => {
   return (
-    <Modal
-      visible={isShowModal}
-      onCancel={() => setIsShowModal(false)}
-      className="detail-modal"
-    >
+    <Modal visible={isShowModal} className="detail-modal">
       <DetailsView
+        onCloseModal={() => setIsShowModal(false)}
         {...{
           match,
           setStakeholderSignupModalVisible,

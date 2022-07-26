@@ -26,6 +26,9 @@ h4 {
   height: auto;
   background-color: $bg-dark-primary;
 
+  @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    width: 100%;
+  }
   @media (min-width: 3000px) {
     height: 100vh;
   }
@@ -35,6 +38,9 @@ h4 {
   display: flex;
   width: 100%;
   flex-direction: row;
+  @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    display: block;
+  }
 }
 
 #appWrapper {
@@ -45,6 +51,9 @@ h4 {
   right: 0;
   bottom: 0;
   left: 208px;
+  @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    width: 100%;
+  }
 }
 
 #appInnerWrapper {
@@ -71,7 +80,6 @@ ul.sidebar-mobile {
   li.item-sidebar {
     width: 100%;
     height: 100px;
-    padding: 20px 0;
     width: 100%;
     display: flex;
     cursor: pointer;
@@ -128,6 +136,7 @@ ul.sidebar-mobile {
       height: 100%;
       text-align: center;
       font-size: 0.85rem;
+      padding: 20px 0;
 
       &.disabled {
         opacity: 1;
@@ -163,7 +172,9 @@ ul.sidebar-mobile {
     }
   }
   #mainNavigation {
-    display: none;
+    .sidebar-desktop {
+      display: none;
+    }
   }
 }
 @media (min-width: 320px) and (max-width: 480px) {
@@ -174,7 +185,9 @@ ul.sidebar-mobile {
     }
   }
   #mainNavigation {
-    display: none;
+    .sidebar-desktop {
+      display: none;
+    }
   }
 }
 @media only screen and (max-width: 465px) {
@@ -214,7 +227,9 @@ ul.sidebar-mobile {
     }
   }
   #mainNavigation {
-    display: none;
+    .sidebar-desktop {
+      display: none;
+    }
   }
 }
 
@@ -240,9 +255,6 @@ ul.sidebar-mobile {
         }
       }
     }
-  }
-  #mainNavigation {
-    display: none;
   }
 }
 
@@ -292,7 +304,6 @@ ul.sidebar-mobile {
     .sidebar {
       .item-sidebar {
         height: auto !important;
-        padding: 20px 0;
         p {
           margin-bottom: 0px;
           font-size: 1em !important;

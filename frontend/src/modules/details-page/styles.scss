@@ -68,7 +68,9 @@
       @media (max-width: 600px) {
         padding: 30px 30px calc(30px - 14px) 30px !important;
       }
-
+      .close-modal-button {
+        display: none;
+      }
       .tool-buttons {
         display: flex;
         flex-wrap: wrap;
@@ -270,7 +272,8 @@
     .location-icon,
     .city-icon {
       display: flex;
-      width: 23.25px;
+      min-width: 23.25px;
+      max-width: 23.25px;
       margin-right: 16px;
     }
 
@@ -341,6 +344,9 @@
 
     .section-connection-stakeholder {
       clear: both;
+      .content-heading {
+        margin-bottom: 0;
+      }
       .stakeholder-detail-no-image .ant-list-item-meta-avatar .avatar-wrapper {
         width: 64px;
         height: 64px;
