@@ -234,8 +234,15 @@ const FilterDrawer = ({
             >
               {topicTypes.map((type) => {
                 const topic = humps.decamelize(type);
+
                 const count =
-                  countData?.find((it) => it?.topic === topic)?.count || 0;
+                  countData?.find((it) => {
+                    if (it?.topic !== "capacity building") {
+                      return it?.topic === topic;
+                    } else {
+                      return it?.topic === "capacity building";
+                    }
+                  })?.count || 0;
 
                 return (
                   <Col span={6} key={type} className="resource-card-wrapper">
