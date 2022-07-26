@@ -1,5 +1,11 @@
 @import "../../vars.scss";
 
+.overlay-dropdown {
+  .selection-value {
+    display: none;
+  }
+}
+
 .ui-header {
   // background-color: rgba(0, 91, 112, 0.8);
   background-color: #004a6f;
@@ -213,7 +219,9 @@
       transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
       width: 15px;
     }
-
+    .dropdown-label {
+      display: none;
+    }
     .view-selection {
       width: 100%;
       padding-right: 0;

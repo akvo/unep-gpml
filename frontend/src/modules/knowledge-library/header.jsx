@@ -8,6 +8,11 @@ import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-
 import { withRouter, useHistory } from "react-router-dom";
 import { KNOWLEDGE_LIBRARY } from "../map/map";
 import { eventTrack } from "../../utils/misc";
+import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
+import TooltipOutlined from "../../images/knowledge-library/tooltip-outlined.svg";
+import { ReactComponent as DownArrow } from "../../images/knowledge-library/chevron-down.svg";
+import topicViewIcon from "../../images/knowledge-library/topic-view-icon.svg";
+import { ReactComponent as IconExchange } from "../../images/capacity-building/ic-exchange.svg";
 
 const KnowledgeLibrarySearch = withRouter(
   ({ history, updateQuery, isShownForm, setIsShownForm }) => {
@@ -126,14 +131,33 @@ const Header = ({
   setView,
   filterVisible,
   setFilterVisible,
-  selectionValue,
   filterTagValue,
   renderFilterTag,
   updateQuery,
+  view,
 }) => {
   const history = useHistory();
   const path = history?.location?.pathname;
   const [isShownForm, setIsShownForm] = useState(false);
+
+  const selectionValue = (
+    <>
+      <div className="selection-value">
+        <button className="select-button">
+          <div className="selection-arrow">
+            <DownArrow />
+          </div>
+        </button>
+        <span className="label text-white">{`${view} view`}</span>
+        {view === "map" ? (
+          <img src={GlobeOutlined} alt="globe-icon" className="filter-img" />
+        ) : (
+          <img src={topicViewIcon} alt="topic-icon" className="filter-img" />
+        )}
+      </div>
+    </>
+  );
+
   return (
     <Col span={24} className="ui-header">
       <div className="ui-container">
@@ -189,17 +213,53 @@ const Header = ({
           {/* Map/Topic view dropdown */}
           <Col lg={2} md={4} sm={6} className="select-wrapper">
             <Select
-              dropdownClassName="overlay-zoom"
+              dropdownClassName="overlay-dropdown"
               className="view-selection"
-              value={selectionValue}
+              value={view}
               onChange={(val) => setView(val)}
             >
-              <Select.Option value="map">Map View</Select.Option>
-              {path === KNOWLEDGE_LIBRARY ? (
-                <Select.Option value="topic">Topic View </Select.Option>
-              ) : (
-                <Select.Option value="card">Card View </Select.Option>
-              )}
+              <Select.Option value="map">
+                {/* Map View */}
+
+                <>
+                  <div className="selection-value">
+                    <button className="select-button">
+                      <div className="selection-arrow">
+                        <DownArrow />
+                      </div>
+                    </button>
+                    <span className="label text-white">{`${view} view`}</span>
+                    <img
+                      src={GlobeOutlined}
+                      alt="globe-icon"
+                      className="filter-img"
+                    />
+                  </div>
+                  <span className="dropdown-label">Map View</span>
+                </>
+              </Select.Option>
+              <Select.Option
+                value={path === KNOWLEDGE_LIBRARY ? "topic" : "grid"}
+              >
+                <>
+                  <div className="selection-value">
+                    <button className="select-button">
+                      <div className="selection-arrow">
+                        <DownArrow />
+                      </div>
+                    </button>
+                    <span className="label text-white">{`${view} view`}</span>
+                    <img
+                      src={topicViewIcon}
+                      alt="topic-icon"
+                      className="filter-img"
+                    />
+                  </div>
+                  <span className="dropdown-label">
+                    {path === KNOWLEDGE_LIBRARY ? "Topic" : "Grid"} View
+                  </span>
+                </>
+              </Select.Option>
             </Select>
           </Col>
         </Row>

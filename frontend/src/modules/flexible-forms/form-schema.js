@@ -246,7 +246,7 @@ export const schema = {
                 items: {
                   title: "",
                   type: "object",
-                  // required: ["role", "entity"],
+                  required: ["role", "entity"],
                   properties: {
                     role: {
                       title: "Entity role",
@@ -1364,7 +1364,7 @@ export const schema = {
                 items: {
                   title: "",
                   type: "object",
-                  required: [],
+                  required: ["role", "entity"],
                   properties: {
                     role: {
                       title: "Entity role",
@@ -1606,7 +1606,7 @@ export const schema = {
                 items: {
                   title: "",
                   type: "object",
-                  required: [],
+                  required: ["role", "entity"],
                   properties: {
                     role: {
                       title: "Entity role",
@@ -1910,7 +1910,7 @@ export const schema = {
                 items: {
                   title: "",
                   type: "object",
-                  // required: ["role", "entity"],
+                  required: ["role", "entity"],
                   properties: {
                     role: {
                       title: "Entity role",
@@ -2178,7 +2178,7 @@ export const schema = {
                 items: {
                   title: "",
                   type: "object",
-                  required: [],
+                  required: ["role", "entity"],
                   properties: {
                     role: {
                       title: "Entity role",
@@ -2407,7 +2407,7 @@ export const schema = {
                 items: {
                   title: "",
                   type: "object",
-                  // required: ["role", "entity"],
+                  required: ["role", "entity"],
                   properties: {
                     role: {
                       title: "Entity role",
@@ -2669,7 +2669,7 @@ export const schema = {
                 items: {
                   title: "",
                   type: "object",
-                  // required: ["role", "entity"],
+                  required: ["role", "entity"],
                   properties: {
                     role: {
                       title: "Entity role",

@@ -65,22 +65,6 @@ const KnowledgeLibrary = ({
   const [allResults, setAllResults] = useState([]);
   const [view, setView] = useState("map");
 
-  const selectionValue = (
-    <div className="selection-value">
-      <button className="select-button">
-        <div className="selection-arrow">
-          <DownArrow />
-        </div>
-      </button>
-      <span className="label text-white">{`${view} view`}</span>
-      {view === "map" ? (
-        <img src={GlobeOutlined} alt="globe-icon" className="filter-img" />
-      ) : (
-        <img src={topicViewIcon} alt="globe-icon" className="filter-img" />
-      )}
-    </div>
-  );
-
   const {
     tags,
     profile,
@@ -329,7 +313,7 @@ const KnowledgeLibrary = ({
               setFilterVisible,
               filterTagValue,
               renderFilterTag,
-              selectionValue,
+              view,
               setView,
             }}
           />
