@@ -1,6 +1,14 @@
 (ns gpml.domain.topic-stakeholder-auth
   (:require [malli.core :as m]))
 
+(def ^:const max-focal-points
+  "The maximum amount of `focal-point` stakeholder in a single
+  resource. If resource already have 2 `focal-point` stakeholders the
+  system must not allow a third `focal-point` role
+  assigment. Currently this restriction is only applied to
+  `organisation` resources."
+  2)
+
 (def ^:const role-types
   "Topic Stakeholder Auth possible role types"
   #{"owner" "focal-point"})

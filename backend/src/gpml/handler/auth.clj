@@ -27,6 +27,17 @@
               :roles       roles}]
     (db.ts-auth/new-auth conn opts)))
 
+(defn- max-focal-points?
+  "Checks whether a resource has reached the maximum amount of focal
+  points roles assignment."
+  [{:keys [db]} {:keys [topic-type topic-id] :as params}]
+  (let [stakeholder-auths
+        (db.ts-auth/get-topic-stakeholder-auths db
+                                                {:filters {:roles ["focal-point"]
+                                                           :topics-ids [topic-id]
+                                                           :topics-type [topic-type]}})]
+    (< (count stakeholder-auths) dom.ts-auth/max-focal-points)))
+
 (defmethod ig/init-key :gpml.handler.auth/get-topic-auth
   [_ {:keys [db logger]}]
   (fn [{{:keys [path]} :parameters user :user}]
@@ -50,22 +61,26 @@
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defmethod ig/init-key :gpml.handler.auth/post-topic-auth
-  [_ {:keys [db logger]}]
+  [_ {:keys [db logger] :as config}]
   (fn [{{:keys [path body]} :parameters user :user}]
     (try
       (let [conn (:spec db)
             authorized? user
             path        (update path :topic-type util/get-internal-topic-type)]
         (if authorized?
-          (do
-            (jdbc/with-db-transaction [tx-conn conn]
-              (db.ts-auth/delete-auth-by-topic tx-conn path)
-              (doseq [s (:stakeholders body)]
-                (grant-topic-to-stakeholder! tx-conn
-                                             (assoc path
-                                                    :stakeholder-id (:id s)
-                                                    :roles (:roles s)))))
-            (resp/response (assoc (merge path body) :success? true)))
+          (if (and (= "organisation" (:topic-type path))
+                   (max-focal-points? config path))
+            (resp/bad-request {:success? false
+                               :reason :maximum-focal-points-reached})
+            (do
+              (jdbc/with-db-transaction [tx-conn conn]
+                (db.ts-auth/delete-auth-by-topic tx-conn path)
+                (doseq [s (:stakeholders body)]
+                  (grant-topic-to-stakeholder! tx-conn
+                                               (assoc path
+                                                      :stakeholder-id (:id s)
+                                                      :roles (:roles s)))))
+              (resp/response (assoc (merge path body) :success? true))))
           util/unauthorized))
       (catch Exception e
         (log logger :error ::failed-to-grant-topic-to-stakeholder {:exception-message (.getMessage e)
@@ -100,15 +115,20 @@
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defmethod ig/init-key :gpml.handler.auth/new-roles [_ {:keys [db logger]}]
-  (fn [{{:keys [path body]} :parameters user :user}]
+  (fn [{{:keys [path body] :as config} :parameters user :user}]
     (try
       (let [conn (:spec db)
             authorized? user
             path (update path :topic-type util/get-internal-topic-type)]
         (if authorized?
-          (do
-            (db.ts-auth/new-auth conn (merge path body))
-            (resp/response (assoc (merge path body) :success? true)))
+          (if (and (= "organisation" (:topic-type path))
+                   (get (set (:roles body)) "focal-point")
+                   (max-focal-points? config path))
+            (resp/bad-request {:success? false
+                               :reason :maximum-focal-points-reached})
+            (do
+              (db.ts-auth/new-auth conn (merge path body))
+              (resp/response (assoc (merge path body) :success? true))))
           util/unauthorized))
       (catch Exception e
         (log logger :error ::failed-to-add-new-roles-to-stakeholder {:exception-message (.getMessage e)
@@ -122,16 +142,21 @@
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defmethod ig/init-key :gpml.handler.auth/update-roles
-  [_ {:keys [db logger]}]
+  [_ {:keys [db logger] :as config}]
   (fn [{{:keys [path body]} :parameters user :user}]
     (try
       (let [conn (:spec db)
             authorized? user
             path (update path :topic-type util/get-internal-topic-type)]
         (if authorized?
-          (do
-            (db.ts-auth/update-auth conn (merge path body))
-            (resp/response (assoc (merge path body) :success? true)))
+          (if (and (= "organisation" (:topic-type path))
+                   (get (set (:roles body)) "focal-point")
+                   (max-focal-points? config path))
+            (resp/bad-request {:success? false
+                               :reason :maximum-focal-points-reached})
+            (do
+              (db.ts-auth/update-auth conn (merge path body))
+              (resp/response (assoc (merge path body) :success? true))))
           util/unauthorized))
       (catch Exception e
         (log logger :error ::failed-to-update-roles {:exception-message (.getMessage e)
