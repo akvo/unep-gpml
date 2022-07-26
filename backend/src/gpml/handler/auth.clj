@@ -36,7 +36,7 @@
                                                 {:filters {:roles ["focal-point"]
                                                            :topics-ids [topic-id]
                                                            :topics-type [topic-type]}})]
-    (< (count stakeholder-auths) dom.ts-auth/max-focal-points)))
+    (= (count stakeholder-auths) dom.ts-auth/max-focal-points)))
 
 (defmethod ig/init-key :gpml.handler.auth/get-topic-auth
   [_ {:keys [db logger]}]
