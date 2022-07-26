@@ -27,14 +27,59 @@
         font-size: 16px;
       }
     }
-    .ant-picker {
-      width: 100%;
-      border: none;
+    .ant-select-selection-placeholder {
+      font-weight: 500;
+    }
+    input {
+      font-weight: 500;
+      &::placeholder {
+        font-weight: 500;
+      }
+    }
+    .date-picker-container {
+      .ant-row {
+        width: auto !important;
+      }
+      .ant-picker {
+        width: 100%;
+        border: none;
+        input {
+          font-size: 16px;
+          color: #a5b0c9;
+          &::placeholder {
+            font-size: 16px;
+            color: #a5b0c9;
+          }
+        }
+      }
     }
   }
 
   .ant-modal-footer {
-    display: none;
+    background: #ffffff;
+    box-shadow: 0px -2px 2px rgba(24, 22, 47, 0.3);
+    border-radius: 0px 0px 10px 10px;
+    padding: 20px;
+    text-align: center;
+    button {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 17px;
+      text-align: center;
+      text-transform: uppercase;
+      background-color: transparent;
+      color: #265d89;
+    }
+    .apply-button {
+      border: 1px solid #265d89;
+      border-radius: 30px;
+      background-color: transparent;
+      padding: 5px 30px;
+    }
+    .clear-button {
+      background-color: transparent;
+      border: none;
+    }
   }
 
   @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {

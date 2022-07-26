@@ -8,7 +8,7 @@ import {
   Checkbox,
   Tag,
   Card,
-  Select,
+  Button,
   DatePicker,
   Modal,
 } from "antd";
@@ -190,6 +190,18 @@ const InviteExpertModal = ({
       title="Filters"
       visible={isShownModal}
       onCancel={() => setIsShownModal(false)}
+      footer={[
+        <Button key="submit" type="primary" className="apply-button">
+          APPLY FILTERS
+        </Button>,
+        <Button
+          key="submit"
+          className="clear-button"
+          onClick={() => setIsShownModal(false)}
+        >
+          Cancel
+        </Button>,
+      ]}
     >
       <Row type="flex" gutter={[0, 24]}>
         {/* Sub-content type */}
