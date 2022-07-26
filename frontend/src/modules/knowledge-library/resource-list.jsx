@@ -227,7 +227,7 @@ const ResourceItem = ({
         key={`${type}-${id}`}
         onClick={() => {
           setParams({ type, id });
-          history.push(linkTo);
+          // history.push(linkTo);
           setIsShowModal(true);
         }}
       >
