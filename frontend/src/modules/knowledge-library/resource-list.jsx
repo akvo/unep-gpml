@@ -13,7 +13,9 @@ import {
 import humps from "humps";
 import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
+import { useHistory } from "react-router-dom";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
+import DetailModal from "../details-page/modal";
 
 // Icons
 
@@ -32,7 +34,7 @@ const ResourceList = ({
     profile: s.profile,
     stakeholders: s.stakeholders,
   }));
-
+  const history = useHistory();
   const [didMount, setDidMount] = useState(false);
   const [isShownModal, setIsShownModal] = useState(false);
   const [dataProperties, setDataProperties] = useState({
@@ -41,8 +43,9 @@ const ResourceList = ({
   });
   const [data, setData] = useState(null);
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
-
+  const [params, setParams] = useState(null);
   const topics = query?.topic;
+  const [isShowModal, setIsShowModal] = useState(false);
   // Choose topics to count, based on whether user is approved or not,
   // and if any topic filters are active.
   const topicsForTotal = (isApprovedUser
@@ -124,13 +127,26 @@ const ResourceList = ({
         ) : !loading && !isEmpty(allResults) ? (
           <>
             <ResourceItem
+              setParams={setParams}
               view={view}
               results={allResults}
               stakeholders={stakeholders}
               setIsShownModal={setIsShownModal}
               setData={setData}
               setDataProperties={setDataProperties}
+              history={history}
+              setIsShowModal={setIsShowModal}
             />
+            {isShowModal && (
+              <DetailModal
+                match={{ params }}
+                setStakeholderSignupModalVisible={() => null}
+                setFilterMenu={() => null}
+                isAuthenticated={true}
+                isShowModal={isShowModal}
+                setIsShowModal={setIsShowModal}
+              />
+            )}
           </>
         ) : (
           <h2 className="loading ">There is no data to display</h2>
@@ -152,7 +168,14 @@ const ResourceList = ({
   );
 };
 
-const ResourceItem = ({ results, view, stakeholders }) => {
+const ResourceItem = ({
+  results,
+  view,
+  stakeholders,
+  setParams,
+  history,
+  setIsShowModal,
+}) => {
   return results.map((result) => {
     const { id, type } = result;
     const fullName = (data) =>
@@ -199,7 +222,15 @@ const ResourceItem = ({ results, view, stakeholders }) => {
     };
 
     return (
-      <Link to={linkTo} className="resource-item-wrapper" key={`${type}-${id}`}>
+      <div
+        className="resource-item-wrapper"
+        key={`${type}-${id}`}
+        onClick={() => {
+          setParams({ type, id });
+          window.history.pushState({ urlPath: `/${linkTo}` }, "", `${linkTo}`);
+          setIsShowModal(true);
+        }}
+      >
         <Card
           className="resource-item"
           style={
@@ -261,7 +292,7 @@ const ResourceItem = ({ results, view, stakeholders }) => {
             </span>
           </div>
         </Card>
-      </Link>
+      </div>
     );
   });
 };

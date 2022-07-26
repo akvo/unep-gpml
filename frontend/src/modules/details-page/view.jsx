@@ -105,6 +105,7 @@ const DetailsView = ({
   setStakeholderSignupModalVisible,
   setFilterMenu,
   isAuthenticated,
+  onCloseModal,
 }) => {
   const [showLess, setShowLess] = useState(true);
 
@@ -395,6 +396,7 @@ const DetailsView = ({
             placeholder,
             handleRelationChange,
             relation,
+            onCloseModal,
           }}
         />
         <Row
