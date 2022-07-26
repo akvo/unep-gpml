@@ -44,6 +44,7 @@ const unsettledTerritoryIsoCode = [
 
 const higlightColor = "#255B87";
 export const KNOWLEDGE_LIBRARY = "/knowledge/library";
+export const KNOWLEDGE_LIB = "/knowledge/lib";
 export const STAKEHOLDER_OVERVIEW = "/connect/community";
 export const EXPERTS = "/connect/experts";
 
@@ -444,7 +445,7 @@ const Maps = ({
   const [isShownLegend, setIsShownLegend] = useState(true);
 
   const resourceCount =
-    path === KNOWLEDGE_LIBRARY &&
+    (path === KNOWLEDGE_LIBRARY || path === KNOWLEDGE_LIB) &&
     countData.filter(
       (data) =>
         data.topic !== "gpml_member_entities" &&
@@ -463,9 +464,11 @@ const Maps = ({
     stakeholderCount.existingStakeholder.map((data) => data?.networkType);
 
   const existingResources =
-    path === KNOWLEDGE_LIBRARY ? resourceCount.map((data) => data.topic) : [];
+    path === KNOWLEDGE_LIBRARY || path === KNOWLEDGE_LIB
+      ? resourceCount.map((data) => data.topic)
+      : [];
   const existingData =
-    path === KNOWLEDGE_LIBRARY
+    path === KNOWLEDGE_LIBRARY || path === KNOWLEDGE_LIB
       ? existingResources
       : path === STAKEHOLDER_OVERVIEW
       ? existingStakeholders
@@ -514,7 +517,7 @@ const Maps = ({
     }
   };
   const legendTitle =
-    path === KNOWLEDGE_LIBRARY
+    path === KNOWLEDGE_LIBRARY || path === KNOWLEDGE_LIB
       ? "Total resources per country"
       : path === STAKEHOLDER_OVERVIEW
       ? "Total stakeholders per country"
@@ -858,7 +861,10 @@ const Maps = ({
                                   />
                                 );
                               }
-                              if (path === KNOWLEDGE_LIBRARY) {
+                              if (
+                                path === KNOWLEDGE_LIBRARY ||
+                                path === KNOWLEDGE_LIB
+                              ) {
                                 setContent(
                                   <KnowledgeLibraryToolTipContent
                                     data={findData}
@@ -886,7 +892,10 @@ const Maps = ({
                             setSelected(null);
                           }}
                           onClick={() => {
-                            if (path === KNOWLEDGE_LIBRARY) {
+                            if (
+                              path === KNOWLEDGE_LIBRARY ||
+                              path === KNOWLEDGE_LIB
+                            ) {
                               !multiCountrySelection
                                 .flat()
                                 .includes(Number(geo.properties.M49Code)) &&
