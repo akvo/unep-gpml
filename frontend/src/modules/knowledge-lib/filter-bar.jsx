@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "antd";
 import { useQuery } from "../../utils/misc";
 import { Icon } from "../../components/svg-icon/svg-icon";
@@ -87,6 +87,18 @@ const FilterBar = ({
       });
     }
   };
+
+  useEffect(() => {
+    if (
+      filterCountries &&
+      filterCountries.length > 0 &&
+      multiCountry.length === 0
+    ) {
+      setCountry(filterCountries.map((item) => parseInt(item)));
+    } else {
+      setCountry([]);
+    }
+  }, [filterCountries, multiCountry]);
 
   const countryList = (
     <CountryTransnationalFilter

@@ -44,13 +44,11 @@ const KnowledgeLib = () => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    if (filterCountries.length > 0) {
-      fetchData({ country: filterCountries.toString() });
-    }
+    fetchData({
+      ...(filterCountries.length > 0 && {
+        country: filterCountries.toString(),
+      }),
+    });
   }, [filterCountries]);
 
   useEffect(() => {
