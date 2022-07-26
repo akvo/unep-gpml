@@ -1,4 +1,4 @@
--- :name get-resource-associations
+-- :name get-resource-associations :query :many
 -- :doc Get the organisation association details for a specific resource.
 SELECT *
 FROM :i:table
