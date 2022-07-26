@@ -618,7 +618,6 @@ const DetailsView = ({
           data?.relatedContent.length > 0 && (
             <Col className="section section-related-content">
               <RelatedContent
-                data={data}
                 isShownCount={false}
                 title="Related content"
                 relatedContent={data?.relatedContent}

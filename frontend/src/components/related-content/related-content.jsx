@@ -24,7 +24,6 @@ import "swiper/modules/thumbs/thumbs.min.css";
 
 const RelatedContent = ({
   url,
-  data,
   title,
   relatedContent,
   dataCount,
@@ -161,9 +160,7 @@ const RelatedContent = ({
                   <div>
                     <h3>{item.title}</h3>
                     <h4>
-                      {data?.type
-                        ? topicNames(data?.type)
-                        : item?.type
+                      {item?.type
                         ? topicNames(item?.type)
                         : ""}
                     </h4>
