@@ -135,7 +135,7 @@ const RelatedContent = ({
         }}
         navigation={true}
         modules={[SwiperPagination, Navigation]}
-        className={`related-content-carousel related-content ${
+        className={`resource-cards ${
           dataCount > 20 && "carousel-with-extra-card"
         }`}
       >
@@ -209,7 +209,6 @@ const RelatedContent = ({
                 </a>
                 <div className="slider-card">
                   <img
-                    className="related-content-image"
                     src={getThumbnail(item)}
                     alt={item?.type}
                   />
