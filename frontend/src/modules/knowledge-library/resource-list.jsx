@@ -52,7 +52,7 @@ const ResourceList = ({
     ? topicTypesApprovedUser
     : topicTypes
   ).map((t) => humps.decamelize(t));
-  console.log("match::::::", params);
+
   const filteredTopics =
     topics?.length > 0
       ? topics?.filter((t) => topicsForTotal.indexOf(t) > -1)
