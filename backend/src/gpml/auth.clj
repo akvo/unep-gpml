@@ -2,6 +2,7 @@
   (:require [gpml.db.comment :as db.comment]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.db.topic-stakeholder-auth :as db.ts-auth]
             [gpml.util :as util]
             [integrant.core :as ig]
             [malli.core :as malli])
@@ -193,11 +194,17 @@
 (defmethod ig/init-key :gpml.auth/restrict-to-organisation-admin-or-owner
   [_ {:keys [db]}]
   (fn [handler]
-    (fn [{:keys [user] :as request}]
-      (let [organisation (first (db.organisation/get-organisations (:spec db) {:filters {:created_by (:id user)}}))
-            owner? (= (:id user) (:created_by organisation))]
+    (fn [{{:keys [path]} :parameters user :user :as request}]
+      (let [stakeholder-auth (db.ts-auth/get-auth-by-topic-and-stakeholder (:spec db)
+                                                                           {:topic-type "organisation"
+                                                                            :topic-id (:id path)
+                                                                            :stakeholder (:id user)})
+            organisation (first (db.organisation/get-organisations (:spec db)
+                                                                   {:filters {:created_by (:id user)}}))
+            org-creator? (= (:id user) (:created_by organisation))]
         (if (or (= (:role user) "ADMIN")
-                owner?)
+                org-creator?
+                (some #(get (set (:roles stakeholder-auth)) %) ["focal-point"]))
           (handler request)
           {:status 403
            :headers {"content-type" "application/json"}
@@ -207,5 +214,3 @@
 (def owners-schema
   [:owners {:optional true}
    [:vector integer?]])
-
-(def authz-roles #{"owner"})
