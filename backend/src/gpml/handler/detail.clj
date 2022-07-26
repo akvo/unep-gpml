@@ -383,7 +383,7 @@
   (let [{:keys [topic-type topic-id] :as params} (update path :topic-type util/get-internal-topic-type)
         submission (->> {:table-name topic-type :id topic-id}
                         (db.submission/detail conn))]
-    ;; The following checks is mostly to avoid doing a lot of work
+    ;; The following checks are mostly to avoid doing a lot of work
     ;; when checking the user permissions on a specific resource.
     (cond
       ;; If the user is empty it means the caller doesn't have a
