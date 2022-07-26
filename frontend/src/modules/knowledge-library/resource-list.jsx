@@ -29,6 +29,9 @@ const ResourceList = ({
   updateQuery,
   isAscending,
   sortResults,
+  setStakeholderSignupModalVisible,
+  setFilterMenu,
+  isAuthenticated,
 }) => {
   const { profile, stakeholders } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -140,11 +143,13 @@ const ResourceList = ({
             {isShowModal && (
               <DetailModal
                 match={{ params }}
-                setStakeholderSignupModalVisible={() => null}
-                setFilterMenu={() => null}
-                isAuthenticated={true}
-                isShowModal={isShowModal}
-                setIsShowModal={setIsShowModal}
+                {...{
+                  setStakeholderSignupModalVisible,
+                  setFilterMenu,
+                  isAuthenticated,
+                  isShowModal,
+                  setIsShowModal,
+                }}
               />
             )}
           </>

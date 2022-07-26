@@ -58,6 +58,7 @@ const KnowledgeLibrary = ({
   setMultiCountryCountries,
   setWarningModalVisible,
   setStakeholderSignupModalVisible,
+  setFilterMenu,
 }) => {
   const [filterVisible, setFilterVisible] = useState(false);
   const [listVisible, setListVisible] = useState(true);
@@ -349,6 +350,9 @@ const KnowledgeLibrary = ({
                     updateQuery,
                     sortResults,
                     isAscending,
+                    setStakeholderSignupModalVisible,
+                    setFilterMenu,
+                    isAuthenticated,
                   }}
                   hideListButtonVisible={view === "map"}
                 />
