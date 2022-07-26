@@ -147,14 +147,11 @@ export const randomColor = (string) => {
 
 export const tagsMap = (array, category, tags) => {
   return array.map((x) => {
-    return {
-      ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
-      tag:
-        Object.values(tags)
-          .flat()
-          .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
-      tag_category: category,
-    };
+    return (
+      Object.values(tags)
+        .flat()
+        .find((o) => o.id === parseInt(x))?.tag || x
+    );
   });
 };
 
