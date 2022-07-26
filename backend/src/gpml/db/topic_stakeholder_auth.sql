@@ -1,3 +1,12 @@
+-- :name get-topic-stakeholder-auths
+-- :doc Generic get topic stakeholder auths supporting filters.
+SELECT *
+FROM topic_stakeholder_auth
+WHERE 1=1
+--~(when (seq (get-in params [:filters :topics-ids])) " AND topic_id IN (:v*:filters.topics-ids)")
+--~(when (seq (get-in params [:filters :topic-types])) " AND topic_type = ANY(CAST(ARRAY[:v*:filters.topic-types] AS topic_type[]))")
+--~(when (seq (get-in params [:filters :stakeholders-ids])) " AND stakeholder IN (:v*:filters.stakeholders-ids)")
+
 -- :name get-auth-by-topic :? :*
 -- :doc Get details about a particular topic
 select * from topic_stakeholder_auth where topic_id=:topic-id and topic_type=:topic-type::topic_type;
