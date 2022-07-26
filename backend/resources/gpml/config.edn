@@ -402,7 +402,9 @@
                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                      [:topic-id int?]]}
                                                  :handler #ig/ref :gpml.handler.detail/get}
-                                           :delete {:middleware [#ig/ref :gpml.auth/auth-middleware]
+                                           :delete {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                 #ig/ref :gpml.auth/auth-required
+                                                                 #ig/ref :gpml.auth/approved-user]
                                                     :summary "remove specific resource"
                                                     :swagger {:tags ["resource detail"]}
                                                     :parameters {:path [:map
