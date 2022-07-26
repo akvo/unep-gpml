@@ -207,7 +207,7 @@
             org-creator? (= (:id user) (:created_by organisation))]
         (if (or (= (:role user) "ADMIN")
                 org-creator?
-                (some #(get (set (:roles stakeholder-auth)) %) ["focal-point"]))
+                (some #(get (set (:roles stakeholder-auth)) %) ["owner" "focal-point"]))
           (handler request)
           {:status 403
            :headers {"content-type" "application/json"}
