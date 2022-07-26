@@ -714,24 +714,36 @@
     (update-resource-connections conn (:entity_connections data) (:individual_connections data) "initiative" id)
     status))
 
-(defmethod ig/init-key :gpml.handler.detail/put [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.detail/put
+  [_ {:keys [db logger mailjet-config]}]
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
-    (let [submission (get-resource-if-allowed (:spec db) path user)
-          review_status (:review_status submission)]
-      (if (some? submission)
-        (let [conn (:spec db)
-              status (if (= topic-type "project")
-                       (update-initiative conn mailjet-config topic-id body)
-                       (update-resource conn mailjet-config topic-type topic-id body))]
-          (when (and (= status 1) (= review_status "REJECTED"))
-            (db.submission/update-submission
-             conn
-             {:table-name (util/get-internal-topic-type topic-type)
-              :id topic-id
-              :review_status "SUBMITTED"}))
-          (resp/response {:status (if (= status 1) "success" "failure")}))
-        util/unauthorized))))
+    (try
+      (let [submission (get-resource-if-allowed (:spec db) path user)
+            review_status (:review_status submission)]
+        (if (some? submission)
+          (let [conn (:spec db)
+                status (if (= topic-type "project")
+                         (update-initiative conn mailjet-config topic-id body)
+                         (update-resource conn mailjet-config topic-type topic-id body))]
+            (when (and (= status 1) (= review_status "REJECTED"))
+              (db.submission/update-submission
+               conn
+               {:table-name (util/get-internal-topic-type topic-type)
+                :id topic-id
+                :review_status "SUBMITTED"}))
+            (resp/response {:success? (= status 1)}))
+          util/unauthorized))
+      (catch Exception e
+        (log logger :error ::failed-to-update-resource-details {:exception-message (.getMessage e)
+                                                                :context-data {:path-params path
+                                                                               :body-params body}})
+        (let [response {:status 500
+                        :body {:success? false
+                               :reason :failed-to-update-resource-details}}]
+          (if (instance? SQLException e)
+            response
+            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defmethod ig/init-key :gpml.handler.detail/put-params [_ _]
   put-params)
