@@ -105,7 +105,7 @@ const ResourceCards = ({
       modules={[SwiperPagination, Navigation]}
       className={classNames('resource-cards', { 'carousel-with-extra-card': lastCard != null })}
     >
-      {items.map((item) => {
+      {items?.map((item) => {
         return (
           <SwiperSlide>
             <Col key={item?.id} className="card" span={12}>

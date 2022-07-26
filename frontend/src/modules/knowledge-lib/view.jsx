@@ -3,6 +3,7 @@ import api from "../../utils/api";
 import FilterBar from "./filter-bar";
 import "./style.scss";
 import FilterModal from "./filter-modal";
+import ResourceCards from "../../components/resource-cards/resource-cards";
 
 const KnowledgeLib = () => {
   const [view, setView] = useState("map"); // to be changed to 'overview' later
@@ -43,6 +44,7 @@ const KnowledgeLib = () => {
           setIsShownModal,
         }}
       />
+      <ResourceCards items={data?.results} />
       <FilterModal {...{ setIsShownModal, isShownModal }} />
     </div>
   );

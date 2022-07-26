@@ -36,7 +36,7 @@ const RelatedContent = ({
   const CardComponent = ({ title, style, children, getRef }) => {
     return (
       <div
-        className={`card-wrapper mb-10 related-content-wrapper`}
+        className={`card-wrapper mb-10 resource-cards-wrapper`}
         ref={getRef}
       >
         <Card title={title} bordered={false} style={style}>
