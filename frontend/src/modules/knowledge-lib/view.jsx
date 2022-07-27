@@ -3,7 +3,7 @@ import api from "../../utils/api";
 import FilterBar from "./filter-bar";
 import "./style.scss";
 import FilterModal from "./filter-modal";
-import ResourceCards from "../../components/resource-cards/resource-cards";
+import ResourceCards, { ResourceCard } from "../../components/resource-cards/resource-cards";
 import { AppstoreOutlined, ArrowRightOutlined, LoadingOutlined } from "@ant-design/icons";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
@@ -136,7 +136,7 @@ const KnowledgeLib = () => {
           />
         )}
       </div>
-      {view === "grid" && <div className="grid">grid here</div>}
+      {view === "grid" && <GridView data={data} />}
       {view === "map" && (
         <Maps
           box={box}
@@ -160,5 +160,15 @@ const KnowledgeLib = () => {
     </div>
   );
 };
+
+const GridView = ({ data, loading }) => {
+  return (
+    <div className="grid-view">
+      <div className="items">
+        {data?.results?.map(item => <ResourceCard item={item} />)}
+      </div>
+    </div>
+  )
+}
 
 export default KnowledgeLib;
