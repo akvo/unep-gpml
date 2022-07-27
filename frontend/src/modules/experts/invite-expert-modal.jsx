@@ -45,7 +45,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
         }),
         email: item?.email,
         expertise: item?.expertise,
-        suggestedCategory: item?.suggestedCategory,
+        suggestedExpertise: item?.suggestedCategory?.map((item) => item.value),
       };
     });
 
