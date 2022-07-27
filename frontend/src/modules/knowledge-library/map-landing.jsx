@@ -84,17 +84,7 @@ const MapLanding = ({
         countryGroupCounts={landing?.countryGroupCounts || []}
         clickEvents={clickCountry}
         isLoaded={isLoaded}
-        multiCountries={
-          multiCountry &&
-          !isEmpty(multiCountryCountries) &&
-          multiCountryCountries.find((x) => x.id === multiCountry)
-            ? multiCountryCountries
-                .find((x) => x.id === multiCountry)
-                ?.countries.map((country) =>
-                  countries.find((x) => x.id === country.id)
-                )
-            : []
-        }
+        multiCountries={[]}
         useVerticalLegend
       />
     </>

@@ -17,6 +17,7 @@
     "auth0-js": "^9.19.0",
     "auth0-lock": "^11.28.0",
     "axios": "^0.21.1",
+    "classnames": "^2.3.1",
     "core-js": "^3.15.2",
     "countries-list": "^2.6.1",
     "d3-geo": "^2.0.1",

@@ -472,8 +472,10 @@
     .section-related-content {
       padding: 0px 40px 0px calc(40px - 10px) !important;
       margin-top: calc(38px - calc(40px - 23px));
-
-      .related-content {
+      .related-content-container {
+        padding: 14px 10px 30px 10px !important;
+      }
+      .resource-cards {
         padding: 0 !important;
       }
       .related-content-title,
@@ -487,10 +489,10 @@
       .related-content-title {
         margin-bottom: 0;
       }
-      .related-content-wrapper {
+      .resource-cards-wrapper {
         min-height: 250px !important;
-        .ant-card-head {
-          min-height: 40px;
+        .related-content-title {
+          min-height: 36px;
           border-bottom: unset;
           display: flex;
           align-items: flex-end;
@@ -522,7 +524,7 @@
     }
 
     .section-related-content + .section {
-      margin-top: calc(38px - 20px) !important;
+      margin-top: calc(38px - 10px - 20px) !important;
     }
 
     .no-login {

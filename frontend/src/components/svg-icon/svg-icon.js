@@ -12,7 +12,7 @@ const useDynamicSVGImport = (name, options = {}) => {
       try {
         ImportedIconRef.current = (
           await import(
-            `!!@svgr/webpack?-svgo,+titleProp,+ref!../../images/cat-tags/${name}.svg`
+            `!!@svgr/webpack?-svgo,+titleProp,+ref!../../images/${name}.svg`
           )
         ).default;
         if (onCompleted) {

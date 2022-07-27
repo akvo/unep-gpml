@@ -73,6 +73,12 @@
     .owned-resources-wrapper {
       margin-bottom: 20px;
       margin-top: 20px;
+      .ant-card {
+        padding: 0 !important;
+        .ant-card-body {
+          padding: 14px 10px !important;
+        }
+      }
     }
 
     .flex-col {
@@ -172,8 +178,8 @@
               flex: 0 0 50% !important;
               max-width: 50% !important;
             }
-            .related-content .carousel-item .ant-col-12,
-            .related-content .card {
+            .resource-cards .carousel-item .ant-col-12,
+            .resource-cards .card {
               max-width: 100% !important;
             }
           }

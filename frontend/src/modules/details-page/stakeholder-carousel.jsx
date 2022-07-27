@@ -60,7 +60,7 @@ const StakeholderCarousel = ({ stakeholders }) => {
                     stakeholder?.type === "entity"
                       ? "organisation"
                       : "stakeholder"
-                  }/${stakeholder?.id}`}
+                  }/${stakeholder?.stakeholderId}`}
                 >
                   <Card
                     className="connection-card"
