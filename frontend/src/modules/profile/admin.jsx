@@ -248,9 +248,8 @@ const OwnerSelect = ({
         mode="multiple"
         placeholder="Assign owner"
         onChange={(data) => {
-          console.log(data);
           onChangeOwner(item, data, listOpts, setListOpts);
-        }} // onChangeOwner(resource, role)}
+        }}
         value={item?.owners}
         loading={item?.id === loading}
         optionFilterProp="children"
@@ -298,10 +297,9 @@ const FocalPoint = ({
         mode="multiple"
         placeholder="Assign focal point"
         onChange={(data) => {
-          console.log(data);
           onChangeFocalPoint(item, data, listOpts, setListOpts);
         }}
-        value={item?.owners}
+        value={item?.focalPoints}
         loading={item?.id === loading}
         optionFilterProp="children"
         filterOption={(input, option) =>
@@ -325,47 +323,6 @@ const FocalPoint = ({
     </div>
   );
 };
-
-// const FocalPoint = ({
-//   item,
-//   listOpts,
-//   setListOpts,
-//   onChangeFocalPoint,
-//   reviewers,
-// }) => {
-//   return (
-//     <div
-//       className="review-status-container"
-//       onClick={(e) => {
-//         e.stopPropagation();
-//       }}
-//     >
-//       <div style={{ width: "100%" }}>Focal point</div>
-//       <Select
-//         labelInValue
-//         style={{ width: "100%" }}
-//         mode="multiple"
-//         showSearch
-//         className="select-reviewer"
-//         placeholder="Assign focal point"
-//         onChange={(data) => {
-//           console.log(data);
-//           onChangeFocalPoint(item, data, listOpts, setListOpts);
-//         }}
-//         value={item?.reviewers.map((x) => x.id)}
-//         filterOption={false}
-//         getPopupContainer={(triggerNode) => triggerNode.parentElement}
-//       >
-//         {reviewers &&
-//           reviewers.map((r) => (
-//             <Select.Option key={r.email} value={r.id}>
-//               {r.email}
-//             </Select.Option>
-//           ))}
-//       </Select>
-//     </div>
-//   );
-// };
 
 const AdminSection = ({
   resourcesData,
@@ -483,8 +440,14 @@ const AdminSection = ({
   const changeOwner = (item, owners, listOpts, setListOpts) => {
     setLoading(item.id);
     const stakeholders = owners.map((x) => ({ id: x, roles: ["owner"] }));
+    const focalPoints = item?.focalPoints?.map((x) => ({
+      id: x,
+      roles: ["focal-point"],
+    }));
     api
-      .post(`/auth/${item.type}/${item.id}`, { stakeholders })
+      .post(`/auth/${item.type}/${item.id}`, {
+        stakeholders: [...stakeholders, ...focalPoints],
+      })
       .then((resp) => {
         notification.success({ message: "Ownerships changed" });
         setLoading(false);
@@ -506,9 +469,15 @@ const AdminSection = ({
 
   const changeFocalPoint = (item, owners, listOpts, setListOpts) => {
     setLoading(item.id);
-    const stakeholders = owners.map((x) => ({ id: x, roles: ["focal-point"] }));
+    const focalPoints = owners?.map((x) => ({ id: x, roles: ["focal-point"] }));
+    const stakeholders = item?.owners?.map((x) => ({
+      id: x,
+      roles: ["owner"],
+    }));
     api
-      .post(`/auth/${item.type}/${item.id}`, { stakeholders })
+      .post(`/auth/${item.type}/${item.id}`, {
+        stakeholders: [...stakeholders, ...focalPoints],
+      })
       .then((resp) => {
         notification.success({ message: "Focal point changed" });
         setLoading(false);
