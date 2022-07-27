@@ -23,6 +23,16 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
   const required = (value) => (value ? undefined : "Required");
 
   const [filteredOptions, setFilteredOptions] = useState([]);
+  const [initialValues, setInitialValues] = useState({
+    invites: [
+      {
+        name: "",
+        email: "",
+        expertise: [],
+        suggestedCategory: [],
+      },
+    ],
+  });
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (values) => {
@@ -44,10 +54,12 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
       .then((res) => {
         window.scrollTo({ top: 0 });
         setLoading(false);
+        setInitialValues({ invites: [] });
         notification.success({ message: "Invites successfully sent" });
       })
       .catch((err) => {
         setLoading(false);
+        setInitialValues({ invites: [] });
         notification.error({ message: "An error occured" });
         console.log(err);
       });
@@ -72,16 +84,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
           mutators={{
             ...arrayMutators,
           }}
-          initialValues={{
-            invites: [
-              {
-                name: "",
-                email: "",
-                expertise: [],
-                suggestedCategory: [],
-              },
-            ],
-          }}
+          initialValues={initialValues}
           render={({ handleSubmit, form, submitting }) => {
             formRef.current = form;
             return (
