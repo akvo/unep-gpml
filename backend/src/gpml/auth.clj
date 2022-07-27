@@ -195,19 +195,20 @@
   [_ {:keys [db]}]
   (fn [handler]
     (fn [{{:keys [path]} :parameters user :user :as request}]
-      (let [stakeholder-auth
+      (let [stakeholder-auth-roles
             (->> (db.ts-auth/get-topic-stakeholder-auths (:spec db)
-                                                         {:topic-type "organisation"
-                                                          :topic-id (:id path)
-                                                          :stakeholder (:id user)})
-                 (first)
-                 (set))
+                                                         {:filters {:topic-types ["organisation"]
+                                                                    :topics-ids [(:id path)]
+                                                                    :stakeholder [(:id user)]}})
+                 first
+                 :roles
+                 set)
             organisation (first (db.organisation/get-organisations (:spec db)
                                                                    {:filters {:created_by (:id user)}}))
             org-creator? (= (:id user) (:created_by organisation))]
         (if (or (= (:role user) "ADMIN")
                 org-creator?
-                (some #(get (set (:roles stakeholder-auth)) %) ["owner" "focal-point"]))
+                (some #(get stakeholder-auth-roles %) ["owner" "focal-point"]))
           (handler request)
           {:status 403
            :headers {"content-type" "application/json"}
