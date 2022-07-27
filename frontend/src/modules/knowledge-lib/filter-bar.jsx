@@ -27,6 +27,8 @@ const FilterBar = ({
   setIsShownModal,
   filterCountries,
   setFilterCountries,
+  fetchData,
+  moreFilter,
 }) => {
   const query = useQuery();
   const [country, setCountry] = useState([]);
@@ -37,6 +39,10 @@ const FilterBar = ({
     country: false,
     multiCountry: false,
   });
+
+  const isEmpty = Object.values(moreFilter).every(
+    (x) => x === null || x === undefined || x?.length === 0
+  );
 
   const handleClickFilter = (key) => () => {
     if (filter.indexOf(key) === -1) {
@@ -63,6 +69,12 @@ const FilterBar = ({
           : { multiCountry: false }),
       });
       setCountry(value);
+      fetchData({
+        ...moreFilter,
+        ...(value.length > 0 && {
+          country: value.toString(),
+        }),
+      });
       setFilterCountries(value.map((item) => item.toString()));
     }
     if (param === "transnational") {
@@ -72,6 +84,9 @@ const FilterBar = ({
       });
       if (value.length === 0) {
         setFilterCountries([]);
+        fetchData({
+          ...moreFilter,
+        });
       }
       setMultiCountry(value);
 
@@ -79,6 +94,14 @@ const FilterBar = ({
         const check = filterCountries.find((x) => x === id.toString());
         !check &&
           api.get(`/country-group/${id}`).then((resp) => {
+            fetchData({
+              ...moreFilter,
+              ...(value.length > 0 && {
+                country: resp.data?.[0]?.countries
+                  .map((item) => item.id.toString())
+                  .toString(),
+              }),
+            });
             setFilterCountries([
               ...filterCountries,
               ...resp.data?.[0]?.countries.map((item) => item.id.toString()),
@@ -143,6 +166,11 @@ const FilterBar = ({
         ))}
       </ul>
       <Button onClick={() => setIsShownModal(true)}>
+        {!isEmpty && (
+          <div class="filter-status">
+            {Object.values(moreFilter).filter((item) => item).length}
+          </div>
+        )}
         <FilterIcon />
         <span>More Filters</span>
       </Button>

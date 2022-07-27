@@ -3,8 +3,14 @@ import api from "../../utils/api";
 import FilterBar from "./filter-bar";
 import "./style.scss";
 import FilterModal from "./filter-modal";
-import ResourceCards, { ResourceCard } from "../../components/resource-cards/resource-cards";
-import { AppstoreOutlined, ArrowRightOutlined, LoadingOutlined } from "@ant-design/icons";
+import ResourceCards, {
+  ResourceCard,
+} from "../../components/resource-cards/resource-cards";
+import {
+  AppstoreOutlined,
+  ArrowRightOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
 
@@ -30,9 +36,17 @@ const KnowledgeLib = () => {
   const [countData, setCountData] = useState([]);
   const [data, setData] = useState({});
   const [isShownModal, setIsShownModal] = useState(false);
+  const [moreFilter, setMoreFilters] = useState({
+    subContentType: null,
+    tag: null,
+    entity: null,
+    representativeGroup: null,
+    startDate: null,
+    endDate: null,
+  });
 
   const fetchData = (params) => {
-    setLoading(true)
+    setLoading(true);
     api
       .get("/browse", { page_size: 30, page_n: 0, ...params })
       .then((resp) => {
@@ -47,12 +61,8 @@ const KnowledgeLib = () => {
   };
 
   useEffect(() => {
-    fetchData({
-      ...(filterCountries.length > 0 && {
-        country: filterCountries.toString(),
-      }),
-    });
-  }, [filterCountries]);
+    fetchData();
+  }, []);
 
   useEffect(() => {
     api.get(`/landing?entityGroup=topic`).then((resp) => {
@@ -74,6 +84,13 @@ const KnowledgeLib = () => {
     setFilterCountries(updateVal);
   };
 
+  const handleFilter = (param, value) => {
+    setMoreFilters({
+      ...moreFilter,
+      [param]: value ? value : null,
+    });
+  };
+
   return (
     <div id="knowledge-lib" className="knowledge-lib">
       <FilterBar
@@ -85,6 +102,8 @@ const KnowledgeLib = () => {
           filter,
           setFilter,
           setIsShownModal,
+          fetchData,
+          moreFilter,
         }}
       />
       <div className="list-content">
@@ -156,7 +175,16 @@ const KnowledgeLib = () => {
           useVerticalLegend
         />
       )}
-      <FilterModal {...{ setIsShownModal, isShownModal }} />
+      <FilterModal
+        {...{
+          setIsShownModal,
+          isShownModal,
+          moreFilter,
+          handleFilter,
+          fetchData,
+          filterCountries,
+        }}
+      />
     </div>
   );
 };
@@ -165,10 +193,12 @@ const GridView = ({ data, loading }) => {
   return (
     <div className="grid-view">
       <div className="items">
-        {data?.results?.map(item => <ResourceCard item={item} />)}
+        {data?.results?.map((item) => (
+          <ResourceCard item={item} />
+        ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default KnowledgeLib;

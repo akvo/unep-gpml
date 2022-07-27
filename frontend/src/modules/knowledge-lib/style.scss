@@ -151,6 +151,22 @@
         stroke: #fff;
       }
     }
+    .filter-status {
+      position: absolute;
+      background-color: #e91a08;
+      color: white;
+      font-weight: 700;
+      height: 20px;
+      border-radius: 50%;
+      top: 5px;
+      right: 5px;
+      font-size: 10px;
+      line-height: 20px;
+      padding: 0 2px;
+      min-width: 20px;
+      text-align: center;
+      transform: translateX(-50%);
+    }
   }
   position: relative;
   overflow-x: hidden;

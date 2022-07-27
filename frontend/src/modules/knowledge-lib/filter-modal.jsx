@@ -4,53 +4,31 @@ import {
   Row,
   Col,
   Space,
-  Drawer,
   Checkbox,
   Tag,
-  Card,
   Button,
   DatePicker,
   Modal,
 } from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
-import classNames from "classnames";
 import moment from "moment";
 import { useAuth0 } from "@auth0/auth0-react";
-import humps from "humps";
 import isEmpty from "lodash/isEmpty";
 import values from "lodash/values";
 import flatten from "lodash/flatten";
 
 import { UIStore } from "../../store";
-import api from "../../utils/api";
-import { topicTypes, topicNames } from "../../utils/misc";
-import { titleCase } from "../../utils/string";
 
 import MultipleSelectFilter from "../../components/select/multiple-select-filter";
-import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
-
-// Import Icons as React component since the color of the icons changes when the card is selected
-import { ReactComponent as CapacityBuildingIcon } from "../../images/knowledge-library/capacity-building.svg";
-import { ReactComponent as ActionSelectedIcon } from "../../images/knowledge-library/action-selected.svg";
-import { ReactComponent as EventFlexibleIcon } from "../../images/knowledge-library/event-flexible.svg";
-import { ReactComponent as InitiativeIcon } from "../../images/knowledge-library/initiative.svg";
-import { ReactComponent as FinancingIcon } from "../../images/knowledge-library/financing-2.svg";
-import { ReactComponent as PolicyIcon } from "../../images/knowledge-library/policy.svg";
-import { ReactComponent as TechnicalIcon } from "../../images/knowledge-library/technical.svg";
-import { ReactComponent as TechnologyIcon } from "../../images/knowledge-library/technology.svg";
 
 const InviteExpertModal = ({
   query,
-  view,
-  countData,
   updateQuery,
-  filterVisible,
-  setFilterVisible,
-  multiCountryCountries,
-  setMultiCountryCountries,
-  filterTagValue,
   setIsShownModal,
   isShownModal,
+  handleFilter,
+  moreFilter,
+  fetchData,
+  filterCountries,
 }) => {
   const {
     tags,
@@ -103,48 +81,6 @@ const InviteExpertModal = ({
     }
   };
 
-  const topicIcons = (topic) => {
-    if (topic === "project") {
-      return <InitiativeIcon width="53" height="53" />;
-    }
-    if (topic === "actionPlan") {
-      return <ActionSelectedIcon width="53" height="53" />;
-    }
-    if (topic === "policy") {
-      return <PolicyIcon width="53" height="53" />;
-    }
-    if (topic === "technicalResource") {
-      return <TechnicalIcon width="53" height="53" />;
-    }
-    if (topic === "financingResource") {
-      return <FinancingIcon width="53" height="53" />;
-    }
-    if (topic === "event") {
-      return <EventFlexibleIcon width="53" height="53" />;
-    }
-    if (topic === "technology") {
-      return <TechnologyIcon width="53" height="53" />;
-    }
-    if (topic === "capacityBuilding") {
-      return <CapacityBuildingIcon width="53" height="53" />;
-    }
-  };
-
-  const handleChangeResourceType = (flag, type) => {
-    const val = query[flag];
-
-    let updateVal = [];
-
-    if (isEmpty(val)) {
-      updateVal = [type];
-    } else if (val.includes(type)) {
-      updateVal = val.filter((x) => x !== type);
-    } else {
-      updateVal = [...val, type];
-    }
-    updateQuery(flag, updateVal);
-  };
-
   // populate options for tags dropdown
   const tagsWithoutSpace =
     !isEmpty(tags) &&
@@ -174,13 +110,9 @@ const InviteExpertModal = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tagsExcludingCapacityBuilding]);
 
-  const clearTopicFilter = () => {
-    setIsClearFilter(true);
-    const removeCapacityBuilding = query?.tag?.filter(
-      (tag) => tag?.toLowerCase() !== "capacity building"
-    );
-    updateQuery("topic", []);
-    setTagsExcludingCapacityBuilding(removeCapacityBuilding);
+  const handleApplyFilter = () => {
+    fetchData({ ...filterCountries, ...moreFilter });
+    setIsShownModal(false);
   };
 
   return (
@@ -191,19 +123,37 @@ const InviteExpertModal = ({
       visible={isShownModal}
       onCancel={() => setIsShownModal(false)}
       footer={[
-        <Button key="submit" type="primary" className="apply-button">
-          APPLY FILTERS
-        </Button>,
         <Button
           key="submit"
-          className="clear-button"
-          onClick={() => setIsShownModal(false)}
+          type="primary"
+          className="apply-button"
+          onClick={() => handleApplyFilter()}
         >
+          APPLY FILTERS
+        </Button>,
+        <Button className="clear-button" onClick={() => setIsShownModal(false)}>
           Cancel
         </Button>,
       ]}
     >
       <Row type="flex" gutter={[0, 24]}>
+        {/* My Bookmarks */}
+        {isAuthenticated && (
+          <Col span={24} style={{ paddingTop: 5, paddingBottom: 5 }}>
+            <Space align="middle">
+              <Checkbox
+                className="favorites-checkbox"
+                checked={moreFilter?.favorites?.indexOf("true") > -1}
+                onChange={({ target: { checked } }) =>
+                  handleFilter("favorites", checked)
+                }
+              >
+                My Bookmarks
+              </Checkbox>
+            </Space>
+          </Col>
+        )}
+
         {/* Sub-content type */}
         <MultipleSelectFilter
           title="Sub-content type"
@@ -223,37 +173,20 @@ const InviteExpertModal = ({
                 }))
               : []
           }
-          value={query?.subContentType || []}
+          value={moreFilter?.subContentType || []}
           flag="subContentType"
           query={query}
-          updateQuery={updateQuery}
+          updateQuery={handleFilter}
         />
-
-        {/* My Bookmarks */}
-        {isAuthenticated && (
-          <Col span={24} style={{ paddingTop: 5, paddingBottom: 5 }}>
-            <Space align="middle">
-              <Checkbox
-                className="favorites-checkbox"
-                checked={query?.favorites?.indexOf("true") > -1}
-                onChange={({ target: { checked } }) =>
-                  updateQuery("favorites", checked)
-                }
-              >
-                My Bookmarks
-              </Checkbox>
-            </Space>
-          </Col>
-        )}
 
         {/* Tags */}
         <MultipleSelectFilter
           title="Tags"
           options={tagOpts || []}
-          value={query?.tag?.map((x) => x) || []}
+          value={moreFilter?.tag?.map((x) => x) || []}
           flag="tag"
           query={query}
-          updateQuery={updateQuery}
+          updateQuery={handleFilter}
         />
 
         <MultipleSelectFilter
@@ -269,10 +202,10 @@ const InviteExpertModal = ({
                   )
               : []
           }
-          value={query?.entity?.map((x) => parseInt(x)) || []}
+          value={moreFilter?.entity?.map((x) => parseInt(x)) || []}
           flag="entity"
           query={query}
-          updateQuery={updateQuery}
+          updateQuery={handleFilter}
         />
 
         <MultipleSelectFilter
@@ -285,10 +218,10 @@ const InviteExpertModal = ({
                 }))
               : []
           }
-          value={query?.representativeGroup || []}
+          value={moreFilter?.representativeGroup || []}
           flag="representativeGroup"
           query={query}
-          updateQuery={updateQuery}
+          updateQuery={handleFilter}
         />
 
         {/* Date Filter */}
@@ -301,25 +234,29 @@ const InviteExpertModal = ({
             {/* Start date */}
             <DatePickerFilter
               title="Start Date"
-              value={query?.startDate}
+              value={moreFilter?.startDate}
               flag="startDate"
               query={query}
-              updateQuery={updateQuery}
+              updateQuery={handleFilter}
               span={12}
               startDate={
-                !isEmpty(query?.startDate) ? moment(query?.startDate[0]) : null
+                !isEmpty(moreFilter?.startDate)
+                  ? moment(moreFilter?.startDate[0])
+                  : null
               }
             />
             {/* End date */}
             <DatePickerFilter
               title="End Date"
-              value={query?.endDate}
+              value={moreFilter?.endDate}
               flag="endDate"
               query={query}
-              updateQuery={updateQuery}
+              updateQuery={handleFilter}
               span={12}
               endDate={
-                !isEmpty(query?.endDate) ? moment(query?.endDate[0]) : null
+                !isEmpty(moreFilter?.endDate)
+                  ? moment(moreFilter?.endDate[0])
+                  : null
               }
             />
           </Row>
@@ -342,18 +279,6 @@ const DatePickerFilter = ({
     <Col span={span}>
       <Space align="middle">
         <div className="filter-title multiple-filter-title">{title}</div>
-        {!isEmpty(query?.[flag]) ? (
-          <Tag
-            className="clear-selection"
-            closable
-            onClick={() => updateQuery(flag, [])}
-            onClose={() => updateQuery(flag, [])}
-          >
-            Clear Selection
-          </Tag>
-        ) : (
-          ""
-        )}
       </Space>
       <div>
         <DatePicker
@@ -362,12 +287,12 @@ const DatePickerFilter = ({
           value={
             !isEmpty(value)
               ? flag.toLowerCase() === "startdate"
-                ? moment(value[0]).startOf("year")
-                : moment(value[0]).endOf("year")
+                ? moment(value).startOf("year")
+                : moment(value).endOf("year")
               : ""
           }
           onChange={(val) =>
-            updateQuery(flag, val ? moment(val).format("YYYY-MM-DD") : [])
+            updateQuery(flag, val ? moment(val).format("YYYY-MM-DD") : null)
           }
           disabledDate={(current) => {
             // Can not select days past start date
