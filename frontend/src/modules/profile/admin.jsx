@@ -863,7 +863,8 @@ const AdminSection = ({
                   )}
                 <>
                   {item.reviewStatus === "APPROVED" &&
-                    item.type !== "stakeholder" && (
+                    item.type !== "stakeholder" &&
+                    item.type !== "organisation" && (
                       <OwnerSelect
                         item={item}
                         reviewers={reviewers}
