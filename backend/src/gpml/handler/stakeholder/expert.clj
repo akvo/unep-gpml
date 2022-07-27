@@ -11,6 +11,7 @@
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
             [jsonista.core :as json]
+            [malli.util :as mu]
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
@@ -74,7 +75,7 @@
       :swagger {:description "Stakeholder's email address."
                 :type "string"}}
      [:string {:min 1}]]
-    [:expertise {:optional true} [:vector [:string {:min 1}]]]]])
+    [:expertise {:optional true} [:sequential [:string {:min 1}]]]]])
 
 (def ^:private invite-experts-response
   [:map
@@ -213,22 +214,92 @@
          :body {:success? false
                 :reason :could-not-create-expert}}))))
 
-(defmethod ig/init-key :gpml.handler.stakeholder.expert/get [_ config]
+(defn- generate-admins-expert-suggestion-text
+  [{:keys [email expertise suggested_expertise] :as expert}
+   user-full-name admin-full-name]
+  (format
+   "Dear %s,
+
+User %s is suggesting an expert with the following information:
+
+- Full Name: %s
+- Email: %s
+%s
+%s"
+   admin-full-name
+   user-full-name
+   (email/get-user-full-name (select-keys expert [:first_name :last_name]))
+   email
+   (if-not (seq expertise) "" (str "- Expertise: " expertise))
+   (if-not (seq suggested_expertise) "" (str "- Suggested Expertise: " suggested_expertise))))
+
+(defn- suggest-expert
+  [{:keys [db logger mailjet-config]}
+   {{:keys [body]} :parameters user :user}]
+  (try
+    (let [expert (-> body
+                     (util/update-if-exists :expertise #(str/join "," %))
+                     (util/update-if-exists :suggested_expertise #(str/join "," %)))
+          user-full-name (email/get-user-full-name user)
+          admins (db.stakeholder/get-stakeholders (:spec db) {:filters {:roles ["ADMIN"]}})
+          admin-names (map email/get-user-full-name admins)
+          subject "New expert suggestion"
+          receivers (map #(assoc {} :Name %1 :Email (:email %2)) admin-names admins)
+          texts (map (partial generate-admins-expert-suggestion-text expert user-full-name) admin-names)
+          htmls (repeat nil)
+          {:keys [status body]} (email/send-email mailjet-config email/unep-sender subject receivers texts htmls)]
+      (if (<= 200 status 299)
+        (resp/response {:success? true})
+        {:status 500
+         :body {:success? false
+                :reason :could-not-send-expert-suggestion-emails
+                :error-details (json/read-value body)}}))
+    (catch Exception e
+      (let [context-data {:body body
+                          :user user}]
+        (log logger :debug ::failed-to-send-expert-suggestion-emails {:exception e
+                                                                      :context-data context-data})
+        (log logger :error ::failed-to-send-expert-suggestion-emails {:exception-message (.getMessage e)
+                                                                      :context-data context-data})
+        {:status 500
+         :body {:reason :failed-to-send-expert-suggestion-emails
+                :error-details {:error (.getMessage e)}}}))))
+
+(defmethod ig/init-key :gpml.handler.stakeholder.expert/get
+  [_ config]
   (fn [req]
     (get-experts config req)))
 
-(defmethod ig/init-key :gpml.handler.stakeholder.expert/post [_ config]
+(defmethod ig/init-key :gpml.handler.stakeholder.expert/post
+  [_ config]
   (fn [req]
     (invite-experts config req)))
 
-(defmethod ig/init-key :gpml.handler.stakeholder.expert/get-params [_ _]
+(defmethod ig/init-key :gpml.handler.stakeholder.expert/post-suggest
+  [_ config]
+  (fn [req]
+    (suggest-expert config req)))
+
+(defmethod ig/init-key :gpml.handler.stakeholder.expert/get-params
+  [_ _]
   {:query get-experts-params})
 
-(defmethod ig/init-key :gpml.handler.stakeholder.expert/get-response [_ _]
+(defmethod ig/init-key :gpml.handler.stakeholder.expert/get-response
+  [_ _]
   {200 {:body get-experts-response}})
 
-(defmethod ig/init-key :gpml.handler.stakeholder.expert/post-params [_ _]
+(defmethod ig/init-key :gpml.handler.stakeholder.expert/post-params
+  [_ _]
   {:body invite-experts-params})
+
+(defmethod ig/init-key :gpml.handler.stakeholder.expert/post-suggest-params
+  [_ _]
+  {:body (-> (mu/get invite-experts-params :map)
+             (mu/assoc :suggested_expertise [:sequential {:optional true} [:string {:min 1}]]))})
+
+(defmethod ig/init-key :gpml.handler.stakeholder.expert/post-suggest-responses
+  [_ _]
+  {200 {:body [:map [:success? [:boolean]]]}})
 
 (defmethod ig/init-key :gpml.handler.stakeholder.expert/post-response [_ _]
   {200 {:body invite-experts-response}})
