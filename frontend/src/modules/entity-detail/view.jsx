@@ -524,7 +524,6 @@ const StakeholderDetail = ({
             {ownedResources.length > 0 && (
               <RelatedContent
                 url={`?entity=${data.id}`}
-                data={[]}
                 isShownCount={true}
                 relatedContent={ownedResources}
                 title="Content on the platform"

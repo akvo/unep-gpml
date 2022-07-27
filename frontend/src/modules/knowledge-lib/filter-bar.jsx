@@ -1,18 +1,30 @@
 import React, { useEffect, useState } from "react";
-import api from "../../utils/api";
-import catTags from "../../utils/cat-tags.json";
-import { Icon } from "../../components/svg-icon/svg-icon";
+import { Button } from "antd";
 import { useQuery } from "../../utils/misc";
+import { Icon } from "../../components/svg-icon/svg-icon";
+import { ReactComponent as FilterIcon } from "../../images/knowledge-library/filter-icon.svg";
+import { ReactComponent as OverviewIcon } from "../../images/overview.svg";
 import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
 import LocationDropdown from "../../components/location-dropdown/location-dropdown";
+import api from "../../utils/api";
 
-function slug(text) {
-  return text.toLowerCase().replaceAll("&", "n").replaceAll(" ", "-");
-}
+const resourceTypes = [
+  { key: "technical-resource", label: "Technical Resources" },
+  { key: "event", label: "Events" },
+  { key: "technology", label: "Technology" },
+  { key: "capacity-building", label: "Capacity Building" },
+  { key: "initiative", label: "Initiatives" },
+  { key: "action-plan", label: "Policy" },
+  { key: "policy", label: "Policy" },
+  { key: "financing-resource", label: "Financing Resources" },
+];
 
 const FilterBar = ({
+  view,
+  setView,
   filter,
   setFilter,
+  setIsShownModal,
   filterCountries,
   setFilterCountries,
 }) => {
@@ -26,21 +38,20 @@ const FilterBar = ({
     multiCountry: false,
   });
 
-  const handleClick0 = (catIndex) => () => {
-    setFilter([catIndex]);
-  };
-  const handleBack = () => {
-    setFilter([]);
+  const handleClickFilter = (key) => () => {
+    if (filter.indexOf(key) === -1) {
+      setFilter([...filter, key]);
+    } else {
+      setFilter(filter.filter((it) => it !== key));
+    }
+    if (view === "overview") {
+      setView("map");
+    }
   };
 
-  const handleClick1 = (tag) => () => {
-    let tagfilters = [...(filter[1] || [])];
-    if (tagfilters.findIndex((it) => it === tag) > -1) {
-      tagfilters = tagfilters.filter((it) => it !== tag);
-    } else {
-      tagfilters = [...tagfilters, tag];
-    }
-    setFilter([filter[0], tagfilters]);
+  const handleClickOverview = () => {
+    setView("overview");
+    setFilter([]);
   };
 
   const updateQuery = (param, value) => {
@@ -109,57 +120,32 @@ const FilterBar = ({
 
   return (
     <div className="filter-bar">
-      {filter.length === 0 && (
-        <div className="level-0">
-          <div>
-            <small>Choose an expert category</small>
-          </div>
-          <div className="filter-tools">
-            <ul>
-              {catTags.map((cat, index) => {
-                return (
-                  <li onClick={handleClick0(index)}>
-                    <Icon name={`cat-tags/${slug(cat.title)}`} fill="#67BEA1" />
-                    <span>{cat.title}</span>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </div>
-      )}
-      {filter.length > 0 && (
-        <div className="level-1">
-          <div className={`selected-btn s${filter[0]}`} onClick={handleBack}>
-            <small>&lt; Back to categories</small>
-            <Icon
-              name={`cat-tags/${slug(catTags[filter[0]].title)}`}
-              fill="#67BEA1"
-            />
-            <div>
-              <strong>{catTags[filter[0]].title}</strong>
-              <small>Sub-topics</small>
+      <Button
+        className={view === "overview" && "selected"}
+        onClick={handleClickOverview}
+      >
+        <OverviewIcon />
+        <span>Overview</span>
+      </Button>
+      <ul>
+        {resourceTypes.map((it) => (
+          <li
+            onClick={handleClickFilter(it.key)}
+            className={filter.indexOf(it.key) !== -1 && "selected"}
+          >
+            <div className="img-container">
+              <Icon name={`resource-types/${it.key}`} fill="#FFF" />
             </div>
-          </div>
-          <ul>
-            {catTags[filter[0]].topics.map((tag) => (
-              <li
-                onClick={handleClick1(tag)}
-                className={
-                  filter[1] && filter[1].indexOf(tag) > -1 && "selected"
-                }
-              >
-                <div className="img-container">
-                  <Icon name={`cat-tags/${slug(tag)}`} fill="#67BEA1" />
-                </div>
-                <div className="label-container">
-                  <span>{tag}</span>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+            <div className="label-container">
+              <span>{it.label}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <Button onClick={() => setIsShownModal(true)}>
+        <FilterIcon />
+        <span>More Filters</span>
+      </Button>
       <LocationDropdown
         {...{
           country,

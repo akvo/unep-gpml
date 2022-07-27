@@ -4,9 +4,11 @@ import {
   ComposableMap,
   Geographies,
   Geography,
+  Marker,
 } from "react-simple-maps";
 import ReactTooltip from "react-tooltip";
 import { scaleQuantize } from "d3-scale";
+import { geoCentroid } from "d3-geo";
 import { Tooltip, Button } from "antd";
 import {
   ZoomInOutlined,
@@ -44,6 +46,7 @@ const unsettledTerritoryIsoCode = [
 
 const higlightColor = "#255B87";
 export const KNOWLEDGE_LIBRARY = "/knowledge/library";
+export const KNOWLEDGE_LIB = "/knowledge/lib";
 export const STAKEHOLDER_OVERVIEW = "/connect/community";
 export const EXPERTS = "/connect/experts";
 
@@ -281,7 +284,7 @@ const KnowledgeLibraryToolTipContent = ({
                 </td>
               </tr>
             ) : (
-              resourceToShow.includes(tooltipChecker()) && (
+              resourceToShow?.includes(tooltipChecker()) && (
                 <tr key={topic}>
                   <td className="tooltip-topic">{topicNames(topic)}</td>
                   <td className="tooltip-count-wrapper">
@@ -444,7 +447,7 @@ const Maps = ({
   const [isShownLegend, setIsShownLegend] = useState(true);
 
   const resourceCount =
-    path === KNOWLEDGE_LIBRARY &&
+    (path === KNOWLEDGE_LIBRARY || path === KNOWLEDGE_LIB) &&
     countData.filter(
       (data) =>
         data.topic !== "gpml_member_entities" &&
@@ -463,9 +466,11 @@ const Maps = ({
     stakeholderCount.existingStakeholder.map((data) => data?.networkType);
 
   const existingResources =
-    path === KNOWLEDGE_LIBRARY ? resourceCount.map((data) => data.topic) : [];
+    path === KNOWLEDGE_LIBRARY || path === KNOWLEDGE_LIB
+      ? resourceCount.map((data) => data.topic)
+      : [];
   const existingData =
-    path === KNOWLEDGE_LIBRARY
+    path === KNOWLEDGE_LIBRARY || path === KNOWLEDGE_LIB
       ? existingResources
       : path === STAKEHOLDER_OVERVIEW
       ? existingStakeholders
@@ -476,7 +481,7 @@ const Maps = ({
   const country =
     !isEmpty(countries) &&
     countries.find((x) => {
-      if (countryToSelect.includes(x.id)) {
+      if (countryToSelect?.includes(x.id)) {
         return x;
       }
     });
@@ -514,7 +519,7 @@ const Maps = ({
     }
   };
   const legendTitle =
-    path === KNOWLEDGE_LIBRARY
+    path === KNOWLEDGE_LIBRARY || path === KNOWLEDGE_LIB
       ? "Total resources per country"
       : path === STAKEHOLDER_OVERVIEW
       ? "Total stakeholders per country"
@@ -724,186 +729,226 @@ const Maps = ({
               }}
             >
               <Geographies key="map-geo" geography={geoUrl}>
-                {({ geographies }) =>
-                  geographies.map((geo) => {
-                    const findData = data?.find(
-                      (i) => i?.countryId === Number(geo.properties.M49Code)
-                    );
-
-                    const isLake =
-                      typeof geo.properties?.ISO3CD === "undefined";
-                    const isUnsettled = unsettledTerritoryIsoCode.includes(
-                      geo.properties.MAP_COLOR
-                    );
-                    const isPattern = geo.properties.MAP_COLOR === "xAC";
-                    const isCountrySelected =
-                      country?.isoCode === geo.properties.MAP_COLOR ||
-                      multiCountries
-                        .map((x) => x.isoCode)
-                        .includes(geo.properties.MAP_COLOR);
-
-                    let pattern = "";
-                    if (geo.properties.MAP_COLOR === "CHN") {
-                      pattern = (
-                        <PatternLines
-                          key={`${geo.rsmKey}-pattern`}
-                          id="lines"
-                          height={2.5}
-                          width={2.5}
-                          stroke="#cecece"
-                          strokeWidth={0.8}
-                          background={
-                            isCountrySelected
-                              ? "#255B87"
-                              : geo.properties.M49Code === selected
-                              ? "rgba(255, 184, 0, 0.65)"
-                              : fillColor(
-                                  curr(findData?.counts, path, existingData)
-                                    ? curr(findData?.counts, path, existingData)
-                                    : 0
-                                )
-                          }
-                          orientation={["diagonal"]}
-                        />
+                {({ geographies }) => (
+                  <>
+                    {geographies.map((geo) => {
+                      const findData = data?.find(
+                        (i) => i?.countryId === Number(geo.properties.M49Code)
                       );
-                    }
 
-                    // To get all countries in a multicountry selection being highlighted
-                    const filterMultiCountry = multiCountryCountries.filter(
-                      (item) => {
-                        const transnationalQuery = query?.transnational?.map(
-                          (item) => Number(item)
+                      const isLake =
+                        typeof geo.properties?.ISO3CD === "undefined";
+                      const isUnsettled = unsettledTerritoryIsoCode?.includes(
+                        geo.properties.MAP_COLOR
+                      );
+                      const isPattern = geo.properties.MAP_COLOR === "xAC";
+                      const isCountrySelected =
+                        country?.isoCode === geo.properties.MAP_COLOR ||
+                        multiCountries
+                          .map((x) => x.isoCode)
+                          .includes(geo.properties.MAP_COLOR);
+
+                      let pattern = "";
+                      if (geo.properties.MAP_COLOR === "CHN") {
+                        pattern = (
+                          <PatternLines
+                            key={`${geo.rsmKey}-pattern`}
+                            id="lines"
+                            height={2.5}
+                            width={2.5}
+                            stroke="#cecece"
+                            strokeWidth={0.8}
+                            background={
+                              isCountrySelected
+                                ? "#255B87"
+                                : geo.properties.M49Code === selected
+                                ? "rgba(255, 184, 0, 0.65)"
+                                : fillColor(
+                                    curr(findData?.counts, path, existingData)
+                                      ? curr(
+                                          findData?.counts,
+                                          path,
+                                          existingData
+                                        )
+                                      : 0
+                                  )
+                            }
+                            orientation={["diagonal"]}
+                          />
                         );
-                        return transnationalQuery?.includes(item?.id);
                       }
-                    );
 
-                    const multiCountrySelection = filterMultiCountry.map(
-                      (transnational) =>
-                        transnational?.countries?.map((country) => country?.id)
-                    );
+                      // To get all countries in a multicountry selection being highlighted
+                      const filterMultiCountry = multiCountryCountries.filter(
+                        (item) => {
+                          const transnationalQuery = query?.transnational?.map(
+                            (item) => Number(item)
+                          );
+                          return transnationalQuery?.includes(item?.id);
+                        }
+                      );
 
-                    const multiselection =
-                      multiCountrySelection?.length !== 0 &&
-                      multiCountrySelection?.flat();
+                      const multiCountrySelection = filterMultiCountry.map(
+                        (transnational) =>
+                          transnational?.countries?.map(
+                            (country) => country?.id
+                          )
+                      );
 
-                    const selectionCondition = () => {
-                      const mapProps = Number(geo.properties.M49Code);
+                      const multiselection =
+                        multiCountrySelection?.length !== 0 &&
+                        multiCountrySelection?.flat();
 
-                      if (
-                        typeof isFilteredCountry === "string" ||
-                        typeof isFilteredCountry === "number"
-                      ) {
-                        return Number(isFilteredCountry) === Number(mapProps);
-                      } else {
-                        const countryToFilter = isFilteredCountry.map((it) =>
-                          Number(it)
-                        );
-                        return (
-                          countryToFilter.includes(mapProps) ||
-                          (multiselection && multiselection.includes(mapProps))
-                        );
-                      }
-                    };
+                      const selectionCondition = () => {
+                        const mapProps = Number(geo.properties.M49Code);
 
-                    return (
-                      <Fragment key={`${geo.rsmKey}-geo-fragment`}>
-                        {pattern}
-                        <Geography
-                          key={geo.rsmKey}
-                          geography={geo}
-                          stroke="#79B0CC"
-                          strokeWidth="0.2"
-                          strokeOpacity="0.8"
-                          cursor={!isLake ? "pointer" : ""}
-                          fill={
-                            isLake
-                              ? "#eaf6fd"
-                              : isUnsettled && !isPattern
-                              ? "#cecece"
-                              : isPattern
-                              ? "url(#lines)"
-                              : geo.properties.M49Code === selected
-                              ? "rgba(255, 184, 0, 0.65)"
-                              : selectionCondition()
-                              ? "#255B87"
-                              : fillColor(
-                                  curr(findData?.counts, path, existingData)
-                                    ? curr(findData?.counts, path, existingData)
-                                    : 0
-                                )
-                          }
-                          onMouseEnter={() => {
-                            const {
-                              MAP_LABEL,
-                              MAP_COLOR,
-                              M49Code,
-                            } = geo.properties;
-                            if (!isLake && MAP_LABEL !== null) {
+                        if (
+                          typeof isFilteredCountry === "string" ||
+                          typeof isFilteredCountry === "number"
+                        ) {
+                          return Number(isFilteredCountry) === Number(mapProps);
+                        } else {
+                          const countryToFilter = isFilteredCountry.map((it) =>
+                            Number(it)
+                          );
+                          return (
+                            countryToFilter?.includes(mapProps) ||
+                            (multiselection &&
+                              multiselection.includes(mapProps))
+                          );
+                        }
+                      };
+
+                      return (
+                        <Fragment key={`${geo.rsmKey}-geo-fragment`}>
+                          {pattern}
+                          <Geography
+                            key={geo.rsmKey}
+                            geography={geo}
+                            stroke="#79B0CC"
+                            strokeWidth="0.2"
+                            strokeOpacity="0.8"
+                            cursor={!isLake ? "pointer" : ""}
+                            fill={
+                              isLake
+                                ? "#eaf6fd"
+                                : isUnsettled && !isPattern
+                                ? "#cecece"
+                                : isPattern
+                                ? "url(#lines)"
+                                : geo.properties.M49Code === selected
+                                ? "rgba(255, 184, 0, 0.65)"
+                                : selectionCondition()
+                                ? "#255B87"
+                                : fillColor(
+                                    curr(findData?.counts, path, existingData)
+                                      ? curr(
+                                          findData?.counts,
+                                          path,
+                                          existingData
+                                        )
+                                      : 0
+                                  )
+                            }
+                            onMouseEnter={() => {
+                              const {
+                                MAP_LABEL,
+                                MAP_COLOR,
+                                M49Code,
+                              } = geo.properties;
+                              if (!isLake && MAP_LABEL !== null) {
+                                if (
+                                  !isFilteredCountry?.includes(M49Code) &&
+                                  !selectionCondition()
+                                ) {
+                                  setSelected(M49Code);
+                                  // setSelected(MAP_COLOR);
+                                }
+
+                                if (path === STAKEHOLDER_OVERVIEW) {
+                                  setContent(
+                                    <StakeholderTooltipContent
+                                      data={findData}
+                                      geo={geo.properties}
+                                      existingStakeholders={
+                                        existingStakeholders
+                                      }
+                                      query={query}
+                                    />
+                                  );
+                                }
+                                if (
+                                  path === KNOWLEDGE_LIBRARY ||
+                                  path === KNOWLEDGE_LIB
+                                ) {
+                                  setContent(
+                                    <KnowledgeLibraryToolTipContent
+                                      data={findData}
+                                      geo={geo.properties}
+                                      existingResources={existingResources}
+                                      query={query}
+                                    />
+                                  );
+                                }
+
+                                if (path === EXPERTS) {
+                                  setContent(
+                                    <ExpertsTooltipContent
+                                      data={findData}
+                                      geo={geo.properties}
+                                      existingStakeholders={
+                                        existingStakeholders
+                                      }
+                                      query={query}
+                                    />
+                                  );
+                                }
+                              }
+                            }}
+                            onMouseLeave={() => {
+                              setContent("");
+                              setSelected(null);
+                            }}
+                            onClick={() => {
                               if (
-                                !isFilteredCountry.includes(M49Code) &&
-                                !selectionCondition()
+                                path === KNOWLEDGE_LIBRARY ||
+                                path === KNOWLEDGE_LIB
                               ) {
-                                setSelected(M49Code);
-                                // setSelected(MAP_COLOR);
-                              }
-
-                              if (path === STAKEHOLDER_OVERVIEW) {
-                                setContent(
-                                  <StakeholderTooltipContent
-                                    data={findData}
-                                    geo={geo.properties}
-                                    existingStakeholders={existingStakeholders}
-                                    query={query}
-                                  />
-                                );
-                              }
-                              if (path === KNOWLEDGE_LIBRARY) {
-                                setContent(
-                                  <KnowledgeLibraryToolTipContent
-                                    data={findData}
-                                    geo={geo.properties}
-                                    existingResources={existingResources}
-                                    query={query}
-                                  />
-                                );
-                              }
-
-                              if (path === EXPERTS) {
-                                setContent(
-                                  <ExpertsTooltipContent
-                                    data={findData}
-                                    geo={geo.properties}
-                                    existingStakeholders={existingStakeholders}
-                                    query={query}
-                                  />
-                                );
-                              }
-                            }
-                          }}
-                          onMouseLeave={() => {
-                            setContent("");
-                            setSelected(null);
-                          }}
-                          onClick={() => {
-                            if (path === KNOWLEDGE_LIBRARY) {
-                              !multiCountrySelection
-                                .flat()
-                                .includes(Number(geo.properties.M49Code)) &&
+                                !multiCountrySelection
+                                  .flat()
+                                  .includes(Number(geo.properties.M49Code)) &&
+                                  !isLake &&
+                                  !isUnsettled &&
+                                  clickEvents(geo.properties.M49Code);
+                              } else {
                                 !isLake &&
-                                !isUnsettled &&
-                                clickEvents(geo.properties.M49Code);
-                            } else {
-                              !isLake &&
-                                !isUnsettled &&
-                                clickEvents(geo.properties.M49Code);
-                            }
-                          }}
-                        />
-                      </Fragment>
-                    );
-                  })
-                }
+                                  !isUnsettled &&
+                                  clickEvents(geo.properties.M49Code);
+                              }
+                            }}
+                          />
+                        </Fragment>
+                      );
+                    })}
+                    {geographies.map((geo) => {
+                      const centroid = geoCentroid(geo);
+                      const findData = data?.find(
+                        (i) => i?.countryId === Number(geo.properties.M49Code)
+                      );
+                      return (
+                        <Marker coordinates={centroid}>
+                          {findData && (
+                            <text y="2" fontSize={6} textAnchor="middle">
+                              {Object.values(
+                                findData?.transnationalCounts
+                              )?.reduce((a, b) => a + b)}
+                            </text>
+                          )}
+                        </Marker>
+                      );
+                    })}
+                  </>
+                )}
               </Geographies>
               <Geographies key="map-line" geography={lineBoundaries}>
                 {({ geographies }) =>

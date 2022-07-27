@@ -24,7 +24,6 @@ import "swiper/modules/thumbs/thumbs.min.css";
 
 const RelatedContent = ({
   url,
-  data,
   title,
   relatedContent,
   dataCount,
@@ -37,7 +36,7 @@ const RelatedContent = ({
   const CardComponent = ({ title, style, children, getRef }) => {
     return (
       <div
-        className={`card-wrapper mb-10 related-content-wrapper`}
+        className={`card-wrapper mb-10 resource-cards-wrapper`}
         ref={getRef}
       >
         <Card title={title} bordered={false} style={style}>
@@ -136,7 +135,7 @@ const RelatedContent = ({
         }}
         navigation={true}
         modules={[SwiperPagination, Navigation]}
-        className={`related-content-carousel related-content ${
+        className={`resource-cards ${
           dataCount > 20 && "carousel-with-extra-card"
         }`}
       >
@@ -212,7 +211,6 @@ const RelatedContent = ({
                 </a>
                 <div className="slider-card">
                   <img
-                    className="related-content-image"
                     src={getThumbnail(item)}
                     alt={item?.type}
                   />
@@ -222,7 +220,7 @@ const RelatedContent = ({
           );
         })}
         {dataCount > 20 && (
-          <SwiperSlide>
+          <SwiperSlide className="show-more-card">
             <a
               href={`/knowledge/library${url ? url : ""}`}
               className="card"
