@@ -236,7 +236,7 @@ const OwnerSelect = ({
 }) => {
   return (
     <div
-      style={{ width: "40%" }}
+      className="review-status-container"
       onClick={(e) => {
         e.stopPropagation();
       }}
@@ -247,7 +247,10 @@ const OwnerSelect = ({
         showSearch={true}
         mode="multiple"
         placeholder="Assign owner"
-        onChange={(data) => onChangeOwner(item, data, listOpts, setListOpts)} // onChangeOwner(resource, role)}
+        onChange={(data) => {
+          console.log(data);
+          onChangeOwner(item, data, listOpts, setListOpts);
+        }} // onChangeOwner(resource, role)}
         value={item?.owners}
         loading={item?.id === loading}
         optionFilterProp="children"
@@ -272,6 +275,97 @@ const OwnerSelect = ({
     </div>
   );
 };
+
+const FocalPoint = ({
+  item,
+  onChangeFocalPoint,
+  loading,
+  reviewers,
+  listOpts,
+  setListOpts,
+}) => {
+  return (
+    <div
+      className="review-status-container"
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+    >
+      <div style={{ width: "100%" }}>Focal Points</div>
+      <Select
+        style={{ width: "100%" }}
+        showSearch={true}
+        mode="multiple"
+        placeholder="Assign focal point"
+        onChange={(data) => {
+          console.log(data);
+          onChangeFocalPoint(item, data, listOpts, setListOpts);
+        }}
+        value={item?.owners}
+        loading={item?.id === loading}
+        optionFilterProp="children"
+        filterOption={(input, option) =>
+          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+        filterSort={(optionA, optionB) =>
+          optionA.children
+            .toLowerCase()
+            .localeCompare(optionB.children.toLowerCase())
+        }
+        // FIXME: Disallow changing roles of other admins?
+        // stakeholder?.role === "ADMIN"
+        disabled={item?.id === loading}
+      >
+        {reviewers.map((r) => (
+          <Select.Option key={r.email} value={r.id}>
+            {r.email}
+          </Select.Option>
+        ))}
+      </Select>
+    </div>
+  );
+};
+
+// const FocalPoint = ({
+//   item,
+//   listOpts,
+//   setListOpts,
+//   onChangeFocalPoint,
+//   reviewers,
+// }) => {
+//   return (
+//     <div
+//       className="review-status-container"
+//       onClick={(e) => {
+//         e.stopPropagation();
+//       }}
+//     >
+//       <div style={{ width: "100%" }}>Focal point</div>
+//       <Select
+//         labelInValue
+//         style={{ width: "100%" }}
+//         mode="multiple"
+//         showSearch
+//         className="select-reviewer"
+//         placeholder="Assign focal point"
+//         onChange={(data) => {
+//           console.log(data);
+//           onChangeFocalPoint(item, data, listOpts, setListOpts);
+//         }}
+//         value={item?.reviewers.map((x) => x.id)}
+//         filterOption={false}
+//         getPopupContainer={(triggerNode) => triggerNode.parentElement}
+//       >
+//         {reviewers &&
+//           reviewers.map((r) => (
+//             <Select.Option key={r.email} value={r.id}>
+//               {r.email}
+//             </Select.Option>
+//           ))}
+//       </Select>
+//     </div>
+//   );
+// };
 
 const AdminSection = ({
   resourcesData,
@@ -393,6 +487,30 @@ const AdminSection = ({
       .post(`/auth/${item.type}/${item.id}`, { stakeholders })
       .then((resp) => {
         notification.success({ message: "Ownerships changed" });
+        setLoading(false);
+      })
+      .then(() =>
+        fetchSubmissionData(
+          listOpts.current,
+          listOpts.size,
+          listOpts.type,
+          listOpts.reviewStatus,
+          listOpts.title
+        )
+      )
+      .then((data) => setListOpts((opts) => ({ ...opts, data })))
+      .catch((err) => {
+        notification.error({ message: "Something went wrong" });
+      });
+  };
+
+  const changeFocalPoint = (item, owners, listOpts, setListOpts) => {
+    setLoading(item.id);
+    const stakeholders = owners.map((x) => ({ id: x, roles: ["focal-point"] }));
+    api
+      .post(`/auth/${item.type}/${item.id}`, { stakeholders })
+      .then((resp) => {
+        notification.success({ message: "Focal point changed" });
         setLoading(false);
       })
       .then(() =>
@@ -545,42 +663,6 @@ const AdminSection = ({
               {r.email}
             </Select.Option>
           ))}
-        </Select>
-      </div>
-    );
-  };
-
-  const FocalPoint = ({ item, listOpts, setListOpts }) => {
-    return (
-      <div
-        className="review-status-container"
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-      >
-        <div style={{ width: "100%" }}>Focal point</div>
-        <Select
-          labelInValue
-          style={{ width: "100%" }}
-          mode="multiple"
-          showSearch
-          className="select-reviewer"
-          placeholder="Assign focal point"
-          onChange={(data) => assignReviewer(item, data, listOpts, setListOpts)}
-          value={item?.reviewers.map((x) => x.id)}
-          filterOption={false}
-          onSearch={(e, event) => {
-            debouncedResults(e);
-          }}
-          notFoundContent={fetching ? <Spin size="small" /> : null}
-          getPopupContainer={(triggerNode) => triggerNode.parentElement}
-        >
-          {focalPoints &&
-            focalPoints.map((r) => (
-              <Select.Option key={r.email} value={r.id}>
-                {r.email}
-              </Select.Option>
-            ))}
         </Select>
       </div>
     );
@@ -824,13 +906,16 @@ const AdminSection = ({
                         loading={loading}
                       />
                     )}
-                  {/* {item.type === "organisation" && (
-                    <FocalPoint
-                      item={item}
-                      listOpts={listOpts}
-                      setListOpts={setListOpts}
-                    />
-                  )} */}
+                  {item.reviewStatus === "APPROVED" &&
+                    item.type === "organisation" && (
+                      <FocalPoint
+                        item={item}
+                        reviewers={reviewers}
+                        listOpts={listOpts}
+                        setListOpts={setListOpts}
+                        onChangeFocalPoint={changeFocalPoint}
+                      />
+                    )}
                 </>
                 {item.reviewStatus === "SUBMITTED" && (
                   <ResourceSubmittedActions />
