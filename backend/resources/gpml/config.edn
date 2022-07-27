@@ -210,7 +210,15 @@
                                                    :swagger {:tags ["stakeholder" "expert"]}
                                                    :parameters #ig/ref :gpml.handler.stakeholder.expert/post-params
                                                    :responses #ig/ref :gpml.handler.stakeholder.expert/post-response
-                                                   :handler #ig/ref :gpml.handler.stakeholder.expert/post}}]]
+                                                   :handler #ig/ref :gpml.handler.stakeholder.expert/post}}]
+                                          ["/suggest"
+                                           {:post {:summary "Suggest an expert"
+                                                   :middleware [#ig/ref :gpml.auth/auth-required
+                                                                #ig/ref :gpml.auth/approved-user]
+                                                   :swagger {:tags ["stakeholder" "expert"]}
+                                                   :parameters #ig/ref :gpml.handler.stakeholder.expert/post-suggest-params
+                                                   :responses #ig/ref :gpml.handler.stakeholder.expert/post-suggest-responses
+                                                   :handler #ig/ref :gpml.handler.stakeholder.expert/post-suggest}}]]
                                          ["/:id"
                                           [""
                                            {:get {:middleware [#ig/ref :gpml.auth/auth-required
@@ -604,6 +612,9 @@
   :gpml.handler.stakeholder.expert/post #ig/ref :gpml.config/common
   :gpml.handler.stakeholder.expert/post-params {}
   :gpml.handler.stakeholder.expert/post-response {}
+  :gpml.handler.stakeholder.expert/post-suggest #ig/ref :gpml.config/common
+  :gpml.handler.stakeholder.expert/post-suggest-params {}
+  :gpml.handler.stakeholder.expert/post-suggest-responses {}
 
   :gpml.handler.currency/all {:db #ig/ref :duct.database/sql}
 
