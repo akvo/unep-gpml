@@ -669,9 +669,7 @@ const StakeholderDetail = ({
                 <CardComponent title={"Owned resources"}>
                   <ResourceCards
                     items={ownedResources}
-                    showMoreCard={ownedResources?.length > 20}
                     showMoreCardAfter={20}
-                    showMoreCardClick={() => history.push("/knowledge/library")}
                     showMoreCardHref={"/knowledge/library"}
                   />
                 </CardComponent>
@@ -684,9 +682,7 @@ const StakeholderDetail = ({
               <CardComponent title={"Bookmarked resources"}>
                 <ResourceCards
                   items={bookedResources}
-                  showMoreCard={bookedResources?.length > 20}
                   showMoreCardAfter={20}
-                  showMoreCardClick={() => history.push("/knowledge/library")}
                   showMoreCardHref={"/knowledge/library"}
                 />
               </CardComponent>

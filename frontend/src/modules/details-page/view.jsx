@@ -617,9 +617,7 @@ const DetailsView = ({
                 <div className="related-content-container">
                   <ResourceCards
                     items={data?.relatedContent}
-                    showMoreCard={data?.relatedContent?.length > 20}
                     showMoreCardAfter={20}
-                    showMoreCardClick={() => history.push("/knowledge/library")}
                     showMoreCardHref={"/knowledge/library"}
                   />
                 </div>

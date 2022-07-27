@@ -518,11 +518,7 @@ const StakeholderDetail = ({
               >
                 <ResourceCards
                   items={ownedResources}
-                  showMoreCard={ownedResources?.length > 20}
                   showMoreCardAfter={20}
-                  showMoreCardClick={() =>
-                    history.push(`/knowledge/library?entity=${data.id}`)
-                  }
                   showMoreCardHref={`/knowledge/library?entity=${data.id}`}
                 />
               </CardComponent>
