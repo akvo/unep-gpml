@@ -1,13 +1,13 @@
 (ns gpml.handler.submission
   (:require [clojure.set :as set]
             [duct.logger :refer [log]]
-            [gpml.constants :as constants]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.review :as db.review]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.submission :as db.submission]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
+            [gpml.handler.util :as handler.util]
             [gpml.util.auth0 :as auth0]
             [gpml.util.email :as email]
             [gpml.util.postgresql :as pg-util]
@@ -125,13 +125,7 @@
   (let [conn (:spec db)
         submission (:submission params)
         initiative? (and (= submission "project") (> (:id params) 10000))
-        table-name (cond
-                     (contains? constants/resource-types submission)
-                     "resource"
-                     initiative?
-                     "initiative"
-                     :else
-                     submission)
+        table-name (handler.util/get-internal-topic-type submission)
         params (conj params {:table-name table-name})
         detail (submission-detail conn params)
         detail (if (= submission "stakeholder")
@@ -149,7 +143,7 @@
         (get-detail config path)
         (let [topic-type (:submission path)
               topic-id (:id path)
-              review (first (db.review/reviews-filter (:spec db) {:topic-type topic-type
+              review (first (db.review/reviews-filter (:spec db) {:topic-type (handler.util/get-internal-topic-type topic-type)
                                                                   :topic-id topic-id}))]
           (if (= (:id user) (:reviewer review))
             (get-detail config path)
