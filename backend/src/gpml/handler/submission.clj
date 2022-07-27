@@ -1,7 +1,6 @@
 (ns gpml.handler.submission
   (:require [clojure.set :as set]
             [duct.logger :refer [log]]
-            [gpml.constants :as constants]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.review :as db.review]
