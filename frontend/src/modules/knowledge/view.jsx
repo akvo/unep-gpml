@@ -67,7 +67,10 @@ function Knowledge({
               <Route exact path="/knowledge">
                 <Redirect to="/knowledge/library" exact={true} />
               </Route>
-              <Route path="/knowledge/lib" render={props => <KnowledgeLib {...props} />} />
+              <Route
+                path="/knowledge/lib"
+                render={(props) => <KnowledgeLib {...props} />}
+              />
               <Route
                 path="/knowledge/library"
                 render={(props) => (

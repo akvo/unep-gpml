@@ -73,6 +73,12 @@
     .owned-resources-wrapper {
       margin-bottom: 20px;
       margin-top: 20px;
+      .ant-card {
+        padding: 0 !important;
+        .ant-card-body {
+          padding: 14px 10px !important;
+        }
+      }
     }
 
     .flex-col {
