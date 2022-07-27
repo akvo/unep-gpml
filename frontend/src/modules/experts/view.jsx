@@ -116,7 +116,7 @@ const Experts = () => {
         {...{ filter, setFilter, filterCountries, setFilterCountries }}
       />
       <div className="expert-list-section">
-        <div className="expert-top-tools">
+        <div className="list-toolbar">
           <div className="page-label">Total {experts?.count}</div>
           <button
             className="view-button"

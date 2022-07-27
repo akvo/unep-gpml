@@ -4,7 +4,9 @@ import FilterBar from "./filter-bar";
 import "./style.scss";
 import FilterModal from "./filter-modal";
 import ResourceCards from "../../components/resource-cards/resource-cards";
-import { ArrowRightOutlined } from "@ant-design/icons";
+import { AppstoreOutlined, ArrowRightOutlined, LoadingOutlined } from "@ant-design/icons";
+import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
+import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
 
 import Maps from "../map/map";
 import { UIStore } from "../../store";
@@ -30,6 +32,7 @@ const KnowledgeLib = () => {
   const [isShownModal, setIsShownModal] = useState(false);
 
   const fetchData = (params) => {
+    setLoading(true)
     api
       .get("/browse", { page_size: 30, page_n: 0, ...params })
       .then((resp) => {
@@ -84,15 +87,55 @@ const KnowledgeLib = () => {
           setIsShownModal,
         }}
       />
-      {view === "map" && (
-        <ResourceCards
-          items={data?.results}
-          showMoreCardAfter={20}
-          showMoreCardClick={() => {
-            setView("grid");
-          }}
-        />
-      )}
+      <div className="list-content">
+        <div className="list-toolbar">
+          <div className="page-label">Total {data?.results?.length}</div>
+          <button
+            className="view-button"
+            shape="round"
+            size="large"
+            onClick={() => {
+              view === "map" ? setView("grid") : setView("map");
+            }}
+          >
+            <div className="view-button-text ">
+              Switch to {`${view === "map" ? "grid" : "map"}`} view
+            </div>
+            {view === "map" ? <AppstoreOutlined /> : <GlobeIcon />}
+          </button>
+          <button
+            className="sort-by-button"
+            // onClick={() => sortExperts(!isAscending)}
+          >
+            <SortIcon
+              style={{
+                transform:
+                  isAscending || isAscending === null
+                    ? "initial"
+                    : "rotate(180deg)",
+              }}
+            />
+            <div className="sort-button-text">
+              <span>Sort by:</span>
+              <b>{isAscending ? `A>Z` : "Z>A"}</b>
+            </div>
+          </button>
+        </div>
+        {loading && (
+          <div className="loading">
+            <LoadingOutlined spin />
+          </div>
+        )}
+        {view === "map" && (
+          <ResourceCards
+            items={data?.results}
+            showMoreCardAfter={20}
+            showMoreCardClick={() => {
+              setView("grid");
+            }}
+          />
+        )}
+      </div>
       {view === "grid" && <div className="grid">grid here</div>}
       {view === "map" && (
         <Maps
