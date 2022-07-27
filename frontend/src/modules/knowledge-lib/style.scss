@@ -1,4 +1,10 @@
 #knowledge-lib {
+  #map-landing {
+    height: 550px;
+  }
+  .map-container svg {
+    outline: unset;
+  }
   .filter-bar {
     background-color: #06496c;
     height: 95px;
