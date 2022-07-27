@@ -9,6 +9,7 @@
             [gpml.domain.stakeholder :as dom.stakeholder]
             [gpml.handler.util :as util]
             [gpml.util.email :as email]
+            [gpml.util.regular-expressions :as util.regex]
             [integrant.core :as ig]
             [malli.util :as mu]
             [ring.util.response :as resp])
@@ -194,15 +195,17 @@
     (list-reviews db reviewer page limit review-status only)))
 
 (defmethod ig/init-key :gpml.handler.review/get-reviewers-params [_ _]
-  (let [role-types-as-str (map name dom.stakeholder/role-types)
-        possible-roles-txt (str/join "|" role-types-as-str)]
+  (let [possible-roles-txt (str/join "|" dom.stakeholder/role-types)
+        error-message (str "Allowed values: " possible-roles-txt)]
     {:query
      [:map
       [:roles {:optional true
-               :error/message (str "Allowed values: " possible-roles-txt)
+               :error/message error-message
                :swagger {:description (str "Comma separated list of user roles. Possible values: " possible-roles-txt)
                          :type "string"}}
-       (vec (apply conj [:enum] role-types-as-str))]
+       [:and
+        [:string {:min 1}]
+        [:re {:error/message error-message} (util.regex/comma-separated-enums-re dom.stakeholder/role-types)]]]
       [:q {:optional true
            :swagger {:description "Search text query."
                      :type "string"}}
