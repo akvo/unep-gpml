@@ -114,6 +114,18 @@
   .ant-modal-footer {
     display: none;
   }
+  .ant-select-multiple {
+    .ant-select-selection-item {
+      background-color: #3276ae;
+      color: white;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+    .ant-select-selection-item-remove svg {
+      fill: white;
+      opacity: 0.5;
+    }
+  }
 
   @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
     .ant-modal-body {
