@@ -290,7 +290,6 @@ const FocalPoint = ({
         e.stopPropagation();
       }}
     >
-      <div style={{ width: "100%" }}>Focal Points</div>
       <Select
         style={{ width: "100%" }}
         showSearch={true}
@@ -875,16 +874,6 @@ const AdminSection = ({
                         loading={loading}
                       />
                     )}
-                  {item.reviewStatus === "APPROVED" &&
-                    item.type === "organisation" && (
-                      <FocalPoint
-                        item={item}
-                        reviewers={reviewers}
-                        listOpts={listOpts}
-                        setListOpts={setListOpts}
-                        onChangeFocalPoint={changeFocalPoint}
-                      />
-                    )}
                 </>
                 {item.reviewStatus === "SUBMITTED" && (
                   <ResourceSubmittedActions />
@@ -1029,6 +1018,26 @@ const AdminSection = ({
                     item={item}
                     getPreviewContent={getPreviewContent}
                     unpublishButton={<ResourceApprovedActions item={item} />}
+                    focalPoint={
+                      <FocalPoint
+                        item={item}
+                        reviewers={reviewers}
+                        listOpts={listOpts}
+                        setListOpts={setListOpts}
+                        onChangeFocalPoint={changeFocalPoint}
+                      />
+                    }
+                    ownerSelect={
+                      <OwnerSelect
+                        item={item}
+                        reviewers={reviewers}
+                        setListOpts={setListOpts}
+                        listOpts={listOpts}
+                        resource={item}
+                        onChangeOwner={changeOwner}
+                        loading={loading}
+                      />
+                    }
                   />
                 </Collapse.Panel>
               ))
