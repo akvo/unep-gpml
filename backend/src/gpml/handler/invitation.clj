@@ -2,6 +2,7 @@
   (:require [clojure.string :as str]
             [duct.logger :refer [log]]
             [gpml.db.invitation :as db.invitation]
+            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.util :as util]
             [gpml.util.postgresql :as pg-util]
             [gpml.util.regular-expressions :as util.regex]
@@ -9,10 +10,11 @@
             [java-time :as time]
             [java-time.pre-java8 :as time-pre-j8]
             [java-time.temporal]
-            [ring.util.response :as resp])
+            [ring.util.response :as resp]
+            [gpml.handler.stakeholder.tag :as handler.stakeholder.tag])
   (:import [java.sql SQLException]))
 
-(def get-invitations-params
+(def ^:private get-invitations-params
   [:map
    [:pending
     {:optional true
@@ -31,7 +33,7 @@
      :swagger {:description "Comma separated list of invitation IDs."}}
     [:string {:min 1}]]])
 
-(def put-invitation-params
+(def ^:private put-invitation-params
   [:map
    [:id
     [:and
@@ -61,8 +63,20 @@
    {{:keys [query]} :parameters}]
   (try
     (let [opts (api-opts->opts query)
-          invitations (db.invitation/get-invitations (:spec db) opts)]
-      (resp/response invitations))
+          invitations (db.invitation/get-invitations (:spec db) opts)
+          stakeholders (->> (db.stakeholder/get-stakeholders (:spec db)
+                                                             {:filters {:ids (map :stakeholder_id invitations)}})
+                            (group-by :id))]
+      (resp/response (reduce (fn [invitations {:keys [stakeholder_id] :as invitation}]
+                               (let [stakeholder (-> stakeholders
+                                                     (get stakeholder_id)
+                                                     first
+                                                     (select-keys [:first_name :last_name :tags]))
+                                     stakeholder-w-unwrapped-tags (-> (merge stakeholder (handler.stakeholder.tag/unwrap-tags stakeholder))
+                                                                      (dissoc :tags))]
+                                 (conj invitations (merge invitation stakeholder-w-unwrapped-tags))))
+                             []
+                             invitations)))
     (catch Exception e
       (log logger :error ::get-invitations {:exception-message (.getMessage e)})
       (if (instance? SQLException e)

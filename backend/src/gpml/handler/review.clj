@@ -38,7 +38,10 @@
     (assoc-in [:filters :roles] (str/split roles #","))
 
     (seq q)
-    (assoc-in [:filters :search-text] (str/lower-case q))))
+    (assoc-in [:filters :search-text] (str/lower-case q))
+
+    true
+    (assoc-in [:filters :review-statuses] ["APPROVED"])))
 
 (defn- reviewer->api-reviewer
   [reviewer]
