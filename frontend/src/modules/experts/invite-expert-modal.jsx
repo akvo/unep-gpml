@@ -45,12 +45,12 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
         }),
         email: item?.email,
         expertise: item?.expertise,
-        suggestedCategory: item?.suggestedCategory,
+        suggestedExpertise: item?.suggestedCategory,
       };
     });
 
     api
-      .post("/stakeholder/expert/invite", values)
+      .post("/stakeholder/expert/suggest", values)
       .then((res) => {
         window.scrollTo({ top: 0 });
         setLoading(false);
