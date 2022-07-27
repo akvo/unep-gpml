@@ -25,10 +25,11 @@ import StakeholderList from "./stakeholder-list";
 import { multicountryGroups } from "../knowledge-library/multicountry";
 import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
 import DownArrow from "../../images/knowledge-library/chevron-down.svg";
+import { useHistory } from "react-router-dom";
 
 let tmid;
 
-const StakeholderOverview = ({ history, isAuthenticated, setLoginVisible }) => {
+const StakeholderOverview = ({ isAuthenticated, setLoginVisible }) => {
   const {
     tags,
     profile,
@@ -47,7 +48,7 @@ const StakeholderOverview = ({ history, isAuthenticated, setLoginVisible }) => {
     entityRoleOptions: s.entityRoleOptions,
     tags: Object.values(s.tags).flat(),
   }));
-
+  const history = useHistory();
   const [filterCountries, setFilterCountries] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const { isLoading } = useAuth0();
