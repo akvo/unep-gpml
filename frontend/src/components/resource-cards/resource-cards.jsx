@@ -1,5 +1,5 @@
 import React from "react";
-import "../related-content/style.scss";
+import "./style.scss";
 import { Col, Avatar } from "antd";
 import classNames from "classnames";
 import { ArrowRightOutlined } from "@ant-design/icons";
