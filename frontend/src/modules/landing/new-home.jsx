@@ -112,8 +112,8 @@ const Landing = withRouter(
     history,
     setWarningModalVisible,
     isAuthenticated,
-    loginWithPopup,
     setFilterMenu,
+    setLoginVisible,
   }) => {
     const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
     const [selectedTopic, setSelectedTopic] = useState(null);
@@ -151,7 +151,7 @@ const Landing = withRouter(
 
     const handleOurCommunityProfileClick = () => {
       if (!isAuthenticated) {
-        return loginWithPopup();
+        return setLoginVisible(true);
       }
       if (isAuthenticated && !hasProfile) {
         return history.push("/onboarding");
@@ -272,10 +272,7 @@ const Landing = withRouter(
               </div>
               {!hasProfile && (
                 <div>
-                  <JoinGPMLButton
-                    history={history}
-                    loginWithPopup={loginWithPopup}
-                  />
+                  <JoinGPMLButton history={history} />
                   <Link to="/about-us">
                     <Button type="ghost" className="left">
                       Learn More
@@ -630,10 +627,7 @@ const Landing = withRouter(
               })}
             </div>
             <div className="btn-wrapper">
-              <JoinGPMLButton
-                history={history}
-                loginWithPopup={loginWithPopup}
-              />
+              <JoinGPMLButton history={history} />
             </div>
           </div>
         </div>
@@ -644,7 +638,7 @@ const Landing = withRouter(
   }
 );
 
-const JoinGPMLButton = withRouter(({ history, loginWithPopup }) => {
+const JoinGPMLButton = withRouter(({ history }) => {
   return (
     <Button
       type="primary"

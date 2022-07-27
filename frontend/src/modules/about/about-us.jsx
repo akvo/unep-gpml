@@ -381,7 +381,7 @@ const renderSectionCommunity = () => {
             participating in global/regional multilateral processes; other major
             groups and stakeholders; and private citizens.
           </p>
-          <Link to="/signup">
+          <Link to="/onboarding">
             <Button type="ghost">Sign up to find out more</Button>
           </Link>
         </div>

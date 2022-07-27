@@ -211,7 +211,7 @@ const Comments = ({
   params,
   editComment,
   setEditComment,
-  loginWithPopup,
+  setLoginVisible,
   isAuthenticated,
   newComment,
   setNewComment,
@@ -305,7 +305,7 @@ const Comments = ({
         {!isAuthenticated && (
           <Button
             className="login-button"
-            onClick={() => loginWithPopup({ action: "login" })}
+            onClick={() => setLoginVisible(true)}
             icon={<MessageOutlined twoToneColor="#09689a" />}
             shape="round"
           >

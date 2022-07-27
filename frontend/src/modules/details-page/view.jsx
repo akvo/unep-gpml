@@ -102,7 +102,7 @@ const renderCountries = (data, countries) => {
 
 const DetailsView = ({
   match: { params },
-  setStakeholderSignupModalVisible,
+  setLoginVisible,
   setFilterMenu,
   isAuthenticated,
 }) => {
@@ -130,7 +130,7 @@ const DetailsView = ({
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const [comments, setComments] = useState([]);
-  const { loginWithPopup } = useAuth0();
+  // const { loginWithPopup } = useAuth0();
   const [warningVisible, setWarningVisible] = useState(false);
   const [visible, setVisible] = useState(false);
   const [showReplyBox, setShowReplyBox] = useState("");
@@ -160,11 +160,12 @@ const DetailsView = ({
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
-      loginWithPopup();
+      // loginWithPopup();
+      setLoginVisible(true);
     }
 
     if (isAuthenticated && profile.reviewStatus === undefined) {
-      setStakeholderSignupModalVisible(true);
+      setLoginVisible(true);
     }
     if (profile.reviewStatus === "APPROVED") {
       api.post("/favorite", relation).then((res) => {
@@ -643,7 +644,7 @@ const DetailsView = ({
             setShowReplyBox,
             setComment,
             getComment,
-            loginWithPopup,
+            setLoginVisible,
             isAuthenticated,
           }}
         />
