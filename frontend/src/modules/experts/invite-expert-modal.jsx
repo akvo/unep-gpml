@@ -45,7 +45,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
         }),
         email: item?.email,
         expertise: item?.expertise,
-        suggestedExpertise: item?.suggestedCategory,
+        suggestedExpertise: item?.suggestedCategory?.map((item) => item.value),
       };
     });
 
@@ -54,30 +54,12 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
       .then((res) => {
         window.scrollTo({ top: 0 });
         setLoading(false);
-        setInitialValues({
-          invites: [
-            {
-              name: "",
-              email: "",
-              expertise: [],
-              suggestedCategory: [],
-            },
-          ],
-        });
+        setInitialValues({ invites: [] });
         notification.success({ message: "Invites successfully sent" });
       })
       .catch((err) => {
         setLoading(false);
-        setInitialValues({
-          invites: [
-            {
-              name: "",
-              email: "",
-              expertise: [],
-              suggestedCategory: [],
-            },
-          ],
-        });
+        setInitialValues({ invites: [] });
         notification.error({ message: "An error occured" });
         console.log(err);
       });
