@@ -54,12 +54,30 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
       .then((res) => {
         window.scrollTo({ top: 0 });
         setLoading(false);
-        setInitialValues({ invites: [] });
+        setInitialValues({
+          invites: [
+            {
+              name: "",
+              email: "",
+              expertise: [],
+              suggestedCategory: [],
+            },
+          ],
+        });
         notification.success({ message: "Invites successfully sent" });
       })
       .catch((err) => {
         setLoading(false);
-        setInitialValues({ invites: [] });
+        setInitialValues({
+          invites: [
+            {
+              name: "",
+              email: "",
+              expertise: [],
+              suggestedCategory: [],
+            },
+          ],
+        });
         notification.error({ message: "An error occured" });
         console.log(err);
       });
