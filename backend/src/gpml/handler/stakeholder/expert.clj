@@ -215,7 +215,7 @@
                 :reason :could-not-create-expert}}))))
 
 (defn- generate-admins-expert-suggestion-text
-  [{:keys [first_name last_name email expertise suggested_expertise] :as expert}
+  [{:keys [email expertise suggested_expertise] :as expert}
    user-full-name admin-full-name]
   (format
    "Dear %s,
