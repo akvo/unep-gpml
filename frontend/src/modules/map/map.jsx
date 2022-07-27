@@ -818,7 +818,7 @@ const Maps = ({
                           );
                         }
                       };
-
+                      const centroid = geoCentroid(geo);
                       return (
                         <Fragment key={`${geo.rsmKey}-geo-fragment`}>
                           {pattern}
@@ -927,24 +927,30 @@ const Maps = ({
                               }
                             }}
                           />
+                          {(path === KNOWLEDGE_LIBRARY ||
+                            path === KNOWLEDGE_LIB) &&
+                            geo.properties.ISO3CD &&
+                            geo.properties.MAP_LABEL &&
+                            geo.properties.M49Code &&
+                            geo.properties.STATUS === "Member State" &&
+                            findData &&
+                            Object.values(
+                              findData?.transnationalCounts
+                            )?.reduce((a, b) => a + b) > 0 && (
+                              <Marker
+                                coordinates={centroid}
+                                key={`${geo.rsmKey}-line`}
+                              >
+                                {findData && (
+                                  <text y="2" fontSize={6} textAnchor="middle">
+                                    {Object.values(
+                                      findData?.transnationalCounts
+                                    )?.reduce((a, b) => a + b)}
+                                  </text>
+                                )}
+                              </Marker>
+                            )}
                         </Fragment>
-                      );
-                    })}
-                    {geographies.map((geo) => {
-                      const centroid = geoCentroid(geo);
-                      const findData = data?.find(
-                        (i) => i?.countryId === Number(geo.properties.M49Code)
-                      );
-                      return (
-                        <Marker coordinates={centroid}>
-                          {findData && (
-                            <text y="2" fontSize={6} textAnchor="middle">
-                              {Object.values(
-                                findData?.transnationalCounts
-                              )?.reduce((a, b) => a + b)}
-                            </text>
-                          )}
-                        </Marker>
                       );
                     })}
                   </>
