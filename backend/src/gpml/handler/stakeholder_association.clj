@@ -3,9 +3,9 @@
             [gpml.constants :as constants]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.stakeholder-association :as db.stakeholder-association]
+            [gpml.util :as util]
             [integrant.core :as ig]
-            [ring.util.response :as resp]
-            [gpml.util :as util]))
+            [ring.util.response :as resp]))
 
 (def ^:const associations
   #{"owner" "implementor" "partner" "donor" "interested in"})
