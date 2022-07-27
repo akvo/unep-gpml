@@ -2,7 +2,7 @@
 -- :doc Get all content types belonging to a particular organisation
 WITH owned_content AS (
 SELECT
-  r.id, r.title, r.type, r.summary,
+  r.id, r.title, REPLACE(LOWER(r.type), ' ', '_') AS type, r.summary,
   json_agg(json_build_object('id', sr.id, 'stakeholder_id', sr.stakeholder, 'role', sr.association, 'stakeholder',
     concat_ws(' ', s.first_name, s.last_name), 'image', s.picture, 'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', orgr.id, 'entity_id', orgr.organisation, 'role', orgr.association, 'entity', o.name,
@@ -19,10 +19,11 @@ SELECT
   WHERE r.created_by IN
     (SELECT id FROM stakeholder
      WHERE affiliation = :id)
+     AND r.review_status = 'APPROVED'
   GROUP BY r.id
 UNION ALL
 SELECT
-  e.id, e.title, 'Event' AS type, e.description AS summary,
+  e.id, e.title, 'event' AS type, e.description AS summary,
   json_agg(json_build_object('id', se.id, 'stakeholder_id', se.stakeholder, 'role', se.association, 'stakeholder',
     concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', oe.id, 'entity_id', oe.organisation, 'role', oe.association, 'entity', o.name,
@@ -39,10 +40,11 @@ SELECT
   WHERE e.created_by IN
     (SELECT id FROM stakeholder
      WHERE affiliation = :id)
+     AND e.review_status = 'APPROVED'
   GROUP BY e.id
 UNION ALL
 SELECT
-  i.id, i.q2::text AS title, 'Initiative' AS type, i.q3::text AS summary,
+  i.id, i.q2::text AS title, 'initiative' AS type, i.q3::text AS summary,
   json_agg(json_build_object('id', si.id, 'stakeholder_id', si.stakeholder, 'role', si.association, 'stakeholder',
     concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', oi.id, 'entity_id', oi.organisation, 'role', oi.association, 'entity', o.name,
@@ -59,10 +61,11 @@ SELECT
   WHERE i.created_by IN
     (SELECT id FROM stakeholder
      WHERE affiliation = :id)
+     AND i.review_status = 'APPROVED'
   GROUP BY i.id
 UNION ALL
 SELECT
-  p.id, p.title, 'Policy' AS type, p.abstract AS summary,
+  p.id, p.title, 'policy' AS type, p.abstract AS summary,
   json_agg(json_build_object('id', sp.id, 'stakeholder_id', sp.stakeholder, 'role', sp.association, 'stakeholder',
     concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', op.id, 'entity_id', op.organisation, 'role', op.association, 'entity', o.name,
@@ -79,10 +82,11 @@ SELECT
   WHERE p.created_by IN
     (SELECT id FROM stakeholder
      WHERE affiliation = :id)
+     AND p.review_status = 'APPROVED'
   GROUP BY p.id
 UNION ALL
 SELECT
-  t.id, t.name AS title, 'Technology' AS type, t.remarks AS summary,
+  t.id, t.name AS title, 'technology' AS type, t.remarks AS summary,
   json_agg(json_build_object('id', st.id, 'stakeholder_id', st.stakeholder, 'role', st.association, 'stakeholder',
     concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', ot.id, 'entity_id', ot.organisation, 'role', ot.association, 'entity', o.name,
@@ -99,6 +103,7 @@ SELECT
   WHERE t.created_by IN
     (SELECT id FROM stakeholder
      WHERE affiliation = :id)
+     AND t.review_status = 'APPROVED'
   GROUP BY t.id)
 --~(if (:count-only? params) "SELECT COUNT(*) FROM owned_content;" "SELECT * FROM owned_content LIMIT :limit OFFSET :offset;")
 
@@ -107,7 +112,7 @@ SELECT
 -- :doc Get all content types belonging to a particular organisation
 WITH associated_content AS (
 SELECT
-  r.id, r.title, r.type, r.summary, r.image, ores.association::text AS association,
+  r.id, r.title, REPLACE(LOWER(r.type), ' ', '_') AS type, r.summary, r.image, ores.association::text AS association,
   json_agg(json_build_object('id', sr.id, 'stakeholder_id', sr.stakeholder, 'role', sr.association, 'stakeholder',
     concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', orgr.id, 'entity_id', orgr.organisation, 'role', orgr.association, 'entity', o.name,
@@ -123,10 +128,11 @@ SELECT
   ON orgr.resource = r.id
   LEFT JOIN organisation o
   ON o.id = orgr.organisation AND orgr.resource = r.id
+  WHERE r.review_status = 'APPROVED'
   GROUP BY r.id,ores.association
 UNION ALL
 SELECT
-  e.id, e.title, 'Event' AS type, e.description AS summary, e.image, orge.association::text AS association,
+  e.id, e.title, 'event' AS type, e.description AS summary, e.image, orge.association::text AS association,
   json_agg(json_build_object('id', se.id, 'stakeholder_id', se.stakeholder, 'role', se.association, 'stakeholder',
     concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', oe.id, 'entity_id', oe.organisation, 'role', oe.association, 'entity', o.name,
@@ -142,10 +148,11 @@ SELECT
   ON oe.event = e.id
   LEFT JOIN organisation o
   ON o.id = oe.organisation AND oe.event = e.id
+  WHERE e.review_status = 'APPROVED'
   GROUP BY e.id, orge.association
 UNION ALL
 SELECT
-  i.id, i.q2::text AS title, 'Initiative' AS type, i.q3::text AS summary, i.qimage AS image, orgi.association::text AS association,
+  i.id, i.q2::text AS title, 'initiative' AS type, i.q3::text AS summary, i.qimage AS image, orgi.association::text AS association,
   json_agg(json_build_object('id', si.id, 'stakeholder_id', si.stakeholder, 'role', si.association, 'stakeholder',
     concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', oi.id, 'entity_id', oi.organisation, 'role', oi.association, 'entity', o.name,
@@ -161,10 +168,11 @@ SELECT
   ON oi.initiative = i.id
   LEFT JOIN organisation o
   ON o.id = oi.organisation AND oi.initiative = i.id
+  WHERE i.review_status = 'APPROVED'
   GROUP BY i.id, orgi.association
 UNION ALL
 SELECT
-  p.id, p.title, 'Policy' AS type, p.abstract AS summary, p.image, orgp.association::text AS association,
+  p.id, p.title, 'policy' AS type, p.abstract AS summary, p.image, orgp.association::text AS association,
   json_agg(json_build_object('id', sp.id, 'stakeholder_id', sp.stakeholder, 'role', sp.association, 'stakeholder',
     concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', op.id, 'entity_id', op.organisation, 'role', op.association, 'entity', o.name,
@@ -180,10 +188,11 @@ SELECT
   ON op.policy = p.id
   LEFT JOIN organisation o
   ON o.id = op.organisation AND op.policy = p.id
+  WHERE p.review_status = 'APPROVED'
   GROUP BY p.id, orgp.association
 UNION ALL
 SELECT
-  t.id, t.name AS title, 'Technology' AS type, t.remarks AS summary, t.image, orgt.association::text AS association,
+  t.id, t.name AS title, 'technology' AS type, t.remarks AS summary, t.image, orgt.association::text AS association,
   json_agg(json_build_object('id', st.id, 'stakeholder_id', st.stakeholder, 'role', st.association, 'stakeholder',
     concat_ws(' ', s.first_name, s.last_name), 'image', s.picture,  'stakeholder_role', s.role)) AS stakeholder_connections,
   json_agg(json_build_object('id', ot.id, 'entity_id', ot.organisation, 'role', ot.association, 'entity', o.name,
@@ -199,6 +208,7 @@ SELECT
   ON ot.technology = t.id
   LEFT JOIN organisation o
   ON o.id = ot.organisation AND ot.technology = t.id
+  WHERE t.review_status = 'APPROVED'
   GROUP BY t.id, orgt.association)
 --~(if (:count-only? params) "SELECT COUNT(*) FROM associated_content;" "SELECT * FROM associated_content LIMIT :limit OFFSET :offset;")
 
