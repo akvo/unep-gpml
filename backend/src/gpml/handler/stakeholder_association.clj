@@ -3,6 +3,7 @@
             [gpml.constants :as constants]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.stakeholder-association :as db.stakeholder-association]
+            [gpml.util :as util]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -12,14 +13,19 @@
 (defmethod ig/init-key ::types [_ _]
   (apply conj [:enum] constants/stakeholder-types))
 
-;; TODO: use update-if-exists instead of update
-(defn api-associated-topics-opts->associated-topics-opts
+(defn- api-associated-topics-opts->associated-topics-opts
   [api-associated-topics-opts]
   (-> api-associated-topics-opts
-      (update :page #(Integer/parseInt %))
-      (update :limit #(Integer/parseInt %))))
+      (util/update-if-exists :page #(Integer/parseInt %))
+      (util/update-if-exists :limit #(Integer/parseInt %))))
 
-(defmethod ig/init-key ::get-associated-topics
+(defn- associated-topics->api-associated-topics
+  [associated-topics]
+  (-> (:json associated-topics)
+      (merge (select-keys associated-topics [:stakeholder_connections :entity_connections]))
+      (assoc :type (:topic associated-topics))))
+
+(defmethod ig/init-key :gpml.handler.stakeholder-association/get-associated-topics
   [_ {:keys [db]}]
   (fn [{:keys [parameters]}]
     (let [{:keys [association limit page]} (api-associated-topics-opts->associated-topics-opts (:query parameters))
@@ -34,12 +40,12 @@
           (db.stakeholder-association/get-stakeholder-associated-topics (:spec db)
                                                                         (merge common-params {:count-only? true}))]
       (resp/response
-       {:associated_topics (map #(merge (:json %)
-                                        (select-keys % [:stakeholder_connections :entity_connections]))
-                                associated-topics)
+       {:success? true
+        :associated_topics (map associated-topics->api-associated-topics associated-topics)
         :count (-> associated-topics-count first :count)}))))
 
-(defmethod ig/init-key ::get-associated-topics-params [_ _]
+(defmethod ig/init-key :gpml.handler.stakeholder-association/get-associated-topics-params
+  [_ _]
   {:path [:map [:id pos-int?]]
    :query [:map
            [:page {:optional true
@@ -61,7 +67,8 @@
     (contains? constants/resource-types topic-type) "resource"
     :else topic-type))
 
-(defmethod ig/init-key ::delete [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.stakeholder-association/delete
+  [_ {:keys [db]}]
   (fn [{{:keys [path]} :parameters}]
     (let [conn (:spec db)
           stakeholder-type (stakeholder-type->api-stakeholder-type (:stakeholder-type path))
@@ -74,7 +81,8 @@
                                         (db.favorite/delete-stakeholder-association tx-conn params))
                                       {:deleted params}))))))
 
-(defmethod ig/init-key ::put [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.stakeholder-association/put
+  [_ {:keys [db]}]
   (fn [{{{:keys [stakeholder-type topic-type connection-id]} :path body :body} :parameters}]
     (let [conn (:spec db)
           stakeholder-type (stakeholder-type->api-stakeholder-type stakeholder-type)
@@ -86,7 +94,8 @@
                       :updated {:id connection-id
                                 :table table}}))))
 
-(defmethod ig/init-key ::put-params [_ _]
+(defmethod ig/init-key :gpml.handler.stakeholder-association/put-params
+  [_ _]
   [:map
    [:stakeholder {:optional true} int?]
    [:organisation {:optional true} int?]
