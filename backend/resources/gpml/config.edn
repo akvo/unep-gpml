@@ -526,7 +526,7 @@
    :auth0 #ig/ref :gpml.config/auth0
    :mailjet-config #ig/ref :gpml.config/mailjet
    :app-name #duct/env ["APP_NAME" Str]
-   :app-domain #duct/env ["APP_NAME" Str]
+   :app-domain #duct/env ["APP_DOMAIN" Str]
    :app-user-admin #duct/env ["APP_USER_ADMIN" Str]}
   ;; Handlers
 
