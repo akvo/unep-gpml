@@ -51,7 +51,7 @@
     (assoc-in [:filters :stakeholders-ids] (map #(Integer/parseInt %) (str/split stakeholders_ids #",")))
 
     (seq ids)
-    (assoc-in [:filters :ids] (map #(util/uuid %) (str/split ids #",")))
+    (assoc-in [:filters :ids] (map util/uuid (str/split ids #",")))
 
     id
     (assoc :id (util/uuid id))))
