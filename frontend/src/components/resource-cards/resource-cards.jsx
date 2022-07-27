@@ -160,7 +160,7 @@ const getThumbnail = (item) => {
 
 export const ResourceCard = ({ item }) => {
   return (
-    <div className="card">
+    <div className="resource-card">
       <Link
         to={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
         className="description-holder"
@@ -219,7 +219,7 @@ export const ResourceCard = ({ item }) => {
           </div>
         </div>
       </Link>
-      <div className="slider-card">
+      <div className="thumb-container">
         <img src={getThumbnail(item)} alt={item?.type} />
       </div>
     </div>

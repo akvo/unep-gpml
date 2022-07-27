@@ -154,6 +154,9 @@
   }
   position: relative;
   overflow-x: hidden;
+  .list-toolbar {
+    margin-bottom: 0;
+  }
   .list-content {
     background-color: rgb(249, 250, 251);
     padding-top: 15px;
@@ -178,5 +181,11 @@
     margin: 20px 0 0;
     padding-left: 20px !important;
     padding-right: 20px !important;
+  }
+  .grid-view {
+    .resource-card {
+      float: left;
+      margin-bottom: 16px;
+    }
   }
 }

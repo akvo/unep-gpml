@@ -42,113 +42,12 @@
   overflow: visible !important;
   padding-left: 10px !important;
 
-  .slider-card {
-    height: 100%;
-    background-color: #fff !important;
-    border-radius: 0 !important;
-    img {
-      width: 100%;
-      height: fit-content;
-      align-self: center;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 5px;
-    }
-  }
-
   .swiper-slide {
     width: unset !important;
     transition: all ease-out 0.2s;
     &:first-of-type {
       .card {
         margin-left: 0;
-      }
-    }
-    .card {
-      transition: all ease-out 0.2s;
-      position: relative;
-      width: 150px !important;
-      height: 192px !important;
-      margin-left: 19px;
-      margin-bottom: 0 !important;
-      padding: 0 !important;
-
-      .description-holder {
-        transition: all ease-out 0.2s;
-        position: absolute;
-        display: flex;
-        opacity: 0;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 13px;
-        background-color: #fff;
-        box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.25);
-        height: 100%;
-        min-height: 192px;
-        border-radius: 5px;
-        width: 100%;
-
-        h3 {
-          font-style: normal;
-          font-weight: 600;
-          font-size: 12px;
-          max-height: 70px;
-          overflow: hidden;
-        }
-        h4 {
-          color: #bbbbbb;
-          font-weight: 400;
-          font-size: 10px;
-          line-height: 17px;
-          text-transform: uppercase;
-        }
-
-        .ant-avatar-circle {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        .bottom-panel {
-          .read-more {
-            font-weight: 500;
-            font-size: 10px;
-            color: #34a6ff;
-          }
-        }
-      }
-      .with-pagination {
-        min-height: 216px;
-      }
-      .no-pagination {
-        min-height: 195px;
-      }
-    }
-
-    &:hover {
-      border-radius: 5px;
-      margin: 0 20px 0 40px !important;
-      transform: scale(1.27) translateY(-12px);
-      z-index: 9999;
-      transition: all ease-out 0.2s;
-      margin-left: -20px;
-
-      .description-holder {
-        display: flex !important;
-        opacity: 1;
-      }
-      .slider-card {
-        border-radius: 10px !important;
-      }
-      .card {
-        margin-left: 0;
-      }
-      &:first-of-type {
-        margin: 0 20px 0 40px !important;
-      }
-    }
-    &:nth-child(1) {
-      &:hover {
-        margin-left: 20px !important;
       }
     }
     .ant-col-12 {
