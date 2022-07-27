@@ -14,11 +14,12 @@
             [gpml.db.organisation :as db.organisation]
             [gpml.db.policy :as db.policy]
             [gpml.db.project :as db.project]
+            [gpml.db.resource.association :as db.resource.association]
             [gpml.db.resource.connection :as db.resource.connection]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.review :as db.review]
             [gpml.db.submission :as db.submission]
-            [gpml.db.topic-stakeholder-auth :as db.topic-stakeholder-auth]
+            [gpml.db.topic-stakeholder-auth :as db.ts-auth]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
             [gpml.handler.initiative :as handler.initiative]
@@ -377,22 +378,66 @@
 (defmethod extra-details :nothing [_ _ _]
   nil)
 
-(defn- get-resource-if-allowed [conn path user]
-  (let [topic (:topic-type path)
-        submission (->> {:table-name (util/get-internal-topic-type topic) :id (:topic-id path)}
-                        (db.submission/detail conn))
-        review (first (db.review/reviews-filter conn (update path :topic-type resolve-resource-type)))
-        user-auth-roles (:roles (db.topic-stakeholder-auth/get-auth-by-topic-and-stakeholder conn {:topic-id (:topic-id path)
-                                                                                                   :topic-type (util/get-internal-topic-type topic)
-                                                                                                   :stakeholder (:id user)}))
-        access-allowed? (or (= (:review_status submission) "APPROVED")
-                            (and (= (:role user) "REVIEWER") (= (:id user) (:reviewer review)))
-                            (contains? (set user-auth-roles) "owner")
-                            (= (:role user) "ADMIN")
-                            (and (not (nil? (:id user)))
-                                 (= (:created_by submission) (:id user))))]
-    (when access-allowed?
-      submission)))
+(defn- get-resource-if-allowed
+  [conn path user read?]
+  (let [{:keys [topic-type topic-id] :as params} (update path :topic-type util/get-internal-topic-type)
+        submission (->> {:table-name topic-type :id topic-id}
+                        (db.submission/detail conn))]
+    ;; The following checks are mostly to avoid doing a lot of work
+    ;; when checking the user permissions on a specific resource.
+    (cond
+      ;; If the user is empty it means the caller doesn't have a
+      ;; session and is just making a read call on the resource. So no
+      ;; need to check extra permissions since platform resources are
+      ;; public in a read-only state.
+      (and (not (seq user))
+           (= (:review_status submission) "APPROVED"))
+      submission
+
+      ;; If it's a read attempt, the resource is approved and the user
+      ;; is logged in then we should allow without checking extra
+      ;; permissions.
+      (and read?
+           (= (:review_status submission) "APPROVED"))
+      submission
+
+      ;; If it's not a read operation the respective PUT, POST and
+      ;; DELETE endpoints should check if the user is approved in the
+      ;; platform to do the desired action for the specific resource.
+      :else
+      (let [review (first (db.review/reviews-filter conn params))
+            resource-org-associations
+            (when-not (get #{"organisation" "stakeholder"} topic-type)
+              (db.resource.association/get-resource-associations conn {:table (str "organisation_" topic-type)
+                                                                       :entity-col "organisation"
+                                                                       :resource-col topic-type
+                                                                       :resource-assoc-type (str topic-type "_association")
+                                                                       :filters {:resource-id topic-id
+                                                                                 :associations ["owner"]}}))
+            user-org-auth-roles
+            (when (and (:id user)
+                       (not (get #{"organisation" "stakeholder"} topic-type)))
+              (->> (db.ts-auth/get-topic-stakeholder-auths conn {:filters {:topics-ids (map :organisation resource-org-associations)
+                                                                           :topic-types ["organisation"]
+                                                                           :stakeholders-ids [(:id user)]}})
+                   (map :roles)
+                   (set)))
+
+            user-auth-roles
+            (->> (db.ts-auth/get-topic-stakeholder-auths conn {:filters {:topics-ids [topic-id]
+                                                                         :topic-types [topic-type]
+                                                                         :stakeholders-ids [(:id user)]}})
+                 (map :roles)
+                 (set))
+            access-allowed?
+            (or (and (= (:role user) "REVIEWER") (= (:id user) (:reviewer review)))
+                (contains? user-auth-roles "owner")
+                (and (not (nil? (:id user)))
+                     (= (:created_by submission) (:id user)))
+                (some #(get user-org-auth-roles %) ["owner" "focal-point"])
+                (= (:role user) "ADMIN"))]
+        (when access-allowed?
+          submission)))))
 
 (def not-nil-name #(vec (filter :name %)))
 
@@ -436,7 +481,7 @@
       (let [conn        (:spec db)
             topic       (resolve-resource-type (:topic-type path))
             authorized? (and (or (model.topic/public? topic) approved?)
-                             (some? (get-resource-if-allowed conn path user)))
+                             (some? (get-resource-if-allowed conn path user false)))
             sqls (condp = topic
                    "policy" (common-queries topic path true false true true)
                    "event" (common-queries topic path true true true true)
@@ -488,7 +533,7 @@
             topic (:topic-type path)
             id (:topic-id path)
             authorized? (and (or (model.topic/public? topic) approved?)
-                             (some? (get-resource-if-allowed conn path user)))]
+                             (some? (get-resource-if-allowed conn path user true)))]
         (if authorized?
           (if-let [data (get-detail conn topic id query)]
             (resp/response (merge
@@ -714,24 +759,36 @@
     (update-resource-connections conn (:entity_connections data) (:individual_connections data) "initiative" id)
     status))
 
-(defmethod ig/init-key :gpml.handler.detail/put [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.detail/put
+  [_ {:keys [db logger mailjet-config]}]
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
-    (let [submission (get-resource-if-allowed (:spec db) path user)
-          review_status (:review_status submission)]
-      (if (some? submission)
-        (let [conn (:spec db)
-              status (if (= topic-type "project")
-                       (update-initiative conn mailjet-config topic-id body)
-                       (update-resource conn mailjet-config topic-type topic-id body))]
-          (when (and (= status 1) (= review_status "REJECTED"))
-            (db.submission/update-submission
-             conn
-             {:table-name (util/get-internal-topic-type topic-type)
-              :id topic-id
-              :review_status "SUBMITTED"}))
-          (resp/response {:status (if (= status 1) "success" "failure")}))
-        util/unauthorized))))
+    (try
+      (let [submission (get-resource-if-allowed (:spec db) path user false)
+            review_status (:review_status submission)]
+        (if (some? submission)
+          (let [conn (:spec db)
+                status (if (= topic-type "project")
+                         (update-initiative conn mailjet-config topic-id body)
+                         (update-resource conn mailjet-config topic-type topic-id body))]
+            (when (and (= status 1) (= review_status "REJECTED"))
+              (db.submission/update-submission
+               conn
+               {:table-name (util/get-internal-topic-type topic-type)
+                :id topic-id
+                :review_status "SUBMITTED"}))
+            (resp/response {:success? (= status 1)}))
+          util/unauthorized))
+      (catch Exception e
+        (log logger :error ::failed-to-update-resource-details {:exception-message (.getMessage e)
+                                                                :context-data {:path-params path
+                                                                               :body-params body}})
+        (let [response {:status 500
+                        :body {:success? false
+                               :reason :failed-to-update-resource-details}}]
+          (if (instance? SQLException e)
+            response
+            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defmethod ig/init-key :gpml.handler.detail/put-params [_ _]
   put-params)
