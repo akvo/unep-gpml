@@ -30,9 +30,9 @@
 (defn- max-focal-points?
   "Checks whether a resource has reached the maximum amount of focal
   points roles assignment."
-  [{:keys [db]} {:keys [topic-type topic-id]}]
+  [conn {:keys [topic-type topic-id]}]
   (let [stakeholder-auths
-        (db.ts-auth/get-topic-stakeholder-auths db
+        (db.ts-auth/get-topic-stakeholder-auths conn
                                                 {:filters {:roles ["focal-point"]
                                                            :topics-ids [topic-id]
                                                            :topics-type [topic-type]}})]
@@ -61,33 +61,37 @@
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defmethod ig/init-key :gpml.handler.auth/post-topic-auth
-  [_ {:keys [db logger] :as config}]
+  [_ {:keys [db logger]}]
   (fn [{{:keys [path body]} :parameters user :user}]
     (try
       (let [conn (:spec db)
             authorized? user
             path        (update path :topic-type util/get-internal-topic-type)]
         (if authorized?
-          (if (and (= "organisation" (:topic-type path))
-                   (max-focal-points? config path))
-            (resp/bad-request {:success? false
-                               :reason :maximum-focal-points-reached})
-            (do
-              (jdbc/with-db-transaction [tx-conn conn]
-                (db.ts-auth/delete-auth-by-topic tx-conn path)
-                (doseq [s (:stakeholders body)]
+          (do
+            (jdbc/with-db-transaction [tx-conn conn]
+              (db.ts-auth/delete-auth-by-topic tx-conn path)
+              (doseq [s (:stakeholders body)]
+                (if (and (= "organisation" (:topic-type path))
+                         (max-focal-points? tx-conn path))
+                  (throw (ex-info "Maximum focal points reached" {:reason :maximum-focal-points-reached}))
                   (grant-topic-to-stakeholder! tx-conn
                                                (assoc path
                                                       :stakeholder-id (:id s)
-                                                      :roles (:roles s)))))
-              (resp/response (assoc (merge path body) :success? true))))
+                                                      :roles (:roles s))))))
+            (resp/response (assoc (merge path body) :success? true)))
           util/unauthorized))
       (catch Exception e
         (log logger :error ::failed-to-grant-topic-to-stakeholder {:exception-message (.getMessage e)
                                                                    :context-data path})
-        (let [response {:status 500
-                        :body {:success? false
-                               :reason :failed-to-grant-topic-to-stakeholder}}]
+        (let [{:keys [reason]} (ex-data e)
+              response (if (= reason :maximum-focal-points-reached)
+                         {:status 400
+                          :body {:success? false
+                                 :reason reason}}
+                         {:status 500
+                          :body {:success? false
+                                 :reason :failed-to-grant-topic-to-stakeholder}})]
           (if (instance? SQLException e)
             response
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
@@ -115,7 +119,7 @@
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defmethod ig/init-key :gpml.handler.auth/new-roles [_ {:keys [db logger]}]
-  (fn [{{:keys [path body] :as config} :parameters user :user}]
+  (fn [{{:keys [path body]} :parameters user :user}]
     (try
       (let [conn (:spec db)
             authorized? user
@@ -123,7 +127,7 @@
         (if authorized?
           (if (and (= "organisation" (:topic-type path))
                    (get (set (:roles body)) "focal-point")
-                   (max-focal-points? config path))
+                   (max-focal-points? conn path))
             (resp/bad-request {:success? false
                                :reason :maximum-focal-points-reached})
             (do
@@ -142,7 +146,7 @@
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defmethod ig/init-key :gpml.handler.auth/update-roles
-  [_ {:keys [db logger] :as config}]
+  [_ {:keys [db logger]}]
   (fn [{{:keys [path body]} :parameters user :user}]
     (try
       (let [conn (:spec db)
@@ -151,7 +155,7 @@
         (if authorized?
           (if (and (= "organisation" (:topic-type path))
                    (get (set (:roles body)) "focal-point")
-                   (max-focal-points? config path))
+                   (max-focal-points? conn path))
             (resp/bad-request {:success? false
                                :reason :maximum-focal-points-reached})
             (do
