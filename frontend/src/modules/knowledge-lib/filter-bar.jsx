@@ -71,6 +71,18 @@ const FilterBar = ({
       setCountry(value);
       fetchData({
         ...moreFilter,
+        ...(moreFilter.entity && {
+          entity: moreFilter.entity.toString(),
+        }),
+        ...(moreFilter.subContentType && {
+          subContentType: moreFilter.subContentType.toString(),
+        }),
+        ...(moreFilter.tag && {
+          tag: moreFilter.tag.toString(),
+        }),
+        ...(moreFilter.representativeGroup && {
+          representativeGroup: moreFilter.representativeGroup.toString(),
+        }),
         ...(value.length > 0 && {
           country: value.toString(),
         }),
@@ -86,6 +98,18 @@ const FilterBar = ({
         setFilterCountries([]);
         fetchData({
           ...moreFilter,
+          ...(moreFilter.entity && {
+            entity: moreFilter.entity.toString(),
+          }),
+          ...(moreFilter.subContentType && {
+            subContentType: moreFilter.subContentType.toString(),
+          }),
+          ...(moreFilter.tag && {
+            tag: moreFilter.tag.toString(),
+          }),
+          ...(moreFilter.representativeGroup && {
+            representativeGroup: moreFilter.representativeGroup.toString(),
+          }),
         });
       }
       setMultiCountry(value);
@@ -96,6 +120,18 @@ const FilterBar = ({
           api.get(`/country-group/${id}`).then((resp) => {
             fetchData({
               ...moreFilter,
+              ...(moreFilter.entity && {
+                entity: moreFilter.entity.toString(),
+              }),
+              ...(moreFilter.subContentType && {
+                subContentType: moreFilter.subContentType.toString(),
+              }),
+              ...(moreFilter.tag && {
+                tag: moreFilter.tag.toString(),
+              }),
+              ...(moreFilter.representativeGroup && {
+                representativeGroup: moreFilter.representativeGroup.toString(),
+              }),
               ...(value.length > 0 && {
                 country: resp.data?.[0]?.countries
                   .map((item) => item.id.toString())
