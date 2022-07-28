@@ -57,7 +57,7 @@
 
 (defn- submission-detail [conn params]
   (let [data (db.submission/detail conn params)
-        creator-id (:id data)
+        creator-id (:created_by data)
         creator (db.stakeholder/stakeholder-by-id conn {:id creator-id})]
     (assoc data
            :created_by_email (:email creator)
