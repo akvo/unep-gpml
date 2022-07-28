@@ -751,36 +751,6 @@ const Maps = ({
                           .map((x) => x.isoCode)
                           .includes(geo.properties.MAP_COLOR);
 
-                      let pattern = "";
-                      if (geo.properties.MAP_COLOR === "CHN") {
-                        pattern = (
-                          <PatternLines
-                            key={`${geo.rsmKey}-pattern`}
-                            id="lines"
-                            height={2.5}
-                            width={2.5}
-                            stroke="#cecece"
-                            strokeWidth={0.8}
-                            background={
-                              isCountrySelected
-                                ? "#255B87"
-                                : geo.properties.M49Code === selected
-                                ? "rgba(255, 184, 0, 0.65)"
-                                : fillColor(
-                                    curr(findData?.counts, path, existingData)
-                                      ? curr(
-                                          findData?.counts,
-                                          path,
-                                          existingData
-                                        )
-                                      : 0
-                                  )
-                            }
-                            orientation={["diagonal"]}
-                          />
-                        );
-                      }
-
                       // To get all countries in a multicountry selection being highlighted
                       const filterMultiCountry = multiCountryCountries.filter(
                         (item) => {
@@ -824,13 +794,9 @@ const Maps = ({
                       const centroid = geoCentroid(geo);
                       return (
                         <Fragment key={`${geo.rsmKey}-geo-fragment`}>
-                          {pattern}
                           <Geography
                             key={geo.rsmKey}
                             geography={geo}
-                            stroke="#79B0CC"
-                            strokeWidth="0.2"
-                            strokeOpacity="0.8"
                             cursor={!isLake ? "pointer" : ""}
                             fill={
                               isLake
@@ -958,37 +924,6 @@ const Maps = ({
                     })}
                   </>
                 )}
-              </Geographies>
-              <Geographies key="map-line" geography={lineBoundaries}>
-                {({ geographies }) =>
-                  geographies.map((geo) => {
-                    const isDashed =
-                      geo.properties?.Type &&
-                      geo.properties?.Type.toLowerCase().includes("dashed");
-                    const isDotted =
-                      geo.properties?.Type &&
-                      geo.properties?.Type.toLowerCase().includes("dotted");
-                    const isContinuous =
-                      geo.properties?.ISO3CD &&
-                      geo.properties?.ISO3CD === "EGY_SDN";
-
-                    return (
-                      <Geography
-                        key={`${geo.rsmKey}-line`}
-                        geography={geo}
-                        stroke={isDashed || isDotted ? "#3080a8" : "#79B0CC"}
-                        strokeDasharray={
-                          isDashed ? "0.5" : isDotted ? "0.2" : "none"
-                        }
-                        strokeWidth={isDashed ? "0.3" : "0.2"}
-                        strokeOpacity={
-                          isDashed || isDotted || isContinuous ? "1" : "0.2"
-                        }
-                        fill="none"
-                      />
-                    );
-                  })
-                }
               </Geographies>
             </ZoomableGroup>
           </ComposableMap>
