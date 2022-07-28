@@ -18,7 +18,6 @@ const DetailModal = ({
       className="detail-modal"
     >
       <DetailsView
-        onCloseModal={() => setIsShowModal(false)}
         {...{
           match,
           setStakeholderSignupModalVisible,

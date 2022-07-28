@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Space, Avatar, Tooltip, Pagination } from "antd";
 import { ArrowRightOutlined, LoadingOutlined } from "@ant-design/icons";
@@ -90,6 +91,17 @@ const ResourceList = ({
     setDidMount(true);
     return () => setDidMount(false);
   }, []);
+
+  useEffect(() => {
+    if (!isShowModal) {
+      const previousHref = `${history?.location?.pathname}${history?.location?.search}`;
+      window.history.pushState(
+        { urlPath: `/${previousHref}` },
+        "",
+        `${previousHref}`
+      );
+    }
+  }, [isShowModal]);
 
   return (
     <Row style={{ postion: "relative" }}>

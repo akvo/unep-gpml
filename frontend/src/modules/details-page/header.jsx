@@ -229,7 +229,6 @@ const Header = ({
   placeholder,
   handleRelationChange,
   relation,
-  onCloseModal,
 }) => {
   const toolButtons = (
     data,
@@ -288,13 +287,6 @@ const Header = ({
 
   return (
     <div className="detail-header">
-      <Button
-        icon={<ModalCloseIcon />}
-        className="close-modal-button"
-        onClick={onCloseModal}
-      >
-        Close
-      </Button>
       <h3 className="detail-resource-type content-heading">
         {topicNames(params?.type)}
       </h3>

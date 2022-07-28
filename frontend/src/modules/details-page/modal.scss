@@ -3,7 +3,10 @@
 .detail-modal {
   width: 1024px !important;
   .ant-modal-close {
-    display: none;
+    position: sticky;
+    left: 100%;
+    z-index: 9999;
+    float: left;
   }
   .detail-view-wrapper {
     padding-top: 0;
@@ -17,26 +20,5 @@
   }
   .ant-modal-footer {
     display: none;
-  }
-  .close-modal-button {
-    display: block !important;
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    background-color: unset;
-    border: unset;
-    box-shadow: unset;
-    padding: 0;
-    color: #00000073;
-    svg {
-      width: 16px;
-      height: 16px;
-    }
-    span {
-      text-indent: -9999px;
-    }
-    &:hover {
-      color: #000000bf;
-    }
   }
 }
