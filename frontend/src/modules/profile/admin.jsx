@@ -290,7 +290,6 @@ const FocalPoint = ({
         e.stopPropagation();
       }}
     >
-      <div style={{ width: "100%" }}>Focal Points</div>
       <Select
         style={{ width: "100%" }}
         showSearch={true}
@@ -864,7 +863,8 @@ const AdminSection = ({
                   )}
                 <>
                   {item.reviewStatus === "APPROVED" &&
-                    item.type !== "stakeholder" && (
+                    item.type !== "stakeholder" &&
+                    item.type !== "organisation" && (
                       <OwnerSelect
                         item={item}
                         reviewers={reviewers}
@@ -873,16 +873,6 @@ const AdminSection = ({
                         resource={item}
                         onChangeOwner={changeOwner}
                         loading={loading}
-                      />
-                    )}
-                  {item.reviewStatus === "APPROVED" &&
-                    item.type === "organisation" && (
-                      <FocalPoint
-                        item={item}
-                        reviewers={reviewers}
-                        listOpts={listOpts}
-                        setListOpts={setListOpts}
-                        onChangeFocalPoint={changeFocalPoint}
                       />
                     )}
                 </>
@@ -1029,6 +1019,26 @@ const AdminSection = ({
                     item={item}
                     getPreviewContent={getPreviewContent}
                     unpublishButton={<ResourceApprovedActions item={item} />}
+                    focalPoint={
+                      <FocalPoint
+                        item={item}
+                        reviewers={reviewers}
+                        listOpts={listOpts}
+                        setListOpts={setListOpts}
+                        onChangeFocalPoint={changeFocalPoint}
+                      />
+                    }
+                    ownerSelect={
+                      <OwnerSelect
+                        item={item}
+                        reviewers={reviewers}
+                        setListOpts={setListOpts}
+                        listOpts={listOpts}
+                        resource={item}
+                        onChangeOwner={changeOwner}
+                        loading={loading}
+                      />
+                    }
                   />
                 </Collapse.Panel>
               ))

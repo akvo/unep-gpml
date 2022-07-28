@@ -505,8 +505,18 @@
         border: #d9d9d9 1px solid;
       }
     }
+    .review-status-container {
+      width: 100%;
+      .ant-select {
+        width: 100%;
+      }
+    }
+    .actions {
+      padding-bottom: 10px;
+    }
 
     ul {
+      flex: 1;
       .has-border {
         margin: 10px 0px 5px;
         border-bottom: solid 2px #eee;
@@ -545,10 +555,10 @@
           text-transform: uppercase;
         }
 
-        span {
-          width: 160px;
-          display: inline-block;
-        }
+        // span {
+        //   width: 160px;
+        //   display: inline-block;
+        // }
 
         ul.ul-children {
           display: inline-block;
