@@ -55,7 +55,8 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
           expertise: [],
           suggestedCategory: [],
         });
-        notification.success({ message: "Invites successfully sent" });
+        notification.success({ message: "Invite successfully sent" });
+        setIsShownModal(false);
       })
       .catch((err) => {
         setLoading(false);
@@ -66,7 +67,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
           suggestedCategory: [],
         });
         notification.error({ message: "An error occured" });
-        console.log(err);
+        setIsShownModal(false);
       });
   };
 
@@ -111,7 +112,8 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                                   onChange={(e) =>
                                     input.onChange(e.target.value)
                                   }
-                                  placeholder="Full Name"
+                                  value={input.value ? input.value : ""}
+                                  placeholder="Enter expert full name"
                                   className={`${
                                     meta.touched && meta.error
                                       ? "ant-input-status-error"
@@ -138,7 +140,8 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                                   onChange={(e) =>
                                     input.onChange(e.target.value)
                                   }
-                                  placeholder="martin@email.com"
+                                  value={input.value ? input.value : ""}
+                                  placeholder="Enter expert email"
                                   className={`${
                                     meta.touched && meta.error
                                       ? "ant-input-status-error"
