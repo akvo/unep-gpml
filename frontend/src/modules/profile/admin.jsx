@@ -233,6 +233,7 @@ const OwnerSelect = ({
   reviewers,
   listOpts,
   setListOpts,
+  showLabel,
 }) => {
   return (
     <div
@@ -241,7 +242,7 @@ const OwnerSelect = ({
         e.stopPropagation();
       }}
     >
-      <div style={{ width: "100%" }}>Owners</div>
+      {showLabel && <div style={{ width: "100%" }}>Owners</div>}
       <Select
         style={{ width: "100%" }}
         showSearch={true}
@@ -282,17 +283,16 @@ const FocalPoint = ({
   reviewers,
   listOpts,
   setListOpts,
+  debouncedResults,
+  fetching,
+  focalPoints,
 }) => {
+  console.log(focalPoints);
   return (
-    <div
-      className="review-status-container"
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
-    >
-      <div style={{ width: "100%" }}>Focal Points</div>
+    <div className="review-status-container">
       <Select
         style={{ width: "100%" }}
+        allowClear
         showSearch={true}
         mode="multiple"
         placeholder="Assign focal point"
@@ -300,22 +300,12 @@ const FocalPoint = ({
           onChangeFocalPoint(item, data, listOpts, setListOpts);
         }}
         value={item?.focalPoints}
-        loading={item?.id === loading}
-        optionFilterProp="children"
-        filterOption={(input, option) =>
-          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
-        filterSort={(optionA, optionB) =>
-          optionA.children
-            .toLowerCase()
-            .localeCompare(optionB.children.toLowerCase())
-        }
-        // FIXME: Disallow changing roles of other admins?
-        // stakeholder?.role === "ADMIN"
-        disabled={item?.id === loading}
+        filterOption={false}
+        onSearch={debouncedResults}
+        notFoundContent={fetching ? <Spin size="small" /> : null}
       >
-        {reviewers.map((r) => (
-          <Select.Option key={r.email} value={r.id}>
+        {focalPoints?.map((r) => (
+          <Select.Option key={r.id} value={r.id}>
             {r.email}
           </Select.Option>
         ))}
@@ -463,7 +453,11 @@ const AdminSection = ({
       )
       .then((data) => setListOpts((opts) => ({ ...opts, data })))
       .catch((err) => {
-        notification.error({ message: "Something went wrong" });
+        notification.error({
+          message: err?.response?.data?.errorDetails?.error
+            ? err?.response?.data?.errorDetails?.error
+            : "Something went wrong",
+        });
       });
   };
 
@@ -493,7 +487,12 @@ const AdminSection = ({
       )
       .then((data) => setListOpts((opts) => ({ ...opts, data })))
       .catch((err) => {
-        notification.error({ message: "Something went wrong" });
+        setLoading(false);
+        notification.error({
+          message: err?.response?.data?.errorDetails?.error
+            ? err?.response?.data?.errorDetails?.error
+            : "Something went wrong",
+        });
       });
   };
 
@@ -864,7 +863,8 @@ const AdminSection = ({
                   )}
                 <>
                   {item.reviewStatus === "APPROVED" &&
-                    item.type !== "stakeholder" && (
+                    item.type !== "stakeholder" &&
+                    item.type !== "organisation" && (
                       <OwnerSelect
                         item={item}
                         reviewers={reviewers}
@@ -873,16 +873,7 @@ const AdminSection = ({
                         resource={item}
                         onChangeOwner={changeOwner}
                         loading={loading}
-                      />
-                    )}
-                  {item.reviewStatus === "APPROVED" &&
-                    item.type === "organisation" && (
-                      <FocalPoint
-                        item={item}
-                        reviewers={reviewers}
-                        listOpts={listOpts}
-                        setListOpts={setListOpts}
-                        onChangeFocalPoint={changeFocalPoint}
+                        showLabel={true}
                       />
                     )}
                 </>
@@ -1029,6 +1020,30 @@ const AdminSection = ({
                     item={item}
                     getPreviewContent={getPreviewContent}
                     unpublishButton={<ResourceApprovedActions item={item} />}
+                    focalPoint={
+                      <FocalPoint
+                        item={item}
+                        reviewers={reviewers}
+                        listOpts={listOpts}
+                        setListOpts={setListOpts}
+                        onChangeFocalPoint={changeFocalPoint}
+                        debouncedResults={debouncedResults}
+                        fetching={fetching}
+                        focalPoints={focalPoints}
+                      />
+                    }
+                    ownerSelect={
+                      <OwnerSelect
+                        item={item}
+                        reviewers={reviewers}
+                        setListOpts={setListOpts}
+                        listOpts={listOpts}
+                        resource={item}
+                        onChangeOwner={changeOwner}
+                        loading={loading}
+                        showLabel={false}
+                      />
+                    }
                   />
                 </Collapse.Panel>
               ))
