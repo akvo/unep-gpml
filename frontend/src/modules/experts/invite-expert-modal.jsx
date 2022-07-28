@@ -23,6 +23,16 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
   const required = (value) => (value ? undefined : "Required");
 
   const [filteredOptions, setFilteredOptions] = useState([]);
+  const [initialValues, setInitialValues] = useState({
+    invites: [
+      {
+        name: "",
+        email: "",
+        expertise: [],
+        suggestedCategory: [],
+      },
+    ],
+  });
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (values) => {
@@ -35,19 +45,39 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
         }),
         email: item?.email,
         expertise: item?.expertise,
-        suggestedCategory: item?.suggestedCategory,
+        suggestedExpertise: item?.suggestedCategory?.map((item) => item.value),
       };
     });
 
     api
-      .post("/stakeholder/expert/invite", values)
+      .post("/stakeholder/expert/suggest", values)
       .then((res) => {
         window.scrollTo({ top: 0 });
         setLoading(false);
+        setInitialValues({
+          invites: [
+            {
+              name: "",
+              email: "",
+              expertise: [],
+              suggestedCategory: [],
+            },
+          ],
+        });
         notification.success({ message: "Invites successfully sent" });
       })
       .catch((err) => {
         setLoading(false);
+        setInitialValues({
+          invites: [
+            {
+              name: "",
+              email: "",
+              expertise: [],
+              suggestedCategory: [],
+            },
+          ],
+        });
         notification.error({ message: "An error occured" });
         console.log(err);
       });
@@ -72,16 +102,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
           mutators={{
             ...arrayMutators,
           }}
-          initialValues={{
-            invites: [
-              {
-                name: "",
-                email: "",
-                expertise: [],
-                suggestedCategory: [],
-              },
-            ],
-          }}
+          initialValues={initialValues}
           render={({ handleSubmit, form, submitting }) => {
             formRef.current = form;
             return (
