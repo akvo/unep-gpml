@@ -465,6 +465,18 @@
           .ant-input-status-error {
             border: 1px solid #ff4d4f;
           }
+          .ant-select-multiple {
+            .ant-select-selection-item {
+              background-color: #3276ae;
+              color: white;
+              border-radius: 3px;
+              font-weight: 500;
+            }
+            .ant-select-selection-item-remove svg {
+              fill: white;
+              opacity: 0.5;
+            }
+          }
         }
 
         p.section-title {
@@ -546,6 +558,18 @@
               span {
                 width: auto;
               }
+            }
+          }
+          .ant-select-multiple {
+            .ant-select-selection-item {
+              background-color: #3276ae;
+              color: white;
+              border-radius: 3px;
+              font-weight: 500;
+            }
+            .ant-select-selection-item-remove svg {
+              fill: white;
+              opacity: 0.5;
             }
           }
         }
