@@ -295,7 +295,7 @@ User %s is suggesting an expert with the following information:
 (defmethod ig/init-key :gpml.handler.stakeholder.expert/post-suggest-params
   [_ _]
   {:body (-> (mu/get invite-experts-params :map)
-             (mu/assoc :suggested_expertise [:sequential {:optional true} [:string {:min 1}]]))})
+             (mu/assoc-in [[:suggested_expertise {:optional true}]] [:sequential [:string {:min 1}]]))})
 
 (defmethod ig/init-key :gpml.handler.stakeholder.expert/post-suggest-responses
   [_ _]
