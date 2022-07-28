@@ -727,6 +727,9 @@ const Maps = ({
               onMoveEnd={(x) => {
                 setPosition(x);
               }}
+              filterZoomEvent={(evt) => {
+                return evt.type === "wheel" ? false : true;
+              }}
             >
               <Geographies key="map-geo" geography={geoUrl}>
                 {({ geographies }) => (
@@ -942,7 +945,7 @@ const Maps = ({
                                 key={`${geo.rsmKey}-line`}
                               >
                                 {findData && (
-                                  <text y="2" fontSize={6} textAnchor="middle">
+                                  <text fontSize={6} textAnchor="middle">
                                     {Object.values(
                                       findData?.transnationalCounts
                                     )?.reduce((a, b) => a + b)}

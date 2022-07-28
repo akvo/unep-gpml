@@ -81,6 +81,24 @@ const KnowledgeLib = () => {
     } else {
       updateVal = [...filterCountries, value];
     }
+    fetchData({
+      ...moreFilter,
+      ...(moreFilter.entity && {
+        entity: moreFilter.entity.toString(),
+      }),
+      ...(moreFilter.subContentType && {
+        subContentType: moreFilter.subContentType.toString(),
+      }),
+      ...(moreFilter.tag && {
+        tag: moreFilter.tag.toString(),
+      }),
+      ...(moreFilter.representativeGroup && {
+        representativeGroup: moreFilter.representativeGroup.toString(),
+      }),
+      ...(updateVal.length > 0 && {
+        country: updateVal.toString(),
+      }),
+    });
     setFilterCountries(updateVal);
   };
 
