@@ -573,9 +573,9 @@ const Root = () => {
                 {...{
                   setWarningModalVisible,
                   setStakeholderSignupModalVisible,
-                  loginWithPopup,
                   isAuthenticated,
                   setFilterMenu,
+                  setLoginVisible,
                   ...props,
                 }}
               />
@@ -620,12 +620,9 @@ const Root = () => {
                   setFilterCountries,
                   setMultiCountryCountries,
                   setWarningModalVisible,
-                  setStakeholderSignupModalVisible,
+                  setLoginVisible,
                   ...props,
                 }}
-                setStakeholderSignupModalVisible={
-                  setStakeholderSignupModalVisible
-                }
                 filters={filters}
                 setFilters={setFilters}
                 filterMenu={filterMenu}
@@ -840,9 +837,7 @@ const Root = () => {
             render={(props) => (
               <NewDetailsView
                 {...props}
-                setStakeholderSignupModalVisible={
-                  setStakeholderSignupModalVisible
-                }
+                setLoginVisible={setLoginVisible}
                 setFilterMenu={setFilterMenu}
                 isAuthenticated={isAuthenticated}
               />
@@ -893,16 +888,16 @@ const Root = () => {
           updateQuery,
           setWarningModalVisible,
           isAuthenticated,
-          setStakeholderSignupModalVisible,
+          setLoginVisible,
           loginWithPopup,
           logout,
           setFilterMenu,
+          showResponsiveMenu,
+          setShowResponsiveMenu,
+          topicsCount,
+          stakeholderCounts,
         }}
-        showResponsiveMenu={showResponsiveMenu}
-        setShowResponsiveMenu={setShowResponsiveMenu}
-        topicsCount={topicsCount}
         resources={resourceCounts}
-        stakeholderCounts={stakeholderCounts}
       />
     </>
   );
