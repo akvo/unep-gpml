@@ -45,7 +45,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
     };
 
     api
-      .post("/stakeholder/expert/suggest", values)
+      .post("/stakeholder/expert/suggest", data)
       .then((res) => {
         window.scrollTo({ top: 0 });
         setLoading(false);
