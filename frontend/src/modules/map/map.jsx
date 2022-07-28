@@ -714,11 +714,7 @@ const Maps = ({
               </Tooltip>
             </div>
           </div>
-          <ComposableMap
-            data-tip=""
-            projection="geoEquirectangular"
-            style={{ height: "auto", zoom: "112%" }}
-          >
+          <ComposableMap data-tip="" projection="geoEquirectangular">
             <ZoomableGroup
               minZoom={mapMinZoom}
               maxZoom={mapMaxZoom}
