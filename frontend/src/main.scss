@@ -868,7 +868,7 @@ path {
     display: none;
   }
   .small-screen-menu {
-    display: none;
+    display: none !important;
   }
 
   @media (max-width: 540px) {
@@ -914,7 +914,6 @@ path {
     }
     .ant-drawer-body {
       ul {
-        padding: 80px 28px;
         text-align: center;
         .menu-add-content,
         .menu-profile {
@@ -1028,6 +1027,10 @@ path {
     }
     .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
       background-color: rgba(77, 255, 165, 0.1);
+    }
+
+    .nav-link:hover a {
+      color: #1890ff;
     }
   }
 }

@@ -57,7 +57,7 @@ const KnowledgeLibrary = ({
   setFilterCountries,
   setMultiCountryCountries,
   setWarningModalVisible,
-  setStakeholderSignupModalVisible,
+  setLoginVisible,
 }) => {
   const [filterVisible, setFilterVisible] = useState(false);
   const [listVisible, setListVisible] = useState(true);
@@ -375,7 +375,7 @@ const KnowledgeLibrary = ({
                     filters,
                     setFilters,
                     setWarningModalVisible,
-                    setStakeholderSignupModalVisible,
+                    setLoginVisible,
                     loginWithPopup,
                     isAuthenticated,
                     setToggleButton,
