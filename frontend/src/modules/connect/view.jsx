@@ -26,12 +26,12 @@ const sidebar = [
     url: "/connect/partners",
     icon: <IconPartner />,
   },
-  {
-    id: 5,
-    title: "Experts",
-    url: "/connect/experts",
-    icon: <ExpertIcon />,
-  },
+  // {
+  //   id: 5,
+  //   title: "Experts",
+  //   url: "/connect/experts",
+  //   icon: <ExpertIcon />,
+  // },
 ];
 
 function Connect({ filters, setFilters, isAuthenticated, setLoginVisible }) {
