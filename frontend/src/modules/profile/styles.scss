@@ -317,6 +317,18 @@
       flex: 1;
       align-items: center;
       justify-content: end;
+      .ant-select-multiple {
+        .ant-select-selection-item {
+          background-color: #3276ae;
+          color: white;
+          border-radius: 3px;
+          font-weight: 500;
+        }
+        .ant-select-selection-item-remove svg {
+          fill: white;
+          opacity: 0.5;
+        }
+      }
     }
     .review-status-container {
       flex: 0 0 50%;

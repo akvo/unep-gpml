@@ -251,7 +251,7 @@ const OwnerSelect = ({
         onChange={(data) => {
           onChangeOwner(item, data, listOpts, setListOpts);
         }}
-        value={item?.owners}
+        value={item?.owners ? item?.owners.map((item) => item.id) : []}
         loading={item?.id === loading}
         optionFilterProp="children"
         filterOption={(input, option) =>
@@ -287,7 +287,6 @@ const FocalPoint = ({
   fetching,
   focalPoints,
 }) => {
-  console.log(focalPoints);
   return (
     <div className="review-status-container">
       <Select
@@ -299,12 +298,17 @@ const FocalPoint = ({
         onChange={(data) => {
           onChangeFocalPoint(item, data, listOpts, setListOpts);
         }}
-        value={item?.focalPoints}
+        value={
+          item?.focalPoints ? item?.focalPoints.map((item) => item.id) : []
+        }
         filterOption={false}
         onSearch={debouncedResults}
         notFoundContent={fetching ? <Spin size="small" /> : null}
       >
-        {focalPoints?.map((r) => (
+        {[
+          ...focalPoints,
+          ...(item?.focalPoints.length > 0 ? item.focalPoints : []),
+        ]?.map((r) => (
           <Select.Option key={r.id} value={r.id}>
             {r.email}
           </Select.Option>
@@ -431,7 +435,7 @@ const AdminSection = ({
     setLoading(item.id);
     const stakeholders = owners.map((x) => ({ id: x, roles: ["owner"] }));
     const focalPoints = item?.focalPoints?.map((x) => ({
-      id: x,
+      id: x.id,
       roles: ["focal-point"],
     }));
     api
@@ -458,6 +462,7 @@ const AdminSection = ({
             ? err?.response?.data?.errorDetails?.error
             : "Something went wrong",
         });
+        setLoading(false);
       });
   };
 
@@ -465,7 +470,7 @@ const AdminSection = ({
     setLoading(item.id);
     const focalPoints = owners?.map((x) => ({ id: x, roles: ["focal-point"] }));
     const stakeholders = item?.owners?.map((x) => ({
-      id: x,
+      id: x.id,
       roles: ["owner"],
     }));
     api
