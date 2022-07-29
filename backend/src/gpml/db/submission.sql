@@ -44,8 +44,8 @@ submission AS (
 ),
 authz AS (
     select s.id, s.type,
-    COALESCE(json_agg(st.id) FILTER (WHERE st.email IS NOT NULL AND a.roles ??| array['owner']), '[]') AS owners,
-    COALESCE(json_agg(st.id) FILTER (WHERE st.email IS NOT NULL AND a.roles ??| array['focal-point']), '[]') AS focal_points
+    COALESCE(json_agg(json_build_object('id', st.id, 'email', st.email)) FILTER (WHERE st.email IS NOT NULL AND a.roles ??| array['owner']), '[]') AS owners,
+    COALESCE(json_agg(json_build_object('id', st.id, 'email', st.email)) FILTER (WHERE st.email IS NOT NULL AND a.roles ??| array['focal-point']), '[]') AS focal_points
     FROM submission s
     LEFT JOIN topic_stakeholder_auth a ON a.topic_type = s.topic::topic_type AND a.topic_id = s.id AND a.roles ??| array['owner', 'focal-point']
     LEFT JOIN stakeholder st ON a.stakeholder = st.id
