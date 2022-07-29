@@ -233,6 +233,7 @@ const OwnerSelect = ({
   reviewers,
   listOpts,
   setListOpts,
+  showLabel,
 }) => {
   return (
     <div
@@ -241,7 +242,7 @@ const OwnerSelect = ({
         e.stopPropagation();
       }}
     >
-      <div style={{ width: "100%" }}>Owners</div>
+      {showLabel && <div style={{ width: "100%" }}>Owners</div>}
       <Select
         style={{ width: "100%" }}
         showSearch={true}
@@ -250,7 +251,7 @@ const OwnerSelect = ({
         onChange={(data) => {
           onChangeOwner(item, data, listOpts, setListOpts);
         }}
-        value={item?.owners}
+        value={item?.owners ? item?.owners.map((item) => item.id) : []}
         loading={item?.id === loading}
         optionFilterProp="children"
         filterOption={(input, option) =>
@@ -282,40 +283,33 @@ const FocalPoint = ({
   reviewers,
   listOpts,
   setListOpts,
+  debouncedResults,
+  fetching,
+  focalPoints,
 }) => {
   return (
-    <div
-      className="review-status-container"
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
-    >
-      <div style={{ width: "100%" }}>Focal Points</div>
+    <div className="review-status-container">
       <Select
         style={{ width: "100%" }}
+        allowClear
         showSearch={true}
         mode="multiple"
         placeholder="Assign focal point"
         onChange={(data) => {
           onChangeFocalPoint(item, data, listOpts, setListOpts);
         }}
-        value={item?.focalPoints}
-        loading={item?.id === loading}
-        optionFilterProp="children"
-        filterOption={(input, option) =>
-          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        value={
+          item?.focalPoints ? item?.focalPoints.map((item) => item.id) : []
         }
-        filterSort={(optionA, optionB) =>
-          optionA.children
-            .toLowerCase()
-            .localeCompare(optionB.children.toLowerCase())
-        }
-        // FIXME: Disallow changing roles of other admins?
-        // stakeholder?.role === "ADMIN"
-        disabled={item?.id === loading}
+        filterOption={false}
+        onSearch={debouncedResults}
+        notFoundContent={fetching ? <Spin size="small" /> : null}
       >
-        {reviewers.map((r) => (
-          <Select.Option key={r.email} value={r.id}>
+        {[
+          ...focalPoints,
+          ...(item?.focalPoints.length > 0 ? item.focalPoints : []),
+        ]?.map((r) => (
+          <Select.Option key={r.id} value={r.id}>
             {r.email}
           </Select.Option>
         ))}
@@ -441,7 +435,7 @@ const AdminSection = ({
     setLoading(item.id);
     const stakeholders = owners.map((x) => ({ id: x, roles: ["owner"] }));
     const focalPoints = item?.focalPoints?.map((x) => ({
-      id: x,
+      id: x.id,
       roles: ["focal-point"],
     }));
     api
@@ -463,7 +457,12 @@ const AdminSection = ({
       )
       .then((data) => setListOpts((opts) => ({ ...opts, data })))
       .catch((err) => {
-        notification.error({ message: "Something went wrong" });
+        notification.error({
+          message: err?.response?.data?.errorDetails?.error
+            ? err?.response?.data?.errorDetails?.error
+            : "Something went wrong",
+        });
+        setLoading(false);
       });
   };
 
@@ -471,7 +470,7 @@ const AdminSection = ({
     setLoading(item.id);
     const focalPoints = owners?.map((x) => ({ id: x, roles: ["focal-point"] }));
     const stakeholders = item?.owners?.map((x) => ({
-      id: x,
+      id: x.id,
       roles: ["owner"],
     }));
     api
@@ -493,7 +492,12 @@ const AdminSection = ({
       )
       .then((data) => setListOpts((opts) => ({ ...opts, data })))
       .catch((err) => {
-        notification.error({ message: "Something went wrong" });
+        setLoading(false);
+        notification.error({
+          message: err?.response?.data?.errorDetails?.error
+            ? err?.response?.data?.errorDetails?.error
+            : "Something went wrong",
+        });
       });
   };
 
@@ -864,7 +868,8 @@ const AdminSection = ({
                   )}
                 <>
                   {item.reviewStatus === "APPROVED" &&
-                    item.type !== "stakeholder" && (
+                    item.type !== "stakeholder" &&
+                    item.type !== "organisation" && (
                       <OwnerSelect
                         item={item}
                         reviewers={reviewers}
@@ -873,16 +878,7 @@ const AdminSection = ({
                         resource={item}
                         onChangeOwner={changeOwner}
                         loading={loading}
-                      />
-                    )}
-                  {item.reviewStatus === "APPROVED" &&
-                    item.type === "organisation" && (
-                      <FocalPoint
-                        item={item}
-                        reviewers={reviewers}
-                        listOpts={listOpts}
-                        setListOpts={setListOpts}
-                        onChangeFocalPoint={changeFocalPoint}
+                        showLabel={true}
                       />
                     )}
                 </>
@@ -1029,6 +1025,30 @@ const AdminSection = ({
                     item={item}
                     getPreviewContent={getPreviewContent}
                     unpublishButton={<ResourceApprovedActions item={item} />}
+                    focalPoint={
+                      <FocalPoint
+                        item={item}
+                        reviewers={reviewers}
+                        listOpts={listOpts}
+                        setListOpts={setListOpts}
+                        onChangeFocalPoint={changeFocalPoint}
+                        debouncedResults={debouncedResults}
+                        fetching={fetching}
+                        focalPoints={focalPoints}
+                      />
+                    }
+                    ownerSelect={
+                      <OwnerSelect
+                        item={item}
+                        reviewers={reviewers}
+                        setListOpts={setListOpts}
+                        listOpts={listOpts}
+                        resource={item}
+                        onChangeOwner={changeOwner}
+                        loading={loading}
+                        showLabel={false}
+                      />
+                    }
                   />
                 </Collapse.Panel>
               ))

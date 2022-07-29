@@ -317,6 +317,18 @@
       flex: 1;
       align-items: center;
       justify-content: end;
+      .ant-select-multiple {
+        .ant-select-selection-item {
+          background-color: #3276ae;
+          color: white;
+          border-radius: 3px;
+          font-weight: 500;
+        }
+        .ant-select-selection-item-remove svg {
+          fill: white;
+          opacity: 0.5;
+        }
+      }
     }
     .review-status-container {
       flex: 0 0 50%;
@@ -465,6 +477,18 @@
           .ant-input-status-error {
             border: 1px solid #ff4d4f;
           }
+          .ant-select-multiple {
+            .ant-select-selection-item {
+              background-color: #3276ae;
+              color: white;
+              border-radius: 3px;
+              font-weight: 500;
+            }
+            .ant-select-selection-item-remove svg {
+              fill: white;
+              opacity: 0.5;
+            }
+          }
         }
 
         p.section-title {
@@ -505,8 +529,18 @@
         border: #d9d9d9 1px solid;
       }
     }
+    .review-status-container {
+      width: 100%;
+      .ant-select {
+        width: 100%;
+      }
+    }
+    .actions {
+      padding-bottom: 10px;
+    }
 
     ul {
+      flex: 1;
       .has-border {
         margin: 10px 0px 5px;
         border-bottom: solid 2px #eee;
@@ -538,6 +572,18 @@
               }
             }
           }
+          .ant-select-multiple {
+            .ant-select-selection-item {
+              background-color: #3276ae;
+              color: white;
+              border-radius: 3px;
+              font-weight: 500;
+            }
+            .ant-select-selection-item-remove svg {
+              fill: white;
+              opacity: 0.5;
+            }
+          }
         }
 
         p.section-title {
@@ -545,10 +591,10 @@
           text-transform: uppercase;
         }
 
-        span {
-          width: 160px;
-          display: inline-block;
-        }
+        // span {
+        //   width: 160px;
+        //   display: inline-block;
+        // }
 
         ul.ul-children {
           display: inline-block;

@@ -333,14 +333,21 @@ export const GeneralPreview = ({ item }) => {
             )}
           </div>
         </li>
-        <li>
-          <div className="detail-title">Tags</div>:
-          <div className="detail-content">
-            {(item.tags &&
-              item.tags.map((x) => Object.values(x)[0]).join(", ")) ||
-              "-"}
-          </div>
-        </li>
+        {item.reviewStatus === "APPROVED" && item.type === "organisation" && (
+          <>
+            <li className="has-border">
+              <p className="section-title">Actions</p>
+            </li>
+            <li className="actions">
+              <div className="detail-title">Owners</div>:
+              <div className="detail-content">{item?.ownerSelect}</div>
+            </li>
+            <li className="actions">
+              <div className="detail-title">Focal points</div>:
+              <div className="detail-content">{item?.focalPoint}</div>
+            </li>
+          </>
+        )}
       </ul>
     </div>
   );
@@ -767,6 +774,8 @@ export const DetailCollapse = ({
   item,
   getPreviewContent,
   unpublishButton,
+  focalPoint,
+  ownerSelect,
 }) => {
   switch (item.type) {
     case "stakeholder":
@@ -776,6 +785,8 @@ export const DetailCollapse = ({
     case "tag":
       return <TagPreview item={{ ...data, ...item, getPreviewContent }} />;
     default:
-      return <GeneralPreview item={{ ...data, ...item }} />;
+      return (
+        <GeneralPreview item={{ ...data, ...item, focalPoint, ownerSelect }} />
+      );
   }
 };
