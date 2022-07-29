@@ -980,12 +980,14 @@ path {
         }
 
         .menu-explore {
-          display: block;
+          position: relative;
+          display: flex !important;
 
-          ul[role="menu"] {
+          ul {
             position: absolute;
-            top: 260px;
-            z-index: 9999;
+            z-index: 9999 !important;
+            top: 100%;
+            left: calc(50% - 201px / 2);
             padding: 0;
             max-width: 200px;
             margin: auto;
