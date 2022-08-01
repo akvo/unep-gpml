@@ -35,6 +35,16 @@ const KnowledgeLib = () => {
   const [filterCountries, setFilterCountries] = useState([]);
   const [filter, setFilter] = useState([]);
   const [countData, setCountData] = useState([]);
+  const [categories, setCategories] = useState([
+    "project",
+    "action_plan",
+    "policy",
+    "technical_resource",
+    "technology",
+    "event",
+    "financing_resource",
+  ]);
+  const [catData, setCatData] = useState([]);
   const [data, setData] = useState({});
   const [isShownModal, setIsShownModal] = useState(false);
   const [moreFilter, setMoreFilters] = useState({
@@ -109,6 +119,30 @@ const KnowledgeLib = () => {
       [param]: value ? value : null,
     });
   };
+
+  const loadAllCat = async () => {
+    const promiseArray = categories.map((url) =>
+      api.get(`/browse?topic=${url}`)
+    );
+
+    Promise.all(promiseArray)
+      .then((data) => {
+        const newData = categories.map((driver, idx) => ({
+          driver,
+          data: data[idx].data.results,
+        }));
+        setCatData(newData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    if (view === "cat" && catData.length === 0) {
+      loadAllCat();
+    }
+  }, [view, catData]);
 
   return (
     <div id="knowledge-lib" className="knowledge-lib">
