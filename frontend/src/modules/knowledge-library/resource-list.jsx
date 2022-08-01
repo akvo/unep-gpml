@@ -40,7 +40,6 @@ const ResourceList = ({
   }));
   const history = useHistory();
   const [didMount, setDidMount] = useState(false);
-  const [isShownModal, setIsShownModal] = useState(false);
   const [dataProperties, setDataProperties] = useState({
     resourceType: null,
     resourceId: null,
@@ -146,7 +145,6 @@ const ResourceList = ({
               view={view}
               results={allResults}
               stakeholders={stakeholders}
-              setIsShownModal={setIsShownModal}
               setData={setData}
               setDataProperties={setDataProperties}
               history={history}
