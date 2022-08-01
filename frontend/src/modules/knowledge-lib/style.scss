@@ -204,4 +204,31 @@
       margin-bottom: 16px;
     }
   }
+  .cat-view {
+    .header-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 40px;
+      margin-top: 20px;
+      h4 {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 23px;
+        text-transform: uppercase;
+
+        color: #a5b0c9;
+      }
+      button {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px;
+        color: #000000;
+        width: auto;
+      }
+    }
+    .resource-cards {
+      margin-top: 5px;
+    }
+  }
 }

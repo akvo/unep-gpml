@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import api from "../../utils/api";
 import FilterBar from "./filter-bar";
 import "./style.scss";
@@ -13,6 +13,7 @@ import {
 } from "@ant-design/icons";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
+import { Button } from "antd";
 
 import Maps from "../map/map";
 import { UIStore } from "../../store";
@@ -193,6 +194,40 @@ const KnowledgeLib = () => {
           useVerticalLegend
         />
       )}
+      {/* {view === "map" && (
+        <div className="cat-view">
+          <Fragment>
+            <div className="header-wrapper">
+              <h4 className="cat-title">Technical</h4>
+              <Button type="link" block>
+                See all {`>`}
+              </Button>
+            </div>
+            <ResourceCards
+              items={data?.results}
+              showMoreCardAfter={20}
+              showMoreCardClick={() => {
+                setView("grid");
+              }}
+            />
+          </Fragment>
+          <Fragment>
+            <div className="header-wrapper">
+              <h4 className="cat-title">Policy</h4>
+              <Button type="link" block>
+                See all {`>`}
+              </Button>
+            </div>
+            <ResourceCards
+              items={data?.results}
+              showMoreCardAfter={20}
+              showMoreCardClick={() => {
+                setView("grid");
+              }}
+            />
+          </Fragment>
+        </div>
+      )} */}
       <FilterModal
         {...{
           setIsShownModal,

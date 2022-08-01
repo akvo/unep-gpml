@@ -445,6 +445,7 @@ const Maps = ({
   const [content, setContent] = useState("");
   const [countryToSelect, setCountryToSelect] = useState([]);
   const [isShownLegend, setIsShownLegend] = useState(true);
+  const [scaleFactor, setScaleFactor] = useState(1);
 
   const resourceCount =
     (path === KNOWLEDGE_LIBRARY || path === KNOWLEDGE_LIB) &&
@@ -714,7 +715,12 @@ const Maps = ({
               </Tooltip>
             </div>
           </div>
-          <ComposableMap data-tip="" projection="geoEquirectangular">
+          <ComposableMap
+            width={800}
+            height={800}
+            data-tip=""
+            projection="geoEquirectangular"
+          >
             <ZoomableGroup
               minZoom={mapMinZoom}
               maxZoom={mapMaxZoom}
@@ -723,6 +729,7 @@ const Maps = ({
               onMoveEnd={(x) => {
                 setPosition(x);
               }}
+              onMove={({ k }) => setScaleFactor(k)}
               filterZoomEvent={(evt) => {
                 return evt.type === "wheel" ? false : true;
               }}
@@ -907,11 +914,26 @@ const Maps = ({
                                 key={`${geo.rsmKey}-line`}
                               >
                                 {findData && (
-                                  <text fontSize={6} textAnchor="middle">
-                                    {Object.values(
-                                      findData?.transnationalCounts
-                                    )?.reduce((a, b) => a + b)}
-                                  </text>
+                                  <g>
+                                    <circle
+                                      fill="none"
+                                      stroke="#fff"
+                                      stroke-width="1px"
+                                      r={6 / scaleFactor}
+                                    />
+
+                                    <text
+                                      stroke="#000"
+                                      stroke-width="0.2px"
+                                      text-anchor="middle"
+                                      alignment-baseline="central"
+                                      fontSize={6}
+                                    >
+                                      {Object.values(
+                                        findData?.transnationalCounts
+                                      )?.reduce((a, b) => a + b)}
+                                    </text>
+                                  </g>
                                 )}
                               </Marker>
                             )}
