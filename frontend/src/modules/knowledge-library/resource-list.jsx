@@ -152,18 +152,16 @@ const ResourceList = ({
               history={history}
               setIsShowModal={setIsShowModal}
             />
-            {isShowModal && (
-              <DetailModal
-                match={{ params }}
-                {...{
-                  setStakeholderSignupModalVisible,
-                  setFilterMenu,
-                  isAuthenticated,
-                  isShowModal,
-                  setIsShowModal,
-                }}
-              />
-            )}
+            <DetailModal
+              match={{ params }}
+              {...{
+                setStakeholderSignupModalVisible,
+                setFilterMenu,
+                isAuthenticated,
+                isShowModal,
+                setIsShowModal,
+              }}
+            />
           </>
         ) : (
           <h2 className="loading ">There is no data to display</h2>
