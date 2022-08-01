@@ -715,12 +715,7 @@ const Maps = ({
               </Tooltip>
             </div>
           </div>
-          <ComposableMap
-            width={800}
-            height={800}
-            data-tip=""
-            projection="geoEquirectangular"
-          >
+          <ComposableMap data-tip="">
             <ZoomableGroup
               minZoom={mapMinZoom}
               maxZoom={mapMaxZoom}
@@ -800,6 +795,9 @@ const Maps = ({
                           <Geography
                             key={geo.rsmKey}
                             geography={geo}
+                            stroke="#79B0CC"
+                            strokeWidth="0.2"
+                            strokeOpacity="0.8"
                             cursor={!isLake ? "pointer" : ""}
                             fill={
                               isLake
@@ -918,16 +916,16 @@ const Maps = ({
                                     <circle
                                       fill="none"
                                       stroke="#fff"
-                                      stroke-width="1px"
-                                      r={6 / scaleFactor}
+                                      strokeWidth="1px"
+                                      r={8 / scaleFactor}
                                     />
 
                                     <text
                                       stroke="#000"
-                                      stroke-width="0.2px"
-                                      text-anchor="middle"
-                                      alignment-baseline="central"
-                                      fontSize={6}
+                                      strokeWidth="0.2px"
+                                      textAnchor="middle"
+                                      alignmentBaseline="central"
+                                      fontSize={7 / scaleFactor}
                                     >
                                       {Object.values(
                                         findData?.transnationalCounts
