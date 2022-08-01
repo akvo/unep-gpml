@@ -263,12 +263,14 @@ const FlexibleForm = withRouter(
       data.summary = data?.summary?.replace(/(?:\r\n|\r|\n)/g, " ");
 
       if (data?.type?.length > 0) {
-        data.relatedContent = data?.type.map((x) => {
-          return {
-            id: parseInt(x.value),
-            type: x.label,
-          };
-        });
+        data.relatedContent = data?.type
+          .filter((x) => x?.value)
+          .map((x) => {
+            return {
+              id: parseInt(x.value),
+              type: x.label,
+            };
+          });
         delete data.related;
         delete data.type;
         delete data.id;
@@ -445,12 +447,14 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.qtype?.length > 0) {
-        data.related_content = data?.qtype.map((x) => {
-          return {
-            id: parseInt(x.value),
-            type: x.label,
-          };
-        });
+        data.related_content = data?.qtype
+          .filter((x) => x?.value)
+          .map((x) => {
+            return {
+              id: parseInt(x.value),
+              type: x.label,
+            };
+          });
         delete data.qrelated;
         delete data.qtype;
       }
@@ -645,12 +649,14 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.type?.length > 0) {
-        data.relatedContent = data?.type.map((x) => {
-          return {
-            id: parseInt(x.value),
-            type: x.label,
-          };
-        });
+        data.relatedContent = data?.type
+          .filter((x) => x?.value)
+          .map((x) => {
+            return {
+              id: parseInt(x.value),
+              type: x.label,
+            };
+          });
         delete data.related;
         delete data.type;
         delete data.id;
@@ -842,12 +848,14 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.type?.length > 0) {
-        data.relatedContent = data?.type.map((x) => {
-          return {
-            id: parseInt(x.value),
-            type: x.label,
-          };
-        });
+        data.relatedContent = data?.type
+          .filter((x) => x?.value)
+          .map((x) => {
+            return {
+              id: parseInt(x.value),
+              type: x.label,
+            };
+          });
         delete data.related;
         delete data.type;
         delete data.id;
@@ -1036,12 +1044,14 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.type?.length > 0) {
-        data.relatedContent = data?.type.map((x) => {
-          return {
-            id: parseInt(x.value),
-            type: x.label,
-          };
-        });
+        data.relatedContent = data?.type
+          .filter((x) => x?.value)
+          .map((x) => {
+            return {
+              id: parseInt(x.value),
+              type: x.label,
+            };
+          });
         delete data.related;
         delete data.type;
         delete data.id;

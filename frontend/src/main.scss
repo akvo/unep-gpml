@@ -868,7 +868,7 @@ path {
     display: none;
   }
   .small-screen-menu {
-    display: none;
+    display: none !important;
   }
 
   @media (max-width: 540px) {
@@ -914,7 +914,6 @@ path {
     }
     .ant-drawer-body {
       ul {
-        padding: 80px 28px;
         text-align: center;
         .menu-add-content,
         .menu-profile {
@@ -981,12 +980,14 @@ path {
         }
 
         .menu-explore {
-          display: block;
+          position: relative;
+          display: flex !important;
 
-          ul[role="menu"] {
+          ul {
             position: absolute;
-            top: 260px;
-            z-index: 9999;
+            z-index: 9999 !important;
+            top: 100%;
+            left: calc(50% - 201px / 2);
             padding: 0;
             max-width: 200px;
             margin: auto;
@@ -1028,6 +1029,10 @@ path {
     }
     .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
       background-color: rgba(77, 255, 165, 0.1);
+    }
+
+    .nav-link:hover a {
+      color: #1890ff;
     }
   }
 }

@@ -161,10 +161,10 @@ const RelatedContent = ({
                   <div>
                     <h3>{item.title}</h3>
                     <h4>
-                      {data?.type
-                        ? topicNames(data?.type)
-                        : item?.type
+                      {item?.type
                         ? topicNames(item?.type)
+                        : data?.type
+                        ? topicNames(data?.type)
                         : ""}
                     </h4>
                   </div>

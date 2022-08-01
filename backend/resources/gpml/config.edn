@@ -210,7 +210,15 @@
                                                    :swagger {:tags ["stakeholder" "expert"]}
                                                    :parameters #ig/ref :gpml.handler.stakeholder.expert/post-params
                                                    :responses #ig/ref :gpml.handler.stakeholder.expert/post-response
-                                                   :handler #ig/ref :gpml.handler.stakeholder.expert/post}}]]
+                                                   :handler #ig/ref :gpml.handler.stakeholder.expert/post}}]
+                                          ["/suggest"
+                                           {:post {:summary "Suggest an expert"
+                                                   :middleware [#ig/ref :gpml.auth/auth-required
+                                                                #ig/ref :gpml.auth/approved-user]
+                                                   :swagger {:tags ["stakeholder" "expert"]}
+                                                   :parameters #ig/ref :gpml.handler.stakeholder.expert/post-suggest-params
+                                                   :responses #ig/ref :gpml.handler.stakeholder.expert/post-suggest-responses
+                                                   :handler #ig/ref :gpml.handler.stakeholder.expert/post-suggest}}]]
                                          ["/:id"
                                           [""
                                            {:get {:middleware [#ig/ref :gpml.auth/auth-required
@@ -366,57 +374,32 @@
                                           [""
                                            {:get {:summary "Get auth details for a specific topic"
                                                   :swagger {:tags ["topic auth detail"]}
-                                                  :parameters {:path [:map
-                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
-                                                                      [:topic-id int?]]}
+                                                  :parameters #ig/ref :gpml.handler.auth/get-topic-auth-params
                                                   :handler #ig/ref :gpml.handler.auth/get-topic-auth}
                                             :post {:summary "Add stakeholders auth roles to topic"
                                                    :swagger {:tags ["topic auth stakeholder"]
                                                              :security [{:id_token []}]}
-                                                   :parameters {:path [:map
-                                                                       [:topic-type #ig/ref :gpml.handler.detail/topics]
-                                                                       [:topic-id int?]]
-                                                                :body [:map
-                                                                       [:stakeholders
-                                                                        [:vector [:map
-                                                                                  [:id int?]
-                                                                                  [:roles [:vector [:enum "owner"]]]]]]]}
+                                                   :parameters #ig/ref :gpml.handler.auth/post-topic-auth-params
                                                    :handler #ig/ref :gpml.handler.auth/post-topic-auth}}]
                                           ["/{stakeholder}"
                                            {:put {:summary "Update stakeholder auth roles"
                                                   :swagger {:tags ["topic auth stakeholder"]
                                                             :security [{:id_token []}]}
-                                                  :parameters {:path [:map
-                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
-                                                                      [:topic-id int?]
-                                                                      [:stakeholder int?]]
-                                                               :body [:map
-                                                                      [:roles [:vector [:enum "owner"]]]]}
+                                                  :parameters #ig/ref :gpml.handler.auth/update-roles-params
                                                   :handler #ig/ref :gpml.handler.auth/update-roles}
                                             :post {:summary "Add stakeholder auth roles to topic"
                                                    :swagger {:tags ["topic auth stakeholder"]
                                                              :security [{:id_token []}]}
-                                                   :parameters {:path [:map
-                                                                       [:topic-type #ig/ref :gpml.handler.detail/topics]
-                                                                       [:topic-id int?]
-                                                                       [:stakeholder int?]]
-                                                                :body [:map
-                                                                       [:roles [:vector [:enum "owner"]]]]}
+                                                   :parameters #ig/ref :gpml.handler.auth/new-roles-params
                                                    :handler #ig/ref :gpml.handler.auth/new-roles}
                                             :delete {:summary "Delete auth details for a specific resource and stakeholder"
                                                      :swagger {:tags ["topic stakeholder auth detail"]
                                                                :security [{:id_token []}]}
-                                                     :parameters {:path [:map
-                                                                         [:topic-type #ig/ref :gpml.handler.detail/topics]
-                                                                         [:topic-id int?]
-                                                                         [:stakeholder int?]]}
+                                                     :parameters #ig/ref :gpml.handler.auth/delete-params
                                                      :handler #ig/ref :gpml.handler.auth/delete}
                                             :get {:summary "Get auth details for a specific resource and stakeholder"
                                                   :swagger {:tags ["topic stakeholder auth detail"]}
-                                                  :parameters {:path [:map
-                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
-                                                                      [:topic-id int?]
-                                                                      [:stakeholder int?]]}
+                                                  :parameters #ig/ref :gpml.handler.auth/get-topic-stakeholder-auth-params
                                                   :handler #ig/ref :gpml.handler.auth/get-topic-stakeholder-auth}}]]]
                                         ["/detail"
                                          ["/{topic-type}/{topic-id}"
@@ -427,7 +410,9 @@
                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                      [:topic-id int?]]}
                                                  :handler #ig/ref :gpml.handler.detail/get}
-                                           :delete {:middleware [#ig/ref :gpml.auth/auth-middleware]
+                                           :delete {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                 #ig/ref :gpml.auth/auth-required
+                                                                 #ig/ref :gpml.auth/approved-user]
                                                     :summary "remove specific resource"
                                                     :swagger {:tags ["resource detail"]}
                                                     :parameters {:path [:map
@@ -541,7 +526,7 @@
    :auth0 #ig/ref :gpml.config/auth0
    :mailjet-config #ig/ref :gpml.config/mailjet
    :app-name #duct/env ["APP_NAME" Str]
-   :app-domain #duct/env ["APP_NAME" Str]
+   :app-domain #duct/env ["APP_DOMAIN" Str]
    :app-user-admin #duct/env ["APP_USER_ADMIN" Str]}
   ;; Handlers
 
@@ -627,6 +612,9 @@
   :gpml.handler.stakeholder.expert/post #ig/ref :gpml.config/common
   :gpml.handler.stakeholder.expert/post-params {}
   :gpml.handler.stakeholder.expert/post-response {}
+  :gpml.handler.stakeholder.expert/post-suggest #ig/ref :gpml.config/common
+  :gpml.handler.stakeholder.expert/post-suggest-params {}
+  :gpml.handler.stakeholder.expert/post-suggest-responses {}
 
   :gpml.handler.currency/all {:db #ig/ref :duct.database/sql}
 
@@ -661,12 +649,19 @@
                          :sentry {:dsn #duct/env "SENTRY_DSN"
                                   :environment #duct/env "ENV_NAME"}}
 
-  :gpml.handler.auth/get-topic-stakeholder-auth {:conn #ig/ref :gpml.db/spec}
-  :gpml.handler.auth/get-topic-auth {:conn #ig/ref :gpml.db/spec}
-  :gpml.handler.auth/post-topic-auth {:conn #ig/ref :gpml.db/spec}
-  :gpml.handler.auth/new-roles {:conn #ig/ref :gpml.db/spec}
-  :gpml.handler.auth/update-roles {:conn #ig/ref :gpml.db/spec}
-  :gpml.handler.auth/delete {:conn #ig/ref :gpml.db/spec}
+  :gpml.handler.auth/get-topic-stakeholder-auth #ig/ref :gpml.config/common
+  :gpml.handler.auth/get-topic-auth #ig/ref :gpml.config/common
+  :gpml.handler.auth/post-topic-auth #ig/ref :gpml.config/common
+  :gpml.handler.auth/new-roles #ig/ref :gpml.config/common
+  :gpml.handler.auth/update-roles #ig/ref :gpml.config/common
+  :gpml.handler.auth/delete #ig/ref :gpml.config/common
+  :gpml.handler.auth/get-topic-stakeholder-auth-params {}
+  :gpml.handler.auth/get-topic-auth-params {}
+  :gpml.handler.auth/post-topic-auth-params {}
+  :gpml.handler.auth/new-roles-params {}
+  :gpml.handler.auth/update-roles-params {}
+  :gpml.handler.auth/delete-params {}
+
   :gpml.handler.comment/post {:db #ig/ref :duct.database/sql
                               :mailjet-config #ig/ref :gpml.config/mailjet}
   :gpml.handler.comment/post-params {}

@@ -278,8 +278,8 @@ const SignupForm = ({
   useEffect(() => {
     setInitialValues({
       ...initialValues,
-      seeking: initialValues?.seeking.map((x) => x),
-      offering: initialValues?.offering.map((x) => x),
+      seeking: initialValues?.seeking?.map((x) => x),
+      offering: initialValues?.offering?.map((x) => x),
     });
   }, [initialValues]);
 

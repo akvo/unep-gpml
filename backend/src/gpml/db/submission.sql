@@ -43,8 +43,11 @@ submission AS (
     order by created
 ),
 authz AS (
-    select s.id, s.type,  COALESCE(json_agg(st.id) FILTER (WHERE st.email IS NOT NULL), '[]') as owners  from submission s
-    LEFT JOIN topic_stakeholder_auth a ON a.topic_type = s.topic::topic_type AND a.topic_id = s.id and a.roles @>'["owner"]'
+    select s.id, s.type,
+    COALESCE(json_agg(json_build_object('id', st.id, 'email', st.email)) FILTER (WHERE st.email IS NOT NULL AND a.roles ??| array['owner']), '[]') AS owners,
+    COALESCE(json_agg(json_build_object('id', st.id, 'email', st.email)) FILTER (WHERE st.email IS NOT NULL AND a.roles ??| array['focal-point']), '[]') AS focal_points
+    FROM submission s
+    LEFT JOIN topic_stakeholder_auth a ON a.topic_type = s.topic::topic_type AND a.topic_id = s.id AND a.roles ??| array['owner', 'focal-point']
     LEFT JOIN stakeholder st ON a.stakeholder = st.id
     GROUP BY s.id, s.type),
 reviewers AS (
@@ -52,7 +55,7 @@ reviewers AS (
     LEFT JOIN review r ON r.topic_type = s.topic::topic_type AND r.topic_id = s.id
     GROUP BY s.id, s.review_status, s.type),
 data AS (
-    SELECT s.id, s.type, s.topic, s.title, TO_CHAR(s.created, 'DD/MM/YYYY HH12:MI pm') as created, c.email as created_by, '/submission/' || s.type || '/' || s.id as preview, COALESCE(s.review_status, 'SUBMITTED') AS review_status, s.role, a.owners, s.image, r.reviewers
+    SELECT s.id, s.type, s.topic, s.title, TO_CHAR(s.created, 'DD/MM/YYYY HH12:MI pm') as created, c.email as created_by, '/submission/' || s.type || '/' || s.id as preview, COALESCE(s.review_status, 'SUBMITTED') AS review_status, s.role, a.owners, a.focal_points, s.image, r.reviewers
     FROM submission s
     LEFT JOIN stakeholder c ON c.id = s.created_by
     LEFT JOIN authz a on s.id=a.id and s.type=a.type

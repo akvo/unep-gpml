@@ -30,7 +30,7 @@ const ResourceList = ({
   updateQuery,
   isAscending,
   sortResults,
-  setStakeholderSignupModalVisible,
+  setLoginVisible,
   setFilterMenu,
   isAuthenticated,
 }) => {
@@ -153,7 +153,7 @@ const ResourceList = ({
             <DetailModal
               match={{ params }}
               {...{
-                setStakeholderSignupModalVisible,
+                setLoginVisible,
                 setFilterMenu,
                 isAuthenticated,
                 isShowModal,

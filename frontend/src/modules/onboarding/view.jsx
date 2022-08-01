@@ -2,8 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import "./styles.scss";
 import { Button, Typography, Steps } from "antd";
 import { Form } from "react-final-form";
-const { Title, Link } = Typography;
-const { Step } = Steps;
 import AffiliationOption from "./affiliation-option";
 import FormOne from "./form-one";
 import FormTwo from "./form-two";
@@ -23,12 +21,7 @@ function Authentication() {
   let history = useHistory();
   const [affiliation, setAffiliation] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
-  const [initialValues, setInitialValues] = useState({
-    offering: [],
-    offeringSuggested: [],
-    seeking: [],
-    seekingSuggested: [],
-  });
+  const [initialValues, setInitialValues] = useState({});
   const [error, setError] = useState(false);
 
   const { tags, nonMemberOrganisations, organisations } = UIStore.currentState;
@@ -48,6 +41,7 @@ function Authentication() {
       setError(true);
     }
   };
+
   const previous = () => {
     setCurrentStep(Math.max(currentStep - 1, 0));
   };
@@ -160,10 +154,6 @@ function Authentication() {
     formRef?.current?.change("privateCitizen", value);
   };
 
-  const array = Object.keys(tags)
-    .map((k) => tags[k])
-    .flat();
-
   const handleSeekingSuggestedTag = (value) => {
     formRef?.current?.change("seeking", [
       ...(formRef?.current?.getFieldState("seeking")?.value
@@ -194,7 +184,6 @@ function Authentication() {
   };
 
   const setEntity = (res) => {
-    console.log(res);
     formRef?.current?.change("orgName", res.id);
   };
 

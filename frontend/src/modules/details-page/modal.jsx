@@ -5,7 +5,7 @@ import DetailsView from "./view";
 
 const DetailModal = ({
   match,
-  setStakeholderSignupModalVisible,
+  setLoginVisible,
   setFilterMenu,
   isAuthenticated,
   isShowModal,
@@ -20,9 +20,9 @@ const DetailModal = ({
       <DetailsView
         {...{
           match,
-          setStakeholderSignupModalVisible,
           setFilterMenu,
           isAuthenticated,
+          setLoginVisible,
         }}
       />
     </Modal>

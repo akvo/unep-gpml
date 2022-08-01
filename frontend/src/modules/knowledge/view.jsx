@@ -54,7 +54,7 @@ function Knowledge({
   setFilterCountries,
   setMultiCountryCountries,
   setWarningModalVisible,
-  setStakeholderSignupModalVisible,
+  setLoginVisible,
 }) {
   return (
     <div id="siteWrapper">
@@ -95,15 +95,9 @@ function Knowledge({
                       setFilterCountries,
                       setMultiCountryCountries,
                       setWarningModalVisible,
-                      setStakeholderSignupModalVisible,
+                      setLoginVisible,
                       ...props,
                     }}
-                    setStakeholderSignupModalVisible={
-                      setStakeholderSignupModalVisible
-                    }
-                    filters={filters}
-                    setFilters={setFilters}
-                    filterMenu={filterMenu}
                   />
                 )}
               />
