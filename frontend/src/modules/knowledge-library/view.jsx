@@ -349,6 +349,8 @@ const KnowledgeLibrary = ({
                     updateQuery,
                     sortResults,
                     isAscending,
+                    isAuthenticated,
+                    setLoginVisible,
                   }}
                   hideListButtonVisible={view === "map"}
                 />

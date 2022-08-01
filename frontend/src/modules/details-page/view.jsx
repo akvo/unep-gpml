@@ -29,7 +29,6 @@ import { UIStore } from "../../store";
 import { titleCase } from "../../utils/string";
 import { eventTrack } from "../../utils/misc";
 import LeftImage from "../../images/sea-dark.jpg";
-import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useHistory } from "react-router-dom";
 import uniqBy from "lodash/uniqBy";
@@ -37,7 +36,7 @@ import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import { detailMaps } from "./mapping";
 import moment from "moment";
-import { topicNames, resourceTypeToTopicType } from "../../utils/misc";
+import { resourceTypeToTopicType } from "../../utils/misc";
 import { multicountryGroups } from "../knowledge-library/multicountry";
 import RelatedContent from "../../components/related-content/related-content";
 import Comments from "./comment";
@@ -46,7 +45,6 @@ import StakeholderCarousel from "./stakeholder-carousel";
 import { ReactComponent as LocationImage } from "../../images/location.svg";
 import { ReactComponent as TransnationalImage } from "../../images/transnational.svg";
 import { ReactComponent as CityImage } from "../../images/city-icn.svg";
-import { ReactComponent as CircledUserIcon } from "../../images/stakeholder-overview/union-outlined.svg";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
@@ -112,16 +110,12 @@ const DetailsView = ({
     profile,
     countries,
     languages,
-    regionOptions,
-    meaOptions,
     transnationalOptions,
     placeholder,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
     languages: s.languages,
-    regionOptions: s.regionOptions,
-    meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
     icons: s.icons,
     placeholder: s.placeholder,
@@ -160,7 +154,6 @@ const DetailsView = ({
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
-      // loginWithPopup();
       setLoginVisible(true);
     }
 

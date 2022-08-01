@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Space, Avatar, Tooltip, Pagination } from "antd";
 import { ArrowRightOutlined, LoadingOutlined } from "@ant-design/icons";
@@ -13,7 +14,9 @@ import {
 import humps from "humps";
 import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
+import { useHistory } from "react-router-dom";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
+import DetailModal from "../details-page/modal";
 
 // Icons
 
@@ -27,22 +30,25 @@ const ResourceList = ({
   updateQuery,
   isAscending,
   sortResults,
+  setLoginVisible,
+  setFilterMenu,
+  isAuthenticated,
 }) => {
   const { profile, stakeholders } = UIStore.useState((s) => ({
     profile: s.profile,
     stakeholders: s.stakeholders,
   }));
-
+  const history = useHistory();
   const [didMount, setDidMount] = useState(false);
-  const [isShownModal, setIsShownModal] = useState(false);
   const [dataProperties, setDataProperties] = useState({
     resourceType: null,
     resourceId: null,
   });
   const [data, setData] = useState(null);
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
-
+  const [params, setParams] = useState(null);
   const topics = query?.topic;
+  const [isShowModal, setIsShowModal] = useState(false);
   // Choose topics to count, based on whether user is approved or not,
   // and if any topic filters are active.
   const topicsForTotal = (isApprovedUser
@@ -85,6 +91,17 @@ const ResourceList = ({
     return () => setDidMount(false);
   }, []);
 
+  useEffect(() => {
+    if (!isShowModal) {
+      const previousHref = `${history?.location?.pathname}${history?.location?.search}`;
+      window.history.pushState(
+        { urlPath: `/${previousHref}` },
+        "",
+        `${previousHref}`
+      );
+    }
+  }, [isShowModal]);
+
   return (
     <Row style={{ postion: "relative" }}>
       <Col
@@ -124,12 +141,24 @@ const ResourceList = ({
         ) : !loading && !isEmpty(allResults) ? (
           <>
             <ResourceItem
+              setParams={setParams}
               view={view}
               results={allResults}
               stakeholders={stakeholders}
-              setIsShownModal={setIsShownModal}
               setData={setData}
               setDataProperties={setDataProperties}
+              history={history}
+              setIsShowModal={setIsShowModal}
+            />
+            <DetailModal
+              match={{ params }}
+              {...{
+                setLoginVisible,
+                setFilterMenu,
+                isAuthenticated,
+                isShowModal,
+                setIsShowModal,
+              }}
             />
           </>
         ) : (
@@ -152,7 +181,14 @@ const ResourceList = ({
   );
 };
 
-const ResourceItem = ({ results, view, stakeholders }) => {
+const ResourceItem = ({
+  results,
+  view,
+  stakeholders,
+  setParams,
+  history,
+  setIsShowModal,
+}) => {
   return results.map((result) => {
     const { id, type } = result;
     const fullName = (data) =>
@@ -199,7 +235,15 @@ const ResourceItem = ({ results, view, stakeholders }) => {
     };
 
     return (
-      <Link to={linkTo} className="resource-item-wrapper" key={`${type}-${id}`}>
+      <div
+        className="resource-item-wrapper"
+        key={`${type}-${id}`}
+        onClick={() => {
+          setParams({ type, id });
+          window.history.pushState({ urlPath: `/${linkTo}` }, "", `${linkTo}`);
+          setIsShowModal(true);
+        }}
+      >
         <Card
           className="resource-item"
           style={
@@ -261,7 +305,7 @@ const ResourceItem = ({ results, view, stakeholders }) => {
             </span>
           </div>
         </Card>
-      </Link>
+      </div>
     );
   });
 };

@@ -68,7 +68,9 @@
       @media (max-width: 600px) {
         padding: 30px 30px calc(30px - 14px) 30px !important;
       }
-
+      .close-modal-button {
+        display: none;
+      }
       .tool-buttons {
         display: flex;
         flex-wrap: wrap;
