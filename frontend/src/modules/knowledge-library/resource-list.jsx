@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Space, Avatar, Tooltip, Pagination } from "antd";
 import { ArrowRightOutlined, LoadingOutlined } from "@ant-design/icons";
@@ -16,7 +15,6 @@ import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
 import { useHistory } from "react-router-dom";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
-import DetailModal from "../details-page/modal";
 
 // Icons
 
@@ -30,9 +28,9 @@ const ResourceList = ({
   updateQuery,
   isAscending,
   sortResults,
-  setLoginVisible,
-  setFilterMenu,
-  isAuthenticated,
+  onHandleModal,
+  setParams,
+  setIsShowModal,
 }) => {
   const { profile, stakeholders } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -46,9 +44,8 @@ const ResourceList = ({
   });
   const [data, setData] = useState(null);
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
-  const [params, setParams] = useState(null);
   const topics = query?.topic;
-  const [isShowModal, setIsShowModal] = useState(false);
+
   // Choose topics to count, based on whether user is approved or not,
   // and if any topic filters are active.
   const topicsForTotal = (isApprovedUser
@@ -90,17 +87,6 @@ const ResourceList = ({
     setDidMount(true);
     return () => setDidMount(false);
   }, []);
-
-  useEffect(() => {
-    if (!isShowModal) {
-      const previousHref = `${history?.location?.pathname}${history?.location?.search}`;
-      window.history.pushState(
-        { urlPath: `/${previousHref}` },
-        "",
-        `${previousHref}`
-      );
-    }
-  }, [isShowModal]);
 
   return (
     <Row style={{ postion: "relative" }}>
@@ -149,16 +135,7 @@ const ResourceList = ({
               setDataProperties={setDataProperties}
               history={history}
               setIsShowModal={setIsShowModal}
-            />
-            <DetailModal
-              match={{ params }}
-              {...{
-                setLoginVisible,
-                setFilterMenu,
-                isAuthenticated,
-                isShowModal,
-                setIsShowModal,
-              }}
+              onHandleModal={onHandleModal}
             />
           </>
         ) : (
@@ -181,14 +158,7 @@ const ResourceList = ({
   );
 };
 
-const ResourceItem = ({
-  results,
-  view,
-  stakeholders,
-  setParams,
-  history,
-  setIsShowModal,
-}) => {
+const ResourceItem = ({ results, view, stakeholders, onHandleModal }) => {
   return results.map((result) => {
     const { id, type } = result;
     const fullName = (data) =>
@@ -238,11 +208,7 @@ const ResourceItem = ({
       <div
         className="resource-item-wrapper"
         key={`${type}-${id}`}
-        onClick={() => {
-          setParams({ type, id });
-          window.history.pushState({ urlPath: `/${linkTo}` }, "", `${linkTo}`);
-          setIsShowModal(true);
-        }}
+        onClick={() => onHandleModal(type, id, linkTo)}
       >
         <Card
           className="resource-item"

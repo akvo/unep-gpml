@@ -297,7 +297,6 @@ const DetailsView = ({
       okText: "Delete",
       okType: "danger",
       onOk() {
-        console.log("params?.type::::::", params?.type);
         return api
           .delete(`/detail/${params?.type.replace("-", "_")}/${params?.id}`)
           .then((res) => {
