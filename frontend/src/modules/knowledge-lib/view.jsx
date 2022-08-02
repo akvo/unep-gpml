@@ -6,14 +6,12 @@ import FilterModal from "./filter-modal";
 import ResourceCards, {
   ResourceCard,
 } from "../../components/resource-cards/resource-cards";
-import {
-  AppstoreOutlined,
-  ArrowRightOutlined,
-  LoadingOutlined,
-  DownOutlined,
-} from "@ant-design/icons";
+import { LoadingOutlined, DownOutlined } from "@ant-design/icons";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
+import { ReactComponent as TopicIcon } from "../../images/topic-view.svg";
+import { ReactComponent as GridIcon } from "../../images/grid-view.svg";
+import { ReactComponent as GraphIcon } from "../../images/graph-view.svg";
 import { ReactComponent as SearchIcon } from "../../images/search-icon.svg";
 import { Button } from "antd";
 import Maps from "../map/map";
@@ -176,28 +174,28 @@ const KnowledgeLib = () => {
                   onClick={() => setView("map")}
                 >
                   <div>MAP VIEW </div>
-                  <GlobeIcon />
+                  <GlobeIcon width={30} />
                 </div>
                 <div
                   className="dropdown__option-box__item"
                   onClick={() => setView("topic")}
                 >
                   <div>TOPIC VIEW </div>
-                  <GlobeIcon />
+                  <TopicIcon width={30} />
                 </div>
                 <div
                   className="dropdown__option-box__item"
                   onClick={() => setView("grid")}
                 >
                   <div>GRID VIEW </div>
-                  <GlobeIcon />
+                  <GridIcon width={30} />
                 </div>
                 <div
                   className="dropdown__option-box__item"
                   onClick={() => setView("graph")}
                 >
                   <div>KNOWLEDGE GRAPH VIEW</div>
-                  <GlobeIcon />
+                  <GraphIcon width={30} />
                 </div>
               </div>
             </div>
