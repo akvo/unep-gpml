@@ -26,7 +26,7 @@ import entity from "./entity";
 import stakeholder from "./stakeholder";
 import entityUiSchema from "./entity-ui-schema.json";
 import stakeholderUiSchema from "./stakeholder-ui-schema.json";
-import { tagsMap } from "../../utils/misc";
+import { tagsMap, tagsMapExpertise } from "../../utils/misc";
 
 import { UIStore } from "../../store";
 import { withRouter } from "react-router-dom";
@@ -180,7 +180,11 @@ const SignUpForm = withRouter(
           delete data.authorizeSubmission;
 
           if (data.orgExpertise) {
-            data.org.tags = tagsMap(data.orgExpertise, "general", tags);
+            data.org.tags = tagsMapExpertise(
+              data.orgExpertise,
+              "general",
+              tags
+            );
             delete data.orgExpertise;
             delete data.expertise;
           }

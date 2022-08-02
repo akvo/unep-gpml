@@ -155,6 +155,19 @@ export const tagsMap = (array, category, tags) => {
   });
 };
 
+export const tagsMapExpertise = (array, category, tags) => {
+  return array.map((x) => {
+    return {
+      ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
+      tag:
+        Object.values(tags)
+          .flat()
+          .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
+      tag_category: category,
+    };
+  });
+};
+
 export const toTitleCase = (phrase) => {
   return phrase
     .toLowerCase()
