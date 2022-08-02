@@ -10,6 +10,7 @@ import {
   HeartFilled,
 } from "@ant-design/icons";
 import { resourceTypeToTopicType, topicNames } from "../../utils/misc";
+import { ReactComponent as ModalCloseIcon } from "../../images/modal-close-icon.svg";
 
 export const HeaderButtons = ({
   data,

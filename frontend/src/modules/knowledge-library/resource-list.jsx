@@ -13,6 +13,7 @@ import {
 import humps from "humps";
 import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
+import { useHistory } from "react-router-dom";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 
 // Icons
@@ -27,22 +28,24 @@ const ResourceList = ({
   updateQuery,
   isAscending,
   sortResults,
+  onHandleModal,
+  setParams,
+  setIsShowModal,
 }) => {
   const { profile, stakeholders } = UIStore.useState((s) => ({
     profile: s.profile,
     stakeholders: s.stakeholders,
   }));
-
+  const history = useHistory();
   const [didMount, setDidMount] = useState(false);
-  const [isShownModal, setIsShownModal] = useState(false);
   const [dataProperties, setDataProperties] = useState({
     resourceType: null,
     resourceId: null,
   });
   const [data, setData] = useState(null);
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
-
   const topics = query?.topic;
+
   // Choose topics to count, based on whether user is approved or not,
   // and if any topic filters are active.
   const topicsForTotal = (isApprovedUser
@@ -124,12 +127,15 @@ const ResourceList = ({
         ) : !loading && !isEmpty(allResults) ? (
           <>
             <ResourceItem
+              setParams={setParams}
               view={view}
               results={allResults}
               stakeholders={stakeholders}
-              setIsShownModal={setIsShownModal}
               setData={setData}
               setDataProperties={setDataProperties}
+              history={history}
+              setIsShowModal={setIsShowModal}
+              onHandleModal={onHandleModal}
             />
           </>
         ) : (
@@ -152,7 +158,7 @@ const ResourceList = ({
   );
 };
 
-const ResourceItem = ({ results, view, stakeholders }) => {
+const ResourceItem = ({ results, view, stakeholders, onHandleModal }) => {
   return results.map((result) => {
     const { id, type } = result;
     const fullName = (data) =>
@@ -199,7 +205,11 @@ const ResourceItem = ({ results, view, stakeholders }) => {
     };
 
     return (
-      <Link to={linkTo} className="resource-item-wrapper" key={`${type}-${id}`}>
+      <div
+        className="resource-item-wrapper"
+        key={`${type}-${id}`}
+        onClick={() => onHandleModal(type.replace("_", "-"), id, linkTo)}
+      >
         <Card
           className="resource-item"
           style={
@@ -261,7 +271,7 @@ const ResourceItem = ({ results, view, stakeholders }) => {
             </span>
           </div>
         </Card>
-      </Link>
+      </div>
     );
   });
 };
