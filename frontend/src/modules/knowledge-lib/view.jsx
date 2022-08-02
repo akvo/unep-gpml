@@ -174,28 +174,28 @@ const KnowledgeLib = () => {
                   onClick={() => setView("map")}
                 >
                   <div>MAP VIEW </div>
-                  <GlobeIcon width={30} />
+                  <GlobeIcon width={32} />
                 </div>
                 <div
                   className="dropdown__option-box__item"
                   onClick={() => setView("topic")}
                 >
                   <div>TOPIC VIEW </div>
-                  <TopicIcon width={30} />
+                  <TopicIcon width={30} height={30} />
                 </div>
                 <div
                   className="dropdown__option-box__item"
                   onClick={() => setView("grid")}
                 >
                   <div>GRID VIEW </div>
-                  <GridIcon width={30} />
+                  <GridIcon width={30} height={30} />
                 </div>
                 <div
                   className="dropdown__option-box__item"
                   onClick={() => setView("graph")}
                 >
                   <div>KNOWLEDGE GRAPH VIEW</div>
-                  <GraphIcon width={30} />
+                  <GraphIcon width={30} height={30} />
                 </div>
               </div>
             </div>
