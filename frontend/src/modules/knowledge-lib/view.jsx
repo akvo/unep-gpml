@@ -10,15 +10,15 @@ import {
   AppstoreOutlined,
   ArrowRightOutlined,
   LoadingOutlined,
+  DownOutlined,
 } from "@ant-design/icons";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
 import { Button } from "antd";
-
 import Maps from "../map/map";
 import { UIStore } from "../../store";
 import { isEmpty } from "lodash";
-import { useQuery } from "../../utils/misc";
+import { useQuery, topicNames } from "../../utils/misc";
 
 const KnowledgeLib = () => {
   const { countries, organisations, landing } = UIStore.useState((s) => ({
@@ -31,6 +31,7 @@ const KnowledgeLib = () => {
   const query = useQuery();
   const [view, setView] = useState("map"); // to be changed to 'overview' later
   const [isAscending, setIsAscending] = useState(null);
+  const [active, setActive] = useState(false);
   const [loading, setLoading] = useState(true);
   const [filterCountries, setFilterCountries] = useState([]);
   const [filter, setFilter] = useState([]);
@@ -127,8 +128,8 @@ const KnowledgeLib = () => {
 
     Promise.all(promiseArray)
       .then((data) => {
-        const newData = categories.map((driver, idx) => ({
-          driver,
+        const newData = categories.map((categories, idx) => ({
+          categories,
           data: data[idx].data.results,
         }));
         setCatData(newData);
@@ -139,7 +140,7 @@ const KnowledgeLib = () => {
   };
 
   useEffect(() => {
-    if (view === "cat" && catData.length === 0) {
+    if (view === "topic" && catData.length === 0) {
       loadAllCat();
     }
   }, [view, catData]);
@@ -162,19 +163,44 @@ const KnowledgeLib = () => {
       <div className="list-content">
         <div className="list-toolbar">
           <div className="page-label">Total {data?.results?.length}</div>
-          <button
-            className="view-button"
-            shape="round"
-            size="large"
-            onClick={() => {
-              view === "map" ? setView("grid") : setView("map");
-            }}
-          >
-            <div className="view-button-text ">
-              Switch to {`${view === "map" ? "grid" : "map"}`} view
+          <div className="view-button-container">
+            <div className="dropdown">
+              <div className="dropdown__value">
+                <DownOutlined />
+                {view} View
+              </div>
+              <div className="dropdown__option-box">
+                <div
+                  className="dropdown__option-box__item"
+                  onClick={() => setView("map")}
+                >
+                  <div>MAP VIEW </div>
+                  <GlobeIcon />
+                </div>
+                <div
+                  className="dropdown__option-box__item"
+                  onClick={() => setView("topic")}
+                >
+                  <div>TOPIC VIEW </div>
+                  <GlobeIcon />
+                </div>
+                <div
+                  className="dropdown__option-box__item"
+                  onClick={() => setView("grid")}
+                >
+                  <div>GRID VIEW </div>
+                  <GlobeIcon />
+                </div>
+                <div
+                  className="dropdown__option-box__item"
+                  onClick={() => setView("graph")}
+                >
+                  <div>KNOWLEDGE GRAPH VIEW</div>
+                  <GlobeIcon />
+                </div>
+              </div>
             </div>
-            {view === "map" ? <AppstoreOutlined /> : <GlobeIcon />}
-          </button>
+          </div>
           <button
             className="sort-by-button"
             // onClick={() => sortExperts(!isAscending)}
@@ -228,40 +254,27 @@ const KnowledgeLib = () => {
           useVerticalLegend
         />
       )}
-      {/* {view === "map" && (
+      {view === "topic" && (
         <div className="cat-view">
-          <Fragment>
-            <div className="header-wrapper">
-              <h4 className="cat-title">Technical</h4>
-              <Button type="link" block>
-                See all {`>`}
-              </Button>
-            </div>
-            <ResourceCards
-              items={data?.results}
-              showMoreCardAfter={20}
-              showMoreCardClick={() => {
-                setView("grid");
-              }}
-            />
-          </Fragment>
-          <Fragment>
-            <div className="header-wrapper">
-              <h4 className="cat-title">Policy</h4>
-              <Button type="link" block>
-                See all {`>`}
-              </Button>
-            </div>
-            <ResourceCards
-              items={data?.results}
-              showMoreCardAfter={20}
-              showMoreCardClick={() => {
-                setView("grid");
-              }}
-            />
-          </Fragment>
+          {catData.map((d) => (
+            <Fragment key={d.categories}>
+              <div className="header-wrapper">
+                <h4 className="cat-title">{topicNames(d.categories)}</h4>
+                <Button type="link" block>
+                  See all {`>`}
+                </Button>
+              </div>
+              <ResourceCards
+                items={d?.data}
+                showMoreCardAfter={20}
+                showMoreCardClick={() => {
+                  setView("grid");
+                }}
+              />
+            </Fragment>
+          ))}
         </div>
-      )} */}
+      )}
       <FilterModal
         {...{
           setIsShownModal,
