@@ -208,7 +208,7 @@ const ResourceItem = ({ results, view, stakeholders, onHandleModal }) => {
       <div
         className="resource-item-wrapper"
         key={`${type}-${id}`}
-        onClick={() => onHandleModal(type, id, linkTo)}
+        onClick={() => onHandleModal(type.replace("_", "-"), id, linkTo)}
       >
         <Card
           className="resource-item"
