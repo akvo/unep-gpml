@@ -684,7 +684,7 @@ const formDataMapping = [
     section: "S5",
     group: "S5_G1",
     question: "S5_G4_33",
-    type: "number",
+    type: "string",
   },
   {
     name: "q34",
@@ -762,6 +762,13 @@ const formDataMapping = [
     group: "S5_G1",
     question: "S5_G7_41.1",
     type: "string",
+  },
+  {
+    name: "q4_2_1",
+    section: "S5",
+    group: "S5_G1",
+    question: "S5_G1_4.2.1",
+    type: "multiple-option",
   },
 ];
 
