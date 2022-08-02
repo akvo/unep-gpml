@@ -825,9 +825,7 @@ const Root = () => {
             render={(props) => (
               <StakeholderDetail
                 {...props}
-                setStakeholderSignupModalVisible={
-                  setStakeholderSignupModalVisible
-                }
+                setLoginVisible={setLoginVisible}
                 setFilterMenu={setFilterMenu}
                 isAuthenticated={isAuthenticated}
               />
