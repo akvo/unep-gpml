@@ -246,6 +246,7 @@
         width: 100%;
         position: absolute;
         left: 0;
+        top: 100%;
         background-color: #fff;
         display: flex;
         flex-direction: column;
@@ -324,13 +325,13 @@
       display: flex;
       justify-content: space-between;
       padding: 0 40px;
-      margin-top: 20px;
+      margin: 20px 0px;
       h4 {
         font-weight: 500;
         font-size: 16px;
         line-height: 23px;
         text-transform: uppercase;
-
+        margin-bottom: 0px;
         color: #a5b0c9;
       }
       button {
@@ -339,6 +340,38 @@
         line-height: 20px;
         color: #000000;
         width: auto;
+      }
+      .title-wrapper {
+        display: flex;
+        align-items: center;
+        .quick-search {
+          display: flex;
+          position: relative;
+          margin-left: 20px;
+          height: 25px;
+          align-items: center;
+          .count {
+            background: #ffffff;
+            border: 1px solid #edf2f7;
+            border-radius: 6px;
+            padding-left: 10px;
+            padding-right: 40px;
+            font-weight: 700;
+            font-size: 12px;
+            color: #18162f;
+            height: 100%;
+            display: flex;
+            align-items: center;
+          }
+          .search-icon {
+            position: absolute;
+            top: 50%;
+            right: -5px;
+            transform: translateY(-50%);
+            align-items: center;
+            display: flex;
+          }
+        }
       }
     }
     .resource-cards {

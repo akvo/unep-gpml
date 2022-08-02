@@ -14,6 +14,7 @@ import {
 } from "@ant-design/icons";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
+import { ReactComponent as SearchIcon } from "../../images/search-icon.svg";
 import { Button } from "antd";
 import Maps from "../map/map";
 import { UIStore } from "../../store";
@@ -259,7 +260,15 @@ const KnowledgeLib = () => {
           {catData.map((d) => (
             <Fragment key={d.categories}>
               <div className="header-wrapper">
-                <h4 className="cat-title">{topicNames(d.categories)}</h4>
+                <div className="title-wrapper">
+                  <h4 className="cat-title">{topicNames(d.categories)}</h4>
+                  <div className="quick-search">
+                    <div className="count">{d?.data.length}</div>
+                    <div className="search-icon">
+                      <SearchIcon />
+                    </div>
+                  </div>
+                </div>
                 <Button type="link" block>
                   See all {`>`}
                 </Button>
