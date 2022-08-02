@@ -121,6 +121,7 @@ const KnowledgeLib = () => {
   };
 
   const loadAllCat = async () => {
+    setLoading(true);
     const promiseArray = categories.map((url) =>
       api.get(`/browse?topic=${url}`)
     );
@@ -132,9 +133,11 @@ const KnowledgeLib = () => {
           data: data[idx].data.results,
         }));
         setCatData(newData);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   };
 
@@ -174,28 +177,28 @@ const KnowledgeLib = () => {
                   onClick={() => setView("map")}
                 >
                   <div>MAP VIEW </div>
-                  <GlobeIcon width={32} />
+                  {/* <GlobeIcon width={32} /> */}
                 </div>
                 <div
                   className="dropdown__option-box__item"
                   onClick={() => setView("topic")}
                 >
                   <div>TOPIC VIEW </div>
-                  <TopicIcon width={30} height={30} />
+                  {/* <TopicIcon width={30} height={30} /> */}
                 </div>
                 <div
                   className="dropdown__option-box__item"
                   onClick={() => setView("grid")}
                 >
                   <div>GRID VIEW </div>
-                  <GridIcon width={30} height={30} />
+                  {/* <GridIcon width={30} height={30} /> */}
                 </div>
                 <div
                   className="dropdown__option-box__item"
                   onClick={() => setView("graph")}
                 >
-                  <div>KNOWLEDGE GRAPH VIEW</div>
-                  <GraphIcon width={30} height={30} />
+                  <div>CATEGORY VIEW</div>
+                  {/* <GraphIcon width={30} height={30} /> */}
                 </div>
               </div>
             </div>
@@ -218,11 +221,6 @@ const KnowledgeLib = () => {
             </div>
           </button>
         </div>
-        {loading && (
-          <div className="loading">
-            <LoadingOutlined spin />
-          </div>
-        )}
         {view === "map" && (
           <ResourceCards
             items={data?.results}
@@ -233,6 +231,11 @@ const KnowledgeLib = () => {
           />
         )}
       </div>
+      {loading && (
+        <div className="loading">
+          <LoadingOutlined spin />
+        </div>
+      )}
       {view === "grid" && <GridView data={data} />}
       {view === "map" && (
         <Maps
