@@ -202,7 +202,7 @@ const SharePanel = ({
 
 const StakeholderDetail = ({
   match: { params },
-  setStakeholderSignupModalVisible,
+  setLoginVisible,
   setFilterMenu,
   isAuthenticated,
 }) => {
@@ -305,6 +305,9 @@ const StakeholderDetail = ({
   );
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      setLoginVisible(true);
+    }
     isLoaded() &&
       !data &&
       params?.type &&
@@ -335,13 +338,13 @@ const StakeholderDetail = ({
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
-      // loginWithPopup(); TODO NAVIN
+      setLoginVisible(true);
     }
     if (profile.reviewStatus === "SUBMITTED") {
       setWarningVisible(true);
     }
     if (isAuthenticated && profile.reviewStatus === undefined) {
-      setStakeholderSignupModalVisible(true);
+      setLoginVisible(true);
     }
     if (profile.reviewStatus === "APPROVED") {
       api.post("/favorite", relation).then((res) => {
