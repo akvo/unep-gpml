@@ -43,6 +43,7 @@ const KnowledgeLib = () => {
   const [filterCountries, setFilterCountries] = useState([]);
   const [filter, setFilter] = useState([]);
   const [countData, setCountData] = useState([]);
+  const [initialCountData, setInitialCountData] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const categories = [
     "project",
@@ -103,6 +104,8 @@ const KnowledgeLib = () => {
       .then((resp) => {
         setData(resp?.data);
         setCountData(resp?.data?.counts);
+        if (initialCountData.length === 0)
+          setInitialCountData(resp?.data?.counts);
         setLoading(false);
       })
       .catch((err) => {
@@ -235,7 +238,10 @@ const KnowledgeLib = () => {
                 </div>
                 <div
                   className="dropdown__option-box__item"
-                  onClick={() => setView("topic")}
+                  onClick={() => {
+                    setView("topic");
+                    setCountData(initialCountData);
+                  }}
                 >
                   <div>TOPIC VIEW </div>
                   {/* <TopicIcon width={30} height={30} /> */}

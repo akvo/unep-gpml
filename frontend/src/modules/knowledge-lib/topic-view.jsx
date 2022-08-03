@@ -23,11 +23,14 @@ const TopicView = ({
   ];
 
   useEffect(() => {
-    if (data.length === 0 || query.hasOwnProperty("country")) {
+    if (data.length === 0) {
       setData(countData);
     }
-    if (!selectedTopic && !loading && !query.hasOwnProperty("country")) {
+    if (!selectedTopic && !loading && !query.hasOwnProperty("tag")) {
       setData(countData);
+    }
+    if (query.hasOwnProperty("topic") && selectedTopic) {
+      setData(data);
     }
   }, [data, countData, query, selectedTopic, loading]);
 
