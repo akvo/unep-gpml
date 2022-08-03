@@ -1161,6 +1161,10 @@ const FlexibleForm = withRouter(
             (value) =>
               value !== "geoCoverageCountries" && value !== "S4_G2_24.4"
           );
+          console.log(
+            "formSchema.schema.properties.S4.properties::::::",
+            formData?.S4.S4_G2.geoCoverageValueTransnational.includes("0")
+          );
           updatedFormDataSchema = {
             ...formSchema.schema,
             properties: {
