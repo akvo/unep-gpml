@@ -128,7 +128,9 @@ const KnowledgeLib = () => {
     window.scrollTo({
       top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
     });
-    setLoading(true);
+    {
+      view !== "category" && setLoading(true);
+    }
     const newQuery = { ...query };
     newQuery[param] = value;
 
@@ -148,7 +150,7 @@ const KnowledgeLib = () => {
 
     history.push(`/knowledge/lib?${newParams.toString()}`);
 
-    if (fetch) {
+    if (fetch && view !== "category") {
       fetchData(pureQuery);
     }
 

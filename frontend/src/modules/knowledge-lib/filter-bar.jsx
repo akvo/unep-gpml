@@ -129,20 +129,23 @@ const FilterBar = ({
             (item) =>
               item !== "offset" &&
               item !== "country" &&
-              item !== "transnational"
+              item !== "transnational" &&
+              item !== "topic"
           ).length > 0 && (
             <div class="filter-status">
               {Object.keys(query).filter(
                 (item) =>
                   item !== "offset" &&
                   item !== "country" &&
-                  item !== "transnational"
+                  item !== "transnational" &&
+                  item !== "topic"
               ).length > 0 &&
                 Object.keys(query).filter(
                   (item) =>
                     item !== "offset" &&
                     item !== "country" &&
-                    item !== "transnational"
+                    item !== "transnational" &&
+                    item !== "topic"
                 ).length}
             </div>
           )}
