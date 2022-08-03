@@ -86,7 +86,9 @@ const TopicView = ({ updateQuery, query, results, countData, fetch }) => {
   // Apply when there is a selected topic
   useEffect(() => {
     if (results.length > 0) {
-      setSortedPopularTopics(allTopics);
+      {
+        sortedPopularTopics.length === 0 && setSortedPopularTopics(allTopics);
+      }
     } else {
       const topics = popularTags.map((topic) => {
         return {
@@ -96,7 +98,9 @@ const TopicView = ({ updateQuery, query, results, countData, fetch }) => {
           count: 0,
         };
       });
-      setSortedPopularTopics(topics);
+      {
+        sortedPopularTopics.length === 0 && setSortedPopularTopics(topics);
+      }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
