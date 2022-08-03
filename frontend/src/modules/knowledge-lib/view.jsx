@@ -18,6 +18,15 @@ import Maps from "../map/map";
 import { UIStore } from "../../store";
 import { isEmpty } from "lodash";
 import { useQuery, topicNames } from "../../utils/misc";
+import TopicView from "./topic-view";
+const popularTags = [
+  "plastics",
+  "waste management",
+  "marine litter",
+  "capacity building",
+  "product by design",
+  "source to sea",
+];
 
 const KnowledgeLib = () => {
   const { countries, organisations, landing } = UIStore.useState((s) => ({
@@ -35,6 +44,8 @@ const KnowledgeLib = () => {
   const [filterCountries, setFilterCountries] = useState([]);
   const [filter, setFilter] = useState([]);
   const [countData, setCountData] = useState([]);
+  const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
+  const [selectedTopic, setSelectedTopic] = useState(null);
   const [categories, setCategories] = useState([
     "project",
     "action_plan",
@@ -45,7 +56,7 @@ const KnowledgeLib = () => {
     "financing_resource",
   ]);
   const [catData, setCatData] = useState([]);
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
   const [isShownModal, setIsShownModal] = useState(false);
   const [moreFilter, setMoreFilters] = useState({
     subContentType: null,
@@ -72,8 +83,11 @@ const KnowledgeLib = () => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData({
+      topic: categories.toString(),
+      incCountsForTags: popularTags.toString(),
+    });
+  }, [categories]);
 
   useEffect(() => {
     api.get(`/landing?entityGroup=topic`).then((resp) => {
@@ -82,6 +96,10 @@ const KnowledgeLib = () => {
       });
     });
   }, []);
+
+  const updateQuery = (param, value) => {
+    console.log(param, value);
+  };
 
   const clickCountry = (value) => {
     let updateVal = [];
@@ -142,7 +160,7 @@ const KnowledgeLib = () => {
   };
 
   useEffect(() => {
-    if (view === "topic" && catData.length === 0) {
+    if (view === "cat" && catData.length === 0) {
       loadAllCat();
     }
   }, [view, catData]);
@@ -221,7 +239,7 @@ const KnowledgeLib = () => {
             </div>
           </button>
         </div>
-        {view === "map" && (
+        {(view === "map" || view === "topic") && (
           <ResourceCards
             items={data?.results}
             showMoreCardAfter={20}
@@ -229,6 +247,17 @@ const KnowledgeLib = () => {
               setView("grid");
             }}
           />
+        )}
+        {view === "topic" && (
+          <div className="topic-view-container">
+            <TopicView
+              {...{ updateQuery, query }}
+              results={data?.results}
+              countData={countData.filter(
+                (count) => count.topic !== "gpml_member_entities"
+              )}
+            />
+          </div>
         )}
       </div>
       {loading && (
@@ -256,7 +285,7 @@ const KnowledgeLib = () => {
           useVerticalLegend
         />
       )}
-      {view === "topic" && (
+      {view === "cat" && (
         <div className="cat-view">
           {catData.map((d) => (
             <Fragment key={d.categories}>
