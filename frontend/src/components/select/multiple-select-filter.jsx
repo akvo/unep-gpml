@@ -11,12 +11,13 @@ const MultipleSelectFilter = ({
   flag,
   updateQuery,
   span = 24,
+  clear,
 }) => {
   return (
     <Col span={span} className="multiselection-filter">
       <Space align="middle">
         <div className="filter-title multiple-filter-title">{title}</div>
-        {!isEmpty(query?.[flag]) ? (
+        {!isEmpty(query?.[flag]) && clear ? (
           <Tag
             className="clear-selection"
             closable
@@ -43,12 +44,7 @@ const MultipleSelectFilter = ({
           }
           value={value}
           onChange={(val) => updateQuery(flag, val)}
-          onDeselect={(val) =>
-            updateQuery(
-              flag,
-              query?.[flag]?.filter((x) => x != val)
-            )
-          }
+          onDeselect={(val) => updateQuery(flag, [])}
           virtual={false}
         />
       </div>

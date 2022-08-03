@@ -14,7 +14,7 @@ const resourceTypes = [
   { key: "technology", label: "Technology" },
   { key: "capacity-building", label: "Capacity Building" },
   { key: "initiative", label: "Initiatives" },
-  { key: "action-plan", label: "Policy" },
+  { key: "action-plan", label: "Action Plan" },
   { key: "policy", label: "Policy" },
   { key: "financing-resource", label: "Financing Resources" },
 ];
@@ -27,28 +27,32 @@ const FilterBar = ({
   setIsShownModal,
   filterCountries,
   setFilterCountries,
-  fetchData,
-  moreFilter,
+  updateQuery,
+  multiCountryCountries,
+  setMultiCountryCountries,
 }) => {
   const query = useQuery();
   const [country, setCountry] = useState([]);
   const [multiCountry, setMultiCountry] = useState([]);
-  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [disable, setDisable] = useState({
     country: false,
     multiCountry: false,
   });
 
-  const isEmpty = Object.values(moreFilter).every(
+  const isEmpty = Object.values(query).every(
     (x) => x === null || x === undefined || x?.length === 0
   );
 
   const handleClickFilter = (key) => () => {
-    if (filter.indexOf(key) === -1) {
-      setFilter([...filter, key]);
+    if (query?.topic?.includes(key)) {
+      updateQuery(
+        "topic",
+        query?.topic?.filter((it) => it !== key),
+        true
+      );
     } else {
-      setFilter(filter.filter((it) => it !== key));
+      updateQuery("topic", key, true);
     }
     if (view === "overview") {
       setView("map");
@@ -58,93 +62,6 @@ const FilterBar = ({
   const handleClickOverview = () => {
     setView("overview");
     setFilter([]);
-  };
-
-  const updateQuery = (param, value) => {
-    if (param === "country") {
-      setDisable({
-        ...disable,
-        ...(value.length > 0
-          ? { multiCountry: true }
-          : { multiCountry: false }),
-      });
-      setCountry(value);
-      fetchData({
-        ...moreFilter,
-        ...(moreFilter.entity && {
-          entity: moreFilter.entity.toString(),
-        }),
-        ...(moreFilter.subContentType && {
-          subContentType: moreFilter.subContentType.toString(),
-        }),
-        ...(moreFilter.tag && {
-          tag: moreFilter.tag.toString(),
-        }),
-        ...(moreFilter.representativeGroup && {
-          representativeGroup: moreFilter.representativeGroup.toString(),
-        }),
-        ...(value.length > 0 && {
-          country: value.toString(),
-        }),
-      });
-      setFilterCountries(value.map((item) => item.toString()));
-    }
-    if (param === "transnational") {
-      setDisable({
-        ...disable,
-        ...(value.length > 0 ? { country: true } : { country: false }),
-      });
-      if (value.length === 0) {
-        setFilterCountries([]);
-        fetchData({
-          ...moreFilter,
-          ...(moreFilter.entity && {
-            entity: moreFilter.entity.toString(),
-          }),
-          ...(moreFilter.subContentType && {
-            subContentType: moreFilter.subContentType.toString(),
-          }),
-          ...(moreFilter.tag && {
-            tag: moreFilter.tag.toString(),
-          }),
-          ...(moreFilter.representativeGroup && {
-            representativeGroup: moreFilter.representativeGroup.toString(),
-          }),
-        });
-      }
-      setMultiCountry(value);
-
-      value.forEach((id) => {
-        const check = filterCountries.find((x) => x === id.toString());
-        !check &&
-          api.get(`/country-group/${id}`).then((resp) => {
-            fetchData({
-              ...moreFilter,
-              ...(moreFilter.entity && {
-                entity: moreFilter.entity.toString(),
-              }),
-              ...(moreFilter.subContentType && {
-                subContentType: moreFilter.subContentType.toString(),
-              }),
-              ...(moreFilter.tag && {
-                tag: moreFilter.tag.toString(),
-              }),
-              ...(moreFilter.representativeGroup && {
-                representativeGroup: moreFilter.representativeGroup.toString(),
-              }),
-              ...(value.length > 0 && {
-                country: resp.data?.[0]?.countries
-                  .map((item) => item.id.toString())
-                  .toString(),
-              }),
-            });
-            setFilterCountries([
-              ...filterCountries,
-              ...resp.data?.[0]?.countries.map((item) => item.id.toString()),
-            ]);
-          });
-      });
-    }
   };
 
   useEffect(() => {
@@ -167,13 +84,14 @@ const FilterBar = ({
         multiCountryCountries,
         setMultiCountryCountries,
       }}
-      country={country || []}
-      multiCountry={multiCountry || []}
+      country={query?.country?.map((x) => parseInt(x)) || []}
+      multiCountry={query?.transnational?.map((x) => parseInt(x)) || []}
       multiCountryLabelCustomIcon={true}
       countrySelectMode="multiple"
       multiCountrySelectMode="multiple"
-      isExpert={true}
+      fetch={true}
       disable={disable}
+      setDisable={setDisable}
     />
   );
 
@@ -189,8 +107,12 @@ const FilterBar = ({
       <ul>
         {resourceTypes.map((it) => (
           <li
-            onClick={handleClickFilter(it.key)}
-            className={filter.indexOf(it.key) !== -1 && "selected"}
+            onClick={handleClickFilter(it.key.replace(/-/g, "_"))}
+            className={
+              query?.topic?.includes(it.key.replace(/-/g, "_"))
+                ? "selected"
+                : ""
+            }
           >
             <div className="img-container">
               <Icon name={`resource-types/${it.key}`} fill="#FFF" />
@@ -202,11 +124,28 @@ const FilterBar = ({
         ))}
       </ul>
       <Button onClick={() => setIsShownModal(true)}>
-        {!isEmpty && (
-          <div class="filter-status">
-            {Object.values(moreFilter).filter((item) => item).length}
-          </div>
-        )}
+        {!isEmpty &&
+          Object.keys(query).filter(
+            (item) =>
+              item !== "offset" &&
+              item !== "country" &&
+              item !== "transnational"
+          ).length > 0 && (
+            <div class="filter-status">
+              {Object.keys(query).filter(
+                (item) =>
+                  item !== "offset" &&
+                  item !== "country" &&
+                  item !== "transnational"
+              ).length > 0 &&
+                Object.keys(query).filter(
+                  (item) =>
+                    item !== "offset" &&
+                    item !== "country" &&
+                    item !== "transnational"
+                ).length}
+            </div>
+          )}
         <FilterIcon />
         <span>More Filters</span>
       </Button>
@@ -217,6 +156,7 @@ const FilterBar = ({
           countryList,
           dropdownVisible,
           setDropdownVisible,
+          query,
         }}
       />
     </div>

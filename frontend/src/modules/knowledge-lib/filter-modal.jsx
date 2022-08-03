@@ -20,15 +20,12 @@ import { UIStore } from "../../store";
 
 import MultipleSelectFilter from "../../components/select/multiple-select-filter";
 
-const InviteExpertModal = ({
+const FilterModal = ({
   query,
   updateQuery,
   setIsShownModal,
   isShownModal,
-  handleFilter,
-  moreFilter,
   fetchData,
-  filterCountries,
 }) => {
   const {
     tags,
@@ -111,24 +108,7 @@ const InviteExpertModal = ({
   }, [tagsExcludingCapacityBuilding]);
 
   const handleApplyFilter = () => {
-    fetchData({
-      ...(filterCountries.length > 0 && {
-        country: filterCountries.toString(),
-      }),
-      ...moreFilter,
-      ...(moreFilter.entity && {
-        entity: moreFilter.entity.toString(),
-      }),
-      ...(moreFilter.subContentType && {
-        subContentType: moreFilter.subContentType.toString(),
-      }),
-      ...(moreFilter.tag && {
-        tag: moreFilter.tag.toString(),
-      }),
-      ...(moreFilter.representativeGroup && {
-        representativeGroup: moreFilter.representativeGroup.toString(),
-      }),
-    });
+    fetchData(query);
     setIsShownModal(false);
   };
 
@@ -160,9 +140,9 @@ const InviteExpertModal = ({
             <Space align="middle">
               <Checkbox
                 className="favorites-checkbox"
-                checked={moreFilter?.favorites?.indexOf("true") > -1}
+                checked={query?.favorites?.indexOf("true") > -1}
                 onChange={({ target: { checked } }) =>
-                  handleFilter("favorites", checked)
+                  updateQuery("favorites", checked)
                 }
               >
                 My Bookmarks
@@ -190,20 +170,20 @@ const InviteExpertModal = ({
                 }))
               : []
           }
-          value={moreFilter?.subContentType || []}
+          value={query?.subContentType || []}
           flag="subContentType"
           query={query}
-          updateQuery={handleFilter}
+          updateQuery={updateQuery}
         />
 
         {/* Tags */}
         <MultipleSelectFilter
           title="Tags"
           options={tagOpts || []}
-          value={moreFilter?.tag?.map((x) => x) || []}
+          value={query?.tag?.map((x) => x) || []}
           flag="tag"
           query={query}
-          updateQuery={handleFilter}
+          updateQuery={updateQuery}
         />
 
         <MultipleSelectFilter
@@ -219,10 +199,11 @@ const InviteExpertModal = ({
                   )
               : []
           }
-          value={moreFilter?.entity?.map((x) => parseInt(x)) || []}
+          value={query?.entity?.map((x) => parseInt(x)) || []}
           flag="entity"
           query={query}
-          updateQuery={handleFilter}
+          updateQuery={updateQuery}
+          clear={false}
         />
 
         <MultipleSelectFilter
@@ -235,10 +216,11 @@ const InviteExpertModal = ({
                 }))
               : []
           }
-          value={moreFilter?.representativeGroup || []}
+          value={query?.representativeGroup || []}
           flag="representativeGroup"
           query={query}
-          updateQuery={handleFilter}
+          updateQuery={updateQuery}
+          clear={false}
         />
 
         {/* Date Filter */}
@@ -251,29 +233,25 @@ const InviteExpertModal = ({
             {/* Start date */}
             <DatePickerFilter
               title="Start Date"
-              value={moreFilter?.startDate}
+              value={query?.startDate}
               flag="startDate"
               query={query}
-              updateQuery={handleFilter}
+              updateQuery={updateQuery}
               span={12}
               startDate={
-                !isEmpty(moreFilter?.startDate)
-                  ? moment(moreFilter?.startDate[0])
-                  : null
+                !isEmpty(query?.startDate) ? moment(query?.startDate[0]) : null
               }
             />
             {/* End date */}
             <DatePickerFilter
               title="End Date"
-              value={moreFilter?.endDate}
+              value={query?.endDate}
               flag="endDate"
               query={query}
-              updateQuery={handleFilter}
+              updateQuery={updateQuery}
               span={12}
               endDate={
-                !isEmpty(moreFilter?.endDate)
-                  ? moment(moreFilter?.endDate[0])
-                  : null
+                !isEmpty(query?.endDate) ? moment(query?.endDate[0]) : null
               }
             />
           </Row>
@@ -324,4 +302,4 @@ const DatePickerFilter = ({
   );
 };
 
-export default InviteExpertModal;
+export default FilterModal;

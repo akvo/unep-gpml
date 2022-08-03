@@ -189,7 +189,7 @@ export const eventTrack = (category, action, label) => {
 
 export const useQuery = () => {
   const srcParams = new URLSearchParams(useLocation().search);
-  const ret = { country: [] };
+  const ret = {};
   for (var key of srcParams.keys()) {
     ret[key] = srcParams
       .get(key)

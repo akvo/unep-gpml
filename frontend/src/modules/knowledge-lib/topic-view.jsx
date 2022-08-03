@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import TopicChart from "../chart/topic-chart";
 import TopicBar from "../chart/topic-bar";
 
-const TopicView = ({ updateQuery, query, results, countData }) => {
-  console.log(results);
+const TopicView = ({ updateQuery, query, results, countData, fetch }) => {
   const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const popularTags = [
@@ -20,8 +19,6 @@ const TopicView = ({ updateQuery, query, results, countData }) => {
       return item;
     }
   });
-
-  const selectedTag = countData.find((item) => item?.topic === selectedTopic);
 
   const topics = countData
     .filter(
@@ -58,15 +55,19 @@ const TopicView = ({ updateQuery, query, results, countData }) => {
   const allTopics = [...nonExistedTopic, topics].flat();
 
   const handlePopularTopicChartClick = (params) => {
+    if (query?.tag?.includes(params?.data.tag)) {
+      updateQuery("tag", [], fetch);
+      return false;
+    }
     const { name, tag } = params?.data;
     setSelectedTopic(name?.toLowerCase());
-    updateQuery("tag", [tag]);
+    updateQuery("tag", [tag], fetch);
   };
 
   const handlePopularTopicBarClick = (e) => {
     const name = e.currentTarget.value;
     setSelectedTopic(name.toLowerCase());
-    updateQuery("tag", [name]);
+    updateQuery("tag", [name], fetch);
   };
 
   useEffect(() => {

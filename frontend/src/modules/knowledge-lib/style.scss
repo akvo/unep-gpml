@@ -204,7 +204,6 @@
 
       .dropdown {
         position: relative;
-        width: 200px;
         padding: 5px 10px;
         text-transform: uppercase;
         span {
@@ -306,7 +305,7 @@
     display: flex;
     height: 300px;
     top: 100px;
-    // position: absolute;
+    position: absolute;
     width: 100%;
     background-color: rgba(249, 250, 251, 0.5);
     z-index: 2;

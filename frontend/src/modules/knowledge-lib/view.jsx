@@ -17,6 +17,7 @@ import { Button } from "antd";
 import Maps from "../map/map";
 import { UIStore } from "../../store";
 import { isEmpty } from "lodash";
+import { useHistory } from "react-router-dom";
 import { useQuery, topicNames } from "../../utils/misc";
 import TopicView from "./topic-view";
 const popularTags = [
@@ -29,24 +30,21 @@ const popularTags = [
 ];
 
 const KnowledgeLib = () => {
-  const { countries, organisations, landing } = UIStore.useState((s) => ({
-    countries: s.countries,
-    organisations: s.organisations,
+  const { landing } = UIStore.useState((s) => ({
     landing: s.landing,
   }));
 
   const box = document.getElementsByClassName("knowledge-lib");
+  const history = useHistory();
   const query = useQuery();
   const [view, setView] = useState("map"); // to be changed to 'overview' later
   const [isAscending, setIsAscending] = useState(null);
-  const [active, setActive] = useState(false);
   const [loading, setLoading] = useState(true);
   const [filterCountries, setFilterCountries] = useState([]);
   const [filter, setFilter] = useState([]);
   const [countData, setCountData] = useState([]);
-  const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
-  const [selectedTopic, setSelectedTopic] = useState(null);
-  const [categories, setCategories] = useState([
+  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
+  const categories = [
     "project",
     "action_plan",
     "policy",
@@ -54,25 +52,56 @@ const KnowledgeLib = () => {
     "technology",
     "event",
     "financing_resource",
-  ]);
+  ];
   const [catData, setCatData] = useState([]);
   const [data, setData] = useState([]);
   const [isShownModal, setIsShownModal] = useState(false);
-  const [moreFilter, setMoreFilters] = useState({
-    subContentType: null,
-    tag: null,
-    entity: null,
-    representativeGroup: null,
-    startDate: null,
-    endDate: null,
-  });
 
-  const fetchData = (params) => {
+  const fetchData = (query) => {
     setLoading(true);
+    const searchParms = new URLSearchParams(window.location.search);
+    searchParms.set("limit", 30);
+    const topic = [
+      "action_plan",
+      "project",
+      "policy",
+      "technical_resource",
+      "technology",
+      "event",
+      "financing_resource",
+    ];
+
+    const popularTags = [
+      "plastics",
+      "waste management",
+      "marine litter",
+      "capacity building",
+      "product by design",
+      "source to sea",
+    ];
+
+    searchParms.set("incCountsForTags", popularTags);
+
+    if (query?.topic?.length === 0) {
+      if (
+        (query?.startDate && query?.startDate?.length !== 0) ||
+        (query?.endDate && query?.endDate?.length !== 0)
+      ) {
+        searchParms.set("topic", "event");
+      } else if (
+        query?.hasOwnProperty("favorites") &&
+        query?.favorites === true
+      ) {
+        searchParms.set("topic", []);
+      } else {
+        searchParms.set("topic", topic);
+      }
+    }
+    const url = `/browse?${String(searchParms)}`;
     api
-      .get("/browse", { page_size: 30, page_n: 0, ...params })
+      .get(url)
       .then((resp) => {
-        setData(resp.data);
+        setData(resp?.data);
         setCountData(resp?.data?.counts);
         setLoading(false);
       })
@@ -83,11 +112,8 @@ const KnowledgeLib = () => {
   };
 
   useEffect(() => {
-    fetchData({
-      topic: categories.toString(),
-      incCountsForTags: popularTags.toString(),
-    });
-  }, [categories]);
+    fetchData();
+  }, []);
 
   useEffect(() => {
     api.get(`/landing?entityGroup=topic`).then((resp) => {
@@ -97,45 +123,52 @@ const KnowledgeLib = () => {
     });
   }, []);
 
-  const updateQuery = (param, value) => {
-    console.log(param, value);
-  };
+  const updateQuery = (param, value, fetch) => {
+    const topScroll = window.innerWidth < 640 ? 996 : 207;
+    window.scrollTo({
+      top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
+    });
+    setLoading(true);
+    const newQuery = { ...query };
+    newQuery[param] = value;
 
-  const clickCountry = (value) => {
-    let updateVal = [];
-    if (isEmpty(filterCountries)) {
-      updateVal = [value];
-    } else if (filterCountries.includes(value)) {
-      updateVal = filterCountries.filter((x) => x !== value);
-    } else {
-      updateVal = [...filterCountries, value];
+    if (param !== "offset") {
+      newQuery["offset"] = 0;
     }
-    fetchData({
-      ...moreFilter,
-      ...(moreFilter.entity && {
-        entity: moreFilter.entity.toString(),
-      }),
-      ...(moreFilter.subContentType && {
-        subContentType: moreFilter.subContentType.toString(),
-      }),
-      ...(moreFilter.tag && {
-        tag: moreFilter.tag.toString(),
-      }),
-      ...(moreFilter.representativeGroup && {
-        representativeGroup: moreFilter.representativeGroup.toString(),
-      }),
-      ...(updateVal.length > 0 && {
-        country: updateVal.toString(),
-      }),
-    });
-    setFilterCountries(updateVal);
+
+    // Remove empty query
+    const arrayOfQuery = Object.entries(newQuery)?.filter(
+      (item) => item[1]?.length !== 0
+    );
+
+    const pureQuery = Object.fromEntries(arrayOfQuery);
+    // setFilter(pureQuery);
+
+    const newParams = new URLSearchParams(pureQuery);
+
+    history.push(`/knowledge/lib?${newParams.toString()}`);
+
+    if (fetch) {
+      fetchData(pureQuery);
+    }
+
+    if (param === "country") {
+      setFilterCountries(value);
+    }
   };
 
-  const handleFilter = (param, value) => {
-    setMoreFilters({
-      ...moreFilter,
-      [param]: value ? value : null,
-    });
+  const clickCountry = (name) => {
+    const val = query["country"];
+    let updateVal = [];
+
+    if (isEmpty(val)) {
+      updateVal = [name];
+    } else if (val.includes(name)) {
+      updateVal = val.filter((x) => x !== name);
+    } else {
+      updateVal = [...val, name];
+    }
+    updateQuery("country", updateVal, true);
   };
 
   const loadAllCat = async () => {
@@ -160,7 +193,7 @@ const KnowledgeLib = () => {
   };
 
   useEffect(() => {
-    if (view === "cat" && catData.length === 0) {
+    if (view === "category" && catData.length === 0) {
       loadAllCat();
     }
   }, [view, catData]);
@@ -176,8 +209,9 @@ const KnowledgeLib = () => {
           filter,
           setFilter,
           setIsShownModal,
-          fetchData,
-          moreFilter,
+          updateQuery,
+          multiCountryCountries,
+          setMultiCountryCountries,
         }}
       />
       <div className="list-content">
@@ -213,7 +247,7 @@ const KnowledgeLib = () => {
                 </div>
                 <div
                   className="dropdown__option-box__item"
-                  onClick={() => setView("graph")}
+                  onClick={() => setView("category")}
                 >
                   <div>CATEGORY VIEW</div>
                   {/* <GraphIcon width={30} height={30} /> */}
@@ -253,6 +287,7 @@ const KnowledgeLib = () => {
             <TopicView
               {...{ updateQuery, query }}
               results={data?.results}
+              fetch={true}
               countData={countData.filter(
                 (count) => count.topic !== "gpml_member_entities"
               )}
@@ -280,12 +315,12 @@ const KnowledgeLib = () => {
           data={landing?.map || []}
           countryGroupCounts={landing?.countryGroupCounts || []}
           isLoaded={() => true}
-          multiCountryCountries={[]}
+          multiCountryCountries={multiCountryCountries}
           multiCountries={[]}
           useVerticalLegend
         />
       )}
-      {view === "cat" && (
+      {view === "category" && (
         <div className="cat-view">
           {catData.map((d) => (
             <Fragment key={d.categories}>
@@ -316,10 +351,10 @@ const KnowledgeLib = () => {
       )}
       <FilterModal
         {...{
+          query,
           setIsShownModal,
           isShownModal,
-          moreFilter,
-          handleFilter,
+          updateQuery,
           fetchData,
           filterCountries,
         }}
