@@ -897,7 +897,7 @@ const Maps = ({
                               }
                             }}
                           />
-                          {(path === KNOWLEDGE_LIBRARY ||
+                          {/* {(path === KNOWLEDGE_LIBRARY ||
                             path === KNOWLEDGE_LIB) &&
                             geo.properties.ISO3CD &&
                             geo.properties.MAP_LABEL &&
@@ -934,7 +934,7 @@ const Maps = ({
                                   </g>
                                 )}
                               </Marker>
-                            )}
+                            )} */}
                         </Fragment>
                       );
                     })}
