@@ -290,6 +290,7 @@ const KnowledgeLib = () => {
               {...{ updateQuery, query }}
               results={data?.results}
               fetch={true}
+              loading={loading}
               countData={countData.filter(
                 (count) => count.topic !== "gpml_member_entities"
               )}

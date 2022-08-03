@@ -2,9 +2,17 @@ import React, { useState, useEffect } from "react";
 import TopicChart from "../chart/topic-chart";
 import TopicBar from "../chart/topic-bar";
 
-const TopicView = ({ updateQuery, query, results, countData, fetch }) => {
+const TopicView = ({
+  updateQuery,
+  query,
+  results,
+  countData,
+  fetch,
+  loading,
+}) => {
   const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
+  const [data, setData] = useState([]);
   const popularTags = [
     "plastics",
     "waste management",
@@ -14,13 +22,22 @@ const TopicView = ({ updateQuery, query, results, countData, fetch }) => {
     "source to sea",
   ];
 
+  useEffect(() => {
+    if (data.length === 0 || query.hasOwnProperty("country")) {
+      setData(countData);
+    }
+    if (!selectedTopic && !loading && !query.hasOwnProperty("country")) {
+      setData(countData);
+    }
+  }, [data, countData, query, selectedTopic, loading]);
+
   const savedTopic = popularTags.filter((item) => {
     if (query?.tag?.includes(item)) {
       return item;
     }
   });
 
-  const topics = countData
+  const topics = data
     .filter(
       (item) =>
         item.topic === "plastics" ||
@@ -86,9 +103,7 @@ const TopicView = ({ updateQuery, query, results, countData, fetch }) => {
   // Apply when there is a selected topic
   useEffect(() => {
     if (results.length > 0) {
-      {
-        sortedPopularTopics.length === 0 && setSortedPopularTopics(allTopics);
-      }
+      setSortedPopularTopics(allTopics);
     } else {
       const topics = popularTags.map((topic) => {
         return {
@@ -98,13 +113,11 @@ const TopicView = ({ updateQuery, query, results, countData, fetch }) => {
           count: 0,
         };
       });
-      {
-        sortedPopularTopics.length === 0 && setSortedPopularTopics(topics);
-      }
+      setSortedPopularTopics(topics);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTopic, results, countData]);
+  }, [selectedTopic, results, data]);
 
   return (
     <>
