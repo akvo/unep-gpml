@@ -40,13 +40,7 @@ const Footer = ({
                 </a>
               </li>
               <li>
-                <a
-                  href="https://www.gpmarinelitter.org/who-we-are/our-members"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Our members
-                </a>
+                <Link to="/connect/community">Our members</Link>
               </li>
             </ul>
           </nav>
