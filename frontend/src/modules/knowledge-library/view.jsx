@@ -18,7 +18,6 @@ import MapLanding from "./map-landing";
 import TopicView from "./topic-view";
 import ResourceList from "./resource-list";
 import FilterDrawer from "./filter-drawer";
-import DetailModal from "../details-page/modal";
 
 import Header from "./header";
 import moment from "moment";
@@ -80,25 +79,6 @@ const KnowledgeLibrary = ({
   }));
 
   const [toggleButton, setToggleButton] = useState("list");
-  const [isShowModal, setIsShowModal] = useState(false);
-  const [params, setParams] = useState(null);
-
-  useEffect(() => {
-    if (!isShowModal) {
-      const previousHref = `${history?.location?.pathname}${history?.location?.search}`;
-      window.history.pushState(
-        { urlPath: `/${previousHref}` },
-        "",
-        `${previousHref}`
-      );
-    }
-  }, [isShowModal]);
-
-  const onHandleModal = (type, id, linkTo) => {
-    setParams({ type, id });
-    window.history.pushState({ urlPath: `/${linkTo}` }, "", `${linkTo}`);
-    setIsShowModal(true);
-  };
 
   useEffect(() => {
     UIStore.update((e) => {
@@ -297,15 +277,6 @@ const KnowledgeLibrary = ({
 
   return (
     <>
-      <DetailModal
-        match={{ params }}
-        {...{
-          setLoginVisible,
-          isAuthenticated,
-          isShowModal,
-          setIsShowModal,
-        }}
-      />
       <Row id="knowledge-library">
         {/* Header */}
 
@@ -374,7 +345,6 @@ const KnowledgeLibrary = ({
                       isAscending,
                       isAuthenticated,
                       setLoginVisible,
-                      onHandleModal,
                     }}
                     hideListButtonVisible={view === "map"}
                   />

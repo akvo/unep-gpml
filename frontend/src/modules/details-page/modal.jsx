@@ -16,6 +16,7 @@ const DetailModal = ({
       visible={isShowModal}
       onCancel={() => setIsShowModal(false)}
       className="detail-modal"
+      destroyOnClose={true}
     >
       <DetailsView
         {...{
