@@ -44,7 +44,7 @@ const ResourceList = ({
     resourceId: null,
   });
   const [data, setData] = useState(null);
-  const [isShowModal, setIsShowModal] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const [params, setParams] = useState(null);
 
   const isApprovedUser = profile?.reviewStatus === "APPROVED";
@@ -93,7 +93,7 @@ const ResourceList = ({
   }, []);
 
   useEffect(() => {
-    if (!isShowModal) {
+    if (!modalVisible) {
       const previousHref = `${history?.location?.pathname}${history?.location?.search}`;
       window.history.pushState(
         { urlPath: `/${previousHref}` },
@@ -101,7 +101,7 @@ const ResourceList = ({
         `${previousHref}`
       );
     }
-  }, [isShowModal]);
+  }, [modalVisible]);
 
   return (
     <Row style={{ postion: "relative" }}>
@@ -149,15 +149,15 @@ const ResourceList = ({
               setData={setData}
               setDataProperties={setDataProperties}
               history={history}
-              setIsShowModal={setIsShowModal}
+              setModalVisible={setModalVisible}
             />
             <DetailModal
               match={{ params }}
+              visible={modalVisible}
+              setVisible={setModalVisible}
               {...{
                 setLoginVisible,
                 isAuthenticated,
-                isShowModal,
-                setIsShowModal,
               }}
             />
           </>
@@ -186,7 +186,7 @@ const ResourceItem = ({
   view,
   stakeholders,
   setParams,
-  setIsShowModal,
+  setModalVisible,
 }) => {
   return results.map((result) => {
     const { id, type } = result;
@@ -240,7 +240,7 @@ const ResourceItem = ({
         onClick={() => {
           setParams({ type: type.replace("_", "-"), id });
           window.history.pushState({ urlPath: `/${linkTo}` }, "", `${linkTo}`);
-          setIsShowModal(true);
+          setModalVisible(true);
         }}
       >
         <Card

@@ -8,13 +8,13 @@ const DetailModal = ({
   setLoginVisible,
   setFilterMenu,
   isAuthenticated,
-  isShowModal,
-  setIsShowModal,
+  visible,
+  setVisible,
 }) => {
   return (
     <Modal
-      visible={isShowModal}
-      onCancel={() => setIsShowModal(false)}
+      visible={visible}
+      onCancel={() => setVisible(false)}
       className="detail-modal"
       destroyOnClose={true}
     >
