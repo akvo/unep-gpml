@@ -116,12 +116,18 @@
              :swagger {:description "Number of items to skip when fetching entries"
                        :type "int"
                        :allowEmptyValue true}}
-    [:int {:min 0}]]])
+    [:int {:min 0}]]
+   [:featured {:optional true
+               :error/message "Featured should be 'true' or 'false'"
+               :swagger {:description "Boolean flag to filter by featured resources"
+                         :type "boolean"
+                         :allowEmptyValue true}}
+    boolean?]])
 
 (defn get-db-filter
   [{:keys [limit offset startDate endDate user-id favorites country transnational
            topic tag affiliation representativeGroup subContentType entity orderBy
-           descending q incCountsForTags]
+           descending q incCountsForTags featured]
     :or {limit default-limit
          offset default-offset}}]
   (cond-> {}
@@ -178,6 +184,8 @@
     (assoc :search-text (->> (str/trim q)
                              (re-seq #"\w+")
                              (str/join " & ")))
+
+    featured (assoc :featured featured)
 
     true
     (assoc :review-status "APPROVED")))

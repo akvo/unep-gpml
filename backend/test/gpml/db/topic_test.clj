@@ -48,6 +48,7 @@
 (defn get-country-group-ids [db country-id]
   (db.country-group/get-country-groups-by-country db {:id country-id}))
 
+;; TODO: Extend the tests to include filtering by `featured` flag of resources
 (deftest topic-filtering
   (let [db (test-util/db-test-conn)
         _ (seeder/seed db {:country? true

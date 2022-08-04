@@ -118,7 +118,7 @@
   [entity-name
    {:keys [entity tag representative-group
            geo-coverage-types sub-content-type
-           search-text review-status] :as _params}
+           search-text review-status featured] :as _params}
    {:keys [search-text-fields] :as _opts}]
   (let [entity-connections-join (if-not (seq entity)
                                   ""
@@ -151,7 +151,10 @@
                      (str " AND e.sub_content_type IN (:v*:sub-content-type)")
 
                      (seq search-text)
-                     (str " AND " tsvector-str " @@ to_tsquery(:search-text)"))]
+                     (str " AND " tsvector-str " @@ to_tsquery(:search-text)")
+
+                     featured
+                     (str " AND e.featured = :featured"))]
     (apply
      format
      "SELECT
