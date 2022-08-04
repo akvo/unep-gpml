@@ -506,8 +506,12 @@ export const ProfilePreview = ({ item }) => {
         .then(() => {
           notification.success({ message: "Profile updated" });
         })
-        .catch(() => {
-          notification.error({ message: "An error occured" });
+        .catch((e) => {
+          notification.error({
+            message: e.response.data.reason
+              ? e.response.data.reason.replace(/-/g, " ")
+              : "An error occured",
+          });
         });
     } else {
       setError("Required");
