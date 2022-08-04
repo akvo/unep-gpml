@@ -84,12 +84,6 @@ const TopicView = ({
     updateQuery("tag", [tag], fetch);
   };
 
-  const handlePopularTopicBarClick = (e) => {
-    const name = e.currentTarget.value;
-    setSelectedTopic(name.toLowerCase());
-    updateQuery("tag", [name], fetch);
-  };
-
   useEffect(() => {
     if (!selectedTopic && savedTopic?.length > 0) {
       setSelectedTopic(savedTopic[0]);
@@ -125,21 +119,11 @@ const TopicView = ({
   return (
     <>
       <TopicChart
-        wrapperHeight={"10%"}
-        loadingId="knowledge-library-loading"
         {...{
           selectedTopic,
           setSelectedTopic,
           sortedPopularTopics,
           handlePopularTopicChartClick,
-        }}
-      />
-      <TopicBar
-        {...{
-          selectedTopic,
-          setSelectedTopic,
-          sortedPopularTopics,
-          handlePopularTopicBarClick,
         }}
       />
     </>
