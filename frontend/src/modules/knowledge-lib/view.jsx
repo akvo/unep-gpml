@@ -316,16 +316,11 @@ const KnowledgeLib = () => {
           query={query}
           countData={countData}
           clickEvents={clickCountry}
-          stakeholderCount={[]}
-          listVisible={[]}
-          isDisplayedList={[]}
-          dataToDisplay={[]}
           isFilteredCountry={filterCountries}
           data={landing?.map || []}
           countryGroupCounts={landing?.countryGroupCounts || []}
           isLoaded={() => true}
           multiCountryCountries={multiCountryCountries}
-          multiCountries={[]}
           useVerticalLegend
         />
       )}

@@ -1209,3 +1209,15 @@ path {
     }
   }
 }
+
+.rsm-svg {
+  .rsm-geographies {
+    path.svg-country {
+      &:hover {
+        stroke-width: 1;
+        stroke: rgba(0, 0, 0, 0.5);
+        fill: #ffb700;
+      }
+    }
+  }
+}
