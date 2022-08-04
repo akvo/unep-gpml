@@ -348,7 +348,7 @@ const MapChart = ({ countData, stakeholderCount, box, isFilteredCountry, data, q
                   const isCountrySelected =
                     country?.isoCode === geo.properties.MAP_COLOR ||
                     multiCountries
-                      .map((x) => x.isoCode)
+                      ?.map((x) => x.isoCode)
                       .includes(geo.properties.MAP_COLOR);
 
                   // To get all countries in a multicountry selection being highlighted
