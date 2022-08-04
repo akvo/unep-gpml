@@ -180,5 +180,6 @@
 (defmethod ig/init-key :gpml.handler.submission/put-params [_ _]
   [:map
    [:id int?]
+   [:featured {:optional true} boolean?]
    [:item_type [:enum "stakeholder", "event", "policy", "technology", "resource", "organisation", "initiative" "tag"]]
    [:review_status [:enum "APPROVED", "REJECTED"]]])

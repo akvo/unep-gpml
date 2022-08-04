@@ -108,4 +108,5 @@ update :i:table-name
 set reviewed_at = now(),
     review_status = :v:review_status::review_status
 --~ (when (contains? params :reviewed_by) ",reviewed_by = :reviewed_by::integer")
+--~ (when (contains? params :featured) ",featured = :featured")
 where id = :id;
