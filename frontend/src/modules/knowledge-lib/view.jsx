@@ -1,4 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
+import classNames from 'classnames'
+import { CSSTransition } from 'react-transition-group';
 import api from "../../utils/api";
 import FilterBar from "./filter-bar";
 import "./style.scss";
@@ -38,25 +40,6 @@ const popularTags = [
   "capacity building",
   "product by design",
   "source to sea",
-];
-
-const views = [
-  {
-    value: "grid",
-    label: "Grid",
-  },
-  {
-    value: "category",
-    label: "Category",
-  },
-  {
-    value: "map",
-    label: "Map",
-  },
-  {
-    value: "topic",
-    label: "Topic",
-  },
 ];
 
 const KnowledgeLib = () => {
@@ -235,30 +218,7 @@ const KnowledgeLib = () => {
       <div className="list-content">
         <div className="list-toolbar">
           <div className="page-label">Total {data?.results?.length}</div>
-          <div className="view-button-container">
-            <div
-              className={`dropdown ${visibleView ? "selected" : ""}`}
-              onClick={() => setVisibleView(!visibleView)}
-            >
-              <div className="dropdown__value">
-                <DownOutlined />
-                {view} View
-              </div>
-              <div className="dropdown__option-box">
-                {views
-                  .filter((selected) => view !== selected.value)
-                  .map((list) => (
-                    <div
-                      className="dropdown__option-box__item"
-                      onClick={() => setView(list.value)}
-                    >
-                      <div>{list.label} VIEW </div>
-                      {/* <GlobeIcon width={32} /> */}
-                    </div>
-                  ))}
-              </div>
-            </div>
-          </div>
+          <ViewSwitch {...{ view, setView }} />
           <button
             className="sort-by-button"
             // onClick={() => sortExperts(!isAscending)}
@@ -374,5 +334,31 @@ const GridView = ({ data, loading }) => {
     </div>
   );
 };
+
+
+
+const ViewSwitch = ({ view, setView }) => {
+  const viewOptions = ['grid', 'category', 'map', 'topic'];
+  const [visible, setVisible] = useState(false)
+  const handleChangeView = (viewOption) => () => {
+    setView(viewOption)
+    setVisible(false)
+  }
+  return (
+    <div className="view-switch-container">
+      <div className={classNames('switch-btn', { active: visible })} onClick={() => { setVisible(!visible) }}>
+        <DownOutlined />
+        {view} view
+      </div>
+      <CSSTransition in={visible} timeout={200} unmountOnExit classNames="view-switch">
+        <div className="view-switch-dropdown">
+          <ul>
+            {viewOptions.filter(opt => view !== opt).map(viewOption => <li onClick={handleChangeView(viewOption)}>{viewOption} view</li>)}
+          </ul>
+        </div>
+      </CSSTransition>
+    </div>
+  )
+}
 
 export default KnowledgeLib;
