@@ -7,7 +7,7 @@ import { UIStore } from "../../store";
 import imageNotFound from "../../images/image-not-found.png";
 import { languages } from "countries-list";
 import { topicNames, resourceSubTypes, toTitleCase } from "../../utils/misc";
-import { Input, Button, notification } from "antd";
+import { Input, Button, notification, Checkbox } from "antd";
 import api from "../../utils/api";
 import { fetchSubmissionData } from "./utils";
 import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
@@ -118,7 +118,7 @@ const GpmlLinkLi = ({ item }) => {
   );
 };
 
-export const GeneralPreview = ({ item }) => {
+export const GeneralPreview = ({ item, featuredSelect }) => {
   const {
     countries,
     regionOptions,
@@ -333,6 +333,18 @@ export const GeneralPreview = ({ item }) => {
             )}
           </div>
         </li>
+        <li>
+          <div className="detail-title">Tags</div>:
+          <div className="detail-content">
+            {(item.tags &&
+              item.tags.map((x) => Object.values(x)[0]).join(", ")) ||
+              "-"}
+          </div>
+        </li>
+        <li className="has-border">
+          <p className="section-title">Actions</p>
+        </li>
+        {featuredSelect}
         {item.reviewStatus === "APPROVED" && item.type === "organisation" && (
           <>
             <li className="has-border">
@@ -506,12 +518,8 @@ export const ProfilePreview = ({ item }) => {
         .then(() => {
           notification.success({ message: "Profile updated" });
         })
-        .catch((e) => {
-          notification.error({
-            message: e.response.data.reason
-              ? e.response.data.reason.replace(/-/g, " ")
-              : "An error occured",
-          });
+        .catch(() => {
+          notification.error({ message: "An error occured" });
         });
     } else {
       setError("Required");
@@ -650,7 +658,7 @@ export const ProfilePreview = ({ item }) => {
   );
 };
 
-export const InitiativePreview = ({ item }) => {
+export const InitiativePreview = ({ item, featuredSelect }) => {
   return (
     <div className="general-info">
       <div className="info-img">
@@ -768,6 +776,10 @@ export const InitiativePreview = ({ item }) => {
             </ul>
           </div>
         </li>
+        <li className="has-border">
+          <p className="section-title">Actions</p>
+        </li>
+        {featuredSelect}
       </ul>
     </div>
   );
@@ -778,19 +790,80 @@ export const DetailCollapse = ({
   item,
   getPreviewContent,
   unpublishButton,
-  focalPoint,
-  ownerSelect,
 }) => {
+  const [featuredFlag, setFeaturedFlag] = useState(false);
+
+  const updateFeaturedResource = () => {
+    api
+      .put(`/detail/${item.type}/${item.id}`, {
+        featured: featuredFlag,
+      })
+      .then(() => {
+        notification.success({ message: "Resource updated" });
+      })
+      .catch((e) => {
+        notification.error({
+          message: e.response.data.reason
+            ? e.response.data.reason.replace(/-/g, " ")
+            : "An error occured",
+        });
+      });
+  };
+
+  const FeaturedSelect = () => {
+    return (
+      <>
+        <li>
+          <div className="detail-title">Mark resource as featured</div>:
+          <div className="detail-content">
+            <Checkbox
+              className="expert-checkbox"
+              defaultChecked={item.featured}
+              checked={featuredFlag}
+              onChange={(e) => {
+                setFeaturedFlag(e.target.checked);
+              }}
+            />
+          </div>
+        </li>
+        <li style={{ marginTop: 10 }}>
+          <div className="detail-content">
+            <Button
+              type="ghost"
+              className="black"
+              disabled={item.featured === featuredFlag}
+              onClick={() => updateFeaturedResource()}
+            >
+              Update
+            </Button>
+          </div>
+        </li>
+      </>
+    );
+  };
+
   switch (item.type) {
     case "stakeholder":
       return <ProfilePreview item={{ ...data, ...item, unpublishButton }} />;
     case "project":
-      return <InitiativePreview item={{ ...data, ...item }} />;
+      return (
+        <InitiativePreview
+          item={{ ...data, ...item, featuredFlag }}
+          featuredSelect={<FeaturedSelect />}
+        />
+      );
     case "tag":
       return <TagPreview item={{ ...data, ...item, getPreviewContent }} />;
     default:
       return (
-        <GeneralPreview item={{ ...data, ...item, focalPoint, ownerSelect }} />
+        <GeneralPreview
+          item={{
+            ...data,
+            ...item,
+            featuredFlag,
+          }}
+          featuredSelect={<FeaturedSelect />}
+        />
       );
   }
 };
