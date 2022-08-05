@@ -19,9 +19,10 @@ import { Button } from "antd";
 import Maps from "../map/map";
 import { UIStore } from "../../store";
 import { isEmpty } from "lodash";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useQuery, topicNames } from "../../utils/misc";
 import TopicView from "./topic-view";
+import Overview from './overview'
 
 const topic = [
   "action_plan",
@@ -177,8 +178,17 @@ const KnowledgeLib = () => {
     }
   }, [view, catData]);
 
+  if(view === 'overview'){
+    return (
+      <div id="knowledge-lib">
+        <Overview summaryData={landing?.summary} {...{ setView }} />
+      </div>
+    )
+  }
+
   return (
-    <div id="knowledge-lib" className="knowledge-lib">
+    <div id="knowledge-lib">
+
       <FilterBar
         {...{
           view,
