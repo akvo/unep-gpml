@@ -614,6 +614,7 @@ const Root = () => {
                   landingQuery,
 
                   //Functions
+                  setFilterMenu,
                   getResults,
                   updateQuery,
                   setFilters,
