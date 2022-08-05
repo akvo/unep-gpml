@@ -1,8 +1,9 @@
 import React, { Fragment, useEffect, useState } from "react";
 import classNames from 'classnames'
 import { CSSTransition } from 'react-transition-group';
+import humps from 'humps'
 import api from "../../utils/api";
-import FilterBar from "./filter-bar";
+import FilterBar, { resourceTypes } from "./filter-bar";
 import "./style.scss";
 import FilterModal from "./filter-modal";
 import ResourceCards, {
@@ -199,8 +200,17 @@ const KnowledgeLib = () => {
     }
   }, [view, catData]);
 
+  if(view === 'overview'){
+    return (
+      <div id="knowledge-lib">
+        <Overview summaryData={landing.summary} />
+      </div>
+    )
+  }
+
   return (
-    <div id="knowledge-lib" className="knowledge-lib">
+    <div id="knowledge-lib">
+
       <FilterBar
         {...{
           view,
@@ -322,6 +332,33 @@ const KnowledgeLib = () => {
     </div>
   );
 };
+
+const Overview = ({ summaryData }) => {
+  const summaryDict = {}
+  let allResources = 0
+  summaryData.forEach(obj => {
+    const key = Object.keys(obj)[0]
+    summaryDict[key] = obj[key]
+    allResources += obj[key]
+  })
+  return (
+    <div className="overview">
+      <h3>Categories</h3>
+      <ul className="categories">
+        <li>
+          <b>{allResources}</b>
+          <span>All Resources</span>
+        </li>
+        {resourceTypes.map(type => (
+          <li>
+            <b>{summaryDict[humps.camelize(type.key)] || 'XX'}</b>
+            <span>{type.label}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
 
 const GridView = ({ data, loading }) => {
   return (

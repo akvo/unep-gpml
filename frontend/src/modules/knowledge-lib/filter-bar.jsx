@@ -8,7 +8,7 @@ import CountryTransnationalFilter from "../../components/select/country-transnat
 import LocationDropdown from "../../components/location-dropdown/location-dropdown";
 import api from "../../utils/api";
 
-const resourceTypes = [
+export const resourceTypes = [
   { key: "technical-resource", label: "Technical Resources" },
   { key: "event", label: "Events" },
   { key: "technology", label: "Technology" },
