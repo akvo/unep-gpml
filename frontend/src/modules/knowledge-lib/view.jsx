@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
-import classNames from 'classnames'
-import { CSSTransition } from 'react-transition-group';
+import classNames from "classnames";
+import { CSSTransition } from "react-transition-group";
 import api from "../../utils/api";
 import FilterBar from "./filter-bar";
 import "./style.scss";
@@ -59,50 +59,29 @@ const KnowledgeLib = () => {
   const [countData, setCountData] = useState([]);
   const [initialCountData, setInitialCountData] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
-  const categories = [
-    "project",
-    "action_plan",
-    "policy",
-    "technical_resource",
-    "technology",
-    "event",
-    "financing_resource",
-  ];
   const [catData, setCatData] = useState([]);
   const [data, setData] = useState([]);
   const [isShownModal, setIsShownModal] = useState(false);
 
   const fetchData = (query) => {
     setLoading(true);
-    const searchParms = new URLSearchParams(window.location.search);
+    const searchParms = new URLSearchParams(
+      view === "topic" ? query : window.location.search
+    );
     searchParms.set("limit", 30);
 
     searchParms.set("incCountsForTags", popularTags);
 
-    if (query?.topic?.length === 0) {
-      if (
-        (query?.startDate && query?.startDate?.length !== 0) ||
-        (query?.endDate && query?.endDate?.length !== 0)
-      ) {
-        searchParms.set("topic", "event");
-      } else if (
-        query?.hasOwnProperty("favorites") &&
-        query?.favorites === true
-      ) {
-        searchParms.set("topic", []);
-      } else {
-        searchParms.set("topic", topic);
-      }
-    }
     const url = `/browse?${String(searchParms)}`;
     api
       .get(url)
       .then((resp) => {
+        setLoading(false);
         setData(resp?.data);
         setCountData(resp?.data?.counts);
-        if (initialCountData.length === 0)
+        if (initialCountData.length === 0 || !query?.hasOwnProperty("tag")) {
           setInitialCountData(resp?.data?.counts);
-        setLoading(false);
+        }
       })
       .catch((err) => {
         console.error(err);
@@ -146,6 +125,7 @@ const KnowledgeLib = () => {
     // setFilter(pureQuery);
 
     const newParams = new URLSearchParams(pureQuery);
+    if (view === "topic") newParams.delete("tag");
 
     history.push(`/knowledge/lib?${newParams.toString()}`);
 
@@ -174,13 +154,11 @@ const KnowledgeLib = () => {
 
   const loadAllCat = async () => {
     setLoading(true);
-    const promiseArray = categories.map((url) =>
-      api.get(`/browse?topic=${url}`)
-    );
+    const promiseArray = topic.map((url) => api.get(`/browse?topic=${url}`));
 
     Promise.all(promiseArray)
       .then((data) => {
-        const newData = categories.map((categories, idx) => ({
+        const newData = topic.map((categories, idx) => ({
           categories,
           data: data[idx].data.results,
         }));
@@ -254,6 +232,9 @@ const KnowledgeLib = () => {
               fetch={true}
               loading={loading}
               countData={countData.filter(
+                (count) => count.topic !== "gpml_member_entities"
+              )}
+              initialCountData={initialCountData.filter(
                 (count) => count.topic !== "gpml_member_entities"
               )}
             />
@@ -335,30 +316,44 @@ const GridView = ({ data, loading }) => {
   );
 };
 
-
-
 const ViewSwitch = ({ view, setView }) => {
-  const viewOptions = ['grid', 'category', 'map', 'topic'];
-  const [visible, setVisible] = useState(false)
+  const viewOptions = ["grid", "category", "map", "topic"];
+  const [visible, setVisible] = useState(false);
   const handleChangeView = (viewOption) => () => {
-    setView(viewOption)
-    setVisible(false)
-  }
+    setView(viewOption);
+    setVisible(false);
+  };
   return (
     <div className="view-switch-container">
-      <div className={classNames('switch-btn', { active: visible })} onClick={() => { setVisible(!visible) }}>
+      <div
+        className={classNames("switch-btn", { active: visible })}
+        onClick={() => {
+          setVisible(!visible);
+        }}
+      >
         <DownOutlined />
         {view} view
       </div>
-      <CSSTransition in={visible} timeout={200} unmountOnExit classNames="view-switch">
+      <CSSTransition
+        in={visible}
+        timeout={200}
+        unmountOnExit
+        classNames="view-switch"
+      >
         <div className="view-switch-dropdown">
           <ul>
-            {viewOptions.filter(opt => view !== opt).map(viewOption => <li onClick={handleChangeView(viewOption)}>{viewOption} view</li>)}
+            {viewOptions
+              .filter((opt) => view !== opt)
+              .map((viewOption) => (
+                <li onClick={handleChangeView(viewOption)}>
+                  {viewOption} view
+                </li>
+              ))}
           </ul>
         </div>
       </CSSTransition>
     </div>
-  )
-}
+  );
+};
 
 export default KnowledgeLib;

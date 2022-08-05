@@ -9,6 +9,7 @@ const TopicView = ({
   countData,
   fetch,
   loading,
+  initialCountData,
 }) => {
   const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
@@ -26,13 +27,16 @@ const TopicView = ({
     if (data.length === 0) {
       setData(countData);
     }
-    if (!selectedTopic && !loading && !query.hasOwnProperty("tag")) {
-      setData(countData);
+    if (!selectedTopic) {
+      setData(initialCountData);
     }
-    if (query.hasOwnProperty("topic") && selectedTopic) {
-      setData(data);
+  }, [data, initialCountData, countData, query, selectedTopic, loading]);
+
+  useEffect(() => {
+    if (query.hasOwnProperty("tag")) {
+      updateQuery("tag", [], true);
     }
-  }, [data, countData, query, selectedTopic, loading]);
+  }, [query]);
 
   const savedTopic = popularTags.filter((item) => {
     if (query?.tag?.includes(item)) {
@@ -75,23 +79,23 @@ const TopicView = ({
   const allTopics = [...nonExistedTopic, topics].flat();
 
   const handlePopularTopicChartClick = (params) => {
-    if (query?.tag?.includes(params?.data.tag)) {
+    if (selectedTopic) {
       updateQuery("tag", [], fetch);
-      return false;
+      setSelectedTopic(
+        params?.data.name?.toLowerCase() === selectedTopic
+          ? null
+          : params?.data.name?.toLowerCase()
+      );
+    } else {
+      const { name, tag } = params?.data;
+      setSelectedTopic(name?.toLowerCase());
+      updateQuery("tag", [tag], fetch);
     }
-    const { name, tag } = params?.data;
-    setSelectedTopic(name?.toLowerCase());
-    updateQuery("tag", [tag], fetch);
   };
 
   useEffect(() => {
     if (!selectedTopic && savedTopic?.length > 0) {
       setSelectedTopic(savedTopic[0]);
-    }
-
-    // Reset selection when the filter is clear
-    if (savedTopic?.length === 0 && selectedTopic) {
-      setSelectedTopic(null);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
