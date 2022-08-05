@@ -22,7 +22,7 @@ import { isEmpty } from "lodash";
 import { Link, useHistory } from "react-router-dom";
 import { useQuery, topicNames } from "../../utils/misc";
 import TopicView from "./topic-view";
-import Overview from './overview'
+import Overview from "./overview";
 
 const topic = [
   "action_plan",
@@ -93,6 +93,12 @@ const KnowledgeLib = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (view) {
+      history.push(`/knowledge/lib?view=${view}`);
+    }
+  }, [view]);
 
   useEffect(() => {
     api.get(`/landing?entityGroup=topic`).then((resp) => {
@@ -178,17 +184,16 @@ const KnowledgeLib = () => {
     }
   }, [view, catData]);
 
-  if(view === 'overview'){
+  if (view === "overview") {
     return (
       <div id="knowledge-lib">
         <Overview summaryData={landing?.summary} {...{ setView }} />
       </div>
-    )
+    );
   }
 
   return (
     <div id="knowledge-lib">
-
       <FilterBar
         {...{
           view,
