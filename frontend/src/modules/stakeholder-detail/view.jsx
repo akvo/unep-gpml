@@ -305,9 +305,6 @@ const StakeholderDetail = ({
   );
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      setLoginVisible(true);
-    }
     isLoaded() &&
       !data &&
       params?.type &&
@@ -335,6 +332,14 @@ const StakeholderDetail = ({
     });
     window.scrollTo({ top: 0 });
   }, [isLoaded]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setLoginVisible(true);
+    } else {
+      setLoginVisible(false);
+    }
+  }, [isAuthenticated]);
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
