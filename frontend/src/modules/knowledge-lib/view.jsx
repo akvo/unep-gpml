@@ -20,6 +20,7 @@ import { isEmpty } from "lodash";
 import { useHistory } from "react-router-dom";
 import { useQuery, topicNames } from "../../utils/misc";
 import TopicView from "./topic-view";
+
 const popularTags = [
   "plastics",
   "waste management",
@@ -27,6 +28,25 @@ const popularTags = [
   "capacity building",
   "product by design",
   "source to sea",
+];
+
+const views = [
+  {
+    value: "grid",
+    label: "Grid",
+  },
+  {
+    value: "category",
+    label: "Category",
+  },
+  {
+    value: "map",
+    label: "Map",
+  },
+  {
+    value: "topic",
+    label: "Topic",
+  },
 ];
 
 const KnowledgeLib = () => {
@@ -39,6 +59,7 @@ const KnowledgeLib = () => {
   const query = useQuery();
   const [view, setView] = useState("map"); // to be changed to 'overview' later
   const [isAscending, setIsAscending] = useState(null);
+  const [visibleView, setVisibleView] = useState(false);
   const [loading, setLoading] = useState(true);
   const [filterCountries, setFilterCountries] = useState([]);
   const [filter, setFilter] = useState([]);
@@ -223,43 +244,26 @@ const KnowledgeLib = () => {
         <div className="list-toolbar">
           <div className="page-label">Total {data?.results?.length}</div>
           <div className="view-button-container">
-            <div className="dropdown">
+            <div
+              className={`dropdown ${visibleView ? "selected" : ""}`}
+              onClick={() => setVisibleView(!visibleView)}
+            >
               <div className="dropdown__value">
                 <DownOutlined />
                 {view} View
               </div>
               <div className="dropdown__option-box">
-                <div
-                  className="dropdown__option-box__item"
-                  onClick={() => setView("map")}
-                >
-                  <div>MAP VIEW </div>
-                  {/* <GlobeIcon width={32} /> */}
-                </div>
-                <div
-                  className="dropdown__option-box__item"
-                  onClick={() => {
-                    setView("topic");
-                    setCountData(initialCountData);
-                  }}
-                >
-                  <div>TOPIC VIEW </div>
-                  {/* <TopicIcon width={30} height={30} /> */}
-                </div>
-                <div
-                  className="dropdown__option-box__item"
-                  onClick={() => setView("grid")}
-                >
-                  <div>GRID VIEW </div>
-                  {/* <GridIcon width={30} height={30} /> */}
-                </div>
-                <div
-                  className="dropdown__option-box__item"
-                  onClick={() => setView("category")}
-                >
-                  <div>CATEGORY VIEW</div>
-                  {/* <GraphIcon width={30} height={30} /> */}
-                </div>
+                {views
+                  .filter((selected) => view !== selected.value)
+                  .map((list) => (
+                    <div
+                      className="dropdown__option-box__item"
+                      onClick={() => setView(list.value)}
+                    >
+                      <div>{list.label} VIEW </div>
+                      {/* <GlobeIcon width={32} /> */}
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
