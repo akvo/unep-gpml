@@ -21,6 +21,16 @@ import { useHistory } from "react-router-dom";
 import { useQuery, topicNames } from "../../utils/misc";
 import TopicView from "./topic-view";
 
+const topic = [
+  "action_plan",
+  "project",
+  "policy",
+  "technical_resource",
+  "technology",
+  "event",
+  "financing_resource",
+];
+
 const popularTags = [
   "plastics",
   "waste management",
@@ -83,24 +93,6 @@ const KnowledgeLib = () => {
     setLoading(true);
     const searchParms = new URLSearchParams(window.location.search);
     searchParms.set("limit", 30);
-    const topic = [
-      "action_plan",
-      "project",
-      "policy",
-      "technical_resource",
-      "technology",
-      "event",
-      "financing_resource",
-    ];
-
-    const popularTags = [
-      "plastics",
-      "waste management",
-      "marine litter",
-      "capacity building",
-      "product by design",
-      "source to sea",
-    ];
 
     searchParms.set("incCountsForTags", popularTags);
 
