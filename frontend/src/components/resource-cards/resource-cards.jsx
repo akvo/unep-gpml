@@ -89,7 +89,6 @@ const ResourceCards = ({
   );
 };
 
-
 const getType = (type) => {
   let t = "";
   switch (type) {
@@ -158,9 +157,9 @@ const getThumbnail = (item) => {
   }
 };
 
-export const ResourceCard = ({ item }) => {
+export const ResourceCard = ({ item, index }) => {
   return (
-    <div className="resource-card">
+    <div className="resource-card" key={index}>
       <Link
         to={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
         className="description-holder"
@@ -223,7 +222,7 @@ export const ResourceCard = ({ item }) => {
         <img src={getThumbnail(item)} alt={item?.type} />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default ResourceCards;
