@@ -513,7 +513,7 @@ const AdminSection = ({
         itemType: itemType,
         reviewStatus: reviewStatus,
       })
-      .then(() => {
+      .then((res) => {
         (async () => {
           const data = await fetchSubmissionData(
             listOpts.current,
@@ -522,6 +522,11 @@ const AdminSection = ({
             listOpts.reviewStatus,
             listOpts.title
           );
+          notification.error({
+            message: res?.data?.message
+              ? res?.data?.message
+              : "Something went wrong",
+          });
           setListOpts((opts) => ({ ...opts, data }));
           setApproveLoading({});
         })();
@@ -894,7 +899,9 @@ const AdminSection = ({
               {item.reviewStatus === "SUBMITTED" && (
                 <ResourceSubmittedActions />
               )}
-              {item.reviewStatus === "APPROVED" && <ResourceApprovedActions />}
+              {item.reviewStatus === "APPROVED" && (
+                <ResourceApprovedActions item={item} />
+              )}
             </div>
           )}
         </>
