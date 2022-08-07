@@ -19,6 +19,8 @@ export const resourceTypes = [
   { key: "financing-resource", label: "Financing Resources" },
 ];
 
+const hideFilterList = ["offset", "country", "transnational", "topic", "view"];
+
 const FilterBar = ({
   view,
   setView,
@@ -107,6 +109,7 @@ const FilterBar = ({
       <ul>
         {resourceTypes.map((it) => (
           <li
+            key={it.key}
             onClick={handleClickFilter(it.key.replace(/-/g, "_"))}
             className={
               query?.topic?.includes(it.key.replace(/-/g, "_"))
@@ -125,27 +128,14 @@ const FilterBar = ({
       </ul>
       <Button onClick={() => setIsShownModal(true)}>
         {!isEmpty &&
-          Object.keys(query).filter(
-            (item) =>
-              item !== "offset" &&
-              item !== "country" &&
-              item !== "transnational" &&
-              item !== "topic"
-          ).length > 0 && (
+          Object.keys(query).filter((item) => !hideFilterList.includes(item))
+            .length > 0 && (
             <div class="filter-status">
               {Object.keys(query).filter(
-                (item) =>
-                  item !== "offset" &&
-                  item !== "country" &&
-                  item !== "transnational" &&
-                  item !== "topic"
+                (item) => !hideFilterList.includes(item)
               ).length > 0 &&
                 Object.keys(query).filter(
-                  (item) =>
-                    item !== "offset" &&
-                    item !== "country" &&
-                    item !== "transnational" &&
-                    item !== "topic"
+                  (item) => !hideFilterList.includes(item)
                 ).length}
             </div>
           )}

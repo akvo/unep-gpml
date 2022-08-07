@@ -9,7 +9,6 @@ const TopicView = ({
   countData,
   fetch,
   loading,
-  initialCountData,
 }) => {
   const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
@@ -24,19 +23,8 @@ const TopicView = ({
   ];
 
   useEffect(() => {
-    if (data.length === 0) {
-      setData(countData);
-    }
-    if (!selectedTopic) {
-      setData(initialCountData);
-    }
-  }, [data, initialCountData, countData, query, selectedTopic, loading]);
-
-  useEffect(() => {
-    if (query.hasOwnProperty("tag")) {
-      updateQuery("tag", [], true);
-    }
-  }, [query]);
+    setData(countData);
+  }, [countData]);
 
   const savedTopic = popularTags.filter((item) => {
     if (query?.tag?.includes(item)) {
@@ -80,7 +68,7 @@ const TopicView = ({
 
   const handlePopularTopicChartClick = (params) => {
     if (selectedTopic) {
-      updateQuery("tag", [], fetch);
+      updateQuery("tag", [], fetch, false, true);
       setSelectedTopic(
         params?.data.name?.toLowerCase() === selectedTopic
           ? null
@@ -89,7 +77,7 @@ const TopicView = ({
     } else {
       const { name, tag } = params?.data;
       setSelectedTopic(name?.toLowerCase());
-      updateQuery("tag", [tag], fetch);
+      updateQuery("tag", [tag], fetch, false, true);
     }
   };
 
@@ -103,7 +91,7 @@ const TopicView = ({
 
   // Apply when there is a selected topic
   useEffect(() => {
-    if (results.length > 0) {
+    if (results?.length > 0) {
       setSortedPopularTopics(allTopics);
     } else {
       const topics = popularTags.map((topic) => {

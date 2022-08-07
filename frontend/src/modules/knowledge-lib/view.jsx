@@ -51,7 +51,9 @@ const KnowledgeLib = () => {
   const box = document.getElementsByClassName("knowledge-lib");
   const history = useHistory();
   const query = useQuery();
-  const [view, setView] = useState("map"); // to be changed to 'overview' later
+  const [view, setView] = useState(
+    query.hasOwnProperty("view") ? query.view[0] : "map"
+  ); // to be changed to 'overview' later
   const [isAscending, setIsAscending] = useState(null);
   const [visibleView, setVisibleView] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -62,26 +64,39 @@ const KnowledgeLib = () => {
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const [catData, setCatData] = useState([]);
   const [data, setData] = useState([]);
+  const [gridItems, setGridItems] = useState([]);
   const [isShownModal, setIsShownModal] = useState(false);
+  const limit = 30;
+  const totalItems = topic.reduce(
+    (acc, topic) =>
+      acc + (countData?.find((it) => it.topic === topic)?.count || 0),
+    0
+  );
 
-  const fetchData = (query) => {
+  const fetchData = (query, hideCount) => {
+    console.log(query);
     setLoading(true);
     const searchParms = new URLSearchParams(
       view === "topic" ? query : window.location.search
     );
-    searchParms.set("limit", 30);
+    searchParms.set("limit", limit);
 
     searchParms.set("incCountsForTags", popularTags);
 
+    searchParms.delete("view");
+
     const url = `/browse?${String(searchParms)}`;
+
     api
       .get(url)
       .then((resp) => {
         setLoading(false);
         setData(resp?.data);
-        setCountData(resp?.data?.counts);
-        if (initialCountData.length === 0 || !query?.hasOwnProperty("tag")) {
-          setInitialCountData(resp?.data?.counts);
+        setGridItems((prevItems) => {
+          return [...new Set([...prevItems, ...resp?.data?.results])];
+        });
+        if (!hideCount) {
+          setCountData(resp?.data?.counts);
         }
       })
       .catch((err) => {
@@ -96,7 +111,9 @@ const KnowledgeLib = () => {
 
   useEffect(() => {
     if (view) {
-      history.push(`/knowledge/lib?view=${view}`);
+      const searchParms = new URLSearchParams(window.location.search);
+      searchParms.set("view", view);
+      history.push(`/knowledge/lib?${String(searchParms)}`);
     }
   }, [view]);
 
@@ -108,13 +125,12 @@ const KnowledgeLib = () => {
     });
   }, []);
 
-  const updateQuery = (param, value, fetch) => {
-    const topScroll = window.innerWidth < 640 ? 996 : 207;
-    window.scrollTo({
-      top: window.pageYOffset < topScroll ? window.pageYOffset : topScroll,
-    });
+  const updateQuery = (param, value, fetch, reset, hideCount) => {
     {
       view !== "category" && setLoading(true);
+    }
+    {
+      !reset && setGridItems([]);
     }
     const newQuery = { ...query };
     newQuery[param] = value;
@@ -137,7 +153,7 @@ const KnowledgeLib = () => {
     history.push(`/knowledge/lib?${newParams.toString()}`);
 
     if (fetch && view !== "category") {
-      fetchData(pureQuery);
+      fetchData(pureQuery, hideCount);
     }
 
     if (param === "country") {
@@ -210,7 +226,16 @@ const KnowledgeLib = () => {
       />
       <div className="list-content">
         <div className="list-toolbar">
-          <div className="page-label">Total {data?.results?.length}</div>
+          <div className="quick-search">
+            <div className="count">
+              {view === "grid"
+                ? `Showing ${gridItems?.length} of ${totalItems}`
+                : `Showing ${data?.results?.length}`}
+            </div>
+            <div className="search-icon">
+              <SearchIcon />
+            </div>
+          </div>
           <ViewSwitch {...{ view, setView }} />
           <button
             className="sort-by-button"
@@ -261,7 +286,18 @@ const KnowledgeLib = () => {
           <LoadingOutlined spin />
         </div>
       )}
-      {view === "grid" && <GridView data={data} />}
+      {view === "grid" && (
+        <GridView
+          {...{
+            query,
+            gridItems,
+            updateQuery,
+            totalItems,
+            limit,
+            loading,
+          }}
+        />
+      )}
       {view === "map" && (
         <Maps
           box={box}
@@ -319,14 +355,38 @@ const KnowledgeLib = () => {
   );
 };
 
-const GridView = ({ data, loading }) => {
+const GridView = ({
+  query,
+  gridItems,
+  loading,
+  updateQuery,
+  totalItems,
+  limit,
+}) => {
   return (
     <div className="grid-view">
       <div className="items">
-        {data?.results?.map((item) => (
-          <ResourceCard item={item} />
+        {gridItems?.map((item, index) => (
+          <ResourceCard item={item} key={item.id * index} />
         ))}
       </div>
+      {gridItems?.length < totalItems && (
+        <Button
+          className="load-more"
+          loading={loading}
+          onClick={() => {
+            updateQuery(
+              "offset",
+              (query.hasOwnProperty("offset") ? Number(query?.offset[0]) : 0) +
+                limit,
+              true,
+              true
+            );
+          }}
+        >
+          Load More
+        </Button>
+      )}
     </div>
   );
 };
@@ -360,7 +420,7 @@ const ViewSwitch = ({ view, setView }) => {
             {viewOptions
               .filter((opt) => view !== opt)
               .map((viewOption) => (
-                <li onClick={handleChangeView(viewOption)}>
+                <li key={viewOption} onClick={handleChangeView(viewOption)}>
                   {viewOption} view
                 </li>
               ))}

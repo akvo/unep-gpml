@@ -172,6 +172,7 @@
   overflow-x: hidden;
   .list-toolbar {
     margin-bottom: 0;
+    padding: 0 40px;
     .view-switch-container {
       width: 160px;
       font-weight: 500;
@@ -283,6 +284,9 @@
   .grid-view {
     width: 100%;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0px;
     .items {
       display: flex;
       flex-wrap: wrap;
@@ -292,6 +296,19 @@
       margin-left: 10px;
       margin-right: 10px;
       margin-bottom: 20px;
+    }
+    .load-more {
+      border: 1px solid #265d89;
+      border-radius: 30px;
+      font-weight: 400;
+      text-align: center;
+      text-transform: uppercase;
+      color: #265d89;
+      padding: 0 20px;
+      &:hover {
+        background-color: #265d89;
+        color: #fff;
+      }
     }
   }
   .cat-view {
@@ -308,6 +325,7 @@
         text-transform: uppercase;
         margin-bottom: 0px;
         color: #a5b0c9;
+        margin-right: 20px;
       }
       button {
         font-weight: 500;
@@ -319,34 +337,6 @@
       .title-wrapper {
         display: flex;
         align-items: center;
-        .quick-search {
-          display: flex;
-          position: relative;
-          margin-left: 20px;
-          height: 25px;
-          align-items: center;
-          .count {
-            background: #ffffff;
-            border: 1px solid #edf2f7;
-            border-radius: 6px;
-            padding-left: 10px;
-            padding-right: 40px;
-            font-weight: 700;
-            font-size: 12px;
-            color: #18162f;
-            height: 100%;
-            display: flex;
-            align-items: center;
-          }
-          .search-icon {
-            position: absolute;
-            top: 50%;
-            right: -5px;
-            transform: translateY(-50%);
-            align-items: center;
-            display: flex;
-          }
-        }
       }
     }
     .resource-cards {
@@ -381,6 +371,32 @@
           margin-right: 0;
         }
       }
+    }
+  }
+  .quick-search {
+    display: flex;
+    position: relative;
+    height: 25px;
+    align-items: center;
+    .count {
+      background: #ffffff;
+      border: 1px solid #edf2f7;
+      border-radius: 6px;
+      padding: 5px 40px 5px 10px;
+      font-weight: 700;
+      font-size: 12px;
+      line-height: 15px;
+      color: #18162f;
+      height: 100%;
+      display: flex;
+    }
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      right: -5px;
+      transform: translateY(-50%);
+      align-items: center;
+      display: flex;
     }
   }
 }
