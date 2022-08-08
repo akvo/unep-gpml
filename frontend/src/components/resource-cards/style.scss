@@ -53,6 +53,9 @@
     .ant-col-12 {
       max-width: 100% !important;
     }
+    &:hover {
+      z-index: 9999;
+    }
   }
   .show-more-card {
     display: flex;
