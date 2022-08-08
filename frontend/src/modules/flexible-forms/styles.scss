@@ -273,7 +273,7 @@
         }
         .custom-radio {
           height: auto;
-          margin-bottom: 20px;
+          margin-bottom: 5px;
           display: block;
           border: 2px solid #fff;
           padding-bottom: 10px;
@@ -313,8 +313,8 @@
             }
           }
           .content-circle {
-            width: 120px;
-            height: 120px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             border: 5px solid #10f9b7;
             text-align: center;
@@ -325,13 +325,13 @@
             display: flex;
 
             img {
-              width: 70px;
+              width: 50px;
             }
           }
           h2 {
             margin-bottom: 0px;
             text-align: center;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 400;
             text-transform: capitalize;
           }
@@ -351,7 +351,7 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
-          margin-bottom: 20px;
+          margin-bottom: 5px;
           h5 {
             color: $blue06;
             font-size: 18px;
@@ -482,7 +482,7 @@
           }
         }
         .sub-content-topics {
-          padding: 40px 0px 20px 0px;
+          padding: 5px 0px 20px 0px;
 
           .ant-row {
             align-items: center;
