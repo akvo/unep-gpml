@@ -2,13 +2,12 @@ import React, { useState, useEffect, Fragment } from "react";
 import "./map-styles.scss";
 import ReactTooltip from "react-tooltip";
 import { LoadingOutlined, DownOutlined } from "@ant-design/icons";
-import MapChart from './map-chart'
+import MapChart from "./map-chart";
 
 export const KNOWLEDGE_LIBRARY = "/knowledge/library";
 export const KNOWLEDGE_LIB = "/knowledge/lib";
 export const STAKEHOLDER_OVERVIEW = "/connect/community";
 export const EXPERTS = "/connect/experts";
-
 
 const Maps = ({
   box,
@@ -25,9 +24,10 @@ const Maps = ({
   multiCountryCountries,
   useVerticalLegend = false,
   countryGroupCounts,
-  useTooltips = true
+  useTooltips = true,
+  showLegend = false,
 }) => {
-  const [tooltipContent, setTooltipContent] = useState('');
+  const [tooltipContent, setTooltipContent] = useState("");
 
   return (
     <div id="map-landing">
@@ -43,13 +43,32 @@ const Maps = ({
             width: "auto",
           }}
         >
-          
-          <MapChart {...{ useTooltips, setTooltipContent, countData, stakeholderCount, box, isFilteredCountry, data, query, multiCountries, multiCountryCountries, clickEvents, setTooltipContent, listVisible, useVerticalLegend, isDisplayedList, countryGroupCounts }} />
-          {useTooltips &&
-          <ReactTooltip type="light" className="opaque map-tooltip-wrapper">
-            {tooltipContent}
-          </ReactTooltip>
-          }
+          <MapChart
+            {...{
+              useTooltips,
+              setTooltipContent,
+              countData,
+              stakeholderCount,
+              box,
+              isFilteredCountry,
+              data,
+              query,
+              multiCountries,
+              multiCountryCountries,
+              clickEvents,
+              setTooltipContent,
+              listVisible,
+              useVerticalLegend,
+              isDisplayedList,
+              countryGroupCounts,
+              showLegend,
+            }}
+          />
+          {useTooltips && (
+            <ReactTooltip type="light" className="opaque map-tooltip-wrapper">
+              {tooltipContent}
+            </ReactTooltip>
+          )}
         </div>
       </div>
     </div>

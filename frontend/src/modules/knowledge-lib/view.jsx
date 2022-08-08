@@ -330,6 +330,7 @@ const KnowledgeLib = () => {
           isLoaded={() => true}
           multiCountryCountries={multiCountryCountries}
           useVerticalLegend
+          showLegend={true}
         />
       )}
       {view === "category" && (

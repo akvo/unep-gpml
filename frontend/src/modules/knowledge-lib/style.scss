@@ -351,7 +351,6 @@
       font-size: 50px;
     }
     h3 {
-      margin-left: 20px;
       margin-top: 10px;
       color: #a5b0c9;
       font-size: 16px;
@@ -360,9 +359,11 @@
     }
     ul.categories {
       display: flex;
-      // background-color: #edf2f7;
-      padding: 15px;
-      margin-left: 5px;
+      padding: 15px 0px;
+      @media screen and (min-width: 0) and (max-width: 1366px) {
+        overflow: scroll;
+        overflow-y: hidden;
+      }
       li {
         background-color: #dce7f3;
         border-radius: 5px;
@@ -406,12 +407,16 @@
       }
     }
     section {
-      background-color: #f6f8fa;
-      padding: 10px 0;
+      &:first-child {
+        background-color: #f6f8fa;
+      }
+      padding: 10px 20px;
       margin-bottom: 15px;
-    }
-    .resource-cards {
-      padding-bottom: 10px !important;
+      .resource-cards {
+        padding-bottom: 10px !important;
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+      }
     }
     .overlay-btn {
       position: relative;

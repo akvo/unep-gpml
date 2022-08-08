@@ -1,75 +1,101 @@
-import React, { useEffect, useState } from 'react'
-import humps from 'humps'
+import React, { useEffect, useState } from "react";
+import humps from "humps";
 import api from "../../utils/api";
 import { resourceTypes } from "./filter-bar";
-import ResourceCards from '../../components/resource-cards/resource-cards';
-import { Icon } from '../../components/svg-icon/svg-icon';
-import Maps from '../map/map';
-import TopicView from './topic-view';
-import { LoadingOutlined } from '@ant-design/icons';
+import ResourceCards from "../../components/resource-cards/resource-cards";
+import { Icon } from "../../components/svg-icon/svg-icon";
+import Maps from "../map/map";
+import TopicView from "./topic-view";
+import { Col, Row } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
-
-const Overview = ({ summaryData, setView, box, query, countData, landing, data, loading, updateQuery }) => {
-  const summaryDict = {}
-  let allResources = 0
-  summaryData?.forEach(obj => {
-    const key = Object.keys(obj)[0]
-    summaryDict[key] = obj[key]
-    allResources += obj[key]
-  })
-  if(loading){
+const Overview = ({
+  summaryData,
+  setView,
+  box,
+  query,
+  countData,
+  landing,
+  data,
+  loading,
+  updateQuery,
+}) => {
+  const summaryDict = {};
+  let allResources = 0;
+  summaryData?.forEach((obj) => {
+    const key = Object.keys(obj)[0];
+    summaryDict[key] = obj[key];
+    allResources += obj[key];
+  });
+  if (loading) {
     return (
       <div className="overview">
         <div className="loading">
           <LoadingOutlined spin />
         </div>
       </div>
-    )
+    );
   }
   const handleClickCategory = (key) => () => {
-    updateQuery('topic', key.replace(/-/g, "_"), true);
-    setView('map')
-  }
+    updateQuery("topic", key.replace(/-/g, "_"), true);
+    setView("map");
+  };
   return (
     <div className="overview">
       <section>
-      <h3>Categories</h3>
-      <ul className="categories">
-        <li onClick={() => { setView('category') }}>
-          <div>
-            <Icon name={`all`} fill="#000" />
-            <b>{allResources}</b>
-          </div>
-          <span>All Resources</span>
-        </li>
-        {resourceTypes.map(type => (
-          <li onClick={handleClickCategory(type.key)}>
+        <h3>Categories</h3>
+        <ul className="categories">
+          <li
+            onClick={() => {
+              setView("category");
+            }}
+          >
             <div>
-              <Icon name={`resource-types/${type.key}`} fill="#000" />
-              <b>{summaryDict[humps.camelize(type.key)] || 'XX'}</b>
+              <Icon name={`all`} fill="#000" />
+              <b>{allResources}</b>
             </div>
-            <span>{type.label}</span>
+            <span>All Resources</span>
           </li>
-        ))}
-      </ul>
-      <Featured {...{ setView }} />
+          {resourceTypes.map((type) => (
+            <li onClick={handleClickCategory(type.key)}>
+              <div>
+                <Icon name={`resource-types/${type.key}`} fill="#000" />
+                <b>{summaryDict[humps.camelize(type.key)] || "XX"}</b>
+              </div>
+              <span>{type.label}</span>
+            </li>
+          ))}
+        </ul>
+        <Featured {...{ setView }} />
       </section>
-      <div className="grid">
-        <div className="col">
-          <h3>Resources by location</h3>
-          <div className="overlay-btn" onClick={() => { setView('map') }}>
-            <Maps
-              {... { box, query, countData }}
-              data={landing?.map || []}
-              isLoaded={() => true}
-              useTooltips={false}
-            />
-          </div>
-        </div>
-        <div className="col">
-          <h3>Resources by topic</h3>
-          <div className="overlay-btn" onClick={() => { setView('topic') }}>
-            <TopicView
+      <section>
+        <Row gutter={16}>
+          <Col sm={24} md={24} lg={12} xl={12}>
+            <h3>Resources by location</h3>
+            <div
+              className="overlay-btn"
+              onClick={() => {
+                setView("map");
+              }}
+            >
+              <Maps
+                {...{ box, query, countData }}
+                data={landing?.map || []}
+                isLoaded={() => true}
+                useTooltips={false}
+                showLegend={false}
+              />
+            </div>
+          </Col>
+          <Col sm={24} md={24} lg={12} xl={12}>
+            <h3>Resources by topic</h3>
+            <div
+              className="overlay-btn"
+              onClick={() => {
+                setView("topic");
+              }}
+            >
+              <TopicView
                 {...{ query, loading }}
                 results={data?.results}
                 fetch={true}
@@ -78,22 +104,22 @@ const Overview = ({ summaryData, setView, box, query, countData, landing, data, 
                 )}
               />
             </div>
-        </div>
-      </div>
-      
+          </Col>
+        </Row>
+      </section>
     </div>
-  )
-}
+  );
+};
 
 const Featured = ({ setView }) => {
-  const [results, setResults] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    api.get('/browse?featured=true').then(({ data }) => {
-      setResults(data.results)
-      setLoading(false)
-    })
-  }, [])
+    api.get("/browse?featured=true").then(({ data }) => {
+      setResults(data.results);
+      setLoading(false);
+    });
+  }, []);
   return (
     <>
       <h3>Featured resources</h3>
@@ -105,7 +131,7 @@ const Featured = ({ setView }) => {
         }}
       />
     </>
-  )
-}
+  );
+};
 
-export default Overview
+export default Overview;
