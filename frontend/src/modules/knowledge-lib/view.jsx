@@ -249,8 +249,10 @@ const KnowledgeLib = () => {
           <div className="quick-search">
             <div className="count">
               {view === "grid"
-                ? `Showing ${gridItems?.length} of ${totalItems}`
-                : `Showing ${data?.results?.length}`}
+                ? `Showing ${
+                    !loading ? gridItems?.length : ""
+                  } of ${totalItems}`
+                : `Showing ${!loading ? data?.results?.length : ""}`}
             </div>
             <div className="search-icon">
               <SearchIcon />
