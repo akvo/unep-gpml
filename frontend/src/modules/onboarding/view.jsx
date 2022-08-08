@@ -73,16 +73,12 @@ function Authentication() {
 
     data.offering = [
       ...values?.offering,
-      ...(values?.offeringSuggested
-        ? values?.offeringSuggested.map((item) => item.label)
-        : []),
+      ...(values?.offeringSuggested ? values?.offeringSuggested : []),
     ];
 
     data.seeking = [
       ...values?.seeking,
-      ...(values?.seekingSuggested
-        ? values?.seekingSuggested.map((item) => item.label)
-        : []),
+      ...(values?.seekingSuggested ? values?.seekingSuggested : []),
     ];
 
     data.org = {};

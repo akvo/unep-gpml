@@ -70,7 +70,6 @@ function FormTwo({
                   placeholder="Suggest categories"
                   allowClear
                   showSearch
-                  labelInValue
                   mode="tags"
                   notFoundContent={null}
                   onChange={(value) => input.onChange(value)}
