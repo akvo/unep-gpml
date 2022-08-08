@@ -55,7 +55,6 @@ const KnowledgeLib = () => {
     query.hasOwnProperty("view") ? query.view[0] : "map"
   ); // to be changed to 'overview' later
   const [isAscending, setIsAscending] = useState(null);
-  const [visibleView, setVisibleView] = useState(false);
   const [loading, setLoading] = useState(true);
   const [filterCountries, setFilterCountries] = useState([]);
   const [filter, setFilter] = useState([]);
@@ -392,7 +391,7 @@ const GridView = ({
 };
 
 const ViewSwitch = ({ view, setView }) => {
-  const viewOptions = ["grid", "category", "map", "topic"];
+  const viewOptions = ['map', 'topic', 'grid', 'category'];
   const [visible, setVisible] = useState(false);
   const handleChangeView = (viewOption) => () => {
     setView(viewOption);
