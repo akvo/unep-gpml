@@ -5,9 +5,11 @@ import { resourceTypes } from "./filter-bar";
 import ResourceCards from '../../components/resource-cards/resource-cards';
 import { Icon } from '../../components/svg-icon/svg-icon';
 import Maps from '../map/map';
+import TopicView from './topic-view';
+import { LoadingOutlined } from '@ant-design/icons';
 
 
-const Overview = ({ summaryData, setView, box, query, countData, landing }) => {
+const Overview = ({ summaryData, setView, box, query, countData, landing, data, loading }) => {
   const summaryDict = {}
   let allResources = 0
   summaryData?.forEach(obj => {
@@ -15,6 +17,15 @@ const Overview = ({ summaryData, setView, box, query, countData, landing }) => {
     summaryDict[key] = obj[key]
     allResources += obj[key]
   })
+  if(loading){
+    return (
+      <div className="overview">
+        <div className="loading">
+          <LoadingOutlined spin />
+        </div>
+      </div>
+    )
+  }
   return (
     <div className="overview">
       <section>
@@ -53,6 +64,16 @@ const Overview = ({ summaryData, setView, box, query, countData, landing }) => {
         </div>
         <div className="col">
           <h3>Resources by topic</h3>
+          <div className="overlay-btn" onClick={() => { setView('topic') }}>
+            <TopicView
+                {...{ query, loading }}
+                results={data?.results}
+                fetch={true}
+                countData={countData.filter(
+                  (count) => count.topic !== "gpml_member_entities"
+                )}
+              />
+            </div>
         </div>
       </div>
       

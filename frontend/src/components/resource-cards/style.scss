@@ -41,7 +41,7 @@
 .resource-cards {
   overflow: visible !important;
   padding-left: 10px !important;
-
+  min-height: 202px;
   .swiper-slide {
     width: unset !important;
     transition: all ease-out 0.2s;

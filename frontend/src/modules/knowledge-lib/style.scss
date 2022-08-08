@@ -345,6 +345,11 @@
   }
 
   .overview {
+    .loading {
+      position: static;
+      height: calc(100vh - 200px);
+      font-size: 50px;
+    }
     h3 {
       margin-left: 20px;
       margin-top: 10px;
