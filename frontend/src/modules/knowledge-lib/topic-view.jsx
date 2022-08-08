@@ -75,7 +75,7 @@ const TopicView = ({
           : [params?.data?.tag],
         fetch,
         false,
-        true
+        false
       );
       setSelectedTopic(
         params?.data.name?.toLowerCase() === selectedTopic
