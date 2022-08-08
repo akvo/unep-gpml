@@ -73,7 +73,6 @@ const KnowledgeLib = () => {
   );
 
   const fetchData = (query, hideCount) => {
-    console.log(query);
     setLoading(true);
     const searchParms = new URLSearchParams(
       view === "topic" ? query : window.location.search
@@ -147,7 +146,7 @@ const KnowledgeLib = () => {
     // setFilter(pureQuery);
 
     const newParams = new URLSearchParams(pureQuery);
-    if (view === "topic") newParams.delete("tag");
+    // if (view === "topic") newParams.delete("tag");
 
     history.push(`/knowledge/lib?${newParams.toString()}`);
 
