@@ -56,9 +56,6 @@ const FilterBar = ({
     } else {
       updateQuery("topic", key, true);
     }
-    if (view === "overview") {
-      setView("map");
-    }
   };
 
   const handleClickOverview = () => {
