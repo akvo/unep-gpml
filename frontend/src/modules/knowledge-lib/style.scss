@@ -446,13 +446,14 @@
     }
     .grid {
       .col {
-        float: left;
+        margin-bottom: 15px;
         h3 {
           margin-left: 0;
         }
       }
       @media screen and (min-width: 1024px) {
         .col {
+          float: left;
           width: calc(50vw - 65px - 15px);
           &:nth-child(2n) {
             margin-left: 15px;
