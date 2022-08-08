@@ -17,6 +17,7 @@ const DetailModal = ({
       onCancel={() => setVisible(false)}
       className="detail-modal"
       destroyOnClose={true}
+      centered={window.innerWidth > 600 ? false : true}
     >
       <DetailsView
         {...{
