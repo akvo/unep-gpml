@@ -67,8 +67,16 @@ const TopicView = ({
   const allTopics = [...nonExistedTopic, topics].flat();
 
   const handlePopularTopicChartClick = (params) => {
-    if (selectedTopic) {
-      updateQuery("tag", [], fetch, false, true);
+    if (params?.data.name?.toLowerCase() === selectedTopic) {
+      updateQuery(
+        "tag",
+        params?.data.name?.toLowerCase() === selectedTopic
+          ? []
+          : [params?.data?.tag],
+        fetch,
+        false,
+        true
+      );
       setSelectedTopic(
         params?.data.name?.toLowerCase() === selectedTopic
           ? null
