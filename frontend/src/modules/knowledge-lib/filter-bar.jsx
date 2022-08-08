@@ -13,7 +13,7 @@ export const resourceTypes = [
   { key: "event", label: "Events" },
   { key: "technology", label: "Technology" },
   { key: "capacity-building", label: "Capacity Building" },
-  { key: "initiative", label: "Initiatives" },
+  { key: "project", label: "Initiatives" },
   { key: "action-plan", label: "Action Plan" },
   { key: "policy", label: "Policy" },
   { key: "financing-resource", label: "Financing Resources" },
