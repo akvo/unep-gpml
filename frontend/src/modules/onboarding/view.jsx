@@ -24,7 +24,12 @@ function Authentication() {
   const [initialValues, setInitialValues] = useState({});
   const [error, setError] = useState(false);
 
-  const { tags, nonMemberOrganisations, organisations } = UIStore.currentState;
+  const {
+    tags,
+    nonMemberOrganisations,
+    organisations,
+    countries,
+  } = UIStore.currentState;
 
   const next = (skip = 0) => {
     if (
@@ -99,6 +104,17 @@ function Authentication() {
     }
     if (location?.state?.data.hasOwnProperty("picture")) {
       data.photo = location?.state?.data.picture;
+    }
+    if (
+      location?.state?.data.hasOwnProperty(
+        "https://digital.gpmarinelitter.org/country"
+      )
+    ) {
+      data.country = countries.find(
+        (country) =>
+          country.name ===
+          location?.state?.data["https://digital.gpmarinelitter.org/country"]
+      ).id;
     }
     if (data.country) {
       data.country = Number(data.country);
