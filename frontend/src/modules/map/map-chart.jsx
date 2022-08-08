@@ -46,7 +46,7 @@ const KNOWLEDGE_LIB = "/knowledge/lib";
 const STAKEHOLDER_OVERVIEW = "/connect/community";
 const EXPERTS = "/connect/experts";
 
-const MapChart = ({ countData, stakeholderCount, box, isFilteredCountry, data, query, multiCountries, multiCountryCountries, clickEvents, setTooltipContent, listVisible, useVerticalLegend, isDisplayedList, countryGroupCounts }) => {
+const MapChart = ({ useTooltips, countData, stakeholderCount, box, isFilteredCountry, data, query, multiCountries, multiCountryCountries, clickEvents, setTooltipContent, listVisible, useVerticalLegend, isDisplayedList, countryGroupCounts }) => {
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
   }));
@@ -135,7 +135,7 @@ const MapChart = ({ countData, stakeholderCount, box, isFilteredCountry, data, q
     }
   };
   useEffect(() => {
-    setCountryToSelect(isFilteredCountry.map((x) => Number(x)));
+    setCountryToSelect(isFilteredCountry?.map((x) => Number(x)));
   }, [isFilteredCountry]);
 
   useEffect(() => {
@@ -352,7 +352,7 @@ const MapChart = ({ countData, stakeholderCount, box, isFilteredCountry, data, q
                       .includes(geo.properties.MAP_COLOR);
 
                   // To get all countries in a multicountry selection being highlighted
-                  const filterMultiCountry = multiCountryCountries.filter(
+                  const filterMultiCountry = multiCountryCountries?.filter(
                     (item) => {
                       const transnationalQuery = query?.transnational?.map(
                         (item) => Number(item)
@@ -361,7 +361,7 @@ const MapChart = ({ countData, stakeholderCount, box, isFilteredCountry, data, q
                     }
                   );
 
-                  const multiCountrySelection = filterMultiCountry.map(
+                  const multiCountrySelection = filterMultiCountry?.map(
                     (transnational) =>
                       transnational?.countries?.map(
                         (country) => country?.id
@@ -381,7 +381,7 @@ const MapChart = ({ countData, stakeholderCount, box, isFilteredCountry, data, q
                     ) {
                       return Number(isFilteredCountry) === Number(mapProps);
                     } else {
-                      const countryToFilter = isFilteredCountry.map((it) =>
+                      const countryToFilter = isFilteredCountry?.map((it) =>
                         Number(it)
                       );
                       return (
@@ -427,7 +427,7 @@ const MapChart = ({ countData, stakeholderCount, box, isFilteredCountry, data, q
                           MAP_LABEL,
                           M49Code,
                         } = geo.properties;
-                        if (!isLake && MAP_LABEL !== null) {
+                        if (useTooltips && !isLake && MAP_LABEL !== null) {
                           setTooltipContent(
                             <KnowledgeLibraryToolTipContent
                               data={findData}
@@ -439,7 +439,9 @@ const MapChart = ({ countData, stakeholderCount, box, isFilteredCountry, data, q
                         }
                       }}
                       onMouseLeave={() => {
-                        setTooltipContent('');
+                        if(useTooltips){
+                          setTooltipContent('');
+                        }
                         // setSelected(null);
                       }}
                       onClick={() => {

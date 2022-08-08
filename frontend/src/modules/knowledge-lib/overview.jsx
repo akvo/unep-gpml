@@ -4,9 +4,10 @@ import api from "../../utils/api";
 import { resourceTypes } from "./filter-bar";
 import ResourceCards from '../../components/resource-cards/resource-cards';
 import { Icon } from '../../components/svg-icon/svg-icon';
+import Maps from '../map/map';
 
 
-const Overview = ({ summaryData, setView }) => {
+const Overview = ({ summaryData, setView, box, query, countData, landing }) => {
   const summaryDict = {}
   let allResources = 0
   summaryData?.forEach(obj => {
@@ -38,8 +39,22 @@ const Overview = ({ summaryData, setView }) => {
       </ul>
       <Featured {...{ setView }} />
       </section>
-      <section>
-      </section>
+      <div className="grid">
+        <div className="col">
+          <h3>Resources by location</h3>
+          <div className="overlay-btn" onClick={() => { setView('map') }}>
+            <Maps
+              {... { box, query, countData }}
+              data={landing?.map || []}
+              isLoaded={() => true}
+              useTooltips={false}
+            />
+          </div>
+        </div>
+        <div className="col">
+          <h3>Resources by topic</h3>
+        </div>
+      </div>
       
     </div>
   )

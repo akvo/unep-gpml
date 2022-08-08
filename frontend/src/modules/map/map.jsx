@@ -25,6 +25,7 @@ const Maps = ({
   multiCountryCountries,
   useVerticalLegend = false,
   countryGroupCounts,
+  useTooltips = true
 }) => {
   const [tooltipContent, setTooltipContent] = useState('');
 
@@ -43,10 +44,12 @@ const Maps = ({
           }}
         >
           
-          <MapChart {...{ setTooltipContent, countData, stakeholderCount, box, isFilteredCountry, data, query, multiCountries, multiCountryCountries, clickEvents, setTooltipContent, listVisible, useVerticalLegend, isDisplayedList, countryGroupCounts }} />
+          <MapChart {...{ useTooltips, setTooltipContent, countData, stakeholderCount, box, isFilteredCountry, data, query, multiCountries, multiCountryCountries, clickEvents, setTooltipContent, listVisible, useVerticalLegend, isDisplayedList, countryGroupCounts }} />
+          {useTooltips &&
           <ReactTooltip type="light" className="opaque map-tooltip-wrapper">
             {tooltipContent}
           </ReactTooltip>
+          }
         </div>
       </div>
     </div>

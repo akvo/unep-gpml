@@ -403,6 +403,57 @@
     section {
       background-color: #f6f8fa;
       padding: 10px 0;
+      margin-bottom: 15px;
+    }
+    .resource-cards {
+      padding-bottom: 10px !important;
+    }
+    .overlay-btn {
+      position: relative;
+      cursor: pointer;
+      &:before {
+        content: "CLICK TO EXPAND";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(24, 22, 47, 0.6);
+        top: 0;
+        left: 0;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 12px;
+        text-transform: uppercase;
+        font-weight: 500;
+        opacity: 0;
+        transition: all 0.2s ease-out;
+      }
+      &:hover {
+        &:before {
+          opacity: 1;
+        }
+      }
+    }
+    #map-landing {
+      height: 400px;
+    }
+    .grid {
+      .col {
+        float: left;
+        h3 {
+          margin-left: 0;
+        }
+      }
+      @media screen and (min-width: 1024px) {
+        .col {
+          width: calc(50vw - 65px - 15px);
+          &:nth-child(2n) {
+            margin-left: 15px;
+          }
+        }
+      }
     }
   }
   .quick-search {
