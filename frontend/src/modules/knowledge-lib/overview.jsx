@@ -9,7 +9,7 @@ import TopicView from './topic-view';
 import { LoadingOutlined } from '@ant-design/icons';
 
 
-const Overview = ({ summaryData, setView, box, query, countData, landing, data, loading }) => {
+const Overview = ({ summaryData, setView, box, query, countData, landing, data, loading, updateQuery }) => {
   const summaryDict = {}
   let allResources = 0
   summaryData?.forEach(obj => {
@@ -26,6 +26,10 @@ const Overview = ({ summaryData, setView, box, query, countData, landing, data, 
       </div>
     )
   }
+  const handleClickCategory = (key) => () => {
+    updateQuery('topic', key.replace(/-/g, "_"), true);
+    setView('map')
+  }
   return (
     <div className="overview">
       <section>
@@ -39,7 +43,7 @@ const Overview = ({ summaryData, setView, box, query, countData, landing, data, 
           <span>All Resources</span>
         </li>
         {resourceTypes.map(type => (
-          <li onClick={() => { setView('map'); /* TODO apply filter */ }}>
+          <li onClick={handleClickCategory(type.key)}>
             <div>
               <Icon name={`resource-types/${type.key}`} fill="#000" />
               <b>{summaryDict[humps.camelize(type.key)] || 'XX'}</b>

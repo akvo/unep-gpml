@@ -201,7 +201,7 @@ const KnowledgeLib = () => {
   if (view === "overview") {
     return (
       <div id="knowledge-lib">
-        <Overview summaryData={landing?.summary} {...{ setView, box, query, countData, landing, data, loading }} />
+        <Overview summaryData={landing?.summary} {...{ setView, updateQuery, box, query, countData, landing, data, loading }} />
       </div>
     );
   }
