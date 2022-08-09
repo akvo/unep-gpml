@@ -46,7 +46,24 @@ const KNOWLEDGE_LIB = "/knowledge/lib";
 const STAKEHOLDER_OVERVIEW = "/connect/community";
 const EXPERTS = "/connect/experts";
 
-const MapChart = ({ useTooltips, countData, stakeholderCount, box, isFilteredCountry, data, query, multiCountries, multiCountryCountries, clickEvents, setTooltipContent, listVisible, useVerticalLegend, isDisplayedList, countryGroupCounts }) => {
+const MapChart = ({
+  useTooltips,
+  countData,
+  stakeholderCount,
+  box,
+  isFilteredCountry,
+  data,
+  query,
+  multiCountries,
+  multiCountryCountries,
+  clickEvents,
+  setTooltipContent,
+  listVisible,
+  useVerticalLegend,
+  isDisplayedList,
+  countryGroupCounts,
+  showLegend,
+}) => {
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
   }));
@@ -60,7 +77,6 @@ const MapChart = ({ useTooltips, countData, stakeholderCount, box, isFilteredCou
   const [filterColor, setFilterColor] = useState(null);
   const [countryToSelect, setCountryToSelect] = useState([]);
   const [isShownLegend, setIsShownLegend] = useState(true);
-  const [scaleFactor, setScaleFactor] = useState(1);
 
   const resourceCount =
     (path === KNOWLEDGE_LIBRARY || path === KNOWLEDGE_LIB) &&
@@ -220,103 +236,102 @@ const MapChart = ({ useTooltips, countData, stakeholderCount, box, isFilteredCou
 
   return (
     <>
-      <div className="map-a11y">
-        <div
-          className="map-buttons"
-          style={{ left: listVisible ? "10px" : "330px" }}
-        >
-          <Tooltip placement="left" title="zoom out">
-            <Button
-              type="secondary"
-              icon={<ZoomOutOutlined />}
-              onClick={() => {
-                position.zoom > mapMinZoom &&
+      {showLegend && (
+        <div className="map-a11y">
+          <div
+            className="map-buttons"
+            style={{ left: listVisible ? "10px" : "330px" }}
+          >
+            <Tooltip placement="left" title="zoom out">
+              <Button
+                type="secondary"
+                icon={<ZoomOutOutlined />}
+                onClick={() => {
+                  position.zoom > mapMinZoom &&
+                    setPosition({
+                      ...position,
+                      zoom: position.zoom - 0.3,
+                    });
+                }}
+                disabled={position.zoom <= mapMinZoom}
+              />
+            </Tooltip>
+            <Tooltip placement="left" title="zoom in">
+              <Button
+                disabled={position.zoom >= mapMaxZoom}
+                type="secondary"
+                icon={<ZoomInOutlined />}
+                onClick={() => {
                   setPosition({
                     ...position,
-                    zoom: position.zoom - 0.3,
+                    zoom: position.zoom + 0.3,
                   });
-              }}
-              disabled={position.zoom <= mapMinZoom}
-            />
-          </Tooltip>
-          <Tooltip placement="left" title="zoom in">
-            <Button
-              disabled={position.zoom >= mapMaxZoom}
-              type="secondary"
-              icon={<ZoomInOutlined />}
-              onClick={() => {
-                setPosition({
-                  ...position,
-                  zoom: position.zoom + 0.3,
-                });
-              }}
-            />
-          </Tooltip>
-          <Tooltip placement="left" title="reset zoom">
-            <Button
-              type="secondary"
-              icon={<FullscreenOutlined />}
-              onClick={() => {
-                setPosition({
-                  coordinates: [18.297325014768123, 2.4067378816508587],
-                  zoom: mapMinZoom,
-                });
-              }}
-            />
-          </Tooltip>
-        </div>
-        <div
-          className={classNames("legend-wrapper", {
-            vertical: useVerticalLegend,
-          })}
-        >
-          {isShownLegend && path !== EXPERTS && (
-            <>
-              {useVerticalLegend ? (
-                existingData.length !== 0 ? (
-                  <VerticalLegend
-                    data={colorScale.thresholds().sort((a, b) => b - a)}
-                    contents={data}
+                }}
+              />
+            </Tooltip>
+            <Tooltip placement="left" title="reset zoom">
+              <Button
+                type="secondary"
+                icon={<FullscreenOutlined />}
+                onClick={() => {
+                  setPosition({
+                    coordinates: [18.297325014768123, 2.4067378816508587],
+                    zoom: mapMinZoom,
+                  });
+                }}
+              />
+            </Tooltip>
+          </div>
+          <div
+            className={classNames("legend-wrapper", {
+              vertical: useVerticalLegend,
+            })}
+          >
+            {isShownLegend && path !== EXPERTS && (
+              <>
+                {useVerticalLegend ? (
+                  existingData.length !== 0 ? (
+                    <VerticalLegend
+                      data={colorScale.thresholds().sort((a, b) => b - a)}
+                      contents={data}
+                      setFilterColor={setFilterColor}
+                      selected={filterColor}
+                      isDisplayedList={isDisplayedList}
+                      title={legendTitle}
+                      path={path}
+                      existingData={existingData}
+                      countData={countData}
+                      countryGroupCounts={countryGroupCounts}
+                      stakeholderCount={stakeholderCount}
+                    />
+                  ) : (
+                    <div className="no-legend-warning">No legend</div>
+                  )
+                ) : (
+                  <Legend
+                    data={colorScale.thresholds()}
                     setFilterColor={setFilterColor}
                     selected={filterColor}
                     isDisplayedList={isDisplayedList}
-                    title={legendTitle}
-                    path={path}
-                    existingData={existingData}
-                    countData={countData}
-                    countryGroupCounts={countryGroupCounts}
-                    stakeholderCount={stakeholderCount}
                   />
+                )}
+              </>
+            )}
+            <Tooltip placement="bottom" title={isShownLegend ? "Hide" : "Show"}>
+              <Button
+                className="legend-button"
+                onClick={() => setIsShownLegend(!isShownLegend)}
+              >
+                {isShownLegend ? (
+                  <DoubleRightOutlined />
                 ) : (
-                  <div className="no-legend-warning">No legend</div>
-                )
-              ) : (
-                <Legend
-                  data={colorScale.thresholds()}
-                  setFilterColor={setFilterColor}
-                  selected={filterColor}
-                  isDisplayedList={isDisplayedList}
-                />
-              )}
-            </>
-          )}
-          <Tooltip
-            placement="bottom"
-            title={isShownLegend ? "Hide" : "Show"}
-          >
-            <Button
-              className="legend-button"
-              onClick={() => setIsShownLegend(!isShownLegend)}
-            >
-              {isShownLegend ? (
-                <DoubleRightOutlined />
-              ) : (
-                <UnorderedListOutlined />
-              )}
-            </Button>
-          </Tooltip>
+                  <UnorderedListOutlined />
+                )}
+              </Button>
+            </Tooltip>
+          </div>
         </div>
-      </div>
+      )}
       <ComposableMap data-tip="">
         <ZoomableGroup
           minZoom={mapMinZoom}
@@ -326,7 +341,6 @@ const MapChart = ({ useTooltips, countData, stakeholderCount, box, isFilteredCou
           onMoveEnd={(x) => {
             setPosition(x);
           }}
-          onMove={({ k }) => setScaleFactor(k)}
           filterZoomEvent={(evt) => {
             return evt.type === "wheel" ? false : true;
           }}
@@ -339,8 +353,7 @@ const MapChart = ({ useTooltips, countData, stakeholderCount, box, isFilteredCou
                     (i) => i?.countryId === Number(geo.properties.M49Code)
                   );
 
-                  const isLake =
-                    typeof geo.properties?.ISO3CD === "undefined";
+                  const isLake = typeof geo.properties?.ISO3CD === "undefined";
                   const isUnsettled = unsettledTerritoryIsoCode?.includes(
                     geo.properties.MAP_COLOR
                   );
@@ -363,9 +376,7 @@ const MapChart = ({ useTooltips, countData, stakeholderCount, box, isFilteredCou
 
                   const multiCountrySelection = filterMultiCountry?.map(
                     (transnational) =>
-                      transnational?.countries?.map(
-                        (country) => country?.id
-                      )
+                      transnational?.countries?.map((country) => country?.id)
                   );
 
                   const multiselection =
@@ -386,16 +397,15 @@ const MapChart = ({ useTooltips, countData, stakeholderCount, box, isFilteredCou
                       );
                       return (
                         countryToFilter?.includes(mapProps) ||
-                        (multiselection &&
-                          multiselection.includes(mapProps))
+                        (multiselection && multiselection.includes(mapProps))
                       );
                     }
                   };
-                  const centroid = geoCentroid(geo);
+
                   return (
                     <Geography
                       key={geo.rsmKey}
-                      className={!isLake && 'svg-country'}
+                      className={!isLake && "svg-country"}
                       geography={geo}
                       stroke="#79B0CC"
                       strokeWidth="0.2"
@@ -414,19 +424,12 @@ const MapChart = ({ useTooltips, countData, stakeholderCount, box, isFilteredCou
                           ? "#255B87"
                           : fillColor(
                               curr(findData?.counts, path, existingData)
-                                ? curr(
-                                    findData?.counts,
-                                    path,
-                                    existingData
-                                  )
+                                ? curr(findData?.counts, path, existingData)
                                 : 0
                             )
                       }
                       onMouseEnter={() => {
-                        const {
-                          MAP_LABEL,
-                          M49Code,
-                        } = geo.properties;
+                        const { MAP_LABEL, M49Code } = geo.properties;
                         if (useTooltips && !isLake && MAP_LABEL !== null) {
                           setTooltipContent(
                             <KnowledgeLibraryToolTipContent
@@ -435,12 +438,12 @@ const MapChart = ({ useTooltips, countData, stakeholderCount, box, isFilteredCou
                               existingResources={existingResources}
                               query={query}
                             />
-                          )
+                          );
                         }
                       }}
                       onMouseLeave={() => {
-                        if(useTooltips){
-                          setTooltipContent('');
+                        if (useTooltips) {
+                          setTooltipContent("");
                         }
                         // setSelected(null);
                       }}
@@ -470,9 +473,8 @@ const MapChart = ({ useTooltips, countData, stakeholderCount, box, isFilteredCou
         </ZoomableGroup>
       </ComposableMap>
     </>
-  )
-}
-
+  );
+};
 
 const StakeholderTooltipContent = ({
   data,
@@ -839,4 +841,4 @@ const Legend = ({ data, setFilterColor, selected }) => {
   return <div className="no-legend-warning">No legend</div>;
 };
 
-export default memo(MapChart)
+export default memo(MapChart);

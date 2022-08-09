@@ -93,6 +93,16 @@ const KnowledgeLib = () => {
         setGridItems((prevItems) => {
           return [...new Set([...prevItems, ...resp?.data?.results])];
         });
+        if (
+          data.length === 0 &&
+          view === "topic" &&
+          query.hasOwnProperty("tag")
+        ) {
+          searchParms.delete("tag");
+          api.get(`/browse?${String(searchParms)}`).then((data) => {
+            setCountData(data?.data?.counts);
+          });
+        }
         if (!hideCount) {
           setCountData(resp?.data?.counts);
         }
@@ -104,7 +114,7 @@ const KnowledgeLib = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData(query);
   }, []);
 
   useEffect(() => {
@@ -201,7 +211,19 @@ const KnowledgeLib = () => {
   if (view === "overview") {
     return (
       <div id="knowledge-lib">
-        <Overview summaryData={landing?.summary} {...{ setView, updateQuery, box, query, countData, landing, data, loading }} />
+        <Overview
+          summaryData={landing?.summary}
+          {...{
+            setView,
+            updateQuery,
+            box,
+            query,
+            countData,
+            landing,
+            data,
+            loading,
+          }}
+        />
       </div>
     );
   }
@@ -227,8 +249,10 @@ const KnowledgeLib = () => {
           <div className="quick-search">
             <div className="count">
               {view === "grid"
-                ? `Showing ${gridItems?.length} of ${totalItems}`
-                : `Showing ${data?.results?.length}`}
+                ? `Showing ${
+                    !loading ? gridItems?.length : ""
+                  } of ${totalItems}`
+                : `Showing ${!loading ? data?.results?.length : ""}`}
             </div>
             <div className="search-icon">
               <SearchIcon />
@@ -308,6 +332,7 @@ const KnowledgeLib = () => {
           isLoaded={() => true}
           multiCountryCountries={multiCountryCountries}
           useVerticalLegend
+          showLegend={true}
         />
       )}
       {view === "category" && (
@@ -390,7 +415,7 @@ const GridView = ({
 };
 
 const ViewSwitch = ({ view, setView }) => {
-  const viewOptions = ['map', 'topic', 'grid', 'category'];
+  const viewOptions = ["map", "topic", "grid", "category"];
   const [visible, setVisible] = useState(false);
   const handleChangeView = (viewOption) => () => {
     setView(viewOption);

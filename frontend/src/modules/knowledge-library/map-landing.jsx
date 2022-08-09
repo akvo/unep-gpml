@@ -86,6 +86,7 @@ const MapLanding = ({
         isLoaded={isLoaded}
         multiCountries={[]}
         useVerticalLegend
+        showLegend={true}
       />
     </>
   );
