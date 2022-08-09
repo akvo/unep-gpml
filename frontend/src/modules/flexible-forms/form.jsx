@@ -1165,6 +1165,7 @@ const FlexibleForm = withRouter(
             "formSchema.schema.properties.S4.properties::::::",
             formData?.S4.S4_G2.geoCoverageValueTransnational.includes("0")
           );
+
           updatedFormDataSchema = {
             ...formSchema.schema,
             properties: {
@@ -1176,6 +1177,18 @@ const FlexibleForm = withRouter(
                   S4_G2: {
                     ...formSchema.schema.properties.S4.properties.S4_G2,
                     required: result,
+                    properties: {
+                      ...formSchema.schema.properties.S4.properties.S4_G2
+                        .properties,
+                      geoCoverageCountries: {
+                        ...formSchema.schema.properties.S4.properties.S4_G2
+                          .properties.geoCoverageCountries,
+                        depend: {
+                          id: "geoCoverageValueTransnational",
+                          value: ["0"],
+                        },
+                      },
+                    },
                   },
                 },
               },

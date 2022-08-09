@@ -1287,7 +1287,7 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["transnational", "national", "sub-national"],
+                  value: ["national", "sub-national"],
                 },
               },
               // geoCoverageValueNational: {
@@ -1545,7 +1545,7 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["transnational", "national", "sub-national"],
+                  value: ["national", "sub-national"],
                 },
               },
               geoCoverageValueSubnationalCity: {
@@ -1833,7 +1833,7 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["transnational", "national", "sub-national"],
+                  value: ["national", "sub-national"],
                 },
               },
               // geoCoverageValueNational: {
@@ -2101,7 +2101,7 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["transnational", "national", "sub-national"],
+                  value: ["national", "sub-national"],
                 },
               },
               // geoCoverageValueNational: {
@@ -2341,7 +2341,7 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["transnational", "national", "sub-national"],
+                  value: ["national", "sub-national"],
                 },
               },
               geoCoverageValueSubnationalCity: {
@@ -2587,7 +2587,7 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["transnational", "national", "sub-national"],
+                  value: ["national", "sub-national"],
                 },
               },
               // geoCoverageValueNational: {
