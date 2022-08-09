@@ -377,6 +377,7 @@ const KnowledgeLib = () => {
                 showMoreCardAfter={20}
                 showMoreCardClick={() => {
                   setView("grid");
+                  handleCategoryFilter(d.categories);
                 }}
               />
             </Fragment>
