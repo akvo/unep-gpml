@@ -313,7 +313,6 @@ const KnowledgeLib = () => {
       {view === "grid" && (
         <GridView
           {...{
-            query,
             gridItems,
             updateQuery,
             totalItems,
@@ -383,11 +382,11 @@ const KnowledgeLib = () => {
 };
 
 const GridView = ({
-  query,
   gridItems,
   loading,
   updateQuery,
   totalItems,
+  limit,
   setPageNumber,
   pageNumber,
 }) => {
@@ -403,8 +402,8 @@ const GridView = ({
           className="load-more"
           loading={loading}
           onClick={() => {
-            setPageNumber((prevNumber) => prevNumber + 30);
-            updateQuery("offset", [pageNumber + 30], true, true);
+            setPageNumber((prevNumber) => prevNumber + limit);
+            updateQuery("offset", [pageNumber + limit], true, true);
           }}
         >
           Load More
