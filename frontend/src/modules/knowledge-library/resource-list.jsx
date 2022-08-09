@@ -17,8 +17,7 @@ import isEmpty from "lodash/isEmpty";
 import { useHistory } from "react-router-dom";
 import DetailModal from "../details-page/modal";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
-
-// Icons
+import bodyScrollLock from "../details-page/scroll-utils";
 
 const ResourceList = ({
   view,
@@ -241,6 +240,7 @@ const ResourceItem = ({
           setParams({ type: type.replace("_", "-"), id });
           window.history.pushState({ urlPath: `/${linkTo}` }, "", `${linkTo}`);
           setModalVisible(true);
+          bodyScrollLock.enable();
         }}
       >
         <Card
