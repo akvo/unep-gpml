@@ -252,6 +252,11 @@ const KnowledgeLib = () => {
                 ? `Showing ${
                     !loading ? gridItems?.length : ""
                   } of ${totalItems}`
+                : view === "category"
+                ? `${catData?.reduce(
+                    (count, current) => count + current?.data?.length,
+                    0
+                  )}`
                 : `Showing ${!loading ? data?.results?.length : ""}`}
             </div>
             <div className="search-icon">
