@@ -6,8 +6,9 @@ import ResourceCards from "../../components/resource-cards/resource-cards";
 import { Icon } from "../../components/svg-icon/svg-icon";
 import Maps from "../map/map";
 import TopicView from "./topic-view";
-import { Col, Row } from "antd";
+import { Card, Col, Row } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 const Overview = ({
   summaryData,
@@ -130,6 +131,15 @@ const Featured = ({ setView }) => {
         showMoreCardClick={() => {
           setView("grid");
         }}
+        firstCard={(
+          <Link to="/flexible-forms">
+            <div className="add-resource-card">
+              <b>+</b>
+              <span>Share your resource</span>
+              <small>Contribute to the library</small>
+            </div>
+          </Link>
+        )}
       />
     </>
   );
