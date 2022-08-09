@@ -59,7 +59,6 @@ const KnowledgeLib = () => {
   const [filterCountries, setFilterCountries] = useState([]);
   const [filter, setFilter] = useState([]);
   const [countData, setCountData] = useState([]);
-  const [initialCountData, setInitialCountData] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const [catData, setCatData] = useState([]);
   const [data, setData] = useState([]);
@@ -150,9 +149,9 @@ const KnowledgeLib = () => {
     );
 
     const pureQuery = Object.fromEntries(arrayOfQuery);
-    // setFilter(pureQuery);
 
     const newParams = new URLSearchParams(pureQuery);
+
     newParams.delete("offset");
 
     history.push(`/knowledge/lib?${newParams.toString()}`);
@@ -178,6 +177,18 @@ const KnowledgeLib = () => {
       updateVal = [...val, name];
     }
     updateQuery("country", updateVal, true);
+  };
+
+  const handleCategoryFilter = (key) => {
+    if (query?.topic?.includes(key)) {
+      updateQuery(
+        "topic",
+        query?.topic?.filter((it) => it !== key),
+        true
+      );
+    } else {
+      updateQuery("topic", key, true);
+    }
   };
 
   const loadAllCat = async () => {
@@ -224,18 +235,6 @@ const KnowledgeLib = () => {
       </div>
     );
   }
-
-  const handleCategoryFilter = (key) => {
-    if (query?.topic?.includes(key)) {
-      updateQuery(
-        "topic",
-        query?.topic?.filter((it) => it !== key),
-        true
-      );
-    } else {
-      updateQuery("topic", key, true);
-    }
-  };
 
   return (
     <div id="knowledge-lib">
@@ -309,9 +308,6 @@ const KnowledgeLib = () => {
               fetch={true}
               loading={loading}
               countData={countData.filter(
-                (count) => count.topic !== "gpml_member_entities"
-              )}
-              initialCountData={initialCountData.filter(
                 (count) => count.topic !== "gpml_member_entities"
               )}
             />
