@@ -42,30 +42,30 @@ const Overview = ({
   };
   return (
     <div className="overview">
-      <section>
-        <h3>Categories</h3>
-        <ul className="categories">
-          <li
-            onClick={() => {
-              setView("category");
-            }}
-          >
+      <ul className="categories">
+        <li
+          onClick={() => {
+            setView("category");
+          }}
+        >
+          <div>
+            <Icon name={`all`} fill="#000" />
+            <b>{allResources}</b>
+          </div>
+          <span>All Resources</span>
+        </li>
+        {resourceTypes.map((type) => (
+          <li onClick={handleClickCategory(type.key)}>
             <div>
-              <Icon name={`all`} fill="#000" />
-              <b>{allResources}</b>
+              <Icon name={`resource-types/${type.key}`} fill="#000" />
+              <b>{summaryDict[humps.camelize(type.key)] || "XX"}</b>
             </div>
-            <span>All Resources</span>
+            <span>{type.label}</span>
           </li>
-          {resourceTypes.map((type) => (
-            <li onClick={handleClickCategory(type.key)}>
-              <div>
-                <Icon name={`resource-types/${type.key}`} fill="#000" />
-                <b>{summaryDict[humps.camelize(type.key)] || "XX"}</b>
-              </div>
-              <span>{type.label}</span>
-            </li>
-          ))}
-        </ul>
+        ))}
+      </ul>
+      <section className="grey">
+        {/* <h3>Categories</h3> */}
         <Featured {...{ setView }} />
       </section>
       <section>

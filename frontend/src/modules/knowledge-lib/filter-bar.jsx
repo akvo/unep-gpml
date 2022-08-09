@@ -7,6 +7,7 @@ import { ReactComponent as OverviewIcon } from "../../images/overview.svg";
 import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
 import LocationDropdown from "../../components/location-dropdown/location-dropdown";
 import api from "../../utils/api";
+import { LeftOutlined } from "@ant-design/icons";
 
 export const resourceTypes = [
   { key: "technical-resource", label: "Technical Resources" },
@@ -97,11 +98,12 @@ const FilterBar = ({
   return (
     <div className="filter-bar">
       <Button
-        className={view === "overview" && "selected"}
+        className="back-btn"
         onClick={handleClickOverview}
       >
-        <OverviewIcon />
-        <span>Overview</span>
+        {/* <OverviewIcon /> */}
+        <LeftOutlined />
+        <span>Back to Overview</span>
       </Button>
       <ul>
         {resourceTypes.map((it) => (
