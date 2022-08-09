@@ -84,6 +84,7 @@ const Overview = ({
                 isLoaded={() => true}
                 useTooltips={false}
                 showLegend={false}
+                zoom={0.9}
               />
             </div>
           </Col>

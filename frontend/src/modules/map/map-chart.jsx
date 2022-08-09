@@ -63,6 +63,7 @@ const MapChart = ({
   isDisplayedList,
   countryGroupCounts,
   showLegend,
+  zoom
 }) => {
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -233,7 +234,6 @@ const MapChart = ({
       : path === STAKEHOLDER_OVERVIEW
       ? "Total stakeholders per country"
       : "Total experts per country";
-
   return (
     <>
       {showLegend && (
@@ -336,7 +336,7 @@ const MapChart = ({
         <ZoomableGroup
           minZoom={mapMinZoom}
           maxZoom={mapMaxZoom}
-          zoom={position.zoom}
+          zoom={zoom ? zoom : position.zoom}
           center={position.coordinates}
           onMoveEnd={(x) => {
             setPosition(x);
