@@ -33,7 +33,7 @@
         flex-direction: column;
         color: #d3dee7;
         cursor: pointer;
-        transition: all 0.2s ease-out;
+        transition: all 0.15s ease-out;
         .img-container {
           margin-top: 3px;
           display: flex;
@@ -43,6 +43,7 @@
           svg {
             path {
               fill: #d3dee7;
+              transition: fill 0.15s ease-out;
             }
           }
         }
@@ -59,6 +60,13 @@
           justify-content: center;
           text-align: center;
           margin-bottom: 3px;
+        }
+        &:hover {
+          color: #ffb800;
+          border-color: #ffb800;
+          .img-container svg path {
+            fill: #ffb800;
+          }
         }
         &.selected {
           background-color: #3fc19f;
@@ -134,6 +142,9 @@
       width: auto;
       svg {
         transform: translateY(6px);
+        path {
+          transition: fill 0.15s ease-out;
+        }
       }
       span {
         font-size: 12px;
@@ -142,6 +153,15 @@
         white-space: normal;
         text-align: left;
         font-weight: 500;
+        transition: color 0.15s ease-out;
+      }
+      &:hover {
+        span {
+          color: #ffb800;
+        }
+        svg path {
+          fill: #ffb800;
+        }
       }
     }
     .ant-btn:last-child {
