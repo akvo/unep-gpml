@@ -157,7 +157,7 @@ const KnowledgeLib = () => {
 
     history.push(`/knowledge/lib?${newParams.toString()}`);
 
-    if (fetch && view !== "category") {
+    if (fetch) {
       fetchData(pureQuery, hideCount);
     }
 
@@ -225,6 +225,18 @@ const KnowledgeLib = () => {
     );
   }
 
+  const handleCategoryFilter = (key) => {
+    if (query?.topic?.includes(key)) {
+      updateQuery(
+        "topic",
+        query?.topic?.filter((it) => it !== key),
+        true
+      );
+    } else {
+      updateQuery("topic", key, true);
+    }
+  };
+
   return (
     <div id="knowledge-lib">
       <FilterBar
@@ -239,6 +251,7 @@ const KnowledgeLib = () => {
           updateQuery,
           multiCountryCountries,
           setMultiCountryCountries,
+          handleCategoryFilter,
         }}
       />
       <div className="list-content">
@@ -352,7 +365,14 @@ const KnowledgeLib = () => {
                     </div>
                   </div>
                 </div>
-                <Button type="link" block>
+                <Button
+                  type="link"
+                  block
+                  onClick={() => {
+                    setView("grid");
+                    handleCategoryFilter(d.categories);
+                  }}
+                >
                   See all {`>`}
                 </Button>
               </div>

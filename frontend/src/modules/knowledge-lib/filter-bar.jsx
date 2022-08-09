@@ -33,6 +33,7 @@ const FilterBar = ({
   updateQuery,
   multiCountryCountries,
   setMultiCountryCountries,
+  handleCategoryFilter,
 }) => {
   const query = useQuery();
   const [country, setCountry] = useState([]);
@@ -46,18 +47,6 @@ const FilterBar = ({
   const isEmpty = Object.values(query).every(
     (x) => x === null || x === undefined || x?.length === 0
   );
-
-  const handleClickFilter = (key) => () => {
-    if (query?.topic?.includes(key)) {
-      updateQuery(
-        "topic",
-        query?.topic?.filter((it) => it !== key),
-        true
-      );
-    } else {
-      updateQuery("topic", key, true);
-    }
-  };
 
   const handleClickOverview = () => {
     setView("overview");
@@ -97,10 +86,7 @@ const FilterBar = ({
 
   return (
     <div className="filter-bar">
-      <Button
-        className="back-btn"
-        onClick={handleClickOverview}
-      >
+      <Button className="back-btn" onClick={handleClickOverview}>
         {/* <OverviewIcon /> */}
         <LeftOutlined />
         <span>Back to Overview</span>
@@ -109,7 +95,7 @@ const FilterBar = ({
         {resourceTypes.map((it) => (
           <li
             key={it.key}
-            onClick={handleClickFilter(it.key.replace(/-/g, "_"))}
+            onClick={() => handleCategoryFilter(it.key.replace(/-/g, "_"))}
             className={
               query?.topic?.includes(it.key.replace(/-/g, "_"))
                 ? "selected"
