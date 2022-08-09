@@ -65,6 +65,7 @@ const KnowledgeLib = () => {
   const [data, setData] = useState([]);
   const [gridItems, setGridItems] = useState([]);
   const [isShownModal, setIsShownModal] = useState(false);
+  const [pageNumber, setPageNumber] = useState(false);
   const limit = 30;
   const totalItems = topic.reduce(
     (acc, topic) =>
@@ -75,7 +76,7 @@ const KnowledgeLib = () => {
   const fetchData = (query, hideCount) => {
     setLoading(true);
     const searchParms = new URLSearchParams(
-      view === "topic" ? query : window.location.search
+      view === "topic" || view === "grid" ? query : window.location.search
     );
     searchParms.set("limit", limit);
 
@@ -143,10 +144,6 @@ const KnowledgeLib = () => {
     const newQuery = { ...query };
     newQuery[param] = value;
 
-    if (param !== "offset") {
-      newQuery["offset"] = 0;
-    }
-
     // Remove empty query
     const arrayOfQuery = Object.entries(newQuery)?.filter(
       (item) => item[1]?.length !== 0
@@ -156,7 +153,7 @@ const KnowledgeLib = () => {
     // setFilter(pureQuery);
 
     const newParams = new URLSearchParams(pureQuery);
-    // if (view === "topic") newParams.delete("tag");
+    newParams.delete("offset");
 
     history.push(`/knowledge/lib?${newParams.toString()}`);
 
@@ -322,6 +319,8 @@ const KnowledgeLib = () => {
             totalItems,
             limit,
             loading,
+            setPageNumber,
+            pageNumber,
           }}
         />
       )}
@@ -389,7 +388,8 @@ const GridView = ({
   loading,
   updateQuery,
   totalItems,
-  limit,
+  setPageNumber,
+  pageNumber,
 }) => {
   return (
     <div className="grid-view">
@@ -403,13 +403,8 @@ const GridView = ({
           className="load-more"
           loading={loading}
           onClick={() => {
-            updateQuery(
-              "offset",
-              (query.hasOwnProperty("offset") ? Number(query?.offset[0]) : 0) +
-                limit,
-              true,
-              true
-            );
+            setPageNumber((prevNumber) => prevNumber + 30);
+            updateQuery("offset", [pageNumber + 30], true, true);
           }}
         >
           Load More
