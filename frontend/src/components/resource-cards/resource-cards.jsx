@@ -45,6 +45,7 @@ const ResourceCards = ({
   showMoreCardAfter = 0,
   showMoreCardClick,
   showMoreCardHref,
+  firstCard
 }) => {
   if (showMoreCardAfter > 0) {
     if (showMoreCardAfter < items?.length) {
@@ -75,6 +76,11 @@ const ResourceCards = ({
       modules={[SwiperPagination, Navigation]}
       className="resource-cards"
     >
+      {firstCard && (
+        <SwiperSlide>
+          {firstCard}
+        </SwiperSlide>
+      )}
       {items?.slice(0, showMoreCardAfter).map((item) => {
         return (
           <SwiperSlide key={item?.id}>

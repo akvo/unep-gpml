@@ -511,6 +511,31 @@
         }
       }
     }
+    .add-resource-card {
+      width: 150px;
+      height: 192px;
+      border: 1px solid #00b194;
+      color: #00b194;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      border-radius: 4px;
+      cursor: pointer;
+      b {
+        font-size: 90px;
+        line-height: 90px;
+        font-weight: 500;
+      }
+      span {
+        font-size: 16px;
+        text-transform: uppercase;
+        font-weight: 500;
+      }
+      small {
+        margin-top: auto;
+        margin-bottom: 7px;
+      }
+    }
   }
   .quick-search {
     display: flex;
