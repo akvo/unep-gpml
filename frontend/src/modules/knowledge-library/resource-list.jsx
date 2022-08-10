@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Space, Avatar, Tooltip, Pagination } from "antd";
 import { ArrowRightOutlined, LoadingOutlined } from "@ant-design/icons";
@@ -13,9 +14,10 @@ import {
 import humps from "humps";
 import { TrimText } from "../../utils/string";
 import isEmpty from "lodash/isEmpty";
+import { useHistory } from "react-router-dom";
+import DetailModal from "../details-page/modal";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
-
-// Icons
+import bodyScrollLock from "../details-page/scroll-utils";
 
 const ResourceList = ({
   view,
@@ -27,22 +29,26 @@ const ResourceList = ({
   updateQuery,
   isAscending,
   sortResults,
+  setLoginVisible,
+  isAuthenticated,
 }) => {
   const { profile, stakeholders } = UIStore.useState((s) => ({
     profile: s.profile,
     stakeholders: s.stakeholders,
   }));
-
+  const history = useHistory();
   const [didMount, setDidMount] = useState(false);
-  const [isShownModal, setIsShownModal] = useState(false);
   const [dataProperties, setDataProperties] = useState({
     resourceType: null,
     resourceId: null,
   });
   const [data, setData] = useState(null);
-  const isApprovedUser = profile?.reviewStatus === "APPROVED";
+  const [modalVisible, setModalVisible] = useState(false);
+  const [params, setParams] = useState(null);
 
+  const isApprovedUser = profile?.reviewStatus === "APPROVED";
   const topics = query?.topic;
+
   // Choose topics to count, based on whether user is approved or not,
   // and if any topic filters are active.
   const topicsForTotal = (isApprovedUser
@@ -85,6 +91,17 @@ const ResourceList = ({
     return () => setDidMount(false);
   }, []);
 
+  useEffect(() => {
+    if (!modalVisible) {
+      const previousHref = `${history?.location?.pathname}${history?.location?.search}`;
+      window.history.pushState(
+        { urlPath: `/${previousHref}` },
+        "",
+        `${previousHref}`
+      );
+    }
+  }, [modalVisible]);
+
   return (
     <Row style={{ postion: "relative" }}>
       <Col
@@ -124,12 +141,23 @@ const ResourceList = ({
         ) : !loading && !isEmpty(allResults) ? (
           <>
             <ResourceItem
+              setParams={setParams}
               view={view}
               results={allResults}
               stakeholders={stakeholders}
-              setIsShownModal={setIsShownModal}
               setData={setData}
               setDataProperties={setDataProperties}
+              history={history}
+              setModalVisible={setModalVisible}
+            />
+            <DetailModal
+              match={{ params }}
+              visible={modalVisible}
+              setVisible={setModalVisible}
+              {...{
+                setLoginVisible,
+                isAuthenticated,
+              }}
             />
           </>
         ) : (
@@ -152,7 +180,13 @@ const ResourceList = ({
   );
 };
 
-const ResourceItem = ({ results, view, stakeholders }) => {
+const ResourceItem = ({
+  results,
+  view,
+  stakeholders,
+  setParams,
+  setModalVisible,
+}) => {
   return results.map((result) => {
     const { id, type } = result;
     const fullName = (data) =>
@@ -199,7 +233,18 @@ const ResourceItem = ({ results, view, stakeholders }) => {
     };
 
     return (
-      <Link to={linkTo} className="resource-item-wrapper" key={`${type}-${id}`}>
+      <Link
+        to={linkTo}
+        className="resource-item-wrapper"
+        key={`${type}-${id}`}
+        onClick={(e) => {
+          e.preventDefault()
+          setParams({ type: type.replace("_", "-"), id });
+          window.history.pushState({ urlPath: `/${linkTo}` }, "", `${linkTo}`);
+          setModalVisible(true);
+          bodyScrollLock.enable();
+        }}
+      >
         <Card
           className="resource-item"
           style={

@@ -7,7 +7,7 @@ import { UIStore } from "../../store";
 import catTags from "../../utils/cat-tags.json";
 
 import { isEmpty } from "lodash";
-import { useQuery } from "./common";
+import { useQuery } from "../../utils/misc";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
 
@@ -116,7 +116,7 @@ const Experts = () => {
         {...{ filter, setFilter, filterCountries, setFilterCountries }}
       />
       <div className="expert-list-section">
-        <div className="expert-top-tools">
+        <div className="list-toolbar">
           <div className="page-label">Total {experts?.count}</div>
           <button
             className="view-button"

@@ -1,18 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./styles.scss";
 import { UIStore } from "../../store";
 import {
   Row,
   Col,
-  Tooltip,
-  Typography,
   Avatar,
   List,
   Card,
@@ -21,37 +13,27 @@ import {
   notification,
 } from "antd";
 import StickyBox from "react-sticky-box";
-import AvatarImage from "../../images/stakeholder/Avatar.png";
-import StakeholderRating from "../../images/stakeholder/stakeholder-rating.png";
+
 import LocationImage from "../../images/location.svg";
 import TransnationalImage from "../../images/transnational.svg";
-import EntityImage from "../../images/entity.png";
-import FollowImage from "../../images/stakeholder/follow.png";
-import ResourceImage from "../../images/stakeholder/resource.png";
+
 import { ReactComponent as TrashIcon } from "../../images/resource-detail/trash-icn.svg";
 import { ReactComponent as EditIcon } from "../../images/resource-detail/edit-icn.svg";
 import { ReactComponent as FollowIcon } from "../../images/resource-detail/follow-icn.svg";
 import {
   LinkOutlined,
-  UserOutlined,
-  ArrowRightOutlined,
   LoadingOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import { withRouter, useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import api from "../../utils/api";
-import {
-  topicNames,
-  resourceTypeToTopicType,
-  relationsByTopicType,
-} from "../../utils/misc";
-import uniqBy from "lodash/uniqBy";
+import { resourceTypeToTopicType } from "../../utils/misc";
+
 import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
 import { useAuth0 } from "@auth0/auth0-react";
-import { TrimText } from "../../utils/string";
 import { randomColor, eventTrack } from "../../utils/misc";
-import RelatedContent from "../../components/related-content/related-content";
+import ResourceCards from "../../components/resource-cards/resource-cards";
 
 const CardComponent = ({ title, style, children, getRef }) => {
   return (
@@ -522,19 +504,24 @@ const StakeholderDetail = ({
           </Row>
           <div className="owned-resources-wrapper">
             {ownedResources.length > 0 && (
-              <RelatedContent
-                url={`?entity=${data.id}`}
-                data={[]}
-                isShownCount={true}
-                relatedContent={ownedResources}
-                title="Content on the platform"
-                isShownPagination={true}
-                dataCount={ownedResourcesCount}
-                relatedContentPage={ownedResourcesPage}
-                relatedContentCount={ownedResourcesCount}
-                getRelatedContent={getOwnedResources}
-                sliderItemCount={5.5}
-              />
+              <CardComponent
+                title={
+                  <div className="related-content-title-wrapper">
+                    <div className="related-content-title">
+                      Content on the platform
+                    </div>
+                    <div className="related-content-count">
+                      Total {ownedResourcesCount}
+                    </div>
+                  </div>
+                }
+              >
+                <ResourceCards
+                  items={ownedResources}
+                  showMoreCardAfter={20}
+                  showMoreCardHref={`/knowledge/library?entity=${data.id}`}
+                />
+              </CardComponent>
             )}
           </div>
           <div>

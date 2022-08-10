@@ -233,22 +233,25 @@ const OwnerSelect = ({
   reviewers,
   listOpts,
   setListOpts,
+  showLabel,
 }) => {
   return (
     <div
-      style={{ width: "40%" }}
+      className="review-status-container"
       onClick={(e) => {
         e.stopPropagation();
       }}
     >
-      <div style={{ width: "100%" }}>Owners</div>
+      {showLabel && <div style={{ width: "100%" }}>Owners</div>}
       <Select
         style={{ width: "100%" }}
         showSearch={true}
         mode="multiple"
         placeholder="Assign owner"
-        onChange={(data) => onChangeOwner(item, data, listOpts, setListOpts)} // onChangeOwner(resource, role)}
-        value={item?.owners}
+        onChange={(data) => {
+          onChangeOwner(item, data, listOpts, setListOpts);
+        }}
+        value={item?.owners ? item?.owners.map((item) => item.id) : []}
         loading={item?.id === loading}
         optionFilterProp="children"
         filterOption={(input, option) =>
@@ -265,6 +268,48 @@ const OwnerSelect = ({
       >
         {reviewers.map((r) => (
           <Select.Option key={r.email} value={r.id}>
+            {r.email}
+          </Select.Option>
+        ))}
+      </Select>
+    </div>
+  );
+};
+
+const FocalPoint = ({
+  item,
+  onChangeFocalPoint,
+  loading,
+  reviewers,
+  listOpts,
+  setListOpts,
+  debouncedResults,
+  fetching,
+  focalPoints,
+}) => {
+  return (
+    <div className="review-status-container">
+      <Select
+        style={{ width: "100%" }}
+        allowClear
+        showSearch={true}
+        mode="multiple"
+        placeholder="Assign focal point"
+        onChange={(data) => {
+          onChangeFocalPoint(item, data, listOpts, setListOpts);
+        }}
+        value={
+          item?.focalPoints ? item?.focalPoints.map((item) => item.id) : []
+        }
+        filterOption={false}
+        onSearch={debouncedResults}
+        notFoundContent={fetching ? <Spin size="small" /> : null}
+      >
+        {[
+          ...focalPoints,
+          ...(item?.focalPoints.length > 0 ? item.focalPoints : []),
+        ]?.map((r) => (
+          <Select.Option key={r.id} value={r.id}>
             {r.email}
           </Select.Option>
         ))}
@@ -389,8 +434,14 @@ const AdminSection = ({
   const changeOwner = (item, owners, listOpts, setListOpts) => {
     setLoading(item.id);
     const stakeholders = owners.map((x) => ({ id: x, roles: ["owner"] }));
+    const focalPoints = item?.focalPoints?.map((x) => ({
+      id: x.id,
+      roles: ["focal-point"],
+    }));
     api
-      .post(`/auth/${item.type}/${item.id}`, { stakeholders })
+      .post(`/auth/${item.type}/${item.id}`, {
+        stakeholders: [...stakeholders, ...focalPoints],
+      })
       .then((resp) => {
         notification.success({ message: "Ownerships changed" });
         setLoading(false);
@@ -406,7 +457,47 @@ const AdminSection = ({
       )
       .then((data) => setListOpts((opts) => ({ ...opts, data })))
       .catch((err) => {
-        notification.error({ message: "Something went wrong" });
+        notification.error({
+          message: err?.response?.data?.errorDetails?.error
+            ? err?.response?.data?.errorDetails?.error
+            : "Something went wrong",
+        });
+        setLoading(false);
+      });
+  };
+
+  const changeFocalPoint = (item, owners, listOpts, setListOpts) => {
+    setLoading(item.id);
+    const focalPoints = owners?.map((x) => ({ id: x, roles: ["focal-point"] }));
+    const stakeholders = item?.owners?.map((x) => ({
+      id: x.id,
+      roles: ["owner"],
+    }));
+    api
+      .post(`/auth/${item.type}/${item.id}`, {
+        stakeholders: [...stakeholders, ...focalPoints],
+      })
+      .then((resp) => {
+        notification.success({ message: "Focal point changed" });
+        setLoading(false);
+      })
+      .then(() =>
+        fetchSubmissionData(
+          listOpts.current,
+          listOpts.size,
+          listOpts.type,
+          listOpts.reviewStatus,
+          listOpts.title
+        )
+      )
+      .then((data) => setListOpts((opts) => ({ ...opts, data })))
+      .catch((err) => {
+        setLoading(false);
+        notification.error({
+          message: err?.response?.data?.errorDetails?.error
+            ? err?.response?.data?.errorDetails?.error
+            : "Something went wrong",
+        });
       });
   };
 
@@ -422,7 +513,7 @@ const AdminSection = ({
         itemType: itemType,
         reviewStatus: reviewStatus,
       })
-      .then(() => {
+      .then((res) => {
         (async () => {
           const data = await fetchSubmissionData(
             listOpts.current,
@@ -431,6 +522,11 @@ const AdminSection = ({
             listOpts.reviewStatus,
             listOpts.title
           );
+          notification.error({
+            message: res?.data?.message
+              ? res?.data?.message
+              : "Something went wrong",
+          });
           setListOpts((opts) => ({ ...opts, data }));
           setApproveLoading({});
         })();
@@ -545,42 +641,6 @@ const AdminSection = ({
               {r.email}
             </Select.Option>
           ))}
-        </Select>
-      </div>
-    );
-  };
-
-  const FocalPoint = ({ item, listOpts, setListOpts }) => {
-    return (
-      <div
-        className="review-status-container"
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-      >
-        <div style={{ width: "100%" }}>Focal point</div>
-        <Select
-          labelInValue
-          style={{ width: "100%" }}
-          mode="multiple"
-          showSearch
-          className="select-reviewer"
-          placeholder="Assign focal point"
-          onChange={(data) => assignReviewer(item, data, listOpts, setListOpts)}
-          value={item?.reviewers.map((x) => x.id)}
-          filterOption={false}
-          onSearch={(e, event) => {
-            debouncedResults(e);
-          }}
-          notFoundContent={fetching ? <Spin size="small" /> : null}
-          getPopupContainer={(triggerNode) => triggerNode.parentElement}
-        >
-          {focalPoints &&
-            focalPoints.map((r) => (
-              <Select.Option key={r.email} value={r.id}>
-                {r.email}
-              </Select.Option>
-            ))}
         </Select>
       </div>
     );
@@ -813,7 +873,8 @@ const AdminSection = ({
                   )}
                 <>
                   {item.reviewStatus === "APPROVED" &&
-                    item.type !== "stakeholder" && (
+                    item.type !== "stakeholder" &&
+                    item.type !== "organisation" && (
                       <OwnerSelect
                         item={item}
                         reviewers={reviewers}
@@ -822,15 +883,9 @@ const AdminSection = ({
                         resource={item}
                         onChangeOwner={changeOwner}
                         loading={loading}
+                        showLabel={true}
                       />
                     )}
-                  {/* {item.type === "organisation" && (
-                    <FocalPoint
-                      item={item}
-                      listOpts={listOpts}
-                      setListOpts={setListOpts}
-                    />
-                  )} */}
                 </>
                 {item.reviewStatus === "SUBMITTED" && (
                   <ResourceSubmittedActions />
@@ -844,7 +899,9 @@ const AdminSection = ({
               {item.reviewStatus === "SUBMITTED" && (
                 <ResourceSubmittedActions />
               )}
-              {item.reviewStatus === "APPROVED" && <ResourceApprovedActions />}
+              {item.reviewStatus === "APPROVED" && (
+                <ResourceApprovedActions item={item} />
+              )}
             </div>
           )}
         </>
@@ -975,6 +1032,30 @@ const AdminSection = ({
                     item={item}
                     getPreviewContent={getPreviewContent}
                     unpublishButton={<ResourceApprovedActions item={item} />}
+                    focalPoint={
+                      <FocalPoint
+                        item={item}
+                        reviewers={reviewers}
+                        listOpts={listOpts}
+                        setListOpts={setListOpts}
+                        onChangeFocalPoint={changeFocalPoint}
+                        debouncedResults={debouncedResults}
+                        fetching={fetching}
+                        focalPoints={focalPoints}
+                      />
+                    }
+                    ownerSelect={
+                      <OwnerSelect
+                        item={item}
+                        reviewers={reviewers}
+                        setListOpts={setListOpts}
+                        listOpts={listOpts}
+                        resource={item}
+                        onChangeOwner={changeOwner}
+                        loading={loading}
+                        showLabel={false}
+                      />
+                    }
                   />
                 </Collapse.Panel>
               ))

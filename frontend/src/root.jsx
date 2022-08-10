@@ -19,7 +19,7 @@ import {
   CloseCircleOutlined,
 } from "@ant-design/icons";
 import MenuOutlined from "./images/menu-outlined.svg";
-import { Landing, JoinGPMLButton } from "./modules/landing/new-home";
+import { Landing } from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
 import Stakeholders from "./modules/stakeholders/view";
 import AddEvent from "./modules/events/view";
@@ -223,8 +223,6 @@ const Root = () => {
 
   const topicsCount = tags?.topics ? tags.topics.length : 0;
   const excludeSummary = ["organisation", "stakeholder"];
-
-  console.log(process.env.NODE_ENV);
 
   const filterNav = (include) => {
     return nav?.resourceCounts
@@ -548,6 +546,7 @@ const Root = () => {
                       isAuthenticated,
                       loginWithPopup,
                       setWarningModalVisible,
+                      setLoginVisible,
                     }}
                   />
                   <UserButton {...{ logout, isRegistered, profile }} />
@@ -573,9 +572,9 @@ const Root = () => {
                 {...{
                   setWarningModalVisible,
                   setStakeholderSignupModalVisible,
-                  loginWithPopup,
                   isAuthenticated,
                   setFilterMenu,
+                  setLoginVisible,
                   ...props,
                 }}
               />
@@ -613,6 +612,7 @@ const Root = () => {
                   landingQuery,
 
                   //Functions
+                  setFilterMenu,
                   getResults,
                   updateQuery,
                   setFilters,
@@ -620,12 +620,9 @@ const Root = () => {
                   setFilterCountries,
                   setMultiCountryCountries,
                   setWarningModalVisible,
-                  setStakeholderSignupModalVisible,
+                  setLoginVisible,
                   ...props,
                 }}
-                setStakeholderSignupModalVisible={
-                  setStakeholderSignupModalVisible
-                }
                 filters={filters}
                 setFilters={setFilters}
                 filterMenu={filterMenu}
@@ -827,9 +824,7 @@ const Root = () => {
             render={(props) => (
               <StakeholderDetail
                 {...props}
-                setStakeholderSignupModalVisible={
-                  setStakeholderSignupModalVisible
-                }
+                setLoginVisible={setLoginVisible}
                 setFilterMenu={setFilterMenu}
                 isAuthenticated={isAuthenticated}
               />
@@ -840,9 +835,7 @@ const Root = () => {
             render={(props) => (
               <NewDetailsView
                 {...props}
-                setStakeholderSignupModalVisible={
-                  setStakeholderSignupModalVisible
-                }
+                setLoginVisible={setLoginVisible}
                 setFilterMenu={setFilterMenu}
                 isAuthenticated={isAuthenticated}
               />
@@ -893,16 +886,16 @@ const Root = () => {
           updateQuery,
           setWarningModalVisible,
           isAuthenticated,
-          setStakeholderSignupModalVisible,
+          setLoginVisible,
           loginWithPopup,
           logout,
           setFilterMenu,
+          showResponsiveMenu,
+          setShowResponsiveMenu,
+          topicsCount,
+          stakeholderCounts,
         }}
-        showResponsiveMenu={showResponsiveMenu}
-        setShowResponsiveMenu={setShowResponsiveMenu}
-        topicsCount={topicsCount}
         resources={resourceCounts}
-        stakeholderCounts={stakeholderCounts}
       />
     </>
   );
@@ -979,15 +972,13 @@ const AddButton = withRouter(
     setWarningModalVisible,
     loginWithPopup,
     history,
+    setLoginVisible,
   }) => {
     const profile = UIStore.useState((s) => s.profile);
     if (isAuthenticated) {
       if (profile?.reviewStatus === "APPROVED") {
         return (
           <>
-            {!profile?.org && (
-              <JoinGPMLButton loginWithPopup={loginWithPopup} />
-            )}
             <Link to="/flexible-forms">
               <Button type="primary">Add Content</Button>
             </Link>
@@ -998,9 +989,9 @@ const AddButton = withRouter(
         <Button
           type="primary"
           onClick={() => {
-            Object.keys(profile).length > 1
+            profile?.reviewStatus === "SUBMITTED"
               ? setWarningModalVisible(true)
-              : setStakeholderSignupModalVisible(true);
+              : history.push("/onboarding");
           }}
         >
           Add Content
@@ -1008,10 +999,7 @@ const AddButton = withRouter(
       );
     }
     return (
-      <Button
-        type="primary"
-        onClick={() => loginWithPopup({ action: "login" })}
-      >
+      <Button type="primary" onClick={() => setLoginVisible(true)}>
         Add Content
       </Button>
     );

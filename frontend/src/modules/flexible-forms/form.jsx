@@ -184,7 +184,9 @@ const FlexibleForm = withRouter(
           data.geoCoverageValueTransnational.length > 0
         ) {
           data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
-            ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+            ? data.geoCoverageValueTransnational
+                ?.filter((value) => Number(value) !== -1)
+                .map((x) => parseInt(x))
             : [];
           delete data.geoCoverageValueTransnational;
         }
@@ -251,12 +253,14 @@ const FlexibleForm = withRouter(
       data.summary = data?.summary?.replace(/(?:\r\n|\r|\n)/g, " ");
 
       if (data?.type?.length > 0) {
-        data.relatedContent = data?.type.map((x) => {
-          return {
-            id: parseInt(x.value),
-            type: x.label,
-          };
-        });
+        data.relatedContent = data?.type
+          .filter((x) => x?.value)
+          .map((x) => {
+            return {
+              id: parseInt(x.value),
+              type: x.label,
+            };
+          });
         delete data.related;
         delete data.type;
         delete data.id;
@@ -383,7 +387,7 @@ const FlexibleForm = withRouter(
 
       if (data.q24.hasOwnProperty("transnational")) {
         data.q24_2 = data.q24_4;
-        data.q24_4 = data.q24_3;
+        data.q24_4 = data.q24_3.filter((value) => !value.hasOwnProperty(-1));
         data.q24_3 = null;
         delete data.qgeoCoverageValueSubnational;
         delete data.qgeoCoverageValueSubnationalCity;
@@ -422,12 +426,14 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.qtype?.length > 0) {
-        data.related_content = data?.qtype.map((x) => {
-          return {
-            id: parseInt(x.value),
-            type: x.label,
-          };
-        });
+        data.related_content = data?.qtype
+          .filter((x) => x?.value)
+          .map((x) => {
+            return {
+              id: parseInt(x.value),
+              type: x.label,
+            };
+          });
         delete data.qrelated;
         delete data.qtype;
       }
@@ -530,7 +536,9 @@ const FlexibleForm = withRouter(
           data.geoCoverageValueTransnational.length > 0
         ) {
           data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
-            ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+            ? data.geoCoverageValueTransnational
+                ?.filter((value) => Number(value) !== -1)
+                .map((x) => parseInt(x))
             : [];
           delete data.geoCoverageValueTransnational;
         }
@@ -610,12 +618,14 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.type?.length > 0) {
-        data.relatedContent = data?.type.map((x) => {
-          return {
-            id: parseInt(x.value),
-            type: x.label,
-          };
-        });
+        data.relatedContent = data?.type
+          .filter((x) => x?.value)
+          .map((x) => {
+            return {
+              id: parseInt(x.value),
+              type: x.label,
+            };
+          });
         delete data.related;
         delete data.type;
         delete data.id;
@@ -726,7 +736,9 @@ const FlexibleForm = withRouter(
           data.geoCoverageValueTransnational.length > 0
         ) {
           data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
-            ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+            ? data.geoCoverageValueTransnationaldata
+                ?.filter((value) => Number(value) !== -1)
+                .map((x) => parseInt(x))
             : [];
           delete data.geoCoverageValueTransnational;
         }
@@ -795,12 +807,14 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.type?.length > 0) {
-        data.relatedContent = data?.type.map((x) => {
-          return {
-            id: parseInt(x.value),
-            type: x.label,
-          };
-        });
+        data.relatedContent = data?.type
+          .filter((x) => x?.value)
+          .map((x) => {
+            return {
+              id: parseInt(x.value),
+              type: x.label,
+            };
+          });
         delete data.related;
         delete data.type;
         delete data.id;
@@ -908,7 +922,9 @@ const FlexibleForm = withRouter(
           data.geoCoverageValueTransnational.length > 0
         ) {
           data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
-            ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+            ? data.geoCoverageValueTransnational
+                ?.filter((value) => Number(value) !== -1)
+                .map((x) => parseInt(x))
             : [];
           delete data.geoCoverageValueTransnational;
         }
@@ -977,12 +993,14 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.type?.length > 0) {
-        data.relatedContent = data?.type.map((x) => {
-          return {
-            id: parseInt(x.value),
-            type: x.label,
-          };
-        });
+        data.relatedContent = data?.type
+          .filter((x) => x?.value)
+          .map((x) => {
+            return {
+              id: parseInt(x.value),
+              type: x.label,
+            };
+          });
         delete data.related;
         delete data.type;
         delete data.id;
@@ -1092,6 +1110,7 @@ const FlexibleForm = withRouter(
             (value) =>
               value !== "geoCoverageCountries" && value !== "S4_G2_24.4"
           );
+
           updatedFormDataSchema = {
             ...formSchema.schema,
             properties: {
@@ -1103,6 +1122,18 @@ const FlexibleForm = withRouter(
                   S4_G2: {
                     ...formSchema.schema.properties.S4.properties.S4_G2,
                     required: result,
+                    properties: {
+                      ...formSchema.schema.properties.S4.properties.S4_G2
+                        .properties,
+                      geoCoverageCountries: {
+                        ...formSchema.schema.properties.S4.properties.S4_G2
+                          .properties.geoCoverageCountries,
+                        depend: {
+                          id: "geoCoverageValueTransnational",
+                          value: ["-1"],
+                        },
+                      },
+                    },
                   },
                 },
               },

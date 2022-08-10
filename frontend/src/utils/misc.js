@@ -1,6 +1,7 @@
 import humps from "humps";
 import auth0 from "auth0-js";
 import ReactGA from "react-ga";
+import { useLocation } from "react-router-dom";
 
 export const tTypes = [
   "project",
@@ -147,6 +148,16 @@ export const randomColor = (string) => {
 
 export const tagsMap = (array, category, tags) => {
   return array.map((x) => {
+    return (
+      Object.values(tags)
+        .flat()
+        .find((o) => o.id === parseInt(x))?.tag || x
+    );
+  });
+};
+
+export const tagsMapExpertise = (array, category, tags) => {
+  return array.map((x) => {
     return {
       ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
       tag:
@@ -184,4 +195,16 @@ export const eventTrack = (category, action, label) => {
     action: action,
     label: label,
   });
+};
+
+export const useQuery = () => {
+  const srcParams = new URLSearchParams(useLocation().search);
+  const ret = {};
+  for (var key of srcParams.keys()) {
+    ret[key] = srcParams
+      .get(key)
+      .split(",")
+      .filter((it) => it !== "");
+  }
+  return ret;
 };

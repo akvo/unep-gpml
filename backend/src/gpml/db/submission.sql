@@ -2,49 +2,52 @@
 -- :doc Get paginated submission contents
 WITH
 submission AS (
-    SELECT s.id, 'stakeholder' AS type, 'stakeholder' AS topic, CONCAT(s.title, '. ', s.last_name,' ', s.first_name) as title, s.id as created_by, s.created, s.role, s.review_status, s.picture as image
+    SELECT s.id, 'stakeholder' AS type, 'stakeholder' AS topic, CONCAT(s.title, '. ', s.last_name,' ', s.first_name) as title, s.id as created_by, s.created, s.role, s.review_status, s.picture as image, NULL::boolean as featured
     FROM stakeholder s
 --~ (when (= "experts" (:only params)) " JOIN stakeholder_tag st ON s.id = st.stakeholder AND st.tag_relation_category = 'expertise' ")
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'organisation' AS type, 'organisation' AS topic, name as title, id as created_by, created, 'USER' as role, review_status, logo as image
+    SELECT id, 'organisation' AS type, 'organisation' AS topic, name as title, id as created_by, created, 'USER' as role, review_status, logo as image, NULL::boolean as featured
     FROM organisation
     WHERE is_member = true
 --~ (when (:review_status params) " AND review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'organisation' AS type, 'non_member_organisation' AS topic, name as title, id as created_by, created, 'USER' as role, review_status, logo as image
+    SELECT id, 'organisation' AS type, 'non_member_organisation' AS topic, name as title, id as created_by, created, 'USER' as role, review_status, logo as image, NULL::boolean as featured
     FROM organisation
     WHERE is_member = false
 --~ (when (:review_status params) " AND review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'tag' AS type, 'tag' AS topic, tag as title, NULL as created_by, NULL as created, NULL as role, review_status, NULL as image
+    SELECT id, 'tag' AS type, 'tag' AS topic, tag as title, NULL as created_by, NULL as created, NULL as role, review_status, NULL as image, NULL::boolean as featured
     FROM tag
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'event' AS type, 'event' AS topic, title, created_by, created, 'USER' as role, review_status, image
+    SELECT id, 'event' AS type, 'event' AS topic, title, created_by, created, 'USER' as role, review_status, image, featured
     FROM event
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'technology' AS type, 'technology' AS topic, name as title, created_by, created, 'USER' as role, review_status, image
+    SELECT id, 'technology' AS type, 'technology' AS topic, name as title, created_by, created, 'USER' as role, review_status, image, featured
     FROM technology
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'policy' AS type, 'policy' AS topic, title, created_by, created, 'USER' as role, review_status, image as picture
+    SELECT id, 'policy' AS type, 'policy' AS topic, title, created_by, created, 'USER' as role, review_status, image as picture, featured
     FROM policy
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, REPLACE(LOWER(type), ' ', '_') AS type, 'resource' AS topic, title, created_by, created, 'USER' as role, review_status, image
+    SELECT id, REPLACE(LOWER(type), ' ', '_') AS type, 'resource' AS topic, title, created_by, created, 'USER' as role, review_status, image, featured
     FROM resource
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'project' AS type, 'initiative' AS topic, replace(q2::text,'"','') as title, created_by, created, 'USER' as role, review_status, '' as image
+    SELECT id, 'project' AS type, 'initiative' AS topic, replace(q2::text,'"','') as title, created_by, created, 'USER' as role, review_status, '' as image, featured
     FROM initiative
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     order by created
 ),
 authz AS (
-    select s.id, s.type,  COALESCE(json_agg(st.id) FILTER (WHERE st.email IS NOT NULL), '[]') as owners  from submission s
-    LEFT JOIN topic_stakeholder_auth a ON a.topic_type = s.topic::topic_type AND a.topic_id = s.id and a.roles @>'["owner"]'
+    select s.id, s.type,
+    COALESCE(json_agg(json_build_object('id', st.id, 'email', st.email)) FILTER (WHERE st.email IS NOT NULL AND a.roles ??| array['owner']), '[]') AS owners,
+    COALESCE(json_agg(json_build_object('id', st.id, 'email', st.email)) FILTER (WHERE st.email IS NOT NULL AND a.roles ??| array['focal-point']), '[]') AS focal_points
+    FROM submission s
+    LEFT JOIN topic_stakeholder_auth a ON a.topic_type = s.topic::topic_type AND a.topic_id = s.id AND a.roles ??| array['owner', 'focal-point']
     LEFT JOIN stakeholder st ON a.stakeholder = st.id
     GROUP BY s.id, s.type),
 reviewers AS (
@@ -52,7 +55,7 @@ reviewers AS (
     LEFT JOIN review r ON r.topic_type = s.topic::topic_type AND r.topic_id = s.id
     GROUP BY s.id, s.review_status, s.type),
 data AS (
-    SELECT s.id, s.type, s.topic, s.title, TO_CHAR(s.created, 'DD/MM/YYYY HH12:MI pm') as created, c.email as created_by, '/submission/' || s.type || '/' || s.id as preview, COALESCE(s.review_status, 'SUBMITTED') AS review_status, s.role, a.owners, s.image, r.reviewers
+    SELECT s.id, s.type, s.topic, s.title, s.featured, TO_CHAR(s.created, 'DD/MM/YYYY HH12:MI pm') as created, c.email as created_by, '/submission/' || s.type || '/' || s.id as preview, COALESCE(s.review_status, 'SUBMITTED') AS review_status, s.role, a.owners, a.focal_points, s.image, r.reviewers
     FROM submission s
     LEFT JOIN stakeholder c ON c.id = s.created_by
     LEFT JOIN authz a on s.id=a.id and s.type=a.type

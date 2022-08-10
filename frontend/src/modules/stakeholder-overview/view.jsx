@@ -25,10 +25,11 @@ import StakeholderList from "./stakeholder-list";
 import { multicountryGroups } from "../knowledge-library/multicountry";
 import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
 import DownArrow from "../../images/knowledge-library/chevron-down.svg";
+import { useHistory } from "react-router-dom";
 
 let tmid;
 
-const StakeholderOverview = ({ history, isAuthenticated, setLoginVisible }) => {
+const StakeholderOverview = ({ isAuthenticated, setLoginVisible }) => {
   const {
     tags,
     profile,
@@ -47,7 +48,7 @@ const StakeholderOverview = ({ history, isAuthenticated, setLoginVisible }) => {
     entityRoleOptions: s.entityRoleOptions,
     tags: Object.values(s.tags).flat(),
   }));
-
+  const history = useHistory();
   const [filterCountries, setFilterCountries] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const { isLoading } = useAuth0();
@@ -57,7 +58,7 @@ const StakeholderOverview = ({ history, isAuthenticated, setLoginVisible }) => {
   const [filterVisible, setFilterVisible] = useState(false);
   const [scroll, setScroll] = useState(true);
   const query = useQuery();
-  const [view, setView] = useState("card");
+  const [view, setView] = useState("grid");
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
@@ -84,20 +85,6 @@ const StakeholderOverview = ({ history, isAuthenticated, setLoginVisible }) => {
 
   const resultCounts =
     results.length + ((pageNumber && pageSize * pageNumber) || 0);
-
-  const selectionValue = (
-    <div className="selection-value">
-      <button className="select-button">
-        <img src={DownArrow} className="selection-arrow" alt="down-arrow" />
-      </button>
-      <span className="label text-white">{`${view} view`}</span>
-      {view === "map" ? (
-        <img src={GlobeOutlined} alt="globe-icon" className="filter-img" />
-      ) : (
-        <img src={topicViewIcon} alt="globe-icon" className="filter-img" />
-      )}
-    </div>
-  );
 
   const sortResults = (ascending) => {
     const sortSuggestedProfiles = suggestedProfiles.sort((a, b) => {
@@ -422,7 +409,7 @@ const StakeholderOverview = ({ history, isAuthenticated, setLoginVisible }) => {
               isAscending,
               renderFilterTag,
               updateQuery,
-              selectionValue,
+              view,
               filterTagValue,
             }}
           />
@@ -447,7 +434,7 @@ const StakeholderOverview = ({ history, isAuthenticated, setLoginVisible }) => {
             />
 
             <Col lg={24} xs={24} order={2}>
-              {view === "card" ? (
+              {view === "grid" ? (
                 <div>
                   {/* Suggested profiles */}
                   {isValidUser && !isEmpty(suggestedProfiles) && (

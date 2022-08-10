@@ -684,7 +684,7 @@ const formDataMapping = [
     section: "S5",
     group: "S5_G1",
     question: "S5_G4_33",
-    type: "number",
+    type: "string",
   },
   {
     name: "q34",
@@ -763,6 +763,13 @@ const formDataMapping = [
     question: "S5_G7_41.1",
     type: "string",
   },
+  {
+    name: "q4_2_1",
+    section: "S5",
+    group: "S5_G1",
+    question: "S5_G1_4.2.1",
+    type: "multiple-option",
+  },
 ];
 
 const FlexibleForms = ({ match: { params }, ...props }) => {
@@ -782,7 +789,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     countries: s.countries,
     tags: s.tags,
     regionOptions: s.regionOptions,
-    transnationalOptions: s.transnationalOptions,
+    transnationalOptions: [
+      ...s.transnationalOptions,
+      { id: -1, type: "transnational", name: "Other", countries: [] },
+    ],
     sectorOptions: s.sectorOptions,
     organisationType: s.organisationType,
     representativeGroup: s.representativeGroup,

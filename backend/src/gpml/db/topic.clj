@@ -118,7 +118,7 @@
   [entity-name
    {:keys [entity tag representative-group
            geo-coverage-types sub-content-type
-           search-text review-status] :as _params}
+           search-text review-status featured] :as _params}
    {:keys [search-text-fields] :as _opts}]
   (let [entity-connections-join (if-not (seq entity)
                                   ""
@@ -151,7 +151,10 @@
                      (str " AND e.sub_content_type IN (:v*:sub-content-type)")
 
                      (seq search-text)
-                     (str " AND " tsvector-str " @@ to_tsquery(:search-text)"))]
+                     (str " AND " tsvector-str " @@ to_tsquery(:search-text)")
+
+                     featured
+                     (str " AND e.featured = :featured"))]
     (apply
      format
      "SELECT
@@ -363,13 +366,27 @@
 (def ^:const ^:private count-aggregate-query-raw-sql
   "SELECT topic, COUNT(*) FROM cte_results GROUP BY topic")
 
-(def ^:const ^:private tags-count-aggregate-hugsql
-  "SELECT tags.tag AS topic, COUNT(*)
+(def ^:const  ^:private tags-count-aggregate-hugsql
+  "This fragment counts tags ignoring duplicates when comparing them as lowercase,
+   since that is the desired behaviour.
+
+   Regarding the ON TRUE lateral join statement, we do it in this way since we have all the tags
+   in each row that comes from cte_results' json column.
+
+   The results with no tags are also omitted so no extra rows are added.
+
+   Before doing the join we are removing tags that do not match the set of tags-to-count."
+
+  "SELECT LOWER(tags.tag) AS topic, COUNT(*)
    FROM cte_results t
-   JOIN (SELECT DISTINCT tag
-         FROM cte_results t
-         JOIN json_populate_recordset(null::record,CASE WHEN (t.json->>'tags'::TEXT = '') IS NOT FALSE THEN '[]'::JSON
-                            ELSE (t.json->>'tags')::JSON END) AS (id INT, tag TEXT) ON TRUE) tags ON LOWER(tags.tag) IN (:v*:tags-to-count)
+   JOIN LATERAL (SELECT DISTINCT LOWER(tag) AS tag
+                 FROM json_populate_recordset
+                   (null::record,
+                    CASE WHEN (t.json->>'tags'::TEXT = '') IS NOT FALSE THEN '[]'::JSON
+                    ELSE (t.json->>'tags')::JSON END)
+                 AS (id INTEGER, tag TEXT)
+                 WHERE LOWER(tag) IN (:v*:tags-to-count)) tags
+   ON TRUE
    GROUP BY 1")
 
 (defn- generate-count-aggregate-query

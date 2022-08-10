@@ -21,7 +21,7 @@ const ResponsiveMenu = withRouter(
     profile,
     setWarningModalVisible,
     isAuthenticated,
-    setStakeholderSignupModalVisible,
+    setLoginVisible,
     loginWithPopup,
     logout,
     setFilterMenu,
@@ -53,17 +53,15 @@ const ResponsiveMenu = withRouter(
             ? history.push(`/stakeholders?topic=${key}`)
             : Object.keys(profile).length > 1
             ? setWarningModalVisible(true)
-            : isAuthenticated
-            ? setStakeholderSignupModalVisible(true)
-            : loginWithPopup();
+            : setLoginVisible(true);
         } else if (key === "add-content-disabled") {
           Object.keys(profile).length > 1
             ? setWarningModalVisible(true)
-            : setStakeholderSignupModalVisible(true);
+            : setLoginVisible(true);
         } else if (key === "join-gpml") {
-          history.push("/signup");
+          history.push("/onboarding");
         } else if (key === "sign-in" || key === "sign-in-mobile") {
-          loginWithPopup();
+          setLoginVisible(true);
         } else if (key === "logout" || key === "logout-mobile") {
           logout({ returnTo: window.location.origin });
         } else if (key === "data-hub") {

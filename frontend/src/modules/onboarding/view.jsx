@@ -2,8 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import "./styles.scss";
 import { Button, Typography, Steps } from "antd";
 import { Form } from "react-final-form";
-const { Title, Link } = Typography;
-const { Step } = Steps;
 import AffiliationOption from "./affiliation-option";
 import FormOne from "./form-one";
 import FormTwo from "./form-two";
@@ -23,15 +21,15 @@ function Authentication() {
   let history = useHistory();
   const [affiliation, setAffiliation] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
-  const [initialValues, setInitialValues] = useState({
-    offering: [],
-    offeringSuggested: [],
-    seeking: [],
-    seekingSuggested: [],
-  });
+  const [initialValues, setInitialValues] = useState({});
   const [error, setError] = useState(false);
 
-  const { tags, nonMemberOrganisations, organisations } = UIStore.currentState;
+  const {
+    tags,
+    nonMemberOrganisations,
+    organisations,
+    countries,
+  } = UIStore.currentState;
 
   const next = (skip = 0) => {
     if (
@@ -48,6 +46,7 @@ function Authentication() {
       setError(true);
     }
   };
+
   const previous = () => {
     setCurrentStep(Math.max(currentStep - 1, 0));
   };
@@ -79,16 +78,12 @@ function Authentication() {
 
     data.offering = [
       ...values?.offering,
-      ...(values?.offeringSuggested
-        ? values?.offeringSuggested.map((item) => item.label)
-        : []),
+      ...(values?.offeringSuggested ? values?.offeringSuggested : []),
     ];
 
     data.seeking = [
       ...values?.seeking,
-      ...(values?.seekingSuggested
-        ? values?.seekingSuggested.map((item) => item.label)
-        : []),
+      ...(values?.seekingSuggested ? values?.seekingSuggested : []),
     ];
 
     data.org = {};
@@ -109,6 +104,17 @@ function Authentication() {
     }
     if (location?.state?.data.hasOwnProperty("picture")) {
       data.photo = location?.state?.data.picture;
+    }
+    if (
+      location?.state?.data.hasOwnProperty(
+        "https://digital.gpmarinelitter.org/country"
+      )
+    ) {
+      data.country = countries.find(
+        (country) =>
+          country.name ===
+          location?.state?.data["https://digital.gpmarinelitter.org/country"]
+      ).id;
     }
     if (data.country) {
       data.country = Number(data.country);
@@ -159,10 +165,6 @@ function Authentication() {
     setAffiliation(value);
     formRef?.current?.change("privateCitizen", value);
   };
-
-  const array = Object.keys(tags)
-    .map((k) => tags[k])
-    .flat();
 
   const handleSeekingSuggestedTag = (value) => {
     formRef?.current?.change("seeking", [

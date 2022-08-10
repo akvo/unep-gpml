@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useLayoutEffect, useEffect } from "react";
 import { Row, Col, Button, Input, Space, Tag, Select } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
@@ -17,12 +18,6 @@ import MapLanding from "./map-landing";
 import TopicView from "./topic-view";
 import ResourceList from "./resource-list";
 import FilterDrawer from "./filter-drawer";
-
-import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
-import TooltipOutlined from "../../images/knowledge-library/tooltip-outlined.svg";
-import { ReactComponent as DownArrow } from "../../images/knowledge-library/chevron-down.svg";
-import topicViewIcon from "../../images/knowledge-library/topic-view-icon.svg";
-import { ReactComponent as IconExchange } from "../../images/capacity-building/ic-exchange.svg";
 
 import Header from "./header";
 import moment from "moment";
@@ -57,7 +52,7 @@ const KnowledgeLibrary = ({
   setFilterCountries,
   setMultiCountryCountries,
   setWarningModalVisible,
-  setStakeholderSignupModalVisible,
+  setLoginVisible,
 }) => {
   const [filterVisible, setFilterVisible] = useState(false);
   const [listVisible, setListVisible] = useState(true);
@@ -65,28 +60,11 @@ const KnowledgeLibrary = ({
   const [allResults, setAllResults] = useState([]);
   const [view, setView] = useState("map");
 
-  const selectionValue = (
-    <div className="selection-value">
-      <button className="select-button">
-        <div className="selection-arrow">
-          <DownArrow />
-        </div>
-      </button>
-      <span className="label text-white">{`${view} view`}</span>
-      {view === "map" ? (
-        <img src={GlobeOutlined} alt="globe-icon" className="filter-img" />
-      ) : (
-        <img src={topicViewIcon} alt="globe-icon" className="filter-img" />
-      )}
-    </div>
-  );
-
   const {
     tags,
     profile,
     countries,
     organisations,
-    transnationalOptions,
     mainContentType,
     representativeGroup,
   } = UIStore.useState((s) => ({
@@ -94,7 +72,6 @@ const KnowledgeLibrary = ({
     profile: s.profile,
     countries: s.countries,
     organisations: s.organisations,
-    transnationalOptions: s.transnationalOptions,
     sectorOptions: s.sectorOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     mainContentType: s.mainContentType,
@@ -299,137 +276,141 @@ const KnowledgeLibrary = ({
     .filter((item) => item);
 
   return (
-    <Row id="knowledge-library">
-      {/* Header */}
+    <>
+      <Row id="knowledge-library">
+        {/* Header */}
 
-      {/* Content */}
-      <Col span={24}>
-        <div className="ui-container">
-          {/* Filter Drawer */}
+        {/* Content */}
+        <Col span={24}>
+          <div className="ui-container">
+            {/* Filter Drawer */}
 
-          <FilterDrawer
-            {...{
-              query,
-              view,
-              countData,
-              filters,
-              filterVisible,
-              setFilterVisible,
-              multiCountryCountries,
-              setMultiCountryCountries,
-              filterTagValue,
-            }}
-            updateQuery={(flag, val) => updateQuery(flag, val)}
-          />
+            <FilterDrawer
+              {...{
+                query,
+                view,
+                countData,
+                filters,
+                filterVisible,
+                setFilterVisible,
+                multiCountryCountries,
+                setMultiCountryCountries,
+                filterTagValue,
+              }}
+              updateQuery={(flag, val) => updateQuery(flag, val)}
+            />
 
-          <Header
-            {...{
-              updateQuery,
-              filterVisible,
-              setFilterVisible,
-              filterTagValue,
-              renderFilterTag,
-              selectionValue,
-              setView,
-            }}
-          />
-          <Row
-            className={
-              view === "map"
-                ? "resource-main-container"
-                : `resource-main-container topic-main-container`
-            }
-          >
-            {/* Resource Main Content */}
-            {listVisible && (
-              <Col
-                lg={10}
-                md={9}
-                sm={12}
-                xs={24}
-                className={
-                  view === "map"
-                    ? "resource-list-container"
-                    : `resource-list-container topic-view-resource`
-                }
-              >
-                {/* Resource List */}
-                <ResourceList
-                  {...{
-                    view,
-                    query,
-                    allResults,
-                    countData,
-                    loading,
-                    pageSize,
-                    updateQuery,
-                    sortResults,
-                    isAscending,
+            <Header
+              {...{
+                updateQuery,
+                filterVisible,
+                setFilterVisible,
+                filterTagValue,
+                renderFilterTag,
+                view,
+                setView,
+              }}
+            />
+            <Row
+              className={
+                view === "map"
+                  ? "resource-main-container"
+                  : `resource-main-container topic-main-container`
+              }
+            >
+              {/* Resource Main Content */}
+              {listVisible && (
+                <Col
+                  lg={10}
+                  md={9}
+                  sm={12}
+                  xs={24}
+                  className={
+                    view === "map"
+                      ? "resource-list-container"
+                      : `resource-list-container topic-view-resource`
+                  }
+                >
+                  {/* Resource List */}
+                  <ResourceList
+                    {...{
+                      view,
+                      query,
+                      allResults,
+                      countData,
+                      loading,
+                      pageSize,
+                      updateQuery,
+                      sortResults,
+                      isAscending,
+                      isAuthenticated,
+                      setLoginVisible,
+                    }}
+                    hideListButtonVisible={view === "map"}
+                  />
+                </Col>
+              )}
+
+              {view === "map" ? (
+                <Col
+                  lg={14}
+                  md={15}
+                  sm={12}
+                  xs={24}
+                  align="center"
+                  className="render-map-container map-main-wrapper"
+                  style={{
+                    background: view === "topic" ? "#255B87" : "#fff",
+                    flex: view === "topic" && "auto",
                   }}
-                  hideListButtonVisible={view === "map"}
-                />
-              </Col>
-            )}
-
-            {view === "map" ? (
-              <Col
-                lg={14}
-                md={15}
-                sm={12}
-                xs={24}
-                align="center"
-                className="render-map-container map-main-wrapper"
-                style={{
-                  background: view === "topic" ? "#255B87" : "#fff",
-                  flex: view === "topic" && "auto",
-                }}
-              >
-                <MapLanding
-                  {...{
-                    query,
-                    countData,
-                    filters,
-                    setFilters,
-                    setWarningModalVisible,
-                    setStakeholderSignupModalVisible,
-                    loginWithPopup,
-                    isAuthenticated,
-                    setToggleButton,
-                    updateQuery,
-                    multiCountryCountries,
-                    setMultiCountryCountries,
-                    setListVisible,
-                    landingQuery,
-                  }}
-                  isFilteredCountry={filterCountries}
-                  isDisplayedList={listVisible}
-                />
-              </Col>
-            ) : (
-              <Col
-                lg={14}
-                md={15}
-                sm={12}
-                xs={24}
-                align="center"
-                className={
-                  view === "topic"
-                    ? `render-map-container topic-view`
-                    : `render-map-container`
-                }
-              >
-                <TopicView
-                  {...{ updateQuery, query, results }}
-                  countData={countData.filter(
-                    (count) => count.topic !== "gpml_member_entities"
-                  )}
-                />
-              </Col>
-            )}
-          </Row>
-        </div>
-      </Col>
-    </Row>
+                >
+                  <MapLanding
+                    {...{
+                      query,
+                      countData,
+                      filters,
+                      setFilters,
+                      setWarningModalVisible,
+                      setLoginVisible,
+                      loginWithPopup,
+                      isAuthenticated,
+                      setToggleButton,
+                      updateQuery,
+                      multiCountryCountries,
+                      setMultiCountryCountries,
+                      setListVisible,
+                      landingQuery,
+                    }}
+                    isFilteredCountry={filterCountries}
+                    isDisplayedList={listVisible}
+                  />
+                </Col>
+              ) : (
+                <Col
+                  lg={14}
+                  md={15}
+                  sm={12}
+                  xs={24}
+                  align="center"
+                  className={
+                    view === "topic"
+                      ? `render-map-container topic-view`
+                      : `render-map-container`
+                  }
+                >
+                  <TopicView
+                    {...{ updateQuery, query, results }}
+                    countData={countData.filter(
+                      (count) => count.topic !== "gpml_member_entities"
+                    )}
+                  />
+                </Col>
+              )}
+            </Row>
+          </div>
+        </Col>
+      </Row>
+    </>
   );
 };
 
