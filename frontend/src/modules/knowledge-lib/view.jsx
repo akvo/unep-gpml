@@ -54,7 +54,9 @@ const KnowledgeLib = () => {
   const [view, setView] = useState(
     query.hasOwnProperty("view") ? query.view[0] : "map"
   ); // to be changed to 'overview' later
-  const [isAscending, setIsAscending] = useState(null);
+  const [isAscending, setIsAscending] = useState(
+    query.hasOwnProperty("descending") ? JSON.parse(query.descending[0]) : null
+  );
   const [loading, setLoading] = useState(true);
   const [filterCountries, setFilterCountries] = useState([]);
   const [filter, setFilter] = useState([]);
@@ -143,6 +145,10 @@ const KnowledgeLib = () => {
     const newQuery = { ...query };
     newQuery[param] = value;
 
+    if (param === "descending" || query.hasOwnProperty("descending")) {
+      newQuery["orderBy"] = "title";
+    }
+
     // Remove empty query
     const arrayOfQuery = Object.entries(newQuery)?.filter(
       (item) => item[1]?.length !== 0
@@ -189,6 +195,15 @@ const KnowledgeLib = () => {
     } else {
       updateQuery("topic", key, true);
     }
+  };
+
+  const sortResults = (ascending) => {
+    if (!ascending) {
+      updateQuery("descending", "false", true);
+    } else {
+      updateQuery("descending", "true", true);
+    }
+    setIsAscending(ascending);
   };
 
   const loadAllCat = async () => {
@@ -258,9 +273,7 @@ const KnowledgeLib = () => {
           <div className="quick-search">
             <div className="count">
               {view === "grid"
-                ? `Showing ${
-                    !loading ? gridItems?.length : ""
-                  } of ${totalItems}`
+                ? `Showing ${gridItems?.length} of ${totalItems}`
                 : view === "category"
                 ? `${catData?.reduce(
                     (count, current) => count + current?.data?.length,
@@ -275,19 +288,19 @@ const KnowledgeLib = () => {
           <ViewSwitch {...{ view, setView }} />
           <button
             className="sort-by-button"
-            // onClick={() => sortExperts(!isAscending)}
+            onClick={() => sortResults(!isAscending)}
           >
             <SortIcon
               style={{
                 transform:
-                  isAscending || isAscending === null
+                  !isAscending || isAscending === null
                     ? "initial"
                     : "rotate(180deg)",
               }}
             />
             <div className="sort-button-text">
               <span>Sort by:</span>
-              <b>{isAscending ? `A>Z` : "Z>A"}</b>
+              <b>{!isAscending ? `A>Z` : "Z>A"}</b>
             </div>
           </button>
         </div>

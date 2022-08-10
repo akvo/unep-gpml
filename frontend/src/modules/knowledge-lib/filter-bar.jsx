@@ -20,7 +20,15 @@ export const resourceTypes = [
   { key: "financing-resource", label: "Financing Resources" },
 ];
 
-const hideFilterList = ["offset", "country", "transnational", "topic", "view"];
+const hideFilterList = [
+  "offset",
+  "country",
+  "transnational",
+  "topic",
+  "view",
+  "orderBy",
+  "descending",
+];
 
 const FilterBar = ({
   view,
