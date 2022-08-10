@@ -233,10 +233,12 @@ const ResourceItem = ({
     };
 
     return (
-      <div
+      <Link
+        to={linkTo}
         className="resource-item-wrapper"
         key={`${type}-${id}`}
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault()
           setParams({ type: type.replace("_", "-"), id });
           window.history.pushState({ urlPath: `/${linkTo}` }, "", `${linkTo}`);
           setModalVisible(true);
@@ -304,7 +306,7 @@ const ResourceItem = ({
             </span>
           </div>
         </Card>
-      </div>
+      </Link>
     );
   });
 };
