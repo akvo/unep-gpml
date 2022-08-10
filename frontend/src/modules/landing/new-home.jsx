@@ -638,7 +638,7 @@ const Landing = withRouter(
   }
 );
 
-const JoinGPMLButton = withRouter(({ history }) => {
+export const JoinGPMLButton = withRouter(({ history }) => {
   return (
     <Button
       type="primary"
@@ -787,4 +787,4 @@ const FeaturedContentMobile = ({ history }) => {
   );
 };
 
-export { Landing, JoinGPMLButton };
+export default Landing;
