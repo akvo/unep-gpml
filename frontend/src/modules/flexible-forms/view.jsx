@@ -791,7 +791,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     regionOptions: s.regionOptions,
     transnationalOptions: [
       ...s.transnationalOptions,
-      { id: 0, type: "transnational", name: "Other", countries: [] },
+      { id: -1, type: "transnational", name: "Other", countries: [] },
     ],
     sectorOptions: s.sectorOptions,
     organisationType: s.organisationType,

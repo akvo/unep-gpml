@@ -196,7 +196,9 @@ const FlexibleForm = withRouter(
           data.geoCoverageValueTransnational.length > 0
         ) {
           data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
-            ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+            ? data.geoCoverageValueTransnational
+                ?.filter((value) => Number(value) !== -1)
+                .map((x) => parseInt(x))
             : [];
           delete data.geoCoverageValueTransnational;
         }
@@ -557,7 +559,9 @@ const FlexibleForm = withRouter(
           data.geoCoverageValueTransnational.length > 0
         ) {
           data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
-            ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+            ? data.geoCoverageValueTransnational
+                ?.filter((value) => Number(value) !== -1)
+                .map((x) => parseInt(x))
             : [];
           delete data.geoCoverageValueTransnational;
         }
@@ -767,7 +771,9 @@ const FlexibleForm = withRouter(
           data.geoCoverageValueTransnational.length > 0
         ) {
           data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
-            ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+            ? data.geoCoverageValueTransnationaldata
+                ?.filter((value) => Number(value) !== -1)
+                .map((x) => parseInt(x))
             : [];
           delete data.geoCoverageValueTransnational;
         }
@@ -963,7 +969,9 @@ const FlexibleForm = withRouter(
           data.geoCoverageValueTransnational.length > 0
         ) {
           data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
-            ? data.geoCoverageValueTransnational.map((x) => parseInt(x))
+            ? data.geoCoverageValueTransnational
+                ?.filter((value) => Number(value) !== -1)
+                .map((x) => parseInt(x))
             : [];
           delete data.geoCoverageValueTransnational;
         }
@@ -1161,10 +1169,6 @@ const FlexibleForm = withRouter(
             (value) =>
               value !== "geoCoverageCountries" && value !== "S4_G2_24.4"
           );
-          console.log(
-            "formSchema.schema.properties.S4.properties::::::",
-            formData?.S4.S4_G2.geoCoverageValueTransnational.includes("0")
-          );
 
           updatedFormDataSchema = {
             ...formSchema.schema,
@@ -1185,7 +1189,7 @@ const FlexibleForm = withRouter(
                           .properties.geoCoverageCountries,
                         depend: {
                           id: "geoCoverageValueTransnational",
-                          value: ["0"],
+                          value: ["-1"],
                         },
                       },
                     },
