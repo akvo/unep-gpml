@@ -160,8 +160,8 @@ export const schema = {
                 enum: [],
                 enumNames: [],
                 depend: {
-                  id: "geoCoverageType",
-                  value: ["transnational"],
+                  id: "S4_G2_24.3",
+                  value: ["-1"],
                 },
               },
               "S4_G2_24.2": {

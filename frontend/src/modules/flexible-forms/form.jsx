@@ -410,7 +410,7 @@ const FlexibleForm = withRouter(
 
       if (data.q24.hasOwnProperty("transnational")) {
         data.q24_2 = data.q24_4;
-        data.q24_4 = data.q24_3;
+        data.q24_4 = data.q24_3.filter((value) => !value.hasOwnProperty(-1));
         data.q24_3 = null;
         delete data.qgeoCoverageValueSubnational;
         delete data.qgeoCoverageValueSubnationalCity;
