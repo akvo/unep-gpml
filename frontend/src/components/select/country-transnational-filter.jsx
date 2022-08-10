@@ -24,6 +24,8 @@ const CountryTransnationalFilter = ({
   setMultiCountryCountries,
   isExpert,
   disable,
+  setDisable,
+  fetch,
 }) => {
   const { countries, transnationalOptions, landing } = UIStore.useState(
     (s) => ({
@@ -53,17 +55,13 @@ const CountryTransnationalFilter = ({
       updateQuery("country", val);
       return;
     }
-    updateQuery("country", query?.country && val);
-  };
-
-  const handleDeselectCountry = (val) => {
-    if (isExpert) {
-      return false;
+    if (setDisable) {
+      setDisable({
+        ...disable,
+        ...(val.length > 0 ? { multiCountry: true } : { multiCountry: false }),
+      });
     }
-    updateQuery(
-      "country",
-      query?.country ? query?.country.filter((x) => x != val) : []
-    );
+    updateQuery("country", val, true);
   };
 
   const handleChangeMultiCountry = (val) => {
@@ -72,7 +70,14 @@ const CountryTransnationalFilter = ({
       return;
     }
 
-    updateQuery("transnational", [val]);
+    if (setDisable) {
+      setDisable({
+        ...disable,
+        ...(val.length > 0 ? { country: true } : { country: false }),
+      });
+    }
+
+    updateQuery("transnational", val, fetch);
 
     // Fetch transnational countries
     val.forEach((id) => {
@@ -85,17 +90,6 @@ const CountryTransnationalFilter = ({
           ]);
         });
     });
-  };
-
-  const handleDeselectMultiCountry = (val) => {
-    updateQuery(
-      "transnational",
-      query?.transnational
-        ? query?.transnational.filter((x) => x != val)
-        : isExpert
-        ? multiCountry?.filter((x) => x != val)
-        : []
-    );
   };
 
   const countryInfoData = multicountryGroups
@@ -127,7 +121,7 @@ const CountryTransnationalFilter = ({
           }
           value={country}
           onChange={handleChangeCountry}
-          onDeselect={handleDeselectCountry}
+          // onDeselect={handleDeselectCountry}
           virtual={false}
         />
       </TabPane>
@@ -152,7 +146,7 @@ const CountryTransnationalFilter = ({
           }
           value={multiCountry}
           onChange={handleChangeMultiCountry}
-          onDeselect={handleDeselectMultiCountry}
+          // onDeselect={handleDeselectMultiCountry}
           dropdownMatchSelectWidth={325}
           suffixIcon={
             !multiCountryLabelCustomIcon && multiCountry ? (

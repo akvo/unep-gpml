@@ -1,25 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import "./styles.scss";
 import { UIStore } from "../../store";
 import {
   Row,
   Col,
-  Tooltip,
   Typography,
   Avatar,
   List,
   Card,
-  Pagination,
   Modal,
   notification,
-  Image,
 } from "antd";
 import StickyBox from "react-sticky-box";
 import ReadMoreReact from "read-more-less-react";
@@ -31,25 +22,16 @@ import { ReactComponent as FollowIcon } from "../../images/resource-detail/follo
 import {
   LinkedinOutlined,
   TwitterOutlined,
-  FilePdfOutlined,
   MailOutlined,
-  UserOutlined,
-  ArrowRightOutlined,
   LoadingOutlined,
-  EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import { withRouter, useHistory, Link } from "react-router-dom";
-import RelatedContent from "../../components/related-content/related-content";
+import { useHistory, Link } from "react-router-dom";
 import api from "../../utils/api";
-import {
-  topicNames,
-  resourceTypeToTopicType,
-  relationsByTopicType,
-} from "../../utils/misc";
-import uniqBy from "lodash/uniqBy";
+import { resourceTypeToTopicType } from "../../utils/misc";
 import isEmpty from "lodash/isEmpty";
 import { eventTrack, randomColor } from "../../utils/misc";
+import ResourceCards from "../../components/resource-cards/resource-cards";
 
 const usePrevious = (value) => {
   const ref = useRef();
@@ -689,38 +671,31 @@ const StakeholderDetail = ({
               </div>
             </Col>
           </Row>
-          <div className="owned-resources-wrapper">
-            {ownedResources.length > 0 && (
-              <RelatedContent
-                data={[]}
-                url={""}
-                isShownCount={false}
-                dataCount={ownedResourcesCount}
-                relatedContent={ownedResources || []}
-                title="Owned resources"
-                isShownPagination={true}
-                relatedContentPage={ownedResourcesPage}
-                relatedContentCount={ownedResourcesCount}
-                getRelatedContent={getOwnedResources}
-              />
-            )}
-          </div>
-          <div className="bookmarked-resources-wrapper">
-            {bookedResources.length > 0 && (
-              <RelatedContent
-                data={[]}
-                url={""}
-                isShownCount={false}
-                dataCount={bookedResourcesCount}
-                relatedContent={bookedResources || []}
-                title="Bookmarked resources "
-                isShownPagination={true}
-                relatedContentPage={bookedResourcesPage}
-                relatedContentCount={bookedResourcesCount}
-                getRelatedContent={getBookedResources}
-              />
-            )}
-          </div>
+          {ownedResources.length > 0 && (
+            <div className="owned-resources-wrapper">
+              <div className="card-wrapper resource-cards-wrapper">
+                <CardComponent title={"Owned resources"}>
+                  <ResourceCards
+                    items={ownedResources}
+                    showMoreCardAfter={20}
+                    showMoreCardHref={"/knowledge/library"}
+                  />
+                </CardComponent>
+              </div>
+            </div>
+          )}
+
+          {bookedResources.length > 0 && (
+            <div className="bookmarked-resources-wrapper">
+              <CardComponent title={"Bookmarked resources"}>
+                <ResourceCards
+                  items={bookedResources}
+                  showMoreCardAfter={20}
+                  showMoreCardHref={"/knowledge/library"}
+                />
+              </CardComponent>
+            </div>
+          )}
         </div>
       </div>
     </div>

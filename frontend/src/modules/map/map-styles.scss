@@ -56,9 +56,8 @@
 
   .landing-container.map-container > div {
     height: 700px !important;
-    width: auto;
+    width: 100% !important;
     display: flex;
-    flex-direction: column-reverse;
     align-content: center;
     padding-bottom: 13px;
     @media (max-width: 950px) {
@@ -79,16 +78,16 @@
     position: relative;
     padding-top: 0;
     padding-bottom: 0;
-
+    width: 100%;
     border-bottom: none !important;
     z-index: 1;
 
     .rsm-svg {
-      width: 100vw;
+      width: 100%;
     }
 
     .rsm-svg {
-      width: 100vw;
+      width: 100%;
     }
 
     h2.loading {

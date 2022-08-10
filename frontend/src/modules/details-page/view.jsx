@@ -38,7 +38,7 @@ import { detailMaps } from "./mapping";
 import moment from "moment";
 import { resourceTypeToTopicType } from "../../utils/misc";
 import { multicountryGroups } from "../knowledge-library/multicountry";
-import RelatedContent from "../../components/related-content/related-content";
+import ResourceCards from "../../components/resource-cards/resource-cards";
 import Comments from "./comment";
 import Header from "./header";
 import StakeholderCarousel from "./stakeholder-carousel";
@@ -568,26 +568,23 @@ const DetailsView = ({
             </div>
           </Col>
         )}
-        <Col>
-          {/* CONNECTION */}
-          {(data?.entityConnections?.length > 0 ||
-            data?.stakeholderConnections.filter(
-              (x) => x.stakeholderRole !== "ADMIN" || x.role === "interested in"
-            )?.length > 0) && (
-            <Col className="section section-connection-stakeholder">
-              <div className="extra-wrapper">
-                <h3 className="content-heading">Connections</h3>
 
-                <StakeholderCarousel
-                  stakeholders={[
-                    ...entityConnections,
-                    ...stakeholderConnections,
-                  ]}
-                />
-              </div>
-            </Col>
-          )}
-        </Col>
+        {/* CONNECTION */}
+        {(data?.entityConnections?.length > 0 ||
+          data?.stakeholderConnections.filter(
+            (x) => x.stakeholderRole !== "ADMIN" || x.role === "interested in"
+          )?.length > 0) && (
+          <Col className="section section-connection-stakeholder">
+            <div className="extra-wrapper">
+              <h3 className="content-heading">Connections</h3>
+
+              <StakeholderCarousel
+                stakeholders={[...entityConnections, ...stakeholderConnections]}
+              />
+            </div>
+          </Col>
+        )}
+
         {/* DOCUMENTS AND INFO */}
         {data?.infoDocs && (
           <Col className="section section-document">
@@ -610,17 +607,19 @@ const DetailsView = ({
           data?.relatedContent?.length > 0 &&
           data?.relatedContent.length > 0 && (
             <Col className="section section-related-content">
-              <RelatedContent
-                data={data}
-                isShownCount={false}
-                title="Related content"
-                relatedContent={data?.relatedContent}
-                isShownPagination={false}
-                sliderItemCount={6}
-                dataCount={data?.relatedContent?.length || 0}
-              />
+              <div className="resource-cards-wrapper">
+                <h3 className="related-content-title">Related content</h3>
+                <div className="related-content-container">
+                  <ResourceCards
+                    items={data?.relatedContent}
+                    showMoreCardAfter={20}
+                    showMoreCardHref={"/knowledge/library"}
+                  />
+                </div>
+              </div>
             </Col>
           )}
+
         {/* COMMENTS */}
         <Comments
           {...{

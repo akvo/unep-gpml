@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import api from "../../utils/api";
-import { Button, Dropdown, Menu } from "antd";
-import { UIStore } from "../../store";
 import catTags from "../../utils/cat-tags.json";
-import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
 import { Icon } from "../../components/svg-icon/svg-icon";
-import { useQuery } from "./common";
+import { useQuery } from "../../utils/misc";
 import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
+import LocationDropdown from "../../components/location-dropdown/location-dropdown";
 
 function slug(text) {
   return text.toLowerCase().replaceAll("&", "n").replaceAll(" ", "-");
@@ -27,10 +25,6 @@ const FilterBar = ({
     country: false,
     multiCountry: false,
   });
-
-  const { countries } = UIStore.useState((s) => ({
-    countries: s.countries,
-  }));
 
   const handleClick0 = (catIndex) => () => {
     setFilter([catIndex]);
@@ -125,7 +119,7 @@ const FilterBar = ({
               {catTags.map((cat, index) => {
                 return (
                   <li onClick={handleClick0(index)}>
-                    <Icon name={slug(cat.title)} fill="#67BEA1" />
+                    <Icon name={`cat-tags/${slug(cat.title)}`} fill="#67BEA1" />
                     <span>{cat.title}</span>
                   </li>
                 );
@@ -138,7 +132,10 @@ const FilterBar = ({
         <div className="level-1">
           <div className={`selected-btn s${filter[0]}`} onClick={handleBack}>
             <small>&lt; Back to categories</small>
-            <Icon name={slug(catTags[filter[0]].title)} fill="#67BEA1" />
+            <Icon
+              name={`cat-tags/${slug(catTags[filter[0]].title)}`}
+              fill="#67BEA1"
+            />
             <div>
               <strong>{catTags[filter[0]].title}</strong>
               <small>Sub-topics</small>
@@ -153,7 +150,7 @@ const FilterBar = ({
                 }
               >
                 <div className="img-container">
-                  <Icon name={slug(tag)} fill="#67BEA1" />
+                  <Icon name={`cat-tags/${slug(tag)}`} fill="#67BEA1" />
                 </div>
                 <div className="label-container">
                   <span>{tag}</span>
@@ -163,28 +160,15 @@ const FilterBar = ({
           </ul>
         </div>
       )}
-      <Dropdown
-        className={`location-filter ${
-          country.length > 0 || multiCountry.length > 0 ? "selected" : ""
-        }`}
-        overlayClassName="location-filter-dropdown"
-        overlay={countryList}
-        placement="bottomLeft"
-        trigger={["click"]}
-        visible={dropdownVisible}
-        onVisibleChange={(visible) => {
-          setDropdownVisible(visible);
+      <LocationDropdown
+        {...{
+          country,
+          multiCountry,
+          countryList,
+          dropdownVisible,
+          setDropdownVisible,
         }}
-      >
-        <Button>
-          <GlobeIcon />
-          <span>
-            {(country.length > 0 || multiCountry.length > 0) &&
-              multiCountry?.length + country?.length}{" "}
-            Location
-          </span>
-        </Button>
-      </Dropdown>
+      />
     </div>
   );
 };
