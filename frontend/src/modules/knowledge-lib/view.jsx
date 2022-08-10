@@ -186,6 +186,7 @@ const KnowledgeLib = () => {
   };
 
   const handleCategoryFilter = (key) => {
+    if (view === "category") setView("grid");
     if (query?.topic?.includes(key)) {
       updateQuery(
         "topic",
@@ -206,9 +207,19 @@ const KnowledgeLib = () => {
     setIsAscending(ascending);
   };
 
-  const loadAllCat = async () => {
+  const loadAllCat = async (sort) => {
     setLoading(true);
-    const promiseArray = topic.map((url) => api.get(`/browse?topic=${url}`));
+    const promiseArray = topic.map((url) =>
+      api.get(
+        `/browse?topic=${url}${
+          sort
+            ? `&descending=${sort}&orderBy=title`
+            : sort === false
+            ? `&descending=${"false"}&orderBy=title`
+            : ""
+        }`
+      )
+    );
 
     Promise.all(promiseArray)
       .then((data) => {
@@ -288,7 +299,12 @@ const KnowledgeLib = () => {
           <ViewSwitch {...{ view, setView }} />
           <button
             className="sort-by-button"
-            onClick={() => sortResults(!isAscending)}
+            onClick={() => {
+              if (view === "category") {
+                loadAllCat(!isAscending);
+                setIsAscending(!isAscending);
+              } else sortResults(!isAscending);
+            }}
           >
             <SortIcon
               style={{
