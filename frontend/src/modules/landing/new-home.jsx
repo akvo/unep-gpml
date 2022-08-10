@@ -272,7 +272,7 @@ const Landing = withRouter(
               </div>
               {!hasProfile && (
                 <div>
-                  <JoinGPMLButton history={history} />
+                  <JoinGPMLButton setLoginVisible={setLoginVisible} />
                   <Link to="/about-us">
                     <Button type="ghost" className="left">
                       Learn More
@@ -627,7 +627,7 @@ const Landing = withRouter(
               })}
             </div>
             <div className="btn-wrapper">
-              <JoinGPMLButton history={history} />
+              <JoinGPMLButton setLoginVisible={setLoginVisible} />
             </div>
           </div>
         </div>
@@ -638,12 +638,12 @@ const Landing = withRouter(
   }
 );
 
-const JoinGPMLButton = withRouter(({ history }) => {
+const JoinGPMLButton = withRouter(({ setLoginVisible }) => {
   return (
     <Button
       type="primary"
       onClick={() => {
-        history.push("/onboarding");
+        setLoginVisible(true);
       }}
     >
       Join GPML
