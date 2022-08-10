@@ -113,7 +113,8 @@ const SelectWidget = ({
                 placement="right"
                 arrowPointAtCenter
               >
-                <InfoCircleOutlined />
+                {schema?.countries.find((o) => o.id === parseInt(optionValue))
+                  .countries?.length > 0 && <InfoCircleOutlined />}
               </Popover>
             </Select.Option>
           ))}
