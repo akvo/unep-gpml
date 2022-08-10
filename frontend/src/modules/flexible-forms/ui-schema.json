@@ -53,6 +53,7 @@
           "S4_G2_24.3",
           "S4_G2_24.4",
           "S4_G2_24.2",
+          "geoCoverageCountries",
           "geoCoverageValueSubnational",
           "geoCoverageValueSubnationalCity"
         ]
