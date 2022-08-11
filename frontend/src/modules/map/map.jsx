@@ -26,7 +26,7 @@ const Maps = ({
   countryGroupCounts,
   useTooltips = true,
   showLegend = false,
-  zoom
+  zoom,
 }) => {
   const [tooltipContent, setTooltipContent] = useState("");
 
@@ -63,7 +63,7 @@ const Maps = ({
               isDisplayedList,
               countryGroupCounts,
               showLegend,
-              zoom
+              zoom,
             }}
           />
           {useTooltips && (
