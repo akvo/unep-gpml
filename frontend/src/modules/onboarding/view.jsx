@@ -171,7 +171,9 @@ function Authentication() {
       ...(formRef?.current?.getFieldState("seeking")?.value
         ? formRef?.current?.getFieldState("seeking")?.value
         : []),
-      value,
+      Object.values(tags)
+        .flat()
+        .find((o) => o.tag.toLowerCase() === value.toLowerCase())?.tag || value,
     ]);
   };
 
@@ -180,7 +182,9 @@ function Authentication() {
       ...(formRef?.current?.getFieldState("offering")?.value
         ? formRef?.current?.getFieldState("offering")?.value
         : []),
-      value,
+      Object.values(tags)
+        .flat()
+        .find((o) => o.tag.toLowerCase() === value.toLowerCase())?.tag || value,
     ]);
   };
 

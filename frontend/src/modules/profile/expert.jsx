@@ -7,8 +7,12 @@ import arrayMutators from "final-form-arrays";
 import { FieldArray } from "react-final-form-arrays";
 import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
 import api from "../../utils/api";
+import { UIStore } from "../../store";
 
 function Expert() {
+  const { tags } = UIStore.useState((s) => ({
+    tags: s.tags,
+  }));
   const formRef = useRef();
   const [pendingInvites, setPendingInvites] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -171,7 +175,13 @@ function Expert() {
                                                   `${name}.expertise`
                                                 )?.value
                                               : []),
-                                            value,
+                                            Object.values(tags)
+                                              .flat()
+                                              .find(
+                                                (o) =>
+                                                  o.tag.toLowerCase() ===
+                                                  value.toLowerCase()
+                                              )?.tag || value,
                                           ]
                                         );
                                       }}
