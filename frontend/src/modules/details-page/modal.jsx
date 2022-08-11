@@ -15,6 +15,7 @@ const DetailModal = ({
 }) => {
   return (
     <Modal
+      zIndex={99999}
       visible={visible}
       onCancel={() => {
         setVisible(false);
