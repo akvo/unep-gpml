@@ -40,7 +40,7 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn create-policy [conn mailjet-config
+(defn create-policy [conn logger mailjet-config
                      {:keys [title original_title abstract url
                              data_source type_of_law record_number
                              first_publication_date latest_amendment_date
@@ -90,10 +90,10 @@
     (when (seq related_content)
       (handler.resource.related-content/create-related-contents conn policy-id "policy" related_content))
     (when (not-empty tags)
-      (handler.resource.tag/create-resource-tags conn mailjet-config {:tags tags
-                                                                      :tag-category "general"
-                                                                      :resource-name "policy"
-                                                                      :resource-id policy-id}))
+      (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
+                                                                             :tag-category "general"
+                                                                             :resource-name "policy"
+                                                                             :resource-id policy-id}))
     (when (not-empty language)
       (let [lang-id (:id (db.language/language-by-iso-code conn (select-keys language [:iso_code])))]
         (if-not (nil? lang-id)
@@ -132,8 +132,8 @@
     (try
       (jdbc/with-db-transaction [conn (:spec db)]
         (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-              policy-id (create-policy conn mailjet-config (assoc body-params
-                                                                  :created_by (:id user)))]
+              policy-id (create-policy conn logger mailjet-config (assoc body-params
+                                                                         :created_by (:id user)))]
           (resp/created (:referrer req) {:success? true
                                          :message "New policy created"
                                          :id policy-id})))

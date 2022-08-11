@@ -566,11 +566,11 @@
 (defn update-resource-tags
   "Updates the resource tags and creating new ones if provided. Note
   that the `tag-category` is `general`."
-  [conn mailjet-config table id tags]
-  (handler.resource.tag/update-resource-tags conn mailjet-config {:tags tags
-                                                                  :resource-name table
-                                                                  :resource-id id
-                                                                  :tag-category "general"}))
+  [conn logger mailjet-config table id tags]
+  (handler.resource.tag/update-resource-tags conn logger mailjet-config {:tags tags
+                                                                         :resource-name table
+                                                                         :resource-id id
+                                                                         :tag-category "general"}))
 
 (defn update-resource-language-urls [conn table id urls]
   ;; Delete any existing lanugage URLs
@@ -693,7 +693,7 @@
           (db.favorite/update-stakeholder-association conn association)
           (db.favorite/new-organisation-association conn association))))))
 
-(defn update-resource [conn mailjet-config topic-type id updates]
+(defn update-resource [conn logger mailjet-config topic-type id updates]
   (let [table (cond
                 (contains? constants/resource-types topic-type) "resource"
                 :else topic-type)
@@ -721,14 +721,14 @@
                     (or
                      (:id org)
                      (and (= -1 (:id org))
-                          (handler.org/create conn mailjet-config org))))
+                          (handler.org/create conn logger mailjet-config org))))
         related-contents (:related_content updates)]
     (when (and (contains? updates :language) (= topic-type "policy"))
       (update-policy-language conn (:language updates) id))
     (doseq [[image-key image-data] (select-keys updates [:image :thumbnail :photo :logo])]
       (update-resource-image conn image-data image-key table id))
     (when (seq tags)
-      (update-resource-tags conn mailjet-config table id tags))
+      (update-resource-tags conn logger mailjet-config table id tags))
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn id table related-contents))
     (when-not (= "policy" topic-type)
@@ -739,7 +739,7 @@
     (update-resource-connections conn (:entity_connections updates) (:individual_connections updates) table id)
     status))
 
-(defn update-initiative [conn mailjet-config id data]
+(defn update-initiative [conn logger mailjet-config id data]
   (let [params (merge {:id id} data)
         tags (remove nil? (:tags data))
         status (jdbc/with-db-transaction [conn-tx conn]
@@ -755,7 +755,7 @@
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn id "initiative" related-contents))
     (when (seq tags)
-      (update-resource-tags conn mailjet-config "initiative" id tags))
+      (update-resource-tags conn logger mailjet-config "initiative" id tags))
     (update-resource-connections conn (:entity_connections data) (:individual_connections data) "initiative" id)
     status))
 
@@ -769,8 +769,8 @@
         (if (some? submission)
           (let [conn (:spec db)
                 status (if (= topic-type "project")
-                         (update-initiative conn mailjet-config topic-id body)
-                         (update-resource conn mailjet-config topic-type topic-id body))]
+                         (update-initiative conn logger mailjet-config topic-id body)
+                         (update-resource conn logger mailjet-config topic-type topic-id body))]
             (when (and (= status 1) (= review_status "REJECTED"))
               (db.submission/update-submission
                conn
