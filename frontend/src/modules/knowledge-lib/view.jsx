@@ -233,7 +233,6 @@ const KnowledgeLib = ({ setLoginVisible, isAuthenticated }) => {
 
   const showModal = ({ e, type, id }) => {
     e.preventDefault();
-    console.log(params);
     if (type && id) {
       const detailUrl = `/${type}/${id}`;
       e.preventDefault();
@@ -332,7 +331,11 @@ const KnowledgeLib = ({ setLoginVisible, isAuthenticated }) => {
               setView("grid");
             }}
             showModal={(e) =>
-              showModal({ e, type: e.target.type, id: e.target.id })
+              showModal({
+                e,
+                type: e.currentTarget.type,
+                id: e.currentTarget.id,
+              })
             }
           />
         )}
@@ -419,7 +422,11 @@ const KnowledgeLib = ({ setLoginVisible, isAuthenticated }) => {
                   handleCategoryFilter(d.categories);
                 }}
                 showModal={(e) =>
-                  showModal({ e, type: e.target.type, id: e.target.id })
+                  showModal({
+                    e,
+                    type: e.currentTarget.type,
+                    id: e.currentTarget.id,
+                  })
                 }
               />
             </Fragment>

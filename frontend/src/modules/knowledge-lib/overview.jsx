@@ -133,7 +133,7 @@ const Featured = ({ setView, showModal }) => {
           setView("grid");
         }}
         showModal={(e) =>
-          showModal({ e, type: e.target.type, id: e.target.id })
+          showModal({ e, type: e.currentTarget.type, id: e.currentTarget.id })
         }
         firstCard={
           <Link to="/flexible-forms">
