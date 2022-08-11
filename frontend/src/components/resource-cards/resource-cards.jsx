@@ -46,6 +46,7 @@ const ResourceCards = ({
   showMoreCardClick,
   showMoreCardHref,
   firstCard,
+  showModal = () => null,
 }) => {
   if (showMoreCardAfter > 0) {
     if (showMoreCardAfter < items?.length) {
@@ -80,7 +81,7 @@ const ResourceCards = ({
       {items?.slice(0, showMoreCardAfter).map((item) => {
         return (
           <SwiperSlide key={item?.id}>
-            <ResourceCard item={item} />
+            <ResourceCard item={item} showModal={showModal} />
           </SwiperSlide>
         );
       })}
@@ -159,11 +160,13 @@ const getThumbnail = (item) => {
   }
 };
 
-export const ResourceCard = ({ item, index }) => {
+export const ResourceCard = ({ item, index, showModal }) => {
   return (
     <div className="resource-card" key={index}>
       <Link
         to={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
+        id={item.id}
+        type={getType(item?.type)?.replace("_", "-")}
         className="description-holder"
         style={{
           backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${getThumbnail(
@@ -173,6 +176,7 @@ export const ResourceCard = ({ item, index }) => {
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
         }}
+        onClick={showModal}
       >
         <div>
           <h3>{item.title}</h3>
