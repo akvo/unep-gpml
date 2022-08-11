@@ -171,6 +171,21 @@ const FlexibleForm = withRouter(
 
       delete data.orgName;
 
+      data.tags =
+        formData.S4.S4_G3.tags &&
+        formData.S4.S4_G3.tags.map((x) => {
+          return {
+            tag: x,
+            ...(Object.values(tags)
+              .flat()
+              .find((o) => o.tag === x) && {
+              id: Object.values(tags)
+                .flat()
+                .find((o) => o.tag === x)?.id,
+            }),
+          };
+        });
+
       delete data?.tagsList;
 
       if (data?.publishYear) {
@@ -348,7 +363,20 @@ const FlexibleForm = withRouter(
       delete data?.S4;
       delete data?.S5;
 
-      data.tags = data.qtags;
+      data.tags =
+        formData.S4.S4_G3.tags &&
+        formData.S4.S4_G3.tags.map((x) => {
+          return {
+            tag: x,
+            ...(Object.values(tags)
+              .flat()
+              .find((o) => o.tag === x) && {
+              id: Object.values(tags)
+                .flat()
+                .find((o) => o.tag === x)?.id,
+            }),
+          };
+        });
       delete data.qtags;
       delete data.qid;
 
@@ -583,6 +611,21 @@ const FlexibleForm = withRouter(
         });
       }
 
+      data.tags =
+        formData.S4.S4_G3.tags &&
+        formData.S4.S4_G3.tags.map((x) => {
+          return {
+            tag: x,
+            ...(Object.values(tags)
+              .flat()
+              .find((o) => o.tag === x) && {
+              id: Object.values(tags)
+                .flat()
+                .find((o) => o.tag === x)?.id,
+            }),
+          };
+        });
+
       delete data.tagsList;
 
       if (data.hasOwnProperty("firstPublicationDate")) {
@@ -778,6 +821,21 @@ const FlexibleForm = withRouter(
         });
       }
 
+      data.tags =
+        formData.S4.S4_G3.tags &&
+        formData.S4.S4_G3.tags.map((x) => {
+          return {
+            tag: x,
+            ...(Object.values(tags)
+              .flat()
+              .find((o) => o.tag === x) && {
+              id: Object.values(tags)
+                .flat()
+                .find((o) => o.tag === x)?.id,
+            }),
+          };
+        });
+
       delete data.tagsList;
 
       if (data.hasOwnProperty("startDate")) {
@@ -970,6 +1028,21 @@ const FlexibleForm = withRouter(
           };
         });
       }
+
+      data.tags =
+        formData.S4.S4_G3.tags &&
+        formData.S4.S4_G3.tags.map((x) => {
+          return {
+            tag: x,
+            ...(Object.values(tags)
+              .flat()
+              .find((o) => o.tag === x) && {
+              id: Object.values(tags)
+                .flat()
+                .find((o) => o.tag === x)?.id,
+            }),
+          };
+        });
 
       delete data.tagsList;
 
