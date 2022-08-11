@@ -136,7 +136,11 @@ const SelectWidget = ({
                 enumDisabled && enumDisabled.indexOf(optionValue) !== -1
               }
               key={String(optionValue) + i.toString(36)}
-              value={String(optionLabel)}
+              value={
+                schema?.title === "Tags"
+                  ? String(optionLabel)
+                  : String(optionValue)
+              }
             >
               {optionLabel}
             </Select.Option>
