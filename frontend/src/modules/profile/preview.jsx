@@ -538,7 +538,7 @@ export const ProfilePreview = ({ item }) => {
 
   useEffect(() => {
     if (item.expertise) {
-      setExpertise(item.expertise.map((item) => toTitleCase(item)));
+      setExpertise(item.expertise.map((item) => item));
     }
   }, [item]);
 
