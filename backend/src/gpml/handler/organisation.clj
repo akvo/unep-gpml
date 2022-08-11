@@ -10,7 +10,7 @@
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
-(defn create [conn mailjet-config org]
+(defn create [conn logger mailjet-config org]
   (let [org-id (:id (db.organisation/new-organisation conn org))
         org-geo2 (handler.geo/get-geo-vector-v2 org-id org)
         org-geo (handler.geo/get-geo-vector org-id org)]
@@ -20,6 +20,7 @@
         (db.organisation/add-geo-coverage conn {:geo org-geo})))
     (when (seq (:tags org))
       (handler.resource.tag/create-resource-tags conn
+                                                 logger
                                                  mailjet-config
                                                  {:tags (:tags org)
                                                   :tag-category "general"
@@ -27,7 +28,7 @@
                                                   :resource-id org-id}))
     org-id))
 
-(defn update-org [conn mailjet-config org]
+(defn update-org [conn logger mailjet-config org]
   (let [org-id (do (db.organisation/update-organisation conn org)
                    (:id org))
         org-geo (handler.geo/get-geo-vector org-id org)
@@ -40,10 +41,10 @@
         (db.organisation/delete-geo-coverage conn org)
         (db.organisation/add-geo-coverage conn {:id org-id :geo org-geo})))
     (when (seq (:tags org))
-      (handler.resource.tag/update-resource-tags conn mailjet-config {:tags (:tags org)
-                                                                      :tag-category "general"
-                                                                      :resource-name "organisation"
-                                                                      :resource-id org-id}))
+      (handler.resource.tag/update-resource-tags conn logger mailjet-config {:tags (:tags org)
+                                                                             :tag-category "general"
+                                                                             :resource-name "organisation"
+                                                                             :resource-id org-id}))
     org-id))
 
 (defmethod ig/init-key :gpml.handler.organisation/get [_ {:keys [db]}]
@@ -79,7 +80,7 @@
                   :reason :can-not-create-member-org-if-user-is-in-rejected-state}}
 
           :else
-          (let [org-id (create (:spec db) mailjet-config (assoc body-params :created_by (:id org-creator)))]
+          (let [org-id (create (:spec db) logger mailjet-config (assoc body-params :created_by (:id org-creator)))]
             (resp/created referrer {:success? true
                                     :org (assoc body-params :id org-id)}))))
       (catch Exception e
@@ -112,9 +113,9 @@
             [:tag_category string?]]]]]
         handler.geo/params-payload))
 
-(defmethod ig/init-key :gpml.handler.organisation/put [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.organisation/put [_ {:keys [db logger mailjet-config]}]
   (fn [{:keys [body-params referrer parameters]}]
-    (let [org-id (update-org db mailjet-config (assoc body-params :id (:id (:path parameters))))]
+    (let [org-id (update-org db logger mailjet-config (assoc body-params :id (:id (:path parameters))))]
       (resp/created referrer (assoc body-params :id org-id)))))
 
 (defmethod ig/init-key :gpml.handler.organisation/put-params [_ _]
