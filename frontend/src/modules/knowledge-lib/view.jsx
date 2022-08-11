@@ -21,8 +21,10 @@ import { UIStore } from "../../store";
 import { isEmpty } from "lodash";
 import { Link, useHistory } from "react-router-dom";
 import { useQuery, topicNames } from "../../utils/misc";
+import bodyScrollLock from "../details-page/scroll-utils";
 import TopicView from "./topic-view";
 import Overview from "./overview";
+import DetailModal from "../details-page/modal";
 
 const topic = [
   "action_plan",
@@ -43,7 +45,7 @@ const popularTags = [
   "source to sea",
 ];
 
-const KnowledgeLib = () => {
+const KnowledgeLib = ({ setLoginVisible, isAuthenticated }) => {
   const { landing } = UIStore.useState((s) => ({
     landing: s.landing,
   }));
@@ -65,6 +67,8 @@ const KnowledgeLib = () => {
   const [gridItems, setGridItems] = useState([]);
   const [isShownModal, setIsShownModal] = useState(false);
   const [pageNumber, setPageNumber] = useState(false);
+  const [params, setParams] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
   const limit = 30;
   const totalItems = topic.reduce(
     (acc, topic) =>
@@ -216,6 +220,34 @@ const KnowledgeLib = () => {
     }
   }, [view, catData]);
 
+  useEffect(() => {
+    if (!modalVisible) {
+      const previousHref = `${history?.location?.pathname}${history?.location?.search}`;
+      window.history.pushState(
+        { urlPath: `/${previousHref}` },
+        "",
+        `${previousHref}`
+      );
+    }
+  }, [modalVisible]);
+
+  const showModal = ({ e, type, id }) => {
+    e.preventDefault();
+    console.log(params);
+    if (type && id) {
+      const detailUrl = `/${type}/${id}`;
+      e.preventDefault();
+      setParams({ type, id });
+      window.history.pushState(
+        { urlPath: `/${detailUrl}` },
+        "",
+        `${detailUrl}`
+      );
+      setModalVisible(true);
+      bodyScrollLock.enable();
+    }
+  };
+
   if (view === "overview") {
     return (
       <div id="knowledge-lib">
@@ -230,6 +262,7 @@ const KnowledgeLib = () => {
             landing,
             data,
             loading,
+            showModal,
           }}
         />
       </div>
@@ -298,6 +331,9 @@ const KnowledgeLib = () => {
             showMoreCardClick={() => {
               setView("grid");
             }}
+            showModal={(e) =>
+              showModal({ e, type: e.target.type, id: e.target.id })
+            }
           />
         )}
         {view === "topic" && (
@@ -329,6 +365,9 @@ const KnowledgeLib = () => {
             loading,
             setPageNumber,
             pageNumber,
+            setParams,
+            setModalVisible,
+            showModal,
           }}
         />
       )}
@@ -379,6 +418,9 @@ const KnowledgeLib = () => {
                   setView("grid");
                   handleCategoryFilter(d.categories);
                 }}
+                showModal={(e) =>
+                  showModal({ e, type: e.target.type, id: e.target.id })
+                }
               />
             </Fragment>
           ))}
@@ -394,6 +436,15 @@ const KnowledgeLib = () => {
           filterCountries,
         }}
       />
+      <DetailModal
+        match={{ params }}
+        visible={modalVisible}
+        setVisible={setModalVisible}
+        {...{
+          setLoginVisible,
+          isAuthenticated,
+        }}
+      />
     </div>
   );
 };
@@ -406,13 +457,27 @@ const GridView = ({
   limit,
   setPageNumber,
   pageNumber,
+  showModal,
 }) => {
   return (
     <div className="grid-view">
       <div className="items">
-        {gridItems?.map((item, index) => (
-          <ResourceCard item={item} key={item.id * index} />
-        ))}
+        {gridItems?.map((item, index) => {
+          const detailUrl = `/${item?.type.replace("_", "-")}/${item?.id}`;
+          return (
+            <ResourceCard
+              item={item}
+              showModal={(e) =>
+                showModal({
+                  e,
+                  type: item?.type.replace("_", "-"),
+                  id: item?.id,
+                })
+              }
+              key={item.id * index}
+            />
+          );
+        })}
       </div>
       {gridItems?.length < totalItems && (
         <Button

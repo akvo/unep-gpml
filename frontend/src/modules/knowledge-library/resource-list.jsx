@@ -238,7 +238,7 @@ const ResourceItem = ({
         className="resource-item-wrapper"
         key={`${type}-${id}`}
         onClick={(e) => {
-          e.preventDefault()
+          e.preventDefault();
           setParams({ type: type.replace("_", "-"), id });
           window.history.pushState({ urlPath: `/${linkTo}` }, "", `${linkTo}`);
           setModalVisible(true);
