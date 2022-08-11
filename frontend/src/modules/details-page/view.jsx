@@ -184,10 +184,10 @@ const DetailsView = ({
       params?.type &&
       params?.id &&
       api
-        .get(`/detail/${params.type.replace("-", "_")}/${params.id}`)
+        .get(`/detail/${params?.type.replace("-", "_")}/${params?.id}`)
         .then((d) => {
           setData(d.data);
-          getComment(params.id, params.type.replace("-", "_"));
+          getComment(params?.id, params?.type.replace("-", "_"));
         })
         .catch((err) => {
           console.error(err);
@@ -196,7 +196,7 @@ const DetailsView = ({
     if (isLoaded() && profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
         api
-          .get(`/favorite/${params.type.replace("-", "_")}/${params.id}`)
+          .get(`/favorite/${params?.type?.replace("-", "_")}/${params?.id}`)
           .then((resp) => {
             setRelations(resp.data);
           });
