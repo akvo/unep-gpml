@@ -171,7 +171,7 @@ export const tagsMapExpertise = (array, category, tags) => {
 
 export const toTitleCase = (phrase) => {
   return phrase
-    .toLowerCase()
+    ?.toLowerCase()
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");

@@ -175,11 +175,14 @@ const FlexibleForm = withRouter(
         formData.S4.S4_G3.tags &&
         formData.S4.S4_G3.tags.map((x) => {
           return {
-            ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
-            tag:
-              Object.values(tags)
+            tag: x,
+            ...(Object.values(tags)
+              .flat()
+              .find((o) => o.tag === x) && {
+              id: Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
+                .find((o) => o.tag === x)?.id,
+            }),
           };
         });
 
@@ -364,14 +367,16 @@ const FlexibleForm = withRouter(
         formData.S4.S4_G3.tags &&
         formData.S4.S4_G3.tags.map((x) => {
           return {
-            ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
-            tag:
-              Object.values(tags)
+            tag: x,
+            ...(Object.values(tags)
+              .flat()
+              .find((o) => o.tag === x) && {
+              id: Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
+                .find((o) => o.tag === x)?.id,
+            }),
           };
         });
-
       delete data.qtags;
       delete data.qid;
 
@@ -610,11 +615,14 @@ const FlexibleForm = withRouter(
         formData.S4.S4_G3.tags &&
         formData.S4.S4_G3.tags.map((x) => {
           return {
-            ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
-            tag:
-              Object.values(tags)
+            tag: x,
+            ...(Object.values(tags)
+              .flat()
+              .find((o) => o.tag === x) && {
+              id: Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
+                .find((o) => o.tag === x)?.id,
+            }),
           };
         });
 
@@ -817,11 +825,14 @@ const FlexibleForm = withRouter(
         formData.S4.S4_G3.tags &&
         formData.S4.S4_G3.tags.map((x) => {
           return {
-            ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
-            tag:
-              Object.values(tags)
+            tag: x,
+            ...(Object.values(tags)
+              .flat()
+              .find((o) => o.tag === x) && {
+              id: Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
+                .find((o) => o.tag === x)?.id,
+            }),
           };
         });
 
@@ -1022,11 +1033,14 @@ const FlexibleForm = withRouter(
         formData.S4.S4_G3.tags &&
         formData.S4.S4_G3.tags.map((x) => {
           return {
-            ...(!isNaN(parseInt(x)) && { id: parseInt(x) }),
-            tag:
-              Object.values(tags)
+            tag: x,
+            ...(Object.values(tags)
+              .flat()
+              .find((o) => o.tag === x) && {
+              id: Object.values(tags)
                 .flat()
-                .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
+                .find((o) => o.tag === x)?.id,
+            }),
           };
         });
 

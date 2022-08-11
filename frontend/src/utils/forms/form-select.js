@@ -38,6 +38,12 @@ const processValue = (schema, value) => {
   return value;
 };
 
+function ciEquals(a, b) {
+  return typeof a === "string" && typeof b === "string"
+    ? a.localeCompare(b, undefined, { sensitivity: "accent" }) === 0
+    : a === b;
+}
+
 const SelectWidget = ({
   autofocus,
   disabled,
@@ -69,6 +75,9 @@ const SelectWidget = ({
   const showTag = uiSchema?.["ui:options"]?.["ui:showTag"];
 
   const [showModal, setShowModal] = useState(false);
+  const [tagMode, setTagMode] = useState(
+    uiSchema?.["ui:mode"] !== undefined ? uiSchema["ui:mode"] : ""
+  );
 
   return (
     <>
@@ -83,11 +92,21 @@ const SelectWidget = ({
         disabled={disabled || (readonlyAsDisabled && readonly)}
         getPopupContainer={getPopupContainer}
         id={id}
-        mode={uiSchema?.["ui:mode"] !== undefined ? uiSchema["ui:mode"] : ""}
+        mode={tagMode}
         name={id}
         onBlur={!readonly ? handleBlur : undefined}
         onChange={!readonly ? handleChange : undefined}
         onFocus={!readonly ? handleFocus : undefined}
+        onSearch={(v) => {
+          const find = enumOptions.find(
+            (tag) => v.toLowerCase() == tag.label.toLowerCase()
+          );
+          if (find) {
+            setTagMode("multiple");
+          } else {
+            setTagMode("tags");
+          }
+        }}
         placeholder={placeholder}
         style={SELECT_STYLE}
         value={typeof value !== "undefined" ? stringify(value) : undefined}
@@ -117,7 +136,11 @@ const SelectWidget = ({
                 enumDisabled && enumDisabled.indexOf(optionValue) !== -1
               }
               key={String(optionValue) + i.toString(36)}
-              value={String(optionValue)}
+              value={
+                schema?.title === "Tags"
+                  ? String(optionLabel)
+                  : String(optionValue)
+              }
             >
               {optionLabel}
             </Select.Option>

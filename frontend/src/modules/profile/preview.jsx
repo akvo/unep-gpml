@@ -124,11 +124,13 @@ export const GeneralPreview = ({ item, featuredSelect }) => {
     regionOptions,
     meaOptions,
     transnationalOptions,
+    tags,
   } = UIStore.useState((s) => ({
     countries: s.countries,
     regionOptions: s.regionOptions,
     meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
+    tags: s.tags,
   }));
   const country = countries.find((x) => x.id === item.country)?.name || "-";
   return (
@@ -488,11 +490,13 @@ export const ProfilePreview = ({ item }) => {
     regionOptions,
     meaOptions,
     transnationalOptions,
+    tags,
   } = UIStore.useState((s) => ({
     countries: s.countries,
     regionOptions: s.regionOptions,
     meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
+    tags: s.tags,
   }));
   const country = countries.find((x) => x.id === item.country)?.name || "-";
   const [expertise, setExpertise] = useState([]);
@@ -501,7 +505,13 @@ export const ProfilePreview = ({ item }) => {
   const handleExpertise = (value) => {
     setError("");
     expertise.indexOf(value) === -1 &&
-      setExpertise((oldItem) => [...oldItem, value]);
+      setExpertise((oldItem) => [
+        ...oldItem,
+        Object.values(tags)
+          .flat()
+          .find((o) => o.tag.toLowerCase() === value.toLowerCase())?.tag ||
+          value,
+      ]);
   };
 
   const handleRemove = (v) => {
