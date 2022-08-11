@@ -595,7 +595,8 @@
   :gpml.handler.stakeholder/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder/get-by-id {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder/post {:db #ig/ref :gpml.db/spec
-                                  :mailjet-config #ig/ref :gpml.config/mailjet}
+                                  :mailjet-config #ig/ref :gpml.config/mailjet
+                                  :logger #ig/ref :duct/logger}
   :gpml.handler.stakeholder/post-params {}
   :gpml.handler.stakeholder/put #ig/ref :gpml.config/common
   :gpml.handler.stakeholder/put-by-admin #ig/ref :gpml.config/common

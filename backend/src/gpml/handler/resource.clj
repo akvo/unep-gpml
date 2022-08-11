@@ -41,7 +41,7 @@
           :remarks nil})))
 
 (defn create-resource
-  [conn mailjet-config
+  [conn logger mailjet-config
    {:keys [resource_type title publish_year
            summary value value_currency
            value_remarks valid_from valid_to image
@@ -92,10 +92,10 @@
                                                 :stakeholder-id stakeholder-id
                                                 :roles ["owner"]}))
     (when (not-empty tags)
-      (handler.resource.tag/create-resource-tags conn mailjet-config {:tags tags
-                                                                      :tag-category "general"
-                                                                      :resource-name "resource"
-                                                                      :resource-id resource-id}))
+      (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
+                                                                             :tag-category "general"
+                                                                             :resource-name "resource"
+                                                                             :resource-id resource-id}))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections resource-id)]
         (db.favorite/new-organisation-association conn association)))
@@ -129,8 +129,8 @@
     (try
       (jdbc/with-db-transaction [conn (:spec db)]
         (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-              resource-id (create-resource conn mailjet-config (assoc body-params
-                                                                      :created_by (:id user)))
+              resource-id (create-resource conn logger mailjet-config (assoc body-params
+                                                                             :created_by (:id user)))
               activity {:id (util/uuid)
                         :type "create_resource"
                         :owner_id (:id user)

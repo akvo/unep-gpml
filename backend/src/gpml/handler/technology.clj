@@ -40,7 +40,7 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn create-technology [conn mailjet-config
+(defn create-technology [conn logger mailjet-config
                          {:keys [name organisation_type
                                  development_stage specifications_provided
                                  year_founded email country
@@ -99,10 +99,10 @@
       (doseq [association (expand-individual-associations api-individual-connections technology-id)]
         (db.favorite/new-stakeholder-association conn association)))
     (when (not-empty tags)
-      (handler.resource.tag/create-resource-tags conn mailjet-config {:tags tags
-                                                                      :tag-category "general"
-                                                                      :resource-name "technology"
-                                                                      :resource-id technology-id}))
+      (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
+                                                                             :tag-category "general"
+                                                                             :resource-name "technology"
+                                                                             :resource-id technology-id}))
     (when (not-empty urls)
       (let [lang-urls (map #(vector technology-id
                                     (->> % :lang
@@ -130,8 +130,8 @@
     (try
       (jdbc/with-db-transaction [conn (:spec db)]
         (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-              technology-id (create-technology conn mailjet-config (assoc body-params
-                                                                          :created_by (:id user)))]
+              technology-id (create-technology conn logger mailjet-config (assoc body-params
+                                                                                 :created_by (:id user)))]
           (resp/created (:referrer req) {:success? true
                                          :message "New technology created"
                                          :id technology-id})))

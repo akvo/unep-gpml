@@ -195,10 +195,12 @@
                              (map #(merge % (get-in experts-by-email [(:email %) 0]))))]
         (doseq [{:keys [email expertise]} body
                 :let [stakeholder-id (get-in (group-by :email expert-stakeholders) [email 0 :id])]]
-          (handler.stakeholder.tag/save-stakeholder-tags conn
-                                                         mailjet-config
-                                                         {:tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags {:expertise expertise})
-                                                          :stakeholder-id stakeholder-id}))
+          (handler.stakeholder.tag/save-stakeholder-tags
+           conn
+           logger
+           mailjet-config
+           {:tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags {:expertise expertise})
+            :stakeholder-id stakeholder-id}))
         (future (send-invitation-emails config invitations))
         (resp/response {:success? true
                         :invited-experts (map #(update % :id str) invitations)})))

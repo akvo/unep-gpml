@@ -39,7 +39,7 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn create-event [conn mailjet-config
+(defn create-event [conn logger mailjet-config
                     {:keys [tags urls title start_date end_date
                             description remarks geo_coverage_type
                             country city geo_coverage_value image thumbnail
@@ -76,10 +76,10 @@
                                                              (:stakeholder %))
                                                           api-individual-connections)))))]
     (when (not-empty tags)
-      (handler.resource.tag/create-resource-tags conn mailjet-config {:tags tags
-                                                                      :tag-category "general"
-                                                                      :resource-name "event"
-                                                                      :resource-id event-id}))
+      (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
+                                                                             :tag-category "general"
+                                                                             :resource-name "event"
+                                                                             :resource-id event-id}))
     (doseq [stakeholder-id owners]
       (h.auth/grant-topic-to-stakeholder! conn {:topic-id event-id
                                                 :topic-type "event"
@@ -172,9 +172,9 @@
   (fn [{:keys [jwt-claims body-params] :as req}]
     (try
       (jdbc/with-db-transaction [conn (:spec db)]
-        (let [result (create-event conn mailjet-config (assoc body-params
-                                                              :created_by
-                                                              (-> (db.stakeholder/stakeholder-by-email conn jwt-claims) :id)))]
+        (let [result (create-event conn logger mailjet-config (assoc body-params
+                                                                     :created_by
+                                                                     (-> (db.stakeholder/stakeholder-by-email conn jwt-claims) :id)))]
           (resp/created (:referrer req) {:success? true
                                          :message "New event created"
                                          :id (:id result)})))
