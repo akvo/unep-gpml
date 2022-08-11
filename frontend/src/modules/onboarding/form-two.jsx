@@ -12,6 +12,7 @@ function FormTwo({
   handleRemove,
 }) {
   const [filteredOptions, setFilteredOptions] = useState([]);
+  const [tagMode, setTagMode] = useState("tags");
   const storeData = UIStore.useState((s) => ({
     tags: s.tags,
   }));
@@ -50,6 +51,11 @@ function FormTwo({
         >
           {({ input, meta }) => {
             const handleSearch = (value) => {
+              const find = filteredOptions.find(
+                (tag) => value.toLowerCase() == tag?.toLowerCase()
+              );
+              if (find) setTagMode("multiple");
+              else setTagMode("tags");
               if (value.length < 2) {
                 setFilteredOptions([]);
               } else {
@@ -70,7 +76,7 @@ function FormTwo({
                   placeholder="Suggest categories"
                   allowClear
                   showSearch
-                  mode="tags"
+                  mode={tagMode}
                   notFoundContent={null}
                   onChange={(value) => input.onChange(value)}
                   onSearch={handleSearch}
