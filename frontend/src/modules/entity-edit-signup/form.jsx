@@ -281,6 +281,12 @@ const SignUpForm = withRouter(
                 id || params?.id
               }`
             );
+            api.get("/tag").then((res) => {
+              console.log(res);
+              UIStore.update((e) => {
+                e.tags = res.data;
+              });
+            });
           })
           .catch(() => {
             notification.error({ message: "An error occured" });
@@ -316,10 +322,8 @@ const SignUpForm = withRouter(
           let array =
             Object.values(tags)
               .flat()
-              .find(
-                (o) =>
-                  o.tag === formData?.S3?.seekingSuggestedTags.toLowerCase()
-              )?.id || formData?.S3?.seekingSuggestedTags.toLowerCase();
+              .find((o) => o.tag === formData?.S3?.seekingSuggestedTags)?.id ||
+            formData?.S3?.seekingSuggestedTags;
 
           signUpData.update((e) => {
             e.data = {
@@ -337,10 +341,8 @@ const SignUpForm = withRouter(
           let array =
             Object.values(tags)
               .flat()
-              .find(
-                (o) =>
-                  o.tag === formData?.S3?.offeringSuggestedTags.toLowerCase()
-              )?.id || formData?.S3?.offeringSuggestedTags.toLowerCase();
+              .find((o) => o.tag === formData?.S3?.offeringSuggestedTags)?.id ||
+            formData?.S3?.offeringSuggestedTags;
 
           signUpData.update((e) => {
             e.data = {
