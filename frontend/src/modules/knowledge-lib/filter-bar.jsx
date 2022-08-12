@@ -42,6 +42,8 @@ const FilterBar = ({
   multiCountryCountries,
   setMultiCountryCountries,
   handleCategoryFilter,
+  history,
+  params,
 }) => {
   const query = useQuery();
   const [country, setCountry] = useState([]);
@@ -57,8 +59,7 @@ const FilterBar = ({
   );
 
   const handleClickOverview = () => {
-    setView("overview");
-    setFilter([]);
+    history.push("/knowledge/lib/overview");
   };
 
   useEffect(() => {
@@ -103,12 +104,8 @@ const FilterBar = ({
         {resourceTypes.map((it) => (
           <li
             key={it.key}
-            onClick={() => handleCategoryFilter(it.key.replace(/-/g, "_"))}
-            className={
-              query?.topic?.includes(it.key.replace(/-/g, "_"))
-                ? "selected"
-                : ""
-            }
+            onClick={() => history.push(`/knowledge/lib/resource/${it.key}`)}
+            className={params?.type === it.key ? "selected" : ""}
           >
             <div className="img-container">
               <Icon name={`resource-types/${it.key}`} fill="#FFF" />

@@ -43,6 +43,7 @@ const higlightColor = "#255B87";
 
 const KNOWLEDGE_LIBRARY = "/knowledge/library";
 const KNOWLEDGE_LIB = "/knowledge/lib";
+const KNOWLEDGE_LIB_OVERVIEW = "/knowledge/lib/overview";
 const STAKEHOLDER_OVERVIEW = "/connect/community";
 const EXPERTS = "/connect/experts";
 
@@ -63,7 +64,7 @@ const MapChart = ({
   isDisplayedList,
   countryGroupCounts,
   showLegend,
-  zoom
+  zoom,
 }) => {
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -80,7 +81,9 @@ const MapChart = ({
   const [isShownLegend, setIsShownLegend] = useState(true);
 
   const resourceCount =
-    (path === KNOWLEDGE_LIBRARY || path === KNOWLEDGE_LIB) &&
+    (path === KNOWLEDGE_LIBRARY ||
+      path === KNOWLEDGE_LIB ||
+      path === KNOWLEDGE_LIB_OVERVIEW) &&
     countData.filter(
       (data) =>
         data.topic !== "gpml_member_entities" &&
@@ -99,11 +102,15 @@ const MapChart = ({
     stakeholderCount.existingStakeholder.map((data) => data?.networkType);
 
   const existingResources =
-    path === KNOWLEDGE_LIBRARY || path === KNOWLEDGE_LIB
+    path === KNOWLEDGE_LIBRARY ||
+    path === KNOWLEDGE_LIB ||
+    path === KNOWLEDGE_LIB_OVERVIEW
       ? resourceCount.map((data) => data.topic)
       : [];
   const existingData =
-    path === KNOWLEDGE_LIBRARY || path === KNOWLEDGE_LIB
+    path === KNOWLEDGE_LIBRARY ||
+    path === KNOWLEDGE_LIB ||
+    path === KNOWLEDGE_LIB_OVERVIEW
       ? existingResources
       : path === STAKEHOLDER_OVERVIEW
       ? existingStakeholders
@@ -229,7 +236,9 @@ const MapChart = ({
     return color;
   };
   const legendTitle =
-    path === KNOWLEDGE_LIBRARY || path === KNOWLEDGE_LIB
+    path === KNOWLEDGE_LIBRARY ||
+    path === KNOWLEDGE_LIB ||
+    path === KNOWLEDGE_LIB_OVERVIEW
       ? "Total resources per country"
       : path === STAKEHOLDER_OVERVIEW
       ? "Total stakeholders per country"
@@ -450,7 +459,8 @@ const MapChart = ({
                       onClick={() => {
                         if (
                           path === KNOWLEDGE_LIBRARY ||
-                          path === KNOWLEDGE_LIB
+                          path === KNOWLEDGE_LIB ||
+                          path === KNOWLEDGE_LIB_OVERVIEW
                         ) {
                           !multiCountrySelection
                             .flat()
