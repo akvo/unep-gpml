@@ -19,7 +19,7 @@ const Overview = ({
   landing,
   data,
   loading,
-  updateQuery,
+  history,
 }) => {
   const summaryDict = {};
   let allResources = 0;
@@ -37,10 +37,12 @@ const Overview = ({
       </div>
     );
   }
+
   const handleClickCategory = (key) => () => {
-    updateQuery("topic", key.replace(/-/g, "_"), true);
+    history.push(`/knowledge/lib/resource/${key}`);
     setView("map");
   };
+
   return (
     <div className="overview">
       <ul className="categories">
@@ -56,7 +58,7 @@ const Overview = ({
           <span>All Resources</span>
         </li>
         {resourceTypes.map((type) => (
-          <li onClick={handleClickCategory(type.key)}>
+          <li onClick={handleClickCategory(type.key)} key={type.key}>
             <div>
               <Icon name={`resource-types/${type.key}`} fill="#000" />
               <b>{summaryDict[humps.camelize(type.key)] || "XX"}</b>
@@ -131,7 +133,7 @@ const Featured = ({ setView }) => {
         showMoreCardClick={() => {
           setView("grid");
         }}
-        firstCard={(
+        firstCard={
           <Link to="/flexible-forms">
             <div className="add-resource-card">
               <b>+</b>
@@ -139,7 +141,7 @@ const Featured = ({ setView }) => {
               <small>Contribute to the library</small>
             </div>
           </Link>
-        )}
+        }
       />
     </>
   );
