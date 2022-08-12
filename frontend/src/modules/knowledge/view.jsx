@@ -69,7 +69,12 @@ function Knowledge({
               </Route>
               <Route
                 path="/knowledge/lib"
-                render={(props) => <KnowledgeLib {...props} />}
+                render={(props) => (
+                  <KnowledgeLib
+                    {...{ isAuthenticated, setLoginVisible }}
+                    {...props}
+                  />
+                )}
               />
               <Route
                 path="/knowledge/library"

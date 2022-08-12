@@ -13,16 +13,22 @@ const DetailModal = ({
   visible,
   setVisible,
 }) => {
+  const desktopViewport = window.innerWidth > 600;
   return (
     <Modal
+      zIndex={99999}
       visible={visible}
       onCancel={() => {
         setVisible(false);
         bodyScrollLock.disable();
       }}
       className="detail-modal"
+      wrapClassName='detail-modal-wrapper'
       destroyOnClose={true}
-      centered={window.innerWidth > 600 ? false : true}
+      centered={desktopViewport ? false : true}
+      style={{
+        top: desktopViewport ? 30 : 0,
+      }}
     >
       <DetailsView
         {...{
