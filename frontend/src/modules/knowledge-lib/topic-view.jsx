@@ -2,14 +2,7 @@ import React, { useState, useEffect } from "react";
 import TopicChart from "../chart/topic-chart";
 import TopicBar from "../chart/topic-bar";
 
-const TopicView = ({
-  updateQuery,
-  query,
-  results,
-  countData,
-  fetch,
-  loading,
-}) => {
+const TopicView = ({ updateQuery, query, results, countData }) => {
   const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [data, setData] = useState([]);
@@ -73,8 +66,8 @@ const TopicView = ({
         params?.data.name?.toLowerCase() === selectedTopic
           ? []
           : [params?.data?.tag],
-        fetch,
-        false,
+        "",
+        "",
         false
       );
       setSelectedTopic(
@@ -85,7 +78,7 @@ const TopicView = ({
     } else {
       const { name, tag } = params?.data;
       setSelectedTopic(name?.toLowerCase());
-      updateQuery("tag", [tag], fetch, false, true);
+      updateQuery("tag", [tag], "", "", true);
     }
   };
 
