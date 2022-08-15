@@ -22,10 +22,12 @@ import MultipleSelectFilter from "../../components/select/multiple-select-filter
 
 const FilterModal = ({
   query,
-  updateQuery,
-  setIsShownModal,
-  isShownModal,
+  setShowFilterModal,
+  showFilterModal,
   fetchData,
+  pathname,
+  history,
+  setGridItems,
 }) => {
   const {
     tags,
@@ -46,6 +48,25 @@ const FilterModal = ({
   ] = useState([]);
 
   const [isClearFilter, setIsClearFilter] = useState(false);
+
+  const updateQuery = (param, value) => {
+    console.log(param, value);
+    const newQuery = { ...query };
+    newQuery[param] = value;
+    // Remove empty query
+    const arrayOfQuery = Object.entries(newQuery)?.filter(
+      (item) => item[1]?.length !== 0 && typeof item[1] !== "undefined"
+    );
+
+    const pureQuery = Object.fromEntries(arrayOfQuery);
+
+    const newParams = new URLSearchParams(pureQuery);
+
+    history.push({
+      pathname: pathname,
+      search: newParams.toString(),
+    });
+  };
 
   const filteredMainContentOptions = !isEmpty(mainContentType)
     ? mainContentType
@@ -108,8 +129,9 @@ const FilterModal = ({
   }, [tagsExcludingCapacityBuilding]);
 
   const handleApplyFilter = () => {
+    setGridItems([]);
     fetchData(query);
-    setIsShownModal(false);
+    setShowFilterModal(false);
   };
 
   return (
@@ -117,8 +139,8 @@ const FilterModal = ({
       centered
       className="filter-modal"
       title="Filters"
-      visible={isShownModal}
-      onCancel={() => setIsShownModal(false)}
+      visible={showFilterModal}
+      onCancel={() => setShowFilterModal(false)}
       footer={[
         <Button
           key="submit"
@@ -128,7 +150,10 @@ const FilterModal = ({
         >
           APPLY FILTERS
         </Button>,
-        <Button className="clear-button" onClick={() => setIsShownModal(false)}>
+        <Button
+          className="clear-button"
+          onClick={() => setShowFilterModal(false)}
+        >
           Cancel
         </Button>,
       ]}
