@@ -85,7 +85,7 @@ function ResourceView({ history, popularTags, landing, box }) {
       });
   };
 
-  const updateQuery = (param, value, reset) => {
+  const updateQuery = (param, value, reset, fetch = true) => {
     if (!reset) {
       setPageNumber(null);
       setGridItems([]);
@@ -120,8 +120,7 @@ function ResourceView({ history, popularTags, landing, box }) {
         search: newParams.toString(),
         state: { type: type },
       });
-
-    fetchData(pureQuery);
+    if (fetch) fetchData(pureQuery);
 
     if (param === "country") {
       setFilterCountries(value);
@@ -167,10 +166,6 @@ function ResourceView({ history, popularTags, landing, box }) {
     if ((pathname || search) && !loading && data.length !== 0)
       updateQuery("replace");
   }, [pathname, search]);
-
-  // useMemo(() => {
-  //   if (!pathname && search) updateQuery();
-  // }, [pathname, search]);
 
   useEffect(() => {
     if (data.length === 0) updateQuery();
@@ -412,7 +407,6 @@ const GridView = ({
 };
 
 const ViewSwitch = ({ type, view, history }) => {
-  console.log(history);
   const viewOptions = ["map", "topic", "grid", "category"];
   const [visible, setVisible] = useState(false);
 
