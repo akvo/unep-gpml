@@ -61,7 +61,7 @@ const CountryTransnationalFilter = ({
         ...(val.length > 0 ? { multiCountry: true } : { multiCountry: false }),
       });
     }
-    updateQuery("country", val, true);
+    updateQuery("country", val, false);
   };
 
   const handleChangeMultiCountry = (val) => {

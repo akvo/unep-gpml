@@ -189,7 +189,7 @@
     }
   }
   position: relative;
-  overflow-x: hidden;
+  // overflow-x: hidden;
   .list-toolbar {
     margin-bottom: 0;
     padding: 0 20px;
@@ -273,6 +273,7 @@
     }
   }
   .list-content {
+    position: relative;
     background-color: rgb(249, 250, 251);
     padding-top: 15px;
     padding-bottom: 15px;
@@ -288,8 +289,8 @@
     align-items: center;
     justify-content: center;
     display: flex;
-    height: 300px;
-    top: 100px;
+    height: 100%;
+    top: 0;
     position: absolute;
     width: 100%;
     background-color: rgba(249, 250, 251, 0.5);
@@ -332,6 +333,7 @@
     }
   }
   .cat-view {
+    overflow-x: hidden;
     .header-wrapper {
       width: 100%;
       display: flex;
