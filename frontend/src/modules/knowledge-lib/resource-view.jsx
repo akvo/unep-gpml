@@ -89,6 +89,11 @@ function ResourceView({ history, popularTags, landing, box }) {
     if (!reset) setGridItems([]);
     const newQuery = { ...query };
     newQuery[param] = value;
+
+    if (param === "descending" || query.hasOwnProperty("descending")) {
+      newQuery["orderBy"] = "title";
+    }
+
     // Remove empty query
     const arrayOfQuery = Object.entries(newQuery)?.filter(
       (item) => item[1]?.length !== 0 && typeof item[1] !== "undefined"
@@ -199,6 +204,15 @@ function ResourceView({ history, popularTags, landing, box }) {
     }
   };
 
+  const sortResults = (ascending) => {
+    if (!ascending) {
+      updateQuery("descending", "false", true);
+    } else {
+      updateQuery("descending", "true", true);
+    }
+    setIsAscending(ascending);
+  };
+
   return (
     <Fragment>
       <FilterBar
@@ -233,7 +247,15 @@ function ResourceView({ history, popularTags, landing, box }) {
             </div>
           </div>
           <ViewSwitch {...{ type, view, history }} />
-          <button className="sort-by-button">
+          <button
+            className="sort-by-button"
+            onClick={() => {
+              if (view === "category") {
+                loadAllCat(!isAscending);
+                setIsAscending(!isAscending);
+              } else sortResults(!isAscending);
+            }}
+          >
             <SortIcon
               style={{
                 transform:
