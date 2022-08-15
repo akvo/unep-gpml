@@ -459,7 +459,7 @@ const Root = () => {
           path="/landing"
           exact
           render={(props) => (
-            <Landing />
+            <Landing {...{...props, setLoginVisible, profile, updateQuery, isRegistered, logout}} />
           )}
         />
         <Route>

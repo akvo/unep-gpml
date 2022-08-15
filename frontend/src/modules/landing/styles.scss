@@ -1,0 +1,101 @@
+@import "../../vars.scss";
+.landing {
+  & > header {
+    background-color: #006a9e;
+    padding: 7px 0 !important;
+    height: auto;
+    .ui.container {
+      display: flex;
+      align-items: center;
+    }
+    .all-tools-btn {
+      height: 52px;
+      margin-left: 30px;
+      display: flex;
+      align-items: center;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 0 11px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.19s ease-out;
+      svg {
+        margin-right: 10px;
+        rect {
+          transition: all 0.19s ease-out;
+        }
+      }
+      &:hover {
+        color: #ffb800;
+        background-color: rgba(22, 24, 47, 0.2);
+        svg {
+          rect {
+            fill: #ffb800;
+            stroke: #ffb800;
+          }
+        }
+      }
+    }
+    .rightside {
+      margin-left: auto;
+      display: flex;
+    }
+    .rightside {
+      .ant-btn {
+        background: transparent;
+        color: rgba(0, 255, 127, 1);
+        border: 2px solid rgba(0, 255, 127, 1);
+        font-size: 16px;
+        font-weight: 700;
+        height: 38px;
+        padding: 0 13px;
+        line-height: 35px;
+        transition: all 0.19s ease-out !important;
+        &:hover {
+          border-color: rgba(0, 255, 127, 1) !important;
+          background-color: rgba(0, 255, 127, 1) !important;
+          color: #01699f !important;
+        }
+      }
+    }
+
+    .src {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+      margin-right: 10px;
+      .input-src {
+        border-radius: 30px;
+        padding-right: 4px;
+        max-width: 170px;
+        height: 38px;
+        // margin-top: -2px;
+        background-color: rgba(255, 255, 255, 0.5);
+        border: none;
+        &.ant-input-affix-wrapper-focused {
+          background-color: rgba(255, 255, 255, 1);
+          outline: none;
+          box-shadow: none;
+          // max-width: 190px;
+        }
+        .ant-input-suffix {
+          svg {
+            height: 20px;
+            width: 20px;
+            margin-right: 4px;
+          }
+        }
+        input.ant-input {
+          font-size: 14px;
+          color: rgba(24, 22, 47, 1);
+          background-color: transparent;
+          &::placeholder {
+            color: rgba(24, 22, 47, 1);
+          }
+        }
+      }
+    }
+  }
+}
