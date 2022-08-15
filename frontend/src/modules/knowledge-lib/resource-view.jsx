@@ -86,7 +86,10 @@ function ResourceView({ history, popularTags, landing, box }) {
   };
 
   const updateQuery = (param, value, reset) => {
-    if (!reset) setGridItems([]);
+    if (!reset) {
+      setPageNumber(null);
+      setGridItems([]);
+    }
     const newQuery = { ...query };
     newQuery[param] = value;
 
@@ -161,12 +164,17 @@ function ResourceView({ history, popularTags, landing, box }) {
   }, [view, catData]);
 
   useMemo(() => {
-    if (pathname && !search) updateQuery("replace");
+    if ((pathname || search) && !loading && data.length !== 0)
+      updateQuery("replace");
   }, [pathname, search]);
 
-  useMemo(() => {
-    if (!pathname && search) updateQuery();
-  }, [pathname, search]);
+  // useMemo(() => {
+  //   if (!pathname && search) updateQuery();
+  // }, [pathname, search]);
+
+  useEffect(() => {
+    if (data.length === 0) updateQuery();
+  }, [data]);
 
   const clickCountry = (name) => {
     const val = query["country"];
@@ -193,6 +201,7 @@ function ResourceView({ history, popularTags, landing, box }) {
   };
 
   const sortResults = (ascending) => {
+    setPageNumber(null);
     if (!ascending) {
       updateQuery("descending", "false", true);
     } else {
@@ -215,6 +224,7 @@ function ResourceView({ history, popularTags, landing, box }) {
           updateQuery,
           search,
           setShowFilterModal,
+          setPageNumber,
         }}
       />
       <div className="list-content">
@@ -402,6 +412,7 @@ const GridView = ({
 };
 
 const ViewSwitch = ({ type, view, history }) => {
+  console.log(history);
   const viewOptions = ["map", "topic", "grid", "category"];
   const [visible, setVisible] = useState(false);
 
@@ -435,6 +446,7 @@ const ViewSwitch = ({ type, view, history }) => {
                       pathname: `/knowledge/lib/resource/${viewOption}/${
                         type && viewOption !== "category" ? type : ""
                       }`,
+                      search: history.location.search,
                     });
                   }}
                 >
