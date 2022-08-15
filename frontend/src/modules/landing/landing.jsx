@@ -4,12 +4,12 @@ import logo from "../../images/gpml.svg";
 import './styles.scss'
 import { Link, withRouter } from 'react-router-dom';
 import { ReactComponent as Dots3x3 } from "../../images/3x3.svg";
-import { SearchOutlined } from '@ant-design/icons';
+import { ReactComponent as Down } from "../../images/down.svg";
+import { ArrowDownOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 
 const Landing = ({ isAuthenticated, updateQuery, profile, isRegistered, logout}) => {
   return (
-    <div>
-    <div className="landing">
+    <div id="landing">
       <Layout.Header className="nav-header-container">
         <div className="ui container">
           <Link to="/">
@@ -31,7 +31,16 @@ const Landing = ({ isAuthenticated, updateQuery, profile, isRegistered, logout})
           </div>
         </div>
       </Layout.Header>
-    </div>
+      <div className="hero">
+        <div className="content">
+          <h1>The Digital Platform on Plastic Pollution & Marine Litter</h1>
+          <h4>Informing and connecting all actors working to prevent marine litter and plastic pollution.</h4>
+          <Button type="primary" size='large'>Join the Partnership</Button>
+        </div>
+        <div className="next-btn">
+          <Down />
+        </div>
+      </div>
     </div>
   )
 }

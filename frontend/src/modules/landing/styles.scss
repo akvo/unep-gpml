@@ -1,5 +1,5 @@
 @import "../../vars.scss";
-.landing {
+#landing {
   & > header {
     background-color: #006a9e;
     padding: 7px 0 !important;
@@ -97,5 +97,80 @@
         }
       }
     }
+  }
+  .hero {
+    height: calc(100vh - 78px);
+    background-color: #006a9e;
+    text-align: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .content {
+      max-width: 700px;
+      padding: 0 30px;
+      h4 {
+        padding: 0 90px;
+      }
+    }
+    h1 {
+      text-shadow: 3px 3px 0 #67bea1;
+    }
+    h1,
+    h4 {
+      color: white;
+    }
+    .ant-btn-primary {
+      margin-top: 20px;
+      background-color: #00ff7f;
+      border-color: #00ff7f;
+      font-weight: 500;
+      font-size: 22px;
+      color: #0055a5;
+      height: auto;
+      line-height: 60px;
+      padding: 0 50px;
+      transition: all 0.19s ease-out;
+      &:hover {
+        background-color: #ffb400;
+        border-color: #ffb400;
+      }
+    }
+  }
+  .next-btn {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(109, 181, 176, 0.1);
+    border-radius: 100%;
+    bottom: 25px;
+    left: 50%;
+    margin-left: -32px;
+    cursor: pointer;
+    svg {
+      transform: translateY(2px);
+      path {
+        transition: stroke 0.19s ease-out;
+      }
+    }
+    animation: MoveUpDown 1.7s ease-in-out infinite;
+    &:hover {
+      svg path {
+        stroke: #ffb400;
+      }
+    }
+  }
+}
+@keyframes MoveUpDown {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
   }
 }
