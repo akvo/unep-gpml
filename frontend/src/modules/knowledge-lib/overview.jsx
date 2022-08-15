@@ -12,7 +12,6 @@ import { Link } from "react-router-dom";
 
 const Overview = ({
   summaryData,
-  setView,
   box,
   query,
   countData,
@@ -39,8 +38,9 @@ const Overview = ({
   }
 
   const handleClickCategory = (key) => () => {
-    history.push(`/knowledge/lib/resource/${key}`);
-    setView("map");
+    history.push({
+      pathname: `/knowledge/lib/resource/map/${key}`,
+    });
   };
 
   return (
@@ -48,7 +48,9 @@ const Overview = ({
       <ul className="categories">
         <li
           onClick={() => {
-            setView("category");
+            history.push({
+              pathname: `/knowledge/lib/resource/category`,
+            });
           }}
         >
           <div>
@@ -69,7 +71,7 @@ const Overview = ({
       </ul>
       <section className="grey">
         {/* <h3>Categories</h3> */}
-        <Featured {...{ setView }} />
+        <Featured />
       </section>
       <section>
         <Row gutter={16}>
@@ -78,7 +80,9 @@ const Overview = ({
             <div
               className="overlay-btn"
               onClick={() => {
-                setView("map");
+                history.push({
+                  pathname: `/knowledge/lib/resource/map`,
+                });
               }}
             >
               <Maps
@@ -88,6 +92,7 @@ const Overview = ({
                 useTooltips={false}
                 showLegend={false}
                 zoom={0.9}
+                path="knowledge"
               />
             </div>
           </Col>
@@ -96,7 +101,9 @@ const Overview = ({
             <div
               className="overlay-btn"
               onClick={() => {
-                setView("topic");
+                history.push({
+                  pathname: `/knowledge/lib/resource/topic`,
+                });
               }}
             >
               <TopicView
@@ -115,7 +122,7 @@ const Overview = ({
   );
 };
 
-const Featured = ({ setView }) => {
+const Featured = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -131,7 +138,9 @@ const Featured = ({ setView }) => {
         items={results}
         showMoreCardAfter={20}
         showMoreCardClick={() => {
-          setView("grid");
+          history.push({
+            pathname: `/knowledge/lib/resource/grid`,
+          });
         }}
         firstCard={
           <Link to="/flexible-forms">
