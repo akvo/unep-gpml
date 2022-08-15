@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useMemo } from "react";
 import classNames from "classnames";
 import { CSSTransition } from "react-transition-group";
 import api from "../../utils/api";
@@ -125,19 +125,6 @@ function ResourceView({ history, popularTags, landing, box }) {
     }
   };
 
-  useEffect(() => {
-    return history.listen((location) => {
-      if (history.action === "PUSH") {
-        console.log("push");
-      }
-
-      if (history.action === "POP") {
-        if (view === "grid") setGridItems([]);
-        updateQuery();
-      }
-    });
-  }, []);
-
   const loadAllCat = async (sort) => {
     setLoading(true);
     const promiseArray = resourceTopic.map((url) =>
@@ -173,9 +160,13 @@ function ResourceView({ history, popularTags, landing, box }) {
     }
   }, [view, catData]);
 
-  useEffect(() => {
-    if (pathname) updateQuery("replace");
-  }, [pathname]);
+  useMemo(() => {
+    if (pathname && !search) updateQuery("replace");
+  }, [pathname, search]);
+
+  useMemo(() => {
+    if (!pathname && search) updateQuery();
+  }, [pathname, search]);
 
   const clickCountry = (name) => {
     const val = query["country"];
@@ -192,16 +183,13 @@ function ResourceView({ history, popularTags, landing, box }) {
   };
 
   const handleCategoryFilter = (key) => {
-    // if (view === "category") setView("grid");
-    if (query?.topic?.includes(key)) {
-      updateQuery(
-        "topic",
-        query?.topic?.filter((it) => it !== key),
-        true
-      );
-    } else {
-      updateQuery("topic", key, true);
-    }
+    history.push({
+      pathname: `/knowledge/lib/resource/${
+        view ? (view === "category" ? "grid" : view) : "map"
+      }/${key.replace(/_/g, "-")}/`,
+      search: search,
+      state: { type: key.replace(/-/g, "_") },
+    });
   };
 
   const sortResults = (ascending) => {
@@ -250,6 +238,7 @@ function ResourceView({ history, popularTags, landing, box }) {
           <button
             className="sort-by-button"
             onClick={() => {
+              if (view === "grid") setGridItems([]);
               if (view === "category") {
                 loadAllCat(!isAscending);
                 setIsAscending(!isAscending);
@@ -270,13 +259,8 @@ function ResourceView({ history, popularTags, landing, box }) {
             </div>
           </button>
         </div>
-        {loading && (
-          <div className="loading">
-            <LoadingOutlined spin />
-          </div>
-        )}
         {(view === "map" || view === "topic") && (
-          <div style={{ overflowX: "hidden" }}>
+          <div style={{ overflowX: "hidden", position: "relative" }}>
             <ResourceCards
               items={data?.results}
               showMoreCardAfter={20}
@@ -284,6 +268,11 @@ function ResourceView({ history, popularTags, landing, box }) {
                 // setView("grid");
               }}
             />
+            {loading && (
+              <div className="loading">
+                <LoadingOutlined spin />
+              </div>
+            )}
           </div>
         )}
         {view === "map" && (
@@ -345,7 +334,6 @@ function ResourceView({ history, popularTags, landing, box }) {
                     type="link"
                     block
                     onClick={() => {
-                      // setView("grid");
                       handleCategoryFilter(d.categories);
                     }}
                   >
@@ -356,7 +344,6 @@ function ResourceView({ history, popularTags, landing, box }) {
                   items={d?.data}
                   showMoreCardAfter={20}
                   showMoreCardClick={() => {
-                    // setView("grid");
                     handleCategoryFilter(d.categories);
                   }}
                 />
@@ -398,7 +385,7 @@ const GridView = ({
           <ResourceCard item={item} key={item.id * index} />
         ))}
       </div>
-      {gridItems?.length < totalItems && (
+      {!loading && gridItems?.length < totalItems && (
         <Button
           className="load-more"
           loading={loading}
@@ -444,11 +431,11 @@ const ViewSwitch = ({ type, view, history }) => {
                   key={viewOption}
                   onClick={() => {
                     setVisible(!visible);
-                    history.push(
-                      `/knowledge/lib/resource/${viewOption}/${
-                        type ? type : ""
-                      }`
-                    );
+                    history.push({
+                      pathname: `/knowledge/lib/resource/${viewOption}/${
+                        type && viewOption !== "category" ? type : ""
+                      }`,
+                    });
                   }}
                 >
                   {viewOption} view
