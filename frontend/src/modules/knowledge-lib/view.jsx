@@ -1,12 +1,12 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.scss";
 import { Redirect, Switch, Route } from "react-router-dom";
 import api from "../../utils/api";
 import Overview from "./overview";
 import ResourceView from "./resource-view";
-import { useQuery, topicNames } from "../../utils/misc";
+import { useQuery } from "../../utils/misc";
 import { UIStore } from "../../store";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const popularTags = [
   "plastics",
@@ -24,15 +24,10 @@ function Library() {
   const [loading, setLoading] = useState(true);
   const [countData, setCountData] = useState([]);
   const [data, setData] = useState([]);
-  const [gridItems, setGridItems] = useState([]);
 
   const { landing } = UIStore.useState((s) => ({
     landing: s.landing,
   }));
-
-  const [view, setView] = useState(
-    query.hasOwnProperty("view") ? query.view[0] : "map"
-  );
 
   const fetchData = () => {
     setLoading(true);
@@ -44,9 +39,6 @@ function Library() {
         setLoading(false);
         setData(resp?.data);
         setCountData(resp?.data?.counts);
-        setGridItems((prevItems) => {
-          return [...new Set([...prevItems, ...resp?.data?.results])];
-        });
       })
       .catch((err) => {
         console.error(err);
@@ -79,7 +71,6 @@ function Library() {
               {...props}
               summaryData={landing?.summary}
               {...{
-                setView,
                 box,
                 query,
                 countData,
@@ -92,22 +83,9 @@ function Library() {
           )}
         />
         <Route
-          path="/knowledge/lib/resource/:type/:view?"
+          path="/knowledge/lib/resource/:view?/:type?"
           render={(props) => (
-            <ResourceView
-              summaryData={landing?.summary}
-              {...{
-                setView,
-                box,
-                query,
-                countData,
-                landing,
-                data,
-                loading,
-                history,
-                gridItems,
-              }}
-            />
+            <ResourceView {...{ box, history, popularTags, landing }} />
           )}
         />
       </Switch>

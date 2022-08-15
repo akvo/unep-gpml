@@ -8,6 +8,7 @@ import CountryTransnationalFilter from "../../components/select/country-transnat
 import LocationDropdown from "../../components/location-dropdown/location-dropdown";
 import api from "../../utils/api";
 import { LeftOutlined } from "@ant-design/icons";
+import { withRouter } from "react-router-dom";
 
 export const resourceTypes = [
   { key: "technical-resource", label: "Technical Resources" },
@@ -31,19 +32,15 @@ const hideFilterList = [
 ];
 
 const FilterBar = ({
-  view,
-  setView,
-  filter,
-  setFilter,
-  setIsShownModal,
+  setShowFilterModal,
   filterCountries,
-  setFilterCountries,
   updateQuery,
   multiCountryCountries,
   setMultiCountryCountries,
-  handleCategoryFilter,
   history,
-  params,
+  type,
+  view,
+  search,
 }) => {
   const query = useQuery();
   const [country, setCountry] = useState([]);
@@ -59,7 +56,10 @@ const FilterBar = ({
   );
 
   const handleClickOverview = () => {
-    history.push("/knowledge/lib/overview");
+    history.push({
+      pathname: "/knowledge/lib/overview",
+      search: "",
+    });
   };
 
   useEffect(() => {
@@ -104,8 +104,22 @@ const FilterBar = ({
         {resourceTypes.map((it) => (
           <li
             key={it.key}
-            onClick={() => history.push(`/knowledge/lib/resource/${it.key}`)}
-            className={params?.type === it.key ? "selected" : ""}
+            onClick={() => {
+              if (type === it.key)
+                history.push({
+                  pathname: `/knowledge/lib/resource/${view ? view : "map"}`,
+                  search: search,
+                });
+              else
+                history.push({
+                  pathname: `/knowledge/lib/resource/${
+                    view ? (view === "category" ? "grid" : view) : "map"
+                  }/${it.key}/`,
+                  search: search,
+                  state: { type: it.key },
+                });
+            }}
+            className={type === it.key ? "selected" : ""}
           >
             <div className="img-container">
               <Icon name={`resource-types/${it.key}`} fill="#FFF" />
@@ -116,7 +130,7 @@ const FilterBar = ({
           </li>
         ))}
       </ul>
-      <Button onClick={() => setIsShownModal(true)}>
+      <Button onClick={() => setShowFilterModal(true)}>
         {!isEmpty &&
           Object.keys(query).filter((item) => !hideFilterList.includes(item))
             .length > 0 && (
@@ -146,4 +160,4 @@ const FilterBar = ({
   );
 };
 
-export default FilterBar;
+export default withRouter(FilterBar);
