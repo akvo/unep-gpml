@@ -48,25 +48,24 @@ const FilterModal = ({
   ] = useState([]);
 
   const [isClearFilter, setIsClearFilter] = useState(false);
+  const [filter, setFilter] = useState({});
 
   const updateQuery = (param, value) => {
-    console.log(param, value);
-    const newQuery = { ...query };
+    const newQuery = { ...filter };
     newQuery[param] = value;
     // Remove empty query
     const arrayOfQuery = Object.entries(newQuery)?.filter(
-      (item) => item[1]?.length !== 0 && typeof item[1] !== "undefined"
+      (item) =>
+        item[1]?.length !== 0 &&
+        typeof item[1] !== "undefined" &&
+        item[1] !== null
     );
 
     const pureQuery = Object.fromEntries(arrayOfQuery);
 
-    const newParams = new URLSearchParams(pureQuery);
-
-    history.push({
-      pathname: pathname,
-      search: newParams.toString(),
-    });
+    setFilter(pureQuery);
   };
+  console.log(filter);
 
   const filteredMainContentOptions = !isEmpty(mainContentType)
     ? mainContentType
@@ -130,8 +129,13 @@ const FilterModal = ({
 
   const handleApplyFilter = () => {
     setGridItems([]);
-    fetchData(query);
     setShowFilterModal(false);
+
+    const newParams = new URLSearchParams(filter);
+    history.push({
+      pathname: pathname,
+      search: newParams.toString(),
+    });
   };
 
   return (
@@ -195,7 +199,7 @@ const FilterModal = ({
                 }))
               : []
           }
-          value={query?.subContentType || []}
+          value={filter?.subContentType || []}
           flag="subContentType"
           query={query}
           updateQuery={updateQuery}
@@ -205,7 +209,7 @@ const FilterModal = ({
         <MultipleSelectFilter
           title="Tags"
           options={tagOpts || []}
-          value={query?.tag?.map((x) => x) || []}
+          value={filter?.tag?.map((x) => x) || []}
           flag="tag"
           query={query}
           updateQuery={updateQuery}
@@ -224,7 +228,7 @@ const FilterModal = ({
                   )
               : []
           }
-          value={query?.entity?.map((x) => parseInt(x)) || []}
+          value={filter?.entity?.map((x) => parseInt(x)) || []}
           flag="entity"
           query={query}
           updateQuery={updateQuery}
@@ -241,7 +245,7 @@ const FilterModal = ({
                 }))
               : []
           }
-          value={query?.representativeGroup || []}
+          value={filter?.representativeGroup || []}
           flag="representativeGroup"
           query={query}
           updateQuery={updateQuery}
@@ -258,25 +262,27 @@ const FilterModal = ({
             {/* Start date */}
             <DatePickerFilter
               title="Start Date"
-              value={query?.startDate}
+              value={filter?.startDate}
               flag="startDate"
               query={query}
               updateQuery={updateQuery}
               span={12}
               startDate={
-                !isEmpty(query?.startDate) ? moment(query?.startDate[0]) : null
+                !isEmpty(filter?.startDate)
+                  ? moment(filter?.startDate[0])
+                  : null
               }
             />
             {/* End date */}
             <DatePickerFilter
               title="End Date"
-              value={query?.endDate}
+              value={filter?.endDate}
               flag="endDate"
               query={query}
               updateQuery={updateQuery}
               span={12}
               endDate={
-                !isEmpty(query?.endDate) ? moment(query?.endDate[0]) : null
+                !isEmpty(filter?.endDate) ? moment(filter?.endDate[0]) : null
               }
             />
           </Row>
