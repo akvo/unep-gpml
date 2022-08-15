@@ -420,13 +420,14 @@ const ViewSwitch = ({ type, view, history }) => {
               .map((viewOption) => (
                 <li
                   key={viewOption}
-                  onClick={() =>
+                  onClick={() => {
+                    setVisible(!visible);
                     history.push(
                       `/knowledge/lib/resource/${viewOption}/${
                         type ? type : ""
                       }`
-                    )
-                  }
+                    );
+                  }}
                 >
                   {viewOption} view
                 </li>
