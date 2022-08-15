@@ -5,6 +5,7 @@ import './styles.scss'
 import { Link, withRouter } from 'react-router-dom';
 import { ReactComponent as Dots3x3 } from "../../images/3x3.svg";
 import { ReactComponent as Down } from "../../images/down.svg";
+import { ReactComponent as PlasticLitter } from "../../images/plastic-litter.svg";
 import { ArrowDownOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 
 const Landing = ({ isAuthenticated, updateQuery, profile, isRegistered, logout}) => {
@@ -32,6 +33,9 @@ const Landing = ({ isAuthenticated, updateQuery, profile, isRegistered, logout})
         </div>
       </Layout.Header>
       <div className="hero">
+        <div className="litter">
+          <PlasticLitter />
+        </div>
         <div className="content">
           <h1>The Digital Platform on Plastic Pollution & Marine Litter</h1>
           <h4>Informing and connecting all actors working to prevent marine litter and plastic pollution.</h4>

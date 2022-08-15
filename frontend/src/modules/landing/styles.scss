@@ -4,9 +4,12 @@
     background-color: #006a9e;
     padding: 7px 0 !important;
     height: auto;
+    display: flex;
     .ui.container {
       display: flex;
       align-items: center;
+      position: relative;
+      z-index: 2;
     }
     .all-tools-btn {
       height: 52px;
@@ -108,14 +111,17 @@
     align-items: center;
     justify-content: center;
     .content {
-      max-width: 700px;
-      padding: 0 30px;
+      max-width: 760px;
+      padding: 0 0px;
+      position: relative;
+      z-index: 2;
       h4 {
-        padding: 0 90px;
+        padding: 0 120px;
       }
     }
     h1 {
       text-shadow: 3px 3px 0 #67bea1;
+      font-size: 52px;
     }
     h1,
     h4 {
@@ -135,6 +141,15 @@
       &:hover {
         background-color: #ffb400;
         border-color: #ffb400;
+      }
+    }
+    .litter {
+      position: absolute;
+      z-index: 0;
+      margin-left: calc(970px - 50vw);
+      margin-top: calc(550px - 50vh);
+      svg {
+        animation: Floating 5.5s ease-in-out infinite;
       }
     }
   }
@@ -172,5 +187,15 @@
   }
   50% {
     transform: translateY(-20px);
+  }
+}
+
+@keyframes Floating {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.07);
   }
 }
