@@ -911,7 +911,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       }
     }
     if (name === "tags") {
-      res = value ? value.map((x) => x.id) : "";
+      res = value ? value.map((x) => x.tag) : "";
     }
 
     if (name === "infoDocs" || name === "info_docs") {
