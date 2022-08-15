@@ -20,6 +20,7 @@ const Overview = ({
   data,
   loading,
   updateQuery,
+  showModal,
 }) => {
   const summaryDict = {};
   let allResources = 0;
@@ -67,7 +68,7 @@ const Overview = ({
       </ul>
       <section className="grey">
         {/* <h3>Categories</h3> */}
-        <Featured {...{ setView }} />
+        <Featured {...{ setView, showModal }} />
       </section>
       <section>
         <Row gutter={16}>
@@ -113,7 +114,7 @@ const Overview = ({
   );
 };
 
-const Featured = ({ setView }) => {
+const Featured = ({ setView, showModal }) => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -131,7 +132,10 @@ const Featured = ({ setView }) => {
         showMoreCardClick={() => {
           setView("grid");
         }}
-        firstCard={(
+        showModal={(e) =>
+          showModal({ e, type: e.currentTarget.type, id: e.currentTarget.id })
+        }
+        firstCard={
           <Link to="/flexible-forms">
             <div className="add-resource-card">
               <b>+</b>
@@ -139,7 +143,7 @@ const Featured = ({ setView }) => {
               <small>Contribute to the library</small>
             </div>
           </Link>
-        )}
+        }
       />
     </>
   );
