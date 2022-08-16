@@ -65,6 +65,14 @@ function ResourceView({ history, popularTags, landing, box }) {
           ? history?.location?.state?.type.replace(/-/g, "_")
           : type.replace(/-/g, "_")
       );
+
+    if (
+      type === "capacity-building" ||
+      history?.location?.state?.type === "capacity-building"
+    ) {
+      queryParams.set("tag", ["capacity building"]);
+      queryParams.delete("topic");
+    }
     queryParams.set("incCountsForTags", popularTags);
     queryParams.set("limit", limit);
 
