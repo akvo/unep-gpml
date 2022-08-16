@@ -10,14 +10,17 @@ import { SearchOutlined } from '@ant-design/icons';
 const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }) => {
   const domRef = useRef()
   useEffect(() => {
-    document.addEventListener('scroll', (e) => {
-      console.log()
-      if(window.scrollY > 100 && domRef.current.classList.contains('scrolled') === false){
-        domRef.current.classList.add('scrolled')
-      } else if(window.scrollY < 100 && domRef.current.classList.contains('scrolled')){
-        domRef.current.classList.remove('scrolled')
+    const listen = (e) => {
+      if(window.scrollY > 100 && domRef.current?.classList.contains('scrolled') === false){
+        domRef.current?.classList.add('scrolled')
+      } else if(window.scrollY < 100 && domRef.current?.classList.contains('scrolled')){
+        domRef.current?.classList.remove('scrolled')
       }
-    })
+    }
+    document.addEventListener('scroll', listen)
+    return () => {
+      document.removeEventListener('scroll', listen)
+    }
   }, [])
   return (
     <Layout.Header className="nav-header-container" ref={domRef}>
@@ -25,7 +28,6 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
         <Link to="/">
           <img src={logo} className="logo" alt="GPML" />
         </Link>
-        {/* <div className="all-tools-btn"></div> */}
         <div className="all-tools-btn">
           <Dots3x3 />
           <span>All Tools</span>
