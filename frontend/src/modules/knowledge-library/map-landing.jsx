@@ -87,6 +87,7 @@ const MapLanding = ({
         multiCountries={[]}
         useVerticalLegend
         showLegend={true}
+        path="knowledge"
       />
     </>
   );
