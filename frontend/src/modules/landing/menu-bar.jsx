@@ -14,6 +14,7 @@ import { ReactComponent as ExpertIcon } from "../../images/stakeholder-overview/
 import logo from "../../images/gpml.svg";
 import { useEffect, useRef, useState } from 'react';
 import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
+import { CSSTransition } from 'react-transition-group';
 
 const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }) => {
   const domRef = useRef()
@@ -34,7 +35,7 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
     }
   }, [])
   const handleKeyPress = (e) => {
-    if(e.key === 'Escape' && showMenu){
+    if(e.key === 'Escape'){
       setShowMenu(false)
     }
   }
@@ -60,7 +61,16 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
           </div>
         </div>
       </Layout.Header>
-      {showMenu && (
+      <CSSTransition
+        in={showMenu}
+        timeout={{
+          appear: 800,
+          enter: 800,
+          exit: 200,
+        }}
+        unmountOnExit
+        classNames="full-menu"
+      >
         <div className="full-menu">
           <h2>All tools</h2>
           <div className="close-btn" onClick={() => setShowMenu(false)}>
@@ -93,7 +103,7 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
             <Item title="About GPML" subtitle="Find out more about us" />
           </div>
         </div>
-      )}
+      </CSSTransition>
     </>
   )
 }

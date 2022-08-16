@@ -286,13 +286,12 @@
         max-width: 165px;
         display: flex;
         flex-direction: column;
-        margin-left: 10px;
+        margin-left: 12px;
         justify-content: center;
-        // min-height: 72px;
         b {
           color: #3fc19f;
           text-transform: uppercase;
-          // margin-top: 7px;
+          transition: fill 0.12s ease-in;
         }
         span {
           color: #a5b0c9;
@@ -327,6 +326,11 @@
           opacity: 1;
           transform: scale(1);
         }
+        div:nth-child(2) {
+          b {
+            color: #fff;
+          }
+        }
       }
     }
   }
@@ -339,6 +343,49 @@
     left: 0;
     background-color: #211f39;
     z-index: 0;
+  }
+  &.full-menu-enter {
+    opacity: 0;
+    .row {
+      .item {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+    }
+  }
+  &.full-menu-enter-active {
+    opacity: 1;
+    .row {
+      .item {
+        opacity: 1;
+        transition: all 170ms;
+        transform: translateX(0);
+        &:nth-child(1) {
+          transition-delay: 0.05s;
+        }
+        &:nth-child(2) {
+          transition-delay: 0.1s;
+        }
+        &:nth-child(3) {
+          transition-delay: 0.2s;
+        }
+        &:nth-child(4) {
+          transition-delay: 0.3s;
+        }
+        &:nth-child(5) {
+          transition-delay: 0.4s;
+        }
+      }
+    }
+    transition: all 600ms;
+  }
+  &.full-menu-exit {
+    opacity: 1;
+    transform: scale(1);
+  }
+  &.full-menu-exit-active {
+    opacity: 0;
+    transition: all 200ms;
   }
 }
 @keyframes MoveUpDown {
