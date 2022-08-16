@@ -23,7 +23,9 @@ const Landing = (props) => {
         </div>
       </div>
       <div className="workspace">
-        <Button type='primary'>Create your workspace</Button>
+        <img src="/person-workspace.svg" />
+        <h3>All the tools you need to act, in one place.</h3>
+        <Button type='primary' size='large'>Create your workspace</Button>
       </div>
     </div>
   )
