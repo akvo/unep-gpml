@@ -16,11 +16,14 @@ const Landing = (props) => {
         <div className="content">
           <h1>The Digital Platform on Plastic Pollution & Marine Litter</h1>
           <h4>Informing and connecting all actors working to prevent plastic pollution and marine litter across the lifecycle and from source to sea.</h4>
-          <Button type="primary" size='large'>Join the Partnership</Button>
+          <Button type="primary" size='large'>Join Now</Button>
         </div>
-        <div className="next-btn">
+        <div className="next-btn" onClick={(e, v) => { window.scrollTo({ top: window.innerHeight - 80, behavior: 'smooth' }) }}>
           <Down />
         </div>
+      </div>
+      <div className="workspace">
+        <Button type='primary'>Create your workspace</Button>
       </div>
     </div>
   )
