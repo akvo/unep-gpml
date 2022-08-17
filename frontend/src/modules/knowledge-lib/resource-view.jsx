@@ -33,7 +33,7 @@ const resourceTopic = [
   "financing_resource",
 ];
 
-function ResourceView({ history, popularTags, landing, box }) {
+function ResourceView({ history, popularTags, landing, box, showModal }) {
   const query = useQuery();
   const [isAscending, setIsAscending] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -278,8 +278,18 @@ function ResourceView({ history, popularTags, landing, box }) {
               items={data?.results}
               showMoreCardAfter={20}
               showMoreCardClick={() => {
-                // setView("grid");
+                history.push({
+                  pathname: `/knowledge/lib/resource/grid/${type ? type : ""}`,
+                  search: history.location.search,
+                });
               }}
+              showModal={(e) =>
+                showModal({
+                  e,
+                  type: e.currentTarget.type,
+                  id: e.currentTarget.id,
+                })
+              }
             />
             {loading && (
               <div className="loading">
@@ -325,6 +335,7 @@ function ResourceView({ history, popularTags, landing, box }) {
               setPageNumber,
               pageNumber,
               updateQuery,
+              showModal,
             }}
           />
         )}
@@ -359,6 +370,13 @@ function ResourceView({ history, popularTags, landing, box }) {
                   showMoreCardClick={() => {
                     handleCategoryFilter(d.categories);
                   }}
+                  showModal={(e) =>
+                    showModal({
+                      e,
+                      type: e.currentTarget.type,
+                      id: e.currentTarget.id,
+                    })
+                  }
                 />
               </Fragment>
             ))}
@@ -390,12 +408,23 @@ const GridView = ({
   limit,
   setPageNumber,
   pageNumber,
+  showModal,
 }) => {
   return (
     <div className="grid-view">
       <div className="items">
         {gridItems?.map((item, index) => (
-          <ResourceCard item={item} key={item.id * index} />
+          <ResourceCard
+            item={item}
+            key={item.id * index}
+            showModal={(e) =>
+              showModal({
+                e,
+                type: item?.type.replace("_", "-"),
+                id: item?.id,
+              })
+            }
+          />
         ))}
       </div>
       {!loading && gridItems?.length < totalItems && (

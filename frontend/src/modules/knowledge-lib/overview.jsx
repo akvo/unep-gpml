@@ -19,6 +19,7 @@ const Overview = ({
   data,
   loading,
   history,
+  showModal,
 }) => {
   const summaryDict = {};
   let allResources = 0;
@@ -75,7 +76,7 @@ const Overview = ({
       </ul>
       <section className="grey">
         {/* <h3>Categories</h3> */}
-        <Featured />
+        <Featured {...{ showModal }} />
       </section>
       <section>
         <Row gutter={16}>
@@ -126,7 +127,7 @@ const Overview = ({
   );
 };
 
-const Featured = () => {
+const Featured = ({ showModal }) => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -146,6 +147,13 @@ const Featured = () => {
             pathname: `/knowledge/lib/resource/grid`,
           });
         }}
+        showModal={(e) =>
+          showModal({
+            e,
+            type: e.currentTarget.type,
+            id: e.currentTarget.id,
+          })
+        }
         firstCard={
           <Link to="/flexible-forms">
             <div className="add-resource-card">
