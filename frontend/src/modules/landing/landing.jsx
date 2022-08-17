@@ -28,7 +28,15 @@ const Landing = (props) => {
         <h3>All the tools you need to act, in one place.</h3>
         <Button type='primary' size='large'>Create your workspace</Button>
       </div>
-      <div className="journey">
+      <TheJourney />
+      <Footer />
+    </div>
+  )
+}
+
+const TheJourney = () => {
+  return (
+    <div className="journey">
         <img src="/plastic-journey.svg" />
         <div className="contents">
           <div className="screen-view">
@@ -78,8 +86,6 @@ including groundwater.</p>
           </div>
         </div>
       </div>
-      <Footer />
-    </div>
   )
 }
 
