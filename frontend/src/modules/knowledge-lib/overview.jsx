@@ -27,6 +27,7 @@ const Overview = ({
     summaryDict[key] = obj[key];
     allResources += obj[key];
   });
+
   if (loading) {
     return (
       <div className="overview">
@@ -63,7 +64,10 @@ const Overview = ({
           <li onClick={handleClickCategory(type.key)} key={type.key}>
             <div>
               <Icon name={`resource-types/${type.key}`} fill="#000" />
-              <b>{summaryDict[humps.camelize(type.key)] || "XX"}</b>
+              <b>
+                {countData.find((item) => type.title === item.topic)?.count ||
+                  "XX"}
+              </b>
             </div>
             <span>{type.label}</span>
           </li>

@@ -11,14 +11,26 @@ import { LeftOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
 
 export const resourceTypes = [
-  { key: "technical-resource", label: "Technical Resources" },
-  { key: "event", label: "Events" },
-  { key: "technology", label: "Technology" },
-  { key: "capacity-building", label: "Capacity Building" },
-  { key: "project", label: "Initiatives" },
-  { key: "action-plan", label: "Action Plan" },
-  { key: "policy", label: "Policy" },
-  { key: "financing-resource", label: "Financing Resources" },
+  {
+    key: "technical-resource",
+    label: "Technical Resources",
+    title: "technical_resource",
+  },
+  { key: "event", label: "Events", title: "event" },
+  { key: "technology", label: "Technology", title: "technology" },
+  {
+    key: "capacity-building",
+    label: "Capacity Building",
+    title: "capacity building",
+  },
+  { key: "project", label: "Initiatives", title: "project" },
+  { key: "action-plan", label: "Action Plan", title: "action_plan" },
+  { key: "policy", label: "Policy", title: "policy" },
+  {
+    key: "financing-resource",
+    label: "Financing Resources",
+    title: "financing_resource",
+  },
 ];
 
 const hideFilterList = [
