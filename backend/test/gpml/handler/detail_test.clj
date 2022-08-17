@@ -51,7 +51,8 @@
    :remarks nil
    :review_status nil
    :document_preview false
-   :image nil})
+   :image nil
+   :language "en"})
 
 (def technology-data
   {:name "technology Title"

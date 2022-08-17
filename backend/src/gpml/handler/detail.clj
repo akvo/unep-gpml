@@ -619,13 +619,6 @@
       :id id
       :organisation org-id})))
 
-(defn update-policy-language [conn language policy-id]
-  (let [lang-id (:id (db.language/language-by-iso-code conn (select-keys language [:iso_code])))]
-    (if-not (nil? lang-id)
-      (db.policy/add-language-to-policy conn {:id policy-id :language lang-id})
-      (db.policy/add-language-to-policy conn {:id policy-id
-                                              :language (:id (db.language/insert-new-language conn language))}))))
-
 (defn -update-blank-resource-picture [conn image-type resource-id image-key]
   (db.detail/update-resource-table
    conn
@@ -723,8 +716,6 @@
                      (and (= -1 (:id org))
                           (handler.org/create conn logger mailjet-config org))))
         related-contents (:related_content updates)]
-    (when (and (contains? updates :language) (= topic-type "policy"))
-      (update-policy-language conn (:language updates) id))
     (doseq [[image-key image-data] (select-keys updates [:image :thumbnail :photo :logo])]
       (update-resource-image conn image-data image-key table id))
     (when (seq tags)

@@ -30,7 +30,8 @@
    :remarks nil
    :document_preview false
    :country (-> (:countries data) first :id)
-   :tags (:tags data)})
+   :tags (:tags data)
+   :language "id"})
 
 (deftest handler-post-test
   (testing "New policy is created"
