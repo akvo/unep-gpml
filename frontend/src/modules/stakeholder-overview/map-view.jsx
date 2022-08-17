@@ -69,6 +69,7 @@ const MapView = ({
           : []
       }
       useVerticalLegend
+      path="community"
     />
   );
 };

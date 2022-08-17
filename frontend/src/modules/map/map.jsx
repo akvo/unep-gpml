@@ -6,6 +6,7 @@ import MapChart from "./map-chart";
 
 export const KNOWLEDGE_LIBRARY = "/knowledge/library";
 export const KNOWLEDGE_LIB = "/knowledge/lib";
+export const KNOWLEDGE_LIB_OVERVIEW = "/knowledge/lib/overview";
 export const STAKEHOLDER_OVERVIEW = "/connect/community";
 export const EXPERTS = "/connect/experts";
 
@@ -27,6 +28,7 @@ const Maps = ({
   useTooltips = true,
   showLegend = false,
   zoom,
+  path,
 }) => {
   const [tooltipContent, setTooltipContent] = useState("");
 
@@ -64,6 +66,7 @@ const Maps = ({
               countryGroupCounts,
               showLegend,
               zoom,
+              path,
             }}
           />
           {useTooltips && (
