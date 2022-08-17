@@ -8,16 +8,29 @@ import CountryTransnationalFilter from "../../components/select/country-transnat
 import LocationDropdown from "../../components/location-dropdown/location-dropdown";
 import api from "../../utils/api";
 import { LeftOutlined } from "@ant-design/icons";
+import { withRouter } from "react-router-dom";
 
 export const resourceTypes = [
-  { key: "technical-resource", label: "Technical Resources" },
-  { key: "event", label: "Events" },
-  { key: "technology", label: "Technology" },
-  { key: "capacity-building", label: "Capacity Building" },
-  { key: "project", label: "Initiatives" },
-  { key: "action-plan", label: "Action Plan" },
-  { key: "policy", label: "Policy" },
-  { key: "financing-resource", label: "Financing Resources" },
+  {
+    key: "technical-resource",
+    label: "Technical Resources",
+    title: "technical_resource",
+  },
+  { key: "event", label: "Events", title: "event" },
+  { key: "technology", label: "Technology", title: "technology" },
+  {
+    key: "capacity-building",
+    label: "Capacity Building",
+    title: "capacity building",
+  },
+  { key: "project", label: "Initiatives", title: "project" },
+  { key: "action-plan", label: "Action Plan", title: "action_plan" },
+  { key: "policy", label: "Policy", title: "policy" },
+  {
+    key: "financing-resource",
+    label: "Financing Resources",
+    title: "financing_resource",
+  },
 ];
 
 const hideFilterList = [
@@ -31,17 +44,15 @@ const hideFilterList = [
 ];
 
 const FilterBar = ({
-  view,
-  setView,
-  filter,
-  setFilter,
-  setIsShownModal,
+  setShowFilterModal,
   filterCountries,
-  setFilterCountries,
   updateQuery,
   multiCountryCountries,
   setMultiCountryCountries,
-  handleCategoryFilter,
+  history,
+  type,
+  view,
+  search,
 }) => {
   const query = useQuery();
   const [country, setCountry] = useState([]);
@@ -57,8 +68,10 @@ const FilterBar = ({
   );
 
   const handleClickOverview = () => {
-    setView("overview");
-    setFilter([]);
+    history.push({
+      pathname: "/knowledge/lib/overview",
+      search: "",
+    });
   };
 
   useEffect(() => {
@@ -103,12 +116,22 @@ const FilterBar = ({
         {resourceTypes.map((it) => (
           <li
             key={it.key}
-            onClick={() => handleCategoryFilter(it.key.replace(/-/g, "_"))}
-            className={
-              query?.topic?.includes(it.key.replace(/-/g, "_"))
-                ? "selected"
-                : ""
-            }
+            onClick={() => {
+              if (type === it.key)
+                history.push({
+                  pathname: `/knowledge/lib/resource/${view ? view : "map"}`,
+                  search: search,
+                });
+              else
+                history.push({
+                  pathname: `/knowledge/lib/resource/${
+                    view ? (view === "category" ? "grid" : view) : "map"
+                  }/${it.key}/`,
+                  search: search,
+                  state: { type: it.key },
+                });
+            }}
+            className={type === it.key ? "selected" : ""}
           >
             <div className="img-container">
               <Icon name={`resource-types/${it.key}`} fill="#FFF" />
@@ -119,7 +142,7 @@ const FilterBar = ({
           </li>
         ))}
       </ul>
-      <Button onClick={() => setIsShownModal(true)}>
+      <Button onClick={() => setShowFilterModal(true)}>
         {!isEmpty &&
           Object.keys(query).filter((item) => !hideFilterList.includes(item))
             .length > 0 && (
@@ -149,4 +172,4 @@ const FilterBar = ({
   );
 };
 
-export default FilterBar;
+export default withRouter(FilterBar);

@@ -12,14 +12,13 @@ import { Link } from "react-router-dom";
 
 const Overview = ({
   summaryData,
-  setView,
   box,
   query,
   countData,
   landing,
   data,
   loading,
-  updateQuery,
+  history,
 }) => {
   const summaryDict = {};
   let allResources = 0;
@@ -28,6 +27,7 @@ const Overview = ({
     summaryDict[key] = obj[key];
     allResources += obj[key];
   });
+
   if (loading) {
     return (
       <div className="overview">
@@ -37,16 +37,21 @@ const Overview = ({
       </div>
     );
   }
+
   const handleClickCategory = (key) => () => {
-    updateQuery("topic", key.replace(/-/g, "_"), true);
-    setView("map");
+    history.push({
+      pathname: `/knowledge/lib/resource/map/${key}`,
+    });
   };
+
   return (
     <div className="overview">
       <ul className="categories">
         <li
           onClick={() => {
-            setView("category");
+            history.push({
+              pathname: `/knowledge/lib/resource/category`,
+            });
           }}
         >
           <div>
@@ -56,10 +61,13 @@ const Overview = ({
           <span>All Resources</span>
         </li>
         {resourceTypes.map((type) => (
-          <li onClick={handleClickCategory(type.key)}>
+          <li onClick={handleClickCategory(type.key)} key={type.key}>
             <div>
               <Icon name={`resource-types/${type.key}`} fill="#000" />
-              <b>{summaryDict[humps.camelize(type.key)] || "XX"}</b>
+              <b>
+                {countData.find((item) => type.title === item.topic)?.count ||
+                  "XX"}
+              </b>
             </div>
             <span>{type.label}</span>
           </li>
@@ -67,7 +75,7 @@ const Overview = ({
       </ul>
       <section className="grey">
         {/* <h3>Categories</h3> */}
-        <Featured {...{ setView }} />
+        <Featured />
       </section>
       <section>
         <Row gutter={16}>
@@ -76,7 +84,9 @@ const Overview = ({
             <div
               className="overlay-btn"
               onClick={() => {
-                setView("map");
+                history.push({
+                  pathname: `/knowledge/lib/resource/map`,
+                });
               }}
             >
               <Maps
@@ -86,6 +96,7 @@ const Overview = ({
                 useTooltips={false}
                 showLegend={false}
                 zoom={0.9}
+                path="knowledge"
               />
             </div>
           </Col>
@@ -94,7 +105,9 @@ const Overview = ({
             <div
               className="overlay-btn"
               onClick={() => {
-                setView("topic");
+                history.push({
+                  pathname: `/knowledge/lib/resource/topic`,
+                });
               }}
             >
               <TopicView
@@ -113,7 +126,7 @@ const Overview = ({
   );
 };
 
-const Featured = ({ setView }) => {
+const Featured = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -129,9 +142,11 @@ const Featured = ({ setView }) => {
         items={results}
         showMoreCardAfter={20}
         showMoreCardClick={() => {
-          setView("grid");
+          history.push({
+            pathname: `/knowledge/lib/resource/grid`,
+          });
         }}
-        firstCard={(
+        firstCard={
           <Link to="/flexible-forms">
             <div className="add-resource-card">
               <b>+</b>
@@ -139,7 +154,7 @@ const Featured = ({ setView }) => {
               <small>Contribute to the library</small>
             </div>
           </Link>
-        )}
+        }
       />
     </>
   );
