@@ -56,11 +56,11 @@ const StakeholderCarousel = ({ stakeholders }) => {
             return (
               <SwiperSlide>
                 <Link
-                  to={`/${
+                  to={
                     stakeholder?.type === "entity"
-                      ? "organisation"
-                      : "stakeholder"
-                  }/${stakeholder?.stakeholderId}`}
+                      ? `/organisation/${stakeholder?.entityId}`
+                      : `/stakeholder/${stakeholder?.stakeholderId}`
+                  }
                 >
                   <Card
                     className="connection-card"
