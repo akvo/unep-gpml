@@ -200,6 +200,7 @@ const Experts = () => {
           multiCountryCountries={[]}
           multiCountries={[]}
           useVerticalLegend
+          path="experts"
         />
       )}
       <InviteExpertModal {...{ setIsShownModal, isShownModal }} />

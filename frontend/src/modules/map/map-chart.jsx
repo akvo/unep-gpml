@@ -428,14 +428,37 @@ const MapChart = ({
                       onMouseEnter={() => {
                         const { MAP_LABEL, M49Code } = geo.properties;
                         if (useTooltips && !isLake && MAP_LABEL !== null) {
-                          setTooltipContent(
-                            <KnowledgeLibraryToolTipContent
-                              data={findData}
-                              geo={geo.properties}
-                              existingResources={existingResources}
-                              query={query}
-                            />
-                          );
+                          if (path === STAKEHOLDER_OVERVIEW) {
+                            setTooltipContent(
+                              <StakeholderTooltipContent
+                                data={findData}
+                                geo={geo.properties}
+                                existingStakeholders={existingStakeholders}
+                                query={query}
+                              />
+                            );
+                          }
+                          if (path === KNOWLEDGE_LIBRARY) {
+                            setTooltipContent(
+                              <KnowledgeLibraryToolTipContent
+                                data={findData}
+                                geo={geo.properties}
+                                existingResources={existingResources}
+                                query={query}
+                              />
+                            );
+                          }
+
+                          if (path === EXPERTS) {
+                            setTooltipContent(
+                              <ExpertsTooltipContent
+                                data={findData}
+                                geo={geo.properties}
+                                existingStakeholders={existingStakeholders}
+                                query={query}
+                              />
+                            );
+                          }
                         }
                       }}
                       onMouseLeave={() => {
