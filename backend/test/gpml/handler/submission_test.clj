@@ -56,7 +56,8 @@
                                     :city nil
                                     :image nil
                                     :geo_coverage_type "global"
-                                    :created_by (:id user_justin)})
+                                    :created_by (:id user_justin)
+                                    :language "en"})
 
           ;; Jane trying to see the list of submission user in this case Nick
           resp (handler (-> (mock/request :get "/")

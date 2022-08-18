@@ -14,7 +14,8 @@ insert into technology(
     review_status,
     url,
     image,
-    logo
+    logo,
+    language
 --~ (when (contains? params :id) ", id")
 --~ (when (contains? params :created_by) ", created_by")
 --~ (when (contains? params :info_docs) ", info_docs")
@@ -37,7 +38,8 @@ values(
     :v:review_status::review_status,
     :url,
     :image,
-    :logo
+    :logo,
+    :language
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :created_by) ", :created_by")
 --~ (when (contains? params :info_docs) ", :info_docs")
@@ -71,6 +73,7 @@ select
     headquarter,
     created_by,
     document_preview,
+    language,
     COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners,
     (select json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
         from technology_language_url plu

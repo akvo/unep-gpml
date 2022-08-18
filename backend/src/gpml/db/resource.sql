@@ -7,7 +7,8 @@ insert into resource(
     summary,
     valid_from,
     valid_to,
-    geo_coverage_type
+    geo_coverage_type,
+    language
 --~ (when (contains? params :country) ", country")
 --~ (when (contains? params :value) ", value")
 --~ (when (contains? params :value_currency) ", value_currency")
@@ -34,7 +35,8 @@ values(
     :summary,
     :valid_from,
     :valid_to,
-    :v:geo_coverage_type::geo_coverage_type
+    :v:geo_coverage_type::geo_coverage_type,
+    :language
 --~ (when (contains? params :country) ", :country")
 --~ (when (contains? params :value) ", :value")
 --~ (when (contains? params :value_currency) ", :value_currency")
@@ -100,6 +102,7 @@ select
     url,
     created_by,
     document_preview,
+    language,
     (select json_agg(json_build_object('url',rlu.url, 'lang', l.iso_code))
         from resource_language_url rlu
         left join language l on l.id = rlu.language

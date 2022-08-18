@@ -122,7 +122,7 @@
         (log logger :error ::failed-to-create-initiative {:exception-message (.getMessage e)})
         (let [response {:status 500
                         :body {:success? false
-                               :reason :could-not-create-event}}]
+                               :reason :could-not-create-initiative}}]
 
           (if (instance? SQLException e)
             response
@@ -157,4 +157,6 @@
       (resp/response (merge data extra-details)))))
 
 (defmethod ig/init-key :gpml.handler.initiative/post-params [_ _]
-  [:map [:version integer?]])
+  [:map
+   [:version integer?]
+   [:language string?]])

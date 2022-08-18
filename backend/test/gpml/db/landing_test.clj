@@ -26,7 +26,8 @@
    :geo_coverage_type geo-coverage
    :attachments nil
    :remarks "Remarks"
-   :review_status "APPROVED"})
+   :review_status "APPROVED"
+   :language "en"})
 
 (defn add-country-data [conn]
   (db.country/new-country conn {:name "Spain" :description "Member State" :iso_code "ESP"})
@@ -96,7 +97,8 @@
                                  :country nil
                                  :city nil
                                  :image nil
-                                 :review_status "SUBMITTED"})
+                                 :review_status "SUBMITTED"
+                                 :language "en"})
           summary (db.landing/summary conn)
           extract-data (fn [topic]
                          (->> summary
