@@ -787,4 +787,4 @@ const FeaturedContentMobile = ({ history }) => {
   );
 };
 
-export { Landing, JoinGPMLButton };
+export default Landing;
