@@ -300,6 +300,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         )}
         {view === "map" && (
           <Maps
+            query={query}
             box={box}
             countData={countData || []}
             clickEvents={clickCountry}
