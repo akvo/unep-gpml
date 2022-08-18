@@ -430,6 +430,21 @@
                                                                      [:topic-id int?]]
                                                               :body #ig/ref :gpml.handler.detail/put-params}
                                                  :handler #ig/ref :gpml.handler.detail/put}}]]
+                                        ["/translations"
+                                         ["/{topic-type}/{topic-id}"
+                                          {:put {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                              #ig/ref :gpml.auth/auth-required
+                                                              #ig/ref :gpml.auth/approved-user]
+                                                 :summary "Create or edit resource translations"
+                                                 :swagger {:tags ["create resource translations"
+                                                                  "edit resource translations"]
+                                                           :security [{:id_token []}]}
+                                                 :parameters {:path [:map
+                                                                     [:topic-type
+                                                                      #ig/ref :gpml.handler.resource.translation/topics]
+                                                                     [:topic-id int?]]
+                                                              :body #ig/ref :gpml.handler.resource.translation/put-params}
+                                                 :handler #ig/ref :gpml.handler.resource.translation/put}}]]
                                         ["/list"
                                          {:get {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                              #ig/ref :gpml.auth/auth-required]
@@ -681,6 +696,10 @@
   :gpml.handler.detail/delete #ig/ref :gpml.config/common
   :gpml.handler.detail/put #ig/ref :gpml.config/common
   :gpml.handler.detail/put-params {}
+
+  :gpml.handler.resource.translation/topics {}
+  :gpml.handler.resource.translation/put #ig/ref :gpml.config/common
+  :gpml.handler.resource.translation/put-params {}
 
   :gpml.handler.list/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.list/get-params {}
