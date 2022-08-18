@@ -5,7 +5,7 @@ import { ReactComponent as Dots3x3 } from "../../images/3x3.svg";
 import { ReactComponent as AtlasSvg } from "../../images/book-atlas.svg";
 import { ReactComponent as CaseStudiesSvg } from "../../images/capacity-building/ic-case-studies.svg";
 import { ReactComponent as CapacityBuildingSvg } from "../../images/capacity-building/ic-capacity-building.svg";
-import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg";
+import { ReactComponent as IconEvent } from "../../images/event-icon.svg";
 import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
 import { ReactComponent as IconCommunity } from "../../images/events/community-icon.svg";
 import { ReactComponent as IconPartner } from "../../images/stakeholder-overview/partner-icon.svg";
