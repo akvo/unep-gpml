@@ -251,7 +251,11 @@ const StakeholderDetail = ({
       api
         .get(url)
         .then((d) => {
-          setOwnedResources(d.data.associatedTopics);
+          setOwnedResources(
+            d?.data?.associatedTopics?.filter(
+              (item) => item.reviewStatus === "APPROVED"
+            )
+          );
           setOwnedResourcesCount(d.data.count);
         })
         .catch((err) => {
@@ -275,7 +279,11 @@ const StakeholderDetail = ({
       api
         .get(url)
         .then((d) => {
-          setBookedResources(d.data.associatedTopics);
+          setBookedResources(
+            d?.data?.associatedTopics?.filter(
+              (item) => item.reviewStatus === "APPROVED"
+            )
+          );
           setBookedResourcesCount(d.data.count);
         })
         .catch((err) => {
