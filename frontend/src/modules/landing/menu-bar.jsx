@@ -91,10 +91,10 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
           </div>
           <h5>Community</h5>
           <div className="row">
-            <Item title="Members" subtitle="Directory of GPML network entities and individuals" icon={<IconCommunity />} />
-            <Item title="Experts" subtitle="Tool to find an expert and experts' groups" icon={<ExpertIcon />} />
-            <Item title="Events" subtitle="Global events calendar" icon={<IconEvent />} />
-            <Item title="Partners" subtitle="Directory of partners of the GPML Digital Platform" icon={<IconPartner />} />
+            <Item title="Members" iconClass='tools-community-icon' subtitle="Directory of GPML network entities and individuals" icon={<IconCommunity />} />
+            <Item title="Experts" iconClass='tools-experts-icon' subtitle="Tool to find an expert and experts' groups" icon={<ExpertIcon />} />
+            <Item title="Events" iconClass='tools-events-icon' subtitle="Global events calendar" icon={<IconEvent />} />
+            <Item title="Partners" iconClass='tools-partners-icon' subtitle="Directory of partners of the GPML Digital Platform" icon={<IconPartner />} />
           </div>
           <h5>Data hub</h5>
           <div className="row">
