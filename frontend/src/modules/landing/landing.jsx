@@ -5,6 +5,8 @@ import { ReactComponent as Down } from "../../images/down.svg";
 import { ReactComponent as PlasticLitter } from "../../images/plastic-litter.svg";
 import MenuBar from './menu-bar';
 import Footer from '../../footer';
+import { useEffect } from 'react';
+import { useRef } from 'react';
 
 const Landing = (props) => {
   return (
@@ -35,9 +37,44 @@ const Landing = (props) => {
 }
 
 const TheJourney = () => {
+  const topRef = useRef()
+  const svgRef = useRef()
+  useEffect(() => {
+    const views = [
+      { scale: 0.76, x: -320, y: -78 },
+      { scale: 1.4, x: -1050, y: -700},
+      { scale: 1.73, x: -740, y: -260},
+      { scale: 1.56, x: -1067, y: -777},
+      { scale: 2.08, x: -3292, y: -1031},
+      { scale: 1.6, x: -2300, y: -850}
+    ]
+    const scrollListener = () => {
+      const { scrollY } = window
+      if(scrollY > topRef.current.offsetTop - 80){
+        const y = scrollY - topRef.current.offsetTop + 130
+        const page = y / window.innerHeight
+
+        const base = Math.floor(page)
+        const view = {}
+        if(base > 4) return
+        view.scale = views[base].scale + (views[base + 1].scale - views[base].scale) * (page - base)
+        view.x = views[base].x + (views[base + 1].x - views[base].x) * (page - base)
+        view.y = views[base].y + (views[base + 1].y - views[base].y) * (page - base)
+        position(view)
+      }
+    }
+    const position = ({ scale, x, y }) => {
+      svgRef.current.style.transform = `translate(${x}px, ${y}px) scale(${scale})`
+    }
+    position(views[0])
+    document.addEventListener('scroll', scrollListener)
+    return () => {
+      document.removeEventListener('scroll', scrollListener)
+    }
+  }, [])
   return (
-    <div className="journey">
-        <img src="/plastic-journey.svg" />
+    <div className="journey" ref={topRef}>
+        <img ref={svgRef} src="/plastic-journey.svg" />
         <div className="contents">
           <div className="screen-view">
             <h1>THE PLASTIC POLLUTION JOURNEY</h1>
@@ -82,6 +119,35 @@ take-away food containers…etc. are sources of plastic
 particles and fibres. Inadequate waste management is a
 source of leakage of plastic particles in the environment
 including groundwater.</p>
+            </div>
+          </div>
+          <div className="screen-view">
+            <div className="pane">
+              <h4>Sewage and wastewater – source and pathway</h4>
+              <p>Wastewater treatment plants are a major
+source of microplastics and nanoplastics in
+water bodies.</p>
+              <h4>Lakes – close to rivers and ocean</h4>
+              <p>Temporary and long-term storage. A source
+under specific weather patterns and
+hydrodynamic regimes.</p>
+               <h4>Reservoirs – sources and sinks</h4>
+               <p>Plastics from atmospheric fallout, streams,
+and rivers. Temporary and long-term storage,
+and possible infiltration into groundwater.</p>
+            </div>
+          </div>
+          <div className="screen-view">
+            <div className="pane">
+              <h4>Tourism</h4>
+              <p>Coastal and sea-based tourism is
+another source of plastic waste
+through intentional or accidental
+littering of shorelines</p>
+                <h4>fishing activities</h4>
+                <p>Galley waste thrown overboard, abandoned, lost, or otherwise discarded fishing gear and marine coating.</p>
+                <h4>Shipping and Recreational boats - source</h4>
+                <p>Galley waste thrown overboard, loss of shipping goods, plastic pellets, and marine coatings.</p>
             </div>
           </div>
         </div>
