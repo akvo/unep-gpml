@@ -189,6 +189,9 @@
       color: #8691b0;
       font-size: 22px;
     }
+    img {
+      max-width: 100%;
+    }
   }
   .ant-btn-primary {
     background-color: #00ff7f;
@@ -281,7 +284,8 @@ body {
   height: 100%;
   background-color: #2f2d46;
   color: #e2e0f2;
-  padding: 50px;
+  padding: 50px 0 50px 50px;
+
   h2 {
     font-size: 22px;
     font-weight: 500;
@@ -309,17 +313,36 @@ body {
   }
   .row {
     display: flex;
-    margin-bottom: 50px;
+    margin-bottom: calc(50px - 30px);
     position: relative;
     z-index: 1;
+    @media screen and (max-width: 1024px) {
+      flex-wrap: wrap;
+    }
     .item {
       display: flex;
       margin-right: 30px;
+      margin-bottom: 30px;
       position: relative;
       cursor: pointer;
+      width: 100%;
+      @media (max-width: 550px) {
+        flex-basis: 100%;
+        flex-wrap: wrap;
+      }
+      @media (min-width: 551px) and (max-width: 850px) {
+        flex-basis: calc(50% - 30px);
+      }
+      @media (min-width: 851px) and (max-width: 1025px) {
+        flex-basis: calc(100% / 3);
+      }
+      @media (min-width: 1026px) {
+        width: unset;
+      }
       .icon {
         width: 82px;
         height: 82px;
+        min-width: 82px;
         background-color: #3d3e54;
         border-radius: 14px;
         display: flex;
@@ -343,7 +366,45 @@ body {
           max-height: 70px;
           transform: translateX(-2px);
         }
+        &.tools-community-icon svg {
+          max-height: 70px;
+          rect {
+            fill: #3fc19f;
+            transition: fill 0.12s ease-in;
+          }
+        }
+
+        &.tools-partners-icon svg,
+        &.tools-experts-icon svg,
+        &.tools-events-icon svg {
+          height: 100%;
+          width: 100%;
+        }
+
+        &.tools-partners-icon svg {
+          max-height: 70px;
+        }
+        &.tools-events-icon svg {
+          max-height: 62px;
+        }
+
+        &.tools-partners-icon svg {
+          max-height: 44px;
+        }
+        @media (max-width: 550px) {
+          width: 64px;
+          height: 64px;
+          min-width: 64px;
+          svg {
+            max-height: 42px;
+          }
+          &.tools-experts-icon svg,
+          &.tools-partners-icon svg {
+            max-height: 35px;
+          }
+        }
       }
+
       div:nth-child(2) {
         max-width: 165px;
         display: flex;
@@ -380,6 +441,11 @@ body {
           background-color: #52b7b1;
           svg {
             path {
+              fill: #fff;
+            }
+          }
+          &.tools-community-icon svg {
+            rect {
               fill: #fff;
             }
           }
@@ -448,6 +514,12 @@ body {
   &.full-menu-exit-active {
     opacity: 0;
     transition: all 200ms;
+  }
+  @media (max-width: 550px) {
+    padding: 20px;
+    .close-btn {
+      top: 10px;
+    }
   }
 }
 @keyframes MoveUpDown {
