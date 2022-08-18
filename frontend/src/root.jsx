@@ -352,6 +352,15 @@ const Root = () => {
     }
   }, []);
 
+  // Remove scroll effect after displaying the detail modal
+  useEffect(() => {
+    const body = document.querySelector("body");
+    if (!path.includes("/knowledge")) {
+      body.classList.remove("scroll-disabled");
+      body.style.top = "unset";
+    }
+  }, [path]);
+
   // Here we retrieve the resources data
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
