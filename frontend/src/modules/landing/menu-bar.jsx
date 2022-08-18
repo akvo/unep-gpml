@@ -5,16 +5,24 @@ import { ReactComponent as Dots3x3 } from "../../images/3x3.svg";
 import { ReactComponent as AtlasSvg } from "../../images/book-atlas.svg";
 import { ReactComponent as CaseStudiesSvg } from "../../images/capacity-building/ic-case-studies.svg";
 import { ReactComponent as CapacityBuildingSvg } from "../../images/capacity-building/ic-capacity-building.svg";
-import { ReactComponent as IconEvent } from "../../images/events/event-icon.svg";
+import { ReactComponent as IconEvent } from "../../images/event-icon.svg";
 import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
 import { ReactComponent as IconCommunity } from "../../images/events/community-icon.svg";
 import { ReactComponent as IconPartner } from "../../images/stakeholder-overview/partner-icon.svg";
 import { ReactComponent as ExpertIcon } from "../../images/stakeholder-overview/expert-icon.svg";
+import { ReactComponent as AnalyticAndStatisticSvg } from "../../images/analytic-and-statistic-icon.svg";
+import { ReactComponent as DataCatalogueSvg } from "../../images/data-catalogue-icon.svg";
+import { ReactComponent as ExploreSvg } from "../../images/explore-icon.svg";
+import { ReactComponent as GlossarySvg } from "../../images/glossary-icon.svg";
+import { ReactComponent as MapSvg } from "../../images/map-icon.svg";
+import { ReactComponent as HelpCenterSvg } from "../../images/help-center-icon.svg";
+import { ReactComponent as AboutSvg } from "../../images/about-icon.svg";
 
 import logo from "../../images/gpml.svg";
 import { useEffect, useRef, useState } from 'react';
 import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import { CSSTransition } from 'react-transition-group';
+import bodyScrollLock from "../details-page/scroll-utils";
 
 const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }) => {
   const domRef = useRef()
@@ -37,6 +45,7 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
   const handleKeyPress = (e) => {
     if(e.key === 'Escape'){
       setShowMenu(false)
+      bodyScrollLock.disable()
     }
   }
   return (
@@ -46,7 +55,10 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
           <Link to="/">
             <img src={logo} className="logo" alt="GPML" />
           </Link>
-          <div className="all-tools-btn" onClick={() => setShowMenu(true)}>
+          <div className="all-tools-btn" onClick={() => {
+            setShowMenu(true);
+            bodyScrollLock.enable();
+          }}>
             <Dots3x3 />
             <span>All Tools</span>
           </div>
@@ -73,7 +85,10 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
       >
         <div className="full-menu">
           <h2>All tools</h2>
-          <div className="close-btn" onClick={() => setShowMenu(false)}>
+          <div className="close-btn" onClick={() => {
+            setShowMenu(false)
+            bodyScrollLock.disable()
+          }}>
             <CloseOutlined />
           </div>
           <h5>Information</h5>
@@ -84,23 +99,23 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
           </div>
           <h5>Community</h5>
           <div className="row">
-            <Item title="Members" subtitle="Directory of GPML network entities and individuals" icon={<IconCommunity />} />
-            <Item title="Experts" subtitle="Tool to find an expert and experts' groups" icon={<ExpertIcon />} />
+            <Item title="Members" iconClass='tools-community-icon' subtitle="Directory of GPML network entities and individuals" icon={<IconCommunity />} />
+            <Item title="Experts" iconClass='tools-experts-icon' subtitle="Tool to find an expert and experts' groups" icon={<ExpertIcon />} />
             <Item title="Events" subtitle="Global events calendar" icon={<IconEvent />} />
-            <Item title="Partners" subtitle="Directory of partners of the GPML Digital Platform" icon={<IconPartner />} />
+            <Item title="Partners" iconClass='tools-partners-icon' subtitle="Directory of partners of the GPML Digital Platform" icon={<IconPartner />} />
           </div>
           <h5>Data hub</h5>
           <div className="row">
-            <Item title="Analytics & statistics" subtitle="Metrics to measure progress" />
-            <Item title="Data Catalog" subtitle="Datasets on plastic pollution and marine litter" />
-            <Item title="Glossary" subtitle="Terminology and definitions" />
-            <Item title="Story Telling" subtitle="Storytelling with custom maps" />
-            <Item title="API explore" subtitle="Web services and APIs" />
+            <Item title="Analytics & statistics" subtitle="Metrics to measure progress" icon={<AnalyticAndStatisticSvg/>}/>
+            <Item title="Data Catalog" subtitle="Datasets on plastic pollution and marine litter" icon={<DataCatalogueSvg/>}/>
+            <Item title="Glossary" subtitle="Terminology and definitions" icon={<GlossarySvg/>}/>
+            <Item title="Story Telling" subtitle="Storytelling with custom maps" icon={<MapSvg/>} />
+            <Item title="API explore" subtitle="Web services and APIs" icon={<ExploreSvg/>}/>
           </div>
           <h5>Looking for more?</h5>
           <div className="row">
-            <Item title="Help Center" subtitle="Support on GPML Digital Platform" />
-            <Item title="About GPML" subtitle="Find out more about us" />
+            <Item title="Help Center" subtitle="Support on GPML Digital Platform" icon={<HelpCenterSvg/>}/>
+            <Item title="About GPML" subtitle="Find out more about us" icon={<AboutSvg/>}/>
           </div>
         </div>
       </CSSTransition>
