@@ -10,7 +10,7 @@ import { useRef } from 'react';
 
 const Landing = (props) => {
   return (
-    <div id="landing">
+    <div id="landingb">
       <MenuBar {...props} />
       <div className="hero">
         <div className="litter">
@@ -44,7 +44,7 @@ const TheJourney = () => {
       { scale: 0.76, x: -320, y: -78 },
       { scale: 1.4, x: -1050, y: -700},
       { scale: 1.73, x: -740, y: -260},
-      { scale: 1.56, x: -1067, y: -777},
+      { scale: 1.56, x: -907, y: -777},
       { scale: 2.08, x: -3292, y: -1031},
       { scale: 1.6, x: -2300, y: -850}
     ]
