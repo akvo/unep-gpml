@@ -22,6 +22,7 @@ import logo from "../../images/gpml.svg";
 import { useEffect, useRef, useState } from 'react';
 import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import { CSSTransition } from 'react-transition-group';
+import bodyScrollLock from "../details-page/scroll-utils";
 
 const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }) => {
   const domRef = useRef()
@@ -44,6 +45,7 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
   const handleKeyPress = (e) => {
     if(e.key === 'Escape'){
       setShowMenu(false)
+      bodyScrollLock.disable()
     }
   }
   return (
@@ -53,7 +55,10 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
           <Link to="/">
             <img src={logo} className="logo" alt="GPML" />
           </Link>
-          <div className="all-tools-btn" onClick={() => setShowMenu(true)}>
+          <div className="all-tools-btn" onClick={() => {
+            setShowMenu(true);
+            bodyScrollLock.enable();
+          }}>
             <Dots3x3 />
             <span>All Tools</span>
           </div>
@@ -80,7 +85,10 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
       >
         <div className="full-menu">
           <h2>All tools</h2>
-          <div className="close-btn" onClick={() => setShowMenu(false)}>
+          <div className="close-btn" onClick={() => {
+            setShowMenu(false)
+            bodyScrollLock.disable()
+          }}>
             <CloseOutlined />
           </div>
           <h5>Information</h5>
@@ -93,7 +101,7 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
           <div className="row">
             <Item title="Members" iconClass='tools-community-icon' subtitle="Directory of GPML network entities and individuals" icon={<IconCommunity />} />
             <Item title="Experts" iconClass='tools-experts-icon' subtitle="Tool to find an expert and experts' groups" icon={<ExpertIcon />} />
-            <Item title="Events" iconClass='tools-events-icon' subtitle="Global events calendar" icon={<IconEvent />} />
+            <Item title="Events" subtitle="Global events calendar" icon={<IconEvent />} />
             <Item title="Partners" iconClass='tools-partners-icon' subtitle="Directory of partners of the GPML Digital Platform" icon={<IconPartner />} />
           </div>
           <h5>Data hub</h5>
