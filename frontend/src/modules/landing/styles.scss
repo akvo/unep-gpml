@@ -189,6 +189,9 @@
       color: #8691b0;
       font-size: 22px;
     }
+    img {
+      max-width: 100%;
+    }
   }
   .ant-btn-primary {
     background-color: #00ff7f;
@@ -251,6 +254,9 @@
     margin-bottom: calc(50px - 30px);
     position: relative;
     z-index: 1;
+    @media screen and (max-width: 1024px) {
+      flex-wrap: wrap;
+    }
     .item {
       display: flex;
       margin-right: 30px;
