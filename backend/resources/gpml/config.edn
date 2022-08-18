@@ -432,7 +432,16 @@
                                                  :handler #ig/ref :gpml.handler.detail/put}}]]
                                         ["/translations"
                                          ["/{topic-type}/{topic-id}"
-                                          {:put {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                          {:get {:middleware [#ig/ref :gpml.auth/auth-middleware]
+                                                 :summary "Get the translations for a specific resource"
+                                                 :swagger {:tags ["get resource translations"]}
+                                                 :parameters {:path [:map
+                                                                     [:topic-type
+                                                                      #ig/ref :gpml.handler.resource.translation/topics]
+                                                                     [:topic-id int?]]
+                                                              :query #ig/ref :gpml.handler.resource.translation/query-params}
+                                                 :handler #ig/ref :gpml.handler.resource.translation/get}
+                                           :put {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                               #ig/ref :gpml.auth/auth-required
                                                               #ig/ref :gpml.auth/approved-user]
                                                  :summary "Create or edit resource translations"
@@ -698,7 +707,9 @@
   :gpml.handler.detail/put-params {}
 
   :gpml.handler.resource.translation/topics {}
+  :gpml.handler.resource.translation/get #ig/ref :gpml.config/common
   :gpml.handler.resource.translation/put #ig/ref :gpml.config/common
+  :gpml.handler.resource.translation/query-params {}
   :gpml.handler.resource.translation/put-params {}
 
   :gpml.handler.list/get {:db #ig/ref :duct.database/sql}

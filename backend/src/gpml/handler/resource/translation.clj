@@ -11,6 +11,9 @@
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
+(defonce translation-table-sufix "_translation")
+(defonce translation-entity-id-sufix "_id")
+
 (defmethod ig/init-key :gpml.handler.resource.translation/topics [_ _]
   (apply conj [:enum] constants/topic-tables))
 
@@ -51,8 +54,16 @@
    [:fn {:error/message "There is some invalid translatable_field"}
     all-valid-translatable-fields?]])
 
+(def get-query-params
+  [:map
+   [:langs-only {:optional true}
+    boolean?]])
+
 (defmethod ig/init-key :gpml.handler.resource.translation/put-params [_ _]
   put-params)
+
+(defmethod ig/init-key :gpml.handler.resource.translation/query-params [_ _]
+  get-query-params)
 
 (defn- api-translation-translation
   [api-translation resource-col topic-id]
@@ -74,14 +85,14 @@
         (if (some? submission)
           (if (valid-translation-languages? (:translations body) (:language submission))
             (let [conn (:spec db)
-                  resource-col (keyword (str topic-type "_id"))
+                  resource-col (keyword (str topic-type translation-entity-id-sufix))
                   parsed-translations (mapv #(api-translation-translation % resource-col topic-id)
                                             (:translations body))
                   res-translation-columns (sql-util/get-insert-columns-from-entity-col parsed-translations)
                   db-res-translations (sql-util/entity-col->persistence-entity-col parsed-translations)
                   result (db.res-translation/create-or-update-translations
                           conn
-                          {:table (str topic-type "_translation")
+                          {:table (str topic-type translation-table-sufix)
                            :resource-col (name resource-col)
                            :insert-cols res-translation-columns
                            :translations db-res-translations})]
@@ -99,6 +110,51 @@
         (let [response {:status 500
                         :body {:success? false
                                :reason :failed-to-create-or-edit-resource-translations}}]
+          (if (instance? SQLException e)
+            response
+            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
+
+(defmethod ig/init-key :gpml.handler.resource.translation/get
+  [_ {:keys [db logger]}]
+  (fn [{{:keys [path query]} :parameters approved? :approved? user :user}]
+    (try
+      (let [conn (:spec db)
+            topic-type (:topic-type path)
+            resource-col (keyword (str topic-type translation-entity-id-sufix))
+            topic-id (:topic-id path)
+            langs-only? (:langs-only query)
+            authorized? (and approved?
+                             (some? (res-permission/get-resource-if-allowed conn path user true)))]
+        (if authorized?
+          (let [table-name (str topic-type translation-table-sufix)
+                result (if langs-only?
+                         (->> (db.res-translation/get-resource-translation-langs
+                               conn
+                               {:table table-name
+                                :resource-col (name resource-col)
+                                :filters {:resource-id topic-id}})
+                              (mapv :language))
+                         (->> (db.res-translation/get-resource-translations
+                               conn
+                               {:table table-name
+                                :resource-col (name resource-col)
+                                :filters {:resource-id topic-id}})
+                              (group-by :translatable_field)
+                              (reduce (fn [translations-acc [field-key field-value]]
+                                        (assoc
+                                         translations-acc
+                                         field-key
+                                         (-> field-value first :translations)))
+                                      {})))]
+            (resp/response result))
+          util/unauthorized))
+      (catch Exception e
+        (log logger :error ::failed-to-get-resource-translations {:exception-message (.getMessage e)
+                                                                  :context-data {:path-params path
+                                                                                 :user user}})
+        (let [response {:status 500
+                        :body {:success? false
+                               :reason :failed-to-get-resource-translations}}]
           (if (instance? SQLException e)
             response
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
