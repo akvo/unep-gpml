@@ -36,7 +36,8 @@
    :country (-> (:countries data) first :id)
    :tags (:tags data)
    :url "resource url"
-   :owners (:owners data)})
+   :owners (:owners data)
+   :language "en"})
 
 (defn fake-upload-blob [_ _ _ content-type]
   (is (= content-type "image/png")))

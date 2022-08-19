@@ -25,6 +25,8 @@
 
 (duct/load-hierarchy)
 
+(defonce ^:private default-lang-iso-code "en")
+
 (defn- dev-system
   []
   (-> (duct/resource "gpml/config.edn")
@@ -36,10 +38,27 @@
              (f/parse (f/formatter "yyyyMMdd")
                       (str/replace (str/replace x #"-" "") #"/" ""))))
 
-(defn parse-data [s {:keys [keywords?]}]
-  (if keywords?
-    (j/read-value s j/keyword-keys-object-mapper)
-    (j/read-value s)))
+(defn parse-data [s {:keys [keywords? add-default-lang?]}]
+  (let [data (if keywords?
+               (j/read-value s j/keyword-keys-object-mapper)
+               (j/read-value s))]
+    (cond
+      (and (map? data)
+           (seq data)
+           add-default-lang?)
+      (if (:language data)
+        data
+        (assoc data :language default-lang-iso-code))
+
+      (and (seq data)
+           add-default-lang?)
+      (map #(fn [item]
+              (if (:language item)
+                item
+                (assoc item :language default-lang-iso-code)))
+           data)
+      :else
+      data)))
 
 (defn get-data
   ([file-name]
@@ -179,7 +198,9 @@
        (map (fn [x]
               (if-let [tags (:tags x)]
                 (assoc x :tags (get-ids (get-tag db tags)))
-                x)))))
+                x)))
+       (map (fn [x]
+              (assoc x :language default-lang-iso-code)))))
 
 (defn seed-resources [db]
   (doseq [data (get-resources db)]
@@ -237,7 +258,9 @@
        (map (fn [x]
               (if-let [tags (:tags x)]
                 (assoc x :tags (get-ids (get-tag db tags)))
-                x)))))
+                x)))
+       (map (fn [x]
+              (assoc x :language default-lang-iso-code)))))
 
 (defn seed-events [db]
   (doseq [data (get-events db)]
@@ -299,7 +322,9 @@
        (map (fn [x]
               (if-let [tags (:tags x)]
                 (assoc x :tags (get-ids (get-tag db tags)))
-                x)))))
+                x)))
+       (map (fn [x]
+              (assoc x :language default-lang-iso-code)))))
 
 (defn seed-policies [db]
   (doseq [data (get-policies db)]
@@ -341,7 +366,9 @@
        (map (fn [x]
               (if-let [tags (:tags x)]
                 (assoc x :tags (get-ids (get-tag db tags)))
-                x)))))
+                x)))
+       (map (fn [x]
+              (assoc x :language default-lang-iso-code)))))
 
 (defn seed-technologies [db]
   (doseq [data (get-technologies db)]
@@ -391,7 +418,9 @@
                               {:value (:value y)
                                :action_detail (:id (get-action-detail db (:action_detail_code y)))})
                             codes))
-                x)))))
+                x)))
+       (map (fn [x]
+              (assoc x :language default-lang-iso-code)))))
 
 (defn seed-projects [db]
   (doseq [data (get-projects db)]

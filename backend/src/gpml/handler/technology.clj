@@ -51,7 +51,7 @@
                                  sub_content_type related_content
                                  headquarter document_preview
                                  logo thumbnail attachments remarks
-                                 entity_connections individual_connections]}]
+                                 entity_connections individual_connections language]}]
   (let [data {:name name
               :year_founded year_founded
               :organisation_type organisation_type
@@ -76,7 +76,8 @@
               :sub_content_type sub_content_type
               :headquarter headquarter
               :document_preview document_preview
-              :review_status "SUBMITTED"}
+              :review_status "SUBMITTED"
+              :language language}
         technology-id (->> data (db.technology/new-technology conn) :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
@@ -139,7 +140,7 @@
         (log logger :error ::failed-to-create-technology {:exception-message (.getMessage e)})
         (let [response {:status 500
                         :body {:success? false
-                               :reason :could-not-create-event}}]
+                               :reason :could-not-create-technology}}]
 
           (if (instance? SQLException e)
             response
@@ -193,6 +194,7 @@
          [:urls {:optional true}
           [:vector {:optional true}
            [:map [:lang string?] [:url [:string {:min 1}]]]]]
+         [:language string?]
          auth/owners-schema]
         handler.geo/params-payload))
 

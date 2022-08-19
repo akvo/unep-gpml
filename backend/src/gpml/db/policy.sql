@@ -17,7 +17,8 @@ insert into policy(
     remarks,
     review_status,
     url,
-    image
+    image,
+    language
 --~ (when (contains? params :id) ", id")
 --~ (when (contains? params :created_by) ", created_by")
 --~ (when (contains? params :info_docs) ", info_docs")
@@ -43,7 +44,8 @@ values(
     :remarks,
     :v:review_status::review_status,
     :url,
-    :image
+    :image,
+    :language
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :created_by) ", :created_by")
 --~ (when (contains? params :info_docs) ", :info_docs")
@@ -81,6 +83,7 @@ select
     image,
     created_by,
     document_preview,
+    language,
     (select json_agg(tag) from policy_tag where policy = :id) as tags,
     (select json_agg(coalesce(country, country_group))
         from policy_geo_coverage where policy = :id) as geo_coverage_value
@@ -109,6 +112,7 @@ select
     url,
     image,
     document_preview,
+    language
     (select json_agg(tag)
         from policy_tag where policy = :id) as tags,
     (select created_by
@@ -145,13 +149,7 @@ select *
 --~ (when (> (-> params keys count) 2) " AND ")
 --~ (when (contains? params :leap_api_ids) " leap_api_id in (:v*:leap_api_ids)")
 
--- :name add-language-to-policy :! :n
--- :doc Add language to policy
-update policy
-  set language = :language
-  where id = :id
-
 -- :name language-by-policy-id :? :1
 -- :doc Get language by policy id
 select l.* from language l
-  where id = (select p.language from policy p where p.id = :id)
+  where iso_code = (select p.language from policy p where p.id = :id)

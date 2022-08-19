@@ -20,7 +20,7 @@ UPDATE initiative SET
 WHERE id = :id;
 
 -- :name initiative-detail-by-id :? :1
-SELECT id,
+SELECT id, language,
 json_agg(DISTINCT jsonb_build_object('name', focus_names.value)) AS focus_area,
 jsonb_build_object('name', STRING_AGG(DISTINCT outcome_names.value, ', ')) AS outcome_and_impact,
 jsonb_build_object('reports', report.value) AS is_action_being_reported,

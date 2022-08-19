@@ -4,7 +4,6 @@
             [gpml.auth :as auth]
             [gpml.constants :as constants]
             [gpml.db.favorite :as db.favorite]
-            [gpml.db.language :as db.language]
             [gpml.db.policy :as db.policy]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.handler.auth :as h.auth]
@@ -79,7 +78,8 @@
               :attachments attachments
               :remarks remarks
               :created_by created_by
-              :review_status "SUBMITTED"}
+              :review_status "SUBMITTED"
+              :language language}
         policy-geo-coverage-insert-cols ["policy" "country_group" "country"]
         policy-id (->> data (db.policy/new-policy conn) :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
@@ -94,12 +94,6 @@
                                                                              :tag-category "general"
                                                                              :resource-name "policy"
                                                                              :resource-id policy-id}))
-    (when (not-empty language)
-      (let [lang-id (:id (db.language/language-by-iso-code conn (select-keys language [:iso_code])))]
-        (if-not (nil? lang-id)
-          (db.policy/add-language-to-policy conn {:id policy-id :language lang-id})
-          (db.policy/add-language-to-policy conn {:id policy-id
-                                                  :language (:id (db.language/insert-new-language conn language))}))))
     (doseq [stakeholder-id owners]
       (h.auth/grant-topic-to-stakeholder! conn {:topic-id policy-id
                                                 :topic-type "policy"
@@ -199,11 +193,7 @@
     [:urls {:optional true}
      [:vector {:optional true}
       [:map [:lang string?] [:url [:string {:min 1}]]]]]
-    [:language {:optional true}
-     [:map
-      [:english_name string?]
-      [:native_name string?]
-      [:iso_code string?]]]
+    [:language string?]
     auth/owners-schema]
    (into handler.geo/params-payload)))
 
