@@ -37,6 +37,16 @@
                       (keyword translatable_field)]))
            translations)))
 
+(defn- all-valid-translatable-fields-for-deletion?
+  [{:keys [translatable_fields topic-type]}]
+  (and
+   (is-allowed-translation-entity? topic-type)
+   (every? (fn [translatable_field]
+             (get-in dom.translation/translatable-fields-by-entity
+                     [(keyword topic-type)
+                      (keyword translatable_field)]))
+           translatable_fields)))
+
 (def put-params
   [:and
    [:map
@@ -54,6 +64,33 @@
    [:fn {:error/message "There is some invalid translatable_field"}
     all-valid-translatable-fields?]])
 
+(def delete-params
+  [:and
+   [:map
+    [:translations {:optional true}
+     [:vector {:min 1
+               :error/message "There has to be at least one element"}
+      [:map
+       [:language {:min 2 :max 3}
+        string?]
+       [:translatable_field
+        [:fn {:error/message "It must be lower-cased."}
+         is-lowercase?]]]]]
+    [:languages {:optional true}
+     [:vector {:min 1
+               :error/message "There has to be at least one element"}
+      [:string {:min 2 :max 3}]]]
+    [:translatable_fields {:optional true}
+     [:vector {:min 1
+               :error/message "There has to be at least one element"}
+      [:fn {:error/message "It must be lower-cased."}
+       is-lowercase?]]]
+    [:topic-type string?]]
+   [:fn {:error/message "There is some invalid translatable_field"}
+    all-valid-translatable-fields?]
+   [:fn {:error/message "There is some invalid translatable_field"}
+    all-valid-translatable-fields-for-deletion?]])
+
 (def get-query-params
   [:map
    [:langs-only {:optional true}
@@ -64,6 +101,9 @@
 
 (defmethod ig/init-key :gpml.handler.resource.translation/query-params [_ _]
   get-query-params)
+
+(defmethod ig/init-key :gpml.handler.resource.translation/delete-params [_ _]
+  delete-params)
 
 (defn- api-translation-translation
   [api-translation resource-col topic-id]
@@ -110,6 +150,53 @@
         (let [response {:status 500
                         :body {:success? false
                                :reason :failed-to-create-or-edit-resource-translations}}]
+          (if (instance? SQLException e)
+            response
+            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
+
+(defmethod ig/init-key :gpml.handler.resource.translation/delete
+  [_ {:keys [db logger]}]
+  (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
+        user :user}]
+    (try
+      (let [authorized? (some? (res-permission/get-resource-if-allowed (:spec db) path user false))]
+        (if authorized?
+          (let [conn (:spec db)
+                resource-col (keyword (str topic-type translation-entity-id-sufix))
+                {:keys [languages translations translatable_fields]} body
+                db-res-translations (when (seq translations)
+                                      (sql-util/entity-col->persistence-entity-col
+                                       translations
+                                       :insert-keys
+                                       [:language :translatable_field]))
+                result (db.res-translation/delete-resource-translations
+                        conn
+                        {:table (str topic-type translation-table-sufix)
+                         :resource-col (name resource-col)
+                         :filters (merge {:resource-id topic-id}
+                                         (when (and (seq db-res-translations)
+                                                    (not (seq languages))
+                                                    (not (seq translatable_fields)))
+                                           {:translations db-res-translations})
+                                         (when (and languages
+                                                    (not (seq translations)))
+                                           {:languages languages})
+                                         (when (and translatable_fields
+                                                    (not (seq translations)))
+                                           {:translatable_fields translatable_fields}))})]
+            (if (> (first result) 0)
+              (resp/response {})
+              {:status 500
+               :body {:success? false
+                      :reason :no-translations-deleted}}))
+          util/unauthorized))
+      (catch Exception e
+        (log logger :error ::failed-to-delete-resource-translations {:exception-message (.getMessage e)
+                                                                     :context-data {:path-params path
+                                                                                    :body-params body}})
+        (let [response {:status 500
+                        :body {:success? false
+                               :reason :failed-to-delete-resource-translations}}]
           (if (instance? SQLException e)
             response
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))

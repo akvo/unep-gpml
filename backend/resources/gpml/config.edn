@@ -441,6 +441,17 @@
                                                                      [:topic-id int?]]
                                                               :query #ig/ref :gpml.handler.resource.translation/query-params}
                                                  :handler #ig/ref :gpml.handler.resource.translation/get}
+                                           :delete {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                 #ig/ref :gpml.auth/auth-required
+                                                                 #ig/ref :gpml.auth/approved-user]
+                                                    :summary "Remove specific resource translations"
+                                                    :swagger {:tags ["remove resource translations"]}
+                                                    :parameters {:path [:map
+                                                                        [:topic-type
+                                                                         #ig/ref :gpml.handler.resource.translation/topics]
+                                                                        [:topic-id int?]]
+                                                                 :body #ig/ref :gpml.handler.resource.translation/delete-params}
+                                                    :handler #ig/ref :gpml.handler.resource.translation/delete}
                                            :put {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                               #ig/ref :gpml.auth/auth-required
                                                               #ig/ref :gpml.auth/approved-user]
@@ -708,8 +719,10 @@
 
   :gpml.handler.resource.translation/topics {}
   :gpml.handler.resource.translation/get #ig/ref :gpml.config/common
+  :gpml.handler.resource.translation/delete #ig/ref :gpml.config/common
   :gpml.handler.resource.translation/put #ig/ref :gpml.config/common
   :gpml.handler.resource.translation/query-params {}
+  :gpml.handler.resource.translation/delete-params {}
   :gpml.handler.resource.translation/put-params {}
 
   :gpml.handler.list/get {:db #ig/ref :duct.database/sql}
