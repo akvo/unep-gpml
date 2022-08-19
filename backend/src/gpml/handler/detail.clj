@@ -14,16 +14,14 @@
             [gpml.db.organisation :as db.organisation]
             [gpml.db.policy :as db.policy]
             [gpml.db.project :as db.project]
-            [gpml.db.resource.association :as db.resource.association]
             [gpml.db.resource.connection :as db.resource.connection]
             [gpml.db.resource.tag :as db.resource.tag]
-            [gpml.db.review :as db.review]
             [gpml.db.submission :as db.submission]
-            [gpml.db.topic-stakeholder-auth :as db.ts-auth]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
             [gpml.handler.initiative :as handler.initiative]
             [gpml.handler.organisation :as handler.org]
+            [gpml.handler.resource.permission :as handler.res-permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
@@ -378,67 +376,6 @@
 (defmethod extra-details :nothing [_ _ _]
   nil)
 
-(defn- get-resource-if-allowed
-  [conn path user read?]
-  (let [{:keys [topic-type topic-id] :as params} (update path :topic-type util/get-internal-topic-type)
-        submission (->> {:table-name topic-type :id topic-id}
-                        (db.submission/detail conn))]
-    ;; The following checks are mostly to avoid doing a lot of work
-    ;; when checking the user permissions on a specific resource.
-    (cond
-      ;; If the user is empty it means the caller doesn't have a
-      ;; session and is just making a read call on the resource. So no
-      ;; need to check extra permissions since platform resources are
-      ;; public in a read-only state.
-      (and (not (seq user))
-           (= (:review_status submission) "APPROVED"))
-      submission
-
-      ;; If it's a read attempt, the resource is approved and the user
-      ;; is logged in then we should allow without checking extra
-      ;; permissions.
-      (and read?
-           (= (:review_status submission) "APPROVED"))
-      submission
-
-      ;; If it's not a read operation the respective PUT, POST and
-      ;; DELETE endpoints should check if the user is approved in the
-      ;; platform to do the desired action for the specific resource.
-      :else
-      (let [review (first (db.review/reviews-filter conn params))
-            resource-org-associations
-            (when-not (get #{"organisation" "stakeholder"} topic-type)
-              (db.resource.association/get-resource-associations conn {:table (str "organisation_" topic-type)
-                                                                       :entity-col "organisation"
-                                                                       :resource-col topic-type
-                                                                       :resource-assoc-type (str topic-type "_association")
-                                                                       :filters {:resource-id topic-id
-                                                                                 :associations ["owner"]}}))
-            user-org-auth-roles
-            (when (and (:id user)
-                       (not (get #{"organisation" "stakeholder"} topic-type)))
-              (->> (db.ts-auth/get-topic-stakeholder-auths conn {:filters {:topics-ids (map :organisation resource-org-associations)
-                                                                           :topic-types ["organisation"]
-                                                                           :stakeholders-ids [(:id user)]}})
-                   (map :roles)
-                   (set)))
-
-            user-auth-roles
-            (->> (db.ts-auth/get-topic-stakeholder-auths conn {:filters {:topics-ids [topic-id]
-                                                                         :topic-types [topic-type]
-                                                                         :stakeholders-ids [(:id user)]}})
-                 (map :roles)
-                 (set))
-            access-allowed?
-            (or (and (= (:role user) "REVIEWER") (= (:id user) (:reviewer review)))
-                (contains? user-auth-roles "owner")
-                (and (not (nil? (:id user)))
-                     (= (:created_by submission) (:id user)))
-                (some #(get user-org-auth-roles %) ["owner" "focal-point"])
-                (= (:role user) "ADMIN"))]
-        (when access-allowed?
-          submission)))))
-
 (def not-nil-name #(vec (filter :name %)))
 
 (defn adapt [data]
@@ -481,7 +418,7 @@
       (let [conn        (:spec db)
             topic       (resolve-resource-type (:topic-type path))
             authorized? (and (or (model.topic/public? topic) approved?)
-                             (some? (get-resource-if-allowed conn path user false)))
+                             (some? (handler.res-permission/get-resource-if-allowed conn path user false)))
             sqls (condp = topic
                    "policy" (common-queries topic path true false true true)
                    "event" (common-queries topic path true true true true)
@@ -533,7 +470,7 @@
             topic (:topic-type path)
             id (:topic-id path)
             authorized? (and (or (model.topic/public? topic) approved?)
-                             (some? (get-resource-if-allowed conn path user true)))]
+                             (some? (handler.res-permission/get-resource-if-allowed conn path user true)))]
         (if authorized?
           (if-let [data (get-detail conn topic id query)]
             (resp/response (merge
@@ -618,13 +555,6 @@
       :resource_type table
       :id id
       :organisation org-id})))
-
-(defn update-policy-language [conn language policy-id]
-  (let [lang-id (:id (db.language/language-by-iso-code conn (select-keys language [:iso_code])))]
-    (if-not (nil? lang-id)
-      (db.policy/add-language-to-policy conn {:id policy-id :language lang-id})
-      (db.policy/add-language-to-policy conn {:id policy-id
-                                              :language (:id (db.language/insert-new-language conn language))}))))
 
 (defn -update-blank-resource-picture [conn image-type resource-id image-key]
   (db.detail/update-resource-table
@@ -723,8 +653,6 @@
                      (and (= -1 (:id org))
                           (handler.org/create conn logger mailjet-config org))))
         related-contents (:related_content updates)]
-    (when (and (contains? updates :language) (= topic-type "policy"))
-      (update-policy-language conn (:language updates) id))
     (doseq [[image-key image-data] (select-keys updates [:image :thumbnail :photo :logo])]
       (update-resource-image conn image-data image-key table id))
     (when (seq tags)
@@ -764,7 +692,7 @@
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
     (try
-      (let [submission (get-resource-if-allowed (:spec db) path user false)
+      (let [submission (handler.res-permission/get-resource-if-allowed (:spec db) path user false)
             review_status (:review_status submission)]
         (if (some? submission)
           (let [conn (:spec db)

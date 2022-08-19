@@ -47,7 +47,7 @@
                             geo_coverage_value_subnational_city
                             created_by owners url info_docs sub_content_type
                             recording document_preview related_content
-                            entity_connections individual_connections]}]
+                            entity_connections individual_connections language]}]
   (let [data {:title title
               :start_date start_date
               :end_date end_date
@@ -68,7 +68,8 @@
               :info_docs info_docs
               :sub_content_type sub_content_type
               :recording recording
-              :document_preview document_preview}
+              :document_preview document_preview
+              :language language}
         event-id (->> data (db.event/new-event conn) :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
@@ -164,7 +165,8 @@
      [:vector {:optional true}
       [:map {:optional true}
        [:id {:optional true} pos-int?]
-       [:tag string?]]]]]
+       [:tag string?]]]]
+    [:language string?]]
    (into handler.geo/params-payload)))
 
 (defmethod ig/init-key :gpml.handler.event/post

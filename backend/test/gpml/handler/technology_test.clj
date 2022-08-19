@@ -28,7 +28,8 @@
    :document_preview false
    :year_founded 2021
    :tags (:tags data)
-   :owners (or (:owners data) [])})
+   :owners (or (:owners data) [])
+   :language "en"})
 
 (deftest handler-post-test
   (testing "New technology is created"

@@ -51,7 +51,7 @@
            attachments country urls tags remarks thumbnail
            created_by url owners info_docs sub_content_type related_content
            first_publication_date latest_amendment_date document_preview
-           entity_connections individual_connections]}]
+           entity_connections individual_connections language]}]
   (let [data {:type resource_type
               :title title
               :publish_year publish_year
@@ -77,7 +77,8 @@
               :sub_content_type sub_content_type
               :first_publication_date first_publication_date
               :latest_amendment_date latest_amendment_date
-              :document_preview document_preview}
+              :document_preview document_preview
+              :language language}
         resource-id (:id (db.resource/new-resource conn data))
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
@@ -144,7 +145,7 @@
         (log logger :error ::failed-to-create-resource {:exception-message (.getMessage e)})
         (let [response {:status 500
                         :body {:success? false
-                               :reason :could-not-create-event}}]
+                               :reason :could-not-create-resource}}]
 
           (if (instance? SQLException e)
             response
@@ -223,6 +224,7 @@
             [:map {:optional true}
              [:id {:optional true} pos-int?]
              [:tag string?]]]]
+          [:language string?]
           auth/owners-schema]
          handler.geo/params-payload)])
 

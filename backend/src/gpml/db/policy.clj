@@ -10,7 +10,6 @@
             [java-time.temporal]))
 
 (declare language-by-policy-id
-         add-language-to-policy
          new-policy
          add-policies-geo
          create-policies

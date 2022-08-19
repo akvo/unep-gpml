@@ -9,7 +9,8 @@ insert into event(
     geo_coverage_type,
     country,
     city,
-    image
+    image,
+    language
 --~ (when (contains? params :id) ", id")
 --~ (when (contains? params :review_status) ", review_status")
 --~ (when (contains? params :created_by) ", created_by")
@@ -31,7 +32,8 @@ values(
     :geo_coverage_type::geo_coverage_type,
     :country,
     :city,
-    :image
+    :image,
+    :language
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :review_status) ", :v:review_status::review_status")
 --~ (when (contains? params :created_by) ", :created_by")

@@ -252,13 +252,18 @@
    way to transform the data will be the right one.
 
    `:leap_api_modified` field can be already transformed into a java time instant, if we are coming from the Update
-    flow, so that is why we apply a conditional transformation there."
+    flow, so that is why we apply a conditional transformation there.
+
+    For now we are not supporting multi-lingual content from the LEAP API import, so we are not using the item's
+    language, neither the `languages-by-iso-code` option, as we are hardcoding all the items language to be
+    english, since right now it is the only language we have the content for.
+    In the future, we will use the original content for creating translations and support multi-lingual
+    feature, but not for now."
   [{:keys [title originalTitle source country abstract type
            dateOfText lastAmendmentDate status files link regulatoryApproach
-           topics language id updated implementingMeas] :as policy-raw}
+           topics id updated implementingMeas] :as policy-raw}
    {:keys [default-lang
            countries-by-iso-code
-           languages-by-iso-code
            tags-by-normalized-name
            mea-country-groups-by-name
            policy-types-of-law
@@ -309,11 +314,7 @@
                       :available-opts
                       policy-sub-content-types)
    :topics (parse-policy-leap-api-field :collection topics)
-   :language (parse-policy-leap-api-field
-              :iso-code
-              language
-              :opts-by-iso-code
-              languages-by-iso-code)
+   :language (name default-lang)
    :leap_api_id (parse-policy-leap-api-field :uuid id)
    :leap_api_modified (if-not (jt/instant? updated)
                         (parse-policy-leap-api-field :timestamp updated)
