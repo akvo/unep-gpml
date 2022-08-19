@@ -186,6 +186,7 @@ const FlexibleForm = withRouter(
           };
         });
 
+      data.language = "en";
       delete data?.tagsList;
 
       if (data?.publishYear) {
@@ -466,6 +467,7 @@ const FlexibleForm = withRouter(
         delete data.qtype;
       }
 
+      data.language = "en";
       delete data.tagsList;
       delete data.qtagsList;
 
@@ -626,6 +628,7 @@ const FlexibleForm = withRouter(
           };
         });
 
+      data.language = "en";
       delete data.tagsList;
 
       if (data.hasOwnProperty("firstPublicationDate")) {
@@ -836,6 +839,7 @@ const FlexibleForm = withRouter(
           };
         });
 
+      data.language = "en";
       delete data.tagsList;
 
       if (data.hasOwnProperty("startDate")) {
@@ -1044,6 +1048,7 @@ const FlexibleForm = withRouter(
           };
         });
 
+      data.language = "en";
       delete data.tagsList;
 
       if (data?.entity) {
