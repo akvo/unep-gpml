@@ -277,7 +277,7 @@ const Root = () => {
         return console.log(err);
       }
       if (authResult) {
-        history.replace("/");
+        history.goBack();
         setSession(authResult);
         api.setToken(authResult.idToken);
         if (
@@ -619,6 +619,7 @@ const Root = () => {
                   setMultiCountryCountries,
                   setWarningModalVisible,
                   setStakeholderSignupModalVisible,
+                  setLoginVisible,
                   ...props,
                 }}
                 setStakeholderSignupModalVisible={

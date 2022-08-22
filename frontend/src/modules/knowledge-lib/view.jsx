@@ -17,7 +17,7 @@ const popularTags = [
   "source to sea",
 ];
 
-function Library() {
+function Library({ isAuthenticated, setLoginVisible }) {
   const history = useHistory();
   const query = useQuery();
   const box = document.getElementsByClassName("knowledge-lib");
@@ -78,6 +78,8 @@ function Library() {
                 data,
                 loading,
                 history,
+                isAuthenticated,
+                setLoginVisible,
               }}
             />
           )}

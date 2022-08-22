@@ -19,6 +19,8 @@ const Overview = ({
   data,
   loading,
   history,
+  setLoginVisible,
+  isAuthenticated,
 }) => {
   const summaryDict = {};
   let allResources = 0;
@@ -75,7 +77,7 @@ const Overview = ({
       </ul>
       <section className="grey">
         {/* <h3>Categories</h3> */}
-        <Featured />
+        <Featured {...{ setLoginVisible, isAuthenticated, history }} />
       </section>
       <section>
         <Row gutter={16}>
@@ -126,7 +128,7 @@ const Overview = ({
   );
 };
 
-const Featured = () => {
+const Featured = ({ isAuthenticated, setLoginVisible, history }) => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -143,11 +145,20 @@ const Featured = () => {
         showMoreCardAfter={20}
         showMoreCardClick={() => {
           history.push({
-            pathname: `/knowledge/lib/resource/grid`,
+            pathname: `/flexible-forms`,
           });
         }}
         firstCard={
-          <Link to="/flexible-forms">
+          <Link
+            onClick={(e) => {
+              e.preventDefault();
+              if (isAuthenticated)
+                history.push({
+                  pathname: `/flexible-forms`,
+                });
+              else setLoginVisible(true);
+            }}
+          >
             <div className="add-resource-card">
               <b>+</b>
               <span>Share your resource</span>
