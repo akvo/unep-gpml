@@ -19,7 +19,7 @@
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
-(defn expand-entity-associations
+(defn- expand-entity-associations
   [entity-connections resource-id]
   (vec (for [connection entity-connections]
          {:column_name "event"
@@ -29,7 +29,7 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn expand-individual-associations
+(defn- expand-individual-associations
   [individual-connections resource-id]
   (vec (for [connection individual-connections]
          {:column_name "event"
@@ -39,37 +39,41 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn create-event [conn logger mailjet-config
-                    {:keys [tags urls title start_date end_date
-                            description remarks geo_coverage_type
-                            country city geo_coverage_value image thumbnail
-                            geo_coverage_countries geo_coverage_country_groups
-                            geo_coverage_value_subnational_city
-                            created_by owners url info_docs sub_content_type
-                            recording document_preview related_content
-                            entity_connections individual_connections language]}]
-  (let [data {:title title
-              :start_date start_date
-              :end_date end_date
-              :description (or description "")
-              :remarks remarks
-              :image (handler.image/assoc-image conn image "event")
-              :thumbnail (handler.image/assoc-image conn thumbnail "event")
-              :geo_coverage_type geo_coverage_type
-              :geo_coverage_value geo_coverage_value
-              :geo_coverage_countries geo_coverage_countries
-              :geo_coverage_country_groups geo_coverage_country_groups
-              :subnational_city geo_coverage_value_subnational_city
-              :city city
-              :url url
-              :country country
-              :owners owners
-              :created_by created_by
-              :info_docs info_docs
-              :sub_content_type sub_content_type
-              :recording recording
-              :document_preview document_preview
-              :language language}
+(defn- create-event
+  [conn logger mailjet-config
+   {:keys [tags urls title start_date end_date
+           description remarks geo_coverage_type
+           country city geo_coverage_value image thumbnail
+           geo_coverage_countries geo_coverage_country_groups
+           geo_coverage_value_subnational_city
+           created_by owners url info_docs sub_content_type
+           recording document_preview related_content
+           entity_connections individual_connections language
+           capacity_building]}]
+  (let [data (cond-> {:title title
+                      :start_date start_date
+                      :end_date end_date
+                      :description (or description "")
+                      :remarks remarks
+                      :image (handler.image/assoc-image conn image "event")
+                      :thumbnail (handler.image/assoc-image conn thumbnail "event")
+                      :geo_coverage_type geo_coverage_type
+                      :geo_coverage_value geo_coverage_value
+                      :geo_coverage_countries geo_coverage_countries
+                      :geo_coverage_country_groups geo_coverage_country_groups
+                      :subnational_city geo_coverage_value_subnational_city
+                      :city city
+                      :url url
+                      :country country
+                      :owners owners
+                      :created_by created_by
+                      :info_docs info_docs
+                      :sub_content_type sub_content_type
+                      :recording recording
+                      :document_preview document_preview
+                      :language language}
+               (not (nil? capacity_building))
+               (assoc :capacity_building capacity_building))
         event-id (->> data (db.event/new-event conn) :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
@@ -115,7 +119,7 @@
      (merge data {:type "event"}))
     {:id event-id}))
 
-(def post-params
+(def ^:private post-params
   (->
    [:map
     [:title string?]
@@ -160,13 +164,13 @@
       [:map
        [:lang string?]
        [:url [:string {:min 1}]]]]]
-    auth/owners-schema
     [:tags {:optional true}
-     [:vector {:optional true}
-      [:map {:optional true}
+     [:vector
+      [:map
        [:id {:optional true} pos-int?]
        [:tag string?]]]]
-    [:language string?]]
+    [:language string?]
+    auth/owners-schema]
    (into handler.geo/params-payload)))
 
 (defmethod ig/init-key :gpml.handler.event/post
