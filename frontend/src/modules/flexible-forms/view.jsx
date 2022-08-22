@@ -1235,7 +1235,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
               newArray = newArray.filter((x) => x !== item.tag);
               newArray = [
                 ...newArray,
-                item.id,
+                item.tag,
                 ...(formData?.data?.S4?.S4_G3?.tags
                   ? formData?.data?.S4?.S4_G3?.tags
                   : []),
