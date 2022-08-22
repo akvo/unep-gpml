@@ -19,7 +19,7 @@
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
-(defn expand-entity-associations
+(defn- expand-entity-associations
   [entity-connections resource-id]
   (vec (for [connection entity-connections]
          {:column_name "policy"
@@ -29,7 +29,7 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn expand-individual-associations
+(defn- expand-individual-associations
   [individual-connections resource-id]
   (vec (for [connection individual-connections]
          {:column_name "policy"
@@ -39,47 +39,51 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn create-policy [conn logger mailjet-config
-                     {:keys [title original_title abstract url
-                             data_source type_of_law record_number
-                             first_publication_date latest_amendment_date
-                             status country geo_coverage_type
-                             geo_coverage_value implementing_mea
-                             geo_coverage_countries geo_coverage_country_groups
-                             geo_coverage_value_subnational_city
-                             tags created_by image thumbnail language
-                             owners info_docs sub_content_type
-                             document_preview related_content topics
-                             attachments remarks entity_connections individual_connections]}]
-  (let [data {:title title
-              :original_title original_title
-              :abstract abstract
-              :url url
-              :country country
-              :data_source data_source
-              :type_of_law type_of_law
-              :record_number record_number
-              :first_publication_date first_publication_date
-              :latest_amendment_date latest_amendment_date
-              :status status
-              :owners owners
-              :info_docs info_docs
-              :sub_content_type sub_content_type
-              :document_preview document_preview
-              :topics (pg-util/->JDBCArray topics "text")
-              :image (handler.image/assoc-image conn image "policy")
-              :thumbnail (handler.image/assoc-image conn thumbnail "policy")
-              :geo_coverage_type geo_coverage_type
-              :geo_coverage_value geo_coverage_value
-              :geo_coverage_countries geo_coverage_countries
-              :geo_coverage_country_groups geo_coverage_country_groups
-              :subnational_city geo_coverage_value_subnational_city
-              :implementing_mea implementing_mea
-              :attachments attachments
-              :remarks remarks
-              :created_by created_by
-              :review_status "SUBMITTED"
-              :language language}
+(defn- create-policy
+  [conn logger mailjet-config
+   {:keys [title original_title abstract url
+           data_source type_of_law record_number
+           first_publication_date latest_amendment_date
+           status country geo_coverage_type
+           geo_coverage_value implementing_mea
+           geo_coverage_countries geo_coverage_country_groups
+           geo_coverage_value_subnational_city
+           tags created_by image thumbnail language
+           owners info_docs sub_content_type
+           document_preview related_content topics
+           attachments remarks entity_connections individual_connections
+           capacity_building]}]
+  (let [data (cond-> {:title title
+                      :original_title original_title
+                      :abstract abstract
+                      :url url
+                      :country country
+                      :data_source data_source
+                      :type_of_law type_of_law
+                      :record_number record_number
+                      :first_publication_date first_publication_date
+                      :latest_amendment_date latest_amendment_date
+                      :status status
+                      :owners owners
+                      :info_docs info_docs
+                      :sub_content_type sub_content_type
+                      :document_preview document_preview
+                      :topics (pg-util/->JDBCArray topics "text")
+                      :image (handler.image/assoc-image conn image "policy")
+                      :thumbnail (handler.image/assoc-image conn thumbnail "policy")
+                      :geo_coverage_type geo_coverage_type
+                      :geo_coverage_value geo_coverage_value
+                      :geo_coverage_countries geo_coverage_countries
+                      :geo_coverage_country_groups geo_coverage_country_groups
+                      :subnational_city geo_coverage_value_subnational_city
+                      :implementing_mea implementing_mea
+                      :attachments attachments
+                      :remarks remarks
+                      :created_by created_by
+                      :review_status "SUBMITTED"
+                      :language language}
+               (not (nil? capacity_building))
+               (assoc :capacity_building capacity_building))
         policy-geo-coverage-insert-cols ["policy" "country_group" "country"]
         policy-id (->> data (db.policy/new-policy conn) :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
@@ -141,7 +145,7 @@
             response
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
-(def post-params
+(def ^:private post-params
   (->
    [:map
     [:title string?]
@@ -194,6 +198,7 @@
      [:vector {:optional true}
       [:map [:lang string?] [:url [:string {:min 1}]]]]]
     [:language string?]
+    [:capacity_building {:optional true} boolean?]
     auth/owners-schema]
    (into handler.geo/params-payload)))
 
