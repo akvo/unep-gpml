@@ -697,7 +697,6 @@
     (try
       (let [submission (handler.res-permission/get-resource-if-allowed (:spec db)
                                                                        user
-
                                                                        (resolve-resource-type topic-type)
                                                                        topic-id
                                                                        {:read? false})
