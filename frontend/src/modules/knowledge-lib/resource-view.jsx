@@ -273,7 +273,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           </button>
         </div>
         {(view === "map" || view === "topic") && (
-          <div style={{ overflowX: "hidden", position: "relative" }}>
+          <div style={{ position: "relative" }}>
             <ResourceCards
               items={data?.results}
               showMoreCardAfter={20}
