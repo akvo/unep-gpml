@@ -416,9 +416,10 @@
   (fn [{{:keys [path]} :parameters approved? :approved? user :user}]
     (try
       (let [conn        (:spec db)
+            topic-id    (:topic-id path)
             topic       (resolve-resource-type (:topic-type path))
             authorized? (and (or (model.topic/public? topic) approved?)
-                             (some? (handler.res-permission/get-resource-if-allowed conn path user false)))
+                             (some? (handler.res-permission/get-resource-if-allowed conn user topic topic-id {:read? false})))
             sqls (condp = topic
                    "policy" (common-queries topic path true false true true)
                    "event" (common-queries topic path true true true true)
@@ -426,9 +427,7 @@
                    "organisation" (common-queries topic path true false true false)
                    "stakeholder" [["delete from stakeholder where id = ?" (:topic-id path)]]
                    "initiative" (common-queries topic path true false true true)
-                   "action_plan" (common-queries "resource" path true true true true)
-                   "technical_resource" (common-queries "resource" path true true true true)
-                   "financing_resource" (common-queries "resource" path true true true true))]
+                   "resource" (common-queries topic path true true true true))]
         (if authorized?
           (resp/response (do
                            (jdbc/with-db-transaction [tx-conn conn]
@@ -470,7 +469,11 @@
             topic (:topic-type path)
             id (:topic-id path)
             authorized? (and (or (model.topic/public? topic) approved?)
-                             (some? (handler.res-permission/get-resource-if-allowed conn path user true)))]
+                             (some? (handler.res-permission/get-resource-if-allowed conn
+                                                                                    user
+                                                                                    (resolve-resource-type topic)
+                                                                                    id
+                                                                                    {:read? true})))]
         (if authorized?
           (if-let [data (get-detail conn topic id query)]
             (resp/response (merge
@@ -692,7 +695,12 @@
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
     (try
-      (let [submission (handler.res-permission/get-resource-if-allowed (:spec db) path user false)
+      (let [submission (handler.res-permission/get-resource-if-allowed (:spec db)
+                                                                       user
+
+                                                                       (resolve-resource-type topic-type)
+                                                                       topic-id
+                                                                       {:read? false})
             review_status (:review_status submission)]
         (if (some? submission)
           (let [conn (:spec db)
