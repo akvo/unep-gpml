@@ -265,8 +265,8 @@ const Header = ({
 
     const canDelete = () =>
       isAuthenticated &&
-      profile.reviewStatus === "APPROVED" &&
-      profile.role === "ADMIN";
+      ((profile.reviewStatus === "APPROVED" && profile.role === "ADMIN") ||
+        find);
 
     return (
       <HeaderButtons
