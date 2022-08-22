@@ -110,6 +110,8 @@ function Library({ setLoginVisible, isAuthenticated }) {
                 loading,
                 history,
                 showModal,
+                isAuthenticated,
+                setLoginVisible,
               }}
             />
           )}

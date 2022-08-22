@@ -17,15 +17,15 @@ export const resourceTypes = [
     title: "technical_resource",
   },
   { key: "event", label: "Events", title: "event" },
-  { key: "technology", label: "Technology", title: "technology" },
+  { key: "technology", label: "Technologies", title: "technology" },
   {
     key: "capacity-building",
     label: "Capacity Building",
     title: "capacity building",
   },
   { key: "project", label: "Initiatives", title: "project" },
-  { key: "action-plan", label: "Action Plan", title: "action_plan" },
-  { key: "policy", label: "Policy", title: "policy" },
+  { key: "action-plan", label: "Action Plans", title: "action_plan" },
+  { key: "policy", label: "Policies", title: "policy" },
   {
     key: "financing-resource",
     label: "Financing Resources",

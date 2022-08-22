@@ -55,6 +55,7 @@ function Knowledge({
   setFilterCountries,
   setMultiCountryCountries,
   setWarningModalVisible,
+  setStakeholderSignupModalVisible,
   setLoginVisible,
 }) {
   return (
@@ -71,8 +72,11 @@ function Knowledge({
                 path="/knowledge/lib"
                 render={(props) => (
                   <KnowledgeLib
-                    {...{ isAuthenticated, setLoginVisible }}
-                    {...props}
+                    {...{
+                      isAuthenticated,
+                      setLoginVisible,
+                      ...props,
+                    }}
                   />
                 )}
               />

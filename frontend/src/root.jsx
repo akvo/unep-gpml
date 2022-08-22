@@ -19,7 +19,7 @@ import {
   CloseCircleOutlined,
 } from "@ant-design/icons";
 import MenuOutlined from "./images/menu-outlined.svg";
-import OldLanding from "./modules/landing/new-home";
+import { Landing, JoinGPMLButton } from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
 import Stakeholders from "./modules/stakeholders/view";
 import AddEvent from "./modules/events/view";
@@ -91,7 +91,6 @@ const TRACKING_ID = "UA-225649296-2";
 import auth0 from "auth0-js";
 
 import { auth0Client } from "./utils/misc";
-import Landing from "./modules/landing/landing";
 
 Promise.all([
   api.get("/tag"),
@@ -278,7 +277,7 @@ const Root = () => {
         return console.log(err);
       }
       if (authResult) {
-        history.replace("/");
+        history.goBack();
         setSession(authResult);
         api.setToken(authResult.idToken);
         if (
@@ -351,15 +350,6 @@ const Root = () => {
       ReactGA.pageview(window.location.pathname + window.location.search);
     }
   }, []);
-
-  // Remove scroll effect after displaying the detail modal
-  useEffect(() => {
-    const body = document.querySelector("body");
-    if (!path.includes("/knowledge")) {
-      body.classList.remove("scroll-disabled");
-      body.style.top = "unset";
-    }
-  }, [path]);
 
   // Here we retrieve the resources data
   const [results, setResults] = useState([]);
@@ -463,461 +453,456 @@ const Root = () => {
 
   return (
     <>
-      <Switch>
-        <Route
-          path="/landing"
-          exact
-          render={(props) => (
-            <Landing {...{...props, setLoginVisible, profile, updateQuery, isRegistered, logout}} />
-          )}
-        />
-        <Route>
-          <ScrollToTop />
-          <div id="root">
-            {storage.getCookie("showDisclaimer") !== "false" &&
-              disclaimerContent?.[disclaimer] && (
-                <div className="panel-disclaimer">
-                  <div className="ui container">
-                    {disclaimerContent?.[disclaimer]}
-                  </div>
-                </div>
-              )}
-            <Header className="nav-header-container">
+      <ScrollToTop />
+      <div id="root">
+        {storage.getCookie("showDisclaimer") !== "false" &&
+          disclaimerContent?.[disclaimer] && (
+            <div className="panel-disclaimer">
               <div className="ui container">
-                <div className="logo-wrapper">
-                  <Link to="/">
-                    <img src={logo} className="logo" alt="GPML" />
-                  </Link>
-                </div>
-                <div className="main-menu-items">
-                  {isAuthenticated && <WorkspaceButton />}
-                  <ul>
-                    <li>
-                      <NavLink
-                        to="/about-us"
-                        className="menu-btn nav-link menu-dropdown"
-                        activeClassName="selected"
-                      >
-                        About
-                      </NavLink>
-                    </li>
-                    <li>
-                      <ExploreDropdownMenu topicsCount={topicsCount} />
-                    </li>
-                    <li>
-                      <a
-                        href="https://datahub.gpmarinelitter.org/"
-                        className="menu-btn nav-link menu-dropdown"
-                      >
-                        Data Hub
-                      </a>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/knowledge/library"
-                        className={`menu-btn nav-link menu-dropdown ${
-                          path.includes("/knowledge") && "selected"
-                        }`}
-                        activeClassName={"selected"}
-                      >
-                        Knowledge Exchange
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/connect/events"
-                        className={`menu-btn nav-link ${
-                          path.includes("/connect") && "selected"
-                        }`}
-                        activeClassName="selected"
-                      >
-                        Connect Stakeholders
-                      </NavLink>
-                    </li>
-                  </ul>
-                </div>
-                <Switch>
-                  <Route path="/browse" />
-                  <Route>
-                    <Search updateQuery={updateQuery} />
-                  </Route>
-                </Switch>
-                <div className="rightside">
-                  {!isAuthenticated ? (
-                    <div className="rightside btn-wrapper">
-                      {isAuthenticated && isRegistered(profile) ? (
-                        <UserButton {...{ logout, isRegistered, profile }} />
-                      ) : (
-                        <Button
-                          type="ghost"
-                          className="left"
-                          onClick={() => setLoginVisible(true)}
-                        >
-                          Sign in
-                        </Button>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="rightside btn-wrapper">
-                      <AddButton
-                        {...{
-                          setStakeholderSignupModalVisible,
-                          isAuthenticated,
-                          loginWithPopup,
-                          setWarningModalVisible,
-                          setLoginVisible,
-                        }}
-                      />
-                      <UserButton {...{ logout, isRegistered, profile }} />
-                    </div>
-                  )}
-                  {/* Drawer/ Menu for responsive design */}
-                  <div className="responsive-menu-trigger">
-                    <Button
-                      className="menu-icon"
-                      icon={<img src={MenuOutlined} />}
-                      onClick={() => setShowResponsiveMenu(true)}
-                    />
-                  </div>
-                </div>
+                {disclaimerContent?.[disclaimer]}
               </div>
-            </Header>
+            </div>
+          )}
+        <Header className="nav-header-container">
+          <div className="ui container">
+            <div className="logo-wrapper">
+              <Link to="/">
+                <img src={logo} className="logo" alt="GPML" />
+              </Link>
+            </div>
+            <div className="main-menu-items">
+              {isAuthenticated && <WorkspaceButton />}
+              <ul>
+                <li>
+                  <NavLink
+                    to="/about-us"
+                    className="menu-btn nav-link menu-dropdown"
+                    activeClassName="selected"
+                  >
+                    About
+                  </NavLink>
+                </li>
+                <li>
+                  <ExploreDropdownMenu topicsCount={topicsCount} />
+                </li>
+                <li>
+                  <a
+                    href="https://datahub.gpmarinelitter.org/"
+                    className="menu-btn nav-link menu-dropdown"
+                  >
+                    Data Hub
+                  </a>
+                </li>
+                <li>
+                  <NavLink
+                    to="/knowledge/library"
+                    className={`menu-btn nav-link menu-dropdown ${
+                      path.includes("/knowledge") && "selected"
+                    }`}
+                    activeClassName={"selected"}
+                  >
+                    Knowledge Exchange
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/connect/events"
+                    className={`menu-btn nav-link ${
+                      path.includes("/connect") && "selected"
+                    }`}
+                    activeClassName="selected"
+                  >
+                    Connect Stakeholders
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
             <Switch>
-              <Route
-                path="/"
-                exact
-                render={(props) => (
-                  <OldLanding
+              <Route path="/browse" />
+              <Route>
+                <Search updateQuery={updateQuery} />
+              </Route>
+            </Switch>
+            <div className="rightside">
+              {!isAuthenticated ? (
+                <div className="rightside btn-wrapper">
+                  {isAuthenticated && isRegistered(profile) ? (
+                    <UserButton {...{ logout, isRegistered, profile }} />
+                  ) : (
+                    <Button
+                      type="ghost"
+                      className="left"
+                      onClick={() => setLoginVisible(true)}
+                    >
+                      Sign in
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <div className="rightside btn-wrapper">
+                  <AddButton
                     {...{
-                      setWarningModalVisible,
                       setStakeholderSignupModalVisible,
                       isAuthenticated,
-                      setFilterMenu,
-                      setLoginVisible,
-                      ...props,
-                    }}
-                  />
-                )}
-              />
-              <Route
-                exact
-                path="/about-us"
-                render={(props) => <AboutUs {...props} />}
-              />
-              <Route
-                exact
-                path="/glossary"
-                render={(props) => <Glossary {...props} />}
-              />
-              <Route
-                path="/knowledge"
-                render={(props) => (
-                  <Knowledge
-                    {...{
-                      history,
-                      query,
-                      results,
-                      countData,
-                      pageSize,
-                      loading,
-                      filters,
-                      filterMenu,
-                      filterCountries,
-                      isAuthenticated,
                       loginWithPopup,
-                      multiCountryCountries,
-                      isLoading,
-                      setLoading,
-                      landingQuery,
-
-                      //Functions
-                      setFilterMenu,
-                      getResults,
-                      updateQuery,
-                      setFilters,
-                      setRelations,
-                      setFilterCountries,
-                      setMultiCountryCountries,
                       setWarningModalVisible,
-                      setLoginVisible,
-                      ...props,
                     }}
-                    filters={filters}
-                    setFilters={setFilters}
-                    filterMenu={filterMenu}
                   />
-                )}
-              />
-
-              <Route
-                path="/browse"
-                render={(props) => (
-                  <Browse
-                    {...{
-                      setWarningModalVisible,
-                      ...props,
-                    }}
-                    setStakeholderSignupModalVisible={
-                      setStakeholderSignupModalVisible
-                    }
-                    filters={filters}
-                    setFilters={setFilters}
-                    filterMenu={filterMenu}
-                  />
-                )}
-              />
-              <Route
-                exact
-                path="/topics"
-                render={(props) => (
-                  <Topic {...props} filters={filters} setFilters={setFilters} />
-                )}
-              />
-              <Route
-                path="/stakeholders"
-                render={(props) => (
-                  <Stakeholders
-                    {...props}
-                    setStakeholderSignupModalVisible={
-                      setStakeholderSignupModalVisible
-                    }
-                    filters={filters}
-                    setFilters={setFilters}
-                    filterMenu={filterMenu}
-                  />
-                )}
-              />
-              <Route
-                path="/add-event"
-                render={(props) => <AddEvent {...props} />}
-              />
-              <Route
-                exact
-                path="/edit-event/:id"
-                render={(props) => <FlexibleForms {...props} />}
-              />
-
-              <Route
-                path="/add-technology"
-                render={(props) => <AddTechnology {...props} />}
-              />
-              <Route
-                exact
-                path="/edit-technology/:id"
-                render={(props) => <FlexibleForms {...props} />}
-              />
-
-              <Route
-                path="/add-policy"
-                render={(props) => <AddPolicy {...props} />}
-              />
-              <Route
-                exact
-                path="/edit-policy/:id"
-                render={(props) => <FlexibleForms {...props} />}
-              />
-
-              <Route
-                path="/add-action-plan"
-                render={(props) => <AddActionPlan {...props} />}
-              />
-              <Route
-                exact
-                path="/edit-action-plan/:id"
-                render={(props) => <FlexibleForms {...props} />}
-              />
-
-              <Route
-                path="/add-financing-resource"
-                render={(props) => <AddFinancingResource {...props} />}
-              />
-              <Route
-                exact
-                path="/edit-financing-resource/:id"
-                render={(props) => <FlexibleForms {...props} />}
-              />
-
-              <Route
-                path="/add-technical-resource"
-                render={(props) => <AddTechnicalResource {...props} />}
-              />
-              <Route
-                exact
-                path="/edit-technical-resource/:id"
-                render={(props) => <FlexibleForms {...props} />}
-              />
-
-              <Route
-                path="/add-initiative"
-                render={(props) => <AddInitiative {...props} />}
-              />
-              <Route
-                exact
-                path="/edit-initiative/:id"
-                render={(props) => <FlexibleForms {...props} />}
-              />
-
-              <Route
-                exact
-                path="/:type(edit-entity|edit-stakeholder)/:id"
-                render={(props) => <EntityFormView {...props} />}
-              />
-
-              <Route
-                path="/profile"
-                render={(props) => <ProfileView {...{ ...props, relations }} />}
-              />
-              <Route
-                path="/entity-signup"
-                render={(props) => <SignupView {...props} formType="entity" />}
-              />
-              <Route
-                path="/stakeholder-signup"
-                render={(props) => <SignupView {...props} formType="stakeholder" />}
-              />
-              <Route
-                path="/stakeholder-signup-new"
-                render={(props) => <SignupViewNew {...props} />}
-              />
-              <Route
-                path="/signup"
-                render={(props) => (
-                  <LandingSignupView
-                    {...props}
-                    profile={profile}
-                    setLoginVisible={setLoginVisible}
-                  />
-                )}
-              />
-              <Route path="/login" render={(props) => <LoginView {...props} />} />
-              <Route
-                path="/flexible-forms"
-                render={(props) => <FlexibleForms {...props} />}
-              />
-              <Route
-                path="/details-view"
-                render={(props) => (
-                  <NewDetailsView {...props} isAuthenticated={isAuthenticated} />
-                )}
-              />
-              <Route
-                path="/discourse-forum"
-                render={(props) => <DiscourseForum />}
-              />
-
-              <Route
-                exact
-                render={(props) =>
-                  isAuthenticated && <Workspace {...props} profile={profile} />
-                }
-                path="/workspace"
-              />
-              <Route
-                exact
-                render={(props) => (
-                  <StakeholderDetail {...props} isAuthenticated={isAuthenticated} />
-                )}
-                path="/stakeholder-detail"
-              />
-              <Route
-                exact
-                render={(props) => <Onboarding {...props} />}
-                path="/onboarding"
-              />
-
-              <Route
-                path="/connect"
-                render={(props) => (
-                  <Connect
-                    {...props}
-                    setLoginVisible={setLoginVisible}
-                    filters={filters}
-                    setFilters={setFilters}
-                    isAuthenticated={isAuthenticated}
-                  />
-                )}
-              />
-
-              <Route
-                path="/:type(stakeholder)/:id"
-                render={(props) => (
-                  <StakeholderDetail
-                    {...props}
-                    setLoginVisible={setLoginVisible}
-                    setFilterMenu={setFilterMenu}
-                    isAuthenticated={isAuthenticated}
-                  />
-                )}
-              />
-              <Route
-                path="/:type(project|action-plan|policy|technical-resource|financing-resource|technology|event)/:id"
-                render={(props) => (
-                  <NewDetailsView
-                    {...props}
-                    setLoginVisible={setLoginVisible}
-                    setFilterMenu={setFilterMenu}
-                    isAuthenticated={isAuthenticated}
-                  />
-                )}
-              />
-              <Route
-                path="/:type(organisation)/:id"
-                render={(props) => (
-                  <EntityDetail
-                    {...props}
-                    setStakeholderSignupModalVisible={
-                      setStakeholderSignupModalVisible
-                    }
-                    setFilterMenu={setFilterMenu}
-                    isAuthenticated={isAuthenticated}
-                  />
-                )}
-              />
-              <Route exact path="/not-found">
-                <Error status={404} />
-              </Route>
-              <Route exact path="/not-authorized">
-                <Error status={403} />
-              </Route>
-              <Route exact path="/error">
-                <Error />
-              </Route>
-              <Route component={(props) => <Error {...props} status={404} />} />
-            </Switch>
-            {isAuthenticated && <AddContentButton />}
-            <Footer
-              setStakeholderSignupModalVisible={setStakeholderSignupModalVisible}
-              setWarningModalVisible={setWarningModalVisible}
-              isAuthenticated={isAuthenticated}
-              loginWithPopup={loginWithPopup}
-              setFilterMenu={setFilterMenu}
-              setLoginVisible={setLoginVisible}
-            />
+                  <UserButton {...{ logout, isRegistered, profile }} />
+                </div>
+              )}
+              {/* Drawer/ Menu for responsive design */}
+              <div className="responsive-menu-trigger">
+                <Button
+                  className="menu-icon"
+                  icon={<img src={MenuOutlined} />}
+                  onClick={() => setShowResponsiveMenu(true)}
+                />
+              </div>
+            </div>
           </div>
-          <ModalWarningUser
-            visible={warningModalVisible}
-            close={() => setWarningModalVisible(false)}
+        </Header>
+        <Switch>
+          <Route
+            path="/"
+            exact
+            render={(props) => (
+              <Landing
+                {...{
+                  setWarningModalVisible,
+                  setStakeholderSignupModalVisible,
+                  loginWithPopup,
+                  isAuthenticated,
+                  setFilterMenu,
+                  ...props,
+                }}
+              />
+            )}
           />
-          <Login visible={loginVisible} close={() => setLoginVisible(false)} />
-          <ResponsiveMenu
-            {...{
-              profile,
-              updateQuery,
-              setWarningModalVisible,
-              isAuthenticated,
-              setLoginVisible,
-              loginWithPopup,
-              logout,
-              setFilterMenu,
-              showResponsiveMenu,
-              setShowResponsiveMenu,
-              topicsCount,
-              stakeholderCounts,
-            }}
-            resources={resourceCounts}
+          <Route
+            exact
+            path="/about-us"
+            render={(props) => <AboutUs {...props} />}
           />
-        </Route>
-      </Switch>
+          <Route
+            exact
+            path="/glossary"
+            render={(props) => <Glossary {...props} />}
+          />
+          <Route
+            path="/knowledge"
+            render={(props) => (
+              <Knowledge
+                {...{
+                  history,
+                  query,
+                  results,
+                  countData,
+                  pageSize,
+                  loading,
+                  filters,
+                  filterMenu,
+                  filterCountries,
+                  isAuthenticated,
+                  loginWithPopup,
+                  multiCountryCountries,
+                  isLoading,
+                  setLoading,
+                  landingQuery,
+
+                  //Functions
+                  getResults,
+                  updateQuery,
+                  setFilters,
+                  setRelations,
+                  setFilterCountries,
+                  setMultiCountryCountries,
+                  setWarningModalVisible,
+                  setStakeholderSignupModalVisible,
+                  setLoginVisible,
+                  ...props,
+                }}
+                setStakeholderSignupModalVisible={
+                  setStakeholderSignupModalVisible
+                }
+                filters={filters}
+                setFilters={setFilters}
+                filterMenu={filterMenu}
+              />
+            )}
+          />
+
+          <Route
+            path="/browse"
+            render={(props) => (
+              <Browse
+                {...{
+                  setWarningModalVisible,
+                  ...props,
+                }}
+                setStakeholderSignupModalVisible={
+                  setStakeholderSignupModalVisible
+                }
+                filters={filters}
+                setFilters={setFilters}
+                filterMenu={filterMenu}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/topics"
+            render={(props) => (
+              <Topic {...props} filters={filters} setFilters={setFilters} />
+            )}
+          />
+          <Route
+            path="/stakeholders"
+            render={(props) => (
+              <Stakeholders
+                {...props}
+                setStakeholderSignupModalVisible={
+                  setStakeholderSignupModalVisible
+                }
+                filters={filters}
+                setFilters={setFilters}
+                filterMenu={filterMenu}
+              />
+            )}
+          />
+          <Route
+            path="/add-event"
+            render={(props) => <AddEvent {...props} />}
+          />
+          <Route
+            exact
+            path="/edit-event/:id"
+            render={(props) => <FlexibleForms {...props} />}
+          />
+
+          <Route
+            path="/add-technology"
+            render={(props) => <AddTechnology {...props} />}
+          />
+          <Route
+            exact
+            path="/edit-technology/:id"
+            render={(props) => <FlexibleForms {...props} />}
+          />
+
+          <Route
+            path="/add-policy"
+            render={(props) => <AddPolicy {...props} />}
+          />
+          <Route
+            exact
+            path="/edit-policy/:id"
+            render={(props) => <FlexibleForms {...props} />}
+          />
+
+          <Route
+            path="/add-action-plan"
+            render={(props) => <AddActionPlan {...props} />}
+          />
+          <Route
+            exact
+            path="/edit-action-plan/:id"
+            render={(props) => <FlexibleForms {...props} />}
+          />
+
+          <Route
+            path="/add-financing-resource"
+            render={(props) => <AddFinancingResource {...props} />}
+          />
+          <Route
+            exact
+            path="/edit-financing-resource/:id"
+            render={(props) => <FlexibleForms {...props} />}
+          />
+
+          <Route
+            path="/add-technical-resource"
+            render={(props) => <AddTechnicalResource {...props} />}
+          />
+          <Route
+            exact
+            path="/edit-technical-resource/:id"
+            render={(props) => <FlexibleForms {...props} />}
+          />
+
+          <Route
+            path="/add-initiative"
+            render={(props) => <AddInitiative {...props} />}
+          />
+          <Route
+            exact
+            path="/edit-initiative/:id"
+            render={(props) => <FlexibleForms {...props} />}
+          />
+
+          <Route
+            exact
+            path="/:type(edit-entity|edit-stakeholder)/:id"
+            render={(props) => <EntityFormView {...props} />}
+          />
+
+          <Route
+            path="/profile"
+            render={(props) => <ProfileView {...{ ...props, relations }} />}
+          />
+          <Route
+            path="/entity-signup"
+            render={(props) => <SignupView {...props} formType="entity" />}
+          />
+          <Route
+            path="/stakeholder-signup"
+            render={(props) => <SignupView {...props} formType="stakeholder" />}
+          />
+          <Route
+            path="/stakeholder-signup-new"
+            render={(props) => <SignupViewNew {...props} />}
+          />
+          <Route
+            path="/signup"
+            render={(props) => (
+              <LandingSignupView
+                {...props}
+                profile={profile}
+                setLoginVisible={setLoginVisible}
+              />
+            )}
+          />
+          <Route path="/login" render={(props) => <LoginView {...props} />} />
+          <Route
+            path="/flexible-forms"
+            render={(props) => <FlexibleForms {...props} />}
+          />
+          <Route
+            path="/details-view"
+            render={(props) => (
+              <NewDetailsView {...props} isAuthenticated={isAuthenticated} />
+            )}
+          />
+          <Route
+            path="/discourse-forum"
+            render={(props) => <DiscourseForum />}
+          />
+
+          <Route
+            exact
+            render={(props) =>
+              isAuthenticated && <Workspace {...props} profile={profile} />
+            }
+            path="/workspace"
+          />
+          <Route
+            exact
+            render={(props) => (
+              <StakeholderDetail {...props} isAuthenticated={isAuthenticated} />
+            )}
+            path="/stakeholder-detail"
+          />
+          <Route
+            exact
+            render={(props) => <Onboarding {...props} />}
+            path="/onboarding"
+          />
+
+          <Route
+            path="/connect"
+            render={(props) => (
+              <Connect
+                {...props}
+                setLoginVisible={setLoginVisible}
+                filters={filters}
+                setFilters={setFilters}
+                isAuthenticated={isAuthenticated}
+              />
+            )}
+          />
+
+          <Route
+            path="/:type(stakeholder)/:id"
+            render={(props) => (
+              <StakeholderDetail
+                {...props}
+                setStakeholderSignupModalVisible={
+                  setStakeholderSignupModalVisible
+                }
+                setFilterMenu={setFilterMenu}
+                isAuthenticated={isAuthenticated}
+              />
+            )}
+          />
+          <Route
+            path="/:type(project|action-plan|policy|technical-resource|financing-resource|technology|event)/:id"
+            render={(props) => (
+              <NewDetailsView
+                {...props}
+                setStakeholderSignupModalVisible={
+                  setStakeholderSignupModalVisible
+                }
+                setFilterMenu={setFilterMenu}
+                isAuthenticated={isAuthenticated}
+              />
+            )}
+          />
+          <Route
+            path="/:type(organisation)/:id"
+            render={(props) => (
+              <EntityDetail
+                {...props}
+                setStakeholderSignupModalVisible={
+                  setStakeholderSignupModalVisible
+                }
+                setFilterMenu={setFilterMenu}
+                isAuthenticated={isAuthenticated}
+              />
+            )}
+          />
+          <Route exact path="/not-found">
+            <Error status={404} />
+          </Route>
+          <Route exact path="/not-authorized">
+            <Error status={403} />
+          </Route>
+          <Route exact path="/error">
+            <Error />
+          </Route>
+          <Route component={(props) => <Error {...props} status={404} />} />
+        </Switch>
+        {isAuthenticated && <AddContentButton />}
+        <Footer
+          setStakeholderSignupModalVisible={setStakeholderSignupModalVisible}
+          setWarningModalVisible={setWarningModalVisible}
+          isAuthenticated={isAuthenticated}
+          loginWithPopup={loginWithPopup}
+          setFilterMenu={setFilterMenu}
+          setLoginVisible={setLoginVisible}
+        />
+      </div>
+      <ModalWarningUser
+        visible={warningModalVisible}
+        close={() => setWarningModalVisible(false)}
+      />
+      <Login visible={loginVisible} close={() => setLoginVisible(false)} />
+      <ResponsiveMenu
+        {...{
+          profile,
+          updateQuery,
+          setWarningModalVisible,
+          isAuthenticated,
+          setStakeholderSignupModalVisible,
+          loginWithPopup,
+          logout,
+          setFilterMenu,
+        }}
+        showResponsiveMenu={showResponsiveMenu}
+        setShowResponsiveMenu={setShowResponsiveMenu}
+        topicsCount={topicsCount}
+        resources={resourceCounts}
+        stakeholderCounts={stakeholderCounts}
+      />
     </>
   );
 };
@@ -956,9 +941,7 @@ const UserButton = withRouter(({ history, logout, isRegistered, profile }) => {
         <Menu className="user-btn-dropdown">
           <Menu.Item
             onClick={() => {
-              history.push(
-                `/${isRegistered(profile) ? "profile" : "onboarding"}`
-              );
+              history.push(`/${isRegistered(profile) ? "profile" : "signup"}`);
             }}
           >
             Profile
@@ -993,13 +976,15 @@ const AddButton = withRouter(
     setWarningModalVisible,
     loginWithPopup,
     history,
-    setLoginVisible,
   }) => {
     const profile = UIStore.useState((s) => s.profile);
     if (isAuthenticated) {
       if (profile?.reviewStatus === "APPROVED") {
         return (
           <>
+            {!profile?.org && (
+              <JoinGPMLButton loginWithPopup={loginWithPopup} />
+            )}
             <Link to="/flexible-forms">
               <Button type="primary">Add Content</Button>
             </Link>
@@ -1010,9 +995,9 @@ const AddButton = withRouter(
         <Button
           type="primary"
           onClick={() => {
-            profile?.reviewStatus === "SUBMITTED"
+            Object.keys(profile).length > 1
               ? setWarningModalVisible(true)
-              : history.push("/onboarding");
+              : setStakeholderSignupModalVisible(true);
           }}
         >
           Add Content
@@ -1020,7 +1005,10 @@ const AddButton = withRouter(
       );
     }
     return (
-      <Button type="primary" onClick={() => setLoginVisible(true)}>
+      <Button
+        type="primary"
+        onClick={() => loginWithPopup({ action: "login" })}
+      >
         Add Content
       </Button>
     );
