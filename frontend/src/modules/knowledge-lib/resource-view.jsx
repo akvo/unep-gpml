@@ -140,27 +140,9 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   const loadAllCat = async (filter) => {
     setLoading(true);
 
-    if (filter.hasOwnProperty("descending")) {
-      filter["orderBy"] = "title";
-    }
-
-    // Remove empty query
-    const arrayOfQuery = Object.entries(filter)?.filter(
-      (item) => item[1]?.length !== 0 && typeof item[1] !== "undefined"
-    );
-
-    const pureQuery = Object.fromEntries(arrayOfQuery);
-
-    const newParams = new URLSearchParams(pureQuery);
-
-    history.push({
-      pathname: pathname,
-      search: newParams.toString(),
-      state: { type: type },
-    });
-
+    const queryParams = new URLSearchParams(filter);
     const promiseArray = resourceTopic.map((url) =>
-      api.get(`/browse?topic=${url}&${String(newParams)}`)
+      api.get(`/browse?topic=${url}&${String(queryParams)}`)
     );
 
     Promise.all(promiseArray)
@@ -178,24 +160,12 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
       });
   };
 
-  useEffect(() => {
-    if (view === "category" && catData.length === 0) {
-      loadAllCat(query);
-    }
-  }, [view, catData]);
-
   useMemo(() => {
-    if (
-      (pathname || search) &&
-      !loading &&
-      data.length !== 0 &&
-      view !== "category"
-    )
-      updateQuery("replace");
-  }, [pathname, search, view]);
+    if ((pathname || search) && !loading) updateQuery("replace");
+  }, [pathname, search]);
 
   useEffect(() => {
-    if (data.length === 0 && view !== "category") updateQuery();
+    if (data.length === 0) updateQuery();
   }, [data, view]);
 
   const clickCountry = (name) => {

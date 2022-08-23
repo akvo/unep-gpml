@@ -6,7 +6,7 @@ import Overview from "./overview";
 import ResourceView from "./resource-view";
 import { useQuery } from "../../utils/misc";
 import { UIStore } from "../../store";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import bodyScrollLock from "../details-page/scroll-utils";
 import DetailModal from "../details-page/modal";
 
@@ -21,6 +21,7 @@ const popularTags = [
 
 function Library({ setLoginVisible, isAuthenticated }) {
   const history = useHistory();
+  const { pathname, search } = useLocation();
   const query = useQuery();
   const box = document.getElementsByClassName("knowledge-lib");
   const [loading, setLoading] = useState(true);
@@ -78,8 +79,8 @@ function Library({ setLoginVisible, isAuthenticated }) {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (pathname === "/knowledge/lib/overview") fetchData();
+  }, [pathname]);
 
   useEffect(() => {
     api.get(`/landing?entityGroup=topic`).then((resp) => {
