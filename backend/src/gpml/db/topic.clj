@@ -21,7 +21,7 @@
   {:tables ["stakeholder" "organisation"]})
 
 (def ^:const table-rename-mapping
-  "Some topics like financing_resource and project aren't the real table
+  "Some topics like financing_resource aren't the real table
   names we want to query. Therefore, when passing the following topic
   options as tables we need to rename them to their proper source
   table."
@@ -275,10 +275,8 @@
 (defn- build-topic-query
   "Generates SQL statements for querying topic information.
 
-  There are two exceptions to the generic query that are
-  considered. First, when the content table is `initiative` the
-  `topic-name` is changed to `project` to not break the API for
-  callers. Second, when the content table is `resource` the
+  There is one exception to the generic query that are
+  considered. When the content table is `resource` the
   `topic-name-query` changes because `resource` table contains three
   types of resources and we should use their names instead of the
   table `entity-name`."
