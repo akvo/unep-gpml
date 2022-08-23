@@ -463,7 +463,6 @@
 
 (defmethod ig/init-key :gpml.handler.detail/get
   [_ {:keys [db logger]}]
-  ;;(cache-hierarchies! (:spec db))
   (fn [{{:keys [path query]} :parameters approved? :approved? user :user}]
     (try
       (let [conn (:spec db)
