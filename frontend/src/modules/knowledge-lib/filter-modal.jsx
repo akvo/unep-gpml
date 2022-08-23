@@ -5,7 +5,7 @@ import {
   Col,
   Space,
   Checkbox,
-  Tag,
+  Input,
   Button,
   DatePicker,
   Modal,
@@ -15,9 +15,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import isEmpty from "lodash/isEmpty";
 import values from "lodash/values";
 import flatten from "lodash/flatten";
-
+import { withRouter } from "react-router-dom";
+import { eventTrack } from "../../utils/misc";
 import { UIStore } from "../../store";
-
+import { SearchOutlined } from "@ant-design/icons";
 import MultipleSelectFilter from "../../components/select/multiple-select-filter";
 
 const FilterModal = ({
@@ -65,7 +66,6 @@ const FilterModal = ({
 
     setFilter(pureQuery);
   };
-  console.log(filter);
 
   const filteredMainContentOptions = !isEmpty(mainContentType)
     ? mainContentType
@@ -179,6 +179,8 @@ const FilterModal = ({
             </Space>
           </Col>
         )}
+
+        <KnowledgeLibrarySearch {...{ updateQuery }} />
 
         {/* Sub-content type */}
         <MultipleSelectFilter
@@ -330,6 +332,34 @@ const DatePickerFilter = ({
         />
       </div>
     </Col>
+  );
+};
+
+const KnowledgeLibrarySearch = ({ updateQuery }) => {
+  const [search, setSearch] = useState("");
+  const handleSearch = (src) => {
+    eventTrack("Communities", "Search", "Button");
+    if (src) {
+      updateQuery("q", src.trim());
+    } else {
+      updateQuery("q", "");
+    }
+    setSearch(src);
+  };
+
+  return (
+    <>
+      <div className="search-input">
+        <Input
+          className="input-search"
+          placeholder="Search resources"
+          value={search}
+          suffix={<SearchOutlined />}
+          onPressEnter={(e) => handleSearch(e.target.value)}
+          onChange={(e) => handleSearch(e.target.value)}
+        />
+      </div>
+    </>
   );
 };
 
