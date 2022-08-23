@@ -124,7 +124,7 @@
   [{:keys [db]} params]
   (let [conn (:spec db)
         submission (:submission params)
-        initiative? (and (= submission "project") (> (:id params) 10000))
+        initiative? (= submission "initiative")
         table-name (handler.util/get-internal-topic-type submission)
         params (conj params {:table-name table-name})
         detail (submission-detail conn params)

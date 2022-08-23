@@ -14,7 +14,6 @@ SELECT r.*, (CASE
    WHEN r.topic_type = 'stakeholder' THEN (SELECT ARRAY[CONCAT(title, '. ', last_name,' ', first_name), t.picture] FROM stakeholder t WHERE t.id = r.topic_id)
 END) AS details,
 (CASE
-  WHEN r.topic_type = 'initiative' THEN 'project'
   WHEN r.topic_type = 'resource' THEN (SELECT REPLACE(LOWER(t.type), ' ', '_') FROM resource t WHERE t.id = r.topic_id)
   ELSE r.topic_type::text
 END) AS type
