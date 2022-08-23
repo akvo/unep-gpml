@@ -128,25 +128,39 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         search: newParams.toString(),
         state: { type: type },
       });
-    if (fetch) fetchData(pureQuery);
+    if (fetch && view !== "category") fetchData(pureQuery);
+
+    if (view === "category") loadAllCat(pureQuery);
 
     if (param === "country") {
       setFilterCountries(value);
     }
   };
 
-  const loadAllCat = async (sort) => {
+  const loadAllCat = async (filter) => {
     setLoading(true);
+
+    if (filter.hasOwnProperty("descending")) {
+      filter["orderBy"] = "title";
+    }
+
+    // Remove empty query
+    const arrayOfQuery = Object.entries(filter)?.filter(
+      (item) => item[1]?.length !== 0 && typeof item[1] !== "undefined"
+    );
+
+    const pureQuery = Object.fromEntries(arrayOfQuery);
+
+    const newParams = new URLSearchParams(pureQuery);
+
+    history.push({
+      pathname: pathname,
+      search: newParams.toString(),
+      state: { type: type },
+    });
+
     const promiseArray = resourceTopic.map((url) =>
-      api.get(
-        `/browse?topic=${url}${
-          sort
-            ? `&descending=${sort}&orderBy=title`
-            : sort === false
-            ? `&descending=${"false"}&orderBy=title`
-            : ""
-        }`
-      )
+      api.get(`/browse?topic=${url}&${String(newParams)}`)
     );
 
     Promise.all(promiseArray)
@@ -166,18 +180,23 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
 
   useEffect(() => {
     if (view === "category" && catData.length === 0) {
-      loadAllCat();
+      loadAllCat(query);
     }
   }, [view, catData]);
 
   useMemo(() => {
-    if ((pathname || search) && !loading && data.length !== 0)
+    if (
+      (pathname || search) &&
+      !loading &&
+      data.length !== 0 &&
+      view !== "category"
+    )
       updateQuery("replace");
-  }, [pathname, search]);
+  }, [pathname, search, view]);
 
   useEffect(() => {
-    if (data.length === 0) updateQuery();
-  }, [data]);
+    if (data.length === 0 && view !== "category") updateQuery();
+  }, [data, view]);
 
   const clickCountry = (name) => {
     const val = query["country"];
@@ -252,10 +271,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             className="sort-by-button"
             onClick={() => {
               if (view === "grid") setGridItems([]);
-              if (view === "category") {
-                loadAllCat(!isAscending);
-                setIsAscending(!isAscending);
-              } else sortResults(!isAscending);
+              sortResults(!isAscending);
             }}
           >
             <SortIcon
@@ -395,6 +411,8 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           pathname,
           history,
           setGridItems,
+          loadAllCat,
+          view,
         }}
       />
     </Fragment>
