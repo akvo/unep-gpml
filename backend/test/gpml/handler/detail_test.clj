@@ -106,7 +106,7 @@
             resp (handler (-> (mock/request :put "/")
                               (assoc :jwt-claims {:email "john@org"}
                                      :parameters
-                                     {:path {:topic-type "project" :topic-id (:id initiative)}
+                                     {:path {:topic-type "initiative" :topic-id (:id initiative)}
                                       :body edited-data})))
             _ (db.initiative/initiative-by-id db initiative)]
         (is (= 403 (:status resp)))))
@@ -125,7 +125,7 @@
                               (assoc :jwt-claims {:email "john@org"}
                                      :user admin
                                      :parameters
-                                     {:path {:topic-type "project" :topic-id (:id initiative)}
+                                     {:path {:topic-type "initiative" :topic-id (:id initiative)}
                                       :body edited-data})))
             edited-initiative (db.initiative/initiative-by-id db initiative)]
         (is (= 200 (:status resp)))
@@ -184,7 +184,7 @@
     (testing "Fetching detail of unapproved resource unauthenticated"
       (let [resp (handler (-> (mock/request :put "/")
                               (assoc :parameters
-                                     {:path {:topic-type "project" :topic-id (:id initiative)}})))]
+                                     {:path {:topic-type "initiative" :topic-id (:id initiative)}})))]
         (is (= 403 (:status resp)))))
 
     (testing "Fetching detail of unapproved resource as authenticated user"
@@ -192,7 +192,7 @@
                               (assoc
                                :user {:id 0 :role "USER"}
                                :parameters
-                               {:path {:topic-type "project" :topic-id (:id initiative)}})))]
+                               {:path {:topic-type "initiative" :topic-id (:id initiative)}})))]
         (is (= 403 (:status resp)))))
 
     (testing "Fetching detail of unapproved resource as different ADMIN"
@@ -200,7 +200,7 @@
                               (assoc
                                :user {:id 0 :role "ADMIN"}
                                :parameters
-                               {:path {:topic-type "project" :topic-id (:id initiative)}
+                               {:path {:topic-type "initiative" :topic-id (:id initiative)}
                                 :query {:review-status "SUBMITTED"}})))]
         (is (= 200 (:status resp)))
         (is (= "Initiative Title." (-> resp :body :title)))))
@@ -210,7 +210,7 @@
                               (assoc
                                :user creator
                                :parameters
-                               {:path {:topic-type "project" :topic-id (:id initiative)}
+                               {:path {:topic-type "initiative" :topic-id (:id initiative)}
                                 :query {:review-status "SUBMITTED"}})))]
         (is (= 200 (:status resp)))
         (is (= "Initiative Title." (-> resp :body :title)))))))
