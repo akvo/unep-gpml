@@ -397,55 +397,55 @@
 (defn seed-action-details [db]
   (jdbc/insert-multi! db :action_detail (mapv #(dissoc % :type) (get-action-details db))))
 
-(defn get-projects [db]
-  (->> (get-data "projects")
-       (map (fn [x]
-              (assoc x :summary (:summary x))))
-       (map (fn [x]
-              (assoc x :review_status "APPROVED")))
-       (map (fn [x]
-              (if-let [country (seq (:countries x))]
-                (assoc x :countries (get-ids (get-country db country)))
-                x)))
-       (map (fn [x]
-              (if-let [codes (:action_codes x)]
-                (assoc x :action_codes (get-ids (map (fn [z] (get-action db z)) codes)))
-                x)))
-       (map (fn [x]
-              (if-let [codes (:action_details x)]
-                (assoc x :action_details
-                       (map (fn [y]
-                              {:value (:value y)
-                               :action_detail (:id (get-action-detail db (:action_detail_code y)))})
-                            codes))
-                x)))
-       (map (fn [x]
-              (assoc x :language default-lang-iso-code)))))
+;; (defn get-projects [db]
+;;   (->> (get-data "projects")
+;;        (map (fn [x]
+;;               (assoc x :summary (:summary x))))
+;;        (map (fn [x]
+;;               (assoc x :review_status "APPROVED")))
+;;        (map (fn [x]
+;;               (if-let [country (seq (:countries x))]
+;;                 (assoc x :countries (get-ids (get-country db country)))
+;;                 x)))
+;;        (map (fn [x]
+;;               (if-let [codes (:action_codes x)]
+;;                 (assoc x :action_codes (get-ids (map (fn [z] (get-action db z)) codes)))
+;;                 x)))
+;;        (map (fn [x]
+;;               (if-let [codes (:action_details x)]
+;;                 (assoc x :action_details
+;;                        (map (fn [y]
+;;                               {:value (:value y)
+;;                                :action_detail (:id (get-action-detail db (:action_detail_code y)))})
+;;                             codes))
+;;                 x)))
+;;        (map (fn [x]
+;;               (assoc x :language default-lang-iso-code)))))
 
-(defn seed-projects [db]
-  (doseq [data (get-projects db)]
-    (try
-      (let [proj-id (:id (db.project/new-project db data))
-            data-countries (:countries data)
-            data-act (:action_codes data)
-            data-act-detail (:action_details data)]
-        (when (not-empty data-countries)
-          (let [proj-countries (mapv #(assoc {} :project proj-id :country %) data-countries)]
-            (jdbc/insert-multi! db :project_country proj-countries)))
-        (when (not-empty data-act)
-          (let [proj-act (mapv #(assoc {} :project proj-id :action %) data-act)]
-            (jdbc/insert-multi! db :project_action proj-act)))
-        (when (not-empty data-act-detail)
-          (let [proj-act-detail (mapv (fn [z]
-                                        {:project proj-id
-                                         :action_detail (:action_detail z)
-                                         :value (:value z)})
-                                      data-act-detail)]
-            (jdbc/insert-multi! db :project_action_detail proj-act-detail))))
-      (catch Exception e
-        (println data)
-        (.printStackTrace e)
-        (throw e)))))
+;; (defn seed-projects [db]
+;;   (doseq [data (get-projects db)]
+;;     (try
+;;       (let [proj-id (:id (db.project/new-project db data))
+;;             data-countries (:countries data)
+;;             data-act (:action_codes data)
+;;             data-act-detail (:action_details data)]
+;;         (when (not-empty data-countries)
+;;           (let [proj-countries (mapv #(assoc {} :project proj-id :country %) data-countries)]
+;;             (jdbc/insert-multi! db :project_country proj-countries)))
+;;         (when (not-empty data-act)
+;;           (let [proj-act (mapv #(assoc {} :project proj-id :action %) data-act)]
+;;             (jdbc/insert-multi! db :project_action proj-act)))
+;;         (when (not-empty data-act-detail)
+;;           (let [proj-act-detail (mapv (fn [z]
+;;                                         {:project proj-id
+;;                                          :action_detail (:action_detail z)
+;;                                          :value (:value z)})
+;;                                       data-act-detail)]
+;;             (jdbc/insert-multi! db :project_action_detail proj-act-detail))))
+;;       (catch Exception e
+;;         (println data)
+;;         (.printStackTrace e)
+;;         (throw e)))))
 
 (defn get-cache-id []
   (str (java.util.UUID/randomUUID) "-" (quot (System/currentTimeMillis) 1000)))
@@ -503,12 +503,12 @@
     (seed-events db)
     (db.util/revert-constraint db cache-id)))
 
-(defn resync-project [db]
-  (let [cache-id (get-cache-id)]
-    (db.util/drop-constraint-project db cache-id)
-    (println "Re-seeding project...")
-    (seed-projects db)
-    (db.util/revert-constraint db cache-id)))
+;; (defn resync-project [db]
+;;   (let [cache-id (get-cache-id)]
+;;     (db.util/drop-constraint-project db cache-id)
+;;     (println "Re-seeding project...")
+;;     (seed-projects db)
+;;     (db.util/revert-constraint db cache-id)))
 
 (defn revert-mapping [mapping-file]
   (reduce-kv (fn [m k v]
@@ -550,7 +550,8 @@
                organisation? language? tag?
                policy? resource?
                technology? event?
-               project?]
+               ;; project?
+               ]
         :or {country? false
              currency? false
              organisation? false
@@ -560,7 +561,8 @@
              resource? false
              technology? false
              event? false
-             project? false}}]
+             ;; project? false
+             }}]
    (jdbc/with-db-transaction [tx db]
      (println "-- Start Seeding")
      #_(truncate-db tx)
@@ -592,11 +594,11 @@
      (when event?
        (println "Seeding event...")
        (resync-event tx))
-     (when project?
-       (println "Seeding project...")
-       (seed-actions tx)
-       (seed-action-details tx)
-       (resync-project tx))
+     ;; (when project?
+     ;;   (println "Seeding project...")
+     ;;   (seed-actions tx)
+     ;;   (seed-action-details tx)
+     ;;   (resync-project tx))
      (println "-- Done Seeding")))
   ([]
    (let [db (-> (dev-system)
@@ -612,9 +614,9 @@
             :policy? true
             :resource? true
             :technology? true
-            :event? true
-            :project? true})
-     (gpml.handler.detail/cache-hierarchies! db))))
+            :event? true})
+     ;; (gpml.handler.detail/cache-hierarchies! db)
+     )))
 
 (comment
 
@@ -642,9 +644,9 @@
   (resync-event db)
 
   ;; resync project
-  (seed-actions db)
-  (seed-action-details db)
-  (resync-project db)
+  ;; (seed-actions db)
+  ;; (seed-action-details db)
+  ;; (resync-project db)
 
   ;; update country id with new id
   ;; should only run once, how to revert to old id?
