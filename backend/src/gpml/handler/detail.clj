@@ -33,6 +33,11 @@
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
+;;========================================START OF DEPRECATED CODE==============================================================
+;; FIXME: The code below doesn't seem to be used anyhwere anymore and
+;; we discuss it's removal. We need to take into consideration the
+;; foundations for it however.
+
 (defn other-or-name [action]
   (when-let [actual-name (or
                           (:value-entered action)
@@ -262,6 +267,7 @@
                                           :format-params action-details
                                           :fn-to-retrieve-data (partial #'keep-action-details action-details))))]))
                 data-queries)))
+;;========================================END OF DEPRECATED CODE==============================================================
 
 (defn- resolve-resource-type
   [resource-type]
