@@ -23,13 +23,16 @@ const Overview = ({
   setLoginVisible,
   isAuthenticated,
 }) => {
-  const summaryDict = {};
-  let allResources = 0;
-  summaryData?.forEach((obj) => {
-    const key = Object.keys(obj)[0];
-    summaryDict[key] = obj[key];
-    allResources += obj[key];
-  });
+  const allResources = countData
+    ?.filter((array) =>
+      resourceTypes.some(
+        (filter) =>
+          array.topic === filter.title && filter.title !== "capacity building"
+      )
+    )
+    ?.reduce(function (acc, obj) {
+      return acc + obj.count;
+    }, 0);
 
   if (loading) {
     return (

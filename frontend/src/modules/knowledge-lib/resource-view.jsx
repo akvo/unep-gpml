@@ -150,6 +150,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         const newData = resourceTopic.map((categories, idx) => ({
           categories,
           data: data[idx].data.results,
+          count: data[idx].data.counts[0].count,
         }));
         setCatData(newData);
         setLoading(false);
@@ -227,7 +228,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
                 ? `Showing ${gridItems?.length} of ${totalItems}`
                 : view === "category"
                 ? `${catData?.reduce(
-                    (count, current) => count + current?.data?.length,
+                    (count, current) => count + current?.count,
                     0
                   )}`
                 : `Showing ${!loading ? data?.results?.length : ""}`}
@@ -335,7 +336,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
                   <div className="title-wrapper">
                     <h4 className="cat-title">{topicNames(d.categories)}</h4>
                     <div className="quick-search">
-                      <div className="count">{d?.data.length}</div>
+                      <div className="count">{d?.count}</div>
                       <div className="search-icon">
                         <SearchIcon />
                       </div>
