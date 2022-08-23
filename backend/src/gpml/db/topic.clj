@@ -27,8 +27,7 @@
   table."
   {"financing_resource" "resource"
    "action_plan" "resource"
-   "technical_resource" "resource"
-   "project" "initiative"})
+   "technical_resource" "resource"})
 
 (defn- rename-tables
   [tables]
@@ -284,7 +283,7 @@
   types of resources and we should use their names instead of the
   table `entity-name`."
   [entity-name _ _]
-  (let [topic-name (if (= "initiative" entity-name) "project" entity-name)
+  (let [topic-name entity-name
         topic-name-query (if (= "resource" entity-name)
                            resource-topic-name-query
                            (generic-topic-name-query topic-name))]

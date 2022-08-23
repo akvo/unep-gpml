@@ -33,7 +33,7 @@ country_counts AS (
   GROUP BY (countries.value)::TEXT::INT, topic
 /*~ ) ~*/
 )
-SELECT geo_coverage AS id, json_object_agg(COALESCE(topic, 'project'), topic_count)
+SELECT geo_coverage AS id, json_object_agg(topic, topic_count)
 --~ (str " AS " (:count-name params))
 FROM country_counts
 GROUP BY geo_coverage;
@@ -49,7 +49,7 @@ aggregate_country_group_counts AS (
   FROM country_group_counts
   GROUP BY country_group_id, entity
 )
-SELECT country_group_id, json_object_agg(COALESCE(entity, 'project'), total_entity_count) AS counts
+SELECT country_group_id, json_object_agg(entity, total_entity_count) AS counts
 FROM aggregate_country_group_counts
 GROUP BY country_group_id;
 
@@ -227,7 +227,7 @@ non_member_organisation_countries AS (
 country_counts AS (
     SELECT
         COUNT(*) AS country,
-        'project' AS data
+        'initiative' AS data
     FROM
         initiative_countries
     UNION
@@ -274,7 +274,7 @@ country_counts AS (
 totals AS (
     SELECT
         COUNT(*) AS total,
-        'project' AS data,
+        'initiative' AS data,
         1 AS o
     FROM
         initiative

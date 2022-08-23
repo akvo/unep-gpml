@@ -37,7 +37,7 @@ submission AS (
     FROM resource
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'project' AS type, 'initiative' AS topic, replace(q2::text,'"','') as title, created_by, created, 'USER' as role, review_status, '' as image, featured
+    SELECT id, 'initiative' AS type, 'initiative' AS topic, replace(q2::text,'"','') as title, created_by, created, 'USER' as role, review_status, '' as image, featured
     FROM initiative
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     order by created

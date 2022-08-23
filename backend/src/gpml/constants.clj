@@ -16,7 +16,7 @@
 (def topics
   (vec
    (sort
-    (apply conj resource-types ["event" "technology" "policy" "project" "stakeholder" "organisation" "non_member_organisation"]))))
+    (apply conj resource-types ["event" "technology" "policy" "initiative" "stakeholder" "organisation" "non_member_organisation"]))))
 
 (def reviewer-review-status [:PENDING :ACCEPTED :REJECTED])
 
