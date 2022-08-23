@@ -77,77 +77,56 @@ const TheJourney = () => {
         <img ref={svgRef} src="/plastic-journey.svg" />
         <div className="contents">
           <div className="screen-view">
-            <h1>THE PLASTIC POLLUTION JOURNEY</h1>
+            <h1>THE PLASTICS JOURNEY</h1>
           </div>
           <div className="screen-view">
             <div className="pane">
-              <h3>the plastics lifecycle</h3>
-              <p>Plastics are leaked into the environment across the lifecycle and source to sea and can also be transported through various pathways.<br /><br />Plastics pose certain challenges and represent losses across the lifecycle, including during production, packaging, distribution, use, maintenance, and eventually recycling, reuse, recovery or final disposal.</p>
-              <Button type="ghost" size="large">Learn more</Button>
+              <h3>FROM SOURCE TO SEA ACCROSS THE PLASTICS LIFECYCLE</h3>
+              <p>Plastics can have environmental, economic and social impacts and are leaked into the environment across the plastics life cycle and from source to sea. Once the plastics are in the environment, they can be transported through various pathways.</p>
+              <Button type="ghost" size="large">Learn More</Button>
             </div>
           </div>
           <div className="screen-view">
             <div className="pane">
-              <h3>PLASTIC POLLUTION FROM SOURCE TO SEA</h3>
-              <h4>Airborne - pathway</h4>
-              <p>Plastic particles such as vehicle tyres,
-              synthetic textiles accumulate in the
-              atmosphere, where they can be
-              transported over long distances. Rain, snow and wind can deposit plastics in
-              different places. Microplastics are found in snow, ice
-              and sea-ice, from the poles to remote
-              mountain tops.
+              <h3>PLASTIC POLLUTION PATHWAYS</h3>
+              <h4>Airborne</h4>
+              <p>Plastic particles such as vehicle tyres and synthetic textiles accumulate in the atmosphere, where they can be transported over long distances. Rain, snow and wind can deposit plastics in different places. Microplastics are found in snow, ice and sea-ice, from the poles to remote mountain tops.
               </p>
-              <h4>rivers - direct pathway</h4>
-              <p>Transport of plastic debris through the environment including into oceans.</p>
+              <h4>rivers</h4>
+              <p>Waste can be transported by rivers through the environment including into lakes and oceans.</p>
             </div>
           </div>
           <div className="screen-view">
             <div className="pane">
-              <h4>Agriculture Soil – source and sink</h4>
-              <p>Use of plastic films and large fibre textiles in farming
-practices. Sewage sludge with plastic residue used as
-fertilizer. Irrigation with plastic contaminated water.
-Artificial fertilizer and seeds coated with a polymer.</p>
-              <h4>industry - source</h4>
-              <p>Missing or low enforcement of regulation to restrict
-pollution from pellets during production or transportation
-contribute to leakage of plastics into the environment.</p>
-              <h4>Cities and Waste Management - source</h4>
-              <p>Clothes, synthetic products such as building materials,
-take-away food containers…etc. are sources of plastic
-particles and fibres. Inadequate waste management is a
-source of leakage of plastic particles in the environment
-including groundwater.</p>
+              <h4>Agriculture</h4>
+              <p>Use of plastic films, irrigation tubes and fibre textiles in farming practices. Sewage sludge with plastic residue used as fertilizer. Irrigation with plastic contaminated water. The use of polymer coatings on fertilizers, pesticides, and seeds.</p>
+              <h4>Cities and Waste Management</h4>
+              <p>Use of consumer goods and products such as clothes, building materials and take-away food containers and lack of or inadequate waste management of materials and products.</p>
+              <h4>Industry</h4>
+              <p>Use and leakage of products, particles, and fibres during industrial activities as well as transportation of consumer and industrial goods</p>
             </div>
           </div>
           <div className="screen-view">
             <div className="pane">
-              <h4>Sewage and wastewater – source and pathway</h4>
-              <p>Wastewater treatment plants are a major
-source of microplastics and nanoplastics in
-water bodies.</p>
-              <h4>Lakes – close to rivers and ocean</h4>
-              <p>Temporary and long-term storage. A source
-under specific weather patterns and
-hydrodynamic regimes.</p>
-               <h4>Reservoirs – sources and sinks</h4>
+              <h3>PLASTIC POLLUTION SOURCES, PATHWAYS AND SINKS INCLUDE</h3>
+              <h4>Wastewater including sewage – source and pathway</h4>
+              <p>Capture of pollutants including microplastics by wastewater treatment systems prevents releases to the environment via outfalls; however, many are still lost and leaked into the environment.</p>
+              <h4>Lakes and reservoirs – source and sink</h4>
+              <p>A source under specific weather patterns and hydrodynamic regimes such as winds and water currents as well as due to anthropogenic activities such as tourism and industrial lake activities including aquaculture. Lakes can also be sinks meaning areas of temporary and long-term storage of pollution, and possible infiltration into groundwater.</p>
+               {/* <h4>Reservoirs – sources and sinks</h4>
                <p>Plastics from atmospheric fallout, streams,
 and rivers. Temporary and long-term storage,
-and possible infiltration into groundwater.</p>
+and possible infiltration into groundwater.</p> */}
             </div>
           </div>
           <div className="screen-view">
             <div className="pane">
               <h4>Tourism</h4>
-              <p>Coastal and sea-based tourism is
-another source of plastic waste
-through intentional or accidental
-littering of shorelines</p>
-                <h4>fishing activities</h4>
-                <p>Galley waste thrown overboard, abandoned, lost, or otherwise discarded fishing gear and marine coating.</p>
-                <h4>Shipping and Recreational boats - source</h4>
-                <p>Galley waste thrown overboard, loss of shipping goods, plastic pellets, and marine coatings.</p>
+              <p>Intentional or accidental littering in the environment due to tourism such as terrestrial, including mountain, coastal and sea-based tourism.</p>
+                <h4>Fishing Activities and Aquaculture</h4>
+                <p>Waste thrown overboard, abandoned, lost, or otherwise discarded fishing gear and aquaculture equipment, and marine coatings.</p>
+                <h4>Shipping and Recreational activities</h4>
+                <p>Waste thrown overboard, loss of shipped goods such as industrial and consumer products and materials, and marine coatings.</p>
             </div>
           </div>
         </div>
