@@ -50,7 +50,7 @@
                 :type "object"
                 :additionalProperties {}
                 :allowEmptyValue false}}
-     map?]]))
+     [:maybe map?]]]))
 
 (defn create-project
   "Creates a new project entity adding the necessary default and unique

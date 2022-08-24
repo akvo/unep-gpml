@@ -5,6 +5,7 @@
             [gpml.domain.project :as dom.prj]
             [gpml.domain.types :as dom.types]
             [gpml.handler.responses :as r]
+            [gpml.handler.util :as handler.util]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
             [malli.util :as mu])
@@ -143,31 +144,15 @@
 
 (defmethod ig/init-key :gpml.handler.project/post-responses
   [_ _]
-  {200 {:body [:map
-               [:success?
-                {:swagger {:description "Indicates if the operation was successfull or not."
-                           :type "boolean"}}
-                boolean?]
-               [:project_id
-                {:swagger {:description "The newly created Project's identifier."
-                           :type "string"
-                           :format "uuid"}}
-                uuid?]]}
-   500 {:body [:map
-               [:success?
-                {:swagger {:description "Indicates if the operation was successfull or not."
-                           :type "boolean"}}
-                boolean?]
-               [:reason
-                {:swagger {:description "The reason of request failure."
-                           :type "string"}}
-                keyword?]
-               [:error-details
-                {:swagger {:description "JSON object with more details about the error."
-                           :type "object"
-                           :properties {:error {:type "string"}}
-                           :additionalProperties {:type "string"}}}
-                map?]]}})
+  (let [project-id-properties {:swagger
+                               {:description "The newly created Project's identifier."
+                                :type "string"
+                                :format "uuid"}}
+        ok-response-schema-update-fn #(mu/update-properties % (constantly project-id-properties))]
+    {200 {:body (-> handler.util/default-ok-response-body-schema
+                    (mu/assoc :project_id uuid?)
+                    (mu/update-in [:project_id] ok-response-schema-update-fn))}
+     500 {:body handler.util/default-error-response-body-schema}}))
 
 (defmethod ig/init-key :gpml.handler.project/get
   [_ config]
@@ -181,6 +166,12 @@
   [_ _]
   {:query api-opts-schema})
 
+(defmethod ig/init-key :gpml.handler.project/get-responses
+  [_ _]
+  {200 {:body (-> handler.util/default-ok-response-body-schema
+                  (mu/assoc :projects [:maybe [:sequential dom.prj/Project]]))}
+   500 {:body handler.util/default-error-response-body-schema}})
+
 (defmethod ig/init-key :gpml.handler.project/put
   [_ config]
   (fn [req]
@@ -190,6 +181,11 @@
   [_ _]
   {:path (mu/select-keys dom.prj/Project [:id])
    :body (mu/optional-keys (mu/dissoc dom.prj/Project :id))})
+
+(defmethod ig/init-key :gpml.handler.project/put-responses
+  [_ _]
+  {200 {:body handler.util/default-ok-response-body-schema}
+   500 {:body handler.util/default-error-response-body-schema}})
 
 (defmethod ig/init-key :gpml.handler.project/get-by-id
   [_ config]
@@ -208,6 +204,13 @@
   [_ _]
   {:path (mu/select-keys dom.prj/Project [:id])})
 
+(defmethod ig/init-key :gpml.handler.project/get-by-id-responses
+  [_ _]
+  {200 {:body (-> handler.util/default-ok-response-body-schema
+                  (mu/assoc :project dom.prj/Project))}
+   400 {:body handler.util/default-error-response-body-schema}
+   500 {:body handler.util/default-error-response-body-schema}})
+
 (defmethod ig/init-key :gpml.handler.project/delete
   [_ config]
   (fn [req]
@@ -216,3 +219,8 @@
 (defmethod ig/init-key :gpml.handler.project/delete-params
   [_ _]
   {:path (mu/select-keys dom.prj/Project [:id])})
+
+(defmethod ig/init-key :gpml.handler.project/delete-responses
+  [_ _]
+  {200 {:body handler.util/default-ok-response-body-schema}
+   500 {:body handler.util/default-error-response-body-schema}})
