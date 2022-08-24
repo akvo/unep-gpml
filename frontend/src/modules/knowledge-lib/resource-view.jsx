@@ -266,7 +266,9 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
               showMoreCardAfter={20}
               showMoreCardClick={() => {
                 history.push({
-                  pathname: `/knowledge/lib/resource/grid/${type ? type : ""}`,
+                  pathname: `/knowledge/library/resource/grid/${
+                    type ? type : ""
+                  }`,
                   search: history.location.search,
                 });
               }}
@@ -301,7 +303,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             path="knowledge"
           />
         )}
-        {!loading && view === "topic" && (
+        {view === "topic" && (
           <div className="topic-view-container">
             <TopicView
               results={data?.results}
@@ -310,6 +312,8 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
               countData={countData.filter(
                 (count) => count.topic !== "gpml_member_entities"
               )}
+              updateQuery={updateQuery}
+              query={query}
             />
           </div>
         )}
