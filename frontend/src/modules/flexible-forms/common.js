@@ -27,6 +27,10 @@ const initialData = {
     steps: 0,
     required: {},
   },
+  S6: {
+    steps: 0,
+    required: {},
+  },
 };
 
 const initialDataEdit = {
@@ -51,6 +55,10 @@ const initialDataEdit = {
     S4_G5: { entity: [{}], individual: [{}] },
   },
   S5: {
+    steps: 0,
+    required: {},
+  },
+  S6: {
     steps: 0,
     required: {},
   },
@@ -363,6 +371,12 @@ const tabs = [
   {
     key: "S5",
     title: "Detail info",
+    desc: "",
+    steps: [],
+  },
+  {
+    key: "S6",
+    title: "Translation",
     desc: "",
     steps: [],
   },

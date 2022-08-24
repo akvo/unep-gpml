@@ -7,13 +7,29 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { Row, Col, Button, Switch, Radio, Popover, Steps, List } from "antd";
+import {
+  Row,
+  Col,
+  Button,
+  Switch,
+  Radio,
+  Popover,
+  Steps,
+  List,
+  Dropdown,
+  Menu,
+  Space,
+  Collapse,
+} from "antd";
+const { Panel } = Collapse;
 import {
   LeftOutlined,
   RightOutlined,
   LoadingOutlined,
   EditOutlined,
   CheckOutlined,
+  DownOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
 import "./styles.scss";
@@ -772,6 +788,34 @@ const formDataMapping = [
   },
 ];
 
+const languageOptions = [
+  {
+    label: "Arabic",
+    key: "0",
+    value: "ar",
+  },
+  {
+    label: "Chinese",
+    key: "1",
+    value: "cn",
+  },
+  {
+    label: "French",
+    key: "3",
+    value: "fr",
+  },
+  {
+    label: "Russian",
+    key: "4",
+    value: "ru",
+  },
+  {
+    label: "Spanish",
+    key: "5",
+    value: "es",
+  },
+];
+
 const FlexibleForms = ({ match: { params }, ...props }) => {
   const {
     tabs,
@@ -843,6 +887,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const [label, setLabel] = useState("Initiative");
   const [subType, setSubType] = useState("");
   const [subContentType, setSubContentType] = useState([]);
+  const [languages, setLanguages] = useState([]);
   const [disabledBtn, setDisabledBtn] = useState({
     disabled: true,
     type: "default",
@@ -1197,26 +1242,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     profile,
   ]);
 
-  // useEffect(() => {
-  //   if (isLoaded()) {
-  //     initialFormData.update((e) => {
-  //       e.data = {
-  //         ...e.data,
-  //         S4: {
-  //           ...e.data.S4,
-  //           S4_G5: {
-  //             ...e.data.S4.S4_G5,
-  //             individual: [
-  //               { role: "owner", stakeholder: profile.id },
-  //               ...e.data.S4.S4_G5.individual,
-  //             ],
-  //           },
-  //         },
-  //       };
-  //     });
-  //   }
-  // }, [initialFormData, isLoaded, profile]);
-
   useEffect(() => {
     if (isLoaded()) {
       if (subType) {
@@ -1258,14 +1283,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       }
     }
   }, [initialFormData, isLoaded, subType]);
-
-  // Todo ask to login if not login
-
-  // useEffect(() => {
-  //   if (Object.keys(profile).length === 0) {
-  //     loginWithPopup({ action: "login" });
-  //   }
-  // }, [profile, loginWithPopup, isLoaded]);
 
   const renderSteps = (parentTitle, section, steps, index) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
@@ -1646,6 +1663,15 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
   };
 
+  const handleSelectLanguage = (val) => {
+    setLanguages(languages.concat(val));
+  };
+
+  const handleRemoveLanguage = (val) => {
+    const newLanaguage = languages.filter((lang) => lang !== val);
+    setLanguages(newLanaguage);
+  };
+
   return (
     <div id="flexible-forms">
       <StickyBox style={{ zIndex: 10 }}>
@@ -1934,13 +1960,66 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       )}
                     </div>
                   </Row>
+                ) : getTabStepIndex().tabIndex === 4 ? (
+                  <Row>
+                    <div className="main-content">
+                      <div>
+                        <Dropdown
+                          overlay={
+                            <ul className="translation-dropdown">
+                              {languageOptions
+                                .filter((ln) => !languages.includes(ln.value))
+                                .map((item) => (
+                                  <li
+                                    onClick={() =>
+                                      handleSelectLanguage(item.value)
+                                    }
+                                  >
+                                    {item.label}
+                                  </li>
+                                ))}
+                            </ul>
+                          }
+                          trigger={["click"]}
+                        >
+                          <Space>
+                            Select language
+                            <DownOutlined />
+                          </Space>
+                        </Dropdown>
+                      </div>
+                      <div
+                        className="collapse-wrapper"
+                        style={{ marginTop: 20 }}
+                      >
+                        <Collapse>
+                          {languages.map((item) => (
+                            <Panel
+                              header={item}
+                              key={item}
+                              extra={
+                                <div style={{ marginLeft: "auto" }}>
+                                  <DeleteOutlined
+                                    onClick={() => handleRemoveLanguage(item)}
+                                  />
+                                </div>
+                              }
+                            >
+                              <p>test</p>
+                            </Panel>
+                          ))}
+                        </Collapse>
+                      </div>
+                    </div>
+                  </Row>
                 ) : (
                   <span></span>
                 )}
                 <Row
                   className={`${
                     getTabStepIndex().tabIndex !== 0 &&
-                    getTabStepIndex().tabIndex !== 1
+                    getTabStepIndex().tabIndex !== 1 &&
+                    getTabStepIndex().tabIndex !== 4
                       ? "main-content"
                       : null
                   }`}
