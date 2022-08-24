@@ -404,6 +404,16 @@
               font-weight: 400;
             }
           }
+          input {
+            border: 2px transparent solid;
+          }
+          .ant-form-item-label {
+            label {
+              color: #255b87;
+              font-size: 16px;
+              font-weight: 400;
+            }
+          }
         }
         .collapse-add-button {
           width: 100%;
