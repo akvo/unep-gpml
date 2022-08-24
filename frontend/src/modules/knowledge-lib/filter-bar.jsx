@@ -142,7 +142,7 @@ const FilterBar = ({
           </li>
         ))}
       </ul>
-      <Button onClick={() => setShowFilterModal(true)}>
+      <Button className="adv-src" onClick={() => setShowFilterModal(true)}>
         {!isEmpty &&
           Object.keys(query).filter((item) => !hideFilterList.includes(item))
             .length > 0 && (
@@ -156,7 +156,7 @@ const FilterBar = ({
             </div>
           )}
         <FilterIcon />
-        <span>More Filters</span>
+        <span>Advanced Search</span>
       </Button>
       <LocationDropdown
         {...{
