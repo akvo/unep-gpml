@@ -374,7 +374,7 @@
 
 (defn api-suggested-profiles-opts->suggested-profiles-opts
   [suggested-profiles-opts]
-  (util/update-if-exists suggested-profiles-opts :page #(Integer/parseInt %)))
+  (util/update-if-not-nil suggested-profiles-opts :page #(Integer/parseInt %)))
 
 (defmethod ig/init-key ::suggested-profiles
   [_ {:keys [db]}]

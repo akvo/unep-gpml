@@ -540,7 +540,37 @@
                                           {:put {:summary "Accept invitation"
                                                  :swagger {:tags ["invitation"]}
                                                  :parameters #ig/ref :gpml.handler.invitation/put-params
-                                                 :handler #ig/ref :gpml.handler.invitation/put}}]]]]
+                                                 :handler #ig/ref :gpml.handler.invitation/put}}]]
+                                        ["/project" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                  #ig/ref :gpml.auth/auth-required
+                                                                  #ig/ref :gpml.auth/approved-user]}
+                                         [""
+                                          {:post {:summary "Create a project"
+                                                  :swagger {:tags ["project"]}
+                                                  :parameters #ig/ref :gpml.handler.project/post-params
+                                                  :responses #ig/ref :gpml.handler.project/post-responses
+                                                  :handler #ig/ref :gpml.handler.project/post}
+                                           :get {:summary "Get projects"
+                                                 :swagger {:tags ["project"]}
+                                                 :parameters #ig/ref :gpml.handler.project/get-params
+                                                 :responses #ig/ref :gpml.handler.project/get-responses
+                                                 :handler #ig/ref :gpml.handler.project/get}}]
+                                         ["/:id"
+                                          {:get {:summary "Get a project"
+                                                 :swagger {:tags ["project"]}
+                                                 :parameters #ig/ref :gpml.handler.project/get-by-id-params
+                                                 :responses #ig/ref :gpml.handler.project/get-by-id-responses
+                                                 :handler #ig/ref :gpml.handler.project/get-by-id}
+                                           :put {:summary "Update a project"
+                                                 :swagger {:tags ["project"]}
+                                                 :parameters #ig/ref :gpml.handler.project/put-params
+                                                 :responses #ig/ref :gpml.handler.project/put-responses
+                                                 :handler #ig/ref :gpml.handler.project/put}
+                                           :delete {:summary "Delete a project"
+                                                    :swagger {:tags ["project"]}
+                                                    :parameters #ig/ref :gpml.handler.project/delete-params
+                                                    :responses #ig/ref :gpml.handler.project/delete-responses
+                                                    :handler #ig/ref :gpml.handler.project/delete}}]]]]
                               :logger #ig/ref :duct.logger/timbre}
 
   ;; Consts
@@ -750,6 +780,22 @@
   :gpml.handler.invitation/put {:db #ig/ref :duct.database/sql
                                 :logger #ig/ref :duct/logger}
   :gpml.handler.invitation/put-params {}
+
+  :gpml.handler.project/post #ig/ref :gpml.config/common
+  :gpml.handler.project/post-params {}
+  :gpml.handler.project/post-responses {}
+  :gpml.handler.project/get #ig/ref :gpml.config/common
+  :gpml.handler.project/get-params {}
+  :gpml.handler.project/get-responses {}
+  :gpml.handler.project/put #ig/ref :gpml.config/common
+  :gpml.handler.project/put-params {}
+  :gpml.handler.project/put-responses {}
+  :gpml.handler.project/get-by-id #ig/ref :gpml.config/common
+  :gpml.handler.project/get-by-id-params {}
+  :gpml.handler.project/get-by-id-responses {}
+  :gpml.handler.project/delete #ig/ref :gpml.config/common
+  :gpml.handler.project/delete-params {}
+  :gpml.handler.project/delete-responses {}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources
                           :logger #ig/ref :duct/logger
