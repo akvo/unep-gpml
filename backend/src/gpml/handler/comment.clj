@@ -138,7 +138,7 @@
       (util/replace-in-keys #"_" "-")
       (update :id (fn [id] (if id (util/uuid id) (util/uuid))))
       (assoc :updated-at (time-pre-j8/sql-timestamp (time/instant) "UTC"))
-      (util/update-if-exists :parent-id util/uuid)))
+      (util/update-if-not-nil :parent-id util/uuid)))
 
 (defn- comment->api-comment
   [comment]
@@ -150,7 +150,7 @@
   [api-opts]
   (-> api-opts
       (util/replace-in-keys #"_" "-")
-      (util/update-if-exists :resource-id #(Integer/parseInt %))))
+      (util/update-if-not-nil :resource-id #(Integer/parseInt %))))
 
 (defn- send-new-comment-created-notification
   [{:keys [db mailjet-config]} {:keys [resource-id resource-type author-id]}]
