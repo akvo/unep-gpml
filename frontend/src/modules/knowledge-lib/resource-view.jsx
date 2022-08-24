@@ -185,7 +185,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
 
   const handleCategoryFilter = (key) => {
     history.push({
-      pathname: `/knowledge/lib/resource/${
+      pathname: `/knowledge/library/resource/${
         view ? (view === "category" ? "grid" : view) : "map"
       }/${key.replace(/_/g, "-")}/`,
       search: search,
@@ -468,7 +468,7 @@ const ViewSwitch = ({ type, view, history }) => {
                   onClick={() => {
                     setVisible(!visible);
                     history.push({
-                      pathname: `/knowledge/lib/resource/${viewOption}/${
+                      pathname: `/knowledge/library/resource/${viewOption}/${
                         type && viewOption !== "category" ? type : ""
                       }`,
                       search: history.location.search,

@@ -136,6 +136,16 @@
           }
         }
       }
+      &.adv-src {
+        svg {
+          margin-bottom: 8px;
+        }
+        span {
+          max-width: 50px;
+          display: inline-block;
+          white-space: normal;
+        }
+      }
     }
     .ant-btn:first-child {
       flex-direction: row;
@@ -279,7 +289,7 @@
     overflow-x: hidden;
     .topic-view-container {
       padding: 0px 20px;
-      margin-top: 20px;
+      margin-top: 10px;
     }
   }
   .loading {
@@ -298,7 +308,7 @@
     color: #027975;
   }
   .resource-cards {
-    margin: 20px 0 0;
+    margin: 0px 0 10px;
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
@@ -374,6 +384,7 @@
     }
     h3 {
       margin-top: 10px;
+      margin-bottom: 15px;
       color: #a5b0c9;
       font-size: 16px;
       text-transform: uppercase;
@@ -451,15 +462,18 @@
         }
       }
     }
+    padding-bottom: 15px;
     section {
       &.grey {
         background-color: #f6f8fa;
         overflow-x: hidden;
       }
-      padding: 10px 30px;
+      padding: 15px 30px 10px;
       // margin-bottom: 15px;
       .resource-cards {
-        padding-bottom: 10px !important;
+        min-height: 222px;
+        margin-bottom: 0;
+        padding-bottom: 0px !important;
         padding-left: 0px !important;
         padding-right: 0px !important;
       }
