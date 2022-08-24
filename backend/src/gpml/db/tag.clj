@@ -116,7 +116,7 @@
    the canonical entity representation."
   [tag]
   (-> tag
-      (util/update-if-exists :review_status #(sql-util/keyword->pg-enum % "review_status"))))
+      (util/update-if-not-nil :review_status #(sql-util/keyword->pg-enum % "review_status"))))
 
 (comment
   (require 'dev)
