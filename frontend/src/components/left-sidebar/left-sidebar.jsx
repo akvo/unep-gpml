@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import classNames from "classnames";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 import "./styles.scss";
@@ -9,27 +9,24 @@ const LeftSidebar = ({ sidebar, active = 1 }) => {
   const [activeMenu, setActiveMenu] = useState(active);
   const location = useLocation();
 
+  console.log(location);
+
   return (
     <>
       {sidebar != null && (
         <aside id="mainNavigation">
           <ul className="sidebar sidebar-desktop">
             {sidebar?.map((s, sx) => (
-              <li
-                className={classNames("item-sidebar", {
-                  active: s?.url === location.pathname,
-                })}
-                key={sx}
-              >
+              <li className={classNames("item-sidebar")} key={sx}>
                 {s?.url ? (
-                  <Link
+                  <NavLink
                     to={s.url}
                     className="item-menu"
                     onClick={() => setActiveMenu(s?.id)}
                   >
                     {s.icon}
                     <p>{s?.title}</p>
-                  </Link>
+                  </NavLink>
                 ) : s.title.toLowerCase() === "forums" ? (
                   <a
                     href="https://communities.gpmarinelitter.org/"
@@ -57,14 +54,14 @@ const LeftSidebar = ({ sidebar, active = 1 }) => {
                 key={sx}
               >
                 {s?.url ? (
-                  <Link
+                  <NavLink
                     to={s.url}
                     className="item-menu"
                     onClick={() => setActiveMenu(s?.id)}
                   >
                     {s?.icon}
                     <p>{s?.title}</p>
-                  </Link>
+                  </NavLink>
                 ) : (
                   <div className="ant-col ant-col-8 item-menu disabled">
                     {s?.icon}
