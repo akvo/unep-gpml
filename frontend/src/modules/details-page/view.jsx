@@ -196,7 +196,16 @@ const DetailsView = ({
               }/${params?.id}`
             )
             .then((resp) => {
-              setTranslations(resp.data);
+              setTranslations({
+                ...resp.data,
+                summary: resp.data.abstract
+                  ? resp.data.abstract
+                  : resp.data.remarks
+                  ? resp.data.remarks
+                  : resp.data.description
+                  ? resp.data.description
+                  : resp.data.summary,
+              });
             })
             .catch((e) => console.log(e));
           setData(d.data);
