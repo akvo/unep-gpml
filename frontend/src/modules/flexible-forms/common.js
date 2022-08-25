@@ -1,6 +1,8 @@
 import { Store } from "pullstate";
 import { schema } from "./form-schema";
 import cloneDeep from "lodash/cloneDeep";
+import { Form, Input } from "antd";
+import RichTextEditor from "react-rte";
 
 const initialData = {
   tabs: ["S1"],
@@ -1060,6 +1062,226 @@ const formDataMapping = [
   },
 ];
 
+const getTranslationForm = (
+  type,
+  handleTranslationChange,
+  item,
+  toolbarConfig,
+  handleChange,
+  value
+) => {
+  switch (type) {
+    case "Action Plan":
+      return (
+        <>
+          <Form.Item label="Title">
+            <Input
+              placeholder="Title"
+              onChange={(e) =>
+                handleTranslationChange("title", item, e.target.value)
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Description">
+            <Input
+              placeholder="Description"
+              onChange={(e) =>
+                handleTranslationChange("summary", item, e.target.value)
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Documents & Info">
+            <RichTextEditor
+              toolbarConfig={toolbarConfig}
+              onChange={(v) => handleChange(v, item)}
+              placeholder="Start typing here...."
+              value={
+                value.find(({ lang }) => lang === item)
+                  ? value.find(({ lang }) => lang === item).value
+                  : value[0].value
+              }
+            />
+          </Form.Item>
+        </>
+      );
+    case "Technical Resource":
+      return (
+        <>
+          <Form.Item label="Title">
+            <Input
+              placeholder="Title"
+              onChange={(e) =>
+                handleTranslationChange("title", item, e.target.value)
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Description">
+            <Input
+              placeholder="Description"
+              onChange={(e) =>
+                handleTranslationChange("summary", item, e.target.value)
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Documents & Info">
+            <RichTextEditor
+              toolbarConfig={toolbarConfig}
+              onChange={(v) => handleChange(v, item)}
+              placeholder="Start typing here...."
+              value={
+                value.find(({ lang }) => lang === item)
+                  ? value.find(({ lang }) => lang === item).value
+                  : value[0].value
+              }
+            />
+          </Form.Item>
+        </>
+      );
+    case "Policy":
+      return (
+        <>
+          <Form.Item label="Title">
+            <Input
+              placeholder="Title"
+              onChange={(e) =>
+                handleTranslationChange("title", item, e.target.value)
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Description">
+            <Input
+              placeholder="Description"
+              onChange={(e) =>
+                handleTranslationChange("abstract", item, e.target.value)
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Documents & Info">
+            <RichTextEditor
+              toolbarConfig={toolbarConfig}
+              onChange={(v) => handleChange(v, item)}
+              placeholder="Start typing here...."
+              value={
+                value.find(({ lang }) => lang === item)
+                  ? value.find(({ lang }) => lang === item).value
+                  : value[0].value
+              }
+            />
+          </Form.Item>
+        </>
+      );
+    case "Event":
+      return (
+        <>
+          <Form.Item label="Title">
+            <Input
+              placeholder="Title"
+              onChange={(e) =>
+                handleTranslationChange("title", item, e.target.value)
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Description">
+            <Input
+              placeholder="Description"
+              onChange={(e) =>
+                handleTranslationChange("description", item, e.target.value)
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Documents & Info">
+            <RichTextEditor
+              toolbarConfig={toolbarConfig}
+              onChange={(v) => handleChange(v, item)}
+              placeholder="Start typing here...."
+              value={
+                value.find(({ lang }) => lang === item)
+                  ? value.find(({ lang }) => lang === item).value
+                  : value[0].value
+              }
+            />
+          </Form.Item>
+        </>
+      );
+    case "Technology":
+      return (
+        <>
+          <Form.Item label="Title">
+            <Input
+              placeholder="Title"
+              onChange={(e) =>
+                handleTranslationChange("title", item, e.target.value)
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Description">
+            <Input
+              placeholder="Description"
+              onChange={(e) =>
+                handleTranslationChange("remarks", item, e.target.value)
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Documents & Info">
+            <RichTextEditor
+              toolbarConfig={toolbarConfig}
+              onChange={(v) => handleChange(v, item)}
+              placeholder="Start typing here...."
+              value={
+                value.find(({ lang }) => lang === item)
+                  ? value.find(({ lang }) => lang === item).value
+                  : value[0].value
+              }
+            />
+          </Form.Item>
+        </>
+      );
+    case "Financing Resource":
+      return (
+        <>
+          <Form.Item label="Title">
+            <Input
+              placeholder="Title"
+              onChange={(e) =>
+                handleTranslationChange("title", item, e.target.value)
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Description">
+            <Input
+              placeholder="Description"
+              onChange={(e) =>
+                handleTranslationChange("summary", item, e.target.value)
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Value Remark">
+            <Input
+              placeholder="Value Remark"
+              onChange={(e) =>
+                handleTranslationChange("value_remark", item, e.target.value)
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Documents & Info">
+            <RichTextEditor
+              toolbarConfig={toolbarConfig}
+              onChange={(v) => handleChange(v, item)}
+              placeholder="Start typing here...."
+              value={
+                value.find(({ lang }) => lang === item)
+                  ? value.find(({ lang }) => lang === item).value
+                  : value[0].value
+              }
+            />
+          </Form.Item>
+        </>
+      );
+    default:
+      return null;
+  }
+};
+
 export default {
   initialData,
   initialFormData,
@@ -1068,4 +1290,5 @@ export default {
   schema,
   initialDataEdit,
   formDataMapping,
+  getTranslationForm,
 };

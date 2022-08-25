@@ -140,6 +140,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     initialFormData,
     initialDataEdit,
     formDataMapping,
+    getTranslationForm,
   } = common;
 
   const storeData = UIStore.useState((s) => ({
@@ -1372,44 +1373,14 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                               }
                             >
                               <Form layout="vertical">
-                                <Form.Item label="Title">
-                                  <Input
-                                    placeholder="Title"
-                                    onChange={(e) =>
-                                      handleTranslationChange(
-                                        "title",
-                                        item,
-                                        e.target.value
-                                      )
-                                    }
-                                  />
-                                </Form.Item>
-                                <Form.Item label="Description">
-                                  <Input
-                                    placeholder="Description"
-                                    onChange={(e) =>
-                                      handleTranslationChange(
-                                        "summary",
-                                        item,
-                                        e.target.value
-                                      )
-                                    }
-                                  />
-                                </Form.Item>
-                                <Form.Item label="Documents & Info">
-                                  <RichTextEditor
-                                    toolbarConfig={toolbarConfig}
-                                    onChange={(v) => handleChange(v, item)}
-                                    placeholder="Start typing here...."
-                                    value={
-                                      value.find(({ lang }) => lang === item)
-                                        ? value.find(
-                                            ({ lang }) => lang === item
-                                          ).value
-                                        : value[0].value
-                                    }
-                                  />
-                                </Form.Item>
+                                {getTranslationForm(
+                                  label,
+                                  handleTranslationChange,
+                                  item,
+                                  toolbarConfig,
+                                  handleChange,
+                                  value
+                                )}
                               </Form>
                             </Panel>
                           ))}
