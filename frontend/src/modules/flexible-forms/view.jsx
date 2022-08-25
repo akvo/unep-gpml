@@ -81,26 +81,31 @@ const languageOptions = [
     label: "Arabic",
     key: "0",
     value: "ar",
+    flag: "🇦🇪",
   },
   {
     label: "Chinese",
     key: "1",
     value: "cn",
+    flag: "🇨🇳",
   },
   {
     label: "French",
     key: "3",
     value: "fr",
+    flag: "🇫🇷",
   },
   {
     label: "Russian",
     key: "4",
     value: "ru",
+    flag: "🇷🇺",
   },
   {
     label: "Spanish",
     key: "5",
     value: "es",
+    flag: "🇪🇸",
   },
 ];
 
@@ -1342,7 +1347,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                                       handleSelectLanguage(item.value)
                                     }
                                   >
-                                    {item.label}
+                                    {item.flag} {item.label}
                                   </li>
                                 ))}
                             </ul>
