@@ -1,12 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { UIStore } from "../../store";
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import {
   Row,
   Col,
@@ -39,13 +33,12 @@ import ExampleIcon from "../../images/examples.png";
 import InfoBlue from "../../images/i-blue.png";
 import FlexibleForm from "./form";
 import isEmpty from "lodash/isEmpty";
-import { useAuth0 } from "@auth0/auth0-react";
 import api from "../../utils/api";
 import { useLocation } from "react-router-dom";
 import moment from "moment";
 import { Link } from "react-router-dom";
 const { Step } = Steps;
-import { Form as FinalForm, Field } from "react-final-form";
+import RichTextEditor from "react-rte";
 
 const getTypeByResource = (type) => {
   let t = "";
@@ -110,6 +103,33 @@ const languageOptions = [
     value: "es",
   },
 ];
+
+const toolbarConfig = {
+  // Optionally specify the groups to display (displayed in the order listed).
+  display: [
+    "INLINE_STYLE_BUTTONS",
+    "BLOCK_TYPE_BUTTONS",
+    "LINK_BUTTONS",
+    "BLOCK_TYPE_DROPDOWN",
+    "HISTORY_BUTTONS",
+  ],
+  INLINE_STYLE_BUTTONS: [
+    { label: "Bold", style: "BOLD", className: "custom-css-class" },
+    { label: "Italic", style: "ITALIC" },
+    { label: "Underline", style: "UNDERLINE" },
+    { label: "Code", style: "CODE" },
+  ],
+  BLOCK_TYPE_DROPDOWN: [
+    { label: "Normal", style: "unstyled" },
+    { label: "Heading Large", style: "header-one" },
+    { label: "Heading Medium", style: "header-two" },
+    { label: "Heading Small", style: "header-three" },
+  ],
+  BLOCK_TYPE_BUTTONS: [
+    { label: "UL", style: "unordered-list-item" },
+    { label: "OL", style: "ordered-list-item" },
+  ],
+};
 
 const FlexibleForms = ({ match: { params }, ...props }) => {
   const {
@@ -187,7 +207,12 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     disabled: true,
     type: "default",
   });
-
+  const [value, setValue] = useState([
+    {
+      lang: "",
+      value: RichTextEditor.createEmptyValue(),
+    },
+  ]);
   const [formSchema, setFormSchema] = useState({
     schema: schema[selectedMainContentType],
   });
@@ -965,6 +990,11 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
 
   const handleRemoveLanguage = (val) => {
     const newLanaguage = languages.filter((lang) => lang !== val);
+    const findInTranslations = translations.find(
+      ({ language }) => language === val
+    );
+    if (findInTranslations)
+      setTranslations(translations.filter(({ language }) => language !== val));
     setLanguages(newLanaguage);
   };
 
@@ -989,7 +1019,23 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       ]);
   };
 
-  console.log(translations);
+  const handleChange = (v, lang) => {
+    const newValue = [...value];
+    const index = value.findIndex((x) => x.lang === lang);
+    if (index !== -1) {
+      newValue[index].lang = lang;
+      newValue[index].value = v;
+      setValue(newValue);
+    } else
+      setValue([
+        ...value,
+        {
+          lang: lang,
+          value: v,
+        },
+      ]);
+    handleTranslationChange("info_docs", lang, v.toString("html"));
+  };
 
   return (
     <div id="flexible-forms">
@@ -1350,6 +1396,20 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                                     }
                                   />
                                 </Form.Item>
+                                <Form.Item label="Documents & Info">
+                                  <RichTextEditor
+                                    toolbarConfig={toolbarConfig}
+                                    onChange={(v) => handleChange(v, item)}
+                                    placeholder="Start typing here...."
+                                    value={
+                                      value.find(({ lang }) => lang === item)
+                                        ? value.find(
+                                            ({ lang }) => lang === item
+                                          ).value
+                                        : value[0].value
+                                    }
+                                  />
+                                </Form.Item>
                               </Form>
                             </Panel>
                           ))}
@@ -1383,6 +1443,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     subContentType={subType && subType}
                     capacityBuilding={capacityBuilding && capacityBuilding}
                     type={state && state?.state ? state?.state.type : ""}
+                    translations={translations}
                   />
                 </Row>
                 {getTabStepIndex().tabIndex === 0 ? (
