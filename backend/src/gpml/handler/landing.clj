@@ -7,10 +7,10 @@
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
-(def ^:const topic-re (util.regex/comma-separated-enums-re topics))
-(def ^:const entity-groups ["topic" "community"])
+(def ^:const ^:private topic-re (util.regex/comma-separated-enums-re topics))
+(def ^:const ^:private entity-groups ["topic" "community"])
 
-(def query-params
+(def ^:private query-params
   [:map
    [:country {:optional true
               :swagger {:description "Comma separated list of country id"
@@ -93,11 +93,24 @@
                   :swagger {:description "The entity group to count: topic or community"}
                   :type "string"
                   :default (first entity-groups)}
-    (apply vector :enum entity-groups)]])
+    (apply vector :enum entity-groups)]
+   [:featured {:optional true
+               :error/message "Featured should be 'true' or 'false'"
+               :swagger {:description "Boolean flag to filter by featured resources"
+                         :type "boolean"
+                         :allowEmptyValue false}}
+    boolean?]
+   [:capacity_building {:optional true
+                        :error/message "'capacity_building' should be 'true' or 'false'"
+                        :swagger {:description "Boolean flag to filter by capacity building resources"
+                                  :type "boolean"
+                                  :allowEmptyValue false}}
+    boolean?]])
 
-(defn api-opts->opts
+(defn- api-opts->opts
   [{:keys [startDate endDate user-id favorites country transnational
-           topic tag affiliation representativeGroup subContentType entity entityGroup q]}]
+           topic tag affiliation representativeGroup subContentType entity
+           entityGroup q capacity_building featured]}]
   (cond-> {}
 
     startDate
@@ -143,10 +156,16 @@
                              (re-seq #"\w+")
                              (str/join " & ")))
 
+    featured
+    (assoc :featured featured)
+
+    capacity_building
+    (assoc :capacity-building capacity_building)
+
     true
     (assoc :review-status "APPROVED")))
 
-(defn landing-response [conn query]
+(defn- landing-response [conn query]
   (let [opts (api-opts->opts query)
         modified-opts (let [country-group-countries (->> (get opts :transnational)
                                                          (map #(db.country-group/get-country-group-countries

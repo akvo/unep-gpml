@@ -128,25 +128,21 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         search: newParams.toString(),
         state: { type: type },
       });
-    if (fetch) fetchData(pureQuery);
+    if (fetch && view !== "category") fetchData(pureQuery);
+
+    if (view === "category") loadAllCat(pureQuery);
 
     if (param === "country") {
       setFilterCountries(value);
     }
   };
 
-  const loadAllCat = async (sort) => {
+  const loadAllCat = async (filter) => {
     setLoading(true);
+
+    const queryParams = new URLSearchParams(filter);
     const promiseArray = resourceTopic.map((url) =>
-      api.get(
-        `/browse?topic=${url}${
-          sort
-            ? `&descending=${sort}&orderBy=title`
-            : sort === false
-            ? `&descending=${"false"}&orderBy=title`
-            : ""
-        }`
-      )
+      api.get(`/browse?topic=${url}&${String(queryParams)}`)
     );
 
     Promise.all(promiseArray)
@@ -154,6 +150,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         const newData = resourceTopic.map((categories, idx) => ({
           categories,
           data: data[idx].data.results,
+          count: data[idx].data.counts[0].count,
         }));
         setCatData(newData);
         setLoading(false);
@@ -164,20 +161,13 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
       });
   };
 
-  useEffect(() => {
-    if (view === "category" && catData.length === 0) {
-      loadAllCat();
-    }
-  }, [view, catData]);
-
   useMemo(() => {
-    if ((pathname || search) && !loading && data.length !== 0)
-      updateQuery("replace");
+    if ((pathname || search) && !loading) updateQuery("replace");
   }, [pathname, search]);
 
   useEffect(() => {
     if (data.length === 0) updateQuery();
-  }, [data]);
+  }, [data, view]);
 
   const clickCountry = (name) => {
     const val = query["country"];
@@ -195,7 +185,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
 
   const handleCategoryFilter = (key) => {
     history.push({
-      pathname: `/knowledge/lib/resource/${
+      pathname: `/knowledge/library/resource/${
         view ? (view === "category" ? "grid" : view) : "map"
       }/${key.replace(/_/g, "-")}/`,
       search: search,
@@ -238,7 +228,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
                 ? `Showing ${gridItems?.length} of ${totalItems}`
                 : view === "category"
                 ? `${catData?.reduce(
-                    (count, current) => count + current?.data?.length,
+                    (count, current) => count + current?.count,
                     0
                   )}`
                 : `Showing ${!loading ? data?.results?.length : ""}`}
@@ -252,10 +242,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             className="sort-by-button"
             onClick={() => {
               if (view === "grid") setGridItems([]);
-              if (view === "category") {
-                loadAllCat(!isAscending);
-                setIsAscending(!isAscending);
-              } else sortResults(!isAscending);
+              sortResults(!isAscending);
             }}
           >
             <SortIcon
@@ -273,13 +260,15 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           </button>
         </div>
         {(view === "map" || view === "topic") && (
-          <div style={{ overflowX: "hidden", position: "relative" }}>
+          <div style={{ position: "relative" }}>
             <ResourceCards
               items={data?.results}
               showMoreCardAfter={20}
               showMoreCardClick={() => {
                 history.push({
-                  pathname: `/knowledge/lib/resource/grid/${type ? type : ""}`,
+                  pathname: `/knowledge/library/resource/grid/${
+                    type ? type : ""
+                  }`,
                   search: history.location.search,
                 });
               }}
@@ -314,7 +303,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             path="knowledge"
           />
         )}
-        {!loading && view === "topic" && (
+        {view === "topic" && (
           <div className="topic-view-container">
             <TopicView
               results={data?.results}
@@ -323,6 +312,8 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
               countData={countData.filter(
                 (count) => count.topic !== "gpml_member_entities"
               )}
+              updateQuery={updateQuery}
+              query={query}
             />
           </div>
         )}
@@ -349,7 +340,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
                   <div className="title-wrapper">
                     <h4 className="cat-title">{topicNames(d.categories)}</h4>
                     <div className="quick-search">
-                      <div className="count">{d?.data.length}</div>
+                      <div className="count">{d?.count}</div>
                       <div className="search-icon">
                         <SearchIcon />
                       </div>
@@ -395,6 +386,8 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           pathname,
           history,
           setGridItems,
+          loadAllCat,
+          view,
         }}
       />
     </Fragment>
@@ -475,7 +468,7 @@ const ViewSwitch = ({ type, view, history }) => {
                   onClick={() => {
                     setVisible(!visible);
                     history.push({
-                      pathname: `/knowledge/lib/resource/${viewOption}/${
+                      pathname: `/knowledge/library/resource/${viewOption}/${
                         type && viewOption !== "category" ? type : ""
                       }`,
                       search: history.location.search,

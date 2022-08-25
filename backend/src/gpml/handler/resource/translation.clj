@@ -5,14 +5,14 @@
             [gpml.db.resource.translation :as db.res-translation]
             [gpml.domain.translation :as dom.translation]
             [gpml.handler.resource.permission :as res-permission]
-            [gpml.handler.util :as util]
+            [gpml.handler.util :as handler.util]
             [gpml.util.sql :as sql-util]
             [integrant.core :as ig]
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
-(defonce translation-table-sufix "_translation")
-(defonce translation-entity-id-sufix "_id")
+(defonce ^:private translation-table-sufix "_translation")
+(defonce ^:private translation-entity-id-sufix "_id")
 
 (defmethod ig/init-key :gpml.handler.resource.translation/topics [_ _]
   (apply conj [:enum] constants/topic-tables))
@@ -47,7 +47,7 @@
                       (keyword translatable_field)]))
            translatable_fields)))
 
-(def put-params
+(def ^:private put-params
   [:and
    [:map
     [:translations
@@ -64,7 +64,7 @@
    [:fn {:error/message "There is some invalid translatable_field"}
     all-valid-translatable-fields?]])
 
-(def delete-params
+(def ^:private delete-params
   [:and
    [:map
     [:translations {:optional true}
@@ -91,7 +91,7 @@
    [:fn {:error/message "There is some invalid translatable_field"}
     all-valid-translatable-fields-for-deletion?]])
 
-(def get-query-params
+(def ^:private get-query-params
   [:map
    [:langs-only {:optional true}
     boolean?]])
@@ -121,7 +121,11 @@
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
     (try
-      (let [submission (res-permission/get-resource-if-allowed (:spec db) path user false)]
+      (let [submission (res-permission/get-resource-if-allowed (:spec db)
+                                                               user
+                                                               (handler.util/get-internal-topic-type topic-type)
+                                                               topic-id
+                                                               {:read? false})]
         (if (some? submission)
           (if (valid-translation-languages? (:translations body) (:language submission))
             (let [conn (:spec db)
@@ -142,7 +146,7 @@
                  :body {:success? false
                         :reason :no-translations-affected}}))
             (resp/bad-request body))
-          util/unauthorized))
+          handler.util/unauthorized))
       (catch Exception e
         (log logger :error ::failed-to-create-or-edit-resource-translations {:exception-message (.getMessage e)
                                                                              :context-data {:path-params path
@@ -159,7 +163,11 @@
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
     (try
-      (let [authorized? (some? (res-permission/get-resource-if-allowed (:spec db) path user false))]
+      (let [authorized? (some? (res-permission/get-resource-if-allowed (:spec db)
+                                                                       user
+                                                                       (handler.util/get-internal-topic-type topic-type)
+                                                                       topic-id
+                                                                       {:read? false}))]
         (if authorized?
           (let [conn (:spec db)
                 resource-col (keyword (str topic-type translation-entity-id-sufix))
@@ -189,7 +197,7 @@
               {:status 500
                :body {:success? false
                       :reason :no-translations-deleted}}))
-          util/unauthorized))
+          handler.util/unauthorized))
       (catch Exception e
         (log logger :error ::failed-to-delete-resource-translations {:exception-message (.getMessage e)
                                                                      :context-data {:path-params path
@@ -203,15 +211,18 @@
 
 (defmethod ig/init-key :gpml.handler.resource.translation/get
   [_ {:keys [db logger]}]
-  (fn [{{:keys [path query]} :parameters approved? :approved? user :user}]
+  (fn [{{:keys [path query]} :parameters user :user}]
     (try
       (let [conn (:spec db)
             topic-type (:topic-type path)
             resource-col (keyword (str topic-type translation-entity-id-sufix))
             topic-id (:topic-id path)
             langs-only? (:langs-only query)
-            authorized? (and approved?
-                             (some? (res-permission/get-resource-if-allowed conn path user true)))]
+            authorized? (some? (res-permission/get-resource-if-allowed conn
+                                                                       user
+                                                                       (handler.util/get-internal-topic-type topic-type)
+                                                                       topic-id
+                                                                       {:read? true}))]
         (if authorized?
           (let [table-name (str topic-type translation-table-sufix)
                 result (if langs-only?
@@ -234,7 +245,7 @@
                                          (-> field-value first :translations)))
                                       {})))]
             (resp/response result))
-          util/unauthorized))
+          handler.util/unauthorized))
       (catch Exception e
         (log logger :error ::failed-to-get-resource-translations {:exception-message (.getMessage e)
                                                                   :context-data {:path-params path
