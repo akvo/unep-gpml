@@ -240,8 +240,8 @@ User %s is suggesting an expert with the following information:
    {{:keys [body]} :parameters user :user}]
   (try
     (let [expert (-> body
-                     (util/update-if-exists :expertise #(str/join "," %))
-                     (util/update-if-exists :suggested_expertise #(str/join "," %)))
+                     (util/update-if-not-nil :expertise #(str/join "," %))
+                     (util/update-if-not-nil :suggested_expertise #(str/join "," %)))
           user-full-name (email/get-user-full-name user)
           admins (db.stakeholder/get-stakeholders (:spec db) {:filters {:roles ["ADMIN"]}})
           admin-names (map email/get-user-full-name admins)
