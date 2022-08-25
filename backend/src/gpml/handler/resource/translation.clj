@@ -168,7 +168,6 @@
                                                                        (handler.util/get-internal-topic-type topic-type)
                                                                        topic-id
                                                                        {:read? false}))]
-        (prn "hey")
         (if authorized?
           (let [conn (:spec db)
                 resource-col (keyword (str topic-type translation-entity-id-sufix))
