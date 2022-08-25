@@ -710,12 +710,12 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.lang) {
-        let find = languages[Object.keys(data.lang)[0]];
-        data.language = {
-          english_name: find.name,
-          native_name: find.native,
-          iso_code: Object.keys(data.lang)[0],
-        };
+        // let find = languages[Object.keys(data.lang)[0]];
+        // data.language = {
+        //   english_name: find.name,
+        //   native_name: find.native,
+        //   iso_code: Object.keys(data.lang)[0],
+        // };
         delete data.lang;
       }
 
