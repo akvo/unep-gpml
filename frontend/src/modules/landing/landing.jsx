@@ -7,6 +7,8 @@ import MenuBar from './menu-bar';
 import Footer from '../../footer';
 import { useEffect } from 'react';
 import { useRef } from 'react';
+import {Swiper, SwiperSlide} from 'swiper/react';
+import { FreeMode } from "swiper";
 
 const Landing = (props) => {
   return (
@@ -31,6 +33,41 @@ const Landing = (props) => {
         <Button type='primary' size='large'>Create your workspace</Button>
       </div>
       <TheJourney />
+      <div className="connect">
+        <h2>Connect with the network</h2>
+        <Swiper
+          spaceBetween={40}
+          slidesPerView="auto"
+          slidesPerGroup={4}
+        >
+          <SwiperSlide className='card casestudy'>
+              <div className="label">featured case study</div>
+              <img src="/featured-case-study.jpg" />
+              <h4>Costa Rica: Becoming The First Country To Eliminate Single-Use Plastics</h4>
+              <p>
+                <b>Challenge & Solution</b><br />
+                Plastic pollution poses a threat both to humans and the environment of Costa Rica. Several industries, including fisheries and tourism, are threatened by improper disposal of plastics. The problem was exacerbated when China closed its borders to plastic waste imports, resulting in a quick build-up of plastic waste. This crisis catalyzed Costa Rica to launch an initiative to eliminate single-use plastics in most municipalities and businesses by 2021.<br /><br />This encompasses regulations targeting Extended Producer Responsibility (EPR), requiring “waste producers” to develop, implement, and follow waste management and collection programs. The regulation of single-use plastics covers restrictions for plastic bags, straws, polystyrene containers and single-use plastic water bottles. In addition, a directive was passed to implement information campaigns and label single-use plastics based on a newly adopted classification tool, distinguishing between “Renewable, Compostable, and Compostable” and other types.
+              </p>
+          </SwiperSlide>
+          <SwiperSlide className="card spotlight">
+              <div className="label">member spotlight</div>
+              <img src="/spotlight.jpg" />
+              <p>
+                <i>DECEMBER 2020</i><br />
+                <b>IMPROVING WASTEWATER MANAGEMENT IN SOMALIA</b><br />
+                In October, Somali Greenpeace Association (SOGPA) in collaboration with its partners, held a Wastewater Management training in Baidoa, Somalia. The aim was to build awareness on the importance of proper wastewater management in helping to keep our waterways and oceans clean.
+30 young people and local leaders took part, learning about the hazards wastewater can cause if not managed properly. An advocacy message was delivered to government leaders, pushing for increased action on the issue. Local authorities have since requested more training for members of society on the problems and solutions regarding wastewater management.
+SOGPA's Vice-chairperson, Hassan Mowlid Yasin, says, "The youth have to be empowered to address environmental issues that affect them.
+              </p>
+          </SwiperSlide>
+        </Swiper>
+      </div>
+      <div className="partners">
+        <h3>Our partners</h3>
+        <div className="img-container">
+          <img src="/partners.png" />
+        </div>
+      </div>
       <Footer />
     </div>
   )

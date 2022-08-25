@@ -278,6 +278,85 @@
       padding: 0 30px;
     }
   }
+  .connect {
+    position: relative;
+    z-index: 2;
+    background-color: #fff;
+    padding: 50px 0 0 40px;
+    h2 {
+      text-transform: uppercase;
+      margin-bottom: 25px;
+    }
+    .swiper {
+      overflow: visible;
+    }
+    .card {
+      box-shadow: 0px 4px 44px rgba(24, 22, 47, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      padding: 20px;
+      img {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      &.casestudy {
+        width: 600px;
+      }
+      &.spotlight {
+        width: 474px;
+        @media screen and (min-width: 1024px) {
+          margin-top: 120px;
+        }
+      }
+      h4 {
+        font-weight: bold;
+      }
+      .label {
+        font-weight: 540;
+        color: #ffb800;
+        text-transform: uppercase;
+        transform: translateY(-5px);
+        margin-bottom: 5px;
+      }
+      p {
+        b {
+          text-transform: uppercase;
+          opacity: 0.6;
+        }
+      }
+    }
+  }
+  .partners {
+    background-color: #edf2f7;
+    padding: 50px 0 0 0;
+    img {
+      height: 310px;
+    }
+    h3 {
+      text-align: center;
+      font-size: 22px;
+      text-transform: uppercase;
+      color: #255b87;
+    }
+    .img-container {
+      padding-left: 40px;
+      overflow-x: scroll;
+      &::-webkit-scrollbar {
+        all: unset;
+      }
+      &::-webkit-scrollbar-track {
+        background: initial;
+      }
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+        background: initial;
+      }
+      /* Handle on hover */
+      &::-webkit-scrollbar-thumb:hover {
+        background: initial;
+      }
+    }
+  }
 }
 body {
   overflow-x: hidden;
