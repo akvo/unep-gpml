@@ -16,8 +16,8 @@
 (defn- api-associated-topics-opts->associated-topics-opts
   [api-associated-topics-opts]
   (-> api-associated-topics-opts
-      (util/update-if-exists :page #(Integer/parseInt %))
-      (util/update-if-exists :limit #(Integer/parseInt %))))
+      (util/update-if-not-nil :page #(Integer/parseInt %))
+      (util/update-if-not-nil :limit #(Integer/parseInt %))))
 
 (defn- associated-topics->api-associated-topics
   [associated-topics]
