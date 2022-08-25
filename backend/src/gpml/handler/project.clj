@@ -1,12 +1,15 @@
 (ns gpml.handler.project
-  (:require [clojure.string :as str]
+  (:require [clojure.java.jdbc :as jdbc]
+            [clojure.string :as str]
             [duct.logger :refer [log]]
             [gpml.db.project :as db.prj]
+            [gpml.db.project.geo-coverage :as db.prj.geo]
             [gpml.domain.project :as dom.prj]
             [gpml.domain.types :as dom.types]
             [gpml.handler.responses :as r]
             [gpml.handler.util :as handler.util]
             [gpml.util.postgresql :as pg-util]
+            [gpml.util.sql :as sql-util]
             [integrant.core :as ig]
             [malli.util :as mu])
   (:import [java.sql SQLException]))
@@ -52,17 +55,31 @@
 (defn- create-project
   [{:keys [db logger]} {:keys [parameters user] :as _req}]
   (try
-    (let [db-project (-> (:body parameters)
-                         (assoc :stakeholder_id (:id user))
-                         (dom.prj/create-project)
-                         (db.prj/project->db-project))
-          inserted-values (db.prj/create-projects (:spec db) {:insert-cols (map name (keys db-project))
-                                                              :insert-values [(vals db-project)]})]
-      (if (= inserted-values 1)
-        (r/ok {:success? true
-               :project_id (:id db-project)})
-        (r/server-error {:success? false
-                         :reason :failed-to-create-project})))
+    (jdbc/with-db-transaction [conn (:spec db)]
+      (let [body (:body parameters)
+            db-project (-> body
+                           (assoc :stakeholder_id (:id user))
+                           (dom.prj/create-project)
+                           (db.prj/project->db-project))
+            inserted-values (db.prj/create-projects conn
+                                                    {:insert-cols (map name (keys db-project))
+                                                     :insert-values [(vals db-project)]})]
+        (if (= inserted-values 1)
+          (let [project-id (:id db-project)
+                project-geo-coverage-keys [:project_id :country_id :country_group_id]
+                geo-coverage-countries (:geo_coverage_countries body)
+                geo-coverage-country-groups (:geo_coverage_country_groups body)
+                project-geo-coverage-countries (map #(zipmap project-geo-coverage-keys [project-id % nil]) geo-coverage-countries)
+                project-geo-coverage-country-groups (map #(zipmap project-geo-coverage-keys [project-id nil %]) geo-coverage-country-groups)
+                project-geo-coverage (concat project-geo-coverage-countries project-geo-coverage-country-groups)
+                insert-values (sql-util/get-insert-values project-geo-coverage-keys project-geo-coverage)
+                inserted-values (db.prj.geo/create-project-geo-coverage conn
+                                                                        {:insert-cols (map name project-geo-coverage-keys)
+                                                                         :insert-values insert-values})]
+            (when-not (= inserted-values (count project-geo-coverage))
+              (throw (ex-info "Failed to create project geo coverage" {:inserted-values inserted-values}))))
+          (throw (ex-info "Failed to create project" {:inserted-values inserted-values})))
+        (r/ok {:success? true :project_id (:id db-project)})))
     (catch Exception e
       (log logger :error ::failed-to-create-project {:exception-message (.getMessage e)
                                                      :context-data parameters})
@@ -92,15 +109,30 @@
 (defn- update-project
   [{:keys [db logger]} {:keys [parameters]}]
   (try
-    (let [db-project (-> (:body parameters)
-                         (db.prj/project->db-project))
-          updated-values (db.prj/update-project (:spec db)
-                                                {:updates db-project
-                                                 :id (get-in parameters [:path :id])})]
-      (if (= updated-values 1)
-        (r/ok {:success? true})
-        (r/server-error {:success? false
-                         :reason :failed-to-update-project})))
+    (jdbc/with-db-transaction [conn (:spec db)]
+      (let [{:keys [geo_coverage_countries geo_coverage_country_groups] :as body} (:body parameters)
+            {:keys [id]} (:path parameters)
+            db-project (-> body
+                           (db.prj/project->db-project))
+            updated-values (db.prj/update-project conn
+                                                  {:updates db-project
+                                                   :id id})]
+        (if (= updated-values 1)
+          (when (or (seq geo_coverage_countries)
+                    (seq geo_coverage_country_groups))
+            (let [_deleted-values (db.prj.geo/delete-project-geo-coverage conn {:project-id id})
+                  project-geo-coverage-keys [:project_id :country_id :country_group_id]
+                  project-geo-coverage-countries (map #(zipmap project-geo-coverage-keys [id % nil]) geo_coverage_countries)
+                  project-geo-coverage-country-groups (map #(zipmap project-geo-coverage-keys [id nil %]) geo_coverage_country_groups)
+                  project-geo-coverage (concat project-geo-coverage-countries project-geo-coverage-country-groups)
+                  insert-values (sql-util/get-insert-values project-geo-coverage-keys project-geo-coverage)
+                  inserted-values (db.prj.geo/create-project-geo-coverage conn
+                                                                          {:insert-cols (map name project-geo-coverage-keys)
+                                                                           :insert-values insert-values})]
+              (when-not (= inserted-values (count project-geo-coverage))
+                (throw (ex-info "Failed to update project geo coverage" {:inserted-values inserted-values})))))
+          (throw (ex-info "Failed to update project" {:updated-values updated-values})))
+        (r/ok {:success? true})))
     (catch Exception e
       (log logger :error ::failed-to-update-project {:exception-message (.getMessage e)
                                                      :context-data {:parameters parameters}})

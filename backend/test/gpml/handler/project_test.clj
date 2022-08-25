@@ -11,7 +11,8 @@
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
             [malli.core :as m]
-            [ring.mock.request :as mock]))
+            [ring.mock.request :as mock]
+            [gpml.seeder.main :as seeder]))
 
 (use-fixtures :each fixtures/with-test-system)
 
@@ -20,7 +21,9 @@
   {:title "test project"
    :geo_coverage_type (rand-nth (vec dom.types/geo-coverage-types))
    :type (first dom.prj/project-types)
-   :checklist {"test item" false}})
+   :checklist {"test item" false}
+   :geo_coverage_countries [724]
+   :geo_coverage_country_groups [151]})
 
 (defn- create-random-project
   [db stakeholder-id]
@@ -55,6 +58,7 @@
                    (ig/init [::sut/post]))
         handler (::sut/post system)
         profile (make-profile "John" "Doe" "mail@org.com")
+        _ (seeder/seed db {:country? true})
         sth-id (:id (db.stakeholder/new-stakeholder db profile))]
     (testing "Happy path"
       (let [project-payload (random-project-data)
@@ -91,6 +95,7 @@
                    (ig/init [::sut/put]))
         handler (::sut/put system)
         profile (make-profile "John" "Doe" "mail@org.com")
+        _ (seeder/seed db {:country? true})
         sth-id (:id (db.stakeholder/new-stakeholder db profile))
         project-id (create-random-project db sth-id)]
     (testing "Happy path"
@@ -118,6 +123,7 @@
                    (ig/init [::sut/get-by-id]))
         handler (::sut/get-by-id system)
         profile (make-profile "John" "Doe" "mail@org.com")
+        _ (seeder/seed db {:country? true})
         sth-id (:id (db.stakeholder/new-stakeholder db profile))
         project-id (create-random-project db sth-id)]
     (testing "Happy path"
@@ -141,6 +147,7 @@
                    (ig/init [::sut/get]))
         handler (::sut/get system)
         profile (make-profile "John" "Doe" "mail@org.com")
+        _ (seeder/seed db {:country? true})
         sth-id (:id (db.stakeholder/new-stakeholder db profile))
         project-id-1 (create-random-project db sth-id)
         _project-id-2 (create-random-project db sth-id)]
@@ -168,6 +175,7 @@
                    (ig/init [::sut/delete]))
         handler (::sut/delete system)
         profile (make-profile "John" "Doe" "mail@org.com")
+        _ (seeder/seed db {:country? true})
         sth-id (:id (db.stakeholder/new-stakeholder db profile))
         project-id (create-random-project db sth-id)]
     (testing "Happy path"

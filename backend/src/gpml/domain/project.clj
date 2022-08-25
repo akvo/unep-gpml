@@ -7,6 +7,17 @@
   "Possible values for `project-type`."
   #{"action-plan"})
 
+(def ProjectGeoCoverage
+  "The Project's geo coverage sub entity."
+  (m/schema
+   [:map
+    [:project_id
+     uuid?]
+    [:country_id
+     pos-int?]
+    [:country_group_id
+     pos-int?]]))
+
 (def Project
   "The Project entity model."
   (m/schema
@@ -50,7 +61,21 @@
                 :type "object"
                 :additionalProperties {}
                 :allowEmptyValue false}}
-     [:maybe map?]]]))
+     [:maybe map?]]
+    [:geo_coverage_countries
+     {:optional true
+      :swagger {:description "The Project's country reach."
+                :type "array"
+                :items {:type "integer"}}}
+     [:sequential
+      pos-int?]]
+    [:geo_coverage_country_groups
+     {:optional true
+      :swagger {:description "The Project's country groups reach."
+                :type "array"
+                :items {:type "integer"}}}
+     [:sequential
+      pos-int?]]]))
 
 (defn create-project
   "Creates a new project entity adding the necessary default and unique
