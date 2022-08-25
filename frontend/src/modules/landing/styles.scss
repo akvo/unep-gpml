@@ -282,7 +282,7 @@
     position: relative;
     z-index: 2;
     background-color: #fff;
-    padding: 50px 0 0 40px;
+    padding: 50px 40px 30px 40px;
     h2 {
       text-transform: uppercase;
       margin-bottom: 25px;
@@ -300,12 +300,52 @@
         margin-bottom: 20px;
       }
       &.casestudy {
-        width: 600px;
+        max-width: 600px;
       }
       &.spotlight {
-        width: 474px;
-        @media screen and (min-width: 1024px) {
+        max-width: 474px;
+      }
+      &.testimonial {
+        max-width: 220px;
+        img {
+          border-radius: 4px;
+          overflow: hidden;
+          margin-bottom: 10px;
+        }
+        h4 {
+          font-size: 14px;
+        }
+        h5 {
+          font-size: 14px;
+          line-height: 18px;
+        }
+        blockquote {
+          position: relative;
+          text-indent: 15px;
+          color: #8691b0;
+          &:before {
+            content: "”";
+            position: absolute;
+            left: -18px;
+            top: -10px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #a5b0c9;
+          }
+        }
+      }
+      @media screen and (min-width: 1024px) {
+        &.spotlight {
           margin-top: 120px;
+        }
+        &:nth-child(3) {
+          margin-top: 50px;
+        }
+        &:nth-child(4) {
+          margin-top: 200px;
+        }
+        &:nth-child(5) {
+          margin-top: 50px;
         }
       }
       h4 {
