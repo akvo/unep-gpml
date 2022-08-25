@@ -182,6 +182,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const [subType, setSubType] = useState("");
   const [subContentType, setSubContentType] = useState([]);
   const [languages, setLanguages] = useState([]);
+  const [translations, setTranslations] = useState([]);
   const [disabledBtn, setDisabledBtn] = useState({
     disabled: true,
     type: "default",
@@ -967,6 +968,29 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     setLanguages(newLanaguage);
   };
 
+  const handleTranslationChange = (name, lang, value) => {
+    const newTranslations = [...translations];
+    const index = translations.findIndex(
+      (x) => x.language === lang && x.translatable_field === name
+    );
+    if (index !== -1) {
+      newTranslations[index].language = lang;
+      newTranslations[index].translatable_field = name;
+      newTranslations[index].value = value;
+      setTranslations(newTranslations);
+    } else
+      setTranslations([
+        ...translations,
+        {
+          language: lang,
+          translatable_field: name,
+          value: value,
+        },
+      ]);
+  };
+
+  console.log(translations);
+
   return (
     <div id="flexible-forms">
       <StickyBox style={{ zIndex: 10 }}>
@@ -1266,6 +1290,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                                 .filter((ln) => !languages.includes(ln.value))
                                 .map((item) => (
                                   <li
+                                    key={item.value}
                                     onClick={() =>
                                       handleSelectLanguage(item.value)
                                     }
@@ -1302,10 +1327,28 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                             >
                               <Form layout="vertical">
                                 <Form.Item label="Title">
-                                  <Input placeholder="Title" />
+                                  <Input
+                                    placeholder="Title"
+                                    onChange={(e) =>
+                                      handleTranslationChange(
+                                        "title",
+                                        item,
+                                        e.target.value
+                                      )
+                                    }
+                                  />
                                 </Form.Item>
                                 <Form.Item label="Description">
-                                  <Input placeholder="Description" />
+                                  <Input
+                                    placeholder="Description"
+                                    onChange={(e) =>
+                                      handleTranslationChange(
+                                        "summary",
+                                        item,
+                                        e.target.value
+                                      )
+                                    }
+                                  />
                                 </Form.Item>
                               </Form>
                             </Panel>
