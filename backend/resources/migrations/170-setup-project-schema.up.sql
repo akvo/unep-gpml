@@ -12,6 +12,7 @@ CREATE TABLE project (
 );
 --;;
 CREATE TABLE project_geo_coverage (
+       id SERIAL NOT NULL PRIMARY KEY,
        project_id UUID NOT NULL REFERENCES project(id) ON DELETE CASCADE,
        country_id INTEGER REFERENCES country(id) ON DELETE CASCADE ON UPDATE CASCADE,
        country_group_id INTEGER REFERENCES country_group(id) ON DELETE CASCADE ON UPDATE CASCADE
