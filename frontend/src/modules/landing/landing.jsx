@@ -1,5 +1,5 @@
-import React from 'react'
-import { Button } from "antd";
+import React, { useState } from 'react'
+import { Button, Card } from "antd";
 import './styles.scss'
 import { ReactComponent as Down } from "../../images/down.svg";
 import { ReactComponent as PlasticLitter } from "../../images/plastic-litter.svg";
@@ -9,6 +9,12 @@ import { useEffect } from 'react';
 import { useRef } from 'react';
 import {Swiper, SwiperSlide} from 'swiper/react';
 import { FreeMode } from "swiper";
+ import { UIStore } from "../../store";
+ import { ReactComponent as ActionPlanIcon } from "../../images/actionplan.svg";
+ import { ReactComponent as KnowledgeIcon } from "../../images/knowledge.svg";
+ import { ReactComponent as DataSetIcon } from "../../images/datasets.svg";
+//  import helpCenterIcon
+//  import { ReactComponent as HelpCenterIcon } from "../../images/help-center.svg";
 
 const Landing = (props) => {
   return (
@@ -69,6 +75,8 @@ SOGPA's Vice-chairperson, Hassan Mowlid Yasin, says, "The youth have to be empow
         </div>
       </div>
       <Stats />
+      <Act />
+      <AnyQuestions />
       <Footer />
     </div>
   )
@@ -210,5 +218,130 @@ const Stats = () => {
     </div>
   )
 }
+
+const Act = () => {
+   const { resources } = UIStore.useState((s) => ({
+     resources: s.nav?.resourceCounts,
+   }));
+
+   const organisationsCount =
+     resources?.find((data) => data?.hasOwnProperty("organisation"))[
+       "organisation"
+     ] || 0;
+
+   const initialData = [
+     {
+       title: "Share your data",
+       name: "Data sets",
+       count: 349,
+       entityCount: 814,
+       icon: <DataSetIcon />,
+       background: "#ECF8F6",
+     },
+   ];
+
+   const [data, setData] = useState(initialData);
+
+   useEffect(() => {
+     const actionPlan = resources?.find((data) =>
+       data?.hasOwnProperty("actionPlan")
+     )["actionPlan"];
+
+     const allResources = resources?.filter(
+       (resource) =>
+         !resource?.hasOwnProperty("stakeholder") &&
+         !resource?.hasOwnProperty("organisation")
+     );
+
+     const resourcesWithKey = allResources
+       ?.map((resource) => {
+         return Object.entries(resource)
+           ?.filter(([key]) => key !== "countries")
+           .flat();
+       })
+       .flat();
+
+     const resourceCounts = resourcesWithKey
+       ?.map((item) => Number(item))
+       ?.filter((item) => !isNaN(item));
+
+     const totalResourceCount = resourceCounts?.reduce(
+       (acc, val) => acc + val,
+       0
+     );
+
+     setData([
+       {
+         title: "Coordinate in a global effort ",
+         name: "Action Plans",
+         count: actionPlan,
+         entityCount: 28,
+         icon: <ActionPlanIcon />,
+         background: "rgba(165, 176, 201, 0.2)",
+       },
+       {
+         title: "Contribute to the knowledge",
+         name: "Resources",
+         count: totalResourceCount,
+         entityCount: 814,
+         icon: <KnowledgeIcon />,
+         background: "#F6EFDD",
+       },
+       ...initialData,
+     ]);
+   }, [resources]);
+
+   return (
+     <div className="act">
+       <h3>Act now</h3>
+       <div className="act-cards">
+         {data.map((item) => (
+           <Card className="act-card">
+             <div
+               className="act-contents"
+               style={{ backgroundColor: item?.background }}
+             >
+               <h4 className="act-title">{item?.title}</h4>
+               <div className="act-data-contents">
+                 {item?.icon}
+                 <div>
+                   <span className="count">{item?.count} </span>
+                   <span className="name">{item?.name}</span>
+                 </div>
+               </div>
+               <div className="created-by">
+                 Created by
+                 <br />
+                 <div className="entity-creators">
+                   {item?.entityCount} entities
+                 </div>
+               </div>
+             </div>
+           </Card>
+         ))}
+       </div>
+       <Button type="primary" size="large">
+         Join now
+       </Button>
+     </div>
+   );
+ };
+
+ const AnyQuestions = () => {
+   return (
+     <div className="any-questions">
+       <div className="image-wrapper">
+         <img src="/help-center.svg" alt="help-center-icon" loading="lazy" />
+       </div>
+       <div className="content-container">
+         <h3>Any Questions?</h3>
+         <p>Visit the Help Center for FAQs, tutorials and more.</p>
+         <Button type="ghost" size="large">
+           Find your answers &#62;
+         </Button>
+       </div>
+     </div>
+   );
+ };
 
 export default Landing
