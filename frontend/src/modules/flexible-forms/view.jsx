@@ -40,43 +40,51 @@ import { Link } from "react-router-dom";
 const { Step } = Steps;
 import RichTextEditor from "react-rte";
 
-const getTypeByResource = (type) => {
+export const getTypeByResource = (type) => {
   let t = "";
   let name = "";
+  let translations = "";
   switch (type) {
     case "action_plan":
       t = "action";
       name = "Action Plan";
+      translations = "resource";
       break;
     case "event":
       t = "event_flexible";
       name = "Event";
+      translations = "event";
       break;
     case "initiative":
       t = "initiative";
       name = "Initiative";
+      translations = "initiative";
       break;
     case "policy":
       t = "policy";
       name = "Policy";
+      translations = "policy";
       break;
     case "financing_resource":
       t = "financing";
       name = "Financing Resource";
+      translations = "resource";
       break;
     case "technical_resource":
       t = "technical";
       name = "Technical Resource";
+      translations = "resource";
       break;
     case "technology":
       t = "technology";
       name = "Technology";
+      translations = "technology";
       break;
   }
-  return { type: t, name: name };
+  return { type: t, name: name, translations: translations };
 };
 
-const languageOptions = [
+export const languageOptions = [
   {
     label: "Arabic",
     key: "0",
@@ -106,6 +114,12 @@ const languageOptions = [
     key: "5",
     value: "es",
     flag: "🇪🇸",
+  },
+  {
+    label: "English",
+    key: "6",
+    value: "en",
+    flag: "🇬🇧",
   },
 ];
 
