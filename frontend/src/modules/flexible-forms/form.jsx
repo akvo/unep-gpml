@@ -50,6 +50,7 @@ const FlexibleForm = withRouter(
     subContentType,
     capacityBuilding,
     type,
+    translations,
     match: { params },
   }) => {
     const {
@@ -299,7 +300,20 @@ const FlexibleForm = withRouter(
       if (status === "add" && !params?.id) {
         api
           .post("/resource", data)
-          .then(() => {
+          .then((res) => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/resource/${res.data.id}`, {
+                  translations: translations,
+                  "topic-type": "resource",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             // scroll top
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
