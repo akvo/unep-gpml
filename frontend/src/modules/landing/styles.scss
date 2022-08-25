@@ -357,6 +357,44 @@
       }
     }
   }
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 200px;
+      height: 160px;
+      background: #255b87;
+      box-shadow: 0px 4px 4px rgba(24, 22, 47, 0.3);
+      border-radius: 20px;
+      margin: 40px 80px 30px;
+      padding: 0 20px;
+      b {
+        font-weight: 600;
+        font-size: 52px;
+        line-height: 20px;
+        margin-bottom: 23px;
+        color: #ffffff;
+        text-shadow: 3px 3px 0px #6db5b0;
+        margin-top: 30px;
+      }
+      i {
+        font-size: 28px;
+        line-height: 25px;
+        color: #6db5b0;
+        font-style: normal;
+        text-align: center;
+        height: 50px;
+      }
+    }
+    .row {
+      display: flex;
+    }
+  }
 }
 body {
   overflow-x: hidden;

@@ -68,6 +68,7 @@ SOGPA's Vice-chairperson, Hassan Mowlid Yasin, says, "The youth have to be empow
           <img src="/partners.png" />
         </div>
       </div>
+      <Stats />
       <Footer />
     </div>
   )
@@ -168,6 +169,45 @@ and possible infiltration into groundwater.</p> */}
           </div>
         </div>
       </div>
+  )
+}
+
+const Stats = () => {
+  return (
+    <div className="stats">
+      <div className="row">
+        <div className="stat">
+          <b>42</b>
+          <i>Governments</i>
+        </div>
+        <div className="stat">
+          <b>498</b>
+          <i>Organisations</i>
+        </div>
+        <div className="stat">
+          <b>571</b>
+          <i>Individuals</i>
+        </div>
+        <div className="stat">
+          <b>6</b>
+          <i>Communities of Practise</i>
+        </div>
+      </div>
+      <div className="row">
+        <div className="stat">
+          <b>5</b>
+          <i>Centers of Excellence</i>
+        </div>
+        <div className="stat">
+          <b>16</b>
+          <i>Sectors</i>
+        </div>
+        <div className="stat">
+          <b>5</b>
+          <i>Regions</i>
+        </div>
+      </div>
+    </div>
   )
 }
 
