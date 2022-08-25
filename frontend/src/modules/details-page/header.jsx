@@ -217,7 +217,6 @@ export const HeaderButtons = ({
         <div className="language-select">
           <Select
             defaultValue={"en"}
-            style={{ width: 120 }}
             placeholder="Select language"
             onChange={(v) => {
               if (v === "en") setLanguage("");
@@ -231,7 +230,6 @@ export const HeaderButtons = ({
               .map((lang) => (
                 <Option value={lang}>
                   {languageOptions.find(({ value }) => value === lang).flag}{" "}
-                  {languageOptions.find(({ value }) => value === lang).label}
                 </Option>
               ))}
           </Select>
