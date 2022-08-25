@@ -50,7 +50,23 @@
                :allowEmptyValue false}}
     [:sequential
      {:decode/string (fn [s] (str/split s #","))}
-     (apply conj [:enum] dom.prj/project-types)]]])
+     (apply conj [:enum] dom.prj/project-types)]]
+   [:countries
+    {:optional true
+     :swagger {:description "A comma separated list of country identifiers."
+               :type "string"
+               :allowEmptyValue false}}
+    [:sequential
+     {:decode/string (fn [s] (str/split s #","))}
+     pos-int?]]
+   [:country_groups
+    {:optional true
+     :swagger {:description "A comma separated list of country group identifiers."
+               :type "string"
+               :allowEmptyValue false}}
+    [:sequential
+     {:decode/string (fn [s] (str/split s #","))}
+     pos-int?]]])
 
 (defn- create-project
   [{:keys [db logger]} {:keys [parameters user] :as _req}]

@@ -48,6 +48,8 @@ WHERE 1=1
 --~ (when (get-in params [:filters :geo_coverage_types]) " AND p.geo_coverage_type = ANY(:filters.geo_coverage_types)")
 --~ (when (get-in params [:filters :types]) " AND p.type = ANY(:filters.types)")
 --~ (when (get-in params [:filters :stakeholders_ids]) " AND p.stakeholder_id IN (:v*:filters.stakeholders_ids)")
+--~ (when (get-in params [:filters :countries]) " AND pgc.country_id IN (:v*:filters.countries)")
+--~ (when (get-in params [:filters :country_groups]) " AND pgc.country_group_id IN (:v*:filters.country_groups)")
 GROUP BY p.id
 
 -- :name create-projects :execute :affected
