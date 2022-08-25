@@ -50,6 +50,7 @@ const FlexibleForm = withRouter(
     subContentType,
     capacityBuilding,
     type,
+    translations,
     match: { params },
   }) => {
     const {
@@ -299,7 +300,20 @@ const FlexibleForm = withRouter(
       if (status === "add" && !params?.id) {
         api
           .post("/resource", data)
-          .then(() => {
+          .then((res) => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/resource/${res.data.id}`, {
+                  translations: translations,
+                  "topic-type": "resource",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             // scroll top
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
@@ -515,7 +529,20 @@ const FlexibleForm = withRouter(
         delete data.version;
         api
           .putRaw(`/detail/project/${id || params?.id}`, data)
-          .then(() => {
+          .then((res) => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/initiative/${res.data.id}`, {
+                  translations: translations,
+                  "topic-type": "initiative",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             // scroll top
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
@@ -709,7 +736,20 @@ const FlexibleForm = withRouter(
       if (status === "add" && !params?.id) {
         api
           .post("/policy", data)
-          .then(() => {
+          .then((res) => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/policy/${res.data.id}`, {
+                  translations: translations,
+                  "topic-type": "policy",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
               e.data = initialData;
@@ -912,7 +952,20 @@ const FlexibleForm = withRouter(
       if (status === "add" && !params?.id) {
         api
           .post("/event", data)
-          .then(() => {
+          .then((res) => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/event/${res.data.id}`, {
+                  translations: translations,
+                  "topic-type": "event",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
               e.data = initialData;
@@ -1114,7 +1167,20 @@ const FlexibleForm = withRouter(
       if (status === "add" && !params?.id) {
         api
           .post("/technology", data)
-          .then(() => {
+          .then((res) => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/technology/${res.data.id}`, {
+                  translations: translations,
+                  "topic-type": "technology",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
               e.data = initialData;
