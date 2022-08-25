@@ -6,13 +6,13 @@
             [gpml.domain.types :as dom.types]
             [gpml.fixtures :as fixtures]
             [gpml.handler.project :as sut]
+            [gpml.seeder.main :as seeder]
             [gpml.test-util :as test-util]
             [gpml.util :as util]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
             [malli.core :as m]
-            [ring.mock.request :as mock]
-            [gpml.seeder.main :as seeder]))
+            [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 
