@@ -211,7 +211,7 @@
 
 (defmethod ig/init-key :gpml.handler.resource.translation/get
   [_ {:keys [db logger]}]
-  (fn [{{:keys [path query]} :parameters approved? :approved? user :user}]
+  (fn [{{:keys [path query]} :parameters user :user}]
     (try
       (let [conn (:spec db)
             topic-type (:topic-type path)
