@@ -12,7 +12,7 @@
          project-actions-id
          project-actions-details)
 
-(hugsql/def-db-fns "gpml/db/project.sql")
+(hugsql/def-db-fns "gpml/db/project.sql" {:quoting :ansi})
 
 (defn opts->db-opts
   "Transform optional argument map values into DB layer specific values."
