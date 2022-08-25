@@ -1277,6 +1277,39 @@ const getTranslationForm = (
           </Form.Item>
         </>
       );
+    case "Initiative":
+      return (
+        <>
+          <Form.Item label="Title">
+            <Input
+              placeholder="Title"
+              onChange={(e) =>
+                handleTranslationChange("title", item, e.target.value)
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Description">
+            <Input
+              placeholder="Description"
+              onChange={(e) =>
+                handleTranslationChange("summary", item, e.target.value)
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Documents & Info">
+            <RichTextEditor
+              toolbarConfig={toolbarConfig}
+              onChange={(v) => handleChange(v, item)}
+              placeholder="Start typing here...."
+              value={
+                value.find(({ lang }) => lang === item)
+                  ? value.find(({ lang }) => lang === item).value
+                  : value[0].value
+              }
+            />
+          </Form.Item>
+        </>
+      );
     default:
       return null;
   }
