@@ -168,7 +168,6 @@
                                                                        (handler.util/get-internal-topic-type topic-type)
                                                                        topic-id
                                                                        {:read? false}))]
-        (prn "hey")
         (if authorized?
           (let [conn (:spec db)
                 resource-col (keyword (str topic-type translation-entity-id-sufix))
@@ -219,12 +218,11 @@
             resource-col (keyword (str topic-type translation-entity-id-sufix))
             topic-id (:topic-id path)
             langs-only? (:langs-only query)
-            authorized? (and approved?
-                             (some? (res-permission/get-resource-if-allowed conn
-                                                                            user
-                                                                            (handler.util/get-internal-topic-type topic-type)
-                                                                            topic-id
-                                                                            {:read? true})))]
+            authorized? (some? (res-permission/get-resource-if-allowed conn
+                                                                       user
+                                                                       (handler.util/get-internal-topic-type topic-type)
+                                                                       topic-id
+                                                                       {:read? true}))]
         (if authorized?
           (let [table-name (str topic-type translation-table-sufix)
                 result (if langs-only?
