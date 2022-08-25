@@ -38,13 +38,17 @@ select action_detail,value from project_action_detail where project = :id
 
 -- :name get-projects :query :many
 -- :doc Get projects with filters.
-SELECT *
-FROM project
+SELECT p.*,
+array_remove(array_agg(pgc.country_id), NULL) AS geo_coverage_countries,
+array_remove(array_agg(pgc.country_group_id), NULL) AS geo_coverage_country_groups
+FROM project p
+LEFT JOIN project_geo_coverage pgc ON p.id = pgc.project_id AND p.geo_coverage_type != 'global'
 WHERE 1=1
---~ (when (get-in params [:filters :ids]) " AND id = ANY(:filters.ids)")
---~ (when (get-in params [:filters :geo_coverage_types]) " AND geo_coverage_type = ANY(:filters.geo_coverage_types)")
---~ (when (get-in params [:filters :types]) " AND type = ANY(:filters.types)")
---~ (when (get-in params [:filters :stakeholders_ids]) " AND stakeholder_id IN (:v*:filters.stakeholders_ids)")
+--~ (when (get-in params [:filters :ids]) " AND p.id = ANY(:filters.ids)")
+--~ (when (get-in params [:filters :geo_coverage_types]) " AND p.geo_coverage_type = ANY(:filters.geo_coverage_types)")
+--~ (when (get-in params [:filters :types]) " AND p.type = ANY(:filters.types)")
+--~ (when (get-in params [:filters :stakeholders_ids]) " AND p.stakeholder_id IN (:v*:filters.stakeholders_ids)")
+GROUP BY p.id
 
 -- :name create-projects :execute :affected
 INSERT INTO project (:i*:insert-cols)
