@@ -105,6 +105,9 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
       newQuery["orderBy"] = "title";
     }
 
+    if (newQuery.hasOwnProperty("country"))
+      setFilterCountries(newQuery.country);
+
     // Remove empty query
     const arrayOfQuery = Object.entries(newQuery)?.filter(
       (item) => item[1]?.length !== 0 && typeof item[1] !== "undefined"
