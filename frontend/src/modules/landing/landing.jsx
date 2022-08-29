@@ -27,7 +27,7 @@ const Landing = (props) => {
         </div>
         <div className="content">
           <h1>The Digital Platform on Plastic Pollution & Marine Litter</h1>
-          <h4>Informing and connecting all actors working to prevent plastic pollution and marine litter across the lifecycle and from source to sea.</h4>
+          <h4>Informing and connecting all actors working to prevent plastic pollution and marine litter across the life cycle and from source to sea.</h4>
           <Button type="primary" size='large'>Join Now</Button>
         </div>
         <div className="next-btn" onClick={(e, v) => { window.scrollTo({ top: window.innerHeight - 80, behavior: 'smooth' }) }}>
@@ -100,14 +100,14 @@ const TheJourney = () => {
           </div>
           <div className="screen-view">
             <div className="pane">
-              <h3>FROM SOURCE TO SEA ACCROSS THE PLASTICS LIFECYCLE</h3>
-              <p>Plastics can have environmental, economic and social impacts and are leaked into the environment across the plastics life cycle and from source to sea. Once the plastics are in the environment, they can be transported through various pathways.</p>
+              <h3>FROM SOURCE TO SEA ACCROSS THE PLASTICS life cycle</h3>
+              <p>Plastics can have environmental, economic, health and social impacts and are leaked into the environment across the plastics life cycle and from source to sea. Once the plastics are in the environment, they can be transported through various pathways.</p>
               <Button type="ghost" size="large">Learn More</Button>
             </div>
           </div>
           <div className="screen-view">
             <div className="pane">
-              <h3>PLASTIC POLLUTION PATHWAYS</h3>
+              <h3>PLASTIC POLLUTION PATHWAYS INCLUDE</h3>
               <h4>Airborne</h4>
               <p>Plastic particles such as vehicle tyres and synthetic textiles accumulate in the atmosphere, where they can be transported over long distances. Rain, snow and wind can deposit plastics in different places. Microplastics are found in snow, ice and sea-ice, from the poles to remote mountain tops.
               </p>
@@ -117,6 +117,7 @@ const TheJourney = () => {
           </div>
           <div className="screen-view">
             <div className="pane">
+              <h3>PLASTIC POLLUTION SOURCES INCLUDE</h3>
               <h4>Agriculture</h4>
               <p>Use of plastic films, irrigation tubes and fibre textiles in farming practices. Sewage sludge with plastic residue used as fertilizer. Irrigation with plastic contaminated water. The use of polymer coatings on fertilizers, pesticides, and seeds.</p>
               <h4>Cities and Waste Management</h4>
@@ -140,12 +141,13 @@ and possible infiltration into groundwater.</p> */}
           </div>
           <div className="screen-view">
             <div className="pane">
+              <h3>FURTHER PLASTIC POLLUTION SOURCES INCLUDE</h3>
               <h4>Tourism</h4>
               <p>Intentional or accidental littering in the environment due to tourism such as terrestrial, including mountain, coastal and sea-based tourism.</p>
-                <h4>Fishing Activities and Aquaculture</h4>
-                <p>Waste thrown overboard, abandoned, lost, or otherwise discarded fishing gear and aquaculture equipment, and marine coatings.</p>
-                <h4>Shipping and Recreational activities</h4>
-                <p>Waste thrown overboard, loss of shipped goods such as industrial and consumer products and materials, and marine coatings.</p>
+              <h4>Fishing Activities and Aquaculture</h4>
+              <p>Waste thrown overboard, abandoned, lost, or otherwise discarded fishing gear and aquaculture equipment, and marine coatings.</p>
+              <h4>Shipping and Recreational activities</h4>
+              <p>Waste thrown overboard, loss of shipped goods such as industrial and consumer products and materials, and marine coatings.</p>
             </div>
           </div>
         </div>
