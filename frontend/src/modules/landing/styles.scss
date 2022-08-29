@@ -1,5 +1,12 @@
 @import "../../vars.scss";
 #landingb {
+  font-size: 16px;
+  @media screen and (max-width: 1380px) {
+    font-size: 14px;
+  }
+  @media screen and (max-width: 1024px) {
+    font-size: 12px;
+  }
   & > header {
     // background-color: #006a9e;
     background: transparent;
@@ -125,12 +132,14 @@
       position: relative;
       z-index: 2;
       h4 {
-        padding: 0 70px;
+        font-size: 1.625em;
+        // line-height: 2.375em;
+        padding: 0 3.2em;
       }
     }
     h1 {
       text-shadow: 3px 3px 0 #67bea1;
-      font-size: 52px;
+      font-size: 3.25em;
     }
     h1,
     h4 {
@@ -192,29 +201,10 @@
     }
     img {
       max-width: 100%;
+      height: 44em;
     }
   }
-  .ant-btn-primary {
-    background-color: #00ff7f;
-    border-color: #00ff7f;
-    font-weight: 500;
-    font-size: 22px;
-    color: #0055a5;
-    height: auto;
-    line-height: 60px;
-    padding: 0 50px;
-    transition: all 0.19s ease-out;
-    &:hover {
-      background-color: #ffb400;
-      border-color: #ffb400;
-      color: #0055a5;
-    }
-    &.ant-btn-lg {
-      font-size: 22px;
-      line-height: 60px;
-      padding: 0 50px;
-    }
-  }
+
   .journey {
     // height: calc(100vh);
     height: calc(600vh);
@@ -241,21 +231,21 @@
       .pane {
         background: rgba(255, 255, 255, 0.9);
         padding: 20px;
-        max-width: 560px;
+        max-width: 35em;
         box-shadow: 0 11px 11px rgba(0, 0, 0, 0.25);
       }
       h3,
       h4 {
         text-transform: uppercase;
-        font-size: 24px;
-        line-height: 34px;
+        font-size: 1.5em;
+        line-height: 1.7;
       }
       h4 {
         color: #8691b0;
       }
       p {
-        font-size: 21px;
-        line-height: 30px;
+        font-size: 1.3125em;
+        line-height: 1.57;
         font-weight: 450;
       }
     }
@@ -273,9 +263,32 @@
     }
     &.ant-btn-lg {
       border-width: 3px;
-      font-size: 22px;
-      line-height: 50px;
+      font-size: 1.375em;
+      line-height: 2.2;
+      // line-height: 3.75em;
+      // padding: 0 3.125em;
       padding: 0 30px;
+    }
+    &.ant-btn-primary {
+      background-color: #00ff7f;
+      border-color: #00ff7f;
+      font-weight: 500;
+      font-size: 22px;
+      color: #0055a5;
+      height: auto;
+      line-height: 60px;
+      padding: 0 50px;
+      transition: all 0.19s ease-out;
+      &:hover {
+        background-color: #ffb400;
+        border-color: #ffb400;
+        color: #0055a5;
+      }
+      &.ant-btn-lg {
+        font-size: 1.375em;
+        line-height: 2.8;
+        padding: 0 2.2em;
+      }
     }
   }
   .connect {
@@ -300,13 +313,13 @@
         margin-bottom: 20px;
       }
       &.casestudy {
-        max-width: 600px;
+        max-width: 37.5em;
       }
       &.spotlight {
-        max-width: 474px;
+        max-width: 30em;
       }
       &.testimonial {
-        max-width: 220px;
+        max-width: 13.75em;
         img {
           border-radius: 4px;
           overflow: hidden;
@@ -407,8 +420,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 200px;
-      height: 160px;
+      width: 12.5em;
+      height: 10em;
       background: #255b87;
       box-shadow: 0px 4px 4px rgba(24, 22, 47, 0.3);
       border-radius: 20px;
@@ -416,7 +429,7 @@
       padding: 0 20px;
       b {
         font-weight: 600;
-        font-size: 52px;
+        font-size: 3.25em;
         line-height: 20px;
         margin-bottom: 23px;
         color: #ffffff;
@@ -424,7 +437,7 @@
         margin-top: 30px;
       }
       i {
-        font-size: 28px;
+        font-size: 1.75em;
         line-height: 25px;
         color: #6db5b0;
         font-style: normal;
@@ -465,7 +478,7 @@
       }
       .act-card {
         width: 100%;
-        max-width: 421px;
+        max-width: 24em;
         max-height: 372px;
         border: 0;
         box-shadow: 0px 4px 14px rgba(24, 22, 47, 0.1);
@@ -517,7 +530,7 @@
         }
 
         .ant-card-body {
-          padding: 17px 14px;
+          padding: 1em 0.95em;
           .act-contents,
           .act-data-contents {
             display: flex;
@@ -534,11 +547,11 @@
             box-shadow: 0px 4px 4px rgba(24, 22, 47, 0.08);
             border-radius: 10px;
             padding: 20px 0 15px 0;
-            height: 338px;
+            height: 21.12em;
             .act-title {
-              font-size: 22px;
-              line-height: 32px;
-              max-width: 240px;
+              font-size: 1.375em;
+              line-height: 1.6;
+              max-width: 15em;
               text-transform: uppercase;
               color: #255b87;
               text-shadow: 2px 2px 0px rgba(109, 181, 176, 0.3);
@@ -560,8 +573,8 @@
                 display: block;
               }
               .count {
-                font-size: 70px;
-                line-height: 70px;
+                font-size: 4.375em;
+                line-height: 1;
                 font-weight: 800;
                 display: flex;
                 align-items: center;
@@ -572,8 +585,8 @@
 
               .name {
                 font-weight: 700;
-                font-size: 24px;
-                line-height: 35px;
+                font-size: 1.5em;
+                line-height: 1.5;
                 text-transform: uppercase;
               }
             }
@@ -581,11 +594,11 @@
           .created-by {
             text-align: left;
             font-weight: 500;
-            font-size: 16px;
-            line-height: 28px;
+            font-size: 1em;
+            line-height: 1.1;
             .entity-creators {
               font-weight: 600;
-              font-size: 36px;
+              font-size: 2.25em;
               text-align: center;
               letter-spacing: -0.03em;
             }
