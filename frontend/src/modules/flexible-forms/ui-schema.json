@@ -118,7 +118,7 @@
             "role": {
               "ui:showSearch": true,
               "ui:widget": "select",
-              "ui:placeholder": "Select entity role",
+              "ui:placeholder": "Select user role",
               "ui:span": 24
             },
             "stakeholder": {
@@ -506,7 +506,7 @@
             "role": {
               "ui:showSearch": true,
               "ui:widget": "select",
-              "ui:placeholder": "Select entity role",
+              "ui:placeholder": "Select user role",
               "ui:span": 24
             },
             "stakeholder": {
@@ -734,7 +734,7 @@
             "role": {
               "ui:showSearch": true,
               "ui:widget": "select",
-              "ui:placeholder": "Select entity role",
+              "ui:placeholder": "Select user role",
               "ui:span": 24
             },
             "stakeholder": {
@@ -998,7 +998,7 @@
             "role": {
               "ui:showSearch": true,
               "ui:widget": "select",
-              "ui:placeholder": "Select entity role",
+              "ui:placeholder": "Select user role",
               "ui:span": 24
             },
             "stakeholder": {
@@ -1231,7 +1231,7 @@
             "role": {
               "ui:showSearch": true,
               "ui:widget": "select",
-              "ui:placeholder": "Select entity role",
+              "ui:placeholder": "Select user role",
               "ui:span": 24
             },
             "stakeholder": {
@@ -1451,7 +1451,7 @@
             "role": {
               "ui:showSearch": true,
               "ui:widget": "select",
-              "ui:placeholder": "Select entity role",
+              "ui:placeholder": "Select user role",
               "ui:span": 24
             },
             "stakeholder": {
@@ -1683,7 +1683,7 @@
             "role": {
               "ui:showSearch": true,
               "ui:widget": "select",
-              "ui:placeholder": "Select entity role",
+              "ui:placeholder": "Select user role",
               "ui:span": 24
             },
             "stakeholder": {

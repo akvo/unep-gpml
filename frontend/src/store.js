@@ -596,7 +596,7 @@ const mainContentType = [
         title: "Prototype",
         tags: ["technology", "prototype"],
         des:
-          "s the first complete solution to the original challenge. The first “prototype” is the first time all parts of a solution are tested together. It is the first time that the inter-dependencies of all components can be tested, analyzed, and refined. ",
+          "Is the first complete solution to the original challenge. The first “prototype” is the first time all parts of a solution are tested together. It is the first time that the inter-dependencies of all components can be tested, analyzed, and refined. ",
       },
       {
         title: "Pilot",
