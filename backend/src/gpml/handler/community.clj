@@ -167,10 +167,8 @@
   (let [conn (:spec db)
         opts (api-params->opts query-params)
         modified-filters (if (get-in opts [:filters :transnational])
-                           (let [country-group-countries (flatten
-                                                          (map #(db.country-group/get-country-group-countries
-                                                                 conn {:id %})
-                                                               (get-in opts [:filters :transnational])))
+                           (let [opts {:filters {:country-groups (get-in opts [:filters :transnational])}}
+                                 country-group-countries (db.country-group/get-country-groups-countries conn opts)
                                  geo-coverage-countries (map :id country-group-countries)]
                              (assoc-in opts [:filters :country] (set (concat
                                                                       (get-in opts [:filters :country])
