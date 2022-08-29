@@ -1068,7 +1068,8 @@ const getTranslationForm = (
   item,
   toolbarConfig,
   handleChange,
-  value
+  value,
+  translations
 ) => {
   switch (type) {
     case "Action Plan":
@@ -1080,6 +1081,12 @@ const getTranslationForm = (
               onChange={(e) =>
                 handleTranslationChange("title", item, e.target.value)
               }
+              value={
+                translations?.find(
+                  (ln) =>
+                    ln.language === item && ln.translatable_field === "title"
+                )?.value
+              }
             />
           </Form.Item>
           <Form.Item label="Description">
@@ -1087,6 +1094,12 @@ const getTranslationForm = (
               placeholder="Description"
               onChange={(e) =>
                 handleTranslationChange("summary", item, e.target.value)
+              }
+              value={
+                translations?.find(
+                  (ln) =>
+                    ln.language === item && ln.translatable_field === "summary"
+                )?.value
               }
             />
           </Form.Item>
@@ -1098,7 +1111,7 @@ const getTranslationForm = (
               value={
                 value.find(({ lang }) => lang === item)
                   ? value.find(({ lang }) => lang === item).value
-                  : value[0].value
+                  : RichTextEditor.createEmptyValue()
               }
             />
           </Form.Item>
@@ -1113,6 +1126,12 @@ const getTranslationForm = (
               onChange={(e) =>
                 handleTranslationChange("title", item, e.target.value)
               }
+              value={
+                translations?.find(
+                  (ln) =>
+                    ln.language === item && ln.translatable_field === "title"
+                )?.value
+              }
             />
           </Form.Item>
           <Form.Item label="Description">
@@ -1120,6 +1139,12 @@ const getTranslationForm = (
               placeholder="Description"
               onChange={(e) =>
                 handleTranslationChange("summary", item, e.target.value)
+              }
+              value={
+                translations?.find(
+                  (ln) =>
+                    ln.language === item && ln.translatable_field === "summary"
+                )?.value
               }
             />
           </Form.Item>
@@ -1131,7 +1156,7 @@ const getTranslationForm = (
               value={
                 value.find(({ lang }) => lang === item)
                   ? value.find(({ lang }) => lang === item).value
-                  : value[0].value
+                  : RichTextEditor.createEmptyValue()
               }
             />
           </Form.Item>
@@ -1146,6 +1171,12 @@ const getTranslationForm = (
               onChange={(e) =>
                 handleTranslationChange("title", item, e.target.value)
               }
+              value={
+                translations?.find(
+                  (ln) =>
+                    ln.language === item && ln.translatable_field === "title"
+                )?.value
+              }
             />
           </Form.Item>
           <Form.Item label="Description">
@@ -1153,6 +1184,12 @@ const getTranslationForm = (
               placeholder="Description"
               onChange={(e) =>
                 handleTranslationChange("abstract", item, e.target.value)
+              }
+              value={
+                translations?.find(
+                  (ln) =>
+                    ln.language === item && ln.translatable_field === "abstract"
+                )?.value
               }
             />
           </Form.Item>
@@ -1164,7 +1201,7 @@ const getTranslationForm = (
               value={
                 value.find(({ lang }) => lang === item)
                   ? value.find(({ lang }) => lang === item).value
-                  : value[0].value
+                  : RichTextEditor.createEmptyValue()
               }
             />
           </Form.Item>
@@ -1179,6 +1216,12 @@ const getTranslationForm = (
               onChange={(e) =>
                 handleTranslationChange("title", item, e.target.value)
               }
+              value={
+                translations?.find(
+                  (ln) =>
+                    ln.language === item && ln.translatable_field === "title"
+                )?.value
+              }
             />
           </Form.Item>
           <Form.Item label="Description">
@@ -1186,6 +1229,13 @@ const getTranslationForm = (
               placeholder="Description"
               onChange={(e) =>
                 handleTranslationChange("description", item, e.target.value)
+              }
+              value={
+                translations?.find(
+                  (ln) =>
+                    ln.language === item &&
+                    ln.translatable_field === "description"
+                )?.value
               }
             />
           </Form.Item>
@@ -1197,7 +1247,7 @@ const getTranslationForm = (
               value={
                 value.find(({ lang }) => lang === item)
                   ? value.find(({ lang }) => lang === item).value
-                  : value[0].value
+                  : RichTextEditor.createEmptyValue()
               }
             />
           </Form.Item>
@@ -1212,6 +1262,12 @@ const getTranslationForm = (
               onChange={(e) =>
                 handleTranslationChange("title", item, e.target.value)
               }
+              value={
+                translations?.find(
+                  (ln) =>
+                    ln.language === item && ln.translatable_field === "title"
+                )?.value
+              }
             />
           </Form.Item>
           <Form.Item label="Description">
@@ -1219,6 +1275,12 @@ const getTranslationForm = (
               placeholder="Description"
               onChange={(e) =>
                 handleTranslationChange("remarks", item, e.target.value)
+              }
+              value={
+                translations?.find(
+                  (ln) =>
+                    ln.language === item && ln.translatable_field === "remarks"
+                )?.value
               }
             />
           </Form.Item>
@@ -1230,7 +1292,7 @@ const getTranslationForm = (
               value={
                 value.find(({ lang }) => lang === item)
                   ? value.find(({ lang }) => lang === item).value
-                  : value[0].value
+                  : RichTextEditor.createEmptyValue()
               }
             />
           </Form.Item>
@@ -1245,6 +1307,12 @@ const getTranslationForm = (
               onChange={(e) =>
                 handleTranslationChange("title", item, e.target.value)
               }
+              value={
+                translations?.find(
+                  (ln) =>
+                    ln.language === item && ln.translatable_field === "title"
+                )?.value
+              }
             />
           </Form.Item>
           <Form.Item label="Description">
@@ -1252,6 +1320,12 @@ const getTranslationForm = (
               placeholder="Description"
               onChange={(e) =>
                 handleTranslationChange("summary", item, e.target.value)
+              }
+              value={
+                translations?.find(
+                  (ln) =>
+                    ln.language === item && ln.translatable_field === "summary"
+                )?.value
               }
             />
           </Form.Item>
@@ -1271,7 +1345,7 @@ const getTranslationForm = (
               value={
                 value.find(({ lang }) => lang === item)
                   ? value.find(({ lang }) => lang === item).value
-                  : value[0].value
+                  : RichTextEditor.createEmptyValue()
               }
             />
           </Form.Item>
@@ -1286,6 +1360,12 @@ const getTranslationForm = (
               onChange={(e) =>
                 handleTranslationChange("title", item, e.target.value)
               }
+              value={
+                translations?.find(
+                  (ln) =>
+                    ln.language === item && ln.translatable_field === "title"
+                )?.value
+              }
             />
           </Form.Item>
           <Form.Item label="Description">
@@ -1293,6 +1373,12 @@ const getTranslationForm = (
               placeholder="Description"
               onChange={(e) =>
                 handleTranslationChange("summary", item, e.target.value)
+              }
+              value={
+                translations?.find(
+                  (ln) =>
+                    ln.language === item && ln.translatable_field === "summary"
+                )?.value
               }
             />
           </Form.Item>
@@ -1304,7 +1390,7 @@ const getTranslationForm = (
               value={
                 value.find(({ lang }) => lang === item)
                   ? value.find(({ lang }) => lang === item).value
-                  : value[0].value
+                  : RichTextEditor.createEmptyValue()
               }
             />
           </Form.Item>

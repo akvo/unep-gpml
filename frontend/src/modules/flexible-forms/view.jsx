@@ -485,6 +485,40 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
           state?.state.type
         ).type;
       });
+      api
+        .get(
+          `/translations/${
+            getTypeByResource(state?.state?.type?.replace("-", "_"))
+              .translations
+          }/${params?.id}`
+        )
+        .then((resp) => {
+          setLanguages(Object.keys(resp?.data?.title));
+          let editTranslations = [];
+          let infoValue = [];
+          Object.keys(resp?.data).map((key) => {
+            Object.keys(resp?.data[key]).map((item) => {
+              if (key === "infoDocs") {
+                infoValue.push({
+                  lang: item,
+                  value: RichTextEditor.createValueFromString(
+                    resp?.data[key][item],
+                    "html"
+                  ),
+                });
+              }
+              if (key !== "infoDocs")
+                editTranslations.push({
+                  language: item,
+                  value: resp?.data[key][item],
+                  translatable_field: key,
+                });
+            });
+          });
+          setTranslations(editTranslations);
+          setValue(infoValue);
+        })
+        .catch((e) => console.log(e));
 
       if (state?.state.type === "initiative") {
         api.getRaw(`/initiative/${dataId}`).then((d) => {
@@ -1368,7 +1402,8 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                                   item,
                                   toolbarConfig,
                                   handleChange,
-                                  value
+                                  value,
+                                  translations
                                 )}
                               </Form>
                             </Panel>

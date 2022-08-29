@@ -288,6 +288,7 @@ const FlexibleForm = withRouter(
       }
 
       if (status === "edit" || params?.id) {
+        delete data.S6;
         data?.image &&
           data?.image.match(customFormats.url) &&
           delete data.image;
@@ -333,8 +334,21 @@ const FlexibleForm = withRouter(
         delete data.version;
         api
           .put(`/detail/${type}/${id || params?.id}`, data)
-          .then(() => {
+          .then((res) => {
             // scroll top
+            if (translations.length > 0) {
+              api
+                .put(`/translations/resource/${params?.id}`, {
+                  translations: translations,
+                  "topic-type": "resource",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
               e.data = initialData;
@@ -510,7 +524,20 @@ const FlexibleForm = withRouter(
       if (status === "add" && !params?.id) {
         api
           .postRaw("/initiative", data)
-          .then(() => {
+          .then((res) => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/initiative/${res.data.id}`, {
+                  translations: translations,
+                  "topic-type": "resource",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
               e.data = initialData;
@@ -532,7 +559,7 @@ const FlexibleForm = withRouter(
           .then((res) => {
             if (translations.length > 0) {
               api
-                .put(`/translations/initiative/${res.data.id}`, {
+                .put(`/translations/initiative/${params?.id}`, {
                   translations: translations,
                   "topic-type": "initiative",
                 })
@@ -769,6 +796,19 @@ const FlexibleForm = withRouter(
         api
           .put(`/detail/${type}/${id || params?.id}`, data)
           .then(() => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/policy/${params?.id}`, {
+                  translations: translations,
+                  "topic-type": "policy",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             // scroll top
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
@@ -985,6 +1025,19 @@ const FlexibleForm = withRouter(
         api
           .put(`/detail/${type}/${id || params?.id}`, data)
           .then(() => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/event/${params?.id}`, {
+                  translations: translations,
+                  "topic-type": "event",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             // scroll top
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
@@ -1200,6 +1253,19 @@ const FlexibleForm = withRouter(
         api
           .put(`/detail/${type}/${id || params?.id}`, data)
           .then(() => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/technology/${params?.id}`, {
+                  translations: translations,
+                  "topic-type": "technology",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             // scroll top
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
