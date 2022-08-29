@@ -1,5 +1,5 @@
-import React from 'react'
-import { Button } from "antd";
+import React, { useState } from 'react'
+import { Button, Card } from "antd";
 import './styles.scss'
 import { ReactComponent as Down } from "../../images/down.svg";
 import { ReactComponent as PlasticLitter } from "../../images/plastic-litter.svg";
@@ -7,6 +7,15 @@ import MenuBar from './menu-bar';
 import Footer from '../../footer';
 import { useEffect } from 'react';
 import { useRef } from 'react';
+import {Swiper, SwiperSlide} from 'swiper/react';
+import { Pagination, Navigation } from "swiper";
+ import { UIStore } from "../../store";
+ import { ReactComponent as ActionPlanIcon } from "../../images/actionplan.svg";
+ import { ReactComponent as KnowledgeIcon } from "../../images/knowledge.svg";
+ import { ReactComponent as DataSetIcon } from "../../images/datasets.svg";
+ import user1img from '../../images/our-community/cassia-patel.jpg'
+//  import helpCenterIcon
+//  import { ReactComponent as HelpCenterIcon } from "../../images/help-center.svg";
 
 const Landing = (props) => {
   return (
@@ -18,7 +27,7 @@ const Landing = (props) => {
         </div>
         <div className="content">
           <h1>The Digital Platform on Plastic Pollution & Marine Litter</h1>
-          <h4>Informing and connecting all actors working to prevent plastic pollution and marine litter across the lifecycle and from source to sea.</h4>
+          <h4>Informing and connecting all actors working to prevent plastic pollution and marine litter across the life cycle and from source to sea.</h4>
           <Button type="primary" size='large'>Join Now</Button>
         </div>
         <div className="next-btn" onClick={(e, v) => { window.scrollTo({ top: window.innerHeight - 80, behavior: 'smooth' }) }}>
@@ -31,6 +40,16 @@ const Landing = (props) => {
         <Button type='primary' size='large'>Create your workspace</Button>
       </div>
       <TheJourney />
+      <Connect />
+      <div className="partners">
+        <h3>Our partners</h3>
+        <div className="img-container">
+          <img src="/partners.png" />
+        </div>
+      </div>
+      <Stats />
+      <Act />
+      <AnyQuestions />
       <Footer />
     </div>
   )
@@ -81,14 +100,14 @@ const TheJourney = () => {
           </div>
           <div className="screen-view">
             <div className="pane">
-              <h3>FROM SOURCE TO SEA ACCROSS THE PLASTICS LIFECYCLE</h3>
-              <p>Plastics can have environmental, economic and social impacts and are leaked into the environment across the plastics life cycle and from source to sea. Once the plastics are in the environment, they can be transported through various pathways.</p>
+              <h3>FROM SOURCE TO SEA ACCROSS THE PLASTICS life cycle</h3>
+              <p>Plastics can have environmental, economic, health and social impacts and are leaked into the environment across the plastics life cycle and from source to sea. Once the plastics are in the environment, they can be transported through various pathways.</p>
               <Button type="ghost" size="large">Learn More</Button>
             </div>
           </div>
           <div className="screen-view">
             <div className="pane">
-              <h3>PLASTIC POLLUTION PATHWAYS</h3>
+              <h3>PLASTIC POLLUTION PATHWAYS INCLUDE</h3>
               <h4>Airborne</h4>
               <p>Plastic particles such as vehicle tyres and synthetic textiles accumulate in the atmosphere, where they can be transported over long distances. Rain, snow and wind can deposit plastics in different places. Microplastics are found in snow, ice and sea-ice, from the poles to remote mountain tops.
               </p>
@@ -98,6 +117,7 @@ const TheJourney = () => {
           </div>
           <div className="screen-view">
             <div className="pane">
+              <h3>PLASTIC POLLUTION SOURCES INCLUDE</h3>
               <h4>Agriculture</h4>
               <p>Use of plastic films, irrigation tubes and fibre textiles in farming practices. Sewage sludge with plastic residue used as fertilizer. Irrigation with plastic contaminated water. The use of polymer coatings on fertilizers, pesticides, and seeds.</p>
               <h4>Cities and Waste Management</h4>
@@ -121,17 +141,239 @@ and possible infiltration into groundwater.</p> */}
           </div>
           <div className="screen-view">
             <div className="pane">
+              <h3>FURTHER PLASTIC POLLUTION SOURCES INCLUDE</h3>
               <h4>Tourism</h4>
               <p>Intentional or accidental littering in the environment due to tourism such as terrestrial, including mountain, coastal and sea-based tourism.</p>
-                <h4>Fishing Activities and Aquaculture</h4>
-                <p>Waste thrown overboard, abandoned, lost, or otherwise discarded fishing gear and aquaculture equipment, and marine coatings.</p>
-                <h4>Shipping and Recreational activities</h4>
-                <p>Waste thrown overboard, loss of shipped goods such as industrial and consumer products and materials, and marine coatings.</p>
+              <h4>Fishing Activities and Aquaculture</h4>
+              <p>Waste thrown overboard, abandoned, lost, or otherwise discarded fishing gear and aquaculture equipment, and marine coatings.</p>
+              <h4>Shipping and Recreational activities</h4>
+              <p>Waste thrown overboard, loss of shipped goods such as industrial and consumer products and materials, and marine coatings.</p>
             </div>
           </div>
         </div>
       </div>
   )
 }
+
+const Connect = () => {
+  return (
+    <div className="connect">
+        <h2>Connect with the network</h2>
+        <Swiper
+          spaceBetween={40}
+          slidesPerView="auto"
+          slidesPerGroup={4}
+          pagination={{
+            clickable: true,
+          }}
+          navigation={true}
+          modules={[Pagination, Navigation]}
+        >
+          <SwiperSlide className="card casestudy">
+            <div className="label">featured case study</div>
+            <img src="/featured-case-study.jpg" />
+            <h4>Costa Rica: Becoming The First Country To Eliminate Single-Use Plastics</h4>
+            <p>
+              <b>Challenge & Solution</b><br />
+              Plastic pollution poses a threat both to humans and the environment of Costa Rica. Several industries, including fisheries and tourism, are threatened by improper disposal of plastics. The problem was exacerbated when China closed its borders to plastic waste imports, resulting in a quick build-up of plastic waste. This crisis catalyzed Costa Rica to launch an initiative to eliminate single-use plastics in most municipalities and businesses by 2021.<br /><br />This encompasses regulations targeting Extended Producer Responsibility (EPR), requiring “waste producers” to develop, implement, and follow waste management and collection programs. The regulation of single-use plastics covers restrictions for plastic bags, straws, polystyrene containers and single-use plastic water bottles. In addition, a directive was passed to implement information campaigns and label single-use plastics based on a newly adopted classification tool, distinguishing between “Renewable, Compostable, and Compostable” and other types.
+            </p>
+          </SwiperSlide>
+          <SwiperSlide className="card spotlight">
+            <div className="label">member spotlight</div>
+            <img src="/spotlight.jpg" />
+            <p>
+              <i>DECEMBER 2020</i><br />
+              <b>IMPROVING WASTEWATER MANAGEMENT IN SOMALIA</b><br />
+              In October, Somali Greenpeace Association (SOGPA) in collaboration with its partners, held a Wastewater Management training in Baidoa, Somalia. The aim was to build awareness on the importance of proper wastewater management in helping to keep our waterways and oceans clean.
+30 young people and local leaders took part, learning about the hazards wastewater can cause if not managed properly. An advocacy message was delivered to government leaders, pushing for increased action on the issue. Local authorities have since requested more training for members of society on the problems and solutions regarding wastewater management.
+SOGPA's Vice-chairperson, Hassan Mowlid Yasin, says, "The youth have to be empowered to address environmental issues that affect them.
+            </p>
+          </SwiperSlide>
+          <SwiperSlide className="card testimonial">
+            <img src={user1img} />
+            <h4>Cassia Patel</h4>
+            <h5>Program Director, Oceanic Global</h5>
+            <blockquote>This is an unparalleled tool to bring together global actors fighting against our marine plastic crisis.</blockquote>
+          </SwiperSlide>
+          <SwiperSlide className="card testimonial">
+            <img src="https://digital.gpmarinelitter.org/image/profile/30" />
+            <h4>Marvin Burman</h4>
+            <h5>Assistant Executive Director - Gulf and Caribbean Fisheries Institute</h5>
+            <blockquote>This is a fantastic resource for knowledge management, networking, accessing and managing data.</blockquote>
+          </SwiperSlide>
+          <SwiperSlide className="card testimonial">
+            <img src="https://digital.gpmarinelitter.org/image/profile/27" />
+            <h4>Fadilah Ali</h4>
+            <h5>Assistant Executive Director - Gulf and Caribbean Fisheries Institute</h5>
+            <blockquote>The platform makes it easier to discover stakeholders, events and experts in specific regions and fields.</blockquote>
+          </SwiperSlide>
+        </Swiper>
+      </div>
+  )
+}
+
+const Stats = () => {
+  return (
+    <div className="stats">
+      <div className="row">
+        <div className="stat">
+          <b>42</b>
+          <i>Governments</i>
+        </div>
+        <div className="stat">
+          <b>498</b>
+          <i>Organisations</i>
+        </div>
+        <div className="stat">
+          <b>571</b>
+          <i>Individuals</i>
+        </div>
+        <div className="stat">
+          <b>6</b>
+          <i>Communities of Practise</i>
+        </div>
+      </div>
+      <div className="row">
+        <div className="stat">
+          <b>5</b>
+          <i>Centers of Excellence</i>
+        </div>
+        <div className="stat">
+          <b>16</b>
+          <i>Sectors</i>
+        </div>
+        <div className="stat">
+          <b>5</b>
+          <i>Regions</i>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const Act = () => {
+   const { resources } = UIStore.useState((s) => ({
+     resources: s.nav?.resourceCounts,
+   }));
+
+   const organisationsCount =
+     resources?.find((data) => data?.hasOwnProperty("organisation"))[
+       "organisation"
+     ] || 0;
+
+   const initialData = [
+     {
+       title: "Share your data",
+       name: "Data sets",
+       count: 349,
+       entityCount: 814,
+       icon: <DataSetIcon />,
+       background: "#ECF8F6",
+     },
+   ];
+
+   const [data, setData] = useState(initialData);
+
+   useEffect(() => {
+     const actionPlan = resources?.find((data) =>
+       data?.hasOwnProperty("actionPlan")
+     )["actionPlan"];
+
+     const allResources = resources?.filter(
+       (resource) =>
+         !resource?.hasOwnProperty("stakeholder") &&
+         !resource?.hasOwnProperty("organisation")
+     );
+
+     const resourcesWithKey = allResources
+       ?.map((resource) => {
+         return Object.entries(resource)
+           ?.filter(([key]) => key !== "countries")
+           .flat();
+       })
+       .flat();
+
+     const resourceCounts = resourcesWithKey
+       ?.map((item) => Number(item))
+       ?.filter((item) => !isNaN(item));
+
+     const totalResourceCount = resourceCounts?.reduce(
+       (acc, val) => acc + val,
+       0
+     );
+
+     setData([
+       {
+         title: "Coordinate in a global effort ",
+         name: "Action Plans",
+         count: actionPlan,
+         entityCount: 28,
+         icon: <ActionPlanIcon />,
+         background: "rgba(165, 176, 201, 0.2)",
+       },
+       {
+         title: "Contribute to the knowledge",
+         name: "Resources",
+         count: totalResourceCount,
+         entityCount: 814,
+         icon: <KnowledgeIcon />,
+         background: "#F6EFDD",
+       },
+       ...initialData,
+     ]);
+   }, [resources]);
+
+   return (
+     <div className="act">
+       <h3>Act now</h3>
+       <div className="act-cards">
+         {data.map((item) => (
+           <Card className="act-card">
+             <div
+               className="act-contents"
+               style={{ backgroundColor: item?.background }}
+             >
+               <h4 className="act-title">{item?.title}</h4>
+               <div className="act-data-contents">
+                 {item?.icon}
+                 <div>
+                   <span className="count">{item?.count} </span>
+                   <span className="name">{item?.name}</span>
+                 </div>
+               </div>
+               <div className="created-by">
+                 Created by
+                 <br />
+                 <div className="entity-creators">
+                   {item?.entityCount} entities
+                 </div>
+               </div>
+             </div>
+           </Card>
+         ))}
+       </div>
+       <Button type="primary" size="large">
+         Join now
+       </Button>
+     </div>
+   );
+ };
+
+ const AnyQuestions = () => {
+   return (
+     <div className="any-questions">
+       <div className="image-wrapper">
+         <img src="/help-center.svg" alt="help-center-icon" loading="lazy" />
+       </div>
+       <div className="content-container">
+         <h3>Any Questions?</h3>
+         <p>Visit the Help Center for FAQs, tutorials and more.</p>
+         <Button type="ghost" size="large">
+           Find your answers &#62;
+         </Button>
+       </div>
+     </div>
+   );
+ };
 
 export default Landing
