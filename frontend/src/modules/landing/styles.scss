@@ -62,17 +62,15 @@
     .rightside {
       margin-left: auto;
       display: flex;
-    }
-    .rightside {
       .ant-btn {
         background: transparent;
         color: rgba(0, 255, 127, 1);
         border: 2px solid rgba(0, 255, 127, 1);
-        font-size: 16px;
+        font-size: 1em;
         font-weight: 700;
-        height: 38px;
+        height: 2.375em;
         padding: 0 13px;
-        line-height: 35px;
+        line-height: 1.5;
         transition: all 0.19s ease-out !important;
         &:hover {
           border-color: rgba(0, 255, 127, 1) !important;
@@ -90,8 +88,8 @@
       .input-src {
         border-radius: 30px;
         padding-right: 4px;
-        max-width: 170px;
-        height: 38px;
+        max-width: 11em;
+        height: 2.375em;
         // margin-top: -2px;
         background-color: rgba(255, 255, 255, 0.5);
         border: none;
@@ -299,7 +297,7 @@
     position: relative;
     z-index: 2;
     background-color: #fff;
-    padding: 50px 40px 30px 40px;
+    padding: 50px 40px 30px 50px;
     h2 {
       text-transform: uppercase;
       margin-bottom: 25px;
@@ -705,11 +703,11 @@ body {
   }
   .row {
     display: flex;
-    margin-bottom: calc(50px - 30px);
+    margin-bottom: 1.25em;
     position: relative;
     z-index: 1;
-    flex-wrap: wrap;
     @media screen and (max-width: 1024px) {
+      flex-wrap: wrap;
     }
     &:last-of-type {
       .item {
@@ -888,7 +886,7 @@ body {
   }
   .contents {
     position: relative;
-    padding: 50px 0 50px 50px;
+    padding: 3.125em 0 3.125em 3.125em;
     &:after {
       content: " ";
       width: 100%;
@@ -983,4 +981,13 @@ body {
 
 .scroll-disabled {
   overflow: hidden;
+}
+
+.nav-header-container {
+  .ui.container {
+    @media only screen and (min-width: 1220px) and (max-width: 1599px) {
+      width: 100%;
+      margin: 0 50px;
+    }
+  }
 }
