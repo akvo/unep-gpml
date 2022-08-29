@@ -12,6 +12,7 @@ import {
 } from "@ant-design/icons";
 import { resourceTypeToTopicType, topicNames } from "../../utils/misc";
 import { languageOptions } from "../flexible-forms/view";
+import Flag from "react-world-flags";
 
 export const HeaderButtons = ({
   data,
@@ -216,21 +217,25 @@ export const HeaderButtons = ({
       {translations && translations.hasOwnProperty("title") && (
         <div className="language-select">
           <Select
-            defaultValue={"en"}
+            defaultValue={"gb"}
             placeholder="Select language"
             onChange={(v) => {
-              if (v === "en") setLanguage("");
+              if (v === "gb") setLanguage("");
               else setLanguage(v);
             }}
             dropdownClassName="language-select-menu"
           >
-            {["en"]
+            {["gb"]
               .concat(Object.keys(translations.title))
               .filter((item) => item !== selectedLanguage)
               .map((lang) => (
-                <Option value={lang}>
-                  {languageOptions.find(({ value }) => value === lang).flag}{" "}
-                </Option>
+                <Select.Option value={lang}>
+                  <Flag
+                    code={
+                      languageOptions.find(({ value }) => value === lang)?.value
+                    }
+                  />
+                </Select.Option>
               ))}
           </Select>
         </div>

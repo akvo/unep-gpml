@@ -39,6 +39,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 const { Step } = Steps;
 import RichTextEditor from "react-rte";
+import Flag from "react-world-flags";
 
 export const getTypeByResource = (type) => {
   let t = "";
@@ -88,38 +89,32 @@ export const languageOptions = [
   {
     label: "Arabic",
     key: "0",
-    value: "ar",
-    flag: "🇦🇪",
+    value: "ae",
   },
   {
     label: "Chinese",
     key: "1",
     value: "cn",
-    flag: "🇨🇳",
   },
   {
     label: "French",
     key: "3",
     value: "fr",
-    flag: "🇫🇷",
   },
   {
     label: "Russian",
     key: "4",
     value: "ru",
-    flag: "🇷🇺",
   },
   {
     label: "Spanish",
     key: "5",
     value: "es",
-    flag: "🇪🇸",
   },
   {
     label: "English",
     key: "6",
-    value: "en",
-    flag: "🇬🇧",
+    value: "gb",
   },
 ];
 
@@ -223,6 +218,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const [subContentType, setSubContentType] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [translations, setTranslations] = useState([]);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
   const [disabledBtn, setDisabledBtn] = useState({
     disabled: true,
     type: "default",
@@ -1348,40 +1344,14 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                 ) : getTabStepIndex().tabIndex === 4 ? (
                   <Row>
                     <div className="main-content">
-                      <div>
-                        <Dropdown
-                          overlay={
-                            <ul className="translation-dropdown">
-                              {languageOptions
-                                .filter((ln) => !languages.includes(ln.value))
-                                .map((item) => (
-                                  <li
-                                    key={item.value}
-                                    onClick={() =>
-                                      handleSelectLanguage(item.value)
-                                    }
-                                  >
-                                    {item.flag} {item.label}
-                                  </li>
-                                ))}
-                            </ul>
-                          }
-                          trigger={["click"]}
-                        >
-                          <Space>
-                            Select language
-                            <DownOutlined />
-                          </Space>
-                        </Dropdown>
-                      </div>
-                      <div
-                        className="collapse-wrapper"
-                        style={{ marginTop: 20 }}
-                      >
+                      <div className="collapse-wrapper">
                         <Collapse>
                           {languages.map((item) => (
                             <Panel
-                              header={item}
+                              header={
+                                languageOptions.find((ln) => ln.value === item)
+                                  ?.label
+                              }
                               key={item}
                               extra={
                                 <div style={{ marginLeft: "auto" }}>
@@ -1404,6 +1374,40 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                             </Panel>
                           ))}
                         </Collapse>
+                      </div>
+                      <div>
+                        <Dropdown
+                          overlay={
+                            <ul className="translation-dropdown">
+                              {languageOptions
+                                .filter(
+                                  (ln) =>
+                                    !languages.includes(ln.value) &&
+                                    ln.value !== "gb"
+                                )
+                                .map((item) => (
+                                  <li
+                                    key={item.value}
+                                    onClick={() => {
+                                      handleSelectLanguage(item.value);
+                                      setDropdownVisible(!dropdownVisible);
+                                    }}
+                                  >
+                                    <Flag code={item.value} /> {item.label}
+                                  </li>
+                                ))}
+                            </ul>
+                          }
+                          trigger={["click"]}
+                          visible={dropdownVisible}
+                          onVisibleChange={(visible) => {
+                            setDropdownVisible(visible);
+                          }}
+                        >
+                          <Button type="default" className="translation-button">
+                            Add translation
+                          </Button>
+                        </Dropdown>
                       </div>
                     </div>
                   </Row>
