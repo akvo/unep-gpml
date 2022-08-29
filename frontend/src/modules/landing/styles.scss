@@ -25,21 +25,25 @@
       position: relative;
       z-index: 2;
     }
+    .logo {
+      height: 3.625em;
+    }
     .all-tools-btn {
-      height: 52px;
+      height: 3.25em;
       margin-left: 30px;
       display: flex;
       align-items: center;
       color: #fff;
-      font-size: 16px;
+      font-size: 1em;
       font-weight: bold;
       text-transform: uppercase;
-      padding: 0 11px;
+      padding: 0 0.687em;
       border-radius: 4px;
       cursor: pointer;
       transition: all 0.19s ease-out;
       svg {
-        margin-right: 10px;
+        margin-right: 0.625em;
+        height: 2em;
         rect {
           transition: all 0.19s ease-out;
         }
@@ -666,22 +670,22 @@ body {
   height: 100%;
   background-color: #2f2d46;
   color: #e2e0f2;
-  padding: 50px 0 50px 50px;
+  // padding: 50px 0 50px 50px;
   overflow: auto;
 
   h2 {
-    font-size: 22px;
+    font-size: 1.375em;
     font-weight: 500;
     color: inherit;
     text-transform: uppercase;
-    margin-bottom: 40px;
+    margin-bottom: 2.5em;
   }
   h5 {
-    font-size: 16px;
+    font-size: 1em;
     font-weight: bold;
     color: inherit;
     text-transform: uppercase;
-    margin-bottom: 20px;
+    margin-bottom: 1.25em;
     position: relative;
     z-index: 2;
     &:last-of-type {
@@ -696,7 +700,7 @@ body {
     top: 45px;
     width: 50px;
     height: 50px;
-    font-size: 36px;
+    font-size: 2.25em;
     cursor: pointer;
   }
   .row {
@@ -704,8 +708,8 @@ body {
     margin-bottom: calc(50px - 30px);
     position: relative;
     z-index: 1;
+    flex-wrap: wrap;
     @media screen and (max-width: 1024px) {
-      flex-wrap: wrap;
     }
     &:last-of-type {
       .item {
@@ -757,9 +761,9 @@ body {
         width: unset;
       }
       .icon {
-        width: 82px;
-        height: 82px;
-        min-width: 82px;
+        width: 5.125em;
+        height: 5.125em;
+        min-width: 5.125em;
         background-color: #3d3e54;
         border-radius: 14px;
         display: flex;
@@ -767,7 +771,7 @@ body {
         justify-content: center;
         transition: all 0.12s ease-in;
         svg {
-          max-height: 55px;
+          max-height: 3.43em;
           path {
             fill: #3fc19f;
             transition: fill 0.12s ease-in;
@@ -775,16 +779,16 @@ body {
         }
         &.learning {
           svg {
-            height: 90px;
-            max-height: 90px;
+            height: 5.6em;
+            max-height: 5.6em;
           }
         }
         &.casestudies svg {
-          max-height: 70px;
+          max-height: 4.375em;
           transform: translateX(-2px);
         }
         &.tools-community-icon svg {
-          max-height: 70px;
+          max-height: 4.375em;
           rect {
             fill: #3fc19f;
             transition: fill 0.12s ease-in;
@@ -820,7 +824,11 @@ body {
       }
 
       div:nth-child(2) {
-        max-width: 165px;
+        @media screen and (min-width: 1024px) {
+          max-width: 10.5em;
+          min-width: 10.5em;
+        }
+        // width: 175px;
         display: flex;
         flex-direction: column;
         margin-left: 12px;
@@ -829,10 +837,12 @@ body {
           color: #3fc19f;
           text-transform: uppercase;
           transition: fill 0.12s ease-in;
+          font-size: 1em;
         }
         span {
           color: #a5b0c9;
           line-height: 20px;
+          font-size: 0.875em;
         }
       }
       &:before {
@@ -876,24 +886,28 @@ body {
       }
     }
   }
-  &:after {
-    content: " ";
-    width: 100%;
-    height: calc(100vh - 640px);
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    background-color: #211f39;
-    z-index: 0;
-    @media (max-width: 1022px) {
-      display: none;
-    }
-    @media (min-width: 1023px) and (max-width: 1070px) {
-      display: block;
-      height: calc(100vh - 1090px);
-    }
-    @media (min-width: 1071px) and (max-width: 1200px) {
-      display: none;
+  .contents {
+    position: relative;
+    padding: 50px 0 50px 50px;
+    &:after {
+      content: " ";
+      width: 100%;
+      height: calc(100vh - 640px);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background-color: #211f39;
+      z-index: 0;
+      @media (max-width: 1022px) {
+        display: none;
+      }
+      @media (min-width: 1023px) and (max-width: 1070px) {
+        display: block;
+        height: calc(100vh - 1090px);
+      }
+      @media (min-width: 1071px) and (max-width: 1200px) {
+        display: none;
+      }
     }
   }
   &.full-menu-enter {
