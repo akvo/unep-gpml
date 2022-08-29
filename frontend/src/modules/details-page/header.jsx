@@ -57,14 +57,13 @@ export const HeaderButtons = ({
             e.preventDefault();
             eventTrack("Resource view", "View Url", "Button");
             window.open(
-              `${
-                data?.url && data?.url?.includes("https://")
-                  ? data?.url
-                  : data?.languages
+              `${data?.url && data?.url?.includes("https://")
+                ? data?.url
+                : data?.languages
                   ? data?.languages[0]?.url
                   : data?.url?.includes("http://")
-                  ? data?.url
-                  : "https://" + data?.url
+                    ? data?.url
+                    : "https://" + data?.url
               }`,
               "_blank"
             );
@@ -104,17 +103,16 @@ export const HeaderButtons = ({
             <Input.Group compact>
               <Input
                 style={{ width: "calc(100% - 20%)" }}
-                defaultValue={`${
-                  data?.url && data?.url?.includes("https://")
+                defaultValue={`${data?.url && data?.url?.includes("https://")
                     ? data?.url
                     : data?.languages
-                    ? data?.languages[0]?.url
-                    : data?.url && data?.url?.includes("http://")
-                    ? data?.url
-                    : data?.url
-                    ? "https://" + data?.url
-                    : "https://"
-                }`}
+                      ? data?.languages[0]?.url
+                      : data?.url && data?.url?.includes("http://")
+                        ? data?.url
+                        : data?.url
+                          ? "https://" + data?.url
+                          : "https://"
+                  }`}
                 disabled
               />
               <Button
@@ -168,11 +166,14 @@ export const HeaderButtons = ({
       <Button
         className="bookmark-button two-tone-button"
         icon={
-          relation?.association?.indexOf("interested in") !== -1 ? (
-            <HeartFilled className="heart-filled" />
-          ) : (
-            <HeartTwoTone className="two-tone-heart" twoToneColor="#09689a" />
-          )
+          relation &&
+            relation.association &&
+            relation.association.indexOf("interested in") !== -1
+            ? (
+              <HeartFilled className="heart-filled" />
+            ) : (
+              <HeartTwoTone className="two-tone-heart" twoToneColor="#09689a" />
+            )
         }
         type="primary"
         shape="round"
@@ -265,8 +266,8 @@ const Header = ({
 
     const canDelete = () =>
       isAuthenticated &&
-      profile.reviewStatus === "APPROVED" &&
-      profile.role === "ADMIN";
+      ((profile.reviewStatus === "APPROVED" && profile.role === "ADMIN") ||
+        find);
 
     return (
       <HeaderButtons
