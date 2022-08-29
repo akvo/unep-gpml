@@ -230,32 +230,26 @@
                                                                                  :admin admin}))
           modified-filters (cond
                              (and (seq geo-coverage) (seq transnational))
-                             (let [country-group-countries (flatten
-                                                            (conj
-                                                             (map #(db.country-group/get-country-group-countries
-                                                                    db {:id %})
-                                                                  (:transnational modified-filters))))
+                             (let [opts {:filters {:country-groups (:transnational modified-filters)
+                                                   :countries-ids (:geo-coverage modified-filters)}}
+                                   country-group-countries (db.country-group/get-country-groups-countries db opts)
                                    geo-coverage-countries (map :id country-group-countries)
-                                   transnational (->> (map #(db.country-group/get-country-groups-by-country db {:id %}) (:geo-coverage modified-filters))
-                                                      (apply concat)
+                                   transnational (->> (db.country-group/get-country-groups-by-countries db opts)
                                                       (map :id)
                                                       set)]
                                (assoc modified-filters :geo-coverage-countries (set (concat geo-coverage-countries geo-coverage))
                                       :transnational transnational))
 
                              (seq geo-coverage)
-                             (let [transnational (->> (map #(db.country-group/get-country-groups-by-country db {:id %}) (:geo-coverage modified-filters))
-                                                      (apply concat)
+                             (let [opts {:filters {:countries-ids (:geo-coverage modified-filters)}}
+                                   transnational (->> (db.country-group/get-country-groups-by-countries db opts)
                                                       (map :id)
                                                       set)]
                                (assoc modified-filters :transnational transnational))
 
                              (seq transnational)
-                             (let [country-group-countries (flatten
-                                                            (conj
-                                                             (map #(db.country-group/get-country-group-countries
-                                                                    db {:id %})
-                                                                  (:transnational modified-filters))))
+                             (let [opts {:filters {:country-groups (:transnational modified-filters)}}
+                                   country-group-countries (db.country-group/get-country-groups-countries db opts)
                                    geo-coverage-countries (map :id country-group-countries)]
                                (assoc modified-filters :geo-coverage-countries (set geo-coverage-countries)))
                              :else

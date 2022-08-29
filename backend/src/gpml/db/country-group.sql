@@ -61,22 +61,16 @@ select * from country_group where type = :type
 insert into country_group_country (country_group, country)
 values(:country_group, :country)
 
--- :name get-country-groups-by-country :? :*
--- :doc get country groups by country-id
-select country_group.id, country_group.name from country_group
-left join country_group_country on country_group_country.country_group= country_group.id
-where country_group_country.country= :id
-
--- FIXME: we should deprecate this function in favor of `get-country-groups-countries`
--- :name get-country-group-countries :? :*
--- :doc get country group countries by country group id
-select cgc.country as id from country_group_country cgc
-left join country_group cg on cgc.country_group = cg.id
-where 1=1
-
 -- :name get-country-groups-countries :query :many
 -- :doc Get country groups countries by country groups ids.
 SELECT cgc.country AS id
 FROM country_group_country cgc
 LEFT JOIN country_group cg ON cgc.country_group = cg.id
 WHERE cg.id IN (:v*:filters.country-groups)
+
+-- :name get-country-groups-by-countries
+-- :doc Get country-group countries by countries ids.
+SELECT cg.id, cg.name
+FROM country_group cg
+LEFT JOIN country_group_country cgc ON cgc.country_group= cg.id
+WHERE cgc.country IN (:v*:filters.countries-ids);

@@ -43,7 +43,7 @@
                                "")]
     (apply
      format
-     "SELECT DISTINCT ON (cgc.country_group, e.id) cgc.country_group AS country_group_id,
+     "SELECT DISTINCT ON (e.id) cgc.country_group AS country_group_id,
 	     %s AS entity,
              COUNT(e.id) entity_count
       FROM %s_geo_coverage egc
@@ -51,7 +51,7 @@
       LEFT JOIN country_group_country cgc ON egc.country = cgc.country
       OR egc.country_group = cgc.country_group
       WHERE e.review_status = 'APPROVED' %s
-      GROUP BY cgc.country_group, e.id, cgc.country %s"
+      GROUP BY cgc.country_group, e.id %s"
      (flatten [entity-name-select-clause
                (repeat 3 entity-name-from-clause)
                where-cond extra-group-by-field]))))

@@ -167,10 +167,8 @@
 
 (defn- landing-response [conn query]
   (let [opts (api-opts->opts query)
-        modified-opts (let [country-group-countries (->> (get opts :transnational)
-                                                         (map #(db.country-group/get-country-group-countries
-                                                                conn {:id %}))
-                                                         (apply concat))
+        modified-opts (let [opts {:filters {:country-groups (get opts :transnational)}}
+                            country-group-countries (db.country-group/get-country-groups-countries opts)
                             geo-coverage-countries (map :id country-group-countries)]
                         (assoc opts :geo-coverage (set (concat
                                                         (get opts :geo-coverage)
