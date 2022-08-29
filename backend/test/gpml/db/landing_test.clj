@@ -112,26 +112,8 @@
         4 "financing_resource"
         0 "event"))))
 
-(def spanish {:country 2
-              :geo_coverage_type "national"
-              :geo_coverage_value [1]})
-
-(def india {:country 2
-            :geo_coverage_type "national"
-            :geo_coverage_value [2]})
-
-(def asia {:geo_coverage_type "regional" :geo_coverage_value [1]})
-
-(def approved {:review_status "APPROVED"})
-
-(defn org [& org-data]
-  (apply merge
-         {:name (str "org" (fixtures/uuid))
-          :review_status "SUBMITTED"}
-         org-data))
-
-(defn get-country-group-ids [db country-id]
-  (db.country-group/get-country-groups-by-country db {:id country-id}))
+(defn- get-country-group-ids [db country-id]
+  (db.country-group/get-country-groups-by-countries db {:filters {:countries-ids [country-id]}}))
 
 (deftest landing-counts
   (let [db-key :duct.database.sql/hikaricp

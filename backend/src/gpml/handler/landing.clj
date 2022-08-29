@@ -167,14 +167,14 @@
 
 (defn- landing-response [conn query]
   (let [opts (api-opts->opts query)
-        modified-opts (let [country-group-countries (->> (get opts :transnational)
-                                                         (map #(db.country-group/get-country-group-countries
-                                                                conn {:id %}))
-                                                         (apply concat))
-                            geo-coverage-countries (map :id country-group-countries)]
-                        (assoc opts :geo-coverage (set (concat
-                                                        (get opts :geo-coverage)
-                                                        geo-coverage-countries))))
+        modified-opts (if-not (seq (get opts :transnational))
+                        opts
+                        (let [opts {:filters {:country-groups (get opts :transnational)}}
+                              country-group-countries (db.country-group/get-country-groups-countries opts)
+                              geo-coverage-countries (map :id country-group-countries)]
+                          (assoc opts :geo-coverage (set (concat
+                                                          (get opts :geo-coverage)
+                                                          geo-coverage-countries)))))
         summary-data (->> (gpml.db.landing/summary conn)
                           (mapv (fn [{:keys [resource_type count country_count]}]
                                   {(keyword resource_type) count :countries country_count})))]

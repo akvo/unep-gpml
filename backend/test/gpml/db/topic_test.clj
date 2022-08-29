@@ -47,7 +47,7 @@
        (map :id)))
 
 (defn get-country-group-ids [db country-id]
-  (db.country-group/get-country-groups-by-country db {:id country-id}))
+  (db.country-group/get-country-groups-by-countries db {:filters {:countries-ids [country-id]}}))
 
 ;; TODO: Extend the tests to include filtering by `featured` flag of resources
 (deftest topic-filtering
