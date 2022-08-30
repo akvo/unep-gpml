@@ -661,7 +661,7 @@
     (when (seq tags)
       (update-resource-tags conn logger mailjet-config table id tags))
     (when (seq related-contents)
-      (handler.resource.related-content/update-related-contents conn id table related-contents))
+      (handler.resource.related-content/update-related-contents conn logger id table related-contents))
     (when-not (= "policy" topic-type)
       (update-resource-language-urls conn table id urls))
     (update-resource-geo-coverage-values conn table id updates)
@@ -684,7 +684,7 @@
     (doseq [[image-key image-data] (select-keys data [:qimage :thumbnail])]
       (update-resource-image conn image-data image-key "initiative" id))
     (when (seq related-contents)
-      (handler.resource.related-content/update-related-contents conn id "initiative" related-contents))
+      (handler.resource.related-content/update-related-contents conn logger id "initiative" related-contents))
     (when (seq tags)
       (update-resource-tags conn logger mailjet-config "initiative" id tags))
     (update-resource-connections conn (:entity_connections data) (:individual_connections data) "initiative" id)
