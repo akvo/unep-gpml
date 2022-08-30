@@ -7,6 +7,7 @@
   @media screen and (max-width: 1280px) {
     font-size: 13px;
   }
+
   & > header {
     // background-color: #006a9e;
     background: transparent;
@@ -117,6 +118,26 @@
       }
     }
   }
+  @media screen and (max-width: 1024px) {
+    overflow-x: hidden;
+    & > header {
+      .ui.container {
+        flex-direction: row;
+      }
+      .logo {
+        height: 4em;
+      }
+      .rightside {
+        display: none;
+      }
+      .all-tools-btn {
+        margin-left: auto;
+        span {
+          display: none;
+        }
+      }
+    }
+  }
   .hero {
     height: 100vh;
     background-color: #006a9e;
@@ -137,6 +158,15 @@
         font-size: 1.625em;
         // line-height: 2.375em;
         padding: 0 3.2em;
+      }
+    }
+
+    @media screen and (max-width: 1024px) {
+      .content {
+        padding: 0 20px;
+        h4 {
+          padding: 0;
+        }
       }
     }
     h1 {
@@ -906,6 +936,11 @@ body {
       @media (min-width: 1071px) and (max-width: 1200px) {
         display: none;
       }
+    }
+  }
+  @media screen and (max-width: 1024px) {
+    .contents {
+      padding: 0 0 0 15px;
     }
   }
   &.full-menu-enter {
