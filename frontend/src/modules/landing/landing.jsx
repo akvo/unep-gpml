@@ -41,12 +41,7 @@ const Landing = (props) => {
       </div>
       <TheJourney />
       <Connect />
-      <div className="partners">
-        <h3>Our partners</h3>
-        <div className="img-container">
-          <img src="/partners.png" />
-        </div>
-      </div>
+      <Partners />
       <Stats />
       <Act />
       <AnyQuestions />
@@ -184,9 +179,7 @@ const Connect = () => {
             <p>
               <i>DECEMBER 2020</i><br />
               <b>IMPROVING WASTEWATER MANAGEMENT IN SOMALIA</b><br />
-              In October, Somali Greenpeace Association (SOGPA) in collaboration with its partners, held a Wastewater Management training in Baidoa, Somalia. The aim was to build awareness on the importance of proper wastewater management in helping to keep our waterways and oceans clean.
-30 young people and local leaders took part, learning about the hazards wastewater can cause if not managed properly. An advocacy message was delivered to government leaders, pushing for increased action on the issue. Local authorities have since requested more training for members of society on the problems and solutions regarding wastewater management.
-SOGPA's Vice-chairperson, Hassan Mowlid Yasin, says, "The youth have to be empowered to address environmental issues that affect them.
+              In October, Somali Greenpeace Association (SOGPA) in collaboration with its partners, held a Wastewater Management training in Baidoa, Somalia. The aim was to build awareness on the importance of proper wastewater management in helping to keep our waterways and oceans clean. 30 young people and local leaders took part, learning about the hazards wastewater can cause if not managed properly. An advocacy message was delivered to government leaders, pushing for increased action on the issue. Local authorities have since requested more training for members of society on the problems and solutions regarding wastewater management. SOGPA's Vice-chairperson, Hassan Mowlid Yasin, says, "The youth have to be empowered to address environmental issues that affect them.
             </p>
           </SwiperSlide>
           <SwiperSlide className="card testimonial">
@@ -209,6 +202,35 @@ SOGPA's Vice-chairperson, Hassan Mowlid Yasin, says, "The youth have to be empow
           </SwiperSlide>
         </Swiper>
       </div>
+  )
+}
+
+const Partners = () => {
+  const ref = useRef()
+  const imgRef = useRef()
+  const scrollHandler = () => {
+    const y = window.scrollY + window.innerHeight - ref.current.clientHeight
+    let subt = y - ref.current.offsetTop
+    const max = window.innerHeight -ref.current.clientHeight - 80
+    if(subt < 0) subt = 0
+    else if(subt > max) subt = max
+    const coef = subt / max
+    const imgExx = imgRef.current.clientWidth - window.innerWidth + 100
+    imgRef.current.style.transform = `translateX(-${coef * imgExx}px)`
+  }
+  useEffect(() => {
+    document.addEventListener('scroll', scrollHandler)
+    return () => {
+      document.removeEventListener('scroll', scrollHandler)
+    }
+  }, [])
+  return (
+    <div className="partners" ref={ref}>
+      <h3>Our partners</h3>
+      <div className="img-container">
+        <img ref={imgRef} src="/partners.png" />
+      </div>
+    </div>
   )
 }
 
