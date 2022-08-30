@@ -161,7 +161,7 @@
                                           {:post {:summary "Create a new policy"
                                                   :swagger {:tags ["policy"]
                                                             :security [{:id_token []}]}
-                                                  :parameters {:body #ig/ref :gpml.handler.policy/post-params}
+                                                  :parameters #ig/ref :gpml.handler.policy/post-params
                                                   :handler #ig/ref :gpml.handler.policy/post}}]]
                                         ["/initiative"
                                          [""
