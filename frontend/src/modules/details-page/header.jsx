@@ -26,6 +26,10 @@ export const HeaderButtons = ({
 }) => {
   const { type, id } = topic;
 
+const bookmarked = relation &&
+relation.association &&
+relation.association.indexOf("interested in") !== -1;
+
   const handleChangeRelation = (relationType) => {
     let association = relation ? [...relation.association] : [];
     if (!association.includes(relationType)) {
@@ -166,14 +170,12 @@ export const HeaderButtons = ({
       <Button
         className="bookmark-button two-tone-button"
         icon={
-          relation &&
-            relation.association &&
-            relation.association.indexOf("interested in") !== -1
-            ? (
-              <HeartFilled className="heart-filled" />
-            ) : (
-              <HeartTwoTone className="two-tone-heart" twoToneColor="#09689a" />
-            )
+              <HeartTwoTone className={`two-tone-heart ${
+                bookmarked ?
+                 "bookmarked" 
+                 : "heart-outlined"
+                }`}
+                 twoToneColor="#09689a" />
         }
         type="primary"
         shape="round"
@@ -184,7 +186,8 @@ export const HeaderButtons = ({
           handleChangeRelation("interested in");
         }}
       >
-        Bookmark
+        {bookmarked? "Bookmarked":"Bookmark"}
+        
       </Button>
       {canEdit() && (
         <Button
