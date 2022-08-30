@@ -29,6 +29,10 @@ export const HeaderButtons = ({
 }) => {
   const { type, id } = topic;
 
+const bookmarked = relation &&
+relation.association &&
+relation.association.indexOf("interested in") !== -1;
+
   const handleChangeRelation = (relationType) => {
     let association = relation ? [...relation.association] : [];
     if (!association.includes(relationType)) {
@@ -60,14 +64,13 @@ export const HeaderButtons = ({
             e.preventDefault();
             eventTrack("Resource view", "View Url", "Button");
             window.open(
-              `${
-                data?.url && data?.url?.includes("https://")
-                  ? data?.url
-                  : data?.languages
+              `${data?.url && data?.url?.includes("https://")
+                ? data?.url
+                : data?.languages
                   ? data?.languages[0]?.url
                   : data?.url?.includes("http://")
-                  ? data?.url
-                  : "https://" + data?.url
+                    ? data?.url
+                    : "https://" + data?.url
               }`,
               "_blank"
             );
@@ -107,17 +110,16 @@ export const HeaderButtons = ({
             <Input.Group compact>
               <Input
                 style={{ width: "calc(100% - 20%)" }}
-                defaultValue={`${
-                  data?.url && data?.url?.includes("https://")
+                defaultValue={`${data?.url && data?.url?.includes("https://")
                     ? data?.url
                     : data?.languages
-                    ? data?.languages[0]?.url
-                    : data?.url && data?.url?.includes("http://")
-                    ? data?.url
-                    : data?.url
-                    ? "https://" + data?.url
-                    : "https://"
-                }`}
+                      ? data?.languages[0]?.url
+                      : data?.url && data?.url?.includes("http://")
+                        ? data?.url
+                        : data?.url
+                          ? "https://" + data?.url
+                          : "https://"
+                  }`}
                 disabled
               />
               <Button
@@ -171,11 +173,12 @@ export const HeaderButtons = ({
       <Button
         className="bookmark-button two-tone-button"
         icon={
-          relation?.association?.indexOf("interested in") !== -1 ? (
-            <HeartFilled className="heart-filled" />
-          ) : (
-            <HeartTwoTone className="two-tone-heart" twoToneColor="#09689a" />
-          )
+              <HeartTwoTone className={`two-tone-heart ${
+                bookmarked ?
+                 "bookmarked" 
+                 : "heart-outlined"
+                }`}
+                 twoToneColor="#09689a" />
         }
         type="primary"
         shape="round"
@@ -186,7 +189,8 @@ export const HeaderButtons = ({
           handleChangeRelation("interested in");
         }}
       >
-        Bookmark
+        {bookmarked? "Bookmarked":"Bookmark"}
+        
       </Button>
       {canEdit() && (
         <Button
