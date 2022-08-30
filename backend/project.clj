@@ -13,10 +13,11 @@
                  [org.postgresql/postgresql "42.2.18"]
                  [com.google.cloud.sql/postgres-socket-factory "1.2.0"]
                  [metosin/reitit-ring "0.5.18" :exclusions [ring/ring-core]]
+                 [metosin/reitit-malli "0.5.18" :exclusions [org.clojure/tools.reader
+                                                             org.clojure/core.rrb-vector]]
                  [metosin/reitit-middleware "0.5.18" :exclusions [ring/ring-core
                                                                   org.clojure/spec.alpha
                                                                   metosin/muuntaja]]
-                 [metosin/reitit-malli "0.5.18" :exclusions [org.clojure/tools.reader]]
                  [metosin/reitit-swagger "0.5.18"]
                  [metosin/reitit-swagger-ui "0.5.18" :exclusions [ring/ring-core]]
                  [metosin/jsonista "0.3.5"]
