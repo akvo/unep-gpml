@@ -79,14 +79,29 @@
         .language-select {
           margin-left: auto;
           .ant-select {
-            box-shadow: 0px 0px 2px rgb(0 0 0 / 25%);
+            box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+            border-radius: 4px;
             .ant-select-selection-item {
-              img {
+              line-height: unset;
+              overflow: initial;
+              display: flex;
+              align-items: center;
+              span {
+                filter: drop-shadow(2px 2px 0px #09689a);
+                background: #d3dee7;
+                border-radius: 2px;
+                text-transform: uppercase;
+                font-size: 14px;
+                color: #255b87;
+                font-weight: 900;
                 width: 30px;
+                text-align: center;
+                display: block;
               }
             }
             .ant-select-selector {
               border: none !important;
+              border-radius: 6px;
             }
           }
         }
@@ -723,7 +738,19 @@
   z-index: 999999;
   .ant-select-item {
     .ant-select-item-option-content {
-      text-align: center;
+      overflow: initial;
+      span {
+        filter: drop-shadow(2px 2px 0px #09689a);
+        background: #d3dee7;
+        border-radius: 2px;
+        text-transform: uppercase;
+        font-size: 14px;
+        color: #255b87;
+        font-weight: 900;
+        width: 30px;
+        text-align: center;
+        display: block;
+      }
     }
     img {
       width: 30px;

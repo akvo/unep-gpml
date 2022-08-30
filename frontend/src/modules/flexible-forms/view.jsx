@@ -89,7 +89,7 @@ export const languageOptions = [
   {
     label: "Arabic",
     key: "0",
-    value: "ae",
+    value: "ar",
   },
   {
     label: "Chinese",
@@ -114,7 +114,7 @@ export const languageOptions = [
   {
     label: "English",
     key: "6",
-    value: "gb",
+    value: "en",
   },
 ];
 
@@ -1418,7 +1418,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                                 .filter(
                                   (ln) =>
                                     !languages.includes(ln.value) &&
-                                    ln.value !== "gb"
+                                    ln.value !== "en"
                                 )
                                 .map((item) => (
                                   <li
@@ -1428,7 +1428,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                                       setDropdownVisible(!dropdownVisible);
                                     }}
                                   >
-                                    <Flag code={item.value} /> {item.label}
+                                    <span>{item.value}</span>
                                   </li>
                                 ))}
                             </ul>
