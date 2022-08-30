@@ -1,8 +1,10 @@
 (ns gpml.handler.resource.related-content
   (:require [clojure.set :as set]
             [clojure.string :as str]
-            [gpml.constants :as constants]
-            [gpml.db.resource.related-content :as db.resource.related-content]))
+            [duct.logger :refer [log]]
+            [gpml.db.resource.related-content :as db.resource.related-content]
+            [gpml.handler.util :as handler.util]
+            [gpml.util.sql :as sql-util]))
 
 (def ^:const ^:private related-content-shared-keys
   [:id :title :description :image :thumbnail])
@@ -33,21 +35,28 @@
 
 (defn create-related-contents
   "Creates related contents records for a given `resource-id` and `resource-table-name`"
-  [conn resource-id resource-table-name related-contents]
+  [conn logger resource-id resource-table-name related-contents]
   (try
     (let [related-contents (map
-                            (fn [{id :id resource-type :type}]
-                              (vector
-                               resource-id resource-table-name id
-                               (if (some #{resource-type} constants/resource-types)
-                                 "resource"
-                                 resource-type)))
+                            (fn [{related-resource-id :id
+                                  related-resource-table-name :type
+                                  related-content-relation-type :related_content_relation_type}]
+                              {:resource_id resource-id
+                               :resource_table_name (handler.util/get-internal-topic-type resource-table-name)
+                               :related_resource_id related-resource-id
+                               :related_resource_table_name (handler.util/get-internal-topic-type related-resource-table-name)
+                               :related_content_relation_type related-content-relation-type})
                             related-contents)
-          affected-rows (db.resource.related-content/create-related-contents conn {:related-contents related-contents})]
+          insert-cols (sql-util/get-insert-columns-from-entity-col related-contents)
+          insert-values (sql-util/entity-col->persistence-entity-col related-contents)
+          affected-rows (db.resource.related-content/create-related-contents conn
+                                                                             {:insert-cols insert-cols
+                                                                              :insert-values insert-values})]
       (if (= affected-rows (count related-contents))
         {:success? true}
         {:success? false}))
     (catch Exception e
+      (log logger :error :could-not-create-related-contents {:exception-message (.getMessage e)})
       {:success? false
        :reason :could-not-create-related-contents
        :error-details {:message (.getMessage e)}})))
@@ -56,10 +65,10 @@
   "Updates the related contents records for a given `resource-id` and
   `resource-table-name`. Note that it deletes previous related content
   and creates everything from scratch."
-  [conn resource-id resource-table-name related-contents]
+  [conn logger resource-id resource-table-name related-contents]
   (db.resource.related-content/delete-related-contents conn {:resource-id resource-id
                                                              :resource-table-name resource-table-name})
-  (create-related-contents conn resource-id resource-table-name related-contents))
+  (create-related-contents conn logger resource-id resource-table-name related-contents))
 
 (defn get-related-contents
   "Gets the related content for a give `resource-id` and

@@ -13,3 +13,16 @@
   type of a domain model entity (Organisation, Stakeholder, Event,
   Policy, Technology, Resource, Initiative)."
   #{"global" "national" "transnational" "sub-national"})
+
+(def ^:const association-types
+  "Possible `<resource>_association` values. This represent
+  association type of a domain model resource (Policy, Event,
+  Technology, Resource and Initiative)."
+  #{"implementor"
+    "donor"
+    "reviewer"
+    "interested in"
+    "owner"
+    "resource_editor"
+    "partner"
+    "regulator"})

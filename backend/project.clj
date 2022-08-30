@@ -12,13 +12,13 @@
                  [duct/module.web "0.7.1" :exclusions [medley ring/ring-core]]
                  [org.postgresql/postgresql "42.2.18"]
                  [com.google.cloud.sql/postgres-socket-factory "1.2.0"]
-                 [metosin/reitit-ring "0.5.13" :exclusions [ring/ring-core]]
-                 [metosin/reitit-middleware "0.5.13" :exclusions [ring/ring-core
+                 [metosin/reitit-ring "0.5.18" :exclusions [ring/ring-core]]
+                 [metosin/reitit-middleware "0.5.18" :exclusions [ring/ring-core
                                                                   org.clojure/spec.alpha
                                                                   metosin/muuntaja]]
-                 [metosin/reitit-malli "0.5.13" :exclusions [org.clojure/tools.reader]]
-                 [metosin/reitit-swagger "0.5.13"]
-                 [metosin/reitit-swagger-ui "0.5.13" :exclusions [ring/ring-core]]
+                 [metosin/reitit-malli "0.5.18" :exclusions [org.clojure/tools.reader]]
+                 [metosin/reitit-swagger "0.5.18"]
+                 [metosin/reitit-swagger-ui "0.5.18" :exclusions [ring/ring-core]]
                  [metosin/jsonista "0.3.3"]
                  [com.layerware/hugsql "0.5.1"]
                  [com.auth0/auth0 "1.25.0" :exclusions [org.jetbrains.kotlin/kotlin-stdlib-common

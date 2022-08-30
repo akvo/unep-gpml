@@ -89,7 +89,7 @@
                                                              (:stakeholder %))
                                                           api-individual-connections)))))]
     (when (seq related_content)
-      (handler.resource.related-content/create-related-contents conn resource-id "resource" related_content))
+      (handler.resource.related-content/create-related-contents conn logger resource-id "resource" related_content))
     (doseq [stakeholder-id owners]
       (h.auth/grant-topic-to-stakeholder! conn {:topic-id resource-id
                                                 :topic-type "resource"

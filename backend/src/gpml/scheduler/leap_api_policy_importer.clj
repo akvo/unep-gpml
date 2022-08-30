@@ -11,6 +11,7 @@
             [gpml.db.policy :as db.policy]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.tag :as db.tag]
+            [gpml.domain.policy :as dom.policy]
             [gpml.util :as util]
             [gpml.util.sql :as sql-util]
             [integrant.core :as ig]
@@ -29,24 +30,6 @@
 ;; TODO: This should be placed somewhere else to be re-used and be more visible.
 (defonce ^:private default-lang :en)
 (defonce ^:private policy-tag-category-name "leap api")
-;; TODO: These should be placed somewhere (to-create Domain layer) else to be re-used and be more visible.
-(defonce ^:private policy-types-of-law #{"Legislation"
-                                         "Regulation"
-                                         "Miscellaneous"
-                                         "Constitution"})
-
-(defonce ^:private policy-status-opts #{"In force"
-                                        "Repealed"
-                                        "Not yet in force"})
-
-(defonce ^:private policy-sub-content-types
-  #{"Bans and Restrictions"
-    "Combined Actions"
-    "Economic Instruments"
-    "Extended Producer Responsability (EPR) Schemes"
-    "Other Actions"
-    "Product standards Certification and Labeling requirements"
-    "Waste Management Legislation"})
 
 ;; TODO: Move this to a shared space, as we are doing the same for Auth0
 (defn- parse-response-body [response]
@@ -815,9 +798,9 @@
                                             :languages-by-iso-code languages-by-iso-code
                                             :tags-by-normalized-name tags-by-normalized-name
                                             :mea-country-groups-by-name mea-country-groups-by-name
-                                            :policy-types-of-law policy-types-of-law
-                                            :policy-status-opts policy-status-opts
-                                            :policy-sub-content-types policy-sub-content-types
+                                            :policy-types-of-law dom.policy/types-of-laws
+                                            :policy-status-opts dom.policy/statuses
+                                            :policy-sub-content-types dom.policy/sub-content-types
                                             :policy-tag-category-id (:id policy-tag-category)}))
     (catch Throwable e
       (let [error-details {:error-code (class e)

@@ -1,6 +1,6 @@
 -- :name create-related-contents :insert :affected
-INSERT INTO related_content(resource_id, resource_table_name, related_resource_id, related_resource_table_name)
-VALUES :t*:related-contents;
+INSERT INTO related_content(:i*:insert-cols)
+VALUES :t*:insert-values;
 
 -- :name get-related-contents :query :many
 -- :doc Gets the related content for a specific resource type and id
