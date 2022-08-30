@@ -123,6 +123,7 @@ const FlexibleForm = withRouter(
       delete data?.S3;
       delete data?.S4;
       delete data?.S5;
+      delete data?.S6;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
@@ -288,7 +289,6 @@ const FlexibleForm = withRouter(
       }
 
       if (status === "edit" || params?.id) {
-        delete data.S6;
         data?.image &&
           data?.image.match(customFormats.url) &&
           delete data.image;
@@ -391,6 +391,7 @@ const FlexibleForm = withRouter(
       delete data?.S3;
       delete data?.S4;
       delete data?.S5;
+      delete data?.S6;
 
       data.tags =
         formData.S4.S4_G3.tags &&
@@ -611,6 +612,7 @@ const FlexibleForm = withRouter(
       delete data?.S3;
       delete data?.S4;
       delete data?.S5;
+      delete data?.S6;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
@@ -853,6 +855,7 @@ const FlexibleForm = withRouter(
       delete data?.S3;
       delete data?.S4;
       delete data?.S5;
+      delete data?.S6;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
@@ -1081,6 +1084,7 @@ const FlexibleForm = withRouter(
       delete data?.S3;
       delete data?.S4;
       delete data?.S5;
+      delete data?.S6;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 

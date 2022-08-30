@@ -857,6 +857,17 @@
     padding: 4px 10px;
     cursor: pointer;
     display: flex;
+    span {
+      filter: drop-shadow(2px 2px 0px #09689a);
+      background: #d3dee7;
+      border-radius: 2px;
+      text-transform: uppercase;
+      font-size: 14px;
+      color: #255b87;
+      font-weight: 900;
+      width: 30px;
+      text-align: center;
+    }
     img {
       width: 30px;
       margin-right: 10px;

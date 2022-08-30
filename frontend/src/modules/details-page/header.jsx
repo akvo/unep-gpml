@@ -217,24 +217,20 @@ export const HeaderButtons = ({
       {translations && translations.hasOwnProperty("title") && (
         <div className="language-select">
           <Select
-            defaultValue={"gb"}
+            defaultValue={"en"}
             placeholder="Select language"
             onChange={(v) => {
-              if (v === "gb") setLanguage("");
+              if (v === "en") setLanguage("");
               else setLanguage(v);
             }}
             dropdownClassName="language-select-menu"
           >
-            {["gb"]
+            {["en"]
               .concat(Object.keys(translations.title))
               .filter((item) => item !== selectedLanguage)
               .map((lang) => (
                 <Select.Option value={lang}>
-                  <Flag
-                    code={
-                      languageOptions.find(({ value }) => value === lang)?.value
-                    }
-                  />
+                  <span>{lang}</span>
                 </Select.Option>
               ))}
           </Select>
