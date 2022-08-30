@@ -19,7 +19,7 @@
                  [metosin/reitit-malli "0.5.18" :exclusions [org.clojure/tools.reader]]
                  [metosin/reitit-swagger "0.5.18"]
                  [metosin/reitit-swagger-ui "0.5.18" :exclusions [ring/ring-core]]
-                 [metosin/jsonista "0.3.3"]
+                 [metosin/jsonista "0.3.5"]
                  [com.layerware/hugsql "0.5.1"]
                  [com.auth0/auth0 "1.25.0" :exclusions [org.jetbrains.kotlin/kotlin-stdlib-common
                                                         com.fasterxml.jackson.core/jackson-databind]]
