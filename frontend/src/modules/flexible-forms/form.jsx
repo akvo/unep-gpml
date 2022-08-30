@@ -313,6 +313,7 @@ const FlexibleForm = withRouter(
                 })
                 .catch((e) => {
                   console.log(e);
+                  notification.error({ message: "An error occured" });
                 });
             }
             // scroll top
@@ -347,6 +348,7 @@ const FlexibleForm = withRouter(
                 })
                 .catch((e) => {
                   console.log(e);
+                  notification.error({ message: "An error occured" });
                 });
             }
             window.scrollTo({ top: 0 });
@@ -537,6 +539,7 @@ const FlexibleForm = withRouter(
                 })
                 .catch((e) => {
                   console.log(e);
+                  notification.error({ message: "An error occured" });
                 });
             }
             window.scrollTo({ top: 0 });
@@ -566,6 +569,7 @@ const FlexibleForm = withRouter(
                 })
                 .then((langResp) => {
                   console.log(langResp);
+                  notification.error({ message: "An error occured" });
                 })
                 .catch((e) => {
                   console.log(e);
@@ -777,6 +781,7 @@ const FlexibleForm = withRouter(
                 })
                 .catch((e) => {
                   console.log(e);
+                  notification.error({ message: "An error occured" });
                 });
             }
             window.scrollTo({ top: 0 });
@@ -809,6 +814,7 @@ const FlexibleForm = withRouter(
                 })
                 .catch((e) => {
                   console.log(e);
+                  notification.error({ message: "An error occured" });
                 });
             }
             // scroll top
@@ -1007,6 +1013,7 @@ const FlexibleForm = withRouter(
                 })
                 .catch((e) => {
                   console.log(e);
+                  notification.error({ message: "An error occured" });
                 });
             }
             window.scrollTo({ top: 0 });
@@ -1039,6 +1046,7 @@ const FlexibleForm = withRouter(
                 })
                 .catch((e) => {
                   console.log(e);
+                  notification.error({ message: "An error occured" });
                 });
             }
             // scroll top
@@ -1236,6 +1244,7 @@ const FlexibleForm = withRouter(
                 })
                 .catch((e) => {
                   console.log(e);
+                  notification.error({ message: "An error occured" });
                 });
             }
             window.scrollTo({ top: 0 });
@@ -1268,6 +1277,7 @@ const FlexibleForm = withRouter(
                 })
                 .catch((e) => {
                   console.log(e);
+                  notification.error({ message: "An error occured" });
                 });
             }
             // scroll top

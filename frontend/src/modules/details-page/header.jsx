@@ -11,6 +11,7 @@ import {
   HeartFilled,
 } from "@ant-design/icons";
 import { resourceTypeToTopicType, topicNames } from "../../utils/misc";
+import { languageOptions } from "../flexible-forms/view";
 
 export const HeaderButtons = ({
   data,
@@ -228,7 +229,12 @@ export const HeaderButtons = ({
               .filter((item) => item !== selectedLanguage)
               .map((lang) => (
                 <Select.Option value={lang}>
-                  <span>{lang}</span>
+                  <span>
+                    {
+                      languageOptions.find((item) => item.dbValue === lang)
+                        .value
+                    }
+                  </span>
                 </Select.Option>
               ))}
           </Select>
