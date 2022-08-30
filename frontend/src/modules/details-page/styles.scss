@@ -76,6 +76,20 @@
         flex-wrap: wrap;
         margin-top: 13px;
         transition: all 0.15s ease-out;
+        .language-select {
+          margin-left: auto;
+          .ant-select {
+            box-shadow: 0px 0px 2px rgb(0 0 0 / 25%);
+            .ant-select-selection-item {
+              img {
+                width: 30px;
+              }
+            }
+            .ant-select-selector {
+              border: none !important;
+            }
+          }
+        }
         @media screen and (max-width: 768px) {
           flex-wrap: nowrap;
           margin-left: -30px;
@@ -702,6 +716,17 @@
       ::placeholder {
         color: #1890ff;
       }
+    }
+  }
+}
+.language-select-menu {
+  z-index: 999999;
+  .ant-select-item {
+    .ant-select-item-option-content {
+      text-align: center;
+    }
+    img {
+      width: 30px;
     }
   }
 }
