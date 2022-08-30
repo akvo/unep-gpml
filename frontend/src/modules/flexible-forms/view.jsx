@@ -89,31 +89,37 @@ export const languageOptions = [
     label: "Arabic",
     key: "0",
     value: "ar",
+    dbValue: "ar",
   },
   {
     label: "Chinese",
     key: "1",
     value: "cn",
+    dbValue: "zh",
   },
   {
     label: "French",
     key: "3",
     value: "fr",
+    dbValue: "fr",
   },
   {
     label: "Russian",
     key: "4",
     value: "ru",
+    dbValue: "ru",
   },
   {
     label: "Spanish",
     key: "5",
     value: "es",
+    dbValue: "es",
   },
   {
     label: "English",
     key: "6",
     value: "en",
+    dbValue: "en",
   },
 ];
 
@@ -1382,8 +1388,9 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                           {languages.map((item) => (
                             <Panel
                               header={
-                                languageOptions.find((ln) => ln.value === item)
-                                  ?.label
+                                languageOptions.find(
+                                  (ln) => ln.dbValue === item
+                                )?.label
                               }
                               key={item}
                               extra={
@@ -1423,7 +1430,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                                   <li
                                     key={item.value}
                                     onClick={() => {
-                                      handleSelectLanguage(item.value);
+                                      handleSelectLanguage(item.dbValue);
                                       setDropdownVisible(!dropdownVisible);
                                     }}
                                   >
