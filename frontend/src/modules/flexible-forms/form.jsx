@@ -50,6 +50,7 @@ const FlexibleForm = withRouter(
     subContentType,
     capacityBuilding,
     type,
+    translations,
     match: { params },
   }) => {
     const {
@@ -122,6 +123,7 @@ const FlexibleForm = withRouter(
       delete data?.S3;
       delete data?.S4;
       delete data?.S5;
+      delete data?.S6;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
@@ -299,7 +301,20 @@ const FlexibleForm = withRouter(
       if (status === "add" && !params?.id) {
         api
           .post("/resource", data)
-          .then(() => {
+          .then((res) => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/resource/${res.data.id}`, {
+                  translations: translations,
+                  "topic-type": "resource",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             // scroll top
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
@@ -319,8 +334,21 @@ const FlexibleForm = withRouter(
         delete data.version;
         api
           .put(`/detail/${type}/${id || params?.id}`, data)
-          .then(() => {
+          .then((res) => {
             // scroll top
+            if (translations.length > 0) {
+              api
+                .put(`/translations/resource/${params?.id}`, {
+                  translations: translations,
+                  "topic-type": "resource",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
               e.data = initialData;
@@ -363,6 +391,7 @@ const FlexibleForm = withRouter(
       delete data?.S3;
       delete data?.S4;
       delete data?.S5;
+      delete data?.S6;
 
       data.tags =
         formData.S4.S4_G3.tags &&
@@ -496,7 +525,20 @@ const FlexibleForm = withRouter(
       if (status === "add" && !params?.id) {
         api
           .postRaw("/initiative", data)
-          .then(() => {
+          .then((res) => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/initiative/${res.data.id}`, {
+                  translations: translations,
+                  "topic-type": "resource",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
               e.data = initialData;
@@ -515,7 +557,20 @@ const FlexibleForm = withRouter(
         delete data.version;
         api
           .putRaw(`/detail/project/${id || params?.id}`, data)
-          .then(() => {
+          .then((res) => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/initiative/${params?.id}`, {
+                  translations: translations,
+                  "topic-type": "initiative",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             // scroll top
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
@@ -557,6 +612,7 @@ const FlexibleForm = withRouter(
       delete data?.S3;
       delete data?.S4;
       delete data?.S5;
+      delete data?.S6;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
@@ -683,12 +739,12 @@ const FlexibleForm = withRouter(
       }
 
       if (data?.lang) {
-        let find = languages[Object.keys(data.lang)[0]];
-        data.language = {
-          english_name: find.name,
-          native_name: find.native,
-          iso_code: Object.keys(data.lang)[0],
-        };
+        // let find = languages[Object.keys(data.lang)[0]];
+        // data.language = {
+        //   english_name: find.name,
+        //   native_name: find.native,
+        //   iso_code: Object.keys(data.lang)[0],
+        // };
         delete data.lang;
       }
 
@@ -709,7 +765,20 @@ const FlexibleForm = withRouter(
       if (status === "add" && !params?.id) {
         api
           .post("/policy", data)
-          .then(() => {
+          .then((res) => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/policy/${res.data.id}`, {
+                  translations: translations,
+                  "topic-type": "policy",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
               e.data = initialData;
@@ -729,6 +798,19 @@ const FlexibleForm = withRouter(
         api
           .put(`/detail/${type}/${id || params?.id}`, data)
           .then(() => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/policy/${params?.id}`, {
+                  translations: translations,
+                  "topic-type": "policy",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             // scroll top
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
@@ -773,6 +855,7 @@ const FlexibleForm = withRouter(
       delete data?.S3;
       delete data?.S4;
       delete data?.S5;
+      delete data?.S6;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
@@ -912,7 +995,20 @@ const FlexibleForm = withRouter(
       if (status === "add" && !params?.id) {
         api
           .post("/event", data)
-          .then(() => {
+          .then((res) => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/event/${res.data.id}`, {
+                  translations: translations,
+                  "topic-type": "event",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
               e.data = initialData;
@@ -932,6 +1028,19 @@ const FlexibleForm = withRouter(
         api
           .put(`/detail/${type}/${id || params?.id}`, data)
           .then(() => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/event/${params?.id}`, {
+                  translations: translations,
+                  "topic-type": "event",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             // scroll top
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
@@ -975,6 +1084,7 @@ const FlexibleForm = withRouter(
       delete data?.S3;
       delete data?.S4;
       delete data?.S5;
+      delete data?.S6;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
 
@@ -1114,7 +1224,20 @@ const FlexibleForm = withRouter(
       if (status === "add" && !params?.id) {
         api
           .post("/technology", data)
-          .then(() => {
+          .then((res) => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/technology/${res.data.id}`, {
+                  translations: translations,
+                  "topic-type": "technology",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {
               e.data = initialData;
@@ -1134,6 +1257,19 @@ const FlexibleForm = withRouter(
         api
           .put(`/detail/${type}/${id || params?.id}`, data)
           .then(() => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/technology/${params?.id}`, {
+                  translations: translations,
+                  "topic-type": "technology",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             // scroll top
             window.scrollTo({ top: 0 });
             initialFormData.update((e) => {

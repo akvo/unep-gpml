@@ -1,6 +1,7 @@
 import React from "react";
 import "./styles.scss";
-import { Col, Popover, Input, Button } from "antd";
+import { Col, Popover, Input, Button, Select } from "antd";
+const { Option } = Select;
 import { eventTrack } from "../../utils/misc";
 import {
   EyeFilled,
@@ -10,7 +11,6 @@ import {
   HeartFilled,
 } from "@ant-design/icons";
 import { resourceTypeToTopicType, topicNames } from "../../utils/misc";
-import { ReactComponent as ModalCloseIcon } from "../../images/modal-close-icon.svg";
 
 export const HeaderButtons = ({
   data,
@@ -23,6 +23,9 @@ export const HeaderButtons = ({
   handleRelationChange,
   visible,
   handleVisible,
+  translations,
+  selectedLanguage,
+  setLanguage,
 }) => {
   const { type, id } = topic;
 
@@ -209,6 +212,28 @@ export const HeaderButtons = ({
           Delete
         </Button>
       )}
+      {translations && translations.hasOwnProperty("title") && (
+        <div className="language-select">
+          <Select
+            defaultValue={"en"}
+            placeholder="Select language"
+            onChange={(v) => {
+              if (v === "en") setLanguage("");
+              else setLanguage(v);
+            }}
+            dropdownClassName="language-select-menu"
+          >
+            {["en"]
+              .concat(Object.keys(translations.title))
+              .filter((item) => item !== selectedLanguage)
+              .map((lang) => (
+                <Select.Option value={lang}>
+                  <span>{lang}</span>
+                </Select.Option>
+              ))}
+          </Select>
+        </div>
+      )}
     </Col>
   );
 };
@@ -229,6 +254,9 @@ const Header = ({
   placeholder,
   handleRelationChange,
   relation,
+  translations,
+  selectedLanguage,
+  setLanguage,
 }) => {
   const toolButtons = (
     data,
@@ -281,6 +309,9 @@ const Header = ({
         allowBookmark={allowBookmark}
         visible={visible}
         handleVisible={handleVisible}
+        translations={translations}
+        selectedLanguage={selectedLanguage}
+        setLanguage={setLanguage}
       />
     );
   };
@@ -290,7 +321,9 @@ const Header = ({
       <h3 className="detail-resource-type content-heading">
         {topicNames(params?.type)}
       </h3>
-      <h4 className="detail-resource-title">{data?.title}</h4>
+      <h4 className="detail-resource-title">
+        {selectedLanguage ? translations?.title[selectedLanguage] : data?.title}
+      </h4>
       {toolButtons(
         data,
         LeftImage,
