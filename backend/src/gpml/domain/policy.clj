@@ -196,7 +196,7 @@
      {:swagger
       {:description "The Policy's default language (e.g., en)."
        :type "string"}}
-     [string? {:min 3 :max 3}]]
+     [string? {:min 2 :max 3}]]
     [:document_preview
      {:optional true
       :swagger
