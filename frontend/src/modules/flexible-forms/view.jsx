@@ -39,7 +39,6 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 const { Step } = Steps;
 import RichTextEditor from "react-rte";
-import Flag from "react-world-flags";
 
 export const getTypeByResource = (type) => {
   let t = "";

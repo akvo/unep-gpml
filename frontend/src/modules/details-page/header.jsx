@@ -11,8 +11,6 @@ import {
   HeartFilled,
 } from "@ant-design/icons";
 import { resourceTypeToTopicType, topicNames } from "../../utils/misc";
-import { languageOptions } from "../flexible-forms/view";
-import Flag from "react-world-flags";
 
 export const HeaderButtons = ({
   data,
