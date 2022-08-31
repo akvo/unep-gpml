@@ -68,8 +68,8 @@
           system (ig/init fixtures/*system* [db-key])
           conn (-> system db-key :spec)
           _ (add-resource-data conn)
-          landing (db.landing/map-counts-include-all-countries conn {:entity-group :topic})
-          valid? (fn [country-id] (->> landing
+          {:keys [country_counts]} (db.landing/get-resource-map-counts conn {:entity-group :topic})
+          valid? (fn [country-id] (->> country_counts
                                        (filter #(= country-id (:country_id %)))
                                        first
                                        :counts
@@ -120,13 +120,13 @@
         system (ig/init fixtures/*system* [db-key])
         conn (-> system db-key :spec)
         _ (add-resource-data conn)
-        landing (db.landing/map-counts-include-all-countries conn {:entity-group :topic})]
+        {:keys [country_counts]} (db.landing/get-resource-map-counts conn {:entity-group :topic})]
     (testing "Landing counts match browse results"
       (let [country-id 4
             transnationals (->> (get-country-group-ids conn country-id)
                                 (map (comp str :id))
                                 set)
-            landing-counts-by-country (filter #(= country-id (:country_id %)) landing)
+            landing-counts-by-country (filter #(= country-id (:country_id %)) country_counts)
             browse (db.topic/get-topics conn {:topic #{"financing_resource"}
                                               :geo-coverage [country-id]
                                               :transnational transnationals

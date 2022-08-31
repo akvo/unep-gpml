@@ -113,7 +113,7 @@
             :swagger {:description "Limit the number of entries per page"
                       :type "int"
                       :allowEmptyValue false}}
-    [:int {:min 0 :max 100}]]
+    [:int {:min 1}]]
    [:offset {:optional true
              :swagger {:description "Number of items to skip when fetching entries"
                        :type "int"
