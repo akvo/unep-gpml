@@ -60,7 +60,7 @@ const AboutUs = () => {
   const getResourceCount = () => {
     const topic = [
       "action_plan",
-      "project",
+      "initiative",
       "policy",
       "technical_resource",
       "technology",

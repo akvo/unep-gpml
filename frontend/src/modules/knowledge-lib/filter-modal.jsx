@@ -72,7 +72,7 @@ const FilterModal = ({
         .filter((content) => {
           const resourceName = (name) => {
             if (name === "initiative") {
-              return "project";
+              return "initiative";
             } else if (name === "event_flexible") {
               return "event";
             } else if (name === "financing") {

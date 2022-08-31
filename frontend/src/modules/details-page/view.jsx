@@ -211,7 +211,7 @@ const DetailsView = ({
   const getComment = async (id, type) => {
     let res = await api.get(
       `/comment?resource_id=${id}&resource_type=${
-        type.replace("-", "_") === "project" ? "initiative" : type
+        type.replace("-", "_") === "initiative" ? "initiative" : type
       }`
     );
     if (res && res?.data) {
@@ -225,7 +225,7 @@ const DetailsView = ({
     let type = null;
     let link = null;
     switch (params.type) {
-      case "project":
+      case "initiative":
         form = "initiative";
         link = "edit-initiative";
         type = "initiative";
@@ -747,24 +747,24 @@ const Records = ({ countries, languages, params, data }) => {
                 type === "array" &&
                 data[key].map((tag) => Object.values(tag)[0]).join(", ")}
               {key !== "tags" &&
-                params.type === "project" &&
+                params.type === "initiative" &&
                 data[key] &&
                 value === "join" &&
                 type === "array" &&
                 data[key]?.length !== 0 &&
                 data[key]?.map((x) => x.name).join(", ")}
               {key !== "tags" &&
-                params.type !== "project" &&
+                params.type !== "initiative" &&
                 data[key] &&
                 value === "join" &&
                 type === "array" &&
                 data[key].join(", ")}
-              {params.type === "project" &&
+              {params.type === "initiative" &&
                 value === "custom" &&
                 type === "array" &&
                 data[key][customValue] &&
                 data[key][customValue]?.map((x) => x.name).join(", ")}
-              {params.type !== "project" &&
+              {params.type !== "initiative" &&
                 value === "custom" &&
                 type === "array" &&
                 data[key][customValue] &&

@@ -40,7 +40,7 @@ const getType = (type) => {
       t = "event";
       break;
     case "initiative":
-      t = "project";
+      t = "initiative";
       break;
     case "policy":
       t = "policy";
@@ -1118,7 +1118,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
           initialFormData.update((e) => {
             e.data = revertFormData(data);
             e.editId = true;
-            e.type = "project";
+            e.type = "initiative";
           });
           setSubType(data.sub_content_type);
         });

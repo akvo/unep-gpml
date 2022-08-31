@@ -46,7 +46,7 @@ const plans = [
             <a href="https://datahub.gpmarinelitter.org/">Data Hub</a> provides
             statistics of urban waste generated and mismanaged plastic waste at
             the country level. The repository of Monitoring & Analysis{" "}
-            <Link to="/knowledge/library?country=&transnational=&topic=project&tag=&q=&offset=0">
+            <Link to="/knowledge/library?country=&transnational=&topic=initiative&tag=&q=&offset=0">
               Initiatives
             </Link>{" "}
             can be helpful in identifying relevant data.

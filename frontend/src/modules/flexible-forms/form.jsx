@@ -512,7 +512,7 @@ const FlexibleForm = withRouter(
       if (status === "edit" || params?.id) {
         delete data.version;
         api
-          .putRaw(`/detail/project/${id || params?.id}`, data)
+          .putRaw(`/detail/initiative/${id || params?.id}`, data)
           .then(() => {
             // scroll top
             window.scrollTo({ top: 0 });
@@ -521,13 +521,13 @@ const FlexibleForm = withRouter(
             });
             setDisabledBtn({ disabled: true, type: "default" });
             notification.success({ message: "Resource successfully updated" });
-            history.push(`/project/${id || params?.id}`);
+            history.push(`/initiative/${id || params?.id}`);
           })
           .catch(() => {
             initialFormData.update((e) => {
               e.data = initialData;
             });
-            history.push(`/project/${id || params?.id}`);
+            history.push(`/initiative/${id || params?.id}`);
             notification.error({ message: "An error occured" });
           })
           .finally(() => {

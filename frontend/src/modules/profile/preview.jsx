@@ -855,7 +855,7 @@ export const DetailCollapse = ({
   switch (item.type) {
     case "stakeholder":
       return <ProfilePreview item={{ ...data, ...item, unpublishButton }} />;
-    case "project":
+    case "initiative":
       return (
         <InitiativePreview
           item={{ ...data, ...item, featuredFlag }}

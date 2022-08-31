@@ -652,7 +652,7 @@ export const Result = ({
           </li>
         )}
       </ul>
-      {result.type !== "project" && description && (
+      {result.type !== "initiative" && description && (
         <TrimText text={description} />
       )}
       {allowBookmark && (

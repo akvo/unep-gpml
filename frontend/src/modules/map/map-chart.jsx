@@ -170,7 +170,7 @@ const MapChart = ({
 
           acc[currProp] = curr.counts?.[currProp];
 
-          if (currProp === "project") {
+          if (currProp === "initiative") {
             return { ...acc, initiative: curr.counts?.["initiative"] || 0 };
           } else {
             return acc;
@@ -633,7 +633,8 @@ const KnowledgeLibraryToolTipContent = ({
 }) => {
   const dataToDisplay = () => {
     return {
-      project: (data?.counts?.project || 0) + (data?.counts?.initiative || 0),
+      initiative:
+        (data?.counts?.initiative || 0) + (data?.counts?.initiative || 0),
       actionPlan: data?.counts?.actionPlan,
       policy: data?.counts?.policy,
       technicalResource: data?.counts?.technicalResource,
@@ -645,7 +646,7 @@ const KnowledgeLibraryToolTipContent = ({
 
   const transnationalData = () => {
     return {
-      project:
+      initiative:
         (data?.transnationalCounts?.project || 0) +
         (data?.transnationalCounts?.initiative || 0),
       actionPlan: data?.transnationalCounts?.actionPlan,
