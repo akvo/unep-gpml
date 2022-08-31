@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Carousel, Avatar, Typography, Button, List, Upload } from "antd";
+import {
+  Row,
+  Col,
+  Carousel,
+  Avatar,
+  Typography,
+  Button,
+  List,
+  Upload,
+} from "antd";
 const { Title } = Typography;
 import "./styles.scss";
 import Header from "./header";
@@ -13,10 +22,12 @@ import NetworkIcon from "../../images/auth/network.png";
 import Video from "../../images/workspace/video.png";
 import FAQ from "../../images/workspace/faq.png";
 import { FilePdfOutlined } from "@ant-design/icons";
+import CreateProjectModal from "./create-project-modal";
 
 const Workspace = ({ profile }) => {
   const history = useHistory();
   const [isFocal, setIsFocal] = useState(false);
+  const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
 
   const handleFocalPoint = (id) => {
     setIsFocal(true);
@@ -161,8 +172,17 @@ const Workspace = ({ profile }) => {
                 <b>1</b>
                 <div className="content">
                   <h3>workflow guidance</h3>
-                  <p>This one-page document outlines how the GPML Digital Platform supports the development of national marine litter and plastic pollution Action Plans. It includes the different phases of the Action Plan creation workflow.</p>
-                  <div><Button type="ghost" icon={<FilePdfOutlined />}>Download</Button></div>
+                  <p>
+                    This one-page document outlines how the GPML Digital
+                    Platform supports the development of national marine litter
+                    and plastic pollution Action Plans. It includes the
+                    different phases of the Action Plan creation workflow.
+                  </p>
+                  <div>
+                    <Button type="ghost" icon={<FilePdfOutlined />}>
+                      Download
+                    </Button>
+                  </div>
                 </div>
               </Col>
             </Row>
@@ -171,17 +191,35 @@ const Workspace = ({ profile }) => {
                 <b>2</b>
                 <div className="content">
                   <h3>Self-assessment</h3>
-                  <p>Identify in which stage you are in your action plan development and implementation. Receive suggestions on how to manage it in the platform.</p>
-                  <div><Button type="primary">Get Started</Button></div>
+                  <p>
+                    Identify in which stage you are in your action plan
+                    development and implementation. Receive suggestions on how
+                    to manage it in the platform.
+                  </p>
+                  <div>
+                    <Button type="primary">Get Started</Button>
+                  </div>
                 </div>
               </Col>
               <Col lg={13}>
                 <div className="content">
                   <h3>MORE ABOUT ACTION PLANS</h3>
                   <ul>
-                    <li><a href="#">How do I get started with my Action Plan?</a></li>
-                    <li><a href="#">How can you share and showcase your data and information in the GPML Digital Platform?</a></li>
-                    <li><a href="#">What tools and resources are available in the GPML Digital Platform?</a></li>
+                    <li>
+                      <a href="#">How do I get started with my Action Plan?</a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        How can you share and showcase your data and information
+                        in the GPML Digital Platform?
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        What tools and resources are available in the GPML
+                        Digital Platform?
+                      </a>
+                    </li>
                   </ul>
                 </div>
               </Col>
@@ -192,17 +230,53 @@ const Workspace = ({ profile }) => {
               <Col lg={8}>
                 <DataCatalogueSvg />
                 <h3>contribute to the datahub maps & dashboard</h3>
-                <Button type="ghost">Upload your data</Button>
+                <Button
+                  type="ghost"
+                  disabled={
+                    profile &&
+                    (!profile?.emailVerified ||
+                      profile?.reviewStatus === "SUBMITTED")
+                  }
+                  onClick={() => {
+                    setShowCreateProjectModal(true);
+                    // window.open(
+                    //   "https://unep-gpml.eu.auth0.com/authorize?response_type=code&client_id=lmdxuDGdQjUsbLbMFpjDCulTP1w5Z4Gi&redirect_uri=https%3A//apps.unep.org/data-catalog/oauth2/callback&scope=openid+profile+email&state=eyJjYW1lX2Zyb20iOiAiL2Rhc2hib2FyZCJ9",
+                    //   "_blank"
+                    // );
+                  }}
+                >
+                  Upload your data
+                </Button>
               </Col>
               <Col lg={8}>
                 <UploadSvg />
                 <h3>Share your knowledge</h3>
-                <Button type="ghost">Add content</Button>
+                <Button
+                  type="ghost"
+                  disabled={
+                    profile &&
+                    (!profile?.emailVerified ||
+                      profile?.reviewStatus === "SUBMITTED")
+                  }
+                  onClick={() => history.push("/flexible-forms")}
+                >
+                  Add content
+                </Button>
               </Col>
               <Col lg={8}>
                 <MatchSvg />
                 <h3>Match with new opportunities</h3>
-                <Button type="ghost">Connect</Button>
+                <Button
+                  type="ghost"
+                  disabled={
+                    profile &&
+                    (!profile?.emailVerified ||
+                      profile?.reviewStatus === "SUBMITTED")
+                  }
+                  onClick={() => history.push("/connect/community")}
+                >
+                  Connect
+                </Button>
               </Col>
             </Row>
           </div>
@@ -296,7 +370,7 @@ const Workspace = ({ profile }) => {
                 height="640px"
                 src="https://www.youtube.com/embed/xSYkLgoHqVQ"
                 title="YouTube video player"
-                frameborder="0"
+                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
               ></iframe>
@@ -336,6 +410,9 @@ const Workspace = ({ profile }) => {
               <ActionPlan />
             </Row>
           </Col> */}
+      <CreateProjectModal
+        {...{ showCreateProjectModal, setShowCreateProjectModal }}
+      />
     </div>
   );
 };
