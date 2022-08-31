@@ -16,6 +16,7 @@
                         "initiative" ["q2" "q3"]
                         "resource" ["title" "summary" "remarks"]}})
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (def ^:const generic-entity-cte-opts
   "Common set of options for entity related CTE generation functions."
   {:tables ["stakeholder" "organisation"]})
@@ -179,67 +180,16 @@
              (repeat 2 entity-name)
              [where-cond]))))
 
-;;======================= Geo Coverage queries =================================
-(defn- build-topic-geo-coverage-query
-  "Generic query for geo coverage data. The `e` alias stands for
-  `entity`."
-  [entity-name]
-  (let [non-global-where-cond (if (= entity-name "initiative")
-                                "e.q24->>'global'::TEXT IS NULL"
-                                "e.geo_coverage_type <> 'global'::geo_coverage_type")
-        global-where-cond (if (= entity-name "initiative")
-                            "e.q24->>'global'::TEXT IS NOT NULL"
-                            "e.geo_coverage_type = 'global'::geo_coverage_type")]
-    (apply format
-           "SELECT
-        e.id,
-        json_agg(COALESCE(cgc.country, egc.country)) AS geo_coverage
-    FROM
-        %s e
-        LEFT JOIN %s_geo_coverage egc ON e.id = egc.%s
-        LEFT JOIN country_group_country cgc ON cgc.country_group = egc.country_group
-    WHERE
-         %s
-    GROUP BY e.id
-    UNION ALL
-    SELECT e.id,
-         '[0]'::json
-    FROM
-        %s e
-    WHERE
-        %s
-    GROUP BY e.id"
-           (concat
-            (repeat 3 entity-name)
-            [non-global-where-cond entity-name global-where-cond]))))
-
-(defn- build-entity-geo-coverage-query
-  [entity-name]
-  (format
-   "SELECT e.id, json_agg(c.id) AS geo_coverage
-    FROM %s e
-    LEFT JOIN country c ON e.country = c.id
-    GROUP BY e.id"
-   entity-name))
-
-(defn- build-geo-coverage-query
-  [entity-name _params _opts]
-  (if (some #{entity-name} (:tables generic-entity-cte-opts))
-    (build-entity-geo-coverage-query entity-name)
-    (build-topic-geo-coverage-query entity-name)))
-
 ;;======================= Topic queries =================================
 (defn- generic-topic-query
   "Generic query to generate topics."
   [topic-name-query entity-name]
   (apply format
          "SELECT
-        %s AS topic,
-        geo.geo_coverage,
-        row_to_json(d.*) AS json
-    FROM
-        cte_%s_data d
-        LEFT JOIN cte_%s_geo geo ON d.id = geo.id"
+          %s AS topic,
+          row_to_json(d.*) AS json
+        FROM
+          cte_%s_data d"
          (concat [topic-name-query] (repeat 2 entity-name))))
 
 (defn- generic-topic-name-query
@@ -255,7 +205,6 @@
   (format
    "SELECT
        cte.topic,
-       cte.geo_coverage,
        cte.json
     FROM
         cte_%s_topic cte"
@@ -316,10 +265,6 @@
   [_ params opts]
   (generate-ctes* :data build-topic-data-query params opts))
 
-(defmethod generate-ctes :geo
-  [cte-type params opts]
-  (generate-ctes* cte-type build-geo-coverage-query params opts))
-
 (defmethod generate-ctes :topic
   [cte-type params opts]
   (generate-ctes* cte-type build-topic-query params opts))
@@ -344,7 +289,6 @@
   (let [opts (merge generic-cte-opts (when (seq (:tables opts))
                                        (update opts :tables rename-tables)))
         topic-data-ctes (generate-ctes :data params opts)
-        topic-geo-coverage-ctes (generate-ctes :geo params opts)
         topic-ctes (generate-ctes :topic params opts)
         topic-cte (generate-topic-cte {} opts)]
     (str
@@ -352,7 +296,6 @@
      (str/join
       ","
       [topic-data-ctes
-       topic-geo-coverage-ctes
        topic-ctes
        topic-cte]))))
 
@@ -363,14 +306,12 @@
   [params opts]
   (let [topic-data-ctes (generate-ctes :entity_data params opts)
         topic-ctes (generate-ctes :topic params opts)
-        topic-geo-coverage-ctes (generate-ctes :geo params opts)
         topic-cte (generate-topic-cte {} opts)]
     (str
      "WITH "
      (str/join
       ","
       [topic-data-ctes
-       topic-geo-coverage-ctes
        topic-ctes
        topic-cte]))))
 
@@ -487,12 +428,12 @@
                AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_country_groups'" "transnational") ")")
 
         (and geo-coverage? transnational?)
-        (str " AND (" (generic-json-array-lookup-cond "t.geo_coverage" "geo-coverage")
+        (str " AND (" (generic-json-array-lookup-cond "t.json->>'geo_coverage_countries'" "geo-coverage")
              " OR t.json->>'geo_coverage_type'='transnational'
                  AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_country_groups'" "transnational") ")")
 
         geo-coverage?
-        (str " AND " (generic-json-array-lookup-cond "t.geo_coverage" "geo-coverage"))
+        (str " AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_countries'" "geo-coverage"))
 
         geo-coverage-countries?
         (str " AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_values'" "geo-coverage-countries")))))))
