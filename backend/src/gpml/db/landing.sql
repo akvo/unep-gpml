@@ -10,7 +10,7 @@ filtered_entities AS (
 --~ (#'gpml.db.topic/generate-filter-topic-snippet params)
 ),
 transnational_counts_per_country AS (
-  SELECT cgc.country AS country_id,
+  SELECT DISTINCT ON (cgc.country) cgc.country AS country_id,
          topic,
          COUNT(topic) AS topic_count
   FROM filtered_entities
@@ -38,7 +38,7 @@ country_counts AS (
   FROM filtered_entities
   LEFT JOIN json_array_elements_text((json->>'geo_coverage_countries')::JSON) countries
   ON json->>'geo_coverage_countries' IS NOT NULL
-  WHERE (countries.value)::TEXT <> 'null' AND json->>'geo_coverage_type' != 'transnational'
+  WHERE (countries.value)::TEXT <> 'null'
   GROUP BY (countries.value)::TEXT::INT, topic
 /*~*/
   SELECT (json->>'country')::INT AS country_id, 'stakeholder' AS topic, COUNT(topic) AS topic_count
