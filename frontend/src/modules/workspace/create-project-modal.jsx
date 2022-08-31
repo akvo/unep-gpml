@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./create-project-modal.scss";
-import { Row, Col, Select, Input, Button, Modal } from "antd";
+import { Select, Input, Button, Modal } from "antd";
 import { Field, Form } from "react-final-form";
+import api from "../../utils/api";
 
 const geoCoverageTypeOptions = [
   { label: "Global", value: "global" },
@@ -16,7 +17,7 @@ const CreateProjectModal = ({
 }) => {
   const [initialValues, setInitialValues] = useState({});
 
-  const required = (value, name) => {
+  const required = (value) => {
     return value ? undefined : "Required";
   };
 
@@ -24,8 +25,20 @@ const CreateProjectModal = ({
     onSubmit(values);
   };
   const onSubmit = async (values) => {
-    console.log(values);
-    setShowCreateProjectModal(false);
+    const data = {
+      ...values,
+      type: "action-plan",
+    };
+    api
+      .post("/project", data)
+      .then((res) => {
+        console.log(res);
+        setShowCreateProjectModal(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setShowCreateProjectModal(false);
+      });
   };
 
   return (
