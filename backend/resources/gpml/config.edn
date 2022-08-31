@@ -254,7 +254,7 @@
                                           {:get {:summary "End-point for the landing page"
                                                  :middleware [#ig/ref :gpml.auth/auth-middleware]
                                                  :swagger {:tags ["landing"]}
-                                                 :parameters {:query #ig/ref :gpml.handler.landing/get-query-params}
+                                                 :parameters #ig/ref :gpml.handler.landing/get-query-params
                                                  :handler #ig/ref :gpml.handler.landing/get}}]]
                                         ["/nav"
                                          [""
@@ -631,7 +631,7 @@
   :gpml.handler.review/list-user-reviews-params {}
   :gpml.handler.review/review-status-params {}
 
-  :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.landing/get #ig/ref :gpml.config/common
   :gpml.handler.landing/get-query-params {}
   :gpml.handler.nav/get {:db #ig/ref :duct.database/sql}
 
