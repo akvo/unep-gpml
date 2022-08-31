@@ -255,6 +255,12 @@
       {:description "Flag indicating if the policy is a capacity building resource."
        :type "boolean"}}
      boolean?]
+    [:subnational_city
+     {:optional true
+      :swagger
+      {:description "If the geo coverage type is sub-national then optional indicate the subnational city."
+       :type "string"}}
+     [string? {:min 1}]]
     ;; From here and below, Policy related entities.
     [:related_content
      {:optional true
