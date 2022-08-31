@@ -166,9 +166,9 @@ const Connect = () => {
     <div className="connect">
         <h2>Connect with the network</h2>
         <Swiper
-          spaceBetween={40}
+          spaceBetween={window.innerWidth <= 1024 ? 20 : 40}
           slidesPerView="auto"
-          slidesPerGroup={4}
+          slidesPerGroup={window.innerWidth <= 1024 ? 1 : 4}
           pagination={{
             clickable: true,
           }}
