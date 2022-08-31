@@ -7,10 +7,8 @@ import {
   HeartTwoTone,
   MailTwoTone,
   PlayCircleTwoTone,
-  HeartFilled,
 } from "@ant-design/icons";
 import { resourceTypeToTopicType, topicNames } from "../../utils/misc";
-import { ReactComponent as ModalCloseIcon } from "../../images/modal-close-icon.svg";
 
 export const HeaderButtons = ({
   data,
@@ -170,11 +168,11 @@ relation.association.indexOf("interested in") !== -1;
       <Button
         className="bookmark-button two-tone-button"
         icon={
-              <HeartTwoTone className={`two-tone-heart ${
+              <HeartTwoTone className={
                 bookmarked ?
                  "bookmarked" 
                  : "heart-outlined"
-                }`}
+                }
                  twoToneColor="#09689a" />
         }
         type="primary"
