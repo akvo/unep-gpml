@@ -102,7 +102,7 @@ stakeholder_association AS (
 ),
 associated_topics AS (
 SELECT DISTINCT ON (t.topic, (COALESCE(t.json ->> 'start_date', t.json ->> 'created'))::timestamptz,
-    (t.json ->> 'id')::int) t.topic, t.geo_coverage, t.json, sa.stakeholder_connections, sa.entity_connections
+    (t.json ->> 'id')::int) t.topic, t.json, sa.stakeholder_connections, sa.entity_connections
 FROM
     cte_topic t
     JOIN stakeholder_association sa ON sa.id = (t.json->>'id')::int AND sa.topic = t.topic
