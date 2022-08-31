@@ -15,7 +15,7 @@ $bg-green-primary: #10f9b7;
     background: url("../../images/workspace/workspace-background.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    padding: 30px 0px 0px;
+    // padding: 30px 0px 0px;
     .workspace-container {
       display: flex;
       flex-direction: column;
@@ -638,6 +638,154 @@ $bg-green-primary: #10f9b7;
     }
     .ant-page-header {
       padding: 5px 24px;
+    }
+  }
+
+  .action-plan-starter {
+    background-color: #205680;
+    color: #fff;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    h2 {
+      font-size: 24px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    h3 {
+      font-size: 20px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    p {
+      font-size: 18px;
+      margin-right: 16px;
+    }
+    .ant-row {
+      margin-bottom: 25px;
+    }
+    .ant-col {
+      & > b {
+        font-size: 60px;
+        line-height: 40px;
+        margin-right: 15px;
+      }
+      display: flex;
+      .content {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+    .ant-btn-link {
+      margin-bottom: 20px;
+    }
+    ul {
+      list-style: disc;
+      padding-left: 20px;
+      a {
+        color: #fff;
+        text-decoration: underline;
+        line-height: 2;
+        &:hover {
+          color: #ffb400;
+        }
+      }
+    }
+  }
+  .action-suggestions {
+    padding: 100px 0 80px;
+    .ant-col {
+      padding-left: 120px;
+      margin-bottom: 30px;
+      &:not(:first-child) {
+        position: relative;
+        &:after {
+          content: " ";
+          position: absolute;
+          left: -20px;
+          top: 0;
+          width: 1px;
+          height: 80px;
+          background-color: rgba(0, 0, 0, 0.2);
+        }
+      }
+      h3 {
+        font-size: 20px;
+        text-transform: uppercase;
+        line-height: 1.4;
+        padding-right: 3.35em;
+        margin-bottom: 1em;
+      }
+      position: relative;
+      svg {
+        position: absolute;
+        left: 15px;
+        max-height: 86px;
+        path {
+          stroke: #6db5b0;
+          fill: #6db5b0;
+        }
+        rect {
+          fill: #6db5b0;
+        }
+      }
+    }
+  }
+  // .ant-btn {
+  //   &.ant-btn-ghost {
+  //     border-color: #18162f;
+  //     border-width: 2px;
+  //     color: #18162f;
+  //     font-weight: 500;
+  //   }
+  // }
+  font-size: 16px;
+  .ant-btn {
+    font-weight: 500;
+    font-size: 1.125em;
+    line-height: 2.2;
+    padding: 0 1.2em;
+    &.ant-btn-ghost {
+      border: 2px solid #18162f;
+      color: #18162f;
+      height: auto;
+      &:hover {
+        background-color: #18162f;
+        color: white;
+      }
+    }
+    &.ant-btn-lg {
+      border-width: 3px;
+      font-size: 1.375em;
+      line-height: 2.2;
+      padding: 0 30px;
+    }
+    &.ant-btn-primary {
+      background-color: #00ff7f;
+      border-color: #00ff7f;
+      // font-weight: 500;
+      // font-size: 22px;
+      color: #0055a5;
+      height: auto;
+      // line-height: 60px;
+      // padding: 0 50px;
+      transition: all 0.19s ease-out;
+      &:hover {
+        background-color: #ffb400;
+        border-color: #ffb400;
+        color: #0055a5;
+      }
+      &.ant-btn-lg {
+        font-size: 1.375em;
+        line-height: 2.8;
+        padding: 0 2.2em;
+      }
+    }
+    &.ant-btn-link {
+      color: #fff;
+      padding: 0;
+      &:hover {
+        color: #ffb400;
+      }
     }
   }
 }
