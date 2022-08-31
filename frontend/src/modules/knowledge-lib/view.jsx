@@ -14,7 +14,6 @@ const popularTags = [
   "plastics",
   "waste management",
   "marine litter",
-  "capacity building",
   "product by design",
   "source to sea",
 ];

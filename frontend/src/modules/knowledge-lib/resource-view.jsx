@@ -70,7 +70,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
       type === "capacity-building" ||
       history?.location?.state?.type === "capacity-building"
     ) {
-      queryParams.set("tag", ["capacity building"]);
+      queryParams.set("capacity_building", ["true"]);
       queryParams.delete("topic");
     }
     queryParams.set("incCountsForTags", popularTags);
