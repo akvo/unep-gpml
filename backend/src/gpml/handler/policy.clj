@@ -45,7 +45,7 @@
            data_source type_of_law record_number
            first_publication_date latest_amendment_date
            status country geo_coverage_type
-           geo_coverage_value implementing_mea
+           geo_coverage_value implementing_mea subnational_city
            geo_coverage_countries geo_coverage_country_groups
            tags created_by image thumbnail language
            owners info_docs sub_content_type
@@ -74,6 +74,7 @@
                       :geo_coverage_value geo_coverage_value
                       :geo_coverage_countries geo_coverage_countries
                       :geo_coverage_country_groups geo_coverage_country_groups
+                      :subnational_city subnational_city
                       :implementing_mea implementing_mea
                       :attachments attachments
                       :remarks remarks
