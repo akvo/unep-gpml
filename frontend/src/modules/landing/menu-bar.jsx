@@ -94,29 +94,29 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
             </div>
             <h5>Information</h5>
             <div className="row">
-              <Item title="Knowledge library" subtitle="Resources on marine litter and plastic pollution" icon={<AtlasSvg />} />
-              <Item icon={<CaseStudiesSvg />} iconClass="casestudies" title="Case studies" subtitle="Compilation of actions around the world" />
-              <Item title="Learning center" subtitle="Learning and capacity building resources" icon={<CapacityBuildingSvg />} iconClass="learning" />
+              <Item to="/knowledge/library" title="Knowledge library" subtitle="Resources on marine litter and plastic pollution" icon={<AtlasSvg />}   {...{ setShowMenu }} />
+              <Item to="/knowledge/case-studies" icon={<CaseStudiesSvg />} iconClass="casestudies" title="Case studies" subtitle="Compilation of actions around the world"   {...{ setShowMenu }} />
+              <Item to="/knowledge/capacity-building" title="Learning center" subtitle="Learning and capacity building resources" icon={<CapacityBuildingSvg />} iconClass="learning"   {...{ setShowMenu }} />
             </div>
             <h5>Community</h5>
             <div className="row">
-              <Item title="Members" iconClass='tools-community-icon' subtitle="Directory of GPML network entities and individuals" icon={<IconCommunity />} />
-              <Item title="Experts" iconClass='tools-experts-icon' subtitle="Tool to find an expert and experts' groups" icon={<ExpertIcon />} />
-              <Item title="Events" subtitle="Global events calendar" icon={<IconEvent />} />
-              <Item title="Partners" iconClass='tools-partners-icon' subtitle="Directory of partners of the GPML Digital Platform" icon={<IconPartner />} />
+              <Item to="/connect/community" title="Members" iconClass='tools-community-icon' subtitle="Directory of GPML network entities and individuals" icon={<IconCommunity />}   {...{ setShowMenu }} />
+              <Item to="/connect/experts" title="Experts" iconClass='tools-experts-icon' subtitle="Tool to find an expert and experts' groups" icon={<ExpertIcon />}   {...{ setShowMenu }} />
+              <Item to="/connect/events" title="Events" subtitle="Global events calendar" icon={<IconEvent />}   {...{ setShowMenu }} />
+              <Item to="/connect/partners" title="Partners" iconClass='tools-partners-icon' subtitle="Directory of partners of the GPML Digital Platform" icon={<IconPartner />}   {...{ setShowMenu }} />
             </div>
             <h5>Data hub</h5>
             <div className="row">
-              <Item title="Analytics & statistics" subtitle="Metrics to measure progress" icon={<AnalyticAndStatisticSvg/>}/>
-              <Item title="Data Catalog" subtitle="Datasets on plastic pollution and marine litter" icon={<DataCatalogueSvg/>}/>
-              <Item title="Glossary" subtitle="Terminology and definitions" icon={<GlossarySvg/>}/>
-              <Item title="Story Telling" subtitle="Storytelling with custom maps" icon={<MapSvg/>} />
-              <Item title="API explore" subtitle="Web services and APIs" icon={<ExploreSvg/>}/>
+              <Item title="Analytics & statistics" subtitle="Metrics to measure progress" icon={<AnalyticAndStatisticSvg/>}  {...{ setShowMenu }} />
+              <Item href="https://unepazecosysadlsstorage.z20.web.core.windows.net/" title="Data Catalog" subtitle="Datasets on plastic pollution and marine litter" icon={<DataCatalogueSvg/>}  {...{ setShowMenu }} />
+              <Item to="/glossary" title="Glossary" subtitle="Terminology and definitions" icon={<GlossarySvg/>}  {...{ setShowMenu }} />
+              <Item href="https://datahub.gpmarinelitter.org/" title="Story Telling" subtitle="Storytelling with custom maps" icon={<MapSvg/>}   {...{ setShowMenu }} />
+              <Item href="https://datahub.gpmarinelitter.org/pages/api-explore" title="API explore" subtitle="Web services and APIs" icon={<ExploreSvg/>}  {...{ setShowMenu }} />
             </div>
             <h5>Looking for more?</h5>
             <div className="row">
-              <Item title="Help Center" subtitle="Support on GPML Digital Platform" icon={<HelpCenterSvg/>}/>
-              <Item title="About GPML" subtitle="Find out more about us" icon={<AboutSvg/>}/>
+              <Item to="/about-us" title="Help Center" subtitle="Support on GPML Digital Platform" icon={<HelpCenterSvg/>}  {...{ setShowMenu }} />
+              <Item title="About GPML" subtitle="Find out more about us" icon={<AboutSvg/>}  {...{ setShowMenu }} />
             </div>
           </div>
         </div>
@@ -125,9 +125,9 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
   )
 }
 
-const Item = ({ title, subtitle, icon, iconClass}) => {
-  return (
-    <div className="item">
+const Item = ({ title, subtitle, icon, iconClass, to, href, setShowMenu }) => {
+  const contents = (
+    <>
       <div className={['icon', iconClass].filter(it => it != null).join(' ')}>
         {icon}
       </div>
@@ -135,6 +135,20 @@ const Item = ({ title, subtitle, icon, iconClass}) => {
         <b>{title}</b>
         <span>{subtitle}</span>
       </div>
+    </>
+  )
+  const handleClick = () => {
+    setShowMenu(false)
+  }
+  if(to != null){
+    return <Link className="item" to={to} onClick={handleClick}>{contents}</Link>
+  }
+  else if(href != null){
+    return <a className="item" href={href} onClick={handleClick}>{contents}</a>
+  }
+  return (
+    <div className="item" onClick={handleClick}>
+      {contents}
     </div>
   )
 }

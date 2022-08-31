@@ -791,6 +791,9 @@
 }
 body {
   overflow-x: hidden;
+  @media screen and (min-width: 1280px) {
+    font-size: 16px;
+  }
 }
 .full-menu {
   position: fixed;
@@ -955,7 +958,7 @@ body {
 
       div:nth-child(2) {
         @media screen and (min-width: 1024px) {
-          max-width: 10.5em;
+          max-width: 11.5em;
           min-width: 10.5em;
         }
         // width: 175px;
@@ -1118,13 +1121,4 @@ body {
 
 .scroll-disabled {
   overflow: hidden;
-}
-
-.nav-header-container {
-  .ui.container {
-    @media only screen and (min-width: 1220px) and (max-width: 1599px) {
-      width: 100%;
-      margin: 0 50px;
-    }
-  }
 }
