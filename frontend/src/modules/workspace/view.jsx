@@ -162,12 +162,12 @@ const Workspace = ({ profile }) => {
                 <div className="content">
                   <h3>workflow guidance</h3>
                   <p>This one-page document outlines how the GPML Digital Platform supports the development of national marine litter and plastic pollution Action Plans. It includes the different phases of the Action Plan creation workflow.</p>
-                  <div><Button type="link" icon={<FilePdfOutlined />}>Download</Button></div>
+                  <div><Button type="ghost" icon={<FilePdfOutlined />}>Download</Button></div>
                 </div>
               </Col>
             </Row>
             <Row>
-              <Col lg={10}>
+              <Col lg={11}>
                 <b>2</b>
                 <div className="content">
                   <h3>Self-assessment</h3>
@@ -175,7 +175,7 @@ const Workspace = ({ profile }) => {
                   <div><Button type="primary">Get Started</Button></div>
                 </div>
               </Col>
-              <Col lg={14}>
+              <Col lg={13}>
                 <div className="content">
                   <h3>MORE ABOUT ACTION PLANS</h3>
                   <ul>

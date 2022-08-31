@@ -658,7 +658,7 @@ $bg-green-primary: #10f9b7;
     }
     p {
       font-size: 18px;
-      margin-right: 16px;
+      margin-right: 40px;
     }
     .ant-row {
       margin-bottom: 25px;
@@ -678,13 +678,26 @@ $bg-green-primary: #10f9b7;
     .ant-btn-link {
       margin-bottom: 20px;
     }
+    .ant-btn.ant-btn-ghost {
+      border-color: white;
+      color: white;
+      margin-bottom: 20px;
+      &:hover {
+        background-color: #fff;
+        color: #205680;
+      }
+    }
     ul {
       list-style: disc;
       padding-left: 20px;
+      li {
+        padding: 0.5em 0;
+        line-height: 1.2;
+      }
       a {
         color: #fff;
         text-decoration: underline;
-        line-height: 2;
+        line-height: 1;
         &:hover {
           color: #ffb400;
         }
