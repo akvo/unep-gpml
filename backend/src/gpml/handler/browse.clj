@@ -41,7 +41,9 @@
                       :allowEmptyValue false}}
     [:or
      [:string {:max 0}]
-     [:re topic-re]]]
+     [:re
+      {:error/message (format "Should be one of the following options: %s" (str/join "," topics))}
+      topic-re]]]
    [:tag {:optional true
           :swagger {:description "Comma separated list of tags"
                     :type "string"
@@ -208,11 +210,6 @@
   (let [resource-type (cond
                         (some #{type} resource-types)
                         "resource"
-
-                        ;; TODO: review with the team the change from
-                        ;; project to initiative
-                        (= type "project")
-                        "initiative"
 
                         :else
                         type)]

@@ -25,7 +25,7 @@ import { useParams, useLocation, withRouter } from "react-router-dom";
 
 const resourceTopic = [
   "action_plan",
-  "project",
+  "initiative",
   "policy",
   "technical_resource",
   "technology",

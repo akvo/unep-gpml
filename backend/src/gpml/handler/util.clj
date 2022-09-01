@@ -36,19 +36,16 @@
 (defn get-internal-topic-type [topic-type]
   (cond
     (contains? constants/resource-types topic-type) "resource"
-    (= topic-type "project") "initiative"
     :else topic-type))
 
 (defn get-display-topic-type [topic-type topic-item]
   (cond
     (= topic-type "resource") (:type topic-item)
-    (= topic-type "project") "Project"
     :else (str/capitalize topic-type)))
 
 (defn get-api-topic-type [topic-type topic-item]
   (cond
     (= topic-type "resource") (-> topic-item :type str/lower-case (str/replace " " "_"))
-    (= topic-type "initiative") "project"
     :else topic-type))
 
 (defn get-title [topic-type topic-item]

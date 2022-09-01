@@ -291,7 +291,7 @@ const SignUpForm = withRouter(
       }
       if (status === "edit" || params?.id) {
         api
-          .put(`/detail/project/${id || params?.id}`, data)
+          .put(`/detail/initiative/${id || params?.id}`, data)
           .then(() => {
             notification.success({ message: "Update success" });
             UIStore.update((e) => {
@@ -309,7 +309,7 @@ const SignUpForm = withRouter(
               e.data = initialSignUpData;
             });
             setDisabledBtn({ disabled: true, type: "default" });
-            history.push(`/project/${id || params?.id}`);
+            history.push(`/initiative/${id || params?.id}`);
           })
           .catch(() => {
             notification.error({ message: "An error occured" });

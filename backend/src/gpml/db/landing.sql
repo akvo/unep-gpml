@@ -58,17 +58,17 @@ country_counts AS (
 /*~ ) ~*/
 ),
 country_counts_agg AS (
-  SELECT country_id, json_object_agg(COALESCE(topic, 'project'), topic_count) AS counts
+  SELECT country_id, json_object_agg(topic, topic_count) AS counts
   FROM country_counts
   GROUP BY country_id
 ),
 transnational_counts_per_country_agg AS (
-  SELECT country_id, json_object_agg(COALESCE(topic, 'project'), topic_count) AS transnational_counts
+  SELECT country_id, json_object_agg(topic, topic_count) AS transnational_counts
   FROM transnational_counts_per_country
   GROUP BY country_id
 ),
 country_group_counts_agg AS (
-  SELECT country_group_id, json_object_agg(COALESCE(topic, 'project'), topic_count) AS counts
+  SELECT country_group_id, json_object_agg(topic, topic_count) AS counts
   FROM country_group_counts
   GROUP BY country_group_id
 ) SELECT json_build_object(
@@ -251,7 +251,7 @@ non_member_organisation_countries AS (
 country_counts AS (
     SELECT
         COUNT(*) AS country,
-        'project' AS data
+        'initiative' AS data
     FROM
         initiative_countries
     UNION
@@ -298,7 +298,7 @@ country_counts AS (
 totals AS (
     SELECT
         COUNT(*) AS total,
-        'project' AS data,
+        'initiative' AS data,
         1 AS o
     FROM
         initiative
