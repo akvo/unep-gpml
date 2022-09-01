@@ -23,7 +23,7 @@ export const resourceTypes = [
     label: "Capacity Building",
     title: "capacity building",
   },
-  { key: "project", label: "Initiatives", title: "project" },
+  { key: "initiative", label: "Initiatives", title: "initiative" },
   { key: "action-plan", label: "Action Plans", title: "action_plan" },
   { key: "policy", label: "Policies", title: "policy" },
   {

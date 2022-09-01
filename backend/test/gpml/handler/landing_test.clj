@@ -14,4 +14,4 @@
           resp (handler (mock/request :get "/"))]
       (is (= 200 (:status resp)))
       (is (not-empty (:body resp)))
-      (is (some #(= {:project 0 :countries 0} %) (-> resp :body :summary))))))
+      (is (some #(= {:initiative 0 :countries 0} %) (-> resp :body :summary))))))

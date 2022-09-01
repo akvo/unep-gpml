@@ -24,7 +24,6 @@
         (fn [{:keys [resource_type resource_data]}]
           (let [resource-type (case resource_type
                                 "resource" (str/replace (str/lower-case (:type resource_data)) #" " "_")
-                                "initiative" "project"
                                 resource_type)
                 non-shared-keys-mapping (get related-content-non-shared-keys-mapping (keyword resource_type))]
             (-> resource_data
