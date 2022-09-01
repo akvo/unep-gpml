@@ -6,21 +6,14 @@ import {
   Avatar,
   Typography,
   Button,
-  List,
-  Upload,
 } from "antd";
 const { Title } = Typography;
 import "./styles.scss";
-import Header from "./header";
 import { useHistory, Link } from "react-router-dom";
 import { ReactComponent as DataCatalogueSvg } from "../../images/data-catalogue-icon.svg";
 import { ReactComponent as MatchSvg } from "../../images/match.svg";
 import { ReactComponent as UploadSvg } from "../../images/upload.svg";
-// import DownloadPdf from "../../images/workspace/download-pdf.svg";
-import DownloadPdf from "../../images/workspace/pdf.png";
 import NetworkIcon from "../../images/auth/network.png";
-import Video from "../../images/workspace/video.png";
-import FAQ from "../../images/workspace/faq.png";
 import { FilePdfOutlined } from "@ant-design/icons";
 import CreateProjectModal from "./create-project-modal";
 
@@ -43,7 +36,6 @@ const Workspace = ({ profile }) => {
 
   return (
     <div id="workspace">
-      {/* <Header userName={userName} /> */}
       <div className="workspace-content-wrapper">
         <div className="workspace-container">
           {profile &&
@@ -202,7 +194,9 @@ const Workspace = ({ profile }) => {
                     to manage it in the platform.
                   </p>
                   <div>
-                    <Button type="primary">Get Started</Button>
+                    <Link to="/projects/get-started">
+                      <Button type="primary">Get Started</Button>
+                    </Link>
                   </div>
                 </div>
               </Col>
@@ -285,88 +279,6 @@ const Workspace = ({ profile }) => {
               </Col>
             </Row>
           </div>
-          {/* <Row className="action-plan-container">
-            <Col lg={12} sm={24}>
-              <div
-                className="content-container"
-                style={{ backgroundColor: "#fff" }}
-              >
-                <p className="recommend-text">ACTIONS</p>
-                <Title level={2}>Your next steps on GPML</Title>
-                <List itemLayout="horizontal">
-                  <List.Item>
-                    <List.Item.Meta
-                      className={`${
-                        profile &&
-                        (!profile?.emailVerified ||
-                          profile?.reviewStatus === "SUBMITTED")
-                          ? "disabled"
-                          : ""
-                      }`}
-                      disabled={
-                        profile &&
-                        (!profile?.emailVerified ||
-                          profile?.reviewStatus === "SUBMITTED")
-                      }
-                      title={
-                        <a
-                          href="https://unep-gpml.eu.auth0.com/authorize?response_type=code&client_id=lmdxuDGdQjUsbLbMFpjDCulTP1w5Z4Gi&redirect_uri=https%3A//apps.unep.org/data-catalog/oauth2/callback&scope=openid+profile+email&state=eyJjYW1lX2Zyb20iOiAiL2Rhc2hib2FyZCJ9"
-                          target="_blank"
-                        >
-                          Add data {">"}
-                        </a>
-                      }
-                      description="Contribute to the DataHub maps & dashboard"
-                    />
-                  </List.Item>
-                  <List.Item>
-                    <List.Item.Meta
-                      className={`${
-                        profile &&
-                        (!profile?.emailVerified ||
-                          profile?.reviewStatus === "SUBMITTED")
-                          ? "disabled"
-                          : ""
-                      }`}
-                      disabled={
-                        profile &&
-                        (!profile?.emailVerified ||
-                          profile?.reviewStatus === "SUBMITTED")
-                      }
-                      title={
-                        <Link to="/flexible-forms">
-                          Share your knowledge {">"}
-                        </Link>
-                      }
-                      description="Contribute to the global library of initiatives, action plans, financing & tech resources & more"
-                    />
-                  </List.Item>
-                  <List.Item>
-                    <List.Item.Meta
-                      className={`${
-                        profile &&
-                        (!profile?.emailVerified ||
-                          profile?.reviewStatus === "SUBMITTED")
-                          ? "disabled"
-                          : ""
-                      }`}
-                      disabled={
-                        profile &&
-                        (!profile?.emailVerified ||
-                          profile?.reviewStatus === "SUBMITTED")
-                      }
-                      title={
-                        <Link to="/connect/community">
-                          Match with new opportunities {">"}
-                        </Link>
-                      }
-                      // description="Fictum, deserunt mollit anim laborum astutumque!"
-                    />
-                  </List.Item>
-                </List>
-              </div>
-            </Col>
-          </Row> */}
           <Row className="video-panel">
             <Col lg={24} sm={24}>
               <Title level={2}>Watch this video to get started</Title>
@@ -383,38 +295,6 @@ const Workspace = ({ profile }) => {
           </Row>
         </div>
       </div>
-      {/* <Col lg={24} md={24} xs={24} order={2}>
-            <Row>
-              <Col span={24} style={{ position: "relative" }}>
-                <div className="section-download text-white">
-                  <div className="card">
-                    <article className="content">
-                      <h3 className="download-guidance text-white">
-                        Download the Action Plan Workflow Guidance
-                      </h3>
-                      <p className="paragraph">
-                        This one-pager document outlines how the functionality
-                        of the Global Partnership on Marine Litter (GPML)
-                        Digital Platform supports the development of national
-                        marine litter and plastic pollution action plans, within
-                        the different phases of the Action Plan Creation
-                        Workflow.
-                      </p>
-                    </article>
-                    <a
-                      href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y"
-                      target="_blank"
-                      className="download-link"
-                    >
-                      <img src={DownloadPdf} alt="download-pdf-document" />
-                      <span className="download-text text-white">Download</span>
-                    </a>
-                  </div>
-                </div>
-              </Col>
-              <ActionPlan />
-            </Row>
-          </Col> */}
       <CreateProjectModal
         {...{ showCreateProjectModal, setShowCreateProjectModal }}
       />
