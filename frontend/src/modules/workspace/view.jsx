@@ -179,9 +179,14 @@ const Workspace = ({ profile }) => {
                     different phases of the Action Plan creation workflow.
                   </p>
                   <div>
+                    <a
+                    href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y"
+                    target="_blank"
+                    >
                     <Button type="ghost" icon={<FilePdfOutlined />}>
-                      Download
+                      Read The Guide
                     </Button>
+                    </a>
                   </div>
                 </div>
               </Col>
