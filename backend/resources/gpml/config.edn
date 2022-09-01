@@ -706,8 +706,8 @@
 
   :gpml.handler.file/profile-cv {:db #ig/ref :duct.database/sql}
 
-  :gpml.handler.favorite/get {:db #ig/ref :duct.database/sql}
-  :gpml.handler.favorite/post {:db #ig/ref :duct.database/sql}
+  :gpml.handler.favorite/get #ig/ref :gpml.config/common
+  :gpml.handler.favorite/post #ig/ref :gpml.config/common
   :gpml.handler.favorite/post-params {}
 
   :gpml.handler.env/get {:auth0 {:domain #duct/env "OIDC_ISSUER"
