@@ -79,21 +79,24 @@
                            (db.prj/project->db-project))
             inserted-values (db.prj/create-projects conn
                                                     {:insert-cols (map name (keys db-project))
-                                                     :insert-values [(vals db-project)]})]
+                                                     :insert-values [(vals db-project)]})
+            {:keys [geo_coverage_countries geo_coverage_country_groups]} body]
         (if (= inserted-values 1)
-          (let [project-id (:id db-project)
-                project-geo-coverage-keys [:project_id :country_id :country_group_id]
-                geo-coverage-countries (:geo_coverage_countries body)
-                geo-coverage-country-groups (:geo_coverage_country_groups body)
-                project-geo-coverage-countries (map #(zipmap project-geo-coverage-keys [project-id % nil]) geo-coverage-countries)
-                project-geo-coverage-country-groups (map #(zipmap project-geo-coverage-keys [project-id nil %]) geo-coverage-country-groups)
-                project-geo-coverage (concat project-geo-coverage-countries project-geo-coverage-country-groups)
-                insert-values (sql-util/get-insert-values project-geo-coverage-keys project-geo-coverage)
-                inserted-values (db.prj.geo/create-project-geo-coverage conn
-                                                                        {:insert-cols (map name project-geo-coverage-keys)
-                                                                         :insert-values insert-values})]
-            (when-not (= inserted-values (count project-geo-coverage))
-              (throw (ex-info "Failed to create project geo coverage" {:inserted-values inserted-values}))))
+          (when (or (seq geo_coverage_countries)
+                    (seq geo_coverage_country_groups))
+            (let [project-id (:id db-project)
+                  project-geo-coverage-keys [:project_id :country_id :country_group_id]
+                  geo-coverage-countries (:geo_coverage_countries body)
+                  geo-coverage-country-groups (:geo_coverage_country_groups body)
+                  project-geo-coverage-countries (map #(zipmap project-geo-coverage-keys [project-id % nil]) geo-coverage-countries)
+                  project-geo-coverage-country-groups (map #(zipmap project-geo-coverage-keys [project-id nil %]) geo-coverage-country-groups)
+                  project-geo-coverage (concat project-geo-coverage-countries project-geo-coverage-country-groups)
+                  insert-values (sql-util/get-insert-values project-geo-coverage-keys project-geo-coverage)
+                  inserted-values (db.prj.geo/create-project-geo-coverage conn
+                                                                          {:insert-cols (map name project-geo-coverage-keys)
+                                                                           :insert-values insert-values})]
+              (when-not (= inserted-values (count project-geo-coverage))
+                (throw (ex-info "Failed to create project geo coverage" {:inserted-values inserted-values})))))
           (throw (ex-info "Failed to create project" {:inserted-values inserted-values})))
         (r/ok {:success? true :project_id (:id db-project)})))
     (catch Exception e
