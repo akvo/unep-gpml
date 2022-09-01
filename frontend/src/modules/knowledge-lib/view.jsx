@@ -6,7 +6,7 @@ import Overview from "./overview";
 import ResourceView from "./resource-view";
 import { useQuery } from "../../utils/misc";
 import { UIStore } from "../../store";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import bodyScrollLock from "../details-page/scroll-utils";
 import DetailModal from "../details-page/modal";
 
@@ -21,6 +21,7 @@ const popularTags = [
 
 function Library({ setLoginVisible, isAuthenticated }) {
   const history = useHistory();
+  const { pathname, search } = useLocation();
   const query = useQuery();
   const box = document.getElementsByClassName("knowledge-lib");
   const [loading, setLoading] = useState(true);
@@ -78,8 +79,8 @@ function Library({ setLoginVisible, isAuthenticated }) {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (pathname === "/knowledge/library/overview") fetchData();
+  }, [pathname]);
 
   useEffect(() => {
     api.get(`/landing?entityGroup=topic`).then((resp) => {
@@ -92,11 +93,11 @@ function Library({ setLoginVisible, isAuthenticated }) {
   return (
     <div id="knowledge-lib">
       <Switch>
-        <Route exact path="/knowledge/lib">
-          <Redirect to="/knowledge/lib/overview" exact={true} />
+        <Route exact path="/knowledge/library">
+          <Redirect to="/knowledge/library/overview" exact={true} />
         </Route>
         <Route
-          path="/knowledge/lib/overview"
+          path="/knowledge/library/overview"
           render={(props) => (
             <Overview
               {...props}
@@ -117,7 +118,7 @@ function Library({ setLoginVisible, isAuthenticated }) {
           )}
         />
         <Route
-          path="/knowledge/lib/resource/:view?/:type?"
+          path="/knowledge/library/resource/:view?/:type?"
           render={(props) => (
             <ResourceView
               {...{ box, history, popularTags, landing, showModal }}

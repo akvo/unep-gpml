@@ -45,6 +45,7 @@ import StakeholderCarousel from "./stakeholder-carousel";
 import { ReactComponent as LocationImage } from "../../images/location.svg";
 import { ReactComponent as TransnationalImage } from "../../images/transnational.svg";
 import { ReactComponent as CityImage } from "../../images/city-icn.svg";
+import { getTypeByResource, languageOptions } from "../flexible-forms/view";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
@@ -129,6 +130,8 @@ const DetailsView = ({
   const [visible, setVisible] = useState(false);
   const [showReplyBox, setShowReplyBox] = useState("");
   const [editComment, setEditComment] = useState("");
+  const [translations, setTranslations] = useState({});
+  const [selectedLanguage, setLanguage] = useState("");
 
   const relation = relations.find(
     (it) =>
@@ -186,6 +189,25 @@ const DetailsView = ({
       api
         .get(`/detail/${params?.type.replace("-", "_")}/${params?.id}`)
         .then((d) => {
+          api
+            .get(
+              `/translations/${
+                getTypeByResource(params?.type.replace("-", "_")).translations
+              }/${params?.id}`
+            )
+            .then((resp) => {
+              setTranslations({
+                ...resp.data,
+                summary: resp.data.abstract
+                  ? resp.data.abstract
+                  : resp.data.remarks
+                  ? resp.data.remarks
+                  : resp.data.description
+                  ? resp.data.description
+                  : resp.data.summary,
+              });
+            })
+            .catch((e) => console.log(e));
           setData(d.data);
           getComment(params?.id, params?.type.replace("-", "_"));
         })
@@ -334,7 +356,7 @@ const DetailsView = ({
 
   const description = data?.description ? data?.description : data?.summary;
 
-  const entityConnections = data?.entityConnections.map((entity) => {
+  const entityConnections = data?.entityConnections?.map((entity) => {
     return {
       ...entity,
       name: entity?.entity,
@@ -347,7 +369,7 @@ const DetailsView = ({
   });
 
   const stakeholderConnections = data?.stakeholderConnections
-    .filter(
+    ?.filter(
       (it, ind) =>
         data.stakeholderConnections.findIndex(
           (_it) => _it.stakeholderId === it.stakeholderId
@@ -388,6 +410,9 @@ const DetailsView = ({
             placeholder,
             handleRelationChange,
             relation,
+            translations,
+            selectedLanguage,
+            setLanguage,
           }}
         />
         <Row
@@ -423,7 +448,11 @@ const DetailsView = ({
             {description && (
               <Row>
                 <h3 className="content-heading">Description</h3>
-                <p className="content-paragraph">{description}</p>
+                <p className="content-paragraph">
+                  {selectedLanguage
+                    ? translations?.summary[selectedLanguage]
+                    : description}
+                </p>
               </Row>
             )}
 
@@ -593,7 +622,11 @@ const DetailsView = ({
               <div className="content-paragraph">
                 <div
                   className="list documents-list"
-                  dangerouslySetInnerHTML={{ __html: data?.infoDocs }}
+                  dangerouslySetInnerHTML={{
+                    __html: selectedLanguage
+                      ? translations?.infoDocs[selectedLanguage]
+                      : data?.infoDocs,
+                  }}
                 />
               </div>
             </div>

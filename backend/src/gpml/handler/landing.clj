@@ -1,11 +1,15 @@
 (ns gpml.handler.landing
   (:require [clojure.string :as str]
+            [duct.logger :refer [log]]
             [gpml.constants :refer [resource-types topics]]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.landing :as db.landing]
+            [gpml.handler.responses :as r]
+            [gpml.util.postgresql :as pg-util]
             [gpml.util.regular-expressions :as util.regex]
             [integrant.core :as ig]
-            [ring.util.response :as resp]))
+            [ring.util.response :as resp])
+  (:import [java.sql SQLException]))
 
 (def ^:const ^:private topic-re (util.regex/comma-separated-enums-re topics))
 (def ^:const ^:private entity-groups ["topic" "community"])
@@ -165,28 +169,41 @@
     true
     (assoc :review-status "APPROVED")))
 
-(defn- landing-response [conn query]
-  (let [opts (api-opts->opts query)
-        modified-opts (let [country-group-countries (->> (get opts :transnational)
-                                                         (map #(db.country-group/get-country-group-countries
-                                                                conn {:id %}))
-                                                         (apply concat))
-                            geo-coverage-countries (map :id country-group-countries)]
-                        (assoc opts :geo-coverage (set (concat
-                                                        (get opts :geo-coverage)
-                                                        geo-coverage-countries))))
-        summary-data (->> (gpml.db.landing/summary conn)
-                          (mapv (fn [{:keys [resource_type count country_count]}]
-                                  {(keyword resource_type) count :countries country_count})))]
-    (resp/response {:map (db.landing/map-counts-include-all-countries conn modified-opts)
-                    :country_group_counts (db.landing/get-map-counts-by-country-group conn)
-                    :summary summary-data})))
+(defn- get-resource-map-counts
+  [{:keys [db logger]}
+   {{:keys [query]} :parameters
+    user :user}]
+  (try
+    (let [conn (:spec db)
+          opts (api-opts->opts (assoc query :user-id (:id user)))
+          modified-opts (if-not (seq (get opts :transnational))
+                          opts
+                          (let [opts {:filters {:country-groups (get opts :transnational)}}
+                                country-group-countries (db.country-group/get-country-groups-countries opts)
+                                geo-coverage-countries (map :id country-group-countries)]
+                            (assoc opts :geo-coverage (set (concat
+                                                            (get opts :geo-coverage)
+                                                            geo-coverage-countries)))))
+          summary-data (->> (gpml.db.landing/summary conn)
+                            (mapv (fn [{:keys [resource_type count country_count]}]
+                                    {(keyword resource_type) count :countries country_count})))
+          {:keys [country_counts country_group_counts]} (db.landing/get-resource-map-counts conn modified-opts)]
+      (resp/response {:success? true
+                      :map country_counts
+                      :country_group_counts country_group_counts
+                      :summary summary-data}))
+    (catch Exception e
+      (log logger :error ::failed-to-get-resource-map-counts {:exception-message (.getMessage e)})
+      (r/server-error {:success? false
+                       :reason :failed-to-get-resource-map-counts
+                       :error-details {:error (if (instance? SQLException e)
+                                                (pg-util/get-sql-state e)
+                                                (.getMessage e))}}))))
 
-(defmethod ig/init-key :gpml.handler.landing/get [_ {:keys [db]}]
-  (fn [{{:keys [query]} :parameters
-        user :user}]
-    (let [conn (:spec db)]
-      (landing-response conn (assoc query :user-id (:id user))))))
+(defmethod ig/init-key :gpml.handler.landing/get
+  [_ config]
+  (fn [req]
+    (get-resource-map-counts config req)))
 
 (defmethod ig/init-key :gpml.handler.landing/get-query-params [_ _]
-  query-params)
+  {:query query-params})

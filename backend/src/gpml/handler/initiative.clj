@@ -83,11 +83,12 @@
          new-tags)))))
 
 (defn- create-initiative
-  [conn {:keys [mailjet-config tags owners related_content created_by
-                entity_connections individual_connections qimage thumbnail capacity_building] :as initiative}]
+  [conn logger mailjet-config
+   {:keys [tags owners related_content created_by
+           entity_connections individual_connections qimage thumbnail capacity_building] :as initiative}]
   (let [data (cond-> initiative
                true
-               (dissoc :tags :owners :mailjet-config :entity_connections
+               (dissoc :tags :owners :entity_connections
                        :individual_connections :related_content)
 
                true
@@ -109,7 +110,7 @@
                                                 :stakeholder-id stakeholder-id
                                                 :roles ["owner"]}))
     (when (seq related_content)
-      (handler.resource.related-content/create-related-contents conn initiative-id "initiative" related_content))
+      (handler.resource.related-content/create-related-contents conn logger initiative-id "initiative" related_content))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections initiative-id)]
         (db.favorite/new-organisation-association conn association)))
@@ -130,9 +131,11 @@
     (try
       (jdbc/with-db-transaction [conn (:spec db)]
         (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-              initiative-id (create-initiative conn (assoc body-params
-                                                           :created_by (:id user)
-                                                           :mailjet-config mailjet-config))]
+              initiative-id (create-initiative conn
+                                               logger
+                                               mailjet-config
+                                               (assoc body-params
+                                                      :created_by (:id user)))]
           (resp/created (:referrer req) {:success? true
                                          :message "New initiative created"
                                          :id initiative-id})))

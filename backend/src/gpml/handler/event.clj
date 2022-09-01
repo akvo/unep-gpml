@@ -97,7 +97,7 @@
       (doseq [association (expand-individual-associations api-individual-connections event-id)]
         (db.favorite/new-stakeholder-association conn association)))
     (when (seq related_content)
-      (handler.resource.related-content/create-related-contents conn event-id "event" related_content))
+      (handler.resource.related-content/create-related-contents conn logger event-id "event" related_content))
     (when (not-empty urls)
       (let [lang-urls (map #(vector event-id
                                     (->> % :lang
@@ -130,8 +130,7 @@
     [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
     [:remarks {:optional true} string?]
     [:geo_coverage_type
-     [:enum "global", "regional", "national", "transnational",
-      "sub-national", "global with elements in specific areas"]]
+     [:enum "global", "national", "transnational", "sub-national"]]
     [:geo_coverage_value_subnational_city {:optional true} string?]
     [:country {:optional true} integer?]
     [:city {:optional true} string?]

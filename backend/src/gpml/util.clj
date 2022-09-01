@@ -2,6 +2,7 @@
   (:require [clojure.string :as str]
             [clojure.walk :as w])
   (:import [java.io File]
+           [java.net URL]
            [java.util UUID]))
 
 (defn uuid
@@ -22,11 +23,28 @@
      (catch Exception _
        nil))))
 
+(defn try-url-str
+  "Tries creating a java.net.URL from the provided string `s`. If it
+  fails returns false."
+  [s]
+  (try
+    (URL. s)
+    (catch Exception  _
+      false)))
+
 (defn update-if-exists
-  "Updates a map `m` key `k` if the value of `k` is not falsy. Otherwise
+  "Updates a map `m` key `k` if it exists. Otherwise returns `m`
+  unchaged."
+  [m k update-fn & args]
+  (if-not (= ::not-found (get m k ::not-found))
+    (apply update m k update-fn args)
+    m))
+
+(defn update-if-not-nil
+  "Updates a map `m` key `k` if the value of `k` is not nil. Otherwise
   returns the `m` unchanged."
   [m k update-fn & args]
-  (if (get m k)
+  (if-not (nil? (get m k))
     (apply update m k update-fn args)
     m))
 

@@ -264,11 +264,7 @@ const renderSectionInfo = () => {
           </p>
         </div>
         <div className="section-info-button-wrapper">
-          <a
-            target="_blank"
-            href="/GPML-One-pager-19.08i.pdf"
-            className="doc-wrapper"
-          >
+          <a target="_blank" href="/GPML_One-pager.pdf" className="doc-wrapper">
             <img src={summaryDocImage} alt="summary-document" />
             <Button type="ghost" className="btn-item">
               Download Summary (1 Page)

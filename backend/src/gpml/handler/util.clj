@@ -6,6 +6,33 @@
 (def unauthorized {:status 403 :body {:message "Unauthorized"}})
 (def not-found {:status 404 :body {:message "Not Found"}})
 
+(def default-ok-response-body-schema
+  "Default schema for 200 < status < 299 server responses."
+  [:map
+   [:success?
+    {:swagger {:description "Indicates if the operation was successfull or not."
+               :type "boolean"}}
+    boolean?]])
+
+(def default-error-response-body-schema
+  "Default schema for error/failure server responses."
+  [:map
+   [:success?
+    {:swagger {:description "Indicates if the operation was successfull or not."
+               :type "boolean"}}
+    boolean?]
+   [:reason
+    {:swagger {:description "The reason of request failure."
+               :type "string"}}
+    keyword?]
+   [:error-details
+    {:optional true
+     :swagger {:description "JSON object with more details about the error."
+               :type "object"
+               :properties {:error {:type "string"}}
+               :additionalProperties {:type "string"}}}
+    map?]])
+
 (defn get-internal-topic-type [topic-type]
   (cond
     (contains? constants/resource-types topic-type) "resource"

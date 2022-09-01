@@ -131,7 +131,12 @@ const FilterModal = ({
     setGridItems([]);
     setShowFilterModal(false);
 
-    const newParams = new URLSearchParams(filter);
+    const newQuery = {
+      ...(Object.keys(filter).length > 0 && query),
+      ...filter,
+    };
+
+    const newParams = new URLSearchParams(newQuery);
     history.push({
       pathname: pathname,
       search: newParams.toString(),

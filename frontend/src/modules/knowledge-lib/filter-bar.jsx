@@ -69,7 +69,7 @@ const FilterBar = ({
 
   const handleClickOverview = () => {
     history.push({
-      pathname: "/knowledge/lib/overview",
+      pathname: "/knowledge/library/overview",
       search: "",
     });
   };
@@ -119,12 +119,12 @@ const FilterBar = ({
             onClick={() => {
               if (type === it.key)
                 history.push({
-                  pathname: `/knowledge/lib/resource/${view ? view : "map"}`,
+                  pathname: `/knowledge/library/resource/${view ? view : "map"}`,
                   search: search,
                 });
               else
                 history.push({
-                  pathname: `/knowledge/lib/resource/${
+                  pathname: `/knowledge/library/resource/${
                     view ? (view === "category" ? "grid" : view) : "map"
                   }/${it.key}/`,
                   search: search,
@@ -142,7 +142,7 @@ const FilterBar = ({
           </li>
         ))}
       </ul>
-      <Button onClick={() => setShowFilterModal(true)}>
+      <Button className="adv-src" onClick={() => setShowFilterModal(true)}>
         {!isEmpty &&
           Object.keys(query).filter((item) => !hideFilterList.includes(item))
             .length > 0 && (
@@ -156,7 +156,7 @@ const FilterBar = ({
             </div>
           )}
         <FilterIcon />
-        <span>More Filters</span>
+        <span>Advanced Search</span>
       </Button>
       <LocationDropdown
         {...{

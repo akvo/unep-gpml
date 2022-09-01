@@ -1,19 +1,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { UIStore } from "../../store";
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-  useMemo,
-} from "react";
-import { Row, Col, Button, Switch, Radio, Popover, Steps, List } from "antd";
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import {
+  Row,
+  Col,
+  Button,
+  Switch,
+  Radio,
+  Popover,
+  Steps,
+  List,
+  Dropdown,
+  Space,
+  Collapse,
+  Form,
+  Input,
+} from "antd";
+const { Panel } = Collapse;
 import {
   LeftOutlined,
   RightOutlined,
   LoadingOutlined,
   EditOutlined,
   CheckOutlined,
+  DownOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
 import "./styles.scss";
@@ -22,755 +33,122 @@ import ExampleIcon from "../../images/examples.png";
 import InfoBlue from "../../images/i-blue.png";
 import FlexibleForm from "./form";
 import isEmpty from "lodash/isEmpty";
-import { useAuth0 } from "@auth0/auth0-react";
 import api from "../../utils/api";
 import { useLocation } from "react-router-dom";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import cloneDeep from "lodash/cloneDeep";
 const { Step } = Steps;
+import RichTextEditor from "react-rte";
 
-const getType = (type) => {
-  let t = "";
-  switch (type) {
-    case "action":
-      t = "action_plan";
-      break;
-    case "event_flexible":
-      t = "event";
-      break;
-    case "initiative":
-      t = "initiative";
-      break;
-    case "policy":
-      t = "policy";
-      break;
-    case "financing":
-      t = "financing_resource";
-      break;
-    case "technical":
-      t = "technical_resource";
-      break;
-    case "technology":
-      t = "technology";
-      break;
-  }
-  return t;
-};
-
-const getTypeByResource = (type) => {
+export const getTypeByResource = (type) => {
   let t = "";
   let name = "";
+  let translations = "";
   switch (type) {
     case "action_plan":
       t = "action";
       name = "Action Plan";
+      translations = "resource";
       break;
     case "event":
       t = "event_flexible";
       name = "Event";
+      translations = "event";
       break;
     case "initiative":
       t = "initiative";
       name = "Initiative";
+      translations = "initiative";
       break;
     case "policy":
       t = "policy";
       name = "Policy";
+      translations = "policy";
       break;
     case "financing_resource":
       t = "financing";
       name = "Financing Resource";
+      translations = "resource";
       break;
     case "technical_resource":
       t = "technical";
       name = "Technical Resource";
+      translations = "resource";
       break;
     case "technology":
       t = "technology";
       name = "Technology";
+      translations = "technology";
       break;
   }
-  return { type: t, name: name };
+  return { type: t, name: name, translations: translations };
 };
 
-const formDataMapping = [
+export const languageOptions = [
   {
-    key: "title",
-    name: "title",
-    type: "string",
-    question: "title",
-    section: "S4",
-    group: "S4_G1",
+    label: "Arabic",
+    key: "0",
+    value: "ar",
+    dbValue: "ar",
   },
   {
-    key: "summary",
-    name: "summary",
-    type: "string",
-    question: "summary",
-    section: "S4",
-    group: "S4_G1",
+    label: "Chinese",
+    key: "1",
+    value: "cn",
+    dbValue: "zh",
   },
   {
-    key: "url",
-    name: "url",
-    type: "string",
-    question: "url",
-    section: "S4",
-    group: "S4_G1",
+    label: "French",
+    key: "3",
+    value: "fr",
+    dbValue: "fr",
   },
   {
-    key: "geoCoverageType",
-    name: "geoCoverageType",
-    type: "string",
-    question: "geoCoverageType",
-    section: "S4",
-    group: "S4_G2",
+    label: "Russian",
+    key: "4",
+    value: "ru",
+    dbValue: "ru",
   },
   {
-    key: "geoCoverageCountries",
-    name: "geoCoverageCountries",
-    question: "geoCoverageCountries",
-    type: "array",
-    section: "S4",
-    group: "S4_G2",
+    label: "Spanish",
+    key: "5",
+    value: "es",
+    dbValue: "es",
   },
   {
-    key: "geoCoverageCountryGroups",
-    name: "geoCoverageCountryGroups",
-    question: "geoCoverageValueTransnational",
-    type: "array",
-    section: "S4",
-    group: "S4_G2",
-  },
-  {
-    key: "tags",
-    name: "tags",
-    question: "tags",
-    type: "array",
-    section: "S4",
-    group: "S4_G3",
-  },
-  {
-    key: "stakeholderConnections",
-    name: "stakeholderConnections",
-    question: "individual",
-    type: "array",
-    section: "S4",
-    group: "S4_G5",
-  },
-  {
-    key: "entityConnections",
-    name: "entityConnections",
-    question: "entity",
-    type: "array",
-    section: "S4",
-    group: "S4_G5",
-  },
-  {
-    key: "validFrom",
-    name: "validFrom",
-    type: "date",
-    section: "S5",
-    group: "date",
-    question: "validFrom",
-  },
-  {
-    key: "validTo",
-    name: "validTo",
-    type: "date",
-    section: "S5",
-    group: "date",
-    question: "validTo",
-  },
-  {
-    key: "relatedContent",
-    name: "relatedContent",
-    type: "array",
-    section: "S4",
-    group: "S4_G6",
-    question: "related",
-  },
-  {
-    key: "infoDocs",
-    name: "infoDocs",
-    type: "string",
-    section: "S4",
-    group: "S4_G6",
-    question: "info",
-  },
-  {
-    key: "publishYear",
-    name: "publishYear",
-    type: "year",
-    group: "dateOne",
-    section: "S5",
-    question: "publishYear",
-  },
-  {
-    key: "value",
-    name: "value",
-    group: "value",
-    type: "integer",
-    section: "S5",
-    question: "valueAmount",
-  },
-  {
-    key: "valueCurrency",
-    name: "valueCurrency",
-    group: "value",
-    type: "string",
-    section: "S5",
-    question: "valueCurrency",
-  },
-  {
-    key: "valueRemarks",
-    name: "valueRemarks",
-    group: "value",
-    type: "string",
-    section: "S5",
-    question: "valueRemark",
-  },
-  {
-    key: "image",
-    name: "image",
-    type: "image",
-    section: "S4",
-    group: "S4_G4",
-    question: "image",
-  },
-  {
-    key: "qimage",
-    name: "qimage",
-    type: "image",
-    section: "S4",
-    group: "S4_G4",
-    question: "image",
-  },
-  {
-    key: "thumbnail",
-    name: "thumbnail",
-    type: "thumbnail",
-    section: "S4",
-    group: "S4_G4",
-    question: "thumbnail",
-  },
-  {
-    key: "originalTitle",
-    name: "originalTitle",
-    group: null,
-    type: "string",
-    section: "S5",
-    question: "originalTitle",
-  },
-  {
-    key: "dataSource",
-    name: "dataSource",
-    group: null,
-    type: "string",
-    section: "S5",
-    question: "dataSource",
-  },
-  {
-    key: "typeOfLaw",
-    name: "typeOfLaw",
-    group: null,
-    type: "string",
-    section: "S5",
-    question: "typeOfLaw",
-  },
-  {
-    key: "recordNumber",
-    name: "recordNumber",
-    group: null,
-    type: "string",
-    section: "S5",
-    question: "recordNumber",
-  },
-  {
-    key: "implementingMea",
-    name: "implementingMea",
-    group: null,
-    type: "integer",
-    section: "S5",
-    question: "implementingMea",
-  },
-  {
-    key: "status",
-    name: "status",
-    group: null,
-    type: "string",
-    section: "S5",
-    question: "status",
-  },
-  {
-    key: "topics",
-    name: "topics",
-    group: null,
-    type: "string",
-    section: "S5",
-    question: "topics",
-  },
-  {
-    key: "firstPublicationDate",
-    name: "firstPublicationDate",
-    group: "date",
-    type: "date",
-    section: "S5",
-    question: "firstPublicationDate",
-  },
-  {
-    key: "latestAmendmentDate",
-    name: "latestAmendmentDate",
-    group: "date",
-    type: "date",
-    section: "S5",
-    question: "latestAmendmentDate",
-  },
-  {
-    key: "startDate",
-    name: "startDate",
-    group: "date",
-    type: "date",
-    section: "S5",
-    question: "startDate",
-  },
-  {
-    key: "endDate",
-    name: "endDate",
-    group: "date",
-    type: "date",
-    section: "S5",
-    question: "endDate",
-  },
-  {
-    key: "eventType",
-    name: "eventType",
-    group: null,
-    type: "string",
-    section: "S5",
-    question: "eventType",
-  },
-  {
-    key: "yearFounded",
-    name: "yearFounded",
-    group: null,
-    type: "year",
-    section: "S5",
-    question: "yearFounded",
-  },
-  {
-    key: "organisationType",
-    name: "organisationType",
-    group: null,
-    type: "string",
-    section: "S5",
-    question: "organisationType",
-  },
-  {
-    name: "q24_3",
-    group: "S4_G2",
-    type: "option",
-    section: "S4",
-    question: "S4_G2_24.4",
-  },
-  {
-    name: "q24_2",
-    group: "S4_G2",
-    type: "option",
-    section: "S4",
-    question: "geoCoverageValueSubnational",
-  },
-  {
-    name: "q24_2",
-    group: "S4_G2",
-    type: "option",
-    section: "S4",
-    question: "S4_G2_24.2",
-  },
-  {
-    name: "q24_subnational_city",
-    group: "S4_G2",
-    type: "string",
-    section: "S4",
-    question: "geoCoverageValueSubnationalCity",
-  },
-  {
-    name: "q24_4",
-    group: "S4_G2",
-    type: "option",
-    section: "S4",
-    question: "S4_G2_24.3",
-  },
-  {
-    name: "q24",
-    section: "S4",
-    group: "S4_G2",
-    question: "geoCoverageType",
-    type: "option",
-  },
-  {
-    name: "q2",
-    section: "S4",
-    group: "S4_G1",
-    question: "title",
-    type: "string",
-  },
-  {
-    name: "q3",
-    section: "S4",
-    group: "S4_G1",
-    question: "summary",
-    type: "string",
-  },
-  {
-    name: "tags",
-    section: "S4",
-    group: "S4_G3",
-    question: "tags",
-    type: "array",
-  },
-  {
-    key: "stakeholder_connections",
-    name: "stakeholder_connections",
-    question: "individual",
-    type: "array",
-    section: "S4",
-    group: "S4_G5",
-  },
-  {
-    key: "info_docs",
-    name: "info_docs",
-    type: "string",
-    section: "S4",
-    group: "S4_G6",
-    question: "info",
-  },
-  {
-    key: "entity_connections",
-    name: "entity_connections",
-    question: "entity",
-    type: "array",
-    section: "S4",
-    group: "S4_G5",
-  },
-  {
-    name: "q4",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G1_4",
-    type: "multiple-option",
-  },
-  {
-    key: "related_content",
-    name: "related_content",
-    type: "array",
-    section: "S4",
-    group: "S4_G6",
-    question: "related",
-  },
-  {
-    name: "q4_1_1",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G1_4.1.1",
-    type: "multiple-option",
-  },
-  {
-    name: "q5",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G2_5",
-    type: "option",
-  },
-  {
-    name: "q4",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G1_4",
-    type: "multiple-option",
-  },
-  {
-    name: "q4_4_1",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G1_4.4.1",
-    type: "multiple-option",
-  },
-  {
-    name: "q4_4_2",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G1_4.4.2",
-    type: "string",
-  },
-  {
-    name: "q4_4_3",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G1_4.4.3",
-    type: "string",
-  },
-  {
-    name: "q4_4_4",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G1_4.4.4",
-    type: "string",
-  },
-  {
-    name: "q4_4_5",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G1_4.4.5",
-    type: "string",
-  },
-  {
-    name: "q5",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G2_5",
-    type: "option",
-  },
-  {
-    name: "q6",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G2_6",
-    type: "string",
-  },
-  {
-    name: "q7",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G2_7",
-    type: "multiple-option",
-  },
-  {
-    name: "q7_1_0",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G2_7.1.0",
-    type: "multiple-option",
-  },
-  {
-    name: "q7_1_1",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G2_7.1.1",
-    type: "multiple-option",
-  },
-  {
-    name: "q7_1_2",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G2_7.1.2",
-    type: "multiple-option",
-  },
-  {
-    name: "q7_2",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G2_7.2",
-    type: "multiple-option",
-  },
-  {
-    name: "q7_3",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G2_7.3",
-    type: "string",
-  },
-  {
-    name: "q8",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G2_8",
-    type: "option",
-  },
-  {
-    name: "q9",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G2_9",
-    type: "string",
-  },
-  {
-    name: "q10",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G2_10",
-    type: "option",
-  },
-  {
-    name: "q11",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G2_11",
-    type: "multiple-option",
-  },
-  {
-    name: "q12",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G2_12",
-    type: "string",
-  },
-  {
-    name: "q13",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G2_13",
-    type: "string",
-  },
-  {
-    name: "q14",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G3_14",
-    type: "multiple-option",
-  },
-  {
-    name: "q15",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G3_15",
-    type: "multiple-option",
-  },
-  {
-    name: "q26",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G3_26",
-    type: "multiple-option",
-  },
-  {
-    name: "q27",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G3_27",
-    type: "string",
-  },
-  {
-    name: "q28",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G3_28",
-    type: "multiple-option",
-  },
-  {
-    name: "q29",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G3_29",
-    type: "string",
-  },
-  {
-    name: "q30",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G3_30",
-    type: "multiple-option",
-  },
-  {
-    name: "q31",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G3_31",
-    type: "string",
-  },
-  {
-    name: "q33",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G4_33",
-    type: "string",
-  },
-  {
-    name: "q34",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G4_34",
-    type: "number",
-  },
-  {
-    name: "q35",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G5_35",
-    type: "option",
-  },
-  {
-    name: "q35_1",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G5_35.1",
-    type: "string",
-  },
-  {
-    name: "q36",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G5_36",
-    type: "number",
-  },
-  {
-    name: "q36_1",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G5_36.1",
-    type: "option",
-  },
-  {
-    name: "q37",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G5_37",
-    type: "number",
-  },
-  {
-    name: "q37_1",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G5_37.1",
-    type: "option",
-  },
-  {
-    name: "q38",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G6_38",
-    type: "option",
-  },
-  {
-    name: "q39",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G6_39",
-    type: "string",
-  },
-  {
-    name: "q41",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G7_41",
-    type: "option",
-  },
-  {
-    name: "q41_1",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G7_41.1",
-    type: "string",
-  },
-  {
-    name: "q4_2_1",
-    section: "S5",
-    group: "S5_G1",
-    question: "S5_G1_4.2.1",
-    type: "multiple-option",
+    label: "English",
+    key: "6",
+    value: "en",
+    dbValue: "en",
   },
 ];
+
+const toolbarConfig = {
+  // Optionally specify the groups to display (displayed in the order listed).
+  display: [
+    "INLINE_STYLE_BUTTONS",
+    "BLOCK_TYPE_BUTTONS",
+    "LINK_BUTTONS",
+    "BLOCK_TYPE_DROPDOWN",
+    "HISTORY_BUTTONS",
+  ],
+  INLINE_STYLE_BUTTONS: [
+    { label: "Bold", style: "BOLD", className: "custom-css-class" },
+    { label: "Italic", style: "ITALIC" },
+    { label: "Underline", style: "UNDERLINE" },
+    { label: "Code", style: "CODE" },
+  ],
+  BLOCK_TYPE_DROPDOWN: [
+    { label: "Normal", style: "unstyled" },
+    { label: "Heading Large", style: "header-one" },
+    { label: "Heading Medium", style: "header-two" },
+    { label: "Heading Small", style: "header-three" },
+  ],
+  BLOCK_TYPE_BUTTONS: [
+    { label: "UL", style: "unordered-list-item" },
+    { label: "OL", style: "ordered-list-item" },
+  ],
+};
 
 const FlexibleForms = ({ match: { params }, ...props }) => {
   const {
@@ -780,9 +158,9 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     initialData,
     initialFormData,
     initialDataEdit,
+    formDataMapping,
+    getTranslationForm,
   } = common;
-
-  const { loginWithPopup } = useAuth0();
 
   const storeData = UIStore.useState((s) => ({
     stakeholders: s.stakeholders?.stakeholders,
@@ -843,14 +221,23 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const [label, setLabel] = useState("Initiative");
   const [subType, setSubType] = useState("");
   const [subContentType, setSubContentType] = useState([]);
+  const [languages, setLanguages] = useState([]);
+  const [translations, setTranslations] = useState([]);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
   const [disabledBtn, setDisabledBtn] = useState({
     disabled: true,
     type: "default",
   });
-
+  const [value, setValue] = useState([
+    {
+      lang: "",
+      value: RichTextEditor.createEmptyValue(),
+    },
+  ]);
   const [formSchema, setFormSchema] = useState({
     schema: schema[selectedMainContentType],
   });
+  const [form] = Form.useForm();
 
   const isLoaded = useCallback(() => {
     return Boolean(
@@ -1103,6 +490,40 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
           state?.state.type
         ).type;
       });
+      api
+        .get(
+          `/translations/${
+            getTypeByResource(state?.state?.type?.replace("-", "_"))
+              .translations
+          }/${params?.id}`
+        )
+        .then((resp) => {
+          setLanguages(Object.keys(resp?.data?.title));
+          let editTranslations = [];
+          let infoValue = [];
+          Object.keys(resp?.data).map((key) => {
+            Object.keys(resp?.data[key]).map((item) => {
+              if (key === "infoDocs") {
+                infoValue.push({
+                  lang: item,
+                  value: RichTextEditor.createValueFromString(
+                    resp?.data[key][item],
+                    "html"
+                  ),
+                });
+              }
+              if (key !== "infoDocs")
+                editTranslations.push({
+                  language: item,
+                  value: resp?.data[key][item],
+                  translatable_field: key,
+                });
+            });
+          });
+          setTranslations(editTranslations);
+          setValue(infoValue);
+        })
+        .catch((e) => console.log(e));
 
       if (state?.state.type === "initiative") {
         api.getRaw(`/initiative/${dataId}`).then((d) => {
@@ -1197,26 +618,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     profile,
   ]);
 
-  // useEffect(() => {
-  //   if (isLoaded()) {
-  //     initialFormData.update((e) => {
-  //       e.data = {
-  //         ...e.data,
-  //         S4: {
-  //           ...e.data.S4,
-  //           S4_G5: {
-  //             ...e.data.S4.S4_G5,
-  //             individual: [
-  //               { role: "owner", stakeholder: profile.id },
-  //               ...e.data.S4.S4_G5.individual,
-  //             ],
-  //           },
-  //         },
-  //       };
-  //     });
-  //   }
-  // }, [initialFormData, isLoaded, profile]);
-
   useEffect(() => {
     if (isLoaded()) {
       if (subType) {
@@ -1258,14 +659,6 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       }
     }
   }, [initialFormData, isLoaded, subType]);
-
-  // Todo ask to login if not login
-
-  // useEffect(() => {
-  //   if (Object.keys(profile).length === 0) {
-  //     loginWithPopup({ action: "login" });
-  //   }
-  // }, [profile, loginWithPopup, isLoaded]);
 
   const renderSteps = (parentTitle, section, steps, index) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0;
@@ -1646,6 +1039,59 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     }
   };
 
+  const handleSelectLanguage = (val) => {
+    setLanguages(languages.concat(val));
+  };
+
+  const handleRemoveLanguage = (val) => {
+    const newLanaguage = languages.filter((lang) => lang !== val);
+    const findInTranslations = translations.find(
+      ({ language }) => language === val
+    );
+    if (findInTranslations)
+      setTranslations(translations.filter(({ language }) => language !== val));
+    setLanguages(newLanaguage);
+  };
+
+  const handleTranslationChange = (name, lang, value) => {
+    const newTranslations = [...translations];
+    const index = translations.findIndex(
+      (x) => x.language === lang && x.translatable_field === name
+    );
+    if (index !== -1) {
+      newTranslations[index].language = lang;
+      newTranslations[index].translatable_field = name;
+      newTranslations[index].value = value;
+      setTranslations(newTranslations);
+    } else
+      setTranslations([
+        ...translations,
+        {
+          language: lang,
+          translatable_field: name,
+          value: value,
+        },
+      ]);
+  };
+
+  const handleChange = (v, lang) => {
+    const newValue = [...value];
+    const index = value.findIndex((x) => x.lang === lang);
+    if (index !== -1) {
+      newValue[index].lang = lang;
+      newValue[index].value = v;
+      setValue(newValue);
+    } else
+      setValue([
+        ...value,
+        {
+          lang: lang,
+          value: v,
+        },
+      ]);
+    handleTranslationChange("info_docs", lang, v.toString("html"));
+  };
+
   return (
     <div id="flexible-forms">
       <StickyBox style={{ zIndex: 10 }}>
@@ -1688,7 +1134,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
           </div>
         </div>
       </StickyBox>
-      {/* 
+      {/*
       <StickyBox style={{ zIndex: 9 }} offsetTop={20} offsetBottom={20}> */}
       <div className="ui container">
         <div className="form-container">
@@ -1934,13 +1380,86 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                       )}
                     </div>
                   </Row>
+                ) : getTabStepIndex().tabIndex === 4 ? (
+                  <Row>
+                    <div className="main-content">
+                      <div className="collapse-wrapper">
+                        <Collapse>
+                          {languages.map((item) => (
+                            <Panel
+                              header={
+                                languageOptions.find(
+                                  (ln) => ln.dbValue === item
+                                )?.label
+                              }
+                              key={item}
+                              extra={
+                                <div style={{ marginLeft: "auto" }}>
+                                  <DeleteOutlined
+                                    onClick={() => handleRemoveLanguage(item)}
+                                  />
+                                </div>
+                              }
+                            >
+                              <Form layout="vertical">
+                                {getTranslationForm(
+                                  label,
+                                  handleTranslationChange,
+                                  item,
+                                  toolbarConfig,
+                                  handleChange,
+                                  value,
+                                  translations
+                                )}
+                              </Form>
+                            </Panel>
+                          ))}
+                        </Collapse>
+                      </div>
+                      <div>
+                        <Dropdown
+                          overlay={
+                            <ul className="translation-dropdown">
+                              {languageOptions
+                                .filter(
+                                  (ln) =>
+                                    !languages.includes(ln.value) &&
+                                    ln.value !== "en"
+                                )
+                                .map((item) => (
+                                  <li
+                                    key={item.value}
+                                    onClick={() => {
+                                      handleSelectLanguage(item.dbValue);
+                                      setDropdownVisible(!dropdownVisible);
+                                    }}
+                                  >
+                                    <span>{item.value}</span>
+                                  </li>
+                                ))}
+                            </ul>
+                          }
+                          trigger={["click"]}
+                          visible={dropdownVisible}
+                          onVisibleChange={(visible) => {
+                            setDropdownVisible(visible);
+                          }}
+                        >
+                          <Button type="default" className="translation-button">
+                            Add translation
+                          </Button>
+                        </Dropdown>
+                      </div>
+                    </div>
+                  </Row>
                 ) : (
                   <span></span>
                 )}
                 <Row
                   className={`${
                     getTabStepIndex().tabIndex !== 0 &&
-                    getTabStepIndex().tabIndex !== 1
+                    getTabStepIndex().tabIndex !== 1 &&
+                    getTabStepIndex().tabIndex !== 4
                       ? "main-content"
                       : null
                   }`}
@@ -1959,6 +1478,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     subContentType={subType && subType}
                     capacityBuilding={capacityBuilding && capacityBuilding}
                     type={state && state?.state ? state?.state.type : ""}
+                    translations={translations}
                   />
                 </Row>
                 {getTabStepIndex().tabIndex === 0 ? (

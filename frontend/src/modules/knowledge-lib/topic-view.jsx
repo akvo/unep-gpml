@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import TopicChart from "../chart/topic-chart";
 import TopicBar from "../chart/topic-bar";
 
-const TopicView = ({ updateQuery, query, results, countData }) => {
+const TopicView = ({ updateQuery, query, results, countData, loading }) => {
   const [sortedPopularTopics, setSortedPopularTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [data, setData] = useState([]);
@@ -16,8 +16,10 @@ const TopicView = ({ updateQuery, query, results, countData }) => {
   ];
 
   useEffect(() => {
-    setData(countData);
-  }, [countData]);
+    setSelectedTopic(null);
+    if ((data.length === 0 || !query.hasOwnProperty("tag")) && !loading)
+      setData(countData);
+  }, [countData, loading, query, data]);
 
   const savedTopic = popularTags.filter((item) => {
     if (query?.tag?.includes(item)) {
@@ -67,7 +69,6 @@ const TopicView = ({ updateQuery, query, results, countData }) => {
           ? []
           : [params?.data?.tag],
         "",
-        "",
         false
       );
       setSelectedTopic(
@@ -78,7 +79,7 @@ const TopicView = ({ updateQuery, query, results, countData }) => {
     } else {
       const { name, tag } = params?.data;
       setSelectedTopic(name?.toLowerCase());
-      updateQuery("tag", [tag], "", "", true);
+      updateQuery("tag", [tag], "", false);
     }
   };
 

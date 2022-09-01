@@ -43,7 +43,7 @@
                                                    :email email
                                                    :review-status "SUBMITTED"})
             body-params     {:name              "test10001"
-                             :geo_coverage_type "regional"
+                             :geo_coverage_type "global"
                              :country           nil
                              :type              "Company"
                              :url               "mycompany.org"}
@@ -60,7 +60,7 @@
     (testing "Trying to create a member organisation with non-existent user should fail"
       (let [body-params  {:name "test10002"
                           :is_member true
-                          :geo_coverage_type "regional"
+                          :geo_coverage_type "global"
                           :country nil
                           :type "Company"
                           :url "mycompany.org"}
@@ -78,7 +78,7 @@
                                              :review-status "REJECTED"})
             body-params  {:name "test10002"
                           :is_member true
-                          :geo_coverage_type "regional"
+                          :geo_coverage_type "global"
                           :country nil
                           :type "Company"
                           :url "mycompany.org"}
@@ -96,7 +96,7 @@
                                              :review-status "SUBMITTED"})
             body-params  {:name "test10002"
                           :is_member true
-                          :geo_coverage_type "regional"
+                          :geo_coverage_type "global"
                           :country nil
                           :type "Company"
                           :url "mycompany.org"}
@@ -110,7 +110,7 @@
     (testing "Trying to create a non-member organisation when caller user doesn't exist should work"
       (let [body-params  {:name "test10003"
                           :is_member false
-                          :geo_coverage_type "regional"
+                          :geo_coverage_type "global"
                           :country nil
                           :type "Company"
                           :url "mycompany.org"}

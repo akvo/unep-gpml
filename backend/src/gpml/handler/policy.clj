@@ -1,21 +1,21 @@
 (ns gpml.handler.policy
   (:require [clojure.java.jdbc :as jdbc]
             [duct.logger :refer [log]]
-            [gpml.auth :as auth]
-            [gpml.constants :as constants]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.policy :as db.policy]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.domain.policy :as dom.policy]
             [gpml.handler.auth :as h.auth]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.util :as handler.util]
-            [gpml.util :as util]
             [gpml.util.email :as email]
+            [gpml.util.malli :as util.malli]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
+            [malli.util :as mu]
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
@@ -45,9 +45,8 @@
            data_source type_of_law record_number
            first_publication_date latest_amendment_date
            status country geo_coverage_type
-           geo_coverage_value implementing_mea
+           geo_coverage_value implementing_mea subnational_city
            geo_coverage_countries geo_coverage_country_groups
-           geo_coverage_value_subnational_city
            tags created_by image thumbnail language
            owners info_docs sub_content_type
            document_preview related_content topics
@@ -75,7 +74,7 @@
                       :geo_coverage_value geo_coverage_value
                       :geo_coverage_countries geo_coverage_countries
                       :geo_coverage_country_groups geo_coverage_country_groups
-                      :subnational_city geo_coverage_value_subnational_city
+                      :subnational_city subnational_city
                       :implementing_mea implementing_mea
                       :attachments attachments
                       :remarks remarks
@@ -92,7 +91,7 @@
                                                              (:stakeholder %))
                                                           api-individual-connections)))))]
     (when (seq related_content)
-      (handler.resource.related-content/create-related-contents conn policy-id "policy" related_content))
+      (handler.resource.related-content/create-related-contents conn logger policy-id "policy" related_content))
     (when (not-empty tags)
       (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
                                                                              :tag-category "general"
@@ -139,68 +138,13 @@
         (log logger :error ::failed-to-create-policy {:exception-message (.getMessage e)})
         (let [response {:status 500
                         :body {:success? false
-                               :reason :could-not-create-event}}]
+                               :reason :could-not-create-policy}}]
 
           (if (instance? SQLException e)
             response
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
-(def ^:private post-params
-  (->
-   [:map
-    [:title string?]
-    [:original_title {:optional true} string?]
-    [:abstract {:optional true} string?]
-    [:data_source {:optional true} string?]
-    [:type_of_law {:optional true}
-     [:enum "Legislation", "Miscellaneous", "Regulation", "Constitution"]]
-    [:record_number {:optional true} string?]
-    [:first_publication_date {:optional true} string?]
-    [:latest_amendment_date {:optional true} string?]
-    [:status {:optional true} [:enum "Repealed", "In force", "Not yet in force"]]
-    [:country {:optional true} integer?]
-    [:geo_coverage_type
-     [:enum "global", "regional", "national", "transnational",
-      "sub-national", "global with elements in specific areas"]]
-    [:geo_coverage_value_subnational_city {:optional true} string?]
-    [:image {:optional true} [:fn (comp util/base64? util/base64-headless)]]
-    [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
-    [:implementing_mea {:optional true} integer?]
-    [:tags {:optional true}
-     [:vector {:optional true}
-      [:map {:optional true}
-       [:id {:optional true} pos-int?]
-       [:tag string?]]]]
-    [:url {:optional true} string?]
-    [:info_docs {:optional true} string?]
-    [:sub_content_type {:optional true} string?]
-    [:document_preview {:optional true} boolean?]
-    [:related_content {:optional true}
-     [:vector {:optional true}
-      [:map {:optional true}
-       [:id [:int]]
-       [:type (vec (conj constants/resources :enum))]]]]
-    [:topics {:optional true}
-     [:vector {:optional true} string?]]
-    [:entity_connections {:optional true}
-     [:vector {:optional true}
-      [:map
-       [:entity int?]
-       [:role
-        [:enum "implementor" "owner" "partner" "donor"]]]]]
-    [:individual_connections {:optional true}
-     [:vector {:optional true}
-      [:map
-       [:stakeholder int?]
-       [:role
-        [:enum "owner" "resource_editor"]]]]]
-    [:urls {:optional true}
-     [:vector {:optional true}
-      [:map [:lang string?] [:url [:string {:min 1}]]]]]
-    [:language string?]
-    [:capacity_building {:optional true} boolean?]
-    auth/owners-schema]
-   (into handler.geo/params-payload)))
-
 (defmethod ig/init-key :gpml.handler.policy/post-params [_ _]
-  post-params)
+  {:body (-> dom.policy/Policy
+             (util.malli/dissoc [:id :modified :created :leap_api_id :leap_api_modified :review_status])
+             (mu/optional-keys))})

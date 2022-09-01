@@ -89,7 +89,7 @@
                                                              (:stakeholder %))
                                                           api-individual-connections)))))]
     (when (seq related_content)
-      (handler.resource.related-content/create-related-contents conn technology-id "technology" related_content))
+      (handler.resource.related-content/create-related-contents conn logger technology-id "technology" related_content))
     (when headquarter
       (db.country/add-country-headquarter conn {:id country :headquarter headquarter}))
     (doseq [stakeholder-id owners]
@@ -162,8 +162,8 @@
            "Development", "Research"]]
          [:country {:optional true} integer?]
          [:geo_coverage_type
-          [:enum "global", "regional", "national", "transnational",
-           "sub-national", "global with elements in specific areas"]]
+          [:enum "global", "national", "transnational",
+           "sub-national"]]
          [:geo_coverage_value_subnational_city {:optional true} string?]
          [:image {:optional true} [:fn (comp util/base64? util/base64-headless)]]
          [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
