@@ -10,14 +10,28 @@ const stages = [
   {
     key: "S1",
     title: "Create",
-    child: [
-      "Assessment - situation analysis",
-      "Legal assessment to position the action plan",
-      "Stakeholder mapping and engagement",
-      "Selection of Implementation actionS",
-      "Monitoring programme",
-      "report planning",
-      "Adoption of the action plan",
+    childs: [
+      {
+        title: "Assessment - situation analysis",
+        childs: [
+          { title: "Gather available research and knowledge" },
+          {
+            title:
+              "Scientific analysis of information on sources, pathways and sinks ",
+          },
+          { title: "Map waste flows" },
+          { title: "Map material flows" },
+          { title: "Identify gaps in information and knowledge" },
+          { title: "Set baselines, where possible" },
+          { title: "Expected outputs" },
+        ],
+      },
+      { title: "Legal assessment to position the action plan" },
+      { title: "Stakeholder mapping and engagement" },
+      { title: "Selection of Implementation actionS" },
+      { title: "Monitoring programme" },
+      { title: "report planning" },
+      { title: "Adoption of the action plan" },
     ],
   },
   {
@@ -84,17 +98,39 @@ const ProjectStages = ({ match: { params }, ...props }) => {
                       )}
                       className="child"
                     >
-                      {item?.child?.map((childItem, index) => (
+                      {item?.childs?.map((childItem, index) => (
                         <Panel
                           header={
                             <>
-                              <h2>{childItem}</h2>
+                              <h2>{childItem.title}</h2>
                             </>
                           }
-                          key={index + childItem}
+                          key={index + childItem.title}
                         >
                           <div className="sub-stages">
-                            <p>test</p>
+                            <Collapse
+                              accordion
+                              expandIconPosition="end"
+                              expandIcon={({ isActive }) => (
+                                <UpCircleOutlined rotate={isActive ? 180 : 0} />
+                              )}
+                              className="child"
+                            >
+                              {childItem?.childs?.map((childItem, index) => (
+                                <Panel
+                                  header={
+                                    <>
+                                      <h2>{childItem.title}</h2>
+                                    </>
+                                  }
+                                  key={index + childItem.title}
+                                >
+                                  <div className="sub-stages">
+                                    <p>test</p>
+                                  </div>
+                                </Panel>
+                              ))}
+                            </Collapse>
                           </div>
                         </Panel>
                       ))}

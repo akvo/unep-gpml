@@ -115,6 +115,7 @@
               }
               .ant-collapse-content {
                 border: none;
+                background: initial;
                 .ant-collapse-content-box {
                   padding: 20px 30px;
                   .sub-stages {
@@ -123,6 +124,28 @@
               }
               .ant-collapse-header {
                 padding: 20px 30px;
+              }
+            }
+          }
+
+          &.child {
+            background: #fff;
+            border: none;
+            .ant-collapse-item {
+              background: #ffffff;
+              border: 1px solid #d3dee7;
+              border-radius: 10px;
+              margin-bottom: 10px;
+              box-shadow: none;
+              &.ant-collapse-item-active {
+                background-color: #fff;
+                border: 1px solid rgba(24, 22, 47, 0.25);
+                box-shadow: 0px 0px 5px rgba(24, 22, 47, 0.15);
+                border-radius: 10px;
+                transform: scale(1);
+              }
+              .ant-collapse-header {
+                padding: 10px 20px;
               }
             }
           }
