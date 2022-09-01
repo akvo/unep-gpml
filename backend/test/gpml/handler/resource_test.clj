@@ -27,8 +27,8 @@
    :value_remarks "Value Remarks"
    :valid_from "2018"
    :valid_to "Ongoing"
-   :geo_coverage_type "regional"
-   :geo_coverage_value (mapv :id (:country_groups data))
+   :geo_coverage_type "global"
+   :geo_coverage_value nil
    :image image
    :remarks nil
    :document_preview false
@@ -77,8 +77,7 @@
                                          (assoc (new-resource (merge data {:owners [(:id user)]}))
                                                 :org {:id -1
                                                       :name "New Era"
-                                                      :geo_coverage_type "regional"
-                                                      :geo_coverage_value (mapv :id (:country_groups data))
+                                                      :geo_coverage_type "global"
                                                       :country (-> (:countries data) second :id)})))))
           resource-one (db.resource/resource-by-id db (:body resp-one))
           resource-two (db.resource/resource-by-id db (:body resp-two))]

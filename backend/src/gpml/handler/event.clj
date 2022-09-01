@@ -130,8 +130,7 @@
     [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
     [:remarks {:optional true} string?]
     [:geo_coverage_type
-     [:enum "global", "regional", "national", "transnational",
-      "sub-national", "global with elements in specific areas"]]
+     [:enum "global", "national", "transnational", "sub-national"]]
     [:geo_coverage_value_subnational_city {:optional true} string?]
     [:country {:optional true} integer?]
     [:city {:optional true} string?]

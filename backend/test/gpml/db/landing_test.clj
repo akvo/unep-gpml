@@ -45,9 +45,9 @@
 
 (defn add-resource-data [conn]
   (add-country-data conn)
-  (db.resource/new-resource conn (make-resource "Resource 1" "transnational"))
+  (db.resource/new-resource conn (make-resource "Resource 1" "national"))
   (db.resource/new-resource conn (make-resource "Resource 2" "national"))
-  (db.resource/new-resource conn (make-resource "Resource 3" "regional"))
+  (db.resource/new-resource conn (make-resource "Resource 3" "transnational"))
   (db.resource/new-resource conn (make-resource "Resource 4" "global"))
   (db.resource/new-resource conn (make-resource "Resource 5" "national"))
   (jdbc/insert-multi! conn :resource_geo_coverage

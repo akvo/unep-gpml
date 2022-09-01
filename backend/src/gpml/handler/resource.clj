@@ -169,8 +169,8 @@
              [:url {:optional true} string?]
              [:country {:optional true} integer?]
              [:geo_coverage_type {:optional true}
-              [:enum "global", "regional", "national", "transnational",
-               "sub-national", "global with elements in specific areas"]]]
+              [:enum "global", "national", "transnational",
+               "sub-national"]]]
             handler.geo/params-payload)]
           [:publish_year {:optional true} integer?]
           [:summary {:optional true} string?]
@@ -180,8 +180,8 @@
           [:valid_from {:optional true} string?]
           [:valid_to {:optional true} string?]
           [:geo_coverage_type
-           [:enum "global", "regional", "national", "transnational",
-            "sub-national", "global with elements in specific areas"]]
+           [:enum "global", "national", "transnational",
+            "sub-national"]]
           [:geo_coverage_value_subnational_city {:optional true} string?]
           [:image {:optional true} [:fn (comp util/base64? util/base64-headless)]]
           [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
