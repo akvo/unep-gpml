@@ -99,7 +99,9 @@ const CreateProjectModal = ({
                           }
                           value={input.value ? input.value : undefined}
                           className={`${
-                            !meta.valid ? "ant-input-status-error" : ""
+                            meta.touched && meta.error
+                              ? "ant-input-status-error"
+                              : ""
                           }`}
                         >
                           {geoCoverageTypeOptions?.map((item) => (

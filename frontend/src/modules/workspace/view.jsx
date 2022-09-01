@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Row,
-  Col,
-  Carousel,
-  Avatar,
-  Typography,
-  Button,
-} from "antd";
+import { Row, Col, Carousel, Avatar, Typography, Button } from "antd";
 const { Title } = Typography;
 import "./styles.scss";
 import { useHistory, Link } from "react-router-dom";
@@ -15,12 +8,9 @@ import { ReactComponent as MatchSvg } from "../../images/match.svg";
 import { ReactComponent as UploadSvg } from "../../images/upload.svg";
 import NetworkIcon from "../../images/auth/network.png";
 import { FilePdfOutlined } from "@ant-design/icons";
-import CreateProjectModal from "./create-project-modal";
-
 const Workspace = ({ profile }) => {
   const history = useHistory();
   const [isFocal, setIsFocal] = useState(false);
-  const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
 
   const handleFocalPoint = (id) => {
     setIsFocal(true);
@@ -172,12 +162,12 @@ const Workspace = ({ profile }) => {
                   </p>
                   <div>
                     <a
-                    href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y"
-                    target="_blank"
+                      href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y"
+                      target="_blank"
                     >
-                    <Button type="ghost" icon={<FilePdfOutlined />}>
-                      Read The Guide
-                    </Button>
+                      <Button type="ghost" icon={<FilePdfOutlined />}>
+                        Read The Guide
+                      </Button>
                     </a>
                   </div>
                 </div>
@@ -237,11 +227,10 @@ const Workspace = ({ profile }) => {
                       profile?.reviewStatus === "SUBMITTED")
                   }
                   onClick={() => {
-                    setShowCreateProjectModal(true);
-                    // window.open(
-                    //   "https://unep-gpml.eu.auth0.com/authorize?response_type=code&client_id=lmdxuDGdQjUsbLbMFpjDCulTP1w5Z4Gi&redirect_uri=https%3A//apps.unep.org/data-catalog/oauth2/callback&scope=openid+profile+email&state=eyJjYW1lX2Zyb20iOiAiL2Rhc2hib2FyZCJ9",
-                    //   "_blank"
-                    // );
+                    window.open(
+                      "https://unep-gpml.eu.auth0.com/authorize?response_type=code&client_id=lmdxuDGdQjUsbLbMFpjDCulTP1w5Z4Gi&redirect_uri=https%3A//apps.unep.org/data-catalog/oauth2/callback&scope=openid+profile+email&state=eyJjYW1lX2Zyb20iOiAiL2Rhc2hib2FyZCJ9",
+                      "_blank"
+                    );
                   }}
                 >
                   Upload your data
@@ -295,9 +284,6 @@ const Workspace = ({ profile }) => {
           </Row>
         </div>
       </div>
-      <CreateProjectModal
-        {...{ showCreateProjectModal, setShowCreateProjectModal }}
-      />
     </div>
   );
 };

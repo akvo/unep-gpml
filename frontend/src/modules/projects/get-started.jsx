@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 // import Swiper from 'swiper'
@@ -8,6 +9,7 @@ import "swiper/swiper.min.css";
 import "swiper/modules/pagination/pagination.min.css";
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import CreateProjectModal from "../workspace/create-project-modal";
 
 const quiz = [
   {
@@ -42,7 +44,8 @@ const quiz = [
 ]
 
 const GetStarted = () => {
-  const swiperRef = useRef()
+  const swiperRef = useRef();
+  const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
   // const swiper = useSwiper()
   const handleClick = (index) => () => {
     // console.log('asdas')
@@ -83,11 +86,14 @@ const GetStarted = () => {
             <div className="content">
               <h2>Your action plan starting point is</h2>
               <h2>IMPLEMENT</h2>
-              <Button icon={<PlusOutlined />} type="ghost" size="large">Create Your Project</Button>
+              <Button icon={<PlusOutlined />} type="ghost" size="large" onClick={() => setShowCreateProjectModal(true)}>Create Your Project</Button>
             </div>
           </SwiperSlide>
         </Swiper>
       </div>
+      <CreateProjectModal
+        {...{ showCreateProjectModal, setShowCreateProjectModal }}
+      />
     </div>
   )
 }
