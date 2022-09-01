@@ -35,29 +35,35 @@
     (let [sth1-id (:id (new-stakeholder db "email1@un.org"))
           sth2-id (:id (new-stakeholder db "email2@un.org"))]
       (testing "Creating a new relation between a stakeholder and a technolgy item"
-        (db.favorite/new-association db {:stakeholder sth1-id
-                                         :topic "technology"
-                                         :topic_id 1
-                                         :association "user"
-                                         :remarks nil})
-        (db.favorite/new-association db {:stakeholder sth1-id
-                                         :topic "technology"
-                                         :topic_id 1
-                                         :association "interested in"
-                                         :remarks nil})
-        (db.favorite/new-association db {:stakeholder sth2-id
-                                         :topic "technology"
-                                         :topic_id 1
-                                         :association "interested in"
-                                         :remarks nil}))
+        (db.favorite/new-stakeholder-association db {:stakeholder sth1-id
+                                                     :topic "technology"
+                                                     :topic_id 1
+                                                     :association "user"
+                                                     :remarks nil})
+        (db.favorite/new-stakeholder-association db {:stakeholder sth1-id
+                                                     :topic "technology"
+                                                     :topic_id 1
+                                                     :association "interested in"
+                                                     :remarks nil})
+        (db.favorite/new-stakeholder-association db {:stakeholder sth2-id
+                                                     :topic "technology"
+                                                     :topic_id 1
+                                                     :association "interested in"
+                                                     :remarks nil}))
       (testing "Attempting to create the same relation doesn't fail"
-        (db.favorite/new-association db {:stakeholder sth1-id
-                                         :topic "technology"
-                                         :topic_id 1
-                                         :association "user"
-                                         :remarks nil}))
+        (db.favorite/new-stakeholder-association db {:stakeholder sth1-id
+                                                     :topic "technology"
+                                                     :topic_id 1
+                                                     :association "user"
+                                                     :remarks nil}))
       (testing "Getting relations for a given stakeholder"
-        (is (= 2 (count (db.favorite/association-by-stakeholder db
-                                                                {:stakeholder sth1-id}))))
-        (is (= 1 (count (db.favorite/association-by-stakeholder db
-                                                                {:stakeholder sth2-id}))))))))
+        (is (= 2 (count (db.favorite/association-by-stakeholder-topic db
+                                                                      {:stakeholder-id sth1-id
+                                                                       :resource-col "technology"
+                                                                       :table "stakeholder_technology"
+                                                                       :resource-id 1}))))
+        (is (= 1 (count (db.favorite/association-by-stakeholder-topic db
+                                                                      {:stakeholder-id sth2-id
+                                                                       :resource-col "technology"
+                                                                       :table "stakeholder_technology"
+                                                                       :resource-id 1}))))))))

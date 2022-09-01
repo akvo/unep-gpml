@@ -397,6 +397,7 @@
      " "
      (list
       "SELECT t.* FROM cte_topic t"
+      ;; FIXME fix this to user a query instead of a view.
       (when (and favorites user-id resource-types)
         "JOIN v_stakeholder_association a
          ON a.stakeholder = :user-id

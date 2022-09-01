@@ -94,11 +94,11 @@
         ;; Mark stakeholder as APPROVED
         _ (db.stakeholder/update-stakeholder-status db (assoc sth :review_status "APPROVED"))
         ;; Mark a technology as favorite
-        _ (db.favorite/new-association db {:stakeholder (:id sth)
-                                           :topic "technology"
-                                           :topic_id 1
-                                           :association "user"
-                                           :remarks nil})]
+        _ (db.favorite/new-stakeholder-association db {:stakeholder (:id sth)
+                                                       :topic "technology"
+                                                       :topic_id 1
+                                                       :association "user"
+                                                       :remarks nil})]
 
     (testing "Query for favorites WITHOUT LOGIN"
       (let [request (-> (mock/request :get "/")
