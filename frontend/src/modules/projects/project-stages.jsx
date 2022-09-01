@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./project-stages.scss";
-import { Collapse } from "antd";
+import { Collapse, Checkbox } from "antd";
 import api from "../../utils/api";
 import { UpCircleOutlined } from "@ant-design/icons";
 
@@ -114,13 +114,13 @@ const ProjectStages = ({ match: { params }, ...props }) => {
                               expandIcon={({ isActive }) => (
                                 <UpCircleOutlined rotate={isActive ? 180 : 0} />
                               )}
-                              className="child"
+                              className="sub-child"
                             >
                               {childItem?.childs?.map((childItem, index) => (
                                 <Panel
                                   header={
                                     <>
-                                      <h2>{childItem.title}</h2>
+                                      <Checkbox>{childItem.title}</Checkbox>
                                     </>
                                   }
                                   key={index + childItem.title}

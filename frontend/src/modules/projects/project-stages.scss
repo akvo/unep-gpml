@@ -65,6 +65,7 @@
           margin-bottom: 0px;
         }
         .ant-collapse {
+          background-color: inherit;
           &.parent {
             margin-top: 20px;
             border: none;
@@ -92,7 +93,7 @@
                   font-size: 32px;
                   line-height: 44px;
                   color: #384e85;
-                  margin-right: 10px;
+                  margin-right: 20px;
                 }
                 h2 {
                   font-weight: 700;
@@ -138,15 +139,74 @@
               margin-bottom: 10px;
               box-shadow: none;
               &.ant-collapse-item-active {
+                background: #edf2f7;
+                border: 1px solid #d3dee7;
+                box-shadow: 2px 2px 0px rgba(24, 22, 47, 0.15);
+                border-radius: 10px;
+                transform: scale(1);
+                .ant-collapse-header {
+                }
+              }
+              .ant-collapse-content {
+                .ant-collapse-content-box {
+                  padding: 10px 20px;
+                }
+              }
+              .ant-collapse-header {
+                padding: 8px 20px;
+              }
+            }
+          }
+          &.sub-child {
+            border: none;
+            .ant-collapse-item {
+              background: #ffffff;
+              border: 1px solid #d3dee7;
+              box-shadow: 1px 1px 0px rgba(24, 22, 47, 0.15);
+              border-radius: 5px;
+              margin-bottom: 5px;
+              &.ant-collapse-item-active {
                 background-color: #fff;
                 border: 1px solid rgba(24, 22, 47, 0.25);
                 box-shadow: 0px 0px 5px rgba(24, 22, 47, 0.15);
                 border-radius: 10px;
                 transform: scale(1);
+                .ant-collapse-header {
+                }
+              }
+              .ant-collapse-content {
+                .ant-collapse-content-box {
+                  padding: 10px 20px;
+                }
               }
               .ant-collapse-header {
-                padding: 10px 20px;
+                padding: 5px 20px;
               }
+            }
+          }
+          .ant-checkbox-wrapper {
+            .ant-checkbox {
+              .ant-checkbox-inner {
+                border: 1px solid #8691b0;
+                box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.25);
+                border-radius: 4px;
+              }
+              &.ant-checkbox-checked {
+                .ant-checkbox-inner {
+                  background-color: #fff;
+                  &::after {
+                    border: 2px solid #8691b0;
+                    border-top: 0;
+                    border-left: 0;
+                  }
+                }
+              }
+            }
+            span {
+              font-weight: 600;
+              font-size: 16px;
+              line-height: 26px;
+              color: #8691b0;
             }
           }
         }
