@@ -105,10 +105,10 @@
                              (merge {:topic (str "stakeholder_" resource-type)}))]
               (db.favorite/delete-stakeholder-association conn delete)))
           (doseq [association (expand-associations body-params)]
-            (prn (db.favorite/new-stakeholder-association conn (merge
-                                                                {:stakeholder (:id user)
-                                                                 :remarks nil}
-                                                                association)))))
+            (db.favorite/new-stakeholder-association conn (merge
+                                                           {:stakeholder (:id user)
+                                                            :remarks nil}
+                                                           association))))
         (db.activity/create-activity db {:id (util/uuid)
                                          :type "bookmark_resource"
                                          :owner_id (:id user)
