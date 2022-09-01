@@ -87,5 +87,13 @@
         color: #2b2942;
       }
     }
+    .swiper-button-next {
+      display: none;
+    }
+    .final {
+      .stage {
+        text-transform: uppercase;
+      }
+    }
   }
 }

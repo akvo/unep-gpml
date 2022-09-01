@@ -2,52 +2,57 @@ import { CloseOutlined, PlusOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 // import Swiper from 'swiper'
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
-import { Pagination } from "swiper";
+import { Pagination, Navigation } from "swiper";
 import './get-started.scss'
 import "swiper/swiper.min.css";
 import "swiper/modules/pagination/pagination.min.css";
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 const quiz = [
   {
-    q: 'Have you collected data on the sources and sinks of plastics in the environment?',
+    q: 'Have you begun implementation of your action plan?',
     a: [
       'No',
-      'Hotspots only',
-      'Beach clean data only',
-      'Multiple environmental compartments (land, freshwater, coastal, marine)',
-      'Waste and material flows',
-      'Sufficient data to set baselines for primary sources and sinks'
+      'Yes, partially (some actions)',
+      'Yes, fully (all actions)',
     ]
   },
   {
-    q: '2. Have you assessed the legal and policy landscape in which the action plan will operate?',
+    q: 'Have you  begun reporting  or measuring progress on your action plan?',
     a: [
       'No',
-      'Yes',
-      'Amendments to legislation are required'
+      'In Progress',
+      'Yes - first report completed',
+      'Yes - second/third/+ report completed'
     ]
   },
   {
-    q: 'Have you mapped all relevant stakeholders and engaged them?',
+    q: 'Have you reviewed and updated your action plan?',
     a: [
       'No',
-      'Relevant government agencies have been mapped',
-      'Relevant private sector actors have been mapped',
-      'Relevant NGOs and CBOs have been mapped',
-      'Full engagement of all stakeholders'
+      'Reviewed, but not updated',
+      'Reviewed and updated, but not yet adopted',
+      'Reviewed, updated and adopted',
     ]
   }
 ]
+const stages = ['create', 'implement', 'report', 'update']
 
 const GetStarted = () => {
   const swiperRef = useRef()
+  const [stage, setStage] = useState('create')
   // const swiper = useSwiper()
   const handleClick = (index) => () => {
     // console.log('asdas')
     swiperRef.current.allowSlideNext = true
-    swiperRef.current.slideNext()
+    if(index === 0){
+      setStage(stages[swiperRef.current.realIndex])
+      swiperRef.current.slideTo(quiz.length)
+    } else {
+      swiperRef.current.slideNext()
+    }
     swiperRef.current.allowSlideNext = false
     if(index < quiz.length){
     } else {
@@ -66,8 +71,9 @@ const GetStarted = () => {
         <Swiper
           onSwiper={(swiper) => { swiperRef.current = swiper }}
           pagination={true}
+          navigation={true}
           allowSlideNext={false}
-          modules={[Pagination]}
+          modules={[Pagination, Navigation]}
         >
           {quiz.map(it =>
           <SwiperSlide>
@@ -80,9 +86,9 @@ const GetStarted = () => {
           </SwiperSlide>
           )}
           <SwiperSlide>
-            <div className="content">
+            <div className="content final">
               <h2>Your action plan starting point is</h2>
-              <h2>IMPLEMENT</h2>
+              <h2 className="stage">{stage}</h2>
               <Button icon={<PlusOutlined />} type="ghost" size="large">Create Your Project</Button>
             </div>
           </SwiperSlide>
