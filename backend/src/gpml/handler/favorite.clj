@@ -3,13 +3,19 @@
             [clojure.java.jdbc :as jdbc]
             [clojure.set :as set]
             [clojure.string :as string]
+            [duct.logger :refer [log]]
             [gpml.db.activity :as db.activity]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.handler.responses :as r]
             [gpml.handler.util :as api-util]
             [gpml.util :as util]
+            [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
-            [ring.util.response :as resp]))
+            [ring.util.response :as resp])
+  (:import [java.sql SQLException]))
+
+;; FIXME: refactor favorite logic. It's entangled with follower and permissions.
 
 (def associations
   {:resource #{"owner" "reviewer" "user" "interested in" "other"}
@@ -42,32 +48,32 @@
   [db email]
   (:id (db.stakeholder/approved-stakeholder-by-email db {:email email})))
 
-(defn get-favorites
+(defn- get-favorites
   [db stakeholder topic-type topic-id]
   (let [topic (api-util/get-internal-topic-type topic-type)
-        data (db.favorite/association-by-stakeholder db {:stakeholder stakeholder
-                                                         :topic topic
-                                                         :table (str "stakeholder_" topic)
-                                                         :topic_id topic-id})]
+        data (db.favorite/association-by-stakeholder-topic db {:stakeholder-id stakeholder
+                                                               :resource-col topic
+                                                               :table (str "stakeholder_" topic)
+                                                               :resource-id topic-id})]
     (reduce (fn [acc [[topic_id topic] v]]
               (conj acc {:topic_id topic_id
                          :topic topic
                          :association (mapv :association v)}))
             []
-            (group-by (juxt :id :topic) data))))
+            (group-by (juxt :id (constantly topic-type)) data))))
 
-(defmethod ig/init-key ::get [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.favorite/get [_ {:keys [db]}]
   (fn [{{:keys [email]} :jwt-claims {{:keys [topic-type topic-id]} :path} :parameters}]
     (if-let [stakeholder (get-stakeholder-id (:spec db) email)]
       (resp/response (get-favorites (:spec db) stakeholder topic-type topic-id))
       (resp/bad-request {:message (format "User with email %s does not exist" email)}))))
 
-(defn topic->column-name [topic]
+(defn- topic->column-name [topic]
   (if (= "stakeholder" topic)
     "other_stakeholder"
     topic))
 
-(defn expand-associations
+(defn- expand-associations
   [{:keys [topic topic_id association]}]
   (vec (for [a association]
          (let [column-name (topic->column-name topic)]
@@ -76,40 +82,46 @@
             :topic_id topic_id
             :association a}))))
 
-(defmethod ig/init-key ::post [_ {:keys [db]}]
-  (fn [{:keys [jwt-claims body-params]}]
-    (if-let [stakeholder (get-stakeholder-id (:spec db) (:email jwt-claims))]
+(defmethod ig/init-key :gpml.handler.favorite/post
+  [_ {:keys [logger db]}]
+  (fn [{:keys [user body-params]}]
+    (try
       (let [db (:spec db)
-            new-topic (assoc body-params :stakeholder stakeholder)
-            topic (:topic body-params)
-            column-name (topic->column-name topic)
-            attr {:column_name column-name
-                  :topic (str "stakeholder_" topic)}
-            current (merge new-topic attr)
-            current (db.favorite/association-by-stakeholder-topic db current)
+            {resource-id :topic_id resource-type :topic} body-params
+            resource-col (topic->column-name resource-type)
+            current (db.favorite/association-by-stakeholder-topic db {:stakeholder-id (:id user)
+                                                                      :resource-col resource-col
+                                                                      :table (str "stakeholder_" resource-type)
+                                                                      :resource-id resource-id})
             delete (first
                     (dt/diff
                      (set (map #(:association %) current))
                      (set (:association body-params))))
             delete (first delete)]
-        (when (some? delete)
-          (let [delete (-> (filter #(= (:association %) delete) current)
-                           first
-                           (merge attr))]
-            (tap> (:id delete))
-            (db.favorite/delete-stakeholder-association db delete)))
         (jdbc/with-db-transaction [conn db]
+          (when (some? delete)
+            (let [delete (-> (filter #(= (:association %) delete) current)
+                             first
+                             (merge {:topic (str "stakeholder_" resource-type)}))]
+              (db.favorite/delete-stakeholder-association conn delete)))
           (doseq [association (expand-associations body-params)]
-            (db.favorite/new-association conn (merge
-                                               {:stakeholder stakeholder
-                                                :remarks nil}
-                                               association))))
+            (prn (db.favorite/new-stakeholder-association conn (merge
+                                                                {:stakeholder (:id user)
+                                                                 :remarks nil}
+                                                                association)))))
         (db.activity/create-activity db {:id (util/uuid)
                                          :type "bookmark_resource"
-                                         :owner_id stakeholder
+                                         :owner_id (:id user)
                                          :metadata (select-keys body-params [:topic :topic_id])})
-        (resp/response {:message "OK"}))
-      (resp/bad-request {:message (format "User with email %s does not exist" (:email jwt-claims))}))))
+        (r/ok {:success? true
+               :message "OK"}))
+      (catch Exception e
+        (log logger :error ::failed-to-create-association {:exception-message (.getMessage e)})
+        (r/server-error {:success? false
+                         :reason :failed-to-create-association
+                         :error-details {:error (if (instance? SQLException e)
+                                                  (pg-util/get-sql-state e)
+                                                  (.getMessage e))}})))))
 
 (defmethod ig/init-key ::post-params [_ _]
   post-params)
