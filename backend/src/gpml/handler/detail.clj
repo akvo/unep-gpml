@@ -33,6 +33,11 @@
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
+;;========================================START OF DEPRECATED CODE==============================================================
+;; FIXME: The code below doesn't seem to be used anyhwere anymore and
+;; we discuss it's removal. We need to take into consideration the
+;; foundations for it however.
+
 (defn other-or-name [action]
   (when-let [actual-name (or
                           (:value-entered action)
@@ -262,15 +267,13 @@
                                           :format-params action-details
                                           :fn-to-retrieve-data (partial #'keep-action-details action-details))))]))
                 data-queries)))
+;;========================================END OF DEPRECATED CODE==============================================================
 
 (defn- resolve-resource-type
   [resource-type]
   (cond
     (some #{resource-type} constants/resource-types)
     "resource"
-
-    (= resource-type "project")
-    "initiative"
 
     :else resource-type))
 
@@ -326,13 +329,11 @@
 
 (defmulti extra-details (fn [resource-type _ _] resource-type) :default :nothing)
 
-(defmethod extra-details "project" [resource-type db project]
+(defmethod extra-details "initiative" [resource-type db initiative]
   (merge
-   (add-extra-details db project resource-type {})
-   {:geo_coverage_type (-> project :geo_coverage_type ffirst)}
-   (if (> (:id project) 10000)
-     (db.initiative/initiative-detail-by-id db project)
-     (details-for-project db project))))
+   (add-extra-details db initiative resource-type {})
+   {:geo_coverage_type (-> initiative :geo_coverage_type ffirst)}
+   (db.initiative/initiative-detail-by-id db initiative)))
 
 (defmethod extra-details "policy" [resource-type db policy]
   (merge
@@ -462,7 +463,6 @@
 
 (defmethod ig/init-key :gpml.handler.detail/get
   [_ {:keys [db logger]}]
-  (cache-hierarchies! (:spec db))
   (fn [{{:keys [path query]} :parameters approved? :approved? user :user}]
     (try
       (let [conn (:spec db)
@@ -703,7 +703,7 @@
             review_status (:review_status submission)]
         (if (some? submission)
           (let [conn (:spec db)
-                status (if (= topic-type "project")
+                status (if (= topic-type "initiative")
                          (update-initiative conn logger mailjet-config topic-id body)
                          (update-resource conn logger mailjet-config topic-type topic-id body))]
             (when (and (= status 1) (= review_status "REJECTED"))

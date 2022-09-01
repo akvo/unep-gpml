@@ -14,8 +14,8 @@ export const curr = (findData, path, existingData) => {
     const currProp = properties[index];
 
     acc[currProp] = findData?.[currProp];
-    if (currProp === "project") {
-      return { ...acc, initiative: findData?.["project"] || 0 };
+    if (currProp === "initiative") {
+      return { ...acc, initiative: findData?.["initiative"] || 0 };
     } else {
       return acc;
     }

@@ -539,7 +539,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
           initialFormData.update((e) => {
             e.data = revertFormData(data);
             e.editId = true;
-            e.type = "project";
+            e.type = "initiative";
           });
           setSubType(data.sub_content_type);
         });
@@ -1134,7 +1134,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
           </div>
         </div>
       </StickyBox>
-      {/* 
+      {/*
       <StickyBox style={{ zIndex: 9 }} offsetTop={20} offsetBottom={20}> */}
       <div className="ui container">
         <div className="form-container">

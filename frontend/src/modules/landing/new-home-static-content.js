@@ -50,7 +50,7 @@ export const popularTopics = [
       },
       {
         id: 68,
-        type: "project",
+        type: "initiative",
         title:
           "UNEP Deliverables under the GEF-funded project (2017-2019): “Addressing Marine Plastics-  A  Systemic  Approach”",
         description:
@@ -285,7 +285,7 @@ export const popularTopics = [
     items: [
       {
         id: 298,
-        type: "project",
+        type: "initiative",
         title:
           "Local and Regional Capacity Building to Facilitate National Action to Control Plastic Pollution",
         description:
@@ -301,7 +301,7 @@ export const popularTopics = [
       },
       {
         id: 10004,
-        type: "project",
+        type: "initiative",
         title: "Clean Seas",
         description:
           "Through the Clean Seas platform, UNEP is connecting and rallying individuals, civil society groups, industry and governments for catalyzing change and transforming habits, practices, standards and policies around the globe to dramatically reduce marine litter and its negative impacts. Since its launch in 2017, the campaign has become a catalyst for change, transforming habits, practices, standards and policies around the globe. To date, 63 countries have joined, making the Clean Seas Campaign the biggest, most powerful global coalition devoted to ending marine plastic pollution. Commitments by signatory countries now cover more than 60 per cent of the world’s coastlines. Land locked countries are also coming on board, seeing the value of its source to sea approach. Countries, businesses and individuals have pledged to turn the tide on plastic waste.",
@@ -346,7 +346,7 @@ export const popularTopics = [
     items: [
       {
         id: 209,
-        type: "project",
+        type: "initiative",
         title: "'Sea to Source: Ganges' Expedition ",
         description:
           "The “Sea to Source: Ganges” river expeditions mobilize a global community of experts to help tackle the global problem of plastic pollution. During the expeditions,  the team measures pre-monsoon and post-monsoon plastic pollution levels in the Ganges river and surrounding communities,  and conducts interviews,  solution workshops,  and education sessions at each site. Using the data they collect,  the team will work with local and national partners to inform solutions,  fill knowledge gaps,  and help drive a long-term positive change. The expedition (in partnership with the Wildlife Institute of India (WII),  the Indian Institute of Technology,  the University of Dhaka,  WildTeam Bangladesh,  and the Isabela Foundation) also focuses on documenting how plastic waste travels from source to sea and filling the critical knowledge gaps around plastic flow,  load,  and composition.",
@@ -360,7 +360,7 @@ export const popularTopics = [
       },
       {
         id: 117,
-        type: "project",
+        type: "initiative",
         title: "Marine Litter Source to Sea Assessment",
         description: "Source to sea marine litter methodology and assessment ",
       },

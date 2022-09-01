@@ -21,7 +21,7 @@ archived AS (
     SELECT id, REPLACE(LOWER(type), ' ', '_'), title, review_status, reviewed_at, reviewed_by, created_by, 'USER' as role
     FROM resource where review_status <> 'SUBMITTED'
     UNION
-    SELECT id, 'project' as type, replace(q2::text,'"','') as title, review_status, reviewed_at, reviewed_by, created_by, 'USER' as role
+    SELECT id, 'initiative' as type, replace(q2::text,'"','') as title, review_status, reviewed_at, reviewed_by, created_by, 'USER' as role
     FROM initiative where review_status <> 'SUBMITTED'
     ORDER BY reviewed_at DESC NULLS LAST
 ),
@@ -41,4 +41,3 @@ SELECT json_build_object(
     'page', :page,
     'pages', (SELECT COUNT(*) FROM archived) / :limit,
     'limit', :limit) as result;
-

@@ -74,7 +74,7 @@ const FilterDrawer = ({
         .filter((content) => {
           const resourceName = (name) => {
             if (name === "initiative") {
-              return "project";
+              return "initiative";
             } else if (name === "event_flexible") {
               return "event";
             } else if (name === "financing") {
@@ -101,7 +101,7 @@ const FilterDrawer = ({
   };
 
   const topicIcons = (topic) => {
-    if (topic === "project") {
+    if (topic === "initiative") {
       return <InitiativeIcon width="53" height="53" />;
     }
     if (topic === "actionPlan") {

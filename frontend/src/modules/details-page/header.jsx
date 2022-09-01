@@ -294,8 +294,8 @@ const Header = ({
         profile.id === params.createdBy ||
         data.owners.includes(profile.id) ||
         find) &&
-      ((params.type !== "project" && !noEditTopics.has(params.type)) ||
-        (params.type === "project" && params.id > 10000));
+      ((params.type !== "initiative" && !noEditTopics.has(params.type)) ||
+        (params.type === "initiative" && params.id > 10000));
 
     const canDelete = () =>
       isAuthenticated &&

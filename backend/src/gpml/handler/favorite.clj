@@ -16,7 +16,6 @@
    :technology #{"owner" "user" "reviewer" "interested in" "other"}
    :event #{"resource person" "organiser" "participant" "sponsor" "host" "interested in" "other"}
    :initiative #{"owner" "implementor" "reviewer" "user" "interested in" "other"}
-   :project #{"owner" "implementor" "reviewer" "user" "interested in" "other"}
    :policy #{"regulator" "implementor" "reviewer" "interested in" "other"}
    :organisation #{"interested in" "other"}
    :stakeholder #{"interested in" "other"}})
@@ -63,11 +62,6 @@
       (resp/response (get-favorites (:spec db) stakeholder topic-type topic-id))
       (resp/bad-request {:message (format "User with email %s does not exist" email)}))))
 
-(defn topic->api-topic [topic]
-  (if (= "project" topic)
-    "initiative"
-    topic))
-
 (defn topic->column-name [topic]
   (if (= "stakeholder" topic)
     "other_stakeholder"
@@ -76,8 +70,7 @@
 (defn expand-associations
   [{:keys [topic topic_id association]}]
   (vec (for [a association]
-         (let [topic (topic->api-topic topic)
-               column-name (topic->column-name topic)]
+         (let [column-name (topic->column-name topic)]
            {:topic topic
             :column_name column-name
             :topic_id topic_id
@@ -88,7 +81,7 @@
     (if-let [stakeholder (get-stakeholder-id (:spec db) (:email jwt-claims))]
       (let [db (:spec db)
             new-topic (assoc body-params :stakeholder stakeholder)
-            topic (topic->api-topic (:topic body-params))
+            topic (:topic body-params)
             column-name (topic->column-name topic)
             attr {:column_name column-name
                   :topic (str "stakeholder_" topic)}

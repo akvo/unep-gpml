@@ -223,23 +223,23 @@ const renderItemValues = (
                   type === "array" &&
                   data[key].map((tag) => Object.values(tag)[0]).join(", ")}
                 {key !== "tags" &&
-                  params.type === "project" &&
+                  params.type === "initiative" &&
                   data[key] &&
                   value === "join" &&
                   type === "array" &&
                   data[key].map((x) => x.name).join(", ")}
                 {key !== "tags" &&
-                  params.type !== "project" &&
+                  params.type !== "initiative" &&
                   data[key] &&
                   value === "join" &&
                   type === "array" &&
                   data[key].join(", ")}
-                {params.type === "project" &&
+                {params.type === "initiative" &&
                   value === "custom" &&
                   type === "array" &&
                   data[key][customValue] &&
                   data[key][customValue].map((x) => x.name).join(", ")}
-                {params.type !== "project" &&
+                {params.type !== "initiative" &&
                   value === "custom" &&
                   type === "array" &&
                   data[key][customValue] &&
@@ -342,7 +342,7 @@ const renderTypeOfActions = (params, data) => {
   const keys = typeOfActionKeys.map((x) => x.key);
   const keyAvailable = keys.map((x) => some(data, x)).includes(true);
 
-  if (params.type !== "project") {
+  if (params.type !== "initiative") {
     return;
   }
 
@@ -445,7 +445,7 @@ const renderInfo = (
     </p>
   );
   const isNarrative =
-    params.type === "project" && data.uuid
+    params.type === "initiative" && data.uuid
       ? data.uuid.split("-")[0] === "999999"
       : false;
   const info = infoMaps[params.type];
@@ -463,7 +463,7 @@ const renderInfo = (
           data
         )}
       </div>
-      {params.type === "project" && data.uuid && !isNarrative && (
+      {params.type === "initiative" && data.uuid && !isNarrative && (
         <div>
           <Divider key="statictext" /> {staticText}
         </div>
@@ -556,7 +556,7 @@ const DetailsView = ({
     params.type !== "stakeholder" || profile.id !== params.id;
 
   const contentHeaderStyle =
-    params.type === "project"
+    params.type === "initiative"
       ? { header: "content-project", topic: "project-topic " + params.type }
       : {
           header: "content-non-project",
@@ -794,7 +794,7 @@ const ButtonMenu = withRouter(
       let form = null;
       let link = null;
       switch (topic.type) {
-        case "project":
+        case "initiative":
           form = "initiative";
           link = "edit-initiative";
           break;
@@ -885,8 +885,8 @@ const ButtonMenu = withRouter(
       (profile.role === "ADMIN" ||
         profile.id === topic.createdBy ||
         topic.owners.includes(profile.id)) &&
-      ((topic.type !== "project" && !noEditTopics.has(topic.type)) ||
-        (topic.type === "project" && topic.id > 10000));
+      ((topic.type !== "initiative" && !noEditTopics.has(topic.type)) ||
+        (topic.type === "initiative" && topic.id > 10000));
 
     const canDelete = () =>
       isAuthenticated &&

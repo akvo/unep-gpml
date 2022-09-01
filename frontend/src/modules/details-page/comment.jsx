@@ -218,7 +218,7 @@ const Comments = ({
 }) => {
   const onSubmit = (val) => {
     const resourceType = (type) => {
-      if (type === "project") {
+      if (type === "initiative") {
         return "initiative";
       } else {
         return type;
