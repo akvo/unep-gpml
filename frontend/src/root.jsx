@@ -93,6 +93,7 @@ import auth0 from "auth0-js";
 import { auth0Client } from "./utils/misc";
 import Landing from "./modules/landing/landing";
 import GetStarted from "./modules/projects/get-started";
+import Project from "./modules/projects/project-stages";
 
 Promise.all([
   api.get("/tag"),
@@ -830,9 +831,14 @@ const Root = () => {
                 }
                 path="/workspace"
               />
+              <Route path="/projects/get-started">
+                <GetStarted />
+              </Route>
               <Route
-                path="/projects/get-started"
-              ><GetStarted /></Route>
+                exact
+                path="/project/:id"
+                render={(props) => <Project {...props} />}
+              />
               <Route
                 exact
                 render={(props) => (
