@@ -67,8 +67,7 @@
                 :allowEmptyValue false}}
      [:maybe map?]]
     [:stage
-     {:optional true
-      :swagger {:description "The Project's stage."
+     {:swagger {:description "The Project's stage."
                 :type "string"
                 :enum project-stages}}
      (apply conj [:enum] project-stages)]
