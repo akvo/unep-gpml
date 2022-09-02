@@ -66,7 +66,15 @@
                :allowEmptyValue false}}
     [:sequential
      {:decode/string (fn [s] (str/split s #","))}
-     pos-int?]]])
+     pos-int?]]
+   [:stages
+    {:optional true
+     :swagger {:description "A comma separated list of Project's stages."
+               :type "string"
+               :allowEmptyValue false}}
+    [:sequential
+     {:decode/string (fn [s] (str/split s #","))}
+     (apply conj [:enum] dom.prj/project-stages)]]])
 
 (defn- create-project
   [{:keys [db logger]} {:keys [parameters user] :as _req}]

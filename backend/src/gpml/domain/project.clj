@@ -7,6 +7,10 @@
   "Possible values for `project-type`."
   #{"action-plan"})
 
+(def project-stages
+  "Possible values for `project-stage`"
+  #{"create" "implement" "report" "update"})
+
 (def ProjectGeoCoverage
   "The Project's geo coverage sub entity."
   (m/schema
@@ -62,6 +66,12 @@
                 :additionalProperties {}
                 :allowEmptyValue false}}
      [:maybe map?]]
+    [:stage
+     {:optional true
+      :swagger {:description "The Project's stage."
+                :type "string"
+                :enum project-stages}}
+     (apply conj [:enum] project-stages)]
     [:geo_coverage_countries
      {:optional true
       :swagger {:description "The Project's country reach."

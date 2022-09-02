@@ -29,7 +29,11 @@
                       {:error-keys #{:humanized}
                        :compile mu/open-schema
                        :skip-extra-values true
-                       :default-values true})
+                       :default-values true
+                       :encode-error (fn [error]
+                                       {:success? false
+                                        :reason :bad-parameter-type-or-format
+                                        :error-details (:humanized error)})})
 
            :middleware [;; swagger feature
                         swagger/swagger-feature
