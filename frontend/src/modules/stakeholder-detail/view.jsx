@@ -66,8 +66,8 @@ const SharePanel = ({
     (profile.role === "ADMIN" ||
       profile.id === Number(params.id) ||
       data.owners.includes(profile.id)) &&
-    (params.type !== "project" ||
-      (params.type === "project" && params.id > 10000));
+    (params.type !== "initiative" ||
+      (params.type === "initiative" && params.id > 10000));
 
   const handleChangeRelation = (relationType) => {
     let association = relation ? [...relation.association] : [];

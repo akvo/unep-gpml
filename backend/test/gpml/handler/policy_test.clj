@@ -23,14 +23,15 @@
    :status "Repealed"
    :first_publication_date "2021-04-01"
    :latest_amendment_date "2021-04-01"
-   :geo_coverage_type "regional"
-   :geo_coverage_value (mapv :id (:country_groups data))
+   :geo_coverage_type "global"
+   :geo_coverage_value nil
    :url "https://akvo.org"
    :attachments nil
    :remarks nil
    :document_preview false
    :country (-> (:countries data) first :id)
-   :tags (:tags data)})
+   :tags (:tags data)
+   :language "id"})
 
 (deftest handler-post-test
   (testing "New policy is created"
@@ -63,8 +64,7 @@
                                 (assoc :body-params (assoc (new-policy data) :org
                                                            {:id -1
                                                             :name "New Era"
-                                                            :geo_coverage_type "regional"
-                                                            :geo_coverage_value (mapv :id (:country_groups data))
+                                                            :geo_coverage_type "global"
                                                             :country (-> (:countries data) second :id)}))))
           policy-one (db.policy/policy-by-id db (:body resp-one))
           policy-two (db.policy/policy-by-id db (:body resp-two))]

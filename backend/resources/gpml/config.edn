@@ -161,7 +161,7 @@
                                           {:post {:summary "Create a new policy"
                                                   :swagger {:tags ["policy"]
                                                             :security [{:id_token []}]}
-                                                  :parameters {:body #ig/ref :gpml.handler.policy/post-params}
+                                                  :parameters #ig/ref :gpml.handler.policy/post-params
                                                   :handler #ig/ref :gpml.handler.policy/post}}]]
                                         ["/initiative"
                                          [""
@@ -254,7 +254,7 @@
                                           {:get {:summary "End-point for the landing page"
                                                  :middleware [#ig/ref :gpml.auth/auth-middleware]
                                                  :swagger {:tags ["landing"]}
-                                                 :parameters {:query #ig/ref :gpml.handler.landing/get-query-params}
+                                                 :parameters #ig/ref :gpml.handler.landing/get-query-params
                                                  :handler #ig/ref :gpml.handler.landing/get}}]]
                                         ["/nav"
                                          [""
@@ -430,6 +430,41 @@
                                                                      [:topic-id int?]]
                                                               :body #ig/ref :gpml.handler.detail/put-params}
                                                  :handler #ig/ref :gpml.handler.detail/put}}]]
+                                        ["/translations"
+                                         ["/{topic-type}/{topic-id}"
+                                          {:get {:middleware [#ig/ref :gpml.auth/auth-middleware]
+                                                 :summary "Get the translations for a specific resource"
+                                                 :swagger {:tags ["get resource translations"]}
+                                                 :parameters {:path [:map
+                                                                     [:topic-type
+                                                                      #ig/ref :gpml.handler.resource.translation/topics]
+                                                                     [:topic-id int?]]
+                                                              :query #ig/ref :gpml.handler.resource.translation/query-params}
+                                                 :handler #ig/ref :gpml.handler.resource.translation/get}
+                                           :delete {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                 #ig/ref :gpml.auth/auth-required
+                                                                 #ig/ref :gpml.auth/approved-user]
+                                                    :summary "Remove specific resource translations"
+                                                    :swagger {:tags ["remove resource translations"]}
+                                                    :parameters {:path [:map
+                                                                        [:topic-type
+                                                                         #ig/ref :gpml.handler.resource.translation/topics]
+                                                                        [:topic-id int?]]
+                                                                 :body #ig/ref :gpml.handler.resource.translation/delete-params}
+                                                    :handler #ig/ref :gpml.handler.resource.translation/delete}
+                                           :put {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                              #ig/ref :gpml.auth/auth-required
+                                                              #ig/ref :gpml.auth/approved-user]
+                                                 :summary "Create or edit resource translations"
+                                                 :swagger {:tags ["create resource translations"
+                                                                  "edit resource translations"]
+                                                           :security [{:id_token []}]}
+                                                 :parameters {:path [:map
+                                                                     [:topic-type
+                                                                      #ig/ref :gpml.handler.resource.translation/topics]
+                                                                     [:topic-id int?]]
+                                                              :body #ig/ref :gpml.handler.resource.translation/put-params}
+                                                 :handler #ig/ref :gpml.handler.resource.translation/put}}]]
                                         ["/list"
                                          {:get {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                              #ig/ref :gpml.auth/auth-required]
@@ -505,7 +540,37 @@
                                           {:put {:summary "Accept invitation"
                                                  :swagger {:tags ["invitation"]}
                                                  :parameters #ig/ref :gpml.handler.invitation/put-params
-                                                 :handler #ig/ref :gpml.handler.invitation/put}}]]]]
+                                                 :handler #ig/ref :gpml.handler.invitation/put}}]]
+                                        ["/project" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                  #ig/ref :gpml.auth/auth-required
+                                                                  #ig/ref :gpml.auth/approved-user]}
+                                         [""
+                                          {:post {:summary "Create a project"
+                                                  :swagger {:tags ["project"]}
+                                                  :parameters #ig/ref :gpml.handler.project/post-params
+                                                  :responses #ig/ref :gpml.handler.project/post-responses
+                                                  :handler #ig/ref :gpml.handler.project/post}
+                                           :get {:summary "Get projects"
+                                                 :swagger {:tags ["project"]}
+                                                 :parameters #ig/ref :gpml.handler.project/get-params
+                                                 :responses #ig/ref :gpml.handler.project/get-responses
+                                                 :handler #ig/ref :gpml.handler.project/get}}]
+                                         ["/:id"
+                                          {:get {:summary "Get a project"
+                                                 :swagger {:tags ["project"]}
+                                                 :parameters #ig/ref :gpml.handler.project/get-by-id-params
+                                                 :responses #ig/ref :gpml.handler.project/get-by-id-responses
+                                                 :handler #ig/ref :gpml.handler.project/get-by-id}
+                                           :put {:summary "Update a project"
+                                                 :swagger {:tags ["project"]}
+                                                 :parameters #ig/ref :gpml.handler.project/put-params
+                                                 :responses #ig/ref :gpml.handler.project/put-responses
+                                                 :handler #ig/ref :gpml.handler.project/put}
+                                           :delete {:summary "Delete a project"
+                                                    :swagger {:tags ["project"]}
+                                                    :parameters #ig/ref :gpml.handler.project/delete-params
+                                                    :responses #ig/ref :gpml.handler.project/delete-responses
+                                                    :handler #ig/ref :gpml.handler.project/delete}}]]]]
                               :logger #ig/ref :duct.logger/timbre}
 
   ;; Consts
@@ -566,7 +631,7 @@
   :gpml.handler.review/list-user-reviews-params {}
   :gpml.handler.review/review-status-params {}
 
-  :gpml.handler.landing/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.landing/get #ig/ref :gpml.config/common
   :gpml.handler.landing/get-query-params {}
   :gpml.handler.nav/get {:db #ig/ref :duct.database/sql}
 
@@ -641,8 +706,8 @@
 
   :gpml.handler.file/profile-cv {:db #ig/ref :duct.database/sql}
 
-  :gpml.handler.favorite/get {:db #ig/ref :duct.database/sql}
-  :gpml.handler.favorite/post {:db #ig/ref :duct.database/sql}
+  :gpml.handler.favorite/get #ig/ref :gpml.config/common
+  :gpml.handler.favorite/post #ig/ref :gpml.config/common
   :gpml.handler.favorite/post-params {}
 
   :gpml.handler.env/get {:auth0 {:domain #duct/env "OIDC_ISSUER"
@@ -682,6 +747,14 @@
   :gpml.handler.detail/put #ig/ref :gpml.config/common
   :gpml.handler.detail/put-params {}
 
+  :gpml.handler.resource.translation/topics {}
+  :gpml.handler.resource.translation/get #ig/ref :gpml.config/common
+  :gpml.handler.resource.translation/delete #ig/ref :gpml.config/common
+  :gpml.handler.resource.translation/put #ig/ref :gpml.config/common
+  :gpml.handler.resource.translation/query-params {}
+  :gpml.handler.resource.translation/delete-params {}
+  :gpml.handler.resource.translation/put-params {}
+
   :gpml.handler.list/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.list/get-params {}
   :gpml.handler.list/get-response {}
@@ -707,6 +780,22 @@
   :gpml.handler.invitation/put {:db #ig/ref :duct.database/sql
                                 :logger #ig/ref :duct/logger}
   :gpml.handler.invitation/put-params {}
+
+  :gpml.handler.project/post #ig/ref :gpml.config/common
+  :gpml.handler.project/post-params {}
+  :gpml.handler.project/post-responses {}
+  :gpml.handler.project/get #ig/ref :gpml.config/common
+  :gpml.handler.project/get-params {}
+  :gpml.handler.project/get-responses {}
+  :gpml.handler.project/put #ig/ref :gpml.config/common
+  :gpml.handler.project/put-params {}
+  :gpml.handler.project/put-responses {}
+  :gpml.handler.project/get-by-id #ig/ref :gpml.config/common
+  :gpml.handler.project/get-by-id-params {}
+  :gpml.handler.project/get-by-id-responses {}
+  :gpml.handler.project/delete #ig/ref :gpml.config/common
+  :gpml.handler.project/delete-params {}
+  :gpml.handler.project/delete-responses {}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources
                           :logger #ig/ref :duct/logger

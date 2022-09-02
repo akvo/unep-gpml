@@ -58,7 +58,7 @@
            db {:id 1
                :name "Akvo"
                :url "https://akvo.org"
-               :geo_coverage_type "regional"
+               :geo_coverage_type "global"
                :type "Academia and Research"
                :program "Test Program"
                :contribution "Test Contribution"
@@ -123,9 +123,8 @@
           ;; John trying to sign up with new organisation
           body-params (assoc (new-profile 1)
                              :org {:name "My own company"
-                                   :geo_coverage_type "regional"
+                                   :geo_coverage_type "global"
                                    :country (-> (:countries data) second :id)
-                                   :geo_coverage_value (mapv :id (:country_groups data))
                                    :type "Company"
                                    :url "mycompany.org"}
                              :country (-> (:countries data) first :id)

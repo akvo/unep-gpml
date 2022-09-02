@@ -141,12 +141,13 @@ const CountryTransnationalFilter = ({
           mode={multiCountrySelectMode || ""}
           placeholder="Multi-Country"
           optionFilterProp="children"
-          filterOption={(input, option) =>
-            option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }
+          filterOption={(input, option) => {
+            return (
+              option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            );
+          }}
           value={multiCountry}
           onChange={handleChangeMultiCountry}
-          // onDeselect={handleDeselectMultiCountry}
           dropdownMatchSelectWidth={325}
           suffixIcon={
             !multiCountryLabelCustomIcon && multiCountry ? (
@@ -168,12 +169,19 @@ const CountryTransnationalFilter = ({
                 key={transnationalGroup.label}
                 label={transnationalGroup.label}
                 isSelectOptGroup={true}
+                filterLabel={transnationalGroup.item
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((transnational) => transnational.name)}
               >
                 {transnationalGroup.item
                   .sort((a, b) => a.name.localeCompare(b.name))
                   .map((transnational) => {
                     return (
-                      <Option key={transnational.id} value={transnational.id}>
+                      <Option
+                        key={transnational.id}
+                        value={transnational.id}
+                        label={transnational.name}
+                      >
                         <div className="dropdown-content">
                           {transnational.name}
                           <MultiCountryInfo

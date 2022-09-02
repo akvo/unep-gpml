@@ -11,6 +11,7 @@
             [gpml.db.policy :as db.policy]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.tag :as db.tag]
+            [gpml.domain.policy :as dom.policy]
             [gpml.util :as util]
             [gpml.util.sql :as sql-util]
             [integrant.core :as ig]
@@ -29,24 +30,6 @@
 ;; TODO: This should be placed somewhere else to be re-used and be more visible.
 (defonce ^:private default-lang :en)
 (defonce ^:private policy-tag-category-name "leap api")
-;; TODO: These should be placed somewhere (to-create Domain layer) else to be re-used and be more visible.
-(defonce ^:private policy-types-of-law #{"Legislation"
-                                         "Regulation"
-                                         "Miscellaneous"
-                                         "Constitution"})
-
-(defonce ^:private policy-status-opts #{"In force"
-                                        "Repealed"
-                                        "Not yet in force"})
-
-(defonce ^:private policy-sub-content-types
-  #{"Bans and Restrictions"
-    "Combined Actions"
-    "Economic Instruments"
-    "Extended Producer Responsability (EPR) Schemes"
-    "Other Actions"
-    "Product standards Certification and Labeling requirements"
-    "Waste Management Legislation"})
 
 ;; TODO: Move this to a shared space, as we are doing the same for Auth0
 (defn- parse-response-body [response]
@@ -252,13 +235,18 @@
    way to transform the data will be the right one.
 
    `:leap_api_modified` field can be already transformed into a java time instant, if we are coming from the Update
-    flow, so that is why we apply a conditional transformation there."
+    flow, so that is why we apply a conditional transformation there.
+
+    For now we are not supporting multi-lingual content from the LEAP API import, so we are not using the item's
+    language, neither the `languages-by-iso-code` option, as we are hardcoding all the items language to be
+    english, since right now it is the only language we have the content for.
+    In the future, we will use the original content for creating translations and support multi-lingual
+    feature, but not for now."
   [{:keys [title originalTitle source country abstract type
            dateOfText lastAmendmentDate status files link regulatoryApproach
-           topics language id updated implementingMeas] :as policy-raw}
+           topics id updated implementingMeas] :as policy-raw}
    {:keys [default-lang
            countries-by-iso-code
-           languages-by-iso-code
            tags-by-normalized-name
            mea-country-groups-by-name
            policy-types-of-law
@@ -309,11 +297,7 @@
                       :available-opts
                       policy-sub-content-types)
    :topics (parse-policy-leap-api-field :collection topics)
-   :language (parse-policy-leap-api-field
-              :iso-code
-              language
-              :opts-by-iso-code
-              languages-by-iso-code)
+   :language (name default-lang)
    :leap_api_id (parse-policy-leap-api-field :uuid id)
    :leap_api_modified (if-not (jt/instant? updated)
                         (parse-policy-leap-api-field :timestamp updated)
@@ -814,9 +798,9 @@
                                             :languages-by-iso-code languages-by-iso-code
                                             :tags-by-normalized-name tags-by-normalized-name
                                             :mea-country-groups-by-name mea-country-groups-by-name
-                                            :policy-types-of-law policy-types-of-law
-                                            :policy-status-opts policy-status-opts
-                                            :policy-sub-content-types policy-sub-content-types
+                                            :policy-types-of-law dom.policy/types-of-laws
+                                            :policy-status-opts dom.policy/statuses
+                                            :policy-sub-content-types dom.policy/sub-content-types
                                             :policy-tag-category-id (:id policy-tag-category)}))
     (catch Throwable e
       (let [error-details {:error-code (class e)

@@ -518,7 +518,7 @@ export const detailMaps = {
   event: detailEvent,
   technology: detailTechnology,
   policy: detailPolicy,
-  project: detailProject,
+  initiative: detailProject,
   stakeholder: detailStakeholder,
   organisation: detailOrganisation,
 };
@@ -549,7 +549,7 @@ const stakeholderDescription = {
 };
 
 export const descriptionMaps = {
-  project: description,
+  initiative: description,
   action_plan: description,
   technical_resource: description,
   financing_resource: description,
@@ -576,7 +576,7 @@ const resourceInfo = [
 ];
 
 export const infoMaps = {
-  project: [
+  initiative: [
     {
       key: "infoResourceLinks",
       name: "Resource Link",

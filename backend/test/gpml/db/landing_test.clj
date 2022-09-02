@@ -26,7 +26,8 @@
    :geo_coverage_type geo-coverage
    :attachments nil
    :remarks "Remarks"
-   :review_status "APPROVED"})
+   :review_status "APPROVED"
+   :language "en"})
 
 (defn add-country-data [conn]
   (db.country/new-country conn {:name "Spain" :description "Member State" :iso_code "ESP"})
@@ -44,9 +45,9 @@
 
 (defn add-resource-data [conn]
   (add-country-data conn)
-  (db.resource/new-resource conn (make-resource "Resource 1" "transnational"))
+  (db.resource/new-resource conn (make-resource "Resource 1" "national"))
   (db.resource/new-resource conn (make-resource "Resource 2" "national"))
-  (db.resource/new-resource conn (make-resource "Resource 3" "regional"))
+  (db.resource/new-resource conn (make-resource "Resource 3" "transnational"))
   (db.resource/new-resource conn (make-resource "Resource 4" "global"))
   (db.resource/new-resource conn (make-resource "Resource 5" "national"))
   (jdbc/insert-multi! conn :resource_geo_coverage
@@ -67,8 +68,8 @@
           system (ig/init fixtures/*system* [db-key])
           conn (-> system db-key :spec)
           _ (add-resource-data conn)
-          landing (db.landing/map-counts-include-all-countries conn {:entity-group :topic})
-          valid? (fn [country-id] (->> landing
+          {:keys [country_counts]} (db.landing/get-resource-map-counts conn {:entity-group :topic})
+          valid? (fn [country-id] (->> country_counts
                                        (filter #(= country-id (:country_id %)))
                                        first
                                        :counts
@@ -96,7 +97,8 @@
                                  :country nil
                                  :city nil
                                  :image nil
-                                 :review_status "SUBMITTED"})
+                                 :review_status "SUBMITTED"
+                                 :language "en"})
           summary (db.landing/summary conn)
           extract-data (fn [topic]
                          (->> summary
@@ -110,39 +112,21 @@
         4 "financing_resource"
         0 "event"))))
 
-(def spanish {:country 2
-              :geo_coverage_type "national"
-              :geo_coverage_value [1]})
-
-(def india {:country 2
-            :geo_coverage_type "national"
-            :geo_coverage_value [2]})
-
-(def asia {:geo_coverage_type "regional" :geo_coverage_value [1]})
-
-(def approved {:review_status "APPROVED"})
-
-(defn org [& org-data]
-  (apply merge
-         {:name (str "org" (fixtures/uuid))
-          :review_status "SUBMITTED"}
-         org-data))
-
-(defn get-country-group-ids [db country-id]
-  (db.country-group/get-country-groups-by-country db {:id country-id}))
+(defn- get-country-group-ids [db country-id]
+  (db.country-group/get-country-groups-by-countries db {:filters {:countries-ids [country-id]}}))
 
 (deftest landing-counts
   (let [db-key :duct.database.sql/hikaricp
         system (ig/init fixtures/*system* [db-key])
         conn (-> system db-key :spec)
         _ (add-resource-data conn)
-        landing (db.landing/map-counts-include-all-countries conn {:entity-group :topic})]
+        {:keys [country_counts]} (db.landing/get-resource-map-counts conn {:entity-group :topic})]
     (testing "Landing counts match browse results"
       (let [country-id 4
             transnationals (->> (get-country-group-ids conn country-id)
                                 (map (comp str :id))
                                 set)
-            landing-counts-by-country (filter #(= country-id (:country_id %)) landing)
+            landing-counts-by-country (filter #(= country-id (:country_id %)) country_counts)
             browse (db.topic/get-topics conn {:topic #{"financing_resource"}
                                               :geo-coverage [country-id]
                                               :transnational transnationals

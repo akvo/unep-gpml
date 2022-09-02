@@ -343,10 +343,14 @@ export const GeneralPreview = ({ item, featuredSelect }) => {
               "-"}
           </div>
         </li>
-        <li className="has-border">
-          <p className="section-title">Actions</p>
-        </li>
-        {featuredSelect}
+        {item.type !== "organisation" && (
+          <>
+            <li className="has-border">
+              <p className="section-title">Actions</p>
+            </li>
+            {featuredSelect}
+          </>
+        )}
         {item.reviewStatus === "APPROVED" && item.type === "organisation" && (
           <>
             <li className="has-border">
@@ -800,6 +804,8 @@ export const DetailCollapse = ({
   item,
   getPreviewContent,
   unpublishButton,
+  focalPoint,
+  ownerSelect,
 }) => {
   const [featuredFlag, setFeaturedFlag] = useState(false);
 
@@ -855,7 +861,7 @@ export const DetailCollapse = ({
   switch (item.type) {
     case "stakeholder":
       return <ProfilePreview item={{ ...data, ...item, unpublishButton }} />;
-    case "project":
+    case "initiative":
       return (
         <InitiativePreview
           item={{ ...data, ...item, featuredFlag }}
@@ -871,6 +877,8 @@ export const DetailCollapse = ({
             ...data,
             ...item,
             featuredFlag,
+            focalPoint,
+            ownerSelect,
           }}
           featuredSelect={<FeaturedSelect />}
         />

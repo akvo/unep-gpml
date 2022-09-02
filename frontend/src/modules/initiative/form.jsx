@@ -283,7 +283,7 @@ const AddInitiativeForm = withRouter(
       }
       if (status === "edit" || params?.id) {
         api
-          .putRaw(`/detail/project/${id || params?.id}`, data)
+          .putRaw(`/detail/initiative/${id || params?.id}`, data)
           .then(() => {
             notification.success({ message: "Update success" });
             UIStore.update((e) => {
@@ -301,7 +301,7 @@ const AddInitiativeForm = withRouter(
               e.data = initialFormData;
             });
             setDisabledBtn({ disabled: true, type: "default" });
-            history.push(`/project/${id || params?.id}`);
+            history.push(`/initiative/${id || params?.id}`);
           })
           .catch(() => {
             notification.error({ message: "An error occured" });

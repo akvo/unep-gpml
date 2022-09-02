@@ -93,13 +93,15 @@
           ;; transnational initiative
           tn-initiative-data (seeder/parse-data
                               (slurp (io/resource "examples/initiative-transnational.json"))
-                              {:keywords? true})
+                              {:keywords? true
+                               :add-default-lang? true})
           tn-initiative-id (db.initiative/new-initiative db tn-initiative-data)
           tn-initiative (db.initiative/initiative-by-id db tn-initiative-id)
           ;; national initiative
           n-initiative-data (seeder/parse-data
                              (slurp (io/resource "examples/initiative-national.json"))
-                             {:keywords? true})
+                             {:keywords? true
+                              :add-default-lang? true})
           n-initiative-id (db.initiative/new-initiative db n-initiative-data)
           n-initiative (db.initiative/initiative-by-id db n-initiative-id)]
 

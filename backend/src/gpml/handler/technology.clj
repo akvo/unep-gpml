@@ -20,7 +20,7 @@
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
-(defn expand-entity-associations
+(defn- expand-entity-associations
   [entity-connections resource-id]
   (vec (for [connection entity-connections]
          {:column_name "technology"
@@ -30,7 +30,7 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn expand-individual-associations
+(defn- expand-individual-associations
   [individual-connections resource-id]
   (vec (for [connection individual-connections]
          {:column_name "technology"
@@ -40,43 +40,48 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn create-technology [conn logger mailjet-config
-                         {:keys [name organisation_type
-                                 development_stage specifications_provided
-                                 year_founded email country
-                                 geo_coverage_type geo_coverage_value
-                                 geo_coverage_countries geo_coverage_country_groups
-                                 geo_coverage_value_subnational_city
-                                 tags url urls created_by image owners info_docs
-                                 sub_content_type related_content
-                                 headquarter document_preview
-                                 logo thumbnail attachments remarks
-                                 entity_connections individual_connections]}]
-  (let [data {:name name
-              :year_founded year_founded
-              :organisation_type organisation_type
-              :development_stage development_stage
-              :specifications_provided specifications_provided
-              :email email
-              :url url
-              :country country
-              :image (handler.image/assoc-image conn image "technology")
-              :logo (handler.image/assoc-image conn logo "technology")
-              :thumbnail (handler.image/assoc-image conn thumbnail "technology")
-              :geo_coverage_type geo_coverage_type
-              :geo_coverage_value geo_coverage_value
-              :geo_coverage_countries geo_coverage_countries
-              :geo_coverage_country_groups geo_coverage_country_groups
-              :subnational_city geo_coverage_value_subnational_city
-              :remarks remarks
-              :attachments attachments
-              :created_by created_by
-              :owners owners
-              :info_docs info_docs
-              :sub_content_type sub_content_type
-              :headquarter headquarter
-              :document_preview document_preview
-              :review_status "SUBMITTED"}
+(defn- create-technology
+  [conn logger mailjet-config
+   {:keys [name organisation_type
+           development_stage specifications_provided
+           year_founded email country
+           geo_coverage_type geo_coverage_value
+           geo_coverage_countries geo_coverage_country_groups
+           geo_coverage_value_subnational_city
+           tags url urls created_by image owners info_docs
+           sub_content_type related_content
+           headquarter document_preview
+           logo thumbnail attachments remarks
+           entity_connections individual_connections language
+           capacity_building]}]
+  (let [data (cond-> {:name name
+                      :year_founded year_founded
+                      :organisation_type organisation_type
+                      :development_stage development_stage
+                      :specifications_provided specifications_provided
+                      :email email
+                      :url url
+                      :country country
+                      :image (handler.image/assoc-image conn image "technology")
+                      :logo (handler.image/assoc-image conn logo "technology")
+                      :thumbnail (handler.image/assoc-image conn thumbnail "technology")
+                      :geo_coverage_type geo_coverage_type
+                      :geo_coverage_value geo_coverage_value
+                      :geo_coverage_countries geo_coverage_countries
+                      :geo_coverage_country_groups geo_coverage_country_groups
+                      :subnational_city geo_coverage_value_subnational_city
+                      :remarks remarks
+                      :attachments attachments
+                      :created_by created_by
+                      :owners owners
+                      :info_docs info_docs
+                      :sub_content_type sub_content_type
+                      :headquarter headquarter
+                      :document_preview document_preview
+                      :review_status "SUBMITTED"
+                      :language language}
+               (not (nil? capacity_building))
+               (assoc :capacity_building capacity_building))
         technology-id (->> data (db.technology/new-technology conn) :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
@@ -84,7 +89,7 @@
                                                              (:stakeholder %))
                                                           api-individual-connections)))))]
     (when (seq related_content)
-      (handler.resource.related-content/create-related-contents conn technology-id "technology" related_content))
+      (handler.resource.related-content/create-related-contents conn logger technology-id "technology" related_content))
     (when headquarter
       (db.country/add-country-headquarter conn {:id country :headquarter headquarter}))
     (doseq [stakeholder-id owners]
@@ -139,13 +144,13 @@
         (log logger :error ::failed-to-create-technology {:exception-message (.getMessage e)})
         (let [response {:status 500
                         :body {:success? false
-                               :reason :could-not-create-event}}]
+                               :reason :could-not-create-technology}}]
 
           (if (instance? SQLException e)
             response
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
-(def post-params
+(def ^:private post-params
   (into [:map
          [:name string?]
          [:year_founded {:optional true} integer?]
@@ -157,8 +162,8 @@
            "Development", "Research"]]
          [:country {:optional true} integer?]
          [:geo_coverage_type
-          [:enum "global", "regional", "national", "transnational",
-           "sub-national", "global with elements in specific areas"]]
+          [:enum "global", "national", "transnational",
+           "sub-national"]]
          [:geo_coverage_value_subnational_city {:optional true} string?]
          [:image {:optional true} [:fn (comp util/base64? util/base64-headless)]]
          [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
@@ -193,6 +198,8 @@
          [:urls {:optional true}
           [:vector {:optional true}
            [:map [:lang string?] [:url [:string {:min 1}]]]]]
+         [:language string?]
+         [:capacity_building {:optional true} boolean?]
          auth/owners-schema]
         handler.geo/params-payload))
 

@@ -278,7 +278,7 @@ const Root = () => {
         return console.log(err);
       }
       if (authResult) {
-        history.replace("/");
+        history.goBack();
         setSession(authResult);
         api.setToken(authResult.idToken);
         if (
@@ -351,6 +351,15 @@ const Root = () => {
       ReactGA.pageview(window.location.pathname + window.location.search);
     }
   }, []);
+
+  // Remove scroll effect after displaying the detail modal
+  useEffect(() => {
+    const body = document.querySelector("body");
+    if (!path.includes("/knowledge")) {
+      body.classList.remove("scroll-disabled");
+      body.style.top = "unset";
+    }
+  }, [path]);
 
   // Here we retrieve the resources data
   const [results, setResults] = useState([]);
@@ -459,7 +468,16 @@ const Root = () => {
           path="/landing"
           exact
           render={(props) => (
-            <Landing {...{...props, setLoginVisible, profile, updateQuery, isRegistered, logout}} />
+            <Landing
+              {...{
+                ...props,
+                setLoginVisible,
+                profile,
+                updateQuery,
+                isRegistered,
+                logout,
+              }}
+            />
           )}
         />
         <Route>
@@ -764,7 +782,9 @@ const Root = () => {
               />
               <Route
                 path="/stakeholder-signup"
-                render={(props) => <SignupView {...props} formType="stakeholder" />}
+                render={(props) => (
+                  <SignupView {...props} formType="stakeholder" />
+                )}
               />
               <Route
                 path="/stakeholder-signup-new"
@@ -780,7 +800,10 @@ const Root = () => {
                   />
                 )}
               />
-              <Route path="/login" render={(props) => <LoginView {...props} />} />
+              <Route
+                path="/login"
+                render={(props) => <LoginView {...props} />}
+              />
               <Route
                 path="/flexible-forms"
                 render={(props) => <FlexibleForms {...props} />}
@@ -788,7 +811,10 @@ const Root = () => {
               <Route
                 path="/details-view"
                 render={(props) => (
-                  <NewDetailsView {...props} isAuthenticated={isAuthenticated} />
+                  <NewDetailsView
+                    {...props}
+                    isAuthenticated={isAuthenticated}
+                  />
                 )}
               />
               <Route
@@ -806,7 +832,10 @@ const Root = () => {
               <Route
                 exact
                 render={(props) => (
-                  <StakeholderDetail {...props} isAuthenticated={isAuthenticated} />
+                  <StakeholderDetail
+                    {...props}
+                    isAuthenticated={isAuthenticated}
+                  />
                 )}
                 path="/stakeholder-detail"
               />
@@ -877,7 +906,9 @@ const Root = () => {
             </Switch>
             {isAuthenticated && <AddContentButton />}
             <Footer
-              setStakeholderSignupModalVisible={setStakeholderSignupModalVisible}
+              setStakeholderSignupModalVisible={
+                setStakeholderSignupModalVisible
+              }
               setWarningModalVisible={setWarningModalVisible}
               isAuthenticated={isAuthenticated}
               loginWithPopup={loginWithPopup}

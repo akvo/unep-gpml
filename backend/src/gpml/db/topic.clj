@@ -16,19 +16,19 @@
                         "initiative" ["q2" "q3"]
                         "resource" ["title" "summary" "remarks"]}})
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (def ^:const generic-entity-cte-opts
   "Common set of options for entity related CTE generation functions."
   {:tables ["stakeholder" "organisation"]})
 
 (def ^:const table-rename-mapping
-  "Some topics like financing_resource and project aren't the real table
+  "Some topics like financing_resource aren't the real table
   names we want to query. Therefore, when passing the following topic
   options as tables we need to rename them to their proper source
   table."
   {"financing_resource" "resource"
    "action_plan" "resource"
-   "technical_resource" "resource"
-   "project" "initiative"})
+   "technical_resource" "resource"})
 
 (defn- rename-tables
   [tables]
@@ -58,7 +58,8 @@
    btrim((e.q41_1)::text, '\"'::text) AS q41_1_url,
    e.q24_subnational_city,
    e.qimage AS image,
-   e.thumbnail")
+   e.thumbnail,
+   e.capacity_building")
 
 (def ^:const ^:private policy-cols
   "e.abstract AS summary,
@@ -73,18 +74,18 @@
    e.remarks AS summary,
    e.*")
 
-(defn generic-topic-search-text-field-query
+(defn- generic-topic-search-text-field-query
   [search-text-field]
   (format "COALESCE(e.%s, '')" search-text-field))
 
-(defn initiative-topic-search-text-field-query
+(defn- initiative-topic-search-text-field-query
   "The columns used from initiative table are mostly JSON objects or
   JSON values so we need to convert them to the proper type when
   building the search text value."
   [search-text-field]
   (format "COALESCE(btrim((e.%s)::text), '')" search-text-field))
 
-(defn generate-tsvector-str
+(defn- generate-tsvector-str
   "Generates SQL statements to concatenate the values of the columns
   specified in `search-text-fields` vector. It is meant to be used
   with `tsvector` to generate search strings for full text search.
@@ -114,11 +115,11 @@
     "technology" technology-cols
     "e.*"))
 
-(defn build-topic-data-query
+(defn- build-topic-data-query
   [entity-name
    {:keys [entity tag representative-group
            geo-coverage-types sub-content-type
-           search-text review-status featured] :as _params}
+           search-text review-status featured capacity-building] :as _params}
    {:keys [search-text-fields] :as _opts}]
   (let [entity-connections-join (if-not (seq entity)
                                   ""
@@ -139,7 +140,7 @@
                      (str " AND org.id IN (:v*:entity)")
 
                      (seq tag)
-                     (str " AND LOWER(t.tag) IN (:v*:tag)")
+                     (str " AND t.tag IN (:v*:tag)")
 
                      (seq representative-group)
                      (str " AND org.type IN (:v*:representative-group)")
@@ -154,7 +155,10 @@
                      (str " AND " tsvector-str " @@ to_tsquery(:search-text)")
 
                      featured
-                     (str " AND e.featured = :featured"))]
+                     (str " AND e.featured = :featured")
+
+                     capacity-building
+                     (str " AND e.capacity_building = :capacity-building"))]
     (apply
      format
      "SELECT
@@ -175,70 +179,19 @@
              (repeat 2 entity-name)
              [where-cond]))))
 
-;;======================= Geo Coverage queries =================================
-(defn build-topic-geo-coverage-query
-  "Generic query for geo coverage data. The `e` alias stands for
-  `entity`."
-  [entity-name]
-  (let [non-global-where-cond (if (= entity-name "initiative")
-                                "e.q24->>'global'::TEXT IS NULL"
-                                "e.geo_coverage_type <> 'global'::geo_coverage_type")
-        global-where-cond (if (= entity-name "initiative")
-                            "e.q24->>'global'::TEXT IS NOT NULL"
-                            "e.geo_coverage_type = 'global'::geo_coverage_type")]
-    (apply format
-           "SELECT
-        e.id,
-        json_agg(COALESCE(cgc.country, egc.country)) AS geo_coverage
-    FROM
-        %s e
-        LEFT JOIN %s_geo_coverage egc ON e.id = egc.%s
-        LEFT JOIN country_group_country cgc ON cgc.country_group = egc.country_group
-    WHERE
-         %s
-    GROUP BY e.id
-    UNION ALL
-    SELECT e.id,
-         '[0]'::json
-    FROM
-        %s e
-    WHERE
-        %s
-    GROUP BY e.id"
-           (concat
-            (repeat 3 entity-name)
-            [non-global-where-cond entity-name global-where-cond]))))
-
-(defn build-entity-geo-coverage-query
-  [entity-name]
-  (format
-   "SELECT e.id, json_agg(c.id) AS geo_coverage
-    FROM %s e
-    LEFT JOIN country c ON e.country = c.id
-    GROUP BY e.id"
-   entity-name))
-
-(defn build-geo-coverage-query
-  [entity-name _params _opts]
-  (if (some #{entity-name} (:tables generic-entity-cte-opts))
-    (build-entity-geo-coverage-query entity-name)
-    (build-topic-geo-coverage-query entity-name)))
-
 ;;======================= Topic queries =================================
-(defn generic-topic-query
+(defn- generic-topic-query
   "Generic query to generate topics."
   [topic-name-query entity-name]
   (apply format
          "SELECT
-        %s AS topic,
-        geo.geo_coverage,
-        row_to_json(d.*) AS json
-    FROM
-        cte_%s_data d
-        LEFT JOIN cte_%s_geo geo ON d.id = geo.id"
+          %s AS topic,
+          row_to_json(d.*) AS json
+        FROM
+          cte_%s_data d"
          (concat [topic-name-query] (repeat 2 entity-name))))
 
-(defn generic-topic-name-query
+(defn- generic-topic-name-query
   [topic-name]
   (format "'%s'::text" topic-name))
 
@@ -246,19 +199,18 @@
   "replace(lower(d.type), ' ', '_')")
 
 ;;======================= Topic CTE query =================================
-(defn generic-topic-cte-query
+(defn- generic-topic-cte-query
   [entity-name]
   (format
    "SELECT
        cte.topic,
-       cte.geo_coverage,
        cte.json
     FROM
         cte_%s_topic cte"
    entity-name))
 
 ;;======================= Utility functions =================================
-(defn generate-cte-sql
+(defn- generate-cte-sql
   "Generates raw SQL for a CTE construct. The caller is responsible for
   adding the trailing comma."
   [cte-name query]
@@ -269,25 +221,23 @@
     ")"]))
 
 ;;======================= Functions to generate topic queries ================
-(defn build-topic-query
+(defn- build-topic-query
   "Generates SQL statements for querying topic information.
 
-  There are two exceptions to the generic query that are
-  considered. First, when the content table is `initiative` the
-  `topic-name` is changed to `project` to not break the API for
-  callers. Second, when the content table is `resource` the
+  There is one exception to the generic query that are
+  considered. When the content table is `resource` the
   `topic-name-query` changes because `resource` table contains three
   types of resources and we should use their names instead of the
   table `entity-name`."
   [entity-name _ _]
-  (let [topic-name (if (= "initiative" entity-name) "project" entity-name)
+  (let [topic-name entity-name
         topic-name-query (if (= "resource" entity-name)
                            resource-topic-name-query
                            (generic-topic-name-query topic-name))]
     (generic-topic-query topic-name-query entity-name)))
 
 ;;======================= Core functions to generate topic CTEs ================
-(defn generate-ctes*
+(defn- generate-ctes*
   [cte-type query-builder-fn params opts]
   (reduce (fn [ctes entity-name]
             (let [normalized-cte-type (str/replace (name cte-type) "-" "_")
@@ -300,7 +250,9 @@
           ""
           (:tables opts)))
 
-(defmulti generate-ctes (fn [cte-type _ _] cte-type))
+(defmulti generate-ctes
+  "Generates the raw CTE SQL for the given query type."
+  (fn [cte-type _ _] cte-type))
 
 (defmethod generate-ctes :data
   [cte-type params opts]
@@ -310,15 +262,11 @@
   [_ params opts]
   (generate-ctes* :data build-topic-data-query params opts))
 
-(defmethod generate-ctes :geo
-  [cte-type params opts]
-  (generate-ctes* cte-type build-geo-coverage-query params opts))
-
 (defmethod generate-ctes :topic
   [cte-type params opts]
   (generate-ctes* cte-type build-topic-query params opts))
 
-(defn generate-topic-cte
+(defn- generate-topic-cte
   "Generate the topic CTE by combining all topics CTEs."
   [_params opts]
   (generate-cte-sql "cte_topic"
@@ -331,12 +279,13 @@
                             ""
                             (:tables opts))))
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn generate-topic-query
+  "Generates the SQL to query topic's (resources) data."
   [params opts]
   (let [opts (merge generic-cte-opts (when (seq (:tables opts))
                                        (update opts :tables rename-tables)))
         topic-data-ctes (generate-ctes :data params opts)
-        topic-geo-coverage-ctes (generate-ctes :geo params opts)
         topic-ctes (generate-ctes :topic params opts)
         topic-cte (generate-topic-cte {} opts)]
     (str
@@ -344,27 +293,32 @@
      (str/join
       ","
       [topic-data-ctes
-       topic-geo-coverage-ctes
        topic-ctes
        topic-cte]))))
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn generate-entity-topic-query
+  "Generates the SQL to query entity topics (stakeholders and
+  organisations) data."
   [params opts]
   (let [topic-data-ctes (generate-ctes :entity_data params opts)
         topic-ctes (generate-ctes :topic params opts)
-        topic-geo-coverage-ctes (generate-ctes :geo params opts)
         topic-cte (generate-topic-cte {} opts)]
     (str
      "WITH "
      (str/join
       ","
       [topic-data-ctes
-       topic-geo-coverage-ctes
        topic-ctes
        topic-cte]))))
 
 (def ^:const ^:private count-aggregate-query-raw-sql
   "SELECT topic, COUNT(*) FROM cte_results GROUP BY topic")
+
+(def ^:const ^:private capacity-building-count-aggregate-query-raw-sql
+  "SELECT 'capacity_building' AS topic, COUNT(*)
+   FROM cte_results
+   WHERE CAST(json->>'capacity_building' AS BOOLEAN) IS TRUE")
 
 (def ^:const  ^:private tags-count-aggregate-hugsql
   "This fragment counts tags ignoring duplicates when comparing them as lowercase,
@@ -390,11 +344,13 @@
    GROUP BY 1")
 
 (defn- generate-count-aggregate-query
-  [{:keys [tags-to-count]}]
+  [{:keys [tags-to-count capacity-building]}]
   (str
    count-aggregate-query-raw-sql
    (when (seq tags-to-count)
-     (str " UNION ALL " tags-count-aggregate-hugsql))))
+     (str " UNION ALL " tags-count-aggregate-hugsql))
+   (when-not (nil? capacity-building)
+     (str " UNION ALL " capacity-building-count-aggregate-query-raw-sql))))
 
 (defn- generate-get-topics-query
   [{:keys [order-by limit offset descending]}]
@@ -411,7 +367,10 @@
       (when offset
         "OFFSET :offset")])))
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn generate-get-topics
+  "Generates the SQL for querying topic's data. If `count-only?` is true
+  then generates the SQL for counting topics."
   [{:keys [count-only?] :as opts}]
   (if count-only?
     (generate-count-aggregate-query opts)
@@ -425,7 +384,9 @@
                                          ELSE (%s)::JSON END))
      WHERE value::INTEGER IN (:v*:%s)) > 0" json-column json-column values-to-lookup))
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn generate-filter-topic-snippet
+  "Generates the SQL to apply filters to the topics aggregate."
   [{:keys [favorites user-id topic start-date end-date transnational
            geo-coverage resource-types geo-coverage-countries
            affiliation]}]
@@ -436,6 +397,7 @@
      " "
      (list
       "SELECT t.* FROM cte_topic t"
+      ;; FIXME fix this to user a query instead of a view.
       (when (and favorites user-id resource-types)
         "JOIN v_stakeholder_association a
          ON a.stakeholder = :user-id
@@ -464,12 +426,12 @@
                AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_country_groups'" "transnational") ")")
 
         (and geo-coverage? transnational?)
-        (str " AND (" (generic-json-array-lookup-cond "t.geo_coverage" "geo-coverage")
+        (str " AND (" (generic-json-array-lookup-cond "t.json->>'geo_coverage_countries'" "geo-coverage")
              " OR t.json->>'geo_coverage_type'='transnational'
                  AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_country_groups'" "transnational") ")")
 
         geo-coverage?
-        (str " AND " (generic-json-array-lookup-cond "t.geo_coverage" "geo-coverage"))
+        (str " AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_countries'" "geo-coverage"))
 
         geo-coverage-countries?
         (str " AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_values'" "geo-coverage-countries")))))))

@@ -7,9 +7,6 @@ ON sc.stakeholder = s.id
 LEFT JOIN stakeholder_tag st ON st.stakeholder = s.id
 LEFT JOIN tag t ON t.id = st.tag
 WHERE sc.:i:resource-type = :resource-id
--- TODO: remove the following line once we refactor association and
--- favorites schema.
-AND sc.is_bookmark IS FALSE
 GROUP BY sc.id, s.id
 
 -- :name get-resource-entity-connections

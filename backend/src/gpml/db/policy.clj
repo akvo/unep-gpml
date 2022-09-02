@@ -10,7 +10,6 @@
             [java-time.temporal]))
 
 (declare language-by-policy-id
-         add-language-to-policy
          new-policy
          add-policies-geo
          create-policies
@@ -27,11 +26,11 @@
    the canonical entity representation."
   [policy]
   (-> policy
-      (util/update-if-exists :geo_coverage_type #(sql-util/keyword->pg-enum % "geo_coverage_type"))
-      (util/update-if-exists :review_status #(sql-util/keyword->pg-enum % "review_status"))
-      (util/update-if-exists :leap_api_modified #(sql-util/instant->sql-timestamp %))
-      (util/update-if-exists :first_publication_date jt/sql-date)
-      (util/update-if-exists :latest_amendment_date jt/sql-date)
-      (util/update-if-exists :attachments sql-util/coll->pg-jsonb)
-      (util/update-if-exists :topics #(pg-util/->JDBCArray % "text"))
+      (util/update-if-not-nil :geo_coverage_type #(sql-util/keyword->pg-enum % "geo_coverage_type"))
+      (util/update-if-not-nil :review_status #(sql-util/keyword->pg-enum % "review_status"))
+      (util/update-if-not-nil :leap_api_modified #(sql-util/instant->sql-timestamp %))
+      (util/update-if-not-nil :first_publication_date jt/sql-date)
+      (util/update-if-not-nil :latest_amendment_date jt/sql-date)
+      (util/update-if-not-nil :attachments sql-util/coll->pg-jsonb)
+      (util/update-if-not-nil :topics #(pg-util/->JDBCArray % "text"))
       (dissoc :tags)))

@@ -20,7 +20,8 @@
    :geo_coverage_type nil
    :end_date "2021-01-01T12:00:00Z"
    :reviewed_at "2021-01-01T12:00:00Z"
-   :start_date "2021-01-01T10:00:00Z"})
+   :start_date "2021-01-01T10:00:00Z"
+   :language "en"})
 
 (defn make-profile [first-name last-name email]
   {:picture nil
@@ -46,7 +47,7 @@
        (map :id)))
 
 (defn get-country-group-ids [db country-id]
-  (db.country-group/get-country-groups-by-country db {:id country-id}))
+  (db.country-group/get-country-groups-by-countries db {:filters {:countries-ids [country-id]}}))
 
 ;; TODO: Extend the tests to include filtering by `featured` flag of resources
 (deftest topic-filtering

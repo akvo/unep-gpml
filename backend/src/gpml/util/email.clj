@@ -95,10 +95,7 @@ again, please visit this URL: %s/edit-%s/%s
           (util/get-title topic-type topic-item)
           (:app-domain mailjet-config)
           (-> (util/get-api-topic-type topic-type topic-item)
-              (str/replace "_" "-")
-              ;; FIXME: This is so messy because of inconsistently
-              ;; using "initiative" instead of project in the URL
-              (str/replace "project" "initiative"))
+              (str/replace "_" "-"))
           (:id topic-item)))
 
 (defn notify-user-review-subject [mailjet-config review-status topic-type topic-item]

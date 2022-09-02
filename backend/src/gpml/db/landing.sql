@@ -1,4 +1,4 @@
--- :name map-counts :? :*
+-- :name map-counts :? :one
 -- :doc Gets the entity count per country.
 -- :require [gpml.db.topic]
 /*~ (if (= (:entity-group params) :topic)
@@ -9,49 +9,73 @@
 filtered_entities AS (
 --~ (#'gpml.db.topic/generate-filter-topic-snippet params)
 ),
-country_counts AS (
-  SELECT (countries.value)::TEXT::INT AS geo_coverage,
+transnational_counts_per_country AS (
+  SELECT cgc.country AS country_id,
+         topic,
+         COUNT(DISTINCT json->>'id') AS topic_count
+  FROM filtered_entities
+  LEFT JOIN json_array_elements_text((json->>'geo_coverage_country_groups')::JSON) country_groups
+  ON json->>'geo_coverage_country_groups' IS NOT NULL
+  JOIN country_group_country cgc ON cgc.country_group = (country_groups.value)::TEXT::INT
+  WHERE (country_groups.value)::TEXT <> 'null' AND json->>'geo_coverage_type' = 'transnational'
+  GROUP BY cgc.country, topic
+),
+country_group_counts AS (
+  SELECT (country_groups.value)::TEXT::INT AS country_group_id,
          topic,
          COUNT(topic) AS topic_count
   FROM filtered_entities
-  LEFT JOIN json_array_elements(geo_coverage) countries
-  ON geo_coverage IS NOT NULL
-  WHERE (countries.value)::TEXT <> 'null'
-  GROUP BY (countries.value)::TEXT::INT, topic
-/*~ (when (= (:entity-group params) :community) */
-  UNION ALL
-  SELECT (countries.value)::TEXT::INT AS geo_coverage, 'organisation' AS topic, COUNT(topic) AS topic_count
-  FROM filtered_entities
-  LEFT JOIN json_array_elements(geo_coverage) countries ON geo_coverage IS NOT NULL
-  WHERE (countries.value)::TEXT <> 'null' AND topic = 'organisation' AND (json->>'is_member')::BOOLEAN IS TRUE
-  GROUP BY (countries.value)::TEXT::INT, topic
-  UNION ALL
-  SELECT (countries.value)::TEXT::INT AS geo_coverage, 'non_member_organisation' AS topic, COUNT(topic) AS topic_count
-  FROM filtered_entities
-  LEFT JOIN json_array_elements(geo_coverage) countries ON geo_coverage IS NOT NULL
-  WHERE (countries.value)::TEXT <> 'null' AND topic = 'organisation' AND (json->>'is_member')::BOOLEAN IS FALSE
-  GROUP BY (countries.value)::TEXT::INT, topic
-/*~ ) ~*/
-)
-SELECT geo_coverage AS id, json_object_agg(COALESCE(topic, 'project'), topic_count)
---~ (str " AS " (:count-name params))
-FROM country_counts
-GROUP BY geo_coverage;
-
--- :name map-counts-by-country-group :? :*
--- :doc Get the entity count per country group.
--- :require [gpml.db.landing]
-WITH country_group_counts AS (
---~(#'gpml.db.landing/generate-entity-count-by-country-group-queries {} {})
+  LEFT JOIN json_array_elements_text((json->>'geo_coverage_country_groups')::JSON) country_groups
+  ON json->>'geo_coverage_country_groups' IS NOT NULL
+  WHERE (country_groups.value)::TEXT <> 'null'
+  GROUP BY (country_groups.value)::TEXT::INT, topic
 ),
-aggregate_country_group_counts AS (
-  SELECT country_group_id, entity, SUM(entity_count) AS total_entity_count
+country_counts AS (
+/*~ (if (= (:entity-group params) :topic) */
+  SELECT (countries.value)::TEXT::INT AS country_id,
+         topic,
+         COUNT(topic) AS topic_count
+  FROM filtered_entities
+  LEFT JOIN json_array_elements_text((json->>'geo_coverage_countries')::JSON) countries
+  ON json->>'geo_coverage_countries' IS NOT NULL
+  WHERE (countries.value)::TEXT <> 'null' AND json->>'geo_coverage_type' IN ('national', 'sub-national')
+  GROUP BY (countries.value)::TEXT::INT, topic
+/*~*/
+  SELECT (json->>'country')::INT AS country_id, 'stakeholder' AS topic, COUNT(topic) AS topic_count
+  FROM filtered_entities
+  WHERE (json->>'country')::INT IS NOT NULL AND topic = 'stakeholder'
+  GROUP BY (json->>'country')::INT, topic
+  UNION ALL
+  SELECT (json->>'country')::INT AS country_id, 'organisation' AS topic, COUNT(topic) AS topic_count
+  FROM filtered_entities
+  WHERE (json->>'country')::INT IS NOT NULL AND topic = 'organisation' AND (json->>'is_member')::BOOLEAN IS TRUE
+  GROUP BY (json->>'country')::INT, topic
+  UNION ALL
+  SELECT (json->>'country')::INT AS country_id, 'non_member_organisation' AS topic, COUNT(topic) AS topic_count
+  FROM filtered_entities
+  WHERE (json->>'country')::INT IS NOT NULL AND topic = 'organisation' AND (json->>'is_member')::BOOLEAN IS FALSE
+  GROUP BY (json->>'country')::INT, topic
+/*~ ) ~*/
+),
+country_counts_agg AS (
+  SELECT country_id, json_object_agg(topic, topic_count) AS counts
+  FROM country_counts
+  GROUP BY country_id
+),
+transnational_counts_per_country_agg AS (
+  SELECT country_id, json_object_agg(topic, topic_count) AS transnational_counts
+  FROM transnational_counts_per_country
+  GROUP BY country_id
+),
+country_group_counts_agg AS (
+  SELECT country_group_id, json_object_agg(topic, topic_count) AS counts
   FROM country_group_counts
-  GROUP BY country_group_id, entity
-)
-SELECT country_group_id, json_object_agg(COALESCE(entity, 'project'), total_entity_count) AS counts
-FROM aggregate_country_group_counts
-GROUP BY country_group_id;
+  GROUP BY country_group_id
+) SELECT json_build_object(
+    'country_counts', (SELECT json_agg(row_to_json(country_counts_agg)) AS counts FROM country_counts_agg),
+    'transnational_counts', (SELECT json_agg(row_to_json(transnational_counts_per_country_agg)) AS counts FROM transnational_counts_per_country_agg),
+    'country_group_counts', (SELECT json_agg(row_to_json(country_group_counts_agg)) AS counts FROM country_group_counts_agg)
+) AS result;
 
 -- :name summary
 -- :doc Get summary of count of entities and number of countries
@@ -227,7 +251,7 @@ non_member_organisation_countries AS (
 country_counts AS (
     SELECT
         COUNT(*) AS country,
-        'project' AS data
+        'initiative' AS data
     FROM
         initiative_countries
     UNION
@@ -274,7 +298,7 @@ country_counts AS (
 totals AS (
     SELECT
         COUNT(*) AS total,
-        'project' AS data,
+        'initiative' AS data,
         1 AS o
     FROM
         initiative

@@ -17,8 +17,8 @@
    :development_stage "Scale up"
    :organisation_type "Established Company"
    :specifications_provided false
-   :geo_coverage_type "regional"
-   :geo_coverage_value (mapv :id (:country_groups data))
+   :geo_coverage_type "global"
+   :geo_coverage_value nil
    :urls [{:lang "id" :url "https://www.test.org"}]
    :url "https://akvo.org"
    :attachments nil
@@ -28,7 +28,8 @@
    :document_preview false
    :year_founded 2021
    :tags (:tags data)
-   :owners (or (:owners data) [])})
+   :owners (or (:owners data) [])
+   :language "en"})
 
 (deftest handler-post-test
   (testing "New technology is created"
@@ -63,8 +64,7 @@
                                                            :org
                                                            {:id -1
                                                             :name "New Era"
-                                                            :geo_coverage_type "regional"
-                                                            :geo_coverage_value (mapv :id (:country_groups data))
+                                                            :geo_coverage_type "global"
                                                             :country (-> (:countries data) second :id)}))))
           technology-one (db.technology/technology-by-id db (:body resp-one))
           technology-two (db.technology/technology-by-id db (:body resp-two))]

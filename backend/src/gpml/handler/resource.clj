@@ -20,7 +20,7 @@
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
-(defn expand-entity-associations
+(defn- expand-entity-associations
   [entity-connections resource-id]
   (vec (for [connection entity-connections]
          {:column_name "resource"
@@ -30,7 +30,7 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn expand-individual-associations
+(defn- expand-individual-associations
   [individual-connections resource-id]
   (vec (for [connection individual-connections]
          {:column_name "resource"
@@ -40,7 +40,7 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn create-resource
+(defn- create-resource
   [conn logger mailjet-config
    {:keys [resource_type title publish_year
            summary value value_currency
@@ -51,33 +51,37 @@
            attachments country urls tags remarks thumbnail
            created_by url owners info_docs sub_content_type related_content
            first_publication_date latest_amendment_date document_preview
-           entity_connections individual_connections]}]
-  (let [data {:type resource_type
-              :title title
-              :publish_year publish_year
-              :summary summary
-              :value value
-              :value_currency value_currency
-              :value_remarks value_remarks
-              :valid_from valid_from
-              :valid_to valid_to
-              :image (handler.image/assoc-image conn image "resource")
-              :thumbnail (handler.image/assoc-image conn thumbnail "resource")
-              :geo_coverage_type geo_coverage_type
-              :geo_coverage_value geo_coverage_value
-              :geo_coverage_countries geo_coverage_countries
-              :geo_coverage_country_groups geo_coverage_country_groups
-              :subnational_city geo_coverage_value_subnational_city
-              :country country
-              :attachments attachments
-              :remarks remarks
-              :created_by created_by
-              :url url
-              :info_docs info_docs
-              :sub_content_type sub_content_type
-              :first_publication_date first_publication_date
-              :latest_amendment_date latest_amendment_date
-              :document_preview document_preview}
+           entity_connections individual_connections language
+           capacity_building]}]
+  (let [data (cond-> {:type resource_type
+                      :title title
+                      :publish_year publish_year
+                      :summary summary
+                      :value value
+                      :value_currency value_currency
+                      :value_remarks value_remarks
+                      :valid_from valid_from
+                      :valid_to valid_to
+                      :image (handler.image/assoc-image conn image "resource")
+                      :thumbnail (handler.image/assoc-image conn thumbnail "resource")
+                      :geo_coverage_type geo_coverage_type
+                      :geo_coverage_value geo_coverage_value
+                      :geo_coverage_countries geo_coverage_countries
+                      :geo_coverage_country_groups geo_coverage_country_groups
+                      :subnational_city geo_coverage_value_subnational_city
+                      :country country
+                      :attachments attachments
+                      :remarks remarks
+                      :created_by created_by
+                      :url url
+                      :info_docs info_docs
+                      :sub_content_type sub_content_type
+                      :first_publication_date first_publication_date
+                      :latest_amendment_date latest_amendment_date
+                      :document_preview document_preview
+                      :language language}
+               (not (nil? capacity_building))
+               (assoc :capacity_building capacity_building))
         resource-id (:id (db.resource/new-resource conn data))
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
@@ -85,7 +89,7 @@
                                                              (:stakeholder %))
                                                           api-individual-connections)))))]
     (when (seq related_content)
-      (handler.resource.related-content/create-related-contents conn resource-id "resource" related_content))
+      (handler.resource.related-content/create-related-contents conn logger resource-id "resource" related_content))
     (doseq [stakeholder-id owners]
       (h.auth/grant-topic-to-stakeholder! conn {:topic-id resource-id
                                                 :topic-type "resource"
@@ -144,18 +148,13 @@
         (log logger :error ::failed-to-create-resource {:exception-message (.getMessage e)})
         (let [response {:status 500
                         :body {:success? false
-                               :reason :could-not-create-event}}]
+                               :reason :could-not-create-resource}}]
 
           (if (instance? SQLException e)
             response
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
-(defn or-and [resource_type validator]
-  (or (= "Action Plan" resource_type)
-      (and (= "Technical Resource" resource_type) (empty? validator))
-      (and (= "Financing Resource" resource_type) (some? validator))))
-
-(def post-params
+(def ^:private post-params
   [:and
    (into [:map
           [:resource_type
@@ -170,8 +169,8 @@
              [:url {:optional true} string?]
              [:country {:optional true} integer?]
              [:geo_coverage_type {:optional true}
-              [:enum "global", "regional", "national", "transnational",
-               "sub-national", "global with elements in specific areas"]]]
+              [:enum "global", "national", "transnational",
+               "sub-national"]]]
             handler.geo/params-payload)]
           [:publish_year {:optional true} integer?]
           [:summary {:optional true} string?]
@@ -181,8 +180,8 @@
           [:valid_from {:optional true} string?]
           [:valid_to {:optional true} string?]
           [:geo_coverage_type
-           [:enum "global", "regional", "national", "transnational",
-            "sub-national", "global with elements in specific areas"]]
+           [:enum "global", "national", "transnational",
+            "sub-national"]]
           [:geo_coverage_value_subnational_city {:optional true} string?]
           [:image {:optional true} [:fn (comp util/base64? util/base64-headless)]]
           [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
@@ -223,6 +222,7 @@
             [:map {:optional true}
              [:id {:optional true} pos-int?]
              [:tag string?]]]]
+          [:language string?]
           auth/owners-schema]
          handler.geo/params-payload)])
 

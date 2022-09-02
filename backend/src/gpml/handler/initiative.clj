@@ -17,24 +17,33 @@
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
-(defn- add-geo-initiative [conn initiative-id {:keys [geo_coverage_country_groups geo_coverage_countries] :as data}]
+(defn- add-geo-initiative
+  [conn initiative-id {:keys [geo_coverage_country_groups geo_coverage_countries] :as data}]
   (when (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
     (let [geo-data (handler.geo/get-geo-vector-v2 initiative-id data)]
       (db.initiative/add-initiative-geo-coverage conn {:geo geo-data}))))
 
-(defn update-geo-initiative [conn initiative-id {:keys [geo_coverage_country_groups geo_coverage_countries] :as data}]
+(defn update-geo-initiative
+  "FIXME: we should deprecate geo coverage functions like this in favor
+  of a more generic approach for all resources. We already have
+  generic DB functions for geo coverage operations."
+  [conn initiative-id {:keys [geo_coverage_country_groups geo_coverage_countries] :as data}]
   (when (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
     (let [geo-data (handler.geo/get-geo-vector-v2 initiative-id data)]
       (db.initiative/delete-initiative-geo-coverage conn {:id initiative-id})
       (db.initiative/add-initiative-geo-coverage conn {:geo geo-data}))))
 
-(defn extract-geo-data [params]
+(defn extract-geo-data
+  "FIXME: we should deprecate geo coverage functions like this in favor
+  of a more generic approach for all resources. This also should be in
+  the domain layer."
+  [params]
   {:geo_coverage_country_groups (mapv (comp #(Integer/parseInt %) name ffirst) (:q24_4 params))
    :geo_coverage_countries (mapv (comp #(Integer/parseInt %) name ffirst) (:q24_2 params))})
 
-(defn expand-entity-associations
+(defn- expand-entity-associations
   [entity-connections resource-id]
   (vec (for [connection entity-connections]
          {:column_name "initiative"
@@ -44,7 +53,7 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn expand-individual-associations
+(defn- expand-individual-associations
   [individual-connections resource-id]
   (vec (for [connection individual-connections]
          {:column_name "initiative"
@@ -54,7 +63,8 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn add-tags [conn mailjet-config tags initiative-id]
+(defn- add-tags
+  [conn mailjet-config tags initiative-id]
   (let [tag-ids (map #(:id %) tags)]
     (if-not (some nil? tag-ids)
       (db.initiative/add-initiative-tags conn {:tags (map #(vector initiative-id %) tag-ids)})
@@ -72,12 +82,21 @@
            (merge % {:type "tag"}))
          new-tags)))))
 
-(defn create-initiative [conn {:keys [mailjet-config tags owners related_content created_by
-                                      entity_connections individual_connections qimage thumbnail] :as initiative}]
-  (let [data (-> initiative
-                 (dissoc :tags :owners :mailjet-config :entity_connections :individual_connections :related_content)
-                 (assoc :qimage (handler.image/assoc-image conn qimage "initiative")
-                        :thumbnail (handler.image/assoc-image conn thumbnail "initiative")))
+(defn- create-initiative
+  [conn logger mailjet-config
+   {:keys [tags owners related_content created_by
+           entity_connections individual_connections qimage thumbnail capacity_building] :as initiative}]
+  (let [data (cond-> initiative
+               true
+               (dissoc :tags :owners :entity_connections
+                       :individual_connections :related_content)
+
+               true
+               (assoc :qimage (handler.image/assoc-image conn qimage "initiative")
+                      :thumbnail (handler.image/assoc-image conn thumbnail "initiative"))
+
+               (not (nil? capacity_building))
+               (assoc :capacity_building capacity_building))
         initiative-id (:id (db.initiative/new-initiative conn data))
         api-individual-connections (util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
@@ -91,7 +110,7 @@
                                                 :stakeholder-id stakeholder-id
                                                 :roles ["owner"]}))
     (when (seq related_content)
-      (handler.resource.related-content/create-related-contents conn initiative-id "initiative" related_content))
+      (handler.resource.related-content/create-related-contents conn logger initiative-id "initiative" related_content))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections initiative-id)]
         (db.favorite/new-organisation-association conn association)))
@@ -112,9 +131,11 @@
     (try
       (jdbc/with-db-transaction [conn (:spec db)]
         (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-              initiative-id (create-initiative conn (assoc body-params
-                                                           :created_by (:id user)
-                                                           :mailjet-config mailjet-config))]
+              initiative-id (create-initiative conn
+                                               logger
+                                               mailjet-config
+                                               (assoc body-params
+                                                      :created_by (:id user)))]
           (resp/created (:referrer req) {:success? true
                                          :message "New initiative created"
                                          :id initiative-id})))
@@ -122,13 +143,14 @@
         (log logger :error ::failed-to-create-initiative {:exception-message (.getMessage e)})
         (let [response {:status 500
                         :body {:success? false
-                               :reason :could-not-create-event}}]
+                               :reason :could-not-create-initiative}}]
 
           (if (instance? SQLException e)
             response
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
-(defn expand-related-initiative-content [conn initiative-id]
+(defn- expand-related-initiative-content
+  [conn initiative-id]
   (let [related_content (handler.resource.related-content/get-related-contents conn initiative-id "initiative")]
     (for [item related_content]
       (merge item
@@ -156,5 +178,10 @@
                          :type "Initiative"}]
       (resp/response (merge data extra-details)))))
 
+;; FIXME: We should define a specific domain model for initiatives and
+;; strip extra parameter keys from the request.
 (defmethod ig/init-key :gpml.handler.initiative/post-params [_ _]
-  [:map [:version integer?]])
+  [:map
+   [:version integer?]
+   [:language string?]
+   [:capacity_building boolean?]])

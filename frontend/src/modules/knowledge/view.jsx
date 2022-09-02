@@ -55,6 +55,7 @@ function Knowledge({
   setFilterCountries,
   setMultiCountryCountries,
   setWarningModalVisible,
+  setStakeholderSignupModalVisible,
   setLoginVisible,
 }) {
   return (
@@ -68,16 +69,19 @@ function Knowledge({
                 <Redirect to="/knowledge/library" exact={true} />
               </Route>
               <Route
-                path="/knowledge/lib"
+                path="/knowledge/library"
                 render={(props) => (
                   <KnowledgeLib
-                    {...{ isAuthenticated, setLoginVisible }}
-                    {...props}
+                    {...{
+                      isAuthenticated,
+                      setLoginVisible,
+                      ...props,
+                    }}
                   />
                 )}
               />
               <Route
-                path="/knowledge/library"
+                path="/knowledge/library-old"
                 render={(props) => (
                   <KnowledgeLibrary
                     {...{

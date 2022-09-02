@@ -1,26 +1,25 @@
 (ns gpml.handler.policy
   (:require [clojure.java.jdbc :as jdbc]
             [duct.logger :refer [log]]
-            [gpml.auth :as auth]
-            [gpml.constants :as constants]
             [gpml.db.favorite :as db.favorite]
-            [gpml.db.language :as db.language]
             [gpml.db.policy :as db.policy]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.domain.policy :as dom.policy]
             [gpml.handler.auth :as h.auth]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.util :as handler.util]
-            [gpml.util :as util]
             [gpml.util.email :as email]
+            [gpml.util.malli :as util.malli]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
+            [malli.util :as mu]
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
-(defn expand-entity-associations
+(defn- expand-entity-associations
   [entity-connections resource-id]
   (vec (for [connection entity-connections]
          {:column_name "policy"
@@ -30,7 +29,7 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn expand-individual-associations
+(defn- expand-individual-associations
   [individual-connections resource-id]
   (vec (for [connection individual-connections]
          {:column_name "policy"
@@ -40,46 +39,50 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn create-policy [conn logger mailjet-config
-                     {:keys [title original_title abstract url
-                             data_source type_of_law record_number
-                             first_publication_date latest_amendment_date
-                             status country geo_coverage_type
-                             geo_coverage_value implementing_mea
-                             geo_coverage_countries geo_coverage_country_groups
-                             geo_coverage_value_subnational_city
-                             tags created_by image thumbnail language
-                             owners info_docs sub_content_type
-                             document_preview related_content topics
-                             attachments remarks entity_connections individual_connections]}]
-  (let [data {:title title
-              :original_title original_title
-              :abstract abstract
-              :url url
-              :country country
-              :data_source data_source
-              :type_of_law type_of_law
-              :record_number record_number
-              :first_publication_date first_publication_date
-              :latest_amendment_date latest_amendment_date
-              :status status
-              :owners owners
-              :info_docs info_docs
-              :sub_content_type sub_content_type
-              :document_preview document_preview
-              :topics (pg-util/->JDBCArray topics "text")
-              :image (handler.image/assoc-image conn image "policy")
-              :thumbnail (handler.image/assoc-image conn thumbnail "policy")
-              :geo_coverage_type geo_coverage_type
-              :geo_coverage_value geo_coverage_value
-              :geo_coverage_countries geo_coverage_countries
-              :geo_coverage_country_groups geo_coverage_country_groups
-              :subnational_city geo_coverage_value_subnational_city
-              :implementing_mea implementing_mea
-              :attachments attachments
-              :remarks remarks
-              :created_by created_by
-              :review_status "SUBMITTED"}
+(defn- create-policy
+  [conn logger mailjet-config
+   {:keys [title original_title abstract url
+           data_source type_of_law record_number
+           first_publication_date latest_amendment_date
+           status country geo_coverage_type
+           geo_coverage_value implementing_mea subnational_city
+           geo_coverage_countries geo_coverage_country_groups
+           tags created_by image thumbnail language
+           owners info_docs sub_content_type
+           document_preview related_content topics
+           attachments remarks entity_connections individual_connections
+           capacity_building]}]
+  (let [data (cond-> {:title title
+                      :original_title original_title
+                      :abstract abstract
+                      :url url
+                      :country country
+                      :data_source data_source
+                      :type_of_law type_of_law
+                      :record_number record_number
+                      :first_publication_date first_publication_date
+                      :latest_amendment_date latest_amendment_date
+                      :status status
+                      :owners owners
+                      :info_docs info_docs
+                      :sub_content_type sub_content_type
+                      :document_preview document_preview
+                      :topics (pg-util/->JDBCArray topics "text")
+                      :image (handler.image/assoc-image conn image "policy")
+                      :thumbnail (handler.image/assoc-image conn thumbnail "policy")
+                      :geo_coverage_type geo_coverage_type
+                      :geo_coverage_value geo_coverage_value
+                      :geo_coverage_countries geo_coverage_countries
+                      :geo_coverage_country_groups geo_coverage_country_groups
+                      :subnational_city subnational_city
+                      :implementing_mea implementing_mea
+                      :attachments attachments
+                      :remarks remarks
+                      :created_by created_by
+                      :review_status "SUBMITTED"
+                      :language language}
+               (not (nil? capacity_building))
+               (assoc :capacity_building capacity_building))
         policy-geo-coverage-insert-cols ["policy" "country_group" "country"]
         policy-id (->> data (db.policy/new-policy conn) :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
@@ -88,18 +91,12 @@
                                                              (:stakeholder %))
                                                           api-individual-connections)))))]
     (when (seq related_content)
-      (handler.resource.related-content/create-related-contents conn policy-id "policy" related_content))
+      (handler.resource.related-content/create-related-contents conn logger policy-id "policy" related_content))
     (when (not-empty tags)
       (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
                                                                              :tag-category "general"
                                                                              :resource-name "policy"
                                                                              :resource-id policy-id}))
-    (when (not-empty language)
-      (let [lang-id (:id (db.language/language-by-iso-code conn (select-keys language [:iso_code])))]
-        (if-not (nil? lang-id)
-          (db.policy/add-language-to-policy conn {:id policy-id :language lang-id})
-          (db.policy/add-language-to-policy conn {:id policy-id
-                                                  :language (:id (db.language/insert-new-language conn language))}))))
     (doseq [stakeholder-id owners]
       (h.auth/grant-topic-to-stakeholder! conn {:topic-id policy-id
                                                 :topic-type "policy"
@@ -141,71 +138,13 @@
         (log logger :error ::failed-to-create-policy {:exception-message (.getMessage e)})
         (let [response {:status 500
                         :body {:success? false
-                               :reason :could-not-create-event}}]
+                               :reason :could-not-create-policy}}]
 
           (if (instance? SQLException e)
             response
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
-(def post-params
-  (->
-   [:map
-    [:title string?]
-    [:original_title {:optional true} string?]
-    [:abstract {:optional true} string?]
-    [:data_source {:optional true} string?]
-    [:type_of_law {:optional true}
-     [:enum "Legislation", "Miscellaneous", "Regulation", "Constitution"]]
-    [:record_number {:optional true} string?]
-    [:first_publication_date {:optional true} string?]
-    [:latest_amendment_date {:optional true} string?]
-    [:status {:optional true} [:enum "Repealed", "In force", "Not yet in force"]]
-    [:country {:optional true} integer?]
-    [:geo_coverage_type
-     [:enum "global", "regional", "national", "transnational",
-      "sub-national", "global with elements in specific areas"]]
-    [:geo_coverage_value_subnational_city {:optional true} string?]
-    [:image {:optional true} [:fn (comp util/base64? util/base64-headless)]]
-    [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
-    [:implementing_mea {:optional true} integer?]
-    [:tags {:optional true}
-     [:vector {:optional true}
-      [:map {:optional true}
-       [:id {:optional true} pos-int?]
-       [:tag string?]]]]
-    [:url {:optional true} string?]
-    [:info_docs {:optional true} string?]
-    [:sub_content_type {:optional true} string?]
-    [:document_preview {:optional true} boolean?]
-    [:related_content {:optional true}
-     [:vector {:optional true}
-      [:map {:optional true}
-       [:id [:int]]
-       [:type (vec (conj constants/resources :enum))]]]]
-    [:topics {:optional true}
-     [:vector {:optional true} string?]]
-    [:entity_connections {:optional true}
-     [:vector {:optional true}
-      [:map
-       [:entity int?]
-       [:role
-        [:enum "implementor" "owner" "partner" "donor"]]]]]
-    [:individual_connections {:optional true}
-     [:vector {:optional true}
-      [:map
-       [:stakeholder int?]
-       [:role
-        [:enum "owner" "resource_editor"]]]]]
-    [:urls {:optional true}
-     [:vector {:optional true}
-      [:map [:lang string?] [:url [:string {:min 1}]]]]]
-    [:language {:optional true}
-     [:map
-      [:english_name string?]
-      [:native_name string?]
-      [:iso_code string?]]]
-    auth/owners-schema]
-   (into handler.geo/params-payload)))
-
 (defmethod ig/init-key :gpml.handler.policy/post-params [_ _]
-  post-params)
+  {:body (-> dom.policy/Policy
+             (util.malli/dissoc [:id :modified :created :leap_api_id :leap_api_modified :review_status])
+             (mu/optional-keys))})

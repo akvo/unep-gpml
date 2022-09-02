@@ -13,6 +13,8 @@
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
 
+(defonce ^:private default-lang-iso-code "en")
+
 (use-fixtures :each fixtures/with-test-system)
 
 (defn- new-stakeholder [db email first_name last_name role review_status]
@@ -51,7 +53,8 @@
    :remarks nil
    :review_status nil
    :document_preview false
-   :image nil})
+   :image nil
+   :language default-lang-iso-code})
 
 (def technology-data
   {:name "technology Title"
@@ -69,7 +72,8 @@
    :document_preview false
    :image nil
    :logo nil
-   :tags nil})
+   :tags nil
+   :language default-lang-iso-code})
 
 (def event-data
   {:title "Event Data"
@@ -83,7 +87,8 @@
    :document_preview false
    :review_status nil
    :image nil
-   :tags nil})
+   :tags nil
+   :language default-lang-iso-code})
 
 (deftest handler-put-test
   (let [system (ig/init fixtures/*system* [::detail/put])
@@ -94,13 +99,14 @@
     (testing "Check editing allowed only if user has the rights"
       (let [data (seeder/parse-data
                   (slurp (io/resource "examples/initiative-national.json"))
-                  {:keywords? true})
+                  {:keywords? true
+                   :add-default-lang? true})
             initiative (db.initiative/new-initiative db data)
             edited-data (merge data {:q2 "New Title"})
             resp (handler (-> (mock/request :put "/")
                               (assoc :jwt-claims {:email "john@org"}
                                      :parameters
-                                     {:path {:topic-type "project" :topic-id (:id initiative)}
+                                     {:path {:topic-type "initiative" :topic-id (:id initiative)}
                                       :body edited-data})))
             _ (db.initiative/initiative-by-id db initiative)]
         (is (= 403 (:status resp)))))
@@ -110,7 +116,8 @@
                      db {:name "Indonesia" :iso_code "IND" :description "Member State" :territory "IND"})
             data (-> (seeder/parse-data
                       (slurp (io/resource "examples/initiative-national.json"))
-                      {:keywords? true})
+                      {:keywords? true
+                       :add-default-lang? true})
                      (assoc :q24_2 [{(keyword (str (:id country))) "Indonesia"}]))
             initiative (db.initiative/new-initiative db data)
             edited-data (merge data {:q2 "New Title"})
@@ -118,7 +125,7 @@
                               (assoc :jwt-claims {:email "john@org"}
                                      :user admin
                                      :parameters
-                                     {:path {:topic-type "project" :topic-id (:id initiative)}
+                                     {:path {:topic-type "initiative" :topic-id (:id initiative)}
                                       :body edited-data})))
             edited-initiative (db.initiative/initiative-by-id db initiative)]
         (is (= 200 (:status resp)))
@@ -170,13 +177,14 @@
         creator (new-stakeholder db "user-approved@org.com" "U" "A" "USER" "APPROVED")
         data (seeder/parse-data
               (slurp (io/resource "examples/initiative-national.json"))
-              {:keywords? true})
+              {:keywords? true
+               :add-default-lang? true})
         initiative (db.initiative/new-initiative db (assoc data :created_by (:id creator)))]
 
     (testing "Fetching detail of unapproved resource unauthenticated"
       (let [resp (handler (-> (mock/request :put "/")
                               (assoc :parameters
-                                     {:path {:topic-type "project" :topic-id (:id initiative)}})))]
+                                     {:path {:topic-type "initiative" :topic-id (:id initiative)}})))]
         (is (= 403 (:status resp)))))
 
     (testing "Fetching detail of unapproved resource as authenticated user"
@@ -184,7 +192,7 @@
                               (assoc
                                :user {:id 0 :role "USER"}
                                :parameters
-                               {:path {:topic-type "project" :topic-id (:id initiative)}})))]
+                               {:path {:topic-type "initiative" :topic-id (:id initiative)}})))]
         (is (= 403 (:status resp)))))
 
     (testing "Fetching detail of unapproved resource as different ADMIN"
@@ -192,7 +200,7 @@
                               (assoc
                                :user {:id 0 :role "ADMIN"}
                                :parameters
-                               {:path {:topic-type "project" :topic-id (:id initiative)}
+                               {:path {:topic-type "initiative" :topic-id (:id initiative)}
                                 :query {:review-status "SUBMITTED"}})))]
         (is (= 200 (:status resp)))
         (is (= "Initiative Title." (-> resp :body :title)))))
@@ -202,7 +210,7 @@
                               (assoc
                                :user creator
                                :parameters
-                               {:path {:topic-type "project" :topic-id (:id initiative)}
+                               {:path {:topic-type "initiative" :topic-id (:id initiative)}
                                 :query {:review-status "SUBMITTED"}})))]
         (is (= 200 (:status resp)))
         (is (= "Initiative Title." (-> resp :body :title)))))))

@@ -50,11 +50,12 @@
                                              :geo_coverage_type nil
                                              :role "USER"
                                              :idp_usernames ["auth0|123"]})]
-    (db.stakeholder/update-stakeholder-status db (assoc sth :review_status "APPROVED"))))
+    (db.stakeholder/update-stakeholder-status db (assoc sth :review_status "APPROVED"))
+    sth))
 
-(defn- mock-post [email]
+(defn- mock-post [sth-id]
   (-> (mock/request :post "/")
-      (assoc :jwt-claims {:email email})
+      (assoc :user {:id sth-id})
       (assoc :body-params {:topic_id 1
                            :topic "technology"
                            :association ["user" "interested in"]})))
@@ -67,6 +68,6 @@
           handler (::favorite/post system)
           _ (seeder/seed db {:country? true
                              :technology? true})
-          _ (new-stakeholder db "email@un.org")
-          resp (handler (mock-post "email@un.org"))]
+          sth-id (:id (new-stakeholder db "email@un.org"))
+          resp (handler (mock-post sth-id))]
       (is (= 200 (:status resp))))))

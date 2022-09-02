@@ -28,7 +28,8 @@
           ;; John create new initiative with new organisation
           submission (seeder/parse-data
                       (slurp (io/resource "examples/submission-initiative.json"))
-                      {:keywords? true})
+                      {:keywords? true
+                       :add-default-lang? true})
           resp (handler (-> (mock/request :post "/")
                             (assoc :jwt-claims {:email "john@org"})
                             (assoc :body-params (assoc submission :version 1))))

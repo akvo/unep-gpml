@@ -4,11 +4,9 @@ import ReactTooltip from "react-tooltip";
 import { LoadingOutlined, DownOutlined } from "@ant-design/icons";
 import MapChart from "./map-chart";
 
-export const KNOWLEDGE_LIBRARY = "/knowledge/library";
-export const KNOWLEDGE_LIB = "/knowledge/lib";
-export const KNOWLEDGE_LIB_OVERVIEW = "/knowledge/lib/overview";
-export const STAKEHOLDER_OVERVIEW = "/connect/community";
-export const EXPERTS = "/connect/experts";
+export const KNOWLEDGE_LIBRARY = "knowledge";
+export const STAKEHOLDER_OVERVIEW = "community";
+export const EXPERTS = "experts";
 
 const Maps = ({
   box,

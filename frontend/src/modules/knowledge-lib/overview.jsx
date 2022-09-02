@@ -20,14 +20,19 @@ const Overview = ({
   loading,
   history,
   showModal,
+  setLoginVisible,
+  isAuthenticated,
 }) => {
-  const summaryDict = {};
-  let allResources = 0;
-  summaryData?.forEach((obj) => {
-    const key = Object.keys(obj)[0];
-    summaryDict[key] = obj[key];
-    allResources += obj[key];
-  });
+  const allResources = countData
+    ?.filter((array) =>
+      resourceTypes.some(
+        (filter) =>
+          array.topic === filter.title && filter.title !== "capacity building"
+      )
+    )
+    ?.reduce(function (acc, obj) {
+      return acc + obj.count;
+    }, 0);
 
   if (loading) {
     return (
@@ -41,7 +46,7 @@ const Overview = ({
 
   const handleClickCategory = (key) => () => {
     history.push({
-      pathname: `/knowledge/lib/resource/map/${key}`,
+      pathname: `/knowledge/library/resource/map/${key}`,
     });
   };
 
@@ -51,7 +56,7 @@ const Overview = ({
         <li
           onClick={() => {
             history.push({
-              pathname: `/knowledge/lib/resource/category`,
+              pathname: `/knowledge/library/resource/category`,
             });
           }}
         >
@@ -76,7 +81,9 @@ const Overview = ({
       </ul>
       <section className="grey">
         {/* <h3>Categories</h3> */}
-        <Featured {...{ showModal }} />
+        <Featured
+          {...{ showModal, setLoginVisible, isAuthenticated, history }}
+        />
       </section>
       <section>
         <Row gutter={16}>
@@ -86,7 +93,7 @@ const Overview = ({
               className="overlay-btn"
               onClick={() => {
                 history.push({
-                  pathname: `/knowledge/lib/resource/map`,
+                  pathname: `/knowledge/library/resource/map`,
                 });
               }}
             >
@@ -107,7 +114,7 @@ const Overview = ({
               className="overlay-btn"
               onClick={() => {
                 history.push({
-                  pathname: `/knowledge/lib/resource/topic`,
+                  pathname: `/knowledge/library/resource/topic`,
                 });
               }}
             >
@@ -127,7 +134,7 @@ const Overview = ({
   );
 };
 
-const Featured = ({ showModal }) => {
+const Featured = ({ showModal, isAuthenticated, setLoginVisible, history }) => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -144,7 +151,7 @@ const Featured = ({ showModal }) => {
         showMoreCardAfter={20}
         showMoreCardClick={() => {
           history.push({
-            pathname: `/knowledge/lib/resource/grid`,
+            pathname: `/flexible-forms`,
           });
         }}
         showModal={(e) =>
@@ -155,7 +162,16 @@ const Featured = ({ showModal }) => {
           })
         }
         firstCard={
-          <Link to="/flexible-forms">
+          <Link
+            onClick={(e) => {
+              e.preventDefault();
+              if (isAuthenticated)
+                history.push({
+                  pathname: `/flexible-forms`,
+                });
+              else setLoginVisible(true);
+            }}
+          >
             <div className="add-resource-card">
               <b>+</b>
               <span>Share your resource</span>

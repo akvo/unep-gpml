@@ -504,7 +504,7 @@ const AdminSection = ({
   const review = (item, reviewStatus, listOpts, setListOpts) => () => {
     setApproveLoading({ ...item, button: reviewStatus });
     const itemType =
-      item.type === "project"
+      item.type === "initiative"
         ? "initiative"
         : resourceTypeToTopicType(item.type);
     api
@@ -522,7 +522,7 @@ const AdminSection = ({
             listOpts.reviewStatus,
             listOpts.title
           );
-          notification.error({
+          notification.success({
             message: res?.data?.message
               ? res?.data?.message
               : "Something went wrong",

@@ -36,7 +36,7 @@
     (let [valid? #(malli/validate [:re browse/topic-re] %)]
       (is (true? (every? valid? topics)))
       (are [expected value] (= expected (valid? value))
-        true "technology,project"
+        true "technology,initiative"
         true "financing_resource,event"
         true "event,policy"
         true (str/join "," topics)
@@ -73,10 +73,10 @@
   (testing "None is empty"
     (is (= (browse/get-db-filter {:q "eco"
                                   :country "253"
-                                  :topic "project,event"})
+                                  :topic "initiative,event"})
            {:search-text "eco"
             :geo-coverage [253]
-            :topic #{"project" "event"}
+            :topic #{"initiative" "event"}
             :offset 0 :limit 50
             :review-status "APPROVED"}))))
 
@@ -94,11 +94,11 @@
         ;; Mark stakeholder as APPROVED
         _ (db.stakeholder/update-stakeholder-status db (assoc sth :review_status "APPROVED"))
         ;; Mark a technology as favorite
-        _ (db.favorite/new-association db {:stakeholder (:id sth)
-                                           :topic "technology"
-                                           :topic_id 1
-                                           :association "user"
-                                           :remarks nil})]
+        _ (db.favorite/new-stakeholder-association db {:stakeholder (:id sth)
+                                                       :topic "technology"
+                                                       :topic_id 1
+                                                       :association "user"
+                                                       :remarks nil})]
 
     (testing "Query for favorites WITHOUT LOGIN"
       (let [request (-> (mock/request :get "/")

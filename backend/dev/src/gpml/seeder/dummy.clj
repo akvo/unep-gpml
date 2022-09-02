@@ -113,7 +113,8 @@
                                           :image "https://directory.growasia.org/wp-content/uploads/solution_logos/0.jpg"
                                           :country (get-country-id db "NLD"))
                                    (dissoc :id :languages :url)))
-                             (seeder/get-data "events"))]
+                             (seeder/get-data "events" {:keywords? true
+                                                        :add-default-lang? true}))]
     (if (= 0 (-> (db.event/dummy db) first :count))
       (doseq [data dummies]
         (let [event {:event (:id (db.event/new-event db data))}]
@@ -126,7 +127,8 @@
   (let [admin (get-or-create-profile db my-email my-name "ADMIN" "APPROVED")
         submission (seeder/parse-data
                     (slurp (io/resource "examples/submission-initiative.json"))
-                    {:keywords? true})
+                    {:keywords? true
+                     :add-default-lang? true})
         data (db.initiative/new-initiative
               db (assoc submission
                         :created_by (:id admin)

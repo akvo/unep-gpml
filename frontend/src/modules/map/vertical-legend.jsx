@@ -51,9 +51,9 @@ const VerticalLegend = ({
                   acc.financingResource + currVal.financingResource,
 
                 policy: acc.policy + currVal.policy,
-                project:
-                  acc.project +
-                  currVal.project +
+                initiative:
+                  acc.initiative +
+                  currVal.initiative +
                   ((acc.initiative || 0) + (currVal.initiative || 0)),
                 technicalResource:
                   acc.technicalResource + currVal.technicalResource,
@@ -67,7 +67,7 @@ const VerticalLegend = ({
               actionPlan: 0,
               event: 0,
               financingResource: 0,
-              project: 0,
+              initiative: 0,
               technicalResource: 0,
               technology: 0,
               policy: 0,
@@ -98,9 +98,9 @@ const VerticalLegend = ({
               acc.financingResource + currVal.financingResource,
 
             policy: acc.policy + currVal.policy,
-            project:
-              acc.project +
-              currVal.project +
+            initiative:
+              acc.initiative +
+              currVal.initiative +
               ((acc.initiative || 0) + (currVal.initiative || 0)),
             technicalResource:
               acc.technicalResource + currVal.technicalResource,
@@ -114,7 +114,7 @@ const VerticalLegend = ({
           actionPlan: 0,
           event: 0,
           financingResource: 0,
-          project: 0,
+          initiative: 0,
           technicalResource: 0,
           technology: 0,
           policy: 0,
