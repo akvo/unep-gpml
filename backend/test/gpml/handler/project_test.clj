@@ -22,6 +22,7 @@
    :geo_coverage_type (rand-nth (vec dom.types/geo-coverage-types))
    :type (first dom.prj/project-types)
    :checklist {"test item" false}
+   :stage (rand-nth (vec dom.prj/project-stages))
    :geo_coverage_countries [724]
    :geo_coverage_country_groups [151]})
 

@@ -50,6 +50,7 @@ WHERE 1=1
 --~ (when (get-in params [:filters :stakeholders_ids]) " AND p.stakeholder_id IN (:v*:filters.stakeholders_ids)")
 --~ (when (get-in params [:filters :countries]) " AND pgc.country_id IN (:v*:filters.countries)")
 --~ (when (get-in params [:filters :country_groups]) " AND pgc.country_group_id IN (:v*:filters.country_groups)")
+--~ (when (get-in params [:filters :stages]) " AND p.stage = ANY(:filters.stages)")
 GROUP BY p.id
 
 -- :name create-projects :execute :affected
