@@ -120,6 +120,25 @@
                 .ant-collapse-content-box {
                   padding: 20px 30px;
                   .sub-stages {
+                    .content {
+                      padding: 10px 20px 30px;
+                      h5 {
+                        text-transform: uppercase;
+                        font-size: 16px;
+                        color: #18162f;
+                        opacity: 0.5;
+                      }
+                      @media screen and (min-width: 1024px) {
+                        max-width: 70%;
+                      }
+                    }
+                    @import "../../buttons.scss";
+                    .ant-btn.ant-btn-ghost {
+                      margin-top: 20px;
+                    }
+                    .buttons {
+                      margin-top: 30px;
+                    }
                   }
                 }
               }

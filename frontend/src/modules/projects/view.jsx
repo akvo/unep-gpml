@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./styles.scss";
-import { Collapse, Checkbox } from "antd";
+import { Collapse, Checkbox, Button } from "antd";
 import api from "../../utils/api";
-import { UpCircleOutlined } from "@ant-design/icons";
+import { CheckOutlined, UpCircleOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 const { Panel } = Collapse;
 
@@ -14,12 +15,27 @@ const stages = [
       {
         title: "Assessment - situation analysis",
         children: [
-          { title: "Gather available research and knowledge" },
+          { title: "Map available research and knowledge", content: (
+            <>
+              The GPML Digital platform provides a wide range of materials to support stakeholders’ needs, ranging from scientific research to technological innovation and public outreach information.<br />
+              Browse through the <Link to="/knowledge/library">resource library</Link> to see what is available for your country and other regions of the platform to view existing resources. You can also <Link to="/flexible-forms">upload new resources</Link> if you have resources that are not yet available on the Digital Platform.
+              <br />
+              <div className="buttons">
+                <h5>which tool to use?</h5>
+                //buttons go here
+              </div>
+            </>
+          ) },
           {
-            title:
-              "Scientific analysis of information on sources, pathways and sinks ",
+            title: "Scientific analysis of information on sources, pathways and sinks ",
+            content: "The GPML Digital platform provides a wide range of materials to support stakeholders’ needs, ranging from scientific research to technological innovation and public outreach information. Browse through the resource  on information on sources pathways and sinks here( link to filtered  knowledge library )"
           },
-          { title: "Map waste flows" },
+          { title: "Map waste flows", content: (
+            <>
+              Understanding how plastic moves from the consumer through the waste management system and the fraction of plastic contained in different waste streams can help identify leakage points and prioritize interventions.
+              <br /><br />Have you already mapped your waste flows?
+            </>
+          ) },
           { title: "Map material flows" },
           { title: "Identify gaps in information and knowledge" },
           { title: "Set baselines, where possible" },
@@ -126,7 +142,13 @@ const ProjectView = ({ match: { params }, ...props }) => {
                                   key={index + childItem.title}
                                 >
                                   <div className="sub-stages">
-                                    <p>test</p>
+                                    <div className="content">
+                                      <h5>Task description</h5>
+                                      <p>
+                                      {childItem.content}
+                                      </p>
+                                      <Button type="ghost" icon={<CheckOutlined />}>Mark as Completed</Button>
+                                    </div>
                                   </div>
                                 </Panel>
                               ))}
