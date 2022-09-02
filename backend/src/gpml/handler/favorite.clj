@@ -60,7 +60,7 @@
                          :topic topic
                          :association (mapv :association v)}))
             []
-            (group-by (juxt :id (constantly topic-type)) data))))
+            (group-by (juxt (keyword topic) (constantly topic)) data))))
 
 (defmethod ig/init-key :gpml.handler.favorite/get [_ {:keys [db]}]
   (fn [{{:keys [email]} :jwt-claims {{:keys [topic-type topic-id]} :path} :parameters}]
