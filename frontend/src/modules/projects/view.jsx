@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./project-stages.scss";
+import "./styles.scss";
 import { Collapse, Checkbox } from "antd";
 import api from "../../utils/api";
 import { UpCircleOutlined } from "@ant-design/icons";
@@ -10,10 +10,10 @@ const stages = [
   {
     key: "S1",
     title: "Create",
-    childs: [
+    children: [
       {
         title: "Assessment - situation analysis",
-        childs: [
+        children: [
           { title: "Gather available research and knowledge" },
           {
             title:
@@ -48,7 +48,7 @@ const stages = [
   },
 ];
 
-const ProjectStages = ({ match: { params }, ...props }) => {
+const ProjectView = ({ match: { params }, ...props }) => {
   const [projectDetail, setProjectDetail] = useState({});
 
   useEffect(() => {
@@ -98,7 +98,7 @@ const ProjectStages = ({ match: { params }, ...props }) => {
                       )}
                       className="child"
                     >
-                      {item?.childs?.map((childItem, index) => (
+                      {item?.children?.map((childItem, index) => (
                         <Panel
                           header={
                             <>
@@ -116,7 +116,7 @@ const ProjectStages = ({ match: { params }, ...props }) => {
                               )}
                               className="sub-child"
                             >
-                              {childItem?.childs?.map((childItem, index) => (
+                              {childItem?.children?.map((childItem, index) => (
                                 <Panel
                                   header={
                                     <>
@@ -163,4 +163,4 @@ const Header = ({ title }) => {
   );
 };
 
-export default ProjectStages;
+export default ProjectView;
