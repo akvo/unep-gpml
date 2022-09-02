@@ -286,9 +286,9 @@ const Header = ({
   ) => {
     const noEditTopics = new Set(["stakeholder"]);
 
-    const find = data?.stakeholderConnections?.find(
-      (it) => it.stakeholderId === profile.id
-    );
+    const resourceOwners= data?.stakeholderConnections?.filter(stakeholder => stakeholder?.role?.toLowerCase() === 'owner').map(stakeholder => stakeholder?.stakeholderId);
+
+    const find = resourceOwners.includes(profile?.id)
 
     const canEdit = () =>
       isAuthenticated &&
