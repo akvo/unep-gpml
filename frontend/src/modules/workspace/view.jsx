@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Carousel, Avatar, Typography, Button } from "antd";
+import {
+  Row,
+  Col,
+  Carousel,
+  Avatar,
+  Typography,
+  Button,
+  Modal,
+  notification,
+} from "antd";
 const { Title } = Typography;
 import "./styles.scss";
 import { useHistory, Link } from "react-router-dom";
@@ -11,10 +20,16 @@ import { ReactComponent as TrashSvg } from "../../images/resource-detail/trash-i
 import { ReactComponent as ShareSvg } from "../../images/resource-detail/share-icn.svg";
 import { ReactComponent as EditSvg } from "../../images/resource-detail/edit-icn.svg";
 import NetworkIcon from "../../images/auth/network.png";
-import { FilePdfOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import {
+  FilePdfOutlined,
+  PlusCircleOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
+import api from "../../utils/api";
 const Workspace = ({ profile }) => {
   const history = useHistory();
   const [isFocal, setIsFocal] = useState(false);
+  const [projects, setProjects] = useState([]);
 
   const handleFocalPoint = (id) => {
     setIsFocal(true);
@@ -27,6 +42,50 @@ const Workspace = ({ profile }) => {
       setIsFocal(profile?.org?.id === JSON.parse(item).id ? true : false);
     }
   }, [profile]);
+
+  useEffect(() => {
+    fetchAllProjects();
+  }, []);
+
+  const fetchAllProjects = () => {
+    api
+      .get("/project")
+      .then((res) => {
+        setProjects(res.data.projects);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleDeleteBtn = (id) => {
+    Modal.error({
+      className: "popup-delete",
+      centered: true,
+      closable: true,
+      icon: <DeleteOutlined />,
+      title: "Are you sure you want to delete this project?",
+      content: "Please be aware this action cannot be undone.",
+      okText: "Delete",
+      okType: "danger",
+      onOk() {
+        return api
+          .delete(`/project/${id}`)
+          .then((res) => {
+            notification.success({
+              message: "Project deleted successfully",
+            });
+            fetchAllProjects();
+          })
+          .catch((err) => {
+            console.error(err);
+            notification.error({
+              message: "Oops, something went wrong",
+            });
+          });
+      },
+    });
+  };
 
   return (
     <div id="workspace">
@@ -165,24 +224,25 @@ const Workspace = ({ profile }) => {
                 </Link>
               </Col>
               <Col span={24}>
-                <div className="all-projects">
-                  <div className="content">
-                    <p>Action Plan</p>
-                    <h2>
-                      Regional Plan On Marine Litter Management In The
-                      Mediterranean
-                    </h2>
-                    <div className="transnational">
-                      <TransnationalSvg />
-                      <span>Global</span>
+                {projects?.map((item) => (
+                  <div className="all-projects" key={item.id}>
+                    <div className="content">
+                      <p>Action Plan</p>
+                      <h2>{item.title}</h2>
+                      <div className="transnational">
+                        <TransnationalSvg />
+                        <span>{item.geoCoverageType}</span>
+                      </div>
+                    </div>
+                    <div className="actions">
+                      <ShareSvg />
+                      <TrashSvg onClick={() => handleDeleteBtn(item.id)} />
+                      <EditSvg
+                        onClick={() => history.push(`/projects/${item.id}`)}
+                      />
                     </div>
                   </div>
-                  <div className="actions">
-                    <ShareSvg />
-                    <TrashSvg />
-                    <EditSvg />
-                  </div>
-                </div>
+                ))}
               </Col>
             </Row>
           </div>
