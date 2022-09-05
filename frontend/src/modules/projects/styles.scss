@@ -73,7 +73,7 @@
             background: rgba(255, 255, 255, 0.5);
             .ant-collapse-expand-icon {
               .ant-collapse-arrow {
-                font-size: 18px;
+                font-size: 26px;
                 color: #8691b0;
               }
             }
@@ -148,6 +148,12 @@
               border: 0.5px solid #d3dee7;
               box-shadow: 2px 2px 0px rgba(109, 181, 176, 0.3);
               border-radius: 5px;
+              &.expected-output {
+                background: #d3dee7;
+                .ant-collapse-header-text {
+                  font-size: 18px;
+                }
+              }
               &.ant-collapse-item-active {
                 background-color: #fff;
                 border: 4px solid #8691b0;
@@ -158,7 +164,7 @@
                 border: none;
                 background: initial;
                 .ant-collapse-content-box {
-                  padding: 20px 30px;
+                  padding: 0px 30px 20px;
                   .sub-stages {
                     .content {
                       padding: 10px 20px 30px;
@@ -247,16 +253,19 @@
                 box-shadow: 2px 2px 0px rgba(24, 22, 47, 0.15);
                 border-radius: 10px;
                 transform: scale(1);
-                .ant-collapse-header {
+                .ant-collapse-header-text {
+                  h2 {
+                    font-weight: 700;
+                  }
                 }
               }
               .ant-collapse-content {
                 .ant-collapse-content-box {
-                  padding: 10px 20px;
+                  padding: 0px 20px 15px;
                 }
               }
               .ant-collapse-header {
-                padding: 8px 20px;
+                padding: 10px 20px;
               }
             }
           }
@@ -283,16 +292,20 @@
                 }
               }
               .ant-collapse-header {
-                padding: 5px 20px;
+                height: 50px;
+                align-items: center;
               }
             }
           }
           .ant-checkbox-wrapper {
+            align-items: center;
             .ant-checkbox {
               .ant-checkbox-inner {
                 border: 1px solid #8691b0;
-                box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.25);
+                box-shadow: 1px 1px 0px rgba(0, 0, 0);
                 border-radius: 4px;
+                width: 20px;
+                height: 20px;
               }
               &.ant-checkbox-checked {
                 .ant-checkbox-inner {
@@ -310,6 +323,8 @@
               font-size: 16px;
               line-height: 26px;
               color: #8691b0;
+              cursor: pointer !important;
+              top: 0;
             }
           }
         }

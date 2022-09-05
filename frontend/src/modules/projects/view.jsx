@@ -984,6 +984,9 @@ const renderSubStages = (title, data, checklist, handleStages) => {
                   </>
                 }
                 key={index + subChild.title}
+                className={`${
+                  subChild.title === "Expected outputs" ? "expected-output" : ""
+                }`}
               >
                 <div className="sub-stages">
                   {subChild.title !== "Expected outputs" ? (
