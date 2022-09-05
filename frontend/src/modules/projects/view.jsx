@@ -320,26 +320,568 @@ const stages = [
               </>
             ),
           },
+          { title: "Expected outputs", content: (checklist) => <></> },
         ],
       },
-      { title: "Stakeholder mapping and engagement" },
-      { title: "Selection of Implementation actionS" },
-      { title: "Monitoring programme" },
-      { title: "report planning" },
-      { title: "Adoption of the action plan" },
+      {
+        title: "Stakeholder mapping and engagement",
+        children: [
+          {
+            title: "Map actors and stakeholders",
+            content: (checklist) => (
+              <>
+                Actors are those who can help make the changes we need.
+                Stakeholders are anyone with an interest or who may be affected
+                positively or negatively by the measures implemented through the
+                action plan. Understanding who the actors and stakeholders are
+                is key to the success and ownership of the action plan.
+                <br />
+                <br />
+                The GPML digital platform provides a database of experts and
+                other stakeholders, to access this network click{" "}
+                <Link to="/connect/community">here</Link>
+                <br />
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="/connect/community">
+                      <div className="icon">
+                        <AtlasSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Community</p>
+                        <p className="content-desc">
+                          Resources on marine litter and plastic pollution
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              </>
+            ),
+          },
+          {
+            title: "Conduct workshops, Interviews: Governments",
+            content: (checklist) => (
+              <>
+                There are many ways to engage actors and stakeholders. This may
+                depend on their circumstances, such as ability to travel and
+                access to technology. It is important to ensure all key actors
+                and stakeholders have access to the information presented and
+                the ability to comment and provide input. The GPML Platform
+                supports the creation of dedicated forum channels for discussing
+                marine litter, plastic pollution and lifecycle management
+                amongst stakeholders. To request a dedicated forum for your
+                workshop reach out to{" "}
+                <Link
+                  to="#"
+                  onClick={(e) => {
+                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
+                    e.preventDefault();
+                  }}
+                >
+                  unep-gpmarinelitter@un.org
+                </Link>
+              </>
+            ),
+          },
+          {
+            title: "Conduct workshops, Interviews: Private Sector (for-profit)",
+            content: (checklist) => (
+              <>
+                There are many ways to engage actors and stakeholders. This may
+                depend on their circumstances, such as ability to travel and
+                access to technology. It is important to ensure all key actors
+                and stakeholders have access to the information presented and
+                the ability to comment and provide input. The GPML Platform
+                supports the creation of dedicated forum channels for discussing
+                marine litter, plastic pollution and lifecycle management
+                amongst stakeholders. To request a dedicated forum for your
+                workshop reach out to{" "}
+                <Link
+                  to="#"
+                  onClick={(e) => {
+                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
+                    e.preventDefault();
+                  }}
+                >
+                  unep-gpmarinelitter@un.org
+                </Link>
+              </>
+            ),
+          },
+          {
+            title:
+              "Conduct workshops, Interviews: Civil Society (not-for-profit)",
+            content: (checklist) => (
+              <>
+                There are many ways to engage actors and stakeholders. This may
+                depend on their circumstances, such as ability to travel and
+                access to technology. It is important to ensure all key actors
+                and stakeholders have access to the information presented and
+                the ability to comment and provide input. The GPML Platform
+                supports the creation of dedicated forum channels for discussing
+                marine litter, plastic pollution and lifecycle management
+                amongst stakeholders. To request a dedicated forum for your
+                workshop reach out to{" "}
+                <Link
+                  to="#"
+                  onClick={(e) => {
+                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
+                    e.preventDefault();
+                  }}
+                >
+                  unep-gpmarinelitter@un.org
+                </Link>
+              </>
+            ),
+          },
+          {
+            title:
+              "Conduct workshops, Interviews: Intergovernmental Organizations (IGOs)",
+            content: (checklist) => (
+              <>
+                There are many ways to engage actors and stakeholders. This may
+                depend on their circumstances, such as ability to travel and
+                access to technology. It is important to ensure all key actors
+                and stakeholders have access to the information presented and
+                the ability to comment and provide input. The GPML Platform
+                supports the creation of dedicated forum channels for discussing
+                marine litter, plastic pollution and lifecycle management
+                amongst stakeholders. To request a dedicated forum for your
+                workshop reach out to{" "}
+                <Link
+                  to="#"
+                  onClick={(e) => {
+                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
+                    e.preventDefault();
+                  }}
+                >
+                  unep-gpmarinelitter@un.org
+                </Link>
+              </>
+            ),
+          },
+          { title: "Expected outputs", content: (checklist) => <></> },
+        ],
+      },
+      {
+        title: "Selection of Implementation actionS",
+        children: [
+          {
+            title:
+              "Stakeholder consultation on the gaps and priority actions for the NAP",
+            content: (checklist) => (
+              <>
+                There are many ways to engage actors and stakeholders. This may
+                depend on their circumstances, such as ability to travel and
+                access to technology. It is important to ensure all key actors
+                and stakeholders have access to the information presented and
+                the ability to comment and provide input. The GPML Platform
+                supports the creation of dedicated forum channels for discussing
+                marine litter, plastic pollution and lifecycle management
+                amongst stakeholders. To request a dedicated forum for your
+                workshop reach out to{" "}
+                <Link
+                  to="#"
+                  onClick={(e) => {
+                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
+                    e.preventDefault();
+                  }}
+                >
+                  unep-gpmarinelitter@un.org
+                </Link>
+              </>
+            ),
+          },
+          {
+            title: "Agree control measures for Land-based sources",
+            content: (checklist) => <></>,
+          },
+          {
+            title: "Agree control measures for Sea-based sources",
+            content: (checklist) => <></>,
+          },
+          {
+            title: "Agree measures for Removal",
+            content: (checklist) => <></>,
+          },
+          {
+            title: "Agree measures for Awareness and Education",
+            content: (checklist) => <></>,
+          },
+          { title: "Expected outputs", content: (checklist) => <></> },
+        ],
+      },
+      {
+        title: "Design a national monitoring programme",
+        children: [
+          {
+            title:
+              "Draft model of monitoring programme based on situation analysis in Action 1",
+            content: (checklist) => (
+              <>
+                The Digital Platform allows for access to a wide range of
+                knowledge products including guidelines and reports on
+                monitoring. <Link to="/">GESAMP report</Link>.
+              </>
+            ),
+          },
+          {
+            title: "Conduct monitoring and hotspot pilots",
+            content: (checklist) => (
+              <>
+                The Digital Platform allows for access to a wide range of
+                knowledge products including guidelines and reports on hotspots{" "}
+                <Link to="/">UNEP hotspots report</Link>.
+              </>
+            ),
+          },
+          {
+            title: "Agree ongoing monitoring programme, actors and funding",
+            content: (checklist) => <></>,
+          },
+          { title: "Expected outputs", content: (checklist) => <></> },
+        ],
+      },
+      {
+        title: "Plan for regular reporting",
+        children: [
+          {
+            title: "Consultation on reporting elements",
+            content: (checklist) => (
+              <>
+                The GPML Platform supports the creation of dedicated forum
+                channels for discussing marine litter, plastic pollution and
+                lifecycle management amongst stakeholders. To request a
+                dedicated forum for your workshop reach out to{" "}
+                <Link
+                  to="#"
+                  onClick={(e) => {
+                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
+                    e.preventDefault();
+                  }}
+                >
+                  unep-gpmarinelitter@un.org
+                </Link>
+              </>
+            ),
+          },
+          {
+            title: "Agree on Indicators/measures of success",
+            content: (checklist) => (
+              <>
+                The National Source Inventories (NSI) approach is a framework
+                for national-level coordination around statistics on plastic
+                production, import, and lifecycle; waste statistics; monitoring
+                of freshwater and wastewater; and monitoring of costal and
+                marine waters. To learn more about the NSI approach read more{" "}
+                <Link to="/">here</Link>
+                <br />
+                <br />
+                The GPML data hub consists of National Source Inventories (link
+                to the data hub map and layers view) for data documentation and
+                exploratory analysis. The inventory of the proposed indicators
+                used in the GPML is available for download{" "}
+                <Link to="/">here</Link>
+              </>
+            ),
+          },
+          {
+            title: "Agree reporting elements and timeframe",
+            content: (checklist) => <></>,
+          },
+          {
+            title: "Design report template",
+            content: (checklist) => (
+              <>
+                The National Source Inventories (NSI) approach is a framework
+                for national-level coordination around statistics on plastic
+                production, import, and lifecycle; waste statistics; monitoring
+                of freshwater and wastewater; and monitoring of costal and
+                marine waters. To learn more about the NSI approach read more{" "}
+                <Link to="/">here</Link>
+                <br />
+                <br />
+                The GPML data hub consists of National Source Inventories (link
+                to the data hub map and layers view) for data documentation and
+                exploratory analysis. The inventory of the proposed indicators
+                used in the GPML is available for download here (link to the
+                inventory of indicators currently being developed by DHI).
+              </>
+            ),
+          },
+          { title: "Expected outputs", content: (checklist) => <></> },
+        ],
+      },
+      {
+        title: "Adoption of the action plan",
+        children: [
+          {
+            title: "Draft action plan for comment",
+            content: (checklist) => <></>,
+          },
+          {
+            title: "Include comments in second draft of action plan",
+            content: (checklist) => <></>,
+          },
+          {
+            title: "Conduct final consultation of action plan",
+            content: (checklist) => (
+              <>
+                The GPML Platform supports the creation of dedicated forum
+                channels for discussing marine litter, plastic pollution and
+                lifecycle management amongst stakeholders. To request a
+                dedicated forum for your stakeholder consultations reach out to{" "}
+                <Link
+                  to="#"
+                  onClick={(e) => {
+                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
+                    e.preventDefault();
+                  }}
+                >
+                  unep-gpmarinelitter@un.org
+                </Link>
+              </>
+            ),
+          },
+          {
+            title: "Develop roadmap for implementation of the action plan",
+            content: (checklist) => <></>,
+          },
+          {
+            title: "Action plan and roadmap adopted by government",
+            content: (checklist) => (
+              <>
+                The GPML Digital Platform promotes all stakeholders to
+                contribute additional resources to its knowledge library.
+                <br />
+                <br />
+                <Link to="/knowledge/library?topic=policy">Click here</Link> to
+                add you action plan to the knowledge library
+                <br />
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="/flexible-forms">
+                      <div className="icon">
+                        <CapacityBuildingSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Learning center</p>
+                        <p className="content-desc">
+                          Learning and capacity building resources
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              </>
+            ),
+          },
+          { title: "Expected outputs", content: (checklist) => <></> },
+        ],
+      },
     ],
   },
   {
     key: "S2",
     title: "Implement",
+    children: [
+      {
+        title: "Implementation",
+        children: [
+          {
+            title: "Allocate funding",
+            content: (checklist) => <></>,
+          },
+          {
+            title:
+              "Engage relevant government agencies and actors for each action",
+            content: (checklist) => (
+              <>
+                The GPML Platform supports the creation of dedicated forum
+                channels for discussing marine litter, plastic pollution and
+                lifecycle management amongst stakeholders. To request a
+                dedicated forum for your stakeholder consultations reach out to{" "}
+                <Link
+                  to="#"
+                  onClick={(e) => {
+                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
+                    e.preventDefault();
+                  }}
+                >
+                  unep-gpmarinelitter@un.org
+                </Link>
+              </>
+            ),
+          },
+          {
+            title: "Conduct monitoring and hot spotting surveys",
+            content: (checklist) => (
+              <>
+                The Digital Platform allows for access to a wide range of
+                knowledge products including guidelines and reports on
+                monitoring and hotspots.
+              </>
+            ),
+          },
+          { title: "Expected outputs", content: (checklist) => <></> },
+        ],
+      },
+    ],
   },
   {
     key: "S3",
     title: "Report",
+    children: [
+      {
+        title: "Mid-term/periodic report",
+        children: [
+          {
+            title: "Collect progress updates from relevant stakeholders",
+            content: (checklist) => (
+              <>
+                The GPML Digital Platform promotes all stakeholders to
+                contribute additional data to its data catalog. Click here (
+                https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data)
+                to add you action plan data.
+              </>
+            ),
+          },
+          {
+            title: "Collect metrics as per monitoring programme",
+            content: (checklist) => (
+              <>
+                The GPML Digital Platform promotes all stakeholders to
+                contribute additional data to its data catalog. Click here (
+                https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data)
+                to add you action plan data.
+              </>
+            ),
+          },
+          {
+            title: "Analyse metrics against indicators where applicable",
+            content: (checklist) => (
+              <>
+                From the list of proposed indicators, select widgets that best
+                align with your goals, for comparison with existing global data
+                in the GPML National Source Inventories. If not already added we
+                encourage you to add your action plan data to the GPML digital
+                platform data catalog(
+                https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data).
+              </>
+            ),
+          },
+          {
+            title: "Draft report",
+            content: (checklist) => (
+              <>
+                From the list of proposed indicators, select widgets that best
+                align with your goals, for comparison with existing global data
+                in the GPML National Source Inventories. If not already added we
+                encourage you to add your action plan data to the GPML digital
+                platform data catalog(
+                https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data).
+              </>
+            ),
+          },
+          {
+            title: "Review progress and identify successes and shortfalls",
+            content: (checklist) => (
+              <>
+                From the list of proposed indicators, select widgets that best
+                align with your goals, for comparison with existing global data
+                in the GPML National Source Inventories. If not already added we
+                encourage you to add your action plan data to the GPML digital
+                platform data catalog(
+                https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data).
+              </>
+            ),
+          },
+          { title: "Expected outputs", content: (checklist) => <></> },
+        ],
+      },
+    ],
   },
   {
     key: "S4",
     title: "Update",
+    children: [
+      {
+        title: "Review",
+        children: [
+          {
+            title: "Stakeholder engagement in review of effectiveness",
+            content: (checklist) => <></>,
+          },
+          {
+            title:
+              "Map actions and results to actions and indicators of action plan",
+            content: (checklist) => (
+              <>
+                From the list of proposed indicators, select widgets that best
+                align with your goals, for comparison with existing global data
+                in the GPML National Source Inventories. If not already added we
+                encourage you to add your action plan data to the GPML digital
+                platform data catalog(
+                https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data).
+              </>
+            ),
+          },
+          {
+            title: "Review of the action plan itself",
+            content: (checklist) => <></>,
+          },
+          { title: "Expected outputs", content: (checklist) => <></> },
+        ],
+      },
+      {
+        title: "Update action plan",
+        children: [
+          {
+            title: "Stakeholder engagement",
+            content: (checklist) => (
+              <>
+                {" "}
+                The GPML Platform supports the creation of dedicated forum
+                channels for discussing marine litter, plastic pollution and
+                lifecycle management amongst stakeholders. To request a
+                dedicated forum for your stakeholder consultations reach out to{" "}
+                <Link
+                  to="#"
+                  onClick={(e) => {
+                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
+                    e.preventDefault();
+                  }}
+                >
+                  unep-gpmarinelitter@un.org
+                </Link>
+              </>
+            ),
+          },
+          {
+            title: "Draft updated action plan",
+            content: (checklist) => <></>,
+          },
+          {
+            title: "Review of updated action plan",
+            content: (checklist) => <></>,
+          },
+          {
+            title: "Develop implementation roadmap for updated action plan",
+            content: (checklist) => (
+              <>
+                The GPML Digital Platform encourages all stakeholders to keep
+                their resources up to date. Click here to add your updated
+                action plan.
+              </>
+            ),
+          },
+          { title: "Expected outputs", content: (checklist) => <></> },
+        ],
+      },
+    ],
   },
 ];
 
@@ -446,32 +988,54 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
               )}
               className="parent"
             >
-              {stages.map((item, index) => (
-                <Panel
-                  header={
-                    <>
-                      <div className="steps-item-icon">
-                        <span class="ant-steps-icon">{index + 1}</span>
-                        <h2>{item.title}</h2>
-                      </div>
-                    </>
-                  }
-                  key={item.key}
-                >
-                  <div className="sub-stages">
-                    <Collapse
-                      accordion
-                      expandIconPosition="end"
-                      expandIcon={({ isActive }) => (
-                        <UpCircleOutlined rotate={isActive ? 180 : 0} />
-                      )}
-                      className="child"
-                    >
-                      {renderSubStages(item?.children, checklist, handleStages)}
-                    </Collapse>
-                  </div>
-                </Panel>
-              ))}
+              {stages.map((item, index) => {
+                console.log(checklist);
+                return (
+                  <Panel
+                    header={
+                      <>
+                        <div className="steps-item-icon">
+                          <span class="ant-steps-icon">{index + 1}</span>
+                          <h2>{item.title}</h2>
+                        </div>
+                        <div className="task-completed">
+                          <p>Tasks completed</p>
+                          <span>
+                            1 of{" "}
+                            {
+                              item.children
+                                .map((child) => child.children)
+                                .flat()
+                                .filter(
+                                  (output) =>
+                                    output.title !== "Expected outputs"
+                                ).length
+                            }
+                          </span>
+                        </div>
+                      </>
+                    }
+                    key={item.key}
+                  >
+                    <div className="sub-stages">
+                      <Collapse
+                        accordion
+                        expandIconPosition="end"
+                        expandIcon={({ isActive }) => (
+                          <UpCircleOutlined rotate={isActive ? 180 : 0} />
+                        )}
+                        className="child"
+                      >
+                        {renderSubStages(
+                          item?.children,
+                          checklist,
+                          handleStages
+                        )}
+                      </Collapse>
+                    </div>
+                  </Panel>
+                );
+              })}
             </Collapse>
           </div>
         </div>
