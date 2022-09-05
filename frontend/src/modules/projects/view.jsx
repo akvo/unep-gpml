@@ -1034,7 +1034,8 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
   const [checklist, setChecklist] = useState({});
 
   useEffect(() => {
-    if (params?.id && profile) {
+    console.log(profile);
+    if (params?.id && profile && profile.reviewStatus === "APPROVED") {
       api
         .get(`/project/${params?.id}`)
         .then((resp) => {
@@ -1042,7 +1043,7 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
         })
         .catch((e) => console.log(e));
     }
-  }, [params, profile]);
+  }, [profile]);
 
   const handleStages = (title, name, value) => {
     setChecklist({
