@@ -15,6 +15,7 @@ const geoCoverageTypeOptions = [
 const CreateProjectModal = ({
   setShowCreateProjectModal,
   showCreateProjectModal,
+  stage,
 }) => {
   const history = useHistory();
   const [initialValues, setInitialValues] = useState({});
@@ -30,13 +31,14 @@ const CreateProjectModal = ({
     const data = {
       ...values,
       type: "action-plan",
+      stage: stage,
     };
     api
       .post("/project", data)
       .then((res) => {
         console.log(res);
         setShowCreateProjectModal(false);
-        history.push(`/projects/${res?.data.project}`);
+        history.push(`/projects/${res?.data.projectId}`);
       })
       .catch((err) => {
         console.log(err);

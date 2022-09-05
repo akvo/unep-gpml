@@ -1055,7 +1055,7 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
   return (
     <div id="project">
       <div className="project-container">
-        <Header title={projectDetail.title} />
+        <Header title={projectDetail.title} stage={projectDetail.stage} />
         <div className="project-body">
           <div className="project-stages">
             <h2>Action plan stages</h2>
@@ -1140,7 +1140,7 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
   );
 };
 
-const Header = ({ title }) => {
+const Header = ({ title, stage }) => {
   return (
     <div className="project-header">
       <div className="title-container">
@@ -1150,7 +1150,7 @@ const Header = ({ title }) => {
       <div className="actions-container">
         <div className="status-wrapper">
           <p>Action plan status</p>
-          <h2>IMPLEMENT</h2>
+          <h2>{stage}</h2>
         </div>
       </div>
     </div>
