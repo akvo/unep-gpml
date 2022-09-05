@@ -729,6 +729,9 @@ $bg-green-primary: #10f9b7;
           display: flex;
           .edit-icon {
             transform: scale(1.4);
+            path {
+              stroke-width: 0.5;
+            }
           }
           .share-icon {
             path {
