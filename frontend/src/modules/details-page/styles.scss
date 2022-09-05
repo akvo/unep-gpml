@@ -155,7 +155,7 @@
         .recording-button svg path:nth-of-type(2),
         .share-button svg path:nth-of-type(1),
         .share-button svg path:nth-of-type(2),
-        .bookmark-button svg path:nth-of-type(2) {
+        .bookmark-button .heart-outlined path:nth-of-type(2) {
           fill: #e6f7ff;
         }
 
@@ -177,17 +177,42 @@
           fill: #fff;
         }
 
-        .bookmark-button:hover .two-tone-heart {
-          svg path:nth-of-type(1) {
-            fill: #fff !important;
-          }
-          svg path:nth-of-type(2) {
-            fill: #09689a !important;
-          }
-        }
+        // .share-button:hover svg path:nth-of-type(1),
+        // .bookmarked path:last-of-type {
+        //   fill: #09689a;
+        // }
 
-        .share-button:hover svg path:nth-of-type(1) {
-          fill: #09689a;
+        .bookmark-button {
+          svg {
+            path {
+              transition: fill 0.25s ease-out;
+            }
+            path:first-of-type {
+              fill: #0c689a;
+            }
+          }
+          &:hover {
+            svg {
+              path:first-of-type {
+                fill: #e6f7ff;
+              }
+              path:last-of-type {
+                fill: #0c689a;
+              }
+            }
+          }
+          &.bookmarked {
+            svg {
+              path:last-of-type {
+                fill: #0c689a;
+              }
+            }
+            &:hover {
+              svg path:last-of-type {
+                fill: #e6f7ff;
+              }
+            }
+          }
         }
       }
 

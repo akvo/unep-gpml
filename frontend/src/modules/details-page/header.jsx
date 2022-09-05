@@ -8,10 +8,10 @@ import {
   HeartTwoTone,
   MailTwoTone,
   PlayCircleTwoTone,
-  HeartFilled,
 } from "@ant-design/icons";
 import { resourceTypeToTopicType, topicNames } from "../../utils/misc";
 import { languageOptions } from "../flexible-forms/view";
+import classNames from "classnames";
 
 export const HeaderButtons = ({
   data,
@@ -29,6 +29,10 @@ export const HeaderButtons = ({
   setLanguage,
 }) => {
   const { type, id } = topic;
+
+const bookmarked = relation &&
+relation.association &&
+relation.association.indexOf("interested in") !== -1;
 
   const handleChangeRelation = (relationType) => {
     let association = relation ? [...relation.association] : [];
@@ -61,14 +65,13 @@ export const HeaderButtons = ({
             e.preventDefault();
             eventTrack("Resource view", "View Url", "Button");
             window.open(
-              `${
-                data?.url && data?.url?.includes("https://")
-                  ? data?.url
-                  : data?.languages
+              `${data?.url && data?.url?.includes("https://")
+                ? data?.url
+                : data?.languages
                   ? data?.languages[0]?.url
                   : data?.url?.includes("http://")
-                  ? data?.url
-                  : "https://" + data?.url
+                    ? data?.url
+                    : "https://" + data?.url
               }`,
               "_blank"
             );
@@ -108,17 +111,16 @@ export const HeaderButtons = ({
             <Input.Group compact>
               <Input
                 style={{ width: "calc(100% - 20%)" }}
-                defaultValue={`${
-                  data?.url && data?.url?.includes("https://")
+                defaultValue={`${data?.url && data?.url?.includes("https://")
                     ? data?.url
                     : data?.languages
-                    ? data?.languages[0]?.url
-                    : data?.url && data?.url?.includes("http://")
-                    ? data?.url
-                    : data?.url
-                    ? "https://" + data?.url
-                    : "https://"
-                }`}
+                      ? data?.languages[0]?.url
+                      : data?.url && data?.url?.includes("http://")
+                        ? data?.url
+                        : data?.url
+                          ? "https://" + data?.url
+                          : "https://"
+                  }`}
                 disabled
               />
               <Button
@@ -170,14 +172,8 @@ export const HeaderButtons = ({
         </Popover>
       )}
       <Button
-        className="bookmark-button two-tone-button"
-        icon={
-          relation?.association?.indexOf("interested in") !== -1 ? (
-            <HeartFilled className="heart-filled" />
-          ) : (
-            <HeartTwoTone className="two-tone-heart" twoToneColor="#09689a" />
-          )
-        }
+        className={classNames('bookmark-button two-tone-button', { bookmarked })}
+        icon={<HeartTwoTone />}
         type="primary"
         shape="round"
         size="middle"
@@ -187,7 +183,8 @@ export const HeaderButtons = ({
           handleChangeRelation("interested in");
         }}
       >
-        Bookmark
+        {bookmarked? "Bookmarked":"Bookmark"}
+        
       </Button>
       {canEdit() && (
         <Button
@@ -283,9 +280,9 @@ const Header = ({
   ) => {
     const noEditTopics = new Set(["stakeholder"]);
 
-    const find = data?.stakeholderConnections?.find(
-      (it) => it.stakeholderId === profile.id
-    );
+    const resourceOwners= data?.stakeholderConnections?.filter(stakeholder => stakeholder?.role?.toLowerCase() === 'owner').map(stakeholder => stakeholder?.stakeholderId);
+
+    const find = resourceOwners.includes(profile?.id)
 
     const canEdit = () =>
       isAuthenticated &&
