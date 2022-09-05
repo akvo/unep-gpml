@@ -7,6 +7,9 @@ import { ReactComponent as DataCatalogueSvg } from "../../images/data-catalogue-
 import { ReactComponent as MatchSvg } from "../../images/match.svg";
 import { ReactComponent as UploadSvg } from "../../images/upload.svg";
 import { ReactComponent as TransnationalSvg } from "../../images/transnational.svg";
+import { ReactComponent as TrashSvg } from "../../images/resource-detail/trash-icn.svg";
+import { ReactComponent as ShareSvg } from "../../images/resource-detail/share-icn.svg";
+import { ReactComponent as EditSvg } from "../../images/resource-detail/edit-icn.svg";
 import NetworkIcon from "../../images/auth/network.png";
 import { FilePdfOutlined, PlusCircleOutlined } from "@ant-design/icons";
 const Workspace = ({ profile }) => {
@@ -174,7 +177,11 @@ const Workspace = ({ profile }) => {
                       <span>Global</span>
                     </div>
                   </div>
-                  <div className="actions"></div>
+                  <div className="actions">
+                    <ShareSvg />
+                    <TrashSvg />
+                    <EditSvg />
+                  </div>
                 </div>
               </Col>
             </Row>
