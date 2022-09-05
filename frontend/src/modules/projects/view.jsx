@@ -946,7 +946,7 @@ const stages = [
   },
 ];
 
-const renderSubStages = (data, checklist, handleStages) => {
+const renderSubStages = (title, data, checklist, handleStages) => {
   const childs = data?.map((childItem, index) => (
     <Panel
       header={
@@ -970,7 +970,10 @@ const renderSubStages = (data, checklist, handleStages) => {
               <Panel
                 header={
                   <>
-                    <Checkbox disabled checked={checklist[subChild.title]}>
+                    <Checkbox
+                      disabled
+                      checked={checklist[title]?.[subChild.title]}
+                    >
                       {subChild.title}
                     </Checkbox>
                   </>
@@ -985,7 +988,7 @@ const renderSubStages = (data, checklist, handleStages) => {
                       <Button
                         type="ghost"
                         icon={
-                          checklist[subChild.title] ? (
+                          checklist[title]?.[subChild.title] ? (
                             <CloseOutlined />
                           ) : (
                             <CheckOutlined />
@@ -993,12 +996,13 @@ const renderSubStages = (data, checklist, handleStages) => {
                         }
                         onClick={() =>
                           handleStages(
+                            title,
                             subChild.title,
-                            !checklist[subChild.title]
+                            !checklist[title]?.[subChild.title]
                           )
                         }
                       >
-                        {checklist[subChild.title]
+                        {checklist[title]?.[subChild.title]
                           ? `Mark as Incomplete`
                           : `Mark as Completed`}
                       </Button>
@@ -1039,14 +1043,12 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
     }
   }, [params, profile]);
 
-  const handleStages = (name, value) => {
+  const handleStages = (title, name, value) => {
     setChecklist({
       ...checklist,
-      [name]: value,
+      [title]: { ...checklist[title], [name]: value },
     });
   };
-
-  console.log(checklist);
 
   return (
     <div id="project">
@@ -1075,7 +1077,15 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                         <div className="task-completed">
                           <p>Tasks completed</p>
                           <span>
-                            1 of{" "}
+                            {
+                              Object.keys(
+                                checklist.hasOwnProperty(item.title) &&
+                                  checklist?.[item.title]
+                              ).filter(
+                                (k) => checklist?.[item.title][k] === true
+                              ).length
+                            }{" "}
+                            of{" "}
                             {
                               item.children
                                 .map((child) => child.children)
@@ -1101,6 +1111,7 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                         className="child"
                       >
                         {renderSubStages(
+                          item.title,
                           item?.children,
                           checklist,
                           handleStages
