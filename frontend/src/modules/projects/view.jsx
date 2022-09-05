@@ -1085,7 +1085,7 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                     style={{
                       border:
                         completedStages === totalStages
-                          ? "3px solid #67BEA1"
+                          ? "4px solid #67BEA1"
                           : "",
                     }}
                     header={
