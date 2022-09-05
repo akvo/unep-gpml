@@ -6,8 +6,9 @@ import { useHistory, Link } from "react-router-dom";
 import { ReactComponent as DataCatalogueSvg } from "../../images/data-catalogue-icon.svg";
 import { ReactComponent as MatchSvg } from "../../images/match.svg";
 import { ReactComponent as UploadSvg } from "../../images/upload.svg";
+import { ReactComponent as TransnationalSvg } from "../../images/transnational.svg";
 import NetworkIcon from "../../images/auth/network.png";
-import { FilePdfOutlined } from "@ant-design/icons";
+import { FilePdfOutlined, PlusCircleOutlined } from "@ant-design/icons";
 const Workspace = ({ profile }) => {
   const history = useHistory();
   const [isFocal, setIsFocal] = useState(false);
@@ -145,6 +146,39 @@ const Workspace = ({ profile }) => {
               </Col>
             </Row>
           )}
+          <div className="all-projects-starter">
+            <Row>
+              <h2>All projects</h2>
+            </Row>
+            <Row className="assessment-row">
+              <Col span={24}>
+                <Link to="/projects/get-started">
+                  <Button
+                    className="assessment-button"
+                    icon={<PlusCircleOutlined />}
+                  >
+                    New project Assessment
+                  </Button>
+                </Link>
+              </Col>
+              <Col span={24}>
+                <div className="all-projects">
+                  <div className="content">
+                    <p>Action Plan</p>
+                    <h2>
+                      Regional Plan On Marine Litter Management In The
+                      Mediterranean
+                    </h2>
+                    <div className="transnational">
+                      <TransnationalSvg />
+                      <span>Global</span>
+                    </div>
+                  </div>
+                  <div className="actions"></div>
+                </div>
+              </Col>
+            </Row>
+          </div>
           <div className="action-plan-starter">
             <Row>
               <h2>Start your action plan</h2>

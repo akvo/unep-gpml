@@ -640,7 +640,90 @@ $bg-green-primary: #10f9b7;
       padding: 5px 24px;
     }
   }
-
+  .all-projects-starter {
+    background-color: #ffffff;
+    color: #fff;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    h2 {
+      font-weight: 500;
+      font-size: 22px;
+      line-height: 32px;
+      text-transform: uppercase;
+      color: #8691b0;
+    }
+    .assessment-row {
+      margin: 20px 0px;
+      .ant-col {
+        &:first-child {
+          margin-bottom: 20px;
+        }
+      }
+      .ant-btn {
+        &.assessment-button {
+          background-color: #ffffff;
+          border: none;
+          box-shadow: none;
+          padding: 0;
+          font-weight: 700;
+          font-size: 22px;
+          line-height: 32px;
+          text-transform: uppercase;
+          color: #18162f;
+          display: flex;
+          align-items: center;
+          margin-bottom: 20px;
+          .anticon {
+            font-size: 40px;
+            line-height: 0px;
+            filter: drop-shadow(2px 2px 0px rgba(24, 22, 47, 0.15));
+          }
+        }
+      }
+      .all-projects {
+        border: 1px solid #a5b0c9;
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+        padding: 30px 0px;
+        &:last-child {
+          border-bottom: 1px solid #a5b0c9;
+        }
+        p {
+          font-weight: 400;
+          font-size: 18px;
+          line-height: 26px;
+          text-transform: uppercase;
+          color: #a5b0c9;
+          margin-bottom: 0px;
+        }
+        h2 {
+          font-weight: 600;
+          font-size: 22px;
+          line-height: 32px;
+          color: #000000;
+          margin-bottom: 0px;
+        }
+        .transnational {
+          display: flex;
+          align-items: center;
+          span {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 23px;
+            color: #18162f;
+            padding-left: 5px;
+          }
+          svg {
+            width: 20px;
+            path {
+              stroke: #000000;
+            }
+          }
+        }
+      }
+    }
+  }
   .action-plan-starter {
     background-color: #205680;
     color: #fff;
