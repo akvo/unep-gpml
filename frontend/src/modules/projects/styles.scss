@@ -32,6 +32,7 @@
           box-shadow: 2px 2px 0px rgb(24 22 47 / 15%);
           border-radius: 5px;
           padding: 10px 20px;
+          width: 230px;
           p {
             font-weight: 400;
             font-size: 18px;
@@ -176,6 +177,10 @@
                       }
                       @media screen and (min-width: 1024px) {
                         max-width: 70%;
+                      }
+                      button {
+                        filter: drop-shadow(2px 2px 0px rgba(24, 22, 47, 0.15));
+                        border: 3px solid #18162f !important;
                       }
                       .buttons {
                         .button-wrapper {

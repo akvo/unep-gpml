@@ -19,6 +19,7 @@ const CreateProjectModal = ({
 }) => {
   const history = useHistory();
   const [initialValues, setInitialValues] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const required = (value) => {
     return value ? undefined : "Required";
@@ -28,6 +29,7 @@ const CreateProjectModal = ({
     onSubmit(values);
   };
   const onSubmit = async (values) => {
+    setLoading(true);
     const data = {
       ...values,
       type: "action-plan",
@@ -37,11 +39,13 @@ const CreateProjectModal = ({
       .post("/project", data)
       .then((res) => {
         console.log(res);
+        setLoading(false);
         setShowCreateProjectModal(false);
         history.push(`/projects/${res?.data.projectId}`);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         setShowCreateProjectModal(false);
       });
   };
@@ -126,6 +130,7 @@ const CreateProjectModal = ({
                   type="primary"
                   className="create-button"
                   onClick={handleSubmit}
+                  loading={loading}
                 >
                   Create project
                 </Button>
