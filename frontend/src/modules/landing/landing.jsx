@@ -127,7 +127,7 @@ const TheJourney = () => {
             <h4>Cities and Waste Management</h4>
             <p>Use of consumer goods and products such as clothes, building materials and take-away food containers and lack of or inadequate waste management of materials and products.</p>
             <h4>Industry</h4>
-            <p>Use and leakage of products, particles, and fibres during industrial activities as well as transportation of consumer and industrial goods</p>
+            <p>Use and leakage of products, particles, and fibres during industrial activities as well as leakage of consumer and industrial goods during transportation.</p>
           </div>
           <div className="mobile-only img">
             <img src="/plastic-journey.svg" />
