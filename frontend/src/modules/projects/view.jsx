@@ -6,6 +6,7 @@ import {
   CheckOutlined,
   UpCircleOutlined,
   CloseOutlined,
+  SendOutlined,
 } from "@ant-design/icons";
 import { ReactComponent as AtlasSvg } from "../../images/book-atlas.svg";
 import { ReactComponent as CaseStudiesSvg } from "../../images/capacity-building/ic-case-studies.svg";
@@ -977,27 +978,41 @@ const renderSubStages = (data, checklist, handleStages) => {
                 key={index + subChild.title}
               >
                 <div className="sub-stages">
-                  <div className="content">
-                    <h5>Task description</h5>
-                    <p>{subChild?.content(checklist, handleStages)}</p>
-                    <Button
-                      type="ghost"
-                      icon={
-                        checklist[subChild.title] ? (
-                          <CloseOutlined />
-                        ) : (
-                          <CheckOutlined />
-                        )
-                      }
-                      onClick={() =>
-                        handleStages(subChild.title, !checklist[subChild.title])
-                      }
-                    >
-                      {checklist[subChild.title]
-                        ? `Mark as Incomplete`
-                        : `Mark as Completed`}
-                    </Button>
-                  </div>
+                  {subChild.title !== "Expected outputs" ? (
+                    <div className="content">
+                      <h5>Task description</h5>
+                      <p>{subChild?.content(checklist, handleStages)}</p>
+                      <Button
+                        type="ghost"
+                        icon={
+                          checklist[subChild.title] ? (
+                            <CloseOutlined />
+                          ) : (
+                            <CheckOutlined />
+                          )
+                        }
+                        onClick={() =>
+                          handleStages(
+                            subChild.title,
+                            !checklist[subChild.title]
+                          )
+                        }
+                      >
+                        {checklist[subChild.title]
+                          ? `Mark as Incomplete`
+                          : `Mark as Completed`}
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="content">
+                      <h5>
+                        The expected output for this action plan stage is:
+                      </h5>
+                      <Button type="ghost" icon={<SendOutlined />}>
+                        SHARE YOUR REPORT
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </Panel>
             );
