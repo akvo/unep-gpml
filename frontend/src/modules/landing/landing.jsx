@@ -251,12 +251,20 @@ const Stats = () => {
     stakeholders: s?.stakeholders?.stakeholders,
     organisations: s?.organisations,
   }));
+  const [governmentsCount,setGovernmentsCount]=useState(0);
+
+useEffect(()=> {
+api.get(`/community?representativeGroup=Government`).then((resp) => {
+  const governments = resp.data.counts.find(count => count?.networkType?.toLowerCase() ==="organisation");
+setGovernmentsCount(governments?.count || 0)
+})
+}, [])
 
   return (
     <div className="stats">
       <div className="row">
         <div className="stat">
-          <b>42</b>
+          <b>{governmentsCount}</b>
           <i>Governments</i>
         </div>
         <div className="stat">
