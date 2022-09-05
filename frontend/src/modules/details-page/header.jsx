@@ -11,6 +11,7 @@ import {
 } from "@ant-design/icons";
 import { resourceTypeToTopicType, topicNames } from "../../utils/misc";
 import { languageOptions } from "../flexible-forms/view";
+import classNames from "classnames";
 
 export const HeaderButtons = ({
   data,
@@ -171,15 +172,8 @@ relation.association.indexOf("interested in") !== -1;
         </Popover>
       )}
       <Button
-        className="bookmark-button two-tone-button"
-        icon={
-              <HeartTwoTone className={
-                bookmarked ?
-                 "bookmarked" 
-                 : "heart-outlined"
-                }
-                 twoToneColor="#09689a" />
-        }
+        className={classNames('bookmark-button two-tone-button', { bookmarked })}
+        icon={<HeartTwoTone />}
         type="primary"
         shape="round"
         size="middle"

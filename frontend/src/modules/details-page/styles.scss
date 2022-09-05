@@ -177,32 +177,39 @@
           fill: #fff;
         }
 
-        .share-button:hover svg path:nth-of-type(1),
-        .bookmarked path:last-of-type {
-          fill: #09689a;
-        }
+        // .share-button:hover svg path:nth-of-type(1),
+        // .bookmarked path:last-of-type {
+        //   fill: #09689a;
+        // }
 
         .bookmark-button {
-          .bookmarked path:last-of-type {
-            stroke: #09689a;
-            stroke-width: 60px;
+          svg {
+            path {
+              transition: fill 0.25s ease-out;
+            }
+            path:first-of-type {
+              fill: #0c689a;
+            }
           }
           &:hover {
-            .heart-outlined {
+            svg {
               path:first-of-type {
-                fill: #fff !important;
+                fill: #e6f7ff;
               }
               path:last-of-type {
-                fill: #09689a !important;
+                fill: #0c689a;
               }
             }
-            .bookmarked {
-              path:first-of-type {
-                fill: #fff !important;
-              }
+          }
+          &.bookmarked {
+            svg {
               path:last-of-type {
-                stroke: #fff;
-                stroke-width: 60px;
+                fill: #0c689a;
+              }
+            }
+            &:hover {
+              svg path:last-of-type {
+                fill: #e6f7ff;
               }
             }
           }
