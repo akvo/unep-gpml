@@ -14,6 +14,7 @@ import { Pagination, Navigation } from "swiper";
  import { ReactComponent as KnowledgeIcon } from "../../images/knowledge.svg";
  import { ReactComponent as DataSetIcon } from "../../images/datasets.svg";
  import user1img from '../../images/our-community/cassia-patel.jpg'
+import api from '../../utils/api';
 //  import helpCenterIcon
 //  import { ReactComponent as HelpCenterIcon } from "../../images/help-center.svg";
 
@@ -246,19 +247,32 @@ const Partners = () => {
 }
 
 const Stats = () => {
+  const {stakeholders, organisations} = UIStore.useState((s) => ({
+    stakeholders: s?.stakeholders?.stakeholders,
+    organisations: s?.organisations,
+  }));
+  const [governmentsCount, setGovernmentsCount] = useState(0);
+
+  useEffect(()=> {
+    api.get(`/community?representativeGroup=Government`).then((resp) => {
+      const governments = resp.data.counts.find(count => count?.networkType?.toLowerCase() ==="organisation");
+      setGovernmentsCount(governments?.count || 0)
+    })
+  }, [])
+
   return (
     <div className="stats">
       <div className="row">
         <div className="stat">
-          <b>42</b>
+          <b>{governmentsCount}</b>
           <i>Governments</i>
         </div>
         <div className="stat">
-          <b>498</b>
+          <b>{organisations?.length}</b>
           <i>Organisations</i>
         </div>
         <div className="stat">
-          <b>571</b>
+          <b>{stakeholders?.length}</b>
           <i>Individuals</i>
         </div>
         <div className="stat">
