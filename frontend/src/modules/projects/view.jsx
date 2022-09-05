@@ -1038,7 +1038,6 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
   const [checklist, setChecklist] = useState({});
 
   useEffect(() => {
-    console.log(profile);
     if (params?.id && profile && profile.reviewStatus === "APPROVED") {
       api
         .get(`/project/${params?.id}`)
@@ -1083,6 +1082,12 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                   .length;
                 return (
                   <Panel
+                    style={{
+                      border:
+                        completedStages === totalStages
+                          ? "3px solid #67BEA1"
+                          : "",
+                    }}
                     header={
                       <>
                         <div className="steps-item-icon">
