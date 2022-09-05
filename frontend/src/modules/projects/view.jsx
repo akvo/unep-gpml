@@ -83,7 +83,7 @@ const stages = [
           },
           {
             title: "Map waste flows",
-            content: (checklist) => (
+            content: (checklist, handleStages) => (
               <>
                 Understanding how plastic moves from the consumer through the
                 waste management system and the fraction of plastic contained in
@@ -105,16 +105,46 @@ const stages = [
                           value: false,
                         },
                       ]}
+                      onChange={(e) =>
+                        handleStages(
+                          "Have you already mapped your waste flows?",
+                          e.target.value
+                        )
+                      }
                       optionType="button"
                     />
                   </div>
+                  {checklist.hasOwnProperty(
+                    "Have you already mapped your waste flows?"
+                  ) && (
+                    <div className="answers" style={{ marginTop: 10 }}>
+                      {checklist[
+                        "Have you already mapped your waste flows?"
+                      ] ? (
+                        <p>
+                          The GPML Data Catalog allows GPML partners to list a
+                          wide range of potentially relevant datasets to list
+                          data on your country’s waste flows click here (
+                          https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data).{" "}
+                        </p>
+                      ) : (
+                        <p>
+                          The GPML Digital platform provides data models to help
+                          support decision makers. Models that could be used to
+                          map waste flows include add Link to access university
+                          of Leeds data
+                          (https://digital-gpmarinelitter.hub.arcgis.com/maps/0e3d5a7a75d2460a965321fca04d96dd/about)
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
               </>
             ),
           },
           {
             title: "Map material flows",
-            content: (checklist) => (
+            content: (checklist, handleStages) => (
               <>
                 Understanding how plastic moves through the economy from
                 manufacture and import to the consumer can help identify
@@ -136,9 +166,39 @@ const stages = [
                           value: false,
                         },
                       ]}
+                      onChange={(e) =>
+                        handleStages(
+                          "Have you already mapped your material flows?",
+                          e.target.value
+                        )
+                      }
                       optionType="button"
                     />
                   </div>
+                  {checklist.hasOwnProperty(
+                    "Have you already mapped your material flows?"
+                  ) && (
+                    <div className="answers" style={{ marginTop: 10 }}>
+                      {checklist[
+                        "Have you already mapped your material flows?"
+                      ] ? (
+                        <p>
+                          The GPML Data Catalog allows GPML partners to list a
+                          wide range of potentially relevant datasets to list
+                          data on your country’s material flows click here (
+                          https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data).{" "}
+                        </p>
+                      ) : (
+                        <p>
+                          The GPML Digital platform provides data models to help
+                          support decision makers. Models that could be used to
+                          map material flows include add Link to Plastex data
+                          (link to be made available once the data is uploaded
+                          in the data hub)
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
               </>
             ),
@@ -919,7 +979,7 @@ const renderSubStages = (data, checklist, handleStages) => {
                 <div className="sub-stages">
                   <div className="content">
                     <h5>Task description</h5>
-                    <p>{subChild?.content(checklist)}</p>
+                    <p>{subChild?.content(checklist, handleStages)}</p>
                     <Button
                       type="ghost"
                       icon={
@@ -971,7 +1031,7 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
     });
   };
 
-  console.log(checklist, "checklist");
+  console.log(checklist);
 
   return (
     <div id="project">
@@ -989,7 +1049,6 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
               className="parent"
             >
               {stages.map((item, index) => {
-                console.log(checklist);
                 return (
                   <Panel
                     header={
