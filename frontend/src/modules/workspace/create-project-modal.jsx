@@ -3,6 +3,7 @@ import "./create-project-modal.scss";
 import { Select, Input, Button, Modal } from "antd";
 import { Field, Form } from "react-final-form";
 import api from "../../utils/api";
+import { useHistory } from "react-router-dom";
 
 const geoCoverageTypeOptions = [
   { label: "Global", value: "global" },
@@ -15,6 +16,7 @@ const CreateProjectModal = ({
   setShowCreateProjectModal,
   showCreateProjectModal,
 }) => {
+  const history = useHistory();
   const [initialValues, setInitialValues] = useState({});
 
   const required = (value) => {
@@ -34,6 +36,7 @@ const CreateProjectModal = ({
       .then((res) => {
         console.log(res);
         setShowCreateProjectModal(false);
+        history.push(`/projects/${res?.data.project}`);
       })
       .catch((err) => {
         console.log(err);

@@ -131,6 +131,50 @@
                       @media screen and (min-width: 1024px) {
                         max-width: 70%;
                       }
+                      .buttons {
+                        .button-wrapper {
+                          display: flex;
+                        }
+                        a {
+                          display: flex;
+                          background: rgb(134 145 176 / 10%);
+                          border-radius: 10px;
+                          margin-right: 10px;
+                          padding: 10px;
+                          width: 320px;
+                          .icon {
+                            background: #3d3e54;
+                            border-radius: 14px;
+                            padding: 10px;
+                            display: flex;
+                            svg {
+                              width: 60px;
+                              fill: #3fc19f;
+                              path {
+                                fill: #3fc19f;
+                              }
+                            }
+                          }
+                          .button-content {
+                            padding: 10px;
+                            .content-title {
+                              margin-bottom: 0px;
+                              font-weight: 700;
+                              font-size: 16px;
+                              line-height: 16px;
+                              text-transform: uppercase;
+                              color: #67bea1;
+                            }
+                            .content-desc {
+                              margin-bottom: 0px;
+                              font-weight: 400;
+                              font-size: 14px;
+                              line-height: 20px;
+                              color: #a5b0c9;
+                            }
+                          }
+                        }
+                      }
                     }
                     @import "../../buttons.scss";
                     .ant-btn.ant-btn-ghost {
@@ -188,7 +232,7 @@
                 background-color: #fff;
                 border: 1px solid rgba(24, 22, 47, 0.25);
                 box-shadow: 0px 0px 5px rgba(24, 22, 47, 0.15);
-                border-radius: 10px;
+                border-radius: 5px;
                 transform: scale(1);
                 .ant-collapse-header {
                 }

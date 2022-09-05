@@ -837,7 +837,7 @@ const Root = () => {
               <Route
                 exact
                 path="/projects/:id"
-                render={(props) => <Project {...props} />}
+                render={(props) => <Project {...props} profile={profile} />}
               />
               <Route
                 exact
