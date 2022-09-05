@@ -971,12 +971,16 @@ const renderSubStages = (title, data, checklist, handleStages) => {
               <Panel
                 header={
                   <>
-                    <Checkbox
-                      disabled
-                      checked={checklist[title]?.[subChild.title]}
-                    >
-                      {subChild.title}
-                    </Checkbox>
+                    {subChild.title !== "Expected outputs" ? (
+                      <Checkbox
+                        disabled
+                        checked={checklist[title]?.[subChild.title]}
+                      >
+                        {subChild.title}
+                      </Checkbox>
+                    ) : (
+                      <> {subChild.title}</>
+                    )}
                   </>
                 }
                 key={index + subChild.title}
