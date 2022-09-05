@@ -83,6 +83,22 @@
               width: 100%;
               .task-completed {
                 margin-right: 40px;
+                padding: 15px 40px;
+                &.done {
+                  background: rgb(103 190 161 / 10%);
+                  border-radius: 62px;
+                  color: #67bea1;
+                  display: flex;
+                  align-items: center;
+                  .anticon {
+                    padding-right: 20px;
+                    font-size: 41px;
+                  }
+                  p,
+                  span {
+                    color: #67bea1;
+                  }
+                }
                 p {
                   margin-bottom: 0;
                   font-weight: 400;
@@ -210,7 +226,7 @@
                 }
               }
               .ant-collapse-header {
-                padding: 20px 30px;
+                padding: 15px 30px;
               }
             }
           }

@@ -7,6 +7,7 @@ import {
   UpCircleOutlined,
   CloseOutlined,
   SendOutlined,
+  CheckCircleOutlined,
 } from "@ant-design/icons";
 import { ReactComponent as AtlasSvg } from "../../images/book-atlas.svg";
 import { ReactComponent as CaseStudiesSvg } from "../../images/capacity-building/ic-case-studies.svg";
@@ -1066,6 +1067,15 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
               className="parent"
             >
               {stages.map((item, index) => {
+                const completedStages = Object.keys(
+                  checklist.hasOwnProperty(item.title) &&
+                    checklist?.[item.title]
+                ).filter((k) => checklist?.[item.title][k] === true).length;
+                const totalStages = item.children
+                  .map((child) => child.children)
+                  .flat()
+                  .filter((output) => output.title !== "Expected outputs")
+                  .length;
                 return (
                   <Panel
                     header={
@@ -1074,28 +1084,28 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                           <span class="ant-steps-icon">{index + 1}</span>
                           <h2>{item.title}</h2>
                         </div>
-                        <div className="task-completed">
-                          <p>Tasks completed</p>
-                          <span>
-                            {
-                              Object.keys(
-                                checklist.hasOwnProperty(item.title) &&
-                                  checklist?.[item.title]
-                              ).filter(
-                                (k) => checklist?.[item.title][k] === true
-                              ).length
-                            }{" "}
-                            of{" "}
-                            {
-                              item.children
-                                .map((child) => child.children)
-                                .flat()
-                                .filter(
-                                  (output) =>
-                                    output.title !== "Expected outputs"
+                        <div
+                          className={`task-completed ${
+                            completedStages === totalStages ? "done" : ""
+                          }`}
+                        >
+                          {completedStages === totalStages && (
+                            <CheckCircleOutlined />
+                          )}
+                          <div>
+                            <p>Tasks completed</p>
+                            <span>
+                              {
+                                Object.keys(
+                                  checklist.hasOwnProperty(item.title) &&
+                                    checklist?.[item.title]
+                                ).filter(
+                                  (k) => checklist?.[item.title][k] === true
                                 ).length
-                            }
-                          </span>
+                              }{" "}
+                              of {totalStages}
+                            </span>
+                          </div>
                         </div>
                       </>
                     }
