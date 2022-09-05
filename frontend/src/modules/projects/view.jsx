@@ -24,7 +24,7 @@ const stages = [
         children: [
           {
             title: "Map available research and knowledge",
-            content: (
+            content: (checklist) => (
               <>
                 The GPML Digital platform provides a wide range of materials to
                 support stakeholders’ needs, ranging from scientific research to
@@ -71,12 +71,19 @@ const stages = [
           {
             title:
               "Scientific analysis of information on sources, pathways and sinks ",
-            content:
-              "The GPML Digital platform provides a wide range of materials to support stakeholders’ needs, ranging from scientific research to technological innovation and public outreach information. Browse through the resource  on information on sources pathways and sinks here( link to filtered  knowledge library )",
+            content: (checklist) => (
+              <>
+                "The GPML Digital platform provides a wide range of materials to
+                support stakeholders’ needs, ranging from scientific research to
+                technological innovation and public outreach information. Browse
+                through the resource on information on sources pathways and
+                sinks here( link to filtered knowledge library )"
+              </>
+            ),
           },
           {
             title: "Map waste flows",
-            content: (
+            content: (checklist) => (
               <>
                 Understanding how plastic moves from the consumer through the
                 waste management system and the fraction of plastic contained in
@@ -107,7 +114,7 @@ const stages = [
           },
           {
             title: "Map material flows",
-            content: (
+            content: (checklist) => (
               <>
                 Understanding how plastic moves through the economy from
                 manufacture and import to the consumer can help identify
@@ -138,7 +145,7 @@ const stages = [
           },
           {
             title: "Identify gaps in information and knowledge",
-            content: (
+            content: (checklist) => (
               <>
                 By analysing the available data and gaining an understanding of
                 known sources, pathways and sinks of plastics, priority actions
@@ -188,7 +195,7 @@ const stages = [
           },
           {
             title: "Set baselines, where possible",
-            content: (
+            content: (checklist) => (
               <>
                 Where sufficient information is available, quantitative
                 baselines can be set against with targets can be agreed and
@@ -210,7 +217,7 @@ const stages = [
               </>
             ),
           },
-          { title: "Expected outputs" },
+          { title: "Expected outputs", content: (checklist) => <></> },
         ],
       },
       {
@@ -218,7 +225,7 @@ const stages = [
         children: [
           {
             title: "Map legislative landscape",
-            content: (
+            content: (checklist) => (
               <>
                 An action plan does not operate in isolation, but is nested
                 within an existing legal and policy framework. These frameworks
@@ -254,7 +261,7 @@ const stages = [
           {
             title:
               "Identify suitable legislation (if any) under which the action plan can be developed",
-            content: (
+            content: (checklist) => (
               <>
                 An action plan could fall under an Environment Act or a Waste
                 Management Act, for example. The GPML Digital platform provides
@@ -286,7 +293,7 @@ const stages = [
           {
             title:
               "Identify any specific environmental, social, or economic goals the action plan can deliver on as per existing legislations/policies?",
-            content: (
+            content: (checklist) => (
               <>
                 An action plan can deliver on more than plastic pollution. It
                 can aim to provide numerous co-benefits to society and the
@@ -355,42 +362,44 @@ const renderSubStages = (data, checklist, handleStages) => {
           )}
           className="sub-child"
         >
-          {childItem?.children?.map((childItem, index) => (
-            <Panel
-              header={
-                <>
-                  <Checkbox disabled checked={checklist[childItem.title]}>
-                    {childItem.title}
-                  </Checkbox>
-                </>
-              }
-              key={index + childItem.title}
-            >
-              <div className="sub-stages">
-                <div className="content">
-                  <h5>Task description</h5>
-                  <p>{childItem.content}</p>
-                  <Button
-                    type="ghost"
-                    icon={
-                      checklist[childItem.title] ? (
-                        <CloseOutlined />
-                      ) : (
-                        <CheckOutlined />
-                      )
-                    }
-                    onClick={() =>
-                      handleStages(childItem.title, !checklist[childItem.title])
-                    }
-                  >
-                    {checklist[childItem.title]
-                      ? `Mark as Incomplete`
-                      : `Mark as Completed`}
-                  </Button>
+          {childItem?.children?.map((subChild, index) => {
+            return (
+              <Panel
+                header={
+                  <>
+                    <Checkbox disabled checked={checklist[subChild.title]}>
+                      {subChild.title}
+                    </Checkbox>
+                  </>
+                }
+                key={index + subChild.title}
+              >
+                <div className="sub-stages">
+                  <div className="content">
+                    <h5>Task description</h5>
+                    <p>{subChild?.content(checklist)}</p>
+                    <Button
+                      type="ghost"
+                      icon={
+                        checklist[subChild.title] ? (
+                          <CloseOutlined />
+                        ) : (
+                          <CheckOutlined />
+                        )
+                      }
+                      onClick={() =>
+                        handleStages(subChild.title, !checklist[subChild.title])
+                      }
+                    >
+                      {checklist[subChild.title]
+                        ? `Mark as Incomplete`
+                        : `Mark as Completed`}
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </Panel>
-          ))}
+              </Panel>
+            );
+          })}
         </Collapse>
       </div>
     </Panel>
