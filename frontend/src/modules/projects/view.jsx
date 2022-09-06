@@ -949,95 +949,6 @@ const stagesChecklist = [
   },
 ];
 
-const renderSubStages = (title, data, checklist, handleStages) => {
-  const childs = data?.map((childItem, index) => (
-    <Panel
-      header={
-        <>
-          <h2>{childItem.title}</h2>
-        </>
-      }
-      key={index + childItem.title}
-    >
-      <div className="sub-stages">
-        <Collapse
-          accordion
-          expandIconPosition="end"
-          expandIcon={({ isActive }) => (
-            <UpCircleOutlined rotate={isActive ? 180 : 0} />
-          )}
-          className="sub-child"
-        >
-          {childItem?.children?.map((subChild, index) => {
-            return (
-              <Panel
-                header={
-                  <>
-                    {subChild.title !== "Expected outputs" ? (
-                      <Checkbox
-                        disabled
-                        checked={checklist[title]?.[subChild.title]}
-                      >
-                        {subChild.title}
-                      </Checkbox>
-                    ) : (
-                      <> {subChild.title}</>
-                    )}
-                  </>
-                }
-                key={index + subChild.title}
-                className={`${
-                  subChild.title === "Expected outputs" ? "expected-output" : ""
-                }`}
-              >
-                <div className="sub-stages">
-                  {subChild.title !== "Expected outputs" ? (
-                    <div className="content">
-                      <h5>Task description</h5>
-                      <p>{subChild?.content(checklist, handleStages)}</p>
-                      <Button
-                        type="ghost"
-                        icon={
-                          checklist[title]?.[subChild.title] ? (
-                            <CloseOutlined />
-                          ) : (
-                            <CheckOutlined />
-                          )
-                        }
-                        onClick={() =>
-                          handleStages(
-                            title,
-                            subChild.title,
-                            !checklist[title]?.[subChild.title]
-                          )
-                        }
-                      >
-                        {checklist[title]?.[subChild.title]
-                          ? `Mark as Incomplete`
-                          : `Mark as Completed`}
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="content">
-                      <h5>
-                        The expected output for this action plan stage is:
-                      </h5>
-                      <Button type="ghost" icon={<SendOutlined />}>
-                        SHARE YOUR REPORT
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              </Panel>
-            );
-          })}
-        </Collapse>
-      </div>
-    </Panel>
-  ));
-  return [childs];
-};
-
 const ProjectView = ({ match: { params }, profile, ...props }) => {
   const [projectDetail, setProjectDetail] = useState({});
   const [checklist, setChecklist] = useState({});
@@ -1137,13 +1048,12 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                   >
                     <div className="sub-stages">
                       <Collapse
-                        accordion
                         expandIconPosition="end"
                         expandIcon={({ isActive }) => (
                           <UpCircleOutlined rotate={isActive ? 180 : 0} />
                         )}
                         className="child"
-                        defaultActiveKey={['1']}
+                        defaultActiveKey={['0']}
                       >
                         {renderSubStages(
                           item.title,
@@ -1162,6 +1072,96 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
       </div>
     </div>
   );
+};
+
+
+const renderSubStages = (title, data, checklist, handleStages) => {
+  const children = data?.map((childItem, index) => (
+    <Panel
+      header={
+        <>
+          <h2>{childItem.title}</h2>
+        </>
+      }
+      key={index}
+    >
+      <div className="sub-stages">
+        <Collapse
+          accordion
+          expandIconPosition="end"
+          expandIcon={({ isActive }) => (
+            <UpCircleOutlined rotate={isActive ? 180 : 0} />
+          )}
+          className="sub-child"
+        >
+          {childItem?.children?.map((subChild, index) => {
+            return (
+              <Panel
+                header={
+                  <>
+                    {subChild.title !== "Expected outputs" ? (
+                      <Checkbox
+                        disabled
+                        checked={checklist[title]?.[subChild.title]}
+                      >
+                        {subChild.title}
+                      </Checkbox>
+                    ) : (
+                      <> {subChild.title}</>
+                    )}
+                  </>
+                }
+                key={index + subChild.title}
+                className={`${
+                  subChild.title === "Expected outputs" ? "expected-output" : ""
+                }`}
+              >
+                <div className="sub-stages">
+                  {subChild.title !== "Expected outputs" ? (
+                    <div className="content">
+                      <h5>Task description</h5>
+                      <p>{subChild?.content(checklist, handleStages)}</p>
+                      <Button
+                        type="ghost"
+                        icon={
+                          checklist[title]?.[subChild.title] ? (
+                            <CloseOutlined />
+                          ) : (
+                            <CheckOutlined />
+                          )
+                        }
+                        onClick={() =>
+                          handleStages(
+                            title,
+                            subChild.title,
+                            !checklist[title]?.[subChild.title]
+                          )
+                        }
+                      >
+                        {checklist[title]?.[subChild.title]
+                          ? `Mark as Incomplete`
+                          : `Mark as Completed`}
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="content">
+                      <h5>
+                        The expected output for this action plan stage is:
+                      </h5>
+                      <Button type="ghost" icon={<SendOutlined />}>
+                        SHARE YOUR REPORT
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </Panel>
+            );
+          })}
+        </Collapse>
+      </div>
+    </Panel>
+  ));
+  return [children];
 };
 
 export default ProjectView;

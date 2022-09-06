@@ -78,6 +78,13 @@
                 color: #8691b0;
               }
             }
+            &
+              > .ant-collapse-item
+              > .ant-collapse-header
+              > .ant-collapse-expand-icon
+              > .ant-collapse-arrow {
+              right: 22px;
+            }
             .ant-collapse-header-text {
               display: flex;
               align-items: center;
