@@ -25,14 +25,6 @@
     [:sequential
      {:decode/string (fn [s] (str/split s #","))}
      uuid?]]
-   [:stakeholders_ids
-    {:optional true
-     :swagger {:description "A comma separated list of stakeholder identifiers."
-               :type "integer"
-               :allowEmptyValue false}}
-    [:sequential
-     {:decode/string (fn [s] (str/split s #","))}
-     pos-int?]]
    [:geo_coverage_types
     {:optional true
      :swagger {:description "A comma separated list of geo_coverage_types"
@@ -117,9 +109,11 @@
                                                 (.getMessage e))}}))))
 
 (defn- get-projects
-  [{:keys [db logger]} {:keys [parameters]}]
+  [{:keys [db logger]} {:keys [parameters user]}]
   (try
-    (let [db-opts (db.prj/opts->db-opts (:query parameters))
+    (let [db-opts (-> (:query parameters)
+                      (assoc :stakeholders_ids [(:id user)])
+                      (db.prj/opts->db-opts))
           results (db.prj/get-projects (:spec db)
                                        {:filters db-opts})]
       {:success? true
