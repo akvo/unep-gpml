@@ -1054,6 +1054,9 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
         .get(`/project/${params?.id}`)
         .then((resp) => {
           setProjectDetail(resp?.data.project);
+          setChecklist(
+            resp?.data?.project?.checklist ? resp?.data?.project?.checklist : {}
+          );
         })
         .catch((e) => console.log(e));
     }
@@ -1069,7 +1072,7 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
       [title]: { ...checklist[title], [name]: value },
     };
     api
-      .put(`/project/${params?.id}`, { checklist: data })
+      .putRaw(`/project/${params?.id}`, { checklist: data })
       .then((resp) => {
         console.log(resp);
       })
@@ -1105,13 +1108,13 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
             >
               {stagesChecklist.map((item, index) => {
                 const completedStages = Object.keys(
-                  checklist.hasOwnProperty(item.title) &&
+                  checklist?.hasOwnProperty(item.title) &&
                     checklist?.[item.title]
-                ).filter(
+                )?.filter(
                   (k) =>
                     checklist?.[item.title][k] === true &&
                     !ignoreChecklistCount.includes(k)
-                ).length;
+                )?.length;
                 const totalStages = item.children
                   .map((child) => child.children)
                   .flat()
