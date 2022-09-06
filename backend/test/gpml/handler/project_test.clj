@@ -129,7 +129,8 @@
         project-id (create-random-project db sth-id)]
     (testing "Happy path"
       (let [request (-> (mock/request :get "/")
-                        (assoc :parameters {:path {:id project-id}}))
+                        (assoc :parameters {:path {:id project-id}}
+                               :user {:id sth-id}))
             {:keys [status body]} (handler request)]
         (is (= 200 status))
         (is (:success? body))
@@ -153,14 +154,16 @@
         project-id-1 (create-random-project db sth-id)
         _project-id-2 (create-random-project db sth-id)]
     (testing "Happy path"
-      (let [request (mock/request :get "/")
+      (let [request (-> (mock/request :get "/")
+                        (assoc :user {:id sth-id}))
             {:keys [status body]} (handler request)]
         (is (= 200 status))
         (is (:success? body))
         (is (= 2 (count (:projects body))))))
     (testing "Happy path applying filters"
       (let [request (-> (mock/request :get "/")
-                        (assoc :parameters {:query {:ids [project-id-1]}}))
+                        (assoc :parameters {:query {:ids [project-id-1]}}
+                               :user {:id sth-id}))
             {:keys [status body]} (handler request)]
         (is (= 200 status))
         (is (:success? body))
@@ -181,7 +184,8 @@
         project-id (create-random-project db sth-id)]
     (testing "Happy path"
       (let [request (-> (mock/request :delete "/")
-                        (assoc :parameters {:path {:id project-id}}))
+                        (assoc :parameters {:path {:id project-id}}
+                               :user {:id sth-id}))
             {:keys [status body]} (handler request)
             project (db.prj/get-projects db {:filters {:ids (pg-util/->JDBCArray [project-id] "uuid")}})]
         (is (= 200 status))

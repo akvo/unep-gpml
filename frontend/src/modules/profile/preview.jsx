@@ -507,7 +507,6 @@ export const ProfilePreview = ({ item }) => {
   const [error, setError] = useState("");
 
   const handleExpertise = (value) => {
-    setError("");
     expertise.indexOf(value) === -1 &&
       setExpertise((oldItem) => [
         ...oldItem,
@@ -523,21 +522,17 @@ export const ProfilePreview = ({ item }) => {
   };
 
   const updateStakeholderExpertise = () => {
-    if (expertise.length > 0) {
-      let vals = {
-        expertise: expertise,
-      };
-      api
-        .put(`/stakeholder/${item.id}`, vals)
-        .then(() => {
-          notification.success({ message: "Profile updated" });
-        })
-        .catch(() => {
-          notification.error({ message: "An error occured" });
-        });
-    } else {
-      setError("Required");
-    }
+    let vals = {
+      expertise: expertise,
+    };
+    api
+      .put(`/stakeholder/${item.id}`, vals)
+      .then(() => {
+        notification.success({ message: "Profile updated" });
+      })
+      .catch(() => {
+        notification.error({ message: "An error occured" });
+      });
   };
 
   useEffect(() => {
@@ -634,7 +629,6 @@ export const ProfilePreview = ({ item }) => {
               <CatTagSelect
                 handleChange={(value) => handleExpertise(value)}
                 meta={"meta"}
-                error={error}
                 value={expertise ? expertise : undefined}
                 handleRemove={(v) => handleRemove(v)}
               />
