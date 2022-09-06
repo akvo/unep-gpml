@@ -32,7 +32,7 @@
           box-shadow: 2px 2px 0px rgb(24 22 47 / 15%);
           border-radius: 5px;
           padding: 10px 20px;
-          width: 230px;
+          width: 170px;
           p {
             font-weight: 400;
             font-size: 18px;
@@ -324,11 +324,13 @@
               }
               &.ant-checkbox-checked {
                 .ant-checkbox-inner {
-                  background-color: #fff;
+                  background-color: #66bea1;
+                  border-color: #66bea1 !important;
                   &::after {
-                    border: 2px solid #8691b0;
+                    border: 2px solid #fff;
                     border-top: 0;
                     border-left: 0;
+                    left: 27%;
                   }
                 }
               }

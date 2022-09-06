@@ -134,16 +134,13 @@ const stagesChecklist = [
                         <p>
                           The GPML Data Catalog allows GPML partners to list a
                           wide range of potentially relevant datasets to list
-                          data on your country’s waste flows click here (
-                          https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data).{" "}
+                          data on your country’s waste flows <a href="https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data" target="_blank">click here</a>.{" "}
                         </p>
                       ) : (
                         <p>
                           The GPML Digital platform provides data models to help
                           support decision makers. Models that could be used to
-                          map waste flows include add Link to access university
-                          of Leeds data
-                          (https://digital-gpmarinelitter.hub.arcgis.com/maps/0e3d5a7a75d2460a965321fca04d96dd/about)
+                          map waste flows include add <a href="https://digital-gpmarinelitter.hub.arcgis.com/maps/0e3d5a7a75d2460a965321fca04d96dd/about" target="_blank">Link to access university of Leeds data</a>
                         </p>
                       )}
                     </div>
@@ -196,8 +193,7 @@ const stagesChecklist = [
                         <p>
                           The GPML Data Catalog allows GPML partners to list a
                           wide range of potentially relevant datasets to list
-                          data on your country’s material flows click here (
-                          https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data).{" "}
+                          data on your country’s material flows <a href="https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data" target="_blank">click here</a>.
                         </p>
                       ) : (
                         <p>
