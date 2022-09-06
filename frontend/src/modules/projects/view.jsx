@@ -14,6 +14,7 @@ import { ReactComponent as CaseStudiesSvg } from "../../images/capacity-building
 import { ReactComponent as CapacityBuildingSvg } from "../../images/capacity-building/ic-capacity-building.svg";
 import { Link } from "react-router-dom";
 import { stages } from "./get-started";
+import classNames from "classnames";
 
 const { Panel } = Collapse;
 
@@ -1100,12 +1101,7 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                 
                 return (
                   <Panel
-                    style={{
-                      border:
-                        isCompleted
-                          ? "4px solid #67BEA1"
-                          : "",
-                    }}
+                    className={classNames({ completed: isCompleted })}
                     header={
                       <>
                         <div className="steps-item-icon">
@@ -1121,8 +1117,8 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                             <CheckCircleOutlined />
                           )}
                           <div>
-                            <p>Tasks completed</p>
-                            <span>
+                            <span>Tasks completed</span>
+                            <strong>
                               {
                                 Object.keys(
                                   checklist.hasOwnProperty(item.title) &&
@@ -1132,7 +1128,7 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                                 ).length
                               }{" "}
                               of {totalStages}
-                            </span>
+                            </strong>
                           </div>
                         </div>
                       </>
@@ -1147,6 +1143,7 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                           <UpCircleOutlined rotate={isActive ? 180 : 0} />
                         )}
                         className="child"
+                        defaultActiveKey={['1']}
                       >
                         {renderSubStages(
                           item.title,
