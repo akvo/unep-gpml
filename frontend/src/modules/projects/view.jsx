@@ -18,6 +18,11 @@ import classNames from "classnames";
 
 const { Panel } = Collapse;
 
+const ignoreChecklistCount = [
+  "Have you already mapped your waste flows?",
+  "Have you already mapped your material flows?",
+];
+
 const stagesChecklist = [
   {
     key: "S1",
@@ -111,6 +116,7 @@ const stagesChecklist = [
                       ]}
                       onChange={(e) =>
                         handleStages(
+                          "Create",
                           "Have you already mapped your waste flows?",
                           e.target.value
                         )
@@ -118,11 +124,11 @@ const stagesChecklist = [
                       optionType="button"
                     />
                   </div>
-                  {checklist.hasOwnProperty(
+                  {checklist["Create"]?.hasOwnProperty(
                     "Have you already mapped your waste flows?"
                   ) && (
                     <div className="answers" style={{ marginTop: 10 }}>
-                      {checklist[
+                      {checklist["Create"][
                         "Have you already mapped your waste flows?"
                       ] ? (
                         <p>
@@ -172,6 +178,7 @@ const stagesChecklist = [
                       ]}
                       onChange={(e) =>
                         handleStages(
+                          "Create",
                           "Have you already mapped your material flows?",
                           e.target.value
                         )
@@ -179,11 +186,11 @@ const stagesChecklist = [
                       optionType="button"
                     />
                   </div>
-                  {checklist.hasOwnProperty(
+                  {checklist["Create"]?.hasOwnProperty(
                     "Have you already mapped your material flows?"
                   ) && (
                     <div className="answers" style={{ marginTop: 10 }}>
-                      {checklist[
+                      {checklist["Create"][
                         "Have you already mapped your material flows?"
                       ] ? (
                         <p>
@@ -970,7 +977,7 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
       [title]: { ...checklist[title], [name]: value },
     });
   };
-  console.log(checklist)
+  console.log(checklist);
 
   return (
     <div id="project">
@@ -1002,14 +1009,20 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                 const completedStages = Object.keys(
                   checklist.hasOwnProperty(item.title) &&
                     checklist?.[item.title]
-                ).filter((k) => checklist?.[item.title][k] === true).length;
+                ).filter(
+                  (k) =>
+                    checklist?.[item.title][k] === true &&
+                    !ignoreChecklistCount.includes(k)
+                ).length;
                 const totalStages = item.children
                   .map((child) => child.children)
                   .flat()
                   .filter((output) => output.title !== "Expected outputs")
                   .length;
-                const isCompleted = completedStages === totalStages || index < stages.indexOf(projectDetail.stage)
-                
+                const isCompleted =
+                  completedStages === totalStages ||
+                  index < stages.indexOf(projectDetail.stage);
+
                 return (
                   <Panel
                     className={classNames({ completed: isCompleted })}
@@ -1024,21 +1037,11 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                             isCompleted ? "done" : ""
                           }`}
                         >
-                          {isCompleted && (
-                            <CheckCircleOutlined />
-                          )}
+                          {isCompleted && <CheckCircleOutlined />}
                           <div>
                             <span>Tasks completed</span>
                             <strong>
-                              {
-                                Object.keys(
-                                  checklist.hasOwnProperty(item.title) &&
-                                    checklist?.[item.title]
-                                ).filter(
-                                  (k) => checklist?.[item.title][k] === true
-                                ).length
-                              }{" "}
-                              of {totalStages}
+                              {completedStages} of {totalStages}
                             </strong>
                           </div>
                         </div>
