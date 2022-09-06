@@ -1,8 +1,10 @@
 (ns gpml.auth
   (:require [gpml.db.comment :as db.comment]
             [gpml.db.organisation :as db.organisation]
+            [gpml.db.project :as db.prj]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.topic-stakeholder-auth :as db.ts-auth]
+            [gpml.handler.responses :as r]
             [gpml.util :as util]
             [integrant.core :as ig]
             [malli.core :as malli])
@@ -214,6 +216,18 @@
            :headers {"content-type" "application/json"}
            :body {:message "Unauthorized"
                   :reason "User don't have the necessary permissions to edit this organisation."}})))))
+
+(defmethod ig/init-key :gpml.auth/restrict-to-project-owner
+  [_ {:keys [db]}]
+  (fn [handler]
+    (fn [{{:keys [path]} :parameters user :user :as request}]
+      (let [db-opts (db.prj/opts->db-opts {:stakeholders_ids [(:id user)]
+                                           :ids [(:id path)]})
+            project (first (db.prj/get-projects (:spec db) {:filters db-opts}))]
+        (if (seq project)
+          (handler request)
+          (r/unauthorized {:message "Unauthorized"
+                           :reason "User don't have the necessary permissions to edit or read the project."}))))))
 
 (def owners-schema
   [:owners {:optional true}

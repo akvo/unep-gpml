@@ -558,16 +558,19 @@
                                          ["/:id"
                                           {:get {:summary "Get a project"
                                                  :swagger {:tags ["project"]}
+                                                 :middleware [#ig/ref :gpml.auth/restrict-to-project-owner]
                                                  :parameters #ig/ref :gpml.handler.project/get-by-id-params
                                                  :responses #ig/ref :gpml.handler.project/get-by-id-responses
                                                  :handler #ig/ref :gpml.handler.project/get-by-id}
                                            :put {:summary "Update a project"
                                                  :swagger {:tags ["project"]}
+                                                 :middleware [#ig/ref :gpml.auth/restrict-to-project-owner]
                                                  :parameters #ig/ref :gpml.handler.project/put-params
                                                  :responses #ig/ref :gpml.handler.project/put-responses
                                                  :handler #ig/ref :gpml.handler.project/put}
                                            :delete {:summary "Delete a project"
                                                     :swagger {:tags ["project"]}
+                                                    :middleware [#ig/ref :gpml.auth/restrict-to-project-owner]
                                                     :parameters #ig/ref :gpml.handler.project/delete-params
                                                     :responses #ig/ref :gpml.handler.project/delete-responses
                                                     :handler #ig/ref :gpml.handler.project/delete}}]]]]
@@ -813,13 +816,13 @@
   :gpml.auth/auth-middleware-auth0-actions {:issuer #duct/env "OIDC_ISSUER"
                                             :audience #duct/env "OIDC_AUDIENCE_AUTH0_ACTIONS"
                                             :db #ig/ref :duct.database/sql}
-
   :gpml.auth/auth-required {}
   :gpml.auth/restrict-to-admin-and-comment-author-middleware {:db #ig/ref :duct.database/sql}
   :gpml.auth/restrict-to-organisation-admin-or-owner {:db #ig/ref :duct.database/sql}
   :gpml.auth/approved-user {:db #ig/ref :duct.database/sql}
   :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}
   :gpml.auth/admin-or-reviewer-required-middleware {:db #ig/ref :duct.database/sql}
+  :gpml.auth/restrict-to-project-owner #ig/ref :gpml.config/common
 
   :gpml.handler.monitoring/collector {}
 
