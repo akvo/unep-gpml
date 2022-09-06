@@ -208,12 +208,37 @@ const Workspace = ({ profile }) => {
               </Col>
             </Row>
           )}
+          {projects.length > 0 &&
           <div className="all-projects-starter">
             <Row>
-              <h2>All projects</h2>
+              <h2>Your action plans</h2>
+            </Row>
+            <Row>
+
+              <ul>
+                {projects?.map((item) => (
+                  <li>
+                    <Link className="all-projects" to={`/projects/${item.id}`} key={item.id}>
+                      <div className="content">
+                        {/* <p>Action Plan</p> */}
+                        <h2>{item.title}</h2>
+                        <div className="transnational">
+                          <TransnationalSvg />
+                          <span>{item.geoCoverageType}</span>
+                        </div>
+                      </div>
+                    </Link>
+                    <div className="actions">
+                      <ShareSvg />
+                      <EditSvg onClick={() => history.push(`/projects/${item.id}`)} />
+                      <TrashSvg onClick={() => handleDeleteBtn(item.id)} />
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </Row>
             <Row className="assessment-row">
-              <Col span={24}>
+              {/* <Col span={24}>
                 <Link to="/projects/get-started">
                   <Button
                     className="assessment-button"
@@ -222,30 +247,10 @@ const Workspace = ({ profile }) => {
                     New project Assessment
                   </Button>
                 </Link>
-              </Col>
-              <Col span={24}>
-                {projects?.map((item) => (
-                  <div className="all-projects" key={item.id}>
-                    <div className="content">
-                      <p>Action Plan</p>
-                      <h2>{item.title}</h2>
-                      <div className="transnational">
-                        <TransnationalSvg />
-                        <span>{item.geoCoverageType}</span>
-                      </div>
-                    </div>
-                    <div className="actions">
-                      <ShareSvg />
-                      <TrashSvg onClick={() => handleDeleteBtn(item.id)} />
-                      <EditSvg
-                        onClick={() => history.push(`/projects/${item.id}`)}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </Col>
+              </Col> */}
             </Row>
           </div>
+          }
           <div className="action-plan-starter">
             <Row>
               <h2>Start your action plan</h2>
