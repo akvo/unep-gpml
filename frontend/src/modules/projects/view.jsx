@@ -79,7 +79,7 @@ const stagesChecklist = [
           },
           {
             title:
-              "Scientific analysis of information on sources, pathways and sinks ",
+              "Scientific analysis of information on sources, pathways and sinks",
             content: (checklist) => (
               <>
                 "The GPML Digital platform provides a wide range of materials to
@@ -134,13 +134,26 @@ const stagesChecklist = [
                         <p>
                           The GPML Data Catalog allows GPML partners to list a
                           wide range of potentially relevant datasets to list
-                          data on your country’s waste flows <a href="https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data" target="_blank">click here</a>.{" "}
+                          data on your country’s waste flows{" "}
+                          <a
+                            href="https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data"
+                            target="_blank"
+                          >
+                            click here
+                          </a>
+                          .{" "}
                         </p>
                       ) : (
                         <p>
                           The GPML Digital platform provides data models to help
                           support decision makers. Models that could be used to
-                          map waste flows include add <a href="https://digital-gpmarinelitter.hub.arcgis.com/maps/0e3d5a7a75d2460a965321fca04d96dd/about" target="_blank">Link to access university of Leeds data</a>
+                          map waste flows include add{" "}
+                          <a
+                            href="https://digital-gpmarinelitter.hub.arcgis.com/maps/0e3d5a7a75d2460a965321fca04d96dd/about"
+                            target="_blank"
+                          >
+                            Link to access university of Leeds data
+                          </a>
                         </p>
                       )}
                     </div>
@@ -193,7 +206,14 @@ const stagesChecklist = [
                         <p>
                           The GPML Data Catalog allows GPML partners to list a
                           wide range of potentially relevant datasets to list
-                          data on your country’s material flows <a href="https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data" target="_blank">click here</a>.
+                          data on your country’s material flows{" "}
+                          <a
+                            href="https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data"
+                            target="_blank"
+                          >
+                            click here
+                          </a>
+                          .
                         </p>
                       ) : (
                         <p>
@@ -959,11 +979,14 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
   useEffect(() => {
     if (params?.id && profile && profile.reviewStatus === "APPROVED") {
       api
-        .get(`/project/${params?.id}`)
+        .getRaw(`/project/${params?.id}`)
         .then((resp) => {
-          setProjectDetail(resp?.data.project);
+          console.log(JSON.parse(resp?.data));
+          setProjectDetail(JSON.parse(resp?.data).project);
           setChecklist(
-            resp?.data?.project?.checklist ? resp?.data?.project?.checklist : {}
+            JSON.parse(resp?.data).project?.checklist
+              ? JSON.parse(resp?.data).project?.checklist
+              : {}
           );
         })
         .catch((e) => console.log(e));
@@ -1065,7 +1088,7 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                           <UpCircleOutlined rotate={isActive ? 180 : 0} />
                         )}
                         className="child"
-                        defaultActiveKey={['0']}
+                        defaultActiveKey={["0"]}
                       >
                         {renderSubStages(
                           item.title,
@@ -1085,7 +1108,6 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
     </div>
   );
 };
-
 
 const renderSubStages = (title, data, checklist, handleStages) => {
   const children = data?.map((childItem, index) => (
