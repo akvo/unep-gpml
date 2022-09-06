@@ -23,7 +23,7 @@ const ignoreChecklistCount = [
   "Have you already mapped your material flows?",
 ];
 
-const stagesChecklist = [
+export const stagesChecklist = [
   {
     key: "S1",
     title: "Create",
@@ -1009,7 +1009,8 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
       })
       .catch((e) => console.log(e));
   };
-  console.log(checklist);
+
+  console.log(stages.indexOf(projectDetail?.stage));
 
   return (
     <div id="project">

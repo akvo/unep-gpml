@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "./create-project-modal.scss";
-import { Select, Input, Button, Modal } from "antd";
+import { Select, Input, Button, Modal, notification } from "antd";
 import { Field, Form } from "react-final-form";
 import api from "../../utils/api";
 import { useHistory } from "react-router-dom";
+import { stagesChecklist } from "../projects/view";
 
 const geoCoverageTypeOptions = [
   { label: "Global", value: "global" },
@@ -11,6 +12,28 @@ const geoCoverageTypeOptions = [
   { label: "National", value: "national" },
   { label: "Sub-national", value: "sub-national" },
 ];
+
+const getCheckListObject = (stage) => {
+  const getPreviousItems = stagesChecklist
+    .slice(
+      0,
+      stagesChecklist.findIndex((item) => item.title.toLowerCase() === stage)
+    )
+    .flatMap((a) =>
+      a.children.flatMap((b) =>
+        b.children.map((e) => ({ label: a.title, ...e }))
+      )
+    );
+
+  const checklist = getPreviousItems.reduce((object, item) => {
+    object[item.label] = object[item.label] || {};
+    object[item.label][item.title] = true;
+    delete object[item.label]?.["Expected outputs"];
+    return object;
+  }, {});
+
+  return checklist;
+};
 
 const CreateProjectModal = ({
   setShowCreateProjectModal,
@@ -30,21 +53,39 @@ const CreateProjectModal = ({
   };
   const onSubmit = async (values) => {
     setLoading(true);
+
     const data = {
       ...values,
       type: "action-plan",
       stage: stage,
     };
+
     api
       .post("/project", data)
       .then((res) => {
-        console.log(res);
         setLoading(false);
         setShowCreateProjectModal(false);
-        history.push(`/projects/${res?.data.projectId}`);
+        api
+          .putRaw(`/project/${res?.data.projectId}`, {
+            checklist: getCheckListObject(stage),
+          })
+          .then(() => {
+            history.push(`/projects/${res?.data.projectId}`);
+          })
+          .catch((e) =>
+            notification.error({
+              message: e?.response?.message
+                ? e?.response?.message
+                : "Oops, something went wrong",
+            })
+          );
       })
       .catch((err) => {
-        console.log(err);
+        notification.error({
+          message: err?.response?.message
+            ? err?.response?.message
+            : "Oops, something went wrong",
+        });
         setLoading(false);
         setShowCreateProjectModal(false);
       });
