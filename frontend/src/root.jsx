@@ -85,6 +85,9 @@ import AddContentButton from "./components/add-content-button/add-content-button
 // Auth
 import Onboarding from "./modules/onboarding/view";
 
+//Help
+import HelpCenter from "./modules/help-center/view";
+
 let tmid;
 
 const TRACKING_ID = "UA-225649296-2";
@@ -821,6 +824,8 @@ const Root = () => {
                 path="/discourse-forum"
                 render={(props) => <DiscourseForum />}
               />
+
+              <Route path="/help-center" render={(props) => <HelpCenter />} />
 
               <Route
                 exact
