@@ -44,8 +44,8 @@ const Workspace = ({ profile }) => {
   }, [profile]);
 
   useEffect(() => {
-    fetchAllProjects();
-  }, []);
+    if (profile && profile.reviewStatus === "APPROVED") fetchAllProjects();
+  }, [profile]);
 
   const fetchAllProjects = () => {
     api
@@ -208,37 +208,42 @@ const Workspace = ({ profile }) => {
               </Col>
             </Row>
           )}
-          {projects.length > 0 &&
-          <div className="all-projects-starter">
-            <Row>
-              <h2>Your action plans</h2>
-            </Row>
-            <Row>
-
-              <ul>
-                {projects?.map((item) => (
-                  <li>
-                    <Link className="all-projects" to={`/projects/${item.id}`} key={item.id}>
-                      <div className="content">
-                        {/* <p>Action Plan</p> */}
-                        <h2>{item.title}</h2>
-                        <div className="transnational">
-                          <TransnationalSvg />
-                          <span>{item.geoCoverageType}</span>
+          {projects.length > 0 && (
+            <div className="all-projects-starter">
+              <Row>
+                <h2>Your action plans</h2>
+              </Row>
+              <Row>
+                <ul>
+                  {projects?.map((item) => (
+                    <li>
+                      <Link
+                        className="all-projects"
+                        to={`/projects/${item.id}`}
+                        key={item.id}
+                      >
+                        <div className="content">
+                          {/* <p>Action Plan</p> */}
+                          <h2>{item.title}</h2>
+                          <div className="transnational">
+                            <TransnationalSvg />
+                            <span>{item.geoCoverageType}</span>
+                          </div>
                         </div>
+                      </Link>
+                      <div className="actions">
+                        <ShareSvg />
+                        <EditSvg
+                          onClick={() => history.push(`/projects/${item.id}`)}
+                        />
+                        <TrashSvg onClick={() => handleDeleteBtn(item.id)} />
                       </div>
-                    </Link>
-                    <div className="actions">
-                      <ShareSvg />
-                      <EditSvg onClick={() => history.push(`/projects/${item.id}`)} />
-                      <TrashSvg onClick={() => handleDeleteBtn(item.id)} />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </Row>
-            <Row className="assessment-row">
-              {/* <Col span={24}>
+                    </li>
+                  ))}
+                </ul>
+              </Row>
+              <Row className="assessment-row">
+                {/* <Col span={24}>
                 <Link to="/projects/get-started">
                   <Button
                     className="assessment-button"
@@ -248,9 +253,9 @@ const Workspace = ({ profile }) => {
                   </Button>
                 </Link>
               </Col> */}
-            </Row>
-          </div>
-          }
+              </Row>
+            </div>
+          )}
           <div className="action-plan-starter">
             <Row>
               <h2>Action plan toolbox</h2>
