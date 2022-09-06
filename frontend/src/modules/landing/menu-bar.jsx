@@ -104,6 +104,7 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
               <Item to="/connect/experts" title="Experts" iconClass='tools-experts-icon' subtitle="Tool to find an expert and experts' groups" icon={<ExpertIcon />}   {...{ setShowMenu }} />
               <Item to="/connect/events" title="Events" subtitle="Global events calendar" icon={<IconEvent />}   {...{ setShowMenu }} />
               <Item to="/connect/partners" title="Partners" iconClass='tools-partners-icon' subtitle="Directory of partners of the GPML Digital Platform" icon={<IconPartner />}   {...{ setShowMenu }} />
+              <Item href="https://communities.gpmarinelitter.org" title="Engage" subtitle="Interactive forum for collaboration" icon={<IconForum />} />
             </div>
             <h5>Data hub</h5>
             <div className="row">
