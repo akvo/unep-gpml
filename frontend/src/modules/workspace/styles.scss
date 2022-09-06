@@ -764,7 +764,6 @@ $bg-green-primary: #10f9b7;
     background-color: #205680;
     color: #fff;
     padding-top: 30px;
-    padding-bottom: 20px;
     h2 {
       font-size: 24px;
       text-transform: uppercase;
@@ -779,8 +778,13 @@ $bg-green-primary: #10f9b7;
       font-size: 18px;
       margin-right: 40px;
     }
+
     .ant-row {
       margin-bottom: 25px;
+      &:last-child {
+        margin-bottom: 20px;
+        margin-top: 50px;
+      }
     }
     .ant-col {
       & > b {

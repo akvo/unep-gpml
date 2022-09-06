@@ -253,35 +253,11 @@ const Workspace = ({ profile }) => {
           }
           <div className="action-plan-starter">
             <Row>
-              <h2>Start your action plan</h2>
-            </Row>
-            <Row>
-              <Col lg={14}>
-                <b>1</b>
-                <div className="content">
-                  <h3>workflow guidance</h3>
-                  <p>
-                    This one-page document outlines how the GPML Digital
-                    Platform supports the development of national marine litter
-                    and plastic pollution Action Plans. It includes the
-                    different phases of the Action Plan creation workflow.
-                  </p>
-                  <div>
-                    <a
-                      href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y"
-                      target="_blank"
-                    >
-                      <Button type="ghost" icon={<FilePdfOutlined />}>
-                        Read The Guide
-                      </Button>
-                    </a>
-                  </div>
-                </div>
-              </Col>
+              <h2>Action plan toolbox</h2>
             </Row>
             <Row>
               <Col lg={11}>
-                <b>2</b>
+                <b>1</b>
                 <div className="content">
                   <h3>Self-assessment</h3>
                   <p>
@@ -316,6 +292,30 @@ const Workspace = ({ profile }) => {
                       </a>
                     </li>
                   </ul>
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col lg={14}>
+                <b>2</b>
+                <div className="content">
+                  <h3>workflow guidance</h3>
+                  <p>
+                    This one-page document outlines how the GPML Digital
+                    Platform supports the development of national marine litter
+                    and plastic pollution Action Plans. It includes the
+                    different phases of the Action Plan creation workflow.
+                  </p>
+                  <div>
+                    <a
+                      href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y"
+                      target="_blank"
+                    >
+                      <Button type="ghost" icon={<FilePdfOutlined />}>
+                        Read The Guide
+                      </Button>
+                    </a>
+                  </div>
                 </div>
               </Col>
             </Row>
