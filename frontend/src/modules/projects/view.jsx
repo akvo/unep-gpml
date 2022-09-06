@@ -972,6 +972,16 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
       ...checklist,
       [title]: { ...checklist[title], [name]: value },
     });
+    const data = {
+      ...checklist,
+      [title]: { ...checklist[title], [name]: value },
+    };
+    api
+      .put(`/project/${params?.id}`, { checklist: data })
+      .then((resp) => {
+        console.log(resp);
+      })
+      .catch((e) => console.log(e));
   };
   console.log(checklist);
 
