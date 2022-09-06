@@ -32,7 +32,7 @@
           box-shadow: 2px 2px 0px rgb(24 22 47 / 15%);
           border-radius: 5px;
           padding: 10px 20px;
-          width: 230px;
+          width: 170px;
           p {
             font-weight: 400;
             font-size: 18px;
@@ -78,6 +78,13 @@
                 color: #8691b0;
               }
             }
+            &
+              > .ant-collapse-item
+              > .ant-collapse-header
+              > .ant-collapse-expand-icon
+              > .ant-collapse-arrow {
+              right: 22px;
+            }
             .ant-collapse-header-text {
               display: flex;
               align-items: center;
@@ -85,7 +92,8 @@
               width: 100%;
               .task-completed {
                 margin-right: 40px;
-                padding: 15px 40px;
+                padding: 15px 30px 15px 20px;
+                color: #000000;
                 &.done {
                   background: rgb(103 190 161 / 10%);
                   border-radius: 62px;
@@ -96,26 +104,21 @@
                     padding-right: 20px;
                     font-size: 41px;
                   }
-                  p,
-                  span {
-                    color: #67bea1;
-                  }
                 }
-                p {
+                div {
+                  line-height: 21px;
+                }
+                span {
                   margin-bottom: 0;
                   font-weight: 400;
                   font-size: 16px;
-                  line-height: 23px;
                   text-transform: uppercase;
-                  color: #000000;
                 }
-                span {
+                strong {
                   display: block;
                   text-align: end;
                   font-weight: 700;
                   font-size: 22px;
-                  line-height: 32px;
-                  color: #000000;
                 }
               }
               .steps-item-icon {
@@ -149,6 +152,12 @@
               border: 0.5px solid #d3dee7;
               box-shadow: 2px 2px 0px rgba(109, 181, 176, 0.3);
               border-radius: 5px;
+              &.completed {
+                border: 4px solid #67bea1;
+                &:not(:first-child) {
+                  margin-top: -4px;
+                }
+              }
               &.expected-output {
                 background: #d3dee7;
                 .ant-collapse-header-text {
@@ -315,11 +324,13 @@
               }
               &.ant-checkbox-checked {
                 .ant-checkbox-inner {
-                  background-color: #fff;
+                  background-color: #66bea1;
+                  border-color: #66bea1 !important;
                   &::after {
-                    border: 2px solid #8691b0;
+                    border: 2px solid #fff;
                     border-top: 0;
                     border-left: 0;
+                    left: 27%;
                   }
                 }
               }

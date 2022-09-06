@@ -14,6 +14,7 @@ import { ReactComponent as CaseStudiesSvg } from "../../images/capacity-building
 import { ReactComponent as CapacityBuildingSvg } from "../../images/capacity-building/ic-capacity-building.svg";
 import { Link } from "react-router-dom";
 import { stages } from "./get-started";
+import classNames from "classnames";
 
 const { Panel } = Collapse;
 
@@ -133,16 +134,13 @@ const stagesChecklist = [
                         <p>
                           The GPML Data Catalog allows GPML partners to list a
                           wide range of potentially relevant datasets to list
-                          data on your country’s waste flows click here (
-                          https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data).{" "}
+                          data on your country’s waste flows <a href="https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data" target="_blank">click here</a>.{" "}
                         </p>
                       ) : (
                         <p>
                           The GPML Digital platform provides data models to help
                           support decision makers. Models that could be used to
-                          map waste flows include add Link to access university
-                          of Leeds data
-                          (https://digital-gpmarinelitter.hub.arcgis.com/maps/0e3d5a7a75d2460a965321fca04d96dd/about)
+                          map waste flows include add <a href="https://digital-gpmarinelitter.hub.arcgis.com/maps/0e3d5a7a75d2460a965321fca04d96dd/about" target="_blank">Link to access university of Leeds data</a>
                         </p>
                       )}
                     </div>
@@ -195,8 +193,7 @@ const stagesChecklist = [
                         <p>
                           The GPML Data Catalog allows GPML partners to list a
                           wide range of potentially relevant datasets to list
-                          data on your country’s material flows click here (
-                          https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data).{" "}
+                          data on your country’s material flows <a href="https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data" target="_blank">click here</a>.
                         </p>
                       ) : (
                         <p>
@@ -955,95 +952,6 @@ const stagesChecklist = [
   },
 ];
 
-const renderSubStages = (title, data, checklist, handleStages) => {
-  const childs = data?.map((childItem, index) => (
-    <Panel
-      header={
-        <>
-          <h2>{childItem.title}</h2>
-        </>
-      }
-      key={index + childItem.title}
-    >
-      <div className="sub-stages">
-        <Collapse
-          accordion
-          expandIconPosition="end"
-          expandIcon={({ isActive }) => (
-            <UpCircleOutlined rotate={isActive ? 180 : 0} />
-          )}
-          className="sub-child"
-        >
-          {childItem?.children?.map((subChild, index) => {
-            return (
-              <Panel
-                header={
-                  <>
-                    {subChild.title !== "Expected outputs" ? (
-                      <Checkbox
-                        disabled
-                        checked={checklist[title]?.[subChild.title]}
-                      >
-                        {subChild.title}
-                      </Checkbox>
-                    ) : (
-                      <> {subChild.title}</>
-                    )}
-                  </>
-                }
-                key={index + subChild.title}
-                className={`${
-                  subChild.title === "Expected outputs" ? "expected-output" : ""
-                }`}
-              >
-                <div className="sub-stages">
-                  {subChild.title !== "Expected outputs" ? (
-                    <div className="content">
-                      <h5>Task description</h5>
-                      <p>{subChild?.content(checklist, handleStages)}</p>
-                      <Button
-                        type="ghost"
-                        icon={
-                          checklist[title]?.[subChild.title] ? (
-                            <CloseOutlined />
-                          ) : (
-                            <CheckOutlined />
-                          )
-                        }
-                        onClick={() =>
-                          handleStages(
-                            title,
-                            subChild.title,
-                            !checklist[title]?.[subChild.title]
-                          )
-                        }
-                      >
-                        {checklist[title]?.[subChild.title]
-                          ? `Mark as Incomplete`
-                          : `Mark as Completed`}
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="content">
-                      <h5>
-                        The expected output for this action plan stage is:
-                      </h5>
-                      <Button type="ghost" icon={<SendOutlined />}>
-                        SHARE YOUR REPORT
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              </Panel>
-            );
-          })}
-        </Collapse>
-      </div>
-    </Panel>
-  ));
-  return [childs];
-};
-
 const ProjectView = ({ match: { params }, profile, ...props }) => {
   const [projectDetail, setProjectDetail] = useState({});
   const [checklist, setChecklist] = useState({});
@@ -1126,9 +1034,7 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
 
                 return (
                   <Panel
-                    style={{
-                      border: isCompleted ? "4px solid #67BEA1" : "",
-                    }}
+                    className={classNames({ completed: isCompleted })}
                     header={
                       <>
                         <div className="steps-item-icon">
@@ -1142,10 +1048,10 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                         >
                           {isCompleted && <CheckCircleOutlined />}
                           <div>
-                            <p>Tasks completed</p>
-                            <span>
+                            <span>Tasks completed</span>
+                            <strong>
                               {completedStages} of {totalStages}
-                            </span>
+                            </strong>
                           </div>
                         </div>
                       </>
@@ -1154,12 +1060,12 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                   >
                     <div className="sub-stages">
                       <Collapse
-                        accordion
                         expandIconPosition="end"
                         expandIcon={({ isActive }) => (
                           <UpCircleOutlined rotate={isActive ? 180 : 0} />
                         )}
                         className="child"
+                        defaultActiveKey={['0']}
                       >
                         {renderSubStages(
                           item.title,
@@ -1178,6 +1084,96 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
       </div>
     </div>
   );
+};
+
+
+const renderSubStages = (title, data, checklist, handleStages) => {
+  const children = data?.map((childItem, index) => (
+    <Panel
+      header={
+        <>
+          <h2>{childItem.title}</h2>
+        </>
+      }
+      key={index}
+    >
+      <div className="sub-stages">
+        <Collapse
+          accordion
+          expandIconPosition="end"
+          expandIcon={({ isActive }) => (
+            <UpCircleOutlined rotate={isActive ? 180 : 0} />
+          )}
+          className="sub-child"
+        >
+          {childItem?.children?.map((subChild, index) => {
+            return (
+              <Panel
+                header={
+                  <>
+                    {subChild.title !== "Expected outputs" ? (
+                      <Checkbox
+                        disabled
+                        checked={checklist[title]?.[subChild.title]}
+                      >
+                        {subChild.title}
+                      </Checkbox>
+                    ) : (
+                      <> {subChild.title}</>
+                    )}
+                  </>
+                }
+                key={index + subChild.title}
+                className={`${
+                  subChild.title === "Expected outputs" ? "expected-output" : ""
+                }`}
+              >
+                <div className="sub-stages">
+                  {subChild.title !== "Expected outputs" ? (
+                    <div className="content">
+                      <h5>Task description</h5>
+                      <p>{subChild?.content(checklist, handleStages)}</p>
+                      <Button
+                        type="ghost"
+                        icon={
+                          checklist[title]?.[subChild.title] ? (
+                            <CloseOutlined />
+                          ) : (
+                            <CheckOutlined />
+                          )
+                        }
+                        onClick={() =>
+                          handleStages(
+                            title,
+                            subChild.title,
+                            !checklist[title]?.[subChild.title]
+                          )
+                        }
+                      >
+                        {checklist[title]?.[subChild.title]
+                          ? `Mark as Incomplete`
+                          : `Mark as Completed`}
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="content">
+                      <h5>
+                        The expected output for this action plan stage is:
+                      </h5>
+                      <Button type="ghost" icon={<SendOutlined />}>
+                        SHARE YOUR REPORT
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </Panel>
+            );
+          })}
+        </Collapse>
+      </div>
+    </Panel>
+  ));
+  return [children];
 };
 
 export default ProjectView;
