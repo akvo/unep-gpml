@@ -30,5 +30,6 @@
       (util/update-if-not-nil :geo_coverage_type #(pg-util/->PGEnum % "geo_coverage_type"))
       (util/update-if-not-nil :type #(pg-util/->PGEnum % "project_type"))
       (util/update-if-not-nil :checklist pg-util/val->jsonb)
+      (util/update-if-not-nil :answers pg-util/val->jsonb)
       (util/update-if-not-nil :stage #(pg-util/->PGEnum % "project_stage"))
       (dissoc :geo_coverage_countries :geo_coverage_country_groups)))

@@ -66,6 +66,13 @@
                 :additionalProperties {}
                 :allowEmptyValue false}}
      [:maybe map?]]
+    [:answers
+     {:optional true
+      :swagger {:description "The Project's answers."
+                :type "object"
+                :additionalProperties {}
+                :allowEmptyValue false}}
+     [:maybe map?]]
     [:stage
      {:swagger {:description "The Project's stage."
                 :type "string"
