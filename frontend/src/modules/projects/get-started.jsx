@@ -35,7 +35,7 @@ const quiz = [
     ],
   },
 ];
-const stages = ["create", "implement", "report", "update"];
+export const stages = ["create", "implement", "report", "update"];
 
 const GetStarted = () => {
   const swiperRef = useRef();
@@ -59,7 +59,7 @@ const GetStarted = () => {
   return (
     <div id="get-started">
       <header>
-        <h4>Action Plan assessment</h4>
+        <h4>Start Your Action Plan</h4>
         <Link to="/workspace">
           <Button type="link" icon={<CloseOutlined />}>
             Cancel

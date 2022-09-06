@@ -13,10 +13,11 @@ import { ReactComponent as AtlasSvg } from "../../images/book-atlas.svg";
 import { ReactComponent as CaseStudiesSvg } from "../../images/capacity-building/ic-case-studies.svg";
 import { ReactComponent as CapacityBuildingSvg } from "../../images/capacity-building/ic-capacity-building.svg";
 import { Link } from "react-router-dom";
+import { stages } from "./get-started";
 
 const { Panel } = Collapse;
 
-const stages = [
+const stagesChecklist = [
   {
     key: "S1",
     title: "Create",
@@ -1057,11 +1058,23 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
       [title]: { ...checklist[title], [name]: value },
     });
   };
+  console.log(checklist)
 
   return (
     <div id="project">
       <div className="project-container">
-        <Header title={projectDetail.title} stage={projectDetail.stage} />
+        <div className="project-header">
+          <div className="title-container">
+            <p>Action plan</p>
+            <h1>{projectDetail.title}</h1>
+          </div>
+          <div className="actions-container">
+            <div className="status-wrapper">
+              <p>Status</p>
+              <h2>{projectDetail.stage}</h2>
+            </div>
+          </div>
+        </div>
         <div className="project-body">
           <div className="project-stages">
             <h2>Action plan stages</h2>
@@ -1073,7 +1086,7 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
               )}
               className="parent"
             >
-              {stages.map((item, index) => {
+              {stagesChecklist.map((item, index) => {
                 const completedStages = Object.keys(
                   checklist.hasOwnProperty(item.title) &&
                     checklist?.[item.title]
@@ -1083,11 +1096,13 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                   .flat()
                   .filter((output) => output.title !== "Expected outputs")
                   .length;
+                const isCompleted = completedStages === totalStages || index < stages.indexOf(projectDetail.stage)
+                
                 return (
                   <Panel
                     style={{
                       border:
-                        completedStages === totalStages
+                        isCompleted
                           ? "4px solid #67BEA1"
                           : "",
                     }}
@@ -1099,10 +1114,10 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                         </div>
                         <div
                           className={`task-completed ${
-                            completedStages === totalStages ? "done" : ""
+                            isCompleted ? "done" : ""
                           }`}
                         >
-                          {completedStages === totalStages && (
+                          {isCompleted && (
                             <CheckCircleOutlined />
                           )}
                           <div>
@@ -1146,23 +1161,6 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
               })}
             </Collapse>
           </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const Header = ({ title, stage }) => {
-  return (
-    <div className="project-header">
-      <div className="title-container">
-        <p>Action plan</p>
-        <h1>{title}</h1>
-      </div>
-      <div className="actions-container">
-        <div className="status-wrapper">
-          <p>Action plan status</p>
-          <h2>{stage}</h2>
         </div>
       </div>
     </div>
