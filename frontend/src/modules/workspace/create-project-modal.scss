@@ -1,0 +1,83 @@
+.create-project-modal {
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  .ant-modal-content {
+    border-radius: 10px;
+    padding: 5px 0px;
+    .create-button {
+      background: #ffffff;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      filter: drop-shadow(2px 2px 0px rgba(24, 22, 47, 0.15));
+      border: 3px solid #18162f;
+      border-radius: 23.5px;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 22px;
+      text-align: center;
+      color: #18162f;
+      height: auto;
+      padding: 5px 20px;
+      &:hover {
+        background-color: #18162f;
+        color: white;
+      }
+    }
+    .clear-button {
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 22px;
+      text-align: center;
+      color: #18162f;
+      border: none;
+    }
+    .ant-modal-footer {
+      background: #ffffff;
+      text-align: center;
+      border: none;
+      border-radius: 0 0 10px 10px;
+    }
+    .ant-modal-header {
+      border: none;
+      border-radius: 10px 10px 0 0;
+      .ant-modal-title {
+        font-weight: 500;
+        font-size: 22px;
+        line-height: 32px;
+        text-transform: uppercase;
+        color: #a5b0c9;
+      }
+    }
+    .ant-modal-body {
+      .form-field {
+        margin-bottom: 30px;
+      }
+      .ant-input-status-error {
+        border: 1px solid #ff4d4f;
+        background-color: #edf2f7;
+      }
+      input {
+        background: #edf2f7;
+        border-radius: 5px;
+        filter: drop-shadow(2px 2px 0px rgba(24, 22, 47, 0.15));
+        border: none;
+        padding: 10px 10px;
+      }
+      .ant-select {
+        width: 100%;
+        background: #edf2f7;
+        border-radius: 5px;
+        filter: drop-shadow(2px 2px 0px rgba(24, 22, 47, 0.15));
+        .ant-select-selector {
+          border: none;
+          border-radius: 5px;
+          height: auto;
+          padding: 5px 10px;
+        }
+        input {
+          height: 100%;
+        }
+      }
+    }
+  }
+}
