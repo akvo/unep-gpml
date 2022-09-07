@@ -256,6 +256,7 @@ const Workspace = ({ profile }) => {
               </Row>
             </div>
           )}
+          {profile?.role === 'ADMIN' &&
           <div className="action-plan-starter">
             <Row>
               <h2>Action plan toolbox</h2>
@@ -325,6 +326,7 @@ const Workspace = ({ profile }) => {
               </Col>
             </Row>
           </div>
+          }
           <div className="action-suggestions">
             <Row>
               <Col lg={8}>
