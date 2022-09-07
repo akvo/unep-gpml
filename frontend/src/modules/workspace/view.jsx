@@ -216,7 +216,7 @@ const Workspace = ({ profile }) => {
               <Row>
                 <ul>
                   {projects?.map((item) => (
-                    <li>
+                    <li key={item.id}>
                       <Link
                         className="all-projects"
                         to={`/projects/${item.id}`}

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import "./create-project-modal.scss";
-import { Select, Input, Button, Modal } from "antd";
+import { Select, Input, Button, Modal, notification } from "antd";
 import { Field, Form } from "react-final-form";
 import api from "../../utils/api";
 import { useHistory } from "react-router-dom";
+import { stagesChecklist } from "../projects/view";
+import { UIStore } from "../../store";
 
 const geoCoverageTypeOptions = [
   { label: "Global", value: "global" },
@@ -17,6 +19,7 @@ const CreateProjectModal = ({
   showCreateProjectModal,
   stage,
 }) => {
+  const { countries, transnationalOptions } = UIStore.currentState;
   const history = useHistory();
   const [initialValues, setInitialValues] = useState({});
   const [loading, setLoading] = useState(false);
@@ -30,21 +33,33 @@ const CreateProjectModal = ({
   };
   const onSubmit = async (values) => {
     setLoading(true);
+
     const data = {
-      ...values,
       type: "action-plan",
       stage: stage,
+      geoCoverageType: values.geoCoverageType,
+      title: values.title,
+      ...(values.geoCoverageType === "national" && {
+        geoCoverageCountries: [values.geoCoverageCountries],
+      }),
+      ...(values.geoCoverageType === "transnational" && {
+        geoCoverageCountryGroups: values.geoCoverageCountryGroups,
+      }),
     };
+
     api
       .post("/project", data)
       .then((res) => {
-        console.log(res);
         setLoading(false);
         setShowCreateProjectModal(false);
         history.push(`/projects/${res?.data.projectId}`);
       })
       .catch((err) => {
-        console.log(err);
+        notification.error({
+          message: err?.response?.message
+            ? err?.response?.message
+            : "Oops, something went wrong",
+        });
         setLoading(false);
         setShowCreateProjectModal(false);
       });
@@ -64,7 +79,7 @@ const CreateProjectModal = ({
         validate={required}
         onSubmit={handleSubmit}
       >
-        {({ handleSubmit, submitting, form }) => {
+        {({ handleSubmit, submitting, form, values }) => {
           return (
             <form onSubmit={handleSubmit}>
               <div className="form-field">
@@ -124,6 +139,87 @@ const CreateProjectModal = ({
                   }}
                 </Field>
               </div>
+              {values.geoCoverageType === "national" && (
+                <div className="form-field">
+                  <Field
+                    name="geoCoverageCountries"
+                    style={{ width: "100%" }}
+                    validate={required}
+                  >
+                    {({ input, meta }) => {
+                      return (
+                        <>
+                          <Select
+                            placeholder="Select country"
+                            allowClear
+                            showSearch
+                            name="geoCoverageCountries"
+                            onChange={(value) => input.onChange(value)}
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .includes(input.toLowerCase())
+                            }
+                            value={input.value ? input.value : undefined}
+                            className={`${
+                              meta.touched && meta.error
+                                ? "ant-input-status-error"
+                                : ""
+                            }`}
+                          >
+                            {countries?.map((item) => (
+                              <Select.Option value={item.id} key={item.id}>
+                                {item.name}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </>
+                      );
+                    }}
+                  </Field>
+                </div>
+              )}
+              {values.geoCoverageType === "transnational" && (
+                <div className="form-field">
+                  <Field
+                    name="geoCoverageCountryGroups"
+                    style={{ width: "100%" }}
+                    validate={required}
+                  >
+                    {({ input, meta }) => {
+                      return (
+                        <>
+                          <Select
+                            mode="multiple"
+                            placeholder="Select geo coverage"
+                            allowClear
+                            showSearch
+                            name="geoCoverageCountryGroups"
+                            onChange={(value) => input.onChange(value)}
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .includes(input.toLowerCase())
+                            }
+                            value={input.value ? input.value : undefined}
+                            className={`${
+                              meta.touched && meta.error
+                                ? "ant-input-status-error"
+                                : ""
+                            }`}
+                          >
+                            {transnationalOptions?.map((item) => (
+                              <Select.Option value={item.id} key={item.id}>
+                                {item.name}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </>
+                      );
+                    }}
+                  </Field>
+                </div>
+              )}
               <div className="ant-modal-footer">
                 <Button
                   key="submit"
