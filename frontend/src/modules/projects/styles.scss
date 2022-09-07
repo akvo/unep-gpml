@@ -153,7 +153,7 @@
               box-shadow: 2px 2px 0px rgba(109, 181, 176, 0.3);
               border-radius: 5px;
               &.completed {
-                border: 4px solid #67bea1;
+                border: 4px solid #67bea1 !important;
                 &:not(:first-child) {
                   margin-top: -4px;
                 }

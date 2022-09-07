@@ -119,15 +119,17 @@ const quiz = [
   },
 ];
 export const stages = ["create", "implement", "report", "update"];
+let answers = {}
 
 const GetStarted = () => {
   const swiperRef = useRef();
   const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
   const [stage, setStage] = useState("create");
-  // const swiper = useSwiper()
+
   const handleClick = (index) => () => {
-    swiperRef.current.allowSlideNext = true;
     const { realIndex } = swiperRef.current
+    answers[`${realIndex + 1}. ${quiz[realIndex].q}`] = quiz[realIndex].a[index]
+    swiperRef.current.allowSlideNext = true;
     let slideTo = realIndex + 1
     if(realIndex === 0 && index === 1){
       slideTo = 11
@@ -195,7 +197,7 @@ const GetStarted = () => {
         </Swiper>
       </div>
       <CreateProjectModal
-        {...{ showCreateProjectModal, setShowCreateProjectModal, stage }}
+        {...{ showCreateProjectModal, setShowCreateProjectModal, stage, answers }}
       />
     </div>
   );

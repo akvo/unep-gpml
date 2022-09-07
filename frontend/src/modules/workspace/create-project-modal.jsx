@@ -18,6 +18,7 @@ const CreateProjectModal = ({
   setShowCreateProjectModal,
   showCreateProjectModal,
   stage,
+  answers
 }) => {
   const { countries, transnationalOptions } = UIStore.currentState;
   const history = useHistory();
@@ -36,7 +37,8 @@ const CreateProjectModal = ({
 
     const data = {
       type: "action-plan",
-      stage: stage,
+      stage,
+      answers,
       geoCoverageType: values.geoCoverageType,
       title: values.title,
       ...(values.geoCoverageType === "national" && {
