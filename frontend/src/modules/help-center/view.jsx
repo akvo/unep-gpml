@@ -73,7 +73,7 @@ function HelpCenter() {
               key="video"
               className="help-center-tab-pane"
             >
-              <Row gutter={16}>
+              <Row gutter={[16, 16]}>
                 <Col span={8}>
                   <iframe
                     width="100%"
