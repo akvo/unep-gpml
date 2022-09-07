@@ -92,6 +92,8 @@ import auth0 from "auth0-js";
 
 import { auth0Client } from "./utils/misc";
 import Landing from "./modules/landing/landing";
+import GetStarted from "./modules/projects/get-started";
+import Project from "./modules/projects/view";
 
 Promise.all([
   api.get("/tag"),
@@ -828,6 +830,14 @@ const Root = () => {
                   isAuthenticated && <Workspace {...props} profile={profile} />
                 }
                 path="/workspace"
+              />
+              <Route path="/projects/get-started">
+                <GetStarted />
+              </Route>
+              <Route
+                exact
+                path="/projects/:id"
+                render={(props) => <Project {...props} profile={profile} />}
               />
               <Route
                 exact
