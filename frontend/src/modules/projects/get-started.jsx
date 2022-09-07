@@ -13,6 +13,89 @@ import CreateProjectModal from "../workspace/create-project-modal";
 
 const quiz = [
   {
+    q: "Have you already created your action plan?",
+    a: ["No", "Yes"]
+  },
+  {
+    q: "What is the focus area of your action plan?",
+    a: ["Plastics", "Circular Economy", "Waste", "Marine Litter", "Sector Specific"]
+  },
+  {
+    q: "Have you collected data on the sources and sinks of plastics in the environment?",
+    a: [
+      "No",
+      "Hotspots only",
+      "Beach clean data only",
+      "Multiple environmental compartments (land, freshwater, coastal, marine)",
+      "Waste and material flows",
+      "Sufficient data to set baselines for primary sources and sinks"
+    ]
+  },
+  {
+    q: "Have you assessed the legal and policy landscape in which the action plan will operate?",
+    a: [
+      "No",
+      "Yes",
+      "Amendments to legislation are required"
+    ]
+  },
+  {
+    q: "Have you mapped all relevant stakeholders?",
+    a: [
+      "No",
+      "Relevant government agencies",
+      "Relevant private sector actors ",
+      "Relevant Civil Society (not-for-profit)actors",
+      "Relevant Intergovernmental Organizations (IGOs) actors"
+    ]
+  },
+  {
+    q: "Have you engaged all relevant stakeholders?",
+    a: [
+      "No",
+      "Relevant government agencies",
+      "Relevant private sector actors ",
+      "Relevant Civil Society (not-for-profit)actors",
+      "Relevant Intergovernmental Organizations (IGOs) actors"
+    ]
+  },
+  {
+    q: "Have you considered gender Aspects and or vulnerable communities?",
+    a: ["Yes", "No"]
+  },
+  {
+    q: "Have you consulted with stakeholders and agreed your priority actions to be included in the action plan?",
+    a: [
+      "No",
+      "Yes, all stakeholders consulted but priority actions not yet finalised",
+      "Yes, all stakeholders consulted and priority actions finalised"
+    ]
+  },
+  {
+    q: "Have you developed a national monitoring programme?",
+    a: [
+      "No",
+      "In Progress",
+      "Adopted and funding allocated"
+    ]
+  },
+  {
+    q: "Have you developed a reporting structure for the action plan?",
+    a: [
+      "No",
+      "In progress",
+      "Yes"
+    ]
+  },
+  {
+    q: "Has your government adopted the action plan?",
+    a: [
+      "Not started",
+      "In progress",
+      "Yes"
+    ]
+  },
+  {
     q: "Have you begun implementation of your action plan?",
     a: ["No", "Yes, partially (some actions)", "Yes, fully (all actions)"],
   },
@@ -43,18 +126,25 @@ const GetStarted = () => {
   const [stage, setStage] = useState("create");
   // const swiper = useSwiper()
   const handleClick = (index) => () => {
-    // console.log('asdas')
     swiperRef.current.allowSlideNext = true;
-    if (index === 0) {
-      setStage(stages[swiperRef.current.realIndex]);
-      swiperRef.current.slideTo(quiz.length);
-    } else {
-      swiperRef.current.slideNext();
+    const { realIndex } = swiperRef.current
+    let slideTo = realIndex + 1
+    if(realIndex === 0 && index === 1){
+      slideTo = 11
+      setStage('implement')
     }
+    else if(realIndex === 11 && index === 0){
+      slideTo = quiz.length
+    }
+    else if(realIndex === 12 && index === 0){
+      slideTo = quiz.length
+      setStage('report')
+    }
+    else if(realIndex === 13){
+      setStage('update')
+    }
+    swiperRef.current.slideTo(slideTo);
     swiperRef.current.allowSlideNext = false;
-    if (index < quiz.length) {
-    } else {
-    }
   };
   return (
     <div id="get-started">
@@ -76,7 +166,7 @@ const GetStarted = () => {
           allowSlideNext={false}
           modules={[Pagination, Navigation]}
         >
-          {quiz.map((it) => (
+          {quiz.map((it, index) => (
             <SwiperSlide>
               <div className="content">
                 <h2>{it.q}</h2>
