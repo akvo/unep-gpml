@@ -14,28 +14,6 @@ const geoCoverageTypeOptions = [
   { label: "Sub-national", value: "sub-national" },
 ];
 
-const getCheckListObject = (stage) => {
-  const getPreviousItems = stagesChecklist
-    .slice(
-      0,
-      stagesChecklist.findIndex((item) => item.title.toLowerCase() === stage)
-    )
-    .flatMap((a) =>
-      a.children.flatMap((b) =>
-        b.children.map((e) => ({ label: a.title, ...e }))
-      )
-    );
-
-  const checklist = getPreviousItems.reduce((object, item) => {
-    object[item.label] = object[item.label] || {};
-    object[item.label][item.title] = true;
-    delete object[item.label]?.["Expected outputs"];
-    return object;
-  }, {});
-
-  return checklist;
-};
-
 const CreateProjectModal = ({
   setShowCreateProjectModal,
   showCreateProjectModal,
@@ -74,20 +52,7 @@ const CreateProjectModal = ({
       .then((res) => {
         setLoading(false);
         setShowCreateProjectModal(false);
-        api
-          .putRaw(`/project/${res?.data.projectId}`, {
-            checklist: getCheckListObject(stage),
-          })
-          .then(() => {
-            history.push(`/projects/${res?.data.projectId}`);
-          })
-          .catch((e) =>
-            notification.error({
-              message: e?.response?.message
-                ? e?.response?.message
-                : "Oops, something went wrong",
-            })
-          );
+        history.push(`/projects/${res?.data.projectId}`);
       })
       .catch((err) => {
         notification.error({

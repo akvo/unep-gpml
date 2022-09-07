@@ -972,6 +972,28 @@ export const stagesChecklist = [
   },
 ];
 
+const getCheckListObject = (stage) => {
+  const getPreviousItems = stagesChecklist
+    .slice(
+      0,
+      stagesChecklist.findIndex((item) => item.title.toLowerCase() === stage)
+    )
+    .flatMap((a) =>
+      a.children.flatMap((b) =>
+        b.children.map((e) => ({ label: a.title, ...e }))
+      )
+    );
+
+  const checklist = getPreviousItems.reduce((object, item) => {
+    object[item.label] = object[item.label] || {};
+    object[item.label][item.title] = true;
+    delete object[item.label]?.["Expected outputs"];
+    return object;
+  }, {});
+
+  return checklist;
+};
+
 const ProjectView = ({ match: { params }, profile, ...props }) => {
   const [projectDetail, setProjectDetail] = useState({});
   const [checklist, setChecklist] = useState({});
@@ -981,12 +1003,11 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
       api
         .getRaw(`/project/${params?.id}`)
         .then((resp) => {
-          console.log(JSON.parse(resp?.data));
           setProjectDetail(JSON.parse(resp?.data).project);
           setChecklist(
             JSON.parse(resp?.data).project?.checklist
               ? JSON.parse(resp?.data).project?.checklist
-              : {}
+              : getCheckListObject(JSON.parse(resp?.data).project.stage)
           );
         })
         .catch((e) => console.log(e));
