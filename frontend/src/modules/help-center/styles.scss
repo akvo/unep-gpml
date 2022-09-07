@@ -1,3 +1,11 @@
 #helpCenter {
   padding: 30px 0px;
+  .help-center-tab-pane {
+    &.faq {
+      ul {
+        list-style-type: disc;
+        padding-left: 20px;
+      }
+    }
+  }
 }
