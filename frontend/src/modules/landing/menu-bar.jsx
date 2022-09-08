@@ -1,5 +1,5 @@
 import { Link, withRouter } from 'react-router-dom';
-import { Input, Button, Layout } from "antd";
+import { Input, Button, Layout, Menu, Dropdown } from "antd";
 import classNames from 'classnames'
 import { ReactComponent as Dots3x3 } from "../../images/3x3.svg";
 import { ReactComponent as AtlasSvg } from "../../images/book-atlas.svg";
@@ -20,7 +20,7 @@ import { ReactComponent as AboutSvg } from "../../images/about-icon.svg";
 
 import logo from "../../images/gpml.svg";
 import { useEffect, useRef, useState } from 'react';
-import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
+import { CloseOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
 import { CSSTransition } from 'react-transition-group';
 import bodyScrollLock from "../details-page/scroll-utils";
 
@@ -179,6 +179,44 @@ const Search = withRouter(({ history, updateQuery }) => {
         onSubmit={(e) => setSearch(e.target.value)}
       />
     </div>
+  );
+});
+
+const UserButton = withRouter(({ history, logout, isRegistered, profile }) => {
+  return (
+    <Dropdown
+      overlayClassName="user-btn-dropdown-wrapper"
+      overlay={
+        <Menu className="user-btn-dropdown">
+          <Menu.Item
+            onClick={() => {
+              history.push(
+                `/${isRegistered(profile) ? "profile" : "onboarding"}`
+              );
+            }}
+          >
+            Profile
+          </Menu.Item>
+          <Menu.Item
+            onClick={() => {
+              // auth0Client.logout({ returnTo: window.location.origin })
+            }}
+          >
+            Logout
+          </Menu.Item>
+        </Menu>
+      }
+      trigger={["click"]}
+      placement="bottomRight"
+    >
+      <Button
+        type="ghost"
+        placement="bottomRight"
+        className="left white"
+        shape="circle"
+        icon={<UserOutlined />}
+      />
+    </Dropdown>
   );
 });
 
