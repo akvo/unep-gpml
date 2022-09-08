@@ -279,7 +279,7 @@ const Root = () => {
         return console.log(err);
       }
       if (authResult) {
-        history.goBack();
+        history.push("/");
         setSession(authResult);
         api.setToken(authResult.idToken);
         if (
@@ -478,6 +478,8 @@ const Root = () => {
                 updateQuery,
                 isRegistered,
                 logout,
+                isAuthenticated,
+                auth0Client,
               }}
             />
           )}

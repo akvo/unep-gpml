@@ -23,8 +23,9 @@ import { useEffect, useRef, useState } from 'react';
 import { CloseOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
 import { CSSTransition } from 'react-transition-group';
 import bodyScrollLock from "../details-page/scroll-utils";
+import { UIStore } from "../../store.js";
 
-const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile, setLoginVisible }) => {
+const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile, setLoginVisible, auth0Client }) => {
   const domRef = useRef()
   const [showMenu, setShowMenu] = useState(false)
   useEffect(() => {
@@ -68,7 +69,7 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile, 
               <Button type="ghost" onClick={() => setLoginVisible(true)}>Login</Button>
             ) : [
             <AddButton />, 
-            <UserButton {...{ logout, isRegistered, profile }} />]
+            <UserButton {...{ auth0Client, isRegistered, profile }} />]
           }
           </div>
         </div>
@@ -182,7 +183,48 @@ const Search = withRouter(({ history, updateQuery }) => {
   );
 });
 
-const UserButton = withRouter(({ history, logout, isRegistered, profile }) => {
+const AddButton = withRouter(
+  ({
+    isAuthenticated,
+    setStakeholderSignupModalVisible,
+    setWarningModalVisible,
+    loginWithPopup,
+    history,
+    setLoginVisible,
+  }) => {
+    const profile = UIStore.useState((s) => s.profile);
+    if (isAuthenticated) {
+      if (profile?.reviewStatus === "APPROVED") {
+        return (
+          <>
+            <Link to="/flexible-forms">
+              <Button type="primary">Add Content</Button>
+            </Link>
+          </>
+        );
+      }
+      return (
+        <Button
+          type="primary"
+          onClick={() => {
+            profile?.reviewStatus === "SUBMITTED"
+              ? setWarningModalVisible(true)
+              : history.push("/onboarding");
+          }}
+        >
+          Add Content
+        </Button>
+      );
+    }
+    return (
+      <Button type="primary" onClick={() => setLoginVisible(true)}>
+        Add Content
+      </Button>
+    );
+  }
+);
+
+const UserButton = withRouter(({ history, isRegistered, profile, auth0Client }) => {
   return (
     <Dropdown
       overlayClassName="user-btn-dropdown-wrapper"
@@ -199,7 +241,7 @@ const UserButton = withRouter(({ history, logout, isRegistered, profile }) => {
           </Menu.Item>
           <Menu.Item
             onClick={() => {
-              // auth0Client.logout({ returnTo: window.location.origin })
+              auth0Client.logout({ returnTo: window.location.origin })
             }}
           >
             Logout
@@ -212,7 +254,7 @@ const UserButton = withRouter(({ history, logout, isRegistered, profile }) => {
       <Button
         type="ghost"
         placement="bottomRight"
-        className="left white"
+        className="profile-button"
         shape="circle"
         icon={<UserOutlined />}
       />

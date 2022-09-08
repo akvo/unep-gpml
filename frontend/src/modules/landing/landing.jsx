@@ -21,7 +21,7 @@ import { Link } from 'react-router-dom';
 const Landing = ({ setLoginVisible, ...props }) => {
   return (
     <div id="landingb">
-      <MenuBar {...props} />
+      <MenuBar {...props} setLoginVisible={setLoginVisible} />
       <div className="hero">
         <div className="litter">
           <PlasticLitter />
@@ -29,7 +29,15 @@ const Landing = ({ setLoginVisible, ...props }) => {
         <div className="content">
           <h1>The Digital Platform on Plastic Pollution & Marine Litter</h1>
           <h4>Informing and connecting all actors working to prevent plastic pollution and marine litter across the life cycle and from source to sea.</h4>
-          <Button type="primary" size='large' onClick={() => setLoginVisible(true)}>Join Now</Button>
+          {!props.isAuthenticated && (
+            <Button
+              type="primary"
+              size="large"
+              onClick={() => setLoginVisible(true)}
+            >
+              Join Now
+            </Button>
+          )}
         </div>
         <div className="next-btn" onClick={(e, v) => { window.scrollTo({ top: window.innerHeight - 80, behavior: 'smooth' }) }}>
           <Down />

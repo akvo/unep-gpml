@@ -66,10 +66,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
           return;
         }
         if (authResult) {
-          window.origin = window.location.origin;
-          console.log(authResult);
           setLoading(false);
-          //window.origin = window.location.origin;
         }
       }
     );
