@@ -25,7 +25,7 @@ import { CSSTransition } from 'react-transition-group';
 import bodyScrollLock from "../details-page/scroll-utils";
 import { UIStore } from "../../store.js";
 
-const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile, setLoginVisible, auth0Client }) => {
+const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegistered, profile, setLoginVisible, auth0Client }) => {
   const domRef = useRef()
   const [showMenu, setShowMenu] = useState(false)
   useEffect(() => {
@@ -68,7 +68,7 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile, 
             {!isAuthenticated ? (
               <Button type="ghost" onClick={() => setLoginVisible(true)}>Login</Button>
             ) : [
-            <AddButton />, 
+            <AddButton {...{ isAuthenticated, setLoginVisible, history, profile, setWarningModalVisible }} />, 
             <UserButton {...{ auth0Client, isRegistered, profile }} />]
           }
           </div>
@@ -186,13 +186,11 @@ const Search = withRouter(({ history, updateQuery }) => {
 const AddButton = withRouter(
   ({
     isAuthenticated,
-    setStakeholderSignupModalVisible,
     setWarningModalVisible,
-    loginWithPopup,
     history,
     setLoginVisible,
+    profile
   }) => {
-    const profile = UIStore.useState((s) => s.profile);
     if (isAuthenticated) {
       if (profile?.reviewStatus === "APPROVED") {
         return (

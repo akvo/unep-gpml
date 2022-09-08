@@ -478,6 +478,7 @@ const Root = () => {
                 logout,
                 isAuthenticated,
                 auth0Client,
+                setWarningModalVisible
               }}
             />
           )}
@@ -493,7 +494,7 @@ const Root = () => {
                   </div>
                 </div>
               )}
-            <MenuBar {...{ setLoginVisible,isAuthenticated, auth0Client, profile, isRegistered }} />
+            <MenuBar {...{ setLoginVisible, isAuthenticated, auth0Client, profile, isRegistered, setWarningModalVisible }} />
             <Switch>
               <Route
                 path="/"
