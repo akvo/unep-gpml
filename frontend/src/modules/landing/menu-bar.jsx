@@ -24,7 +24,7 @@ import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import { CSSTransition } from 'react-transition-group';
 import bodyScrollLock from "../details-page/scroll-utils";
 
-const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }) => {
+const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile, setLoginVisible }) => {
   const domRef = useRef()
   const [showMenu, setShowMenu] = useState(false)
   useEffect(() => {
@@ -65,7 +65,7 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
           <div className="rightside">
             <Search updateQuery={updateQuery} />
             {!isAuthenticated ? (
-            <Button type="ghost">Login</Button>
+              <Button type="ghost" onClick={() => setLoginVisible(true)}>Login</Button>
             ) : [
             <AddButton />, 
             <UserButton {...{ logout, isRegistered, profile }} />]

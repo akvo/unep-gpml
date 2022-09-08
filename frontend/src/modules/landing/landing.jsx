@@ -14,10 +14,11 @@ import { Pagination, Navigation } from "swiper";
  import { ReactComponent as KnowledgeIcon } from "../../images/knowledge.svg";
  import { ReactComponent as DataSetIcon } from "../../images/datasets.svg";
  import user1img from '../../images/our-community/cassia-patel.jpg'
+import { Link } from 'react-router-dom';
 //  import helpCenterIcon
 //  import { ReactComponent as HelpCenterIcon } from "../../images/help-center.svg";
 
-const Landing = (props) => {
+const Landing = ({ setLoginVisible, ...props }) => {
   return (
     <div id="landingb">
       <MenuBar {...props} />
@@ -28,7 +29,7 @@ const Landing = (props) => {
         <div className="content">
           <h1>The Digital Platform on Plastic Pollution & Marine Litter</h1>
           <h4>Informing and connecting all actors working to prevent plastic pollution and marine litter across the life cycle and from source to sea.</h4>
-          <Button type="primary" size='large'>Join Now</Button>
+          <Button type="primary" size='large' onClick={() => setLoginVisible(true)}>Join Now</Button>
         </div>
         <div className="next-btn" onClick={(e, v) => { window.scrollTo({ top: window.innerHeight - 80, behavior: 'smooth' }) }}>
           <Down />
@@ -37,13 +38,13 @@ const Landing = (props) => {
       <div className="workspace">
         <img src="/person-workspace.svg" />
         <h3>All the tools you need to act, in one place.</h3>
-        <Button type='primary' size='large'>Create your workspace</Button>
+        <Button type='primary' size='large' onClick={() => setLoginVisible(true)}>Create your workspace</Button>
       </div>
       <TheJourney />
       <Connect />
       <Partners />
       <Stats />
-      <Act />
+      <Act {...{ setLoginVisible }} />
       <AnyQuestions />
       <Footer />
     </div>
@@ -284,7 +285,7 @@ const Stats = () => {
   )
 }
 
-const Act = () => {
+const Act = ({ setLoginVisible }) => {
    const { resources } = UIStore.useState((s) => ({
      resources: s.nav?.resourceCounts,
    }));
@@ -385,7 +386,7 @@ const Act = () => {
            </Card>
          ))}
        </div>
-       <Button type="primary" size="large">
+       <Button type="primary" size="large" onClick={() => setLoginVisible(true)}>
          Join now
        </Button>
      </div>
@@ -401,9 +402,11 @@ const Act = () => {
        <div className="content-container">
          <h3>Any Questions?</h3>
          <p>Visit the Help Center for FAQs, tutorials and more.</p>
-         <Button type="ghost" size="large">
-           Find your answers &#62;
-         </Button>
+         <Link to="/help-center">
+          <Button type="ghost" size="large">
+            Find your answers &#62;
+          </Button>
+         </Link>
        </div>
      </div>
    );

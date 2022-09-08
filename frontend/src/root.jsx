@@ -464,6 +464,7 @@ const Root = () => {
 
   return (
     <>
+      <Login visible={loginVisible} close={() => setLoginVisible(false)} />
       <Switch>
         <Route
           path="/"
@@ -492,7 +493,7 @@ const Root = () => {
                   </div>
                 </div>
               )}
-            <MenuBar />
+            <MenuBar {...{ setLoginVisible }} />
             <Switch>
               <Route
                 path="/"
@@ -822,7 +823,6 @@ const Root = () => {
             visible={warningModalVisible}
             close={() => setWarningModalVisible(false)}
           />
-          <Login visible={loginVisible} close={() => setLoginVisible(false)} />
           <ResponsiveMenu
             {...{
               profile,
