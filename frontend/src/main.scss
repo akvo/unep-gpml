@@ -1309,6 +1309,7 @@ path {
       }
     }
   }
+
   .rightside {
     margin-left: auto;
     display: flex;
@@ -1329,7 +1330,14 @@ path {
       }
     }
   }
-
+  @media screen and (max-width: 1024px) {
+    .all-tools-btn span {
+      display: none;
+    }
+    .rightside {
+      display: none !important;
+    }
+  }
   .src {
     display: flex;
     align-items: center;
