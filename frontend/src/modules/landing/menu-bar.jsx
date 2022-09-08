@@ -162,17 +162,15 @@ const Search = withRouter(({ history, updateQuery }) => {
   const handleSearch = (src) => {
     const path = history.location.pathname;
     if (src) {
-      history.push(`/knowledge/library?q=${src.trim()}`);
-      updateQuery("q", src.trim());
+      history.push(`/knowledge/library/resource/category?q=${src.trim()}`);
     } else {
-      updateQuery("q", src.trim());
+      history.push(`/knowledge/library/resource/category`);
     }
   };
 
   return (
     <div className="src">
       <Input
-        value={search}
         className="input-src"
         placeholder="Search"
         suffix={<SearchOutlined />}
