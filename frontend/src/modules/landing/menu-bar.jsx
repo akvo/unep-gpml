@@ -231,6 +231,7 @@ const UserButton = withRouter(({ history, isRegistered, profile, auth0Client }) 
       overlay={
         <Menu className="user-btn-dropdown">
           <Menu.Item
+            key="profile"
             onClick={() => {
               history.push(
                 `/${isRegistered(profile) ? "profile" : "onboarding"}`
@@ -240,6 +241,7 @@ const UserButton = withRouter(({ history, isRegistered, profile, auth0Client }) 
             Profile
           </Menu.Item>
           <Menu.Item
+            key="logout"
             onClick={() => {
               auth0Client.logout({ returnTo: window.location.origin })
             }}

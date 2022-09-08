@@ -194,6 +194,14 @@ h4 {
   }
   */
 
+  
+  .profile-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+  }
+  
   // btn primary
   .ant-btn-primary {
     color: #2d6796;

@@ -280,7 +280,6 @@ const Root = () => {
       }
       if (authResult) {
         history.push("/");
-        setSession(authResult);
         api.setToken(authResult.idToken);
         if (
           authResult?.idTokenPayload?.hasOwnProperty(
@@ -311,7 +310,6 @@ const Root = () => {
     auth0Client.checkSession({}, async (err, authResult) => {
       if (err) {
         console.log(err);
-        // history.push("/login");
       }
       if (authResult) {
         setSession(authResult);
@@ -344,7 +342,7 @@ const Root = () => {
         updateStatusProfile(resp.data);
       }
     })();
-  }, [isAuthenticated, idToken, authResult]);
+  }, [idToken, authResult]);
 
   useEffect(() => {
     if (window.location.host === "digital.gpmarinelitter.org") {
@@ -495,7 +493,7 @@ const Root = () => {
                   </div>
                 </div>
               )}
-            <MenuBar {...{ setLoginVisible }} />
+            <MenuBar {...{ setLoginVisible,isAuthenticated, auth0Client, profile, isRegistered }} />
             <Switch>
               <Route
                 path="/"
