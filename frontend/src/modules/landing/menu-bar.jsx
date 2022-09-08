@@ -1,4 +1,4 @@
-import { Link, withRouter } from 'react-router-dom';
+import { Link, NavLink, withRouter } from 'react-router-dom';
 import { Input, Button, Layout, Menu, Dropdown } from "antd";
 import classNames from 'classnames'
 import { ReactComponent as Dots3x3 } from "../../images/3x3.svg";
@@ -20,7 +20,7 @@ import { ReactComponent as AboutSvg } from "../../images/about-icon.svg";
 
 import logo from "../../images/gpml.svg";
 import { useEffect, useRef, useState } from 'react';
-import { CloseOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
+import { CloseOutlined, HomeOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
 import { CSSTransition } from 'react-transition-group';
 import bodyScrollLock from "../details-page/scroll-utils";
 import { UIStore } from "../../store.js";
@@ -56,6 +56,17 @@ const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegis
           <Link to="/">
             <img src={logo} className="logo" alt="GPML" />
           </Link>
+          {isAuthenticated && (
+            <NavLink
+              to="/workspace"
+              className="btn-workspace menu-btn"
+              activeClassName="selected"
+              aria-label="Workspace"
+            >
+              <HomeOutlined />
+              <span className="text">Workspace</span>
+            </NavLink>
+          )}
           <div className="all-tools-btn" onClick={() => {
             setShowMenu(true);
             bodyScrollLock.enable();
