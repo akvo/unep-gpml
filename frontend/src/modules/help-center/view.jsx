@@ -32,7 +32,7 @@ function HelpCenter() {
             >
               <iframe
                 src={
-                  "https://docs.google.com/document/d/1nopNTzzsYJkiJKVog0E75BQrT0NfBuPrt9ZO-FyK3LQ&embedded=true"
+                  "https://docs.google.com/document/d/1nopNTzzsYJkiJKVog0E75BQrT0NfBuPrt9ZO-FyK3LQ/edit?usp=sharing&embedded=true"
                 }
                 title="file"
                 width="100%"
@@ -144,7 +144,7 @@ function HelpCenter() {
             >
               <iframe
                 src={
-                  "https://docs.google.com/document/d/1NdbsIjrXxNaGsNt5lcVbWWj3jiY4NiJErOlBPwI-pr8&embedded=true"
+                  "https://docs.google.com/document/d/1NdbsIjrXxNaGsNt5lcVbWWj3jiY4NiJErOlBPwI-pr8/edit?usp=sharing&embedded=true"
                 }
                 title="file"
                 width="100%"
@@ -158,7 +158,7 @@ function HelpCenter() {
             >
               <iframe
                 src={
-                  "https://docs.google.com/document/d/1Dl3ZbXn5mK-5dpxBNT2-vZXWZ0Fnb0d82XQMmXKqn94&embedded=true"
+                  "https://docs.google.com/document/d/1Dl3ZbXn5mK-5dpxBNT2-vZXWZ0Fnb0d82XQMmXKqn94/edit?usp=sharing&embedded=true"
                 }
                 title="file"
                 width="100%"
@@ -172,7 +172,7 @@ function HelpCenter() {
             >
               <iframe
                 src={
-                  "https://docs.google.com/document/d/1n8_mrPU6ETnNAfAQKCK8ldrRAqLysrGKB88u_oMimsM/edit&embedded=true"
+                  "https://docs.google.com/document/d/1n8_mrPU6ETnNAfAQKCK8ldrRAqLysrGKB88u_oMimsM/edit?usp=sharing&embedded=true"
                 }
                 title="file"
                 width="100%"
