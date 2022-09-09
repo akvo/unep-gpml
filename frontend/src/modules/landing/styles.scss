@@ -28,6 +28,12 @@
     }
     .logo {
       height: 3.625em;
+      transform: translateY(-2px);
+    }
+    .menu-btn.btn-workspace {
+      height: 50px;
+      margin-left: 25px;
+      margin-right: -15px;
     }
     .all-tools-btn {
       height: 3.25em;
