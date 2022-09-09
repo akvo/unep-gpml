@@ -32,7 +32,7 @@ function HelpCenter() {
             >
               <iframe
                 src={
-                  "https://docs.google.com/document/d/1nopNTzzsYJkiJKVog0E75BQrT0NfBuPrt9ZO-FyK3LQ/edit?usp=sharing&embedded=true"
+                  "https://docs.google.com/document/d/e/2PACX-1vSsL8Pou0JXSh9qCMnUcGMhaEkj1oULd12ZZq81vxArBhFPYiDePV5JMxXsewTYPmcxXUMX0yntYBX7/pub?embedded=true"
                 }
                 title="file"
                 width="100%"
@@ -144,7 +144,7 @@ function HelpCenter() {
             >
               <iframe
                 src={
-                  "https://docs.google.com/document/d/1NdbsIjrXxNaGsNt5lcVbWWj3jiY4NiJErOlBPwI-pr8/edit?usp=sharing&embedded=true"
+                  "https://docs.google.com/document/d/e/2PACX-1vT553Y4g-Xo5nG5llgf5FbGFzxCaZkOPlZ2MOvyPFY7PeQuqGCpDZP6_J2negT7RY9PkblAJrifYw9Y/pub?embedded=true"
                 }
                 title="file"
                 width="100%"
@@ -158,7 +158,7 @@ function HelpCenter() {
             >
               <iframe
                 src={
-                  "https://docs.google.com/document/d/1Dl3ZbXn5mK-5dpxBNT2-vZXWZ0Fnb0d82XQMmXKqn94/edit?usp=sharing&embedded=true"
+                  "https://docs.google.com/document/d/e/2PACX-1vTrJhxqW49qwLE_JOT9EnJWpGlGOtdjZOAyqlPoSSUBOlPvTbckHkejld80YtTYYjvAgSCDQrg3hxad/pub?embedded=true"
                 }
                 title="file"
                 width="100%"
@@ -172,7 +172,7 @@ function HelpCenter() {
             >
               <iframe
                 src={
-                  "https://docs.google.com/document/d/1n8_mrPU6ETnNAfAQKCK8ldrRAqLysrGKB88u_oMimsM/edit?usp=sharing&embedded=true"
+                  "https://docs.google.com/document/d/e/2PACX-1vRoIYUcPZT9Eg2idGgytRPT222Nwia4kKNmRbCOY-PiNJqSo9X_BLccEqx3YParFbAQK2ewHRqzqquI/pub?embedded=true"
                 }
                 title="file"
                 width="100%"
