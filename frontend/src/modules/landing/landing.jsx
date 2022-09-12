@@ -110,7 +110,7 @@ const TheJourney = () => {
           <div className="pane">
             <h3>FROM SOURCE TO SEA ACROSS THE PLASTICS life cycle</h3>
             <p>Plastics can have environmental, economic, health and social impacts and are leaked into the environment across the plastics life cycle and from source to sea. Once the plastics are in the environment, they can be transported through various pathways.</p>
-            <Button type="ghost" size="large">Learn More</Button>
+            {/* <Button type="ghost" size="large">Learn More</Button> */}
           </div>
           <div className="mobile-only img">
             <img src="/plastic-journey.svg" />
