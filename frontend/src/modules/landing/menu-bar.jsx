@@ -123,7 +123,7 @@ const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegis
               <Item href="https://datahub.gpmarinelitter.org" title="Analytics & statistics" subtitle="Metrics to measure progress" icon={<AnalyticAndStatisticSvg/>}  {...{ setShowMenu }} />
               <Item href="https://unepazecosysadlsstorage.z20.web.core.windows.net/" title="Data Catalogue" subtitle="Datasets on plastic pollution and marine litter" icon={<DataCatalogueSvg/>}  {...{ setShowMenu }} />
               <Item to="/glossary" title="Glossary" subtitle="Terminology and definitions" icon={<GlossarySvg/>}  {...{ setShowMenu }} />
-              <Item href="https://datahub.gpmarinelitter.org/pages/story_map" title="Story Telling" subtitle="Storytelling with custom maps" icon={<MapSvg/>}   {...{ setShowMenu }} />
+              <Item href="https://datahub.gpmarinelitter.org/pages/story_map" title="Story Maps" subtitle="Storytelling with custom maps" icon={<MapSvg/>}   {...{ setShowMenu }} />
               <Item href="https://datahub.gpmarinelitter.org/pages/api-explore" title="API explore" subtitle="Web services and APIs" icon={<ExploreSvg/>}  {...{ setShowMenu }} />
             </div>
             <h5>Looking for more?</h5>
@@ -152,6 +152,7 @@ const Item = ({ title, subtitle, icon, iconClass, to, href, setShowMenu }) => {
   )
   const handleClick = () => {
     setShowMenu(false)
+    bodyScrollLock.disable()
   }
   if(to != null){
     return <Link className="item" to={to} onClick={handleClick}>{contents}</Link>

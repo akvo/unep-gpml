@@ -320,9 +320,9 @@ const Act = ({ setLoginVisible }) => {
    const initialData = [
      {
        title: "Share your data",
-       name: "Data sets",
-       count: 349,
-       entityCount: 814,
+       name: "Data layers",
+       count: '300+',
+       entityCount: '20+',
        icon: <DataSetIcon />,
        background: "#ECF8F6",
      },
