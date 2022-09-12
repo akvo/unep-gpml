@@ -5,7 +5,13 @@ import StakeholderOverview from "../stakeholder-overview/view";
 import Partners from "../partners/view";
 import Experts from "../experts/view";
 
-function Connect({ filters, setFilters, isAuthenticated, setLoginVisible }) {
+function Connect({
+  filters,
+  setFilters,
+  isAuthenticated,
+  setLoginVisible,
+  loadingProfile,
+}) {
   const history = useHistory();
   return (
     <div id="siteWrapper">
@@ -24,10 +30,17 @@ function Connect({ filters, setFilters, isAuthenticated, setLoginVisible }) {
                   setFilters={setFilters}
                   isAuthenticated={isAuthenticated}
                   history={history}
+                  loadingProfile={loadingProfile}
                 />
               </Route>
               <Route path="/connect/partners" component={Partners} />
-              <Route path="/connect/experts" component={Experts} />
+              <Route path="/connect/experts">
+                <Experts
+                  setLoginVisible={setLoginVisible}
+                  isAuthenticated={isAuthenticated}
+                  loadingProfile={loadingProfile}
+                />
+              </Route>
             </Switch>
           </div>
         </div>

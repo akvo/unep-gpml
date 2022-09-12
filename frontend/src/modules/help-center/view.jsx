@@ -20,9 +20,9 @@ function HelpCenter() {
                   "_blank"
                 );
               }
-              if (key === "glossary") {
-                history.push("/glossary");
-              }
+              // if (key === "glossary") {
+              //   history.push("/glossary");
+              // }
             }}
           >
             <TabPane
@@ -183,7 +183,14 @@ function HelpCenter() {
               tab="Glossary"
               key="glossary"
               className="help-center-tab-pane"
-            />
+            >
+              <iframe
+                src={"https://dev-gpmlglossary.pantheonsite.io/"}
+                title="file"
+                width="100%"
+                height="600"
+              />
+            </TabPane>
             <TabPane
               tab="Forums"
               key="forums"

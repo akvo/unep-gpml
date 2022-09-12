@@ -1,42 +1,31 @@
 import React from "react";
+import { Button, Modal } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./unathenticated-page.scss";
 import { Link } from "react-router-dom";
 
-const UnathenticatedPage = ({ setLoginVisible }) => {
+const UnathenticatedPage = ({
+  unAthenticatedModal,
+  setUnathenticatedModal,
+  setLoginVisible,
+}) => {
   return (
-    <div className="unathenticated-page">
-      <p>
-        You can now connect with other members of the GPML Digital Platform.
-      </p>
-      <p>Get started now!</p>
-      <p>
-        <img
-          className="image"
-          src="https://communities.gpmarinelitter.org/images/emoji/twitter/white_check_mark.png?v=12/"
-          alt="check"
-        />{" "}
-        First, create an individual account by directly signing up to the GPML
-        Digital Platform (if you don't have one yet)
-      </p>
-      <p>
-        <Link to="/onboarding">
-          https://digital.gpmarinelitter.org/onboarding
-        </Link>
-      </p>
-      <p>
-        {" "}
-        <img
-          className="image"
-          src="https://communities.gpmarinelitter.org/images/emoji/twitter/point_down.png?v=12"
-          alt="pointing"
-        />
-        Once you are successfully registered log in below.
-      </p>
-      <a className="login-button" onClick={() => setLoginVisible(true)}>
-        <UserOutlined /> <span>Log in</span>
-      </a>
-    </div>
+    <Modal
+      centered
+      className="unathenticated-modal"
+      visible={unAthenticatedModal}
+      onCancel={() => setUnathenticatedModal(false)}
+      footer={
+        <>
+          <Button onClick={() => setLoginVisible(true)}>Sign In</Button>
+        </>
+      }
+      closable={false}
+    >
+      <div className="unathenticated-page">
+        <p>You need to have an account and be signed in to see this page</p>
+      </div>
+    </Modal>
   );
 };
 
