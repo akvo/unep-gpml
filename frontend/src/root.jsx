@@ -224,6 +224,7 @@ const Root = () => {
   const [filters, setFilters] = useState(null);
   const [filterMenu, setFilterMenu] = useState(null);
   const [showResponsiveMenu, setShowResponsiveMenu] = useState(false);
+  const [loadingProfile, setLoadingProfile] = useState(false);
   const [_expiresAt, setExpiresAt] = useState(null);
   const [idToken, setIdToken] = useState(null);
   const [authResult, setAuthResult] = useState(null);
@@ -303,7 +304,7 @@ const Root = () => {
               };
             });
             history.push({
-              pathname: "onboarding",
+              pathname: "/onboarding",
               state: { data: authResult?.idTokenPayload },
             });
           }
@@ -316,6 +317,8 @@ const Root = () => {
     auth0Client.checkSession({}, async (err, authResult) => {
       if (err) {
         console.log(err);
+        setLoadingProfile(true);
+        // history.push("/login");
       }
       if (authResult) {
         setSession(authResult);
@@ -332,9 +335,10 @@ const Root = () => {
       }
       if (isAuthenticated && idToken && authResult) {
         let resp = await api.get("/profile");
+        setLoadingProfile(false);
         if (resp.data && Object.keys(resp.data).length === 0) {
           history.push({
-            pathname: "onboarding",
+            pathname: "/onboarding",
             state: { data: authResult?.idTokenPayload },
           });
         }
@@ -484,7 +488,7 @@ const Root = () => {
                 logout,
                 isAuthenticated,
                 auth0Client,
-                setWarningModalVisible
+                setWarningModalVisible,
               }}
             />
           )}
@@ -500,7 +504,16 @@ const Root = () => {
                   </div>
                 </div>
               )}
-            <MenuBar {...{ setLoginVisible, isAuthenticated, auth0Client, profile, isRegistered, setWarningModalVisible }} />
+            <MenuBar
+              {...{
+                setLoginVisible,
+                isAuthenticated,
+                auth0Client,
+                profile,
+                isRegistered,
+                setWarningModalVisible,
+              }}
+            />
             <Switch>
               <Route
                 path="/"
@@ -774,6 +787,7 @@ const Root = () => {
                     filters={filters}
                     setFilters={setFilters}
                     isAuthenticated={isAuthenticated}
+                    loadingProfile={loadingProfile}
                   />
                 )}
               />
