@@ -1,5 +1,5 @@
-import { Link, withRouter } from 'react-router-dom';
-import { Input, Button, Layout } from "antd";
+import { Link, NavLink, withRouter } from 'react-router-dom';
+import { Input, Button, Layout, Menu, Dropdown } from "antd";
 import classNames from 'classnames'
 import { ReactComponent as Dots3x3 } from "../../images/3x3.svg";
 import { ReactComponent as AtlasSvg } from "../../images/book-atlas.svg";
@@ -20,11 +20,12 @@ import { ReactComponent as AboutSvg } from "../../images/about-icon.svg";
 
 import logo from "../../images/gpml.svg";
 import { useEffect, useRef, useState } from 'react';
-import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
+import { CloseOutlined, HomeOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
 import { CSSTransition } from 'react-transition-group';
 import bodyScrollLock from "../details-page/scroll-utils";
+import { UIStore } from "../../store.js";
 
-const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }) => {
+const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegistered, profile, setLoginVisible, auth0Client }) => {
   const domRef = useRef()
   const [showMenu, setShowMenu] = useState(false)
   useEffect(() => {
@@ -55,6 +56,17 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
           <Link to="/">
             <img src={logo} className="logo" alt="GPML" />
           </Link>
+          {isAuthenticated && (
+            <NavLink
+              to="/workspace"
+              className="btn-workspace menu-btn"
+              activeClassName="selected"
+              aria-label="Workspace"
+            >
+              <HomeOutlined />
+              <span className="text">Workspace</span>
+            </NavLink>
+          )}
           <div className="all-tools-btn" onClick={() => {
             setShowMenu(true);
             bodyScrollLock.enable();
@@ -65,10 +77,10 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
           <div className="rightside">
             <Search updateQuery={updateQuery} />
             {!isAuthenticated ? (
-            <Button type="ghost">Login</Button>
+              <Button type="ghost" onClick={() => setLoginVisible(true)}>Login</Button>
             ) : [
-            <AddButton />, 
-            <UserButton {...{ logout, isRegistered, profile }} />]
+            <AddButton {...{ isAuthenticated, setLoginVisible, history, profile, setWarningModalVisible }} />, 
+            <UserButton {...{ auth0Client, isRegistered, profile }} />]
           }
           </div>
         </div>
@@ -94,29 +106,30 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
             </div>
             <h5>Information</h5>
             <div className="row">
-              <Item title="Knowledge library" subtitle="Resources on plastic pollution and marine litter" icon={<AtlasSvg />} />
-              <Item icon={<CaseStudiesSvg />} iconClass="casestudies" title="Case studies" subtitle="Compilation of actions around the world" />
-              <Item title="Learning center" subtitle="Learning and capacity development resources" icon={<CapacityBuildingSvg />} iconClass="learning" />
+              <Item to="/knowledge/library" title="Knowledge library" subtitle="Resources on marine litter and plastic pollution" icon={<AtlasSvg />}   {...{ setShowMenu }} />
+              <Item to="/knowledge/case-studies" icon={<CaseStudiesSvg />} iconClass="casestudies" title="Case studies" subtitle="Compilation of actions around the world"   {...{ setShowMenu }} />
+              <Item to="/knowledge/capacity-building" title="Learning center" subtitle="Learning and capacity building resources" icon={<CapacityBuildingSvg />} iconClass="learning"   {...{ setShowMenu }} />
             </div>
             <h5>Community</h5>
             <div className="row">
-              <Item title="Members" iconClass='tools-community-icon' subtitle="Directory of GPML network entities and individuals" icon={<IconCommunity />} />
-              <Item title="Experts" iconClass='tools-experts-icon' subtitle="Tool to find an expert" icon={<ExpertIcon />} />
-              <Item title="Events" subtitle="Global events calendar" icon={<IconEvent />} />
-              <Item title="Partners" iconClass='tools-partners-icon' subtitle="Directory of partners of the GPML Digital Platform" icon={<IconPartner />} />
+              <Item to="/connect/community" title="Members" iconClass='tools-community-icon' subtitle="Directory of GPML network entities and individuals" icon={<IconCommunity />}   {...{ setShowMenu }} />
+              <Item to="/connect/experts" title="Experts" iconClass='tools-experts-icon' subtitle="Tool to find an expert and experts' groups" icon={<ExpertIcon />}   {...{ setShowMenu }} />
+              <Item to="/connect/events" title="Events" subtitle="Global events calendar" icon={<IconEvent />}   {...{ setShowMenu }} />
+              <Item to="/connect/partners" title="Partners" iconClass='tools-partners-icon' subtitle="Directory of partners of the GPML Digital Platform" icon={<IconPartner />}   {...{ setShowMenu }} />
+              <Item href="https://communities.gpmarinelitter.org" title="Engage" subtitle="Interactive forum for collaboration" icon={<IconForum />} />
             </div>
             <h5>Data hub</h5>
             <div className="row">
-              <Item title="Analytics & statistics" subtitle="Metrics to measure progress" icon={<AnalyticAndStatisticSvg/>}/>
-              <Item title="Data Catalog" subtitle="Datasets on plastic pollution and marine litter" icon={<DataCatalogueSvg/>}/>
-              <Item title="Glossary" subtitle="Terminology and definitions" icon={<GlossarySvg/>}/>
-              <Item title="Story Maps" subtitle="Storytelling with custom maps" icon={<MapSvg/>} />
-              <Item title="API explore" subtitle="Web services and APIs" icon={<ExploreSvg/>}/>
+              <Item href="https://datahub.gpmarinelitter.org" title="Analytics & statistics" subtitle="Metrics to measure progress" icon={<AnalyticAndStatisticSvg/>}  {...{ setShowMenu }} />
+              <Item href="https://unepazecosysadlsstorage.z20.web.core.windows.net/" title="Data Catalog" subtitle="Datasets on plastic pollution and marine litter" icon={<DataCatalogueSvg/>}  {...{ setShowMenu }} />
+              {/* <Item to="/glossary" title="Glossary" subtitle="Terminology and definitions" icon={<GlossarySvg/>}  {...{ setShowMenu }} /> */}
+              <Item href="https://datahub.gpmarinelitter.org/pages/story_map" title="Story Telling" subtitle="Storytelling with custom maps" icon={<MapSvg/>}   {...{ setShowMenu }} />
+              <Item href="https://datahub.gpmarinelitter.org/pages/api-explore" title="API explore" subtitle="Web services and APIs" icon={<ExploreSvg/>}  {...{ setShowMenu }} />
             </div>
             <h5>Looking for more?</h5>
             <div className="row">
-              <Item title="Help Center" subtitle="Support on GPML Digital Platform" icon={<HelpCenterSvg/>}/>
-              <Item title="About GPML" subtitle="Find out more about us" icon={<AboutSvg/>}/>
+              {/* <Item to="/help-center" title="Help Center" subtitle="Support on GPML Digital Platform" icon={<HelpCenterSvg/>}  {...{ setShowMenu }} /> */}
+              <Item to="/about-us" title="About GPML" subtitle="Find out more about us" icon={<AboutSvg/>}  {...{ setShowMenu }} />
             </div>
           </div>
         </div>
@@ -125,9 +138,9 @@ const MenuBar = ({ updateQuery, isAuthenticated, logout, isRegistered, profile }
   )
 }
 
-const Item = ({ title, subtitle, icon, iconClass}) => {
-  return (
-    <div className="item">
+const Item = ({ title, subtitle, icon, iconClass, to, href, setShowMenu }) => {
+  const contents = (
+    <>
       <div className={['icon', iconClass].filter(it => it != null).join(' ')}>
         {icon}
       </div>
@@ -135,6 +148,20 @@ const Item = ({ title, subtitle, icon, iconClass}) => {
         <b>{title}</b>
         <span>{subtitle}</span>
       </div>
+    </>
+  )
+  const handleClick = () => {
+    setShowMenu(false)
+  }
+  if(to != null){
+    return <Link className="item" to={to} onClick={handleClick}>{contents}</Link>
+  }
+  else if(href != null){
+    return <a className="item" href={href} onClick={handleClick}>{contents}</a>
+  }
+  return (
+    <div className="item" onClick={handleClick}>
+      {contents}
     </div>
   )
 }
@@ -146,17 +173,15 @@ const Search = withRouter(({ history, updateQuery }) => {
   const handleSearch = (src) => {
     const path = history.location.pathname;
     if (src) {
-      history.push(`/knowledge/library?q=${src.trim()}`);
-      updateQuery("q", src.trim());
+      history.push(`/knowledge/library/resource/category?q=${src.trim()}`);
     } else {
-      updateQuery("q", src.trim());
+      history.push(`/knowledge/library/resource/category`);
     }
   };
 
   return (
     <div className="src">
       <Input
-        value={search}
         className="input-src"
         placeholder="Search"
         suffix={<SearchOutlined />}
@@ -164,6 +189,85 @@ const Search = withRouter(({ history, updateQuery }) => {
         onSubmit={(e) => setSearch(e.target.value)}
       />
     </div>
+  );
+});
+
+const AddButton = withRouter(
+  ({
+    isAuthenticated,
+    setWarningModalVisible,
+    history,
+    setLoginVisible,
+    profile
+  }) => {
+    if (isAuthenticated) {
+      if (profile?.reviewStatus === "APPROVED") {
+        return (
+          <>
+            <Link to="/flexible-forms">
+              <Button type="primary">Add Content</Button>
+            </Link>
+          </>
+        );
+      }
+      return (
+        <Button
+          type="primary"
+          onClick={() => {
+            profile?.reviewStatus === "SUBMITTED"
+              ? setWarningModalVisible(true)
+              : history.push("/onboarding");
+          }}
+        >
+          Add Content
+        </Button>
+      );
+    }
+    return (
+      <Button type="primary" onClick={() => setLoginVisible(true)}>
+        Add Content
+      </Button>
+    );
+  }
+);
+
+const UserButton = withRouter(({ history, isRegistered, profile, auth0Client }) => {
+  return (
+    <Dropdown
+      overlayClassName="user-btn-dropdown-wrapper"
+      overlay={
+        <Menu className="user-btn-dropdown">
+          <Menu.Item
+            key="profile"
+            onClick={() => {
+              history.push(
+                `/${isRegistered(profile) ? "profile" : "onboarding"}`
+              );
+            }}
+          >
+            Profile
+          </Menu.Item>
+          <Menu.Item
+            key="logout"
+            onClick={() => {
+              auth0Client.logout({ returnTo: window.location.origin })
+            }}
+          >
+            Logout
+          </Menu.Item>
+        </Menu>
+      }
+      trigger={["click"]}
+      placement="bottomRight"
+    >
+      <Button
+        type="ghost"
+        placement="bottomRight"
+        className="profile-button"
+        shape="circle"
+        icon={<UserOutlined />}
+      />
+    </Dropdown>
   );
 });
 

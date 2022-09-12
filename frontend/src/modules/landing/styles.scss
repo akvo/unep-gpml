@@ -28,6 +28,12 @@
     }
     .logo {
       height: 3.625em;
+      transform: translateY(-2px);
+    }
+    .menu-btn.btn-workspace {
+      height: 50px;
+      margin-left: 25px;
+      margin-right: -15px;
     }
     .all-tools-btn {
       height: 3.25em;
@@ -63,6 +69,7 @@
     .rightside {
       margin-left: auto;
       display: flex;
+      align-items: center;
       .ant-btn {
         background: transparent;
         color: rgba(0, 255, 127, 1);
@@ -791,6 +798,9 @@
 }
 body {
   overflow-x: hidden;
+  @media screen and (min-width: 1280px) {
+    font-size: 16px;
+  }
 }
 .full-menu {
   position: fixed;
@@ -863,6 +873,10 @@ body {
           background-color: #211f39;
           z-index: -1;
           height: calc(100% + 68px + 70px);
+        }
+        @media screen and (max-width: 1024px) {
+          left: -35px;
+          width: calc(100% + 55px);
         }
       }
     }
@@ -955,7 +969,7 @@ body {
 
       div:nth-child(2) {
         @media screen and (min-width: 1024px) {
-          max-width: 10.5em;
+          max-width: 11.5em;
           min-width: 10.5em;
         }
         // width: 175px;
@@ -1118,13 +1132,4 @@ body {
 
 .scroll-disabled {
   overflow: hidden;
-}
-
-.nav-header-container {
-  .ui.container {
-    @media only screen and (min-width: 1220px) and (max-width: 1599px) {
-      width: 100%;
-      margin: 0 50px;
-    }
-  }
 }

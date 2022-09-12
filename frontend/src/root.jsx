@@ -97,6 +97,7 @@ import { auth0Client } from "./utils/misc";
 import Landing from "./modules/landing/landing";
 import GetStarted from "./modules/projects/get-started";
 import Project from "./modules/projects/view";
+import MenuBar from "./modules/landing/menu-bar";
 
 Promise.all([
   api.get("/tag"),
@@ -315,7 +316,6 @@ const Root = () => {
     auth0Client.checkSession({}, async (err, authResult) => {
       if (err) {
         console.log(err);
-        // history.push("/login");
       }
       if (authResult) {
         setSession(authResult);
@@ -348,7 +348,7 @@ const Root = () => {
         updateStatusProfile(resp.data);
       }
     })();
-  }, [isAuthenticated, idToken, authResult]);
+  }, [idToken, authResult]);
 
   useEffect(() => {
     if (window.location.host === "digital.gpmarinelitter.org") {
@@ -468,9 +468,10 @@ const Root = () => {
 
   return (
     <>
+      <Login visible={loginVisible} close={() => setLoginVisible(false)} />
       <Switch>
         <Route
-          path="/landing"
+          path="/"
           exact
           render={(props) => (
             <Landing
@@ -481,6 +482,9 @@ const Root = () => {
                 updateQuery,
                 isRegistered,
                 logout,
+                isAuthenticated,
+                auth0Client,
+                setWarningModalVisible
               }}
             />
           )}
@@ -496,106 +500,7 @@ const Root = () => {
                   </div>
                 </div>
               )}
-            <Header className="nav-header-container">
-              <div className="ui container">
-                <div className="logo-wrapper">
-                  <Link to="/">
-                    <img src={logo} className="logo" alt="GPML" />
-                  </Link>
-                </div>
-                <div className="main-menu-items">
-                  {isAuthenticated && <WorkspaceButton />}
-                  <ul>
-                    <li>
-                      <NavLink
-                        to="/about-us"
-                        className="menu-btn nav-link menu-dropdown"
-                        activeClassName="selected"
-                      >
-                        About
-                      </NavLink>
-                    </li>
-                    <li>
-                      <ExploreDropdownMenu topicsCount={topicsCount} />
-                    </li>
-                    <li>
-                      <a
-                        href="https://datahub.gpmarinelitter.org/"
-                        className="menu-btn nav-link menu-dropdown"
-                      >
-                        Data Hub
-                      </a>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/knowledge/library"
-                        className={`menu-btn nav-link menu-dropdown ${
-                          path.includes("/knowledge") && "selected"
-                        }`}
-                        activeClassName={"selected"}
-                      >
-                        Knowledge Exchange
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/connect/events"
-                        className={`menu-btn nav-link ${
-                          path.includes("/connect") && "selected"
-                        }`}
-                        activeClassName="selected"
-                      >
-                        Connect Stakeholders
-                      </NavLink>
-                    </li>
-                  </ul>
-                </div>
-                <Switch>
-                  <Route path="/browse" />
-                  <Route>
-                    <Search updateQuery={updateQuery} />
-                  </Route>
-                </Switch>
-                <div className="rightside">
-                  {!isAuthenticated ? (
-                    <div className="rightside btn-wrapper">
-                      {isAuthenticated && isRegistered(profile) ? (
-                        <UserButton {...{ logout, isRegistered, profile }} />
-                      ) : (
-                        <Button
-                          type="ghost"
-                          className="left"
-                          onClick={() => setLoginVisible(true)}
-                        >
-                          Sign in
-                        </Button>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="rightside btn-wrapper">
-                      <AddButton
-                        {...{
-                          setStakeholderSignupModalVisible,
-                          isAuthenticated,
-                          loginWithPopup,
-                          setWarningModalVisible,
-                          setLoginVisible,
-                        }}
-                      />
-                      <UserButton {...{ logout, isRegistered, profile }} />
-                    </div>
-                  )}
-                  {/* Drawer/ Menu for responsive design */}
-                  <div className="responsive-menu-trigger">
-                    <Button
-                      className="menu-icon"
-                      icon={<img src={MenuOutlined} />}
-                      onClick={() => setShowResponsiveMenu(true)}
-                    />
-                  </div>
-                </div>
-              </div>
-            </Header>
+            <MenuBar {...{ setLoginVisible, isAuthenticated, auth0Client, profile, isRegistered, setWarningModalVisible }} />
             <Switch>
               <Route
                 path="/"
@@ -935,7 +840,6 @@ const Root = () => {
             visible={warningModalVisible}
             close={() => setWarningModalVisible(false)}
           />
-          <Login visible={loginVisible} close={() => setLoginVisible(false)} />
           <ResponsiveMenu
             {...{
               profile,

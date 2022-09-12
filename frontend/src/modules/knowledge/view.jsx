@@ -60,7 +60,6 @@ function Knowledge({
 }) {
   return (
     <div id="siteWrapper">
-      <LeftSidebar sidebar={sidebar} />
       <div id="appWrapper">
         <div id="appInnerWrapper">
           <div id="bodyContent">
