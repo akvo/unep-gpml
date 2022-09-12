@@ -128,7 +128,7 @@ const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegis
             </div>
             <h5>Looking for more?</h5>
             <div className="row">
-              {/* <Item to="/help-center" title="Help Center" subtitle="Support on GPML Digital Platform" icon={<HelpCenterSvg/>}  {...{ setShowMenu }} /> */}
+              <Item to="/help-center" title="Help Center" subtitle="Support on GPML Digital Platform" icon={<HelpCenterSvg/>}  {...{ setShowMenu }} />
               <Item to="/about-us" title="About GPML" subtitle="Find out more about us" icon={<AboutSvg/>}  {...{ setShowMenu }} />
             </div>
           </div>
