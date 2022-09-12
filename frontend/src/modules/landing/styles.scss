@@ -80,6 +80,7 @@
         padding: 0 13px;
         line-height: 1.5;
         transition: all 0.19s ease-out !important;
+        min-width: 38px;
         &:hover {
           border-color: rgba(0, 255, 127, 1) !important;
           background-color: rgba(0, 255, 127, 1) !important;
