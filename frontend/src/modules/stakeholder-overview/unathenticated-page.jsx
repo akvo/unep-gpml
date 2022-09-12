@@ -21,6 +21,7 @@ const UnathenticatedPage = ({
         </>
       }
       closable={false}
+      maskClosable={false}
     >
       <div className="unathenticated-page">
         <p>You need to have an account and be signed in to see this page</p>
