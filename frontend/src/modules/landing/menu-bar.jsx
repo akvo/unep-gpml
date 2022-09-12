@@ -53,8 +53,9 @@ const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegis
     <>
       <Layout.Header className="nav-header-container" ref={domRef}>
         <div className="ui container">
-          <Link to="/">
+          <Link to="/" className="logo-a">
             <img src={logo} className="logo" alt="GPML" />
+            <div className="beta">beta</div>
           </Link>
           {isAuthenticated && (
             <NavLink
@@ -77,7 +78,7 @@ const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegis
           <div className="rightside">
             <Search updateQuery={updateQuery} />
             {!isAuthenticated ? (
-              <Button type="ghost" onClick={() => setLoginVisible(true)}>Login</Button>
+              <Button type="ghost" onClick={() => setLoginVisible(true)}>Sign in</Button>
             ) : [
             <AddButton {...{ isAuthenticated, setLoginVisible, history, profile, setWarningModalVisible }} />, 
             <UserButton {...{ auth0Client, isRegistered, profile }} />]

@@ -26,9 +26,31 @@
       position: relative;
       z-index: 2;
     }
+    .logo-a {
+      position: relative;
+    }
     .logo {
       height: 3.625em;
       transform: translateY(-2px);
+      margin-right: 50px;
+      & + .beta {
+        font-size: 13px;
+        text-transform: uppercase;
+        color: #09689a;
+        background-color: #d3dee7;
+        border: 3px solid #09689a;
+        position: absolute;
+        line-height: 1;
+        top: 10px;
+        right: 0px;
+        font-weight: bold;
+        height: 23px;
+        line-height: 18px;
+        padding: 0 3px;
+        border-radius: 5px;
+        box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.25);
+        z-index: 2;
+      }
     }
     .menu-btn.btn-workspace {
       height: 50px;
