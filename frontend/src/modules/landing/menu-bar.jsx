@@ -1,4 +1,4 @@
-import { Link, NavLink, withRouter } from 'react-router-dom';
+import { Link, NavLink, Route, Switch, withRouter } from 'react-router-dom';
 import { Input, Button, Layout, Menu, Dropdown } from "antd";
 import classNames from 'classnames'
 import { ReactComponent as Dots3x3 } from "../../images/3x3.svg";
@@ -75,6 +75,13 @@ const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegis
             <Dots3x3 />
             <span>All Tools</span>
           </div>
+          <Switch>
+            {Object.keys(pathContent).map(path =>
+              <Route path={path}>
+                <Item to={path} />
+              </Route>
+            )}
+          </Switch>
           <div className="rightside">
             <Search updateQuery={updateQuery} />
             {!isAuthenticated ? (
@@ -107,30 +114,30 @@ const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegis
             </div>
             <h5>Information</h5>
             <div className="row">
-              <Item to="/knowledge/library" title="Knowledge library" subtitle="Resources on marine litter and plastic pollution" icon={<AtlasSvg />}   {...{ setShowMenu }} />
-              <Item to="/knowledge/case-studies" icon={<CaseStudiesSvg />} iconClass="casestudies" title="Case studies" subtitle="Compilation of actions around the world"   {...{ setShowMenu }} />
-              <Item to="/knowledge/capacity-building" title="Learning center" subtitle="Learning and capacity building resources" icon={<CapacityBuildingSvg />} iconClass="learning"   {...{ setShowMenu }} />
+              <Item to="/knowledge/library" {...{ setShowMenu }} />
+              <Item to="/knowledge/case-studies"  {...{ setShowMenu }} />
+              <Item to="/knowledge/capacity-building"  {...{ setShowMenu }} />
             </div>
             <h5>Community</h5>
             <div className="row">
-              <Item to="/connect/community" title="Members" iconClass='tools-community-icon' subtitle="Directory of GPML network entities and individuals" icon={<IconCommunity />}   {...{ setShowMenu }} />
-              <Item to="/connect/experts" title="Experts" iconClass='tools-experts-icon' subtitle="Tool to find an expert and experts' groups" icon={<ExpertIcon />}   {...{ setShowMenu }} />
-              <Item to="/connect/events" title="Events" subtitle="Global events calendar" icon={<IconEvent />}   {...{ setShowMenu }} />
-              <Item to="/connect/partners" title="Partners" iconClass='tools-partners-icon' subtitle="Directory of partners of the GPML Digital Platform" icon={<IconPartner />}   {...{ setShowMenu }} />
+              <Item to="/connect/community" {...{ setShowMenu }} />
+              <Item to="/connect/experts" {...{ setShowMenu }} />
+              <Item to="/connect/events" {...{ setShowMenu }} />
+              <Item to="/connect/partners" {...{ setShowMenu }} />
               <Item href="https://communities.gpmarinelitter.org" title="Engage" subtitle="Interactive forum for collaboration" icon={<IconForum />} />
             </div>
             <h5>Data hub</h5>
             <div className="row">
               <Item href="https://datahub.gpmarinelitter.org" title="Analytics & statistics" subtitle="Metrics to measure progress" icon={<AnalyticAndStatisticSvg/>}  {...{ setShowMenu }} />
               <Item href="https://unepazecosysadlsstorage.z20.web.core.windows.net/" title="Data Catalogue" subtitle="Datasets on plastic pollution and marine litter" icon={<DataCatalogueSvg/>}  {...{ setShowMenu }} />
-              <Item to="/glossary" title="Glossary" subtitle="Terminology and definitions" icon={<GlossarySvg/>}  {...{ setShowMenu }} />
+              <Item to="/glossary"  {...{ setShowMenu }} />
               <Item href="https://datahub.gpmarinelitter.org/pages/story_map" title="Story Maps" subtitle="Storytelling with custom maps" icon={<MapSvg/>}   {...{ setShowMenu }} />
               <Item href="https://datahub.gpmarinelitter.org/pages/api-explore" title="API explore" subtitle="Web services and APIs" icon={<ExploreSvg/>}  {...{ setShowMenu }} />
             </div>
             <h5>Looking for more?</h5>
             <div className="row">
-              <Item to="/help-center" title="Help Center" subtitle="Support on GPML Digital Platform" icon={<HelpCenterSvg/>}  {...{ setShowMenu }} />
-              <Item to="/about-us" title="About GPML" subtitle="Find out more about us" icon={<AboutSvg/>}  {...{ setShowMenu }} />
+              <Item to="/help-center" {...{ setShowMenu }} />
+              <Item to="/about-us" {...{ setShowMenu }} />
             </div>
           </div>
         </div>
@@ -139,7 +146,46 @@ const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegis
   )
 }
 
+const pathContent = {
+  '/knowledge/library': {
+    title: 'Knowledge library', subtitle: 'Resources on marine litter and plastic pollution', icon: <AtlasSvg />
+  },
+  '/knowledge/case-studies': {
+    title: 'Case studies', icon: <CaseStudiesSvg />, subtitle: 'Compilation of actions around the world', iconClass: 'casestudies'
+  },
+  '/knowledge/capacity-building': {
+     title: "Learning center", subtitle: "Learning and capacity building resources", icon: <CapacityBuildingSvg />, iconClass: "learning" 
+  },
+  '/connect/community': {
+     title: "Members", iconClass: 'tools-community-icon', subtitle: "Directory of GPML network entities and individuals", icon: <IconCommunity />
+  },
+  '/connect/experts': {
+     title: "Experts", iconClass: 'tools-experts-icon', subtitle: "Tool to find an expert and experts' groups", icon: <ExpertIcon />
+  },
+  '/connect/events': {
+     title: "Events", subtitle: "Global events calendar", icon: <IconEvent />
+  },
+  '/connect/partners': {
+     title: "Partners", iconClass: 'tools-partners-icon', subtitle: "Directory of partners of the GPML Digital Platform", icon: <IconPartner />
+  },
+  '/glossary': {
+     title: "Glossary", subtitle: "Terminology and definitions", icon: <GlossarySvg/>
+  },
+  '/help-center': {
+     title: "Help Center", subtitle: "Support on GPML Digital Platform", icon: <HelpCenterSvg/>
+  },
+  '/about-us': {
+     title: "About GPML", subtitle: "Find out more about us", icon: <AboutSvg/>
+  }
+}
+
 const Item = ({ title, subtitle, icon, iconClass, to, href, setShowMenu }) => {
+  if(to != null && pathContent[to] != null){
+    iconClass = pathContent[to].iconClass
+    icon = pathContent[to].icon
+    title = pathContent[to].title
+    subtitle = pathContent[to].subtitle
+  }
   const contents = (
     <>
       <div className={['icon', iconClass].filter(it => it != null).join(' ')}>
@@ -156,13 +202,13 @@ const Item = ({ title, subtitle, icon, iconClass, to, href, setShowMenu }) => {
     bodyScrollLock.disable()
   }
   if(to != null){
-    return <Link className="item" to={to} onClick={handleClick}>{contents}</Link>
+    return <Link className="menu-item" to={to} onClick={handleClick}>{contents}</Link>
   }
   else if(href != null){
-    return <a className="item" href={href} onClick={handleClick}>{contents}</a>
+    return <a className="menu-item" href={href} onClick={handleClick}>{contents}</a>
   }
   return (
-    <div className="item" onClick={handleClick}>
+    <div className="menu-item">
       {contents}
     </div>
   )
