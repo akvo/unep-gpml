@@ -15,6 +15,7 @@ const UnathenticatedPage = ({
       className="unathenticated-modal"
       visible={unAthenticatedModal}
       onCancel={() => setUnathenticatedModal(false)}
+      maskStyle={{ backgroundColor: "rgb(24 22 47 / 90%)" }}
       footer={
         <>
           <Button onClick={() => setLoginVisible(true)}>Sign In</Button>
