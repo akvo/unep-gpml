@@ -16,8 +16,10 @@ import ExpertCarousel from "./expert-carousel";
 import FilterBar from "./filter-bar";
 import InviteExpertModal from "./invite-expert-modal";
 import ExpertCard from "./expert-card";
+import UnathenticatedPage from "../stakeholder-overview/unathenticated-page";
 
-const Experts = () => {
+const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
+  console.log(loadingProfile, isAuthenticated);
   const { countries, organisations } = UIStore.useState((s) => ({
     countries: s.countries,
     organisations: s.organisations,
@@ -37,6 +39,7 @@ const Experts = () => {
   const [filterCountries, setFilterCountries] = useState([]);
   const [filter, setFilter] = useState([]);
   const [isShownModal, setIsShownModal] = useState(false);
+  const [unAthenticatedModal, setUnathenticatedModal] = useState(false);
 
   const fetchExperts = (params) => {
     const url = `/stakeholder/expert/list`;
@@ -109,6 +112,12 @@ const Experts = () => {
     }
     fetchExperts(params);
   }, [filter, filterCountries]);
+
+  useEffect(() => {
+    if (!isAuthenticated && loadingProfile) {
+      setUnathenticatedModal(true);
+    }
+  }, [isAuthenticated, loadingProfile]);
 
   return (
     <div id="experts" className="experts">
@@ -204,6 +213,9 @@ const Experts = () => {
         />
       )}
       <InviteExpertModal {...{ setIsShownModal, isShownModal }} />
+      <UnathenticatedPage
+        {...{ unAthenticatedModal, setLoginVisible, setUnathenticatedModal }}
+      />
     </div>
   );
 };
