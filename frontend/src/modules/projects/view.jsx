@@ -269,7 +269,7 @@ export const stagesChecklist = [
                         <CapacityBuildingSvg />
                       </div>
                       <div className="button-content">
-                        <p className="content-title">data catalog</p>
+                        <p className="content-title">data catalogue</p>
                         <p className="content-desc">
                           Datasets on plastic pollution and marine litter
                         </p>
@@ -830,7 +830,7 @@ export const stagesChecklist = [
             content: (checklist) => (
               <>
                 The GPML Digital Platform promotes all stakeholders to
-                contribute additional data to its data catalog. Click here (
+                contribute additional data to its data catalogue. Click here (
                 https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data)
                 to add you action plan data.
               </>
@@ -841,7 +841,7 @@ export const stagesChecklist = [
             content: (checklist) => (
               <>
                 The GPML Digital Platform promotes all stakeholders to
-                contribute additional data to its data catalog. Click here (
+                contribute additional data to its data catalogue. Click here (
                 https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data)
                 to add you action plan data.
               </>
