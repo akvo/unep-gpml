@@ -192,18 +192,24 @@ const FilterModal = ({
           title="Sub-content type"
           options={
             !isEmpty(mainContentType)
-              ? mainContentOption().map((content) => ({
-                  label: content?.name,
-                  options: content?.childs
-                    .map((child, i) => ({
-                      label: child?.title,
-                      value: child?.title,
-                      key: `${i}-${content?.name}`,
-                    }))
-                    .sort((a, b) =>
-                      a?.label?.trim().localeCompare(b?.label?.trim())
-                    ),
-                }))
+              ? mainContentOption().map((content) => {
+                  const label =
+                    content?.name?.toLowerCase() === "capacity building"
+                      ? "Capacity Development"
+                      : content?.name;
+                  return {
+                    label: label,
+                    options: content?.childs
+                      .map((child, i) => ({
+                        label: child?.title,
+                        value: child?.title,
+                        key: `${i}-${content?.name}`,
+                      }))
+                      .sort((a, b) =>
+                        a?.label?.trim().localeCompare(b?.label?.trim())
+                      ),
+                  };
+                })
               : []
           }
           value={filter?.subContentType || []}

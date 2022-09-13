@@ -107,6 +107,8 @@ const FilterBar = ({
     />
   );
 
+  const title = (title) => title?.toLowerCase() === "capacity building" ? "Capacity Development" : title;
+
   return (
     <div className="filter-bar">
       {filter.length === 0 && (
@@ -120,7 +122,7 @@ const FilterBar = ({
                 return (
                   <li onClick={handleClick0(index)}>
                     <Icon name={`cat-tags/${slug(cat.title)}`} fill="#67BEA1" />
-                    <span>{cat.title}</span>
+                    <span>{title(cat.title)}</span>
                   </li>
                 );
               })}
@@ -137,7 +139,7 @@ const FilterBar = ({
               fill="#67BEA1"
             />
             <div>
-              <strong>{catTags[filter[0]].title}</strong>
+              <strong>{title(catTags[filter[0]].title)}</strong>
               <small>Sub-topics</small>
             </div>
           </div>

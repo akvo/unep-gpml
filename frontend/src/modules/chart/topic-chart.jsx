@@ -24,9 +24,13 @@ const TopicChart = ({
           height={height}
           className="popular-topic-chart"
           data={sortedPopularTopics.map((x) => {
+            const topic =
+              x?.topic?.toLowerCase() === "capacity building"
+                ? "capacity development"
+                : x?.topic;
             return {
               id: x?.id,
-              name: titleCase(x?.topic),
+              name: titleCase(topic),
               value: x?.count > 100 ? x?.count : x?.count + 50,
               count: x?.count,
               tag: x?.tag,

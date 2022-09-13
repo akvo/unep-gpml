@@ -116,7 +116,7 @@ const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegis
             <div className="row">
               <Item to="/knowledge/library" {...{ setShowMenu }} />
               <Item to="/knowledge/case-studies"  {...{ setShowMenu }} />
-              <Item to="/knowledge/capacity-building"  {...{ setShowMenu }} />
+              <Item to="/knowledge/capacity-development"  {...{ setShowMenu }} />
             </div>
             <h5>Community</h5>
             <div className="row">
@@ -153,7 +153,7 @@ const pathContent = {
   '/knowledge/case-studies': {
     title: 'Case studies', icon: <CaseStudiesSvg />, subtitle: 'Compilation of actions around the world', iconClass: 'casestudies'
   },
-  '/knowledge/capacity-building': {
+  '/knowledge/capacity-development': {
      title: "Learning center", subtitle: "Learning and capacity building resources", icon: <CapacityBuildingSvg />, iconClass: "learning" 
   },
   '/connect/community': {
