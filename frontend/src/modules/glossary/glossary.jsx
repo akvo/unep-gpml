@@ -63,7 +63,14 @@ const Glossary = () => {
     <div id="glossary">
       {/* Will be removed after */}
       <div className="ui container section-container">
-        <h2 className="text-blue">GPML Glossary</h2>
+        <iframe
+          src={"https://dev-gpmlglossary.pantheonsite.io/"}
+          title="file"
+          width="100%"
+          height="600"
+          style={{ border: "none" }}
+        />
+        {/* <h2 className="text-blue">GPML Glossary</h2>
         <p className="body-text" style={{ fontSize: "1.125rem" }}>
           To facilitate data interoperability UNEP has been working closely with
           Ontology Experts to develop the first draft of the Marine Litter and
@@ -104,7 +111,7 @@ const Glossary = () => {
             You can access the Draft Glossary here
           </a>
           .
-        </p>
+        </p> */}
       </div>
 
       {/* Commented for future design */}
@@ -139,7 +146,7 @@ const renderGlossary = () => {
           <h2 className="text-blue">{group}</h2>
         </Col>
         <Col sm={22} md={22} lg={22}>
-          <Row className className="glossary-item-body" gutter={[20, 20]}>
+          <Row className="glossary-item-body" gutter={[20, 20]}>
             {data.map((d, idx) => {
               const { title, description } = d;
               return (
