@@ -58,7 +58,7 @@ const plans = [
               ISWA plastic pollution calculator
             </Link>{" "}
             , can be found under{" "}
-            <Link to="/knowledge/capacity-building">Tools & Toolkits</Link>.
+            <Link to="/knowledge/capacity-development">Tools & Toolkits</Link>.
           </li>
           <li>
             The <Link to="/connect/community">Connect Stakeholders</Link>{" "}
@@ -68,12 +68,12 @@ const plans = [
           </li>
           <li>
             The{" "}
-            <Link to="/knowledge/capacity-building">
+            <Link to="/knowledge/capacity-development">
               Capacity Building section
             </Link>{" "}
             contains{" "}
-            <Link to="/knowledge/capacity-building">Courses & Trainings</Link>{" "}
-            and <Link to="/knowledge/capacity-building">Events</Link>, such as
+            <Link to="/knowledge/capacity-development">Courses & Trainings</Link>{" "}
+            and <Link to="/knowledge/capacity-development">Events</Link>, such as
             the <Link to="/technical-resource/149">MOOC on Marine Litter</Link>{" "}
             , webinars, and conferences, that provide training opportunities in
             different areas.

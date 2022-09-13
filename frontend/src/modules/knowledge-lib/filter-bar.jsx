@@ -20,7 +20,7 @@ export const resourceTypes = [
   { key: "technology", label: "Technologies", title: "technology" },
   {
     key: "capacity-building",
-    label: "Capacity Building",
+    label: "Capacity Development",
     title: "capacity building",
   },
   { key: "initiative", label: "Initiatives", title: "initiative" },
@@ -146,7 +146,7 @@ const FilterBar = ({
         {!isEmpty &&
           Object.keys(query).filter((item) => !hideFilterList.includes(item))
             .length > 0 && (
-            <div class="filter-status">
+            <div className="filter-status">
               {Object.keys(query).filter(
                 (item) => !hideFilterList.includes(item)
               ).length > 0 &&
