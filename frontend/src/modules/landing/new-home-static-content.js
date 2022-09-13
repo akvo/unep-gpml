@@ -249,7 +249,7 @@ export const popularTopics = [
   },
   {
     id: 5,
-    topic: "Capacity Building",
+    topic: "Capacity Development",
     tag: "capacity building",
     count: 32,
     summary: [
@@ -287,7 +287,7 @@ export const popularTopics = [
         id: 298,
         type: "initiative",
         title:
-          "Local and Regional Capacity Building to Facilitate National Action to Control Plastic Pollution",
+          "Local and Regional Capacity Development to Facilitate National Action to Control Plastic Pollution",
         description:
           "Circular economy demonstration projects in 5 countries implemented.  Learning captured and scaled up ",
       },

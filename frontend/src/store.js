@@ -161,7 +161,7 @@ const mainContentType = [
       },
       {
         title: "Working with people",
-        tags: ["initiatives", "working with people", "capacity building"],
+        tags: ["initiatives", "working with people", "capacity development"],
         des:
           "Encouraging or enabling others, e.g., education, training, communication, awareness raising, behaviour change programmes",
       },
@@ -543,7 +543,7 @@ const mainContentType = [
       },
     ],
     desc:
-      "Upcoming capacity building activities and events on marine litter, plastic pollution and related topics.",
+      "Upcoming capacity development activities and events on marine litter, plastic pollution and related topics.",
   },
   {
     code: "technology",
@@ -622,7 +622,7 @@ const mainContentType = [
   },
   {
     code: "capacity_building",
-    name: "Capacity Building",
+    name: "Capacity Development",
     examples: [
       {
         title: "Our Coast is Dying",
@@ -679,7 +679,7 @@ const mainContentType = [
       },
       {
         title: "Events",
-        des: "Upcoming trainings, capacity building activities and events.",
+        des: "Upcoming trainings, capacity development activities and events.",
       },
       {
         title: "Financing Resources",
@@ -693,7 +693,7 @@ const mainContentType = [
       },
     ],
     desc:
-      "The definition of capacity building is broad. It is a holistic enterprise, encompassing a multitude of activities. It means building abilities, relationships and values that will enable organisations, groups and individuals to improve their performance and achieve their development objectives. It includes strengthening the processes, systems and rules that influence collective and individual behaviour and performance in all development endeavours. And it means enhancing people’s technical ability and willingness to play new developmental roles and adapt to new demands and situations.",
+      "The definition of capacity development is broad. It is a holistic enterprise, encompassing a multitude of activities. It means building abilities, relationships and values that will enable organisations, groups and individuals to improve their performance and achieve their development objectives. It includes strengthening the processes, systems and rules that influence collective and individual behaviour and performance in all development endeavours. And it means enhancing people’s technical ability and willingness to play new developmental roles and adapt to new demands and situations.",
   },
 ];
 

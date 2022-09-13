@@ -69,7 +69,7 @@ const plans = [
           <li>
             The{" "}
             <Link to="/knowledge/capacity-development">
-              Capacity Building section
+              Capacity Development section
             </Link>{" "}
             contains{" "}
             <Link to="/knowledge/capacity-development">Courses & Trainings</Link>{" "}
@@ -93,7 +93,7 @@ const plans = [
           actions. Implementation is supported by cooperation and engagement of
           stakeholders, sharing of information, reporting of progress on
           actions, education, outreach, and awareness raising as well as
-          training and capacity building.
+          training and capacity development.
         </p>
 
         <h3>How the Digital Platform can support</h3>
@@ -155,7 +155,7 @@ const plans = [
             </li>
           </ul>
           <li>
-            The <Link to="/learning">Capacity Building section</Link> contains
+            The <Link to="/learning">Capacity Development section</Link> contains
             an extensive repository of
             <Link to="/learning">
               {" "}
