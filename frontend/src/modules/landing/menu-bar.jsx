@@ -154,7 +154,7 @@ const pathContent = {
     title: 'Case studies', icon: <CaseStudiesSvg />, subtitle: 'Compilation of actions around the world', iconClass: 'casestudies'
   },
   '/knowledge/capacity-development': {
-     title: "Learning center", subtitle: "Learning and capacity building resources", icon: <CapacityBuildingSvg />, iconClass: "learning" 
+     title: "Learning center", subtitle: "Learning and capacity development resources", icon: <CapacityBuildingSvg />, iconClass: "learning" 
   },
   '/connect/community': {
      title: "Members", iconClass: 'tools-community-icon', subtitle: "Directory of GPML network entities and individuals", icon: <IconCommunity />
