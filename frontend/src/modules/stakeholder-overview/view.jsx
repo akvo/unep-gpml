@@ -29,7 +29,11 @@ import { useHistory } from "react-router-dom";
 
 let tmid;
 
-const StakeholderOverview = ({ isAuthenticated, setLoginVisible }) => {
+const StakeholderOverview = ({
+  isAuthenticated,
+  setLoginVisible,
+  loadingProfile,
+}) => {
   const {
     tags,
     profile,
@@ -56,10 +60,10 @@ const StakeholderOverview = ({ isAuthenticated, setLoginVisible }) => {
   const hasProfile = profile?.reviewStatus;
   const isValidUser = isAuthenticated && isApprovedUser && hasProfile;
   const [filterVisible, setFilterVisible] = useState(false);
-  const [scroll, setScroll] = useState(true);
   const query = useQuery();
   const [view, setView] = useState("grid");
   const [loading, setLoading] = useState(true);
+  const [unAthenticatedModal, setUnathenticatedModal] = useState(false);
   const [results, setResults] = useState([]);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
   const [nonMemberOrganisation, setNonMemberOrganisation] = useState(0);
@@ -229,16 +233,10 @@ const StakeholderOverview = ({ isAuthenticated, setLoginVisible }) => {
   }, [isValidUser]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const position = window.pageYOffset;
-      if (!isValidUser && position > 50) {
-        setScroll(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  });
+    if (!isAuthenticated && loadingProfile) {
+      setUnathenticatedModal(true);
+    }
+  }, [isAuthenticated, loadingProfile]);
 
   const updateQuery = (param, value, paramValueArr) => {
     const topScroll = window.innerWidth < 640 ? 996 : 207;
@@ -395,10 +393,7 @@ const StakeholderOverview = ({ isAuthenticated, setLoginVisible }) => {
 
   return (
     <div id="stakeholder-overview" className="stakeholder-overview">
-      {!isValidUser && !scroll && (
-        <UnathenticatedPage setLoginVisible={setLoginVisible} />
-      )}
-      <div className={!isValidUser && !scroll ? "blur" : ""}>
+      <div>
         {isValidUser && (
           <Header
             {...{
@@ -548,6 +543,9 @@ const StakeholderOverview = ({ isAuthenticated, setLoginVisible }) => {
           </div>
         </Col>
       </div>
+      <UnathenticatedPage
+        {...{ unAthenticatedModal, setLoginVisible, setUnathenticatedModal }}
+      />
     </div>
   );
 };
