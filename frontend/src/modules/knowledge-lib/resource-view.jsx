@@ -153,7 +153,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         const newData = resourceTopic.map((categories, idx) => ({
           categories,
           data: data[idx].data.results,
-          count: data[idx]?.data?.counts[0]?.count,
+          count: data[idx]?.data?.counts[0]?.count || 0,
         }));
         setCatData(newData);
         setLoading(false);

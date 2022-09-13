@@ -67,6 +67,10 @@ const FilterModal = ({
     setFilter(pureQuery);
   };
 
+  useEffect(() => {
+    if (Object.keys(query).length > 0) setFilter(query);
+  }, [query]);
+
   const filteredMainContentOptions = !isEmpty(mainContentType)
     ? mainContentType
         .filter((content) => {
@@ -185,7 +189,7 @@ const FilterModal = ({
           </Col>
         )}
 
-        <KnowledgeLibrarySearch {...{ updateQuery }} />
+        <KnowledgeLibrarySearch {...{ updateQuery, filter }} />
 
         {/* Sub-content type */}
         <MultipleSelectFilter
@@ -346,7 +350,7 @@ const DatePickerFilter = ({
   );
 };
 
-const KnowledgeLibrarySearch = ({ updateQuery }) => {
+const KnowledgeLibrarySearch = ({ updateQuery, filter }) => {
   const [search, setSearch] = useState("");
   const handleSearch = (src) => {
     eventTrack("Communities", "Search", "Button");
@@ -364,7 +368,7 @@ const KnowledgeLibrarySearch = ({ updateQuery }) => {
         <Input
           className="input-search"
           placeholder="Search resources"
-          value={search}
+          value={filter?.q}
           suffix={<SearchOutlined />}
           onPressEnter={(e) => handleSearch(e.target.value)}
           onChange={(e) => handleSearch(e.target.value)}
