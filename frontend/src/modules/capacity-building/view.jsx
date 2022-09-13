@@ -44,7 +44,7 @@ const CapacityBuilding = () => {
             <div style={{ margin: "auto 0" }}>
               <Title level={3}>
                 <span className="text-green">
-                  Capacity building &amp; awareness
+                  Capacity Development &amp; awareness
                 </span>
               </Title>
             </div>

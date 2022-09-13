@@ -1290,6 +1290,12 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                             /_/g,
                             "-"
                           )}-selected.svg`).default;
+
+                          const name =
+                            item?.name?.toLowerCase() === "capacity building"
+                              ? "Capacity Development"
+                              : item?.name;
+
                           return (
                             <Col
                               className="gutter-row"
@@ -1311,11 +1317,11 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                                           ? imgSelected
                                           : img
                                       }
-                                      alt={`${item.name} Image`}
+                                      alt={`${name} Image`}
                                     />
                                   </div>
                                   <div className="info-icon-container">
-                                    <h2>{item.name}</h2>
+                                    <h2>{name}</h2>
                                     <Popover content={item.desc}>
                                       <div className="info-icon-wrapper">
                                         <img src={InfoBlue} />
