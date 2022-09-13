@@ -68,7 +68,7 @@ export const stagesChecklist = [
                       <div className="button-content">
                         <p className="content-title">Learning center</p>
                         <p className="content-desc">
-                          Learning and capacity building resources
+                          Learning and capacity development resources
                         </p>
                       </div>
                     </Link>
@@ -757,7 +757,7 @@ export const stagesChecklist = [
                       <div className="button-content">
                         <p className="content-title">Learning center</p>
                         <p className="content-desc">
-                          Learning and capacity building resources
+                          Learning and capacity development resources
                         </p>
                       </div>
                     </Link>
