@@ -985,7 +985,7 @@ body {
   &.full-menu-enter {
     opacity: 0;
     .row {
-      .item {
+      .menu-item {
         opacity: 0;
         transform: translateX(-20px);
       }
@@ -994,7 +994,7 @@ body {
   &.full-menu-enter-active {
     opacity: 1;
     .row {
-      .item {
+      .menu-item {
         opacity: 1;
         transition: all 170ms;
         transform: translateX(0);
