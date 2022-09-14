@@ -23,13 +23,14 @@ function FormTwo({
     .map((k) => tags[k])
     .flat()
     .map((it) => it.tag);
+
   return (
     <>
       <div className="text-wrapper">
         <Title level={2}>What are the expertises you can provide?</Title>
       </div>
       <div className="ant-form ant-form-vertical">
-        <Field name="offering" style={{ width: "100%" }} validate={validate}>
+        <Field name="offering" style={{ width: "100%" }}>
           {({ input, meta }) => {
             return (
               <>
@@ -44,11 +45,7 @@ function FormTwo({
             );
           }}
         </Field>
-        <Field
-          name="offeringSuggested"
-          style={{ width: "100%" }}
-          validate={validate}
-        >
+        <Field name="offeringSuggested" style={{ width: "100%" }}>
           {({ input, meta }) => {
             const handleSearch = (value) => {
               const find = filteredOptions.find(

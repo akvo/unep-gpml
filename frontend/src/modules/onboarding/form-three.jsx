@@ -30,7 +30,7 @@ function FormThree({
         <Title level={2}>What are the expertises you are looking for?</Title>
       </div>
       <div className="ant-form ant-form-vertical">
-        <Field name="seeking" style={{ width: "100%" }} validate={validate}>
+        <Field name="seeking" style={{ width: "100%" }}>
           {({ input, meta }) => {
             return (
               <>
@@ -45,11 +45,7 @@ function FormThree({
             );
           }}
         </Field>
-        <Field
-          name="seekingSuggested"
-          style={{ width: "100%" }}
-          validate={validate}
-        >
+        <Field name="seekingSuggested" style={{ width: "100%" }}>
           {({ input, meta }) => {
             const handleSearch = (value) => {
               const find = filteredOptions.find(
