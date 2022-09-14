@@ -80,59 +80,14 @@ function HelpCenter() {
               className="help-center-tab-pane"
             >
               <Row gutter={[16, 16]}>
-                <Col span={12}>
+                <Col span={24}>
                   <iframe
                     width="100%"
-                    height="480"
-                    src={`https://www.youtube.com/embed/xSYkLgoHqVQ`}
-                    frameBorder="0"
+                    height="600"
+                    src="https://www.youtube.com/embed/videoseries?list=PLOlw9GG0Pf9iilXoal3dNxnRlM4xn8pII"
+                    frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    title="Embedded youtube"
-                  />
-                </Col>
-                <Col span={12}>
-                  <iframe
-                    width="100%"
-                    height="480"
-                    src={`https://www.youtube.com/embed/AOOpIn9-zIw`}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    title="Embedded youtube"
-                  />
-                </Col>
-                <Col span={12}>
-                  <iframe
-                    width="100%"
-                    height="480"
-                    src={`https://www.youtube.com/embed/ka0lbripFJU`}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    title="Embedded youtube"
-                  />
-                </Col>
-                <Col span={12}>
-                  <iframe
-                    width="100%"
-                    height="480"
-                    src={`https://www.youtube.com/embed/oET7Ham4KV8`}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    title="Embedded youtube"
-                  />
-                </Col>
-                <Col span={12}>
-                  <iframe
-                    width="100%"
-                    height="480"
-                    src={`https://www.youtube.com/embed/NNGiHD5X3Qo`}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    title="Embedded youtube"
+                    allowfullscreen
                   />
                 </Col>
               </Row>
