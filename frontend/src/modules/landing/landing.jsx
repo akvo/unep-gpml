@@ -210,13 +210,13 @@ const Connect = () => {
             <blockquote>This is an unparalleled tool to bring together global actors fighting against our marine plastic crisis.</blockquote>
           </SwiperSlide>
           <SwiperSlide className="card testimonial">
-            <img src="https://digital.gpmarinelitter.org/image/profile/30" />
+            <img src="https://digital.gpmarinelitter.org/image/profile/27" />
             <h4>Marvin Burman</h4>
             <h5>Assistant Executive Director - Gulf and Caribbean Fisheries Institute</h5>
             <blockquote>This is a fantastic resource for knowledge management, networking, accessing and managing data.</blockquote>
           </SwiperSlide>
           <SwiperSlide className="card testimonial">
-            <img src="https://digital.gpmarinelitter.org/image/profile/27" />
+            <img src="https://digital.gpmarinelitter.org/image/profile/30" />
             <h4>Fadilah Ali</h4>
             <h5>Assistant Executive Director - Gulf and Caribbean Fisheries Institute</h5>
             <blockquote>The platform makes it easier to discover stakeholders, events and experts in specific regions and fields.</blockquote>
