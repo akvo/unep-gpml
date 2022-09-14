@@ -30,9 +30,10 @@ export const HeaderButtons = ({
 }) => {
   const { type, id } = topic;
 
-const bookmarked = relation &&
-relation.association &&
-relation.association.indexOf("interested in") !== -1;
+  const bookmarked =
+    relation &&
+    relation.association &&
+    relation.association.indexOf("interested in") !== -1;
 
   const handleChangeRelation = (relationType) => {
     let association = relation ? [...relation.association] : [];
@@ -65,13 +66,14 @@ relation.association.indexOf("interested in") !== -1;
             e.preventDefault();
             eventTrack("Resource view", "View Url", "Button");
             window.open(
-              `${data?.url && data?.url?.includes("https://")
-                ? data?.url
-                : data?.languages
+              `${
+                data?.url && data?.url?.includes("https://")
+                  ? data?.url
+                  : data?.languages
                   ? data?.languages[0]?.url
                   : data?.url?.includes("http://")
-                    ? data?.url
-                    : "https://" + data?.url
+                  ? data?.url
+                  : "https://" + data?.url
               }`,
               "_blank"
             );
@@ -111,16 +113,17 @@ relation.association.indexOf("interested in") !== -1;
             <Input.Group compact>
               <Input
                 style={{ width: "calc(100% - 20%)" }}
-                defaultValue={`${data?.url && data?.url?.includes("https://")
+                defaultValue={`${
+                  data?.url && data?.url?.includes("https://")
                     ? data?.url
                     : data?.languages
-                      ? data?.languages[0]?.url
-                      : data?.url && data?.url?.includes("http://")
-                        ? data?.url
-                        : data?.url
-                          ? "https://" + data?.url
-                          : "https://"
-                  }`}
+                    ? data?.languages[0]?.url
+                    : data?.url && data?.url?.includes("http://")
+                    ? data?.url
+                    : data?.url
+                    ? "https://" + data?.url
+                    : "https://"
+                }`}
                 disabled
               />
               <Button
@@ -172,7 +175,9 @@ relation.association.indexOf("interested in") !== -1;
         </Popover>
       )}
       <Button
-        className={classNames('bookmark-button two-tone-button', { bookmarked })}
+        className={classNames("bookmark-button two-tone-button", {
+          bookmarked,
+        })}
         icon={<HeartTwoTone />}
         type="primary"
         shape="round"
@@ -183,8 +188,7 @@ relation.association.indexOf("interested in") !== -1;
           handleChangeRelation("interested in");
         }}
       >
-        {bookmarked? "Bookmarked":"Bookmark"}
-        
+        {bookmarked ? "Bookmarked" : "Bookmark"}
       </Button>
       {canEdit() && (
         <Button
@@ -228,8 +232,8 @@ relation.association.indexOf("interested in") !== -1;
                 <Select.Option value={lang}>
                   <span>
                     {
-                      languageOptions.find((item) => item.dbValue === lang)
-                        .value
+                      languageOptions?.find((item) => item.dbValue === lang)
+                        ?.value
                     }
                   </span>
                 </Select.Option>
@@ -280,9 +284,11 @@ const Header = ({
   ) => {
     const noEditTopics = new Set(["stakeholder"]);
 
-    const resourceOwners= data?.stakeholderConnections?.filter(stakeholder => stakeholder?.role?.toLowerCase() === 'owner').map(stakeholder => stakeholder?.stakeholderId);
+    const resourceOwners = data?.stakeholderConnections
+      ?.filter((stakeholder) => stakeholder?.role?.toLowerCase() === "owner")
+      .map((stakeholder) => stakeholder?.stakeholderId);
 
-    const find = resourceOwners.includes(profile?.id)
+    const find = resourceOwners.includes(profile?.id);
 
     const canEdit = () =>
       isAuthenticated &&

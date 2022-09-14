@@ -53,6 +53,9 @@
   }
   #map-landing {
     height: 550px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .filter-bar {
     background-color: #06496c;

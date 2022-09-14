@@ -45,7 +45,7 @@ export const topicTypesApprovedUser = topicTypes.concat([
 
 export const topicNames = (topic) => {
   const names = {
-    project: "Initiative",
+    initiative: "Initiative",
     actionPlan: "Action Plan",
     policy: "Policy",
     technicalResource: "Technical Resource",

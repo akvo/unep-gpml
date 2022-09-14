@@ -210,6 +210,7 @@ const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
           multiCountries={[]}
           useVerticalLegend
           path="experts"
+          zoom={0.9}
         />
       )}
       <InviteExpertModal {...{ setIsShownModal, isShownModal }} />

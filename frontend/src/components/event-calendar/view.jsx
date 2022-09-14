@@ -16,7 +16,7 @@ import {
   ArrowRightOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import { Link, withRouter } from "react-router-dom";
+import { Link, useHistory, useLocation, withRouter } from "react-router-dom";
 import "./styles.scss";
 import "react-multi-carousel/lib/styles.css";
 import moment from "moment";
@@ -25,8 +25,10 @@ import imageNotFound from "../../images/image-not-found.png";
 import { TrimText } from "../../utils/string";
 import api from "../../utils/api";
 
-const EventCalendar = withRouter(({ history }) => {
-  const path = history.location.pathname;
+const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
+  const history = useHistory();
+  const location = useLocation();
+  const path = location?.pathname;
   const dateNow = moment().format("YYYY/MM/DD");
   const [event, setEvent] = useState([]);
   const [data, setData] = useState(null);
@@ -142,20 +144,23 @@ const EventCalendar = withRouter(({ history }) => {
             </span>
           </h2>
           {path === "/connect/events" && (
-            <Link
-              to={{
-                pathname: "/flexible-forms",
-                state: { type: "event_flexible", label: "Event" },
+            <Button
+              onClick={() => {
+                if (isAuthenticated) {
+                  history.push({
+                    pathname: "/flexible-forms",
+                    state: { type: "event_flexible", label: "Event" },
+                  });
+                } else {
+                  setLoginVisible(true);
+                }
               }}
+              type="primary"
+              className="event-add-button"
+              icon={<PlusOutlined />}
             >
-              <Button
-                type="primary"
-                className="event-add-button"
-                icon={<PlusOutlined />}
-              >
-                Add An Event
-              </Button>
-            </Link>
+              Add An Event
+            </Button>
           )}
         </div>
         <div className="body">
@@ -192,7 +197,7 @@ const EventCalendar = withRouter(({ history }) => {
       </div>
     </div>
   );
-});
+};
 
 const renderEventContent = (history, event, eventCarousel, onThisDayText) => {
   return (
@@ -405,4 +410,4 @@ const calendarHeader = ({ value, onChange, isShownAddButton }) => {
   );
 };
 
-export default EventCalendar;
+export default withRouter(EventCalendar);

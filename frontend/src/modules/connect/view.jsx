@@ -22,7 +22,12 @@ function Connect({
               <Route exact path="/connect">
                 <Redirect to="/connect/events" exact={true} />
               </Route>
-              <Route path="/connect/events" component={EventPage} />
+              <Route path="/connect/events">
+                <EventPage
+                  setLoginVisible={setLoginVisible}
+                  isAuthenticated={isAuthenticated}
+                />
+              </Route>
               <Route path="/connect/community">
                 <StakeholderOverview
                   setLoginVisible={setLoginVisible}

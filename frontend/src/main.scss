@@ -1545,3 +1545,9 @@ path {
     transition: all 0.13s ease-in-out;
   }
 }
+
+//pop over
+
+.ant-popover {
+  z-index: 99999;
+}
