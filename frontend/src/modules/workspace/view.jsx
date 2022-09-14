@@ -94,28 +94,20 @@ const Workspace = ({ profile }) => {
           {profile &&
             profile?.emailVerified &&
             profile?.reviewStatus === "SUBMITTED" && (
-              <Row>
-                <Col lg={24} sm={24}>
-                  <div className="pending-stripe">
-                    <Title level={4}>
-                      Your account is pending reviewal. You can still explore
-                      the platform.
-                    </Title>
-                  </div>
-                </Col>
-              </Row>
+              <div className="pending-stripe">
+                <Title level={4}>
+                  Your account is pending reviewal. You can still explore the
+                  platform.
+                </Title>
+              </div>
             )}
           {profile && !profile?.emailVerified && (
-            <Row>
-              <Col lg={24} sm={24}>
-                <div className="pending-stripe">
-                  <Title level={4}>
-                    We sent you a confirmation email, Please take a moment and
-                    validate your address to confirm your account.
-                  </Title>
-                </div>
-              </Col>
-            </Row>
+            <div className="pending-stripe">
+              <Title level={4}>
+                We sent you a confirmation email, Please take a moment and
+                validate your address to confirm your account.
+              </Title>
+            </div>
           )}
           {profile && profile.org && !profile?.org?.isMember && (
             <Row
@@ -256,77 +248,79 @@ const Workspace = ({ profile }) => {
               </Row>
             </div>
           )}
-          {profile?.role === 'ADMIN' &&
-          <div className="action-plan-starter">
-            <Row>
-              <h2>Action plan toolbox</h2>
-            </Row>
-            <Row>
-              <Col lg={11}>
-                <b>1</b>
-                <div className="content">
-                  <h3>Self-assessment</h3>
-                  <p>
-                    Identify in which stage you are in your action plan
-                    development and implementation. Receive suggestions on how
-                    to manage it in the platform.
-                  </p>
-                  <div>
-                    <Link to="/projects/get-started">
-                      <Button type="primary">Get Started</Button>
-                    </Link>
+          {profile?.role === "ADMIN" && (
+            <div className="action-plan-starter">
+              <Row>
+                <h2>Action plan toolbox</h2>
+              </Row>
+              <Row>
+                <Col lg={11}>
+                  <b>1</b>
+                  <div className="content">
+                    <h3>Self-assessment</h3>
+                    <p>
+                      Identify in which stage you are in your action plan
+                      development and implementation. Receive suggestions on how
+                      to manage it in the platform.
+                    </p>
+                    <div>
+                      <Link to="/projects/get-started">
+                        <Button type="primary">Get Started</Button>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              </Col>
-              <Col lg={13}>
-                <div className="content">
-                  <h3>MORE ABOUT ACTION PLANS</h3>
-                  <ul>
-                    <li>
-                      <a href="#">How do I get started with my Action Plan?</a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        How can you share and showcase your data and information
-                        in the GPML Digital Platform?
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        What tools and resources are available in the GPML
-                        Digital Platform?
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col lg={14}>
-                <b>2</b>
-                <div className="content">
-                  <h3>workflow guidance</h3>
-                  <p>
-                    This one-page document outlines how the GPML Digital
-                    Platform supports the development of national marine litter
-                    and plastic pollution Action Plans. It includes the
-                    different phases of the Action Plan creation workflow.
-                  </p>
-                  <div>
-                    <a
-                      href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y"
-                      target="_blank"
-                    >
-                      <Button type="ghost" icon={<FilePdfOutlined />}>
-                        Read The Guide
-                      </Button>
-                    </a>
+                </Col>
+                <Col lg={13}>
+                  <div className="content">
+                    <h3>MORE ABOUT ACTION PLANS</h3>
+                    <ul>
+                      <li>
+                        <a href="#">
+                          How do I get started with my Action Plan?
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">
+                          How can you share and showcase your data and
+                          information in the GPML Digital Platform?
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">
+                          What tools and resources are available in the GPML
+                          Digital Platform?
+                        </a>
+                      </li>
+                    </ul>
                   </div>
-                </div>
-              </Col>
-            </Row>
-          </div>
-          }
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={14}>
+                  <b>2</b>
+                  <div className="content">
+                    <h3>workflow guidance</h3>
+                    <p>
+                      This one-page document outlines how the GPML Digital
+                      Platform supports the development of national marine
+                      litter and plastic pollution Action Plans. It includes the
+                      different phases of the Action Plan creation workflow.
+                    </p>
+                    <div>
+                      <a
+                        href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y"
+                        target="_blank"
+                      >
+                        <Button type="ghost" icon={<FilePdfOutlined />}>
+                          Read The Guide
+                        </Button>
+                      </a>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+            </div>
+          )}
           <div className="action-suggestions">
             <Row>
               <Col lg={8}>

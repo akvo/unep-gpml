@@ -38,8 +38,8 @@ function FormFour({ validate }) {
               </div>
               <TextArea
                 onChange={(e) => input.onChange(e.target.value)}
-                placeholder="Max 100 words"
-                maxLength={100}
+                placeholder="Max 500 letters"
+                maxLength={500}
                 className={`${
                   meta.touched && meta.error ? "ant-input-status-error" : ""
                 }`}

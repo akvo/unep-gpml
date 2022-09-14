@@ -23,6 +23,7 @@ function Authentication() {
   const [currentStep, setCurrentStep] = useState(0);
   const [initialValues, setInitialValues] = useState({});
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     tags,
@@ -62,6 +63,7 @@ function Authentication() {
   };
 
   const onSubmit = async (values) => {
+    setLoading(true);
     let data = {
       ...values,
       ...(location?.state?.data &&
@@ -134,6 +136,7 @@ function Authentication() {
     api
       .post("/profile", data)
       .then((res) => {
+        setLoading(false);
         window.scrollTo({ top: 0 });
         UIStore.update((e) => {
           e.profile = {
@@ -141,9 +144,10 @@ function Authentication() {
             emailVerified: location?.state.data.email_verified,
           };
         });
-        history.push("workspace");
+        history.push("/workspace");
       })
       .catch((err) => {
+        setLoading(false);
         console.log(err);
       });
   };
@@ -295,6 +299,7 @@ function Authentication() {
                   <Button
                     className="step-button-next abs"
                     onClick={handleSubmit}
+                    loading={loading}
                   >
                     Submit {">"}
                   </Button>
