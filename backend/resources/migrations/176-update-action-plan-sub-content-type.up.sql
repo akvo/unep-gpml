@@ -1,0 +1,11 @@
+BEGIN;
+--;;
+UPDATE resource SET sub_content_type = 'Sub-national Action Plan' WHERE type = 'Action Plan' AND sub_content_type = 'Sub-national';
+--;;
+UPDATE resource SET sub_content_type = 'National Action Plan' WHERE type = 'Action Plan' AND sub_content_type = 'National';
+--;;
+UPDATE resource SET sub_content_type = 'Global Action Plan' WHERE type = 'Action Plan' AND sub_content_type = 'Global';
+--;;
+UPDATE resource SET sub_content_type = 'Transnational Action Plan' WHERE type = 'Action Plan' AND sub_content_type = 'Transnational';
+--;;
+COMMIT;
