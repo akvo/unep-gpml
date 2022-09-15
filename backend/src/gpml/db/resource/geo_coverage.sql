@@ -4,5 +4,14 @@ DELETE FROM :i:table WHERE :i:resource-col = :resource-id;
 
 -- :name create-resource-geo-coverage :returning-execute :many
 -- :doc Creates new geo-coverage records for a given resource table
-INSERT INTO :i:table (:i:resource-col, country_group, country)
-VALUES :t*:geo-coverage RETURNING *;
+INSERT INTO :i:table(:i*:insert-cols)
+VALUES :t*:insert-values RETURNING *;
+
+-- :name get-resource-geo-coverage :query :many
+-- :doc Get geo coverage optionally applying filters.
+SELECT *
+FROM :i:table
+WHERE 1=1
+--~(when (seq (get-in params [:filters :resources-ids])) " AND :i:resource-col IN (:v*:filters.resources-ids)")
+--~(when (seq (get-in params [:filters :countries-ids])) " AND country IN (:v*:filters.countries-ids)")
+--~(when (seq (get-in params [:filters :country-groups-ids])) " AND country_group IN (:v*:filters.country-groups-ids)")

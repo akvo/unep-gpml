@@ -83,7 +83,7 @@
          new-tags)))))
 
 (defn- create-initiative
-  [conn logger mailjet-config
+  [{:keys [logger mailjet-config] :as config} tx
    {:keys [tags owners related_content created_by
            entity_connections individual_connections qimage thumbnail capacity_building] :as initiative}]
   (let [data (cond-> initiative
@@ -92,48 +92,47 @@
                        :individual_connections :related_content)
 
                true
-               (assoc :qimage (handler.image/assoc-image conn qimage "initiative")
-                      :thumbnail (handler.image/assoc-image conn thumbnail "initiative"))
+               (assoc :qimage (handler.image/assoc-image config tx qimage "initiative")
+                      :thumbnail (handler.image/assoc-image config tx thumbnail "initiative"))
 
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
-        initiative-id (:id (db.initiative/new-initiative conn data))
-        api-individual-connections (util/individual-connections->api-individual-connections conn individual_connections created_by)
+        initiative-id (:id (db.initiative/new-initiative tx data))
+        api-individual-connections (util/individual-connections->api-individual-connections tx individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
                                                           api-individual-connections)))))]
-    (add-geo-initiative conn initiative-id (extract-geo-data data))
+    (add-geo-initiative tx initiative-id (extract-geo-data data))
     (doseq [stakeholder-id owners]
-      (h.auth/grant-topic-to-stakeholder! conn {:topic-id initiative-id
-                                                :topic-type "initiative"
-                                                :stakeholder-id stakeholder-id
-                                                :roles ["owner"]}))
+      (h.auth/grant-topic-to-stakeholder! tx {:topic-id initiative-id
+                                              :topic-type "initiative"
+                                              :stakeholder-id stakeholder-id
+                                              :roles ["owner"]}))
     (when (seq related_content)
-      (handler.resource.related-content/create-related-contents conn logger initiative-id "initiative" related_content))
+      (handler.resource.related-content/create-related-contents tx logger initiative-id "initiative" related_content))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections initiative-id)]
-        (db.favorite/new-organisation-association conn association)))
+        (db.favorite/new-organisation-association tx association)))
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections initiative-id)]
-        (db.favorite/new-stakeholder-association conn association)))
+        (db.favorite/new-stakeholder-association tx association)))
     (when (not-empty tags)
-      (add-tags conn mailjet-config tags initiative-id))
+      (add-tags tx mailjet-config tags initiative-id))
     (email/notify-admins-pending-approval
-     conn
+     tx
      mailjet-config
      {:type "initiative" :title (:q2 data)})
     initiative-id))
 
 (defmethod ig/init-key :gpml.handler.initiative/post
-  [_ {:keys [db logger mailjet-config]}]
+  [_ {:keys [db logger] :as config}]
   (fn [{:keys [jwt-claims body-params] :as req}]
     (try
-      (jdbc/with-db-transaction [conn (:spec db)]
-        (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-              initiative-id (create-initiative conn
-                                               logger
-                                               mailjet-config
+      (jdbc/with-db-transaction [tx (:spec db)]
+        (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
+              initiative-id (create-initiative config
+                                               tx
                                                (assoc body-params
                                                       :created_by (:id user)))]
           (resp/created (:referrer req) {:success? true
