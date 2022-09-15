@@ -278,7 +278,7 @@ const Stats = () => {
           <i>Governments</i>
         </div>
         <div className="stat">
-          <b>{organisations?.length + nonMemberOrganisations?.length}</b>
+          <b>{(organisations?.length + nonMemberOrganisations?.length) - governmentsCount}</b>
           <i>Organisations</i>
         </div>
         <div className="stat">
