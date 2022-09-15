@@ -71,6 +71,7 @@ const FilterModal = ({
     if (Object.keys(query).length > 0) setFilter(query);
   }, [query]);
 
+
   const filteredMainContentOptions = !isEmpty(mainContentType)
     ? mainContentType
         .filter((content) => {
@@ -136,7 +137,7 @@ const FilterModal = ({
     setShowFilterModal(false);
 
     const newQuery = {
-      ...(Object.keys(filter).length > 0 && query),
+      // ...(Object.keys(filter).length > 0 && query),
       ...filter,
     };
 
