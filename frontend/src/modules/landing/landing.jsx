@@ -256,9 +256,10 @@ const Partners = () => {
 }
 
 const Stats = () => {
-  const {stakeholders, organisations} = UIStore.useState((s) => ({
+  const {stakeholders, organisations,nonMemberOrganisations} = UIStore.useState((s) => ({
     stakeholders: s?.stakeholders?.stakeholders,
     organisations: s?.organisations,
+    nonMemberOrganisations:s?.nonMemberOrganisations
   }));
   const [governmentsCount, setGovernmentsCount] = useState(0);
 
@@ -277,7 +278,7 @@ const Stats = () => {
           <i>Governments</i>
         </div>
         <div className="stat">
-          <b>{organisations?.length}</b>
+          <b>{organisations?.length + nonMemberOrganisations?.length}</b>
           <i>Organisations</i>
         </div>
         <div className="stat">
