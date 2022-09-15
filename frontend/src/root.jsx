@@ -804,7 +804,7 @@ const Root = () => {
                 )}
               />
               <Route
-                path="/:type(project|action-plan|policy|technical-resource|financing-resource|technology|event)/:id"
+                path="/:type(initiative|action-plan|policy|technical-resource|financing-resource|technology|event)/:id"
                 render={(props) => (
                   <NewDetailsView
                     {...props}
