@@ -251,7 +251,8 @@
        :type "boolean"}}
      boolean?]
     [:capacity_building
-     {:swagger
+     {:optional true
+      :swagger
       {:description "Flag indicating if the policy is a capacity building resource."
        :type "boolean"}}
      boolean?]
