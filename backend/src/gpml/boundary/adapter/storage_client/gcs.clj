@@ -1,5 +1,6 @@
 (ns gpml.boundary.adapter.storage-client.gcs
-  (:require [gpml.boundary.port.storage-client :as port])
+  (:require [clj-gcp.storage.core]
+            [gpml.boundary.port.storage-client :as port])
   (:import [clj_gcp.storage.core GCSStorageClient]
            [com.google.cloud.storage Storage BlobId]))
 
