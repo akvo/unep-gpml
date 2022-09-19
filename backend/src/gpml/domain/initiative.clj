@@ -14,6 +14,7 @@
     [:q2 [string? {:min 1}]]
     [:q3 [string? {:min 1}]]
     [:q36 double?]
+    [:q24 map?]
     [:url
      [:and
       [string? {:min 1}]

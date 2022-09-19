@@ -654,7 +654,7 @@
             entities)))
 
 (defn- import-or-update-entity
-  [{:keys [datasource-adapter logger] :as config}
+  [{:keys [brs-ds-adapter logger] :as config}
    {:keys [gpml-entity-name brs-entity-name]}
    opts]
   (try
@@ -662,8 +662,8 @@
            more-pages? true]
       (when more-pages?
         (let [{:keys [success? entities skip-token more-pages?] :as result}
-              (datasource/get-data datasource-adapter {:entity brs-entity-name
-                                                       :skip-token skip-token})]
+              (datasource/get-data brs-ds-adapter {:entity brs-entity-name
+                                                   :skip-token skip-token})]
           (if success?
             (let [{:keys [to-import to-update]}
                   (get-import-and-update-entities config gpml-entity-name entities)]

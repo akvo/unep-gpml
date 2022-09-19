@@ -35,7 +35,7 @@
              :Beneficiaries :geo_coverage
              :Implementedby :entity_connections
              :Donors :entity_connections
-             :isGlobal :geo_coverage_type
+             :isGlobal :q24
              :name :q2
              :description :q3
              :statusName :status
@@ -56,13 +56,13 @@
   [beneficiaries global?]
   (cond
     global?
-    :global
+    {"global" "Global"}
 
     (> (count beneficiaries) 1)
-    :transnational
+    {"transnational" "Transnational"}
 
     :else
-    :national))
+    {"national" "National"}))
 
 (defn- get-meeting-geo-coverage-type
   [country]
@@ -108,9 +108,9 @@
           value))
 
 (defn- value->translations
-  ([brs-api-id resource-name field value]
-   (value->translations brs-api-id resource-name field value false))
-  ([brs-api-id resource-name field value html->plain-text?]
+  ([brs-api-id entity-name field value]
+   (value->translations brs-api-id entity-name field value false))
+  ([brs-api-id entity-name field value html->plain-text?]
    (reduce (fn [acc {:keys [value language]}]
              (if (seq value)
                (conj acc {:value (if-not html->plain-text?
@@ -118,22 +118,30 @@
                                    (html->plain-text value))
                           :language language
                           :brs_api_id brs-api-id
-                          :translatable_field (name (get-in brs-field->gpml-field [resource-name field] field))})
+                          :translatable_field (name (get-in brs-field->gpml-field [entity-name field] field))})
                acc))
            []
            value)))
 
 (defmulti ^:private parse-brs-field
-  (fn [_ _ resource-name field _]
-    [resource-name field]))
+  "Parses a single field `field` for a given entity `entity-name`."
+  (fn [_ _ entity-name field _]
+    [entity-name field]))
+
+(defmethod parse-brs-field [:publication :id]
+  [_ _ _ _ value]
+  ;; BRS IDs for publications are upper-cased GUIDs but IDs for
+  ;; meetings and projects are lower-cased GUIDs. To keep things
+  ;; consistent, we are lower-casing publications' IDs as well.
+  (str/lower-case value))
 
 (defmethod parse-brs-field [:publication :title]
-  [_ brs-api-id resource-name field value]
-  (value->translations brs-api-id resource-name field value))
+  [_ brs-api-id entity-name field value]
+  (value->translations brs-api-id entity-name field value))
 
 (defmethod parse-brs-field [:publication :description]
-  [_ brs-api-id resource-name field value]
-  (value->translations brs-api-id resource-name field value true))
+  [_ brs-api-id entity-name field value]
+  (value->translations brs-api-id entity-name field value true))
 
 (defmethod parse-brs-field [:publication :tags]
   [_ brs-api-id _ _ value]
@@ -154,18 +162,22 @@
     (value->instant value)))
 
 (defmethod parse-brs-field [:publication :files]
-  [_ brs-api-id resource-name field value]
-  (value->translations brs-api-id resource-name field (map #(set/rename-keys % {:url :value}) value)))
+  [_ brs-api-id entity-name field value]
+  (->> value
+       (group-by :language)
+       vals
+       (map (comp #(set/rename-keys % {:url :value}) first))
+       (value->translations brs-api-id entity-name field)))
 
 (defmethod parse-brs-field [:meeting :description]
-  [_ brs-api-id resource-name field value]
+  [_ brs-api-id entity-name field value]
   (when (seq value)
-    (value->translations brs-api-id resource-name field [{:value value :language "en"}] true)))
+    (value->translations brs-api-id entity-name field [{:value value :language "en"}] true)))
 
 (defmethod parse-brs-field [:meeting :title]
-  [_ brs-api-id resource-name field value]
+  [_ brs-api-id entity-name field value]
   (when (seq value)
-    (value->translations brs-api-id resource-name field [{:value value :language "en"}])))
+    (value->translations brs-api-id entity-name field [{:value value :language "en"}])))
 
 (defmethod parse-brs-field [:meeting :brs_terms]
   [_ brs-api-id _ _ value]
@@ -173,9 +185,9 @@
     (value->tags brs-api-id (str/split value #","))))
 
 (defmethod parse-brs-field [:meeting :brs_linkRegistration]
-  [_ brs-api-id resource-name field value]
+  [_ brs-api-id entity-name field value]
   (when (seq value)
-    (value->translations brs-api-id resource-name field [{:value value :language "en"}])))
+    (value->translations brs-api-id entity-name field [{:value value :language "en"}])))
 
 (defmethod parse-brs-field [:meeting :country]
   [_ brs-api-id _ _ value]
@@ -196,12 +208,12 @@
 ;;   (value->instant value))
 
 (defmethod parse-brs-field [:project :name]
-  [_ brs-api-id resource-name field value]
-  (value->translations brs-api-id resource-name field [{:language "en" :value value}] true))
+  [_ brs-api-id entity-name field value]
+  (value->translations brs-api-id entity-name field [{:language "en" :value value}] true))
 
 (defmethod parse-brs-field [:project :description]
-  [_ brs-api-id resource-name field value]
-  (value->translations brs-api-id resource-name field [{:language "en" :value value}] true))
+  [_ brs-api-id entity-name field value]
+  (value->translations brs-api-id entity-name field [{:language "en" :value value}] true))
 
 (defmethod parse-brs-field [:project :objectives]
   [_ _ _ _ value]
@@ -253,16 +265,19 @@
   value)
 
 (defn- brs-resource->gpml-resource*
-  [config resource-name {:keys [id] :as odata-map}]
+  [config entity-name {:keys [id] :as brs-entity}]
   (reduce (fn [acc [brs-field value]]
-            (let [gpml-field (get-in brs-field->gpml-field [resource-name brs-field] brs-field)
-                  parsed-value (parse-brs-field config id resource-name brs-field value)]
-              (if (and (= :files brs-field) (= :publication resource-name))
+            (let [gpml-field (get-in brs-field->gpml-field [entity-name brs-field] brs-field)
+                  parsed-value (parse-brs-field config (str/lower-case id) entity-name brs-field value)]
+              (if (and (= :files brs-field) (= :publication entity-name))
                 (assoc acc
                        gpml-field parsed-value
                        :url (->> parsed-value (filter #(= (:language %) "en")) first :value))
                 (assoc acc
                        gpml-field
+                       ;; Special cases for those fields that have
+                       ;; a dependency on other fields and for fields
+                       ;; that are meant to be merged together.
                        (cond
                          (get #{:tags :keywords} brs-field)
                          (concat (:tags acc) parsed-value)
@@ -271,20 +286,25 @@
                          (concat (:entity_connections acc) parsed-value)
 
                          (= :isGlobal brs-field)
-                         (get-project-geo-coverage-type (:Beneficiaries odata-map) parsed-value)
+                         (get-project-geo-coverage-type (:Beneficiaries brs-entity) parsed-value)
 
                          (= :city brs-field)
-                         (get-meeting-geo-coverage-type (:country odata-map))
+                         (get-meeting-geo-coverage-type (:country brs-entity))
 
                          :else
                          parsed-value)))))
           {}
-          odata-map))
+          brs-entity))
 
 (defn brs-entity->gpml-entity
-  "FIXME"
-  [config resource-name odata-map]
-  (-> (brs-resource->gpml-resource* config resource-name odata-map)
+  "Parses a single BRS API entity into a GPML entity. That means a
+  complete remap and transformation of the fields and values.
+
+  Images however are left as-is. That is, the URLs are left untouched
+  and we download the images at storage time. So, we can store one by
+  one and avoid putting a lot of images in memory."
+  [config entity-name brs-entity]
+  (-> (brs-resource->gpml-resource* config entity-name brs-entity)
        ;; Publication resources have the tags separated in multiple
        ;; keys. So, when parsing the fields we merge them together and
        ;; that could generate duplicates. We make sure here we don't

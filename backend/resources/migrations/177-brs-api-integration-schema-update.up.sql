@@ -16,13 +16,7 @@ ADD COLUMN start_date TIMESTAMP WITHOUT TIME ZONE,
 ADD COLUMN end_date TIMESTAMP WITHOUT TIME ZONE,
 ADD COLUMN status TEXT,
 ADD COLUMN objectives TEXT,
-ADD COLUMN activities TEXT,
-ADD COLUMN geo_coverage_type GEO_COVERAGE_TYPE;
---;;
-UPDATE initiative SET geo_coverage_type = j::geo_coverage_type
-FROM initiative AS i2
-JOIN jsonb_object_keys(i2.q24::jsonb) j ON TRUE
-WHERE initiative.id = i2.id;
+ADD COLUMN activities TEXT;
 --;;
 ALTER TABLE event
 ALTER COLUMN start_date DROP NOT NULL,
