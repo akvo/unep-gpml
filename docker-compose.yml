@@ -27,6 +27,15 @@ services:
       - SCHEDULER_THREAD_COUNT=50
       - SCHEDULER_TIME_ZONE=Europe/Madrid
       - SCHEDULER_LEAP_API_POLICY_IMPORTER_CRON=0 0 2 1/14 * ? *
+      - SCHEDULER_BRS_API_IMPORTER_CRON=0 0 3 1/7 * ? *
+      - GCS_BUCKET_NAME=akvo-unep-gpml
+      - LOCAL_FS_STORAGE_BASE_PATH=/tmp/local-storage
+      - LOCAL_FS_STORAGE_BUCKET_NAME=unep-gpml-dev
+      - BRS_API_URL=https://informea.pops.int
+      - BRS_API_RECORDS_PER_PAGE=100
+      - BRS_API_PUBLICATIONS_ENDPOINT=/mfilesInformea/MFilesMea.svc/Documents
+      - BRS_API_MEETINGS_ENDPOINT=/Meetings/Conferences.svc/Meetings
+      - BRS_API_PROJECTS_ENDPOINT=/Projects/Projects.svc/Projects
   frontend:
     environment:
       - PORT=3001
