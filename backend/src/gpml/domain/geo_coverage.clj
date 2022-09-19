@@ -1,6 +1,6 @@
 (ns gpml.domain.geo-coverage
-  (:require [malli.core :as m]
-            [gpml.util :as util]))
+  (:require [gpml.util :as util]
+            [malli.core :as m]))
 
 (def GeoCoverage
   "Geo Coverage schema. This is a sub entity relation stored in the
