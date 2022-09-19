@@ -12,6 +12,7 @@
      [:event {:optional true} pos-int?]
      [:policy {:optional true} pos-int?]
      [:technology {:optional true} pos-int?]
+     [:initiative {:optional true} post-int?]
      [:organisation {:optional true} pos-int?]
      [:country {:optional true} pos-int?]
      [:country_group {:optional true} pos-int?]]
