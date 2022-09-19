@@ -54,7 +54,7 @@ const StakeholderCarousel = ({ stakeholders }) => {
             const initial = `${firstInitial}${secondInitial}`;
 
             return (
-              <SwiperSlide>
+              <SwiperSlide key={stakeholder?.name}>
                 <Link
                   to={
                     stakeholder?.type === "entity"

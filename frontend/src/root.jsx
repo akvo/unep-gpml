@@ -386,7 +386,7 @@ const Root = () => {
     searchParms.set("limit", pageSize);
     const topic = [
       "action_plan",
-      "project",
+      "initiative",
       "policy",
       "technical_resource",
       "technology",
