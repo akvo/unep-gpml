@@ -12,7 +12,7 @@
     "Conferences"})
 
 (def Event
-  "FIXME"
+  "The Event entity schema."
   (m/schema
    [:map
     [:brs_api_id {:optional true} [string? {:min 1}]]

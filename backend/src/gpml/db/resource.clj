@@ -14,7 +14,8 @@
 (hugsql/def-db-fns "gpml/db/resource.sql" {:quoting :ansi})
 
 (defn resource->db-resource
-  "FIXME"
+  "Apply transformations to Resource entity fields to database specific
+  types."
   [resource]
   (-> resource
       (util/update-if-not-nil :brs_api_modified sql-util/instant->sql-timestamp)

@@ -1,8 +1,10 @@
 (ns gpml.domain.geo-coverage
-  (:require [malli.core :as m]))
+  (:require [malli.core :as m]
+            [gpml.util :as util]))
 
 (def GeoCoverage
-  "FIXME"
+  "Geo Coverage schema. This is a sub entity relation stored in the
+  `<entity-name>_geo_coverage` tables."
   (m/schema
    [:and
     [:map
@@ -13,7 +15,6 @@
      [:organisation {:optional true} pos-int?]
      [:country {:optional true} pos-int?]
      [:country_group {:optional true} pos-int?]]
-    [:fn (fn [{:keys [_resource _event _policy _technology _organisation country country_group]}]
-           ;; FIXME: add XOR check for resource fields
-           (or (and country (not country_group))
-               (and (not country) country_group)))]]))
+    [:fn (fn [{:keys [resource event policy technology organisation country country_group]}]
+           (and (util/xor? country country_group)
+                (util/xor? resource event policy technology organisation)))]]))

@@ -4,7 +4,10 @@
             [malli.core :as m]))
 
 (def Initiative
-  "FIXME"
+  "The Initiative entity schema. Not all fields for initiative are
+  described here as they are subject to be removed and replaced by non
+  JSONB fields (fields starting with `q` which means they are a
+  question from the FE quiz)."
   (m/schema
    [:map
     [:id pos-int?]

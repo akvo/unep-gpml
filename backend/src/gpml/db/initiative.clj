@@ -18,7 +18,11 @@
 (hugsql/def-db-fns "gpml/db/initiative.sql" {:quoting :ansi})
 
 (defn initiative->db-initiative
-  "FIXME"
+  "Apply transformations to Initiative entity fields to database specific
+  types.
+
+  FIXME: Not all JSONB initiative fields are parsed here. They are
+  mostly likely going to be removed in future iterations."
   [initiative]
   (-> initiative
       (util/update-if-not-nil :q2 pg-util/val->jsonb)

@@ -2,8 +2,15 @@
   (:require [gpml.domain.types :as dom.types]
             [malli.core :as m]))
 
+(def ^:const types
+  "Possible Resource types.
+
+  FIXME: this currently is not an enum value
+  and it should be, instead of plain text."
+  #{"technical_resource" "action_plan" "financing_resource"})
+
 (def Resource
-  "FIXME"
+  "The Resource entity schema."
   (m/schema
    [:map
     [:attachments {:optional true} map?]
@@ -33,7 +40,7 @@
     [:summary {:optional true} [string? {:min 1}]]
     [:thumbnail {:optional true} [string? {:min 1}]]
     [:title {:optional true} [string? {:min 1}]]
-    [:type {:optional true} [string? {:min 1}]]
+    [:type {:optional true} (apply conj [:enum] types)]
     [:url {:optional true} [string? {:min 1}]]
     [:valid_from {:optional true} [string? {:min 1}]]
     [:valid_to {:optional true} [string? {:min 1}]]

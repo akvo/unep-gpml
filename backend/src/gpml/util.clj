@@ -159,3 +159,19 @@
                         (not (seq v)))
                    (nil? v))]
      k)))
+
+(defn xor?
+  "Returns the xor of all its arguments. The elements are considered
+  logical false as per [[clojure.core/if]] logic.
+
+  Code borrowed from: https://clojurians-log.clojureverse.org/clojure/2020-07-04"
+  [& xs]
+  (loop [acc false
+         xs xs]
+    (if-let [xs (seq xs)]
+      (let [x (first xs)
+            acc (if x
+                  (if acc false x)
+                  acc)]
+        (recur acc (next xs)))
+      acc)))

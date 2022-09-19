@@ -4,7 +4,7 @@
             [malli.core :as m]))
 
 (def Tag
-  "FIXME"
+  "The Tag entity schema."
   (m/schema
    [:map
     [:id pos-int?]

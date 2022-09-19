@@ -20,7 +20,8 @@
 (hugsql/def-db-fns "gpml/db/event.sql" {:quoting :ansi})
 
 (defn event->db-event
-  "FIXME"
+  "Apply transformations to Event entity fields to database specific
+  types."
   [event]
   (-> event
       (util/update-if-not-nil :brs_api_modified sql-util/instant->sql-timestamp)
