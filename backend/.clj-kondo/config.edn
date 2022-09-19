@@ -23,7 +23,8 @@
   :unresolved-symbol
   {:exclude [(twarc.core/defjob)
              (gpml.handler.responses/http-statuses)
-             (gpml.scheduler.leap-api-policy-importer/handle-leap-api-policy-import-job)]}
+             (gpml.scheduler.leap-api-policy-importer/handle-leap-api-policy-import-job)
+             (gpml.scheduler.brs-api-importer/handle-import)]}
 
   :unresolved-var
   {:exclude [gpml.handler.responses]}

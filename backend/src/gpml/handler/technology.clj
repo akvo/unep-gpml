@@ -41,7 +41,7 @@
           :remarks nil})))
 
 (defn- create-technology
-  [conn logger mailjet-config
+  [{:keys [logger mailjet-config] :as config} tx
    {:keys [name organisation_type
            development_stage specifications_provided
            year_founded email country
@@ -62,9 +62,9 @@
                       :email email
                       :url url
                       :country country
-                      :image (handler.image/assoc-image conn image "technology")
-                      :logo (handler.image/assoc-image conn logo "technology")
-                      :thumbnail (handler.image/assoc-image conn thumbnail "technology")
+                      :image (handler.image/assoc-image config tx image "technology")
+                      :logo (handler.image/assoc-image config tx logo "technology")
+                      :thumbnail (handler.image/assoc-image config tx thumbnail "technology")
                       :geo_coverage_type geo_coverage_type
                       :geo_coverage_value geo_coverage_value
                       :geo_coverage_countries geo_coverage_countries
@@ -82,61 +82,61 @@
                       :language language}
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
-        technology-id (->> data (db.technology/new-technology conn) :id)
-        api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
+        technology-id (->> data (db.technology/new-technology tx) :id)
+        api-individual-connections (handler.util/individual-connections->api-individual-connections tx individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
                                                           api-individual-connections)))))]
     (when (seq related_content)
-      (handler.resource.related-content/create-related-contents conn logger technology-id "technology" related_content))
+      (handler.resource.related-content/create-related-contents tx logger technology-id "technology" related_content))
     (when headquarter
-      (db.country/add-country-headquarter conn {:id country :headquarter headquarter}))
+      (db.country/add-country-headquarter tx {:id country :headquarter headquarter}))
     (doseq [stakeholder-id owners]
-      (h.auth/grant-topic-to-stakeholder! conn {:topic-id technology-id
-                                                :topic-type "technology"
-                                                :stakeholder-id stakeholder-id
-                                                :roles ["owner"]}))
+      (h.auth/grant-topic-to-stakeholder! tx {:topic-id technology-id
+                                              :topic-type "technology"
+                                              :stakeholder-id stakeholder-id
+                                              :roles ["owner"]}))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections technology-id)]
-        (db.favorite/new-organisation-association conn association)))
+        (db.favorite/new-organisation-association tx association)))
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections technology-id)]
-        (db.favorite/new-stakeholder-association conn association)))
+        (db.favorite/new-stakeholder-association tx association)))
     (when (not-empty tags)
-      (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
-                                                                             :tag-category "general"
-                                                                             :resource-name "technology"
-                                                                             :resource-id technology-id}))
+      (handler.resource.tag/create-resource-tags tx logger mailjet-config {:tags tags
+                                                                           :tag-category "general"
+                                                                           :resource-name "technology"
+                                                                           :resource-id technology-id}))
     (when (not-empty urls)
       (let [lang-urls (map #(vector technology-id
                                     (->> % :lang
                                          (assoc {} :iso_code)
-                                         (db.language/language-by-iso-code conn)
+                                         (db.language/language-by-iso-code tx)
                                          :id)
                                     (:url %)) urls)]
-        (db.technology/add-technology-language-urls conn {:urls lang-urls})))
+        (db.technology/add-technology-language-urls tx {:urls lang-urls})))
     (if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
       (let [geo-data (handler.geo/get-geo-vector-v2 technology-id data)]
-        (db.technology/add-technology-geo conn {:geo geo-data}))
+        (db.technology/add-technology-geo tx {:geo geo-data}))
       (when (not-empty geo_coverage_value)
         (let [geo-data (handler.geo/get-geo-vector technology-id data)]
-          (db.technology/add-technology-geo conn {:geo geo-data}))))
+          (db.technology/add-technology-geo tx {:geo geo-data}))))
     (email/notify-admins-pending-approval
-     conn
+     tx
      mailjet-config
      (merge data {:type "technology"}))
     technology-id))
 
 (defmethod ig/init-key :gpml.handler.technology/post
-  [_ {:keys [db logger mailjet-config]}]
+  [_ {:keys [db logger] :as config}]
   (fn [{:keys [jwt-claims body-params] :as req}]
     (try
-      (jdbc/with-db-transaction [conn (:spec db)]
-        (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-              technology-id (create-technology conn logger mailjet-config (assoc body-params
-                                                                                 :created_by (:id user)))]
+      (jdbc/with-db-transaction [tx (:spec db)]
+        (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
+              technology-id (create-technology config tx (assoc body-params
+                                                                :created_by (:id user)))]
           (resp/created (:referrer req) {:success? true
                                          :message "New technology created"
                                          :id technology-id})))
