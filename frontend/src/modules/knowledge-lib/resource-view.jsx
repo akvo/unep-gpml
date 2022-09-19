@@ -153,7 +153,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         const newData = resourceTopic.map((categories, idx) => ({
           categories,
           data: data[idx].data.results,
-          count: data[idx]?.data?.counts[0]?.count,
+          count: data[idx]?.data?.counts[0]?.count || 0,
         }));
         setCatData(newData);
         setLoading(false);
@@ -337,42 +337,53 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
 
         {view === "category" && (
           <div className="cat-view">
+            {loading && (
+              <div className="loading">
+                <LoadingOutlined spin />
+              </div>
+            )}
             {catData.map((d) => (
               <Fragment key={d.categories}>
-                <div className="header-wrapper">
-                  <div className="title-wrapper">
-                    <h4 className="cat-title">{topicNames(d.categories)}</h4>
-                    <div className="quick-search">
-                      <div className="count">{d?.count}</div>
-                      <div className="search-icon">
-                        <SearchIcon />
+                {d?.count > 0 && (
+                  <>
+                    <div className="header-wrapper">
+                      <div className="title-wrapper">
+                        <h4 className="cat-title">
+                          {topicNames(d.categories)}
+                        </h4>
+                        <div className="quick-search">
+                          <div className="count">{d?.count}</div>
+                          <div className="search-icon">
+                            <SearchIcon />
+                          </div>
+                        </div>
                       </div>
+                      <Button
+                        type="link"
+                        block
+                        onClick={() => {
+                          handleCategoryFilter(d.categories);
+                        }}
+                      >
+                        See all {`>`}
+                      </Button>
                     </div>
-                  </div>
-                  <Button
-                    type="link"
-                    block
-                    onClick={() => {
-                      handleCategoryFilter(d.categories);
-                    }}
-                  >
-                    See all {`>`}
-                  </Button>
-                </div>
-                <ResourceCards
-                  items={d?.data}
-                  showMoreCardAfter={20}
-                  showMoreCardClick={() => {
-                    handleCategoryFilter(d.categories);
-                  }}
-                  showModal={(e) =>
-                    showModal({
-                      e,
-                      type: e.currentTarget.type,
-                      id: e.currentTarget.id,
-                    })
-                  }
-                />
+                    <ResourceCards
+                      items={d?.data}
+                      showMoreCardAfter={20}
+                      showMoreCardClick={() => {
+                        handleCategoryFilter(d.categories);
+                      }}
+                      showModal={(e) =>
+                        showModal({
+                          e,
+                          type: e.currentTarget.type,
+                          id: e.currentTarget.id,
+                        })
+                      }
+                    />
+                  </>
+                )}
               </Fragment>
             ))}
           </div>

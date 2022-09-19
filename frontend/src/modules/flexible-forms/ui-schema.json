@@ -102,7 +102,8 @@
               "ui:placeholder": "Select an entity",
               "ui:span": 24,
               "ui:options": {
-                "showEntity": true
+                "showEntity": true,
+                "type": "connection"
               }
             }
           }
@@ -125,7 +126,10 @@
               "ui:showSearch": true,
               "ui:widget": "select",
               "ui:placeholder": "Select an individual",
-              "ui:span": 24
+              "ui:span": 24,
+              "ui:options": {
+                "type": "connection"
+              }
             }
           }
         },
@@ -490,7 +494,8 @@
               "ui:placeholder": "Select an entity",
               "ui:span": 24,
               "ui:options": {
-                "showEntity": true
+                "showEntity": true,
+                "type": "connection"
               }
             }
           }
@@ -513,7 +518,10 @@
               "ui:showSearch": true,
               "ui:widget": "select",
               "ui:placeholder": "Select an individual",
-              "ui:span": 24
+              "ui:span": 24,
+              "ui:options": {
+                "type": "connection"
+              }
             }
           }
         },
@@ -718,7 +726,8 @@
               "ui:placeholder": "Select an entity",
               "ui:span": 24,
               "ui:options": {
-                "showEntity": true
+                "showEntity": true,
+                "type": "connection"
               }
             }
           }
@@ -741,7 +750,10 @@
               "ui:showSearch": true,
               "ui:widget": "select",
               "ui:placeholder": "Select an individual",
-              "ui:span": 24
+              "ui:span": 24,
+              "ui:options": {
+                "type": "connection"
+              }
             }
           }
         },
@@ -982,7 +994,8 @@
               "ui:placeholder": "Select an entity",
               "ui:span": 24,
               "ui:options": {
-                "showEntity": true
+                "showEntity": true,
+                "type": "connection"
               }
             }
           }
@@ -1005,7 +1018,10 @@
               "ui:showSearch": true,
               "ui:widget": "select",
               "ui:placeholder": "Select an individual",
-              "ui:span": 24
+              "ui:span": 24,
+              "ui:options": {
+                "type": "connection"
+              }
             }
           }
         },
@@ -1215,7 +1231,8 @@
               "ui:placeholder": "Select an entity",
               "ui:span": 24,
               "ui:options": {
-                "showEntity": true
+                "showEntity": true,
+                "type": "connection"
               }
             }
           }
@@ -1238,7 +1255,10 @@
               "ui:showSearch": true,
               "ui:widget": "select",
               "ui:placeholder": "Select an individual",
-              "ui:span": 24
+              "ui:span": 24,
+              "ui:options": {
+                "type": "connection"
+              }
             }
           }
         },
@@ -1435,7 +1455,8 @@
               "ui:placeholder": "Select an entity",
               "ui:span": 24,
               "ui:options": {
-                "showEntity": true
+                "showEntity": true,
+                "type": "connection"
               }
             }
           }
@@ -1458,7 +1479,10 @@
               "ui:showSearch": true,
               "ui:widget": "select",
               "ui:placeholder": "Select an individual",
-              "ui:span": 24
+              "ui:span": 24,
+              "ui:options": {
+                "type": "connection"
+              }
             }
           }
         },
@@ -1667,7 +1691,8 @@
               "ui:placeholder": "Select an entity",
               "ui:span": 24,
               "ui:options": {
-                "showEntity": true
+                "showEntity": true,
+                "type": "connection"
               }
             }
           }
@@ -1690,7 +1715,10 @@
               "ui:showSearch": true,
               "ui:widget": "select",
               "ui:placeholder": "Select an individual",
-              "ui:span": 24
+              "ui:span": 24,
+              "ui:options": {
+                "type": "connection"
+              }
             }
           }
         },

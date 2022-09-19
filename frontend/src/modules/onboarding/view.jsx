@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, notification } from "react";
 import "./styles.scss";
 import { Button, Typography, Steps } from "antd";
 import { Form } from "react-final-form";
@@ -13,6 +13,7 @@ import api from "../../utils/api";
 import { useHistory } from "react-router-dom";
 import GettingStartedIcon from "../../images/auth/surfer.svg";
 import waveSvg from "../../images/auth/wave.svg";
+import { setIn } from "final-form";
 
 function Authentication() {
   const formRef = useRef();
@@ -23,6 +24,7 @@ function Authentication() {
   const [currentStep, setCurrentStep] = useState(0);
   const [initialValues, setInitialValues] = useState({});
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     tags,
@@ -62,6 +64,7 @@ function Authentication() {
   };
 
   const onSubmit = async (values) => {
+    setLoading(true);
     let data = {
       ...values,
       ...(location?.state?.data &&
@@ -77,12 +80,12 @@ function Authentication() {
     };
 
     data.offering = [
-      ...values?.offering,
+      ...(values?.offering ? values?.offering : []),
       ...(values?.offeringSuggested ? values?.offeringSuggested : []),
     ];
 
     data.seeking = [
-      ...values?.seeking,
+      ...(values?.seeking ? values?.seeking : []),
       ...(values?.seekingSuggested ? values?.seekingSuggested : []),
     ];
 
@@ -134,6 +137,7 @@ function Authentication() {
     api
       .post("/profile", data)
       .then((res) => {
+        setLoading(false);
         window.scrollTo({ top: 0 });
         UIStore.update((e) => {
           e.profile = {
@@ -141,23 +145,20 @@ function Authentication() {
             emailVerified: location?.state.data.email_verified,
           };
         });
-        history.push("workspace");
+        history.push("/workspace");
       })
       .catch((err) => {
+        setLoading(false);
         console.log(err);
+        notification.error({
+          message: err?.response?.message
+            ? err?.response?.message
+            : "Oops, something went wrong",
+        });
       });
   };
 
-  const required = (value, name) => {
-    if (name === "jobTitle" && !value) {
-      return "Please enter job title";
-    }
-    if (name === "orgName" && !value) {
-      return "Please enter the name of entity";
-    }
-    if (name === "offering" && !value) {
-      return "Please enter the name of entity";
-    }
+  const required = (value) => {
     return value ? undefined : "Required";
   };
 
@@ -207,10 +208,44 @@ function Authentication() {
     <div id="onboarding">
       <Form
         initialValues={initialValues}
-        validate={required}
+        validate={(values) => {
+          let errors = {};
+          const setError = (key, value) => {
+            errors = setIn(errors, key, value);
+          };
+          if (
+            (!values.offering || values.offering.length === 0) &&
+            currentStep === 3 &&
+            (!values.offeringSuggested || values.offeringSuggested.length === 0)
+          ) {
+            setError("offering", "Required");
+          }
+          if (
+            (!values.offering || values.offering.length === 0) &&
+            currentStep === 3 &&
+            (!values.offeringSuggested || values.offeringSuggested.length === 0)
+          ) {
+            setError("offeringSuggested", "Required");
+          }
+          if (
+            (!values.seeking || values.seeking.length === 0) &&
+            currentStep === 4 &&
+            (!values.seekingSuggested || values.seekingSuggested.length === 0)
+          ) {
+            setError("seeking", "Required");
+          }
+          if (
+            (!values.seeking || values.seeking.length === 0) &&
+            currentStep === 4 &&
+            (!values.seekingSuggested || values.seekingSuggested.length === 0)
+          ) {
+            setError("seekingSuggested", "Required");
+          }
+          return errors;
+        }}
         onSubmit={handleSubmit}
       >
-        {({ handleSubmit, submitting, form }) => {
+        {({ handleSubmit, submitting, form, values }) => {
           formRef.current = form;
           return (
             <form onSubmit={handleSubmit} className="step-form">
@@ -295,6 +330,7 @@ function Authentication() {
                   <Button
                     className="step-button-next abs"
                     onClick={handleSubmit}
+                    loading={loading}
                   >
                     Submit {">"}
                   </Button>

@@ -19,7 +19,7 @@ const sidebar = [
   {
     id: 2,
     title: "Learning",
-    url: "/knowledge/capacity-building",
+    url: "/knowledge/capacity-development",
     icon: <IconLearning />,
   },
   {
@@ -60,7 +60,6 @@ function Knowledge({
 }) {
   return (
     <div id="siteWrapper">
-      <LeftSidebar sidebar={sidebar} />
       <div id="appWrapper">
         <div id="appInnerWrapper">
           <div id="bodyContent">
@@ -116,7 +115,7 @@ function Knowledge({
                 )}
               />
               <Route
-                path="/knowledge/capacity-building"
+                path="/knowledge/capacity-development"
                 render={(props) => <CapacityBuilding {...props} />}
               />
               <Route

@@ -102,7 +102,7 @@ const getType = (type) => {
       t = "event";
       break;
     case "Initiative":
-      t = "project";
+      t = "initiative";
       break;
     case "Policy":
       t = "policy";
@@ -142,7 +142,7 @@ const getThumbnail = (item) => {
   }
   if (
     item?.type?.toLowerCase() === "initiative" ||
-    item?.type?.toLowerCase() === "project"
+    item?.type?.toLowerCase() === "initiative"
   ) {
     return initiative;
   }

@@ -85,6 +85,9 @@ import AddContentButton from "./components/add-content-button/add-content-button
 // Auth
 import Onboarding from "./modules/onboarding/view";
 
+//Help
+import HelpCenter from "./modules/help-center/view";
+
 let tmid;
 
 const TRACKING_ID = "UA-225649296-2";
@@ -92,6 +95,9 @@ import auth0 from "auth0-js";
 
 import { auth0Client } from "./utils/misc";
 import Landing from "./modules/landing/landing";
+import GetStarted from "./modules/projects/get-started";
+import Project from "./modules/projects/view";
+import MenuBar from "./modules/landing/menu-bar";
 
 Promise.all([
   api.get("/tag"),
@@ -218,6 +224,7 @@ const Root = () => {
   const [filters, setFilters] = useState(null);
   const [filterMenu, setFilterMenu] = useState(null);
   const [showResponsiveMenu, setShowResponsiveMenu] = useState(false);
+  const [loadingProfile, setLoadingProfile] = useState(false);
   const [_expiresAt, setExpiresAt] = useState(null);
   const [idToken, setIdToken] = useState(null);
   const [authResult, setAuthResult] = useState(null);
@@ -297,7 +304,7 @@ const Root = () => {
               };
             });
             history.push({
-              pathname: "onboarding",
+              pathname: "/onboarding",
               state: { data: authResult?.idTokenPayload },
             });
           }
@@ -310,6 +317,7 @@ const Root = () => {
     auth0Client.checkSession({}, async (err, authResult) => {
       if (err) {
         console.log(err);
+        setLoadingProfile(true);
         // history.push("/login");
       }
       if (authResult) {
@@ -327,9 +335,10 @@ const Root = () => {
       }
       if (isAuthenticated && idToken && authResult) {
         let resp = await api.get("/profile");
+        setLoadingProfile(false);
         if (resp.data && Object.keys(resp.data).length === 0) {
           history.push({
-            pathname: "onboarding",
+            pathname: "/onboarding",
             state: { data: authResult?.idTokenPayload },
           });
         }
@@ -343,7 +352,7 @@ const Root = () => {
         updateStatusProfile(resp.data);
       }
     })();
-  }, [isAuthenticated, idToken, authResult]);
+  }, [idToken, authResult]);
 
   useEffect(() => {
     if (window.location.host === "digital.gpmarinelitter.org") {
@@ -377,7 +386,7 @@ const Root = () => {
     searchParms.set("limit", pageSize);
     const topic = [
       "action_plan",
-      "project",
+      "initiative",
       "policy",
       "technical_resource",
       "technology",
@@ -463,9 +472,10 @@ const Root = () => {
 
   return (
     <>
+      <Login visible={loginVisible} close={() => setLoginVisible(false)} />
       <Switch>
         <Route
-          path="/landing"
+          path="/"
           exact
           render={(props) => (
             <Landing
@@ -476,6 +486,9 @@ const Root = () => {
                 updateQuery,
                 isRegistered,
                 logout,
+                isAuthenticated,
+                auth0Client,
+                setWarningModalVisible,
               }}
             />
           )}
@@ -491,106 +504,16 @@ const Root = () => {
                   </div>
                 </div>
               )}
-            <Header className="nav-header-container">
-              <div className="ui container">
-                <div className="logo-wrapper">
-                  <Link to="/">
-                    <img src={logo} className="logo" alt="GPML" />
-                  </Link>
-                </div>
-                <div className="main-menu-items">
-                  {isAuthenticated && <WorkspaceButton />}
-                  <ul>
-                    <li>
-                      <NavLink
-                        to="/about-us"
-                        className="menu-btn nav-link menu-dropdown"
-                        activeClassName="selected"
-                      >
-                        About
-                      </NavLink>
-                    </li>
-                    <li>
-                      <ExploreDropdownMenu topicsCount={topicsCount} />
-                    </li>
-                    <li>
-                      <a
-                        href="https://datahub.gpmarinelitter.org/"
-                        className="menu-btn nav-link menu-dropdown"
-                      >
-                        Data Hub
-                      </a>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/knowledge/library"
-                        className={`menu-btn nav-link menu-dropdown ${
-                          path.includes("/knowledge") && "selected"
-                        }`}
-                        activeClassName={"selected"}
-                      >
-                        Knowledge Exchange
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/connect/events"
-                        className={`menu-btn nav-link ${
-                          path.includes("/connect") && "selected"
-                        }`}
-                        activeClassName="selected"
-                      >
-                        Connect Stakeholders
-                      </NavLink>
-                    </li>
-                  </ul>
-                </div>
-                <Switch>
-                  <Route path="/browse" />
-                  <Route>
-                    <Search updateQuery={updateQuery} />
-                  </Route>
-                </Switch>
-                <div className="rightside">
-                  {!isAuthenticated ? (
-                    <div className="rightside btn-wrapper">
-                      {isAuthenticated && isRegistered(profile) ? (
-                        <UserButton {...{ logout, isRegistered, profile }} />
-                      ) : (
-                        <Button
-                          type="ghost"
-                          className="left"
-                          onClick={() => setLoginVisible(true)}
-                        >
-                          Sign in
-                        </Button>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="rightside btn-wrapper">
-                      <AddButton
-                        {...{
-                          setStakeholderSignupModalVisible,
-                          isAuthenticated,
-                          loginWithPopup,
-                          setWarningModalVisible,
-                          setLoginVisible,
-                        }}
-                      />
-                      <UserButton {...{ logout, isRegistered, profile }} />
-                    </div>
-                  )}
-                  {/* Drawer/ Menu for responsive design */}
-                  <div className="responsive-menu-trigger">
-                    <Button
-                      className="menu-icon"
-                      icon={<img src={MenuOutlined} />}
-                      onClick={() => setShowResponsiveMenu(true)}
-                    />
-                  </div>
-                </div>
-              </div>
-            </Header>
+            <MenuBar
+              {...{
+                setLoginVisible,
+                isAuthenticated,
+                auth0Client,
+                profile,
+                isRegistered,
+                setWarningModalVisible,
+              }}
+            />
             <Switch>
               <Route
                 path="/"
@@ -822,12 +745,22 @@ const Root = () => {
                 render={(props) => <DiscourseForum />}
               />
 
+              <Route path="/help-center" render={(props) => <HelpCenter />} />
+
               <Route
                 exact
                 render={(props) =>
                   isAuthenticated && <Workspace {...props} profile={profile} />
                 }
                 path="/workspace"
+              />
+              <Route path="/projects/get-started">
+                <GetStarted />
+              </Route>
+              <Route
+                exact
+                path="/projects/:id"
+                render={(props) => <Project {...props} profile={profile} />}
               />
               <Route
                 exact
@@ -854,6 +787,7 @@ const Root = () => {
                     filters={filters}
                     setFilters={setFilters}
                     isAuthenticated={isAuthenticated}
+                    loadingProfile={loadingProfile}
                   />
                 )}
               />
@@ -870,7 +804,7 @@ const Root = () => {
                 )}
               />
               <Route
-                path="/:type(project|action-plan|policy|technical-resource|financing-resource|technology|event)/:id"
+                path="/:type(initiative|action-plan|policy|technical-resource|financing-resource|technology|event)/:id"
                 render={(props) => (
                   <NewDetailsView
                     {...props}
@@ -920,7 +854,6 @@ const Root = () => {
             visible={warningModalVisible}
             close={() => setWarningModalVisible(false)}
           />
-          <Login visible={loginVisible} close={() => setLoginVisible(false)} />
           <ResponsiveMenu
             {...{
               profile,

@@ -67,6 +67,11 @@ const FilterModal = ({
     setFilter(pureQuery);
   };
 
+  useEffect(() => {
+    if (Object.keys(query).length > 0) setFilter(query);
+  }, [query]);
+
+
   const filteredMainContentOptions = !isEmpty(mainContentType)
     ? mainContentType
         .filter((content) => {
@@ -132,7 +137,7 @@ const FilterModal = ({
     setShowFilterModal(false);
 
     const newQuery = {
-      ...(Object.keys(filter).length > 0 && query),
+      // ...(Object.keys(filter).length > 0 && query),
       ...filter,
     };
 
@@ -185,25 +190,31 @@ const FilterModal = ({
           </Col>
         )}
 
-        <KnowledgeLibrarySearch {...{ updateQuery }} />
+        <KnowledgeLibrarySearch {...{ updateQuery, filter }} />
 
         {/* Sub-content type */}
         <MultipleSelectFilter
           title="Sub-content type"
           options={
             !isEmpty(mainContentType)
-              ? mainContentOption().map((content) => ({
-                  label: content?.name,
-                  options: content?.childs
-                    .map((child, i) => ({
-                      label: child?.title,
-                      value: child?.title,
-                      key: `${i}-${content?.name}`,
-                    }))
-                    .sort((a, b) =>
-                      a?.label?.trim().localeCompare(b?.label?.trim())
-                    ),
-                }))
+              ? mainContentOption().map((content) => {
+                  const label =
+                    content?.name?.toLowerCase() === "capacity building"
+                      ? "Capacity Development"
+                      : content?.name;
+                  return {
+                    label: label,
+                    options: content?.childs
+                      .map((child, i) => ({
+                        label: child?.title,
+                        value: child?.title,
+                        key: `${i}-${content?.name}`,
+                      }))
+                      .sort((a, b) =>
+                        a?.label?.trim().localeCompare(b?.label?.trim())
+                      ),
+                  };
+                })
               : []
           }
           value={filter?.subContentType || []}
@@ -340,7 +351,7 @@ const DatePickerFilter = ({
   );
 };
 
-const KnowledgeLibrarySearch = ({ updateQuery }) => {
+const KnowledgeLibrarySearch = ({ updateQuery, filter }) => {
   const [search, setSearch] = useState("");
   const handleSearch = (src) => {
     eventTrack("Communities", "Search", "Button");
@@ -358,7 +369,7 @@ const KnowledgeLibrarySearch = ({ updateQuery }) => {
         <Input
           className="input-search"
           placeholder="Search resources"
-          value={search}
+          value={filter?.q}
           suffix={<SearchOutlined />}
           onPressEnter={(e) => handleSearch(e.target.value)}
           onChange={(e) => handleSearch(e.target.value)}

@@ -1,18 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Carousel, Avatar, Typography, Button, List } from "antd";
+import {
+  Row,
+  Col,
+  Carousel,
+  Avatar,
+  Typography,
+  Button,
+  Modal,
+  notification,
+} from "antd";
 const { Title } = Typography;
 import "./styles.scss";
-import Header from "./header";
 import { useHistory, Link } from "react-router-dom";
-// import DownloadPdf from "../../images/workspace/download-pdf.svg";
-import DownloadPdf from "../../images/workspace/pdf.png";
+import { ReactComponent as DataCatalogueSvg } from "../../images/data-catalogue-icon.svg";
+import { ReactComponent as MatchSvg } from "../../images/match.svg";
+import { ReactComponent as UploadSvg } from "../../images/upload.svg";
+import { ReactComponent as TransnationalSvg } from "../../images/transnational.svg";
+import { ReactComponent as TrashSvg } from "../../images/resource-detail/trash-icn.svg";
+import { ReactComponent as ShareSvg } from "../../images/resource-detail/share-icn.svg";
+import { ReactComponent as EditSvg } from "../../images/resource-detail/edit-icn.svg";
 import NetworkIcon from "../../images/auth/network.png";
-import Video from "../../images/workspace/video.png";
-import FAQ from "../../images/workspace/faq.png";
-
+import {
+  FilePdfOutlined,
+  PlusCircleOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
+import api from "../../utils/api";
 const Workspace = ({ profile }) => {
   const history = useHistory();
   const [isFocal, setIsFocal] = useState(false);
+  const [projects, setProjects] = useState([]);
 
   const handleFocalPoint = (id) => {
     setIsFocal(true);
@@ -26,36 +43,71 @@ const Workspace = ({ profile }) => {
     }
   }, [profile]);
 
+  useEffect(() => {
+    if (profile && profile.reviewStatus === "APPROVED") fetchAllProjects();
+  }, [profile]);
+
+  const fetchAllProjects = () => {
+    api
+      .get("/project")
+      .then((res) => {
+        setProjects(res.data.projects);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleDeleteBtn = (id) => {
+    Modal.error({
+      className: "popup-delete",
+      centered: true,
+      closable: true,
+      icon: <DeleteOutlined />,
+      title: "Are you sure you want to delete this project?",
+      content: "Please be aware this action cannot be undone.",
+      okText: "Delete",
+      okType: "danger",
+      onOk() {
+        return api
+          .delete(`/project/${id}`)
+          .then((res) => {
+            notification.success({
+              message: "Project deleted successfully",
+            });
+            fetchAllProjects();
+          })
+          .catch((err) => {
+            console.error(err);
+            notification.error({
+              message: "Oops, something went wrong",
+            });
+          });
+      },
+    });
+  };
+
   return (
     <div id="workspace">
-      {/* <Header userName={userName} /> */}
       <div className="workspace-content-wrapper">
         <div className="workspace-container">
           {profile &&
             profile?.emailVerified &&
             profile?.reviewStatus === "SUBMITTED" && (
-              <Row>
-                <Col lg={24} sm={24}>
-                  <div className="pending-stripe">
-                    <Title level={4}>
-                      Your account is pending reviewal. You can still explore
-                      the platform.
-                    </Title>
-                  </div>
-                </Col>
-              </Row>
+              <div className="pending-stripe">
+                <Title level={4}>
+                  Your account is pending reviewal. You can still explore the
+                  platform.
+                </Title>
+              </div>
             )}
           {profile && !profile?.emailVerified && (
-            <Row>
-              <Col lg={24} sm={24}>
-                <div className="pending-stripe">
-                  <Title level={4}>
-                    We sent you a confirmation email, Please take a moment and
-                    validate your address to confirm your account.
-                  </Title>
-                </div>
-              </Col>
-            </Row>
+            <div className="pending-stripe">
+              <Title level={4}>
+                We sent you a confirmation email, Please take a moment and
+                validate your address to confirm your account.
+              </Title>
+            </div>
           )}
           {profile && profile.org && !profile?.org?.isMember && (
             <Row
@@ -148,120 +200,190 @@ const Workspace = ({ profile }) => {
               </Col>
             </Row>
           )}
-          <Row className="action-plan-container">
-            <Col lg={12} sm={24}>
-              <div className="content-container">
-                <p className="recommend-text">Download</p>
-                <Title level={2}>Action Plan Workflow Guidance</Title>
-                <div className="action-plan-wrapper">
-                  <div>
-                    <p>
-                      This one-pager document outlines how the functionality of
-                      the Global Partnership on Marine Litter (GPML) Digital
-                      Platform supports the development of national marine
-                      litter and plastic pollution action plans, within the
-                      different phases of the Action Plan Creation Workflow.
-                    </p>
-                  </div>
-                  <a
-                    href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y"
-                    target="_blank"
-                    className="download-link"
+          {projects.length > 0 && (
+            <div className="all-projects-starter">
+              <Row>
+                <h2>Your action plans</h2>
+              </Row>
+              <Row>
+                <ul>
+                  {projects?.map((item) => (
+                    <li key={item.id}>
+                      <Link
+                        className="all-projects"
+                        to={`/projects/${item.id}`}
+                        key={item.id}
+                      >
+                        <div className="content">
+                          {/* <p>Action Plan</p> */}
+                          <h2>{item.title}</h2>
+                          <div className="transnational">
+                            <TransnationalSvg />
+                            <span>{item.geoCoverageType}</span>
+                          </div>
+                        </div>
+                      </Link>
+                      <div className="actions">
+                        <ShareSvg />
+                        <EditSvg
+                          onClick={() => history.push(`/projects/${item.id}`)}
+                        />
+                        <TrashSvg onClick={() => handleDeleteBtn(item.id)} />
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </Row>
+              <Row className="assessment-row">
+                {/* <Col span={24}>
+                <Link to="/projects/get-started">
+                  <Button
+                    className="assessment-button"
+                    icon={<PlusCircleOutlined />}
                   >
+                    New project Assessment
+                  </Button>
+                </Link>
+              </Col> */}
+              </Row>
+            </div>
+          )}
+          {profile?.role === "ADMIN" && (
+            <div className="action-plan-starter">
+              <Row>
+                <h2>Action plan toolbox</h2>
+              </Row>
+              <Row>
+                <Col lg={11}>
+                  <b>1</b>
+                  <div className="content">
+                    <h3>Self-assessment</h3>
+                    <p>
+                      Identify in which stage you are in your action plan
+                      development and implementation. Receive suggestions on how
+                      to manage it in the platform.
+                    </p>
                     <div>
-                      <img src={DownloadPdf} alt="download-pdf-document" />
+                      <Link to="/projects/get-started">
+                        <Button type="primary">Get Started</Button>
+                      </Link>
                     </div>
-                  </a>
-                </div>
-              </div>
-            </Col>
-            <Col lg={12} sm={24}>
-              <div
-                className="content-container"
-                style={{ backgroundColor: "#fff" }}
-              >
-                <p className="recommend-text">ACTIONS</p>
-                <Title level={2}>Your next steps on GPML</Title>
-                <List itemLayout="horizontal">
-                  <List.Item>
-                    <List.Item.Meta
-                      className={`${
-                        profile &&
-                        (!profile?.emailVerified ||
-                          profile?.reviewStatus === "SUBMITTED")
-                          ? "disabled"
-                          : ""
-                      }`}
-                      disabled={
-                        profile &&
-                        (!profile?.emailVerified ||
-                          profile?.reviewStatus === "SUBMITTED")
-                      }
-                      title={
+                  </div>
+                </Col>
+                <Col lg={13}>
+                  <div className="content">
+                    <h3>MORE ABOUT ACTION PLANS</h3>
+                    <ul>
+                      <li>
                         <a
-                          href="https://unep-gpml.eu.auth0.com/authorize?response_type=code&client_id=lmdxuDGdQjUsbLbMFpjDCulTP1w5Z4Gi&redirect_uri=https%3A//apps.unep.org/data-catalog/oauth2/callback&scope=openid+profile+email&state=eyJjYW1lX2Zyb20iOiAiL2Rhc2hib2FyZCJ9"
+                          href="https://docs.google.com/document/d/e/2PACX-1vTFohwO-ceBvGhFrB1mhI8-oB8_g6VjDZU_6PEez537PmHFTgqgLx8fOnCbhw7BOA/pub"
                           target="_blank"
                         >
-                          Add data {">"}
+                          How do I get started with my Action Plan?
                         </a>
-                      }
-                      description="Contribute to the DataHub maps & dashboard"
-                    />
-                  </List.Item>
-                  <List.Item>
-                    <List.Item.Meta
-                      className={`${
-                        profile &&
-                        (!profile?.emailVerified ||
-                          profile?.reviewStatus === "SUBMITTED")
-                          ? "disabled"
-                          : ""
-                      }`}
-                      disabled={
-                        profile &&
-                        (!profile?.emailVerified ||
-                          profile?.reviewStatus === "SUBMITTED")
-                      }
-                      title={
-                        <Link to="/flexible-forms">
-                          Share your knowledge {">"}
-                        </Link>
-                      }
-                      description="Contribute to the global library of initiatives, action plans, financing & tech resources & more"
-                    />
-                  </List.Item>
-                  {/* <List.Item>
-                        <List.Item.Meta
-                          title={`Suggest an expert >`}
-                          description="Tu quoque, Brute, fili mi, nihil timor populi, nihil!"
-                        />
-                      </List.Item> */}
-                  <List.Item>
-                    <List.Item.Meta
-                      className={`${
-                        profile &&
-                        (!profile?.emailVerified ||
-                          profile?.reviewStatus === "SUBMITTED")
-                          ? "disabled"
-                          : ""
-                      }`}
-                      disabled={
-                        profile &&
-                        (!profile?.emailVerified ||
-                          profile?.reviewStatus === "SUBMITTED")
-                      }
-                      title={
-                        <Link to="/connect/community">
-                          Match with new opportunities {">"}
-                        </Link>
-                      }
-                      // description="Fictum, deserunt mollit anim laborum astutumque!"
-                    />
-                  </List.Item>
-                </List>
-              </div>
-            </Col>
-          </Row>
+                      </li>
+                      <li>
+                        <a
+                          href="https://docs.google.com/document/d/e/2PACX-1vTFohwO-ceBvGhFrB1mhI8-oB8_g6VjDZU_6PEez537PmHFTgqgLx8fOnCbhw7BOA/pub"
+                          target="_blank"
+                        >
+                          How can you share and showcase your data and
+                          information in the GPML Digital Platform?
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="https://docs.google.com/document/d/e/2PACX-1vTFohwO-ceBvGhFrB1mhI8-oB8_g6VjDZU_6PEez537PmHFTgqgLx8fOnCbhw7BOA/pub"
+                          target="_blank"
+                        >
+                          What tools and resources are available in the GPML
+                          Digital Platform?
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={14}>
+                  <b>2</b>
+                  <div className="content">
+                    <h3>workflow guidance</h3>
+                    <p>
+                      This one-page document outlines how the GPML Digital
+                      Platform supports the development of national marine
+                      litter and plastic pollution Action Plans. It includes the
+                      different phases of the Action Plan creation workflow.
+                    </p>
+                    <div>
+                      <a
+                        href="https://docs.google.com/document/d/e/2PACX-1vSiUKIP_gaD1FtG_9zu2Q7zuqHXhVdoOcCBLcKCrISbAIteAXt4ek63kl9P0gLfvA/pub"
+                        target="_blank"
+                      >
+                        <Button type="ghost" icon={<FilePdfOutlined />}>
+                          Read The Guide
+                        </Button>
+                      </a>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+            </div>
+          )}
+          <div className="action-suggestions">
+            <Row>
+              <Col lg={8}>
+                <DataCatalogueSvg />
+                <h3>contribute to the datahub maps & dashboard</h3>
+                <Button
+                  type="ghost"
+                  disabled={
+                    profile &&
+                    (!profile?.emailVerified ||
+                      profile?.reviewStatus === "SUBMITTED")
+                  }
+                  onClick={() => {
+                    window.open(
+                      "https://unep-gpml.eu.auth0.com/authorize?response_type=code&client_id=lmdxuDGdQjUsbLbMFpjDCulTP1w5Z4Gi&redirect_uri=https%3A//apps.unep.org/data-catalog/oauth2/callback&scope=openid+profile+email&state=eyJjYW1lX2Zyb20iOiAiL2Rhc2hib2FyZCJ9",
+                      "_blank"
+                    );
+                  }}
+                >
+                  Upload your data
+                </Button>
+              </Col>
+              <Col lg={8}>
+                <UploadSvg />
+                <h3>Share your knowledge</h3>
+                <Button
+                  type="ghost"
+                  disabled={
+                    profile &&
+                    (!profile?.emailVerified ||
+                      profile?.reviewStatus === "SUBMITTED")
+                  }
+                  onClick={() => history.push("/flexible-forms")}
+                >
+                  Add content
+                </Button>
+              </Col>
+              <Col lg={8}>
+                <MatchSvg />
+                <h3>Match with new opportunities</h3>
+                <Button
+                  type="ghost"
+                  disabled={
+                    profile &&
+                    (!profile?.emailVerified ||
+                      profile?.reviewStatus === "SUBMITTED")
+                  }
+                  onClick={() => history.push("/connect/community")}
+                >
+                  Connect
+                </Button>
+              </Col>
+            </Row>
+          </div>
           <Row className="video-panel">
             <Col lg={24} sm={24}>
               <Title level={2}>Watch this video to get started</Title>
@@ -270,7 +392,7 @@ const Workspace = ({ profile }) => {
                 height="640px"
                 src="https://www.youtube.com/embed/xSYkLgoHqVQ"
                 title="YouTube video player"
-                frameborder="0"
+                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
               ></iframe>
@@ -278,38 +400,6 @@ const Workspace = ({ profile }) => {
           </Row>
         </div>
       </div>
-      {/* <Col lg={24} md={24} xs={24} order={2}>
-            <Row>
-              <Col span={24} style={{ position: "relative" }}>
-                <div className="section-download text-white">
-                  <div className="card">
-                    <article className="content">
-                      <h3 className="download-guidance text-white">
-                        Download the Action Plan Workflow Guidance
-                      </h3>
-                      <p className="paragraph">
-                        This one-pager document outlines how the functionality
-                        of the Global Partnership on Marine Litter (GPML)
-                        Digital Platform supports the development of national
-                        marine litter and plastic pollution action plans, within
-                        the different phases of the Action Plan Creation
-                        Workflow.
-                      </p>
-                    </article>
-                    <a
-                      href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y"
-                      target="_blank"
-                      className="download-link"
-                    >
-                      <img src={DownloadPdf} alt="download-pdf-document" />
-                      <span className="download-text text-white">Download</span>
-                    </a>
-                  </div>
-                </div>
-              </Col>
-              <ActionPlan />
-            </Row>
-          </Col> */}
     </div>
   );
 };

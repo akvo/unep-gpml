@@ -496,7 +496,9 @@
     position: absolute;
     min-width: calc(100% - 100px);
     overflow: hidden;
-
+    .ant-drawer {
+      z-index: 9;
+    }
     @media (max-width: 510px) {
       width: 100%;
     }

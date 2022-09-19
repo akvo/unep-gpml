@@ -103,6 +103,8 @@ const SelectWidget = ({
           );
           if (find) {
             setTagMode("multiple");
+          } else if (uiSchema?.["ui:options"]?.["type"] === "connection") {
+            setTagMode("multiple");
           } else {
             setTagMode("tags");
           }

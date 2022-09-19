@@ -183,4 +183,4 @@
   [:map
    [:version integer?]
    [:language string?]
-   [:capacity_building boolean?]])
+   [:capacity_building {:optional true} boolean?]])

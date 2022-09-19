@@ -15,13 +15,14 @@ import { Pagination, Navigation } from "swiper";
  import { ReactComponent as DataSetIcon } from "../../images/datasets.svg";
  import user1img from '../../images/our-community/cassia-patel.jpg'
 import api from '../../utils/api';
+import { Link } from 'react-router-dom';
 //  import helpCenterIcon
 //  import { ReactComponent as HelpCenterIcon } from "../../images/help-center.svg";
 
-const Landing = (props) => {
+const Landing = ({ setLoginVisible, ...props }) => {
   return (
     <div id="landingb">
-      <MenuBar {...props} />
+      <MenuBar {...props} setLoginVisible={setLoginVisible} />
       <div className="hero">
         <div className="litter">
           <PlasticLitter />
@@ -29,7 +30,15 @@ const Landing = (props) => {
         <div className="content">
           <h1>The Digital Platform on Plastic Pollution & Marine Litter</h1>
           <h4>Informing and connecting all actors working to prevent plastic pollution and marine litter across the life cycle and from source to sea.</h4>
-          <Button type="primary" size='large'>Join Now</Button>
+          {!props.isAuthenticated && (
+            <Button
+              type="primary"
+              size="large"
+              onClick={() => setLoginVisible(true)}
+            >
+              Join Now
+            </Button>
+          )}
         </div>
         <div className="next-btn" onClick={(e, v) => { window.scrollTo({ top: window.innerHeight - 80, behavior: 'smooth' }) }}>
           <Down />
@@ -38,13 +47,13 @@ const Landing = (props) => {
       <div className="workspace">
         <img src="/person-workspace.svg" />
         <h3>All the tools you need to act, in one place.</h3>
-        <Button type='primary' size='large'>Create your workspace</Button>
+        <Button type='primary' size='large' onClick={() => setLoginVisible(true)}>Create your workspace</Button>
       </div>
       <TheJourney />
       <Connect />
       <Partners />
       <Stats />
-      <Act />
+      <Act {...{ setLoginVisible }} />
       <AnyQuestions />
       <Footer />
     </div>
@@ -101,7 +110,7 @@ const TheJourney = () => {
           <div className="pane">
             <h3>FROM SOURCE TO SEA ACROSS THE PLASTICS life cycle</h3>
             <p>Plastics can have environmental, economic, health and social impacts and are leaked into the environment across the plastics life cycle and from source to sea. Once the plastics are in the environment, they can be transported through various pathways.</p>
-            <Button type="ghost" size="large">Learn More</Button>
+            {/* <Button type="ghost" size="large">Learn More</Button> */}
           </div>
           <div className="mobile-only img">
             <img src="/plastic-journey.svg" />
@@ -201,13 +210,13 @@ const Connect = () => {
             <blockquote>This is an unparalleled tool to bring together global actors fighting against our marine plastic crisis.</blockquote>
           </SwiperSlide>
           <SwiperSlide className="card testimonial">
-            <img src="https://digital.gpmarinelitter.org/image/profile/30" />
+            <img src="https://digital.gpmarinelitter.org/image/profile/27" />
             <h4>Marvin Burman</h4>
             <h5>Assistant Executive Director - Gulf and Caribbean Fisheries Institute</h5>
             <blockquote>This is a fantastic resource for knowledge management, networking, accessing and managing data.</blockquote>
           </SwiperSlide>
           <SwiperSlide className="card testimonial">
-            <img src="https://digital.gpmarinelitter.org/image/profile/27" />
+            <img src="https://digital.gpmarinelitter.org/image/profile/30" />
             <h4>Fadilah Ali</h4>
             <h5>Assistant Executive Director - Gulf and Caribbean Fisheries Institute</h5>
             <blockquote>The platform makes it easier to discover stakeholders, events and experts in specific regions and fields.</blockquote>
@@ -247,9 +256,10 @@ const Partners = () => {
 }
 
 const Stats = () => {
-  const {stakeholders, organisations} = UIStore.useState((s) => ({
+  const {stakeholders, organisations,nonMemberOrganisations} = UIStore.useState((s) => ({
     stakeholders: s?.stakeholders?.stakeholders,
     organisations: s?.organisations,
+    nonMemberOrganisations:s?.nonMemberOrganisations
   }));
   const [governmentsCount, setGovernmentsCount] = useState(0);
 
@@ -268,7 +278,7 @@ const Stats = () => {
           <i>Governments</i>
         </div>
         <div className="stat">
-          <b>{organisations?.length}</b>
+          <b>{(organisations?.length + nonMemberOrganisations?.length) - governmentsCount}</b>
           <i>Organisations</i>
         </div>
         <div className="stat">
@@ -298,7 +308,7 @@ const Stats = () => {
   )
 }
 
-const Act = () => {
+const Act = ({ setLoginVisible }) => {
    const { resources } = UIStore.useState((s) => ({
      resources: s.nav?.resourceCounts,
    }));
@@ -311,9 +321,9 @@ const Act = () => {
    const initialData = [
      {
        title: "Share your data",
-       name: "Data sets",
-       count: 349,
-       entityCount: 814,
+       name: "Data layers",
+       count: '300+',
+       entityCount: '20+',
        icon: <DataSetIcon />,
        background: "#ECF8F6",
      },
@@ -399,7 +409,7 @@ const Act = () => {
            </Card>
          ))}
        </div>
-       <Button type="primary" size="large">
+       <Button type="primary" size="large" onClick={() => setLoginVisible(true)}>
          Join now
        </Button>
      </div>
@@ -415,9 +425,11 @@ const Act = () => {
        <div className="content-container">
          <h3>Any Questions?</h3>
          <p>Visit the Help Center for FAQs, tutorials and more.</p>
-         <Button type="ghost" size="large">
-           Find your answers &#62;
-         </Button>
+         <Link to="/help-center">
+          <Button type="ghost" size="large">
+            Find your answers &#62;
+          </Button>
+         </Link>
        </div>
      </div>
    );
