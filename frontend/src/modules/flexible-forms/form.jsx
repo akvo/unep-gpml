@@ -549,8 +549,13 @@ const FlexibleForm = withRouter(
             setDisabledBtn({ disabled: true, type: "default" });
             notification.success({ message: "Resource successfully created" });
           })
-          .catch(() => {
-            notification.error({ message: "An error occured" });
+          .catch((e) => {
+            console.log(e.response);
+            notification.error({
+              message: e.response.data.reason
+                ? e.response.data.reason.replace(/-/g, " ")
+                : "An error occured",
+            });
           })
           .finally(() => {
             setSending(false);
@@ -584,7 +589,8 @@ const FlexibleForm = withRouter(
             notification.success({ message: "Resource successfully updated" });
             history.push(`/initiative/${id || params?.id}`);
           })
-          .catch(() => {
+          .catch((e) => {
+            console.log(e.response);
             initialFormData.update((e) => {
               e.data = initialData;
             });
