@@ -3,6 +3,7 @@
             [clojure.walk :as w])
   (:import [java.io File]
            [java.net URL]
+           [java.util Base64]
            [java.util UUID]))
 
 (defn uuid
@@ -109,6 +110,16 @@
      (File/createTempFile prefix suffix)
      (catch Exception _ nil))))
 
+(defn encode-base64
+  "Encodes a byte[] as String using Base64"
+  [src]
+  (.encodeToString (Base64/getEncoder) src))
+
+(defn decode-base64
+  "Returns a byte[] from a Base64 encoded String"
+  [src]
+  (.decode (Base64/getDecoder) src))
+
 (defn base64?
   "Check that `src` is a valid Base64 encoded String"
   [src]
@@ -121,6 +132,11 @@
   [src]
   (last (re-find #"^data:(\S+);base64,(.*)$" src)))
 
+(defn add-base64-header
+  "Adds the base64 header given the `mime-type` and `base64-str`."
+  [mime-type base64-str]
+  (format "data:%s;base64,%s" mime-type base64-str))
+
 (defn select-values
   "Same as select-keys but for values and respecting the order of `ks`.
    `nil` values are removed from the final output."
@@ -131,3 +147,15 @@
   "Applies the `select-values` function to a collection of maps `coll`."
   [coll ks]
   (map #(select-values % ks) coll))
+
+(defn dissoc-nil-or-empty-val-keys
+  "Dissoc keys from map `m` which have `nil` or empty strings values."
+  [m]
+  (apply
+   dissoc
+   m
+   (for [[k v] m
+         :when (or (and (string? v)
+                        (not (seq v)))
+                   (nil? v))]
+     k)))

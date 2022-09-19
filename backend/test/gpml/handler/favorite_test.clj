@@ -32,7 +32,7 @@
       (is (= [:topic] (-> errors first :in))))))
 
 (defn- new-stakeholder [db email]
-  (let [country-id (-> (db.country/country-by-code db {:name "IDN"}) :id)
+  (let [country-id (-> (db.country/get-countries db {:filters {:iso-codes-a3 ["IDN"] :descriptions ["Member State"]}}) first :id)
         sth (db.stakeholder/new-stakeholder db
                                             {:picture "https://picsum.photos/200"
                                              :cv nil

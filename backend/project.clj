@@ -46,7 +46,10 @@
                                                         clj-time]]
                  [clojure.java-time "0.3.3"]
                  [ns-tracker "0.4.0"]
-                 [twarc "0.1.15"]]
+                 [twarc "0.1.15"]
+                 [diehard "0.10.3"]
+                 [org.jsoup/jsoup "1.15.3"]
+                 [juji/editscript "0.6.2"]]
   :plugins [[duct/lein-duct "0.12.1"]]
   :main ^:skip-aot gpml.main
   :resource-paths ["resources" "target/resources"]

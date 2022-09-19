@@ -14,7 +14,7 @@
   {:remarks "Remarks",
    :description "Description of the event"
    :title "Event 10"
-   :country (-> (db.country/country-by-code db {:name "IDN"}) :id)
+   :country (-> (db.country/get-countries db {:filters {:iso-codes-a3 ["IDN"] :descriptions ["Member State"]}}) first :id)
    :city "Timbuktu"
    :image nil
    :geo_coverage_type nil
@@ -42,8 +42,8 @@
    :idp_usernames ["auth0|123"]})
 
 (defn get-country-id [db codes]
-  (->> {:codes codes}
-       (db.country/country-by-codes db)
+  (->> {:filters {:iso-codes-a3 codes :descriptions ["Member State"]}}
+       (db.country/get-countries db)
        (map :id)))
 
 (defn get-country-group-ids [db country-id]
