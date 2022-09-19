@@ -565,6 +565,13 @@
    []
    data-coll))
 
+(defn- delete-images
+  [config images-urls]
+  (doseq [img-url images-urls
+          :when (seq img-url)
+          :let [[resource-name img-name] (subvec (str/split img-url #"/") 4 6)]]
+    (handler.img/delete-blob config (str resource-name "/" img-name))))
+
 (defmulti ^:private save-as-gpml-entity
   (fn [_ entity-name _ _]
     entity-name))
@@ -572,8 +579,11 @@
 (defmethod save-as-gpml-entity :resource
   [{:keys [db logger] :as config} entity-name data-coll opts]
   (try
-    (let [updated-data-coll (add-gpml-image-url config (:spec db) logger entity-name data-coll)]
-      (with-safe-db-transaction (:spec db) logger entity-name updated-data-coll opts))
+    (let [updated-data-coll (add-gpml-image-url config (:spec db) logger entity-name data-coll)
+          result (with-safe-db-transaction (:spec db) logger entity-name updated-data-coll opts)]
+      (if (:success? result)
+        result
+        (delete-images config (map :image updated-data-coll))))
     (catch Exception e
       (let [error-details {:entity-name entity-name
                            :exception-message (ex-message e)
@@ -602,8 +612,11 @@
 (defmethod save-as-gpml-entity :initiative
   [{:keys [db logger] :as config} entity-name data-coll opts]
   (try
-    (let [updated-data-coll (add-gpml-image-url config (:spec db) logger entity-name data-coll)]
-      (with-safe-db-transaction (:spec db) logger entity-name updated-data-coll opts))
+    (let [updated-data-coll (add-gpml-image-url config (:spec db) logger entity-name data-coll)
+          result (with-safe-db-transaction (:spec db) logger entity-name updated-data-coll opts)]
+      (if (:success? result)
+        result
+        (delete-images config (map :qimage updated-data-coll))))
     (catch Exception e
       (let [error-details {:entity-name entity-name
                            :exception-message (ex-message e)
@@ -665,7 +678,7 @@
                                                    :entity gpml-entity-name})))
   (log logger :info ::finished {}))
 
-(defn import-or-update-entities
+(defn- import-or-update-entities
   [{:keys [db brs-entities-to-import] :as config}]
   (let [countries (db.country/get-countries (:spec db) {})
         brs-tag-category-id (get-brs-tag-category-id (:spec db))]
