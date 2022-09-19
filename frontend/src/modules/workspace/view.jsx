@@ -275,18 +275,27 @@ const Workspace = ({ profile }) => {
                     <h3>MORE ABOUT ACTION PLANS</h3>
                     <ul>
                       <li>
-                        <a href="#">
+                        <a
+                          href="https://docs.google.com/document/d/e/2PACX-1vTFohwO-ceBvGhFrB1mhI8-oB8_g6VjDZU_6PEez537PmHFTgqgLx8fOnCbhw7BOA/pub"
+                          target="_blank"
+                        >
                           How do I get started with my Action Plan?
                         </a>
                       </li>
                       <li>
-                        <a href="#">
+                        <a
+                          href="https://docs.google.com/document/d/e/2PACX-1vTFohwO-ceBvGhFrB1mhI8-oB8_g6VjDZU_6PEez537PmHFTgqgLx8fOnCbhw7BOA/pub"
+                          target="_blank"
+                        >
                           How can you share and showcase your data and
                           information in the GPML Digital Platform?
                         </a>
                       </li>
                       <li>
-                        <a href="#">
+                        <a
+                          href="https://docs.google.com/document/d/e/2PACX-1vTFohwO-ceBvGhFrB1mhI8-oB8_g6VjDZU_6PEez537PmHFTgqgLx8fOnCbhw7BOA/pub"
+                          target="_blank"
+                        >
                           What tools and resources are available in the GPML
                           Digital Platform?
                         </a>
@@ -308,7 +317,7 @@ const Workspace = ({ profile }) => {
                     </p>
                     <div>
                       <a
-                        href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37900/Action%20Plan%20Guidance%20document%20.pdf?sequence=1&isAllowed=y"
+                        href="https://docs.google.com/document/d/e/2PACX-1vSiUKIP_gaD1FtG_9zu2Q7zuqHXhVdoOcCBLcKCrISbAIteAXt4ek63kl9P0gLfvA/pub"
                         target="_blank"
                       >
                         <Button type="ghost" icon={<FilePdfOutlined />}>
