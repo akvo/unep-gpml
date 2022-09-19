@@ -4,18 +4,23 @@
 -- Technical, Action Plan, Organization and Stakeholder. That is, it
 -- is not about 'resource' table solely.
 
--- :name create-resource-tags :<! :*
+-- :name create-resource-tags :insert-returning :many
 -- :doc Creates a relation for <resource>_tag.
 INSERT INTO :i:table (:i:resource-col, tag
 --~(when (= (:table params) "stakeholder_tag") ", tag_relation_category")
 )
 VALUES :t*:tags RETURNING *;
 
--- :name delete-resource-tags :! :n
+-- :name create-resource-tags-v2 :insert-returning :many
+-- :doc Same as create-resource-tags but columns are defined programatically.
+INSERT INTO :i:table(:i*:insert-cols)
+VALUES :t*:insert-values RETURNING *;
+
+-- :name delete-resource-tags :execute :affected
 -- :doc Delete relation for <resource>_tag.
 DELETE FROM :i:table WHERE :i:resource-col = :resource-id;
 
--- :name get-resource-tags :? :*
+-- :name get-resource-tags :query :many
 -- :doc Get resource tags
 SELECT rt.:i:resource-col, t.id, t.tag, tg.category AS tag_category
 --~(when (= (:table params) "stakeholder_tag") ", rt.tag_relation_category")

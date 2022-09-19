@@ -41,7 +41,7 @@
           :remarks nil})))
 
 (defn- create-resource
-  [conn logger mailjet-config
+  [{:keys [logger mailjet-config] :as config} tx
    {:keys [resource_type title publish_year
            summary value value_currency
            value_remarks valid_from valid_to image
@@ -62,8 +62,8 @@
                       :value_remarks value_remarks
                       :valid_from valid_from
                       :valid_to valid_to
-                      :image (handler.image/assoc-image conn image "resource")
-                      :thumbnail (handler.image/assoc-image conn thumbnail "resource")
+                      :image (handler.image/assoc-image config tx image "resource")
+                      :thumbnail (handler.image/assoc-image config tx thumbnail "resource")
                       :geo_coverage_type geo_coverage_type
                       :geo_coverage_value geo_coverage_value
                       :geo_coverage_countries geo_coverage_countries
@@ -82,65 +82,67 @@
                       :language language}
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
-        resource-id (:id (db.resource/new-resource conn data))
-        api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
+        resource-id (:id (db.resource/new-resource tx data))
+        api-individual-connections (handler.util/individual-connections->api-individual-connections tx individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
                                                           api-individual-connections)))))]
     (when (seq related_content)
-      (handler.resource.related-content/create-related-contents conn logger resource-id "resource" related_content))
+      (handler.resource.related-content/create-related-contents tx logger resource-id "resource" related_content))
     (doseq [stakeholder-id owners]
-      (h.auth/grant-topic-to-stakeholder! conn {:topic-id resource-id
-                                                :topic-type "resource"
-                                                :stakeholder-id stakeholder-id
-                                                :roles ["owner"]}))
+      (h.auth/grant-topic-to-stakeholder! tx {:topic-id resource-id
+                                              :topic-type "resource"
+                                              :stakeholder-id stakeholder-id
+                                              :roles ["owner"]}))
     (when (not-empty tags)
-      (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
-                                                                             :tag-category "general"
-                                                                             :resource-name "resource"
-                                                                             :resource-id resource-id}))
+      (handler.resource.tag/create-resource-tags tx logger mailjet-config {:tags tags
+                                                                           :tag-category "general"
+                                                                           :resource-name "resource"
+                                                                           :resource-id resource-id}))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections resource-id)]
-        (db.favorite/new-organisation-association conn association)))
+        (db.favorite/new-organisation-association tx association)))
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections resource-id)]
-        (db.favorite/new-stakeholder-association conn association)))
+        (db.favorite/new-stakeholder-association tx association)))
     (when (not-empty urls)
       (let [lang-urls (map #(vector resource-id
                                     (->> % :lang
                                          (assoc {} :iso_code)
-                                         (db.language/language-by-iso-code conn)
+                                         (db.language/language-by-iso-code tx)
                                          :id)
                                     (:url %)) urls)]
-        (db.resource/add-resource-language-urls conn {:urls lang-urls})))
+        (db.resource/add-resource-language-urls tx {:urls lang-urls})))
     (if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
       (let [geo-data (handler.geo/get-geo-vector-v2 resource-id data)]
-        (db.resource/add-resource-geo conn {:geo geo-data}))
+        (db.resource/add-resource-geo tx {:geo geo-data}))
       (when (not-empty geo_coverage_value)
         (let [geo-data (handler.geo/get-geo-vector resource-id data)]
-          (db.resource/add-resource-geo conn {:geo geo-data}))))
+          (db.resource/add-resource-geo tx {:geo geo-data}))))
     (email/notify-admins-pending-approval
-     conn
+     tx
      mailjet-config
      (merge data {:type resource_type}))
     resource-id))
 
 (defmethod ig/init-key :gpml.handler.resource/post
-  [_ {:keys [db logger mailjet-config]}]
+  [_ {:keys [db logger] :as config}]
   (fn [{:keys [jwt-claims body-params] :as req}]
     (try
-      (jdbc/with-db-transaction [conn (:spec db)]
-        (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-              resource-id (create-resource conn logger mailjet-config (assoc body-params
-                                                                             :created_by (:id user)))
+      (jdbc/with-db-transaction [tx (:spec db)]
+        (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
+              resource-id (create-resource config
+                                           tx
+                                           (assoc body-params
+                                                  :created_by (:id user)))
               activity {:id (util/uuid)
                         :type "create_resource"
                         :owner_id (:id user)
                         :metadata {:resource_id resource-id
                                    :resource_type (:resource_type body-params)}}]
-          (db.activity/create-activity conn activity)
+          (db.activity/create-activity tx activity)
           (resp/created (:referrer req) {:success? true
                                          :message "New resource created"
                                          :id resource-id})))
