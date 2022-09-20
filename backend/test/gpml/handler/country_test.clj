@@ -13,8 +13,8 @@
     (let [system (ig/init fixtures/*system* [::country/get])
           handler (::country/get system)
           db (-> system :duct.database.sql/hikaricp :spec)
-          _ (db.country/new-country db {:name "The Netherlands" :iso_code "NLD" :description "Member State"})
+          _ (db.country/new-country db {:name "The Netherlands" :iso_code_a3 "NLD" :description "Member State"})
           resp (handler (mock/request :get "/"))]
       (is (= 200 (:status resp)))
       (is (not-empty (:body resp)))
-      (is (= "NLD" (-> resp :body first :iso_code))))))
+      (is (= "NLD" (-> resp :body first :iso_code_a3))))))

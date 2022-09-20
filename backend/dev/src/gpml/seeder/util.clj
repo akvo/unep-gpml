@@ -151,5 +151,7 @@
 ;; initiative country updater
 (defn update-initiative-country [db mapping json-file]
   (doseq [query (map #(transform-initiative-query % mapping json-file [:q23 :q24_2 :q24_4])
-                     (seeder.db/get-initiative-country-values db))]
-    (db.initiative/update-initiative db query)))
+                     (seeder.db/get-initiative-country-values db))
+          :let [initiative (db.initiative/initiative->db-initiative query)]]
+    (db.initiative/update-initiative db {:id (:id initiative)
+                                         :updates (dissoc initiative :id)})))

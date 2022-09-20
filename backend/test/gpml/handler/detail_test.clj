@@ -113,7 +113,7 @@
 
     (testing "Initiative editing"
       (let [country (db.country/new-country
-                     db {:name "Indonesia" :iso_code "IND" :description "Member State" :territory "IND"})
+                     db {:name "Indonesia" :iso_code_a3 "IND" :description "Member State" :territory "IND"})
             data (-> (seeder/parse-data
                       (slurp (io/resource "examples/initiative-national.json"))
                       {:keywords? true

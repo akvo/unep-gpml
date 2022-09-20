@@ -6,8 +6,7 @@
             [gpml.util.sql :as sql-util]
             [hugsql.core :as hugsql]))
 
-(declare all-countries
-         tag-by-id
+(declare get-tags
          tag-by-tags
          new-tag-category
          new-tag
@@ -21,7 +20,8 @@
          get-more-popular-topics-tags
          get-tag-categories
          update-tag
-         tag->db-tag)
+         tag->db-tag
+         create-tags)
 
 (hugsql/def-db-fns "gpml/db/tag.sql" {:quoting :ansi})
 
@@ -117,6 +117,12 @@
   [tag]
   (-> tag
       (util/update-if-not-nil :review_status #(sql-util/keyword->pg-enum % "review_status"))))
+
+(defn opts->db-opts
+  "FIXME"
+  [opts]
+  (-> opts
+      (util/update-if-not-nil :tags #(map str/lower-case %))))
 
 (comment
   (require 'dev)
