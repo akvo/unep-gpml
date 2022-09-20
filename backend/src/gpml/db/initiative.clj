@@ -27,7 +27,6 @@
   (-> initiative
       (util/update-if-not-nil :q2 pg-util/val->jsonb)
       (util/update-if-not-nil :q3 pg-util/val->jsonb)
-      (util/update-if-not-nil :q36 pg-util/val->jsonb)
       (util/update-if-not-nil :q23 pg-util/val->jsonb)
       (util/update-if-not-nil :q24 pg-util/val->jsonb)
       (util/update-if-not-nil :q24_2 pg-util/val->jsonb)
