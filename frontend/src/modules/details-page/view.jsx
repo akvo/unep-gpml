@@ -30,7 +30,7 @@ import { titleCase } from "../../utils/string";
 import { eventTrack } from "../../utils/misc";
 import LeftImage from "../../images/sea-dark.jpg";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import uniqBy from "lodash/uniqBy";
 import isEmpty from "lodash/isEmpty";
 import { redirectError } from "../error/error-util";
@@ -122,6 +122,7 @@ const DetailsView = ({
     placeholder: s.placeholder,
   }));
   const history = useHistory();
+  const location = useLocation();
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const [comments, setComments] = useState([]);
@@ -145,15 +146,6 @@ const DetailsView = ({
 
   const allowBookmark =
     params.type !== "stakeholder" || profile.id !== params.id;
-
-  const isLoaded = useCallback(
-    () =>
-      Boolean(
-        !isEmpty(countries) &&
-          (isConnectStakeholders ? !isEmpty(profile) : true)
-      ),
-    [countries, profile, isConnectStakeholders]
-  );
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
@@ -182,9 +174,7 @@ const DetailsView = ({
   };
 
   useEffect(() => {
-    isLoaded() &&
-      !data &&
-      params?.type &&
+    params?.type &&
       params?.id &&
       api
         .get(`/detail/${params?.type.replace("-", "_")}/${params?.id}`)
@@ -215,7 +205,7 @@ const DetailsView = ({
           console.error(err);
           redirectError(err, history);
         });
-    if (isLoaded() && profile.reviewStatus === "APPROVED") {
+    if (profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
         api
           .get(`/favorite/${params?.type?.replace("-", "_")}/${params?.id}`)
@@ -228,7 +218,7 @@ const DetailsView = ({
       e.disclaimer = null;
     });
     window.scrollTo({ top: 0 });
-  }, [profile, isLoaded]);
+  }, [profile, location]);
 
   const getComment = async (id, type) => {
     let res = await api.get(
