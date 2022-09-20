@@ -88,6 +88,9 @@ export const uiSchema = {
     "ui:showSearch": true,
     "ui:widget": "select",
     "ui:placeholder": "Choose the entity country",
+    "ui:options": {
+      type: "single",
+    },
   },
   url: {
     "ui:placeholder": "URL Address (e.g. example.com)",
@@ -97,6 +100,9 @@ export const uiSchema = {
   geoCoverageType: {
     "ui:placeholder": "Choose the entity coverage type",
     "ui:widget": "select",
+    "ui:options": {
+      type: "single",
+    },
   },
   geoCoverageValueRegional: {
     "ui:placeholder": "Choose the entity coverage",

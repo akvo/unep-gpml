@@ -98,6 +98,9 @@ const SelectWidget = ({
         onChange={!readonly ? handleChange : undefined}
         onFocus={!readonly ? handleFocus : undefined}
         onSearch={(v) => {
+          if (uiSchema?.["ui:options"]?.["type"] === "single") {
+            return false;
+          }
           const find = enumOptions.find(
             (tag) => v.toLowerCase() == tag.label.toLowerCase()
           );
