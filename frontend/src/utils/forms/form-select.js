@@ -85,7 +85,7 @@ const SelectWidget = ({
         allowClear={uiSchema?.["ui:allowClear"] ? true : false}
         showSearch={uiSchema?.["ui:showSearch"] ? true : false}
         filterOption={(input, option) =>
-          option?.children?.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
+          option?.children?.toLowerCase().indexOf(input.toLowerCase()) === 0 ||
           option.value === "-1"
         }
         autoFocus={autofocus}
