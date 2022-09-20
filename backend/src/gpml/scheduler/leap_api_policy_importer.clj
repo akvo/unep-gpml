@@ -772,9 +772,9 @@
   [{:keys [logger db] :as config}]
   (try
     (let [conn (:spec db)
-          all-countries (db.country/all-countries conn)
+          all-countries (db.country/get-countries conn {})
           countries-by-iso-code (when (seq all-countries)
-                                  (group-by :iso_code all-countries))
+                                  (group-by :iso_code_a3 all-countries))
           all-languages (db.language/all-languages conn)
           languages-by-iso-code (when (seq all-languages)
                                   (group-by :iso_code all-languages))
