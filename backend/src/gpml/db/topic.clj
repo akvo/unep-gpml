@@ -121,7 +121,7 @@
            geo-coverage-types sub-content-type
            search-text review-status featured capacity-building] :as _params}
    {:keys [search-text-fields] :as _opts}]
-  (let [entity-connections-join (if-not (seq entity)
+  (let [entity-connections-join (if-not (or (seq entity) (seq representative-group))
                                   ""
                                   (format "LEFT JOIN organisation_%s oe ON e.id = oe.%s
                                            LEFT JOIN organisation org ON oe.organisation = org.id"
