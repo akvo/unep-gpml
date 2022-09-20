@@ -856,7 +856,7 @@
   :gpml.boundary.adapter.datasource/brs
   {:api-url #duct/env ["BRS_API_URL" Str]
    :logger #ig/ref :duct/logger
-   :retry-config {:timeout 120000}
+   :retry-config {:timeout 180000}
    :records-per-page #duct/env ["BRS_API_RECORDS_PER_PAGE" Int :or 100]
    :endpoints {:publication #duct/env ["BRS_API_PUBLICATIONS_ENDPOINT" Str]
                :meeting #duct/env ["BRS_API_MEETINGS_ENDPOINT" Str]
