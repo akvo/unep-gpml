@@ -15,7 +15,7 @@
                  :$inlinecount "allpages"
                  :$format "json"}
    :meeting {:$select "id,country,city,description,end,imageUrl,location,start,title,status,type,updated,url,brs_linkRecording,brs_linkRegistration,brs_terms"
-             :$filter "substringof('plastic', brs_terms) eq true and status eq 'confirmed'"
+             :$filter "substringof('plastic', brs_terms) eq true and status eq 'confirmed' and type ne 'expert group'"
              :$orderby "start desc"
              :$inlinecount "allpages"
              :$format "json"}
