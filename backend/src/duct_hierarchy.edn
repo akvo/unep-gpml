@@ -1,1 +1,2 @@
-{:gpml.scheduler/leap-api-policy-importer [:duct/daemon]}
+{:gpml.scheduler/leap-api-policy-importer [:duct/daemon]
+ :gpml.scheduler/brs-api-importer [:duct/daemon]}

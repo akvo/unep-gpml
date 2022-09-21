@@ -1,37 +1,21 @@
--- :name all-countries :? :*
--- :doc Get all countries
-select * from country where iso_code is not null and length(trim(name)) > 0  order by id
-
--- :name country-by-id :? :1
--- :doc Get country by id
-select * from country where id = :id
-
--- :name country-by-ids :? :*
--- :doc Get country by ids
-select * from country where id in (:v*:ids)
-
--- :name country-by-names :? :*
--- :doc Get country by names
-select * from country where name in (:v*:names) and description = 'Member State'
-
--- :name country-by-name :? :1
--- :doc Get country by name
-select id from country where name = :name and description = 'Member State'
-
--- :name country-by-code :? :1
--- :doc Get country by iso_code
-select id from country where iso_code = :name and description = 'Member State'
-
--- :name country-by-codes :? :*
--- :doc Get country by iso_codes
-select id from country where iso_code in (:v*:codes) and description = 'Member State'
-
--- :name new-country :<! :1
+-- :name new-country :insert-returning :one
 -- :doc Insert new country
-insert into country (name, iso_code, description)
-values(:name, :iso_code, :description) returning id
+INSERT INTO country (name, iso_code_a3, description)
+VALUES(:name, :iso_code_a3, :description) returning id
 
--- :name add-country-headquarter :! :1
+-- :name add-country-headquarter :execute :affected
 -- :doc Add headquarter to a given country
 UPDATE country SET headquarter = :headquarter
 WHERE id = :id
+
+-- :name get-countries :query :many
+-- :doc Get countries applying optional filters.
+SELECT *
+FROM country
+WHERE iso_code_a3 IS NOT NULL AND length(trim(name)) > 0
+--~(when (seq (get-in params [:filters :names])) " AND name IN (:v*:filters.names)")
+--~(when (seq (get-in params [:filters :ids])) " AND id IN (:v*:filters.ids)")
+--~(when (seq (get-in params [:filters :descriptions])) " AND description IN (:v*:filters.descriptions)")
+--~(when (seq (get-in params [:filters :iso-codes-a2])) " AND iso_code_a2 IN (:v*:filters.iso-codes-a2)")
+--~(when (seq (get-in params [:filters :iso-codes-a3])) " AND iso_code_a3 IN (:v*:filters.iso-codes-a3)")
+ORDER BY id;
