@@ -7,7 +7,7 @@ import { ReactComponent as OverviewIcon } from "../../images/overview.svg";
 import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
 import LocationDropdown from "../../components/location-dropdown/location-dropdown";
 import api from "../../utils/api";
-import { LeftOutlined } from "@ant-design/icons";
+import { LeftOutlined, CloseOutlined } from "@ant-design/icons";
 import { withRouter } from "react-router-dom";
 
 export const resourceTypes = [
@@ -53,6 +53,7 @@ const FilterBar = ({
   type,
   view,
   search,
+  pathname,
 }) => {
   const query = useQuery();
   const [country, setCountry] = useState([]);
@@ -105,6 +106,16 @@ const FilterBar = ({
     />
   );
 
+  const resetFilter = () => {
+    const newQuery = {};
+
+    const newParams = new URLSearchParams(newQuery);
+    history.push({
+      pathname: pathname,
+      search: newParams.toString(),
+    });
+  };
+
   return (
     <div className="filter-bar">
       <Button className="back-btn" onClick={handleClickOverview}>
@@ -119,7 +130,9 @@ const FilterBar = ({
             onClick={() => {
               if (type === it.key)
                 history.push({
-                  pathname: `/knowledge/library/resource/${view ? view : "map"}`,
+                  pathname: `/knowledge/library/resource/${
+                    view ? view : "map"
+                  }`,
                   search: search,
                 });
               else
@@ -158,6 +171,17 @@ const FilterBar = ({
         <FilterIcon />
         <span>Advanced Search</span>
       </Button>
+      {!isEmpty &&
+        Object.keys(query).filter((item) => !hideFilterList.includes(item))
+          .length > 0 && (
+          <Button
+            icon={<CloseOutlined />}
+            className="reset-button"
+            onClick={() => resetFilter()}
+          >
+            Reset filters
+          </Button>
+        )}
       <LocationDropdown
         {...{
           country,
