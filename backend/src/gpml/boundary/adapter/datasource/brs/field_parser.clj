@@ -3,6 +3,7 @@
             [clojure.string :as str]
             [gpml.domain.event :as dom.event]
             [gpml.util :as util]
+            [gpml.util.regular-expressions :as util.regex]
             [java-time :as jt]
             [java-time.temporal])
   (:import [org.jsoup Jsoup]
@@ -74,8 +75,17 @@
   [value]
   (-> value
       (java-time/local-date-time)
-      (.atZone (java-time/zone-id "UTC"))
+      (java-time/zoned-date-time (jt/zone-id "UTC"))
       (java-time/instant)))
+
+(defn- dot-net-json-date->offset-date-time
+  [value]
+  (let [[_ millis offset] (re-find util.regex/dot-net-json-date-re value)]
+    (-> (Long/parseLong millis)
+        (jt/java-date)
+        (jt/offset-date-time (if offset
+                               (jt/zone-offset offset)
+                               (jt/zone-id "UTC"))))))
 
 (defn- value->geo-coverage
   [brs-api-id value]
@@ -202,10 +212,22 @@
               s))
           dom.event/sub-content-types)))
 
-;; FIXME: uncomment this once BRS API fixes the Meeting dates.
-;; (defmethod parse-brs-field [:meeting :updated]
-;;   [_ _ _ _ value]
-;;   (value->instant value))
+(defmethod parse-brs-field [:meeting :updated]
+  [_ _ _ _ value]
+  (jt/instant (dot-net-json-date->offset-date-time value)))
+
+;; Meeting start and end date records are all based on a UNIX Epoch in
+;; milliseconds with no time offset, meaning they are using UTC time
+;; zone. However, just in case the API returns a date with a specific
+;; time zone we are also taking care of it by parsing the date with
+;; its respective time zone.
+(defmethod parse-brs-field [:meeting :start]
+  [_ _ _ _ value]
+  (dot-net-json-date->offset-date-time value))
+
+(defmethod parse-brs-field [:meeting :end]
+  [_ _ _ _ value]
+  (dot-net-json-date->offset-date-time value))
 
 (defmethod parse-brs-field [:project :name]
   [_ brs-api-id entity-name field value]

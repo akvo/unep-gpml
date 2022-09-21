@@ -21,11 +21,13 @@
 
 (defn event->db-event
   "Apply transformations to Event entity fields to database specific
-  types."
+  types.
+
+  NOTE: start and end date are not transformed here because they are
+  java.time.OffsetDateTime which is supported by JDBC driver and will
+  automatically apply the offset to the dates."
   [event]
   (-> event
       (util/update-if-not-nil :brs_api_modified sql-util/instant->sql-timestamp)
-      (util/update-if-not-nil :start_date sql-util/instant->sql-timestamp)
-      (util/update-if-not-nil :end_date sql-util/instant->sql-timestamp)
       (util/update-if-not-nil :geo_coverage_type sql-util/keyword->pg-enum "geo_coverage_type")
       (util/update-if-not-nil :review_status sql-util/keyword->pg-enum "review_status")))

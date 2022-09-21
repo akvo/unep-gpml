@@ -166,16 +166,7 @@
 
 (defn- create-entities*
   [tx entity-name db-create-fn db-transformer-fn relation? data-coll]
-  (let [;; FIXME: please remove this once these fields are corrected
-        ;; from BRS API side (start_date,end_date and
-        ;; brs_api_modified) and we introduce country parsing using
-        ;; ISO 3166 Alpha-2 code.
-        data-coll (if-not (= :event entity-name)
-                    data-coll
-                    (map #(-> %
-                              (assoc :start_date (jt/instant))
-                              (dissoc :end_date :brs_api_modified)) data-coll))
-        insert-cols (keys (first data-coll))
+  (let [insert-cols (keys (first data-coll))
         insert-values (->> data-coll
                            (map db-transformer-fn)
                            (sql-util/get-insert-values insert-cols))
