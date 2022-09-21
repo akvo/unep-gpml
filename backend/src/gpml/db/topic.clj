@@ -45,7 +45,7 @@
    e.created,
    e.modified,
    btrim((e.q2)::text, '\"'::text) AS title,
-   e.q24 AS geo_coverage_type,
+   jsonb_object_keys(e.q24) AS geo_coverage_type,
    btrim((e.q3)::text, '\"'::text) AS summary,
    e.reviewed_at,
    e.reviewed_by,
@@ -121,7 +121,7 @@
            geo-coverage-types sub-content-type
            search-text review-status featured capacity-building] :as _params}
    {:keys [search-text-fields] :as _opts}]
-  (let [entity-connections-join (if-not (seq entity)
+  (let [entity-connections-join (if-not (or (seq entity) (seq representative-group))
                                   ""
                                   (format "LEFT JOIN organisation_%s oe ON e.id = oe.%s
                                            LEFT JOIN organisation org ON oe.organisation = org.id"
@@ -130,7 +130,7 @@
         search-text-fields (get search-text-fields entity-name)
         tsvector-str (generate-tsvector-str entity-name search-text-fields)
         geo-coverage-type-cond (if (= entity-name "initiative")
-                                 "(select json_object_keys(q24::json) from initiative where id = e.id)::geo_coverage_type"
+                                 "(select jsonb_object_keys(q24) from initiative where id = e.id)::geo_coverage_type"
                                  "e.geo_coverage_type")
         where-cond (cond-> "WHERE 1=1"
                      (seq review-status)
