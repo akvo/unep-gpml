@@ -117,7 +117,7 @@ function Authentication() {
         (country) =>
           country.name ===
           location?.state?.data["https://digital.gpmarinelitter.org/country"]
-      ).id;
+      )?.id;
     }
     if (data.country) {
       data.country = Number(data.country);
