@@ -77,7 +77,8 @@
     (testing "seed using old ids"
       (seeder/resync-country db {:old? true})
       (let [;; get id from database
-            old-id (db.country/country-by-code db {:name "CYP"})
+            old-id (first (db.country/get-countries db {:filters {:iso-codes-a3 ["CYP"]
+                                                                  :descriptions ["Member State"]}}))
             ;; get the old country.json id
             old-json-id (-> (filter #(= "CYP" (:iso_code %))
                                     (seeder/get-data "countries"))
@@ -86,7 +87,8 @@
 
     (let [me (dummy/get-or-create-profile
               db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
-          country (db.country/country-by-code db {:name "CYP"})
+          country (first (db.country/get-countries db {:filters {:iso-codes-a3 ["CYP"]
+                                                                 :descriptions ["Member State"]}}))
           _ (db.stakeholder/update-stakeholder db {:country (:id country)
                                                    :id (:id me)})
           me (db.stakeholder/stakeholder-by-email db me)
@@ -111,7 +113,8 @@
       ;; Run the country updater!
       (seeder/updater-country db)
 
-      (let [new-id (db.country/country-by-code db {:name "CYP"})
+      (let [new-id (first (db.country/get-countries db {:filters {:iso-codes-a3 ["CYP"]
+                                                                  :descriptions ["Member State"]}}))
             new-json-id (-> (filter #(= "CYP" (:iso_code %))
                                     (seeder/get-data "new_countries"))
                             first :id)
@@ -129,17 +132,17 @@
 
         (let [new-me (db.stakeholder/stakeholder-by-email db me)]
           (testing "My new country id is changed"
-            (is (= "CYP" (:iso_code
-                          (db.country/country-by-id db {:id (:country new-me)}))))))
+            (is (= "CYP" (:iso_code_a3
+                          (first (db.country/get-countries db {:filters {:ids [(:country new-me)]}}))))))
 
-        (testing "Transnational Initiative country ID changes correctly"
-          (let [new-tn-initiative (db.initiative/initiative-by-id db tn-initiative-id)
-                country-new (:q23 new-tn-initiative)
-                country-old (:q23 tn-initiative)
-                country-tn-new (:q24_4 new-tn-initiative)
-                country-tn-old (:q24_4 tn-initiative)]
-            (check-country country-new country-old)
-            (map check-country country-tn-new country-tn-old)))
+          (testing "Transnational Initiative country ID changes correctly"
+            (let [new-tn-initiative (db.initiative/initiative-by-id db tn-initiative-id)
+                  country-new (:q23 new-tn-initiative)
+                  country-old (:q23 tn-initiative)
+                  country-tn-new (:q24_4 new-tn-initiative)
+                  country-tn-old (:q24_4 tn-initiative)]
+              (check-country country-new country-old)
+              (map check-country country-tn-new country-tn-old))))
 
         (testing "National Initiative country ID changes correctly"
           (let [new-n-initiative (db.initiative/initiative-by-id db n-initiative-id)
@@ -158,16 +161,17 @@
         _ (seeder/seed-countries db {:old? true})
         me (dummy/get-or-create-profile
             db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
-        country (db.country/country-by-code db {:name "IDN"})
+        country (first (db.country/get-countries db {:filters {:iso-codes-a3 ["IDN"]
+                                                               :descriptions ["Member State"]}}))
         _ (db.stakeholder/update-stakeholder db {:country (:id country)
                                                  :id (:id me)})
         me (db.stakeholder/stakeholder-by-email db me)]
     (seeder/updater-country db)
     (testing "my country id is updated"
       (is (= (:id country) (:country me)))
-      (is (= (count (db.country/all-countries db)) (count countries-new))))
+      (is (= (count (db.country/get-countries db {})) (count countries-new))))
     (seeder/updater-country db)
     (let [old-me (db.stakeholder/stakeholder-by-id db me)]
       (testing "my country id is reversed"
         (is (= me old-me))
-        (is (= (count (db.country/all-countries db)) (count countries-old)))))))
+        (is (= (count (db.country/get-countries db {})) (count countries-old)))))))

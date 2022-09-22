@@ -30,12 +30,12 @@
    :language "en"})
 
 (defn add-country-data [conn]
-  (db.country/new-country conn {:name "Spain" :description "Member State" :iso_code "ESP"})
-  (db.country/new-country conn {:name "India" :description "Member State" :iso_code "IND"})
-  (db.country/new-country conn {:name "Indonesia" :description "Member State" :iso_code "IDN"})
-  (db.country/new-country conn {:name "Kenya" :description "Member State" :iso_code "KEN"})
-  (db.country/new-country conn {:name "Netherlands" :description "Member State" :iso_code "NLD"})
-  (db.country/new-country conn {:name "All" :description "Member State" :iso_code nil})
+  (db.country/new-country conn {:name "Spain" :description "Member State" :iso_code_a3 "ESP"})
+  (db.country/new-country conn {:name "India" :description "Member State" :iso_code_a3 "IND"})
+  (db.country/new-country conn {:name "Indonesia" :description "Member State" :iso_code_a3 "IDN"})
+  (db.country/new-country conn {:name "Kenya" :description "Member State" :iso_code_a3 "KEN"})
+  (db.country/new-country conn {:name "Netherlands" :description "Member State" :iso_code_a3 "NLD"})
+  (db.country/new-country conn {:name "All" :description "Member State" :iso_code_a3 nil})
   (db.country-group/new-country-group conn {:name "Asia" :type "region"})
   (db.country-group/new-country-group conn {:name "Europe" :type "region"})
   (jdbc/insert-multi! conn :country_group_country
@@ -75,11 +75,11 @@
                                        :counts
                                        :financing_resource))]
       (are [expected country-id] (= expected (valid? country-id))
-        1 (-> (db.country/country-by-code conn {:name "ESP"}) :id)
-        1 (-> (db.country/country-by-code conn {:name "IND"}) :id)
-        2 (-> (db.country/country-by-code conn {:name "IDN"}) :id)
-        1 (-> (db.country/country-by-code conn {:name "KEN"}) :id)
-        0 (-> (db.country/country-by-code conn {:name "NLD"}) :id)))))
+        1 (-> (db.country/get-countries conn {:filters {:descriptions ["Member State"] :iso-codes-a3 ["ESP"]}}) first :id)
+        1 (-> (db.country/get-countries conn {:filters {:descriptions ["Member State"] :iso-codes-a3 ["IND"]}}) first :id)
+        2 (-> (db.country/get-countries conn {:filters {:descriptions ["Member State"] :iso-codes-a3 ["IDN"]}}) first :id)
+        1 (-> (db.country/get-countries conn {:filters {:descriptions ["Member State"] :iso-codes-a3 ["KEN"]}}) first :id)
+        0 (-> (db.country/get-countries conn {:filters {:descriptions ["Member State"] :iso-codes-a3 ["NLD"]}}) first :id)))))
 
 (deftest test-summary
   (testing "Test summary data for landing page"
