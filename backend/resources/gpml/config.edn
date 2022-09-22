@@ -573,7 +573,13 @@
                                                     :middleware [#ig/ref :gpml.auth/restrict-to-project-owner]
                                                     :parameters #ig/ref :gpml.handler.project/delete-params
                                                     :responses #ig/ref :gpml.handler.project/delete-responses
-                                                    :handler #ig/ref :gpml.handler.project/delete}}]]]]
+                                                    :handler #ig/ref :gpml.handler.project/delete}}]]
+                                        ["/brs" {:middleware [#ig/ref :gpml.auth/auth-middleware-gpml-programmatic
+                                                              #ig/ref :gpml.auth/auth-required]}
+                                         ["/run-importer"
+                                          {:post {:summary "Runs the BRS importer job"
+                                                  :swagger {:tags ["scheduled task" "import job"]}
+                                                  :handler #ig/ref :gpml.handler.programmatic.brs-api-importer/post}}]]]]
                               :logger #ig/ref :duct.logger/timbre}
 
   ;; Consts
@@ -812,6 +818,8 @@
   :gpml.handler.project/delete-params {}
   :gpml.handler.project/delete-responses {}
 
+  :gpml.handler.programmatic.brs-api-importer/post #ig/ref :gpml.config/common
+
   :clj-gcp.storage/client {}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources
@@ -819,17 +827,26 @@
                           :strategy :raise-error}
   :duct.migrator.ragtime/resources {:path "migrations"}
 
-  :gpml.auth/auth-middleware {:issuer #duct/env "OIDC_ISSUER"
-                              :audience #duct/env "OIDC_AUDIENCE"
-                              :db #ig/ref :duct.database/sql}
+  :gpml.auth/auth-middleware
+  {:issuer #duct/env ["OIDC_ISSUER" Str]
+   :audience #duct/env ["OIDC_AUDIENCE" Str]
+   :db #ig/ref :duct.database/sql}
 
-  :gpml.auth/auth-middleware-ckan {:issuer #duct/env "OIDC_ISSUER"
-                                   :audience #duct/env "OIDC_AUDIENCE_CKAN"
-                                   :db #ig/ref :duct.database/sql}
+  :gpml.auth/auth-middleware-gpml-programmatic
+  {:issuer #duct/env ["OIDC_ISSUER" Str]
+   :audience #duct/env ["OIDC_AUDIENCE_M2M" Str]
+   :db #ig/ref :duct.database/sql}
 
-  :gpml.auth/auth-middleware-auth0-actions {:issuer #duct/env "OIDC_ISSUER"
-                                            :audience #duct/env "OIDC_AUDIENCE_AUTH0_ACTIONS"
-                                            :db #ig/ref :duct.database/sql}
+  :gpml.auth/auth-middleware-ckan
+  {:issuer #duct/env ["OIDC_ISSUER" Str]
+   :audience #duct/env ["OIDC_AUDIENCE_M2M" Str]
+   :db #ig/ref :duct.database/sql}
+
+  :gpml.auth/auth-middleware-auth0-actions
+  {:issuer #duct/env ["OIDC_ISSUER" Str]
+   :audience #duct/env ["OIDC_AUDIENCE_AUTH0_ACTIONS" Str]
+   :db #ig/ref :duct.database/sql}
+
   :gpml.auth/auth-required {}
   :gpml.auth/restrict-to-admin-and-comment-author-middleware {:db #ig/ref :duct.database/sql}
   :gpml.auth/restrict-to-organisation-admin-or-owner {:db #ig/ref :duct.database/sql}

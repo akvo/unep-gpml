@@ -669,7 +669,8 @@
                                                    :entity gpml-entity-name})))
   (log logger :info ::finished {}))
 
-(defn- import-or-update-entities
+(defn import-or-update-entities
+  "Imports and/or updates existing data records from BRS API."
   [{:keys [db brs-entities-to-import] :as config}]
   (let [countries (db.country/get-countries (:spec db) {})
         brs-tag-category-id (get-brs-tag-category-id (:spec db))]
