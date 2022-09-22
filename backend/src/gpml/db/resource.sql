@@ -1,6 +1,6 @@
--- :name new-resource :<! :1
+-- :name new-resource :returning-execute :one
 -- :doc Insert a new resource
-insert into resource(
+INSERT INTO resource(
     title,
     type,
     publish_year,
@@ -28,7 +28,7 @@ insert into resource(
 --~ (when (contains? params :subnational_city) ", subnational_city")
 --~ (when (contains? params :document_preview) ", document_preview")
 )
-values(
+VALUES(
     :title,
     :type,
     :publish_year,
@@ -58,33 +58,18 @@ values(
 )
 returning id;
 
--- :name add-resource-tags :<! :1
--- :doc add resource tags
-insert into resource_tag(resource, tag)
-values :t*:tags RETURNING id;
-
--- :name add-resource-geo :<! :1
+-- :name add-resource-geo :returning-execute :one
 -- :doc add resource geo
-insert into resource_geo_coverage(resource, country_group, country)
-values :t*:geo RETURNING id;
+INSERT INTO resource_geo_coverage(resource, country_group, country)
+VALUES :t*:geo RETURNING id;
 
--- :name add-resource-language-urls :<! :1
+-- :name add-resource-language-urls :returning-execute :one
 -- :doc Add language URLs to a resource
-insert into resource_language_url(resource, language, url)
-values :t*:urls RETURNING id;
+INSERT INTO resource_language_url(resource, language, url)
+VALUES :t*:urls RETURNING id;
 
--- :name add-resource-organisations :<! :1
--- :doc Add organisation to a resource
-insert into resource_organisation(resource, organisation)
-values :t*:organisations RETURNING id;
-
--- :name new-resource-image :<! :1
--- :doc Insert new resource image
-insert into resource_image(image)
-values(:image) returning id;
-
--- :name resource-by-id :? :1
-select
+-- :name resource-by-id :query :one
+SELECT
     id,
     type as resource_type,
     title,
@@ -111,74 +96,30 @@ select
         from resource_geo_coverage where resource = :id) as geo_coverage_value,
     (select json_agg(tag)
         from resource_tag where resource = :id) as tags
-from resource r
-where id = :id
+FROM resource r
+WHERE id = :id
 
+-- :name create-resources :insert-returning :many
+-- :doc Creates multiple resources
+INSERT INTO resource(:i*:insert-cols)
+VALUES :t*:insert-values RETURNING *;
 
--- :name pending-resource :? :*
--- :doc Returns the pending resources data
+-- :name get-resources :query :many
+-- :doc Get resources. Accepts optional filters.
+SELECT *
+FROM resource
+WHERE 1=1
+--~(when (seq (get-in params [:filters :brs-api-ids])) " AND brs_api_id IN (:v*:filters.brs-api-ids)")
+--~(when (seq (get-in params [:filters :ids])) " AND id IN (:v*:filters.ids)")
+--~(when (seq (get-in params [:filters :types])) " AND type IN (:v*:filters.types)")
 
-select
-    id,
-    type as resource_type,
-    title,
-    summary,
-    image,
-    country,
-    geo_coverage_type,
-    geo_coverage_values as geo_coverage_value,
-    publish_year,
-    valid_from,
-    valid_to,
-    value,
-    value_currency,
-    value_remarks,
-    remarks,
-    document_preview,
-    (select json_build_object('id',o.id,'name',o.name)
-        from resource_organisation ro
-        left join organisation o on o.id = ro.organisation
-        where ro.resource = :id
-        limit 1) as org,
-    (select json_agg(json_build_object('url',rlu.url, 'lang', l.iso_code))
-        from resource_language_url rlu
-        left join language l on l.id = rlu.language
-        where rlu.resource = :id) as urls,
-    (select json_agg(tag)
-        from resource_tag where resource = 'SUBMITTED') as tags,
-    (select created_by
-        from resource where id = :id) as created_by
-from v_resource_data
-where id = :id
-
--- :name resource-image-by-id :? :1
--- :doc Get resource image by id
-select * from resource_image where id = :id
-
--- :name new-resource-image :<! :1
--- :doc Insert new resource image
-insert into resource_image (image)
-values(:image) returning id;
-
--- :name all-resources
--- :doc List all resources
-select id, title
-  from resource;
-
--- :name all-technical-resources
--- :doc List all technical resources
-select id, title
-  from resource
-  where type = 'Technical Resource';
-
--- :name all-financing-resources
--- :doc List all financing resources
-select id, title
-  from resource
-  where type = 'Financing Resource';
-
--- :name all-action-plans
--- :doc List all action plans
-select id, title
-  from resource
-  where type = 'Action Plan';
+-- :name update-resource :execute :affected
+UPDATE resource
+SET
+/*~
+(str/join ","
+  (for [[field _] (:updates params)]
+    (str (identifier-param-quote (name field) options)
+      " = :updates." (name field))))
+~*/
+WHERE id = :id;

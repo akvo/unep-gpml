@@ -8,7 +8,8 @@
 (use-fixtures :each fixtures/with-test-system)
 
 (defn get-country [conn profile]
-  (:id (db.country/country-by-name conn {:name (:country profile)})))
+  (:id (first (db.country/get-countries conn {:filters {:names [(:country profile)]
+                                                        :descriptions ["Member State"]}}))))
 
 (defn make-profile [conn first-name last-name email country]
   {:picture nil
@@ -33,7 +34,7 @@
 (defn add-stakeholder-data [conn]
   (let [country "Indonesia"
         iso_code "IDN"]
-    (db.country/new-country conn {:name country :iso_code iso_code :description "Member State"})
+    (db.country/new-country conn {:name country :iso_code_a3 iso_code :description "Member State"})
     (db.stakeholder/new-stakeholder conn (make-profile conn "John" "Doe" "mail@org.com" country))))
 
 (deftest test-new-profile
