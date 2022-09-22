@@ -103,7 +103,7 @@
               "ui:span": 24,
               "ui:options": {
                 "showEntity": true,
-                "type": "connection"
+                "type": "single"
               }
             }
           }
@@ -128,7 +128,7 @@
               "ui:placeholder": "Select an individual",
               "ui:span": 24,
               "ui:options": {
-                "type": "connection"
+                "type": "single"
               }
             }
           }
@@ -495,7 +495,7 @@
               "ui:span": 24,
               "ui:options": {
                 "showEntity": true,
-                "type": "connection"
+                "type": "single"
               }
             }
           }
@@ -520,7 +520,7 @@
               "ui:placeholder": "Select an individual",
               "ui:span": 24,
               "ui:options": {
-                "type": "connection"
+                "type": "single"
               }
             }
           }
@@ -727,7 +727,7 @@
               "ui:span": 24,
               "ui:options": {
                 "showEntity": true,
-                "type": "connection"
+                "type": "single"
               }
             }
           }
@@ -752,7 +752,7 @@
               "ui:placeholder": "Select an individual",
               "ui:span": 24,
               "ui:options": {
-                "type": "connection"
+                "type": "single"
               }
             }
           }
@@ -995,7 +995,7 @@
               "ui:span": 24,
               "ui:options": {
                 "showEntity": true,
-                "type": "connection"
+                "type": "single"
               }
             }
           }
@@ -1020,7 +1020,7 @@
               "ui:placeholder": "Select an individual",
               "ui:span": 24,
               "ui:options": {
-                "type": "connection"
+                "type": "single"
               }
             }
           }
@@ -1232,7 +1232,7 @@
               "ui:span": 24,
               "ui:options": {
                 "showEntity": true,
-                "type": "connection"
+                "type": "single"
               }
             }
           }
@@ -1257,7 +1257,7 @@
               "ui:placeholder": "Select an individual",
               "ui:span": 24,
               "ui:options": {
-                "type": "connection"
+                "type": "single"
               }
             }
           }
@@ -1456,7 +1456,7 @@
               "ui:span": 24,
               "ui:options": {
                 "showEntity": true,
-                "type": "connection"
+                "type": "single"
               }
             }
           }
@@ -1481,7 +1481,7 @@
               "ui:placeholder": "Select an individual",
               "ui:span": 24,
               "ui:options": {
-                "type": "connection"
+                "type": "single"
               }
             }
           }
@@ -1692,7 +1692,7 @@
               "ui:span": 24,
               "ui:options": {
                 "showEntity": true,
-                "type": "connection"
+                "type": "single"
               }
             }
           }
@@ -1717,7 +1717,7 @@
               "ui:placeholder": "Select an individual",
               "ui:span": 24,
               "ui:options": {
-                "type": "connection"
+                "type": "single"
               }
             }
           }
