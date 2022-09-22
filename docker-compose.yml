@@ -15,7 +15,7 @@ services:
       - DATABASE_URL=jdbc:postgresql://db/gpml?user=unep&password=password
       - OIDC_ISSUER=https://unep-gpml-test.eu.auth0.com/
       - OIDC_AUDIENCE=dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J
-      - OIDC_AUDIENCE_CKAN=https://unep-gpml-test.eu.auth0.com/api/v2/
+      - OIDC_AUDIENCE_M2M=https://unep-gpml-test.eu.auth0.com/api/v2/
       - OIDC_AUDIENCE_AUTH0_ACTIONS=ftSrE1lYDbpvnWKJkdoT8nfO1ewTdxxh
       - APP_NAME=UNEP GPML (test)
       - APP_USER_ADMIN=caroline.kamau@un.org
