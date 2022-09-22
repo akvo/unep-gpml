@@ -19,5 +19,5 @@
 
 (defmethod ig/init-key :gpml.handler.programmatic.brs-api-importer/post
   [_ config]
-  (fn [req]
+  (fn [_req]
     (run-brs-api-importer config)))
