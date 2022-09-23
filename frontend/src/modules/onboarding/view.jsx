@@ -63,6 +63,20 @@ function Authentication() {
     }
   };
 
+  const getBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      var reader = new FileReader();
+      if (file) {
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.result);
+      }
+      if (!file) {
+        reject("discard");
+      }
+    });
+  };
+
   const onSubmit = async (values) => {
     setLoading(true);
     let data = {
@@ -95,6 +109,10 @@ function Authentication() {
     delete data.seekingSuggested;
     delete data.password;
     delete data.privateCitizen;
+
+    if (data.cv) {
+      data.cv = await getBase64(data.cv);
+    }
 
     if (location?.state?.data.hasOwnProperty("given_name")) {
       data.firstName = location?.state?.data.given_name;

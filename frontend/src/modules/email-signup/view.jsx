@@ -338,7 +338,7 @@ function EmailJoin({ setSignUp, children }) {
                       )}
                     </Field>
                   </Form.Item>
-                  <Form.Item
+                  {/* <Form.Item
                     label={
                       <p>
                         Photo <span>OPTIONAL</span>
@@ -361,7 +361,7 @@ function EmailJoin({ setSignUp, children }) {
                         <span>or</span> Browse your computer
                       </p>
                     </Dragger>
-                  </Form.Item>
+                  </Form.Item> */}
                   <Form.Item label="Country" name="country">
                     <Field name="country">
                       {({ options, input, meta, control, ...props }) => {
