@@ -345,7 +345,7 @@
   (merge
    (add-extra-details db technology resource-type {})
    (when-let [headquarters-country (:country technology)]
-     {:headquarters (gpml.db.country/country-by-id db {:id headquarters-country})})))
+     {:headquarters (first (gpml.db.country/get-countries db {:filters {:ids [headquarters-country]}}))})))
 
 (defmethod extra-details "technical_resource" [resource-type db resource]
   (add-extra-details db resource resource-type {}))
@@ -558,22 +558,26 @@
       :id id
       :organisation org-id})))
 
-(defn -update-blank-resource-picture [conn image-type resource-id image-key]
+(defn -update-blank-resource-picture
+  [{:keys [db]} image-type resource-id image-key]
   (db.detail/update-resource-table
-   conn
+   (:spec db)
    {:table image-type :id resource-id :updates {image-key ""}}))
 
-(defn -update-resource-picture [conn image image-type resource-id image-key]
-  (let [url (handler.image/assoc-image conn image image-type)]
+(defn -update-resource-picture
+  [{:keys [db] :as config} image image-type resource-id image-key]
+  (let [conn (:spec db)
+        url (handler.image/assoc-image config conn image image-type)]
     (when-not (and image (= image url))
       (db.detail/update-resource-table
        conn
        {:table image-type :id resource-id :updates {image-key url}}))))
 
-(defn update-resource-image [conn image image-key image-type resource-id]
+(defn update-resource-image
+  [config image image-key image-type resource-id]
   (if (empty? image)
-    (-update-blank-resource-picture conn image-type resource-id image-key)
-    (-update-resource-picture conn image image-type resource-id image-key)))
+    (-update-blank-resource-picture config image-type resource-id image-key)
+    (-update-resource-picture config image image-type resource-id image-key)))
 
 (defn expand-associations
   [connections stakeholder-type topic topic-id]
@@ -625,8 +629,10 @@
           (db.favorite/update-stakeholder-association conn association)
           (db.favorite/new-organisation-association conn association))))))
 
-(defn update-resource [conn logger mailjet-config topic-type id updates]
-  (let [table (cond
+(defn update-resource
+  [{:keys [db] :as config} logger mailjet-config topic-type id updates]
+  (let [conn (:spec db)
+        table (cond
                 (contains? constants/resource-types topic-type) "resource"
                 :else topic-type)
         table-columns (-> updates
@@ -656,7 +662,7 @@
                           (handler.org/create conn logger mailjet-config org))))
         related-contents (:related_content updates)]
     (doseq [[image-key image-data] (select-keys updates [:image :thumbnail :photo :logo])]
-      (update-resource-image conn image-data image-key table id))
+      (update-resource-image config image-data image-key table id))
     (when (seq tags)
       (update-resource-tags conn logger mailjet-config table id tags))
     (when (seq related-contents)
@@ -669,8 +675,10 @@
     (update-resource-connections conn (:entity_connections updates) (:individual_connections updates) table id)
     status))
 
-(defn update-initiative [conn logger mailjet-config id data]
-  (let [params (merge {:id id} data)
+(defn update-initiative
+  [{:keys [db] :as config} logger mailjet-config id data]
+  (let [conn (:spec db)
+        params (merge {:id id} data)
         tags (remove nil? (:tags data))
         status (jdbc/with-db-transaction [conn-tx conn]
                  (let [status (db.detail/update-initiative conn-tx (-> params
@@ -681,7 +689,7 @@
                    status))
         related-contents (:related_content data)]
     (doseq [[image-key image-data] (select-keys data [:qimage :thumbnail])]
-      (update-resource-image conn image-data image-key "initiative" id))
+      (update-resource-image config image-data image-key "initiative" id))
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn logger id "initiative" related-contents))
     (when (seq tags)
@@ -690,7 +698,7 @@
     status))
 
 (defmethod ig/init-key :gpml.handler.detail/put
-  [_ {:keys [db logger mailjet-config]}]
+  [_ {:keys [db logger mailjet-config] :as config}]
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
     (try
@@ -703,8 +711,8 @@
         (if (some? submission)
           (let [conn (:spec db)
                 status (if (= topic-type "initiative")
-                         (update-initiative conn logger mailjet-config topic-id body)
-                         (update-resource conn logger mailjet-config topic-type topic-id body))]
+                         (update-initiative config logger mailjet-config topic-id body)
+                         (update-resource config logger mailjet-config topic-type topic-id body))]
             (when (and (= status 1) (= review_status "REJECTED"))
               (db.submission/update-submission
                conn

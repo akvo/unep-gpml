@@ -27,7 +27,8 @@
 (def lorem "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas luctus eros at consequat accumsan. Integer massa ligula, blandit at commodo vitae, vestibulum et erat.")
 
 (defn get-country-id [db code]
-  (:id (db.country/country-by-code db {:name code})))
+  (:id (first (db.country/get-countries db {:filters {:iso-codes-a3 [code]
+                                                      :descriptions ["Member State"]}}))))
 
 (defn associate-tags [db data category]
   (mapv (fn [tag]
