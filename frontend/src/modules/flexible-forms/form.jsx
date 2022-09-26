@@ -502,6 +502,11 @@ const FlexibleForm = withRouter(
       delete data.tagsList;
       delete data.qtagsList;
 
+      if (data.qthumbnail) {
+        data.thumbnail = data.qthumbnail;
+        delete data.qthumbnail;
+      }
+
       if (status === "add" && !params?.id) {
         data?.qimage && data?.qimage === "" && delete data.qimage;
         data?.thumbnail && data?.thumbnail === "" && delete data.thumbnail;
