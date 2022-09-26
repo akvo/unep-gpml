@@ -1,6 +1,13 @@
-{
- :duct.database.sql/hikaricp {:idle-timeout 10000
+{:duct.database.sql/hikaricp {:idle-timeout 10000
                               :minimum-idle 0
                               :maximum-pool-size 1}
 
+ :mocks.boundary.adapter.storage-client/local-file-system
+ {:base-path #duct/env ["LOCAL_FS_STORAGE_BASE_PATH" Str]}
+
+ ;; NOTE: uncomment this if you're working on the BE and doing things
+ ;; with images.
+ ;; [:duct/const :gpml.config/common]
+ ;; {:storage-client-adapter #ig/ref :mocks.boundary.adapter.storage-client/local-file-system
+ ;;  :storage-bucket-name #duct/env ["LOCAL_FS_STORAGE_BUCKET_NAME" Str]}
  }

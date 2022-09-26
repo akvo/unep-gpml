@@ -103,6 +103,61 @@ spec:
             secretKeyRef:
               name: unep-gpml
               key: mailjet-secret-key
+        - name: SCHEDULER_THREAD_COUNT
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: scheduler-thread-count
+        - name: SCHEDULER_TIME_ZONE
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: scheduler-time-zone
+        - name: SCHEDULER_LEAP_API_POLICY_IMPORTER_CRON
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: scheduler-leap-api-policy-importer-cron
+        - name: SCHEDULER_BRS_API_IMPORTER_CRON
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: scheduler-brs-api-importer-cron
+        - name: GCS_BUCKET_NAME
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: gcs-bucket-name
+        - name: BRS_API_URL
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: brs-api-url
+        - name: BRS_API_RECORDS_PER_PAGE
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: brs-api-records-per-page
+        - name: BRS_API_PUBLICATIONS_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: brs-api-publications-endpoint
+        - name: BRS_API_MEETINGS_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: brs-api-meetings-endpoint
+        - name: BRS_API_PROJECTS_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: brs-api-projects-endpoint
+        - name: OIDC_AUDIENCE_M2M
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: oidc-audience-m2m
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/secrets/cloudsql/credentials.json"
         readinessProbe:
