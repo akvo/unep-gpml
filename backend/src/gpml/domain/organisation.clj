@@ -11,6 +11,7 @@
   #{"Government"
     "Private Sector (for-profit)"
     "Intergovernmental Organizations (IGOs)"
+    "Non-Governmental Organization (NGO)"
     "Academia and Research"
     "Civil Society (not-for-profit)"
     "Other"})
