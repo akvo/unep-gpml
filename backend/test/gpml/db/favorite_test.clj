@@ -21,7 +21,7 @@
        :linked_in nil
        :twitter nil
        :url nil
-       :country (-> (db.country/country-by-code db {:name "IDN"}) :id)
+       :country (-> (db.country/get-countries db {:filters {:iso-codes-a3 ["IDN"] :descriptions ["Member State"]}}) first :id)
        :representation "test"
        :about "Lorem Ipsum"
        :geo_coverage_type nil

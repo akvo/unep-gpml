@@ -142,6 +142,9 @@
 (defmethod ig/init-key :gpml.auth/auth-middleware-auth0-actions [_ opts]
   (auth-middleware-programmatic opts))
 
+(defmethod ig/init-key :gpml.auth/auth-middleware-gpml-programmatic [_ opts]
+  (auth-middleware-programmatic opts))
+
 (defmethod ig/init-key :gpml.auth/auth-required [_ _]
   (fn [handler]
     (fn [request]
