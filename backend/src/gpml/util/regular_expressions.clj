@@ -6,6 +6,15 @@
 (def ^:const comma-separated-numbers-re #"^\d+(,\d+)*$")
 (def ^:const number-re #"[0-9]+$")
 
+(def ^:const dot-net-json-date-re
+  "Regex to parse and validate .NET JSON serialized dates.
+  Considering the formats:
+  - /Date([-]<millis from UNIX Epoch>[-+time zone offset])/ brackets means optional
+  - /Date(1656429300000)/
+  - /Date(1656429300000-0145)/
+  - /Date(-1656429300000+0145)/"
+  #"\\?\/Date\(([-]?\d+)([-+]\d+)?\)\\?\/")
+
 (defn comma-separated-enums-re
   [enum-coll]
   (re-pattern (format "^(%1$s)((,(%1$s))+)?$" (str/join "|" enum-coll))))

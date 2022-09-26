@@ -40,7 +40,7 @@
           :remarks nil})))
 
 (defn- create-policy
-  [conn logger mailjet-config
+  [{:keys [logger mailjet-config] :as config} tx
    {:keys [title original_title abstract url
            data_source type_of_law record_number
            first_publication_date latest_amendment_date
@@ -68,8 +68,8 @@
                       :sub_content_type sub_content_type
                       :document_preview document_preview
                       :topics (pg-util/->JDBCArray topics "text")
-                      :image (handler.image/assoc-image conn image "policy")
-                      :thumbnail (handler.image/assoc-image conn thumbnail "policy")
+                      :image (handler.image/assoc-image config tx image "policy")
+                      :thumbnail (handler.image/assoc-image config tx thumbnail "policy")
                       :geo_coverage_type geo_coverage_type
                       :geo_coverage_value geo_coverage_value
                       :geo_coverage_countries geo_coverage_countries
@@ -84,53 +84,55 @@
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
         policy-geo-coverage-insert-cols ["policy" "country_group" "country"]
-        policy-id (->> data (db.policy/new-policy conn) :id)
-        api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
+        policy-id (->> data (db.policy/new-policy tx) :id)
+        api-individual-connections (handler.util/individual-connections->api-individual-connections tx individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
                                                           api-individual-connections)))))]
     (when (seq related_content)
-      (handler.resource.related-content/create-related-contents conn logger policy-id "policy" related_content))
+      (handler.resource.related-content/create-related-contents tx logger policy-id "policy" related_content))
     (when (not-empty tags)
-      (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
-                                                                             :tag-category "general"
-                                                                             :resource-name "policy"
-                                                                             :resource-id policy-id}))
+      (handler.resource.tag/create-resource-tags tx logger mailjet-config {:tags tags
+                                                                           :tag-category "general"
+                                                                           :resource-name "policy"
+                                                                           :resource-id policy-id}))
     (doseq [stakeholder-id owners]
-      (h.auth/grant-topic-to-stakeholder! conn {:topic-id policy-id
-                                                :topic-type "policy"
-                                                :stakeholder-id stakeholder-id
-                                                :roles ["owner"]}))
+      (h.auth/grant-topic-to-stakeholder! tx {:topic-id policy-id
+                                              :topic-type "policy"
+                                              :stakeholder-id stakeholder-id
+                                              :roles ["owner"]}))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections policy-id)]
-        (db.favorite/new-organisation-association conn association)))
+        (db.favorite/new-organisation-association tx association)))
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections policy-id)]
-        (db.favorite/new-stakeholder-association conn association)))
+        (db.favorite/new-stakeholder-association tx association)))
     (if (or (not-empty geo_coverage_country_groups)
             (not-empty geo_coverage_countries))
       (let [geo-data (handler.geo/get-geo-vector-v2 policy-id data)]
-        (db.policy/add-policies-geo conn {:geo geo-data
-                                          :insert-cols policy-geo-coverage-insert-cols}))
+        (db.policy/add-policies-geo tx {:geo geo-data
+                                        :insert-cols policy-geo-coverage-insert-cols}))
       (when (not-empty geo_coverage_value)
         (let [geo-data (handler.geo/get-geo-vector policy-id data)]
-          (db.policy/add-policies-geo conn {:geo geo-data
-                                            :insert-cols policy-geo-coverage-insert-cols}))))
+          (db.policy/add-policies-geo tx {:geo geo-data
+                                          :insert-cols policy-geo-coverage-insert-cols}))))
     (email/notify-admins-pending-approval
-     conn
+     tx
      mailjet-config
      (merge data {:type "policy"}))
     policy-id))
 
 (defmethod ig/init-key :gpml.handler.policy/post
-  [_ {:keys [db logger mailjet-config]}]
+  [_ {:keys [db logger] :as config}]
   (fn [{:keys [jwt-claims body-params] :as req}]
     (try
-      (jdbc/with-db-transaction [conn (:spec db)]
-        (let [user (db.stakeholder/stakeholder-by-email conn jwt-claims)
-              policy-id (create-policy conn logger mailjet-config (assoc body-params
-                                                                         :created_by (:id user)))]
+      (jdbc/with-db-transaction [tx (:spec db)]
+        (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
+              policy-id (create-policy config
+                                       tx
+                                       (assoc body-params
+                                              :created_by (:id user)))]
           (resp/created (:referrer req) {:success? true
                                          :message "New policy created"
                                          :id policy-id})))
