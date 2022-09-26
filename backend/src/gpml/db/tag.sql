@@ -1,16 +1,8 @@
--- :name all-countries :? :*
--- :doc Get all tags
-select * from tag order by id
-
 -- :name get-flat-tags :? :*
 -- :doc Get all tags
 SELECT * FROM tag
 --~ (when (:review-status params) "WHERE review_status = (:v:review-status)::review_status")
 ORDER BY id;
-
--- :name tag-by-id :? :1
--- :doc Get tag by id
-select * from tag where id = :id
 
 -- :name tag-by-tags :? :*
 -- :doc Get tag by tags
@@ -93,7 +85,7 @@ ORDER BY
     count DESC
 --~(if (:limit params) "LIMIT :limit;" ";")
 
--- :name get-tag-categories :? :*
+-- :name get-tag-categories :query :many
 -- :doc Get tag categories. Optionally applying passed filters
 SELECT
     *
@@ -117,3 +109,32 @@ SET
       " = :updates." (name field))))
 ~*/
 WHERE id = :id;
+
+-- :name create-tags :insert-returning :many
+-- :doc Create tags. If they already exists do nothing.
+INSERT INTO tag(:i*:insert-cols)
+VALUES :t*:insert-values
+ON CONFLICT (LOWER(tag)) DO NOTHING RETURNING *;
+
+-- :name get-tags :query :many
+-- :doc Get tags. Applying optional filters if provided.
+SELECT t.id,
+       t.tag,
+       t.tag_category AS tag_category_id,
+       t.review_status,
+       t.review_status,
+       t.reviewed_by,
+       t.reviewed_at,
+       t.definition,
+       t.ontology_ref_link,
+       tg.category AS tag_category
+FROM tag t
+JOIN tag_category tg ON t.tag_category = tg.id
+WHERE 1=1
+--~(when (seq (get-in params [:filters :tags])) " AND (LOWER(t.tag)) IN (:v*:filters.tags)")
+--~(when (seq (get-in params [:filters :ids])) " AND t.id IN (:v*:filters.ids)")
+--~(when (seq (get-in params [:filters :tag_categories])) " AND tg.category IN (:v*:filters.tag_categories")
+--~(when (seq (get-in params [:filters :tag_categories_ids])) " AND t.tag_category IN (:v*:filters.tag_categories_ids")
+--~(when (seq (get-in params [:filters :review_statuses])) " AND t.review_status = ANY(:filters.review_statuses")
+--~(when (seq (get-in params [:filters :reviewed_by])) " AND t.review_status IN (:v*:filters.reviewed_by")
+;

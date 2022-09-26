@@ -1,1 +1,5 @@
-{:gpml.scheduler/leap-api-policy-importer [:duct/daemon]}
+{:gpml.scheduler/leap-api-policy-importer [:duct/daemon]
+ ;; FIXME: disabling brs-api-importer scheduler until the BRS
+ ;; integration is resumed.
+ ;; :gpml.scheduler/brs-api-importer [:duct/daemon]
+ }
