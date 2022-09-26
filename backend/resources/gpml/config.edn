@@ -574,12 +574,18 @@
                                                     :parameters #ig/ref :gpml.handler.project/delete-params
                                                     :responses #ig/ref :gpml.handler.project/delete-responses
                                                     :handler #ig/ref :gpml.handler.project/delete}}]]
-                                        ["/brs" {:middleware [#ig/ref :gpml.auth/auth-middleware-gpml-programmatic
-                                                              #ig/ref :gpml.auth/auth-required]}
-                                         ["/run-importer"
-                                          {:post {:summary "Runs the BRS importer job"
-                                                  :swagger {:tags ["scheduled task" "import job"]}
-                                                  :handler #ig/ref :gpml.handler.programmatic.brs-api-importer/post}}]]]]
+                                        ["/programmatic" {:middleware [#ig/ref :gpml.auth/auth-middleware-gpml-programmatic
+                                                                       #ig/ref :gpml.auth/auth-required]}
+                                         ["/organisation"
+                                          {:post {:summary "Creates an organisation"
+                                                  :swagger {:tags ["organisation" "programmatic"]}
+                                                  :parameters #ig/ref :gpml.handler.programmatic.organisation/post-params
+                                                  :handler #ig/ref :gpml.handler.programmatic.organisation/post}}]
+                                         ["/brs"
+                                          ["/run-importer"
+                                           {:post {:summary "Runs the BRS importer job"
+                                                   :swagger {:tags ["scheduled task" "import job" "programmatic"]}
+                                                   :handler #ig/ref :gpml.handler.programmatic.brs-api-importer/post}}]]]]]
                               :logger #ig/ref :duct.logger/timbre}
 
   ;; Consts
@@ -722,6 +728,8 @@
   :gpml.handler.organisation/post-params {}
   :gpml.handler.organisation/put-params {}
   :gpml.handler.organisation/get-id {:db #ig/ref :duct.database/sql}
+  :gpml.handler.programmatic.organisation/post #ig/ref :gpml.config/common
+  :gpml.handler.programmatic.organisation/post-params {}
 
   :gpml.handler.image/get {:db #ig/ref :duct.database/sql}
 
