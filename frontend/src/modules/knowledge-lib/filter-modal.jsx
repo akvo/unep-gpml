@@ -71,7 +71,6 @@ const FilterModal = ({
     if (Object.keys(query).length > 0) setFilter(query);
   }, [query]);
 
-
   const filteredMainContentOptions = !isEmpty(mainContentType)
     ? mainContentType
         .filter((content) => {
@@ -121,7 +120,7 @@ const FilterModal = ({
   const representativeOpts = !isEmpty(representativeGroup)
     ? [...representativeGroup, { code: "other", name: "Other" }].map((x) => ({
         label: x?.name,
-        value: x?.code,
+        value: x?.name,
       }))
     : [];
 

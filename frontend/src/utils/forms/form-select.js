@@ -85,7 +85,7 @@ const SelectWidget = ({
         allowClear={uiSchema?.["ui:allowClear"] ? true : false}
         showSearch={uiSchema?.["ui:showSearch"] ? true : false}
         filterOption={(input, option) =>
-          option?.children?.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
+          option?.children?.toLowerCase().indexOf(input.toLowerCase()) === 0 ||
           option.value === "-1"
         }
         autoFocus={autofocus}
@@ -98,6 +98,9 @@ const SelectWidget = ({
         onChange={!readonly ? handleChange : undefined}
         onFocus={!readonly ? handleFocus : undefined}
         onSearch={(v) => {
+          if (uiSchema?.["ui:options"]?.["type"] === "single") {
+            return false;
+          }
           const find = enumOptions.find(
             (tag) => v.toLowerCase() == tag.label.toLowerCase()
           );

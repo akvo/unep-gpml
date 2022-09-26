@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Row } from "antd";
 import { AppstoreOutlined, LoadingOutlined } from "@ant-design/icons";
 import "./style.scss";
 import api from "../../utils/api";
@@ -17,9 +16,9 @@ import FilterBar from "./filter-bar";
 import InviteExpertModal from "./invite-expert-modal";
 import ExpertCard from "./expert-card";
 import UnathenticatedPage from "../stakeholder-overview/unathenticated-page";
+import InviteExpertCard from './invite-expert-card';
 
 const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
-  console.log(loadingProfile, isAuthenticated);
   const { countries, organisations } = UIStore.useState((s) => ({
     countries: s.countries,
     organisations: s.organisations,
@@ -181,6 +180,7 @@ const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
             {experts.experts.map((expert) => (
               <ExpertCard {...{ expert, countries, organisations }} />
             ))}
+            <InviteExpertCard {...{ setIsShownModal }} />
           </div>
         )}
       </div>

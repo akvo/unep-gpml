@@ -332,7 +332,6 @@
 (defmethod extra-details "initiative" [resource-type db initiative]
   (merge
    (add-extra-details db initiative resource-type {})
-   {:geo_coverage_type (-> initiative :geo_coverage_type ffirst)}
    (db.initiative/initiative-detail-by-id db initiative)))
 
 (defmethod extra-details "policy" [resource-type db policy]

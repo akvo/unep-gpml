@@ -1,6 +1,10 @@
 import { UIStore } from "../../../store";
 
-const { geoCoverageTypeOptions, representativeGroup } = UIStore.currentState;
+const {
+  geoCoverageTypeOptions,
+  representativeGroup,
+  countries,
+} = UIStore.currentState;
 
 export const schema = {
   title: "",
@@ -33,7 +37,8 @@ export const schema = {
     },
     country: {
       title: "Country",
-      enum: [],
+      enum: countries?.map((x, i) => x.id),
+      enumNames: countries?.map((x, i) => x.name),
     },
     geoCoverageType: {
       title: "Geo coverage type",
@@ -57,7 +62,7 @@ export const schema = {
       },
     },
     geoCoverageCountries: {
-      title: "Geo coverage Country",
+      title: "Geo coverage country",
       enum: [],
       depend: {
         id: "geoCoverageType",
@@ -88,6 +93,9 @@ export const uiSchema = {
     "ui:showSearch": true,
     "ui:widget": "select",
     "ui:placeholder": "Choose the entity country",
+    "ui:options": {
+      type: "single",
+    },
   },
   url: {
     "ui:placeholder": "URL Address (e.g. example.com)",
@@ -97,6 +105,9 @@ export const uiSchema = {
   geoCoverageType: {
     "ui:placeholder": "Choose the entity coverage type",
     "ui:widget": "select",
+    "ui:options": {
+      type: "single",
+    },
   },
   geoCoverageValueRegional: {
     "ui:placeholder": "Choose the entity coverage",
@@ -109,12 +120,18 @@ export const uiSchema = {
     "ui:widget": "select",
     "ui:showSearch": true,
     "ui:mode": "multiple",
+    "ui:options": {
+      type: "connection",
+    },
   },
   geoCoverageCountries: {
     "ui:placeholder": "Choose country",
     "ui:widget": "select",
     "ui:showSearch": true,
     "ui:mode": "multiple",
+    "ui:options": {
+      type: "connection",
+    },
   },
   geoCoverageValueSubNational: {
     "ui:placeholder": "Choose the entity coverage",

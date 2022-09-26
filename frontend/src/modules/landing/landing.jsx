@@ -339,7 +339,8 @@ const Act = ({ setLoginVisible }) => {
      const allResources = resources?.filter(
        (resource) =>
          !resource?.hasOwnProperty("stakeholder") &&
-         !resource?.hasOwnProperty("organisation")
+         !resource?.hasOwnProperty("organisation") &&
+         !resource?.hasOwnProperty("nonMemberOrganisation")
      );
 
      const resourcesWithKey = allResources

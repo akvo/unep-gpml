@@ -221,6 +221,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           search,
           setShowFilterModal,
           setPageNumber,
+          pathname,
         }}
       />
       <div className="list-content">

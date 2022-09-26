@@ -146,6 +146,24 @@
           white-space: normal;
         }
       }
+      &.reset-button {
+        display: flex;
+        width: auto;
+        height: auto;
+        flex-direction: revert;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+        border: 1px solid #fff;
+        padding: 5px 10px;
+        svg {
+          margin-bottom: 0px;
+          width: 15px;
+        }
+        span {
+          font-size: 14px;
+        }
+      }
     }
     .ant-btn:first-child {
       flex-direction: row;

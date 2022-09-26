@@ -14,10 +14,11 @@ transnational_counts_per_country AS (
          topic,
          COUNT(DISTINCT json->>'id') AS topic_count
   FROM filtered_entities
-  LEFT JOIN json_array_elements_text((json->>'geo_coverage_country_groups')::JSON) country_groups
-  ON json->>'geo_coverage_country_groups' IS NOT NULL
-  JOIN country_group_country cgc ON cgc.country_group = (country_groups.value)::TEXT::INT
-  WHERE (country_groups.value)::TEXT <> 'null' AND json->>'geo_coverage_type' = 'transnational'
+  LEFT JOIN json_array_elements_text((json->>'geo_coverage_values')::JSON) cgcs
+  ON json->>'geo_coverage_values' IS NOT NULL
+  JOIN country_group_country cgc ON cgc.country_group = (cgcs.value)::TEXT::INT
+  OR cgc.country = (cgcs.value)::TEXT::INT
+  WHERE (cgcs.value)::TEXT <> 'null' AND json->>'geo_coverage_type' = 'transnational'
   GROUP BY cgc.country, topic
 ),
 country_group_counts AS (

@@ -1,6 +1,7 @@
 @import "../../vars.scss";
 .invite-expert-card {
   padding: 8px;
+  max-width: 370px;
   height: 153px;
   .ant-card-body {
     display: flex;
