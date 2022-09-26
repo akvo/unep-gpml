@@ -1,25 +1,20 @@
--- :name new-initiative :<! :1
+-- :name new-initiative :returning-execute :one
 -- :doc Insert a new initiative
 -- :require [gpml.util.sql]
-insert into initiative(
+INSERT INTO initiative(
 --~ (#'gpml.util.sql/generate-insert params)
-) values (
+) VALUES (
 --~ (#'gpml.util.sql/generate-jsonb params)
 ) returning id;
 
--- :name initiative-by-id :? :1
+-- :name initiative-by-id :query :one
 SELECT initiative.*, COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners
 FROM initiative
 LEFT JOIN topic_stakeholder_auth authz ON authz.topic_type::text='initiative' AND authz.topic_id=initiative.id
 WHERE initiative.id = :id
 GROUP BY initiative.id
 
--- :name update-initiative :! :n
-UPDATE initiative SET
---~ (#'gpml.util.sql/generate-update params)
-WHERE id = :id;
-
--- :name initiative-detail-by-id :? :1
+-- :name initiative-detail-by-id :query :one
 SELECT id, language,
 json_agg(DISTINCT jsonb_build_object('name', focus_names.value)) AS focus_area,
 jsonb_build_object('name', STRING_AGG(DISTINCT outcome_names.value, ', ')) AS outcome_and_impact,
@@ -67,21 +62,40 @@ jsonb_build_object('name', STRING_AGG(DISTINCT donor_names.value,', '), 'types',
   GROUP BY id, term.value, report.value;
 
 
--- :name add-initiative-geo-coverage :<! :1
+-- :name add-initiative-geo-coverage :returning-execute :one
 -- :doc Add specified countries or country groups to an initiative
-insert into initiative_geo_coverage(initiative, country_group, country)
-values :t*:geo RETURNING id;
+INSERT INTO initiative_geo_coverage(initiative, country_group, country)
+VALUES :t*:geo RETURNING id;
 
--- :name delete-initiative-geo-coverage :! :n
+-- :name delete-initiative-geo-coverage :execute :affected
 -- :doc Remove specified countries or country groups from an initiative
-delete from initiative_geo_coverage where initiative=:id;
+DELETE FROM initiative_geo_coverage WHERE initiative=:id;
 
--- :name all-initiatives
--- :doc List all initiatives
-select id, q2 as title
-  from initiative;
-
--- :name add-initiative-tags :<! :1
+-- :name add-initiative-tags :returning-execute :one
 -- :doc add initiative tags
-insert into initiative_tag(initiative, tag)
-values :t*:tags RETURNING id;
+INSERT INTO initiative_tag(initiative, tag)
+VALUES :t*:tags RETURNING id;
+
+-- :name create-initiatives
+-- :doc Creates multiple initiatives.
+INSERT INTO initiative(:i*:insert-cols)
+VALUES :t*:insert-values RETURNING *;
+
+-- :name get-initiatives :query :many
+-- :doc Get initiatives. Accepts optional filters.
+SELECT *
+FROM initiative
+WHERE 1=1
+--~(when (seq (get-in params [:filters :brs-api-ids])) " AND brs_api_id IN (:v*:filters.brs-api-ids)")
+--~(when (seq (get-in params [:filters :ids])) " AND id IN (:v*:filters.ids)")
+
+-- :name update-initiative :execute :affected
+UPDATE initiative
+SET
+/*~
+(str/join ","
+  (for [[field _] (:updates params)]
+    (str (identifier-param-quote (name field) options)
+      " = :updates." (name field))))
+~*/
+WHERE id = :id;

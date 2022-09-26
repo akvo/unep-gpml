@@ -40,7 +40,7 @@
   [conn opts]
   (let [{:keys [country_counts country_group_counts]} (get-resource-map-counts* conn opts)
         included-countries (->> country_counts (map :country_id) set)
-        all-countries (->> (db.country/all-countries conn) (map :id) set)
+        all-countries (->> (db.country/get-countries conn {}) (map :id) set)
         missing-countries (remove nil? (set/difference all-countries included-countries))
         missing-counts (map #(merge {:country_id %} default-topic-counts) missing-countries)]
     {:country_counts (concat country_counts missing-counts)

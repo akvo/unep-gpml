@@ -16,3 +16,14 @@ FROM organisation_:i:resource-type oc
 JOIN organisation o
 ON oc.organisation = o.id
 WHERE oc.:i:resource-type = :resource-id
+
+-- :name create-resource-connections :returning-execute :many
+INSERT INTO :i:table(:i*:insert-cols)
+VALUES :t*:insert-values RETURNING *;
+
+-- :name get-resource-connections
+SELECT *
+FROM :i:table
+WHERE 1=1
+--~(when (seq (get-in params [:filters :resources-ids])) " AND :i:resource-col IN (:v*:filters.resources-ids)")
+--~(when (seq (get-in params [:filters :entities-ids])) " AND :i:entity-col IN (:v*:filters.entities-ids)")

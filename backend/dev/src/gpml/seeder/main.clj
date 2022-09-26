@@ -2,10 +2,10 @@
   (:require [clj-time.format :as f]
             [clojure.java.io :as io]
             [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
             [clojure.string :as str]
             [duct.core :as duct]
             [gpml.db.action :as db.action]
-            [gpml.db.action-detail :as db.action-detail]
             [gpml.db.country :as db.country]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.currency :as db.currency]
@@ -13,7 +13,6 @@
             [gpml.db.language :as db.language]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.policy :as db.policy]
-            [gpml.db.project :as db.project]
             [gpml.db.resource :as db.resource]
             [gpml.db.tag :as db.tag]
             [gpml.db.technology :as db.technology]
@@ -70,7 +69,7 @@
   (reduce (fn [acc o] (conj acc (:id o))) [] cmd))
 
 (defn get-country [db x]
-  (db.country/country-by-names db {:names x}))
+  (db.country/get-countries db {:filters {:names x :descriptions ["Member State"]}}))
 
 (defn get-country-group [db x]
   (db.country-group/country-group-by-name db {:name x}))
@@ -94,8 +93,9 @@
   (db.action/action-by-code db {:code x}))
 
 (defn seed-countries [db {:keys [old?]}]
-  (let [file (if old? "countries" "new_countries")]
-    (jdbc/insert-multi! db :country (get-data file))))
+  (let [file (if old? "countries" "new_countries")
+        data (map #(set/rename-keys % {:iso_code :iso_code_a3}) (get-data file))]
+    (jdbc/insert-multi! db :country data)))
 
 (defn seed-country-groups [db]
   (doseq [data (get-data "country_group")]
@@ -446,7 +446,7 @@
                          (filter #(= (-> example-map first name Integer/parseInt) (:id %)))
                          first)
         current-record (if (= check "country")
-                         (db.country/country-by-id db old-example)
+                         (first (db.country/get-countries db {:filters {:ids [(:id old-example)]}}))
                          (db.country-group/country-group-by-id db old-example))]
     (if (not current-record)
       false

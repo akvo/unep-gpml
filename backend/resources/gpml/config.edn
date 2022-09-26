@@ -573,10 +573,24 @@
                                                     :middleware [#ig/ref :gpml.auth/restrict-to-project-owner]
                                                     :parameters #ig/ref :gpml.handler.project/delete-params
                                                     :responses #ig/ref :gpml.handler.project/delete-responses
-                                                    :handler #ig/ref :gpml.handler.project/delete}}]]]]
+                                                    :handler #ig/ref :gpml.handler.project/delete}}]]
+                                        ["/brs" {:middleware [#ig/ref :gpml.auth/auth-middleware-gpml-programmatic
+                                                              #ig/ref :gpml.auth/auth-required]}
+                                         ["/run-importer"
+                                          {:post {:summary "Runs the BRS importer job"
+                                                  :swagger {:tags ["scheduled task" "import job"]}
+                                                  :handler #ig/ref :gpml.handler.programmatic.brs-api-importer/post}}]]]]
                               :logger #ig/ref :duct.logger/timbre}
 
   ;; Consts
+
+  [:duct/const :gpml.config/brs-gpml-entities-mapping]
+  [{:gpml-entity-name :resource
+    :brs-entity-name :publication}
+   {:gpml-entity-name :event
+    :brs-entity-name :meeting}
+   {:gpml-entity-name :initiative
+    :brs-entity-name :project}]
 
   [:duct/const :gpml.config/mailjet] {:api-key #duct/env ["MAILJET_API_KEY" Str]
                                       :secret-key #duct/env ["MAILJET_SECRET_KEY" Str]
@@ -591,11 +605,15 @@
   {:db #ig/ref :duct.database/sql
    :logger #ig/ref :duct/logger
    :scheduler #ig/ref :gpml/scheduler
+   :storage-client-adapter #ig/ref :clj-gcp.storage/client
+   :brs-ds-adapter #ig/ref :gpml.boundary.adapter.datasource/brs
    :auth0 #ig/ref :gpml.config/auth0
    :mailjet-config #ig/ref :gpml.config/mailjet
    :app-name #duct/env ["APP_NAME" Str]
    :app-domain #duct/env ["APP_DOMAIN" Str]
-   :app-user-admin #duct/env ["APP_USER_ADMIN" Str]}
+   :app-user-admin #duct/env ["APP_USER_ADMIN" Str]
+   :storage-bucket-name #duct/env ["GCS_BUCKET_NAME" Str]
+   :brs-entities-to-import #ig/ref :gpml.config/brs-gpml-entities-mapping}
   ;; Handlers
 
   :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
@@ -800,22 +818,35 @@
   :gpml.handler.project/delete-params {}
   :gpml.handler.project/delete-responses {}
 
+  :gpml.handler.programmatic.brs-api-importer/post #ig/ref :gpml.config/common
+
+  :clj-gcp.storage/client {}
+
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources
                           :logger #ig/ref :duct/logger
                           :strategy :raise-error}
   :duct.migrator.ragtime/resources {:path "migrations"}
 
-  :gpml.auth/auth-middleware {:issuer #duct/env "OIDC_ISSUER"
-                              :audience #duct/env "OIDC_AUDIENCE"
-                              :db #ig/ref :duct.database/sql}
+  :gpml.auth/auth-middleware
+  {:issuer #duct/env ["OIDC_ISSUER" Str]
+   :audience #duct/env ["OIDC_AUDIENCE" Str]
+   :db #ig/ref :duct.database/sql}
 
-  :gpml.auth/auth-middleware-ckan {:issuer #duct/env "OIDC_ISSUER"
-                                   :audience #duct/env "OIDC_AUDIENCE_CKAN"
-                                   :db #ig/ref :duct.database/sql}
+  :gpml.auth/auth-middleware-gpml-programmatic
+  {:issuer #duct/env ["OIDC_ISSUER" Str]
+   :audience #duct/env ["OIDC_AUDIENCE_M2M" Str]
+   :db #ig/ref :duct.database/sql}
 
-  :gpml.auth/auth-middleware-auth0-actions {:issuer #duct/env "OIDC_ISSUER"
-                                            :audience #duct/env "OIDC_AUDIENCE_AUTH0_ACTIONS"
-                                            :db #ig/ref :duct.database/sql}
+  :gpml.auth/auth-middleware-ckan
+  {:issuer #duct/env ["OIDC_ISSUER" Str]
+   :audience #duct/env ["OIDC_AUDIENCE_M2M" Str]
+   :db #ig/ref :duct.database/sql}
+
+  :gpml.auth/auth-middleware-auth0-actions
+  {:issuer #duct/env ["OIDC_ISSUER" Str]
+   :audience #duct/env ["OIDC_AUDIENCE_AUTH0_ACTIONS" Str]
+   :db #ig/ref :duct.database/sql}
+
   :gpml.auth/auth-required {}
   :gpml.auth/restrict-to-admin-and-comment-author-middleware {:db #ig/ref :duct.database/sql}
   :gpml.auth/restrict-to-organisation-admin-or-owner {:db #ig/ref :duct.database/sql}
@@ -839,13 +870,32 @@
    :minimum-idle 10
    :maximum-pool-size 25}
 
-  :gpml/scheduler {:thread-count #duct/env ["SCHEDULER_THREAD_COUNT" Int :or 50]}
+  :gpml.boundary.adapter.datasource/brs
+  {:api-url #duct/env ["BRS_API_URL" Str]
+   :logger #ig/ref :duct/logger
+   :retry-config {:timeout 180000}
+   :records-per-page #duct/env ["BRS_API_RECORDS_PER_PAGE" Int :or 100]
+   :endpoints {:publication #duct/env ["BRS_API_PUBLICATIONS_ENDPOINT" Str]
+               :meeting #duct/env ["BRS_API_MEETINGS_ENDPOINT" Str]
+               :project #duct/env ["BRS_API_PROJECTS_ENDPOINT" Str]}}
+
+  :gpml/scheduler
+  {:thread-count #duct/env ["SCHEDULER_THREAD_COUNT" Int :or 50]}
 
   :gpml.scheduler/leap-api-policy-importer
   {:config #ig/ref :gpml.config/common
    :scheduler-config {:time-zone #duct/env ["SCHEDULER_TIME_ZONE" Str :or "Europe/Madrid"]
                       :identity "leap-api-policy-importer"
-                      :cron #duct/env ["SCHEDULER_LEAP_API_POLICY_IMPORTER_CRON" Str :or "0 0 2 1/14 * ? *"]}}}
+                      :cron #duct/env ["SCHEDULER_LEAP_API_POLICY_IMPORTER_CRON" Str :or "0 0 2 1/14 * ? *"]}}
+
+  :gpml.scheduler/brs-api-importer
+  {:config #ig/ref :gpml.config/common
+   :scheduler-config {:time-zone #duct/env ["SCHEDULER_TIME_ZONE" Str :or "Europe/Madrid"]
+                      :identity "brs-api-importer"
+                      :cron #duct/env ["SCHEDULER_BRS_API_IMPORTER_CRON" Str :or "0 0 3 1/7 * ? *"]}}
+
+  ;; End of base configuration
+  }
 
  :duct.profile/dev   #duct/include "dev"
  :duct.profile/local #duct/include "local"
