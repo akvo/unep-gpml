@@ -781,6 +781,13 @@ const formDataMapping = [
     type: "multiple-option",
   },
   {
+    name: "q4_3_1",
+    section: "S5",
+    group: "S5_G1",
+    question: "S5_G1_4.3.1",
+    type: "multiple-option",
+  },
+  {
     name: "q4_4_1",
     section: "S5",
     group: "S5_G1",

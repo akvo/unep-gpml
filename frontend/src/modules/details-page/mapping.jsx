@@ -283,6 +283,12 @@ const detailProject = [
     value: "join",
     type: "array",
   },
+  {
+    key: "mainFocus",
+    name: "Main Focus:",
+    value: "join",
+    type: "array",
+  },
   // {
   //     'key' : 'firstPublicationDate',
   //     'name' : 'Lifecycle Phase',

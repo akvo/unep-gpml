@@ -458,7 +458,7 @@ const FlexibleForm = withRouter(
         if (status === "edit" || params?.id) {
           data.q24_2 = Array.isArray(data.q24_2) ? data.q24_2 : [data.q24_2];
         } else {
-          data.q24_2 = [data.q24_2];
+          data.q24_2 = data.q24_2;
         }
         delete data.qgeoCoverageValueSubnational;
         delete data.qgeoCoverageValueSubnationalCity;
