@@ -158,6 +158,11 @@ spec:
             secretKeyRef:
               name: unep-gpml
               key: oidc-audience-m2m
+        - name: SUBSCRIPTIONS_MANAGEMENT_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: subscriptions-management-email
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/secrets/cloudsql/credentials.json"
         readinessProbe:
