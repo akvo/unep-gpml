@@ -740,7 +740,8 @@
   :gpml.handler.favorite/post-params {}
 
   :gpml.handler.env/get {:auth0 {:domain #duct/env "OIDC_ISSUER"
-                                 :clientId #duct/env "OIDC_AUDIENCE"}
+                                 :clientId #duct/env "OIDC_AUDIENCE"
+                                 :audience #duct/env "OIDC_AUDIENCE_M2M"}
                          :sentry {:dsn #duct/env "SENTRY_DSN"
                                   :environment #duct/env "ENV_NAME"}}
 
