@@ -585,7 +585,12 @@
                                           ["/run-importer"
                                            {:post {:summary "Runs the BRS importer job"
                                                    :swagger {:tags ["scheduled task" "import job" "programmatic"]}
-                                                   :handler #ig/ref :gpml.handler.programmatic.brs-api-importer/post}}]]]]]
+                                                   :handler #ig/ref :gpml.handler.programmatic.brs-api-importer/post}}]]]
+                                        ["/subscribe"
+                                         {:post {:summary "Send an email to GPML Secretariat about a new subscription request"
+                                                 :swagger {:tags ["subscribe"]}
+                                                 :handler #ig/ref :gpml.handler.subscribe/post
+                                                 :parameters #ig/ref :gpml.handler.subscribe/post-params}}]]]
                               :logger #ig/ref :duct.logger/timbre}
 
   ;; Consts
@@ -619,7 +624,8 @@
    :app-domain #duct/env ["APP_DOMAIN" Str]
    :app-user-admin #duct/env ["APP_USER_ADMIN" Str]
    :storage-bucket-name #duct/env ["GCS_BUCKET_NAME" Str]
-   :brs-entities-to-import #ig/ref :gpml.config/brs-gpml-entities-mapping}
+   :brs-entities-to-import #ig/ref :gpml.config/brs-gpml-entities-mapping
+   :subscribe-settings {:management-dest-email #duct/env ["SUBSCRIPTIONS_MANAGEMENT_EMAIL" Str]}}
   ;; Handlers
 
   :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
@@ -828,6 +834,9 @@
   :gpml.handler.project/delete-responses {}
 
   :gpml.handler.programmatic.brs-api-importer/post #ig/ref :gpml.config/common
+
+  :gpml.handler.subscribe/post #ig/ref :gpml.config/common
+  :gpml.handler.subscribe/post-params {}
 
   :clj-gcp.storage/client {}
 

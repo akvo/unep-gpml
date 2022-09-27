@@ -36,6 +36,7 @@ services:
       - BRS_API_PUBLICATIONS_ENDPOINT=/mfilesInformea/MFilesMea.svc/Documents
       - BRS_API_MEETINGS_ENDPOINT=/Meetings/Conferences.svc/Meetings
       - BRS_API_PROJECTS_ENDPOINT=/Projects/Projects.svc/Projects
+      - SUBSCRIPTIONS_MANAGEMENT_EMAIL
   frontend:
     environment:
       - PORT=3001

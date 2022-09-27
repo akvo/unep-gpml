@@ -5,6 +5,7 @@
 (def ^:const date-iso-8601-re #"^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
 (def ^:const comma-separated-numbers-re #"^\d+(,\d+)*$")
 (def ^:const number-re #"[0-9]+$")
+(def ^:const email-re #"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
 
 (def ^:const dot-net-json-date-re
   "Regex to parse and validate .NET JSON serialized dates.

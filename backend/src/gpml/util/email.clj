@@ -34,6 +34,14 @@ A new %s (%s) is awaiting your approval. Please visit %s/profile to approve or d
 - UNEP GPML Digital Platform
 ")
 
+(def notify-secretariat-new-subscription-text
+  "Dear GPML Secretariat,
+
+A new subscription request has arrived from %s.
+
+- UNEP GPML Digital Platform
+")
+
 (defn new-resource-comment-text [resource-owner comment-author resource-title app-domain]
   (format "Dear %s,
 
@@ -134,6 +142,20 @@ again, please visit this URL: %s/edit-%s/%s
         htmls (repeat nil)]
     (when (> (count receivers) 0)
       (send-email mailjet-config sender subject receivers texts htmls))))
+
+(defn notify-secretariat-about-new-subscription-req
+  "Send email about a new subscription request
+   The plural format for texts and receivers is because the sending shared email function expects a list of messages
+   to be sent. That is why we provide an infinite sequence for non-used `htmls` option. Besides, we make `sender` and
+   `texts` a collection of a single element, since in this case we are sending a single message."
+  [mailjet-config dest-email req-email]
+  (let [subject (format "[%s] New subscription request" (:app-name mailjet-config))
+        sender unep-sender
+        receivers [{:Name "GPML Secretariat"
+                    :Email dest-email}]
+        texts [(format notify-secretariat-new-subscription-text req-email)]
+        htmls (repeat nil)]
+    (send-email mailjet-config sender subject receivers texts htmls)))
 
 (comment
   (require 'dev)
