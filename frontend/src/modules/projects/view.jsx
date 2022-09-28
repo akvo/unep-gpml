@@ -10,8 +10,11 @@ import {
   CheckCircleOutlined,
 } from "@ant-design/icons";
 import { ReactComponent as AtlasSvg } from "../../images/book-atlas.svg";
+import { ReactComponent as AnalyticAndStatisticSvg } from "../../images/analytic-and-statistic-icon.svg";
+import { ReactComponent as DataCatalogueSvg } from "../../images/data-catalogue-icon.svg";
 import { ReactComponent as CaseStudiesSvg } from "../../images/capacity-building/ic-case-studies.svg";
 import { ReactComponent as CapacityBuildingSvg } from "../../images/capacity-building/ic-capacity-building.svg";
+import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
 import { Link } from "react-router-dom";
 import { stages } from "./get-started";
 import classNames from "classnames";
@@ -185,6 +188,35 @@ export const stagesChecklist = [
                       )}
                     </div>
                   )}
+                  <div className="buttons">
+                    <h5>which tool to use?</h5>
+                    <div className="button-wrapper">
+                      <Link to="https://datahub.gpmarinelitter.org/">
+                        <div className="icon">
+                          <AnalyticAndStatisticSvg />
+                        </div>
+                        <div className="button-content">
+                          <p className="content-title">
+                            Analytics and Statistics
+                          </p>
+                          <p className="content-desc">
+                            Metrics to measure progress
+                          </p>
+                        </div>
+                      </Link>
+                      <Link to="https://unepazecosysadlsstorage.z20.web.core.windows.net/">
+                        <div className="icon">
+                          <DataCatalogueSvg />
+                        </div>
+                        <div className="button-content">
+                          <p className="content-title">Data Catalogue</p>
+                          <p className="content-desc">
+                            Datasets on plastic pollution and marine litter
+                          </p>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </>
             ),
@@ -264,6 +296,35 @@ export const stagesChecklist = [
                       )}
                     </div>
                   )}
+                  <div className="buttons">
+                    <h5>which tool to use?</h5>
+                    <div className="button-wrapper">
+                      <Link to="https://datahub.gpmarinelitter.org/">
+                        <div className="icon">
+                          <AnalyticAndStatisticSvg />
+                        </div>
+                        <div className="button-content">
+                          <p className="content-title">
+                            Analytics and Statistics
+                          </p>
+                          <p className="content-desc">
+                            Metrics to measure progress
+                          </p>
+                        </div>
+                      </Link>
+                      <Link to="https://unepazecosysadlsstorage.z20.web.core.windows.net/">
+                        <div className="icon">
+                          <DataCatalogueSvg />
+                        </div>
+                        <div className="button-content">
+                          <p className="content-title">Data Catalogue</p>
+                          <p className="content-desc">
+                            Datasets on plastic pollution and marine litter
+                          </p>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </>
             ),
@@ -297,6 +358,30 @@ export const stagesChecklist = [
                         <p className="content-title">Knowledge library</p>
                         <p className="content-desc">
                           Resources on marine litter and plastic pollution
+                        </p>
+                      </div>
+                    </Link>
+                    <Link to="https://datahub.gpmarinelitter.org/">
+                      <div className="icon">
+                        <AnalyticAndStatisticSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">
+                          Analytics and Statistics
+                        </p>
+                        <p className="content-desc">
+                          Metrics to measure progress
+                        </p>
+                      </div>
+                    </Link>
+                    <Link to="https://unepazecosysadlsstorage.z20.web.core.windows.net/">
+                      <div className="icon">
+                        <DataCatalogueSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Data Catalogue</p>
+                        <p className="content-desc">
+                          Datasets on plastic pollution and marine litter
                         </p>
                       </div>
                     </Link>
@@ -336,6 +421,35 @@ export const stagesChecklist = [
                 >
                   Data catalogue
                 </a>{" "}
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://datahub.gpmarinelitter.org/">
+                      <div className="icon">
+                        <AnalyticAndStatisticSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">
+                          Analytics and Statistics
+                        </p>
+                        <p className="content-desc">
+                          Metrics to measure progress
+                        </p>
+                      </div>
+                    </Link>
+                    <Link to="https://unepazecosysadlsstorage.z20.web.core.windows.net/">
+                      <div className="icon">
+                        <DataCatalogueSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Data Catalogue</p>
+                        <p className="content-desc">
+                          Datasets on plastic pollution and marine litter
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -445,6 +559,35 @@ export const stagesChecklist = [
                 >
                   Data catalogue
                 </a>{" "}
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://datahub.gpmarinelitter.org/">
+                      <div className="icon">
+                        <AnalyticAndStatisticSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">
+                          Analytics and Statistics
+                        </p>
+                        <p className="content-desc">
+                          Metrics to measure progress
+                        </p>
+                      </div>
+                    </Link>
+                    <Link to="https://unepazecosysadlsstorage.z20.web.core.windows.net/">
+                      <div className="icon">
+                        <DataCatalogueSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Data Catalogue</p>
+                        <p className="content-desc">
+                          Datasets on plastic pollution and marine litter
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -519,6 +662,22 @@ export const stagesChecklist = [
                 >
                   unep-gpmarinelitter@un.org
                 </Link>
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://communities.gpmarinelitter.org/">
+                      <div className="icon">
+                        <IconForum />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Engage</p>
+                        <p className="content-desc">
+                          Interactive forum for collaboration
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -552,7 +711,23 @@ export const stagesChecklist = [
                   }}
                 >
                   unep-gpmarinelitter@un.org
-                </Link>
+                </Link>{" "}
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://communities.gpmarinelitter.org/">
+                      <div className="icon">
+                        <IconForum />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Engage</p>
+                        <p className="content-desc">
+                          Interactive forum for collaboration
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -587,7 +762,23 @@ export const stagesChecklist = [
                   }}
                 >
                   unep-gpmarinelitter@un.org
-                </Link>
+                </Link>{" "}
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://communities.gpmarinelitter.org/">
+                      <div className="icon">
+                        <IconForum />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Engage</p>
+                        <p className="content-desc">
+                          Interactive forum for collaboration
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -622,7 +813,23 @@ export const stagesChecklist = [
                   }}
                 >
                   unep-gpmarinelitter@un.org
-                </Link>
+                </Link>{" "}
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://communities.gpmarinelitter.org/">
+                      <div className="icon">
+                        <IconForum />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Engage</p>
+                        <p className="content-desc">
+                          Interactive forum for collaboration
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -663,7 +870,23 @@ export const stagesChecklist = [
                   }}
                 >
                   unep-gpmarinelitter@un.org
-                </Link>
+                </Link>{" "}
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://communities.gpmarinelitter.org/">
+                      <div className="icon">
+                        <IconForum />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Engage</p>
+                        <p className="content-desc">
+                          Interactive forum for collaboration
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -674,6 +897,22 @@ export const stagesChecklist = [
                 Browse through the action plans in the{" "}
                 <Link to="/knowledge/library">Knowledge Library</Link> for
                 inspiration on possible control measures for land-based sources.
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="/knowledge/library">
+                      <div className="icon">
+                        <AtlasSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Knowledge library</p>
+                        <p className="content-desc">
+                          Resources on marine litter and plastic pollution
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -684,6 +923,22 @@ export const stagesChecklist = [
                 Browse through the action plans in the{" "}
                 <Link to="/knowledge/library">Knowledge Library</Link> for
                 inspiration on possible control measures for sea-based sources.
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="/knowledge/library">
+                      <div className="icon">
+                        <AtlasSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Knowledge library</p>
+                        <p className="content-desc">
+                          Resources on marine litter and plastic pollution
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -694,6 +949,22 @@ export const stagesChecklist = [
                 Browse through the action plans in the{" "}
                 <Link to="/knowledge/library">Knowledge Library</Link> for
                 inspiration on possible measures for removal.
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="/knowledge/library">
+                      <div className="icon">
+                        <AtlasSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Knowledge library</p>
+                        <p className="content-desc">
+                          Resources on marine litter and plastic pollution
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -704,6 +975,22 @@ export const stagesChecklist = [
                 Browse through the action plans in the{" "}
                 <Link to="/knowledge/library">Knowledge Library</Link> for
                 inspiration on measures for awareness and education.
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="/knowledge/library">
+                      <div className="icon">
+                        <AtlasSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Knowledge library</p>
+                        <p className="content-desc">
+                          Resources on marine litter and plastic pollution
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -715,13 +1002,29 @@ export const stagesChecklist = [
         children: [
           {
             title:
-              "Draft model of monitoring programme based on situation analysis in Action 1",
+              "Draft model of monitoring programme based on situation analysis findings",
             content: (checklist) => (
               <>
                 The Digital Platform allows for access to a wide range of
                 knowledge products including guidelines and reports on
                 monitoring. Such reports can be accessed through the{" "}
                 <Link to="/knowledge/library">Knowledge Library</Link>.
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="/knowledge/library">
+                      <div className="icon">
+                        <AtlasSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Knowledge library</p>
+                        <p className="content-desc">
+                          Resources on marine litter and plastic pollution
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -733,6 +1036,22 @@ export const stagesChecklist = [
                 knowledge products including guidelines and reports on hotspots.
                 Such reports can be accessed through the{" "}
                 <Link to="/knowledge/library">Knowledge Library</Link>.
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="/knowledge/library">
+                      <div className="icon">
+                        <AtlasSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Knowledge library</p>
+                        <p className="content-desc">
+                          Resources on marine litter and plastic pollution
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -744,6 +1063,22 @@ export const stagesChecklist = [
                 <Link to="/knowledge/library">Knowledge Library</Link> allows
                 for access to a wide range of knowledge products including
                 financing resources and guidelines, and reports on monitoring.{" "}
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="/knowledge/library">
+                      <div className="icon">
+                        <AtlasSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Knowledge library</p>
+                        <p className="content-desc">
+                          Resources on marine litter and plastic pollution
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -777,6 +1112,22 @@ export const stagesChecklist = [
                 >
                   unep-gpmarinelitter@un.org
                 </Link>
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://communities.gpmarinelitter.org/">
+                      <div className="icon">
+                        <IconForum />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Engage</p>
+                        <p className="content-desc">
+                          Interactive forum for collaboration
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -803,6 +1154,35 @@ export const stagesChecklist = [
                 production, import, and lifecycle; waste statistics; monitoring
                 of freshwater and wastewater; and monitoring of costal and
                 marine waters.
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://datahub.gpmarinelitter.org/">
+                      <div className="icon">
+                        <AnalyticAndStatisticSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">
+                          Analytics and Statistics
+                        </p>
+                        <p className="content-desc">
+                          Metrics to measure progress
+                        </p>
+                      </div>
+                    </Link>
+                    <Link to="https://unepazecosysadlsstorage.z20.web.core.windows.net/">
+                      <div className="icon">
+                        <DataCatalogueSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Data Catalogue</p>
+                        <p className="content-desc">
+                          Datasets on plastic pollution and marine litter
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -814,6 +1194,22 @@ export const stagesChecklist = [
                 reporting. Browse through the action plans in the{" "}
                 <Link to="/knowledge/library">Knowledge Library</Link> for ideas
                 on how to structure the reporting elements.
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="/knowledge/library">
+                      <div className="icon">
+                        <AtlasSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Knowledge library</p>
+                        <p className="content-desc">
+                          Resources on marine litter and plastic pollution
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -840,6 +1236,35 @@ export const stagesChecklist = [
                 production, import, and lifecycle; waste statistics; monitoring
                 of freshwater and wastewater; and monitoring of costal and
                 marine waters.
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://datahub.gpmarinelitter.org/">
+                      <div className="icon">
+                        <AnalyticAndStatisticSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">
+                          Analytics and Statistics
+                        </p>
+                        <p className="content-desc">
+                          Metrics to measure progress
+                        </p>
+                      </div>
+                    </Link>
+                    <Link to="https://unepazecosysadlsstorage.z20.web.core.windows.net/">
+                      <div className="icon">
+                        <DataCatalogueSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Data Catalogue</p>
+                        <p className="content-desc">
+                          Datasets on plastic pollution and marine litter
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -856,6 +1281,22 @@ export const stagesChecklist = [
                 For inspiration on how to structure your action plan, browse
                 through the action plans in the{" "}
                 <Link to="/knowledge/library">Knowledge Library</Link>.
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="/knowledge/library">
+                      <div className="icon">
+                        <AtlasSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Knowledge library</p>
+                        <p className="content-desc">
+                          Resources on marine litter and plastic pollution
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -899,6 +1340,22 @@ export const stagesChecklist = [
                 >
                   unep-gpmarinelitter@un.org
                 </Link>
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://communities.gpmarinelitter.org/">
+                      <div className="icon">
+                        <IconForum />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Engage</p>
+                        <p className="content-desc">
+                          Interactive forum for collaboration
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -909,7 +1366,23 @@ export const stagesChecklist = [
                 Create a plan for the implementation of your action plan. For
                 inspiration on how to structure your action plan implementation
                 roadmap, browse through the action plans in the{" "}
-                <Link to="/knowledge/library">Knowledge Library</Link>.
+                <Link to="/knowledge/library">Knowledge Library</Link>.{" "}
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="/knowledge/library">
+                      <div className="icon">
+                        <AtlasSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Knowledge library</p>
+                        <p className="content-desc">
+                          Resources on marine litter and plastic pollution
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -922,20 +1395,22 @@ export const stagesChecklist = [
                 here to add you action plan to the knowledge library.
                 <br />
                 <br />
-                <Link to="/knowledge/library?topic=policy">Click here</Link> to
-                add you action plan to the knowledge library
+                <Link to="/knowledge/library?topic=action-plan">
+                  Click here
+                </Link>{" "}
+                to add you action plan to the knowledge library
                 <br />
                 <div className="buttons">
                   <h5>which tool to use?</h5>
                   <div className="button-wrapper">
-                    <Link to="/flexible-forms">
+                    <Link to="/knowledge/library?topic=action-plan">
                       <div className="icon">
-                        <CapacityBuildingSvg />
+                        <AtlasSvg />
                       </div>
                       <div className="button-content">
-                        <p className="content-title">Learning center</p>
+                        <p className="content-title">Knowledge library</p>
                         <p className="content-desc">
-                          Learning and capacity development resources
+                          Resources on marine litter and plastic pollution
                         </p>
                       </div>
                     </Link>
@@ -958,7 +1433,11 @@ export const stagesChecklist = [
         children: [
           {
             title: "Allocate funding",
-            content: (checklist) => <></>,
+            content: (checklist) => (
+              <>
+                Allocation of funds for the implementation of the action plan.
+              </>
+            ),
           },
           {
             title:
@@ -984,7 +1463,23 @@ export const stagesChecklist = [
                   }}
                 >
                   unep-gpmarinelitter@un.org
-                </Link>
+                </Link>{" "}
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://communities.gpmarinelitter.org/">
+                      <div className="icon">
+                        <IconForum />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Engage</p>
+                        <p className="content-desc">
+                          Interactive forum for collaboration
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -995,7 +1490,23 @@ export const stagesChecklist = [
                 The Digital Platform{" "}
                 <Link to="/knowledge/library">Knowledge Library</Link> allows
                 for access to a wide range of knowledge products including
-                guidelines and reports on monitoring and hotspots.
+                guidelines and reports on monitoring and hotspots.{" "}
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="/knowledge/library">
+                      <div className="icon">
+                        <AtlasSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Knowledge library</p>
+                        <p className="content-desc">
+                          Resources on marine litter and plastic pollution
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -1025,6 +1536,22 @@ export const stagesChecklist = [
                 </a>
                 . <Link to="/knowledge/library">Click here</Link> to add you
                 action plan data
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://unepazecosysadlsstorage.z20.web.core.windows.net/">
+                      <div className="icon">
+                        <DataCatalogueSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Data Catalogue</p>
+                        <p className="content-desc">
+                          Datasets on plastic pollution and marine litter
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -1042,6 +1569,22 @@ export const stagesChecklist = [
                 </a>
                 . <Link to="/knowledge/library">Click here</Link> to add you
                 action plan data
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://unepazecosysadlsstorage.z20.web.core.windows.net/">
+                      <div className="icon">
+                        <DataCatalogueSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Data Catalogue</p>
+                        <p className="content-desc">
+                          Datasets on plastic pollution and marine litter
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -1070,9 +1613,37 @@ export const stagesChecklist = [
                   href="https://unepazecosysadlsstorage.z20.web.core.windows.net/"
                   target="_blank"
                 >
-                  Data catalogue
+                  Data catalogue.
                 </a>
-                .
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://datahub.gpmarinelitter.org/">
+                      <div className="icon">
+                        <AnalyticAndStatisticSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">
+                          Analytics and Statistics
+                        </p>
+                        <p className="content-desc">
+                          Metrics to measure progress
+                        </p>
+                      </div>
+                    </Link>
+                    <Link to="https://unepazecosysadlsstorage.z20.web.core.windows.net/">
+                      <div className="icon">
+                        <DataCatalogueSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Data Catalogue</p>
+                        <p className="content-desc">
+                          Datasets on plastic pollution and marine litter
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -1080,30 +1651,25 @@ export const stagesChecklist = [
             title: "Draft report",
             content: (checklist) => (
               <>
-                The GPML{" "}
-                <Link to="https://datahub.gpmarinelitter.org">Data Hub</Link>{" "}
-                also consists of National Source Inventories for data
-                documentation and exploratory analysis based on a set of
-                proposed indicators. The inventory of the proposed indicators
-                used in the GPML is available for download in the{" "}
-                <a
-                  href="https://unepazecosysadlsstorage.z20.web.core.windows.net/"
-                  target="_blank"
-                >
-                  Data catalogue
-                </a>
-                .
-                <br />
-                <br />
-                If not already added, we encourage you to add your action plan
-                data to the GPML digital platform{" "}
-                <a
-                  href="https://unepazecosysadlsstorage.z20.web.core.windows.net/"
-                  target="_blank"
-                >
-                  Data catalogue
-                </a>
-                .
+                Browse through the action plans in the{" "}
+                <Link to="/knowledge/library">Knowledge Library</Link> for ideas
+                on how to structure the action plan report.
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="/knowledge/library">
+                      <div className="icon">
+                        <AtlasSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Knowledge library</p>
+                        <p className="content-desc">
+                          Resources on marine litter and plastic pollution
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -1151,7 +1717,23 @@ export const stagesChecklist = [
                   }}
                 >
                   unep-gpmarinelitter@un.org
-                </Link>
+                </Link>{" "}
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://communities.gpmarinelitter.org/">
+                      <div className="icon">
+                        <IconForum />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Engage</p>
+                        <p className="content-desc">
+                          Interactive forum for collaboration
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -1173,6 +1755,35 @@ export const stagesChecklist = [
                   Data catalogue
                 </a>
                 .
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://datahub.gpmarinelitter.org/">
+                      <div className="icon">
+                        <AnalyticAndStatisticSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">
+                          Analytics and Statistics
+                        </p>
+                        <p className="content-desc">
+                          Metrics to measure progress
+                        </p>
+                      </div>
+                    </Link>
+                    <Link to="https://unepazecosysadlsstorage.z20.web.core.windows.net/">
+                      <div className="icon">
+                        <DataCatalogueSvg />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Data Catalogue</p>
+                        <p className="content-desc">
+                          Datasets on plastic pollution and marine litter
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
@@ -1211,7 +1822,23 @@ export const stagesChecklist = [
                   }}
                 >
                   unep-gpmarinelitter@un.org
-                </Link>
+                </Link>{" "}
+                <div className="buttons">
+                  <h5>which tool to use?</h5>
+                  <div className="button-wrapper">
+                    <Link to="https://communities.gpmarinelitter.org/">
+                      <div className="icon">
+                        <IconForum />
+                      </div>
+                      <div className="button-content">
+                        <p className="content-title">Engage</p>
+                        <p className="content-desc">
+                          Interactive forum for collaboration
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               </>
             ),
           },
