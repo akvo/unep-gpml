@@ -1,6 +1,7 @@
 (ns gpml.util
   (:require [clojure.string :as str]
-            [clojure.walk :as w])
+            [clojure.walk :as w]
+            [gpml.util.regular-expressions :as util.regex])
   (:import [java.io File]
            [java.net URL]
            [java.util Base64]
@@ -175,3 +176,9 @@
                   acc)]
         (recur acc (next xs)))
       acc)))
+
+(defn email?
+  "Check if the provided argument is a valid email"
+  [email]
+  (and string?
+       (re-matches gpml.util.regular-expressions/email-re email)))
