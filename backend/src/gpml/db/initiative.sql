@@ -15,7 +15,8 @@ WHERE initiative.id = :id
 GROUP BY initiative.id
 
 -- :name initiative-detail-by-id :query :one
-SELECT id, language,
+SELECT id,
+language,
 json_agg(DISTINCT jsonb_build_object('name', focus_names.value)) AS focus_area,
 jsonb_build_object('name', STRING_AGG(DISTINCT outcome_names.value, ', ')) AS outcome_and_impact,
 jsonb_build_object('reports', report.value) AS is_action_being_reported,
@@ -28,7 +29,19 @@ json_agg(DISTINCT jsonb_build_object('name', phase_names.value)) AS lifecycle_ph
 json_agg(DISTINCT jsonb_build_object('name', organisation.value)) AS organisation,
 json_agg(DISTINCT jsonb_build_object('name', SUBSTR(currency_amount_invested.key,1, POSITION(' ' IN currency_amount_invested.value)))) AS currency_amount_invested,
 json_agg(DISTINCT jsonb_build_object('name', SUBSTR(currency_in_kind_contribution.key,1, POSITION(' ' IN currency_in_kind_contribution.value)))) AS currency_in_kind_contribution,
-jsonb_build_object('name', STRING_AGG(DISTINCT donor_names.value,', '), 'types', json_agg(DISTINCT jsonb_build_object('name', funding_type.value))) AS funding
+q4_1_1,
+q4_1_2,
+q4_2_1,
+q4_2_2,
+q4_3_1,
+q4_3_2,
+q4_4_1,
+q4_4_2,
+q4_4_3,
+q4_4_4,
+q4_4_5,
+q35,
+q35_1
 
   FROM initiative i
   LEFT JOIN jsonb_array_elements(q40) infos ON true
