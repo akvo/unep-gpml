@@ -308,24 +308,18 @@ function Login({ handleOnClickBtnNext, visible, close }) {
           </Col>
         </Row>
         <div className="terms">
-          {signup ? (
-            <Title level={4}>
-              By clicking next you are agreeing to our{" "}
-              <a
-                href="/privacy-policy-and-terms-of-use.pdf"
-                target="_blank"
-                rel="noreferrer"
-                className="copy-right"
-              >
-                terms and services
-              </a>
-              .
-            </Title>
-          ) : (
-            <Title level={4}>
-              By signing up you are agreeing to our terms and services.
-            </Title>
-          )}
+          <Title level={4}>
+            By signing up you are agreeing to our{" "}
+            <a
+              href="/privacy-policy-and-terms-of-use.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="copy-right"
+            >
+              terms and services
+            </a>
+            .
+          </Title>
         </div>
       </div>
     </Modal>
