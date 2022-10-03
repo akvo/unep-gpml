@@ -119,7 +119,7 @@
   [entity-name
    {:keys [entity tag representative-group
            geo-coverage-types sub-content-type
-           search-text review-status featured capacity-building] :as _params}
+           search-text review-status featured capacity-building upcoming] :as _params}
    {:keys [search-text-fields] :as _opts}]
   (let [entity-connections-join (if-not (or (seq entity) (seq representative-group))
                                   ""
@@ -158,7 +158,10 @@
                      (str " AND e.featured = :featured")
 
                      capacity-building
-                     (str " AND e.capacity_building = :capacity-building"))]
+                     (str " AND e.capacity_building = :capacity-building")
+
+                     (and upcoming (= entity-name "event"))
+                     (str " AND now() < e.start_date"))]
     (apply
      format
      "SELECT
