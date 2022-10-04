@@ -1,17 +1,53 @@
+import { useState } from "react";
 import { LinkedinOutlined, YoutubeOutlined } from "@ant-design/icons";
-import unepLogo from "./images/UNEP-logo.svg";
+import unepLogo from "./images/footer-logo.svg";
 import { Link } from "react-router-dom";
 import { UIStore } from "./store.js";
+import logo from "./images/gpml.svg";
+import { Button, Input, notification } from "antd";
+import api from "./utils/api";
 
-const Footer = ({
-  isAuthenticated,
-  loginWithPopup,
-  setStakeholderSignupModalVisible,
-  setWarningModalVisible,
-  setFilterMenu,
-  setLoginVisible,
-}) => {
-  const profile = UIStore.useState((s) => s.profile);
+const Footer = ({ setShowMenu }) => {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const isValidEmail = (email) => {
+    return /\S+@\S+\.\S+/.test(email);
+  };
+
+  const handleChange = (event) => {
+    if (!isValidEmail(event.target.value)) {
+      setError("Email is invalid");
+    } else {
+      setError(null);
+    }
+    setEmail(event.target.value);
+  };
+
+  const subscribe = () => {
+    setLoading(true);
+    api
+      .post("/subscribe", { email })
+      .then((res) => {
+        setEmail("");
+        setLoading(false);
+        notification.success({
+          message: "You have been successfully subscribed",
+        });
+      })
+      .catch((err) => {
+        setEmail("");
+        setLoading(false);
+        console.log(err);
+        notification.error({
+          message: err?.response?.message
+            ? err?.response?.message
+            : "Oops, something went wrong",
+        });
+      });
+  };
+
   return (
     <footer>
       <div className="ui container">
@@ -19,7 +55,7 @@ const Footer = ({
           <nav>
             <ul>
               <li>
-                <h4>GPML Partnership</h4>
+                <h4>About Us</h4>
               </li>
               <li>
                 <a
@@ -40,52 +76,7 @@ const Footer = ({
                 </a>
               </li>
               <li>
-                <Link to="/connect/community">Our members</Link>
-              </li>
-            </ul>
-          </nav>
-          <nav>
-            <ul>
-              <li>
-                <h4>GPML Digital platform</h4>
-              </li>
-              {profile && profile.org && !profile?.org?.isMember && (
-                <li>
-                  <Link to="/onboarding">Join GPML</Link>
-                </li>
-              )}
-              <li>
-                <Link to="/knowledge/library"> Knowledge Exchange</Link>
-              </li>
-              <li>
-                {profile?.reviewStatus === "APPROVED" ? (
-                  <Link
-                    // onClick={() =>
-                    //   setFilterMenu(["organisation", "stakeholder"])
-                    // }
-                    to="/connect/events"
-                  >
-                    Connect Stakeholders
-                  </Link>
-                ) : (
-                  <span
-                    style={{ cursor: "pointer" }}
-                    onClick={(e) => {
-                      profile && profile.hasOwnProperty("reviewStatus")
-                        ? setWarningModalVisible(true)
-                        : isAuthenticated
-                        ? setStakeholderSignupModalVisible(true)
-                        : setLoginVisible(true);
-                    }}
-                  >
-                    Connect Stakeholders
-                  </span>
-                )}
-              </li>
-              <li>
-                <a href="https://datahub.gpmarinelitter.org/" rel="noreferrer">
-                  Data Hub
-                </a>
+                <Link to="/about-us">About the GPML Digital platform</Link>
               </li>
             </ul>
           </nav>
@@ -94,73 +85,19 @@ const Footer = ({
           <nav>
             <ul>
               <li>
-                <h4>Resources</h4>
+                <h4>GPML Tools</h4>
               </li>
               <li>
                 <Link
-                  onClick={() => setFilterMenu(["project"])}
-                  to="/knowledge/library?topic=project"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowMenu(true);
+                  }}
+                  to="/"
                 >
-                  Initiative
+                  Show all tools
                 </Link>
               </li>
-              <li>
-                <Link
-                  onClick={() => setFilterMenu(["action_plan"])}
-                  to="/knowledge/library?topic=action_plan"
-                >
-                  Action Plan
-                </Link>
-              </li>
-              <li>
-                <Link
-                  onClick={() => setFilterMenu(["policy"])}
-                  to="/knowledge/library?topic=policy"
-                >
-                  Policy
-                </Link>
-              </li>
-              <li>
-                <a
-                  onClick={() => setFilterMenu(["technical_resource"])}
-                  to="/knowledge/library?topic=technical_resource"
-                >
-                  Technical Resources
-                </a>
-              </li>
-              <li>
-                <Link
-                  onClick={() => setFilterMenu(["financing_resource"])}
-                  to="/knowledge/library?topic=financing_resource"
-                >
-                  Financing Resources
-                </Link>
-              </li>
-              <li>
-                <Link
-                  onClick={() => setFilterMenu(["event"])}
-                  to="/knowledge/library?topic=event"
-                >
-                  Event
-                </Link>
-              </li>
-              <li>
-                <Link
-                  onClick={() => setFilterMenu(["technology"])}
-                  to="/knowledge/library?topic=technology"
-                >
-                  Technology
-                </Link>
-              </li>
-            </ul>
-          </nav>
-          <nav>
-            <ul>
-              {/*
-              <li><h4>Data</h4></li>
-              <li><a href="https://gpmldatahub-uneplive.hub.arcgis.com/datasets/2e4ea3959913412f8efb0e7f63e46544?showData=true" target="_blank" rel="noreferrer">SDG 14 Data</a></li>
-              <li><a href="https://gpmldatahub-uneplive.hub.arcgis.com/datasets/841b887cfe2d49abac209d21e93fc4cc?showData=true" target="_blank" rel="noreferrer">Citizen Science Data</a></li>
-              */}
             </ul>
           </nav>
         </div>
@@ -177,95 +114,100 @@ const Footer = ({
               </li>
             </ul>
           </nav>
+        </div>
+        <div className="col">
           <nav>
             <ul>
               <li>
-                <h4>Join Us</h4>
+                <h4>Follow Us</h4>
+              </li>
+            </ul>
+            <ul className="horizonList socialLink">
+              <li>
+                <a
+                  href="https://www.linkedin.com/company/global-partnership-on-marine-litter/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <LinkedinOutlined />
+                </a>
               </li>
               <li>
-                <Link to="/onboarding">
-                  Join the GPML Partnership (Entities Only)
-                </Link>
-              </li>
-              <li>
-                {profile?.reviewStatus === "APPROVED" ? (
-                  <span>
-                    Sign up to the GPML Digital Platform (For All Individuals)
-                  </span>
-                ) : (
-                  <span
-                    style={{ cursor: "pointer" }}
-                    onClick={(e) => {
-                      profile && profile.hasOwnProperty("reviewStatus")
-                        ? setWarningModalVisible(true)
-                        : isAuthenticated
-                        ? setStakeholderSignupModalVisible(true)
-                        : setLoginVisible(true);
-                    }}
-                  >
-                    Sign up to the GPML Digital Platform (For All Individuals)
-                  </span>
-                )}
+                <a
+                  href="https://www.youtube.com/channel/UCoWXFwDeoD4c9GoXzFdm9Bg"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <YoutubeOutlined />
+                </a>
               </li>
             </ul>
           </nav>
         </div>
       </div>
+      <div className="ui container">
+        <div className="subscribe-section">
+          <div className="col">
+            <nav>
+              <ul>
+                <li>
+                  <h5>Powered by</h5>
+                </li>
+                <img src={logo} className="logo" alt="GPML" />
+              </ul>
+            </nav>
+          </div>
+          <div className="col">
+            <nav>
+              <ul>
+                <li>
+                  <h4>Stay tuned with the GPML latest news and events!</h4>
+                </li>
+              </ul>
+            </nav>
+            <nav>
+              <Input.Group compact>
+                <Input
+                  placeholder="Email"
+                  value={email}
+                  onChange={handleChange}
+                  className={`${error ? "ant-input-status-error" : ""}`}
+                />
+                <Button
+                  onClick={() => subscribe()}
+                  disabled={error}
+                  loading={loading}
+                >
+                  Subscribe
+                </Button>
+              </Input.Group>
+            </nav>
+          </div>
+        </div>
+      </div>
       <div className="second-footer">
         <div className="ui container unep">
-          <img src={unepLogo} className="uneplogo" alt="unep" />
+          <nav>
+            <img src={unepLogo} alt="unep" />
+            <ul className="horizonList">
+              <li className="copyright">
+                <p className="copy-right">© UNEP</p>
+                <a
+                  href="/privacy-policy-and-terms-of-use.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="copy-right"
+                >
+                  Privacy Policy &amp; Terms of use
+                </a>
+              </li>
+            </ul>
+          </nav>
           <div className="unepInfo">
             <h2>
               The Digital Platform is a UNEP contribution to the Global
               Partnership on Marine Litter (GPML)
             </h2>
-          </div>
-        </div>
-        <div className="ui container">
-          <div className="footBottom">
-            <div className="col">
-              <nav>
-                <ul className="horizonList">
-                  <li>
-                    <p className="copy-right">© UNEP</p>
-                  </li>
-                  <li>
-                    <a
-                      href="/privacy-policy-and-terms-of-use.pdf"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="copy-right"
-                    >
-                      Privacy Policy &amp; Terms of use
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-            <div className="col">
-              <nav>
-                <ul className="horizonList socialLink">
-                  <li>
-                    <a
-                      href="https://www.linkedin.com/company/global-partnership-on-marine-litter/"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <LinkedinOutlined />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://www.youtube.com/channel/UCoWXFwDeoD4c9GoXzFdm9Bg"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <YoutubeOutlined />
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
           </div>
         </div>
       </div>
