@@ -16,129 +16,164 @@
 (def ^:const ^:private default-limit 50)
 (def ^:const ^:private default-offset 0)
 
-(def ^:private query-params
-  [:map
-   [:country {:optional true
-              :swagger {:description "Comma separated list of country id"
-                        :type "string"
-                        :collectionFormat "csv"
-                        :allowEmptyValue false}}
-    [:or
-     [:string {:max 0}]
-     [:re util.regex/comma-separated-numbers-re]]]
-   [:transnational {:optional true
-                    :swagger {:description "Comma separated list of transnational id"
-                              :type "string"
-                              :collectionFormat "csv"
-                              :allowEmptyValue false}}
-    [:or
-     [:string {:max 0}]
-     [:re util.regex/comma-separated-numbers-re]]]
-   [:topic {:optional true
-            :swagger {:description (format "Comma separated list of topics to filter: %s" (str/join "," topics))
-                      :type "string"
-                      :collectionFormat "csv"
-                      :allowEmptyValue false}}
-    [:or
-     [:string {:max 0}]
-     [:re
-      {:error/message (format "Should be one of the following options: %s" (str/join "," topics))}
-      topic-re]]]
-   [:tag {:optional true
-          :swagger {:description "Comma separated list of tags"
-                    :type "string"
-                    :collectionFormat "csv"
-                    :allowEmptyValue false}}
-    string?]
-   [:q {:optional true
-        :swagger {:description "Text search term to be found on the different topics"
-                  :type "string"
-                  :allowEmptyValue false}}
-    [:string]]
-   [:favorites {:optional true
-                :error/message "Favorites should be 'true' or 'false'"
-                :swagger {:description "Flag to return only favorited items"
-                          :type "boolean"
-                          :allowEmptyValue false}}
-    [:boolean]]
-   [:startDate {:optional true
-                :error/message "startDate should be in the ISO 8601 format i.e.: YYYY-MM-DD"
-                :swagger {:description "Events startDate in the format of ISO 8601 i.e.: YYYY-MM-DD"
-                          :type "string"
-                          :allowEmptyValue false}}
-    [:or
-     [:string {:max 0}]
-     [:re util.regex/date-iso-8601-re]]]
-   [:endDate {:optional true
-              :error/message "endDate should be in the ISO 8601 format i.e.: YYYY-MM-DD"
-              :swagger {:description "Events endDate in the format of ISO 8601 i.e.: YYYY-MM-DD"
-                        :type "string"
-                        :allowEmptyValue false}}
-    [:or
-     [:string {:max 0}]
-     [:re util.regex/date-iso-8601-re]]]
-   [:representativeGroup {:optional true
-                          :swagger {:description "Comma separated list of representative groups"
-                                    :type "string"
-                                    :allowEmptyValue false}}
-    string?]
-   [:affiliation {:optional true
-                  :swagger {:description "Comma separated list of affiliation ids (i.e., organisation ids)"
-                            :type "string"
-                            :allowEmptyValue false}}
-    string?]
-   [:subContentType {:optional true
-                     :swagger {:description "Comma separated list of a topic's subContentTypes"
+(def api-opts-schema
+  "Browse API's filter options."
+  [:and
+   [:map
+    [:country {:optional true
+               :swagger {:description "Comma separated list of country id"
+                         :type "string"
+                         :collectionFormat "csv"
+                         :allowEmptyValue false}}
+     [:set
+      {:decode/string
+       (fn [s]
+         (->> (set (str/split s #","))
+              (map #(Integer/parseInt %))))}
+      pos-int?]]
+    [:transnational {:optional true
+                     :swagger {:description "Comma separated list of transnational id"
                                :type "string"
+                               :collectionFormat "csv"
                                :allowEmptyValue false}}
-    string?]
-   [:entity {:optional true
-             :swagger {:description "Comma separated list of entity IDs"
+     [:set
+      {:decode/string (fn [s] (set (map #(Integer/parseInt %) (str/split s #","))))}
+      pos-int?]]
+    [:topic {:optional true
+             :swagger {:description (format "Comma separated list of topics to filter: %s" (str/join "," topics))
                        :type "string"
+                       :collectionFormat "csv"
                        :allowEmptyValue false}}
-    string?]
-   [:orderBy {:optional true
-              :swagger {:description "One of the following properties to order the list of results: title, description, id"
-                        :type "string"
-                        :allowEmptyValue false}}
-    (apply vector :enum order-by-fields)]
-   [:incCountsForTags {:optional true
-                       :swagger {:description "Includes the counts for the specified tags which is a comma separated list of approved tags."
-                                 :type "string"}}
-    [:string {:min 1}]]
-   [:descending {:optional true
-                 :swagger {:description "Order results in descending order: true or false"
+     [:set
+      {:decode/string (fn [s] (set (str/split s #",")))}
+      (apply conj [:enum] topics)]]
+    [:tag {:optional true
+           :swagger {:description "Comma separated list of tags"
+                     :type "string"
+                     :collectionFormat "csv"
+                     :allowEmptyValue false}}
+     [:set
+      {:decode/string (fn [s] (set (str/split s #",")))}
+      string?]]
+    [:q {:optional true
+         :swagger {:description "Text search term to be found on the different topics"
+                   :type "string"
+                   :allowEmptyValue false}}
+     [:string
+      {:min 1
+       :decode/string (fn [s] (->> (str/trim s)
+                                   (re-seq #"\w+")
+                                   (str/join " & ")))}]]
+    [:favorites {:optional true
+                 :error/message "Favorites should be 'true' or 'false'"
+                 :swagger {:description "Flag to return only favorited items"
                            :type "boolean"
                            :allowEmptyValue false}}
-    [:boolean]]
-   [:limit {:optional true
-            :swagger {:description "Limit the number of entries per page"
-                      :type "int"
-                      :allowEmptyValue false}}
-    [:int {:min 1}]]
-   [:offset {:optional true
-             :swagger {:description "Number of items to skip when fetching entries"
+     [:boolean]]
+    [:startDate {:optional true
+                 :error/message "startDate should be in the ISO 8601 format i.e.: YYYY-MM-DD"
+                 :swagger {:description "Events startDate in the format of ISO 8601 i.e.: YYYY-MM-DD"
+                           :type "string"
+                           :allowEmptyValue false}}
+     [:or
+      [:string {:max 0}]
+      [:re util.regex/date-iso-8601-re]]]
+    [:endDate {:optional true
+               :error/message "endDate should be in the ISO 8601 format i.e.: YYYY-MM-DD"
+               :swagger {:description "Events endDate in the format of ISO 8601 i.e.: YYYY-MM-DD"
+                         :type "string"
+                         :allowEmptyValue false}}
+     [:or
+      [:string {:max 0}]
+      [:re util.regex/date-iso-8601-re]]]
+    [:representativeGroup {:optional true
+                           :swagger {:description "Comma separated list of representative groups"
+                                     :type "string"
+                                     :allowEmptyValue false}}
+     [:set
+      {:decode/string (fn [s] (set (str/split s #",")))}
+      string?]]
+    [:affiliation {:optional true
+                   :swagger {:description "Comma separated list of affiliation ids (i.e., organisation ids)"
+                             :type "string"
+                             :allowEmptyValue false}}
+     [:set
+      {:decode/string (fn [s] (set (map #(Integer/parseInt %) (str/split s #","))))}
+      pos-int?]]
+    [:subContentType {:optional true
+                      :swagger {:description "Comma separated list of a topic's subContentTypes"
+                                :type "string"
+                                :allowEmptyValue false}}
+     [:set
+      {:decode/string (fn [s] (set (str/split s #",")))}
+      string?]]
+    [:entity {:optional true
+              :swagger {:description "Comma separated list of entity IDs"
+                        :type "string"
+                        :allowEmptyValue false}}
+     [:set
+      {:decode/string (fn [s] (set (map #(Integer/parseInt %) (str/split s #","))))}
+      pos-int?]]
+    [:orderBy {:optional true
+               :swagger {:description "One of the following properties to order the list of results: title, description, id"
+                         :type "string"
+                         :allowEmptyValue false}}
+     (apply vector :enum order-by-fields)]
+    [:incCountsForTags {:optional true
+                        :swagger {:description "Includes the counts for the specified tags which is a comma separated list of approved tags."
+                                  :type "string"}}
+     [:set
+      {:decode/string (fn [s] (set (str/split s #",")))}
+      string?]]
+    [:descending {:optional true
+                  :swagger {:description "Order results in descending order: true or false"
+                            :type "boolean"
+                            :allowEmptyValue false}}
+     [:boolean]]
+    [:limit {:optional true
+             :swagger {:description "Limit the number of entries per page"
                        :type "int"
                        :allowEmptyValue false}}
-    [:int {:min 0}]]
-   [:featured {:optional true
-               :error/message "Featured should be 'true' or 'false'"
-               :swagger {:description "Boolean flag to filter by featured resources"
-                         :type "boolean"
-                         :allowEmptyValue false}}
-    boolean?]
-   [:capacity_building {:optional true
-                        :error/message "'capacity_building' should be 'true' or 'false'"
-                        :swagger {:description "Boolean flag to filter by capacity building resources"
-                                  :type "boolean"
-                                  :allowEmptyValue false}}
-    boolean?]])
+     [:int {:min 1}]]
+    [:offset {:optional true
+              :swagger {:description "Number of items to skip when fetching entries"
+                        :type "int"
+                        :allowEmptyValue false}}
+     [:int {:min 0}]]
+    [:featured {:optional true
+                :error/message "Featured should be 'true' or 'false'"
+                :swagger {:description "Boolean flag to filter by featured resources"
+                          :type "boolean"
+                          :allowEmptyValue false}}
+     boolean?]
+    [:upcoming {:optional true
+                :error/message "Upcoming should be 'true' or 'false'"
+                :swagger {:description "Boolean flag to filter by upcoming events. This only applies to the event entity"
+                          :type "boolean"
+                          :allowEmptyValue false}}
+     boolean?]
+    [:capacity_building {:optional true
+                         :error/message "'capacity_building' should be 'true' or 'false'"
+                         :swagger {:description "Boolean flag to filter by capacity building resources"
+                                   :type "boolean"
+                                   :allowEmptyValue false}}
+     boolean?]]
+   [:fn
+    {:error/fn
+     (fn [_ _]
+       "Upcoming parameter is only supported for the 'event' topic.")}
+    (fn [{:keys [upcoming topic]}]
+      (if-not (true? upcoming)
+        true
+        (and upcoming
+             (= (count topic) 1)
+             (= (first topic) "event"))))]])
 
 (defn get-db-filter
   "Transforms API query parameters into a map of database filters."
   [{:keys [limit offset startDate endDate user-id favorites country transnational
            topic tag affiliation representativeGroup subContentType entity orderBy
-           descending q incCountsForTags featured capacity_building]
+           descending q incCountsForTags featured capacity_building upcoming]
     :or {limit default-limit
          offset default-offset}}]
   (cond-> {}
@@ -158,32 +193,31 @@
     (assoc :user-id user-id :favorites true :resource-types resource-types)
 
     (seq country)
-    (assoc :geo-coverage (->> (set (str/split country #","))
-                              (map #(Integer/parseInt %))))
+    (assoc :geo-coverage country)
 
     (seq transnational)
-    (assoc :transnational (set (map #(Integer/parseInt %) (str/split transnational #","))))
+    (assoc :transnational 1)
 
     (seq topic)
-    (assoc :topic (set (str/split topic #",")))
+    (assoc :topic topic)
 
     (seq tag)
-    (assoc :tag (set (str/split tag #",")))
+    (assoc :tag tag)
 
     (seq incCountsForTags)
-    (assoc :tags-to-count (set (str/split incCountsForTags #",")))
+    (assoc :tags-to-count incCountsForTags)
 
     (seq affiliation)
-    (assoc :affiliation (set (map #(Integer/parseInt %) (str/split affiliation #","))))
+    (assoc :affiliation affiliation)
 
     (seq representativeGroup)
-    (assoc :representative-group (set (str/split representativeGroup #",")))
+    (assoc :representative-group representativeGroup)
 
     (seq subContentType)
-    (assoc :sub-content-type (set (str/split subContentType #",")))
+    (assoc :sub-content-type subContentType)
 
     (seq entity)
-    (assoc :entity (set (map #(Integer/parseInt %) (str/split entity #","))))
+    (assoc :entity entity)
 
     (seq orderBy)
     (assoc :order-by orderBy)
@@ -192,12 +226,13 @@
     (assoc :descending descending)
 
     (seq q)
-    (assoc :search-text (->> (str/trim q)
-                             (re-seq #"\w+")
-                             (str/join " & ")))
+    (assoc :search-text q)
 
     featured
     (assoc :featured featured)
+
+    upcoming
+    (assoc :upcoming upcoming)
 
     capacity_building
     (assoc :capacity-building capacity_building)
@@ -287,4 +322,4 @@
      (= "ADMIN" (:role user)))))
 
 (defmethod ig/init-key :gpml.handler.browse/query-params [_ _]
-  query-params)
+  api-opts-schema)
