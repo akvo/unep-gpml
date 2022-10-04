@@ -16,8 +16,6 @@ import { Pagination, Navigation } from "swiper";
  import user1img from '../../images/our-community/cassia-patel.jpg'
 import api from '../../utils/api';
 import { Link } from 'react-router-dom';
-//  import helpCenterIcon
-//  import { ReactComponent as HelpCenterIcon } from "../../images/help-center.svg";
 
 const Landing = ({ setLoginVisible, history, ...props }) => {
   return (
@@ -58,7 +56,7 @@ const Landing = ({ setLoginVisible, history, ...props }) => {
       <Stats />
       <Act {...{ setLoginVisible }} />
       <AnyQuestions />
-      <Footer />
+      <Footer setShowMenu={props.setShowMenu} />
     </div>
   )
 }

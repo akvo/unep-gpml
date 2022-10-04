@@ -7,14 +7,14 @@ import logo from "./images/gpml.svg";
 import { Button, Input, notification } from "antd";
 import api from "./utils/api";
 
-const Footer = ({ setFilterMenu }) => {
+const Footer = ({ setShowMenu }) => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  function isValidEmail(email) {
+  const isValidEmail = (email) => {
     return /\S+@\S+\.\S+/.test(email);
-  }
+  };
 
   const handleChange = (event) => {
     if (!isValidEmail(event.target.value)) {
@@ -89,8 +89,11 @@ const Footer = ({ setFilterMenu }) => {
               </li>
               <li>
                 <Link
-                  onClick={() => setFilterMenu(["project"])}
-                  to="/knowledge/library?topic=project"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowMenu(true);
+                  }}
+                  to="/"
                 >
                   Show all tools
                 </Link>
