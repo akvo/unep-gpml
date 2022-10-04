@@ -10,9 +10,7 @@
             [gpml.handler.image :as handler.image]
             [gpml.handler.organisation :as handler.org]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
-            [gpml.handler.tag :as handler.tag]
             [gpml.handler.util :as handler.util]
-            [gpml.util :as util]
             [gpml.util.email :as email]
             [gpml.util.geo :as geo]
             [gpml.util.postgresql :as pg-util]
@@ -360,42 +358,57 @@
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (def ^:const suggested-profiles-per-page 5)
+(def ^:const default-get-suggested-profiles-page 0)
 
 (defn api-suggested-profiles-opts->suggested-profiles-opts
-  [suggested-profiles-opts]
-  (util/update-if-not-nil suggested-profiles-opts :page #(Integer/parseInt %)))
+  [{:keys [page] :as suggested-profiles-opts}]
+  (if page
+    (update suggested-profiles-opts :page #(Integer/parseInt %))
+    (assoc suggested-profiles-opts :page default-get-suggested-profiles-page)))
 
+;; TODO: Refactor query to allow stakeholder ids as filter for `get-recent-active-stakeholders`.
+;; TODO: Use limit got from params instead of the one hardcoded from a constant (apply the constant as default if missing).
 (defmethod ig/init-key ::suggested-profiles
   [_ {:keys [db]}]
   (fn [{:keys [jwt-claims parameters]}]
     (if-let [stakeholder (db.stakeholder/stakeholder-by-email (:spec db) {:email (:email jwt-claims)})]
       (let [{page :page} (api-suggested-profiles-opts->suggested-profiles-opts (:query parameters))
-            tags (db.stakeholder/stakeholder-tags (:spec db) stakeholder)
-            offerings-ids (->> tags (filter #(= (:category %) "offering")) first :tags)
-            seekings-ids (->> tags (filter #(= (:category %) "seeking")) first :tags)
-            {:keys [offering-seekings seeking-offerings]}
-            (handler.tag/get-offerings-seekings-matches db offerings-ids seekings-ids)
-            stakeholders (db.stakeholder/get-suggested-stakeholders (:spec db) {:offering-seekings offering-seekings
-                                                                                :seeking-offerings seeking-offerings
-                                                                                :stakeholder-id (:id stakeholder)
-                                                                                :offset (* suggested-profiles-per-page page)
-                                                                                :limit suggested-profiles-per-page})]
+            tags (db.resource.tag/get-resource-tags (:spec db) {:table "stakeholder_tag"
+                                                                :resource-col "stakeholder"
+                                                                :resource-id (:id stakeholder)})
+            offerings-ids (->> tags
+                               (filter #(= (:tag_relation_category %) "offering"))
+                               (mapv #(get % :id)))
+            seekings-ids (->> tags
+                              (filter #(= (:tag_relation_category %) "seeking"))
+                              (mapv #(get % :id)))
+            stakeholders (db.stakeholder/get-suggested-stakeholders
+                          (:spec db)
+                          {:seeking-ids-for-offerings seekings-ids
+                           :offering-ids-for-seekings offerings-ids
+                           :stakeholder-id (:id stakeholder)
+                           :offset (* suggested-profiles-per-page page)
+                           :limit suggested-profiles-per-page})]
         (cond
           (and (seq stakeholders) (= (count stakeholders) suggested-profiles-per-page))
-          (resp/response {:suggested_profiles (map #(get-stakeholder-profile db %) stakeholders)})
+          (resp/response {:suggested_profiles (mapv #(get-stakeholder-profile db %) stakeholders)})
 
           (not (seq stakeholders))
-          (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders (:spec db)
-                                                                                                  {:limit suggested-profiles-per-page
-                                                                                                   :stakeholder-id (:id stakeholder)})
-                                                   (map #(get-stakeholder-profile db %)))})
+          (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
+                                                    (:spec db)
+
+                                                    {:limit suggested-profiles-per-page
+                                                     :stakeholder-id (:id stakeholder)})
+                                                   (mapv #(get-stakeholder-profile db %)))})
 
           :else
-          (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders (:spec db)
-                                                                                                  {:limit (- suggested-profiles-per-page (count stakeholders))
-                                                                                                   :stakeholder-id (:id stakeholder)})
-                                                   (apply conj stakeholders)
-                                                   (map #(get-stakeholder-profile db %))
+          (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
+                                                    (:spec db)
+
+                                                    {:limit (- suggested-profiles-per-page (count stakeholders))
+                                                     :stakeholder-id (:id stakeholder)})
+                                                   (apply conj (vec stakeholders))
+                                                   (mapv #(get-stakeholder-profile db %))
                                                    (distinct))})))
       (resp/response {}))))
 

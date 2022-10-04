@@ -287,35 +287,34 @@ select id, first_name, last_name, email from stakeholder
    and review_status = 'APPROVED';
 
 -- :name get-suggested-stakeholders :?
--- :doc Get stakeholder based on matching seeking, offerings and location
+-- :doc Get distinct stakeholders based on matching seeking and offerings.
 WITH suggested_stakeholders AS (
     SELECT
-        *
+        DISTINCT s.*
     FROM
         stakeholder s
         JOIN stakeholder_tag st ON s.id = st.stakeholder
         JOIN tag t ON st.tag = t.id
-        JOIN tag_category tg ON t.tag_category = tg.id
     WHERE
-        t.tag IN (:v*:offering-seekings)
+        t.id IN (:v*:seeking-ids-for-offerings)
         AND s.id != :stakeholder-id
+        AND st.tag_relation_category = 'offering'
     UNION
     SELECT
-        *
+        DISTINCT s.*
     FROM
         stakeholder s
         JOIN stakeholder_tag st ON s.id = st.stakeholder
         JOIN tag t ON st.tag = t.id
-        JOIN tag_category tg ON t.tag_category = tg.id
     WHERE
-        t.tag IN (:v*:seeking-offerings)
-        AND s.id != :stakeholder-id)
-SELECT
-    *
+        t.id IN (:v*:offering-ids-for-seekings)
+        AND s.id != :stakeholder-id
+        AND st.tag_relation_category = 'seeking')
+SELECT *
 FROM
     suggested_stakeholders
 LIMIT :limit
-OFFSET :offset
+OFFSET :offset;
 
 -- :name get-recent-active-stakeholders :? :*
 -- :doc Get stakeholders based on the most recent activites
