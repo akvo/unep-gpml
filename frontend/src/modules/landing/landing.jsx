@@ -19,7 +19,7 @@ import { Link } from 'react-router-dom';
 //  import helpCenterIcon
 //  import { ReactComponent as HelpCenterIcon } from "../../images/help-center.svg";
 
-const Landing = ({ setLoginVisible, ...props }) => {
+const Landing = ({ setLoginVisible, history, ...props }) => {
   return (
     <div id="landingb">
       <MenuBar {...props} setLoginVisible={setLoginVisible} />
@@ -47,7 +47,10 @@ const Landing = ({ setLoginVisible, ...props }) => {
       <div className="workspace">
         <img src="/person-workspace.svg" />
         <h3>All the tools you need to act, in one place.</h3>
-        <Button type='primary' size='large' onClick={() => setLoginVisible(true)}>Create your workspace</Button>
+        <Button type='primary' size='large' onClick={() => {
+          if (!props.isAuthenticated) setLoginVisible(true);
+          else history.push("/projects/get-started");
+        }}>Create your workspace</Button>
       </div>
       <TheJourney />
       <Connect />
