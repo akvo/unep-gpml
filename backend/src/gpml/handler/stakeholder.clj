@@ -357,21 +357,23 @@
             response
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
-(def ^:const suggested-profiles-per-page 5)
+(def ^:const default-suggested-profiles-per-page 5)
 (def ^:const default-get-suggested-profiles-page 0)
 
-(defn api-suggested-profiles-opts->suggested-profiles-opts
-  [{:keys [page] :as suggested-profiles-opts}]
-  (if page
-    (update suggested-profiles-opts :page #(Integer/parseInt %))
-    (assoc suggested-profiles-opts :page default-get-suggested-profiles-page)))
+(defn- api-suggested-profiles-opts->suggested-profiles-opts
+  [{:keys [limit page] :as suggested-profiles-opts}]
+  (cond-> suggested-profiles-opts
+    (nil? limit)
+    (assoc :limit default-suggested-profiles-per-page)
 
-;; TODO: Use limit got from params instead of the one hardcoded from a constant (apply the constant as default if missing).
+    (nil? page)
+    (assoc :page default-get-suggested-profiles-page)))
+
 (defmethod ig/init-key ::suggested-profiles
   [_ {:keys [db]}]
   (fn [{:keys [jwt-claims parameters]}]
     (if-let [stakeholder (db.stakeholder/stakeholder-by-email (:spec db) {:email (:email jwt-claims)})]
-      (let [{page :page} (api-suggested-profiles-opts->suggested-profiles-opts (:query parameters))
+      (let [{page :page limit :limit} (api-suggested-profiles-opts->suggested-profiles-opts (:query parameters))
             tags (db.resource.tag/get-resource-tags (:spec db) {:table "stakeholder_tag"
                                                                 :resource-col "stakeholder"
                                                                 :resource-id (:id stakeholder)})
@@ -386,23 +388,23 @@
                           {:seeking-ids-for-offerings seekings-ids
                            :offering-ids-for-seekings offerings-ids
                            :stakeholder-id (:id stakeholder)
-                           :offset (* suggested-profiles-per-page page)
-                           :limit suggested-profiles-per-page})]
+                           :offset (* limit page)
+                           :limit limit})]
         (cond
-          (and (seq stakeholders) (= (count stakeholders) suggested-profiles-per-page))
+          (and (seq stakeholders) (= (count stakeholders) limit))
           (resp/response {:suggested_profiles (mapv #(get-stakeholder-profile db %) stakeholders)})
 
           (not (seq stakeholders))
           (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
                                                     (:spec db)
-                                                    {:limit suggested-profiles-per-page
+                                                    {:limit limit
                                                      :stakeholder-ids [(:id stakeholder)]})
                                                    (mapv #(get-stakeholder-profile db %)))})
 
           :else
           (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
                                                     (:spec db)
-                                                    {:limit (- suggested-profiles-per-page (count stakeholders))
+                                                    {:limit (- limit (count stakeholders))
                                                      :stakeholder-ids (conj
                                                                        (->> stakeholders
                                                                             (mapv #(get % :id))
@@ -455,9 +457,11 @@
 (defmethod ig/init-key ::suggested-profiles-params
   [_ _]
   {:query [:map
-           [:page {:optional true
-                   :default "0"}
-            string?]]})
+           [:page {:optional true}
+            [:int
+             {:min 0}]]
+           [:limit {:optional true}
+            pos-int?]]})
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post-params [_ _]
   [:map
