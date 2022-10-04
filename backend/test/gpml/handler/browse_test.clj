@@ -13,7 +13,6 @@
             [integrant.core :as ig]
             [malli.core :as malli]
             [malli.transform :as mt]
-            [muuntaja.core :as m]
             [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
