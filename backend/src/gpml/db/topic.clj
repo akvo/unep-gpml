@@ -119,7 +119,7 @@
   [entity-name
    {:keys [entity tag representative-group
            geo-coverage-types sub-content-type
-           search-text review-status featured capacity-building] :as _params}
+           search-text review-status featured capacity-building upcoming] :as _params}
    {:keys [search-text-fields] :as _opts}]
   (let [entity-connections-join (if-not (or (seq entity) (seq representative-group))
                                   ""
@@ -158,7 +158,10 @@
                      (str " AND e.featured = :featured")
 
                      capacity-building
-                     (str " AND e.capacity_building = :capacity-building"))]
+                     (str " AND e.capacity_building = :capacity-building")
+
+                     (and upcoming (= entity-name "event"))
+                     (str " AND now() < e.start_date"))]
     (apply
      format
      "SELECT
@@ -353,10 +356,20 @@
      (str " UNION ALL " capacity-building-count-aggregate-query-raw-sql))))
 
 (defn- generate-get-topics-query
-  [{:keys [order-by limit offset descending]}]
+  [{:keys [order-by limit offset descending upcoming topic]}]
   (let [order (if descending "DESC" "ASC")
-        order-by-clause (if (seq order-by)
+        order-by-clause (cond
+                          ;; We assume the upcoming filter will always
+                          ;; be together with the event topic. The
+                          ;; browse API disallows its usage if there
+                          ;; are multiple topics.
+                          (and upcoming (= (first topic) "event"))
+                          "ORDER BY json->>'start_date' ASC"
+
+                          (seq order-by)
                           (format "ORDER BY json->>'%s' %s" order-by order)
+
+                          :else
                           "ORDER BY (COALESCE(json->>'start_date', json->>'created'))::timestamptz DESC")]
     (str/join
      " "

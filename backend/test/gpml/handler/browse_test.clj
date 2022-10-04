@@ -12,6 +12,7 @@
             [gpml.util.regular-expressions :as util.regex]
             [integrant.core :as ig]
             [malli.core :as malli]
+            [malli.transform :as mt]
             [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
@@ -49,36 +50,38 @@
         false ",,"))))
 
 (deftest db-filter-based-on-query-params
-  (testing "Default filter values"
-    (is (= (browse/get-db-filter {}) {:offset 0 :limit 50 :review-status "APPROVED"}))
-    (is (= (browse/get-db-filter {:q "" :topic "" :country ""}) {:offset 0 :limit 50 :review-status "APPROVED"})))
-  (testing "Country is not empty"
-    (is (= (browse/get-db-filter {:country "73,106,107"})
-           {:geo-coverage [107 73 106] :offset 0 :limit 50 :review-status "APPROVED"})))
-  (testing "Topic is not empty"
-    (is (= (browse/get-db-filter {:topic "technology"})
-           {:topic #{"technology"} :offset 0 :limit 50 :review-status "APPROVED"})))
-  (testing "Search is not empty"
-    (is (= (browse/get-db-filter {:q "act"})
-           {:search-text "act" :offset 0 :limit 50 :review-status "APPROVED"})))
-  (testing "Search multiple keywords"
-    (is (= (browse/get-db-filter {:q "some test"})
-           {:search-text "some & test" :offset 0 :limit 50 :review-status "APPROVED"})))
-  (testing "Trailing/leading/double spaces are trimmed"
-    (is (= (browse/get-db-filter {:q "  This   is a test  "})
-           {:search-text "This & is & a & test" :offset 0 :limit 50 :review-status "APPROVED"})))
-  (testing "Ampersand is removed"
-    (is (= (browse/get-db-filter {:q "&&test&&"})
-           {:search-text "test" :offset 0 :limit 50 :review-status "APPROVED"})))
-  (testing "None is empty"
-    (is (= (browse/get-db-filter {:q "eco"
-                                  :country "253"
-                                  :topic "initiative,event"})
-           {:search-text "eco"
-            :geo-coverage [253]
-            :topic #{"initiative" "event"}
-            :offset 0 :limit 50
-            :review-status "APPROVED"}))))
+  (letfn [(decode-params [params]
+            (malli/decode browse/api-opts-schema params mt/string-transformer))]
+    (testing "Default filter values"
+      (is (= (browse/get-db-filter (decode-params {})) {:offset 0 :limit 50 :review-status "APPROVED"})))
+    (testing "Country is not empty"
+      (is (= (browse/get-db-filter (decode-params {:country "73,106,107"}))
+             {:geo-coverage #{107 73 106} :offset 0 :limit 50 :review-status "APPROVED"})))
+    (testing "Topic is not empty"
+      (is (= (browse/get-db-filter (decode-params {:topic "technology"}))
+             {:topic #{"technology"} :offset 0 :limit 50 :review-status "APPROVED"})))
+    (testing "Search is not empty"
+      (is (= (browse/get-db-filter (decode-params {:q "act"}))
+             {:search-text "act" :offset 0 :limit 50 :review-status "APPROVED"})))
+    (testing "Search multiple keywords"
+      (is (= (browse/get-db-filter (decode-params {:q "some test"}))
+             {:search-text "some & test" :offset 0 :limit 50 :review-status "APPROVED"})))
+    (testing "Trailing/leading/double spaces are trimmed"
+      (is (= (browse/get-db-filter (decode-params {:q "  This   is a test  "}))
+             {:search-text "This & is & a & test" :offset 0 :limit 50 :review-status "APPROVED"})))
+    (testing "Ampersand is removed"
+      (is (= (browse/get-db-filter (decode-params {:q "&&test&&"}))
+             {:search-text "test" :offset 0 :limit 50 :review-status "APPROVED"})))
+    (testing "None is empty"
+      (is (= (browse/get-db-filter (decode-params
+                                    {:q "eco"
+                                     :country "253"
+                                     :topic "initiative,event"}))
+             {:search-text "eco"
+              :geo-coverage #{253}
+              :topic #{"initiative" "event"}
+              :offset 0 :limit 50
+              :review-status "APPROVED"})))))
 
 (deftest browse-view-results
   (let [db (test-util/db-test-conn)
@@ -135,14 +138,14 @@
 
     (testing "Testing query for BOGUS tags"
       (let [resp (handler (-> (mock/request :get "/")
-                              (assoc :parameters {:query {:tag "bogus1,bogus2"}})))
+                              (assoc :parameters {:query {:tag #{"bogus1" "bogus2"}}})))
             body (-> resp :body)
             results (:results body)]
         (is (= 0 (count results)))))
 
     (testing "Testing query for existing tags"
       (let [resp (handler (-> (mock/request :get "/")
-                              (assoc :parameters {:query {:tag "waste management"}})))
+                              (assoc :parameters {:query {:tag #{"waste management"}}})))
             body (-> resp :body)
             results (:results body)]
         (is (= 16 (count results)))))))
