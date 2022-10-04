@@ -357,23 +357,11 @@
             response
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
-(def ^:const default-suggested-profiles-per-page 5)
-(def ^:const default-get-suggested-profiles-page 0)
-
-(defn- api-suggested-profiles-opts->suggested-profiles-opts
-  [{:keys [limit page] :as suggested-profiles-opts}]
-  (cond-> suggested-profiles-opts
-    (nil? limit)
-    (assoc :limit default-suggested-profiles-per-page)
-
-    (nil? page)
-    (assoc :page default-get-suggested-profiles-page)))
-
 (defmethod ig/init-key ::suggested-profiles
   [_ {:keys [db]}]
   (fn [{:keys [jwt-claims parameters]}]
     (if-let [stakeholder (db.stakeholder/stakeholder-by-email (:spec db) {:email (:email jwt-claims)})]
-      (let [{page :page limit :limit} (api-suggested-profiles-opts->suggested-profiles-opts (:query parameters))
+      (let [{page :page limit :limit} (:query parameters)
             tags (db.resource.tag/get-resource-tags (:spec db) {:table "stakeholder_tag"
                                                                 :resource-col "stakeholder"
                                                                 :resource-id (:id stakeholder)})
@@ -457,10 +445,12 @@
 (defmethod ig/init-key ::suggested-profiles-params
   [_ _]
   {:query [:map
-           [:page {:optional true}
+           [:page
+            {:default 0}
             [:int
              {:min 0}]]
-           [:limit {:optional true}
+           [:limit
+            {:default 5}
             pos-int?]]})
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post-params [_ _]
