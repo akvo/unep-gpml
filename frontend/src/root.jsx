@@ -489,6 +489,7 @@ const Root = () => {
                 isAuthenticated,
                 auth0Client,
                 setWarningModalVisible,
+                history
               }}
             />
           )}
