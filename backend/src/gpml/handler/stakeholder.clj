@@ -366,7 +366,6 @@
     (update suggested-profiles-opts :page #(Integer/parseInt %))
     (assoc suggested-profiles-opts :page default-get-suggested-profiles-page)))
 
-;; TODO: Refactor query to allow stakeholder ids as filter for `get-recent-active-stakeholders`.
 ;; TODO: Use limit got from params instead of the one hardcoded from a constant (apply the constant as default if missing).
 (defmethod ig/init-key ::suggested-profiles
   [_ {:keys [db]}]
@@ -396,20 +395,21 @@
           (not (seq stakeholders))
           (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
                                                     (:spec db)
-
                                                     {:limit suggested-profiles-per-page
-                                                     :stakeholder-id (:id stakeholder)})
+                                                     :stakeholder-ids [(:id stakeholder)]})
                                                    (mapv #(get-stakeholder-profile db %)))})
 
           :else
           (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
                                                     (:spec db)
-
                                                     {:limit (- suggested-profiles-per-page (count stakeholders))
-                                                     :stakeholder-id (:id stakeholder)})
+                                                     :stakeholder-ids (conj
+                                                                       (->> stakeholders
+                                                                            (mapv #(get % :id))
+                                                                            (remove nil?))
+                                                                       (:id stakeholder))})
                                                    (apply conj (vec stakeholders))
-                                                   (mapv #(get-stakeholder-profile db %))
-                                                   (distinct))})))
+                                                   (mapv #(get-stakeholder-profile db %)))})))
       (resp/response {}))))
 
 (def org-schema

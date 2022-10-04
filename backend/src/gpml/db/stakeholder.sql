@@ -324,7 +324,7 @@ SELECT
 FROM
     stakeholder s
     JOIN activity a ON s.id = a.owner_id
-    WHERE s.id != :stakeholder-id
+    WHERE s.id NOT IN (:v*:stakeholder-ids)
 ORDER BY
     s.id,
     a.created_at DESC
