@@ -80,7 +80,7 @@
                              :photo picture)
           resp (handler (-> (mock/request :post "/")
                             (assoc :jwt-claims {:email "john@org" :picture "test.jpg" :sub "auth0|123"})
-                            (assoc :body-params body-params)))]
+                            (assoc :parameters {:body  body-params})))]
       (is (= 201 (:status resp)))
       (is (= "John" (-> (:body resp) :first_name)))
       (is (= "Doe" (-> (:body resp) :last_name)))
@@ -125,7 +125,7 @@
                              :photo picture)
           resp (handler (-> (mock/request :post "/")
                             (assoc :jwt-claims {:email "john@org" :picture "test.jpg" :sub "auth0|123"})
-                            (assoc :body-params body-params)))]
+                            (assoc :parameters {:body  body-params})))]
       (is (= 201 (:status resp)))
       (is (= "John" (-> (:body resp) :first_name)))
       (is (= "Doe" (-> (:body resp) :last_name)))
@@ -165,7 +165,7 @@
           ;; John trying to sign up without any organisation and leave photo, twitter, and linkedin blank
           resp (handler (-> (mock/request :post "/")
                             (assoc :jwt-claims {:email "john@org"})
-                            (assoc :body-params (dissoc body-params :twitter :linkedin :photo))))]
+                            (assoc :parameters {:body  (dissoc body-params :twitter :linkedin :photo)})))]
       (is (= 201 (:status resp)))
       (is (= "John" (-> (:body resp) :first_name)))
       (is (= "Doe" (-> (:body resp) :last_name)))
