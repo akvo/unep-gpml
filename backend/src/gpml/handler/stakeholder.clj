@@ -271,14 +271,14 @@
     (:id result)))
 
 (defn- update-stakeholder-profile
-  [tx old-sth new-sth]
+  [conn old-sth new-sth]
   (let [idp-usernames (-> (concat (:idp_usernames old-sth)
                                   (:idp_usernames new-sth))
                           distinct
                           vec)
-        expert? (seq (db.stakeholder/get-experts tx {:filters {:ids [(:id old-sth)]}
-                                                     :page-size 0
-                                                     :offset 0}))
+        expert? (seq (db.stakeholder/get-experts conn {:filters {:ids [(:id old-sth)]}
+                                                       :page-size 0
+                                                       :offset 0}))
         to-update (merge
                    (assoc (select-keys new-sth [:affiliation])
                           :id (:id old-sth)
@@ -287,7 +287,7 @@
                    (when (and expert?
                               (= (:review_status old-sth) "INVITED"))
                      {:review_status "APPROVED"}))]
-    (db.stakeholder/update-stakeholder tx to-update)
+    (db.stakeholder/update-stakeholder conn to-update)
     (:id old-sth)))
 
 (defn- save-stakeholder
@@ -366,8 +366,7 @@
                               ;; Note that we also update the
                               ;; stakeholder with the org-id because
                               ;; it's a new organisation.
-                              (and (not (:id org))
-                                   (seq org))
+                              (seq org)
                               (let [{:keys [success? org-id] :as result}
                                     (make-affiliation tx logger mailjet-config (assoc org :created_by sth-id))]
                                 (if success?
