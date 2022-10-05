@@ -349,13 +349,16 @@
                               ;; the creator and we should set the
                               ;; `created_by` field in the
                               ;; organisation's entity table.
-                              (and (:id org)
-                                   (not (:is_member org)))
-                              {:success? (boolean (handler.org/update-org tx
-                                                                          logger
-                                                                          mailjet-config
-                                                                          {:id (:id org)
-                                                                           :created_by sth-id}))}
+                              (:id org)
+                              (let [old-org (first (db.organisation/get-organisations tx
+                                                                                      {:filters {:id (:id org)}}))]
+                                (if-not (:is_member old-org)
+                                  {:success? (boolean (handler.org/update-org tx
+                                                                              logger
+                                                                              mailjet-config
+                                                                              {:id (:id org)
+                                                                               :created_by sth-id}))}
+                                  {:success? true}))
 
                               ;; This case will happen when the user
                               ;; joins the GPML partnership and
