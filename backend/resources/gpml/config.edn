@@ -735,7 +735,8 @@
   :gpml.handler.programmatic.organisation/post #ig/ref :gpml.config/common
   :gpml.handler.programmatic.organisation/post-params {}
 
-  :gpml.handler.image/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.image/get {:db #ig/ref :duct.database/sql
+                           :logger #ig/ref :duct/logger}
 
   :gpml.handler.file/profile-cv {:db #ig/ref :duct.database/sql}
 
