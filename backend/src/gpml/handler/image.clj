@@ -4,6 +4,8 @@
             [gpml.boundary.port.storage-client :as storage-client]
             [gpml.db.event :as db.event]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.util :as util]
+            [gpml.util.http-client :as http-client]
             [integrant.core :as ig]
             [medley.core :as m]
             [ring.util.response :as resp])
@@ -74,7 +76,23 @@
                                   :else nil)]
             (str/join ["/image/" image-type "/" (:id topic-image)]))))
 
-(defmethod ig/init-key :gpml.handler.image/get [_ {:keys [db]}]
+(defn- handle-img-resp-from-url
+  [logger img-url]
+  (if-not (util/try-url-str img-url)
+    (resp/not-found {:message "Image not found (not valid url)"})
+    (let [{:keys [status headers body]} (http-client/do-request logger
+                                                                {:method :get
+                                                                 :url img-url
+                                                                 :as :byte-array}
+                                                                {})]
+      (if (<= 200 status 299)
+        (-> body
+            (resp/response)
+            (resp/content-type (get headers "Content-Type"))
+            (resp/header "Cache-Control" "public,max-age:60"))
+        (resp/not-found {:message "Image not found (could not fetch the url)"})))))
+
+(defmethod ig/init-key :gpml.handler.image/get [{:keys [logger]} {:keys [db]}]
   (fn [{{{:keys [id image_type]} :path} :parameters}]
     (if-let [data (cond
                     (= image_type "profile")
@@ -82,5 +100,8 @@
                     (= image_type "event")
                     (:image (db.event/event-image-by-id (:spec db) {:id id}))
                     :else nil)]
-      (get-content data)
+      (if (and (seq data)
+               (util/base64? (util/base64-headless data)))
+        (get-content data)
+        (handle-img-resp-from-url logger data))
       (resp/not-found {:message "Image not found"}))))
