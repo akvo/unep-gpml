@@ -9,11 +9,11 @@
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
             [gpml.handler.organisation :as handler.org]
+            [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.handler.util :as handler.util]
             [gpml.util.email :as email]
             [gpml.util.geo :as geo]
-            [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
@@ -176,7 +176,7 @@
        (nil? (get body-params :org)))
       (assoc :affiliation nil))))
 
-(defn get-stakeholder-profile [db stakeholder]
+(defn- get-stakeholder-profile [db stakeholder]
   (let [conn (:spec db)
         tags (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
                                                       :resource-col "stakeholder"
@@ -194,7 +194,7 @@
       (assoc profile :affiliation (-> profile :org :id) :non_member_organisation nil)
       (assoc profile :non_member_organisation (-> profile :org :id) :affiliation nil))))
 
-(defn update-stakeholder
+(defn- update-stakeholder
   [{:keys [logger mailjet-config] :as config} tx {:keys [body-params old-profile]}]
   (let [{:keys [id]} body-params
         new-profile (merge (dissoc old-profile :non_member_organisation)
@@ -227,9 +227,10 @@
       (resp/response {}))))
 
 (defn- make-affiliation*
-  [db logger mailjet-config org]
-  (let [org-id (handler.org/create db logger mailjet-config org)]
-    (email/notify-admins-pending-approval db mailjet-config
+  [conn logger mailjet-config org]
+  (let [org-id (handler.org/create conn logger mailjet-config org)]
+    (email/notify-admins-pending-approval conn
+                                          mailjet-config
                                           {:title (:name org) :type "organisation"})
     org-id))
 
@@ -240,104 +241,165 @@
   `non_member`. If the existing organisation is already a `member`
   then we should return an error letting the caller know that an
   organisation with the same name exists. "
-  [db logger mailjet-config org]
-  (if-not (:id org)
-    (try
-      {:success? true
-       :org-id (make-affiliation* db logger mailjet-config org)}
-      (catch Exception e
-        (if (instance? SQLException e)
-          (let [reason (pg-util/get-sql-state e)]
-            (if (= reason :unique-constraint-violation)
-              (if-let [old-org (first (db.organisation/get-organisations db {:filters {:name (:name org)
-                                                                                       :is_member false}}))]
-                (do
-                  (db.organisation/delete-organisation db {:id (:id old-org)})
-                  {:success? true
-                   :org-id (make-affiliation* db logger mailjet-config org)})
-                {:success? false
-                 :reason reason})
-              {:success? false
-               :reason reason}))
-          {:success? false
-           :reason :could-not-create-org
-           :error-details {:message (.getMessage e)}})))
+  [conn logger mailjet-config org]
+  (if (:id org)
     {:success? true
-     :org-id (:id org)}))
+     :org-id (:id org)}
+    (try
+      (if-let [old-org (first (db.organisation/get-organisations conn
+                                                                 {:filters {:name (:name org)
+                                                                            :is_member false}}))]
+        (do
+          (db.organisation/delete-organisation conn {:id (:id old-org)})
+          {:success? true
+           :org-id (make-affiliation* conn logger mailjet-config org)})
+        {:success? true
+         :org-id (make-affiliation* conn logger mailjet-config org)})
+      (catch Exception e
+        {:success? false
+         :reason :could-not-create-org
+         :error-details {:message (.getMessage e)}}))))
+
+(defn- create-stakeholder
+  [{:keys [mailjet-config]} conn new-sth]
+  (let [result (db.stakeholder/new-stakeholder conn new-sth)]
+    (email/notify-admins-pending-approval conn
+                                          mailjet-config
+                                          (merge new-sth {:type "stakeholder"}))
+    (:id result)))
+
+(defn- update-stakeholder-profile
+  [tx old-sth new-sth]
+  (let [idp-usernames (-> (concat (:idp_usernames old-sth)
+                                  (:idp_usernames new-sth))
+                          distinct
+                          vec)
+        expert? (seq (db.stakeholder/get-experts tx {:filters {:ids [(:id old-sth)]}
+                                                     :page-size 0
+                                                     :offset 0}))
+        to-update (merge
+                   (assoc (select-keys new-sth [:affiliation])
+                          :id (:id old-sth)
+                          :idp_usernames idp-usernames
+                          :non_member_organisation nil)
+                   (when (and expert?
+                              (= (:review_status old-sth) "INVITED"))
+                     {:review_status "APPROVED"}))]
+    (db.stakeholder/update-stakeholder tx to-update)
+    (:id old-sth)))
 
 (defn- save-stakeholder
-  ([config req org-id]
-   (save-stakeholder config req org-id false))
-  ([{:keys [db logger mailjet-config] :as config}
-    {:keys [jwt-claims body-params headers]}
-    org-id
-    new-org?]
-   (let [profile (make-profile (assoc body-params
-                                      :affiliation org-id
-                                      :email (:email jwt-claims)
-                                      :idp_usernames [(:sub jwt-claims)]
-                                      :cv (or (assoc-cv db (:cv body-params))
-                                              (:cv body-params))
-                                      :picture (handler.image/assoc-image config db (:photo body-params) "profile")))
-         stakeholder-id (if-let [current-stakeholder (db.stakeholder/stakeholder-by-email db {:email (:email profile)})]
-                          (let [idp-usernames (vec (-> current-stakeholder :idp_usernames (concat (:idp_usernames profile))))
-                                expert? (seq (db.stakeholder/get-experts db {:filters {:ids [(:id current-stakeholder)]}
-                                                                             :page-size 0
-                                                                             :offset 0}))]
-                            (db.stakeholder/update-stakeholder db (merge
-                                                                   (assoc (select-keys profile [:affiliation])
-                                                                          :id (:id current-stakeholder)
-                                                                          :idp_usernames idp-usernames
-                                                                          :non_member_organisation nil)
-                                                                   (when (and expert?
-                                                                              (= (:review_status current-stakeholder) "INVITED"))
-                                                                     {:review_status "APPROVED"})))
-                            (:id current-stakeholder))
-                          (let [new-stakeholder (db.stakeholder/new-stakeholder db profile)]
-                            (email/notify-admins-pending-approval db mailjet-config
-                                                                  (merge profile {:type "stakeholder"}))
-                            (:id new-stakeholder)))
-         profile (db.stakeholder/stakeholder-by-id db {:id stakeholder-id})
-         tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body-params)]
-     (when new-org?
-       (handler.org/update-org db logger mailjet-config {:id org-id :created_by stakeholder-id}))
-     (let [save-tags-result (if (seq tags)
-                              (handler.stakeholder.tag/save-stakeholder-tags
-                               db
-                               logger
-                               mailjet-config
-                               {:tags tags
-                                :stakeholder-id stakeholder-id
-                                :handle-errors? true})
-                              {:success? true})]
-       (if (:success? save-tags-result)
-         (resp/created (:referer headers) (-> (merge body-params profile)
-                                              (dissoc :affiliation :picture)
-                                              (assoc :org (db.organisation/organisation-by-id
-                                                           db
-                                                           {:id (:affiliation profile)}))))
-         (resp/bad-request save-tags-result))))))
+  [{:keys [db logger mailjet-config] :as config}
+   {{:keys [body]} :parameters
+    :keys [jwt-claims] :as _req}]
+  (try
+    (jdbc/with-db-transaction [tx (:spec db)]
+      (let [org (:org body)
+            new-sth (make-profile (assoc body
+                                         :affiliation (:id org)
+                                         :email (:email jwt-claims)
+                                         :idp_usernames [(:sub jwt-claims)]
+                                         :cv (or (assoc-cv tx (:cv body))
+                                                 (:cv body))
+                                         :picture (handler.image/assoc-image config
+                                                                             tx
+                                                                             (:photo body)
+                                                                             "profile")))
+            old-sth (db.stakeholder/stakeholder-by-email tx {:email (:email new-sth)})
+            sth-id (if old-sth
+                     (update-stakeholder-profile tx old-sth new-sth)
+                     (create-stakeholder config tx new-sth))
+            tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body)
+            save-tags-result (if-not (seq tags)
+                               {:success? true}
+                               (handler.stakeholder.tag/save-stakeholder-tags tx
+                                                                              logger
+                                                                              mailjet-config
+                                                                              {:tags tags
+                                                                               :stakeholder-id sth-id
+                                                                               :handle-errors? true}))
+            save-org-result (cond
+                              ;; The user is being created with either:
+                              ;;
+                              ;; 1. A new non-member
+                              ;; organisation. This is an assumption
+                              ;; that both FE and BE are aligned
+                              ;; with. New users are only allowed to
+                              ;; SELECT an existing MEMBER
+                              ;; organisation or CREATE a
+                              ;; NON-MEMBER. If they choose to create
+                              ;; a non-member, the org will be created
+                              ;; before the user profile is
+                              ;; submitted. Once they submit the
+                              ;; profile, the non-member organisation
+                              ;; will be passed as payload. So here
+                              ;; with `(not (:is_member org))` we are
+                              ;; signaling that it's a new non-member
+                              ;; organisation.
+                              ;;
+                              ;; 2. If the user selected a member
+                              ;; organisation, then it isn't a new
+                              ;; organisation and we shouldn't do
+                              ;; anything.
+                              ;;
+                              ;; Signaling that it's a new
+                              ;; organisation means that the user is
+                              ;; the creator and we should set the
+                              ;; `created_by` field in the
+                              ;; organisation's entity table.
+                              (and (:id org)
+                                   (not (:is_member org)))
+                              {:success? (boolean (handler.org/update-org tx
+                                                                          logger
+                                                                          mailjet-config
+                                                                          {:id (:id org)
+                                                                           :created_by sth-id}))}
 
-(defmethod ig/init-key :gpml.handler.stakeholder/post [_ {:keys [db logger mailjet-config] :as config}]
-  (fn [{{:keys [org] :as body-params} :body-params :as req}]
-    (cond
-      (:id org)
-      (save-stakeholder config req (:id org))
+                              ;; This case will happen when the user
+                              ;; joins the GPML partnership and
+                              ;; creates a new MEMBER organisation.
+                              ;; Note that we also update the
+                              ;; stakeholder with the org-id because
+                              ;; it's a new organisation.
+                              (and (not (:id org))
+                                   (seq org))
+                              (let [{:keys [success? org-id] :as result}
+                                    (make-affiliation tx logger mailjet-config (assoc org :created_by sth-id))]
+                                (if success?
+                                  {:success? (= 1 (db.stakeholder/update-stakeholder tx {:affiliation org-id
+                                                                                         :id sth-id}))}
+                                  result))
 
-      (seq org)
-      (let [result (make-affiliation db logger mailjet-config (:org body-params))]
-        (if (:success? result)
-          (save-stakeholder config req (:org-id result) true)
-          (if (= :unique-constraint-violation (:reason result))
-            {:status 409
-             :headers {"content-type" "application/json"}
-             :body (assoc result :reason :organisation-name-already-exists)}
-            {:status 500
-             :headers {"content-type" "application/json"}
-             :body result})))
+                              :else
+                              {:success? true})
+            new-sth (db.stakeholder/stakeholder-by-id tx {:id sth-id})]
+        (when-not (:success? save-tags-result)
+          (throw (ex-info "Failed to save stakeholder tags." save-tags-result)))
+        (when-not (:success? save-org-result)
+          (throw (ex-info "Failed to create or update organisation." save-org-result)))
+        ;; FIXME: we are not adding the `:success?` key here because
+        ;; it would break the FE, as it expects a JSON with the
+        ;; stakeholder fields. We would need to sync with FE to change
+        ;; this.
+        (r/created (-> (merge body new-sth)
+                       (dissoc :affiliation :picture)
+                       (assoc :org (db.organisation/organisation-by-id
+                                    tx
+                                    {:id (:affiliation new-sth)}))))))
+    (catch Exception e
+      (let [{:keys [reason]} (ex-data e)]
+        (log logger :error ::failed-to-create-or-update-stakeholder {:exception-message (ex-message e)})
+        (if (= reason :organisation-name-already-exists)
+          (r/conflict {:success? false
+                       :reason reason})
+          (r/server-error {:success? false
+                           :reason :failed-to-create-or-update-profile
+                           :error-details {:error (ex-message e)}}))))))
 
-      :else
-      (save-stakeholder config req nil false))))
+(defmethod ig/init-key :gpml.handler.stakeholder/post
+  [_ config]
+  (fn [req]
+    (save-stakeholder config req)))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/put
   [_ {:keys [db logger] :as config}]
