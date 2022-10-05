@@ -846,9 +846,15 @@ const Root = () => {
             </Switch>
             {isAuthenticated && <AddContentButton />}
             <Footer
-              {...{
-                setShowMenu,
-              }}
+              setStakeholderSignupModalVisible={
+                setStakeholderSignupModalVisible
+              }
+              setWarningModalVisible={setWarningModalVisible}
+              isAuthenticated={isAuthenticated}
+              loginWithPopup={loginWithPopup}
+              setFilterMenu={setFilterMenu}
+              setLoginVisible={setLoginVisible}
+              setShowMenu={setShowMenu}
             />
           </div>
           <ModalWarningUser

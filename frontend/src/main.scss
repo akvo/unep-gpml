@@ -660,6 +660,39 @@ footer {
       width: 100%;
       padding-bottom: 40px;
 
+      .success-meesage {
+        background-color: #e6f7ff;
+        border: 1px solid #91d5ff;
+        padding: 15px 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        color: rgba(0, 0, 0, 0.85);
+        text-align: center;
+        p {
+          margin-bottom: 0;
+        }
+      }
+
+      .success-enter {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      .success-enter-active {
+        opacity: 1;
+        transform: translateX(0);
+        transition: opacity 300ms, transform 300ms;
+      }
+      .success-exit {
+        opacity: 1;
+      }
+      .success-exit-active {
+        opacity: 0;
+        transform: scale(0.9);
+        transition: opacity 300ms, transform 300ms;
+      }
+
       @media (max-width: 540px) {
         display: block;
         .col {
@@ -699,6 +732,10 @@ footer {
             line-height: 24px;
             color: #ffffff;
             background: #8691b0;
+            &:hover {
+              background-color: rgba(24, 22, 47, 0.2);
+              color: rgb(255, 184, 0);
+            }
           }
         }
       }

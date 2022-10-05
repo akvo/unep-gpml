@@ -1,16 +1,20 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { LinkedinOutlined, YoutubeOutlined } from "@ant-design/icons";
 import unepLogo from "./images/footer-logo.svg";
 import { Link } from "react-router-dom";
 import { UIStore } from "./store.js";
 import logo from "./images/gpml.svg";
-import { Button, Input, notification } from "antd";
+import { Button, Input, notification, Alert } from "antd";
 import api from "./utils/api";
+import { CSSTransition } from "react-transition-group";
 
 const Footer = ({ setShowMenu }) => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [timeout, setTimeoutState] = useState(300);
+  const nodeRef = useRef(null);
 
   const isValidEmail = (email) => {
     return /\S+@\S+\.\S+/.test(email);
@@ -29,24 +33,28 @@ const Footer = ({ setShowMenu }) => {
     setLoading(true);
     api
       .post("/subscribe", { email })
-      .then((res) => {
+      .then(async (res) => {
         setEmail("");
         setLoading(false);
-        notification.success({
-          message: "You have been successfully subscribed",
-        });
+        setShowMessage(true);
       })
       .catch((err) => {
-        setEmail("");
         setLoading(false);
-        console.log(err);
+        console.log(err?.response);
         notification.error({
-          message: err?.response?.message
-            ? err?.response?.message
+          message: err?.response?.data['errorDetails']
+            ? err?.response?.data['errorDetails']?.email[0]
             : "Oops, something went wrong",
         });
       });
   };
+
+  useEffect(() => {
+    setTimeout(function () {
+      setShowMessage(false);
+      setTimeoutState(0);
+    }, 3000);
+  }, [showMessage]);
 
   return (
     <footer>
@@ -158,30 +166,46 @@ const Footer = ({ setShowMenu }) => {
             </nav>
           </div>
           <div className="col">
-            <nav>
-              <ul>
-                <li>
-                  <h4>Stay tuned with the GPML latest news and events!</h4>
-                </li>
-              </ul>
-            </nav>
-            <nav>
-              <Input.Group compact>
-                <Input
-                  placeholder="Email"
-                  value={email}
-                  onChange={handleChange}
-                  className={`${error ? "ant-input-status-error" : ""}`}
-                />
-                <Button
-                  onClick={() => subscribe()}
-                  disabled={error}
-                  loading={loading}
-                >
-                  Subscribe
-                </Button>
-              </Input.Group>
-            </nav>
+            {!showMessage && (
+              <div>
+                <nav>
+                  <ul>
+                    <li>
+                      <h4>Stay tuned with the GPML latest news and events!</h4>
+                    </li>
+                  </ul>
+                </nav>
+                <nav>
+                  <Input.Group compact>
+                    <Input
+                      placeholder="Email"
+                      value={email}
+                      onChange={handleChange}
+                      className={`${error ? "ant-input-status-error" : ""}`}
+                      onPressEnter={() => subscribe()}
+                    />
+                    <Button
+                      onClick={() => subscribe()}
+                      disabled={error || email.length === 0}
+                      loading={loading}
+                    >
+                      Subscribe
+                    </Button>
+                  </Input.Group>
+                </nav>
+              </div>
+            )}
+            <CSSTransition
+              in={showMessage}
+              nodeRef={nodeRef}
+              timeout={timeout}
+              classNames="success"
+              unmountOnExit
+            >
+              <div ref={nodeRef} className="success-meesage">
+                <p>You have been successfully subscribed!</p>
+              </div>
+            </CSSTransition>
           </div>
         </div>
       </div>
