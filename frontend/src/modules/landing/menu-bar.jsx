@@ -25,9 +25,8 @@ import { CSSTransition } from 'react-transition-group';
 import bodyScrollLock from "../details-page/scroll-utils";
 import { UIStore } from "../../store.js";
 
-const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegistered, profile, setLoginVisible, auth0Client }) => {
+const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegistered, profile, setLoginVisible, auth0Client, showMenu, setShowMenu }) => {
   const domRef = useRef()
-  const [showMenu, setShowMenu] = useState(false)
   useEffect(() => {
     const listen = (e) => {
       if(window.scrollY > 100 && domRef.current?.classList.contains('scrolled') === false){
