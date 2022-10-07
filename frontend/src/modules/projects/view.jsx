@@ -453,7 +453,14 @@ export const stagesChecklist = [
               </>
             ),
           },
-          { title: "Expected outputs", content: (checklist) => <></> },
+          {
+            title: "Expected outputs",
+            content: (checklist) => (
+              <>
+                <b>Report:</b> Situation analysis of plastic flows and emissions
+              </>
+            ),
+          },
         ],
       },
       {
@@ -591,7 +598,15 @@ export const stagesChecklist = [
               </>
             ),
           },
-          { title: "Expected outputs", content: (checklist) => <></> },
+          {
+            title: "Expected outputs",
+            content: (checklist) => (
+              <>
+                <b>Report:</b> Situation analysis of relevant legal frameworks
+                and socio-economic costs and benefits
+              </>
+            ),
+          },
         ],
       },
       {
@@ -833,7 +848,15 @@ export const stagesChecklist = [
               </>
             ),
           },
-          { title: "Expected outputs", content: (checklist) => <></> },
+          {
+            title: "Expected outputs",
+            content: (checklist) => (
+              <>
+                <b>Report:</b> Report on actors and findings (needs, barriers,
+                opportunities)
+              </>
+            ),
+          },
         ],
       },
       {
@@ -994,7 +1017,15 @@ export const stagesChecklist = [
               </>
             ),
           },
-          { title: "Expected outputs", content: (checklist) => <></> },
+          {
+            title: "Expected outputs",
+            content: (checklist) => (
+              <>
+                Priority action, roles and responsibilities agreed and
+                documented
+              </>
+            ),
+          },
         ],
       },
       {
@@ -1082,7 +1113,12 @@ export const stagesChecklist = [
               </>
             ),
           },
-          { title: "Expected outputs", content: (checklist) => <></> },
+          {
+            title: "Expected outputs",
+            content: (checklist) => (
+              <>Ongoing national monitoring programme with funding allocated</>
+            ),
+          },
         ],
       },
       {
@@ -1268,7 +1304,12 @@ export const stagesChecklist = [
               </>
             ),
           },
-          { title: "Expected outputs", content: (checklist) => <></> },
+          {
+            title: "Expected outputs",
+            content: (checklist) => (
+              <>Reporting template with roles and responsibilities</>
+            ),
+          },
         ],
       },
       {
@@ -1419,7 +1460,12 @@ export const stagesChecklist = [
               </>
             ),
           },
-          { title: "Expected outputs", content: (checklist) => <></> },
+          {
+            title: "Expected outputs",
+            content: (checklist) => (
+              <>National Action Plan and Implementation Roadmap</>
+            ),
+          },
         ],
       },
     ],
@@ -1510,7 +1556,6 @@ export const stagesChecklist = [
               </>
             ),
           },
-          { title: "Expected outputs", content: (checklist) => <></> },
         ],
       },
     ],
@@ -1682,7 +1727,10 @@ export const stagesChecklist = [
               </>
             ),
           },
-          { title: "Expected outputs", content: (checklist) => <></> },
+          {
+            title: "Expected outputs",
+            content: (checklist) => <>Periodic progress report</>,
+          },
         ],
       },
     ],
@@ -1796,7 +1844,12 @@ export const stagesChecklist = [
               </>
             ),
           },
-          { title: "Expected outputs", content: (checklist) => <></> },
+          {
+            title: "Expected outputs",
+            content: (checklist) => (
+              <>Report identifying opportunities for updating the action plan</>
+            ),
+          },
         ],
       },
       {
@@ -1864,7 +1917,12 @@ export const stagesChecklist = [
               </>
             ),
           },
-          { title: "Expected outputs", content: (checklist) => <></> },
+          {
+            title: "Expected outputs",
+            content: (checklist) => (
+              <>Updated action plan and implementation roadmap adopted</>
+            ),
+          },
         ],
       },
     ],
@@ -1929,8 +1987,6 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
       })
       .catch((e) => console.log(e));
   };
-
-  console.log(stages.indexOf(projectDetail?.stage));
 
   return (
     <div id="project">
@@ -2103,9 +2159,7 @@ const renderSubStages = (title, data, checklist, handleStages) => {
                       <h5>
                         The expected output for this action plan stage is:
                       </h5>
-                      <Button type="ghost" icon={<SendOutlined />}>
-                        SHARE YOUR REPORT
-                      </Button>
+                      <p>{subChild?.content(checklist, handleStages)}</p>
                     </div>
                   )}
                 </div>
