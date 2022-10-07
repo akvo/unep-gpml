@@ -661,15 +661,13 @@ footer {
       padding-bottom: 40px;
 
       .success-meesage {
-        background-color: #e6f7ff;
-        border: 1px solid #91d5ff;
-        padding: 15px 8px;
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
-        color: rgba(0, 0, 0, 0.85);
+        color: #fff;
         text-align: center;
+        font-size: 24px;
         p {
           margin-bottom: 0;
         }
@@ -764,7 +762,7 @@ footer {
       .col {
         width: 25%;
         flex: 1;
-
+        margin-bottom: 10px;
         nav {
           margin-bottom: 2rem;
 
@@ -783,24 +781,17 @@ footer {
                 display: inline-block;
               }
             }
-            &.horizonList {
-              li {
-                display: inline-block;
-                &:first-child {
-                  margin-right: 10px;
-                }
-              }
-
-              &.socialLink {
-                li {
-                  a {
-                    font-size: 1.5rem;
-                    margin-left: 0;
-                  }
-                }
-              }
-            }
           }
+        }
+      }
+    }
+
+    .socialLink {
+      display: flex;
+      span {
+        font-size: 20px;
+        &:first-child {
+          margin-right: 10px;
         }
       }
     }
