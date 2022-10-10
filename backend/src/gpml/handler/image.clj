@@ -1,6 +1,7 @@
 (ns gpml.handler.image
   (:require [clj-gcp.storage.core :as sut]
             [clojure.string :as str]
+            [duct.logger :refer [log]]
             [gpml.boundary.port.storage-client :as storage-client]
             [gpml.db.event :as db.event]
             [gpml.db.stakeholder :as db.stakeholder]
@@ -78,30 +79,49 @@
 
 (defn- handle-img-resp-from-url
   [logger img-url]
-  (if-not (util/try-url-str img-url)
-    (resp/not-found {:message "Image not found (not valid url)"})
-    (let [{:keys [status headers body]} (http-client/do-request logger
-                                                                {:method :get
-                                                                 :url img-url
-                                                                 :as :byte-array}
-                                                                {})]
-      (if (<= 200 status 299)
-        (-> body
-            (resp/response)
-            (resp/content-type (get headers "Content-Type"))
-            (resp/header "Cache-Control" "public,max-age:60"))
-        (resp/not-found {:message "Image not found (could not fetch the url)"})))))
+  (let [{:keys [status headers body] :as result} (http-client/do-request logger
+                                                                         {:method :get
+                                                                          :url img-url
+                                                                          :as :byte-array}
+                                                                         {})]
+    (if (and status
+             (<= 200 status 299))
+      (-> body
+          (resp/response)
+          (resp/content-type (get headers "Content-Type"))
+          (resp/header "Cache-Control" "public,max-age:60"))
+      (do
+        (log logger :error ::could-not-fetch-image {:status status
+                                                    :reason-phrase (:reason-phrase result)})
+        (resp/not-found {:message "Image not found (could not download the image)"})))))
 
-(defmethod ig/init-key :gpml.handler.image/get [{:keys [logger]} {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.image/get [_ {:keys [logger db]}]
   (fn [{{{:keys [id image_type]} :path} :parameters}]
-    (if-let [data (cond
-                    (= image_type "profile")
-                    (:picture (db.stakeholder/stakeholder-image-by-id (:spec db) {:id id}))
-                    (= image_type "event")
-                    (:image (db.event/event-image-by-id (:spec db) {:id id}))
-                    :else nil)]
-      (if (and (seq data)
+    (try
+      (if-let [data (cond
+                      (= image_type "profile")
+                      (:picture (db.stakeholder/stakeholder-image-by-id (:spec db) {:id id}))
+                      (= image_type "event")
+                      (:image (db.event/event-image-by-id (:spec db) {:id id}))
+                      :else nil)]
+        (cond (util/try-url-str data)
+              (handle-img-resp-from-url logger data)
+
+              (and
+               (seq data)
+               (seq (util/base64-headless data))
                (util/base64? (util/base64-headless data)))
-        (get-content data)
-        (handle-img-resp-from-url logger data))
-      (resp/not-found {:message "Image not found"}))))
+              (get-content data)
+
+              :else
+              (do
+                (log logger :error ::could-not-fetch-url {:data data
+                                                          :id id
+                                                          :image-type image_type})
+                (resp/not-found {:message "Image not found (could not fetch the url)"})))
+        (resp/not-found {:message "Image not found"}))
+      (catch Throwable e
+        (let [error-details {:error-code (class e)
+                             :message (.getMessage e)}]
+          (log logger :error ::could-not-get-image error-details)
+          (resp/not-found {:message "Image not found (an error happened)"}))))))
