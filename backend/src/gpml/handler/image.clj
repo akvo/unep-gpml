@@ -97,25 +97,31 @@
 
 (defmethod ig/init-key :gpml.handler.image/get [_ {:keys [logger db]}]
   (fn [{{{:keys [id image_type]} :path} :parameters}]
-    (if-let [data (cond
-                    (= image_type "profile")
-                    (:picture (db.stakeholder/stakeholder-image-by-id (:spec db) {:id id}))
-                    (= image_type "event")
-                    (:image (db.event/event-image-by-id (:spec db) {:id id}))
-                    :else nil)]
-      (cond (util/try-url-str data)
-            (handle-img-resp-from-url logger data)
+    (try
+      (if-let [data (cond
+                      (= image_type "profile")
+                      (:picture (db.stakeholder/stakeholder-image-by-id (:spec db) {:id id}))
+                      (= image_type "event")
+                      (:image (db.event/event-image-by-id (:spec db) {:id id}))
+                      :else nil)]
+        (cond (util/try-url-str data)
+              (handle-img-resp-from-url logger data)
 
-            (and
-             (seq data)
-             (seq (util/base64-headless data))
-             (util/base64? (util/base64-headless data)))
-            (get-content data)
+              (and
+               (seq data)
+               (seq (util/base64-headless data))
+               (util/base64? (util/base64-headless data)))
+              (get-content data)
 
-            :else
-            (do
-              (log logger :error ::could-not-fetch-url {:data data
-                                                        :id id
-                                                        :image-type image_type})
-              (resp/not-found {:message "Image not found (could not fetch the url)"})))
-      (resp/not-found {:message "Image not found"}))))
+              :else
+              (do
+                (log logger :error ::could-not-fetch-url {:data data
+                                                          :id id
+                                                          :image-type image_type})
+                (resp/not-found {:message "Image not found (could not fetch the url)"})))
+        (resp/not-found {:message "Image not found"}))
+      (catch Throwable e
+        (let [error-details {:error-code (class e)
+                             :message (.getMessage e)}]
+          (log logger :error ::could-not-get-image error-details)
+          (resp/not-found {:message "Image not found (an error happened)"}))))))
