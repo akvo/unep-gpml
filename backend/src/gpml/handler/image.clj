@@ -4,13 +4,13 @@
             [duct.logger :refer [log]]
             [gpml.boundary.port.storage-client :as storage-client]
             [gpml.db.event :as db.event]
+            [gpml.db.organisation :as db.organisation]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.util :as util]
             [gpml.util.http-client :as http-client]
             [integrant.core :as ig]
             [medley.core :as m]
-            [ring.util.response :as resp]
-            [gpml.db.organisation :as db.organisation])
+            [ring.util.response :as resp])
   (:import java.io.ByteArrayInputStream
            java.nio.ByteBuffer
            java.util.Base64))
