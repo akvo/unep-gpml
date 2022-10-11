@@ -161,7 +161,6 @@ const Footer = ({ setShowMenu }) => {
                     placeholder="Email"
                     value={email}
                     onChange={handleChange}
-                    className={`${error ? "ant-input-status-error" : ""}`}
                     onPressEnter={() => subscribe()}
                   />
                   <Button
