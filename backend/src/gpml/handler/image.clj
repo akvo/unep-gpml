@@ -78,12 +78,20 @@
             (str/join ["/image/" image-type "/" (:id topic-image)]))))
 
 (defn- handle-img-resp-from-url
-  [logger img-url]
-  (let [{:keys [status headers body] :as result} (http-client/do-request logger
-                                                                         {:method :get
-                                                                          :url img-url
-                                                                          :as :byte-array}
-                                                                         {})]
+  "Given a image URL, we try to download it, returning a response as byte output stream.
+   The request needs to be provided with the user-agent, since some image repositories need it.
+
+   In order to allow proper image recognition and caching, we provide also content-type and cache-control related
+   headers in the response back."
+  [req logger img-url]
+  (let [user-agent (get-in req [:headers "user-agent"])
+        {:keys [status headers body] :as result} (http-client/do-request
+                                                  logger
+                                                  {:method :get
+                                                   :url img-url
+                                                   :as :byte-array
+                                                   :headers {:user-agent user-agent}}
+                                                  {})]
     (if (and status
              (<= 200 status 299))
       (-> body
@@ -95,8 +103,11 @@
                                                     :reason-phrase (:reason-phrase result)})
         (resp/not-found {:message "Image not found (could not download the image)"})))))
 
+;; We try to provide the image with a given `id`, looking into the source related to its `type`.
+;; We try to catch any exception to be sure we return a consistent response and we log any error that happen, not
+;; covered by the usual flow.
 (defmethod ig/init-key :gpml.handler.image/get [_ {:keys [logger db]}]
-  (fn [{{{:keys [id image_type]} :path} :parameters}]
+  (fn [{{{:keys [id image_type]} :path} :parameters :as req}]
     (try
       (if-let [data (cond
                       (= image_type "profile")
@@ -104,21 +115,28 @@
                       (= image_type "event")
                       (:image (db.event/event-image-by-id (:spec db) {:id id}))
                       :else nil)]
-        (cond (util/try-url-str data)
-              (handle-img-resp-from-url logger data)
+        (cond
+          ;; We check first if what we get from the DB is a valid URL, so we download the image in that case from
+          ;; the URL, in order to return it in the same format for FE as in other cases: byte output stream.
+          (util/try-url-str data)
+          (handle-img-resp-from-url req logger data)
 
-              (and
-               (seq data)
-               (seq (util/base64-headless data))
-               (util/base64? (util/base64-headless data)))
-              (get-content data)
+          ;; In case the data is not a URL, we check if it's a valid Base64-encoded image in order to parse it like
+          ;; so and return a byte array output stream to FE, keeping same format the other cases.
+          (and
+           (seq data)
+           (seq (util/base64-headless data))
+           (util/base64? (util/base64-headless data)))
+          (get-content data)
 
-              :else
-              (do
-                (log logger :error ::could-not-fetch-url {:data data
-                                                          :id id
-                                                          :image-type image_type})
-                (resp/not-found {:message "Image not found (could not fetch the url)"})))
+          ;; If the data is not a valid URL or a Base64-encoded image, that means that we could not get it right
+          ;; or has a invalid format, as an empty string.
+          :else
+          (do
+            (log logger :error ::could-not-fetch-url {:data data
+                                                      :id id
+                                                      :image-type image_type})
+            (resp/not-found {:message "Image not found (could not fetch the url)"})))
         (resp/not-found {:message "Image not found"}))
       (catch Throwable e
         (let [error-details {:error-code (class e)
