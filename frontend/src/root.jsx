@@ -374,6 +374,7 @@ const Root = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loginVisible, setLoginVisible] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const [filterCountries, setFilterCountries] = useState([]);
   const [relations, setRelations] = useState([]);
   const { isLoading } = useAuth0();
@@ -489,6 +490,9 @@ const Root = () => {
                 isAuthenticated,
                 auth0Client,
                 setWarningModalVisible,
+                history,
+                showMenu,
+                setShowMenu,
               }}
             />
           )}
@@ -512,6 +516,8 @@ const Root = () => {
                 profile,
                 isRegistered,
                 setWarningModalVisible,
+                showMenu,
+                setShowMenu,
               }}
             />
             <Switch>
@@ -848,6 +854,7 @@ const Root = () => {
               loginWithPopup={loginWithPopup}
               setFilterMenu={setFilterMenu}
               setLoginVisible={setLoginVisible}
+              setShowMenu={setShowMenu}
             />
           </div>
           <ModalWarningUser
