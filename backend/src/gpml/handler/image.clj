@@ -9,7 +9,8 @@
             [gpml.util.http-client :as http-client]
             [integrant.core :as ig]
             [medley.core :as m]
-            [ring.util.response :as resp])
+            [ring.util.response :as resp]
+            [gpml.db.organisation :as db.organisation])
   (:import java.io.ByteArrayInputStream
            java.nio.ByteBuffer
            java.util.Base64))
@@ -112,8 +113,12 @@
       (if-let [data (cond
                       (= image_type "profile")
                       (:picture (db.stakeholder/stakeholder-image-by-id (:spec db) {:id id}))
+
                       (= image_type "event")
                       (:image (db.event/event-image-by-id (:spec db) {:id id}))
+
+                      (= image_type "organisation")
+                      (:logo (first (db.organisation/get-organisations (:spec db) {:filters {:id id}})))
                       :else nil)]
         (cond
           ;; We check first if what we get from the DB is a valid URL, so we download the image in that case from

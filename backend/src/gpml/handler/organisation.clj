@@ -10,7 +10,8 @@
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
-(defn create [conn logger mailjet-config org]
+(defn create
+  [conn logger mailjet-config org]
   (let [org-id (:id (db.organisation/new-organisation conn org))
         org-geo2 (handler.geo/get-geo-vector-v2 org-id org)
         org-geo (handler.geo/get-geo-vector org-id org)]
@@ -28,7 +29,8 @@
                                                   :resource-id org-id}))
     org-id))
 
-(defn update-org [conn logger mailjet-config org]
+(defn update-org
+  [conn logger mailjet-config org]
   (let [org-id (do (db.organisation/update-organisation conn org)
                    (:id org))
         org-geo (handler.geo/get-geo-vector org-id org)
