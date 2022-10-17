@@ -64,18 +64,18 @@
     ;; The following checks are mostly to avoid doing a lot of work
     ;; when checking the user permissions on a specific resource.
     (cond
+      ;; If it's a read attempt, the resource is approved and the user
+      ;; is logged in then we should allow without checking extra
+      ;; permissions.
+      (and read?
+           (= (:review_status resource) "APPROVED"))
+      resource
+
       ;; If the user is empty it means the caller doesn't have a
       ;; session and is just making a read call on the resource. So no
       ;; need to check extra permissions since platform resources are
       ;; public in a read-only state.
       (and (not (seq user))
-           (= (:review_status resource) "APPROVED"))
-      resource
-
-      ;; If it's a read attempt, the resource is approved and the user
-      ;; is logged in then we should allow without checking extra
-      ;; permissions.
-      (and read?
            (= (:review_status resource) "APPROVED"))
       resource
 
