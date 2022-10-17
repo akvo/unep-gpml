@@ -261,11 +261,8 @@
          :error-details {:message (.getMessage e)}}))))
 
 (defn- create-stakeholder
-  [{:keys [mailjet-config]} conn new-sth]
+  [conn new-sth]
   (let [result (db.stakeholder/new-stakeholder conn new-sth)]
-    (email/notify-admins-pending-approval conn
-                                          mailjet-config
-                                          (merge new-sth {:type "stakeholder"}))
     (:id result)))
 
 (defn- update-stakeholder-profile
@@ -308,7 +305,7 @@
             old-sth (db.stakeholder/stakeholder-by-email tx {:email (:email new-sth)})
             sth-id (if old-sth
                      (update-stakeholder-profile tx old-sth new-sth)
-                     (create-stakeholder config tx new-sth))
+                     (create-stakeholder tx new-sth))
             tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body)
             save-tags-result (if-not (seq tags)
                                {:success? true}
@@ -379,6 +376,10 @@
           (throw (ex-info "Failed to save stakeholder tags." save-tags-result)))
         (when-not (:success? save-org-result)
           (throw (ex-info "Failed to create or update organisation." save-org-result)))
+        (when-not old-sth
+          (email/notify-admins-pending-approval tx
+                                                mailjet-config
+                                                (merge new-sth {:type "stakeholder"})))
         ;; FIXME: we are not adding the `:success?` key here because
         ;; it would break the FE, as it expects a JSON with the
         ;; stakeholder fields. We would need to sync with FE to change
