@@ -192,7 +192,8 @@ function Authentication() {
         : []),
       Object.values(tags)
         .flat()
-        .find((o) => o.tag.toLowerCase() === value.toLowerCase())?.tag || value,
+        .find((o) => o.tag.toLowerCase() === value.toLowerCase())?.tag ||
+        value.toLowerCase(),
     ]);
   };
 
@@ -203,7 +204,8 @@ function Authentication() {
         : []),
       Object.values(tags)
         .flat()
-        .find((o) => o.tag.toLowerCase() === value.toLowerCase())?.tag || value,
+        .find((o) => o.tag.toLowerCase() === value.toLowerCase())?.tag ||
+        value.toLowerCase(),
     ]);
   };
 
