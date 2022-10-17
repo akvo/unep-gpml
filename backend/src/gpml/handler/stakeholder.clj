@@ -542,13 +542,11 @@
       [:tag_category string?]]]]
    [:org {:optional true} org-schema]])
 
-(defmethod ig/init-key ::get-params [_ _]
+(defmethod ig/init-key :gpml.handler.stakeholder/get-params [_ _]
   {:query [:map
-           [:page {:optional true
-                   :default 1}
+           [:page {:default 1}
             int?]
-           [:limit {:optional true
-                    :default 10}
+           [:limit {:default 10}
             int?]
            [:review-status {:optional true}
             (apply conj [:enum] (->> constants/admin-review-status (map name)))]
