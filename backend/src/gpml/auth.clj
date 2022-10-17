@@ -93,7 +93,7 @@
                          (:email_verified jwt-claims)
                          (db.stakeholder/stakeholder-by-email conn jwt-claims))]
     {:approved? (= "APPROVED" (:review_status stakeholder))
-     :user (or stakeholder {})}))
+     :user (or stakeholder nil)}))
 
 (defn id-token-verifier
   [signature-verifier opts]
