@@ -358,12 +358,15 @@
       }
 
       .role-name {
-        font-weight: bold;
+        font-weight: 600;
+        font-size: 14px;
         display: flex;
-        font-size: 9px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
 
         li {
           margin-right: 10px;
+          flex: 0 0 auto;
         }
       }
     }

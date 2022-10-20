@@ -16,12 +16,6 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
 
   const country = countries.find((country) => country.id === profile.country);
 
-  const findSeeking =
-    profile.type !== "organisation" &&
-    seeking?.filter((seek) => {
-      return profile?.seeking?.includes(seek?.id);
-    });
-
   return (
     <Link
       className="card-wrapper-link"
@@ -192,13 +186,11 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
         <div className="person-role">
           <p className="seeking-text">Seeking:</p>
           <ul className="role-name">
-            {findSeeking &&
-              findSeeking.length !== 0 &&
-              findSeeking
-                .slice(0, 3)
-                .map((seeking, i) => (
-                  <li key={`${i}-${seeking?.tag}`}>{seeking?.tag}</li>
-                ))}
+            {profile?.seeking &&
+              profile?.seeking.length !== 0 &&
+              profile?.seeking.map((seeking, i) => (
+                <li key={`${i}-${seeking}`}>{seeking}</li>
+              ))}
           </ul>
         </div>
       </Card>
