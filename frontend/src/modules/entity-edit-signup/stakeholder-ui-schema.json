@@ -61,7 +61,10 @@
     "orgName": {
       "ui:placeholder": "Entity name",
       "ui:showSearch": true,
-      "ui:allowClear": true
+      "ui:allowClear": true,
+      "ui:options": {
+        "type": "single"
+      }
     },
     "jobTitle": {
       "ui:placeholder": "Enter Job Title"

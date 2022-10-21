@@ -355,7 +355,7 @@ const KnowledgeLibrarySearch = ({ updateQuery, filter }) => {
   const handleSearch = (src) => {
     eventTrack("Communities", "Search", "Button");
     if (src) {
-      updateQuery("q", src.trim());
+      updateQuery("q", src);
     } else {
       updateQuery("q", "");
     }

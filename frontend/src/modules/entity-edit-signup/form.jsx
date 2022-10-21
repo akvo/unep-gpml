@@ -214,7 +214,7 @@ const SignUpForm = withRouter(
         }
         if (data.privateCitizen) {
           delete data.privateCitizen;
-          delete data.org;
+          data.org = null;
         }
         data.representation = "";
         if (formData.S2["newCompanyName"]) {
