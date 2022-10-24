@@ -614,6 +614,7 @@
           [:seeking {:optional true} [:vector [:string {:min 1}]]]
           [:offering {:optional true} [:vector [:string {:min 1}]]]
           [:expertise {:optional true} [:vector [:string {:min 1}]]]
+          [:affiliation {:optional true} [:maybe pos-int?]]
           [:tags {:optional true}
            [:vector {:optional true}
             [:map {:optional true}
