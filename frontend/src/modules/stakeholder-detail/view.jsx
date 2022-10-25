@@ -429,7 +429,7 @@ const StakeholderDetail = ({
                   </div>
                   <div className="topbar-title-holder">
                     <h1>{data?.firstName + " " + data?.lastName}</h1>
-                    {data?.jobTitle && (
+                    {data?.jobTitle && data?.affiliation && (
                       <p className="role">
                         {data?.jobTitle} @ {data?.affiliation?.name}
                       </p>

@@ -480,7 +480,6 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
                   ?.filter((item) => item.tagRelationCategory === "offering")
                   ?.map((item) => item.id),
               };
-              console.log(d.data);
             }
             if (!d.data.affiliation) {
               d.data = {

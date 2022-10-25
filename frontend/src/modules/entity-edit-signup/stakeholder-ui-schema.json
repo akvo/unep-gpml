@@ -63,7 +63,8 @@
       "ui:showSearch": true,
       "ui:allowClear": true,
       "ui:options": {
-        "type": "single"
+        "type": "single",
+        "showEntity": true
       }
     },
     "jobTitle": {

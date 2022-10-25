@@ -79,6 +79,10 @@ const SelectWidget = ({
     uiSchema?.["ui:mode"] !== undefined ? uiSchema["ui:mode"] : ""
   );
 
+  const setOrg = (res) => {
+    if (res) handleChange(res.id);
+  };
+
   return (
     <>
       <Select
@@ -177,6 +181,7 @@ const SelectWidget = ({
       <ModalAddEntity
         visible={showModal}
         close={() => setShowModal(!showModal)}
+        setEntity={setOrg}
       />
     </>
   );
