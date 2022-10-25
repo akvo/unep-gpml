@@ -1,6 +1,14 @@
-import { Link, NavLink, Route, Switch, withRouter } from 'react-router-dom';
+import {
+  Link,
+  NavLink,
+  Route,
+  Switch,
+  withRouter,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 import { Input, Button, Layout, Menu, Dropdown } from "antd";
-import classNames from 'classnames'
+import classNames from "classnames";
 import { ReactComponent as Dots3x3 } from "../../images/3x3.svg";
 import { ReactComponent as AtlasSvg } from "../../images/book-atlas.svg";
 import { ReactComponent as CaseStudiesSvg } from "../../images/capacity-building/ic-case-studies.svg";
@@ -19,35 +27,69 @@ import { ReactComponent as HelpCenterSvg } from "../../images/help-center-icon.s
 import { ReactComponent as AboutSvg } from "../../images/about-icon.svg";
 
 import logo from "../../images/gpml.svg";
-import { useEffect, useRef, useState } from 'react';
-import { CloseOutlined, HomeOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
-import { CSSTransition } from 'react-transition-group';
+import { useEffect, useRef, useState } from "react";
+import {
+  CloseOutlined,
+  HomeOutlined,
+  SearchOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { CSSTransition } from "react-transition-group";
 import bodyScrollLock from "../details-page/scroll-utils";
 import { UIStore } from "../../store.js";
 
-const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegistered, profile, setLoginVisible, auth0Client, showMenu, setShowMenu }) => {
-  const domRef = useRef()
+const MenuBar = ({
+  updateQuery,
+  isAuthenticated,
+  setWarningModalVisible,
+  isRegistered,
+  profile,
+  setLoginVisible,
+  auth0Client,
+  showMenu,
+  setShowMenu,
+}) => {
+  const domRef = useRef();
+  const history = useHistory();
+  const { search, pathname } = useLocation();
   useEffect(() => {
     const listen = (e) => {
-      if(window.scrollY > 100 && domRef.current?.classList.contains('scrolled') === false){
-        domRef.current?.classList.add('scrolled')
-      } else if(window.scrollY < 100 && domRef.current?.classList.contains('scrolled')){
-        domRef.current?.classList.remove('scrolled')
+      if (
+        window.scrollY > 100 &&
+        domRef.current?.classList.contains("scrolled") === false
+      ) {
+        domRef.current?.classList.add("scrolled");
+      } else if (
+        window.scrollY < 100 &&
+        domRef.current?.classList.contains("scrolled")
+      ) {
+        domRef.current?.classList.remove("scrolled");
       }
-    }
-    document.addEventListener('scroll', listen)
-    document.addEventListener('keyup', handleKeyPress)
+    };
+    document.addEventListener("scroll", listen);
+    document.addEventListener("keyup", handleKeyPress);
     return () => {
-      document.removeEventListener('scroll', listen)
-      document.removeEventListener('keypress', handleKeyPress)
-    }
-  }, [])
+      document.removeEventListener("scroll", listen);
+      document.removeEventListener("keypress", handleKeyPress);
+    };
+  }, []);
+
   const handleKeyPress = (e) => {
-    if(e.key === 'Escape'){
-      setShowMenu(false)
-      bodyScrollLock.disable()
+    if (e.key === "Escape") {
+      setShowMenu(false);
+      bodyScrollLock.disable();
     }
-  }
+  };
+
+  useEffect(() => {
+    const query = new URLSearchParams(search);
+    const param = query.get("ref");
+    if (param && param === "all_tools" && pathname === "/") {
+      setShowMenu(true);
+      bodyScrollLock.enable();
+    }
+  }, [search, pathname]);
+
   return (
     <>
       <Layout.Header className="nav-header-container" ref={domRef}>
@@ -67,28 +109,48 @@ const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegis
               <span className="text">Workspace</span>
             </NavLink>
           )}
-          <div className="all-tools-btn" onClick={() => {
-            setShowMenu(true);
-            bodyScrollLock.enable();
-          }}>
+          <div
+            className="all-tools-btn"
+            onClick={() => {
+              if (pathname === "/")
+                history.push({
+                  pathname: "/",
+                  search: "?ref=all_tools",
+                });
+              else setShowMenu(true);
+              bodyScrollLock.enable();
+            }}
+          >
             <Dots3x3 />
             <span>All Tools</span>
           </div>
           <Switch>
-            {Object.keys(pathContent).map(path =>
+            {Object.keys(pathContent).map((path) => (
               <Route path={path}>
                 <Item to={path} />
               </Route>
-            )}
+            ))}
           </Switch>
           <div className="rightside">
             <Search updateQuery={updateQuery} />
             {!isAuthenticated ? (
-              <Button type="ghost" onClick={() => setLoginVisible(true)}>Sign in</Button>
-            ) : [
-            <AddButton {...{ isAuthenticated, setLoginVisible, history, profile, setWarningModalVisible }} />, 
-            <UserButton {...{ auth0Client, isRegistered, profile }} />]
-          }
+              <Button type="ghost" onClick={() => setLoginVisible(true)}>
+                Sign in
+              </Button>
+            ) : (
+              [
+                <AddButton
+                  {...{
+                    isAuthenticated,
+                    setLoginVisible,
+                    history,
+                    profile,
+                    setWarningModalVisible,
+                  }}
+                />,
+                <UserButton {...{ auth0Client, isRegistered, profile }} />,
+              ]
+            )}
           </div>
         </div>
       </Layout.Header>
@@ -105,17 +167,25 @@ const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegis
         <div className="full-menu">
           <div className="contents">
             <h2>All tools</h2>
-            <div className="close-btn" onClick={() => {
-              setShowMenu(false)
-              bodyScrollLock.disable()
-            }}>
+            <div
+              className="close-btn"
+              onClick={() => {
+                if (pathname === "/") {
+                  history.push({
+                    pathname: "/",
+                  });
+                }
+                setShowMenu(false);
+                bodyScrollLock.disable();
+              }}
+            >
               <CloseOutlined />
             </div>
             <h5>Information</h5>
             <div className="row">
               <Item to="/knowledge/library" {...{ setShowMenu }} />
-              <Item to="/knowledge/case-studies"  {...{ setShowMenu }} />
-              <Item to="/knowledge/capacity-development"  {...{ setShowMenu }} />
+              <Item to="/knowledge/case-studies" {...{ setShowMenu }} />
+              <Item to="/knowledge/capacity-development" {...{ setShowMenu }} />
             </div>
             <h5>Community</h5>
             <div className="row">
@@ -123,15 +193,44 @@ const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegis
               <Item to="/connect/experts" {...{ setShowMenu }} />
               <Item to="/connect/events" {...{ setShowMenu }} />
               <Item to="/connect/partners" {...{ setShowMenu }} />
-              <Item href="https://communities.gpmarinelitter.org" title="Engage" subtitle="Interactive forum for collaboration" icon={<IconForum />} />
+              <Item
+                href="https://communities.gpmarinelitter.org"
+                title="Engage"
+                subtitle="Interactive forum for collaboration"
+                icon={<IconForum />}
+              />
             </div>
             <h5>Data hub</h5>
             <div className="row">
-              <Item href="https://datahub.gpmarinelitter.org" title="Analytics & statistics" subtitle="Metrics to measure progress" icon={<AnalyticAndStatisticSvg/>}  {...{ setShowMenu }} />
-              <Item href="https://unepazecosysadlsstorage.z20.web.core.windows.net/" title="Data Catalogue" subtitle="Datasets on plastic pollution and marine litter" icon={<DataCatalogueSvg/>}  {...{ setShowMenu }} />
-              <Item to="/glossary"  {...{ setShowMenu }} />
-              <Item href="https://datahub.gpmarinelitter.org/pages/story_map" title="Story Maps" subtitle="Storytelling with custom maps" icon={<MapSvg/>}   {...{ setShowMenu }} />
-              <Item href="https://datahub.gpmarinelitter.org/pages/api-explore" title="API explore" subtitle="Web services and APIs" icon={<ExploreSvg/>}  {...{ setShowMenu }} />
+              <Item
+                href="https://datahub.gpmarinelitter.org"
+                title="Analytics & statistics"
+                subtitle="Metrics to measure progress"
+                icon={<AnalyticAndStatisticSvg />}
+                {...{ setShowMenu }}
+              />
+              <Item
+                href="https://unepazecosysadlsstorage.z20.web.core.windows.net/"
+                title="Data Catalogue"
+                subtitle="Datasets on plastic pollution and marine litter"
+                icon={<DataCatalogueSvg />}
+                {...{ setShowMenu }}
+              />
+              <Item to="/glossary" {...{ setShowMenu }} />
+              <Item
+                href="https://datahub.gpmarinelitter.org/pages/story_map"
+                title="Story Maps"
+                subtitle="Storytelling with custom maps"
+                icon={<MapSvg />}
+                {...{ setShowMenu }}
+              />
+              <Item
+                href="https://datahub.gpmarinelitter.org/pages/api-explore"
+                title="API explore"
+                subtitle="Web services and APIs"
+                icon={<ExploreSvg />}
+                {...{ setShowMenu }}
+              />
             </div>
             <h5>Looking for more?</h5>
             <div className="row">
@@ -142,52 +241,77 @@ const MenuBar = ({ updateQuery, isAuthenticated, setWarningModalVisible, isRegis
         </div>
       </CSSTransition>
     </>
-  )
-}
+  );
+};
 
 const pathContent = {
-  '/knowledge/library': {
-    title: 'Knowledge library', subtitle: 'Resources on marine litter and plastic pollution', icon: <AtlasSvg />
+  "/knowledge/library": {
+    title: "Knowledge library",
+    subtitle: "Resources on marine litter and plastic pollution",
+    icon: <AtlasSvg />,
   },
-  '/knowledge/case-studies': {
-    title: 'Case studies', icon: <CaseStudiesSvg />, subtitle: 'Compilation of actions around the world', iconClass: 'casestudies'
+  "/knowledge/case-studies": {
+    title: "Case studies",
+    icon: <CaseStudiesSvg />,
+    subtitle: "Compilation of actions around the world",
+    iconClass: "casestudies",
   },
-  '/knowledge/capacity-development': {
-     title: "Learning center", subtitle: "Learning and capacity development resources", icon: <CapacityBuildingSvg />, iconClass: "learning" 
+  "/knowledge/capacity-development": {
+    title: "Learning center",
+    subtitle: "Learning and capacity development resources",
+    icon: <CapacityBuildingSvg />,
+    iconClass: "learning",
   },
-  '/connect/community': {
-     title: "Members", iconClass: 'tools-community-icon', subtitle: "Directory of GPML network entities and individuals", icon: <IconCommunity />
+  "/connect/community": {
+    title: "Members",
+    iconClass: "tools-community-icon",
+    subtitle: "Directory of GPML network entities and individuals",
+    icon: <IconCommunity />,
   },
-  '/connect/experts': {
-     title: "Experts", iconClass: 'tools-experts-icon', subtitle: "Tool to find an expert and experts' groups", icon: <ExpertIcon />
+  "/connect/experts": {
+    title: "Experts",
+    iconClass: "tools-experts-icon",
+    subtitle: "Tool to find an expert and experts' groups",
+    icon: <ExpertIcon />,
   },
-  '/connect/events': {
-     title: "Events", subtitle: "Global events calendar", icon: <IconEvent />
+  "/connect/events": {
+    title: "Events",
+    subtitle: "Global events calendar",
+    icon: <IconEvent />,
   },
-  '/connect/partners': {
-     title: "Partners", iconClass: 'tools-partners-icon', subtitle: "Directory of partners of the GPML Digital Platform", icon: <IconPartner />
+  "/connect/partners": {
+    title: "Partners",
+    iconClass: "tools-partners-icon",
+    subtitle: "Directory of partners of the GPML Digital Platform",
+    icon: <IconPartner />,
   },
-  '/glossary': {
-     title: "Glossary", subtitle: "Terminology and definitions", icon: <GlossarySvg/>
+  "/glossary": {
+    title: "Glossary",
+    subtitle: "Terminology and definitions",
+    icon: <GlossarySvg />,
   },
-  '/help-center': {
-     title: "Help Center", subtitle: "Support on GPML Digital Platform", icon: <HelpCenterSvg/>
+  "/help-center": {
+    title: "Help Center",
+    subtitle: "Support on GPML Digital Platform",
+    icon: <HelpCenterSvg />,
   },
-  '/about-us': {
-     title: "About GPML", subtitle: "Find out more about us", icon: <AboutSvg/>
-  }
-}
+  "/about-us": {
+    title: "About GPML",
+    subtitle: "Find out more about us",
+    icon: <AboutSvg />,
+  },
+};
 
 const Item = ({ title, subtitle, icon, iconClass, to, href, setShowMenu }) => {
-  if(to != null && pathContent[to] != null){
-    iconClass = pathContent[to].iconClass
-    icon = pathContent[to].icon
-    title = pathContent[to].title
-    subtitle = pathContent[to].subtitle
+  if (to != null && pathContent[to] != null) {
+    iconClass = pathContent[to].iconClass;
+    icon = pathContent[to].icon;
+    title = pathContent[to].title;
+    subtitle = pathContent[to].subtitle;
   }
   const contents = (
     <>
-      <div className={['icon', iconClass].filter(it => it != null).join(' ')}>
+      <div className={["icon", iconClass].filter((it) => it != null).join(" ")}>
         {icon}
       </div>
       <div>
@@ -195,27 +319,29 @@ const Item = ({ title, subtitle, icon, iconClass, to, href, setShowMenu }) => {
         <span>{subtitle}</span>
       </div>
     </>
-  )
+  );
   const handleClick = () => {
-    setShowMenu(false)
-    bodyScrollLock.disable()
+    setShowMenu(false);
+    bodyScrollLock.disable();
+  };
+  if (to != null) {
+    return (
+      <Link className="menu-item" to={to} onClick={handleClick}>
+        {contents}
+      </Link>
+    );
+  } else if (href != null) {
+    return (
+      <a className="menu-item" href={href} onClick={handleClick}>
+        {contents}
+      </a>
+    );
   }
-  if(to != null){
-    return <Link className="menu-item" to={to} onClick={handleClick}>{contents}</Link>
-  }
-  else if(href != null){
-    return <a className="menu-item" href={href} onClick={handleClick}>{contents}</a>
-  }
-  return (
-    <div className="menu-item">
-      {contents}
-    </div>
-  )
-}
-
+  return <div className="menu-item">{contents}</div>;
+};
 
 const Search = withRouter(({ history, updateQuery }) => {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   const handleSearch = (src) => {
     const path = history.location.pathname;
@@ -245,7 +371,7 @@ const AddButton = withRouter(
     setWarningModalVisible,
     history,
     setLoginVisible,
-    profile
+    profile,
   }) => {
     if (isAuthenticated) {
       if (profile?.reviewStatus === "APPROVED") {
@@ -278,44 +404,46 @@ const AddButton = withRouter(
   }
 );
 
-const UserButton = withRouter(({ history, isRegistered, profile, auth0Client }) => {
-  return (
-    <Dropdown
-      overlayClassName="user-btn-dropdown-wrapper"
-      overlay={
-        <Menu className="user-btn-dropdown">
-          <Menu.Item
-            key="profile"
-            onClick={() => {
-              history.push(
-                `/${isRegistered(profile) ? "profile" : "onboarding"}`
-              );
-            }}
-          >
-            Profile
-          </Menu.Item>
-          <Menu.Item
-            key="logout"
-            onClick={() => {
-              auth0Client.logout({ returnTo: window.location.origin })
-            }}
-          >
-            Logout
-          </Menu.Item>
-        </Menu>
-      }
-      trigger={["click"]}
-      placement="bottomRight"
-    >
-      <Button
-        type="ghost"
+const UserButton = withRouter(
+  ({ history, isRegistered, profile, auth0Client }) => {
+    return (
+      <Dropdown
+        overlayClassName="user-btn-dropdown-wrapper"
+        overlay={
+          <Menu className="user-btn-dropdown">
+            <Menu.Item
+              key="profile"
+              onClick={() => {
+                history.push(
+                  `/${isRegistered(profile) ? "profile" : "onboarding"}`
+                );
+              }}
+            >
+              Profile
+            </Menu.Item>
+            <Menu.Item
+              key="logout"
+              onClick={() => {
+                auth0Client.logout({ returnTo: window.location.origin });
+              }}
+            >
+              Logout
+            </Menu.Item>
+          </Menu>
+        }
+        trigger={["click"]}
         placement="bottomRight"
-        className="profile-button"
-        shape="circle"
-        icon={<UserOutlined />}
-      />
-    </Dropdown>
-  );
-});
+      >
+        <Button
+          type="ghost"
+          placement="bottomRight"
+          className="profile-button"
+          shape="circle"
+          icon={<UserOutlined />}
+        />
+      </Dropdown>
+    );
+  }
+);
 
-export default MenuBar
+export default MenuBar;
