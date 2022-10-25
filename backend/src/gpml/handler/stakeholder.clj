@@ -422,7 +422,7 @@
             response
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
-(defmethod ig/init-key ::suggested-profiles
+(defmethod ig/init-key :gpml.handler.stakeholder/suggested-profiles
   [_ {:keys [db]}]
   (fn [{:keys [jwt-claims parameters]}]
     (if-let [stakeholder (db.stakeholder/stakeholder-by-email (:spec db) {:email (:email jwt-claims)})]
@@ -507,7 +507,7 @@
        [:tag_category {:optional true} string?]]]]]
    handler.geo/params-payload))
 
-(defmethod ig/init-key ::suggested-profiles-params
+(defmethod ig/init-key :gpml.handler.stakeholder/suggested-profiles-params
   [_ _]
   {:query [:map
            [:page
@@ -594,7 +594,7 @@
             response
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
-(defmethod ig/init-key ::put-by-admin-params [_ _]
+(defmethod ig/init-key :gpml.handler.stakeholder/put-by-admin-params [_ _]
   {:path [:map [:id int?]]
    :body [:map
           [:id {:optional true} int?]
@@ -614,6 +614,7 @@
           [:seeking {:optional true} [:vector [:string {:min 1}]]]
           [:offering {:optional true} [:vector [:string {:min 1}]]]
           [:expertise {:optional true} [:vector [:string {:min 1}]]]
+          [:affiliation {:optional true} [:maybe pos-int?]]
           [:tags {:optional true}
            [:vector {:optional true}
             [:map {:optional true}
