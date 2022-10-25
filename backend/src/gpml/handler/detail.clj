@@ -24,6 +24,7 @@
             [gpml.handler.resource.permission :as handler.res-permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
+            [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.handler.util :as util]
             [gpml.model.topic :as model.topic]
@@ -462,40 +463,37 @@
 
 (defmethod ig/init-key :gpml.handler.detail/get
   [_ {:keys [db logger]}]
-  (fn [{{:keys [path query]} :parameters approved? :approved? user :user}]
+  (fn [{{:keys [path query]} :parameters user :user}]
     (try
       (let [conn (:spec db)
             topic (:topic-type path)
             id (:topic-id path)
-            authorized? (and (or (model.topic/public? topic) approved?)
-                             (some? (handler.res-permission/get-resource-if-allowed conn
-                                                                                    user
-                                                                                    (resolve-resource-type topic)
-                                                                                    id
-                                                                                    {:read? true})))]
-        (if authorized?
-          (if-let [data (get-detail conn topic id query)]
+            resource (handler.res-permission/get-resource-if-allowed conn
+                                                                     user
+                                                                     (resolve-resource-type topic)
+                                                                     id
+                                                                     {:read? true})]
+        (if (seq resource)
+          (if-let [details (get-detail conn topic id query)]
             (resp/response (merge
                             (adapt (merge
                                     (case topic
-                                      "technology" (dissoc data :tags :remarks :name)
-                                      (dissoc data :tags :abstract :description))
-                                    (extra-details topic conn data)))
-                            {:owners (:owners data)}))
-            util/not-found)
-          util/unauthorized))
+                                      "technology" (dissoc details :tags :remarks :name)
+                                      (dissoc details :tags :abstract :description))
+                                    (extra-details topic conn details)))
+                            {:owners (:owners details)}))
+            (r/not-found {}))
+          (r/unauthorized {})))
       (catch Exception e
         (log logger :error ::failed-to-get-resource-details {:exception-message (.getMessage e)
                                                              :context-data {:path-params path
                                                                             :user user}})
         (if (instance? SQLException e)
-          {:status 500
-           :body {:success? true
-                  :reason (pg-util/get-sql-state e)}}
-          {:status 500
-           :body {:success? true
-                  :reason :could-not-get-resource-details
-                  :error-details {:error (.getMessage e)}}})))))
+          (r/server-error {:success? true
+                           :reason (pg-util/get-sql-state e)})
+          (r/server-error {:success? true
+                           :reason :could-not-get-resource-details
+                           :error-details {:error (.getMessage e)}}))))))
 
 (def put-params
   ;; FIXME: Add validation
