@@ -66,7 +66,6 @@
                              linked_in
                              public_database
                              public_email
-                             non_member_organisation
                              cv
                              affiliation
                              job_title
@@ -86,13 +85,12 @@
    :country           country
    :public_email      (boolean public_email)
    :public_database   public_database
-   :affiliation       (or affiliation (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation))
-   :job_title job_title})
+   :affiliation       affiliation
+   :job_title         job_title})
 
 (defn- create-profile
   [{:keys [id photo picture about
            title first_name role
-           non_member_organisation
            last_name idp_usernames
            linked_in cv twitter email
            affiliation job_title
@@ -100,14 +98,13 @@
            reviewed_at reviewed_by review_status
            organisation_role public_email]}
    tags
-   geo
    org]
   (let [{:keys [seeking offering expertise]} (->> tags
                                                   (group-by :tag_relation_category)
                                                   (reduce-kv (fn [m k v] (assoc m (keyword k) (map :tag v))) {}))]
     {:id id
      :title title
-     :affiliation (or affiliation (when (and non_member_organisation (pos? non_member_organisation)) non_member_organisation))
+     :affiliation affiliation
      :job_title job_title
      :first_name first_name
      :last_name last_name
@@ -124,7 +121,6 @@
      :expertise expertise
      :tags tags
      :geo_coverage_type geo_coverage_type
-     :geo_coverage_value geo
      :org org
      :about about
      :role role
@@ -181,26 +177,17 @@
         tags (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
                                                       :resource-col "stakeholder"
                                                       :resource-id (:id stakeholder)})
-        org (db.organisation/organisation-by-id conn {:id (:affiliation stakeholder)})
-        geo-type (:geo_coverage_type stakeholder)
-        geo-value (db.stakeholder/get-stakeholder-geo conn stakeholder)
-        geo (cond
-              (contains? #{"regional" "global with elements in specific areas"} geo-type)
-              (mapv :country_group geo-value)
-              (contains? #{"national" "transnational" "sub-national"} geo-type)
-              (mapv :country geo-value))
-        profile (create-profile stakeholder tags geo org)]
-    (if (-> profile :org :is_member)
-      (assoc profile :affiliation (-> profile :org :id) :non_member_organisation nil)
-      (assoc profile :non_member_organisation (-> profile :org :id) :affiliation nil))))
+        org (db.organisation/organisation-by-id conn {:id (:affiliation stakeholder)})]
+    (create-profile stakeholder tags org)))
 
 (defn- update-stakeholder
   [{:keys [logger mailjet-config] :as config} tx {:keys [body-params old-profile]}]
-  (let [{:keys [id]} body-params
-        new-profile (merge (dissoc old-profile :non_member_organisation)
-                           (if (:non_member_organisation body-params)
-                             (-> body-params (assoc :affiliation (:non_member_organisation body-params)) (dissoc :non_member_organisation))
-                             body-params))
+  (let [{:keys [id org]} body-params
+        new-profile (merge
+                     old-profile
+                     (if (:id org)
+                       (-> body-params (assoc :affiliation (:id org)) (dissoc :org :org-name))
+                       body-params))
         profile (create-new-profile config tx new-profile body-params)
         tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body-params)]
     (db.stakeholder/update-stakeholder tx profile)
@@ -576,7 +563,7 @@
       (resp/response
        (get-stakeholder-profile db stakeholder)))))
 
-(defmethod ig/init-key :gpml.handler.stakeholder/put-by-admin
+(defmethod ig/init-key :gpml.handler.stakeholder/put-restricted
   [_ {:keys [db logger] :as config}]
   (fn [{{:keys [path body]} :parameters}]
     (try
@@ -594,7 +581,7 @@
             response
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
-(defmethod ig/init-key :gpml.handler.stakeholder/put-by-admin-params [_ _]
+(defmethod ig/init-key :gpml.handler.stakeholder/put-restricted-params [_ _]
   {:path [:map [:id int?]]
    :body [:map
           [:id {:optional true} int?]

@@ -64,28 +64,34 @@
     ;; The following checks are mostly to avoid doing a lot of work
     ;; when checking the user permissions on a specific resource.
     (cond
-      ;; If it's a read attempt, the resource is approved and the user
-      ;; is logged in then we should allow without checking extra
-      ;; permissions.
+      ;; If the resource is the caller stakeholder details or the
+      ;; caller is an approved user of the platform than we should
+      ;; allow it to see it's data. Otherwise, stakeholder data is not
+      ;; public.
       (and read?
-           (= (:review_status resource) "APPROVED"))
+           (= resource-type "stakeholder")
+           (or (= (:id user) (:id resource))
+               (= (:review_status user) "APPROVED")))
       resource
 
-      ;; If the user is empty it means the caller doesn't have a
-      ;; session and is just making a read call on the resource. So no
-      ;; need to check extra permissions since platform resources are
-      ;; public in a read-only state.
-      (and (not (seq user))
-           (= (:review_status resource) "APPROVED"))
+      ;; Platform resources are public with the exception of
+      ;; stakeholders. They can only be visible for platform approved
+      ;; users.
+      (and read?
+           (= (:review_status resource) "APPROVED")
+           (not= resource-type "stakeholder"))
       resource
 
       ;; If it's not a read operation the respective PUT, POST and
       ;; DELETE endpoints should check if the user is approved in the
       ;; platform to do the desired action for the specific resource.
-      :else
-      (when (or (reviewer? conn user resource-type resource-id)
-                (owner? conn user resource-type resource-id)
-                (creator? user resource)
-                (user-org-resource-allowed? conn user resource-type resource-id)
-                (admin? user))
-        resource))))
+      (or (reviewer? conn user resource-type resource-id)
+          (owner? conn user resource-type resource-id)
+          (creator? user resource)
+          (user-org-resource-allowed? conn user resource-type resource-id)
+          (admin? user))
+      resource
+
+      ;; If none of the above fulfills then we return `nil` signaling
+      ;; the user doesn't have permissions to access the resource.
+      :else nil)))
