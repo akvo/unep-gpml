@@ -127,6 +127,7 @@ const SignUpForm = withRouter(
 
           if (data.orgHeadquarter?.[formData.S5.orgHeadquarter]) {
             data.org.country = formData.S5.orgHeadquarter;
+            delete data.orgHeadquarter;
           }
           if (data.orgSubnationalArea) {
             data.org.subnationalArea = data.orgSubnationalArea;
@@ -157,7 +158,6 @@ const SignUpForm = withRouter(
           }
           delete data.geoCoverageType;
           delete data.geoCoverageValue;
-          delete data.orgHeadquarter;
           delete data.orgName;
           delete data.orgRepresentative;
           delete data.orgDescription;

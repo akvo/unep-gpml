@@ -55,6 +55,10 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
     0
   );
 
+  const uniqueArrayByKey = (array) => [
+    ...new Map(array.map((item) => [item["id"], item])).values(),
+  ];
+
   const fetchData = (searchParams) => {
     setLoading(true);
     const queryParams = new URLSearchParams(searchParams);
@@ -84,7 +88,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         setData(resp?.data);
         setCountData(resp?.data?.counts);
         setGridItems((prevItems) => {
-          return [...new Set([...prevItems, ...resp?.data?.results])];
+          return uniqueArrayByKey([...prevItems, ...resp?.data?.results]);
         });
       })
       .catch((err) => {
