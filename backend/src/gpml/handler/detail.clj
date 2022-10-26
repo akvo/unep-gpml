@@ -483,7 +483,7 @@
                                     (extra-details topic conn details)))
                             {:owners (:owners details)}))
             (r/not-found {}))
-          (r/unauthorized {})))
+          (r/forbidden {})))
       (catch Exception e
         (log logger :error ::failed-to-get-resource-details {:exception-message (.getMessage e)
                                                              :context-data {:path-params path
