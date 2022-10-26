@@ -223,18 +223,18 @@
                                           [""
                                            {:get {:middleware [#ig/ref :gpml.auth/auth-required
                                                                #ig/ref :gpml.auth/approved-user
-                                                               #ig/ref :gpml.auth/admin-required-middleware]
+                                                               #ig/ref :gpml.auth/admin-or-profile-owner-required-middleware]
                                                   :summary "Get a stakeholder by id"
                                                   :swagger {:tags ["stakeholder"]}
                                                   :parameters {:path [:map [:id int?]]}
                                                   :handler #ig/ref :gpml.handler.stakeholder/get-by-id}
                                             :put {:middleware [#ig/ref :gpml.auth/auth-required
                                                                #ig/ref :gpml.auth/approved-user
-                                                               #ig/ref :gpml.auth/admin-required-middleware]
+                                                               #ig/ref :gpml.auth/admin-or-profile-owner-required-middleware]
                                                   :summary "Edit stakeholder's data"
                                                   :swagger {:tags ["stakeholder"]}
-                                                  :parameters #ig/ref :gpml.handler.stakeholder/put-by-admin-params
-                                                  :handler #ig/ref :gpml.handler.stakeholder/put-by-admin}
+                                                  :parameters #ig/ref :gpml.handler.stakeholder/put-restricted-params
+                                                  :handler #ig/ref :gpml.handler.stakeholder/put-restricted}
                                             :patch {:middleware [#ig/ref :gpml.auth/auth-required
                                                                  #ig/ref :gpml.auth/approved-user
                                                                  #ig/ref :gpml.auth/admin-required-middleware]
@@ -695,8 +695,8 @@
   :gpml.handler.stakeholder/post #ig/ref :gpml.config/common
   :gpml.handler.stakeholder/post-params {}
   :gpml.handler.stakeholder/put #ig/ref :gpml.config/common
-  :gpml.handler.stakeholder/put-by-admin #ig/ref :gpml.config/common
-  :gpml.handler.stakeholder/put-by-admin-params {}
+  :gpml.handler.stakeholder/put-restricted #ig/ref :gpml.config/common
+  :gpml.handler.stakeholder/put-restricted-params {}
   :gpml.handler.stakeholder-association/get-associated-topics {:db #ig/ref :duct.database/sql}
   :gpml.handler.stakeholder-association/get-associated-topics-params {}
 
@@ -871,6 +871,7 @@
   :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}
   :gpml.auth/admin-or-reviewer-required-middleware {:db #ig/ref :duct.database/sql}
   :gpml.auth/restrict-to-project-owner #ig/ref :gpml.config/common
+  :gpml.auth/admin-or-profile-owner-required-middleware {}
 
   :gpml.handler.monitoring/collector {}
 
