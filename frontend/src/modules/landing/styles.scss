@@ -456,6 +456,9 @@
       &.spotlight {
         max-width: 30em;
       }
+      &.nowpap {
+        max-width: 35em;
+      }
       &.testimonial {
         max-width: 13.75em;
         img {
@@ -488,6 +491,9 @@
       @media screen and (min-width: 1024px) {
         &.spotlight {
           margin-top: 120px;
+        }
+        &.nowpap {
+          margin-top: 60px;
         }
         &:nth-child(3) {
           margin-top: 50px;

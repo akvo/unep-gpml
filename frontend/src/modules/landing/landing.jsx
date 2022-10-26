@@ -186,6 +186,12 @@ const Connect = () => {
           navigation={true}
           modules={[Pagination, Navigation]}
         >
+          <SwiperSlide className="card nowpap">
+            <div className="label">REGIONAL NODE SPOTLIGHT</div>
+            <img src="/nowpap.jpg" />
+            <h4>A NOWPAP-organised international coastal cleanup campaign in Dalian, China</h4>
+            <p>The Northwest Pacific Action Plan <a href='https://www.unep.org/nowpap/' target="_blank">(NOWPAP)</a> was adopted by the People’s Republic of China, Japan, the Republic of Korea, and the Russian Federation in September 1994 as a part of the <a href='http://web.unep.org/regionalseas/' target="_blank">Regional Seas Programme</a> of the UN Environment Programme (UNEP). The overall goal is "the wise use, development and management of the coastal and marine environment so as to obtain the utmost long-term benefits for the human populations of the region, while protecting human health, ecological integrity and the region’s sustainability for future generations".<br /><br />NOWPAP and the Coordinating Body on the Seas of East Asia <a href='https://www.unep.org/cobsea/' target="_blank">(COBSEA)</a> recently co-organised a Technical Session on “Strengthening Regional Cooperation for Global Action on Marine Litter in the East Asian Seas and Northwest Pacific’ at the 7th International Marine Debris Conference. The session explored how existing regional mechanisms can be leveraged to strengthen partnerships and cooperation toward tackling marine litter globally. Representatives of Japan, Republic of Korea, Thailand and Vietnam shared their insights on interagency coordination, monitoring for evidence-based action, and strengthening regional cooperation. Read more <a href='https://www.unep.org/nowpap/news-and-stories/press-release/strengthening-regional-cooperation-global-action-marine-litter' target="_blank">here</a>.</p>
+          </SwiperSlide>
           <SwiperSlide className="card casestudy">
             <div className="label">featured case study</div>
             <img src="/featured-case-study.jpg" />
