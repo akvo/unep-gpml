@@ -461,6 +461,7 @@
          [:name {:optional true} string?]
          [:url {:optional true} string?]
          [:type {:optional true} string?] ;;representative_group
+         [:program {:optional true} string?]
          [:representative_group_government {:optional true} string?]
          [:representative_group_private_sector {:optional true} string?]
          [:representative_group_academia_research {:optional true} string?]
