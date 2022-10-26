@@ -563,7 +563,7 @@
       (resp/response
        (get-stakeholder-profile db stakeholder)))))
 
-(defmethod ig/init-key :gpml.handler.stakeholder/put-by-admin
+(defmethod ig/init-key :gpml.handler.stakeholder/put-restricted
   [_ {:keys [db logger] :as config}]
   (fn [{{:keys [path body]} :parameters}]
     (try
@@ -581,7 +581,7 @@
             response
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
-(defmethod ig/init-key :gpml.handler.stakeholder/put-by-admin-params [_ _]
+(defmethod ig/init-key :gpml.handler.stakeholder/put-restricted-params [_ _]
   {:path [:map [:id int?]]
    :body [:map
           [:id {:optional true} int?]

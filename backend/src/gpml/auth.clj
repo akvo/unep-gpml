@@ -176,6 +176,15 @@
         {:status 403
          :body {:message "Unauthorized"}}))))
 
+(defmethod ig/init-key :gpml.auth/admin-or-profile-owner-required-middleware [_ _]
+  (fn [handler]
+    (fn [{:keys [user parameters] :as request}]
+      (if (or (= "ADMIN" (:role user))
+              (= (get-in parameters [:path :id]) (:id user)))
+        (handler (assoc request :admin user))
+        {:status 403
+         :body {:message "Unauthorized"}}))))
+
 (defmethod ig/init-key :gpml.auth/admin-or-reviewer-required-middleware [_ _]
   (fn [handler]
     (fn [{:keys [user approved?] :as request}]
