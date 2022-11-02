@@ -1,6 +1,7 @@
 (ns gpml.handler.detail
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.set :as set]
+            [clojure.string :as str]
             [duct.logger :refer [log]]
             [gpml.constants :as constants]
             [gpml.db.action :as db.action]
@@ -28,6 +29,7 @@
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.handler.util :as util]
             [gpml.model.topic :as model.topic]
+            [gpml.util :as generic-util]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
             [medley.core :as medley]
@@ -682,7 +684,11 @@
                  (let [status (db.detail/update-initiative conn-tx (-> params
                                                                        (dissoc :related_content :tags :entity_connections
                                                                                :individual_connections :urls :org :geo_coverage_countries
-                                                                               :geo_coverage_country_groups :qimage)))]
+                                                                               :geo_coverage_country_groups :qimage)
+                                                                       (generic-util/update-if-not-nil
+                                                                        :source
+                                                                        #(-> %
+                                                                             str/lower-case))))]
                    (handler.initiative/update-geo-initiative conn-tx id (handler.initiative/extract-geo-data params))
                    status))
         related-contents (:related_content data)]

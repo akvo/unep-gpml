@@ -50,8 +50,14 @@
    ",\n"
    (for [k (keys (dissoc data :id))]
      (str (str/replace (str k) ":" "")
-          (if (and (is-jsonb k) (get data k))
+          (cond
+            (= :source k)
+            (format "= %s::resource_source" k)
+
+            (and (is-jsonb k) (get data k))
             (format "= to_jsonb(:v%s)" k)
+
+            :else
             (format "= %s" k))))))
 
 (defn generate-update-resource
@@ -79,6 +85,9 @@
 
               (= key "geo_coverage_type")
               (str value "::geo_coverage_type")
+
+              (= key "source")
+              (str value "::resource_source")
 
               (contains? #{"end_date" "start_date"} key)
               (str value "::timestamptz")

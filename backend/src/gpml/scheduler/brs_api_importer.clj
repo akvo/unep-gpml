@@ -17,6 +17,7 @@
             [gpml.domain.initiative :as dom.initiative]
             [gpml.domain.resource :as dom.resource]
             [gpml.domain.translation :as dom.translation]
+            [gpml.domain.types :as dom.types]
             [gpml.handler.image :as handler.img]
             [gpml.util :as util]
             [gpml.util.http-client :as http-client]
@@ -34,13 +35,16 @@
   {:resource {:review_status :APPROVED
               :geo_coverage_type :global
               :type "Technical Resource"
-              :language "en"}
+              :language "en"
+              :source (keyword dom.types/default-resource-source)}
    :event {:review_status :APPROVED
-           :language "en"}
+           :language "en"
+           :source (keyword dom.types/default-resource-source)}
    :initiative {:review_status :APPROVED
                 :language "en"
                 :version 2
-                :q36_1 {"USD" "USD United States dollar"}}
+                :q36_1 {"USD" "USD United States dollar"}
+                :source (keyword dom.types/default-resource-source)}
    :tag {:review_status :SUBMITTED}})
 
 (defn- get-entity-schema-keys

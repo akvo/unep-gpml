@@ -26,3 +26,10 @@
     "resource_editor"
     "partner"
     "regulator"})
+
+(def ^:const default-resource-source "gpml")
+
+(def ^:const resource-source-types
+  "Source (platform) of a resource."
+  #{"gpml"
+    "cobsea"})

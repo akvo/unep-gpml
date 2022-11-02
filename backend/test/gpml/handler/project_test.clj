@@ -24,7 +24,8 @@
    :checklist {"test item" false}
    :stage (rand-nth (vec dom.prj/project-stages))
    :geo_coverage_countries [724]
-   :geo_coverage_country_groups [151]})
+   :geo_coverage_country_groups [151]
+   :source dom.types/default-resource-source})
 
 (defn- create-random-project
   [db stakeholder-id]

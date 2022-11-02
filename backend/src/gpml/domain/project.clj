@@ -91,10 +91,24 @@
                 :type "array"
                 :items {:type "integer"}}}
      [:sequential
-      pos-int?]]]))
+      pos-int?]]
+    [:source
+     {:default dom.types/default-resource-source
+      :swagger {:description "Source platform of the Project"
+                :type "string"
+                :enum dom.types/resource-source-types}}
+     (apply conj [:enum] dom.types/resource-source-types)]]))
 
 (defn create-project
   "Creates a new project entity adding the necessary default and unique
   values."
   [data]
-  (assoc data :id (util/uuid)))
+  (-> data
+      (assoc :id (util/uuid))
+      (update :source keyword)))
+
+(defn update-project
+  "Handle transformations to represent domain canonical entity."
+  [data]
+  (-> data
+      (util/update-if-not-nil :source keyword)))
