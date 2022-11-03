@@ -12,7 +12,8 @@
     "technology"
     "financing_resource"
     "technical_resource"
-    "action_plan"})
+    "action_plan"
+    "case_study"})
 
 (def ^:const relation-types
   "Possible resource relation types.

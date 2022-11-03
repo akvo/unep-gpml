@@ -4,6 +4,7 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.tag :as db.tag]
             [gpml.db.technology :as db.technology]
+            [gpml.domain.types :as dom.types]
             [gpml.fixtures :as fixtures]
             [gpml.handler.profile-test :as profile-test]
             [gpml.handler.technology :as technology]
@@ -55,7 +56,8 @@
           ;; create John create new technology with available organisation
           resp-one (handler (-> (mock/request :post "/")
                                 (assoc :jwt-claims {:email "john@org"})
-                                (assoc :body-params (new-technology data))))
+                                (assoc :body-params (new-technology data))
+                                (assoc :parameters {:body {:source dom.types/default-resource-source}})))
           ;; create John create new technology with new organisation
           resp-two (handler (-> (mock/request :post "/")
                                 (assoc :jwt-claims {:email "john@org"})
@@ -65,7 +67,8 @@
                                                            {:id -1
                                                             :name "New Era"
                                                             :geo_coverage_type "global"
-                                                            :country (-> (:countries data) second :id)}))))
+                                                            :country (-> (:countries data) second :id)}))
+                                (assoc :parameters {:body {:source dom.types/default-resource-source}})))
           technology-one (db.technology/technology-by-id db (:body resp-one))
           technology-two (db.technology/technology-by-id db (:body resp-two))]
       (is (= 201 (:status resp-one)))

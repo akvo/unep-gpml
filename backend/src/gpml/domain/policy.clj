@@ -352,4 +352,12 @@
      [:sequential
       {:min 1
        :error/message "Need at least one geo coverage value"}
-      pos-int?]]]))
+      pos-int?]]
+    [:source
+     {:default dom.types/default-resource-source
+      :decode/string keyword
+      :decode/json keyword
+      :swagger {:description "Source platform of the Policy"
+                :type "string"
+                :enum dom.types/resource-source-types}}
+     (apply conj [:enum] dom.types/resource-source-types)]]))

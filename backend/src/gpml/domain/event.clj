@@ -43,4 +43,6 @@
     [:subnational_city {:optional true} [string? {:min 1}]]
     [:thumbnail {:optional true} [string? {:min 1}]]
     [:title {:optional false} [string? {:min 1}]]
-    [:url {:optional true} [string? {:min 1}]]]))
+    [:url {:optional true} [string? {:min 1}]]
+    [:source {:default dom.types/default-resource-source}
+     (apply conj [:enum] dom.types/resource-source-types)]]))

@@ -10,6 +10,7 @@ SELECT r.*, (CASE
    WHEN r.topic_type = 'resource' THEN (SELECT ARRAY[t.title, t.image] FROM resource t WHERE t.id = r.topic_id)
    WHEN r.topic_type = 'event' THEN (SELECT ARRAY[t.title, t.image] FROM event t WHERE t.id = r.topic_id)
    WHEN r.topic_type = 'policy' THEN (SELECT ARRAY[t.title, t.image] FROM policy t WHERE t.id = r.topic_id)
+   WHEN r.topic_type = 'case_study' THEN (SELECT ARRAY[t.title, t.image] FROM case_study t WHERE t.id = r.topic_id)
    WHEN r.topic_type = 'organisation' THEN (SELECT ARRAY[t.name, t.logo] FROM organisation t WHERE t.id = r.topic_id)
    WHEN r.topic_type = 'stakeholder' THEN (SELECT ARRAY[CONCAT(title, '. ', last_name,' ', first_name), t.picture] FROM stakeholder t WHERE t.id = r.topic_id)
 END) AS details,
@@ -46,6 +47,7 @@ SELECT r.*, (CASE
   WHEN r.topic_type = 'resource' THEN (SELECT t.title FROM resource t WHERE t.id = r.topic_id)
   WHEN r.topic_type = 'event' THEN (SELECT t.title FROM event t WHERE t.id = r.topic_id)
   WHEN r.topic_type = 'policy' THEN (SELECT t.title FROM policy t WHERE t.id = r.topic_id)
+  WHEN r.topic_type = 'case_study' THEN (SELECT t.title FROM case_study t WHERE t.id = r.topic_id)
   WHEN r.topic_type = 'organisation' THEN (SELECT t.name FROM organisation t WHERE t.id = r.topic_id)
   WHEN r.topic_type = 'stakeholder' THEN (SELECT CONCAT(title, '. ', last_name,' ', first_name) FROM stakeholder t WHERE t.id = r.topic_id)
 END) AS title

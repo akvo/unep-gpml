@@ -4,6 +4,7 @@
             [gpml.db.policy :as db.policy]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.tag :as db.tag]
+            [gpml.domain.types :as dom.types]
             [gpml.fixtures :as fixtures]
             [gpml.handler.policy :as policy]
             [gpml.handler.profile-test :as profile-test]
@@ -57,7 +58,8 @@
           ;; create John create new policy with available organisation
           resp-one (handler (-> (mock/request :post "/")
                                 (assoc :jwt-claims {:email "john@org"})
-                                (assoc :body-params (new-policy data))))
+                                (assoc :body-params (new-policy data))
+                                (assoc :parameters {:body {:source dom.types/default-resource-source}})))
           ;; create John create new policy with new organisation
           resp-two (handler (-> (mock/request :post "/")
                                 (assoc :jwt-claims {:email "john@org"})
@@ -65,7 +67,8 @@
                                                            {:id -1
                                                             :name "New Era"
                                                             :geo_coverage_type "global"
-                                                            :country (-> (:countries data) second :id)}))))
+                                                            :country (-> (:countries data) second :id)}))
+                                (assoc :parameters {:body {:source dom.types/default-resource-source}})))
           policy-one (db.policy/policy-by-id db (:body resp-one))
           policy-two (db.policy/policy-by-id db (:body resp-two))]
       (is (= 201 (:status resp-one)))

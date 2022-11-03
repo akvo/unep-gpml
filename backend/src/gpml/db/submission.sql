@@ -40,6 +40,10 @@ submission AS (
     SELECT id, 'initiative' AS type, 'initiative' AS topic, replace(q2::text,'"','') as title, created_by, created, 'USER' as role, review_status, '' as image, featured
     FROM initiative
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
+    UNION
+    SELECT id, 'case_study' AS type, 'case_study' AS topic, title, created_by, created, 'USER' as role, review_status, image, featured
+    FROM case_study
+--~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     order by created
 ),
 authz AS (

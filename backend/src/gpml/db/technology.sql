@@ -23,6 +23,7 @@ insert into technology(
 --~ (when (contains? params :subnational_city) ", subnational_city")
 --~ (when (contains? params :headquarter) ", headquarter")
 --~ (when (contains? params :document_preview) ", document_preview")
+--~ (when (contains? params :source) ", source")
 )
 values(
     :name,
@@ -47,6 +48,7 @@ values(
 --~ (when (contains? params :subnational_city) ", :subnational_city")
 --~ (when (contains? params :headquarter) ", :headquarter")
 --~ (when (contains? params :document_preview) ", :document_preview")
+--~ (when (contains? params :source) ", :source")
 )
 returning id;
 
