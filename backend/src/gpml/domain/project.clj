@@ -94,6 +94,8 @@
       pos-int?]]
     [:source
      {:default dom.types/default-resource-source
+      :decode/string keyword
+      :decode/json keyword
       :swagger {:description "Source platform of the Project"
                 :type "string"
                 :enum dom.types/resource-source-types}}
@@ -104,8 +106,7 @@
   values."
   [data]
   (-> data
-      (assoc :id (util/uuid))
-      (update :source keyword)))
+      (assoc :id (util/uuid))))
 
 (defn update-project
   "Handle transformations to represent domain canonical entity."

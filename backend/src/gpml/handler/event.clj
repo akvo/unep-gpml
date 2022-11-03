@@ -1,6 +1,5 @@
 (ns gpml.handler.event
   (:require [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
             [duct.logger :refer [log]]
             [gpml.auth :as auth]
             [gpml.constants :as constants]
@@ -75,7 +74,7 @@
                       :recording recording
                       :document_preview document_preview
                       :language language
-                      :source (-> source str/lower-case keyword)}
+                      :source source}
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
         event-id (->>
@@ -175,7 +174,9 @@
        [:id {:optional true} pos-int?]
        [:tag string?]]]]
     [:language string?]
-    [:source {:default dom.types/default-resource-source}
+    [:source {:default dom.types/default-resource-source
+              :decode/string keyword
+              :decode/json keyword}
      (apply conj [:enum] dom.types/resource-source-types)]
     auth/owners-schema]
    (into handler.geo/params-payload)))

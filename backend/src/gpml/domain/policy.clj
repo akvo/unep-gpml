@@ -355,6 +355,8 @@
       pos-int?]]
     [:source
      {:default dom.types/default-resource-source
+      :decode/string keyword
+      :decode/json keyword
       :swagger {:description "Source platform of the Policy"
                 :type "string"
                 :enum dom.types/resource-source-types}}

@@ -1,6 +1,5 @@
 (ns gpml.handler.technology
   (:require [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
             [duct.logger :refer [log]]
             [gpml.auth :as auth]
             [gpml.constants :as constants]
@@ -83,7 +82,7 @@
                       :document_preview document_preview
                       :review_status "SUBMITTED"
                       :language language
-                      :source (-> source str/lower-case keyword)}
+                      :source source}
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
         technology-id (->>
@@ -208,7 +207,9 @@
            [:map [:lang string?] [:url [:string {:min 1}]]]]]
          [:language string?]
          [:capacity_building {:optional true} boolean?]
-         [:source {:default dom.types/default-resource-source}
+         [:source {:default dom.types/default-resource-source
+                   :decode/string keyword
+                   :decode/json keyword}
           (apply conj [:enum] dom.types/resource-source-types)]
          auth/owners-schema]
         handler.geo/params-payload))

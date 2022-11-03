@@ -1,6 +1,5 @@
 (ns gpml.handler.policy
   (:require [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
             [duct.logger :refer [log]]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.policy :as db.policy]
@@ -84,7 +83,7 @@
                       :created_by created_by
                       :review_status "SUBMITTED"
                       :language language
-                      :source (-> source str/lower-case keyword)}
+                      :source source}
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
         policy-geo-coverage-insert-cols ["policy" "country_group" "country"]

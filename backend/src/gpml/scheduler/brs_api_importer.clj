@@ -36,15 +36,15 @@
               :geo_coverage_type :global
               :type "Technical Resource"
               :language "en"
-              :source (keyword dom.types/default-resource-source)}
+              :source dom.types/default-resource-source}
    :event {:review_status :APPROVED
            :language "en"
-           :source (keyword dom.types/default-resource-source)}
+           :source dom.types/default-resource-source}
    :initiative {:review_status :APPROVED
                 :language "en"
                 :version 2
                 :q36_1 {"USD" "USD United States dollar"}
-                :source (keyword dom.types/default-resource-source)}
+                :source dom.types/default-resource-source}
    :tag {:review_status :SUBMITTED}})
 
 (defn- get-entity-schema-keys

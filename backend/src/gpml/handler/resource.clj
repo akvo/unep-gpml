@@ -1,6 +1,5 @@
 (ns gpml.handler.resource
   (:require [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
             [duct.logger :refer [log]]
             [gpml.auth :as auth]
             [gpml.constants :as constants]
@@ -83,7 +82,7 @@
                       :latest_amendment_date latest_amendment_date
                       :document_preview document_preview
                       :language language
-                      :source (-> source str/lower-case keyword)}
+                      :source source}
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
         resource-id (:id (db.resource/new-resource
@@ -233,7 +232,9 @@
              [:tag string?]]]]
           [:language string?]
           [:source
-           {:default dom.types/default-resource-source}
+           {:default dom.types/default-resource-source
+            :decode/string keyword
+            :decode/json keyword}
            (apply conj [:enum] dom.types/resource-source-types)]
           auth/owners-schema]
          handler.geo/params-payload)])

@@ -1,6 +1,5 @@
 (ns gpml.handler.initiative
   (:require [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
             [duct.logger :refer [log]]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.initiative :as db.initiative]
@@ -100,10 +99,7 @@
                       :thumbnail (handler.image/assoc-image config tx thumbnail "initiative"))
 
                (not (nil? capacity_building))
-               (assoc :capacity_building capacity_building)
-
-               true
-               (update :source #(-> % str/lower-case keyword)))
+               (assoc :capacity_building capacity_building))
         initiative-id (:id (db.initiative/new-initiative
                             tx
                             (update data :source #(sql-util/keyword->pg-enum % "resource_source"))))
@@ -194,5 +190,7 @@
    [:version integer?]
    [:language string?]
    [:capacity_building {:optional true} boolean?]
-   [:source {:default dom.types/default-resource-source}
+   [:source {:default dom.types/default-resource-source
+             :decode/string keyword
+             :decode/json keyword}
     (apply conj [:enum] dom.types/resource-source-types)]])
