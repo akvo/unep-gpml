@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS case_study (
   geo_coverage_type GEO_COVERAGE_TYPE NOT NULL,
   source RESOURCE_SOURCE NOT NULL DEFAULT 'gpml',
   publish_year SMALLINT,
-  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  created TIMESTAMP NOT NULL DEFAULT NOW(),
   last_modified_at TIMESTAMP NOT NULL DEFAULT NOW(),
   reviewed_at TIMESTAMP,
   reviewed_by INTEGER REFERENCES stakeholder(id) ON UPDATE CASCADE,
@@ -24,25 +24,25 @@ CREATE TABLE IF NOT EXISTS case_study (
 --;; Geo-coverage related schema
 CREATE TABLE IF NOT EXISTS case_study_geo_coverage (
   id SERIAL NOT NULL PRIMARY KEY,
-  case_study_id INTEGER NOT NULL REFERENCES case_study(id) ON DELETE CASCADE,
-  country_id INTEGER REFERENCES country(id) ON DELETE CASCADE ON UPDATE CASCADE,
-  country_group_id INTEGER REFERENCES country_group(id) ON DELETE CASCADE ON UPDATE CASCADE
+  case_study INTEGER NOT NULL REFERENCES case_study(id) ON DELETE CASCADE,
+  country INTEGER REFERENCES country(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  country_group INTEGER REFERENCES country_group(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 --;;
 ALTER TABLE IF EXISTS case_study_geo_coverage
-  ADD CONSTRAINT case_study_geo_coverage_unique UNIQUE (case_study_id, country_id, country_group_id);
+  ADD CONSTRAINT case_study_geo_coverage_unique UNIQUE (case_study, country, country_group);
 --;;
-CREATE UNIQUE INDEX IF NOT EXISTS case_study_geo_coverage_case_study_id_country_id_idx
+CREATE UNIQUE INDEX IF NOT EXISTS case_study_geo_coverage_case_study_country_idx
   ON case_study_geo_coverage (
-    case_study_id,
-    country_id)
-  WHERE country_id IS NULL;
+    case_study,
+    country)
+  WHERE country IS NULL;
 --;;
-CREATE UNIQUE INDEX IF NOT EXISTS case_study_geo_coverage_case_study_id_country_group_id_idx
+CREATE UNIQUE INDEX IF NOT EXISTS case_study_geo_coverage_case_study_country_group_idx
   ON case_study_geo_coverage (
-    case_study_id,
-    country_group_id)
-  WHERE country_group_id IS NULL;
+    case_study,
+    country_group)
+  WHERE country_group IS NULL;
 --;;
 --;; Tags related schema
 --;;
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS case_study_tag (
 --;;
 --;; Stakeholder relationship
 CREATE TYPE case_study_association AS
-  ENUM ('implementor', 'owner', 'donor', 'partner', 'resource_editor');
+  ENUM ('implementor', 'owner', 'donor', 'partner', 'interested in', 'resource_editor');
 -- ;;
 CREATE TABLE IF NOT EXISTS stakeholder_case_study (
   id serial PRIMARY KEY,
@@ -91,5 +91,9 @@ CREATE TABLE IF NOT EXISTS case_study_translation (
   FOREIGN KEY (case_study_id) REFERENCES case_study(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (language) REFERENCES language(iso_code) ON UPDATE CASCADE ON DELETE CASCADE
 );
+--;;
+--;; Add additional topic type
+ALTER TYPE topic_type
+  ADD VALUE 'case_study';
 --;;
 COMMIT;
