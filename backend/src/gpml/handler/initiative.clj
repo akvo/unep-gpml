@@ -7,12 +7,14 @@
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.tag :as db.tag]
+            [gpml.domain.types :as dom.types]
             [gpml.handler.auth :as h.auth]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.util :as util]
             [gpml.util.email :as email]
+            [gpml.util.sql :as sql-util]
             [integrant.core :as ig]
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
@@ -83,7 +85,8 @@
          new-tags)))))
 
 (defn- create-initiative
-  [{:keys [logger mailjet-config] :as config} tx
+  [{:keys [logger mailjet-config] :as config}
+   tx
    {:keys [tags owners related_content created_by
            entity_connections individual_connections qimage thumbnail capacity_building] :as initiative}]
   (let [data (cond-> initiative
@@ -97,7 +100,9 @@
 
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
-        initiative-id (:id (db.initiative/new-initiative tx data))
+        initiative-id (:id (db.initiative/new-initiative
+                            tx
+                            (update data :source #(sql-util/keyword->pg-enum % "resource_source"))))
         api-individual-connections (util/individual-connections->api-individual-connections tx individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
@@ -127,14 +132,15 @@
 
 (defmethod ig/init-key :gpml.handler.initiative/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params] :as req}]
+  (fn [{:keys [jwt-claims body-params parameters] :as req}]
     (try
       (jdbc/with-db-transaction [tx (:spec db)]
         (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
               initiative-id (create-initiative config
                                                tx
                                                (assoc body-params
-                                                      :created_by (:id user)))]
+                                                      :created_by (:id user)
+                                                      :source (get-in parameters [:body :source])))]
           (resp/created (:referrer req) {:success? true
                                          :message "New initiative created"
                                          :id initiative-id})))
@@ -183,4 +189,8 @@
   [:map
    [:version integer?]
    [:language string?]
-   [:capacity_building {:optional true} boolean?]])
+   [:capacity_building {:optional true} boolean?]
+   [:source {:default dom.types/default-resource-source
+             :decode/string keyword
+             :decode/json keyword}
+    (apply conj [:enum] dom.types/resource-source-types)]])

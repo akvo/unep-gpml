@@ -14,6 +14,7 @@
             [gpml.util.email :as email]
             [gpml.util.malli :as util.malli]
             [gpml.util.postgresql :as pg-util]
+            [gpml.util.sql :as sql-util]
             [integrant.core :as ig]
             [malli.util :as mu]
             [ring.util.response :as resp])
@@ -40,7 +41,8 @@
           :remarks nil})))
 
 (defn- create-policy
-  [{:keys [logger mailjet-config] :as config} tx
+  [{:keys [logger mailjet-config] :as config}
+   tx
    {:keys [title original_title abstract url
            data_source type_of_law record_number
            first_publication_date latest_amendment_date
@@ -51,7 +53,7 @@
            owners info_docs sub_content_type
            document_preview related_content topics
            attachments remarks entity_connections individual_connections
-           capacity_building]}]
+           capacity_building source]}]
   (let [data (cond-> {:title title
                       :original_title original_title
                       :abstract abstract
@@ -80,11 +82,14 @@
                       :remarks remarks
                       :created_by created_by
                       :review_status "SUBMITTED"
-                      :language language}
+                      :language language
+                      :source source}
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
         policy-geo-coverage-insert-cols ["policy" "country_group" "country"]
-        policy-id (->> data (db.policy/new-policy tx) :id)
+        policy-id (->>
+                   (update data :source #(sql-util/keyword->pg-enum % "resource_source"))
+                   (db.policy/new-policy tx) :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections tx individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
@@ -125,14 +130,15 @@
 
 (defmethod ig/init-key :gpml.handler.policy/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params] :as req}]
+  (fn [{:keys [jwt-claims body-params parameters] :as req}]
     (try
       (jdbc/with-db-transaction [tx (:spec db)]
         (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
               policy-id (create-policy config
                                        tx
                                        (assoc body-params
-                                              :created_by (:id user)))]
+                                              :created_by (:id user)
+                                              :source (get-in parameters [:body :source])))]
           (resp/created (:referrer req) {:success? true
                                          :message "New policy created"
                                          :id policy-id})))

@@ -3,6 +3,7 @@
             [clojure.test :refer [deftest is testing use-fixtures]]
             [gpml.db.initiative :as db.initiative]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.domain.types :as dom.types]
             [gpml.fixtures :as fixtures]
             [gpml.handler.initiative :as initiative]
             [gpml.handler.profile-test :as profile-test]
@@ -32,7 +33,8 @@
                        :add-default-lang? true})
           resp (handler (-> (mock/request :post "/")
                             (assoc :jwt-claims {:email "john@org"})
-                            (assoc :body-params (assoc submission :version 1))))
+                            (assoc :body-params (assoc submission :version 1))
+                            (assoc :parameters {:body {:source dom.types/default-resource-source}})))
           data (db.initiative/initiative-by-id db (:body resp))]
       (is (= 201 (:status resp)))
       (is (= 1 (-> data :version)))

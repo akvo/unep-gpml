@@ -32,4 +32,5 @@
       (util/update-if-not-nil :checklist pg-util/val->jsonb)
       (util/update-if-not-nil :answers pg-util/val->jsonb)
       (util/update-if-not-nil :stage #(pg-util/->PGEnum % "project_stage"))
+      (util/update-if-not-nil :source #(pg-util/->PGEnum % "resource_source"))
       (dissoc :geo_coverage_countries :geo_coverage_country_groups)))

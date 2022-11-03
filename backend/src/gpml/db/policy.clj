@@ -33,4 +33,5 @@
       (util/update-if-not-nil :latest_amendment_date jt/sql-date)
       (util/update-if-not-nil :attachments sql-util/coll->pg-jsonb)
       (util/update-if-not-nil :topics #(pg-util/->JDBCArray % "text"))
+      (util/update-if-not-nil :source #(sql-util/keyword->pg-enum % "resource_source"))
       (dissoc :tags)))

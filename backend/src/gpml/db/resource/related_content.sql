@@ -1,4 +1,4 @@
--- :name create-related-contents :insert :affected
+-- :name create-related-contents :execute :affected
 INSERT INTO related_content(:i*:insert-cols)
 VALUES :t*:insert-values;
 

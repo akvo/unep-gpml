@@ -27,6 +27,7 @@ INSERT INTO resource(
 --~ (when (contains? params :capacity_building) ", capacity_building")
 --~ (when (contains? params :subnational_city) ", subnational_city")
 --~ (when (contains? params :document_preview) ", document_preview")
+--~ (when (contains? params :source) ", source")
 )
 VALUES(
     :title,
@@ -55,6 +56,7 @@ VALUES(
 --~ (when (contains? params :capacity_building) ", :capacity_building")
 --~ (when (contains? params :subnational_city) ", :subnational_city")
 --~ (when (contains? params :document_preview) ", :document_preview")
+--~ (when (contains? params :source) ", :source")
 )
 returning id;
 

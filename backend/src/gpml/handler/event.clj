@@ -7,6 +7,7 @@
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.domain.types :as dom.types]
             [gpml.handler.auth :as h.auth]
             [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
@@ -15,6 +16,7 @@
             [gpml.handler.util :as handler.util]
             [gpml.util :as util]
             [gpml.util.email :as email]
+            [gpml.util.sql :as sql-util]
             [integrant.core :as ig]
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
@@ -49,7 +51,7 @@
            created_by owners url info_docs sub_content_type
            recording document_preview related_content
            entity_connections individual_connections language
-           capacity_building]}]
+           capacity_building source]}]
   (let [data (cond-> {:title title
                       :start_date start_date
                       :end_date end_date
@@ -71,10 +73,13 @@
                       :sub_content_type sub_content_type
                       :recording recording
                       :document_preview document_preview
-                      :language language}
+                      :language language
+                      :source source}
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
-        event-id (->> data (db.event/new-event tx) :id)
+        event-id (->>
+                  (update data :source #(sql-util/keyword->pg-enum % "resource_source"))
+                  (db.event/new-event tx) :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections tx individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
@@ -169,17 +174,22 @@
        [:id {:optional true} pos-int?]
        [:tag string?]]]]
     [:language string?]
+    [:source {:default dom.types/default-resource-source
+              :decode/string keyword
+              :decode/json keyword}
+     (apply conj [:enum] dom.types/resource-source-types)]
     auth/owners-schema]
    (into handler.geo/params-payload)))
 
 (defmethod ig/init-key :gpml.handler.event/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params] :as req}]
+  (fn [{:keys [jwt-claims body-params parameters] :as req}]
     (try
       (jdbc/with-db-transaction [tx (:spec db)]
         (let [result (create-event config tx (assoc body-params
                                                     :created_by
-                                                    (-> (db.stakeholder/stakeholder-by-email tx jwt-claims) :id)))]
+                                                    (-> (db.stakeholder/stakeholder-by-email tx jwt-claims) :id)
+                                                    :source (get-in parameters [:body :source])))]
           (resp/created (:referrer req) {:success? true
                                          :message "New event created"
                                          :id (:id result)})))

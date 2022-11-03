@@ -9,12 +9,13 @@
 
 (def ^:const generic-cte-opts
   "Common set of options for all CTE generation functions."
-  {:tables ["event" "technology" "policy" "initiative" "resource"]
+  {:tables ["event" "technology" "policy" "initiative" "resource" "case_study"]
    :search-text-fields {"event" ["title" "description" "remarks"]
                         "technology" ["name"]
                         "policy" ["title" "original_title" "abstract" "remarks"]
                         "initiative" ["q2" "q3"]
-                        "resource" ["title" "summary" "remarks"]}})
+                        "resource" ["title" "summary" "remarks"]
+                        "case_study" ["title" "description"]}})
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (def ^:const generic-entity-cte-opts
@@ -69,6 +70,10 @@
   "e.description AS summary,
    e.*")
 
+(def ^:const ^:private case-study-cols
+  "e.description AS summary,
+   e.*")
+
 (def ^:const ^:private technology-cols
   "e.name AS title,
    e.remarks AS summary,
@@ -113,6 +118,7 @@
     "policy" policy-cols
     "event" event-cols
     "technology" technology-cols
+    "case_study" case-study-cols
     "e.*"))
 
 (defn- build-topic-data-query

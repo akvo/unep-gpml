@@ -2,6 +2,7 @@
   (:require [clojure.test :refer [deftest is testing use-fixtures]]
             [gpml.db.event :as db.event]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.domain.types :as dom.types]
             [gpml.fixtures :as fixtures]
             [gpml.handler.event :as event]
             [gpml.handler.profile-test :as profile-test]
@@ -37,7 +38,8 @@
           _ (db.stakeholder/update-stakeholder-status db (assoc user :review_status "APPROVED"))
           resp-one (handler (-> (mock/request :post "/")
                                 (assoc :jwt-claims {:email "john@org"})
-                                (assoc :body-params payload)))
+                                (assoc :body-params payload)
+                                (assoc :parameters {:body {:source dom.types/default-resource-source}})))
           event-one (db.event/event-by-id db (:body resp-one))]
       (is (= 201 (:status resp-one)))
       (is (= (:url event-one) (:url payload))))))
