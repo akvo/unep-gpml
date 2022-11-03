@@ -3,7 +3,7 @@
 (def ^:const topic-tables
   "The list of tables considered as topics in the current model of the
   GPML platform as of 2022-03-16."
-  ["event" "technology" "policy" "initiative" "resource"])
+  ["event" "technology" "policy" "initiative" "case_study" "resource"])
 
 (def ^:const geo-coverage-entity-tables
   "The list of tables with geo coverage relations."
@@ -16,7 +16,7 @@
 (def topics
   (vec
    (sort
-    (apply conj resource-types ["event" "technology" "policy" "initiative" "stakeholder" "organisation" "non_member_organisation"]))))
+    (apply conj resource-types ["event" "technology" "policy" "initiative" "stakeholder" "organisation" "non_member_organisation" "case_study"]))))
 
 (def reviewer-review-status [:PENDING :ACCEPTED :REJECTED])
 
