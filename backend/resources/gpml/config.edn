@@ -31,6 +31,12 @@
                                          {:get {:summary "List available countries"
                                                 :swagger {:tags ["country"]}
                                                 :handler #ig/ref :gpml.handler.country/get}}]
+                                        ["/country-state"
+                                         {:get {:summary "List of available country states"
+                                                :swagger {:tags ["country" "state"]}
+                                                :handler #ig/ref :gpml.handler.country-state/get
+                                                :parameters #ig/ref :gpml.handler.country-state/get-params
+                                                :responses #ig/ref :gpml.handler.country-state/get-responses}}]
                                         ["/country-group"
                                          [""
                                           {:get {:summary "List available country groups"
@@ -585,7 +591,12 @@
                                           ["/run-importer"
                                            {:post {:summary "Runs the BRS importer job"
                                                    :swagger {:tags ["scheduled task" "import job" "programmatic"]}
-                                                   :handler #ig/ref :gpml.handler.programmatic.brs-api-importer/post}}]]]
+                                                   :handler #ig/ref :gpml.handler.programmatic.brs-api-importer/post}}]]
+                                         ["/country-state"
+                                          {:post {:summary "Creates country states from a CSV file"
+                                                  :swagger ["country state" "programmatic"]
+                                                  :parameters #ig/ref :gpml.handler.programmatic.country-state/post-params
+                                                  :handler #ig/ref :gpml.handler.programmatic.country-state/post}}]]
                                         ["/subscribe"
                                          {:post {:summary "Send an email to GPML Secretariat about a new subscription request"
                                                  :swagger {:tags ["subscribe"]}
@@ -836,6 +847,13 @@
 
   :gpml.handler.subscribe/post #ig/ref :gpml.config/common
   :gpml.handler.subscribe/post-params {}
+
+  :gpml.handler.programmatic.country-state/post #ig/ref :gpml.config/common
+  :gpml.handler.programmatic.country-state/post-params {}
+
+  :gpml.handler.country-state/get #ig/ref :gpml.config/common
+  :gpml.handler.country-state/get-params {}
+  :gpml.handler.country-state/get-responses {}
 
   :clj-gcp.storage/client {}
 
