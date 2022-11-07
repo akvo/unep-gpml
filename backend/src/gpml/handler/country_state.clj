@@ -2,7 +2,7 @@
   (:require [clojure.string :as str]
             [duct.logger :refer [log]]
             [gpml.db.country-state :as db.country-state]
-            [gpml.domain.country-state :as dom.country-state]
+            [gpml.domain.geo-coverage :as dom.geo-coverage]
             [gpml.handler.responses :as r]
             [gpml.handler.util :as handler.util]
             [integrant.core :as ig]
@@ -63,5 +63,5 @@
 (defmethod ig/init-key :gpml.handler.country-state/get-responses
   [_ _]
   {200 {:body (-> handler.util/default-ok-response-body-schema
-                  (mu/assoc :country_states [:sequential dom.country-state/CountryState]))}
+                  (mu/assoc :country_states [:sequential dom.geo-coverage/CountryState]))}
    500 {:body handler.util/default-error-response-body-schema}})

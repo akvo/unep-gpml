@@ -9,7 +9,7 @@
             [gpml.db.resource :as db.resource]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.handler.auth :as h.auth]
-            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
@@ -41,13 +41,13 @@
           :remarks nil})))
 
 (defn- create-resource
-  [{:keys [logger mailjet-config] :as config} tx
+  [{:keys [logger mailjet-config] :as config} conn
    {:keys [resource_type title publish_year
            summary value value_currency
            value_remarks valid_from valid_to image
            geo_coverage_type geo_coverage_value
            geo_coverage_countries geo_coverage_country_groups
-           geo_coverage_value_subnational_city
+           geo_coverage_value_subnational_city geo_coverage_country_states
            attachments country urls tags remarks thumbnail
            created_by url owners info_docs sub_content_type related_content
            first_publication_date latest_amendment_date document_preview
@@ -62,8 +62,8 @@
                       :value_remarks value_remarks
                       :valid_from valid_from
                       :valid_to valid_to
-                      :image (handler.image/assoc-image config tx image "resource")
-                      :thumbnail (handler.image/assoc-image config tx thumbnail "resource")
+                      :image (handler.image/assoc-image config conn image "resource")
+                      :thumbnail (handler.image/assoc-image config conn thumbnail "resource")
                       :geo_coverage_type geo_coverage_type
                       :geo_coverage_value geo_coverage_value
                       :geo_coverage_countries geo_coverage_countries
@@ -82,47 +82,49 @@
                       :language language}
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
-        resource-id (:id (db.resource/new-resource tx data))
-        api-individual-connections (handler.util/individual-connections->api-individual-connections tx individual_connections created_by)
+        resource-id (:id (db.resource/new-resource conn data))
+        api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
                                                           api-individual-connections)))))]
     (when (seq related_content)
-      (handler.resource.related-content/create-related-contents tx logger resource-id "resource" related_content))
+      (handler.resource.related-content/create-related-contents conn logger resource-id "resource" related_content))
     (doseq [stakeholder-id owners]
-      (h.auth/grant-topic-to-stakeholder! tx {:topic-id resource-id
-                                              :topic-type "resource"
-                                              :stakeholder-id stakeholder-id
-                                              :roles ["owner"]}))
+      (h.auth/grant-topic-to-stakeholder! conn {:topic-id resource-id
+                                                :topic-type "resource"
+                                                :stakeholder-id stakeholder-id
+                                                :roles ["owner"]}))
     (when (not-empty tags)
-      (handler.resource.tag/create-resource-tags tx logger mailjet-config {:tags tags
-                                                                           :tag-category "general"
-                                                                           :resource-name "resource"
-                                                                           :resource-id resource-id}))
+      (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
+                                                                             :tag-category "general"
+                                                                             :resource-name "resource"
+                                                                             :resource-id resource-id}))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections resource-id)]
-        (db.favorite/new-organisation-association tx association)))
+        (db.favorite/new-organisation-association conn association)))
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections resource-id)]
-        (db.favorite/new-stakeholder-association tx association)))
+        (db.favorite/new-stakeholder-association conn association)))
     (when (not-empty urls)
       (let [lang-urls (map #(vector resource-id
                                     (->> % :lang
                                          (assoc {} :iso_code)
-                                         (db.language/language-by-iso-code tx)
+                                         (db.language/language-by-iso-code conn)
                                          :id)
                                     (:url %)) urls)]
-        (db.resource/add-resource-language-urls tx {:urls lang-urls})))
-    (if (or (not-empty geo_coverage_country_groups)
-            (not-empty geo_coverage_countries))
-      (let [geo-data (handler.geo/get-geo-vector-v2 resource-id data)]
-        (db.resource/add-resource-geo tx {:geo geo-data}))
-      (when (not-empty geo_coverage_value)
-        (let [geo-data (handler.geo/get-geo-vector resource-id data)]
-          (db.resource/add-resource-geo tx {:geo geo-data}))))
+        (db.resource/add-resource-language-urls conn {:urls lang-urls})))
+    (when (or (seq geo_coverage_country_groups)
+              (seq geo_coverage_countries)
+              (seq geo_coverage_country_states))
+      (handler.geo/create-resource-geo-coverage conn
+                                                :resource
+                                                resource-id
+                                                {:countries geo_coverage_countries
+                                                 :country-groups geo_coverage_country_groups
+                                                 :country-states geo_coverage_country_states}))
     (email/notify-admins-pending-approval
-     tx
+     conn
      mailjet-config
      (merge data {:type resource_type}))
     resource-id))
@@ -173,7 +175,7 @@
              [:geo_coverage_type {:optional true}
               [:enum "global", "national", "transnational",
                "sub-national"]]]
-            handler.geo/params-payload)]
+            handler.geo/api-geo-coverage-schemas)]
           [:publish_year {:optional true} integer?]
           [:summary {:optional true} string?]
           [:value {:optional true} integer?]
@@ -226,7 +228,7 @@
              [:tag string?]]]]
           [:language string?]
           auth/owners-schema]
-         handler.geo/params-payload)])
+         handler.geo/api-geo-coverage-schemas)])
 
 (defmethod ig/init-key :gpml.handler.resource/post-params [_ _]
   post-params)

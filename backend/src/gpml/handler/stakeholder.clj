@@ -6,7 +6,7 @@
             [gpml.db.organisation :as db.organisation]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.image :as handler.image]
             [gpml.handler.organisation :as handler.org]
             [gpml.handler.responses :as r]
@@ -478,7 +478,7 @@
             [:tag string?]
             [:tag_category {:optional true} string?]]]]
          [:geo_coverage_type {:optional true} geo/coverage_type]]
-        handler.geo/params-payload))
+        handler.geo/api-geo-coverage-schemas))
 
 (def new-org-schema
   (into
@@ -493,7 +493,7 @@
        [:id {:optional true} pos-int?]
        [:tag string?]
        [:tag_category {:optional true} string?]]]]]
-   handler.geo/params-payload))
+   handler.geo/api-geo-coverage-schemas))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/suggested-profiles-params
   [_ _]

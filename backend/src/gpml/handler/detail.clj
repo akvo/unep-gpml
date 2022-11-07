@@ -17,7 +17,7 @@
             [gpml.db.resource.connection :as db.resource.connection]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.submission :as db.submission]
-            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.image :as handler.image]
             [gpml.handler.initiative :as handler.initiative]
             [gpml.handler.organisation :as handler.org]
@@ -526,20 +526,19 @@
                         (:url %))
                  urls)})))
 
-(defn update-resource-geo-coverage-values [conn table id geo_data]
-  ;; Delete any existing geo coverage values
-  (db.detail/delete-resource-related-data
-   conn
-   {:table (str table "_geo_coverage") :resource_type table :id id})
-
-  ;; Create geo coverage values for the resource
-  (when (or (seq (:geo_coverage_country_groups geo_data))
-            (seq (:geo_coverage_countries geo_data)))
-    (db.detail/add-resource-related-geo
-     conn
-     {:table (str table "_geo_coverage")
-      :resource_type table
-      :geo (handler.geo/get-geo-vector-v2 id geo_data)})))
+;; FIXME:
+;; call [[handler.resource.geo-coverage/update-resource-geo-coverage]]
+;; directly from point of reference instead of wrapping it here.
+(defn update-resource-geo-coverage-values
+  [conn table id {:keys [geo_coverage_countries
+                         geo_coverage_country_groups
+                         geo_coverage_country_states]}]
+  (handler.geo/update-resource-geo-coverage conn
+                                            (keyword table)
+                                            id
+                                            {:countries geo_coverage_countries
+                                             :country-groups geo_coverage_country_groups
+                                             :country-states geo_coverage_country_states}))
 
 (defn update-resource-organisation [conn table id org-id]
   ;; Delete any existing org
