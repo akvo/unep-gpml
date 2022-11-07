@@ -6,7 +6,6 @@
             [gpml.db.event :as db.event]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
-            [gpml.db.resource.geo-coverage :as db.geo-coverage]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.handler.auth :as h.auth]
             [gpml.handler.image :as handler.image]

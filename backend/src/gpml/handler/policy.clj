@@ -6,8 +6,8 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.policy :as dom.policy]
             [gpml.handler.auth :as h.auth]
-            [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.image :as handler.image]
+            [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.util :as handler.util]
@@ -84,7 +84,6 @@
                       :language language}
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
-        policy-geo-coverage-insert-cols ["policy" "country_group" "country"]
         policy-id (->> data (db.policy/new-policy conn) :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
