@@ -23,7 +23,22 @@ ADD COLUMN country_state INTEGER REFERENCES country_state(id) ON DELETE CASCADE;
 ALTER TABLE technology_geo_coverage
 ADD COLUMN country_state INTEGER REFERENCES country_state(id) ON DELETE CASCADE;
 --;;
+ALTER TABLE case_study_geo_coverage
+ADD COLUMN country_state INTEGER REFERENCES country_state(id) ON DELETE CASCADE;
+--;;
+ALTER TABLE project_geo_coverage
+ADD COLUMN country_state INTEGER REFERENCES country_state(id) ON DELETE CASCADE;
+--;;
 ALTER TABLE organisation_geo_coverage
 ADD COLUMN country_state INTEGER REFERENCES country_state(id) ON DELETE CASCADE;
+--;;
+ALTER TABLE project_geo_coverage
+RENAME COLUMN project_id TO project;
+--;;
+ALTER TABLE project_geo_coverage
+RENAME COLUMN country_id TO country;
+--;;
+ALTER TABLE project_geo_coverage
+RENAME COLUMN country_group_id TO country_group;
 --;;
 COMMIT;
