@@ -29,40 +29,47 @@
                                                         :insert-values insert-values})))
 
 (defn create-resource-geo-coverage
-  [conn entity-id entity-key {:keys [countries country-groups country-states]}]
-  (let [countries-country-groups-geo
-        (dom.geo-coverage/geo-countries-country-groups entity-id
-                                                       entity-key
-                                                       countries
-                                                       country-groups)
-        country-states-geo
-        (dom.geo-coverage/geo-country-states entity-id
-                                             (keyword (str (name entity-key) "_id"))
-                                             country-states)
-        countries-country-groups-geo-res
+  [conn entity-id entity-key geo-coverage-type {:keys [countries country-groups country-states]}]
+  (let [geo-coverage
+        (dom.geo-coverage/->geo-coverage entity-id
+                                         entity-key
+                                         geo-coverage-type
+                                         countries
+                                         country-groups
+                                         country-states)
+        result
         (create-resource-geo-coverage* conn
                                        (str (name entity-key) "_geo_coverage")
-                                       countries-country-groups-geo)
-        country-states-geo-res
-        (create-resource-geo-coverage* conn
-                                       (str (name entity-key) "_country_state")
-                                       country-states-geo)]
-    (if (and (= (+ (count countries) (country-groups)) (count countries-country-groups-geo-res))
-             (= (count country-states) country-states-geo-res))
+                                       geo-coverage)]
+    (if (= (count result) (count geo-coverage))
       {:success? true}
       {:success? false})))
 
+(defn delete-resource-geo-coverage
+  [conn entity-key entity-id]
+  (try
+    (let [affected-rows
+          (db.geo-coverage/delete-resource-geo-coverage conn
+                                                        {:table (str (name entity-key) "_geo_coverage")
+                                                         :resource-col (name entity-key)
+                                                         :resource-id entity-id})]
+      {:success? true
+       :delete-values affected-rows})
+    (catch Exception e
+      {:success? false
+       :reason :failed-to-delete-resource-geo-coverage
+       :error-details {:exception-type (class e)
+                       :exception-message (ex-message e)}})))
+
 (defn update-resource-geo-coverage
-  [conn entity-key entity-id geo-coverage]
-  (db.geo-coverage/delete-resource-geo-coverage conn
-                                                {:table (str (name entity-key) "_geo_coverage")
-                                                 :resource-col (name entity-key)
-                                                 :resource-id entity-id})
-  (db.geo-coverage/delete-resource-geo-coverage conn
-                                                {:table (str (name entity-key) "_country_state")
-                                                 :resource-col (name entity-key)
-                                                 :resource-id entity-id})
-  (create-resource-geo-coverage conn
-                                entity-key
-                                entity-id
-                                geo-coverage))
+  [conn entity-key entity-id geo-coverage-type geo-coverage]
+  (let [result (delete-resource-geo-coverage conn
+                                             entity-key
+                                             entity-id)]
+    (if (:success? result)
+      (create-resource-geo-coverage conn
+                                    entity-key
+                                    entity-id
+                                    geo-coverage-type
+                                    geo-coverage)
+      (throw (ex-info "Failed to delete resource geo coverage" result)))))
