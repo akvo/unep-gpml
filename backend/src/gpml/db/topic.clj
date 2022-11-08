@@ -174,6 +174,7 @@
        %s,
        array_remove(array_agg(DISTINCT eg.country_group), NULL) AS geo_coverage_country_groups,
        array_remove(array_agg(DISTINCT eg.country), NULL) AS geo_coverage_countries,
+       array_remove(array_agg(DISTINCT eg.country_state), NULL) AS geo_coverage_country_states,
        array_remove(array_agg(DISTINCT COALESCE(eg.country, eg.country_group)), NULL) AS geo_coverage_values,
        json_agg(json_build_object('id', t.id, 'tag', t.tag)) FILTER (WHERE t.id IS NOT NULL) AS tags
    FROM %s e
