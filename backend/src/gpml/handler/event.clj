@@ -113,10 +113,12 @@
         (db.event/add-event-language-urls conn {:urls lang-urls})))
     (when (or (seq geo_coverage_country_groups)
               (seq geo_coverage_countries)
-              (seq geo_coverage_country_states))
+              (seq geo_coverage_country_states)
+              (not= :global geo_coverage_type))
       (handler.geo/create-resource-geo-coverage conn
                                                 :event
                                                 event-id
+                                                (keyword geo_coverage_type)
                                                 {:countries geo_coverage_countries
                                                  :country-groups geo_coverage_country_groups
                                                  :country-states geo_coverage_country_states}))

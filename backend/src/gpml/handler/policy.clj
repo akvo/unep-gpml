@@ -93,7 +93,8 @@
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
-                                                          api-individual-connections)))))]
+                                                          api-individual-connections)))))
+        geo-coverage-type (keyword geo_coverage_type)]
     (when (seq related_content)
       (handler.resource.related-content/create-related-contents conn logger policy-id "policy" related_content))
     (when (not-empty tags)
@@ -114,10 +115,12 @@
         (db.favorite/new-stakeholder-association conn association)))
     (when (or (seq geo_coverage_country_groups)
               (seq geo_coverage_countries)
-              (seq geo_coverage_country_states))
+              (seq geo_coverage_country_states)
+              (not= :global geo-coverage-type))
       (handler.geo/create-resource-geo-coverage conn
                                                 :policy
                                                 policy-id
+                                                geo-coverage-type
                                                 {:countries geo_coverage_countries
                                                  :country-groups geo_coverage_country_groups
                                                  :country-states geo_coverage_country_states}))

@@ -530,20 +530,6 @@
                         (:url %))
                  urls)})))
 
-;; FIXME:
-;; call [[handler.resource.geo-coverage/update-resource-geo-coverage]]
-;; directly from point of reference instead of wrapping it here.
-(defn update-resource-geo-coverage-values
-  [conn table id {:keys [geo_coverage_countries
-                         geo_coverage_country_groups
-                         geo_coverage_country_states]}]
-  (handler.geo/update-resource-geo-coverage conn
-                                            (keyword table)
-                                            id
-                                            {:countries geo_coverage_countries
-                                             :country-groups geo_coverage_country_groups
-                                             :country-states geo_coverage_country_states}))
-
 (defn update-resource-organisation [conn table id org-id]
   ;; Delete any existing org
   (db.detail/delete-resource-related-data
@@ -560,25 +546,24 @@
       :organisation org-id})))
 
 (defn -update-blank-resource-picture
-  [{:keys [db]} image-type resource-id image-key]
+  [conn image-type resource-id image-key]
   (db.detail/update-resource-table
-   (:spec db)
+   conn
    {:table image-type :id resource-id :updates {image-key ""}}))
 
 (defn -update-resource-picture
-  [{:keys [db] :as config} image image-type resource-id image-key]
-  (let [conn (:spec db)
-        url (handler.image/assoc-image config conn image image-type)]
+  [config conn image image-type resource-id image-key]
+  (let [url (handler.image/assoc-image config conn image image-type)]
     (when-not (and image (= image url))
       (db.detail/update-resource-table
        conn
        {:table image-type :id resource-id :updates {image-key url}}))))
 
 (defn update-resource-image
-  [config image image-key image-type resource-id]
+  [config conn image image-key image-type resource-id]
   (if (empty? image)
-    (-update-blank-resource-picture config image-type resource-id image-key)
-    (-update-resource-picture config image image-type resource-id image-key)))
+    (-update-blank-resource-picture conn image-type resource-id image-key)
+    (-update-resource-picture config conn image image-type resource-id image-key)))
 
 (defn expand-associations
   [connections stakeholder-type topic topic-id]
@@ -630,12 +615,19 @@
           (db.favorite/update-stakeholder-association conn association)
           (db.favorite/new-organisation-association conn association))))))
 
-(defn update-resource
-  [{:keys [db] :as config} logger mailjet-config topic-type id updates]
-  (let [conn (:spec db)
-        table (cond
+(defn- update-resource
+  [{:keys [logger mailjet-config] :as config}
+   conn
+   topic-type
+   id
+   {:keys [geo_coverage_countries
+           geo_coverage_country_groups
+           geo_coverage_country_states
+           geo_coverage_type] :as updates}]
+  (let [table (cond
                 (contains? constants/resource-types topic-type) "resource"
                 :else topic-type)
+        geo-coverage-type (keyword geo_coverage_type)
         table-columns (-> updates
                           (dissoc
                            :tags :urls :geo_coverage_value :org
@@ -663,7 +655,7 @@
                           (handler.org/create conn logger mailjet-config org))))
         related-contents (:related_content updates)]
     (doseq [[image-key image-data] (select-keys updates [:image :thumbnail :photo :logo])]
-      (update-resource-image config image-data image-key table id))
+      (update-resource-image config conn image-data image-key table id))
     (when (seq tags)
       (update-resource-tags conn logger mailjet-config table id tags))
     (when (seq related-contents)
@@ -671,38 +663,62 @@
     (when-not (or (= "policy" topic-type)
                   (= "case_study" topic-type))
       (update-resource-language-urls conn table id urls))
-    (update-resource-geo-coverage-values conn table id updates)
+    (when (or (seq geo_coverage_countries)
+              (seq geo_coverage_country_groups)
+              (seq geo_coverage_country_states)
+              (not= :global geo-coverage-type))
+      (handler.geo/update-resource-geo-coverage conn
+                                                (keyword table)
+                                                id
+                                                geo-coverage-type
+                                                {:countries geo_coverage_countries
+                                                 :country-groups geo_coverage_country_groups
+                                                 :country-states geo_coverage_country_states}))
     (when (contains? #{"resource"} table)
       (update-resource-organisation conn table id org-id))
     (update-resource-connections conn (:entity_connections updates) (:individual_connections updates) table id)
     status))
 
-(defn update-initiative
-  [{:keys [db] :as config} logger mailjet-config id data]
-  (let [conn (:spec db)
-        params (merge {:id id} data)
-        tags (remove nil? (:tags data))
-        status (jdbc/with-db-transaction [conn-tx conn]
-                 (let [status (db.detail/update-initiative
-                               conn-tx
-                               (dissoc params
-                                       :related_content :tags :entity_connections
-                                       :individual_connections :urls :org :geo_coverage_countries
-                                       :geo_coverage_country_groups :qimage))]
-                   (handler.initiative/update-geo-initiative conn-tx id (handler.initiative/extract-geo-data params))
-                   status))
-        related-contents (:related_content data)]
-    (doseq [[image-key image-data] (select-keys data [:qimage :thumbnail])]
-      (update-resource-image config image-data image-key "initiative" id))
+(defn- update-initiative
+  [{:keys [logger mailjet-config] :as config}
+   conn
+   id
+   initiative]
+  (let [tags (remove nil? (:tags initiative))
+        geo-coverage-type (keyword (first (keys (:q24 initiative))))
+        {:keys [geo_coverage_countries
+                geo_coverage_country_groups
+                geo_coverage_country_states]}
+        (handler.initiative/extract-geo-data initiative)
+        status (db.detail/update-initiative
+                conn
+                (dissoc initiative
+                        :related_content :tags :entity_connections
+                        :individual_connections :urls :org :geo_coverage_countries
+                        :geo_coverage_country_groups :qimage))
+        related-contents (:related_content initiative)]
+    (doseq [[image-key image-data] (select-keys initiative [:qimage :thumbnail])]
+      (update-resource-image config conn image-data image-key "initiative" id))
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn logger id "initiative" related-contents))
     (when (seq tags)
       (update-resource-tags conn logger mailjet-config "initiative" id tags))
-    (update-resource-connections conn (:entity_connections data) (:individual_connections data) "initiative" id)
+    (when (or (seq geo_coverage_country_groups)
+              (seq geo_coverage_countries)
+              (seq geo_coverage_country_states)
+              (not= :global geo-coverage-type))
+      (handler.geo/update-resource-geo-coverage conn
+                                                :initiative
+                                                id
+                                                geo-coverage-type
+                                                {:countries geo_coverage_countries
+                                                 :country-groups geo_coverage_country_groups
+                                                 :country-states geo_coverage_country_states}))
+    (update-resource-connections conn (:entity_connections initiative) (:individual_connections initiative) "initiative" id)
     status))
 
 (defmethod ig/init-key :gpml.handler.detail/put
-  [_ {:keys [db logger mailjet-config] :as config}]
+  [_ {:keys [db logger] :as config}]
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
     (try
@@ -713,28 +729,27 @@
                                                                        {:read? false})
             review_status (:review_status submission)]
         (if (some? submission)
-          (let [conn (:spec db)
-                status (if (= topic-type "initiative")
-                         (update-initiative config logger mailjet-config topic-id body)
-                         (update-resource config logger mailjet-config topic-type topic-id body))]
-            (when (and (= status 1) (= review_status "REJECTED"))
-              (db.submission/update-submission
-               conn
-               {:table-name (util/get-internal-topic-type topic-type)
-                :id topic-id
-                :review_status "SUBMITTED"}))
-            (resp/response {:success? (= status 1)}))
-          util/unauthorized))
+          (jdbc/with-db-transaction [tx (:spec db)]
+            (let [status (if (= topic-type "initiative")
+                           (update-initiative config tx topic-id body)
+                           (update-resource config tx topic-type topic-id body))]
+              (when (and (= status 1) (= review_status "REJECTED"))
+                (db.submission/update-submission
+                 tx
+                 {:table-name (util/get-internal-topic-type topic-type)
+                  :id topic-id
+                  :review_status "SUBMITTED"}))
+              (r/ok {:success? (= status 1)})))
+          (r/forbidden {:message "Unauthorized"})))
       (catch Exception e
         (log logger :error ::failed-to-update-resource-details {:exception-message (.getMessage e)
                                                                 :context-data {:path-params path
                                                                                :body-params body}})
-        (let [response {:status 500
-                        :body {:success? false
-                               :reason :failed-to-update-resource-details}}]
+        (let [response {:success? false
+                        :reason :failed-to-update-resource-details}]
           (if (instance? SQLException e)
-            response
-            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
+            (r/server-error response)
+            (r/server-error (assoc-in response [:error-details :error] (.getMessage e)))))))))
 
 (defmethod ig/init-key :gpml.handler.detail/put-params [_ _]
   put-params)

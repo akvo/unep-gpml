@@ -11,16 +11,21 @@
   (:import [java.sql SQLException]))
 
 (defn create
-  [conn logger mailjet-config {:keys [geo_coverage_country_groups
-                                      geo_coverage_countries
-                                      geo_coverage_country_states] :as org}]
-  (let [org-id (:id (db.organisation/new-organisation conn org))]
+  [conn logger mailjet-config
+   {:keys [geo_coverage_type
+           geo_coverage_country_groups
+           geo_coverage_countries
+           geo_coverage_country_states] :as org}]
+  (let [geo-coverage-type (keyword geo_coverage_type)
+        org-id (:id (db.organisation/new-organisation conn org))]
     (when (or (seq geo_coverage_country_groups)
               (seq geo_coverage_countries)
-              (seq geo_coverage_country_states))
+              (seq geo_coverage_country_states)
+              (not= :global geo-coverage-type))
       (handler.geo/create-resource-geo-coverage conn
                                                 :organisation
                                                 org-id
+                                                geo-coverage-type
                                                 {:countries geo_coverage_countries
                                                  :country-groups geo_coverage_country_groups
                                                  :country-states geo_coverage_country_states}))
@@ -35,17 +40,22 @@
     org-id))
 
 (defn update-org
-  [conn logger mailjet-config {:keys [geo_coverage_country_groups
-                                      geo_coverage_countries
-                                      geo_coverage_country_states] :as org}]
-  (let [org-id (do (db.organisation/update-organisation conn org)
+  [conn logger mailjet-config
+   {:keys [geo_coverage_type
+           geo_coverage_country_groups
+           geo_coverage_countries
+           geo_coverage_country_states] :as org}]
+  (let [geo-coverage-type (keyword geo_coverage_type)
+        org-id (do (db.organisation/update-organisation conn org)
                    (:id org))]
     (when (or (seq geo_coverage_country_groups)
               (seq geo_coverage_countries)
-              (seq geo_coverage_country_states))
+              (seq geo_coverage_country_states)
+              (not= :global geo-coverage-type))
       (handler.geo/create-resource-geo-coverage conn
                                                 :organisation
                                                 org-id
+                                                geo-coverage-type
                                                 {:countries geo_coverage_countries
                                                  :country-groups geo_coverage_country_groups
                                                  :country-states geo_coverage_country_states}))
