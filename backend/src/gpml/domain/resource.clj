@@ -46,4 +46,6 @@
     [:valid_to {:optional true} [string? {:min 1}]]
     [:value {:optional true} [string? {:min 1}]]
     [:value_currency {:optional true} [string? {:min 1}]]
-    [:value_remarks {:optional true} [string? {:min 1}]]]))
+    [:value_remarks {:optional true} [string? {:min 1}]]
+    [:source {:default dom.types/default-resource-source}
+     (apply conj [:enum] dom.types/resource-source-types)]]))

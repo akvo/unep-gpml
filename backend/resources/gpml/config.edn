@@ -601,7 +601,16 @@
                                          {:post {:summary "Send an email to GPML Secretariat about a new subscription request"
                                                  :swagger {:tags ["subscribe"]}
                                                  :handler #ig/ref :gpml.handler.subscribe/post
-                                                 :parameters #ig/ref :gpml.handler.subscribe/post-params}}]]]
+                                                 :parameters #ig/ref :gpml.handler.subscribe/post-params}}]
+                                        ["/case-study" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                     #ig/ref :gpml.auth/auth-required
+                                                                     #ig/ref :gpml.auth/approved-user]}
+                                         [""
+                                          {:post {:summary "Create a new case study"
+                                                  :swagger {:tags ["case-study"]}
+                                                  :handler #ig/ref :gpml.handler.case-study/post
+                                                  :parameters #ig/ref :gpml.handler.case-study/post-params
+                                                  :responses #ig/ref :gpml.handler.case-study/post-responses}}]]]]
                               :logger #ig/ref :duct.logger/timbre}
 
   ;; Consts
@@ -842,6 +851,10 @@
   :gpml.handler.project/delete #ig/ref :gpml.config/common
   :gpml.handler.project/delete-params {}
   :gpml.handler.project/delete-responses {}
+
+  :gpml.handler.case-study/post #ig/ref :gpml.config/common
+  :gpml.handler.case-study/post-params {}
+  :gpml.handler.case-study/post-responses {}
 
   :gpml.handler.programmatic.brs-api-importer/post #ig/ref :gpml.config/common
 

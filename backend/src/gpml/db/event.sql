@@ -22,6 +22,7 @@ INSERT INTO event(
 --~ (when (contains? params :recording) ", recording")
 --~ (when (contains? params :subnational_city) ", subnational_city")
 --~ (when (contains? params :document_preview) ", document_preview")
+--~ (when (contains? params :source) ", source")
 )
 VALUES(
     :title,
@@ -45,6 +46,7 @@ VALUES(
 --~ (when (contains? params :recording) ", :recording")
 --~ (when (contains? params :subnational_city) ", :subnational_city")
 --~ (when (contains? params :document_preview) ", :document_preview")
+--~ (when (contains? params :source) ", :source")
 ) RETURNING id;
 
 -- :name add-event-language-urls :returning-execute :one

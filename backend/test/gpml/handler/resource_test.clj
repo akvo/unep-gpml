@@ -6,6 +6,7 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.tag :as db.tag]
             [gpml.db.topic-stakeholder-auth :as db.ts-auth]
+            [gpml.domain.types :as dom.types]
             [gpml.fixtures :as fixtures]
             [gpml.handler.image :as image]
             [gpml.handler.profile-test :as profile-test]
@@ -68,7 +69,8 @@
           resp-one (with-redefs [image/upload-blob fake-upload-blob]
                      (handler (-> (mock/request :post "/")
                                   (assoc :jwt-claims {:email "john@org"})
-                                  (assoc :body-params payload))))
+                                  (assoc :body-params payload)
+                                  (assoc :parameters {:body {:source dom.types/default-resource-source}}))))
           ;; create John create new resource with new organisation
           resp-two (with-redefs [image/upload-blob fake-upload-blob]
                      (handler (-> (mock/request :post "/")
@@ -78,7 +80,8 @@
                                                 :org {:id -1
                                                       :name "New Era"
                                                       :geo_coverage_type "global"
-                                                      :country (-> (:countries data) second :id)})))))
+                                                      :country (-> (:countries data) second :id)}))
+                                  (assoc :parameters {:body {:source dom.types/default-resource-source}}))))
           resource-one (db.resource/resource-by-id db (:body resp-one))
           resource-two (db.resource/resource-by-id db (:body resp-two))]
       (is (not-empty (db.ts-auth/get-auth-by-topic db {:topic-id (:id resource-one) :topic-type "resource"})))

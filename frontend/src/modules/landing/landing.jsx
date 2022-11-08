@@ -293,7 +293,7 @@ const Stats = () => {
           <i>Individuals</i>
         </div>
         <div className="stat">
-          <b>6</b>
+          <b>2</b>
           <i>Communities of Practise</i>
         </div>
       </div>

@@ -38,4 +38,5 @@
       ;; FIXME: once initiative schema is refactored and geo coverage
       ;; type is a enum typed column, uncomment the next line.
       ;;(util/update-if-not-nil :geo_coverage_type sql-util/keyword->pg-enum "geo_coverage_type")
-      (util/update-if-not-nil :review_status sql-util/keyword->pg-enum "review_status")))
+      (util/update-if-not-nil :review_status sql-util/keyword->pg-enum "review_status")
+      (util/update-if-not-nil :source #(sql-util/keyword->pg-enum % "resource_source"))))

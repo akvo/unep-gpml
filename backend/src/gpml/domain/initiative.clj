@@ -25,4 +25,6 @@
     [:activities [string? {:min 1}]]
     [:qimage [string? {:min 1}]]
     [:brs_api_id [string? {:min 1}]]
-    [:brs_api_modified inst?]]))
+    [:brs_api_modified inst?]
+    [:source {:default dom.types/default-resource-source}
+     (apply conj [:enum] dom.types/resource-source-types)]]))

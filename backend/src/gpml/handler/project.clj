@@ -134,6 +134,7 @@
       (let [{:keys [geo_coverage_countries geo_coverage_country_groups] :as body} (:body parameters)
             {:keys [id]} (:path parameters)
             db-project (-> body
+                           dom.prj/update-project
                            (db.prj/project->db-project))
             updated-values (db.prj/update-project conn
                                                   {:updates db-project

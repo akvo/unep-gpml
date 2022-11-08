@@ -26,6 +26,7 @@ insert into policy(
 --~ (when (contains? params :topics) ", topics")
 --~ (when (contains? params :subnational_city) ", subnational_city")
 --~ (when (contains? params :document_preview) ", document_preview")
+--~ (when (contains? params :source) ", source")
 )
 values(
     :title,
@@ -53,6 +54,7 @@ values(
 --~ (when (contains? params :topics) ", :topics")
 --~ (when (contains? params :subnational_city) ", :subnational_city")
 --~ (when (contains? params :document_preview) ", :document_preview")
+--~ (when (contains? params :source) ", :source")
 )
 returning id;
 

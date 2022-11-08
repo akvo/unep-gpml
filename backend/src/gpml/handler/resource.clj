@@ -8,6 +8,7 @@
             [gpml.db.language :as db.language]
             [gpml.db.resource :as db.resource]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.domain.types :as dom.types]
             [gpml.handler.auth :as h.auth]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.geo-coverage :as handler.geo]
@@ -16,6 +17,7 @@
             [gpml.handler.util :as handler.util]
             [gpml.util :as util]
             [gpml.util.email :as email]
+            [gpml.util.sql :as sql-util]
             [integrant.core :as ig]
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
@@ -52,7 +54,7 @@
            created_by url owners info_docs sub_content_type related_content
            first_publication_date latest_amendment_date document_preview
            entity_connections individual_connections language
-           capacity_building]}]
+           capacity_building source]}]
   (let [data (cond-> {:type resource_type
                       :title title
                       :publish_year publish_year
@@ -79,10 +81,13 @@
                       :first_publication_date first_publication_date
                       :latest_amendment_date latest_amendment_date
                       :document_preview document_preview
-                      :language language}
+                      :language language
+                      :source source}
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
-        resource-id (:id (db.resource/new-resource conn data))
+        resource-id (:id (db.resource/new-resource
+                          conn
+                          (update data :source #(sql-util/keyword->pg-enum % "resource_source"))))
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
@@ -131,14 +136,15 @@
 
 (defmethod ig/init-key :gpml.handler.resource/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params] :as req}]
+  (fn [{:keys [jwt-claims body-params parameters] :as req}]
     (try
       (jdbc/with-db-transaction [tx (:spec db)]
         (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
               resource-id (create-resource config
                                            tx
                                            (assoc body-params
-                                                  :created_by (:id user)))
+                                                  :created_by (:id user)
+                                                  :source (get-in parameters [:body :source])))
               activity {:id (util/uuid)
                         :type "create_resource"
                         :owner_id (:id user)
@@ -227,6 +233,11 @@
              [:id {:optional true} pos-int?]
              [:tag string?]]]]
           [:language string?]
+          [:source
+           {:default dom.types/default-resource-source
+            :decode/string keyword
+            :decode/json keyword}
+           (apply conj [:enum] dom.types/resource-source-types)]
           auth/owners-schema]
          handler.geo/api-geo-coverage-schemas)])
 

@@ -8,6 +8,7 @@
             [gpml.db.language :as db.language]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.technology :as db.technology]
+            [gpml.domain.types :as dom.types]
             [gpml.handler.auth :as h.auth]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.geo-coverage :as handler.geo]
@@ -16,6 +17,7 @@
             [gpml.handler.util :as handler.util]
             [gpml.util :as util]
             [gpml.util.email :as email]
+            [gpml.util.sql :as sql-util]
             [integrant.core :as ig]
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
@@ -53,7 +55,7 @@
            headquarter document_preview
            logo thumbnail attachments remarks
            entity_connections individual_connections language
-           capacity_building]}]
+           capacity_building source]}]
   (let [data (cond-> {:name name
                       :year_founded year_founded
                       :organisation_type organisation_type
@@ -79,10 +81,14 @@
                       :headquarter headquarter
                       :document_preview document_preview
                       :review_status "SUBMITTED"
-                      :language language}
+                      :language language
+                      :source source}
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
-        technology-id (->> data (db.technology/new-technology conn) :id)
+        technology-id (->>
+                       (update data :source #(sql-util/keyword->pg-enum % "resource_source"))
+                       (db.technology/new-technology conn)
+                       :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
@@ -133,12 +139,13 @@
 
 (defmethod ig/init-key :gpml.handler.technology/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params] :as req}]
+  (fn [{:keys [jwt-claims body-params parameters] :as req}]
     (try
       (jdbc/with-db-transaction [tx (:spec db)]
         (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
               technology-id (create-technology config tx (assoc body-params
-                                                                :created_by (:id user)))]
+                                                                :created_by (:id user)
+                                                                :source (get-in parameters [:body :source])))]
           (resp/created (:referrer req) {:success? true
                                          :message "New technology created"
                                          :id technology-id})))
@@ -202,6 +209,10 @@
            [:map [:lang string?] [:url [:string {:min 1}]]]]]
          [:language string?]
          [:capacity_building {:optional true} boolean?]
+         [:source {:default dom.types/default-resource-source
+                   :decode/string keyword
+                   :decode/json keyword}
+          (apply conj [:enum] dom.types/resource-source-types)]
          auth/owners-schema]
         handler.geo/api-geo-coverage-schemas))
 

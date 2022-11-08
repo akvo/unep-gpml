@@ -354,6 +354,9 @@
 (defmethod extra-details "financing_resource" [resource-type db resource]
   (add-extra-details db resource resource-type {}))
 
+(defmethod extra-details "case_study" [resource-type db resource]
+  (add-extra-details db resource resource-type {}))
+
 (defmethod extra-details "action_plan" [resource-type db resource]
   (add-extra-details db resource resource-type {}))
 
@@ -428,7 +431,8 @@
                    "organisation" (common-queries topic path true false true false)
                    "stakeholder" [["delete from stakeholder where id = ?" (:topic-id path)]]
                    "initiative" (common-queries topic path true false true true)
-                   "resource" (common-queries topic path true true true true))]
+                   "resource" (common-queries topic path true true true true)
+                   "case_study" (common-queries topic path true false true true))]
         (if authorized?
           (resp/response (do
                            (jdbc/with-db-transaction [tx-conn conn]
@@ -664,7 +668,8 @@
       (update-resource-tags conn logger mailjet-config table id tags))
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn logger id table related-contents))
-    (when-not (= "policy" topic-type)
+    (when-not (or (= "policy" topic-type)
+                  (= "case_study" topic-type))
       (update-resource-language-urls conn table id urls))
     (update-resource-geo-coverage-values conn table id updates)
     (when (contains? #{"resource"} table)
@@ -678,10 +683,12 @@
         params (merge {:id id} data)
         tags (remove nil? (:tags data))
         status (jdbc/with-db-transaction [conn-tx conn]
-                 (let [status (db.detail/update-initiative conn-tx (-> params
-                                                                       (dissoc :related_content :tags :entity_connections
-                                                                               :individual_connections :urls :org :geo_coverage_countries
-                                                                               :geo_coverage_country_groups :qimage)))]
+                 (let [status (db.detail/update-initiative
+                               conn-tx
+                               (dissoc params
+                                       :related_content :tags :entity_connections
+                                       :individual_connections :urls :org :geo_coverage_countries
+                                       :geo_coverage_country_groups :qimage))]
                    (handler.initiative/update-geo-initiative conn-tx id (handler.initiative/extract-geo-data params))
                    status))
         related-contents (:related_content data)]
