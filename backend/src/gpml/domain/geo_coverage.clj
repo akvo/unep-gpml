@@ -4,15 +4,6 @@
             [malli.core :as m]
             [malli.util :as mu]))
 
-(def CountryState
-  (m/schema
-   [:map
-    [:id pos-int?]
-    [:name [string? {:min 1}]]
-    [:code [string? {:min 1}]]
-    [:type [:maybe string?]]
-    [:country_id pos-int?]]))
-
 (def GeoCoverage
   "Geo Coverage schema for countries and country groups. This is a sub
   entity relation stored in the `<entity-name>_geo_coverage` tables."
