@@ -24,16 +24,13 @@
    {:keys [geo_coverage_country_groups
            geo_coverage_countries
            geo_coverage_country_states]}]
-  (when (or (seq geo_coverage_country_groups)
-            (seq geo_coverage_countries)
-            (seq geo_coverage_country_states))
-    (handler.geo/create-resource-geo-coverage conn
-                                              :initiative
-                                              initiative-id
-                                              geo-coverage-type
-                                              {:countries geo_coverage_countries
-                                               :country-groups geo_coverage_country_groups
-                                               :country-states geo_coverage_country_states})))
+  (handler.geo/create-resource-geo-coverage conn
+                                            :initiative
+                                            initiative-id
+                                            geo-coverage-type
+                                            {:countries geo_coverage_countries
+                                             :country-groups geo_coverage_country_groups
+                                             :country-states geo_coverage_country_states}))
 
 (defn extract-geo-data
   "FIXME: we should deprecate geo coverage functions like this in favor

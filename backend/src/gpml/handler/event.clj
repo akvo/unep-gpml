@@ -84,7 +84,8 @@
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
-                                                          api-individual-connections)))))]
+                                                          api-individual-connections)))))
+        geo-coverage-type (keyword geo_coverage_type)]
     (when (not-empty tags)
       (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
                                                                              :tag-category "general"
@@ -111,17 +112,13 @@
                                          :id)
                                     (:url %)) urls)]
         (db.event/add-event-language-urls conn {:urls lang-urls})))
-    (when (or (seq geo_coverage_country_groups)
-              (seq geo_coverage_countries)
-              (seq geo_coverage_country_states)
-              (not= :global geo_coverage_type))
-      (handler.geo/create-resource-geo-coverage conn
-                                                :event
-                                                event-id
-                                                (keyword geo_coverage_type)
-                                                {:countries geo_coverage_countries
-                                                 :country-groups geo_coverage_country_groups
-                                                 :country-states geo_coverage_country_states}))
+    (handler.geo/create-resource-geo-coverage conn
+                                              :event
+                                              event-id
+                                              geo-coverage-type
+                                              {:countries geo_coverage_countries
+                                               :country-groups geo_coverage_country_groups
+                                               :country-states geo_coverage_country_states})
     (email/notify-admins-pending-approval
      conn
      mailjet-config

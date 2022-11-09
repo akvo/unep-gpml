@@ -21,29 +21,34 @@
      integer?]]])
 
 (defn- create-resource-geo-coverage*
-  [conn table countries-country-groups-geo]
-  (let [insert-cols (util.sql/get-insert-columns-from-entity-col countries-country-groups-geo)
-        insert-values (util.sql/entity-col->persistence-entity-col countries-country-groups-geo)]
+  [conn table geo-coverage]
+  (let [insert-cols (util.sql/get-insert-columns-from-entity-col geo-coverage)
+        insert-values (util.sql/entity-col->persistence-entity-col geo-coverage)]
     (db.geo-coverage/create-resource-geo-coverage conn {:table table
                                                         :insert-cols insert-cols
                                                         :insert-values insert-values})))
 
 (defn create-resource-geo-coverage
   [conn entity-key entity-id geo-coverage-type {:keys [countries country-groups country-states]}]
-  (let [geo-coverage
-        (dom.geo-coverage/->geo-coverage entity-id
-                                         entity-key
-                                         geo-coverage-type
-                                         countries
-                                         country-groups
-                                         country-states)
-        result
-        (create-resource-geo-coverage* conn
-                                       (str (name entity-key) "_geo_coverage")
-                                       geo-coverage)]
-    (if (= (count result) (count geo-coverage))
-      {:success? true}
-      {:success? false})))
+  (if-not (and (or (seq countries)
+                   (seq country-groups)
+                   (seq country-states))
+               (not= :global geo-coverage-type))
+    {:success? true}
+    (let [geo-coverage
+          (dom.geo-coverage/->geo-coverage entity-id
+                                           entity-key
+                                           geo-coverage-type
+                                           countries
+                                           country-groups
+                                           country-states)
+          result
+          (create-resource-geo-coverage* conn
+                                         (str (name entity-key) "_geo_coverage")
+                                         geo-coverage)]
+      (if (= (count result) (count geo-coverage))
+        {:success? true}
+        {:success? false}))))
 
 (defn delete-resource-geo-coverage
   [conn entity-key entity-id]

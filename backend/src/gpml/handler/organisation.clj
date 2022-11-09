@@ -18,17 +18,13 @@
            geo_coverage_country_states] :as org}]
   (let [geo-coverage-type (keyword geo_coverage_type)
         org-id (:id (db.organisation/new-organisation conn org))]
-    (when (or (seq geo_coverage_country_groups)
-              (seq geo_coverage_countries)
-              (seq geo_coverage_country_states)
-              (not= :global geo-coverage-type))
-      (handler.geo/create-resource-geo-coverage conn
-                                                :organisation
-                                                org-id
-                                                geo-coverage-type
-                                                {:countries geo_coverage_countries
-                                                 :country-groups geo_coverage_country_groups
-                                                 :country-states geo_coverage_country_states}))
+    (handler.geo/create-resource-geo-coverage conn
+                                              :organisation
+                                              org-id
+                                              geo-coverage-type
+                                              {:countries geo_coverage_countries
+                                               :country-groups geo_coverage_country_groups
+                                               :country-states geo_coverage_country_states})
     (when (seq (:tags org))
       (handler.resource.tag/create-resource-tags conn
                                                  logger
@@ -48,17 +44,13 @@
   (let [geo-coverage-type (keyword geo_coverage_type)
         org-id (do (db.organisation/update-organisation conn org)
                    (:id org))]
-    (when (or (seq geo_coverage_country_groups)
-              (seq geo_coverage_countries)
-              (seq geo_coverage_country_states)
-              (not= :global geo-coverage-type))
-      (handler.geo/create-resource-geo-coverage conn
-                                                :organisation
-                                                org-id
-                                                geo-coverage-type
-                                                {:countries geo_coverage_countries
-                                                 :country-groups geo_coverage_country_groups
-                                                 :country-states geo_coverage_country_states}))
+    (handler.geo/update-resource-geo-coverage conn
+                                              :organisation
+                                              org-id
+                                              geo-coverage-type
+                                              {:countries geo_coverage_countries
+                                               :country-groups geo_coverage_country_groups
+                                               :country-states geo_coverage_country_states})
     (when (seq (:tags org))
       (handler.resource.tag/update-resource-tags conn logger mailjet-config {:tags (:tags org)
                                                                              :tag-category "general"

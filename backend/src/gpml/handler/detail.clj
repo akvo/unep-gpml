@@ -624,7 +624,8 @@
            geo_coverage_country_groups
            geo_coverage_country_states
            geo_coverage_type] :as updates}]
-  (let [table (cond
+  (let [updates (assoc updates :id id)
+        table (cond
                 (contains? constants/resource-types topic-type) "resource"
                 :else topic-type)
         geo-coverage-type (keyword geo_coverage_type)
@@ -663,16 +664,13 @@
     (when-not (or (= "policy" topic-type)
                   (= "case_study" topic-type))
       (update-resource-language-urls conn table id urls))
-    (when (or (seq geo_coverage_countries)
-              (seq geo_coverage_country_groups)
-              (seq geo_coverage_country_states))
-      (handler.geo/update-resource-geo-coverage conn
-                                                (keyword table)
-                                                id
-                                                geo-coverage-type
-                                                {:countries geo_coverage_countries
-                                                 :country-groups geo_coverage_country_groups
-                                                 :country-states geo_coverage_country_states}))
+    (handler.geo/update-resource-geo-coverage conn
+                                              (keyword table)
+                                              id
+                                              geo-coverage-type
+                                              {:countries geo_coverage_countries
+                                               :country-groups geo_coverage_country_groups
+                                               :country-states geo_coverage_country_states})
     (when (contains? #{"resource"} table)
       (update-resource-organisation conn table id org-id))
     (update-resource-connections conn (:entity_connections updates) (:individual_connections updates) table id)
@@ -683,7 +681,8 @@
    conn
    id
    initiative]
-  (let [tags (remove nil? (:tags initiative))
+  (let [initiative (assoc initiative :id id)
+        tags (remove nil? (:tags initiative))
         geo-coverage-type (keyword (first (keys (:q24 initiative))))
         {:keys [geo_coverage_countries
                 geo_coverage_country_groups
@@ -702,16 +701,13 @@
       (handler.resource.related-content/update-related-contents conn logger id "initiative" related-contents))
     (when (seq tags)
       (update-resource-tags conn logger mailjet-config "initiative" id tags))
-    (when (or (seq geo_coverage_country_groups)
-              (seq geo_coverage_countries)
-              (seq geo_coverage_country_states))
-      (handler.geo/update-resource-geo-coverage conn
-                                                :initiative
-                                                id
-                                                geo-coverage-type
-                                                {:countries geo_coverage_countries
-                                                 :country-groups geo_coverage_country_groups
-                                                 :country-states geo_coverage_country_states}))
+    (handler.geo/update-resource-geo-coverage conn
+                                              :initiative
+                                              id
+                                              geo-coverage-type
+                                              {:countries geo_coverage_countries
+                                               :country-groups geo_coverage_country_groups
+                                               :country-states geo_coverage_country_states})
     (update-resource-connections conn (:entity_connections initiative) (:individual_connections initiative) "initiative" id)
     status))
 

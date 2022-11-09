@@ -120,17 +120,13 @@
                                          :id)
                                     (:url %)) urls)]
         (db.resource/add-resource-language-urls conn {:urls lang-urls})))
-    (when (or (seq geo_coverage_country_groups)
-              (seq geo_coverage_countries)
-              (seq geo_coverage_country_states)
-              (not= :global geo-coverage-type))
-      (handler.geo/create-resource-geo-coverage conn
-                                                :resource
-                                                resource-id
-                                                geo-coverage-type
-                                                {:countries geo_coverage_countries
-                                                 :country-groups geo_coverage_country_groups
-                                                 :country-states geo_coverage_country_states}))
+    (handler.geo/create-resource-geo-coverage conn
+                                              :resource
+                                              resource-id
+                                              geo-coverage-type
+                                              {:countries geo_coverage_countries
+                                               :country-groups geo_coverage_country_groups
+                                               :country-states geo_coverage_country_states})
     (email/notify-admins-pending-approval
      conn
      mailjet-config

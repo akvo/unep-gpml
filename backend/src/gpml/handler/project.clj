@@ -85,21 +85,17 @@
                     geo_coverage_country_states]} body
             geo-coverage-type (keyword geo_coverage_type)]
         (if (= inserted-values 1)
-          (when (or (seq geo_coverage_countries)
-                    (seq geo_coverage_country_groups)
-                    (seq geo_coverage_country_states)
-                    (not= :global geo-coverage-type))
-            (let [project-id (:id db-project)
-                  result (handler.geo-coverage/create-resource-geo-coverage
-                          conn
-                          :project
-                          project-id
-                          geo-coverage-type
-                          {:countries geo_coverage_countries
-                           :country-groups geo_coverage_country_groups
-                           :country-states geo_coverage_country_states})]
-              (when-not (:success? result)
-                (throw (ex-info "Failed to create project geo coverage" {:inserted-values inserted-values})))))
+          (let [project-id (:id db-project)
+                result (handler.geo-coverage/create-resource-geo-coverage
+                        conn
+                        :project
+                        project-id
+                        geo-coverage-type
+                        {:countries geo_coverage_countries
+                         :country-groups geo_coverage_country_groups
+                         :country-states geo_coverage_country_states})]
+            (when-not (:success? result)
+              (throw (ex-info "Failed to create project geo coverage" {:inserted-values inserted-values}))))
           (throw (ex-info "Failed to create project" {:inserted-values inserted-values})))
         (r/ok {:success? true :project_id (:id db-project)})))
     (catch Exception e
@@ -162,18 +158,14 @@
                                   (not= old-geo-coverage-type :global))
                              (handler.geo-coverage/delete-resource-geo-coverage conn :project id)
 
-                             (or (seq geo_coverage_countries)
-                                 (seq geo_coverage_country_groups)
-                                 (seq geo_coverage_country_states))
+                             :else
                              (handler.geo-coverage/update-resource-geo-coverage conn
                                                                                 :project
                                                                                 id
                                                                                 new-geo-coverage-type
                                                                                 {:countries geo_coverage_countries
                                                                                  :country-groups geo_coverage_country_groups
-                                                                                 :country-states geo_coverage_country_states})
-                             :else
-                             {:success? true})]
+                                                                                 :country-states geo_coverage_country_states}))]
                 (if (:success? result)
                   (r/ok result)
                   (throw (ex-info "Failed to update project geo coverage" {}))))
