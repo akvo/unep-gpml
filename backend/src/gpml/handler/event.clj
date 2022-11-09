@@ -9,8 +9,8 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.types :as dom.types]
             [gpml.handler.auth :as h.auth]
-            [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
+            [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.util :as handler.util]
@@ -42,12 +42,12 @@
           :remarks nil})))
 
 (defn- create-event
-  [{:keys [logger mailjet-config] :as config} tx
+  [{:keys [logger mailjet-config] :as config} conn
    {:keys [tags urls title start_date end_date
            description remarks geo_coverage_type
            country city geo_coverage_value image thumbnail
            geo_coverage_countries geo_coverage_country_groups
-           geo_coverage_value_subnational_city
+           geo_coverage_value_subnational_city geo_coverage_country_states
            created_by owners url info_docs sub_content_type
            recording document_preview related_content
            entity_connections individual_connections language
@@ -57,8 +57,8 @@
                       :end_date end_date
                       :description (or description "")
                       :remarks remarks
-                      :image (handler.image/assoc-image config tx image "event")
-                      :thumbnail (handler.image/assoc-image config tx thumbnail "event")
+                      :image (handler.image/assoc-image config conn image "event")
+                      :thumbnail (handler.image/assoc-image config conn thumbnail "event")
                       :geo_coverage_type geo_coverage_type
                       :geo_coverage_value geo_coverage_value
                       :geo_coverage_countries geo_coverage_countries
@@ -79,47 +79,48 @@
                (assoc :capacity_building capacity_building))
         event-id (->>
                   (update data :source #(sql-util/keyword->pg-enum % "resource_source"))
-                  (db.event/new-event tx) :id)
-        api-individual-connections (handler.util/individual-connections->api-individual-connections tx individual_connections created_by)
+                  (db.event/new-event conn) :id)
+        api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
-                                                          api-individual-connections)))))]
+                                                          api-individual-connections)))))
+        geo-coverage-type (keyword geo_coverage_type)]
     (when (not-empty tags)
-      (handler.resource.tag/create-resource-tags tx logger mailjet-config {:tags tags
-                                                                           :tag-category "general"
-                                                                           :resource-name "event"
-                                                                           :resource-id event-id}))
+      (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
+                                                                             :tag-category "general"
+                                                                             :resource-name "event"
+                                                                             :resource-id event-id}))
     (doseq [stakeholder-id owners]
-      (h.auth/grant-topic-to-stakeholder! tx {:topic-id event-id
-                                              :topic-type "event"
-                                              :stakeholder-id stakeholder-id
-                                              :roles ["owner"]}))
+      (h.auth/grant-topic-to-stakeholder! conn {:topic-id event-id
+                                                :topic-type "event"
+                                                :stakeholder-id stakeholder-id
+                                                :roles ["owner"]}))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections event-id)]
-        (db.favorite/new-organisation-association tx association)))
+        (db.favorite/new-organisation-association conn association)))
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections event-id)]
-        (db.favorite/new-stakeholder-association tx association)))
+        (db.favorite/new-stakeholder-association conn association)))
     (when (seq related_content)
-      (handler.resource.related-content/create-related-contents tx logger event-id "event" related_content))
+      (handler.resource.related-content/create-related-contents conn logger event-id "event" related_content))
     (when (not-empty urls)
       (let [lang-urls (map #(vector event-id
                                     (->> % :lang
                                          (assoc {} :iso_code)
-                                         (db.language/language-by-iso-code tx)
+                                         (db.language/language-by-iso-code conn)
                                          :id)
                                     (:url %)) urls)]
-        (db.event/add-event-language-urls tx {:urls lang-urls})))
-    (if (or (not-empty geo_coverage_country_groups)
-            (not-empty geo_coverage_countries))
-      (let [geo-data (handler.geo/get-geo-vector-v2 event-id data)]
-        (db.event/add-event-geo-coverage tx {:geo geo-data}))
-      (when (not-empty geo_coverage_value)
-        (let [geo-data (handler.geo/get-geo-vector event-id data)]
-          (db.event/add-event-geo-coverage tx {:geo geo-data}))))
+        (db.event/add-event-language-urls conn {:urls lang-urls})))
+    (handler.geo/create-resource-geo-coverage conn
+                                              :event
+                                              event-id
+                                              geo-coverage-type
+                                              {:countries geo_coverage_countries
+                                               :country-groups geo_coverage_country_groups
+                                               :country-states geo_coverage_country_states})
     (email/notify-admins-pending-approval
-     tx
+     conn
      mailjet-config
      (merge data {:type "event"}))
     {:id event-id}))
@@ -179,7 +180,7 @@
               :decode/json keyword}
      (apply conj [:enum] dom.types/resource-source-types)]
     auth/owners-schema]
-   (into handler.geo/params-payload)))
+   (into handler.geo/api-geo-coverage-schemas)))
 
 (defmethod ig/init-key :gpml.handler.event/post
   [_ {:keys [db logger] :as config}]

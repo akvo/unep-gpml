@@ -3,11 +3,11 @@
             [duct.logger :refer [log]]
             [gpml.db.case-study :as db.case-study]
             [gpml.db.favorite :as db.favorite]
-            [gpml.db.resource.geo-coverage :as db.res.geo-coverage]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.case-study :as dom.case-study]
             [gpml.handler.auth :as h.auth]
             [gpml.handler.image :as handler.image]
+            [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.responses :as r]
@@ -21,22 +21,16 @@
 
 (defn- handle-geo-coverage
   "FIXME: Add docstring"
-  [conn cs-id geo-coverage-countries geo-coverage-country-groups]
-  (let [geo-coverage-keys [:case_study :country :country_group]
-        geo-coverage-countries (map #(zipmap geo-coverage-keys [cs-id % nil]) geo-coverage-countries)
-        geo-coverage-country-groups (map #(zipmap
-                                           geo-coverage-keys
-                                           [cs-id nil %])
-                                         geo-coverage-country-groups)
-        geo-coverage (concat geo-coverage-countries geo-coverage-country-groups)
-        insert-values (sql-util/get-insert-values geo-coverage-keys geo-coverage)
-        inserted-values (db.res.geo-coverage/create-resource-geo-coverage
-                         conn
-                         {:table "case_study_geo_coverage"
-                          :insert-cols (map name geo-coverage-keys)
-                          :insert-values insert-values})]
-    (when-not (= (count inserted-values) (count geo-coverage))
-      (throw (ex-info "Failed to create case study's geo coverage" {:inserted-values (count inserted-values)})))))
+  [conn cs-id geo-coverage-type geo-coverage-countries geo-coverage-country-groups geo-coverage-country-states]
+  (let [result (handler.geo/create-resource-geo-coverage conn
+                                                         :case_study
+                                                         cs-id
+                                                         geo-coverage-type
+                                                         {:countries geo-coverage-countries
+                                                          :country-groups geo-coverage-country-groups
+                                                          :country-states geo-coverage-country-states})]
+    (when-not (:success? result)
+      (throw (ex-info "Failed to create case study's geo coverage" result)))))
 
 (defn- handle-related-content
   "FIXME: Add docstring"
@@ -73,8 +67,8 @@
 
 (defn- create-case-study
   [{:keys [logger mailjet-config] :as config} conn {:keys [body]}]
-  (let [{:keys [geo_coverage_countries geo_coverage_country_groups tags
-                individual_connections entity_connections related_content
+  (let [{:keys [geo_coverage_countries geo_coverage_country_groups geo_coverage_country_states
+                tags geo_coverage_type individual_connections entity_connections related_content
                 image thumbnail created_by]} body
         case-study (apply dissoc body dom.case-study/entity-relation-keys)
         image-url (handler.image/assoc-image config conn image "case_study")
@@ -103,9 +97,12 @@
         :tag-category "general"
         :resource-name "case_study"
         :resource-id cs-id}))
-    (when (or (not-empty geo_coverage_country_groups)
-              (not-empty geo_coverage_countries))
-      (handle-geo-coverage conn cs-id geo_coverage_countries geo_coverage_country_groups))
+    (handle-geo-coverage conn
+                         cs-id
+                         (keyword geo_coverage_type)
+                         geo_coverage_countries
+                         geo_coverage_country_groups
+                         geo_coverage_country_states)
     (when (seq related_content)
       (handle-related-content conn logger cs-id related_content))
     (doseq [stakeholder-id owners]

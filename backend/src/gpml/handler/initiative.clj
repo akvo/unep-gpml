@@ -9,8 +9,8 @@
             [gpml.db.tag :as db.tag]
             [gpml.domain.types :as dom.types]
             [gpml.handler.auth :as h.auth]
-            [gpml.handler.geo :as handler.geo]
             [gpml.handler.image :as handler.image]
+            [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.util :as util]
             [gpml.util.email :as email]
@@ -20,22 +20,17 @@
   (:import [java.sql SQLException]))
 
 (defn- add-geo-initiative
-  [conn initiative-id {:keys [geo_coverage_country_groups geo_coverage_countries] :as data}]
-  (when (or (not-empty geo_coverage_country_groups)
-            (not-empty geo_coverage_countries))
-    (let [geo-data (handler.geo/get-geo-vector-v2 initiative-id data)]
-      (db.initiative/add-initiative-geo-coverage conn {:geo geo-data}))))
-
-(defn update-geo-initiative
-  "FIXME: we should deprecate geo coverage functions like this in favor
-  of a more generic approach for all resources. We already have
-  generic DB functions for geo coverage operations."
-  [conn initiative-id {:keys [geo_coverage_country_groups geo_coverage_countries] :as data}]
-  (when (or (not-empty geo_coverage_country_groups)
-            (not-empty geo_coverage_countries))
-    (let [geo-data (handler.geo/get-geo-vector-v2 initiative-id data)]
-      (db.initiative/delete-initiative-geo-coverage conn {:id initiative-id})
-      (db.initiative/add-initiative-geo-coverage conn {:geo geo-data}))))
+  [conn initiative-id geo-coverage-type
+   {:keys [geo_coverage_country_groups
+           geo_coverage_countries
+           geo_coverage_country_states]}]
+  (handler.geo/create-resource-geo-coverage conn
+                                            :initiative
+                                            initiative-id
+                                            geo-coverage-type
+                                            {:countries geo_coverage_countries
+                                             :country-groups geo_coverage_country_groups
+                                             :country-states geo_coverage_country_states}))
 
 (defn extract-geo-data
   "FIXME: we should deprecate geo coverage functions like this in favor
@@ -87,7 +82,7 @@
 (defn- create-initiative
   [{:keys [logger mailjet-config] :as config}
    tx
-   {:keys [tags owners related_content created_by
+   {:keys [q24 tags owners related_content created_by
            entity_connections individual_connections qimage thumbnail capacity_building] :as initiative}]
   (let [data (cond-> initiative
                true
@@ -107,8 +102,9 @@
         owners (distinct (remove nil? (flatten (conj owners
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
-                                                          api-individual-connections)))))]
-    (add-geo-initiative tx initiative-id (extract-geo-data data))
+                                                          api-individual-connections)))))
+        geo-coverage-type (keyword (first (keys q24)))]
+    (add-geo-initiative tx initiative-id geo-coverage-type (extract-geo-data data))
     (doseq [stakeholder-id owners]
       (h.auth/grant-topic-to-stakeholder! tx {:topic-id initiative-id
                                               :topic-type "initiative"
