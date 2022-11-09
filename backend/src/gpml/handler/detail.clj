@@ -665,8 +665,7 @@
       (update-resource-language-urls conn table id urls))
     (when (or (seq geo_coverage_countries)
               (seq geo_coverage_country_groups)
-              (seq geo_coverage_country_states)
-              (not= :global geo-coverage-type))
+              (seq geo_coverage_country_states))
       (handler.geo/update-resource-geo-coverage conn
                                                 (keyword table)
                                                 id
@@ -705,8 +704,7 @@
       (update-resource-tags conn logger mailjet-config "initiative" id tags))
     (when (or (seq geo_coverage_country_groups)
               (seq geo_coverage_countries)
-              (seq geo_coverage_country_states)
-              (not= :global geo-coverage-type))
+              (seq geo_coverage_country_states))
       (handler.geo/update-resource-geo-coverage conn
                                                 :initiative
                                                 id

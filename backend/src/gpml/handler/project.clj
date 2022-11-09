@@ -3,14 +3,12 @@
             [clojure.string :as str]
             [duct.logger :refer [log]]
             [gpml.db.project :as db.prj]
-            [gpml.db.resource.geo-coverage :as db.geo-coverage]
             [gpml.domain.project :as dom.prj]
             [gpml.domain.types :as dom.types]
             [gpml.handler.resource.geo-coverage :as handler.geo-coverage]
             [gpml.handler.responses :as r]
             [gpml.handler.util :as handler.util]
             [gpml.util.postgresql :as pg-util]
-            [gpml.util.sql :as sql-util]
             [integrant.core :as ig]
             [malli.util :as mu])
   (:import [java.sql SQLException]))

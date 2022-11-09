@@ -39,17 +39,17 @@ select action_detail,value from project_action_detail where project = :id
 -- :name get-projects :query :many
 -- :doc Get projects with filters.
 SELECT p.*,
-array_remove(array_agg(pgc.country_id), NULL) AS geo_coverage_countries,
-array_remove(array_agg(pgc.country_group_id), NULL) AS geo_coverage_country_groups
+array_remove(array_agg(pgc.country), NULL) AS geo_coverage_countries,
+array_remove(array_agg(pgc.country_group), NULL) AS geo_coverage_country_groups
 FROM project p
-LEFT JOIN project_geo_coverage pgc ON p.id = pgc.project_id AND p.geo_coverage_type != 'global'
+LEFT JOIN project_geo_coverage pgc ON p.id = pgc.project AND p.geo_coverage_type != 'global'
 WHERE 1=1
 --~ (when (get-in params [:filters :ids]) " AND p.id = ANY(:filters.ids)")
 --~ (when (get-in params [:filters :geo_coverage_types]) " AND p.geo_coverage_type = ANY(:filters.geo_coverage_types)")
 --~ (when (get-in params [:filters :types]) " AND p.type = ANY(:filters.types)")
 --~ (when (get-in params [:filters :stakeholders_ids]) " AND p.stakeholder_id IN (:v*:filters.stakeholders_ids)")
---~ (when (get-in params [:filters :countries]) " AND pgc.country_id IN (:v*:filters.countries)")
---~ (when (get-in params [:filters :country_groups]) " AND pgc.country_group_id IN (:v*:filters.country_groups)")
+--~ (when (get-in params [:filters :countries]) " AND pgc.country IN (:v*:filters.countries)")
+--~ (when (get-in params [:filters :country_groups]) " AND pgc.country_group IN (:v*:filters.country_groups)")
 --~ (when (get-in params [:filters :stages]) " AND p.stage = ANY(:filters.stages)")
 GROUP BY p.id
 

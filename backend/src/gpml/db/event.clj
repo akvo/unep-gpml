@@ -6,7 +6,6 @@
 
 (declare new-event
          add-event-language-urls
-         add-event-geo-coverage
          update-event-status
          event-by-id
          event-image-by-id
