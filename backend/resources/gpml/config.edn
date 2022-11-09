@@ -594,7 +594,7 @@
                                                    :handler #ig/ref :gpml.handler.programmatic.brs-api-importer/post}}]]
                                          ["/country-state"
                                           {:post {:summary "Creates country states from a CSV file"
-                                                  :swagger ["country state" "programmatic"]
+                                                  :swagger {:tags ["country state" "programmatic"]}
                                                   :parameters #ig/ref :gpml.handler.programmatic.country-state/post-params
                                                   :handler #ig/ref :gpml.handler.programmatic.country-state/post}}]]
                                         ["/subscribe"
