@@ -40,7 +40,8 @@ select action_detail,value from project_action_detail where project = :id
 -- :doc Get projects with filters.
 SELECT p.*,
 array_remove(array_agg(pgc.country), NULL) AS geo_coverage_countries,
-array_remove(array_agg(pgc.country_group), NULL) AS geo_coverage_country_groups
+array_remove(array_agg(pgc.country_group), NULL) AS geo_coverage_country_groups,
+array_remove(array_agg(pgc.country_state), NULL) AS geo_coverage_country_states
 FROM project p
 LEFT JOIN project_geo_coverage pgc ON p.id = pgc.project AND p.geo_coverage_type != 'global'
 WHERE 1=1

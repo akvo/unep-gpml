@@ -92,6 +92,13 @@
                 :items {:type "integer"}}}
      [:sequential
       pos-int?]]
+    [:geo_coverage_country_states
+     {:optional true
+      :swagger {:description "The Project's country states reach."
+                :type "array"
+                :items {:type "integer"}}}
+     [:sequential
+      pos-int?]]
     [:source
      {:default dom.types/default-resource-source
       :decode/string keyword

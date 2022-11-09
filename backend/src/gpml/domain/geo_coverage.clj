@@ -62,9 +62,8 @@
   (let [geo-coverage (initial-geo-coverage entity-key)]
     (cond
       (= :sub-national geo-coverage-type)
-      (apply merge
-             (build-geo-coverage-coll geo-coverage entity-key entity-id :country countries)
-             (build-geo-coverage-coll geo-coverage entity-key entity-id :country_state country-states))
+      (concat (build-geo-coverage-coll geo-coverage entity-key entity-id :country countries)
+              (build-geo-coverage-coll geo-coverage entity-key entity-id :country_state country-states))
       (= :national geo-coverage-type)
       (build-geo-coverage-coll geo-coverage entity-key entity-id :country countries)
 

@@ -92,8 +92,8 @@
             (let [project-id (:id db-project)
                   result (handler.geo-coverage/create-resource-geo-coverage
                           conn
-                          project-id
                           :project
+                          project-id
                           geo-coverage-type
                           {:countries geo_coverage_countries
                            :country-groups geo_coverage_country_groups
@@ -120,7 +120,7 @@
           results (db.prj/get-projects (:spec db)
                                        {:filters db-opts})]
       {:success? true
-       :projects results})
+       :projects (map db.prj/db-project->project results)})
     (catch Exception e
       (log logger :error ::failed-to-get-projects {:exception-message (.getMessage e)
                                                    :context-data parameters})
@@ -134,8 +134,9 @@
   [{:keys [db logger]} {:keys [parameters]}]
   (try
     (jdbc/with-db-transaction [conn (:spec db)]
-      (let [{:keys [id]} (:path parameters)
-            old-project (first (db.prj/get-projects conn {:filters {:ids [id]}}))]
+      (let [id (get-in parameters [:path :id])
+            {:keys [ids]} (db.prj/opts->db-opts {:ids [id]})
+            old-project (first (db.prj/get-projects conn {:filters {:ids ids}}))]
         (if-not (seq old-project)
           (r/bad-request {:success? false :reason
                           :failed-to-update-project})
