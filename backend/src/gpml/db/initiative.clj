@@ -9,8 +9,6 @@
          initiative-by-id
          update-initiative
          initiative-detail-by-id
-         add-initiative-geo-coverage
-         delete-initiative-geo-coverage
          add-initiative-tags
          create-initiatives
          get-initiatives)
