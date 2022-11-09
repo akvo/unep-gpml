@@ -138,6 +138,15 @@
         geo-coverage-type-cond (if (= entity-name "initiative")
                                  "(select jsonb_object_keys(q24) from initiative where id = e.id)::geo_coverage_type"
                                  "e.geo_coverage_type")
+        geo-coverage-select (if (= entity-name "stakeholder")
+                              ""
+                              "array_remove(array_agg(DISTINCT eg.country_group), NULL) AS geo_coverage_country_groups,
+                               array_remove(array_agg(DISTINCT eg.country), NULL) AS geo_coverage_countries,
+                               array_remove(array_agg(DISTINCT eg.country_state), NULL) AS geo_coverage_country_states,
+                               array_remove(array_agg(DISTINCT COALESCE(eg.country, eg.country_group)), NULL) AS geo_coverage_values,")
+        geo-coverage-join (if (= entity-name "stakeholder")
+                            ""
+                            (format "LEFT JOIN %s_geo_coverage eg ON eg.%s = e.id" entity-name entity-name))
         where-cond (cond-> "WHERE 1=1"
                      (seq review-status)
                      (str " AND e.review_status = :review-status::REVIEW_STATUS")
@@ -172,21 +181,19 @@
      format
      "SELECT
        %s,
-       array_remove(array_agg(DISTINCT eg.country_group), NULL) AS geo_coverage_country_groups,
-       array_remove(array_agg(DISTINCT eg.country), NULL) AS geo_coverage_countries,
-       array_remove(array_agg(DISTINCT eg.country_state), NULL) AS geo_coverage_country_states,
-       array_remove(array_agg(DISTINCT COALESCE(eg.country, eg.country_group)), NULL) AS geo_coverage_values,
+       %s
        json_agg(json_build_object('id', t.id, 'tag', t.tag)) FILTER (WHERE t.id IS NOT NULL) AS tags
    FROM %s e
    LEFT JOIN %s_tag et ON et.%s = e.id LEFT JOIN tag t ON et.tag = t.id
    %s
-   LEFT JOIN %s_geo_coverage eg ON eg.%s = e.id
+   %s
    %s
    GROUP BY e.id"
      (concat [table-specific-cols]
+             [geo-coverage-select]
              (repeat 3 entity-name)
              [entity-connections-join]
-             (repeat 2 entity-name)
+             [geo-coverage-join]
              [where-cond]))))
 
 ;;======================= Topic queries =================================
