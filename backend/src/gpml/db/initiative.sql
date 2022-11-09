@@ -74,12 +74,6 @@ q35_1
 
   GROUP BY id, term.value, report.value;
 
-
--- :name add-initiative-geo-coverage :returning-execute :one
--- :doc Add specified countries or country groups to an initiative
-INSERT INTO initiative_geo_coverage(initiative, country_group, country)
-VALUES :t*:geo RETURNING id;
-
 -- :name delete-initiative-geo-coverage :execute :affected
 -- :doc Remove specified countries or country groups from an initiative
 DELETE FROM initiative_geo_coverage WHERE initiative=:id;

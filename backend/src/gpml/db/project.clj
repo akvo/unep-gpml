@@ -23,6 +23,11 @@
       (util/update-if-not-nil :types #(pg-util/->JDBCArray % "project_type"))
       (util/update-if-not-nil :stages #(pg-util/->JDBCArray % "project_stage"))))
 
+(defn db-project->project
+  "Transform database project type into domain types."
+  [project]
+  (util/update-if-exists project :source keyword))
+
 (defn project->db-project
   "Transform project to be ready to be persisted in DB"
   [project]
@@ -33,4 +38,4 @@
       (util/update-if-not-nil :answers pg-util/val->jsonb)
       (util/update-if-not-nil :stage #(pg-util/->PGEnum % "project_stage"))
       (util/update-if-not-nil :source #(pg-util/->PGEnum % "resource_source"))
-      (dissoc :geo_coverage_countries :geo_coverage_country_groups)))
+      (dissoc :geo_coverage_countries :geo_coverage_country_groups :geo_coverage_country_states)))
