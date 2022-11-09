@@ -43,7 +43,7 @@
   depending on the `geo-coverage-type`:
 
   1 - If the `geo-coverage-type` is `:sub-national` `countries` and
-  `country-states` must be pairs.
+  `country-states` are not pair and must be different records.
 
   2 - If the `geo-coverage-type` is `:national` `countries` are solo.
 
