@@ -196,7 +196,7 @@
     (assoc :geo-coverage country)
 
     (seq transnational)
-    (assoc :transnational 1)
+    (assoc :transnational transnational)
 
     (seq topic)
     (assoc :topic topic)
