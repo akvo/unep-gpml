@@ -8,6 +8,7 @@
             [reitit.ring :as ring]
             [reitit.ring.coercion :as coercion]
             [reitit.ring.middleware.exception :as exception]
+            [reitit.ring.middleware.multipart :as multipart]
             [reitit.ring.middleware.muuntaja :as muuntaja]
             [reitit.ring.middleware.parameters :as parameters]
             [reitit.swagger :as swagger]
@@ -63,6 +64,8 @@
                         coercion/coerce-response-middleware
                          ;; coercing request parameters
                         coercion/coerce-request-middleware
+                         ;; multipart
+                        multipart/multipart-middleware
 
                         (fn [handler]
                           (if collector

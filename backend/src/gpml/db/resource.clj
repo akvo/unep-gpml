@@ -5,7 +5,6 @@
 
 (declare create-resources
          new-resource
-         add-resource-geo
          add-resource-language-urls
          resource-by-id
          get-resources

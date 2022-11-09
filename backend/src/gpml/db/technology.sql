@@ -128,11 +128,6 @@ where id = :id
 insert into technology_tag(technology, tag)
 values :t*:tags RETURNING id;
 
--- :name add-technology-geo :<! :1
--- :doc add technology geo
-insert into technology_geo_coverage(technology, country_group, country)
-values :t*:geo RETURNING id;
-
 -- :name add-technology-language-urls :<! :1
 -- :doc Add language URLs to a technology
 insert into technology_language_url(technology, language, url)

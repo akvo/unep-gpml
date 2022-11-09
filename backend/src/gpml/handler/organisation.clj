@@ -2,7 +2,7 @@
   (:require [duct.logger :refer [log]]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.handler.geo :as handler.geo]
+            [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.util.geo :as geo]
             [gpml.util.postgresql :as pg-util]
@@ -11,14 +11,20 @@
   (:import [java.sql SQLException]))
 
 (defn create
-  [conn logger mailjet-config org]
-  (let [org-id (:id (db.organisation/new-organisation conn org))
-        org-geo2 (handler.geo/get-geo-vector-v2 org-id org)
-        org-geo (handler.geo/get-geo-vector org-id org)]
-    (if (seq org-geo2)
-      (db.organisation/add-geo-coverage conn {:geo org-geo2})
-      (when (seq org-geo)
-        (db.organisation/add-geo-coverage conn {:geo org-geo})))
+  [conn logger mailjet-config
+   {:keys [geo_coverage_type
+           geo_coverage_country_groups
+           geo_coverage_countries
+           geo_coverage_country_states] :as org}]
+  (let [geo-coverage-type (keyword geo_coverage_type)
+        org-id (:id (db.organisation/new-organisation conn org))]
+    (handler.geo/create-resource-geo-coverage conn
+                                              :organisation
+                                              org-id
+                                              geo-coverage-type
+                                              {:countries geo_coverage_countries
+                                               :country-groups geo_coverage_country_groups
+                                               :country-states geo_coverage_country_states})
     (when (seq (:tags org))
       (handler.resource.tag/create-resource-tags conn
                                                  logger
@@ -30,18 +36,21 @@
     org-id))
 
 (defn update-org
-  [conn logger mailjet-config org]
-  (let [org-id (do (db.organisation/update-organisation conn org)
-                   (:id org))
-        org-geo (handler.geo/get-geo-vector org-id org)
-        org-geo2 (handler.geo/get-geo-vector-v2 org-id org)]
-    (if (seq org-geo2)
-      (do
-        (db.organisation/delete-geo-coverage conn org)
-        (db.organisation/add-geo-coverage conn {:id org-id :geo org-geo2}))
-      (when (seq org-geo)
-        (db.organisation/delete-geo-coverage conn org)
-        (db.organisation/add-geo-coverage conn {:id org-id :geo org-geo})))
+  [conn logger mailjet-config
+   {:keys [geo_coverage_type
+           geo_coverage_country_groups
+           geo_coverage_countries
+           geo_coverage_country_states] :as org}]
+  (let [geo-coverage-type (keyword geo_coverage_type)
+        org-id (do (db.organisation/update-organisation conn org)
+                   (:id org))]
+    (handler.geo/update-resource-geo-coverage conn
+                                              :organisation
+                                              org-id
+                                              geo-coverage-type
+                                              {:countries geo_coverage_countries
+                                               :country-groups geo_coverage_country_groups
+                                               :country-states geo_coverage_country_states})
     (when (seq (:tags org))
       (handler.resource.tag/update-resource-tags conn logger mailjet-config {:tags (:tags org)
                                                                              :tag-category "general"
@@ -113,7 +122,7 @@
             [:id {:optional true} pos-int?]
             [:tag string?]
             [:tag_category string?]]]]]
-        handler.geo/params-payload))
+        handler.geo/api-geo-coverage-schemas))
 
 (defmethod ig/init-key :gpml.handler.organisation/put [_ {:keys [db logger mailjet-config]}]
   (fn [{:keys [body-params referrer parameters]}]
@@ -142,4 +151,4 @@
             [:id {:optional true} pos-int?]
             [:tag string?]
             [:tag_category {:optional true} string?]]]]]
-        handler.geo/params-payload))
+        handler.geo/api-geo-coverage-schemas))
