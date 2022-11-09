@@ -11,6 +11,7 @@
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.util :as handler.util]
+            [gpml.util :as util]
             [gpml.util.email :as email]
             [gpml.util.malli :as util.malli]
             [gpml.util.postgresql :as pg-util]
@@ -82,12 +83,14 @@
                       :remarks remarks
                       :created_by created_by
                       :review_status "SUBMITTED"
-                      :language language
-                      :source source}
+                      :language language}
                (not (nil? capacity_building))
-               (assoc :capacity_building capacity_building))
+               (assoc :capacity_building capacity_building)
+
+               (not (nil? source))
+               (assoc :source source))
         policy-id (->>
-                   (update data :source #(sql-util/keyword->pg-enum % "resource_source"))
+                   (util/update-if-not-nil data :source #(sql-util/keyword->pg-enum % "resource_source"))
                    (db.policy/new-policy conn) :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
         owners (distinct (remove nil? (flatten (conj owners
