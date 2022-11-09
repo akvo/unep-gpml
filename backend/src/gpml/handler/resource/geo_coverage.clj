@@ -29,7 +29,7 @@
                                                         :insert-values insert-values})))
 
 (defn create-resource-geo-coverage
-  [conn entity-id entity-key geo-coverage-type {:keys [countries country-groups country-states]}]
+  [conn entity-key entity-id geo-coverage-type {:keys [countries country-groups country-states]}]
   (let [geo-coverage
         (dom.geo-coverage/->geo-coverage entity-id
                                          entity-key
