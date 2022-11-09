@@ -54,11 +54,6 @@ VALUES(
 INSERT INTO event_language_url(event, language, url)
 VALUES :t*:urls RETURNING id;
 
--- :name add-event-geo-coverage :returning-execute :one
--- :doc Add specified countries or country groups to an event
-INSERT INTO event_geo_coverage(event, country_group, country)
-VALUES :t*:geo RETURNING id;
-
 -- :name update-event-status :execute :affected
 -- :doc Approves an event by given id
 UPDATE event

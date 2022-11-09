@@ -60,11 +60,6 @@ VALUES(
 )
 returning id;
 
--- :name add-resource-geo :returning-execute :one
--- :doc add resource geo
-INSERT INTO resource_geo_coverage(resource, country_group, country)
-VALUES :t*:geo RETURNING id;
-
 -- :name add-resource-language-urls :returning-execute :one
 -- :doc Add language URLs to a resource
 INSERT INTO resource_language_url(resource, language, url)
