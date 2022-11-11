@@ -165,58 +165,9 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const caseStudy = {
     code: "case_study",
     name: "Case Study",
-    examples: [
-      {
-        title:
-          "PAME, Regional Action Plan on Marine Litter in the Arctic (May 2021)",
-        link: "https://digital.gpmarinelitter.org/action_plan/10017",
-      },
-      {
-        title: "HELCOM Regional action plan on marine litter",
-        link: "https://digital.gpmarinelitter.org/action_plan/122",
-      },
-      {
-        title: "Gulf of Mexico Alliance Regional Action Plan",
-        link: "https://digital.gpmarinelitter.org/action_plan/260",
-      },
-      {
-        title:
-          "ASEAN Regional Action Plan for Combating Marine Debris in the ASEAN Member States (2021 – 2025)",
-        link: "https://digital.gpmarinelitter.org/action_plan/10008",
-      },
-      {
-        title: "COBSEA Regional Action Plan on Marine Litter 2019",
-        link: "https://digital.gpmarinelitter.org/action_plan/196",
-      },
-      {
-        title: "Marine Litter in the Black Sea Region",
-        link: "https://digital.gpmarinelitter.org/action_plan/194",
-      },
-    ],
-    childs: [
-      {
-        title: "Global Action Plan",
-        tags: ["action plan", "global"],
-        des: "Worldwide Coverage",
-      },
-      {
-        title: "Transnational Action Plan",
-        tags: ["action plan", "transnational"],
-        des: "Covers two or more countries",
-      },
-      {
-        title: "National Action Plan",
-        tags: ["action plan", "national"],
-        des: "Covers an entire country",
-      },
-      {
-        title: "Sub-national Action Plan",
-        tags: ["action plan", "sub-national"],
-        des: "Covers part of a country e.g, city, or federal state",
-      },
-    ],
-    desc:
-      "An action plan is a detailed plan outlining actions needed to reach one or more goals. Alternatively, it can be defined as a sequence of steps that must be taken, or activities that must be performed well, for a strategy to succeed. Development of action plans is required under many multilateral environmental agreements to facilitate implementation.",
+    examples: [],
+    childs: [],
+    desc: "",
   };
 
   const storeData = UIStore.useState((s) => ({
