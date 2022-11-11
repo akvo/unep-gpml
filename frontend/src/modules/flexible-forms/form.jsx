@@ -51,6 +51,7 @@ const FlexibleForm = withRouter(
     capacityBuilding,
     type,
     translations,
+    source,
     match: { params },
   }) => {
     const {
@@ -117,6 +118,7 @@ const FlexibleForm = withRouter(
         resourceType: mainType,
         subContentType: subContentType,
         ...(capacityBuilding && { capacityBuilding: true }),
+        source: source ? source : "gpml",
       };
 
       transformFormData(data, formData, formSchema.schema.properties, true);
@@ -387,6 +389,7 @@ const FlexibleForm = withRouter(
       let data = {
         ...formData,
         ...(capacityBuilding && { capacityBuilding: true }),
+        source: source ? source : "gpml",
       };
 
       transformFormData(data, formData, formSchema.schema.properties);
@@ -622,6 +625,7 @@ const FlexibleForm = withRouter(
         ...formData,
         subContentType: subContentType,
         ...(capacityBuilding && { capacityBuilding: true }),
+        source: source ? source : "gpml",
       };
 
       transformFormData(data, formData, formSchema.schema.properties, true);
@@ -866,6 +870,7 @@ const FlexibleForm = withRouter(
         ...formData,
         subContentType: subContentType,
         ...(capacityBuilding && { capacityBuilding: true }),
+        source: source ? source : "gpml",
       };
 
       transformFormData(data, formData, formSchema.schema.properties, true);
@@ -1097,6 +1102,7 @@ const FlexibleForm = withRouter(
       let data = {
         ...formData,
         subContentType: subContentType,
+        source: source ? source : "gpml",
       };
 
       transformFormData(data, formData, formSchema.schema.properties, true);

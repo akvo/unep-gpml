@@ -1546,6 +1546,9 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     capacityBuilding={capacityBuilding && capacityBuilding}
                     type={state && state?.state ? state?.state.type : ""}
                     translations={translations}
+                    source={
+                      query?.source?.toString() === "cobsea" ? "cobsea" : ""
+                    }
                   />
                 </Row>
                 {getTabStepIndex().tabIndex === 0 ? (
