@@ -34,9 +34,9 @@ import InfoBlue from "../../images/i-blue.png";
 import FlexibleForm from "./form";
 import isEmpty from "lodash/isEmpty";
 import api from "../../utils/api";
-import { useLocation } from "react-router-dom";
+import { useQuery } from "../../utils/misc";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 const { Step } = Steps;
 import RichTextEditor from "react-rte";
 
@@ -161,6 +161,14 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     formDataMapping,
     getTranslationForm,
   } = common;
+  const query = useQuery();
+  const caseStudy = {
+    code: "case_study",
+    name: "Case Study",
+    examples: [],
+    childs: [],
+    desc: "",
+  };
 
   const storeData = UIStore.useState((s) => ({
     stakeholders: s.stakeholders?.stakeholders,
@@ -174,7 +182,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     sectorOptions: s.sectorOptions,
     organisationType: s.organisationType,
     representativeGroup: s.representativeGroup,
-    mainContentType: s.mainContentType,
+    mainContentType: [
+      ...s.mainContentType,
+      ...(query?.source?.toString() === "cobsea" ? [caseStudy] : []),
+    ],
     meaOptions: s.meaOptions,
     nonMemberOrganisations: s.nonMemberOrganisations,
     organisations: s.organisations,
@@ -237,6 +248,7 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
   const [formSchema, setFormSchema] = useState({
     schema: schema[selectedMainContentType],
   });
+
   const [form] = Form.useForm();
 
   const isLoaded = useCallback(() => {
@@ -1485,6 +1497,9 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
                     capacityBuilding={capacityBuilding && capacityBuilding}
                     type={state && state?.state ? state?.state.type : ""}
                     translations={translations}
+                    source={
+                      query?.source?.toString() === "cobsea" ? "cobsea" : ""
+                    }
                   />
                 </Row>
                 {getTabStepIndex().tabIndex === 0 ? (

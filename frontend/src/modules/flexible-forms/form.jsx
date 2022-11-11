@@ -51,6 +51,7 @@ const FlexibleForm = withRouter(
     capacityBuilding,
     type,
     translations,
+    source,
     match: { params },
   }) => {
     const {
@@ -102,6 +103,11 @@ const FlexibleForm = withRouter(
         return false;
       }
 
+      if (mainType === "Case Study") {
+        handleOnSubmitCaseStudy(formData);
+        return false;
+      }
+
       delete formData?.tabs;
       delete formData?.steps;
       delete formData?.required;
@@ -112,6 +118,7 @@ const FlexibleForm = withRouter(
         resourceType: mainType,
         subContentType: subContentType,
         ...(capacityBuilding && { capacityBuilding: true }),
+        source: source ? source : "gpml",
       };
 
       transformFormData(data, formData, formSchema.schema.properties, true);
@@ -382,6 +389,7 @@ const FlexibleForm = withRouter(
       let data = {
         ...formData,
         ...(capacityBuilding && { capacityBuilding: true }),
+        source: source ? source : "gpml",
       };
 
       transformFormData(data, formData, formSchema.schema.properties);
@@ -617,6 +625,7 @@ const FlexibleForm = withRouter(
         ...formData,
         subContentType: subContentType,
         ...(capacityBuilding && { capacityBuilding: true }),
+        source: source ? source : "gpml",
       };
 
       transformFormData(data, formData, formSchema.schema.properties, true);
@@ -861,6 +870,7 @@ const FlexibleForm = withRouter(
         ...formData,
         subContentType: subContentType,
         ...(capacityBuilding && { capacityBuilding: true }),
+        source: source ? source : "gpml",
       };
 
       transformFormData(data, formData, formSchema.schema.properties, true);
@@ -1092,6 +1102,7 @@ const FlexibleForm = withRouter(
       let data = {
         ...formData,
         subContentType: subContentType,
+        source: source ? source : "gpml",
       };
 
       transformFormData(data, formData, formSchema.schema.properties, true);
@@ -1305,6 +1316,241 @@ const FlexibleForm = withRouter(
               e.data = initialData;
             });
             history.push(`/${type}/${id || params?.id}`);
+            notification.error({ message: "An error occured" });
+          })
+          .finally(() => {
+            setSending(false);
+          });
+      }
+    };
+
+    const handleOnSubmitCaseStudy = (formData) => {
+      console.log(formData);
+      delete formData?.tabs;
+      delete formData?.steps;
+      delete formData?.required;
+
+      // # Transform data before sending to endpoint
+      let data = {
+        ...formData,
+        resourceType: mainType,
+        subContentType: subContentType,
+        ...(capacityBuilding && { capacityBuilding: true }),
+        source: "cobsea",
+      };
+
+      transformFormData(data, formData, formSchema.schema.properties, true);
+
+      data.version = parseInt(formSchema.schema.version);
+
+      delete data?.S1;
+      delete data?.S2;
+      delete data?.S3;
+      delete data?.S4;
+      delete data?.S5;
+      delete data?.S6;
+
+      data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
+
+      if (data.resourceType === "Financing Resource") {
+        if (data.hasOwnProperty("valueCurrency")) {
+          data.valueCurrency = Object.keys(data?.valueCurrency)[0];
+        }
+        if (data.hasOwnProperty("validFrom")) {
+          data.validFrom = data?.validFrom;
+          data.validTo = data.validTo || "Ongoing";
+        }
+        if (data.hasOwnProperty("validTo")) {
+          data.validTo = data?.validTo;
+        }
+        if (data.hasOwnProperty("valueAmount")) {
+          data.value = data?.valueAmount;
+        }
+
+        delete data.valueAmount;
+        if (data.hasOwnProperty("valueRemark")) {
+          data.valueRemarks = data.valueRemark;
+          delete data.valueRemark;
+        }
+      }
+
+      if (data.resourceType === "Action Plan") {
+        if (data.hasOwnProperty("validTo")) {
+          data.validTo = data?.validTo;
+        }
+        if (data.hasOwnProperty("validFrom")) {
+          data.validFrom = data?.validFrom;
+          data.validTo = data.validTo || "Ongoing";
+        }
+
+        if (data.hasOwnProperty("firstPublicationDate")) {
+          data.firstPublicationDate = data.firstPublicationDate;
+          data.latestAmendmentDate = data.latestAmendmentDate || "Ongoing";
+        }
+
+        if (data.hasOwnProperty("latestAmendmentDate")) {
+          data.latestAmendmentDate = data.latestAmendmentDate;
+        }
+      } else {
+        delete data.firstPublicationDate;
+        delete data.latestAmendmentDate;
+      }
+
+      delete data.orgName;
+
+      data.tags =
+        formData.S4.S4_G3.tags &&
+        formData.S4.S4_G3.tags.map((x) => {
+          return {
+            tag: x,
+            ...(Object.values(tags)
+              .flat()
+              .find((o) => o.tag === x) && {
+              id: Object.values(tags)
+                .flat()
+                .find((o) => o.tag === x)?.id,
+            }),
+          };
+        });
+
+      data.language = "en";
+      delete data?.tagsList;
+
+      if (data?.publishYear) {
+        const publishYear = new Date(data.publishYear);
+        data.publishYear = publishYear.getFullYear();
+      }
+
+      if (data.geoCoverageType === "transnational") {
+        if (
+          data.geoCoverageValueTransnational &&
+          data.geoCoverageValueTransnational.length > 0
+        ) {
+          data.geoCoverageCountryGroups = data.geoCoverageValueTransnational
+            ? data.geoCoverageValueTransnational
+                ?.filter((value) => Number(value) !== -1)
+                .map((x) => parseInt(x))
+            : [];
+          delete data.geoCoverageValueTransnational;
+        }
+        if (data.geoCoverageCountries && data.geoCoverageCountries.length > 0) {
+          data.geoCoverageCountries = data.geoCoverageCountries
+            ? data.geoCoverageCountries.map((x) => parseInt(x))
+            : [];
+          if (
+            data.geoCoverageValueTransnational &&
+            data.geoCoverageValueTransnational.length === 0
+          ) {
+            delete data.geoCoverageValueTransnational;
+          }
+        }
+      }
+
+      if (data.geoCoverageType === "national") {
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
+        delete data.geoCoverageValueTransnational;
+      }
+
+      if (data.geoCoverageType === "sub-national") {
+        data.geoCoverageCountries = data.geoCoverageCountries.map((x) =>
+          parseInt(x)
+        );
+        delete data.geoCoverageValueTransnational;
+      }
+
+      if (data.geoCoverageType === "global") {
+        delete data.geoCoverageValueTransnational;
+        delete data.geoCoverageCountries;
+      }
+
+      if (data?.urls) {
+        data.urls = data.urls.map((x) => {
+          return {
+            url: x,
+            lang: "en",
+          };
+        });
+      }
+
+      if (data?.entity) {
+        data.entityConnections = data.entity[0].hasOwnProperty("role")
+          ? data.entity
+          : [];
+        delete data.entity;
+      }
+
+      if (data?.individual) {
+        data.individualConnections = data.individual[0].hasOwnProperty("role")
+          ? data.individual
+          : [];
+        delete data.individual;
+      }
+
+      if (data?.info) {
+        data.infoDocs = data.info === "<p><br></p>" ? "" : data.info;
+        delete data.info;
+      }
+
+      data.summary = data?.summary?.replace(/(?:\r\n|\r|\n)/g, " ");
+
+      if (data?.type?.length > 0) {
+        data.relatedContent = data?.type
+          .filter((x) => x?.value)
+          .map((x) => {
+            return {
+              id: parseInt(x.value),
+              type: x.label,
+            };
+          });
+        delete data.related;
+        delete data.type;
+        delete data.id;
+      }
+
+      if (status === "add" && !params?.id) {
+        data?.image && data?.image === "" && delete data.image;
+      }
+
+      if (status === "edit" || params?.id) {
+        data?.image &&
+          data?.image.match(customFormats.url) &&
+          delete data.image;
+
+        if (formData?.S4["S4_G4"].image === "") {
+          data.image = "";
+        }
+      }
+      console.log(data);
+
+      if (status === "add" && !params?.id) {
+        api
+          .post("/case-study", data)
+          .then((res) => {
+            if (translations.length > 0) {
+              api
+                .put(`/translations/resource/${res.data.id}`, {
+                  translations: translations,
+                  "topic-type": "resource",
+                })
+                .then((langResp) => {
+                  console.log(langResp);
+                })
+                .catch((e) => {
+                  console.log(e);
+                  notification.error({ message: "An error occured" });
+                });
+            }
+            // scroll top
+            window.scrollTo({ top: 0 });
+            initialFormData.update((e) => {
+              e.data = initialData;
+            });
+            setDisabledBtn({ disabled: true, type: "default" });
+            notification.success({ message: "Resource successfully created" });
+          })
+          .catch(() => {
             notification.error({ message: "An error occured" });
           })
           .finally(() => {
