@@ -209,7 +209,8 @@ const getSchema = ({
 
   if (
     selectedMainContentType === "technical" ||
-    selectedMainContentType === "action"
+    selectedMainContentType === "action" ||
+    selectedMainContentType === "case_study"
   ) {
     let array = Object.keys(tags)
       .map((k) => tags[k])
