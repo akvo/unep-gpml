@@ -130,7 +130,6 @@ export const schema = {
               "S4_G2_24.3",
               "S4_G2_24.2",
               "geoCoverageValueSubnational",
-              "geoCoverageValueSubnationalCity",
             ],
             properties: {
               geoCoverageType: {
@@ -175,17 +174,16 @@ export const schema = {
                 },
               },
               geoCoverageValueSubnational: {
-                title: "Subnational",
-                type: "string",
+                title: "Subnational Area",
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
                   value: ["sub-national"],
                 },
               },
-              geoCoverageValueSubnationalCity: {
-                title: "Subnational Area",
-                type: "string",
+              geoCoverageCountryStates: {
+                title: "State",
+                enum: [],
                 depend: {
                   id: "geoCoverageType",
                   value: ["sub-national"],
@@ -1260,6 +1258,7 @@ export const schema = {
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
+              "geoCoverageValueSubnational",
             ],
             properties: {
               geoCoverageType: {
@@ -1287,28 +1286,20 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["national", "sub-national"],
+                  value: ["national"],
                 },
               },
-              // geoCoverageValueNational: {
-              //   title: "National",
-              //   enum: [],
-              //   depend: {
-              //     id: "geoCoverageType",
-              //     value: ["national"],
-              //   },
-              // },
-              // geoCoverageValueSubnational: {
-              //   title: "Subnational",
-              //   enum: [],
-              //   depend: {
-              //     id: "geoCoverageType",
-              //     value: ["sub-national"],
-              //   },
-              // },
-              geoCoverageValueSubnationalCity: {
-                title: "Subnational Area",
-                type: "string",
+              geoCoverageValueSubnational: {
+                title: "Select a country",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["sub-national"],
+                },
+              },
+              geoCoverageCountryStates: {
+                title: "Select a State",
+                enum: [],
                 depend: {
                   id: "geoCoverageType",
                   value: ["sub-national"],
@@ -1545,12 +1536,20 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["national", "sub-national"],
+                  value: ["national"],
                 },
               },
-              geoCoverageValueSubnationalCity: {
+              geoCoverageValueSubnational: {
                 title: "Subnational Area",
-                type: "string",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["sub-national"],
+                },
+              },
+              geoCoverageCountryStates: {
+                title: "State",
+                enum: [],
                 depend: {
                   id: "geoCoverageType",
                   value: ["sub-national"],
@@ -1833,28 +1832,20 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["national", "sub-national"],
+                  value: ["national"],
                 },
               },
-              // geoCoverageValueNational: {
-              //   title: "National",
-              //   enum: [],
-              //   depend: {
-              //     id: "geoCoverageType",
-              //     value: ["national"],
-              //   },
-              // },
-              // geoCoverageValueSubnational: {
-              //   title: "Subnational",
-              //   enum: [],
-              //   depend: {
-              //     id: "geoCoverageType",
-              //     value: ["sub-national"],
-              //   },
-              // },
-              geoCoverageValueSubnationalCity: {
+              geoCoverageValueSubnational: {
                 title: "Subnational Area",
-                type: "string",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["sub-national"],
+                },
+              },
+              geoCoverageCountryStates: {
+                title: "State",
+                enum: [],
                 depend: {
                   id: "geoCoverageType",
                   value: ["sub-national"],
@@ -2101,28 +2092,254 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["national", "sub-national"],
+                  value: ["national"],
                 },
               },
-              // geoCoverageValueNational: {
-              //   title: "National",
-              //   enum: [],
-              //   depend: {
-              //     id: "geoCoverageType",
-              //     value: ["national"],
-              //   },
-              // },
-              // geoCoverageValueSubnational: {
-              //   title: "Subnational Area",
-              //   enum: [],
-              //   depend: {
-              //     id: "geoCoverageType",
-              //     value: ["sub-national"],
-              //   },
-              // },
-              geoCoverageValueSubnationalCity: {
-                title: "City",
+              geoCoverageValueSubnational: {
+                title: "Subnational Area",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["sub-national"],
+                },
+              },
+              geoCoverageCountryStates: {
+                title: "State",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["sub-national"],
+                },
+              },
+            },
+          },
+          S4_G3: {
+            title: "",
+            type: "object",
+            depend: {
+              id: "steps",
+              value: 2,
+            },
+            required: ["tags"],
+            properties: {
+              tags: {
+                title: "Tags",
+                enum: [],
+              },
+            },
+          },
+          S4_G4: {
+            title: "",
+            type: "object",
+            depend: {
+              id: "steps",
+              value: 3,
+            },
+            required: [],
+            properties: {
+              image: {
+                title: "Image",
                 type: "string",
+                format: "data-url",
+              },
+            },
+          },
+          S4_G5: {
+            title: "",
+            type: "object",
+            depend: {
+              id: "steps",
+              value: 4,
+            },
+            required: [],
+            properties: {
+              entity: {
+                title: "Entity connection",
+                description: "entity",
+                custom: "entity",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "entity"],
+                  properties: {
+                    role: {
+                      title: "Entity role",
+                      enum: entityRoleOptions.map((x) => x.toLowerCase()),
+                      enumNames: entityRoleOptions,
+                    },
+                    entity: {
+                      title: "Entity",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
+                },
+              },
+              individual: {
+                title: "Individual connection",
+                description: "individual",
+                custom: "stakeholder",
+                type: "array",
+                items: {
+                  title: "",
+                  type: "object",
+                  required: ["role", "stakeholder"],
+                  properties: {
+                    role: {
+                      title: "User role",
+                      enum: individualRoleOptions.map((x) =>
+                        x !== "Resource Editor"
+                          ? x.toLowerCase()
+                          : x.toLowerCase().replace(/ /g, "_")
+                      ),
+                      enumNames: individualRoleOptions,
+                    },
+                    stakeholder: {
+                      title: "Indvidual",
+                      enum: [],
+                      enumNames: [],
+                    },
+                  },
+                },
+              },
+            },
+          },
+          S4_G6: {
+            title: "",
+            type: "object",
+            depend: {
+              id: "steps",
+              value: 5,
+            },
+            properties: {
+              info: {
+                title: "Info And Docs",
+                type: "string",
+              },
+              related: {
+                title: "Related Resource",
+                enum: [],
+                enumNames: [],
+              },
+            },
+          },
+        },
+      },
+      S5: {
+        title: "",
+        type: "object",
+        depend: {
+          id: "tabs",
+          value: ["S5"],
+        },
+        properties: {
+          dateOne: {
+            type: "object",
+            title: "",
+            required: [],
+            properties: {
+              publishYear: {
+                title: "Publication Year",
+                type: "string",
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  case_study: {
+    type: "object",
+    version: "2",
+    label: "case_study",
+    properties: {
+      S4: {
+        title: "",
+        type: "object",
+        depend: {
+          id: "tabs",
+          value: ["S4"],
+        },
+        properties: {
+          S4_G1: {
+            title: "",
+            type: "object",
+            depend: {
+              id: "steps",
+              value: 0,
+            },
+            required: ["title", "summary", "url"],
+            properties: {
+              title: {
+                title: "Title",
+                type: "string",
+              },
+              summary: {
+                title: "Description",
+                type: "string",
+              },
+              url: {
+                title: "URL",
+                type: "string",
+                format: "url",
+              },
+            },
+          },
+          S4_G2: {
+            title: "",
+            type: "object",
+            depend: {
+              id: "steps",
+              value: 1,
+            },
+            required: [
+              "geoCoverageType",
+              "geoCoverageValueTransnational",
+              "geoCoverageCountries",
+              // "geoCoverageValueNational",
+              // "geoCoverageValueSubnational",
+              // "geoCoverageValueSubnationalCity",
+            ],
+            properties: {
+              geoCoverageType: {
+                title: "Select Geo-Coverage Type",
+                type: "string",
+                enum: ["global", "transnational", "national", "sub-national"],
+                enumNames: [
+                  "Global",
+                  "Transnational",
+                  "National",
+                  "Subnational",
+                ],
+              },
+              geoCoverageValueTransnational: {
+                title: "GEO COVERAGE (Transnational)",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["transnational"],
+                },
+              },
+              geoCoverageCountries: {
+                title: "GEO COVERAGE (Countries)",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["national"],
+                },
+              },
+              geoCoverageValueSubnational: {
+                title: "Subnational Area",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["sub-national"],
+                },
+              },
+              geoCoverageCountryStates: {
+                title: "State",
+                enum: [],
                 depend: {
                   id: "geoCoverageType",
                   value: ["sub-national"],
@@ -2341,12 +2558,20 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["national", "sub-national"],
+                  value: ["national"],
                 },
               },
-              geoCoverageValueSubnationalCity: {
+              geoCoverageValueSubnational: {
                 title: "Subnational Area",
-                type: "string",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["sub-national"],
+                },
+              },
+              geoCoverageCountryStates: {
+                title: "State",
+                enum: [],
                 depend: {
                   id: "geoCoverageType",
                   value: ["sub-national"],
@@ -2587,28 +2812,20 @@ export const schema = {
                 enum: [],
                 depend: {
                   id: "geoCoverageType",
-                  value: ["national", "sub-national"],
+                  value: ["national"],
                 },
               },
-              // geoCoverageValueNational: {
-              //   title: "National",
-              //   enum: [],
-              //   depend: {
-              //     id: "geoCoverageType",
-              //     value: ["national"],
-              //   },
-              // },
-              // geoCoverageValueSubnational: {
-              //   title: "Subnational",
-              //   enum: [],
-              //   depend: {
-              //     id: "geoCoverageType",
-              //     value: ["sub-national"],
-              //   },
-              // },
-              geoCoverageValueSubnationalCity: {
+              geoCoverageValueSubnational: {
                 title: "Subnational Area",
-                type: "string",
+                enum: [],
+                depend: {
+                  id: "geoCoverageType",
+                  value: ["sub-national"],
+                },
+              },
+              geoCoverageCountryStates: {
+                title: "State",
+                enum: [],
                 depend: {
                   id: "geoCoverageType",
                   value: ["sub-national"],
