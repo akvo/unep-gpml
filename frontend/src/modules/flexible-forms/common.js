@@ -199,6 +199,13 @@ const getSchema = ({
       "geoCoverageCountries"
     ].enumNames = countries?.map((x) => x.name);
 
+    prop.S4.properties.S4_G2.properties[
+      "geoCoverageValueSubnational"
+    ].enum = countries?.map((x) => String(x.id));
+    prop.S4.properties.S4_G2.properties[
+      "geoCoverageValueSubnational"
+    ].enumNames = countries?.map((x) => x.name);
+
     // prop.S4.properties.S4_G2.properties[
     //   "geoCoverageValueSubnational"
     // ].enum = countries?.map((x) => String(x.id));
@@ -422,6 +429,22 @@ const formDataMapping = [
     key: "geoCoverageCountries",
     name: "geoCoverageCountries",
     question: "geoCoverageCountries",
+    type: "array",
+    section: "S4",
+    group: "S4_G2",
+  },
+  {
+    key: "geoCoverageCountries",
+    name: "geoCoverageCountries",
+    question: "geoCoverageValueSubnational",
+    type: "array",
+    section: "S4",
+    group: "S4_G2",
+  },
+  {
+    key: "geoCoverageCountryStates",
+    name: "geoCoverageCountryStates",
+    question: "geoCoverageCountryStates",
     type: "array",
     section: "S4",
     group: "S4_G2",

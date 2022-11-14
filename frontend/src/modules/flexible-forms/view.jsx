@@ -208,14 +208,10 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
     representativeGroup,
     mainContentType,
     meaOptions,
-    nonMemberOrganisations,
     organisations,
-    formStep,
     formEdit,
     profile,
     selectedMainContentType,
-    currencies,
-    relatedResource,
   } = storeData;
 
   const tabsData = tabs;
