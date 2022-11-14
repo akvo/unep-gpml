@@ -43,12 +43,20 @@
         "geoCoverageValueSubnational": {
           "ui:placeholder": "Select a country",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:allowClear": true,
+          "ui:options": {
+            "type": "single"
+          }
         },
         "geoCoverageCountryStates": {
           "ui:placeholder": "Select a State",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:allowClear": true,
+          "ui:options": {
+            "type": "single"
+          }
         },
         "ui:order": [
           "geoCoverageType",
@@ -438,12 +446,18 @@
         "geoCoverageValueSubnational": {
           "ui:placeholder": "Select a country",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:options": {
+            "type": "single"
+          }
         },
         "geoCoverageCountryStates": {
           "ui:placeholder": "Select a State",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:options": {
+            "type": "single"
+          }
         },
         "ui:order": [
           "geoCoverageType",
@@ -672,12 +686,18 @@
         "geoCoverageValueSubnational": {
           "ui:placeholder": "Select a country",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:options": {
+            "type": "single"
+          }
         },
         "geoCoverageCountryStates": {
           "ui:placeholder": "Select a State",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:options": {
+            "type": "single"
+          }
         },
         "ui:order": [
           "geoCoverageType",
@@ -942,12 +962,20 @@
         "geoCoverageValueSubnational": {
           "ui:placeholder": "Select a country",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:allowClear": true,
+          "ui:options": {
+            "type": "single"
+          }
         },
         "geoCoverageCountryStates": {
           "ui:placeholder": "Select a State",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:allowClear": true,
+          "ui:options": {
+            "type": "single"
+          }
         },
         "ui:order": [
           "geoCoverageType",
@@ -1181,12 +1209,20 @@
         "geoCoverageValueSubnational": {
           "ui:placeholder": "Select a country",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:allowClear": true,
+          "ui:options": {
+            "type": "single"
+          }
         },
         "geoCoverageCountryStates": {
           "ui:placeholder": "Select a State",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:allowClear": true,
+          "ui:options": {
+            "type": "single"
+          }
         },
         "ui:order": [
           "geoCoverageType",
@@ -1403,12 +1439,20 @@
         "geoCoverageValueSubnational": {
           "ui:placeholder": "Select a country",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:allowClear": true,
+          "ui:options": {
+            "type": "single"
+          }
         },
         "geoCoverageCountryStates": {
           "ui:placeholder": "Select a State",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:allowClear": true,
+          "ui:options": {
+            "type": "single"
+          }
         },
         "ui:order": [
           "geoCoverageType",
@@ -1625,12 +1669,20 @@
         "geoCoverageValueSubnational": {
           "ui:placeholder": "Select a country",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:allowClear": true,
+          "ui:options": {
+            "type": "single"
+          }
         },
         "geoCoverageCountryStates": {
           "ui:placeholder": "Select a State",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:allowClear": true,
+          "ui:options": {
+            "type": "single"
+          }
         },
         "ui:order": [
           "geoCoverageType",
@@ -1863,12 +1915,20 @@
         "geoCoverageValueSubnational": {
           "ui:placeholder": "Select a country",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:allowClear": true,
+          "ui:options": {
+            "type": "single"
+          }
         },
         "geoCoverageCountryStates": {
           "ui:placeholder": "Select a State",
           "ui:widget": "select",
-          "ui:showSearch": true
+          "ui:showSearch": true,
+          "ui:allowClear": true,
+          "ui:options": {
+            "type": "single"
+          }
         },
         "ui:order": [
           "geoCoverageType",

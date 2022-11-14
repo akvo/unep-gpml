@@ -1731,7 +1731,9 @@ const FlexibleForm = withRouter(
           };
         } else if (
           formData?.S4.S4_G2.geoCoverageType === "sub-national" &&
-          formData?.S4.S4_G2.geoCoverageValueSubnational
+          formData?.S4.S4_G2.geoCoverageValueSubnational &&
+          formData?.S4.S4_G2.geoCoverageValueSubnational !==
+            flexibleFormData?.data?.S4.S4_G2.geoCoverageValueSubnational
         ) {
           const state = await getStates(
             formData?.S4.S4_G2.geoCoverageValueSubnational
@@ -1752,8 +1754,8 @@ const FlexibleForm = withRouter(
                       geoCoverageCountryStates: {
                         ...formSchema.schema.properties.S4.properties.S4_G2
                           .properties.geoCoverageCountryStates,
-                        enum: [...state?.map((x) => String(x.id))],
-                        enumNames: [...state?.map((x) => String(x.name))],
+                        enum: state?.map((x) => String(x.id)),
+                        enumNames: state?.map((x) => x.name),
                       },
                     },
                   },
@@ -1762,9 +1764,12 @@ const FlexibleForm = withRouter(
             },
           };
         } else {
-          updatedFormDataSchema = formSchema.schema;
+          updatedFormDataSchema = {
+            ...schema,
+          };
         }
 
+        console.log(updatedFormDataSchema, "inside");
         setSchema(updatedFormDataSchema);
 
         // to overide validation
@@ -1921,6 +1926,19 @@ const FlexibleForm = withRouter(
       return api
         .get(`/country-state?countries_ids=${parseInt(id)}`)
         .then((d) => {
+          console.log(flexibleFormData);
+          initialFormData.update((e) => {
+            e.data = {
+              ...e.data,
+              S4: {
+                ...e.data.S4,
+                S4_G2: {
+                  ...e.data.S4.S4_G2,
+                  geoCoverageCountryStates: "",
+                },
+              },
+            };
+          });
           return d.data.countryStates;
         })
         .catch((e) => {
