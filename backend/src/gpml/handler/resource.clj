@@ -2,7 +2,6 @@
   (:require [clojure.java.jdbc :as jdbc]
             [duct.logger :refer [log]]
             [gpml.auth :as auth]
-            [gpml.constants :as constants]
             [gpml.db.activity :as db.activity]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
@@ -210,7 +209,7 @@
            [:vector {:optional true}
             [:map {:optional true}
              [:id [:int]]
-             [:type (vec (conj constants/resources :enum))]]]]
+             [:type (apply conj [:enum] dom.types/resources-types)]]]]
           [:first_publication_date {:optional true} string?]
           [:latest_amendment_date {:optional true} string?]
           [:document_preview {:optional true} boolean?]

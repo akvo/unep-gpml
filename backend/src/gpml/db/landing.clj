@@ -1,8 +1,8 @@
 (ns gpml.db.landing
   {:ns-tracker/resource-deps ["landing.sql"]}
   (:require [clojure.set :as set]
-            [gpml.constants :as constants]
             [gpml.db.country :as db.country]
+            [gpml.domain.types :as dom.types]
             [gpml.util.postgresql]
             [hugsql.core :as hugsql]))
 
@@ -14,7 +14,7 @@
 (hugsql/def-db-fns "gpml/db/landing.sql")
 
 (def ^:private default-topic-counts
-  (->> constants/topics
+  (->> dom.types/topic-types
        (map #(-> {}
                  (assoc-in [:counts (keyword %)] 0)
                  (assoc-in [:transnational_counts (keyword %)] 0)))

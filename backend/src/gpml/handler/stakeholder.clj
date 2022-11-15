@@ -2,10 +2,11 @@
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.string :as str]
             [duct.logger :refer [log]]
-            [gpml.constants :as constants]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.domain.stakeholder :as dom.stakeholder]
+            [gpml.domain.types :as dom.types]
             [gpml.handler.image :as handler.image]
             [gpml.handler.organisation :as handler.org]
             [gpml.handler.resource.geo-coverage :as handler.geo]
@@ -18,8 +19,7 @@
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
-(def roles-re (->> constants/user-roles
-                   (map name)
+(def roles-re (->> dom.stakeholder/role-types
                    (str/join "|")
                    (format "^(%1$s)((,(%1$s))+)?$")
                    re-pattern))
@@ -538,7 +538,7 @@
            [:limit {:default 10}
             int?]
            [:review-status {:optional true}
-            (apply conj [:enum] (->> constants/admin-review-status (map name)))]
+            (apply conj [:enum] (remove #{"REVIEWER"} dom.types/review-statuses))]
            [:roles {:optional true}
             [:re roles-re]]
            [:email-like {:optional true}
@@ -556,7 +556,7 @@
 (defmethod ig/init-key :gpml.handler.stakeholder/patch-params [_ _]
   {:path [:map [:id int?]]
    :body [:map [:role
-                (apply conj [:enum] (->> constants/user-roles (map name)))]]})
+                (apply conj [:enum] dom.stakeholder/role-types)]]})
 
 (defmethod ig/init-key :gpml.handler.stakeholder/get-by-id [_ {:keys [db]}]
   (fn [{{:keys [path]} :parameters}]
