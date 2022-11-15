@@ -2,7 +2,7 @@
   (:require [clj-gcp.storage.core]
             [gpml.boundary.port.storage-client :as port])
   (:import [clj_gcp.storage.core GCSStorageClient]
-           [com.google.cloud.storage Storage BlobId]))
+           [com.google.cloud.storage BlobId Storage]))
 
 (defn- delete-blob
   [^Storage storage bucket-name blob-name]

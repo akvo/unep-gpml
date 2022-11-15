@@ -2,10 +2,10 @@
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.set :as set]
             [duct.logger :refer [log]]
-            [gpml.constants :as constants]
             [gpml.db.topic-stakeholder-auth :as db.ts-auth]
             [gpml.domain.stakeholder :as dom.stakeholder]
             [gpml.domain.topic-stakeholder-auth :as dom.ts-auth]
+            [gpml.domain.types :as dom.types]
             [gpml.handler.util :as util]
             [integrant.core :as ig]
             [malli.util :as mu]
@@ -14,7 +14,7 @@
 
 (def ^:private shared-path-params
   [:map
-   [:topic-type (apply conj [:enum] constants/topics)]
+   [:topic-type (apply conj [:enum] dom.types/topic-types)]
    [:topic-id [:int {:min 0}]]
    [:stakeholder [:int {:min 0}]]])
 

@@ -1,9 +1,9 @@
 (ns gpml.handler.resource.translation
   (:require [clojure.string :as str]
             [duct.logger :refer [log]]
-            [gpml.constants :as constants]
             [gpml.db.resource.translation :as db.res-translation]
             [gpml.domain.translation :as dom.translation]
+            [gpml.domain.types :as dom.types]
             [gpml.handler.resource.permission :as res-permission]
             [gpml.handler.util :as handler.util]
             [gpml.util.sql :as sql-util]
@@ -15,7 +15,7 @@
 (defonce ^:private translation-entity-id-sufix "_id")
 
 (defmethod ig/init-key :gpml.handler.resource.translation/topics [_ _]
-  (apply conj [:enum] constants/topic-tables))
+  (apply conj [:enum] dom.types/topic-entity-tables))
 
 (defn- is-lowercase?
   [content-str]
@@ -25,7 +25,7 @@
 
 (defn- is-allowed-translation-entity?
   [topic-type]
-  (get (set constants/topic-tables) topic-type))
+  (get dom.types/topic-entity-tables topic-type))
 
 (defn- all-valid-translatable-fields?
   [{:keys [translations topic-type]}]

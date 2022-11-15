@@ -3,6 +3,16 @@
             [gpml.util :as util]
             [malli.core :as m]))
 
+(def ^:const popular-tags
+  "Set of tags that are considered popular. This is a harcoded value and
+  is a predefined value for getting tags count per resource."
+  #{"plastics"
+    "waste management"
+    "marine litter"
+    "capacity building"
+    "product by design"
+    "source to sea"})
+
 (def Tag
   "The Tag entity schema."
   (m/schema

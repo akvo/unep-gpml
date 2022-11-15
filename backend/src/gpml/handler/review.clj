@@ -3,10 +3,10 @@
             [clojure.set :as set]
             [clojure.string :as str]
             [duct.logger :refer [log]]
-            [gpml.constants :as constants]
             [gpml.db.review :as db.review]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.stakeholder :as dom.stakeholder]
+            [gpml.domain.types :as dom.types]
             [gpml.handler.util :as util]
             [gpml.util.email :as email]
             [gpml.util.regular-expressions :as util.regex]
@@ -25,7 +25,7 @@
        (db.review/reviews-by-reviewer-id conn opts)))
 
 (def ^:private review-status-re
-  (->> constants/reviewer-review-status
+  (->> dom.types/review-statuses
        (map symbol)
        (str/join "|")
        (format "^(%1$s)((,(%1$s))+)?$")
@@ -228,7 +228,7 @@
      [:re review-status-re]]]})
 
 (defmethod ig/init-key :gpml.handler.review/review-status-params [_ _]
-  (apply conj [:enum] (map name constants/reviewer-review-status)))
+  (apply conj [:enum] dom.types/review-statuses))
 
 (defmethod ig/init-key :gpml.handler.review/get-reviewers-responses [_ _]
   {200 {:body
