@@ -58,7 +58,8 @@
    :q30 :sector})
 
 (defn parse-initiative-details
-  "FIXME"
+  "Parses initiative details, form questions' answers into initiative
+  properties."
   [initiative-details]
   (-> initiative-details
       (util/update-if-not-nil :q16 question-answer->initiative-prop)
