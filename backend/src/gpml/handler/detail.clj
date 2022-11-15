@@ -17,6 +17,7 @@
             [gpml.db.resource.connection :as db.resource.connection]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.submission :as db.submission]
+            [gpml.domain.initiative :as dom.initiative]
             [gpml.handler.image :as handler.image]
             [gpml.handler.initiative :as handler.initiative]
             [gpml.handler.organisation :as handler.org]
@@ -333,7 +334,7 @@
 (defmethod extra-details "initiative" [resource-type db initiative]
   (merge
    (add-extra-details db initiative resource-type {})
-   (db.initiative/initiative-detail-by-id db initiative)))
+   (dom.initiative/parse-initiative-details (db.initiative/initiative-by-id db initiative))))
 
 (defmethod extra-details "policy" [resource-type db policy]
   (merge
@@ -379,26 +380,6 @@
 
 (defmethod extra-details :nothing [_ _ _]
   nil)
-
-(def not-nil-name #(vec (filter :name %)))
-
-(defn adapt [data]
-  (-> data
-      (update :organisation (fn [orgs]
-                              (let [clean-orgs (vec (filter :name orgs))]
-                                (if (= [] clean-orgs)
-                                  (vec (filter :name (:non_member_organisation data)))
-                                  clean-orgs))))
-      (update :lifecycle_phase not-nil-name)
-      (update :sector not-nil-name)
-      (update :funding #(when (:name %) %))
-      (update :outcome_and_impact not-nil-name)
-      (update :focus_area not-nil-name)
-      (update :currency_amount_invested not-nil-name)
-      (update :currency_in_kind_contribution not-nil-name)
-      (update :activity_owner not-nil-name)
-      (update :activity_term (fn [x] (when (:name x) x)))
-      (update :is_action_being_reported #(when (:reports %) %))))
 
 (defn- common-queries
   [table {:keys [topic-id]} & [geo url tags related-content]]
@@ -479,13 +460,12 @@
                                                                      {:read? true})]
         (if (seq resource)
           (if-let [details (get-detail conn topic id query)]
-            (resp/response (merge
-                            (adapt (merge
-                                    (case topic
-                                      "technology" (dissoc details :tags :remarks :name)
-                                      (dissoc details :tags :abstract :description))
-                                    (extra-details topic conn details)))
-                            {:owners (:owners details)}))
+            (r/ok (merge
+                   (case topic
+                     "technology" (dissoc details :tags :remarks :name)
+                     (dissoc details :tags :abstract :description))
+                   (extra-details topic conn details)
+                   {:owners (:owners details)}))
             (r/not-found {}))
           (r/forbidden {})))
       (catch Exception e
