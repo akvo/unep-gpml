@@ -2,7 +2,6 @@
   (:require [clojure.java.jdbc :as jdbc]
             [duct.logger :refer [log]]
             [gpml.auth :as auth]
-            [gpml.constants :as constants]
             [gpml.db.event :as db.event]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
@@ -147,7 +146,7 @@
      [:vector {:optional true}
       [:map {:optional true}
        [:id [:int]]
-       [:type (vec (conj constants/resources :enum))]]]]
+       [:type (apply conj [:enum] dom.types/resources-types)]]]]
     [:capacity_building {:optional true} boolean?]
     [:event_type {:optional true} string?]
     [:recording {:optional true} string?]

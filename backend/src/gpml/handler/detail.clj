@@ -2,7 +2,6 @@
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.set :as set]
             [duct.logger :refer [log]]
-            [gpml.constants :as constants]
             [gpml.db.action :as db.action]
             [gpml.db.action-detail :as db.action-detail]
             [gpml.db.country]
@@ -17,6 +16,9 @@
             [gpml.db.resource.connection :as db.resource.connection]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.submission :as db.submission]
+            [gpml.domain.initiative :as dom.initiative]
+            [gpml.domain.resource :as dom.resource]
+            [gpml.domain.types :as dom.types]
             [gpml.handler.image :as handler.image]
             [gpml.handler.initiative :as handler.initiative]
             [gpml.handler.organisation :as handler.org]
@@ -27,7 +29,6 @@
             [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.handler.util :as util]
-            [gpml.model.topic :as model.topic]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
             [medley.core :as medley]
@@ -184,7 +185,7 @@
 (defonce cached-hierarchies (atom {}))
 
 (defmethod ig/init-key :gpml.handler.detail/topics [_ _]
-  (apply conj [:enum] constants/topics))
+  (apply conj [:enum] dom.types/topic-types))
 
 (declare get-action-hierarchy)
 
@@ -273,7 +274,7 @@
 (defn- resolve-resource-type
   [resource-type]
   (cond
-    (some #{resource-type} constants/resource-types)
+    (some #{resource-type} dom.resource/types)
     "resource"
 
     :else resource-type))
@@ -333,7 +334,7 @@
 (defmethod extra-details "initiative" [resource-type db initiative]
   (merge
    (add-extra-details db initiative resource-type {})
-   (db.initiative/initiative-detail-by-id db initiative)))
+   (dom.initiative/parse-initiative-details (db.initiative/initiative-by-id db initiative))))
 
 (defmethod extra-details "policy" [resource-type db policy]
   (merge
@@ -380,26 +381,6 @@
 (defmethod extra-details :nothing [_ _ _]
   nil)
 
-(def not-nil-name #(vec (filter :name %)))
-
-(defn adapt [data]
-  (-> data
-      (update :organisation (fn [orgs]
-                              (let [clean-orgs (vec (filter :name orgs))]
-                                (if (= [] clean-orgs)
-                                  (vec (filter :name (:non_member_organisation data)))
-                                  clean-orgs))))
-      (update :lifecycle_phase not-nil-name)
-      (update :sector not-nil-name)
-      (update :funding #(when (:name %) %))
-      (update :outcome_and_impact not-nil-name)
-      (update :focus_area not-nil-name)
-      (update :currency_amount_invested not-nil-name)
-      (update :currency_in_kind_contribution not-nil-name)
-      (update :activity_owner not-nil-name)
-      (update :activity_term (fn [x] (when (:name x) x)))
-      (update :is_action_being_reported #(when (:reports %) %))))
-
 (defn- common-queries
   [table {:keys [topic-id]} & [geo url tags related-content]]
   (filter some?
@@ -416,14 +397,18 @@
              ["delete from resource_organisation where resource=?" topic-id])
            [(format "delete from %s where id = ?" table) topic-id]]))
 
-(defmethod ig/init-key :gpml.handler.detail/delete [_ {:keys [db logger]}]
-  (fn [{{:keys [path]} :parameters approved? :approved? user :user}]
+(defmethod ig/init-key :gpml.handler.detail/delete
+  [_ {:keys [db logger]}]
+  (fn [{{:keys [path]} :parameters user :user}]
     (try
       (let [conn        (:spec db)
             topic-id    (:topic-id path)
             topic       (resolve-resource-type (:topic-type path))
-            authorized? (and (or (model.topic/public? topic) approved?)
-                             (some? (handler.res-permission/get-resource-if-allowed conn user topic topic-id {:read? false})))
+            authorized? (some? (handler.res-permission/get-resource-if-allowed conn
+                                                                               user
+                                                                               topic
+                                                                               topic-id
+                                                                               {:read? false}))
             sqls (condp = topic
                    "policy" (common-queries topic path true false true true)
                    "event" (common-queries topic path true true true true)
@@ -479,13 +464,12 @@
                                                                      {:read? true})]
         (if (seq resource)
           (if-let [details (get-detail conn topic id query)]
-            (resp/response (merge
-                            (adapt (merge
-                                    (case topic
-                                      "technology" (dissoc details :tags :remarks :name)
-                                      (dissoc details :tags :abstract :description))
-                                    (extra-details topic conn details)))
-                            {:owners (:owners details)}))
+            (r/ok (merge
+                   (case topic
+                     "technology" (dissoc details :tags :remarks :name)
+                     (dissoc details :tags :abstract :description))
+                   (extra-details topic conn details)
+                   {:owners (:owners details)}))
             (r/not-found {}))
           (r/forbidden {})))
       (catch Exception e
@@ -626,7 +610,7 @@
            geo_coverage_type] :as updates}]
   (let [updates (assoc updates :id id)
         table (cond
-                (contains? constants/resource-types topic-type) "resource"
+                (contains? dom.resource/types topic-type) "resource"
                 :else topic-type)
         geo-coverage-type (keyword geo_coverage_type)
         table-columns (-> updates

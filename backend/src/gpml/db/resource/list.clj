@@ -1,7 +1,7 @@
 (ns gpml.db.resource.list
   {:ns-tracker/resource-deps ["resource/list.sql"]}
   (:require [clojure.string :as str]
-            [gpml.constants :as constants]
+            [gpml.domain.types :as dom.types]
             [hugsql.core :as hugsql]))
 
 (def ^:const default-limit 100)
@@ -13,7 +13,7 @@
 (defn generate-get-resources-query
   []
   (str/join " UNION ALL "
-            (for [table constants/topic-tables]
+            (for [table dom.types/topic-entity-tables]
               (let [title-column (case table
                                    "technology" "name"
                                    "initiative" "q2->>0"

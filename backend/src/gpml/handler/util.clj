@@ -1,7 +1,7 @@
 (ns gpml.handler.util
   (:require [clojure.string :as str]
-            [gpml.constants :as constants]
-            [gpml.db.stakeholder :as db.stakeholder]))
+            [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.domain.resource :as dom.resource]))
 
 (def unauthorized {:status 403 :body {:message "Unauthorized"}})
 (def not-found {:status 404 :body {:message "Not Found"}})
@@ -35,7 +35,7 @@
 
 (defn get-internal-topic-type [topic-type]
   (cond
-    (contains? constants/resource-types topic-type) "resource"
+    (contains? dom.resource/types topic-type) "resource"
     :else topic-type))
 
 (defn get-display-topic-type [topic-type topic-item]
