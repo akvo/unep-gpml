@@ -1,7 +1,8 @@
 (ns gpml.db.tag
   {:ns-tracker/resource-deps ["tag.sql"]}
   (:require [clojure.string :as str]
-            [gpml.constants :as constants]
+            [gpml.domain.tag :as dom.tag]
+            [gpml.domain.types :as dom.types]
             [gpml.util :as util]
             [gpml.util.sql :as sql-util]
             [hugsql.core :as hugsql]))
@@ -36,7 +37,7 @@
                  JOIN tag t ON t.id = et.tag
                  WHERE e.review_status = 'APPROVED' AND t.tag IN %s
                  GROUP BY t.id, t.tag"
-         (flatten [(repeat 3 entity-name) (popular-tags->db-popular-tags constants/popular-tags)])))
+         (flatten [(repeat 3 entity-name) (popular-tags->db-popular-tags dom.tag/popular-tags)])))
 
 (defn generate-popular-topics-tags-count-cte
   "Generates a CTE to get a result set of `tag` and the number of
@@ -53,7 +54,7 @@
                  (str acc " UNION ALL " query)
                  query)))
            ""
-           constants/topic-tables)
+           dom.types/topic-entity-tables)
    ")"))
 
 (defn- generic-more-topic-tag-count-query
@@ -65,7 +66,7 @@
                  WHERE e.review_status = 'APPROVED' AND e.id IN %s
                  AND t.tag IN %s
                  GROUP BY t.id, t.tag"
-         (flatten [(repeat 3 entity-name) ids (popular-tags->db-popular-tags constants/popular-tags)])))
+         (flatten [(repeat 3 entity-name) ids (popular-tags->db-popular-tags dom.tag/popular-tags)])))
 
 (defn generate-more-popular-topics-tags-count-cte
   "Generates a CTE to get a result set of `tag` and the number of
@@ -106,7 +107,7 @@
                  (str acc " UNION ALL " query)
                  query)))
            ""
-           constants/topic-tables)
+           dom.types/topic-entity-tables)
    ")"))
 
 (defn tag->db-tag

@@ -1,9 +1,10 @@
 (ns gpml.handler.landing
   (:require [clojure.string :as str]
             [duct.logger :refer [log]]
-            [gpml.constants :refer [resource-types topics]]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.landing :as db.landing]
+            [gpml.domain.resource :as dom.resource]
+            [gpml.domain.types :as dom.types]
             [gpml.handler.responses :as r]
             [gpml.util.postgresql :as pg-util]
             [gpml.util.regular-expressions :as util.regex]
@@ -11,7 +12,7 @@
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
-(def ^:const ^:private topic-re (util.regex/comma-separated-enums-re topics))
+(def ^:const ^:private topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
 (def ^:const ^:private entity-groups ["topic" "community"])
 
 (def ^:private query-params
@@ -33,7 +34,7 @@
      [:string {:max 0}]
      [:re util.regex/comma-separated-numbers-re]]]
    [:topic {:optional true
-            :swagger {:description (format "Comma separated list of topics to filter: %s" (str/join "," topics))
+            :swagger {:description (format "Comma separated list of topics to filter: %s" (str/join "," dom.types/topic-types))
                       :type "string"
                       :collectionFormat "csv"
                       :allowEmptyValue true}}
@@ -124,7 +125,7 @@
     (assoc :end-date endDate)
 
     (and user-id favorites)
-    (assoc :user-id user-id :favorites true :resource-types resource-types)
+    (assoc :user-id user-id :favorites true :resource-types dom.resource/types)
 
     (seq country)
     (assoc :geo-coverage (->> (set (str/split country #","))

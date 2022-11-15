@@ -1,10 +1,10 @@
 (ns gpml.handler.browse-test
   (:require [clojure.string :as str]
             [clojure.test :refer [are deftest is testing use-fixtures]]
-            [gpml.constants :refer [topics]]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.topic-test :as db.topic-test]
+            [gpml.domain.types :as dom.types]
             [gpml.fixtures :as fixtures]
             [gpml.handler.browse :as browse]
             [gpml.seeder.main :as seeder]
@@ -35,12 +35,12 @@
         false "esp,usa")))
   (testing "Topic query parameter validation"
     (let [valid? #(malli/validate [:re browse/topic-re] %)]
-      (is (true? (every? valid? topics)))
+      (is (true? (every? valid? dom.types/topic-types)))
       (are [expected value] (= expected (valid? value))
         true "technology,initiative"
         true "financing_resource,event"
         true "event,policy"
-        true (str/join "," topics)
+        true (str/join "," dom.types/topic-types)
         false "resource"
         false "technology,"
         false "technology,event,"

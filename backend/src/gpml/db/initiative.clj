@@ -8,7 +8,6 @@
 (declare new-initiative
          initiative-by-id
          update-initiative
-         initiative-detail-by-id
          add-initiative-tags
          create-initiatives
          get-initiatives)

@@ -1,17 +1,18 @@
 (ns gpml.handler.browse
   (:require [clojure.string :as str]
             [duct.logger :refer [log]]
-            [gpml.constants :refer [resource-types topics]]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.resource.connection :as db.resource.connection]
             [gpml.db.topic :as db.topic]
+            [gpml.domain.resource :as dom.resource]
+            [gpml.domain.types :as dom.types]
             [gpml.util.postgresql :as pg-util]
             [gpml.util.regular-expressions :as util.regex]
             [integrant.core :as ig]
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
-(def ^:const topic-re (util.regex/comma-separated-enums-re topics))
+(def ^:const topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
 (def ^:const ^:private order-by-fields ["title" "description" "id"])
 (def ^:const ^:private default-limit 50)
 (def ^:const ^:private default-offset 0)
@@ -40,13 +41,13 @@
       {:decode/string (fn [s] (set (map #(Integer/parseInt %) (str/split s #","))))}
       pos-int?]]
     [:topic {:optional true
-             :swagger {:description (format "Comma separated list of topics to filter: %s" (str/join "," topics))
+             :swagger {:description (format "Comma separated list of topics to filter: %s" (str/join "," dom.types/topic-types))
                        :type "string"
                        :collectionFormat "csv"
                        :allowEmptyValue false}}
      [:set
       {:decode/string (fn [s] (set (str/split s #",")))}
-      (apply conj [:enum] topics)]]
+      (apply conj [:enum] dom.types/topic-types)]]
     [:tag {:optional true
            :swagger {:description "Comma separated list of tags"
                      :type "string"
@@ -190,7 +191,7 @@
     (assoc :end-date endDate)
 
     (and user-id favorites)
-    (assoc :user-id user-id :favorites true :resource-types resource-types)
+    (assoc :user-id user-id :favorites true :resource-types dom.resource/types)
 
     (seq country)
     (assoc :geo-coverage country)
@@ -243,7 +244,7 @@
 (defn- result->result-with-connections
   [db {:keys [type] :as result}]
   (let [resource-type (cond
-                        (some #{type} resource-types)
+                        (some #{type} dom.resource/types)
                         "resource"
 
                         :else

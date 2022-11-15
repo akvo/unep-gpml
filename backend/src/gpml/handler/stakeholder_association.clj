@@ -1,17 +1,14 @@
 (ns gpml.handler.stakeholder-association
   (:require [clojure.java.jdbc :as jdbc]
-            [gpml.constants :as constants]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.stakeholder-association :as db.stakeholder-association]
+            [gpml.domain.resource :as dom.resource]
             [gpml.util :as util]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
 (def ^:const associations
   #{"owner" "implementor" "partner" "donor" "interested in"})
-
-(defmethod ig/init-key ::types [_ _]
-  (apply conj [:enum] constants/stakeholder-types))
 
 (defn- api-associated-topics-opts->associated-topics-opts
   [api-associated-topics-opts]
@@ -64,7 +61,7 @@
 
 (defn- topic-type->api-topic-type [topic-type]
   (cond
-    (contains? constants/resource-types topic-type) "resource"
+    (contains? dom.resource/types topic-type) "resource"
     :else topic-type))
 
 (defmethod ig/init-key :gpml.handler.stakeholder-association/delete
