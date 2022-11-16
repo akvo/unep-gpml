@@ -157,6 +157,29 @@ again, please visit this URL: %s/edit-%s/%s
         htmls (repeat nil)]
     (send-email mailjet-config sender subject receivers texts htmls)))
 
+(defn notify-about-new-contact
+  "Send email about a new contact request
+   The plural format for texts and receivers is because the sending shared email function expects a list of messages
+   to be sent. That is why we provide an infinite sequence for non-used `htmls` option. Besides, we make `sender` and
+   `texts` a collection of a single element, since in this case we are sending a single message."
+  [mailjet-config {dest-email :dest-email
+                   req-email :email
+                   name :name
+                   organization :organization
+                   msg :message
+                   subject :subject}]
+  (let [msg-body (format "Name: %s\nEmail: %s\nOrganization: %s\nMessage: \n%s"
+                         name
+                         req-email
+                         organization
+                         msg)
+        sender unep-sender
+        receivers [{:Name "Contact Management"
+                    :Email dest-email}]
+        texts [msg-body]
+        htmls (repeat nil)]
+    (send-email mailjet-config sender subject receivers texts htmls)))
+
 (comment
   (require 'dev)
   (let [db (dev/db-conn)
