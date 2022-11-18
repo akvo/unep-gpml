@@ -5,11 +5,7 @@
 (defn- response
   ([status body]
    {:status  status
-    :headers {"Content-Type"                     "application/json"
-             "Access-Control-Allow-Origin"      "*"
-             "Access-Control-Allow-Credentials" "false"
-             "Access-Control-Allow-Methods"     "POST, GET, DELETE, OPTIONS"
-             "Access-Control-Allow-Headers"     "Accept, Content-Type"}
+    :headers {}
     :body    body}))
 
 (defmacro http-status [code sym]
