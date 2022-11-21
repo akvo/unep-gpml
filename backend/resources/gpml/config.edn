@@ -611,7 +611,8 @@
                                                   :handler #ig/ref :gpml.handler.case-study/post
                                                   :parameters #ig/ref :gpml.handler.case-study/post-params
                                                   :responses #ig/ref :gpml.handler.case-study/post-responses}}]]]]
-                              :logger #ig/ref :duct.logger/timbre}
+                              :logger #ig/ref :duct.logger/timbre
+                              :cors-allowed-origins #ig/ref :gpml.handler.main/cors-allowed-origins}
 
   ;; Consts
 
@@ -905,6 +906,8 @@
   :gpml.auth/admin-or-profile-owner-required-middleware {}
 
   :gpml.handler.monitoring/collector {}
+
+  :gpml.handler.main/cors-allowed-origins {:allowed-origins #duct/env ["CORS_ALLOWED_ORIGINS"]}
 
   :gpml.handler.monitoring/jetty-configurator
   {:collector #ig/ref :gpml.handler.monitoring/collector}
