@@ -13,6 +13,7 @@
             [reitit.ring.middleware.parameters :as parameters]
             [reitit.swagger :as swagger]
             [reitit.swagger-ui :as swagger-ui]
+            [ring.middleware.cors :as cors]
             [ring.util.response :as resp]
             [taoensso.timbre :as timbre]))
 
@@ -36,7 +37,11 @@
                                         :reason :bad-parameter-type-or-format
                                         :error-details (:humanized error)})})
 
-           :middleware [;; swagger feature
+           :middleware [;; CORS
+                        [cors/wrap-cors
+                         :access-control-allow-origin [#".*"]
+                         :access-control-allow-methods [:get :post :delete :put]]
+                        ;; swagger feature
                         swagger/swagger-feature
                          ;; query-params & form-params
                         parameters/parameters-middleware

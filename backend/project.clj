@@ -48,7 +48,8 @@
                  [ns-tracker "0.4.0"]
                  [twarc "0.1.15"]
                  [diehard "0.10.3"]
-                 [org.jsoup/jsoup "1.15.3"]]
+                 [org.jsoup/jsoup "1.15.3"]
+                 [ring-cors "0.1.13"]]
   :plugins [[duct/lein-duct "0.12.1"]]
   :main ^:skip-aot gpml.main
   :resource-paths ["resources" "target/resources"]
