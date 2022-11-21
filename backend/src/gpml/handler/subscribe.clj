@@ -1,8 +1,8 @@
 (ns gpml.handler.subscribe
-  (:require [gpml.util :as util]
+  (:require [gpml.handler.responses :as r]
+            [gpml.util :as util]
             [gpml.util.email :as email]
-            [integrant.core :as ig]
-            [ring.util.response :as resp]))
+            [integrant.core :as ig]))
 
 (defmethod ig/init-key :gpml.handler.subscribe/post
   [_ {{:keys [management-dest-email]} :subscribe-settings
@@ -15,11 +15,11 @@
                                             management-dest-email
                                             email)]
         (if (= 200 status)
-          (resp/response {:success? true})
-          (resp/response {:success? false
-                          :reason :could-not-send-new-subscription-req-email
-                          :error-details reason-phrase})))
-      (resp/response {:success? false
+          (r/ok {:success? true})
+          (r/server-error {:success? false
+                           :reason :could-not-send-new-subscription-req-email
+                           :error-details reason-phrase})))
+      (r/bad-request {:success? false
                       :reason :could-not-send-new-subscription-req-email
                       :error-details "Destination email address missing in config"}))))
 
