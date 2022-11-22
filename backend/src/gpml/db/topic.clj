@@ -414,11 +414,11 @@
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn generate-filter-topic-snippet
   "Generates the SQL to apply filters to the topics aggregate."
-  [{:keys [favorites user-id topic start-date end-date transnational
-           geo-coverage resource-types geo-coverage-countries
+  [{:keys [favorites user-id topic start-date end-date
+           geo-coverage-country-groups
+           geo-coverage-countries resource-types
            affiliation]}]
-  (let [geo-coverage? (seq geo-coverage)
-        transnational? (seq transnational)
+  (let [geo-coverage-country-groups? (seq geo-coverage-country-groups)
         geo-coverage-countries? (seq geo-coverage-countries)]
     (str/join
      " "
@@ -447,18 +447,10 @@
           (seq end-date)
           " AND TO_DATE(json->>'end_date', 'YYYY-MM-DD') <= :end-date::date"))
       (cond
-        (and geo-coverage-countries? transnational?)
-        (str " AND (" (generic-json-array-lookup-cond "t.json->>'geo_coverage_values'" "geo-coverage-countries")
+        (and geo-coverage-countries? geo-coverage-country-groups?)
+        (str " AND (" (generic-json-array-lookup-cond "t.json->>'geo_coverage_countries'" "geo-coverage-countries")
              " OR t.json->>'geo_coverage_type'='transnational'
-               AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_country_groups'" "transnational") ")")
-
-        (and geo-coverage? transnational?)
-        (str " AND (" (generic-json-array-lookup-cond "t.json->>'geo_coverage_countries'" "geo-coverage")
-             " OR t.json->>'geo_coverage_type'='transnational'
-                 AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_country_groups'" "transnational") ")")
-
-        geo-coverage?
-        (str " AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_countries'" "geo-coverage"))
+               AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_country_groups'" "geo-coverage-country-groups") ")")
 
         geo-coverage-countries?
-        (str " AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_values'" "geo-coverage-countries")))))))
+        (str " AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_countries'" "geo-coverage-countries")))))))
