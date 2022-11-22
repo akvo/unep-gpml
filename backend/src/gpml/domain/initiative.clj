@@ -46,14 +46,14 @@
 (def ^:const ^:private initiative-rename-key-mapping
   {:q40 :info_resource_links
    :q4 :main_focus
-   :q16 :main_acitivity_owner
+   :q16 :main_activity_owner
    :q1_1 :organisation
    :q36_1 :currency_amount_invested
    :q37_1 :currency_in_kind_contribution
    :q38 :activity_term
    :q5 :is_action_being_reported
    :q26 :lifecycle_phase
-   :q11 :out_and_impacts
+   :q11 :outcome_and_impacts
    :q28 :focus_area
    :q30 :sector})
 
