@@ -150,7 +150,7 @@ const toolbarConfig = {
   ],
 };
 
-const FlexibleForms = ({ match: { params }, ...props }) => {
+const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match: { params }, ...props }) => {
   const {
     tabs,
     getSchema,
@@ -281,6 +281,12 @@ const FlexibleForms = ({ match: { params }, ...props }) => {
       setLabel(state?.state?.label);
     }
   }, [state]);
+  
+  useEffect(() => {
+    if (!isAuthenticated && loadingProfile) {
+      setLoginVisible(true);
+    }
+  }, [isAuthenticated, loadingProfile]);
 
   const getRevertValue = (type, value, name) => {
     let res = value;

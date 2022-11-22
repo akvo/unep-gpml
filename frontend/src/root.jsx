@@ -285,7 +285,11 @@ const Root = () => {
         return console.log(err);
       }
       if (authResult) {
-        history.push("/");
+        const redirectLocation =
+          localStorage.getItem("redirect_on_login") === 'undefined'
+            ? '/'
+            : JSON.parse(localStorage.getItem("redirect_on_login"));
+        history.push(redirectLocation.pathname);
         setSession(authResult);
         api.setToken(authResult.idToken);
         if (
@@ -310,6 +314,7 @@ const Root = () => {
           }
         }
       }
+      localStorage.removeItem("redirect_on_login");
     });
   }, []);
 
@@ -632,7 +637,7 @@ const Root = () => {
               <Route
                 exact
                 path="/edit-event/:id"
-                render={(props) => <FlexibleForms {...props} />}
+                render={(props) => <FlexibleForms {...props} setLoginVisible={setLoginVisible}/>}
               />
 
               <Route
@@ -735,7 +740,9 @@ const Root = () => {
               />
               <Route
                 path="/flexible-forms"
-                render={(props) => <FlexibleForms {...props} />}
+                render={(props) => <FlexibleForms {...props} setLoginVisible={setLoginVisible} 
+                isAuthenticated={isAuthenticated} 
+                loadingProfile={loadingProfile}/> }
               />
               <Route
                 path="/details-view"

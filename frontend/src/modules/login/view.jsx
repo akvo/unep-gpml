@@ -50,6 +50,10 @@ function Login({ handleOnClickBtnNext, visible, close }) {
     setLoading(true);
     const username = values.email;
     const password = values.password;
+    localStorage.setItem(
+      "redirect_on_login",
+      JSON.stringify(history.location)
+    );
     auth0Client.login(
       {
         realm: "Username-Password-Authentication",

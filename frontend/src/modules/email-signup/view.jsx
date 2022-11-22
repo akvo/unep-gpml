@@ -125,6 +125,10 @@ function EmailJoin({ setSignUp, children }) {
 
   const onSubmit = async (data) => {
     setLoading(true);
+    localStorage.setItem(
+      "redirect_on_login",
+      JSON.stringify(history.location)
+    );
     auth0Client.redirect.signupAndLogin(
       {
         connection: "Username-Password-Authentication",
