@@ -56,7 +56,7 @@
       (is (= (browse/get-db-filter (decode-params {})) {:offset 0 :limit 50 :review-status "APPROVED"})))
     (testing "Country is not empty"
       (is (= (browse/get-db-filter (decode-params {:country "73,106,107"}))
-             {:geo-coverage #{107 73 106} :offset 0 :limit 50 :review-status "APPROVED"})))
+             {:countries #{107 73 106} :offset 0 :limit 50 :review-status "APPROVED"})))
     (testing "Topic is not empty"
       (is (= (browse/get-db-filter (decode-params {:topic "technology"}))
              {:topic #{"technology"} :offset 0 :limit 50 :review-status "APPROVED"})))
@@ -78,7 +78,7 @@
                                      :country "253"
                                      :topic "initiative,event"}))
              {:search-text "eco"
-              :geo-coverage #{253}
+              :countries #{253}
               :topic #{"initiative" "event"}
               :offset 0 :limit 50
               :review-status "APPROVED"})))))

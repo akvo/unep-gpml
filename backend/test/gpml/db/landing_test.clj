@@ -128,8 +128,8 @@
                                 set)
             landing-counts-by-country (filter #(= country-id (:country_id %)) country_counts)
             browse (db.topic/get-topics conn {:topic #{"financing_resource"}
-                                              :geo-coverage [country-id]
-                                              :transnational transnationals
+                                              :geo-coverage-countries [country-id]
+                                              :geo-coverage-country-groups transnationals
                                               :count-only? true
                                               :limit 8
                                               :offset 0})]
