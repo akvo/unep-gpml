@@ -78,6 +78,10 @@ function Login({ handleOnClickBtnNext, visible, close }) {
 
   const handleGoogleLogin = () => {
     eventTrack("Authentication", "Google", "Button");
+    localStorage.setItem(
+      "redirect_on_login",
+      JSON.stringify(history.location)
+    );
     try {
       auth0Client.authorize(
         {
@@ -94,6 +98,10 @@ function Login({ handleOnClickBtnNext, visible, close }) {
 
   const handleLinkedinLogin = () => {
     eventTrack("Authentication", "Linkedin", "Button");
+    localStorage.setItem(
+      "redirect_on_login",
+      JSON.stringify(history.location)
+    );
     try {
       auth0Client.authorize(
         {
