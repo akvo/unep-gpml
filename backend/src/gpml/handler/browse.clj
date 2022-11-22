@@ -6,10 +6,10 @@
             [gpml.db.topic :as db.topic]
             [gpml.domain.resource :as dom.resource]
             [gpml.domain.types :as dom.types]
+            [gpml.handler.responses :as r]
             [gpml.util.postgresql :as pg-util]
             [gpml.util.regular-expressions :as util.regex]
-            [integrant.core :as ig]
-            [ring.util.response :as resp])
+            [integrant.core :as ig])
   (:import [java.sql SQLException]))
 
 (def ^:const topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
@@ -21,6 +21,7 @@
   "Browse API's filter options."
   [:and
    [:map
+    ;; TODO: rename `country` to `countries`. Sync with FE.
     [:country {:optional true
                :swagger {:description "Comma separated list of country id"
                          :type "string"
@@ -32,6 +33,7 @@
          (->> (set (str/split s #","))
               (map #(Integer/parseInt %))))}
       pos-int?]]
+    ;; TODO: rename `transnational` to `country-groups`. Sync with FE.
     [:transnational {:optional true
                      :swagger {:description "Comma separated list of transnational id"
                                :type "string"
@@ -194,10 +196,10 @@
     (assoc :user-id user-id :favorites true :resource-types dom.resource/types)
 
     (seq country)
-    (assoc :geo-coverage country)
+    (assoc :countries country)
 
     (seq transnational)
-    (assoc :transnational transnational)
+    (assoc :country-groups transnational)
 
     (seq topic)
     (assoc :topic topic)
@@ -257,34 +259,28 @@
 (defn- browse-response
   [{:keys [logger] {db :spec} :db} query approved? admin]
   (try
-    (let [{:keys [geo-coverage transnational] :as modified-filters} (->> query
-                                                                         (get-db-filter)
-                                                                         (merge {:approved approved?
-                                                                                 :admin admin}))
+    (let [{:keys [countries country-groups] :as modified-filters}
+          (->> query
+               (get-db-filter)
+               (merge {:approved approved?
+                       :admin admin}))
           modified-filters (cond
-                             (and (seq geo-coverage) (seq transnational))
-                             (let [opts {:filters {:country-groups (:transnational modified-filters)
-                                                   :countries-ids (:geo-coverage modified-filters)}}
-                                   country-group-countries (db.country-group/get-country-groups-countries db opts)
-                                   geo-coverage-countries (map :id country-group-countries)
+                             (seq countries)
+                             (let [opts {:filters {:countries-ids countries}}
                                    transnational (->> (db.country-group/get-country-groups-by-countries db opts)
                                                       (map :id)
                                                       set)]
-                               (assoc modified-filters :geo-coverage-countries (set (concat geo-coverage-countries geo-coverage))
-                                      :transnational transnational))
+                               (assoc modified-filters
+                                      :geo-coverage-countries countries
+                                      :geo-coverage-country-groups transnational))
 
-                             (seq geo-coverage)
-                             (let [opts {:filters {:countries-ids (:geo-coverage modified-filters)}}
-                                   transnational (->> (db.country-group/get-country-groups-by-countries db opts)
-                                                      (map :id)
-                                                      set)]
-                               (assoc modified-filters :transnational transnational))
-
-                             (seq transnational)
-                             (let [opts {:filters {:country-groups (:transnational modified-filters)}}
+                             (seq country-groups)
+                             (let [opts {:filters {:country-groups country-groups}}
                                    country-group-countries (db.country-group/get-country-groups-countries db opts)
                                    geo-coverage-countries (map :id country-group-countries)]
-                               (assoc modified-filters :geo-coverage-countries (set geo-coverage-countries)))
+                               (assoc modified-filters
+                                      :geo-coverage-country-groups country-groups
+                                      :geo-coverage-countries (set geo-coverage-countries)))
                              :else
                              modified-filters)
           get-topics-start-time (System/currentTimeMillis)
@@ -299,18 +295,17 @@
           count-topics-exec-time (- (System/currentTimeMillis) count-topics-start-time)]
       (log logger :info ::query-exec-time {:get-topics-exec-time (str get-topics-exec-time "ms")
                                            :count-topics-exec-time (str count-topics-exec-time "ms")})
-      (resp/response {:success? true
-                      :results (map #(result->result-with-connections db %) results)
-                      :counts counts}))
+      (r/ok {:success? true
+             :results (map #(result->result-with-connections db %) results)
+             :counts counts}))
     (catch Exception e
       (log logger :error :failed-to-get-topics {:exception-message (.getMessage e)
                                                 :context-data {:query-params query}})
-      (let [response {:status 500
-                      :body {:success? false
-                             :reason :could-not-get-topics}}]
+      (let [response {:success? false
+                      :reason :could-not-get-topics}]
         (if (instance? SQLException e)
-          (assoc-in response [:body :error-details :error] (pg-util/get-sql-state e))
-          (assoc-in response [:body :error-details :error] (.getMessage e)))))))
+          (r/server-error (assoc-in response [:body :error-details :error] (pg-util/get-sql-state e)))
+          (r/server-error (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defmethod ig/init-key :gpml.handler.browse/get [_ config]
   (fn [{{:keys [query]} :parameters

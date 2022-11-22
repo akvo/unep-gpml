@@ -602,6 +602,11 @@
                                                  :swagger {:tags ["subscribe"]}
                                                  :handler #ig/ref :gpml.handler.subscribe/post
                                                  :parameters #ig/ref :gpml.handler.subscribe/post-params}}]
+                                        ["/contact"
+                                         {:post {:summary "Send an contact email from different sources"
+                                                 :swagger {:tags ["contact"]}
+                                                 :handler #ig/ref :gpml.handler.contact/post
+                                                 :parameters #ig/ref :gpml.handler.contact/post-params}}]
                                         ["/case-study" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                      #ig/ref :gpml.auth/auth-required
                                                                      #ig/ref :gpml.auth/approved-user]}
@@ -646,7 +651,8 @@
    :app-user-admin #duct/env ["APP_USER_ADMIN" Str]
    :storage-bucket-name #duct/env ["GCS_BUCKET_NAME" Str]
    :brs-entities-to-import #ig/ref :gpml.config/brs-gpml-entities-mapping
-   :subscribe-settings {:management-dest-email #duct/env ["SUBSCRIPTIONS_MANAGEMENT_EMAIL" Str]}}
+   :subscribe-settings {:management-dest-email #duct/env ["SUBSCRIPTIONS_MANAGEMENT_EMAIL" Str]}
+   :contact-settings {:cobsea {:dest-email #duct/env ["CONTACT_COBSEA_MANAGEMENT_EMAIL" Str]}}}
   ;; Handlers
 
   :duct.server.http/jetty {:handler #ig/ref :gpml.handler.main/handler}
@@ -861,6 +867,9 @@
 
   :gpml.handler.subscribe/post #ig/ref :gpml.config/common
   :gpml.handler.subscribe/post-params {}
+
+  :gpml.handler.contact/post #ig/ref :gpml.config/common
+  :gpml.handler.contact/post-params {}
 
   :gpml.handler.programmatic.country-state/post #ig/ref :gpml.config/common
   :gpml.handler.programmatic.country-state/post-params {}

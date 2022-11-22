@@ -17,6 +17,7 @@
 
 (def ^:private query-params
   [:map
+   ;; TODO: rename `country` to `countries`. Sync with FE.
    [:country {:optional true
               :swagger {:description "Comma separated list of country id"
                         :type "string"
@@ -25,6 +26,7 @@
     [:or
      [:string {:max 0}]
      [:re util.regex/comma-separated-numbers-re]]]
+   ;; TODO: rename `transnational` to `country-groups`. Sync with FE.
    [:transnational {:optional true
                     :swagger {:description "Comma separated list of transnational id"
                               :type "string"
@@ -128,12 +130,12 @@
     (assoc :user-id user-id :favorites true :resource-types dom.resource/types)
 
     (seq country)
-    (assoc :geo-coverage (->> (set (str/split country #","))
-                              (map #(Integer/parseInt %))))
+    (assoc :countries (->> (set (str/split country #","))
+                           (map #(Integer/parseInt %))))
 
     (seq transnational)
-    (assoc :transnational (->> (set (str/split transnational #","))
-                               (map #(Integer/parseInt %))))
+    (assoc :country-groups (->> (set (str/split transnational #","))
+                                (map #(Integer/parseInt %))))
 
     (seq topic)
     (assoc :topic (set (str/split topic #",")))
@@ -177,14 +179,14 @@
   (try
     (let [conn (:spec db)
           opts (api-opts->opts (assoc query :user-id (:id user)))
-          modified-opts (if-not (seq (get opts :transnational))
+          modified-opts (if-not (seq (get opts :country-groups))
                           opts
-                          (let [opts {:filters {:country-groups (get opts :transnational)}}
+                          (let [opts {:filters {:country-groups (get opts :country-groups)}}
                                 country-group-countries (db.country-group/get-country-groups-countries opts)
                                 geo-coverage-countries (map :id country-group-countries)]
-                            (assoc opts :geo-coverage (set (concat
-                                                            (get opts :geo-coverage)
-                                                            geo-coverage-countries)))))
+                            (assoc opts :geo-coverage-countries (set (concat
+                                                                      (get opts :countries)
+                                                                      geo-coverage-countries)))))
           summary-data (->> (gpml.db.landing/summary conn)
                             (mapv (fn [{:keys [resource_type count country_count]}]
                                     {(keyword resource_type) count :countries country_count})))

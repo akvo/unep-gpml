@@ -203,7 +203,7 @@ const DetailsView = ({
         })
         .catch((err) => {
           console.error(err);
-          redirectError(err, history);
+          // redirectError(err, history);
         });
     if (profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
