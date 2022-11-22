@@ -1,4 +1,4 @@
--- :name map-counts :? :one
+-- :name map-counts :query :one
 -- :doc Gets the entity count per country.
 -- :require [gpml.db.topic]
 /*~ (if (= (:entity-group params) :topic)
