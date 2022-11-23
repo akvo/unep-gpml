@@ -1,5 +1,6 @@
 (ns gpml.handler.main
-  (:require [duct.logger :as log]
+  (:require [clojure.string :as str]
+            [duct.logger :refer [log]]
             [iapetos.collector.ring :as prometheus-ring]
             [integrant.core :as ig]
             [malli.util :as mu]
@@ -17,12 +18,12 @@
             [ring.util.response :as resp]
             [taoensso.timbre :as timbre]))
 
-(defn root
+(defn- root
   [_]
   (resp/response {:status "OK"}))
 
-(defn router
-  [routes collector]
+(defn- router
+  [{:keys [routes collector cors-allowed-origins]}]
   (ring/router
    routes
    {:data {:muuntaja m/instance
@@ -39,7 +40,7 @@
 
            :middleware [;; CORS
                         [cors/wrap-cors
-                         :access-control-allow-origin [#".*"]
+                         :access-control-allow-origin cors-allowed-origins
                          :access-control-allow-methods [:get :post :delete :put]]
                         ;; swagger feature
                         swagger/swagger-feature
@@ -78,9 +79,10 @@
                                                                   {:path-fn (fn [req] (:template (ring/get-match req)))})
                             handler))]}}))
 
-(defmethod ig/init-key :gpml.handler.main/handler [_ {:keys [routes collector logger]}]
-  (log/info logger "initialising handlers ...")
-  (ring/ring-handler (router routes collector)
+(defmethod ig/init-key :gpml.handler.main/handler
+  [_ {:keys [collector logger] :as config}]
+  (log logger :info ::initialising-handlers {})
+  (ring/ring-handler (router config)
                      (ring/routes
                       (swagger-ui/create-swagger-ui-handler {:path "/api/docs"
                                                              :url "/api/swagger.json"
@@ -91,8 +93,14 @@
                      {:middleware [(fn [handler]
                                      (prometheus-ring/wrap-metrics-expose handler collector {:path "/metrics"}))]}))
 
-(defmethod ig/init-key :gpml.handler.main/root [_ _]
+(defmethod ig/init-key :gpml.handler.main/root
+  [_ _]
   root)
 
-(defmethod ig/init-key :gpml.handler.main/swagger-handler [_ _]
+(defmethod ig/init-key :gpml.handler.main/cors-allowed-origins
+  [_ {:keys [allowed-origins]}]
+  (mapv re-pattern (str/split allowed-origins #",")))
+
+(defmethod ig/init-key :gpml.handler.main/swagger-handler
+  [_ _]
   (swagger/create-swagger-handler))
