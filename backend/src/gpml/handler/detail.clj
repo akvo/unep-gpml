@@ -31,8 +31,7 @@
             [gpml.handler.util :as util]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
-            [medley.core :as medley]
-            [ring.util.response :as resp])
+            [medley.core :as medley])
   (:import [java.sql SQLException]))
 
 ;;========================================START OF DEPRECATED CODE==============================================================
