@@ -168,6 +168,11 @@ spec:
             secretKeyRef:
               name: unep-gpml
               key: contact-cobsea-management-email
+        - name: CORS_ALLOWED_ORIGINS
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: cors_allowed_origins
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/secrets/cloudsql/credentials.json"
         readinessProbe:
