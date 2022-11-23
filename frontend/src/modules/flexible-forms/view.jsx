@@ -162,6 +162,7 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
     getTranslationForm,
   } = common;
   const query = useQuery();
+  
   const caseStudy = {
     code: "case_study",
     name: "Case Study",
@@ -182,10 +183,7 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
     sectorOptions: s.sectorOptions,
     organisationType: s.organisationType,
     representativeGroup: s.representativeGroup,
-    mainContentType: [
-      ...s.mainContentType,
-      ...(query?.source?.toString() === "cobsea" ? [caseStudy] : []),
-    ],
+    mainContentType: s.mainContentType,
     meaOptions: s.meaOptions,
     nonMemberOrganisations: s.nonMemberOrganisations,
     organisations: s.organisations,
@@ -287,6 +285,17 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
       setLoginVisible(true);
     }
   }, [isAuthenticated, loadingProfile]);
+  
+  useEffect(() => {
+    if (profile && profile.role === "ADMIN") {
+      UIStore.update((e) => {
+        e.mainContentType =   [
+          ...e.mainContentType,
+          caseStudy,
+        ];
+      });
+    }
+  }, [profile]);
 
   const getRevertValue = (type, value, name) => {
     let res = value;

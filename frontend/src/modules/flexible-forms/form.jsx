@@ -1769,7 +1769,6 @@ const FlexibleForm = withRouter(
           };
         }
 
-        console.log(updatedFormDataSchema, "inside");
         setSchema(updatedFormDataSchema);
 
         // to overide validation
