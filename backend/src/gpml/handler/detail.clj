@@ -404,11 +404,15 @@
       (let [conn        (:spec db)
             topic-id    (:topic-id path)
             topic       (resolve-resource-type (:topic-type path))
-            authorized? (some? (handler.res-permission/get-resource-if-allowed conn
-                                                                               user
-                                                                               topic
-                                                                               topic-id
-                                                                               {:read? false}))
+            resource (handler.res-permission/get-resource-if-allowed conn
+                                                                     user
+                                                                     topic
+                                                                     topic-id
+                                                                     {:read? false})
+            authorized? (when (not (and (= topic "stakeholder")
+                                        (= topic-id (:id user))))
+                          resource)
+
             sqls (condp = topic
                    "policy" (common-queries topic path true false true true)
                    "event" (common-queries topic path true true true true)
@@ -419,25 +423,23 @@
                    "resource" (common-queries topic path true true true true)
                    "case_study" (common-queries topic path true false true true))]
         (if authorized?
-          (resp/response (do
-                           (jdbc/with-db-transaction [tx-conn conn]
-                             (doseq [s sqls]
-                               (jdbc/execute! tx-conn s)))
-                           {:deleted {:topic-id (:topic-id path)
-                                      :topic topic}}))
-          util/unauthorized))
+          (r/ok (do
+                  (jdbc/with-db-transaction [tx-conn conn]
+                    (doseq [s sqls]
+                      (jdbc/execute! tx-conn s)))
+                  {:deleted {:topic-id (:topic-id path)
+                             :topic topic}}))
+          (r/forbidden {:message "Unauthorized"})))
       (catch Exception e
         (log logger :error ::delete-resource-failed {:exception-message (.getMessage e)
                                                      :context-data path})
         (if (instance? SQLException e)
-          {:status 500
-           :body {:success? false
-                  :reason :could-not-delete-resource
-                  :error-details {:error-type (pg-util/get-sql-state e)}}}
-          {:status 500
-           :body {:success? false
-                  :reason :could-not-delete-resource
-                  :error-details {:error-message (.getMessage e)}}})))))
+          (r/server-error {:success? false
+                           :reason :could-not-delete-resource
+                           :error-details {:error-type (pg-util/get-sql-state e)}})
+          (r/server-error {:success? false
+                           :reason :could-not-delete-resource
+                           :error-details {:error-message (.getMessage e)}}))))))
 
 (defn- get-detail
   [conn table-name id opts]
