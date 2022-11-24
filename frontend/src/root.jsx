@@ -289,7 +289,10 @@ const Root = () => {
           localStorage.getItem("redirect_on_login") === 'undefined'
             ? '/'
             : JSON.parse(localStorage.getItem("redirect_on_login"));
-        history.push(redirectLocation.pathname);
+        history.push({
+          pathname: redirectLocation?.pathname,
+          ...(redirectLocation?.search && {search: redirectLocation?.search})
+        })
         setSession(authResult);
         api.setToken(authResult.idToken);
         if (
