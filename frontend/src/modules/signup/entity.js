@@ -71,10 +71,18 @@ const getSchema = (
 
     // // country options
     prop.S2.properties["country"].enum = !isEmpty(countries)
-      ? countries?.map((x) => x.id)
+      ? countries
+          .filter(
+            (country) => country.description.toLowerCase() === "member state"
+          )
+          .map((it) => it.id)
       : [];
     prop.S2.properties["country"].enumNames = !isEmpty(countries)
-      ? countries?.map((x) => x.name)
+      ? countries
+          .filter(
+            (country) => country.description.toLowerCase() === "member state"
+          )
+          .map((it) => it.name)
       : [];
   }
 
@@ -124,11 +132,19 @@ const getSchema = (
   prop.S4.properties["orgExpertise"].enum = array?.map((it) => String(it.id));
   prop.S4.properties["orgExpertise"].enumNames = array?.map((it) => it.tag);
   prop.S5.properties["orgHeadquarter"].enum = !isEmpty(countries)
-    ? countries?.map((x) => x.id)
+    ? countries
+        .filter(
+          (country) => country.description.toLowerCase() === "member state"
+        )
+        .map((it) => it.id)
     : [];
 
   prop.S5.properties["orgHeadquarter"].enumNames = !isEmpty(countries)
-    ? countries?.map((x) => x.name)
+    ? countries
+        .filter(
+          (country) => country.description.toLowerCase() === "member state"
+        )
+        .map((it) => it.name)
     : [];
   // prop.S1.properties["registeredStakeholders"].enum = stakeholders?.map((it) =>
   //   String(it.id)
@@ -172,10 +188,18 @@ const getSchema = (
     : [];
 
   prop.S5.properties["geoCoverageCountries"].enum = !isEmpty(countries)
-    ? countries?.map((x) => String(x.id))
+    ? countries
+        .filter(
+          (country) => country.description.toLowerCase() === "member state"
+        )
+        .map((it) => String(it.id))
     : [];
   prop.S5.properties["geoCoverageCountries"].enumNames = !isEmpty(countries)
-    ? countries?.map((x) => x.name)
+    ? countries
+        .filter(
+          (country) => country.description.toLowerCase() === "member state"
+        )
+        .map((it) => it.name)
     : [];
   // geocoverage global with elements in specific areas options
   // prop.S5.properties[

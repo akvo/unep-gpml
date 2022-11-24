@@ -1,6 +1,7 @@
 import { Store } from "pullstate";
 import { schema } from "./entity-schema";
 import cloneDeep from "lodash/cloneDeep";
+import { isEmpty } from "lodash";
 
 const initialSignUpData = {
   tabs: ["S3"],
@@ -70,8 +71,12 @@ const getSchema = (
     ].enumNames = tags?.offering?.map((it) => it.tag);
 
     // // country options
-    prop.S2.properties["country"].enum = countries?.map((x) => x.id);
-    prop.S2.properties["country"].enumNames = countries?.map((x) => x.name);
+    prop.S2.properties["country"].enum = countries
+      .filter((country) => country.description.toLowerCase() === "member state")
+      .map((it) => it.id);
+    prop.S2.properties["country"].enumNames = countries
+      .filter((country) => country.description.toLowerCase() === "member state")
+      .map((it) => it.name);
   }
 
   const representative = representativeGroup?.map((x) => x.name);
@@ -104,11 +109,13 @@ const getSchema = (
 
   prop.S4.properties["orgExpertise"].enum = array?.map((it) => String(it.id));
   prop.S4.properties["orgExpertise"].enumNames = array?.map((it) => it.tag);
-  prop.S5.properties["orgHeadquarter"].enum = countries?.map((x) => x.id);
+  prop.S5.properties["orgHeadquarter"].enum = countries
+    .filter((country) => country.description.toLowerCase() === "member state")
+    .map((it) => it.id);
 
-  prop.S5.properties["orgHeadquarter"].enumNames = countries?.map(
-    (x) => x.name
-  );
+  prop.S5.properties["orgHeadquarter"].enumNames = countries
+    .filter((country) => country.description.toLowerCase() === "member state")
+    .map((it) => it.name);
   // prop.S1.properties["registeredStakeholders"].enum = stakeholders?.map((it) =>
   //   String(it.id)
   // );
@@ -146,12 +153,12 @@ const getSchema = (
     "geoCoverageValueTransnational"
   ].enumNames = transnationalOptions?.map((x) => x.name);
 
-  prop.S5.properties["geoCoverageCountries"].enum = countries?.map((x) =>
-    String(x.id)
-  );
-  prop.S5.properties["geoCoverageCountries"].enumNames = countries?.map(
-    (x) => x.name
-  );
+  prop.S5.properties["geoCoverageCountries"].enum = countries
+    .filter((country) => country.description.toLowerCase() === "member state")
+    .map((it) => String(it.id));
+  prop.S5.properties["geoCoverageCountries"].enumNames = countries
+    .filter((country) => country.description.toLowerCase() === "member state")
+    .map((it) => it.name);
   // geocoverage global with elements in specific areas options
   // prop.S5.properties[
   //   "geoCoverageValueGlobalSpesific"
