@@ -41,6 +41,7 @@ const { Step } = Steps;
 import RichTextEditor from "react-rte";
 
 export const getTypeByResource = (type) => {
+  console.log(type,"type")
   let t = "";
   let name = "";
   let translations = "";
@@ -73,6 +74,11 @@ export const getTypeByResource = (type) => {
     case "technical_resource":
       t = "technical";
       name = "Technical Resource";
+      translations = "resource";
+      break;
+    case "case_study":
+      t = "case_study";
+      name = "Case Study";
       translations = "resource";
       break;
     case "technology":

@@ -273,9 +273,9 @@ const DetailsView = ({
         type = "event";
         break;
       case "case-study":
-        form = "case-study";
+        form = "caseStudy";
         link = "edit-case-study";
-        type = "case-study";
+        type = "case_study";
         break;
       default:
         form = "entity";
