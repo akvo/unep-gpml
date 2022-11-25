@@ -87,6 +87,21 @@ const detailActionPlan = [
   },
 ];
 
+const detailCaseStudy = [
+  {
+    key: "subContentType",
+    name: "Sub Content Type",
+    value: "subContentType",
+    type: "name",
+  },
+  {
+    key: "publishYear",
+    name: "Publication Year",
+    value: "publishYear",
+    type: "number",
+  },
+];
+
 const detailFinancingResource = [
   {
     key: "subContentType",
@@ -461,6 +476,7 @@ export const detailMaps = {
   initiative: detailProject,
   stakeholder: detailStakeholder,
   organisation: detailOrganisation,
+  case_study: detailCaseStudy,
 };
 
 const description = {

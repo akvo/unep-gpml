@@ -272,6 +272,11 @@ const DetailsView = ({
         link = "edit-event";
         type = "event";
         break;
+      case "case-study":
+        form = "case-study";
+        link = "edit-case-study";
+        type = "case-study";
+        break;
       default:
         form = "entity";
         link = "edit-entity";

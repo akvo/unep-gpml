@@ -642,7 +642,11 @@ const Root = () => {
                 path="/edit-event/:id"
                 render={(props) => <FlexibleForms {...props} setLoginVisible={setLoginVisible}/>}
               />
-
+              <Route
+                exact
+                path="/edit-case-study/:id"
+                render={(props) => <FlexibleForms {...props} setLoginVisible={setLoginVisible}/>}
+              />
               <Route
                 path="/add-technology"
                 render={(props) => <AddTechnology {...props} />}
@@ -820,7 +824,7 @@ const Root = () => {
                 )}
               />
               <Route
-                path="/:type(initiative|action-plan|policy|technical-resource|financing-resource|technology|event)/:id"
+                path="/:type(initiative|action-plan|policy|technical-resource|financing-resource|technology|event|case-study)/:id"
                 render={(props) => (
                   <NewDetailsView
                     {...props}
