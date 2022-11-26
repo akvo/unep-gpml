@@ -37,12 +37,12 @@ const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
   const eventCarousel = useRef(null);
 
   const dateCellRender = (value) => {
-    const calendarDate = moment(value).format("YYYY/MM/DD");
+    const calendarDate = moment.parseZone(value).format("YYYY/MM/DD");
     if (data && data?.results) {
       const eventByDate = data.results
         .map((x) => {
-          const startDate = moment(x.startDate).format("YYYY/MM/DD");
-          const endDate = moment(x.endDate).format("YYYY/MM/DD");
+          const startDate = moment.parseZone(x.startDate).format("YYYY/MM/DD");
+          const endDate = moment.parseZone(x.endDate).format("YYYY/MM/DD");
           if (calendarDate >= startDate && calendarDate <= endDate) {
             return {
               ...x,
@@ -73,17 +73,17 @@ const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
   const generateEvent = useCallback(
     (filterDate, searchNextEvent = false) => {
       const eventNow = data.results.filter((x, i) => {
-        const startDate = moment(x.startDate).format("YYYY/MM/DD");
-        const endDate = moment(x.endDate).format("YYYY/MM/DD");
+        const startDate = moment.parseZone(x.startDate).format("YYYY/MM/DD");
+        const endDate = moment.parseZone(x.endDate).format("YYYY/MM/DD");
         return filterDate >= startDate && filterDate <= endDate;
       });
 
       const year = new Date().getFullYear();
 
-      const futureDate = moment(`${year + 5}/04/01`).format("YYYY/MM/DD");
+      const futureDate = moment.parseZone(`${year + 5}/04/01`).format("YYYY/MM/DD");
 
       if (!eventNow.length && searchNextEvent && filterDate <= futureDate) {
-        const nextDay = moment(filterDate, "YYYY/MM/DD")
+        const nextDay = moment.parseZone(filterDate, "YYYY/MM/DD")
           .add(1, "days")
           .format("YYYY/MM/DD");
 
@@ -98,7 +98,7 @@ const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
 
   const handleOnDateSelected = (value) => {
     setEvent(null);
-    const selectedDate = moment(value).format("YYYY/MM/DD");
+    const selectedDate = moment.parseZone(value).format("YYYY/MM/DD");
     setSelectedDate(selectedDate);
     generateEvent(selectedDate);
   };
@@ -106,7 +106,7 @@ const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
   const onThisDayText =
     dateNow === selectedDate
       ? "this day"
-      : moment(selectedDate, "YYYY/MM/DD").format("DD MMM YYYY");
+      : moment.parseZone(selectedDate, "YYYY/MM/DD").format("DD MMM YYYY");
 
   useEffect(() => {
     if (!data) {
@@ -236,12 +236,12 @@ const renderEventContent = (history, event, eventCarousel, onThisDayText) => {
           event.map((x, i) => {
             const { id, title, description, type, image } = x;
 
-            const startDate = moment(x.startDate).format("YYYY/MM/DD");
-            const endDate = moment(x.endDate).format("YYYY/MM/DD");
-            const startDateText = moment(startDate, "YYYY/MM/DD").format(
+            const startDate = moment.parseZone(x.startDate).format("YYYY/MM/DD");
+            const endDate = moment.parseZone(x.endDate).format("YYYY/MM/DD");
+            const startDateText = moment.parseZone(startDate, "YYYY/MM/DD").format(
               "DD MMMM YYYY"
             );
-            const endDateText = moment(endDate, "YYYY/MM/DD").format(
+            const endDateText = moment.parseZone(endDate, "YYYY/MM/DD").format(
               "DD MMMM YYYY"
             );
             const dateText =
