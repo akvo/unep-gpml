@@ -142,6 +142,17 @@
       {:description "Flag indicating if the Case Study is a capacity building resource."
        :type "boolean"}}
      boolean?]
+    [:url
+     {:optional true
+      :swagger
+      {:description "Case Study's source URL."
+       :type "string"
+       :format "uri"}}
+     [:and
+      [string? {:min 1}]
+      [:fn
+       {:error/message "Not a valid URL. It should have the following shape: [protocol]://[domain]/[paths]"}
+       util/try-url-str]]]
     [:tags
      {:optional true}
      [:vector
