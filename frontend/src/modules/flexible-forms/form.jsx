@@ -1406,7 +1406,7 @@ const FlexibleForm = withRouter(
         resourceType: mainType,
         subContentType: subContentType,
         ...(capacityBuilding && { capacityBuilding: true }),
-        source: "cobsea",
+        source: source ? source : "gpml",
       };
 
       transformFormData(data, formData, formSchema.schema.properties, true);
@@ -1421,50 +1421,6 @@ const FlexibleForm = withRouter(
       delete data?.S6;
 
       data.geoCoverageType = Object.keys(data.geoCoverageType)[0];
-
-      if (data.resourceType === "Financing Resource") {
-        if (data.hasOwnProperty("valueCurrency")) {
-          data.valueCurrency = Object.keys(data?.valueCurrency)[0];
-        }
-        if (data.hasOwnProperty("validFrom")) {
-          data.validFrom = data?.validFrom;
-          data.validTo = data.validTo || "Ongoing";
-        }
-        if (data.hasOwnProperty("validTo")) {
-          data.validTo = data?.validTo;
-        }
-        if (data.hasOwnProperty("valueAmount")) {
-          data.value = data?.valueAmount;
-        }
-
-        delete data.valueAmount;
-        if (data.hasOwnProperty("valueRemark")) {
-          data.valueRemarks = data.valueRemark;
-          delete data.valueRemark;
-        }
-      }
-
-      if (data.resourceType === "Action Plan") {
-        if (data.hasOwnProperty("validTo")) {
-          data.validTo = data?.validTo;
-        }
-        if (data.hasOwnProperty("validFrom")) {
-          data.validFrom = data?.validFrom;
-          data.validTo = data.validTo || "Ongoing";
-        }
-
-        if (data.hasOwnProperty("firstPublicationDate")) {
-          data.firstPublicationDate = data.firstPublicationDate;
-          data.latestAmendmentDate = data.latestAmendmentDate || "Ongoing";
-        }
-
-        if (data.hasOwnProperty("latestAmendmentDate")) {
-          data.latestAmendmentDate = data.latestAmendmentDate;
-        }
-      } else {
-        delete data.firstPublicationDate;
-        delete data.latestAmendmentDate;
-      }
 
       delete data.orgName;
 
@@ -1485,6 +1441,10 @@ const FlexibleForm = withRouter(
 
       data.language = "en";
       delete data?.tagsList;
+
+      if (!/^https?:\/\//i.test(data.url)) {
+        data.url = 'http://' + data.url;
+      }
 
       if (data?.publishYear) {
         const publishYear = new Date(data.publishYear);
@@ -1614,7 +1574,7 @@ const FlexibleForm = withRouter(
               api
                 .put(`/translations/resource/${res.data.id}`, {
                   translations: translations,
-                  "topic-type": "resource",
+                  "topic-type": "case_study",
                 })
                 .then((langResp) => {
                   console.log(langResp);

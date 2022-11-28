@@ -1402,7 +1402,7 @@
         "title": {
           "ui:placeholder": "Title"
         },
-        "summary": {
+        "description": {
           "ui:placeholder": "Description",
           "ui:widget": "textarea",
           "ui:maxLength": 1000,
@@ -1413,7 +1413,7 @@
           "ui:widget": "URLWidget",
           "ui:placeholder": "Url"
         },
-        "ui:order": ["title", "summary", "url"]
+        "ui:order": ["title", "description", "url"]
       },
       "S4_G2": {
         "geoCoverageType": {

@@ -2269,13 +2269,13 @@ export const schema = {
               id: "steps",
               value: 0,
             },
-            required: ["title", "summary", "url"],
+            required: ["title", "description", "url"],
             properties: {
               title: {
                 title: "Title",
                 type: "string",
               },
-              summary: {
+              description: {
                 title: "Description",
                 type: "string",
               },
