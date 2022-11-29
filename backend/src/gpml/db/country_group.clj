@@ -9,6 +9,9 @@
          country-group-by-names
          country-group-by-id
          get-country-groups-by-type
+         new-country-group-country
+         get-country-groups-countries
+         get-country-groups-by-countries
          get-country-groups)
 
 (hugsql/def-db-fns "gpml/db/country_group.sql")
