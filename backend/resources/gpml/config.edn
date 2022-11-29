@@ -596,7 +596,12 @@
                                           {:post {:summary "Creates country states from a CSV file"
                                                   :swagger {:tags ["country state" "programmatic"]}
                                                   :parameters #ig/ref :gpml.handler.programmatic.country-state/post-params
-                                                  :handler #ig/ref :gpml.handler.programmatic.country-state/post}}]]
+                                                  :handler #ig/ref :gpml.handler.programmatic.country-state/post}}]
+                                         ["/case-study"
+                                          {:post {:summary "Creates case studies from a JSON file"
+                                                  :swagger {:tags ["case study" "programmatic"]}
+                                                  :parameters #ig/ref :gpml.handler.programmatic.case-study/post-params
+                                                  :handler #ig/ref :gpml.handler.programmatic.case-study/post}}]]
                                         ["/subscribe"
                                          {:post {:summary "Send an email to GPML Secretariat about a new subscription request"
                                                  :swagger {:tags ["subscribe"]}
@@ -862,6 +867,8 @@
   :gpml.handler.case-study/post #ig/ref :gpml.config/common
   :gpml.handler.case-study/post-params {}
   :gpml.handler.case-study/post-responses {}
+  :gpml.handler.programmatic.case-study/post #ig/ref :gpml.config/common
+  :gpml.handler.programmatic.case-study/post-params {}
 
   :gpml.handler.programmatic.brs-api-importer/post #ig/ref :gpml.config/common
 
