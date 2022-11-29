@@ -153,6 +153,23 @@
       [:fn
        {:error/message "Not a valid URL. It should have the following shape: [protocol]://[domain]/[paths]"}
        util/try-url-str]]]
+    [:challenge_and_solution
+     {:optional true
+      :swagger
+      {:description "Case Study's challenge and solution description."
+       :type "string"}}
+     [string? {:min 1}]]
+    [:external_link
+     {:optional true
+      :swagger
+      {:description "Case Study's external source URL."
+       :type "string"
+       :format "uri"}}
+     [:and
+      [string? {:min 1}]
+      [:fn
+       {:error/message "Not a valid URL. It should have the following shape: [protocol]://[domain]/[paths]"}
+       util/try-url-str]]]
     [:tags
      {:optional true}
      [:vector
