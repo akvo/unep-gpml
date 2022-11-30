@@ -9,6 +9,11 @@
   Resource, Initiative)."
   #{"APPROVED" "SUBMITTED" "REJECTED"})
 
+(def ^:const reviewer-review-statuses
+  "Possible `reviewer_review_status` values. This represent the state of
+  each review submitted to the platform."
+  #{"ACCEPTED" "PENDING" "REJECTED"})
+
 ;; TODO: Refactor enums to be keywords instead of strings.
 (def ^:const geo-coverage-types
   "Possible `geo_coverage_type` values. This represent the geo coverage
