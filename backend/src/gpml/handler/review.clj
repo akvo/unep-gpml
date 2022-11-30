@@ -25,7 +25,7 @@
        (db.review/reviews-by-reviewer-id conn opts)))
 
 (def ^:private review-status-re
-  (->> dom.types/review-statuses
+  (->> dom.types/reviewer-review-statuses
        (map symbol)
        (str/join "|")
        (format "^(%1$s)((,(%1$s))+)?$")
@@ -228,7 +228,7 @@
      [:re review-status-re]]]})
 
 (defmethod ig/init-key :gpml.handler.review/review-status-params [_ _]
-  (apply conj [:enum] dom.types/review-statuses))
+  (apply conj [:enum] dom.types/reviewer-review-statuses))
 
 (defmethod ig/init-key :gpml.handler.review/get-reviewers-responses [_ _]
   {200 {:body
