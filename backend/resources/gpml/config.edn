@@ -966,9 +966,9 @@
   ;; End of base configuration
   }
 
- :duct.profile/dev   #duct/include "dev"
- :duct.profile/local #duct/include "local"
- :duct.profile/test  #duct/include "test"
+ :duct.profile/dev   #duct/include "dev.edn"
+ :duct.profile/local #duct/include "local.edn"
+ :duct.profile/test  #duct/include "test.edn"
  :duct.profile/prod
  {:gpml.handler.main/handler {:collector #ig/ref :gpml.handler.monitoring/collector}
   :duct.server.http/jetty {:configurator #ig/ref :gpml.handler.monitoring/jetty-configurator}
