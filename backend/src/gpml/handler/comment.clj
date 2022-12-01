@@ -5,7 +5,6 @@
             [gpml.db.stakeholder-association :as db.stakeholder-association]
             [gpml.util :as util]
             [gpml.util.email :as email]
-            [gpml.util.regular-expressions :as util.regex]
             [integrant.core :as ig]
             [java-time :as time]
             [java-time.pre-java8 :as time-pre-j8]
@@ -15,46 +14,36 @@
 (def ^:const resource-types
   [:policy :event :financing_resource :technical_resource :action_plan :initiative :technology])
 
-(def ^:const id-param
+(def id-param
   [:id
    {:optional false
     :swagger {:description "The comment's ID"
-              :type "string"
-              :format "uuid"
-              :allowEmptyValue false}}
-   [:or
-    [:re util.regex/uuid-regex]
-    [:fn uuid?]]])
+              :type "integer"}}
+   pos-int?])
 
-(def ^:const author-id-param
+(def author-id-param
   [:author_id
    {:optional false
     :swagger {:description "The comment's author ID"
-              :type "integer"
-              :allowEmptyValue false}}
-   [:fn pos-int?]])
+              :type "integer"}}
+   pos-int?])
 
-(def ^:const parent-id-param
+(def parent-id-param
   [:parent_id
    {:optional true
     :swagger {:description "The comment's parent ID if there is any"
-              :type "string"
-              :format "uuid"
-              :allowEmptyValue false}}
-   [:or
-    [:re util.regex/uuid-regex]
-    [:fn uuid?]
-    [:fn nil?]]])
+              :type "integer"}}
+   [:maybe
+    pos-int?]])
 
-(def ^:const resource-id-param
+(def resource-id-param
   [:resource_id
    {:optional false
     :swagger {:description "The resource ID"
-              :type "integer"
-              :allowEmptyValue false}}
-   [:fn pos-int?]])
+              :type "integer"}}
+   pos-int?])
 
-(def ^:const resource-type-param
+(def resource-type-param
   [:resource_type
    {:optional false
     :swagger {:description (str "One of the following resource types: " (str/join "," (map name resource-types)))
@@ -62,7 +51,7 @@
               :allowEmptyValue false}}
    (vec (cons :enum (mapv name resource-types)))])
 
-(def ^:const title-param
+(def title-param
   [:title
    {:optional true
     :swagger {:description "The title of the comment"
@@ -70,7 +59,7 @@
               :allowEmptyValue false}}
    [:maybe [:fn util/non-blank-string?]]])
 
-(def ^:const content-param
+(def content-param
   [:content
    {:optional false
     :swagger {:description "The content of the comment"
@@ -78,7 +67,7 @@
               :allowEmptyValue false}}
    [:fn util/non-blank-string?]])
 
-(def ^:const comment-schema
+(def comment-schema
   [:map
    id-param
    author-id-param
@@ -88,7 +77,7 @@
    title-param
    content-param])
 
-(def ^:const create-comment-params
+(def create-comment-params
   [:map
    author-id-param
    parent-id-param
@@ -97,36 +86,36 @@
    title-param
    content-param])
 
-(def ^:const create-comment-response
+(def create-comment-response
   [:map
    [:comment comment-schema]])
 
-(def ^:const get-resource-comments-params
+(def get-resource-comments-params
   [:map
    (assoc resource-id-param 2 [:fn util/str-number?])
    resource-type-param])
 
-(def ^:const get-resource-comments-response
+(def get-resource-comments-response
   [:map
    [:comments [:maybe [:vector comment-schema]]]])
 
-(def ^:const update-comment-params
+(def update-comment-params
   [:map
    id-param
    (assoc-in title-param [1 :optional] true)
    (assoc-in content-param [1 :optional] true)])
 
-(def ^:const update-comment-response
+(def update-comment-response
   [:map
    [:updated-comments {:swagger {:description "Number of updated comments"
                                  :type "integer"}}
     [:int {:min 0}]]])
 
-(def ^:const delete-comment-params
+(def delete-comment-params
   [:map
    id-param])
 
-(def ^:const delete-comment-response
+(def delete-comment-response
   [:map
    [:deleted-comments {:swagger {:description "Number of deleted comments"
                                  :type "integer"}}
@@ -136,9 +125,7 @@
   [api-comment]
   (-> api-comment
       (util/replace-in-keys #"_" "-")
-      (update :id (fn [id] (if id (util/uuid id) (util/uuid))))
-      (assoc :updated-at (time-pre-j8/sql-timestamp (time/instant) "UTC"))
-      (util/update-if-not-nil :parent-id util/uuid)))
+      (assoc :updated-at (time-pre-j8/sql-timestamp (time/instant) "UTC"))))
 
 (defn- comment->api-comment
   [comment]
@@ -208,7 +195,7 @@
 
 (defn- delete-comment
   [{:keys [db]} {{{:keys [id]} :path} :parameters :as _req}]
-  {:deleted-comments (db.comment/delete-comment (:spec db) {:id (util/uuid id)})})
+  {:deleted-comments (db.comment/delete-comment (:spec db) {:id id})})
 
 (defmethod ig/init-key :gpml.handler.comment/post [_ config]
   (fn [req]
