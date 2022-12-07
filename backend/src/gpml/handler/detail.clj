@@ -620,6 +620,8 @@
                            :image :photo :logo :language :thumbnail
                            :geo_coverage_country_groups
                            :geo_coverage_countries
+                           :geo_coverage_country_states
+                           :geo_coverage_value_subnational
                            :entity_connections :related_content
                            :individual_connections
                            :resource_type)
@@ -677,8 +679,12 @@
                 conn
                 (dissoc initiative
                         :related_content :tags :entity_connections
-                        :individual_connections :urls :org :geo_coverage_countries
-                        :geo_coverage_country_groups :qimage))
+                        :individual_connections :urls :org
+                        :geo_coverage_countries
+                        :geo_coverage_country_states
+                        :geo_coverage_country_groups
+                        :geo_coverage_value_subnational
+                        :qimage))
         related-contents (:related_content initiative)]
     (doseq [[image-key image-data] (select-keys initiative [:qimage :thumbnail])]
       (update-resource-image config conn image-data image-key "initiative" id))
