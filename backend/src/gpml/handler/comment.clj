@@ -3,6 +3,7 @@
             [gpml.db.comment :as db.comment]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.stakeholder-association :as db.stakeholder-association]
+            [gpml.domain.types :as dom.types]
             [gpml.util :as util]
             [gpml.util.email :as email]
             [gpml.util.regular-expressions :as util.regex]
@@ -11,9 +12,6 @@
             [java-time.pre-java8 :as time-pre-j8]
             [java-time.temporal]
             [ring.util.response :as resp]))
-
-(def ^:const resource-types
-  [:policy :event :financing_resource :technical_resource :action_plan :initiative :technology])
 
 (def ^:const id-param
   [:id
@@ -57,10 +55,11 @@
 (def ^:const resource-type-param
   [:resource_type
    {:optional false
-    :swagger {:description (str "One of the following resource types: " (str/join "," (map name resource-types)))
+    :swagger {:description "The resource type the user commented on."
               :type "string"
+              :enum dom.types/resources-types
               :allowEmptyValue false}}
-   (vec (cons :enum (mapv name resource-types)))])
+   (apply conj [:enum] dom.types/resources-types)])
 
 (def ^:const title-param
   [:title
