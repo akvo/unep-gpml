@@ -1,0 +1,5 @@
+BEGIN;
+--;;
+ALTER TYPE RESOURCE_TYPE ADD VALUE 'case_study';
+--;;
+COMMIT;
