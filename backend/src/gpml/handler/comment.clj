@@ -1,6 +1,5 @@
 (ns gpml.handler.comment
-  (:require [clojure.string :as str]
-            [gpml.db.comment :as db.comment]
+  (:require [gpml.db.comment :as db.comment]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.stakeholder-association :as db.stakeholder-association]
             [gpml.domain.types :as dom.types]
