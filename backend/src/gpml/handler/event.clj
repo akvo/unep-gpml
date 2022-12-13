@@ -10,6 +10,7 @@
             [gpml.handler.auth :as h.auth]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.geo-coverage :as handler.geo]
+            [gpml.handler.resource.permission :as handler.resource.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.util :as handler.util]
@@ -98,9 +99,25 @@
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections event-id)]
         (db.favorite/new-organisation-association conn association)))
+    (handler.resource.permission/create-resource-context
+     {:conn conn
+      :logger logger
+      :context-type :event
+      :resource-id event-id
+      :entity-connections entity_connections})
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections event-id)]
-        (db.favorite/new-stakeholder-association conn association)))
+        (db.favorite/new-stakeholder-association conn association))
+      ;; TODO: Decide if we want to keep adding specific permissions over resources for stakeholders
+      ;; even if there is a permission over the parent organisation context of the target resource.
+      ;; In the DB migration we have used both data sources to simplify, but it might be redundant
+      ;; to do it here explicitly.
+      (handler.resource.permission/assign-roles-to-users
+       {:conn conn
+        :logger logger
+        :context-type :event
+        :resource-id event-id
+        :individual-connections api-individual-connections}))
     (when (seq related_content)
       (handler.resource.related-content/create-related-contents conn logger event-id "event" related_content))
     (when (not-empty urls)
