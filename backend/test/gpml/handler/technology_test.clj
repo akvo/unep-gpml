@@ -80,7 +80,7 @@
                     :info_docs nil
                     :sub_content_type nil
                     :subnational_city nil
-                    :tags (map #(:id %) (:tags data))
+                    :tags (map :id (:tags data))
                     :owners [(:id user)]
                     :created_by 10001)
              technology-one))
@@ -92,7 +92,7 @@
                     :info_docs nil
                     :sub_content_type nil
                     :subnational_city nil
-                    :tags (map #(:id %) (:tags data))
+                    :tags (map :id (:tags data))
                     :owners [(:id user)]
                     :created_by 10001)
              technology-two)))))

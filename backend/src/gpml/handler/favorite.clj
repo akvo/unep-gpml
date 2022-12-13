@@ -95,7 +95,7 @@
                                                                       :resource-id resource-id})
             delete (first
                     (dt/diff
-                     (set (map #(:association %) current))
+                     (set (map :association current))
                      (set (:association body-params))))
             delete (first delete)]
         (jdbc/with-db-transaction [conn db]

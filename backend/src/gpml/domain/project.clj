@@ -1,6 +1,5 @@
 (ns gpml.domain.project
   (:require [gpml.domain.types :as dom.types]
-            [gpml.util :as util]
             [malli.core :as m]))
 
 (def project-types

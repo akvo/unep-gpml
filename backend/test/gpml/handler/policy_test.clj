@@ -75,10 +75,10 @@
       (is (= (assoc (new-policy data)
                     :id 10001
                     :image nil
-                    :tags (map #(:id %) (:tags data))
+                    :tags (map :id (:tags data))
                     :created_by 10001) policy-one))
       (is (= (assoc (new-policy data)
                     :id 10002
                     :image nil
-                    :tags (map #(:id %) (:tags data))
+                    :tags (map :id (:tags data))
                     :created_by 10001) policy-two)))))

@@ -95,14 +95,14 @@
       (is (= (dissoc (assoc (new-resource data)
                             :id 10001
                             :value "2000"
-                            :tags (map #(:id %) (:tags data))
+                            :tags (map :id (:tags data))
                             :created_by 10001) :image :owners)
              (dissoc resource-one :image :owners)))
       (is (= (dissoc (assoc (new-resource data)
                             :id 10002
                             :image "/image/resource/2"
                             :value "2000"
-                            :tags (map #(:id %) (:tags data))
+                            :tags (map :id (:tags data))
                             :created_by 10001) :image :owners)
              (dissoc resource-two :image)))
       (is (= (:url payload) (:url resource-one))))))

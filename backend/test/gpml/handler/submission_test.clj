@@ -74,7 +74,7 @@
       (is (= "stakeholder" (-> resp :body :data first :type)))
       (is (= "/submission/stakeholder/10002" (-> resp :body :data first :preview)))
       (is (= "Mr. Doe Bob" (-> resp :body :data second :title)))
-      (is (= "event" (some #{"event"} (map #(:type %) (-> resp :body :data)))))
+      (is (= "event" (some #{"event"} (map :type (-> resp :body :data)))))
       (is (= "event" (-> resp :body :data last :type)))
       (is (= "justin@org" (-> (filter #(not= "tag" (:type %)) (-> resp :body :data)) last :created_by))))))
 

@@ -39,7 +39,7 @@
                   :limit limit
                   :offset (* limit page)}
           associated-content (db.organisation-detail/get-associated-content-by-org conn params)
-          api-associated-content (map #(remove-nil-connections %) associated-content)
+          api-associated-content (map remove-nil-connections associated-content)
           associated-content-count (db.organisation-detail/get-associated-content-by-org
                                     conn (assoc params :count-only? true))]
       (resp/response {:results api-associated-content

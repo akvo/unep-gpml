@@ -30,7 +30,7 @@
                          (JwkProviderBuilder.)
                          (.build))
         public-key-provider (reify PublicKeyProvider
-                              (getPublicKeyById [this key-id]
+                              (getPublicKeyById [_this key-id]
                                 (.getPublicKey (.get ^JwkProvider jwk-provider key-id))))]
     (SignatureVerifier/forRS256 public-key-provider)))
 

@@ -577,12 +577,12 @@
 (defn update-resource-connections [conn entity_connections individual_connections topic resource-id]
   (let [existing-ecs (db.favorite/get-associations conn (get-association-query-params "organisation" topic resource-id))
         delete-ecs (vec (set/difference
-                         (into #{} (map #(:id %) existing-ecs))
-                         (into #{} (remove nil? (map #(:id %) entity_connections)))))
+                         (into #{} (map :id existing-ecs))
+                         (into #{} (remove nil? (map :id entity_connections)))))
         existing-ics (db.favorite/get-associations conn (get-association-query-params "stakeholder" topic resource-id))
         delete-ics (vec (set/difference
-                         (into #{} (map #(:id %) existing-ics))
-                         (into #{} (remove nil? (map #(:id %) individual_connections)))))]
+                         (into #{} (map :id existing-ics))
+                         (into #{} (remove nil? (map :id individual_connections)))))]
     (when-not (empty? delete-ecs)
       (db.favorite/delete-associations conn {:table (str "organisation_" topic)
                                              :ids delete-ecs}))
