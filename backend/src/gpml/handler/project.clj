@@ -19,11 +19,10 @@
     {:optional true
      :swagger {:description "A comma separated list of Project's identifiers."
                :type "string"
-               :format "uuid"
                :allowEmptyValue false}}
     [:sequential
      {:decode/string (fn [s] (str/split s #","))}
-     uuid?]]
+     pos-int?]]
    [:geo_coverage_types
     {:optional true
      :swagger {:description "A comma separated list of geo_coverage_types"
@@ -74,7 +73,6 @@
       (let [body (:body parameters)
             db-project (-> body
                            (assoc :stakeholder_id (:id user))
-                           (dom.prj/create-project)
                            (db.prj/project->db-project))
             inserted-values (db.prj/create-projects conn
                                                     {:insert-cols (map name (keys db-project))
@@ -83,10 +81,10 @@
                     geo_coverage_countries
                     geo_coverage_country_groups
                     geo_coverage_country_states]} body
-            geo-coverage-type (keyword geo_coverage_type)]
-        (if (= inserted-values 1)
-          (let [project-id (:id db-project)
-                result (handler.geo-coverage/create-resource-geo-coverage
+            geo-coverage-type (keyword geo_coverage_type)
+            project-id (-> inserted-values first :id)]
+        (if (= (count inserted-values) 1)
+          (let [result (handler.geo-coverage/create-resource-geo-coverage
                         conn
                         :project
                         project-id
@@ -97,7 +95,7 @@
             (when-not (:success? result)
               (throw (ex-info "Failed to create project geo coverage" {:inserted-values inserted-values}))))
           (throw (ex-info "Failed to create project" {:inserted-values inserted-values})))
-        (r/ok {:success? true :project_id (:id db-project)})))
+        (r/ok {:success? true :project_id project-id})))
     (catch Exception e
       (log logger :error ::failed-to-create-project {:exception-message (.getMessage e)
                                                      :context-data parameters})
@@ -140,9 +138,7 @@
                         geo_coverage_countries
                         geo_coverage_country_groups
                         geo_coverage_country_states] :as body} (:body parameters)
-                db-project (-> body
-                               dom.prj/update-project
-                               (db.prj/project->db-project))
+                db-project (db.prj/project->db-project body)
                 updated-values (db.prj/update-project conn
                                                       {:updates db-project
                                                        :id id})
@@ -216,11 +212,10 @@
   [_ _]
   (let [project-id-properties {:swagger
                                {:description "The newly created Project's identifier."
-                                :type "string"
-                                :format "uuid"}}
+                                :type "integer"}}
         ok-response-schema-update-fn #(mu/update-properties % (constantly project-id-properties))]
     {200 {:body (-> handler.util/default-ok-response-body-schema
-                    (mu/assoc :project_id uuid?)
+                    (mu/assoc :project_id pos-int?)
                     (mu/update-in [:project_id] ok-response-schema-update-fn))}
      500 {:body handler.util/default-error-response-body-schema}}))
 

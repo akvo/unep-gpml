@@ -18,7 +18,7 @@
   "Transform optional argument map values into DB layer specific values."
   [opts]
   (-> opts
-      (util/update-if-not-nil :ids #(pg-util/->JDBCArray % "uuid"))
+      (util/update-if-not-nil :ids #(pg-util/->JDBCArray % "integer"))
       (util/update-if-not-nil :geo_coverage_types #(pg-util/->JDBCArray % "geo_coverage_type"))
       (util/update-if-not-nil :types #(pg-util/->JDBCArray % "project_type"))
       (util/update-if-not-nil :stages #(pg-util/->JDBCArray % "project_stage"))))

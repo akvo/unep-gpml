@@ -8,7 +8,6 @@
             [gpml.handler.project :as sut]
             [gpml.seeder.main :as seeder]
             [gpml.test-util :as test-util]
-            [gpml.util :as util]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
             [malli.core :as m]
@@ -30,11 +29,11 @@
 (defn- create-random-project
   [db stakeholder-id]
   (let [db-project (-> (random-project-data)
-                       (assoc :id (util/uuid) :stakeholder_id stakeholder-id)
-                       (db.prj/project->db-project))]
-    (db.prj/create-projects db {:insert-cols (map name (keys db-project))
-                                :insert-values [(vals db-project)]})
-    (:id db-project)))
+                       (assoc :stakeholder_id stakeholder-id)
+                       (db.prj/project->db-project))
+        created-project (db.prj/create-projects db {:insert-cols (map name (keys db-project))
+                                                    :insert-values [(vals db-project)]})]
+    (-> created-project first :id)))
 
 (defn- make-profile [first-name last-name email]
   {:picture nil
@@ -70,7 +69,7 @@
             {:keys [status body]} (handler request)]
         (is (= 200 status))
         (is (:success? body))
-        (is (uuid? (:project_id body)))))
+        (is (pos-int? (:project_id body)))))
     (testing "Creation should fail if user is not authenticated"
       (let [project-payload (random-project-data)
             request (-> (mock/request :post "/")
@@ -138,7 +137,7 @@
         (is (= project-id (get-in body [:project :id])))))
     (testing "Parameter validation should fail when passing bad parameters"
       (let [get-project-schema (:path (ig/init-key ::sut/get-by-id-params {}))]
-        (is (not (m/validate get-project-schema {:id 1})))))
+        (is (not (m/validate get-project-schema {:id "foo"})))))
     (testing "Parameter validation should fail when missing required parameter"
       (let [get-project-schema (:path (ig/init-key ::sut/get-by-id-params {}))]
         (is (not (m/validate get-project-schema {})))
@@ -172,7 +171,7 @@
         (is (= project-id-1 (-> body :projects first :id)))))
     (testing "Parameter validation should fail when passing bad parameters"
       (let [get-projects-schema (:query (ig/init-key ::sut/get-params {}))]
-        (is (not (m/validate get-projects-schema {:ids 1 :geo_coverage_types ["test"]})))))))
+        (is (not (m/validate get-projects-schema {:ids true :geo_coverage_types ["test"]})))))))
 
 (deftest delete-project-test
   (let [db (test-util/db-test-conn)
@@ -188,13 +187,13 @@
                         (assoc :parameters {:path {:id project-id}}
                                :user {:id sth-id}))
             {:keys [status body]} (handler request)
-            project (db.prj/get-projects db {:filters {:ids (pg-util/->JDBCArray [project-id] "uuid")}})]
+            project (db.prj/get-projects db {:filters {:ids (pg-util/->JDBCArray [project-id] "integer")}})]
         (is (= 200 status))
         (is (:success? body))
         (is (not (seq project)))))
     (testing "Parameter validation should fail when passing bad parameters"
       (let [delete-project-schema (:path (ig/init-key ::sut/delete-params {}))]
-        (is (not (m/validate delete-project-schema {:id 1})))))
+        (is (not (m/validate delete-project-schema {:id "foo"})))))
     (testing "Parameter validation should fail when missing required parameter"
       (let [delete-project-schema (:path (ig/init-key ::sut/delete-params {}))]
         (is (not (m/validate delete-project-schema {})))
