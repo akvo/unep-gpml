@@ -20,11 +20,11 @@ CREATE TABLE IF NOT EXISTS rbac_role (
 CREATE TABLE IF NOT EXISTS rbac_role_assignment (
     role_id uuid NOT NULL REFERENCES rbac_role(id) ON UPDATE CASCADE,
     context_id uuid NOT NULL REFERENCES rbac_context(id) ON UPDATE CASCADE,
-    user_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL REFERENCES stakeholder(id) ON DELETE CASCADE,
     PRIMARY KEY (role_id, context_id, user_id));
 --;;
 CREATE TABLE IF NOT EXISTS rbac_super_admin (
-    user_id INTEGER PRIMARY KEY);
+    user_id INTEGER PRIMARY KEY REFERENCES stakeholder(id) ON DELETE CASCADE);
 --;;
 CREATE TABLE IF NOT EXISTS rbac_permission (
     id uuid PRIMARY KEY,
