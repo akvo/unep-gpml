@@ -1,5 +1,4 @@
 .idea
-.env
 *.iml
 pg-data/
 notify.team.sh
