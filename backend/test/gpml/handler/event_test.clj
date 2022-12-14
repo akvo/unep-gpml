@@ -39,7 +39,10 @@
                              :context-type :application
                              :resource-id srv.permissions/root-app-resource-id
                              :user-id (:id user)}]
-          _ (srv.permissions/assign-roles-to-users db (:logger system) role-assignments)
+          _ (srv.permissions/assign-roles-to-users
+             {:conn db
+              :logger (:logger system)}
+             role-assignments)
           payload (new-event (merge data {:owners [(:id user)]}))
           _ (db.stakeholder/update-stakeholder-status db (assoc user :review_status "APPROVED"))
           resp-one (handler (-> (mock/request :post "/")

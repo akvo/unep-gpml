@@ -7,7 +7,7 @@
 
 (defn- create-resource-context*
   "FIXME: Add docstring"
-  [{:keys [conn logger context-type resource-id parent-context-type parent-resource-id]}]
+  [{:keys [conn logger]} {:keys [context-type resource-id parent-context-type parent-resource-id]}]
   (let [{success? :success? parent-context :context} (rbac/get-context conn
                                                                        logger
                                                                        (or parent-context-type
@@ -21,7 +21,7 @@
 
 (defn assign-roles-to-users
   "FIXME: Add docstring"
-  [conn logger role-assignments]
+  [{:keys [conn logger]} role-assignments]
   (let [parsed-role-assignments (mapv (fn [{:keys [role-name context-type resource-id user-id]}]
                                         {:role (:role (rbac/get-role-by-name conn logger role-name))
                                          :context (:context (rbac/get-context conn logger context-type resource-id))
@@ -31,15 +31,14 @@
 
 (defn create-resource-context
   "FIXME: Add docstring"
-  [{:keys [conn logger entity-connections context-type resource-id]}]
+  [config {:keys [entity-connections context-type resource-id]}]
   (let [entity-owner-connection (->> entity-connections
                                      (filter #(= :owner (-> % :role keyword)))
                                      first)
         owner-entity-id (:entity entity-owner-connection)]
     (create-resource-context*
-     {:conn conn
-      :logger logger
-      :context-type context-type
+     config
+     {:context-type context-type
       :resource-id resource-id
       :parent-resource-id owner-entity-id
       :parent-context-type (when owner-entity-id
@@ -47,7 +46,7 @@
 
 (defn assign-roles-to-users-from-connections
   "FIXME: Add docstring"
-  [{:keys [conn logger individual-connections context-type resource-id]}]
+  [config {:keys [individual-connections context-type resource-id]}]
   (let [individual-connections-for-perms (->> individual-connections
                                               (filter #(contains? #{:owner :resource_editor} (-> % :role keyword)))
                                               distinct)
@@ -60,4 +59,4 @@
                                    :user-id stakeholder})
                                 individual-connections-for-perms)]
     (when (seq roles-assignments)
-      (assign-roles-to-users conn logger roles-assignments))))
+      (assign-roles-to-users config roles-assignments))))

@@ -102,8 +102,8 @@
         (db.favorite/new-organisation-association conn association)))
     (srv.permissions/create-resource-context
      {:conn conn
-      :logger logger
-      :context-type :event
+      :logger logger}
+     {:context-type :event
       :resource-id event-id
       :entity-connections entity_connections})
     (when (not-empty api-individual-connections)
@@ -111,8 +111,8 @@
         (db.favorite/new-stakeholder-association conn association))
       (srv.permissions/assign-roles-to-users-from-connections
        {:conn conn
-        :logger logger
-        :context-type :event
+        :logger logger}
+       {:context-type :event
         :resource-id event-id
         :individual-connections api-individual-connections}))
     (when (seq related_content)
