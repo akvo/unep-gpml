@@ -6,6 +6,7 @@
             [gpml.fixtures :as fixtures]
             [gpml.handler.event :as event]
             [gpml.handler.profile-test :as profile-test]
+            [gpml.service.permissions :as srv.permissions]
             [integrant.core :as ig]
             [ring.mock.request :as mock])
   (:import [java.sql Timestamp]
@@ -34,10 +35,16 @@
           data (profile-test/seed-important-database db)
           ;; create new user name John
           user (db.stakeholder/new-stakeholder db (profile-test/new-profile 1))
+          role-assignments [{:role-name :approved-user
+                             :context-type :application
+                             :resource-id srv.permissions/root-app-resource-id
+                             :user-id (:id user)}]
+          _ (srv.permissions/assign-roles-to-users db (:logger system) role-assignments)
           payload (new-event (merge data {:owners [(:id user)]}))
           _ (db.stakeholder/update-stakeholder-status db (assoc user :review_status "APPROVED"))
           resp-one (handler (-> (mock/request :post "/")
                                 (assoc :jwt-claims {:email "john@org"})
+                                (assoc :user user)
                                 (assoc :body-params payload)
                                 (assoc :parameters {:body {:source dom.types/default-resource-source}})))
           event-one (db.event/event-by-id db (:body resp-one))]

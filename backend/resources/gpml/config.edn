@@ -143,8 +143,7 @@
                                                                         [:reviewers [:vector int?]]]]}
                                                    :handler #ig/ref :gpml.handler.review/update-review}}]]
                                         ["/event" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                #ig/ref :gpml.auth/auth-required
-                                                                #ig/ref :gpml.auth/approved-user]}
+                                                                #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:post {:summary "Create a new event"
                                                   :swagger {:tags ["event"]

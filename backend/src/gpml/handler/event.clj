@@ -10,15 +10,16 @@
             [gpml.handler.auth :as h.auth]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.geo-coverage :as handler.geo]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
+            [gpml.handler.responses :as r]
             [gpml.handler.util :as handler.util]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
             [gpml.util.email :as email]
             [gpml.util.sql :as sql-util]
-            [integrant.core :as ig]
-            [ring.util.response :as resp])
+            [integrant.core :as ig])
   (:import [java.sql SQLException]))
 
 (defn- expand-entity-associations
@@ -108,7 +109,7 @@
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections event-id)]
         (db.favorite/new-stakeholder-association conn association))
-      (srv.permissions/assign-roles-to-users
+      (srv.permissions/assign-roles-to-users-from-connections
        {:conn conn
         :logger logger
         :context-type :event
@@ -196,25 +197,30 @@
 
 (defmethod ig/init-key :gpml.handler.event/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params parameters] :as req}]
+  (fn [{:keys [jwt-claims body-params parameters user]}]
     (try
-      (jdbc/with-db-transaction [tx (:spec db)]
-        (let [result (create-event config tx (assoc body-params
-                                                    :created_by
-                                                    (-> (db.stakeholder/stakeholder-by-email tx jwt-claims) :id)
-                                                    :source (get-in parameters [:body :source])))]
-          (resp/created (:referrer req) {:success? true
-                                         :message "New event created"
-                                         :id (:id result)})))
-      (catch Exception e
+      (if (h.r.permission/operation-allowed?
+           config
+           {:user-id (:id user)
+            :entity-type :event
+            :operation-type :create
+            :root-context? true})
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (let [result (create-event config tx (assoc body-params
+                                                      :created_by
+                                                      (-> (db.stakeholder/stakeholder-by-email tx jwt-claims) :id)
+                                                      :source (get-in parameters [:body :source])))]
+            (r/created {:success? true
+                        :message "New event created"
+                        :id (:id result)})))
+        (r/forbidden {:message "Unauthorized"}))
+      (catch Throwable e
         (log logger :error ::failed-to-create-event {:exception-message (.getMessage e)})
-        (let [response {:status 500
-                        :body {:success? false
-                               :reason :could-not-create-event}}]
-
+        (let [response {:success? false
+                        :reason :could-not-create-event}]
           (if (instance? SQLException e)
-            response
-            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
+            (r/server-error response)
+            (r/server-error (assoc-in response [:error-details :error] (ex-message e)))))))))
 
 (defmethod ig/init-key :gpml.handler.event/post-params [_ _]
   post-params)

@@ -1,8 +1,11 @@
 (ns gpml.handler.resource.permission
-  (:require [gpml.db.resource.association :as db.resource.association]
+  (:require [dev.gethop.rbac :as rbac]
+            [gpml.db.resource.association :as db.resource.association]
             [gpml.db.resource.detail :as db.resource.detail]
             [gpml.db.review :as db.review]
-            [gpml.db.topic-stakeholder-auth :as db.ts-auth]))
+            [gpml.db.topic-stakeholder-auth :as db.ts-auth]
+            [gpml.domain.resource :as dom.resource]
+            [gpml.service.permissions :as srv.permissions]))
 
 (defn- reviewer?
   [conn user resource-type resource-id]
@@ -95,3 +98,34 @@
       ;; If none of the above fulfills then we return `nil` signaling
       ;; the user doesn't have permissions to access the resource.
       :else nil)))
+
+(defn- entity-type->context-type
+  [entity-type]
+  (cond
+    (some #{entity-type} dom.resource/types)
+    :resource
+
+    :else (keyword entity-type)))
+
+;; TODO: Add pre condition for ensuring a valid operation-type value
+(defn operation-allowed?
+  "FIXME: Add docstring"
+  [{:keys [db logger]} {:keys [user-id entity-type entity-id operation-type root-context? custom-permission]}]
+  (let [context-type-entity (entity-type->context-type entity-type)
+        context-type (if-not root-context?
+                       context-type-entity
+                       srv.permissions/root-app-context-type)
+        resource-id (if entity-id
+                      entity-id
+                      srv.permissions/root-app-resource-id)
+        permission-ns-name (cond
+                             custom-permission
+                             (name custom-permission)
+
+                             (and root-context? entity-type)
+                             (str (name operation-type) "-" (name context-type-entity))
+
+                             :else
+                             (name operation-type))
+        permission (keyword (name context-type) permission-ns-name)]
+    (rbac/has-permission (:spec db) logger user-id resource-id context-type permission)))

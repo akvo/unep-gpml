@@ -19,7 +19,7 @@
                          :resource-id resource-id}]
         (rbac/create-context! conn logger new-context parent-context)))))
 
-(defn- assign-roles-to-users*
+(defn assign-roles-to-users
   "FIXME: Add docstring"
   [conn logger role-assignments]
   (let [parsed-role-assignments (mapv (fn [{:keys [role-name context-type resource-id user-id]}]
@@ -45,7 +45,7 @@
       :parent-context-type (when owner-entity-id
                              organisation-context-type)})))
 
-(defn assign-roles-to-users
+(defn assign-roles-to-users-from-connections
   "FIXME: Add docstring"
   [{:keys [conn logger individual-connections context-type resource-id]}]
   (let [individual-connections-for-perms (->> individual-connections
@@ -60,4 +60,4 @@
                                    :user-id stakeholder})
                                 individual-connections-for-perms)]
     (when (seq roles-assignments)
-      (assign-roles-to-users* conn logger roles-assignments))))
+      (assign-roles-to-users conn logger roles-assignments))))
