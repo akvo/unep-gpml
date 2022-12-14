@@ -143,10 +143,10 @@
                                               country-groups))
       (throw (ex-info "Failed to create geo coverage" {:reason :failed-to-create-geo-coverage})))
     (when-not (:success? (handle-tags conn
-                                        case-study-id
-                                        (:tags api-case-study)
-                                        tag-category-id))
-        (throw (ex-info "Failed to create tags" {:reason :failed-to-create-tags})))
+                                      case-study-id
+                                      (:tags api-case-study)
+                                      tag-category-id))
+      (throw (ex-info "Failed to create tags" {:reason :failed-to-create-tags})))
     {:success? true
      :id case-study-id}))
 
