@@ -44,10 +44,6 @@ select * from country_group where name = :name
 -- :doc Get country group by names
 select * from country_group where name in (:v*:names)
 
--- :name country-group-by-ids :? :*
--- :doc Get country group by names
-select names from country_group where name in (:v*:ids)
-
 -- :name country-group-by-id :? :1
 -- :doc Get country group by id
 select * from country_group where id = :id
@@ -74,3 +70,13 @@ SELECT cg.id, cg.name
 FROM country_group cg
 LEFT JOIN country_group_country cgc ON cgc.country_group= cg.id
 WHERE cgc.country IN (:v*:filters.countries-ids);
+
+-- :name get-country-groups :query :many
+-- :doc Get countries applying optional filters.
+SELECT *
+FROM country_group
+WHERE 1=1
+--~(when (seq (get-in params [:filters :names])) " AND name IN (:v*:filters.names)")
+--~(when (seq (get-in params [:filters :ids])) " AND id IN (:v*:filters.ids)")
+--~(when (seq (get-in params [:filters :types])) " AND type IN (:v*:filters.types)")
+ORDER BY id;
