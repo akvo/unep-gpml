@@ -14,11 +14,11 @@ INSERT INTO rbac_context(id, context_type_name, resource_id, parent)
 SELECT uuid_generate_v4(), 'stakeholder', id, '00000000-0000-0000-0000-000000000000'
 FROM stakeholder;
 --;;
---;; Super admins
+--;; Super admins (only approved users)
 INSERT INTO rbac_super_admin(user_id)
 SELECT id
 FROM stakeholder
-WHERE role = 'ADMIN';
+WHERE role = 'ADMIN' AND review_status = 'APPROVED';
 --;;
 --;; Event contexts
 INSERT INTO rbac_context(id, context_type_name, resource_id, parent)
@@ -302,12 +302,16 @@ INNER JOIN rbac_context rc ON rc.resource_id = p.id AND rc.context_type_name = '
 GROUP BY s.id, rc.id, p.id;
 --;;
 --;; Stakeholder approved-user rbac_role_assignment
+--;; Regardless of being super admins all the approved users should have this role, in case at some point they stop
+--;; being super-admins.
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
 SELECT '2ecb82a5-5aff-47ba-8889-5cfdc3199550', '00000000-0000-0000-0000-000000000000', id
 FROM stakeholder
-WHERE review_status = 'APPROVED' AND role != 'ADMIN';
+WHERE review_status = 'APPROVED';
 --;;
 --;; Stakeholder unapproved-user rbac_role_assignment
+--;; In this case, it does not make sense super admins have this role, since they could only be rejected once
+--;; they have been approved, so they will never go back to `submitted`.
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
 SELECT '6fd14e4b-4b52-4264-98d0-394e225829e0', '00000000-0000-0000-0000-000000000000', id
 FROM stakeholder
