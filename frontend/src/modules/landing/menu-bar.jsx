@@ -26,7 +26,7 @@ import { ReactComponent as MapSvg } from "../../images/map-icon.svg";
 import { ReactComponent as HelpCenterSvg } from "../../images/help-center-icon.svg";
 import { ReactComponent as AboutSvg } from "../../images/about-icon.svg";
 
-import logo from "../../images/gpml.svg";
+import logo from "../../images/GPML-logo-alone.svg";
 import { useEffect, useRef, useState } from "react";
 import {
   CloseOutlined,

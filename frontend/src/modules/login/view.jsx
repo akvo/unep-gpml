@@ -229,7 +229,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                     </div>
                     <p className="register-text">
                       Once you have an account you can register your
-                      organisation and apply for GPML membership
+                      organisation and apply for Global Partnership on Plastic Pollution and Marine Litter membership
                     </p>
                   </div>
                 ) : (

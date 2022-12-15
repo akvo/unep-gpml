@@ -207,8 +207,7 @@ const Footer = ({ setShowMenu }) => {
           </div>
           <div className="unepInfo">
             <h2>
-              The Digital Platform is a UNEP contribution to the Global
-              Partnership on Marine Litter (GPML)
+              The Digital Platform is a UNEP contribution to the the Global Partnership on Plastic Pollution and Marine Litter (GPML)
             </h2>
           </div>
         </div>
