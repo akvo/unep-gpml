@@ -4,6 +4,7 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.tag :as handler.resource.tag]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util.geo :as geo]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
@@ -33,6 +34,11 @@
                                                   :tag-category "general"
                                                   :resource-name "organisation"
                                                   :resource-id org-id}))
+    (srv.permissions/create-resource-context
+     {:conn conn
+      :logger logger}
+     {:context-type :organisation
+      :resource-id org-id})
     org-id))
 
 (defn update-org
@@ -92,6 +98,14 @@
 
           :else
           (let [org-id (create (:spec db) logger mailjet-config (assoc body-params :created_by (:id org-creator)))]
+            (when (:id org-creator)
+              (srv.permissions/assign-roles-to-users-from-connections
+               {:conn (:spec db)
+                :logger logger}
+               {:context-type :organisation
+                :resource-id org-id
+                :individual-connections [{:role "owner"
+                                          :stakeholder (:id org-creator)}]}))
             (resp/created referrer {:success? true
                                     :org (assoc body-params :id org-id)}))))
       (catch Exception e

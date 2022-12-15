@@ -13,6 +13,7 @@
             [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.handler.util :as handler.util]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util.email :as email]
             [gpml.util.geo :as geo]
             [integrant.core :as ig]
@@ -247,10 +248,24 @@
          :reason :could-not-create-org
          :error-details {:message (.getMessage e)}}))))
 
-(defn- create-stakeholder
-  [conn new-sth]
-  (let [result (db.stakeholder/new-stakeholder conn new-sth)]
-    (:id result)))
+(defn- create-stakeholder!
+  [conn logger new-sth]
+  (let [result (db.stakeholder/new-stakeholder conn new-sth)
+        sth-id (:id result)
+        role-assignments [{:role-name :unapproved-user
+                           :context-type :application
+                           :resource-id srv.permissions/root-app-resource-id
+                           :user-id sth-id}]]
+    (srv.permissions/create-resource-context
+     {:conn conn
+      :logger logger}
+     {:context-type :stakeholder
+      :resource-id sth-id})
+    (srv.permissions/assign-roles-to-users
+     {:conn conn
+      :logger logger}
+     role-assignments)
+    sth-id))
 
 (defn- update-stakeholder-profile
   [conn old-sth new-sth]
@@ -272,6 +287,8 @@
     (db.stakeholder/update-stakeholder conn to-update)
     (:id old-sth)))
 
+;; FIXME: The permissions metadata adding part is not right, as we are re-creating org related to the new stakeholder,
+;; so we need to handle that and ensure we get the right resource-id for the permissions.
 (defn- save-stakeholder
   [{:keys [db logger mailjet-config] :as config}
    {{:keys [body]} :parameters
@@ -292,7 +309,7 @@
             old-sth (db.stakeholder/stakeholder-by-email tx {:email (:email new-sth)})
             sth-id (if old-sth
                      (update-stakeholder-profile tx old-sth new-sth)
-                     (create-stakeholder tx new-sth))
+                     (create-stakeholder! tx logger new-sth))
             tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body)
             save-tags-result (if-not (seq tags)
                                {:success? true}
@@ -335,11 +352,23 @@
                               (let [old-org (first (db.organisation/get-organisations tx
                                                                                       {:filters {:id (:id org)}}))]
                                 (if-not (:is_member old-org)
-                                  {:success? (boolean (handler.org/update-org tx
-                                                                              logger
-                                                                              mailjet-config
-                                                                              {:id (:id org)
-                                                                               :created_by sth-id}))}
+                                  (do
+                                    ;; We assign `resource-owner` role to the stakeholder that has created the org,
+                                    ;; as it is a non-member organisation that he can edit without being approved yet.
+                                    (srv.permissions/assign-roles-to-users-from-connections
+                                     {:conn tx
+                                      :logger logger}
+                                     {:context-type :organisation
+                                      :resource-id (:id org)
+                                      :individual-connections [{:role "owner"
+                                                                :stakeholder sth-id}]})
+                                    {:success? (boolean (handler.org/update-org tx
+                                                                                logger
+                                                                                mailjet-config
+                                                                                {:id (:id org)
+                                                                                 :created_by sth-id}))})
+                                  ;; This means the org is a MEMBER, approved organisation, where the stakeholder
+                                  ;; should not have ownership permissions, so we don't need to do anything else.
                                   {:success? true}))
 
                               ;; This case will happen when the user
@@ -348,12 +377,26 @@
                               ;; Note that we also update the
                               ;; stakeholder with the org-id because
                               ;; it's a new organisation.
+                              ;; On the other hand, we give the user the right permissions to be the owner
+                              ;; of the new organisation. In this case, both the stakeholder (user) and its organisation
+                              ;; will need to be approved, so we can set permissions for the stakeholder as owner of it
+                              ;; without issues.
+                              ;; TODO: Actually not sure if we had still this case. It doesn't look like an option
+                              ;; from FE. To be checked to test the addition of permissions metadata here.
                               (seq org)
                               (let [{:keys [success? org-id] :as result}
                                     (make-affiliation tx logger mailjet-config (assoc org :created_by sth-id))]
                                 (if success?
-                                  {:success? (= 1 (db.stakeholder/update-stakeholder tx {:affiliation org-id
-                                                                                         :id sth-id}))}
+                                  (do
+                                    (srv.permissions/assign-roles-to-users-from-connections
+                                     {:conn tx
+                                      :logger logger}
+                                     {:context-type :organisation
+                                      :resource-id org-id
+                                      :individual-connections [{:role "owner"
+                                                                :stakeholder sth-id}]})
+                                    {:success? (= 1 (db.stakeholder/update-stakeholder tx {:affiliation org-id
+                                                                                           :id sth-id}))})
                                   result))
 
                               :else
