@@ -214,40 +214,6 @@
       (resp/response (get-stakeholder-profile db stakeholder))
       (resp/response {}))))
 
-(defn- make-affiliation*
-  [conn logger mailjet-config org]
-  (let [org-id (handler.org/create conn logger mailjet-config org)]
-    (email/notify-admins-pending-approval conn
-                                          mailjet-config
-                                          {:title (:name org) :type "organisation"})
-    org-id))
-
-(defn- make-affiliation
-  "Creates a new organisation for affiliation. If the organisation
-  with the same name exists and it is a `non_member` organisation we
-  MUST let the new organisation to be created and remove the
-  `non_member`. If the existing organisation is already a `member`
-  then we should return an error letting the caller know that an
-  organisation with the same name exists. "
-  [conn logger mailjet-config org]
-  (if (:id org)
-    {:success? true
-     :org-id (:id org)}
-    (try
-      (if-let [old-org (first (db.organisation/get-organisations conn
-                                                                 {:filters {:name (:name org)
-                                                                            :is_member false}}))]
-        (do
-          (db.organisation/delete-organisation conn {:id (:id old-org)})
-          {:success? true
-           :org-id (make-affiliation* conn logger mailjet-config org)})
-        {:success? true
-         :org-id (make-affiliation* conn logger mailjet-config org)})
-      (catch Exception e
-        {:success? false
-         :reason :could-not-create-org
-         :error-details {:message (.getMessage e)}}))))
-
 (defn- create-stakeholder!
   [conn logger new-sth]
   (let [result (db.stakeholder/new-stakeholder conn new-sth)
@@ -370,34 +336,6 @@
                                   ;; This means the org is a MEMBER, approved organisation, where the stakeholder
                                   ;; should not have ownership permissions, so we don't need to do anything else.
                                   {:success? true}))
-
-                              ;; This case will happen when the user
-                              ;; joins the GPML partnership and
-                              ;; creates a new MEMBER organisation.
-                              ;; Note that we also update the
-                              ;; stakeholder with the org-id because
-                              ;; it's a new organisation.
-                              ;; On the other hand, we give the user the right permissions to be the owner
-                              ;; of the new organisation. In this case, both the stakeholder (user) and its organisation
-                              ;; will need to be approved, so we can set permissions for the stakeholder as owner of it
-                              ;; without issues.
-                              ;; TODO: Actually not sure if we had still this case. It doesn't look like an option
-                              ;; from FE. To be checked to test the addition of permissions metadata here.
-                              (seq org)
-                              (let [{:keys [success? org-id] :as result}
-                                    (make-affiliation tx logger mailjet-config (assoc org :created_by sth-id))]
-                                (if success?
-                                  (do
-                                    (srv.permissions/assign-roles-to-users-from-connections
-                                     {:conn tx
-                                      :logger logger}
-                                     {:context-type :organisation
-                                      :resource-id org-id
-                                      :individual-connections [{:role "owner"
-                                                                :stakeholder sth-id}]})
-                                    {:success? (= 1 (db.stakeholder/update-stakeholder tx {:affiliation org-id
-                                                                                           :id sth-id}))})
-                                  result))
 
                               :else
                               {:success? true})

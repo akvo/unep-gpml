@@ -2,10 +2,13 @@
   (:require [duct.logger :refer [log]]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.domain.organisation :as dom.organisation]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.tag :as handler.resource.tag]
+            [gpml.handler.responses :as r]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util.geo :as geo]
+            [gpml.util.malli :as util.malli]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
             [ring.util.response :as resp])
@@ -143,6 +146,8 @@
     (let [org-id (update-org db logger mailjet-config (assoc body-params :id (:id (:path parameters))))]
       (resp/created referrer (assoc body-params :id org-id)))))
 
+;; TODO: Check if we are coercing params to skip extra params, as for example we don't want `is_member` to be updatable
+;; from this endpoint.
 (defmethod ig/init-key :gpml.handler.organisation/put-params [_ _]
   (into [:map
          [:name {:optional true} string?]
@@ -166,3 +171,23 @@
             [:tag string?]
             [:tag_category {:optional true} string?]]]]]
         handler.geo/api-geo-coverage-schemas))
+
+(defmethod ig/init-key :gpml.handler.organisation/put-to-member [_ {:keys [db logger mailjet-config]}]
+  (fn [{:keys [body-params parameters]}]
+    (try
+      (update-org (:spec db) logger mailjet-config (assoc body-params :id (:id (:path parameters))
+                                                          :is_member true))
+      (r/ok {:success? true})
+      (catch Throwable e
+        (log logger :error ::failed-to-convert-org-to-member {:exception-message (ex-message e)})
+        (let [response {:success? false
+                        :reason :could-not-convert-org-to-member}]
+          (if (instance? SQLException e)
+            (r/server-error response)
+            (r/server-error (assoc-in response [:error-details :error] (ex-message e)))))))))
+
+(defmethod ig/init-key :gpml.handler.organisation/put-to-member-params [_ _]
+  {:path [:map [:id int?]]
+   :body (-> dom.organisation/Organisation
+             (util.malli/dissoc
+              [:id :is_member :created :modified :reviewed_at :reviewed_by :review_status]))})
