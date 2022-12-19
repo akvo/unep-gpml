@@ -166,7 +166,17 @@
 
       (= -1 (:id org))
       (assoc :affiliation (if (= -1 (:id org))
-                            (handler.org/create tx logger mailjet-config org)
+                            (let [org-id (handler.org/create tx logger mailjet-config (dissoc org :id))]
+                              (srv.permissions/assign-roles-to-users-from-connections
+                               {:conn tx
+                                :logger logger}
+                               {:context-type :organisation
+                                :resource-id org-id
+                                :individual-connections [{:role "owner"
+                                                          :stakeholder (:id new-profile)}]})
+                              org-id)
+                            ;; TODO: We are not sure if we should remove the ownership-related role assignment
+                            ;; from the user to the previous organisation, if he has changed it here.
                             (:id org)))
       (and
        (contains? body-params :org)
