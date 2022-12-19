@@ -29,6 +29,16 @@
                                       role-assignments)]
     (rbac/assign-roles! conn logger parsed-role-assignments)))
 
+(defn unassign-roles-from-users
+  "FIXME: Add docstring"
+  [{:keys [conn logger]} role-unassignments]
+  (let [parsed-role-unassignments (mapv (fn [{:keys [role-name context-type resource-id user-id]}]
+                                          {:role (:role (rbac/get-role-by-name conn logger role-name))
+                                           :context (:context (rbac/get-context conn logger context-type resource-id))
+                                           :user {:id user-id}})
+                                        role-unassignments)]
+    (rbac/unassign-roles! conn logger parsed-role-unassignments)))
+
 (defn create-resource-context
   "FIXME: Add docstring"
   [config {:keys [entity-connections context-type resource-id]}]
