@@ -659,7 +659,9 @@ footer {
       align-items: center;
       width: 100%;
       padding-bottom: 40px;
-
+      img {
+        width: 80px;
+      }
       .success-meesage {
         display: flex;
         align-items: center;
