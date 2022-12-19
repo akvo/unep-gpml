@@ -112,12 +112,9 @@
   "FIXME: Add docstring"
   [{:keys [db logger]} {:keys [user-id entity-type entity-id operation-type root-context? custom-permission]}]
   (let [context-type-entity (entity-type->context-type entity-type)
-        context-type (if-not root-context?
-                       context-type-entity
-                       srv.permissions/root-app-context-type)
-        resource-id (if entity-id
-                      entity-id
-                      srv.permissions/root-app-resource-id)
+        [context-type resource-id] (if-not root-context?
+                                     [context-type-entity entity-id]
+                                     [srv.permissions/root-app-context-type srv.permissions/root-app-resource-id])
         permission-ns-name (cond
                              custom-permission
                              (name custom-permission)
