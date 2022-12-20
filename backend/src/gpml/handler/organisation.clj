@@ -146,8 +146,8 @@
     (let [org-id (update-org db logger mailjet-config (assoc body-params :id (:id (:path parameters))))]
       (resp/created referrer (assoc body-params :id org-id)))))
 
-;; TODO: Check if we are coercing params to skip extra params, as for example we don't want `is_member` to be updatable
-;; from this endpoint.
+;; TODO: We are not skipping extra params, as for example we don't want `is_member` to be updatable
+;; from this endpoint, so we should skip the ones not expected.
 (defmethod ig/init-key :gpml.handler.organisation/put-params [_ _]
   (into [:map
          [:name {:optional true} string?]
