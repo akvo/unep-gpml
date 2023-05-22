@@ -2783,9 +2783,7 @@ export const schema = {
               "geoCoverageType",
               "geoCoverageValueTransnational",
               "geoCoverageCountries",
-              // "geoCoverageValueNational",
-              // "geoCoverageValueSubnational",
-              "geoCoverageValueSubnationalCity",
+              "geoCoverageValueSubnational",
             ],
             properties: {
               geoCoverageType: {
