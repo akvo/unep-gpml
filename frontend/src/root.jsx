@@ -286,13 +286,13 @@ const Root = () => {
       }
       if (authResult) {
         const redirectLocation =
-          localStorage.getItem("redirect_on_login") === 'undefined'
-            ? '/'
+          localStorage.getItem("redirect_on_login") === "undefined"
+            ? "/"
             : JSON.parse(localStorage.getItem("redirect_on_login"));
         history.push({
           pathname: redirectLocation?.pathname,
-          ...(redirectLocation?.search && {search: redirectLocation?.search})
-        })
+          ...(redirectLocation?.search && { search: redirectLocation?.search }),
+        });
         setSession(authResult);
         api.setToken(authResult.idToken);
         if (
@@ -640,12 +640,16 @@ const Root = () => {
               <Route
                 exact
                 path="/edit-event/:id"
-                render={(props) => <FlexibleForms {...props} setLoginVisible={setLoginVisible}/>}
+                render={(props) => (
+                  <FlexibleForms {...props} setLoginVisible={setLoginVisible} />
+                )}
               />
               <Route
                 exact
                 path="/edit-case-study/:id"
-                render={(props) => <FlexibleForms {...props} setLoginVisible={setLoginVisible}/>}
+                render={(props) => (
+                  <FlexibleForms {...props} setLoginVisible={setLoginVisible} />
+                )}
               />
               <Route
                 path="/add-technology"
@@ -732,24 +736,19 @@ const Root = () => {
                 render={(props) => <SignupViewNew {...props} />}
               />
               <Route
-                path="/signup"
-                render={(props) => (
-                  <LandingSignupView
-                    {...props}
-                    profile={profile}
-                    setLoginVisible={setLoginVisible}
-                  />
-                )}
-              />
-              <Route
                 path="/login"
                 render={(props) => <LoginView {...props} />}
               />
               <Route
                 path="/flexible-forms"
-                render={(props) => <FlexibleForms {...props} setLoginVisible={setLoginVisible} 
-                isAuthenticated={isAuthenticated} 
-                loadingProfile={loadingProfile}/> }
+                render={(props) => (
+                  <FlexibleForms
+                    {...props}
+                    setLoginVisible={setLoginVisible}
+                    isAuthenticated={isAuthenticated}
+                    loadingProfile={loadingProfile}
+                  />
+                )}
               />
               <Route
                 path="/details-view"

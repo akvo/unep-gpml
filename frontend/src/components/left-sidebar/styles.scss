@@ -38,6 +38,7 @@ h4 {
   display: flex;
   width: 100%;
   flex-direction: row;
+  min-height: 100vh;
   @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
     display: block;
   }
