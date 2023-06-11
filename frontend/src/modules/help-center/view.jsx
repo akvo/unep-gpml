@@ -134,7 +134,7 @@ function HelpCenter() {
                 height="600"
               />
             </TabPane>
-            <TabPane
+            {/* <TabPane
               tab="Glossary"
               key="glossary"
               className="help-center-tab-pane"
@@ -150,7 +150,7 @@ function HelpCenter() {
               tab="Forums"
               key="forums"
               className="help-center-tab-pane"
-            />
+            /> */}
           </Tabs>
         </div>
       </div>

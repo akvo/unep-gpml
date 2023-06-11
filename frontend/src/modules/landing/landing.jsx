@@ -337,25 +337,32 @@ const Connect = () => {
           </p>
         </SwiperSlide>
         <SwiperSlide className="card spotlight">
-          <div className="label">member spotlight</div>
-          <img src="/spotlight.jpg" />
+          <div className="label">REGIONAL NODE SPOTLIGHT</div>
+          <img src="/node-spotlight.jpg" />{" "}
+          <h4>
+            Cooperative actions from Caribbean fisheries officials after a
+            successful ghost gear retrieval training in Panama
+          </h4>
           <p>
-            <i>DECEMBER 2020</i>
+            The Caribbean Node of the GPML (GPML-Caribe) represents a
+            partnership for national and regional organizations, governments,
+            research, technical, civil society agencies and individuals, that
+            work together to reduce the quantity and impact of marine litter in
+            the Wider Caribbean Region. GPML-Caribe is co-hosted by the Gulf and
+            Caribbean Fisheries Institute (GCFI) and the UNEP Cartagena
+            Convention Secretariat.
             <br />
-            <b>IMPROVING WASTEWATER MANAGEMENT IN SOMALIA</b>
             <br />
-            In October, Somali Greenpeace Association (SOGPA) in collaboration
-            with its partners, held a Wastewater Management training in Baidoa,
-            Somalia. The aim was to build awareness on the importance of proper
-            wastewater management in helping to keep our waterways and oceans
-            clean. 30 young people and local leaders took part, learning about
-            the hazards wastewater can cause if not managed properly. An
-            advocacy message was delivered to government leaders, pushing for
-            increased action on the issue. Local authorities have since
-            requested more training for members of society on the problems and
-            solutions regarding wastewater management. SOGPA's Vice-chairperson,
-            Hassan Mowlid Yasin, says, "The youth have to be empowered to
-            address environmental issues that affect them.
+            Since its inception around five years ago, GPML-Caribe has supported
+            numerous projects within the region including research on
+            microplastics, education and outreach activities, regional campaigns
+            including coastal and underwater cleanups, partnerships with the
+            private sector to improve waste management and efforts to address
+            abandoned, lost, discarded fishing gear (ALDFG). GPML-Caribe has
+            also developed a Regional Marine Litter Management Strategy, an
+            Action Plan for Harmonized Marine Litter Monitoring in the Wider
+            Caribbean Region, as well as a Caribbean Regional Action Plan to
+            Prevent Abandoned, Lost or Otherwise Discarded Fishing Gear.
           </p>
         </SwiperSlide>
         <SwiperSlide className="card testimonial">

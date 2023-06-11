@@ -216,7 +216,13 @@ const MenuBar = ({
                 icon={<DataCatalogueSvg />}
                 {...{ setShowMenu }}
               />
-              <Item to="/glossary" {...{ setShowMenu }} />
+              <Item
+                href="https://datahub.gpmarinelitter.org/pages/glossary/"
+                title="Glossary"
+                subtitle="Terminology and definitions"
+                icon=<GlossarySvg />
+                {...{ setShowMenu }}
+              />
               <Item
                 href="https://datahub.gpmarinelitter.org/pages/story_map"
                 title="Story Maps"
