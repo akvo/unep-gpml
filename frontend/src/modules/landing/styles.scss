@@ -917,6 +917,7 @@ body {
       position: relative;
       cursor: pointer;
       width: 100%;
+      z-index: 1;
       @media (max-width: 550px) {
         flex-basis: 100%;
         margin-right: 0;

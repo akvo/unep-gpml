@@ -412,17 +412,15 @@ h4 {
   & > header {
     display: flex;
     align-items: center;
-    min-height: 89px;
     box-sizing: border-box;
     background: rgba(9, 104, 154, 1);
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
 
     .ui.container {
       display: flex;
-      justify-content: space-between;
       align-content: center;
       width: 100%;
-      margin: 0 20px;
+      margin: 0 50px;
       .rightside {
         display: flex;
         justify-content: space-between;
@@ -1519,11 +1517,14 @@ path {
     }
   }
   @media screen and (max-width: 1024px) {
-    .all-tools-btn span {
-      display: none;
-    }
     .rightside {
       display: none !important;
+    }
+    .all-tools-btn {
+      margin-left: auto;
+      span {
+        display: none;
+      }
     }
   }
   .src {

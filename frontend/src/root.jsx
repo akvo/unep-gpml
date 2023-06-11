@@ -507,369 +507,359 @@ const Root = () => {
         />
         <Route>
           <ScrollToTop />
-          <div id="root">
-            {storage.getCookie("showDisclaimer") !== "false" &&
-              disclaimerContent?.[disclaimer] && (
-                <div className="panel-disclaimer">
-                  <div className="ui container">
-                    {disclaimerContent?.[disclaimer]}
-                  </div>
+          {storage.getCookie("showDisclaimer") !== "false" &&
+            disclaimerContent?.[disclaimer] && (
+              <div className="panel-disclaimer">
+                <div className="ui container">
+                  {disclaimerContent?.[disclaimer]}
                 </div>
+              </div>
+            )}
+          <MenuBar
+            {...{
+              setLoginVisible,
+              isAuthenticated,
+              auth0Client,
+              profile,
+              isRegistered,
+              setWarningModalVisible,
+              showMenu,
+              setShowMenu,
+            }}
+          />
+          <Switch>
+            <Route
+              path="/"
+              exact
+              render={(props) => (
+                <OldLanding
+                  {...{
+                    setWarningModalVisible,
+                    setStakeholderSignupModalVisible,
+                    isAuthenticated,
+                    setFilterMenu,
+                    setLoginVisible,
+                    ...props,
+                  }}
+                />
               )}
-            <MenuBar
-              {...{
-                setLoginVisible,
-                isAuthenticated,
-                auth0Client,
-                profile,
-                isRegistered,
-                setWarningModalVisible,
-                showMenu,
-                setShowMenu,
-              }}
             />
-            <Switch>
-              <Route
-                path="/"
-                exact
-                render={(props) => (
-                  <OldLanding
-                    {...{
-                      setWarningModalVisible,
-                      setStakeholderSignupModalVisible,
-                      isAuthenticated,
-                      setFilterMenu,
-                      setLoginVisible,
-                      ...props,
-                    }}
-                  />
-                )}
-              />
-              <Route
-                exact
-                path="/about-us"
-                render={(props) => <AboutUs {...props} />}
-              />
-              <Route
-                exact
-                path="/glossary"
-                render={(props) => <Glossary {...props} />}
-              />
-              <Route
-                path="/knowledge"
-                render={(props) => (
-                  <Knowledge
-                    {...{
-                      history,
-                      query,
-                      results,
-                      countData,
-                      pageSize,
-                      loading,
-                      filters,
-                      filterMenu,
-                      filterCountries,
-                      isAuthenticated,
-                      loginWithPopup,
-                      multiCountryCountries,
-                      isLoading,
-                      setLoading,
-                      landingQuery,
+            <Route
+              exact
+              path="/about-us"
+              render={(props) => <AboutUs {...props} />}
+            />
+            <Route
+              exact
+              path="/glossary"
+              render={(props) => <Glossary {...props} />}
+            />
+            <Route
+              path="/knowledge"
+              render={(props) => (
+                <Knowledge
+                  {...{
+                    history,
+                    query,
+                    results,
+                    countData,
+                    pageSize,
+                    loading,
+                    filters,
+                    filterMenu,
+                    filterCountries,
+                    isAuthenticated,
+                    loginWithPopup,
+                    multiCountryCountries,
+                    isLoading,
+                    setLoading,
+                    landingQuery,
 
-                      //Functions
-                      setFilterMenu,
-                      getResults,
-                      updateQuery,
-                      setFilters,
-                      setRelations,
-                      setFilterCountries,
-                      setMultiCountryCountries,
-                      setWarningModalVisible,
-                      setLoginVisible,
-                      ...props,
-                    }}
-                    filters={filters}
-                    setFilters={setFilters}
-                    filterMenu={filterMenu}
-                  />
-                )}
-              />
+                    //Functions
+                    setFilterMenu,
+                    getResults,
+                    updateQuery,
+                    setFilters,
+                    setRelations,
+                    setFilterCountries,
+                    setMultiCountryCountries,
+                    setWarningModalVisible,
+                    setLoginVisible,
+                    ...props,
+                  }}
+                  filters={filters}
+                  setFilters={setFilters}
+                  filterMenu={filterMenu}
+                />
+              )}
+            />
 
-              <Route
-                path="/browse"
-                render={(props) => (
-                  <Browse
-                    {...{
-                      setWarningModalVisible,
-                      ...props,
-                    }}
-                    setStakeholderSignupModalVisible={
-                      setStakeholderSignupModalVisible
-                    }
-                    filters={filters}
-                    setFilters={setFilters}
-                    filterMenu={filterMenu}
-                  />
-                )}
-              />
-              <Route
-                exact
-                path="/topics"
-                render={(props) => (
-                  <Topic {...props} filters={filters} setFilters={setFilters} />
-                )}
-              />
-              <Route
-                path="/stakeholders"
-                render={(props) => (
-                  <Stakeholders
-                    {...props}
-                    setStakeholderSignupModalVisible={
-                      setStakeholderSignupModalVisible
-                    }
-                    filters={filters}
-                    setFilters={setFilters}
-                    filterMenu={filterMenu}
-                  />
-                )}
-              />
-              <Route
-                path="/add-event"
-                render={(props) => <AddEvent {...props} />}
-              />
-              <Route
-                exact
-                path="/edit-event/:id"
-                render={(props) => (
-                  <FlexibleForms {...props} setLoginVisible={setLoginVisible} />
-                )}
-              />
-              <Route
-                exact
-                path="/edit-case-study/:id"
-                render={(props) => (
-                  <FlexibleForms {...props} setLoginVisible={setLoginVisible} />
-                )}
-              />
-              <Route
-                path="/add-technology"
-                render={(props) => <AddTechnology {...props} />}
-              />
-              <Route
-                exact
-                path="/edit-technology/:id"
-                render={(props) => <FlexibleForms {...props} />}
-              />
+            <Route
+              path="/browse"
+              render={(props) => (
+                <Browse
+                  {...{
+                    setWarningModalVisible,
+                    ...props,
+                  }}
+                  setStakeholderSignupModalVisible={
+                    setStakeholderSignupModalVisible
+                  }
+                  filters={filters}
+                  setFilters={setFilters}
+                  filterMenu={filterMenu}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/topics"
+              render={(props) => (
+                <Topic {...props} filters={filters} setFilters={setFilters} />
+              )}
+            />
+            <Route
+              path="/stakeholders"
+              render={(props) => (
+                <Stakeholders
+                  {...props}
+                  setStakeholderSignupModalVisible={
+                    setStakeholderSignupModalVisible
+                  }
+                  filters={filters}
+                  setFilters={setFilters}
+                  filterMenu={filterMenu}
+                />
+              )}
+            />
+            <Route
+              path="/add-event"
+              render={(props) => <AddEvent {...props} />}
+            />
+            <Route
+              exact
+              path="/edit-event/:id"
+              render={(props) => (
+                <FlexibleForms {...props} setLoginVisible={setLoginVisible} />
+              )}
+            />
+            <Route
+              exact
+              path="/edit-case-study/:id"
+              render={(props) => (
+                <FlexibleForms {...props} setLoginVisible={setLoginVisible} />
+              )}
+            />
+            <Route
+              path="/add-technology"
+              render={(props) => <AddTechnology {...props} />}
+            />
+            <Route
+              exact
+              path="/edit-technology/:id"
+              render={(props) => <FlexibleForms {...props} />}
+            />
 
-              <Route
-                path="/add-policy"
-                render={(props) => <AddPolicy {...props} />}
-              />
-              <Route
-                exact
-                path="/edit-policy/:id"
-                render={(props) => <FlexibleForms {...props} />}
-              />
+            <Route
+              path="/add-policy"
+              render={(props) => <AddPolicy {...props} />}
+            />
+            <Route
+              exact
+              path="/edit-policy/:id"
+              render={(props) => <FlexibleForms {...props} />}
+            />
 
-              <Route
-                path="/add-action-plan"
-                render={(props) => <AddActionPlan {...props} />}
-              />
-              <Route
-                exact
-                path="/edit-action-plan/:id"
-                render={(props) => <FlexibleForms {...props} />}
-              />
+            <Route
+              path="/add-action-plan"
+              render={(props) => <AddActionPlan {...props} />}
+            />
+            <Route
+              exact
+              path="/edit-action-plan/:id"
+              render={(props) => <FlexibleForms {...props} />}
+            />
 
-              <Route
-                path="/add-financing-resource"
-                render={(props) => <AddFinancingResource {...props} />}
-              />
-              <Route
-                exact
-                path="/edit-financing-resource/:id"
-                render={(props) => <FlexibleForms {...props} />}
-              />
+            <Route
+              path="/add-financing-resource"
+              render={(props) => <AddFinancingResource {...props} />}
+            />
+            <Route
+              exact
+              path="/edit-financing-resource/:id"
+              render={(props) => <FlexibleForms {...props} />}
+            />
 
-              <Route
-                path="/add-technical-resource"
-                render={(props) => <AddTechnicalResource {...props} />}
-              />
-              <Route
-                exact
-                path="/edit-technical-resource/:id"
-                render={(props) => <FlexibleForms {...props} />}
-              />
+            <Route
+              path="/add-technical-resource"
+              render={(props) => <AddTechnicalResource {...props} />}
+            />
+            <Route
+              exact
+              path="/edit-technical-resource/:id"
+              render={(props) => <FlexibleForms {...props} />}
+            />
 
-              <Route
-                path="/add-initiative"
-                render={(props) => <AddInitiative {...props} />}
-              />
-              <Route
-                exact
-                path="/edit-initiative/:id"
-                render={(props) => <FlexibleForms {...props} />}
-              />
+            <Route
+              path="/add-initiative"
+              render={(props) => <AddInitiative {...props} />}
+            />
+            <Route
+              exact
+              path="/edit-initiative/:id"
+              render={(props) => <FlexibleForms {...props} />}
+            />
 
-              <Route
-                exact
-                path="/:type(edit-entity|edit-stakeholder)/:id"
-                render={(props) => <EntityFormView {...props} />}
-              />
+            <Route
+              exact
+              path="/:type(edit-entity|edit-stakeholder)/:id"
+              render={(props) => <EntityFormView {...props} />}
+            />
 
-              <Route
-                path="/profile"
-                render={(props) => <ProfileView {...{ ...props, relations }} />}
-              />
-              <Route
-                path="/entity-signup"
-                render={(props) => <SignupView {...props} formType="entity" />}
-              />
-              <Route
-                path="/stakeholder-signup"
-                render={(props) => (
-                  <SignupView {...props} formType="stakeholder" />
-                )}
-              />
-              <Route
-                path="/stakeholder-signup-new"
-                render={(props) => <SignupViewNew {...props} />}
-              />
-              <Route
-                path="/login"
-                render={(props) => <LoginView {...props} />}
-              />
-              <Route
-                path="/flexible-forms"
-                render={(props) => (
-                  <FlexibleForms
-                    {...props}
-                    setLoginVisible={setLoginVisible}
-                    isAuthenticated={isAuthenticated}
-                    loadingProfile={loadingProfile}
-                  />
-                )}
-              />
-              <Route
-                path="/details-view"
-                render={(props) => (
-                  <NewDetailsView
-                    {...props}
-                    isAuthenticated={isAuthenticated}
-                  />
-                )}
-              />
-              <Route
-                path="/discourse-forum"
-                render={(props) => <DiscourseForum />}
-              />
+            <Route
+              path="/profile"
+              render={(props) => <ProfileView {...{ ...props, relations }} />}
+            />
+            <Route
+              path="/entity-signup"
+              render={(props) => <SignupView {...props} formType="entity" />}
+            />
+            <Route
+              path="/stakeholder-signup"
+              render={(props) => (
+                <SignupView {...props} formType="stakeholder" />
+              )}
+            />
+            <Route
+              path="/stakeholder-signup-new"
+              render={(props) => <SignupViewNew {...props} />}
+            />
+            <Route path="/login" render={(props) => <LoginView {...props} />} />
+            <Route
+              path="/flexible-forms"
+              render={(props) => (
+                <FlexibleForms
+                  {...props}
+                  setLoginVisible={setLoginVisible}
+                  isAuthenticated={isAuthenticated}
+                  loadingProfile={loadingProfile}
+                />
+              )}
+            />
+            <Route
+              path="/details-view"
+              render={(props) => (
+                <NewDetailsView {...props} isAuthenticated={isAuthenticated} />
+              )}
+            />
+            <Route
+              path="/discourse-forum"
+              render={(props) => <DiscourseForum />}
+            />
 
-              <Route path="/help-center" render={(props) => <HelpCenter />} />
+            <Route path="/help-center" render={(props) => <HelpCenter />} />
 
-              <Route
-                exact
-                render={(props) =>
-                  isAuthenticated && <Workspace {...props} profile={profile} />
-                }
-                path="/workspace"
-              />
-              <Route path="/projects/get-started">
-                <GetStarted />
-              </Route>
-              <Route
-                exact
-                path="/projects/:id"
-                render={(props) => <Project {...props} profile={profile} />}
-              />
-              <Route
-                exact
-                render={(props) => (
-                  <StakeholderDetail
-                    {...props}
-                    isAuthenticated={isAuthenticated}
-                  />
-                )}
-                path="/stakeholder-detail"
-              />
-              <Route
-                exact
-                render={(props) => <Onboarding {...props} />}
-                path="/onboarding"
-              />
-
-              <Route
-                path="/connect"
-                render={(props) => (
-                  <Connect
-                    {...props}
-                    setLoginVisible={setLoginVisible}
-                    filters={filters}
-                    setFilters={setFilters}
-                    isAuthenticated={isAuthenticated}
-                    loadingProfile={loadingProfile}
-                  />
-                )}
-              />
-
-              <Route
-                path="/:type(stakeholder)/:id"
-                render={(props) => (
-                  <StakeholderDetail
-                    {...props}
-                    setLoginVisible={setLoginVisible}
-                    setFilterMenu={setFilterMenu}
-                    isAuthenticated={isAuthenticated}
-                  />
-                )}
-              />
-              <Route
-                path="/:type(initiative|action-plan|policy|technical-resource|financing-resource|technology|event|case-study)/:id"
-                render={(props) => (
-                  <NewDetailsView
-                    {...props}
-                    setLoginVisible={setLoginVisible}
-                    setFilterMenu={setFilterMenu}
-                    isAuthenticated={isAuthenticated}
-                  />
-                )}
-              />
-              <Route
-                path="/:type(organisation)/:id"
-                render={(props) => (
-                  <EntityDetail
-                    {...props}
-                    setStakeholderSignupModalVisible={
-                      setStakeholderSignupModalVisible
-                    }
-                    setFilterMenu={setFilterMenu}
-                    isAuthenticated={isAuthenticated}
-                  />
-                )}
-              />
-              <Route exact path="/not-found">
-                <Error status={404} />
-              </Route>
-              <Route exact path="/not-authorized">
-                <Error status={403} />
-              </Route>
-              <Route exact path="/error">
-                <Error />
-              </Route>
-              <Route component={(props) => <Error {...props} status={404} />} />
-            </Switch>
-            {isAuthenticated && <AddContentButton />}
-            <Footer
-              setStakeholderSignupModalVisible={
-                setStakeholderSignupModalVisible
+            <Route
+              exact
+              render={(props) =>
+                isAuthenticated && <Workspace {...props} profile={profile} />
               }
-              setWarningModalVisible={setWarningModalVisible}
-              isAuthenticated={isAuthenticated}
-              loginWithPopup={loginWithPopup}
-              setFilterMenu={setFilterMenu}
-              setLoginVisible={setLoginVisible}
-              setShowMenu={setShowMenu}
+              path="/workspace"
             />
-          </div>
+            <Route path="/projects/get-started">
+              <GetStarted />
+            </Route>
+            <Route
+              exact
+              path="/projects/:id"
+              render={(props) => <Project {...props} profile={profile} />}
+            />
+            <Route
+              exact
+              render={(props) => (
+                <StakeholderDetail
+                  {...props}
+                  isAuthenticated={isAuthenticated}
+                />
+              )}
+              path="/stakeholder-detail"
+            />
+            <Route
+              exact
+              render={(props) => <Onboarding {...props} />}
+              path="/onboarding"
+            />
+
+            <Route
+              path="/connect"
+              render={(props) => (
+                <Connect
+                  {...props}
+                  setLoginVisible={setLoginVisible}
+                  filters={filters}
+                  setFilters={setFilters}
+                  isAuthenticated={isAuthenticated}
+                  loadingProfile={loadingProfile}
+                />
+              )}
+            />
+
+            <Route
+              path="/:type(stakeholder)/:id"
+              render={(props) => (
+                <StakeholderDetail
+                  {...props}
+                  setLoginVisible={setLoginVisible}
+                  setFilterMenu={setFilterMenu}
+                  isAuthenticated={isAuthenticated}
+                />
+              )}
+            />
+            <Route
+              path="/:type(initiative|action-plan|policy|technical-resource|financing-resource|technology|event|case-study)/:id"
+              render={(props) => (
+                <NewDetailsView
+                  {...props}
+                  setLoginVisible={setLoginVisible}
+                  setFilterMenu={setFilterMenu}
+                  isAuthenticated={isAuthenticated}
+                />
+              )}
+            />
+            <Route
+              path="/:type(organisation)/:id"
+              render={(props) => (
+                <EntityDetail
+                  {...props}
+                  setStakeholderSignupModalVisible={
+                    setStakeholderSignupModalVisible
+                  }
+                  setFilterMenu={setFilterMenu}
+                  isAuthenticated={isAuthenticated}
+                />
+              )}
+            />
+            <Route exact path="/not-found">
+              <Error status={404} />
+            </Route>
+            <Route exact path="/not-authorized">
+              <Error status={403} />
+            </Route>
+            <Route exact path="/error">
+              <Error />
+            </Route>
+            <Route component={(props) => <Error {...props} status={404} />} />
+          </Switch>
+          {isAuthenticated && <AddContentButton />}
+          <Footer
+            setStakeholderSignupModalVisible={setStakeholderSignupModalVisible}
+            setWarningModalVisible={setWarningModalVisible}
+            isAuthenticated={isAuthenticated}
+            loginWithPopup={loginWithPopup}
+            setFilterMenu={setFilterMenu}
+            setLoginVisible={setLoginVisible}
+            setShowMenu={setShowMenu}
+          />
           <ModalWarningUser
             visible={warningModalVisible}
             close={() => setWarningModalVisible(false)}
