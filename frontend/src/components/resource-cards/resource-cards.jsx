@@ -161,8 +161,28 @@ const getThumbnail = (item) => {
 };
 
 export const ResourceCard = ({ item, index, showModal }) => {
+  const innerContent = (
+    <>
+      <h3>{item.title}</h3>
+      <h4>{item?.type ? topicNames(item?.type) : ""}</h4>
+    </>
+  )
+  if(item.thumbnail == null){
+    return (
+      <div className="resource-card nothumb" key={item.id}>
+        <Link
+          id={item.id}
+          to={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
+          type={getType(item?.type)?.replace("_", "-")}
+          onClick={showModal}
+          className="nothumb-container">
+          {innerContent}
+        </Link>
+      </div>
+    )
+  }
   return (
-    <div className="resource-card" key={index}>
+    <div className="resource-card" key={item.id}>
       <Link
         to={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
         id={item.id}
@@ -178,11 +198,8 @@ export const ResourceCard = ({ item, index, showModal }) => {
         }}
         onClick={showModal}
       >
-        <div>
-          <h3>{item.title}</h3>
-          <h4>{item?.type ? topicNames(item?.type) : ""}</h4>
-        </div>
-        <div className="bottom-panel">
+        {innerContent}
+        {/* <div className="bottom-panel">
           <div>
             <Avatar.Group
               maxCount={2}
@@ -219,10 +236,7 @@ export const ResourceCard = ({ item, index, showModal }) => {
               ))}
             </Avatar.Group>
           </div>
-          <div className="read-more">
-            Read More <ArrowRightOutlined />
-          </div>
-        </div>
+        </div> */}
       </Link>
       <div className="thumb-container">
         <img src={getThumbnail(item)} alt={item?.type} />
