@@ -1365,6 +1365,15 @@ path {
       max-height: 155px;
       overflow-y: hidden;
     }
+    .bottom-panel {
+      margin-top: auto;
+      .connections {
+        margin-bottom: 5px;
+        .ant-avatar {
+          border: 1px solid #ccc !important;
+        }
+      }
+    }
     h4 {
       margin-top: auto;
       font-size: 0.7em;
