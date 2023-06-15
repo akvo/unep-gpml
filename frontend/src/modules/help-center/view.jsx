@@ -55,7 +55,7 @@ function HelpCenter() {
                     height="500px"
                     width="100%"
                     src={
-                      "https://dev-digital-platform-help-center.pantheonsite.io/sites/default/files/2023-06/Add%20Content%20Guideline%20%282%29.pdf"
+                      "https://dev-digital-platform-help-center.pantheonsite.io/sites/default/files/2023-06/Add%20Content%20Guideline%20%285%29.pdf"
                     }
                   />
                 </li>
