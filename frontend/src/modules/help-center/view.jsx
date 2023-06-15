@@ -68,7 +68,7 @@ function HelpCenter() {
                     height="500px"
                     width="100%"
                     src={
-                      "https://dev-digital-platform-help-center.pantheonsite.io/sites/default/files/2022-08/Sign%20In%20Document.pdf"
+                      "https://dev-digital-platform-help-center.pantheonsite.io/sites/default/files/2023-06/How%20to%20sign%20up%20%281%29.pdf"
                     }
                   />
                 </li>
