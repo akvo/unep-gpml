@@ -485,11 +485,11 @@
           "ui:options": { "accept": "image/*" },
           "ui:widget": "file"
         },
-        "banner": {
+        "thumbnail": {
           "ui:options": { "accept": "image/*" },
           "ui:widget": "file"
         },
-        "ui:order": ["image", "banner"]
+        "ui:order": ["image", "thumbnail"]
       },
       "S4_G5": {
         "entity": {
@@ -725,11 +725,11 @@
           "ui:options": { "accept": "image/*" },
           "ui:widget": "file"
         },
-        "banner": {
+        "thumbnail": {
           "ui:options": { "accept": "image/*" },
           "ui:widget": "file"
         },
-        "ui:order": ["image", "banner"]
+        "ui:order": ["image", "thumbnail"]
       },
       "S4_G5": {
         "entity": {
@@ -1003,11 +1003,11 @@
           "ui:options": { "accept": "image/*" },
           "ui:widget": "file"
         },
-        "banner": {
+        "thumbnail": {
           "ui:options": { "accept": "image/*" },
           "ui:widget": "file"
         },
-        "ui:order": ["image", "banner"]
+        "ui:order": ["image", "thumbnail"]
       },
       "S4_G5": {
         "entity": {
@@ -1250,11 +1250,11 @@
           "ui:options": { "accept": "image/*" },
           "ui:widget": "file"
         },
-        "banner": {
+        "thumbnail": {
           "ui:options": { "accept": "image/*" },
           "ui:widget": "file"
         },
-        "ui:order": ["image", "banner"]
+        "ui:order": ["image", "thumbnail"]
       },
       "S4_G5": {
         "entity": {
@@ -1480,11 +1480,11 @@
           "ui:options": { "accept": "image/*" },
           "ui:widget": "file"
         },
-        "banner": {
+        "thumbnail": {
           "ui:options": { "accept": "image/*" },
           "ui:widget": "file"
         },
-        "ui:order": ["image", "banner"]
+        "ui:order": ["image", "thumbnail"]
       },
       "S4_G5": {
         "entity": {
