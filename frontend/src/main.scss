@@ -1,6 +1,6 @@
-@import "./reset.scss";
-@import "antd/dist/antd.css";
-@import "./vars.scss";
+@import './reset.scss';
+@import 'antd/dist/antd.css';
+@import './vars.scss';
 
 body {
   margin: 0;
@@ -43,8 +43,8 @@ i,
 input,
 ::placeholder,
 .ant-input::-webkit-input-placeholder {
-  font-family: "Jost", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
-    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: 'Jost', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 
 // Typography
@@ -330,7 +330,7 @@ h4 {
         }
         &:before,
         &:after {
-          content: " ";
+          content: ' ';
           height: 40px;
           width: 1px;
           position: absolute;
@@ -576,7 +576,7 @@ button.ant-btn.ant-btn-link.ant-dropdown-trigger.menu-btn.nav-link {
       box-sizing: content-box;
       white-space: nowrap;
       &:before {
-        content: "";
+        content: '';
         display: inline-block;
         vertical-align: middle;
         padding-top: 100%;
@@ -981,7 +981,7 @@ path {
     box-sizing: content-box;
     white-space: nowrap;
     &:before {
-      content: "";
+      content: '';
       display: inline-block;
       vertical-align: middle;
       padding-top: 100%;
@@ -1075,12 +1075,12 @@ path {
               margin-left: 8px;
             }
           }
-          div[title="Knowledge Exchange"] {
+          div[title='Knowledge Exchange'] {
             .ant-menu-submenu-arrow {
               right: 100px;
             }
           }
-          div[title="Explore"] {
+          div[title='Explore'] {
             display: block;
             position: relative;
             & + div {
@@ -1119,10 +1119,10 @@ path {
             padding: 0;
             max-width: 200px;
             margin: auto;
-            li[role="menuitem"]:not(:last-child) {
+            li[role='menuitem']:not(:last-child) {
               border-bottom: 1px solid #00aaf1 !important;
             }
-            li[role="menuitem"] {
+            li[role='menuitem'] {
               padding: 5px 12px !important;
               color: #2d6796 !important;
             }
@@ -1166,7 +1166,7 @@ path {
 }
 /* End of Responsive menu style */
 
-@import "./container.scss";
+@import './container.scss';
 
 .swiper {
   padding-bottom: 33px !important;
@@ -1333,7 +1333,8 @@ path {
       border-radius: 5px;
     }
   }
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
+  // box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.12);
   border-radius: 4px;
   overflow: hidden;
   z-index: 1;
@@ -1343,6 +1344,43 @@ path {
     transform: scale(1.23) translateY(-5px);
     .description-holder {
       opacity: 1;
+    }
+  }
+}
+.resource-card.nothumb {
+  background-color: #fff;
+  .nothumb-container {
+    padding: 10px;
+    display: block;
+    .read-more {
+      display: none;
+    }
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    h3 {
+      font-size: 1em;
+      line-height: 1.2;
+      font-weight: 500;
+      max-height: 155px;
+      overflow-y: hidden;
+    }
+    .bottom-panel {
+      margin-top: auto;
+      .connections {
+        margin-bottom: 5px;
+        .ant-avatar {
+          border: 1px solid #ccc !important;
+        }
+      }
+    }
+    h4 {
+      margin-top: auto;
+      font-size: 0.7em;
+      line-height: 1;
+      opacity: 0.6;
+      text-transform: uppercase;
+      margin-bottom: 0;
     }
   }
 }
@@ -1423,7 +1461,7 @@ path {
     position: relative;
     cursor: default;
     &:after {
-      content: " ";
+      content: ' ';
       position: absolute;
       width: 1px;
       height: 35px;
@@ -1654,7 +1692,7 @@ path {
     }
   }
   &:before {
-    content: " ";
+    content: ' ';
     width: calc(100% + 20px);
     height: calc(100% + 20px);
     padding: 10px;

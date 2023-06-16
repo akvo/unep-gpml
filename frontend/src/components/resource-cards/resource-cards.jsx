@@ -161,8 +161,68 @@ const getThumbnail = (item) => {
 };
 
 export const ResourceCard = ({ item, index, showModal }) => {
+  const innerContent = (
+    <>
+      <h3>{item.title}</h3>
+      <div className="bottom-panel">
+        {item?.entityConnections?.length > 0 &&
+        <div className="connections">
+          <Avatar.Group
+            maxCount={2}
+            size="large"
+            maxStyle={{
+              color: "#f56a00",
+              backgroundColor: "#fde3cf",
+              cursor: "pointer",
+            }}
+          >
+            {item?.entityConnections?.map((connection, index) => (
+              <Avatar
+                className="related-content-avatar"
+                style={{ border: "none" }}
+                key={item?.entity || index}
+                src={
+                  connection?.image ? (
+                    connection?.image
+                  ) : item?.image ? (
+                    item.image
+                  ) : (
+                    <Avatar
+                      style={{
+                        backgroundColor: "#09689A",
+                        verticalAlign: "middle",
+                      }}
+                      size={40}
+                    >
+                      {item?.entity?.substring(0, 2)}
+                    </Avatar>
+                  )
+                }
+              />
+            ))}
+          </Avatar.Group>
+        </div>
+        }
+        <h4>{item?.type ? topicNames(item?.type) : ""}</h4>
+      </div>
+    </>
+  )
+  if(item.thumbnail == null){
+    return (
+      <div className="resource-card nothumb" key={item.id}>
+        <Link
+          id={item.id}
+          to={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
+          type={getType(item?.type)?.replace("_", "-")}
+          onClick={showModal}
+          className="nothumb-container">
+          {innerContent}
+        </Link>
+      </div>
+    )
+  }
   return (
-    <div className="resource-card" key={index}>
+    <div className="resource-card" key={item.id}>
       <Link
         to={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
         id={item.id}
@@ -178,51 +238,7 @@ export const ResourceCard = ({ item, index, showModal }) => {
         }}
         onClick={showModal}
       >
-        <div>
-          <h3>{item.title}</h3>
-          <h4>{item?.type ? topicNames(item?.type) : ""}</h4>
-        </div>
-        <div className="bottom-panel">
-          <div>
-            <Avatar.Group
-              maxCount={2}
-              size="large"
-              maxStyle={{
-                color: "#f56a00",
-                backgroundColor: "#fde3cf",
-                cursor: "pointer",
-              }}
-            >
-              {item?.entityConnections?.map((connection, index) => (
-                <Avatar
-                  className="related-content-avatar"
-                  style={{ border: "none" }}
-                  key={item?.entity || index}
-                  src={
-                    connection?.image ? (
-                      connection?.image
-                    ) : item?.image ? (
-                      item.image
-                    ) : (
-                      <Avatar
-                        style={{
-                          backgroundColor: "#09689A",
-                          verticalAlign: "middle",
-                        }}
-                        size={40}
-                      >
-                        {item?.entity?.substring(0, 2)}
-                      </Avatar>
-                    )
-                  }
-                />
-              ))}
-            </Avatar.Group>
-          </div>
-          <div className="read-more">
-            Read More <ArrowRightOutlined />
-          </div>
-        </div>
+        {innerContent}
       </Link>
       <div className="thumb-container">
         <img src={getThumbnail(item)} alt={item?.type} />
