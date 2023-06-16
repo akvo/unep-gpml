@@ -208,7 +208,7 @@ export const ResourceCard = ({ item, index, showModal }) => {
     </>
   )
   let thumbnail = item.thumbnail
-  if(item.type === 'financing_resource' || item.type === 'policy' || item.type === 'action_plan' || item.type === 'technical_resource'){
+  if(!thumbnail && item.type === 'financing_resource' || item.type === 'policy' || item.type === 'action_plan' || item.type === 'technical_resource'){
     thumbnail = item.image
   }
   if(thumbnail == null){
