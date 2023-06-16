@@ -207,7 +207,11 @@ export const ResourceCard = ({ item, index, showModal }) => {
       </div>
     </>
   )
-  if(item.thumbnail == null){
+  let thumbnail = item.thumbnail
+  if(item.type === 'financing_resource' || item.type === 'policy' || item.type === 'action_plan' || item.type === 'technical_resource'){
+    thumbnail = item.image
+  }
+  if(thumbnail == null){
     return (
       <div className="resource-card nothumb" key={item.id}>
         <Link
@@ -229,9 +233,7 @@ export const ResourceCard = ({ item, index, showModal }) => {
         type={getType(item?.type)?.replace("_", "-")}
         className="description-holder"
         style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${getThumbnail(
-            item
-          )})`,
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${thumbnail})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
@@ -241,7 +243,7 @@ export const ResourceCard = ({ item, index, showModal }) => {
         {innerContent}
       </Link>
       <div className="thumb-container">
-        <img src={getThumbnail(item)} alt={item?.type} />
+        <img src={thumbnail} alt={item?.type} />
       </div>
     </div>
   );
