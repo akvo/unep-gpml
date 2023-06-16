@@ -87,7 +87,7 @@ const Overview = ({
       </section>
       <section>
         <Row gutter={16}>
-          <Col sm={24} md={24} lg={12} xl={12}>
+          <Col sm={24} md={24} lg={24} xl={24}>
             <h3>Resources by location</h3>
             <div
               className="overlay-btn"
@@ -105,26 +105,6 @@ const Overview = ({
                 showLegend={false}
                 zoom={0.9}
                 path="knowledge"
-              />
-            </div>
-          </Col>
-          <Col sm={24} md={24} lg={12} xl={12}>
-            <h3>Resources by topic</h3>
-            <div
-              className="overlay-btn"
-              onClick={() => {
-                history.push({
-                  pathname: `/knowledge/library/resource/topic`,
-                });
-              }}
-            >
-              <TopicView
-                {...{ query, loading }}
-                results={data?.results}
-                fetch={true}
-                countData={countData.filter(
-                  (count) => count.topic !== "gpml_member_entities"
-                )}
               />
             </div>
           </Col>
