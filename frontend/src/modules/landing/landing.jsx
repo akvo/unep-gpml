@@ -258,6 +258,35 @@ const Connect = () => {
         navigation={true}
         modules={[Pagination, Navigation]}
       >
+        <SwiperSlide className="card casestudy">
+          <div className="label">REGIONAL NODE SPOTLIGHT</div>
+          <img src="/node-spotlight.jpg" />{" "}
+          <h4>
+            Cooperative actions from Caribbean fisheries officials after a
+            successful ghost gear retrieval training in Panama
+          </h4>
+          <p>
+            The Caribbean Node of the GPML (GPML-Caribe) represents a
+            partnership for national and regional organizations, governments,
+            research, technical, civil society agencies and individuals, that
+            work together to reduce the quantity and impact of marine litter in
+            the Wider Caribbean Region. GPML-Caribe is co-hosted by the Gulf and
+            Caribbean Fisheries Institute (GCFI) and the UNEP Cartagena
+            Convention Secretariat.
+            <br />
+            <br />
+            Since its inception around five years ago, GPML-Caribe has supported
+            numerous projects within the region including research on
+            microplastics, education and outreach activities, regional campaigns
+            including coastal and underwater cleanups, partnerships with the
+            private sector to improve waste management and efforts to address
+            abandoned, lost, discarded fishing gear (ALDFG). GPML-Caribe has
+            also developed a Regional Marine Litter Management Strategy, an
+            Action Plan for Harmonized Marine Litter Monitoring in the Wider
+            Caribbean Region, as well as a Caribbean Regional Action Plan to
+            Prevent Abandoned, Lost or Otherwise Discarded Fishing Gear.
+          </p>
+        </SwiperSlide>
         <SwiperSlide className="card nowpap">
           <div className="label">REGIONAL NODE SPOTLIGHT</div>
           <img src="/nowpap.jpg" />
@@ -306,7 +335,7 @@ const Connect = () => {
             .
           </p>
         </SwiperSlide>
-        <SwiperSlide className="card casestudy">
+        <SwiperSlide className="card spotlight">
           <div className="label">featured case study</div>
           <img src="/featured-case-study.jpg" />
           <h4>
@@ -334,35 +363,6 @@ const Connect = () => {
             information campaigns and label single-use plastics based on a newly
             adopted classification tool, distinguishing between “Renewable,
             Compostable, and Compostable” and other types.
-          </p>
-        </SwiperSlide>
-        <SwiperSlide className="card spotlight">
-          <div className="label">REGIONAL NODE SPOTLIGHT</div>
-          <img src="/node-spotlight.jpg" />{" "}
-          <h4>
-            Cooperative actions from Caribbean fisheries officials after a
-            successful ghost gear retrieval training in Panama
-          </h4>
-          <p>
-            The Caribbean Node of the GPML (GPML-Caribe) represents a
-            partnership for national and regional organizations, governments,
-            research, technical, civil society agencies and individuals, that
-            work together to reduce the quantity and impact of marine litter in
-            the Wider Caribbean Region. GPML-Caribe is co-hosted by the Gulf and
-            Caribbean Fisheries Institute (GCFI) and the UNEP Cartagena
-            Convention Secretariat.
-            <br />
-            <br />
-            Since its inception around five years ago, GPML-Caribe has supported
-            numerous projects within the region including research on
-            microplastics, education and outreach activities, regional campaigns
-            including coastal and underwater cleanups, partnerships with the
-            private sector to improve waste management and efforts to address
-            abandoned, lost, discarded fishing gear (ALDFG). GPML-Caribe has
-            also developed a Regional Marine Litter Management Strategy, an
-            Action Plan for Harmonized Marine Litter Monitoring in the Wider
-            Caribbean Region, as well as a Caribbean Regional Action Plan to
-            Prevent Abandoned, Lost or Otherwise Discarded Fishing Gear.
           </p>
         </SwiperSlide>
         <SwiperSlide className="card testimonial">
