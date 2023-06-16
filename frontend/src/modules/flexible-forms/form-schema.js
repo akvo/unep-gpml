@@ -1336,6 +1336,11 @@ export const schema = {
                 type: "string",
                 format: "data-url",
               },
+              thumbnail: {
+                title: "Thumbnail",
+                type: "string",
+                format: "data-url",
+              },
             },
           },
           S4_G5: {
@@ -1583,6 +1588,11 @@ export const schema = {
             properties: {
               image: {
                 title: "Image",
+                type: "string",
+                format: "data-url",
+              },
+              thumbnail: {
+                title: "Thumbnail",
                 type: "string",
                 format: "data-url",
               },
@@ -1882,6 +1892,11 @@ export const schema = {
                 type: "string",
                 format: "data-url",
               },
+              thumbnail: {
+                title: "Thumbnail",
+                type: "string",
+                format: "data-url",
+              },
             },
           },
           S4_G5: {
@@ -2142,6 +2157,11 @@ export const schema = {
                 type: "string",
                 format: "data-url",
               },
+              thumbnail: {
+                title: "Thumbnail",
+                type: "string",
+                format: "data-url",
+              },
             },
           },
           S4_G5: {
@@ -2373,6 +2393,11 @@ export const schema = {
             properties: {
               image: {
                 title: "Image",
+                type: "string",
+                format: "data-url",
+              },
+              thumbnail: {
+                title: "Thumbnail",
                 type: "string",
                 format: "data-url",
               },
