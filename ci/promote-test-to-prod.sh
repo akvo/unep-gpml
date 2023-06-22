@@ -16,5 +16,5 @@ docker run \
        --env ZULIP_CLI_TOKEN \
        --interactive \
        --tty \
-       akvo/akvo-devops:20201203.085214.79bec73 \
+       akvo/akvo-devops:20230616.092805.f8473b3 \
        promote-test-to-prod.sh "${deployment_name}" "${deployment_version_label}" "${github_project}" "${notification}" "${zulip_stream}"
