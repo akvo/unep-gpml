@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
-  Redirect,
   Link,
   Switch,
   withRouter,
   useLocation,
   useHistory,
-  NavLink,
 } from "react-router-dom";
 import ReactGA from "react-ga";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -18,7 +16,6 @@ import {
   SearchOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
-import MenuOutlined from "./images/menu-outlined.svg";
 import OldLanding from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
 import Stakeholders from "./modules/stakeholders/view";
@@ -27,7 +24,6 @@ import SignupView from "./modules/signup/view";
 import SignupViewNew from "./modules/email-signup/view";
 import Login from "./modules/login/view";
 import LoginView from "./modules/login/login-view";
-import LandingSignupView from "./modules/signup-old/view";
 import logo from "./images/gpml.svg";
 // add auth0 logo pop-up
 // eslint-disable-next-line
@@ -35,12 +31,10 @@ import tmpLogo from "./images/GPML-temporary-logo-horiz.jpg";
 import ModalWarningUser from "./utils/modal-warning-user";
 import api from "./utils/api";
 import { updateStatusProfile, isRegistered } from "./utils/profile";
-import { redirectError } from "./modules/error/error-util";
 import { useQuery } from "./modules/knowledge-library/common";
 import { storage } from "./utils/storage";
 import { UIStore } from "./store.js";
 import ProfileView from "./modules/profile/view";
-import DetailsView from "./modules/details/view";
 import Footer from "./footer";
 import uniqBy from "lodash/uniqBy";
 import sortBy from "lodash/sortBy";
@@ -56,28 +50,22 @@ import Glossary from "./modules/glossary/glossary";
 import Error from "./modules/error/error";
 import EntityFormView from "./modules/entity-edit-signup/view";
 import Workspace from "./modules/workspace/view";
-import EventPage from "./modules/event-page/view";
 import StakeholderDetail from "./modules/stakeholder-detail/view";
 import EntityDetail from "./modules/entity-detail/view";
 import Connect from "./modules/connect/view";
 import Knowledge from "./modules/knowledge/view";
 
 // Menu dropdown
-import ExploreDropdownMenu from "./modules/dropdown-menu/explore";
 import ResponsiveMenu from "./modules/dropdown-menu/responsive-menu";
-import WorkspaceButton from "./modules/dropdown-menu/workspace-button";
 
 // Discourse Forum
 import DiscourseForum from "./modules/discourse-forum/discourse-forum";
 
 // Flexible Form
 import FlexibleForms from "./modules/flexible-forms/view";
-import CapacityBuilding from "./modules/capacity-building/view";
 
 // New Details Page
 import NewDetailsView from "./modules/details-page/view";
-import CaseStudies from "./modules/case-studies/view";
-import KnowledgeLibrary from "./modules/knowledge-library/view";
 
 // Buttons
 import AddContentButton from "./components/add-content-button/add-content-button";
@@ -90,8 +78,7 @@ import HelpCenter from "./modules/help-center/view";
 
 let tmid;
 
-const TRACKING_ID = "UA-225649296-2";
-import auth0 from "auth0-js";
+const TRACKING_ID = "G-NCNKDZ0R29";
 
 import { auth0Client } from "./utils/misc";
 import Landing from "./modules/landing/landing";
@@ -214,11 +201,7 @@ const Root = () => {
     nav: s.nav,
     tags: s.tags,
   }));
-  const domain = window.__ENV__.auth0.domain.replace(/(https:\/\/|\/)/gi, "");
-  const [
-    stakeholderSignupModalVisible,
-    setStakeholderSignupModalVisible,
-  ] = useState(false);
+  const [setStakeholderSignupModalVisible] = useState(false);
 
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [filters, setFilters] = useState(null);
