@@ -165,53 +165,58 @@ export const ResourceCard = ({ item, index, showModal }) => {
     <>
       <h3>{item.title}</h3>
       <div className="bottom-panel">
-        {item?.entityConnections?.length > 0 &&
-        <div className="connections">
-          <Avatar.Group
-            maxCount={2}
-            size="large"
-            maxStyle={{
-              color: "#f56a00",
-              backgroundColor: "#fde3cf",
-              cursor: "pointer",
-            }}
-          >
-            {item?.entityConnections?.map((connection, index) => (
-              <Avatar
-                className="related-content-avatar"
-                style={{ border: "none" }}
-                key={item?.entity || index}
-                src={
-                  connection?.image ? (
-                    connection?.image
-                  ) : item?.image ? (
-                    item.image
-                  ) : (
-                    <Avatar
-                      style={{
-                        backgroundColor: "#09689A",
-                        verticalAlign: "middle",
-                      }}
-                      size={40}
-                    >
-                      {item?.entity?.substring(0, 2)}
-                    </Avatar>
-                  )
-                }
-              />
-            ))}
-          </Avatar.Group>
-        </div>
-        }
+        {item?.entityConnections?.length > 0 && (
+          <div className="connections">
+            <Avatar.Group
+              maxCount={2}
+              size="large"
+              maxStyle={{
+                color: "#f56a00",
+                backgroundColor: "#fde3cf",
+                cursor: "pointer",
+              }}
+            >
+              {item?.entityConnections?.map((connection, index) => (
+                <Avatar
+                  className="related-content-avatar"
+                  style={{ border: "none" }}
+                  key={item?.entity || index}
+                  src={
+                    connection?.image ? (
+                      connection?.image
+                    ) : item?.image ? (
+                      item.image
+                    ) : (
+                      <Avatar
+                        style={{
+                          backgroundColor: "#09689A",
+                          verticalAlign: "middle",
+                        }}
+                        size={40}
+                      >
+                        {item?.entity?.substring(0, 2)}
+                      </Avatar>
+                    )
+                  }
+                />
+              ))}
+            </Avatar.Group>
+          </div>
+        )}
         <h4>{item?.type ? topicNames(item?.type) : ""}</h4>
       </div>
     </>
-  )
-  let thumbnail = item.thumbnail
-  if(!thumbnail && item.type === 'financing_resource' || item.type === 'policy' || item.type === 'action_plan' || item.type === 'technical_resource'){
-    thumbnail = item.image
+  );
+  let thumbnail = item.thumbnail;
+  if (
+    (!thumbnail && item.type === "financing_resource") ||
+    item.type === "policy" ||
+    item.type === "action_plan" ||
+    item.type === "technical_resource"
+  ) {
+    thumbnail = item.image;
   }
-  if(thumbnail == null){
+  if (!thumbnail || thumbnail == null) {
     return (
       <div className="resource-card nothumb" key={item.id}>
         <Link
@@ -219,11 +224,12 @@ export const ResourceCard = ({ item, index, showModal }) => {
           to={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
           type={getType(item?.type)?.replace("_", "-")}
           onClick={showModal}
-          className="nothumb-container">
+          className="nothumb-container"
+        >
           {innerContent}
         </Link>
       </div>
-    )
+    );
   }
   return (
     <div className="resource-card" key={item.id}>
