@@ -1,6 +1,6 @@
 import humps from "humps";
 import auth0 from "auth0-js";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 import { useLocation } from "react-router-dom";
 
 export const tTypes = [
