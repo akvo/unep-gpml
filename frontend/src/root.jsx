@@ -348,7 +348,9 @@ const Root = () => {
   useEffect(() => {
     if (window.location.host === "digital.gpmarinelitter.org") {
       ReactGA.initialize(TRACKING_ID);
-      ReactGA.pageview(window.location.pathname + window.location.search);
+      const command = "send";
+      const object = { hitType: "pageview" };
+      ReactGA.ga(command, object);
     }
   }, []);
 
