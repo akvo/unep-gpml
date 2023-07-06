@@ -7,82 +7,16 @@
   }
   .filter-bar {
     background-color: #06496c;
-    height: 95px;
-    padding-left: 15px;
     display: flex;
-    // justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    padding: 0px 20px;
 
-    ul {
-      display: flex;
-      flex-wrap: wrap;
-      margin-bottom: 0;
-      margin-right: 15px;
-      margin-left: 5px;
-      // margin-top: 2px;
-      li {
-        width: 70px;
-        height: 70px;
-        border-radius: 6px;
-        border: 1.5px solid #d3dee7;
-        margin: 4px;
-        margin-right: 7px;
-        font-size: 10px;
-        font-weight: 550;
-        display: flex;
-        flex-direction: column;
-        color: #d3dee7;
-        cursor: pointer;
-        transition: all 0.15s ease-out;
-        .img-container {
-          margin-top: 3px;
-          display: flex;
-          flex: 1;
-          align-items: center;
-          justify-content: center;
-          svg {
-            path {
-              fill: #d3dee7;
-              transition: fill 0.15s ease-out;
-            }
-          }
-        }
-        img {
-          max-height: 38px;
-          max-width: 44px;
-        }
-        .label-container {
-          margin-top: auto;
-          line-height: 9px;
-          min-height: 16px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          text-align: center;
-          margin-bottom: 3px;
-        }
-        &:hover {
-          color: #ffb800;
-          border-color: #ffb800;
-          .img-container svg path {
-            fill: #ffb800;
-          }
-        }
-        &.selected {
-          background-color: #3fc19f;
-          border: 3px solid #adefd9;
-          color: #fff;
-          transform: scale(1.1);
-          .img-container {
-            svg {
-              path {
-                fill: #ffffff;
-              }
-            }
-          }
-        }
-      }
+    @media screen and (min-width: 0) and (max-width: 1366px) {
+      overflow: scroll;
+      overflow-y: hidden;
     }
+
     .ant-btn {
       display: flex;
       flex-direction: column;
@@ -94,7 +28,6 @@
       border: unset;
       border-radius: 4px;
       cursor: pointer;
-      margin-right: 14px;
       svg {
         width: 21px;
         height: 21px;
@@ -166,8 +99,6 @@
       }
     }
     .ant-btn:first-child {
-      flex-direction: row;
-      width: auto;
       svg {
         transform: translateY(6px);
         path {
@@ -175,12 +106,11 @@
         }
       }
       span {
-        font-size: 12px;
+        font-size: 10px;
         max-width: 60px;
         line-height: 14px;
         white-space: normal;
-        text-align: left;
-        font-weight: 500;
+        text-align: center;
         transition: color 0.15s ease-out;
       }
       &:hover {
@@ -193,8 +123,6 @@
       }
     }
     .ant-btn:last-child {
-      margin-left: auto;
-
       path {
         stroke: #fff;
       }
@@ -214,6 +142,11 @@
       min-width: 20px;
       text-align: center;
       transform: translateX(-50%);
+    }
+    .search-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
   }
   position: relative;
@@ -410,12 +343,12 @@
     }
     ul.categories {
       display: flex;
-      padding: 15px 0px 15px 30px;
+      padding: 15px 0px 15px 0px;
       background-color: #06496c;
       margin-bottom: 0;
-      @media screen and (min-width: 0) and (max-width: 1366px) {
-        overflow: scroll;
-        overflow-y: hidden;
+      .selected {
+        background-color: #fff;
+        color: #06496c;
       }
       li {
         // background-color: #dce7f3;
@@ -431,6 +364,14 @@
         letter-spacing: -0.5px;
         border: 2px solid #edf2f7;
         color: #edf2f7;
+        &.selected {
+          svg {
+            path {
+              transition: fill 0.15s ease-out;
+              fill: #06496c;
+            }
+          }
+        }
         & > div {
           display: flex;
           justify-content: center;
@@ -480,7 +421,7 @@
         }
       }
     }
-    padding-bottom: 15px;
+    padding-right: 15px;
     section {
       &.grey {
         background-color: #f6f8fa;
