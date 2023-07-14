@@ -39,4 +39,8 @@ CREATE TABLE IF NOT EXISTS rbac_role_permission (
     permission_value SMALLINT NOT NULL,
     PRIMARY KEY (role_id, permission_id));
 --;;
+CREATE INDEX IF NOT EXISTS rbac_context_resource_id_idx ON rbac_context (resource_id);
+--;;
+CREATE INDEX IF NOT EXISTS rbac_role_assignment_context_id_idx ON rbac_role_assignment (context_id);
+--;;
 COMMIT;
