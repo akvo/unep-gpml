@@ -5,7 +5,6 @@
             [gpml.db.favorite :as db.favorite]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.case-study :as dom.case-study]
-            [gpml.handler.auth :as h.auth]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.permission :as h.r.permission]
@@ -13,6 +12,7 @@
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.responses :as r]
             [gpml.handler.util :as handler.util]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util.email :as email]
             [gpml.util.malli :as util.malli]
             [gpml.util.sql :as sql-util]
@@ -78,7 +78,6 @@
                                     conn
                                     individual_connections
                                     created_by)
-        owners (map :stakeholder (filter #(= (:role %) "owner") individual_connections))
         db-case-study (-> case-study
                           (assoc :image image-url :thumbnail thumbnail-url)
                           db.case-study/case-study->db-case-study)
@@ -106,17 +105,24 @@
                          geo_coverage_country_states)
     (when (seq related_content)
       (handle-related-content conn logger cs-id related_content))
-    (doseq [stakeholder-id owners]
-      (h.auth/grant-topic-to-stakeholder! conn {:topic-id cs-id
-                                                :topic-type "case_study"
-                                                :stakeholder-id stakeholder-id
-                                                :roles ["owner"]}))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections cs-id)]
         (db.favorite/new-organisation-association conn association)))
+    (srv.permissions/create-resource-context
+     {:conn conn
+      :logger logger}
+     {:context-type :case-study
+      :resource-id cs-id
+      :entity-connections entity_connections})
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections cs-id)]
-        (db.favorite/new-stakeholder-association conn association)))
+        (db.favorite/new-stakeholder-association conn association))
+      (srv.permissions/assign-roles-to-users-from-connections
+       {:conn conn
+        :logger logger}
+       {:context-type :case-study
+        :resource-id cs-id
+        :individual-connections api-individual-connections}))
     (email/notify-admins-pending-approval
      conn
      mailjet-config
