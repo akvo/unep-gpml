@@ -184,8 +184,7 @@
                                                  :parameters {:path [:map [:id int?]]}
                                                  :handler #ig/ref :gpml.handler.initiative/get}}]]
                                         ["/technology" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                     #ig/ref :gpml.auth/auth-required
-                                                                     #ig/ref :gpml.auth/approved-user]}
+                                                                     #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:post {:summary "Create a new technology"
                                                   :swagger {:tags ["technology"]

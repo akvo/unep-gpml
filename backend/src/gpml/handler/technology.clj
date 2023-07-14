@@ -5,20 +5,20 @@
             [gpml.db.country :as db.country]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.technology :as db.technology]
             [gpml.domain.types :as dom.types]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.geo-coverage :as handler.geo]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
+            [gpml.handler.responses :as r]
             [gpml.handler.util :as handler.util]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
             [gpml.util.email :as email]
             [gpml.util.sql :as sql-util]
-            [integrant.core :as ig]
-            [ring.util.response :as resp])
+            [integrant.core :as ig])
   (:import [java.sql SQLException]))
 
 (defn- expand-entity-associations
@@ -140,25 +140,30 @@
 
 (defmethod ig/init-key :gpml.handler.technology/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params parameters] :as req}]
+  (fn [{:keys [body-params parameters user]}]
     (try
-      (jdbc/with-db-transaction [tx (:spec db)]
-        (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
-              technology-id (create-technology config tx (assoc body-params
-                                                                :created_by (:id user)
-                                                                :source (get-in parameters [:body :source])))]
-          (resp/created (:referrer req) {:success? true
-                                         :message "New technology created"
-                                         :id technology-id})))
+      (if-not (h.r.permission/operation-allowed?
+               config
+               {:user-id (:id user)
+                :entity-type :technology
+                :operation-type :create
+                :root-context? true})
+        (r/forbidden {:message "Unauthorized"})
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (let [technology-id (create-technology config tx (assoc body-params
+                                                                  :created_by (:id user)
+                                                                  :source (get-in parameters [:body :source])))]
+            (r/created {:success? true
+                        :message "New technology created"
+                        :id technology-id}))))
       (catch Exception e
         (log logger :error ::failed-to-create-technology {:exception-message (.getMessage e)})
-        (let [response {:status 500
-                        :body {:success? false
-                               :reason :could-not-create-technology}}]
+        (let [response {:success? false
+                        :reason :could-not-create-technology}]
 
           (if (instance? SQLException e)
-            response
-            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
+            (r/server-error response)
+            (r/server-error (assoc-in response [:body :error-details :error] (.getMessage e)))))))))
 
 (def ^:private post-params
   (into [:map
