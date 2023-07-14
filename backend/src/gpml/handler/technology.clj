@@ -8,12 +8,12 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.technology :as db.technology]
             [gpml.domain.types :as dom.types]
-            [gpml.handler.auth :as h.auth]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.util :as handler.util]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
             [gpml.util.email :as email]
             [gpml.util.sql :as sql-util]
@@ -89,26 +89,29 @@
                        (db.technology/new-technology conn)
                        :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
-        owners (distinct (remove nil? (flatten (conj owners
-                                                     (map #(when (= (:role %) "owner")
-                                                             (:stakeholder %))
-                                                          api-individual-connections)))))
         geo-coverage-type (keyword geo_coverage_type)]
     (when (seq related_content)
       (handler.resource.related-content/create-related-contents conn logger technology-id "technology" related_content))
     (when headquarter
       (db.country/add-country-headquarter conn {:id country :headquarter headquarter}))
-    (doseq [stakeholder-id owners]
-      (h.auth/grant-topic-to-stakeholder! conn {:topic-id technology-id
-                                                :topic-type "technology"
-                                                :stakeholder-id stakeholder-id
-                                                :roles ["owner"]}))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections technology-id)]
         (db.favorite/new-organisation-association conn association)))
+    (srv.permissions/create-resource-context
+     {:conn conn
+      :logger logger}
+     {:context-type :technology
+      :resource-id technology-id
+      :entity-connections entity_connections})
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections technology-id)]
-        (db.favorite/new-stakeholder-association conn association)))
+        (db.favorite/new-stakeholder-association conn association))
+      (srv.permissions/assign-roles-to-users-from-connections
+       {:conn conn
+        :logger logger}
+       {:context-type :technology
+        :resource-id technology-id
+        :individual-connections api-individual-connections}))
     (when (not-empty tags)
       (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
                                                                              :tag-category "general"
