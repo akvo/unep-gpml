@@ -8,11 +8,11 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.tag :as db.tag]
             [gpml.domain.types :as dom.types]
-            [gpml.handler.auth :as h.auth]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.util :as util]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util.email :as email]
             [gpml.util.sql :as sql-util]
             [integrant.core :as ig]
@@ -81,8 +81,8 @@
 
 (defn- create-initiative
   [{:keys [logger mailjet-config] :as config}
-   tx
-   {:keys [q24 tags owners related_content created_by
+   conn
+   {:keys [q24 tags related_content created_by
            entity_connections individual_connections qimage thumbnail capacity_building] :as initiative}]
   (let [data (cond-> initiative
                true
@@ -90,38 +90,41 @@
                        :individual_connections :related_content)
 
                true
-               (assoc :qimage (handler.image/assoc-image config tx qimage "initiative")
-                      :thumbnail (handler.image/assoc-image config tx thumbnail "initiative"))
+               (assoc :qimage (handler.image/assoc-image config conn qimage "initiative")
+                      :thumbnail (handler.image/assoc-image config conn thumbnail "initiative"))
 
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
         initiative-id (:id (db.initiative/new-initiative
-                            tx
+                            conn
                             (update data :source #(sql-util/keyword->pg-enum % "resource_source"))))
-        api-individual-connections (util/individual-connections->api-individual-connections tx individual_connections created_by)
-        owners (distinct (remove nil? (flatten (conj owners
-                                                     (map #(when (= (:role %) "owner")
-                                                             (:stakeholder %))
-                                                          api-individual-connections)))))
+        api-individual-connections (util/individual-connections->api-individual-connections conn individual_connections created_by)
         geo-coverage-type (keyword (first (keys q24)))]
-    (add-geo-initiative tx initiative-id geo-coverage-type (extract-geo-data data))
-    (doseq [stakeholder-id owners]
-      (h.auth/grant-topic-to-stakeholder! tx {:topic-id initiative-id
-                                              :topic-type "initiative"
-                                              :stakeholder-id stakeholder-id
-                                              :roles ["owner"]}))
+    (add-geo-initiative conn initiative-id geo-coverage-type (extract-geo-data data))
     (when (seq related_content)
-      (handler.resource.related-content/create-related-contents tx logger initiative-id "initiative" related_content))
+      (handler.resource.related-content/create-related-contents conn logger initiative-id "initiative" related_content))
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections initiative-id)]
-        (db.favorite/new-organisation-association tx association)))
+        (db.favorite/new-organisation-association conn association)))
+    (srv.permissions/create-resource-context
+     {:conn conn
+      :logger logger}
+     {:context-type :initiative
+      :resource-id initiative-id
+      :entity-connections entity_connections})
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections initiative-id)]
-        (db.favorite/new-stakeholder-association tx association)))
+        (db.favorite/new-stakeholder-association conn association))
+      (srv.permissions/assign-roles-to-users-from-connections
+       {:conn conn
+        :logger logger}
+       {:context-type :initiative
+        :resource-id initiative-id
+        :individual-connections api-individual-connections}))
     (when (not-empty tags)
-      (add-tags tx mailjet-config tags initiative-id))
+      (add-tags conn mailjet-config tags initiative-id))
     (email/notify-admins-pending-approval
-     tx
+     conn
      mailjet-config
      {:type "initiative" :title (:q2 data)})
     initiative-id))
