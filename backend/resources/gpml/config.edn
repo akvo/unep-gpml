@@ -620,8 +620,7 @@
                                                  :handler #ig/ref :gpml.handler.contact/post
                                                  :parameters #ig/ref :gpml.handler.contact/post-params}}]
                                         ["/case-study" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                     #ig/ref :gpml.auth/auth-required
-                                                                     #ig/ref :gpml.auth/approved-user]}
+                                                                     #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:post {:summary "Create a new case study"
                                                   :swagger {:tags ["case-study"]}
