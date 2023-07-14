@@ -120,6 +120,7 @@ const FlexibleForm = withRouter(
         ...(capacityBuilding && { capacityBuilding: true }),
         source: source ? source : "gpml",
       };
+      console.log(formData);
 
       transformFormData(data, formData, formSchema.schema.properties, true);
 
@@ -213,6 +214,9 @@ const FlexibleForm = withRouter(
                 ?.filter((value) => Number(value) !== -1)
                 .map((x) => parseInt(x))
             : [];
+          if (data.geoCoverageValueTransnational.includes("-1")) {
+            delete data.geoCoverageCountryGroups;
+          }
           delete data.geoCoverageValueTransnational;
         }
         if (data.geoCoverageCountries && data.geoCoverageCountries.length > 0) {
@@ -1443,7 +1447,7 @@ const FlexibleForm = withRouter(
       delete data?.tagsList;
 
       if (!/^https?:\/\//i.test(data.url)) {
-        data.url = 'http://' + data.url;
+        data.url = "http://" + data.url;
       }
 
       if (data?.publishYear) {

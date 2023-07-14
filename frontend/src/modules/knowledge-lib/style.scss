@@ -400,7 +400,7 @@
       height: calc(100vh - 200px);
       font-size: 50px;
     }
-    h3 {
+    section h3:not(.resource-card h3) {
       margin-top: 10px;
       margin-bottom: 15px;
       color: #a5b0c9;
@@ -525,7 +525,6 @@
       }
     }
     #map-landing {
-      height: 400px;
       display: flex;
       align-items: center;
     }

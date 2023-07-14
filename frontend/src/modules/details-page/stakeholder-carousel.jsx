@@ -95,13 +95,7 @@ const StakeholderCarousel = ({ stakeholders }) => {
                         <li className="list-item  connection-role">ENTITY</li>
                       ) : stakeholder?.role === "owner" ? (
                         <li className="list-item  connection-role">OWNER</li>
-                      ) : (
-                        stakeholder?.jobTitle && (
-                          <li className="list-item connection-job-title">
-                            {stakeholder?.jobTitle}
-                          </li>
-                        )
-                      )}
+                      ) : null}
                     </ul>
                   </Card>
                 </Link>

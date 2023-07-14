@@ -3,7 +3,7 @@ import { LinkedinOutlined, YoutubeOutlined } from "@ant-design/icons";
 import unepLogo from "./images/footer-logo.svg";
 import { Link } from "react-router-dom";
 import { UIStore } from "./store.js";
-import logo from "./images/gpml.svg";
+import logo from "./images/GPML-logo-alone.svg";
 import { Button, Input, notification, Alert } from "antd";
 import api from "./utils/api";
 import { CSSTransition } from "react-transition-group";
@@ -207,8 +207,8 @@ const Footer = ({ setShowMenu }) => {
           </div>
           <div className="unepInfo">
             <h2>
-              The Digital Platform is a UNEP contribution to the Global
-              Partnership on Marine Litter (GPML)
+              The Digital Platform is a UNEP contribution to the the Global
+              Partnership on Plastic Pollution and Marine Litter (GPML)
             </h2>
           </div>
         </div>

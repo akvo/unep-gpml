@@ -333,7 +333,7 @@ const detailProject = [
     key: "activityTerm",
     name: "Initiative Duration",
     value: "activityTerm",
-    type: "name",
+    type: "array",
   },
 ];
 

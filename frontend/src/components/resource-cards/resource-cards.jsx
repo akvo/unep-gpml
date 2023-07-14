@@ -161,29 +161,12 @@ const getThumbnail = (item) => {
 };
 
 export const ResourceCard = ({ item, index, showModal }) => {
-  return (
-    <div className="resource-card" key={index}>
-      <Link
-        to={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
-        id={item.id}
-        type={getType(item?.type)?.replace("_", "-")}
-        className="description-holder"
-        style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${getThumbnail(
-            item
-          )})`,
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-        }}
-        onClick={showModal}
-      >
-        <div>
-          <h3>{item.title}</h3>
-          <h4>{item?.type ? topicNames(item?.type) : ""}</h4>
-        </div>
-        <div className="bottom-panel">
-          <div>
+  const innerContent = (
+    <>
+      <h3>{item.title}</h3>
+      <div className="bottom-panel">
+        {item?.entityConnections?.length > 0 && (
+          <div className="connections">
             <Avatar.Group
               maxCount={2}
               size="large"
@@ -219,13 +202,54 @@ export const ResourceCard = ({ item, index, showModal }) => {
               ))}
             </Avatar.Group>
           </div>
-          <div className="read-more">
-            Read More <ArrowRightOutlined />
-          </div>
-        </div>
+        )}
+        <h4>{item?.type ? topicNames(item?.type) : ""}</h4>
+      </div>
+    </>
+  );
+  let thumbnail = item.thumbnail;
+  if (
+    (!thumbnail && item.type === "financing_resource") ||
+    item.type === "policy" ||
+    item.type === "action_plan" ||
+    item.type === "technical_resource"
+  ) {
+    thumbnail = item.image;
+  }
+  if (!thumbnail || thumbnail == null) {
+    return (
+      <div className="resource-card nothumb" key={item.id}>
+        <Link
+          id={item.id}
+          to={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
+          type={getType(item?.type)?.replace("_", "-")}
+          onClick={showModal}
+          className="nothumb-container"
+        >
+          {innerContent}
+        </Link>
+      </div>
+    );
+  }
+  return (
+    <div className="resource-card" key={item.id}>
+      <Link
+        to={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
+        id={item.id}
+        type={getType(item?.type)?.replace("_", "-")}
+        className="description-holder"
+        style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${thumbnail})`,
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+        }}
+        onClick={showModal}
+      >
+        {innerContent}
       </Link>
       <div className="thumb-container">
-        <img src={getThumbnail(item)} alt={item?.type} />
+        <img src={thumbnail} alt={item?.type} />
       </div>
     </div>
   );

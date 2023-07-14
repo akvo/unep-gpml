@@ -472,7 +472,8 @@ const DetailsView = ({
                       <>
                         {data?.geoCoverageType !== "sub-national" &&
                           data?.geoCoverageType !== "national" &&
-                          data?.geoCoverageCountryGroups?.length > 0 &&
+                          (data?.geoCoverageCountryGroups?.length > 0 ||
+                            data.geoCoverageCountries.length > 0) &&
                           renderGeoCoverageCountryGroups(
                             data,
                             countries,
@@ -493,13 +494,7 @@ const DetailsView = ({
                                     data,
                                     countries,
                                     transnationalOptions
-                                  ) &&
-                                    ", " +
-                                      renderCountries(
-                                        data,
-                                        countries,
-                                        transnationalOptions
-                                      )}
+                                  )}
                                 </div>
                               </Row>
                             </div>

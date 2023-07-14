@@ -215,13 +215,13 @@ const renderSectionMission = () => {
       <div className="ui container section-mission-wrapper">
         <div className="section-mission-text">
           <h2 className="text-green">
-            The Global Partnership on Marine Litter (GPML)
+            Global Partnership on Plastic Pollution and Marine Litter (GPML)
           </h2>
           <p className="txt-emphasis text-white">
-            The Global Partnership on Marine Litter (GPML) was launched at the
-            United Nations Conference on Sustainable Development (Rio+20) in
-            June 2012, in response to a request set out in the Manila
-            Declaration on ‘Furthering the Implementation of the Global
+            Global Partnership on Plastic Pollution and Marine Litter (GPML) was
+            launched at the United Nations Conference on Sustainable Development
+            (Rio+20) in June 2012, in response to a request set out in the
+            Manila Declaration on ‘Furthering the Implementation of the Global
             Programme of Action for the Protection of the Marine Environment
             from Land-based Activities’. The partnership is led by a Steering
             Committee and the United Nations Environment Programme (UNEP)
