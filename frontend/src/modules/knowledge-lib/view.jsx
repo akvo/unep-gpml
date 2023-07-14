@@ -67,11 +67,8 @@ function Library({ setLoginVisible, isAuthenticated }) {
   return (
     <div id="knowledge-lib">
       <Switch>
-        <Route exact path="/knowledge/library">
-          <Redirect to="/knowledge/library/resource/" exact={true} />
-        </Route>
         <Route
-          path="/knowledge/library/resource/:view?/:type?"
+          path="/knowledge/library/:view?/:type?"
           render={(props) => (
             <ResourceView
               {...{

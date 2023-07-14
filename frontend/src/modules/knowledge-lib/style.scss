@@ -41,13 +41,17 @@
         text-transform: capitalize;
         color: #ffffff;
       }
-      &:hover {
-        // color: #ffffff;
-      }
       &.selected {
         svg {
           path {
             stroke: #ffa800;
+          }
+        }
+        &:hover {
+          svg {
+            path {
+              stroke: #fff;
+            }
           }
         }
       }
@@ -371,6 +375,14 @@
               fill: #06496c;
             }
           }
+
+          &:hover {
+            color: #06496c;
+            border-color: #fff;
+            & > div svg path {
+              fill: #06496c;
+            }
+          }
         }
         & > div {
           display: flex;
@@ -399,25 +411,12 @@
             transform: translateY(4px);
           }
         }
-        // &:nth-child(2),
-        // &:nth-child(5),
-        // &:nth-child(9) {
-        //   span {
-        //     white-space: normal;
-        //     max-width: 100px;
-        //     line-height: 15px;
-        //   }
-        // }
         &:hover {
           color: #ffb800;
           border-color: #ffb800;
           & > div svg path {
             fill: #ffb800;
           }
-          // transform: scale(1.2);
-          // z-index: 20;
-          // border: 1px solid rgba(0, 0, 0, 0.7);
-          // box-shadow: 0px 0px 5px rgba(95, 103, 114, 0.25);
         }
       }
     }

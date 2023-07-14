@@ -8,7 +8,6 @@ import FilterModal from "./filter-modal";
 import ResourceCards, {
   ResourceCard,
 } from "../../components/resource-cards/resource-cards";
-import { Icon } from "../../components/svg-icon/svg-icon";
 import { LoadingOutlined, DownOutlined } from "@ant-design/icons";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
 import { ReactComponent as SearchIcon } from "../../images/search-icon.svg";
@@ -94,7 +93,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
       .then((resp) => {
         setLoading(false);
         setData(resp?.data);
-        if (view === "all") {
+        if (!view) {
           setTotalCount(resp?.data?.counts);
         }
         setCountData(resp?.data?.counts);
@@ -203,7 +202,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
 
   const handleCategoryFilter = (key) => {
     history.push({
-      pathname: `/knowledge/library/resource/${
+      pathname: `/knowledge/library/${
         view ? (view === "category" ? "grid" : view) : "map"
       }/${key.replace(/_/g, "-")}/`,
       search: search,
@@ -279,16 +278,14 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             </div>
           </button>
         </div>
-        {(view === "map" || view === "all" || view === "topic") && (
+        {(view === "map" || !view || view === "topic") && (
           <div style={{ position: "relative" }}>
             <ResourceCards
               items={data?.results}
               showMoreCardAfter={20}
               showMoreCardClick={() => {
                 history.push({
-                  pathname: `/knowledge/library/resource/grid/${
-                    type ? type : ""
-                  }`,
+                  pathname: `/knowledge/library/grid/${type ? type : ""}`,
                   search: history.location.search,
                 });
               }}
@@ -307,7 +304,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             )}
           </div>
         )}
-        {(view === "map" || view === "all") && (
+        {(view === "map" || !view) && (
           <Maps
             query={query}
             box={box}
@@ -471,7 +468,7 @@ const GridView = ({
 const ViewSwitch = ({ type, view, history }) => {
   const viewOptions = ["map", "grid", "category"];
   const [visible, setVisible] = useState(false);
-  view = view === "all" ? "map" : view;
+  view = !view ? "map" : view;
 
   return (
     <div className="view-switch-container">
@@ -500,7 +497,7 @@ const ViewSwitch = ({ type, view, history }) => {
                   onClick={() => {
                     setVisible(!visible);
                     history.push({
-                      pathname: `/knowledge/library/resource/${viewOption}/${
+                      pathname: `/knowledge/library/${viewOption}/${
                         type && viewOption !== "category" ? type : ""
                       }`,
                       search: history.location.search,

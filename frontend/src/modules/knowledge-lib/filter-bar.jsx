@@ -133,18 +133,15 @@ const FilterBar = ({
       <div className="overview">
         <ul className="categories">
           <li
-            className={`${view === "all" ? "selected" : ""}`}
+            className={`${!type ? "selected" : ""}`}
             onClick={() => {
               history.push({
-                pathname: `/knowledge/library/resource/all`,
+                pathname: `/knowledge/library/${view ? view : ""}`,
               });
             }}
           >
             <div>
-              <Icon
-                name={`all`}
-                fill={`${view === "all" ? "#06496c" : "#fff"}`}
-              />
+              <Icon name={`all`} fill={`${!view ? "#06496c" : "#fff"}`} />
               <b>{allResources}</b>
             </div>
             <span>All Resources</span>
@@ -155,7 +152,9 @@ const FilterBar = ({
               key={t.key}
               onClick={() => {
                 history.push({
-                  pathname: `/knowledge/library/resource/map/${t.key}`,
+                  pathname: `/knowledge/library/${
+                    view ? (view === "category" ? "grid" : view) : "map"
+                  }/${t.key}`,
                 });
               }}
             >
