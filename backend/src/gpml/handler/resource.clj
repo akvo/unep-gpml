@@ -6,12 +6,13 @@
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
             [gpml.db.resource :as db.resource]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.types :as dom.types]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.geo-coverage :as handler.geo]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
+            [gpml.handler.responses :as r]
             [gpml.handler.util :as handler.util]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
@@ -137,33 +138,38 @@
 
 (defmethod ig/init-key :gpml.handler.resource/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params parameters] :as req}]
+  (fn [{:keys [body-params parameters user]}]
     (try
-      (jdbc/with-db-transaction [tx (:spec db)]
-        (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
-              resource-id (create-resource config
-                                           tx
-                                           (assoc body-params
-                                                  :created_by (:id user)
-                                                  :source (get-in parameters [:body :source])))
-              activity {:id (util/uuid)
-                        :type "create_resource"
-                        :owner_id (:id user)
-                        :metadata {:resource_id resource-id
-                                   :resource_type (:resource_type body-params)}}]
-          (db.activity/create-activity tx activity)
-          (resp/created (:referrer req) {:success? true
-                                         :message "New resource created"
-                                         :id resource-id})))
+      (if-not (h.r.permission/operation-allowed?
+               config
+               {:user-id (:id user)
+                :entity-type :resource
+                :operation-type :create
+                :root-context? true})
+        (r/forbidden {:message "Unauthorized"})
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (let [resource-id (create-resource config
+                                             tx
+                                             (assoc body-params
+                                                    :created_by (:id user)
+                                                    :source (get-in parameters [:body :source])))
+                activity {:id (util/uuid)
+                          :type "create_resource"
+                          :owner_id (:id user)
+                          :metadata {:resource_id resource-id
+                                     :resource_type (:resource_type body-params)}}]
+            (db.activity/create-activity tx activity)
+            (r/created {:success? true
+                        :message "New resource created"
+                        :id resource-id}))))
       (catch Exception e
         (log logger :error ::failed-to-create-resource {:exception-message (.getMessage e)})
-        (let [response {:status 500
-                        :body {:success? false
-                               :reason :could-not-create-resource}}]
+        (let [response {:success? false
+                        :reason :could-not-create-resource}]
 
           (if (instance? SQLException e)
-            response
-            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
+            (r/server-error response)
+            (r/server-error (assoc-in response [:body :error-details :error] (.getMessage e)))))))))
 
 (def ^:private post-params
   [:and

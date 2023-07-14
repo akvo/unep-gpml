@@ -151,8 +151,7 @@
                                                   :parameters {:body #ig/ref :gpml.handler.event/post-params}
                                                   :handler #ig/ref :gpml.handler.event/post}}]]
                                         ["/resource" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                   #ig/ref :gpml.auth/auth-required
-                                                                   #ig/ref :gpml.auth/approved-user]}
+                                                                   #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:post {:summary "Create a new resource"
                                                   :swagger {:tags ["resource"]
