@@ -3,7 +3,6 @@
             [duct.logger :refer [log]]
             [gpml.db.case-study :as db.case-study]
             [gpml.db.favorite :as db.favorite]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.case-study :as dom.case-study]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.geo-coverage :as handler.geo]
@@ -131,7 +130,7 @@
 
 (defmethod ig/init-key :gpml.handler.case-study/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims parameters user]}]
+  (fn [{:keys [parameters user]}]
     (try
       (if (h.r.permission/operation-allowed?
            config
@@ -139,17 +138,13 @@
             :entity-type :case-study
             :operation-type :create
             :root-context? true})
-        (let [stakeholder (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)]
-          (if-not (seq stakeholder)
-            (r/server-error {:success? false
-                             :reason :failed-to-get-stakeholder})
-            (jdbc/with-db-transaction [tx (:spec db)]
-              (let [cs-id (create-case-study
-                           config
-                           tx
-                           (assoc-in parameters [:body :created_by] (:id stakeholder)))]
-                (r/ok {:success? true
-                       :id cs-id})))))
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (let [cs-id (create-case-study
+                       config
+                       tx
+                       (assoc-in parameters [:body :created_by] (:id user)))]
+            (r/ok {:success? true
+                   :id cs-id})))
         (r/forbidden {:message "Unauthorized"}))
       (catch Exception e
         (log logger :error ::failed-to-create-case-study {:exception-message (.getMessage e)})
