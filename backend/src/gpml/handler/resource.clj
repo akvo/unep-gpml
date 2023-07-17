@@ -18,8 +18,7 @@
             [gpml.util :as util]
             [gpml.util.email :as email]
             [gpml.util.sql :as sql-util]
-            [integrant.core :as ig]
-            [ring.util.response :as resp])
+            [integrant.core :as ig])
   (:import [java.sql SQLException]))
 
 (defn- expand-entity-associations
@@ -51,7 +50,7 @@
            geo_coverage_countries geo_coverage_country_groups
            geo_coverage_value_subnational_city geo_coverage_country_states
            attachments country urls tags remarks thumbnail
-           created_by url owners info_docs sub_content_type related_content
+           created_by url info_docs sub_content_type related_content
            first_publication_date latest_amendment_date document_preview
            entity_connections individual_connections language
            capacity_building source]}]
