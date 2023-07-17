@@ -5,12 +5,13 @@
             [gpml.db.initiative :as db.initiative]
             [gpml.db.resource.connection :as db.resource.connection]
             [gpml.db.resource.tag :as db.resource.tag]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.tag :as db.tag]
             [gpml.domain.types :as dom.types]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.geo-coverage :as handler.geo]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
+            [gpml.handler.responses :as r]
             [gpml.handler.util :as util]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util.email :as email]
@@ -131,27 +132,32 @@
 
 (defmethod ig/init-key :gpml.handler.initiative/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params parameters] :as req}]
+  (fn [{:keys [body-params parameters user]}]
     (try
-      (jdbc/with-db-transaction [tx (:spec db)]
-        (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
-              initiative-id (create-initiative config
-                                               tx
-                                               (assoc body-params
-                                                      :created_by (:id user)
-                                                      :source (get-in parameters [:body :source])))]
-          (resp/created (:referrer req) {:success? true
-                                         :message "New initiative created"
-                                         :id initiative-id})))
+      (if-not (h.r.permission/operation-allowed?
+               config
+               {:user-id (:id user)
+                :entity-type :initiative
+                :operation-type :create
+                :root-context? true})
+        (r/forbidden {:message "Unauthorized"})
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (let [initiative-id (create-initiative config
+                                                 tx
+                                                 (assoc body-params
+                                                        :created_by (:id user)
+                                                        :source (get-in parameters [:body :source])))]
+            (r/created {:success? true
+                        :message "New initiative created"
+                        :id initiative-id}))))
       (catch Exception e
         (log logger :error ::failed-to-create-initiative {:exception-message (.getMessage e)})
-        (let [response {:status 500
-                        :body {:success? false
-                               :reason :could-not-create-initiative}}]
+        (let [response {:success? false
+                        :reason :could-not-create-initiative}]
 
           (if (instance? SQLException e)
-            response
-            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
+            (r/server-error response)
+            (r/server-error (assoc-in response [:body :error-details :error] (.getMessage e)))))))))
 
 (defn- expand-related-initiative-content
   [conn initiative-id]

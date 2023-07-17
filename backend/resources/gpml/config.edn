@@ -170,8 +170,7 @@
                                         ["/initiative"
                                          [""
                                           {:post {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                               #ig/ref :gpml.auth/auth-required
-                                                               #ig/ref :gpml.auth/approved-user]
+                                                               #ig/ref :gpml.auth/auth-required]
                                                   :summary "Create a new initiative"
                                                   :swagger {:tags ["initiative"]
                                                             :security [{:id_token []}]}
