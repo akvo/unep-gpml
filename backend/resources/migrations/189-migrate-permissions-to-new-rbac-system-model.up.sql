@@ -102,11 +102,6 @@ INSERT INTO rbac_context(id, context_type_name, resource_id, parent)
 SELECT uuid_generate_v4(), 'project', id, '00000000-0000-0000-0000-000000000000'
 FROM project;
 --;;
---;; Comment contexts
-INSERT INTO rbac_context(id, context_type_name, resource_id, parent)
-SELECT uuid_generate_v4(), 'comment', id, '00000000-0000-0000-0000-000000000000'
-FROM comment;
---;;
 --;; Event resource-owner rbac_role_assignment
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
 SELECT '2a06dc77-50f4-4b99-8599-54f73052775b', rc.id, s.id
@@ -316,14 +311,6 @@ INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
 SELECT '6fd14e4b-4b52-4264-98d0-394e225829e0', '00000000-0000-0000-0000-000000000000', id
 FROM stakeholder
 WHERE review_status = 'SUBMITTED' AND role != 'ADMIN';
---;;
---;; Stakeholder comment-owner rbac_role_assignment
-INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
-SELECT '44d4c87a-82ee-4ec1-a814-cd730c1ba227', rc.id, s.id
-FROM stakeholder s
-INNER JOIN comment c ON c.author_id = s.id
-INNER JOIN rbac_context rc ON rc.resource_id = c.id AND rc.context_type_name = 'comment'
-GROUP BY s.id, rc.id, c.id;
 --;;
 --;; Focal point permission migration. We are setting it at
 --;; organisation context level.  That means all resources in the

@@ -14,9 +14,6 @@ VALUES (
     'stakeholder',
     'Stakeholder-level context type'),
 (
-    'comment',
-    'Comment-level context type'),
-(
     'event',
     'Event-level context type'),
 (
@@ -121,16 +118,6 @@ VALUES (
     'application/read-suggested-profiles',
     'Allows reading suggested profiles data',
     'application'),
-(
-    '8168d22c-cb31-4b69-8da0-0970e89fb6b6',
-    'comment/update',
-    'Allows updating a comment',
-    'comment'),
-(
-    '23816fe9-e3e8-4c5a-a1de-ce09906365c1',
-    'comment/delete',
-    'Allows deleting a comment',
-    'comment'),
 (
     '31767296-c109-464e-806f-522ab9501893',
     'organisation/read',
@@ -297,6 +284,11 @@ VALUES (
     'Allows bookmarking a project',
     'project'),
 (
+    '934fa824-229e-4fe3-8c73-f4de4ce69eba',
+    'project/read',
+    'Allows reading the information of a project',
+    'project'),
+(
     'be3a9fc5-d0e5-4c34-949e-d81f93506b9a',
     'case-study/update',
     'Allows updating a case study',
@@ -338,10 +330,6 @@ VALUES (
     '2a06dc77-50f4-4b99-8599-54f73052775b',
     'resource-owner',
     'The owner of a resource'),
-(
-    '44d4c87a-82ee-4ec1-a814-cd730c1ba227',
-    'comment-owner',
-    'Owner of a comment'),
 (
     '6fd14e4b-4b52-4264-98d0-394e225829e0',
     'unapproved-user',
@@ -438,6 +426,10 @@ VALUES (
 (
     '2ecb82a5-5aff-47ba-8889-5cfdc3199550',
     'd6e94e45-52c1-4f85-ac8c-9e2c56551ec8',
+    1),
+(
+    '2ecb82a5-5aff-47ba-8889-5cfdc3199550',
+    '934fa824-229e-4fe3-8c73-f4de4ce69eba',
     1),
 (
     '10ee926b-cf5c-44eb-82b9-e4c3d283aff1',
@@ -542,14 +534,6 @@ VALUES (
 (
     '2a06dc77-50f4-4b99-8599-54f73052775b',
     'e73f86ad-c0db-4eb1-99a7-123c45a1230a',
-    1),
-(
-    '44d4c87a-82ee-4ec1-a814-cd730c1ba227',
-    '8168d22c-cb31-4b69-8da0-0970e89fb6b6',
-    1),
-(
-    '44d4c87a-82ee-4ec1-a814-cd730c1ba227',
-    '23816fe9-e3e8-4c5a-a1de-ce09906365c1',
     1),
 (
     '6fd14e4b-4b52-4264-98d0-394e225829e0',
