@@ -50,9 +50,23 @@
      config
      {:context-type context-type
       :resource-id resource-id
-      :parent-resource-id owner-entity-id
-      :parent-context-type (when owner-entity-id
-                             organisation-context-type)})))
+      :parent-resource-id (if owner-entity-id
+                            owner-entity-id
+                            root-app-resource-id)
+      :parent-context-type (if owner-entity-id
+                             organisation-context-type
+                             root-app-context-type)})))
+
+(defn delete-resource-context
+  [{:keys [conn logger]} {:keys [resource-id context-type-name]}]
+  (let [result (rbac/delete-context!
+                conn
+                logger
+                {:resource-id resource-id
+                 :context-type-name context-type-name})]
+    (if (:success? result)
+      result
+      (assoc result :reason :failed-to-delete-context))))
 
 (defn assign-roles-to-users-from-connections
   "FIXME: Add docstring"
