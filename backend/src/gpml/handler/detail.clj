@@ -397,55 +397,57 @@
 (defmethod extra-details :nothing [_ _ _]
   nil)
 
+;; TODO: refactor this. With the exception of the related_content
+;; table the other tables should have a ON DELETE CASCADE constraint
+;; so the database does the deletion work for us. And the
+;; related_content records deletion should be handled by a HugSQL
+;; function and not explicitly written here.
 (defn- common-queries
-  [table {:keys [topic-id]} & [geo url tags related-content]]
+  [topic-type topic-id {:keys [url? related-content?]}]
   (filter some?
-          [(when geo [(format "delete from %s_geo_coverage where %s = ?" table table) topic-id])
-           (when url [(format "delete from %s_language_url where %s = ?" table table) topic-id])
-           (when tags [(format "delete from %s_tag where %s = ?" table table) topic-id])
-           (when related-content ["delete from related_content
+          [(when url? [(format "delete from %s_language_url where %s = ?" topic-type topic-type) topic-id])           
+           (when related-content? ["delete from related_content
             where (resource_id = ? and resource_table_name = ?::regclass)
             or (related_resource_id = ? and related_resource_table_name = ?::regclass)"
-                                  topic-id table topic-id table])
-           (when (= "organisation" table)
+                                   topic-id topic-type topic-id topic-type])
+           (when (= "organisation" topic-type)
              ["delete from resource_organisation where organisation=?" topic-id])
-           (when (= "resource" table)
+           (when (= "resource" topic-type)
              ["delete from resource_organisation where resource=?" topic-id])
-           [(format "delete from %s where id = ?" table) topic-id]]))
+           ["delete from rbac_context where resource_id = ? and context_type_name = ?" topic-id topic-type]
+           [(format "delete from %s where id = ?" topic-type) topic-id]]))
 
 (defmethod ig/init-key :gpml.handler.detail/delete
-  [_ {:keys [db logger]}]
+  [_ {:keys [db logger] :as config}]
   (fn [{{:keys [path]} :parameters user :user}]
     (try
-      (let [conn        (:spec db)
-            topic-id    (:topic-id path)
-            topic       (resolve-resource-type (:topic-type path))
-            resource (handler.res-permission/get-resource-if-allowed conn
-                                                                     user
-                                                                     topic
-                                                                     topic-id
-                                                                     {:read? false})
-            authorized? (when (not (and (= topic "stakeholder")
-                                        (= topic-id (:id user))))
-                          resource)
-
-            sqls (condp = topic
-                   "policy" (common-queries topic path true false true true)
-                   "event" (common-queries topic path true true true true)
-                   "technology" (common-queries topic path true true true true)
-                   "organisation" (common-queries topic path true false true false)
-                   "stakeholder" [["delete from stakeholder where id = ?" (:topic-id path)]]
-                   "initiative" (common-queries topic path true false true true)
-                   "resource" (common-queries topic path true true true true)
-                   "case_study" (common-queries topic path true false true true))]
-        (if authorized?
-          (r/ok (do
-                  (jdbc/with-db-transaction [tx-conn conn]
-                    (doseq [s sqls]
-                      (jdbc/execute! tx-conn s)))
-                  {:deleted {:topic-id (:topic-id path)
-                             :topic topic}}))
-          (r/forbidden {:message "Unauthorized"})))
+      (let [topic-id (:topic-id path)
+            topic-type (resolve-resource-type (:topic-type path))]
+        (if (= topic-type "stakeholder")
+          (r/forbidden {:message "Unauthorized"})
+          (let [authorized? (handler.res-permission/operation-allowed?
+                             config
+                             {:user-id (:id user)
+                              :entity-type (keyword topic-type)
+                              :entity-id topic-id
+                              :operation-type :delete
+                              :root-context? false})]
+            (if-not authorized?
+              (r/forbidden {:message "Unauthorized"})
+              (let [sts (condp = topic-type
+                          "policy" (common-queries topic-type topic-id {:url? false :related-content? true})
+                          "event" (common-queries topic-type topic-id {:url? true :related-content? true})
+                          "technology" (common-queries topic-type topic-id {:url? true :related-content? true})
+                          "organisation" (common-queries topic-type topic-id {:url? false :related-content? false})
+                          "initiative" (common-queries topic-type topic-id {:url? false :related-content? true})
+                          "resource" (common-queries topic-type topic-id {:url? true :related-content? true})
+                          "case_study" (common-queries topic-type topic-id {:url? true :related-content? true}))]
+                (jdbc/with-db-transaction [tx (:spec db)]
+                  (doseq [st sts]
+                    (jdbc/execute! tx st)))
+                (r/ok {:success? true
+                       :deleted {:topic-id topic-id
+                                 :topic-type topic-type}}))))))
       (catch Exception e
         (log logger :error ::delete-resource-failed {:exception-message (.getMessage e)
                                                      :context-data path})
