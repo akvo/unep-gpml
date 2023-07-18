@@ -119,6 +119,11 @@ VALUES (
     'Allows reading suggested profiles data',
     'application'),
 (
+    'abd6b37b-11d8-4098-9d7d-feebc49d99be',
+    'application/read-projects',
+    'Allows reading the information of a collection of projects (without specific restrictions)',
+    'application'),
+(
     '31767296-c109-464e-806f-522ab9501893',
     'organisation/read',
     'Allows reading organisation data',
@@ -430,6 +435,10 @@ VALUES (
 (
     '2ecb82a5-5aff-47ba-8889-5cfdc3199550',
     '934fa824-229e-4fe3-8c73-f4de4ce69eba',
+    1),
+(
+    '2ecb82a5-5aff-47ba-8889-5cfdc3199550',
+    'abd6b37b-11d8-4098-9d7d-feebc49d99be',
     1),
 (
     '10ee926b-cf5c-44eb-82b9-e4c3d283aff1',
