@@ -13,6 +13,7 @@
             [gpml.db.organisation :as db.organisation]
             [gpml.db.policy :as db.policy]
             [gpml.db.project :as db.project]
+            [gpml.db.rbac-util :as db.rbac-util]
             [gpml.db.resource.connection :as db.resource.connection]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.submission :as db.submission]
@@ -298,78 +299,94 @@
      []
      related-contents)))
 
+(defn- add-stakeholder-connections
+  [db resource]
+  (let [search-opts {:resource-id (:id resource)
+                     :resource-type (resolve-resource-type (:type resource))}
+        sth-conns (->> (db.resource.connection/get-resource-stakeholder-connections db search-opts)
+                       (map (fn [sth-conn]
+                              (dissoc
+                               (->> sth-conn
+                                    (handler.stakeholder.tag/unwrap-tags)
+                                    (merge sth-conn))
+                               :tags))))]
+    (assoc resource :stakeholder_connections sth-conns)))
+
 (defn- add-extra-details
   [db {:keys [id affiliation] :as resource} resource-type
-   {:keys [tags? entity-connections? stakeholder-connections? related-content? affiliation?]
-    :or {tags? true entity-connections? true
+   {:keys [owners? tags? entity-connections?
+           stakeholder-connections? related-content? affiliation?]
+    :or {owners? true tags? true entity-connections? true
          stakeholder-connections? true related-content? true
          affiliation? false}}]
-  (cond-> resource
-    tags?
-    (assoc :tags (db.resource.tag/get-resource-tags db {:table (str (resolve-resource-type resource-type) "_tag")
-                                                        :resource-col (resolve-resource-type resource-type)
-                                                        :resource-id id}))
+  (let [resolved-resource-type (resolve-resource-type resource-type)]
+    (cond-> (assoc resource :type resource-type)
+      tags?
+      (assoc :tags (db.resource.tag/get-resource-tags db {:table (str (resolve-resource-type resource-type) "_tag")
+                                                          :resource-col (resolve-resource-type resource-type)
+                                                          :resource-id id}))
 
-    entity-connections?
-    (assoc :entity_connections (db.resource.connection/get-resource-entity-connections db {:resource-id id
-                                                                                           :resource-type (resolve-resource-type resource-type)}))
+      entity-connections?
+      (assoc :entity_connections (db.resource.connection/get-resource-entity-connections db {:resource-id id
+                                                                                             :resource-type resolved-resource-type}))
 
-    stakeholder-connections?
-    (assoc :stakeholder_connections (->> (db.resource.connection/get-resource-stakeholder-connections db {:resource-id id
-                                                                                                          :resource-type (resolve-resource-type resource-type)})
-                                         (map (fn [sc] (dissoc (merge sc (handler.stakeholder.tag/unwrap-tags sc)) :tags)))))
+      stakeholder-connections?
+      (->> (add-stakeholder-connections db))
 
-    related-content?
-    (assoc :related_content (expand-related-content db id (resolve-resource-type resource-type)))
+      related-content?
+      (assoc :related_content (expand-related-content db id (resolve-resource-type resource-type)))
 
-    (and affiliation? affiliation)
-    (assoc :affiliation (db.organisation/organisation-by-id db {:id affiliation}))
+      (and affiliation? affiliation)
+      (assoc :affiliation (db.organisation/organisation-by-id db {:id affiliation}))
 
-    true
-    (assoc :type resource-type)))
+      owners?
+      (assoc :owners (->> (db.rbac-util/get-users-with-granted-permission-on-resource db {:resource-id id
+                                                                                          :context-type-name resolved-resource-type
+                                                                                          :permission-name (str resolved-resource-type "/" "update")})
+                          (mapv :user_id))))))
 
-(defmulti extra-details (fn [resource-type _ _] resource-type) :default :nothing)
+(defmulti extra-details (fn [_ resource-type _] resource-type) :default :nothing)
 
-(defmethod extra-details "initiative" [resource-type db initiative]
+(defmethod extra-details "initiative" [db resource-type initiative]
   (merge
    (add-extra-details db initiative resource-type {})
    (dom.initiative/parse-initiative-details (db.initiative/initiative-by-id db initiative))))
 
-(defmethod extra-details "policy" [resource-type db policy]
+(defmethod extra-details "policy" [db resource-type policy]
   (merge
    (add-extra-details db policy resource-type {})
    {:language (db.policy/language-by-policy-id db (select-keys policy [:id]))}
    (when-let [implementing-mea (:implementing_mea policy)]
      {:implementing_mea (:name (db.country-group/country-group-by-id db {:id implementing-mea}))})))
 
-(defmethod extra-details "technology" [resource-type db technology]
+(defmethod extra-details "technology" [db resource-type technology]
   (merge
    (add-extra-details db technology resource-type {})
    (when-let [headquarters-country (:country technology)]
      {:headquarters (first (gpml.db.country/get-countries db {:filters {:ids [headquarters-country]}}))})))
 
-(defmethod extra-details "technical_resource" [resource-type db resource]
+(defmethod extra-details "technical_resource" [db resource-type resource]
   (add-extra-details db resource resource-type {}))
 
-(defmethod extra-details "financing_resource" [resource-type db resource]
+(defmethod extra-details "financing_resource" [db resource-type resource]
   (add-extra-details db resource resource-type {}))
 
-(defmethod extra-details "case_study" [resource-type db resource]
+(defmethod extra-details "case_study" [db resource-type resource]
   (add-extra-details db resource resource-type {}))
 
-(defmethod extra-details "action_plan" [resource-type db resource]
+(defmethod extra-details "action_plan" [db resource-type resource]
   (add-extra-details db resource resource-type {}))
 
-(defmethod extra-details "event" [resource-type db event]
+(defmethod extra-details "event" [db resource-type event]
   (add-extra-details db event resource-type {}))
 
-(defmethod extra-details "organisation" [resource-type db organisation]
+(defmethod extra-details "organisation" [db resource-type organisation]
   (add-extra-details db organisation resource-type {:tags? true
                                                     :entity-connections? false
                                                     :stakeholder-connections? false
                                                     :related-content? false}))
 
-(defmethod extra-details "stakeholder" [resource-type db stakeholder]
+(defmethod extra-details "stakeholder" [db resource-type stakeholder]
   (let [details (add-extra-details db stakeholder resource-type {:tags? true
                                                                  :entity-connections? false
                                                                  :stakeholder-connections? false
@@ -440,39 +457,54 @@
                            :reason :could-not-delete-resource
                            :error-details {:error-message (.getMessage e)}}))))))
 
-(defn- get-detail
+(defn- get-detail*
   [conn table-name id opts]
-  (let [opts (merge opts {:topic-type table-name :topic-id id})
+  (let [opts (merge opts {:topic-type table-name :id id})
         {:keys [json] :as result}
-        (if (some #{table-name} ["organisation" "stakeholder"])
+        (if (get #{"organisation" "stakeholder"} table-name)
           (db.detail/get-entity-details conn opts)
           (db.detail/get-topic-details conn opts))]
     (-> result
         (dissoc :json)
         (merge json))))
 
+(defn- get-detail
+  [{:keys [db]} topic-id topic-type query]
+  (let [conn (:spec db)
+        resource-details (-> (get-detail* conn topic-type topic-id query)
+                             (dissoc :tags :remarks :name :abstract :description))]
+    (if (seq resource-details)
+      {:success? true
+       :resource-details (extra-details conn topic-type resource-details)}
+      {:success? false
+       :reason :not-found})))
+
 (defmethod ig/init-key :gpml.handler.detail/get
-  [_ {:keys [db logger]}]
+  [_ {:keys [logger] :as config}]
   (fn [{{:keys [path query]} :parameters user :user}]
     (try
-      (let [conn (:spec db)
-            topic (:topic-type path)
-            id (:topic-id path)
-            resource (handler.res-permission/get-resource-if-allowed conn
-                                                                     user
-                                                                     (resolve-resource-type topic)
-                                                                     id
-                                                                     {:read? true})]
-        (if (seq resource)
-          (if-let [details (get-detail conn topic id query)]
-            (r/ok (merge
-                   (case topic
-                     "technology" (dissoc details :tags :remarks :name)
-                     (dissoc details :tags :abstract :description))
-                   (extra-details topic conn details)
-                   {:owners (:owners details)}))
-            (r/not-found {}))
-          (r/forbidden {})))
+      (let [topic-type (:topic-type path)
+            topic-id (:topic-id path)
+            authorized? (if-not (= topic-type "stakeholder")
+                          true
+                          ;; Platform resources (topics) are public
+                          ;; except for stakeholders. To view
+                          ;; stakeholder's data calling users needs to
+                          ;; be approved and have the
+                          ;; `stakeholder/read` permission.
+                          (handler.res-permission/operation-allowed? config
+                                                                     {:user-id (:id user)
+                                                                      :entity-type :stakeholder
+                                                                      :operation-type :read
+                                                                      :root-context? true}))]
+        (if-not authorized?
+          (r/forbidden {:message "Unauthorized"})
+          (let [result (get-detail config topic-id topic-type query)]
+            (if-not (:success? result)
+              (if (= (:reason result) :not-found)
+                (r/not-found result)
+                (r/server-error result))
+              (r/ok (:resource-details result))))))
       (catch Exception e
         (log logger :error ::failed-to-get-resource-details {:exception-message (.getMessage e)
                                                              :context-data {:path-params path
