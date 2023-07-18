@@ -552,8 +552,7 @@
                                                  :parameters #ig/ref :gpml.handler.invitation/put-params
                                                  :handler #ig/ref :gpml.handler.invitation/put}}]]
                                         ["/project" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                  #ig/ref :gpml.auth/auth-required
-                                                                  #ig/ref :gpml.auth/approved-user]}
+                                                                  #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:post {:summary "Create a project"
                                                   :swagger {:tags ["project"]}
@@ -568,19 +567,16 @@
                                          ["/:id"
                                           {:get {:summary "Get a project"
                                                  :swagger {:tags ["project"]}
-                                                 :middleware [#ig/ref :gpml.auth/restrict-to-project-owner]
                                                  :parameters #ig/ref :gpml.handler.project/get-by-id-params
                                                  :responses #ig/ref :gpml.handler.project/get-by-id-responses
                                                  :handler #ig/ref :gpml.handler.project/get-by-id}
                                            :put {:summary "Update a project"
                                                  :swagger {:tags ["project"]}
-                                                 :middleware [#ig/ref :gpml.auth/restrict-to-project-owner]
                                                  :parameters #ig/ref :gpml.handler.project/put-params
                                                  :responses #ig/ref :gpml.handler.project/put-responses
                                                  :handler #ig/ref :gpml.handler.project/put}
                                            :delete {:summary "Delete a project"
                                                     :swagger {:tags ["project"]}
-                                                    :middleware [#ig/ref :gpml.auth/restrict-to-project-owner]
                                                     :parameters #ig/ref :gpml.handler.project/delete-params
                                                     :responses #ig/ref :gpml.handler.project/delete-responses
                                                     :handler #ig/ref :gpml.handler.project/delete}}]]
@@ -923,7 +919,6 @@
   :gpml.auth/approved-user {:db #ig/ref :duct.database/sql}
   :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}
   :gpml.auth/admin-or-reviewer-required-middleware {:db #ig/ref :duct.database/sql}
-  :gpml.auth/restrict-to-project-owner #ig/ref :gpml.config/common
   :gpml.auth/admin-or-profile-owner-required-middleware {}
 
   :gpml.handler.monitoring/collector {}
