@@ -8,9 +8,12 @@
             [gpml.handler.auth :as h.auth]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.geo-coverage :as handler.geo]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
+            [gpml.handler.responses :as r]
             [gpml.handler.util :as handler.util]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
             [gpml.util.email :as email]
             [gpml.util.malli :as util.malli]
@@ -113,9 +116,21 @@
     (when (not-empty entity_connections)
       (doseq [association (expand-entity-associations entity_connections policy-id)]
         (db.favorite/new-organisation-association conn association)))
+    (srv.permissions/create-resource-context
+     {:conn conn
+      :logger logger}
+     {:context-type :policy
+      :resource-id policy-id
+      :entity-connections entity_connections})
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections policy-id)]
-        (db.favorite/new-stakeholder-association conn association)))
+        (db.favorite/new-stakeholder-association conn association))
+      (srv.permissions/assign-roles-to-users-from-connections
+       {:conn conn
+        :logger logger}
+       {:context-type :policy
+        :resource-id policy-id
+        :individual-connections api-individual-connections}))
     (handler.geo/create-resource-geo-coverage conn
                                               :policy
                                               policy-id
@@ -131,18 +146,25 @@
 
 (defmethod ig/init-key :gpml.handler.policy/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params parameters] :as req}]
+  (fn [{:keys [jwt-claims body-params parameters user] :as req}]
     (try
-      (jdbc/with-db-transaction [tx (:spec db)]
-        (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
-              policy-id (create-policy config
-                                       tx
-                                       (assoc body-params
-                                              :created_by (:id user)
-                                              :source (get-in parameters [:body :source])))]
-          (resp/created (:referrer req) {:success? true
-                                         :message "New policy created"
-                                         :id policy-id})))
+      (if-not (h.r.permission/operation-allowed?
+               config
+               {:user-id (:id user)
+                :entity-type :policy
+                :operation-type :create
+                :root-context? true})
+        (r/forbidden {:message "Unauthorized"})
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
+                policy-id (create-policy config
+                                         tx
+                                         (assoc body-params
+                                                :created_by (:id user)
+                                                :source (get-in parameters [:body :source])))]
+            (resp/created (:referrer req) {:success? true
+                                           :message "New policy created"
+                                           :id policy-id}))))
       (catch Exception e
         (log logger :error ::failed-to-create-policy {:exception-message (.getMessage e)})
         (let [response {:status 500
