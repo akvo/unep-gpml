@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS rbac_context (
     id uuid PRIMARY KEY,
     context_type_name VARCHAR(127) NOT NULL REFERENCES rbac_context_type(name) ON UPDATE CASCADE,
     resource_id INTEGER NOT NULL,
-    parent uuid REFERENCES rbac_context(id) ON UPDATE CASCADE,
+    parent uuid REFERENCES rbac_context(id) ON UPDATE CASCADE ON DELETE CASCADE,
     UNIQUE(context_type_name, resource_id));
 --;;
 CREATE TABLE IF NOT EXISTS rbac_role (
@@ -18,8 +18,8 @@ CREATE TABLE IF NOT EXISTS rbac_role (
     UNIQUE (name));
 --;;
 CREATE TABLE IF NOT EXISTS rbac_role_assignment (
-    role_id uuid NOT NULL REFERENCES rbac_role(id) ON UPDATE CASCADE,
-    context_id uuid NOT NULL REFERENCES rbac_context(id) ON UPDATE CASCADE,
+    role_id uuid NOT NULL REFERENCES rbac_role(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    context_id uuid NOT NULL REFERENCES rbac_context(id) ON UPDATE CASCADE ON DELETE CASCADE,
     user_id INTEGER NOT NULL REFERENCES stakeholder(id) ON DELETE CASCADE,
     PRIMARY KEY (role_id, context_id, user_id));
 --;;
