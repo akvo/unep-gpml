@@ -42,7 +42,9 @@
           :remarks nil})))
 
 (defn- create-technology
-  [{:keys [logger mailjet-config] :as config} conn
+  [{:keys [logger mailjet-config] :as config}
+   conn
+   user
    {:keys [name organisation_type
            development_stage specifications_provided
            year_founded email country
@@ -105,13 +107,16 @@
       :entity-connections entity_connections})
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections technology-id)]
-        (db.favorite/new-stakeholder-association conn association))
-      (srv.permissions/assign-roles-to-users-from-connections
-       {:conn conn
-        :logger logger}
-       {:context-type :technology
-        :resource-id technology-id
-        :individual-connections api-individual-connections}))
+        (db.favorite/new-stakeholder-association conn association)))
+    (srv.permissions/assign-roles-to-users-from-connections
+     {:conn conn
+      :logger logger}
+     {:context-type :technology
+      :resource-id technology-id
+      :individual-connections (if (seq api-individual-connections)
+                                api-individual-connections
+                                [{:role "owner"
+                                  :stakeholder (:id user)}])})
     (when (not-empty tags)
       (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
                                                                              :tag-category "general"
@@ -150,9 +155,13 @@
                 :root-context? true})
         (r/forbidden {:message "Unauthorized"})
         (jdbc/with-db-transaction [tx (:spec db)]
-          (let [technology-id (create-technology config tx (assoc body-params
-                                                                  :created_by (:id user)
-                                                                  :source (get-in parameters [:body :source])))]
+          (let [technology-id (create-technology
+                               config
+                               tx
+                               user
+                               (assoc body-params
+                                      :created_by (:id user)
+                                      :source (get-in parameters [:body :source])))]
             (r/created {:success? true
                         :message "New technology created"
                         :id technology-id}))))

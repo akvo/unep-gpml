@@ -45,7 +45,9 @@
           :remarks nil})))
 
 (defn- create-policy
-  [{:keys [logger mailjet-config] :as config} conn
+  [{:keys [logger mailjet-config] :as config}
+   conn
+   user
    {:keys [title original_title abstract url
            data_source type_of_law record_number
            first_publication_date latest_amendment_date
@@ -124,13 +126,16 @@
       :entity-connections entity_connections})
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections policy-id)]
-        (db.favorite/new-stakeholder-association conn association))
-      (srv.permissions/assign-roles-to-users-from-connections
-       {:conn conn
-        :logger logger}
-       {:context-type :policy
-        :resource-id policy-id
-        :individual-connections api-individual-connections}))
+        (db.favorite/new-stakeholder-association conn association)))
+    (srv.permissions/assign-roles-to-users-from-connections
+     {:conn conn
+      :logger logger}
+     {:context-type :policy
+      :resource-id policy-id
+      :individual-connections (if (seq api-individual-connections)
+                                api-individual-connections
+                                [{:role "owner"
+                                  :stakeholder (:id user)}])})
     (handler.geo/create-resource-geo-coverage conn
                                               :policy
                                               policy-id
@@ -157,11 +162,13 @@
         (r/forbidden {:message "Unauthorized"})
         (jdbc/with-db-transaction [tx (:spec db)]
           (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
-                policy-id (create-policy config
-                                         tx
-                                         (assoc body-params
-                                                :created_by (:id user)
-                                                :source (get-in parameters [:body :source])))]
+                policy-id (create-policy
+                           config
+                           tx
+                           user
+                           (assoc body-params
+                                  :created_by (:id user)
+                                  :source (get-in parameters [:body :source])))]
             (resp/created (:referrer req) {:success? true
                                            :message "New policy created"
                                            :id policy-id}))))

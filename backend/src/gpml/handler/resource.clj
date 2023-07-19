@@ -42,7 +42,9 @@
           :remarks nil})))
 
 (defn- create-resource
-  [{:keys [logger mailjet-config] :as config} conn
+  [{:keys [logger mailjet-config] :as config}
+   conn
+   user
    {:keys [resource_type title publish_year
            summary value value_currency
            value_remarks valid_from valid_to image
@@ -107,13 +109,16 @@
       :entity-connections entity_connections})
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections resource-id)]
-        (db.favorite/new-stakeholder-association conn association))
-      (srv.permissions/assign-roles-to-users-from-connections
-       {:conn conn
-        :logger logger}
-       {:context-type :resource
-        :resource-id resource-id
-        :individual-connections api-individual-connections}))
+        (db.favorite/new-stakeholder-association conn association)))
+    (srv.permissions/assign-roles-to-users-from-connections
+     {:conn conn
+      :logger logger}
+     {:context-type :resource
+      :resource-id resource-id
+      :individual-connections (if (seq api-individual-connections)
+                                api-individual-connections
+                                [{:role "owner"
+                                  :stakeholder (:id user)}])})
     (when (not-empty urls)
       (let [lang-urls (map #(vector resource-id
                                     (->> % :lang
@@ -147,11 +152,13 @@
                 :root-context? true})
         (r/forbidden {:message "Unauthorized"})
         (jdbc/with-db-transaction [tx (:spec db)]
-          (let [resource-id (create-resource config
-                                             tx
-                                             (assoc body-params
-                                                    :created_by (:id user)
-                                                    :source (get-in parameters [:body :source])))
+          (let [resource-id (create-resource
+                             config
+                             tx
+                             user
+                             (assoc body-params
+                                    :created_by (:id user)
+                                    :source (get-in parameters [:body :source])))
                 activity {:id (util/uuid)
                           :type "create_resource"
                           :owner_id (:id user)

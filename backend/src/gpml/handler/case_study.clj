@@ -66,7 +66,10 @@
           :remarks nil})))
 
 (defn- create-case-study
-  [{:keys [logger mailjet-config] :as config} conn {:keys [body]}]
+  [{:keys [logger mailjet-config] :as config}
+   conn
+   user
+   {:keys [body]}]
   (let [{:keys [geo_coverage_countries geo_coverage_country_groups geo_coverage_country_states
                 tags geo_coverage_type individual_connections entity_connections related_content
                 image thumbnail created_by]} body
@@ -115,13 +118,16 @@
       :entity-connections entity_connections})
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections cs-id)]
-        (db.favorite/new-stakeholder-association conn association))
-      (srv.permissions/assign-roles-to-users-from-connections
-       {:conn conn
-        :logger logger}
-       {:context-type :case-study
-        :resource-id cs-id
-        :individual-connections api-individual-connections}))
+        (db.favorite/new-stakeholder-association conn association)))
+    (srv.permissions/assign-roles-to-users-from-connections
+     {:conn conn
+      :logger logger}
+     {:context-type :case-study
+      :resource-id cs-id
+      :individual-connections (if (seq api-individual-connections)
+                                api-individual-connections
+                                [{:role "owner"
+                                  :stakeholder (:id user)}])})
     (email/notify-admins-pending-approval
      conn
      mailjet-config
@@ -142,6 +148,7 @@
           (let [cs-id (create-case-study
                        config
                        tx
+                       user
                        (assoc-in parameters [:body :created_by] (:id user)))]
             (r/ok {:success? true
                    :id cs-id})))

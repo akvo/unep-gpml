@@ -5,7 +5,6 @@
             [gpml.db.event :as db.event]
             [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.types :as dom.types]
             [gpml.handler.auth :as h.auth]
             [gpml.handler.image :as handler.image]
@@ -43,7 +42,9 @@
           :remarks nil})))
 
 (defn- create-event
-  [{:keys [logger mailjet-config] :as config} conn
+  [{:keys [logger mailjet-config] :as config}
+   conn
+   user
    {:keys [tags urls title start_date end_date
            description remarks geo_coverage_type
            country city geo_coverage_value image thumbnail
@@ -108,13 +109,16 @@
       :entity-connections entity_connections})
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections event-id)]
-        (db.favorite/new-stakeholder-association conn association))
-      (srv.permissions/assign-roles-to-users-from-connections
-       {:conn conn
-        :logger logger}
-       {:context-type :event
-        :resource-id event-id
-        :individual-connections api-individual-connections}))
+        (db.favorite/new-stakeholder-association conn association)))
+    (srv.permissions/assign-roles-to-users-from-connections
+     {:conn conn
+      :logger logger}
+     {:context-type :event
+      :resource-id event-id
+      :individual-connections (if (seq api-individual-connections)
+                                api-individual-connections
+                                [{:role "owner"
+                                  :stakeholder (:id user)}])})
     (when (seq related_content)
       (handler.resource.related-content/create-related-contents conn logger event-id "event" related_content))
     (when (not-empty urls)
@@ -206,10 +210,14 @@
             :operation-type :create
             :root-context? true})
         (jdbc/with-db-transaction [tx (:spec db)]
-          (let [result (create-event config tx (assoc body-params
-                                                      :created_by
-                                                      (-> (db.stakeholder/stakeholder-by-email tx jwt-claims) :id)
-                                                      :source (get-in parameters [:body :source])))]
+          (let [result (create-event
+                        config
+                        tx
+                        user
+                        (assoc body-params
+                               :created_by
+                               (:id user)
+                               :source (get-in parameters [:body :source])))]
             (r/created {:success? true
                         :message "New event created"
                         :id (:id result)})))
