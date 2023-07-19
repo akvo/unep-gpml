@@ -405,7 +405,7 @@
 (defn- common-queries
   [topic-type topic-id {:keys [url? related-content?]}]
   (filter some?
-          [(when url? [(format "delete from %s_language_url where %s = ?" topic-type topic-type) topic-id])           
+          [(when url? [(format "delete from %s_language_url where %s = ?" topic-type topic-type) topic-id])
            (when related-content? ["delete from related_content
             where (resource_id = ? and resource_table_name = ?::regclass)
             or (related_resource_id = ? and related_resource_table_name = ?::regclass)"
