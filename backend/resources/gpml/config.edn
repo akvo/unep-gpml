@@ -103,7 +103,6 @@
                                                                  #ig/ref :gpml.auth/approved-user]}
                                          [""
                                           {:get {:summary "Get list of reviews assigned to current user"
-                                                 :middleware [#ig/ref :gpml.auth/admin-or-reviewer-required-middleware]
                                                  :swagger {:tags ["review"]
                                                            :security [{:id_token []}]}
                                                  :parameters #ig/ref :gpml.handler.review/list-user-reviews-params

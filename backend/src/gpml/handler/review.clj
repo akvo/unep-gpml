@@ -196,10 +196,18 @@
   (fn [{{{:keys [topic-type topic-id]} :path} :parameters}]
     (get-reviews db topic-type topic-id)))
 
-(defmethod ig/init-key :gpml.handler.review/list-user-reviews [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.review/list-user-reviews
+  [_ {:keys [db] :as config}]
   (fn [{{{:keys [page limit review-status only]} :query} :parameters
-        reviewer :reviewer}]
-    (list-reviews db reviewer page limit review-status only)))
+        user :user}]
+    (if (h.r.permission/operation-allowed?
+         config
+         {:user-id (:id user)
+          :entity-type :application
+          :custom-permission :list-assigned-reviews
+          :root-context? true})
+      (list-reviews db user page limit review-status only)
+      (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.review/get-reviewers-params [_ _]
   (let [possible-roles-txt (str/join "|" dom.stakeholder/role-types)
