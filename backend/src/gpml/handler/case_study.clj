@@ -114,8 +114,7 @@
      {:conn conn
       :logger logger}
      {:context-type :case-study
-      :resource-id cs-id
-      :entity-connections entity_connections})
+      :resource-id cs-id})
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections cs-id)]
         (db.favorite/new-stakeholder-association conn association)))

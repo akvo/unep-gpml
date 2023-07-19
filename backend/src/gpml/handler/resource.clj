@@ -105,8 +105,7 @@
      {:conn conn
       :logger logger}
      {:context-type :resource
-      :resource-id resource-id
-      :entity-connections entity_connections})
+      :resource-id resource-id})
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections resource-id)]
         (db.favorite/new-stakeholder-association conn association)))

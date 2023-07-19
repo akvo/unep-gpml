@@ -1,6 +1,7 @@
 (ns gpml.handler.detail
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.set :as set]
+            [clojure.string :as str]
             [duct.logger :refer [log]]
             [gpml.db.action :as db.action]
             [gpml.db.action-detail :as db.action-detail]
@@ -14,9 +15,9 @@
             [gpml.db.policy :as db.policy]
             [gpml.db.project :as db.project]
             [gpml.db.rbac-util :as db.rbac-util]
+            [gpml.db.resource.association :as db.res.acs]
             [gpml.db.resource.connection :as db.resource.connection]
             [gpml.db.resource.tag :as db.resource.tag]
-            [gpml.db.submission :as db.submission]
             [gpml.domain.initiative :as dom.initiative]
             [gpml.domain.resource :as dom.resource]
             [gpml.domain.types :as dom.types]
@@ -29,7 +30,7 @@
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
-            [gpml.handler.util :as util]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
             [medley.core :as medley])
@@ -603,36 +604,85 @@
                                              :association role
                                              :remarks nil}))))))
 
-(defn get-association-query-params [stakeholder-type topic topic-id]
-  {:column_name topic
-   :topic_id topic-id
-   :table (str stakeholder-type "_" topic)})
+(defn- get-associations-diff
+  [updated-acs existing-acs]
+  (reduce
+   (fn [acs-diff {:keys [id] :as acs}]
+     (let [in-existing (some #(when (= id (:id %)) %) existing-acs)
+           in-updated (some #(when (= id (:id %)) %) updated-acs)
+           to-create? (not id)]
+       (cond
+         to-create?
+         (update acs-diff :to-create conj acs)
 
-(defn update-resource-connections [conn entity_connections individual_connections topic resource-id]
-  (let [existing-ecs (db.favorite/get-associations conn (get-association-query-params "organisation" topic resource-id))
-        delete-ecs (vec (set/difference
-                         (into #{} (map :id existing-ecs))
-                         (into #{} (remove nil? (map :id entity_connections)))))
-        existing-ics (db.favorite/get-associations conn (get-association-query-params "stakeholder" topic resource-id))
-        delete-ics (vec (set/difference
-                         (into #{} (map :id existing-ics))
-                         (into #{} (remove nil? (map :id individual_connections)))))]
-    (when-not (empty? delete-ecs)
-      (db.favorite/delete-associations conn {:table (str "organisation_" topic)
-                                             :ids delete-ecs}))
-    (when-not (empty? delete-ics)
-      (db.favorite/delete-associations conn {:table (str "stakeholder_" topic)
-                                             :ids delete-ics}))
-    (when (not-empty individual_connections)
-      (doseq [association (expand-associations individual_connections "stakeholder" topic resource-id)]
+         (and in-existing (not in-updated))
+         (update acs-diff :to-delete conj in-existing)
+
+         (and in-updated in-existing (not= (:role in-updated) (:role in-existing)))
+         (update acs-diff :to-update conj (assoc in-updated :old-role (:role in-existing)))
+
+         :else
+         acs-diff)))
+   {:to-create []
+    :to-delete []
+    :to-update []}
+   (medley/distinct-by
+    (fn [x] (or (:id x) x))
+    (concat updated-acs existing-acs))))
+
+(defn- get-role-unassignments
+  [associations resource-type resource-id]
+  (keep (fn [{:keys [stakeholder role]}]
+          (when (get #{"owner" "resource_editor"} role)
+            {:user-id stakeholder
+             :role-name (keyword (str/replace role \_ \-))
+             :context-type resource-type
+             :resource-id resource-id}))
+        associations))
+
+(defn update-resource-connections
+  [{:keys [logger]} conn entity-connections individual-connections resource-type resource-id]
+  (let [existing-ecs (db.res.acs/get-resource-associations conn
+                                                           {:table (str "organisation_" resource-type)
+                                                            :resource-col resource-type
+                                                            :filters {:resource-id resource-id}})
+        {_to-create-ecs :to-create to-delete-ecs :to-delete _to-update-ecs :to-update}
+        (get-associations-diff entity-connections existing-ecs)
+        existing-ics (db.res.acs/get-resource-associations conn
+                                                           {:table (str "stakeholder_" resource-type)
+                                                            :resource-col resource-type
+                                                            :filters {:resource-id resource-id}})
+        {to-create-ics :to-create to-delete-ics :to-delete to-update-ics :to-update}
+        (get-associations-diff individual-connections existing-ics)
+        role-unassignments (get-role-unassignments to-delete-ics
+                                                   resource-type
+                                                   resource-id)]
+    (when (seq to-delete-ecs)
+      (db.favorite/delete-associations conn {:table (str "organisation_" resource-type)
+                                             :ids (map :id to-delete-ecs)}))
+    (when (seq to-delete-ics)
+      (db.favorite/delete-associations conn {:table (str "stakeholder_" resource-type)
+                                             :ids (map :id to-delete-ics)}))
+    (when (seq individual-connections)
+      (doseq [association (expand-associations individual-connections "stakeholder" resource-type resource-id)]
         (if (contains? association :id)
           (db.favorite/update-stakeholder-association conn association)
           (db.favorite/new-stakeholder-association conn association))))
-    (when (not-empty entity_connections)
-      (doseq [association (expand-associations entity_connections "organisation" topic resource-id)]
+    (when (seq entity-connections)
+      (doseq [association (expand-associations entity-connections "organisation" resource-type resource-id)]
         (if (contains? association :id)
           (db.favorite/update-stakeholder-association conn association)
-          (db.favorite/new-organisation-association conn association))))))
+          (db.favorite/new-organisation-association conn association))))
+    (when (seq role-unassignments)
+      (srv.permissions/unassign-roles-from-users {:conn conn
+                                                  :logger logger}
+                                                 role-unassignments))
+    (when (or (seq to-create-ics) (seq to-update-ics))
+      (srv.permissions/assign-roles-to-users-from-connections {:conn conn
+                                                               :logger logger}
+                                                              {:context-type (keyword resource-type)
+                                                               :resource-id resource-id
+                                                               :individual-connections (concat to-create-ics to-update-ics)}))))
 
 (defn- update-resource
   [{:keys [logger mailjet-config] :as config}
@@ -694,7 +744,13 @@
                                                :country-states geo_coverage_country_states})
     (when (contains? #{"resource"} table)
       (update-resource-organisation conn table id org-id))
-    (update-resource-connections conn (:entity_connections updates) (:individual_connections updates) table id)
+    (update-resource-connections
+     config
+     conn
+     (:entity_connections updates)
+     (:individual_connections updates)
+     table
+     id)
     status))
 
 (defn- update-initiative
@@ -733,7 +789,13 @@
                                               {:countries geo_coverage_countries
                                                :country-groups geo_coverage_country_groups
                                                :country-states geo_coverage_country_states})
-    (update-resource-connections conn (:entity_connections initiative) (:individual_connections initiative) "initiative" id)
+    (update-resource-connections
+     config
+     conn
+     (:entity_connections initiative)
+     (:individual_connections initiative)
+     "initiative"
+     id)
     status))
 
 (defmethod ig/init-key :gpml.handler.detail/put
@@ -741,25 +803,37 @@
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
     (try
-      (let [submission (handler.res-permission/get-resource-if-allowed (:spec db)
-                                                                       user
-                                                                       (resolve-resource-type topic-type)
-                                                                       topic-id
-                                                                       {:read? false})
-            review_status (:review_status submission)]
-        (if (some? submission)
-          (jdbc/with-db-transaction [tx (:spec db)]
-            (let [status (if (= topic-type "initiative")
+      (let [authorized? (handler.res-permission/operation-allowed?
+                         config
+                         {:user-id (:id user)
+                          :entity-type (keyword (resolve-resource-type topic-type))
+                          :entity-id topic-id
+                          :operation-type :update
+                          :root-context? false})]
+        (if-not authorized?
+          (r/forbidden {:message "Unauthorized"})
+          (let [conn (:spec db)
+                status (jdbc/with-db-transaction [tx conn]
+                         (if (= topic-type "initiative")
                            (update-initiative config tx topic-id body)
-                           (update-resource config tx topic-type topic-id body))]
-              (when (and (= status 1) (= review_status "REJECTED"))
-                (db.submission/update-submission
-                 tx
-                 {:table-name (util/get-internal-topic-type topic-type)
-                  :id topic-id
-                  :review_status "SUBMITTED"}))
-              (r/ok {:success? (= status 1)})))
-          (r/forbidden {:message "Unauthorized"})))
+                           (update-resource config tx topic-type topic-id body)))]
+            (if (= status 1)
+              (r/ok {:success? true})
+              (r/server-error {:success? false
+                               :reason :failed-to-update-resource-details}))))
+        ;; FIXME: review if this logic still makes sense in this endpoint.
+        ;; (jdbc/with-db-transaction [tx (:spec db)]
+        ;;   (let [status (if (= topic-type "initiative")
+        ;;                  (update-initiative config tx topic-id body)
+        ;;                  (update-resource config tx topic-type topic-id body))]
+        ;;     (when (and (= status 1) (= review_status "REJECTED"))
+        ;;       (db.submission/update-submission
+        ;;        tx
+        ;;        {:table-name (util/get-internal-topic-type topic-type)
+        ;;         :id topic-id
+        ;;         :review_status "SUBMITTED"}))))
+        )
+
       (catch Exception e
         (log logger :error ::failed-to-update-resource-details {:exception-message (.getMessage e)
                                                                 :context-data {:path-params path

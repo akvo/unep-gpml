@@ -103,8 +103,7 @@
      {:conn conn
       :logger logger}
      {:context-type :technology
-      :resource-id technology-id
-      :entity-connections entity_connections})
+      :resource-id technology-id})
     (when (not-empty api-individual-connections)
       (doseq [association (expand-individual-associations api-individual-connections technology-id)]
         (db.favorite/new-stakeholder-association conn association)))

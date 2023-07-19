@@ -41,21 +41,13 @@
 
 (defn create-resource-context
   "FIXME: Add docstring"
-  [config {:keys [entity-connections context-type resource-id]}]
-  (let [entity-owner-connection (->> entity-connections
-                                     (filter #(= :owner (-> % :role keyword)))
-                                     first)
-        owner-entity-id (:entity entity-owner-connection)]
-    (create-resource-context*
-     config
-     {:context-type context-type
-      :resource-id resource-id
-      :parent-resource-id (if owner-entity-id
-                            owner-entity-id
-                            root-app-resource-id)
-      :parent-context-type (if owner-entity-id
-                             organisation-context-type
-                             root-app-context-type)})))
+  [config {:keys [context-type resource-id]}]
+  (create-resource-context*
+   config
+   {:context-type context-type
+    :resource-id resource-id
+    :parent-resource-id root-app-resource-id
+    :parent-context-type root-app-context-type}))
 
 (defn delete-resource-context
   [{:keys [conn logger]} {:keys [resource-id context-type-name]}]
