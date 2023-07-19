@@ -201,7 +201,7 @@
 
 (defmethod ig/init-key :gpml.handler.event/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params parameters user]}]
+  (fn [{:keys [body-params parameters user]}]
     (try
       (if (h.r.permission/operation-allowed?
            config
