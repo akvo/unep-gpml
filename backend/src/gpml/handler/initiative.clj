@@ -5,12 +5,12 @@
             [gpml.db.initiative :as db.initiative]
             [gpml.db.resource.connection :as db.resource.connection]
             [gpml.db.resource.tag :as db.resource.tag]
-            [gpml.db.tag :as db.tag]
             [gpml.domain.types :as dom.types]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
+            [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.responses :as r]
             [gpml.handler.util :as util]
             [gpml.service.permissions :as srv.permissions]
@@ -61,25 +61,6 @@
           :association (:role connection)
           :remarks nil})))
 
-(defn- add-tags
-  [conn mailjet-config tags initiative-id]
-  (let [tag-ids (map :id tags)]
-    (if-not (some nil? tag-ids)
-      (db.initiative/add-initiative-tags conn {:tags (map #(vector initiative-id %) tag-ids)})
-      (let [tag-category (:id (db.tag/tag-category-by-category-name conn {:category "general"}))
-            new-tags (filter #(not (contains? % :id)) tags)
-            tags-to-db (map #(vector % tag-category) (vec (map :tag new-tags)))
-            tag-entity-columns ["tag" "tag_category"]
-            new-tag-ids (map :id (db.tag/new-tags conn {:tags tags-to-db
-                                                        :insert-cols tag-entity-columns}))]
-        (db.initiative/add-initiative-tags conn {:tags (map #(vector initiative-id %) (concat (remove nil? tag-ids) new-tag-ids))})
-        (map
-         #(email/notify-admins-pending-approval
-           conn
-           mailjet-config
-           (merge % {:type "tag"}))
-         new-tags)))))
-
 (defn- create-initiative
   [{:keys [logger mailjet-config] :as config}
    conn
@@ -123,7 +104,10 @@
         :resource-id initiative-id
         :individual-connections api-individual-connections}))
     (when (not-empty tags)
-      (add-tags conn mailjet-config tags initiative-id))
+      (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
+                                                                             :tag-category "general"
+                                                                             :resource-name "initiative"
+                                                                             :resource-id initiative-id}))
     (email/notify-admins-pending-approval
      conn
      mailjet-config
