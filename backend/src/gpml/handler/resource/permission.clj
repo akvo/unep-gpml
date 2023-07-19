@@ -126,3 +126,9 @@
                              (name operation-type))
         permission (keyword (name context-type) permission-ns-name)]
     (rbac/has-permission (:spec db) logger user-id resource-id context-type permission)))
+
+(defn super-admin?
+  "FIXME: Add docstring"
+  [{:keys [db logger]} user-id]
+  (let [{:keys [success? super-admin?]} (rbac/super-admin? (:spec db) logger user-id)]
+    (and success? super-admin?)))

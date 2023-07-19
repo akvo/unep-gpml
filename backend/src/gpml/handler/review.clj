@@ -7,6 +7,8 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.stakeholder :as dom.stakeholder]
             [gpml.domain.types :as dom.types]
+            [gpml.handler.resource.permission :as h.r.permission]
+            [gpml.handler.responses :as r]
             [gpml.handler.util :as util]
             [gpml.util.email :as email]
             [gpml.util.regular-expressions :as util.regex]
@@ -163,8 +165,10 @@
 
 (defmethod ig/init-key :gpml.handler.review/get-reviewers
   [_ config]
-  (fn [{{:keys [query]} :parameters}]
-    (get-reviewers config query)))
+  (fn [{{:keys [query]} :parameters user :user}]
+    (if (h.r.permission/super-admin? config (:id user))
+      (get-reviewers config query)
+      (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.review/new-multiple-review [_ {:keys [db mailjet-config]}]
   (fn [{{{:keys [topic-type topic-id]} :path
