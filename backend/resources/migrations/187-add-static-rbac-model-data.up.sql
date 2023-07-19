@@ -124,6 +124,11 @@ VALUES (
     'Allows reading the information of a collection of projects (without specific restrictions)',
     'application'),
 (
+    '99646cc1-41a9-4730-968a-e97fad7532d4',
+    'application/list-assigned-reviews',
+    'Allows reading the information of a collection of assigned reviews (without specific restrictions)',
+    'application'),
+(
     '31767296-c109-464e-806f-522ab9501893',
     'organisation/read',
     'Allows reading organisation data',
@@ -439,6 +444,10 @@ VALUES (
 (
     '2ecb82a5-5aff-47ba-8889-5cfdc3199550',
     'abd6b37b-11d8-4098-9d7d-feebc49d99be',
+    1),
+(
+    '2ecb82a5-5aff-47ba-8889-5cfdc3199550',
+    '99646cc1-41a9-4730-968a-e97fad7532d4',
     1),
 (
     '10ee926b-cf5c-44eb-82b9-e4c3d283aff1',
