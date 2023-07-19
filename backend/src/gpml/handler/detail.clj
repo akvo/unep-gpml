@@ -488,7 +488,8 @@
     (try
       (let [topic-type (:topic-type path)
             topic-id (:topic-id path)
-            authorized? (if-not (= topic-type "stakeholder")
+            authorized? (if-not (or (= topic-type "stakeholder")
+                                    (= topic-type "organisation"))
                           true
                           ;; Platform resources (topics) are public
                           ;; except for stakeholders. To view
@@ -497,9 +498,9 @@
                           ;; `stakeholder/read` permission.
                           (handler.res-permission/operation-allowed? config
                                                                      {:user-id (:id user)
-                                                                      :entity-type :stakeholder
+                                                                      :entity-type (keyword topic-type)
                                                                       :operation-type :read
-                                                                      :root-context? true}))]
+                                                                      :root-context? false}))]
         (if-not authorized?
           (r/forbidden {:message "Unauthorized"})
           (let [result (get-detail config topic-id topic-type query)]
