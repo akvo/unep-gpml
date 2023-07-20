@@ -99,8 +99,7 @@
                                                  :parameters #ig/ref :gpml.handler.review/get-reviewers-params
                                                  :responses #ig/ref :gpml.handler.review/get-reviewers-responses}}]]
                                         ["/review" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                 #ig/ref :gpml.auth/auth-required
-                                                                 #ig/ref :gpml.auth/approved-user]}
+                                                                 #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:get {:summary "Get list of reviews assigned to current user"
                                                  :swagger {:tags ["review"]
@@ -109,7 +108,6 @@
                                                  :handler #ig/ref :gpml.handler.review/list-user-reviews}}]
                                          ["/{topic-type}/{topic-id}"
                                           {:get {:summary "Get reviews for a submission"
-                                                 :middleware [#ig/ref :gpml.auth/admin-required-middleware]
                                                  :swagger {:tags ["review"]
                                                            :security [{:id_token []}]}
                                                  :parameters {:path [:map
@@ -117,7 +115,6 @@
                                                                      [:topic-id int?]]}
                                                  :handler #ig/ref :gpml.handler.review/get-reviews}
                                            :post {:summary "Assign reviewers for a submission"
-                                                  :middleware [#ig/ref :gpml.auth/admin-required-middleware]
                                                   :swagger {:tags ["review"]
                                                             :security [{:id_token []}]}
                                                   :parameters {:path [:map
@@ -127,7 +124,6 @@
                                                                       [:reviewers [:vector int?]]]}
                                                   :handler #ig/ref :gpml.handler.review/new-multiple-review}
                                            :patch {:summary "Update review for a submission"
-                                                   :middleware [#ig/ref :gpml.auth/admin-or-reviewer-required-middleware]
                                                    :swagger {:tags ["review"]
                                                              :security [{:id_token []}]}
                                                    :parameters {:path [:map

@@ -1,5 +1,6 @@
 (ns gpml.handler.resource.permission
-  (:require [dev.gethop.rbac :as rbac]
+  (:require [clojure.string :as str]
+            [dev.gethop.rbac :as rbac]
             [gpml.db.resource.association :as db.resource.association]
             [gpml.db.resource.detail :as db.resource.detail]
             [gpml.db.review :as db.review]
@@ -99,19 +100,19 @@
       ;; the user doesn't have permissions to access the resource.
       :else nil)))
 
-(defn- entity-type->context-type
+(defn entity-type->context-type
   [entity-type]
   (cond
     (some #{entity-type} dom.resource/types)
     :resource
 
-    :else (keyword entity-type)))
+    :else (keyword (str/replace entity-type "_" "-"))))
 
 ;; TODO: Add pre condition for ensuring a valid operation-type value
 (defn operation-allowed?
   "FIXME: Add docstring"
   [{:keys [db logger]} {:keys [user-id entity-type entity-id operation-type root-context? custom-permission]}]
-  (let [context-type-entity (entity-type->context-type entity-type)
+  (let [context-type-entity (entity-type->context-type (name entity-type))
         [context-type resource-id] (if-not root-context?
                                      [context-type-entity entity-id]
                                      [srv.permissions/root-app-context-type srv.permissions/root-app-resource-id])
