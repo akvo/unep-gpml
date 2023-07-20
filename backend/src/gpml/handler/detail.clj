@@ -418,6 +418,7 @@
            ["delete from rbac_context where resource_id = ? and context_type_name = ?" topic-id topic-type]
            [(format "delete from %s where id = ?" topic-type) topic-id]]))
 
+;; TODO: We need to delete related resource context as well.
 (defmethod ig/init-key :gpml.handler.detail/delete
   [_ {:keys [db logger] :as config}]
   (fn [{{:keys [path]} :parameters user :user}]
@@ -429,7 +430,7 @@
           (let [authorized? (handler.res-permission/operation-allowed?
                              config
                              {:user-id (:id user)
-                              :entity-type (keyword topic-type)
+                              :entity-type topic-type
                               :entity-id topic-id
                               :operation-type :delete
                               :root-context? false})]
@@ -496,11 +497,12 @@
                           ;; stakeholder's data calling users needs to
                           ;; be approved and have the
                           ;; `stakeholder/read` permission.
-                          (handler.res-permission/operation-allowed? config
-                                                                     {:user-id (:id user)
-                                                                      :entity-type (keyword topic-type)
-                                                                      :operation-type :read
-                                                                      :root-context? false}))]
+                          (handler.res-permission/operation-allowed?
+                           config
+                           {:user-id (:id user)
+                            :entity-type topic-type
+                            :operation-type :read
+                            :root-context? false}))]
         (if-not authorized?
           (r/forbidden {:message "Unauthorized"})
           (let [result (get-detail config topic-id topic-type query)]
@@ -807,7 +809,7 @@
       (let [authorized? (handler.res-permission/operation-allowed?
                          config
                          {:user-id (:id user)
-                          :entity-type (keyword (resolve-resource-type topic-type))
+                          :entity-type topic-type
                           :entity-id topic-id
                           :operation-type :update
                           :root-context? false})]
