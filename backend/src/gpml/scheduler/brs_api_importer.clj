@@ -535,10 +535,11 @@
         (handle-entities-batch-update tx logger entity-name data-coll opts)
         (handle-entities-batch-import tx logger entity-name data-coll opts)))
     {:success? true}
-    (catch Exception e
+    (catch Throwable e
       (let [error-details {:entity-name entity-name
                            :exception-message (ex-message e)
-                           :exception-data (ex-data e)}]
+                           :exception-data (ex-data e)
+                           :stack-trace (map str (.getStackTrace e))}]
         (log logger :error ::failed-to-save-entity error-details)
         {:success? false
          :reason :failed-to-save-entity
@@ -579,10 +580,11 @@
       (if (:success? result)
         result
         (delete-images config (map :image updated-data-coll))))
-    (catch Exception e
+    (catch Throwable e
       (let [error-details {:entity-name entity-name
                            :exception-message (ex-message e)
-                           :exception-data (ex-data e)}]
+                           :exception-data (ex-data e)
+                           :stack-trace (map str (.getStackTrace e))}]
         (log logger :error ::failed-to-save-entity error-details)
         {:success? false
          :reason :failed-to-save-entity
@@ -595,10 +597,11 @@
       (let [updated-data-coll (add-gpml-image-url config tx logger entity-name data-coll)]
         (with-safe-db-transaction tx logger entity-name updated-data-coll opts)))
     {:success? true}
-    (catch Exception e
+    (catch Throwable e
       (let [error-details {:entity-name entity-name
                            :exception-message (ex-message e)
-                           :exception-data (ex-data e)}]
+                           :exception-data (ex-data e)
+                           :stack-trace (map str (.getStackTrace e))}]
         (log logger :error ::failed-to-save-entity error-details)
         {:success? false
          :reason :failed-to-save-entity
@@ -612,10 +615,11 @@
       (if (:success? result)
         result
         (delete-images config (map :qimage updated-data-coll))))
-    (catch Exception e
+    (catch Throwable e
       (let [error-details {:entity-name entity-name
                            :exception-message (ex-message e)
-                           :exception-data (ex-data e)}]
+                           :exception-data (ex-data e)
+                           :stack-trace (map str (.getStackTrace e))}]
         (log logger :error ::failed-to-save-entity error-details)
         {:success? false
          :reason :failed-to-save-entity
@@ -668,8 +672,9 @@
                 (save-as-gpml-entity config gpml-entity-name to-import opts)))
             (log logger :error ::failed-to-get-data-from-datasource {:result result}))
           (recur skip-token more-pages?))))
-    (catch Exception e
+    (catch Throwable e
       (log logger :error ::something-bad-happened {:exception-message (ex-message e)
+                                                   :stack-trace (map str (.getStackTrace e))
                                                    :entity gpml-entity-name})))
   (log logger :info ::finished {}))
 
