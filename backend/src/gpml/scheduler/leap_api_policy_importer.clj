@@ -810,7 +810,8 @@
                                             :policy-tag-category-id (:id policy-tag-category)}))
     (catch Throwable e
       (let [error-details {:error-code (class e)
-                           :message (.getMessage e)}]
+                           :message (.getMessage e)
+                           :stack-trace (map str (.getStackTrace e))}]
         (log logger :error ::leap-api-policy-importer.import-failed error-details)))))
 
 (defjob handle-leap-api-policy-import-job
