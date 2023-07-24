@@ -35,7 +35,7 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <script src="/env.js"></script>
+          <script src="https://digital.gpmarinelitter.org/env.js"></script>
           <script
             dangerouslySetInnerHTML={{
               __html: `

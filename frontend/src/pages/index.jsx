@@ -1,12 +1,8 @@
 import React from "react";
+import Landing from "../modules/landing/landing";
 
 function HomePage() {
-  return (
-    <div>
-      <h1>Welcome to My Website!</h1>
-      <p>This is the homepage of my Next.js app.</p>
-    </div>
-  );
+  return <Landing />;
 }
 
 export default HomePage;

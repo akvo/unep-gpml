@@ -1,12 +1,16 @@
-@import './reset.scss';
-@import 'antd/dist/antd.css';
-@import './vars.scss';
+@import "./reset.scss";
+@import "antd/dist/antd.css";
+@import "./vars.scss";
 
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 100% !important;
+  overflow-x: hidden;
+  @media screen and (min-width: 1280px) {
+    font-size: 16px;
+  }
 }
 
 .ant-tabs-nav-operations {
@@ -43,8 +47,8 @@ i,
 input,
 ::placeholder,
 .ant-input::-webkit-input-placeholder {
-  font-family: 'Jost', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
-    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: "Jost", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
 // Typography
@@ -330,7 +334,7 @@ h4 {
         }
         &:before,
         &:after {
-          content: ' ';
+          content: " ";
           height: 40px;
           width: 1px;
           position: absolute;
@@ -576,7 +580,7 @@ button.ant-btn.ant-btn-link.ant-dropdown-trigger.menu-btn.nav-link {
       box-sizing: content-box;
       white-space: nowrap;
       &:before {
-        content: '';
+        content: "";
         display: inline-block;
         vertical-align: middle;
         padding-top: 100%;
@@ -658,7 +662,7 @@ footer {
       width: 100%;
       padding-bottom: 40px;
       img {
-        width: 80px;
+        width: 80px !important;
       }
       .success-meesage {
         display: flex;
@@ -981,7 +985,7 @@ path {
     box-sizing: content-box;
     white-space: nowrap;
     &:before {
-      content: '';
+      content: "";
       display: inline-block;
       vertical-align: middle;
       padding-top: 100%;
@@ -1075,12 +1079,12 @@ path {
               margin-left: 8px;
             }
           }
-          div[title='Knowledge Exchange'] {
+          div[title="Knowledge Exchange"] {
             .ant-menu-submenu-arrow {
               right: 100px;
             }
           }
-          div[title='Explore'] {
+          div[title="Explore"] {
             display: block;
             position: relative;
             & + div {
@@ -1119,10 +1123,10 @@ path {
             padding: 0;
             max-width: 200px;
             margin: auto;
-            li[role='menuitem']:not(:last-child) {
+            li[role="menuitem"]:not(:last-child) {
               border-bottom: 1px solid #00aaf1 !important;
             }
-            li[role='menuitem'] {
+            li[role="menuitem"] {
               padding: 5px 12px !important;
               color: #2d6796 !important;
             }
@@ -1166,7 +1170,7 @@ path {
 }
 /* End of Responsive menu style */
 
-@import './container.scss';
+@import "./container.scss";
 
 .swiper {
   padding-bottom: 33px !important;
@@ -1461,7 +1465,7 @@ path {
     position: relative;
     cursor: default;
     &:after {
-      content: ' ';
+      content: " ";
       position: absolute;
       width: 1px;
       height: 35px;
@@ -1516,7 +1520,6 @@ path {
     transition: all 0.19s ease-out;
     svg {
       margin-right: 0.625em;
-      height: 2em;
       rect {
         transition: all 0.19s ease-out;
       }
@@ -1692,7 +1695,7 @@ path {
     }
   }
   &:before {
-    content: ' ';
+    content: " ";
     width: calc(100% + 20px);
     height: calc(100% + 20px);
     padding: 10px;
@@ -1712,4 +1715,8 @@ path {
 
 .ant-popover {
   z-index: 99999 !important;
+}
+
+.scroll-disabled {
+  overflow: hidden;
 }
