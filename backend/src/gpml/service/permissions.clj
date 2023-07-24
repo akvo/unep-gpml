@@ -3,6 +3,9 @@
 
 (def ^:const root-app-resource-id 0)
 (def ^:const root-app-context-type :application)
+
+(def ^:const root-app-context-id #uuid"00000000-0000-0000-0000-000000000000")
+
 (def ^:const organisation-context-type :organisation)
 
 (defn- create-resource-context*
@@ -48,6 +51,20 @@
     :resource-id resource-id
     :parent-resource-id root-app-resource-id
     :parent-context-type root-app-context-type}))
+
+(defn create-resource-contexts-under-root
+  "Create multiple rbac contexts under the same (root) parent
+
+  The contexts are expected to share the same type."
+  [{:keys [conn logger]} {:keys [context-type resource-ids]}]
+  (let [parent-context {:id root-app-context-id}]
+    (doseq [resource-id resource-ids]
+      (rbac/create-context!
+       conn
+       logger
+       {:context-type-name context-type
+        :resource-id resource-id}
+       parent-context))))
 
 (defn delete-resource-context
   [{:keys [conn logger]} {:keys [resource-id context-type-name]}]

@@ -12,6 +12,7 @@
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.tag :as db.tag]
             [gpml.domain.policy :as dom.policy]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
             [gpml.util.sql :as sql-util]
             [integrant.core :as ig]
@@ -436,8 +437,9 @@
    It returns a map with created policies and tags (as we need to share this info to avoid additional
    queries to the DB).
 
-   For now the dependent entities are tags and geo-coverage related data."
+   For now the dependent entities are rbac contexts for permissions, tags and geo-coverage related data."
   [main-conn
+   logger
    processed-new-policies-vals
    policy-columns
    new-tags-by-norm-name
@@ -473,6 +475,12 @@
                                          processed-policy-tags
                                          :insert-keys
                                          policy-tag-insert-keys))]
+      (when (seq created-policies)
+        (srv.permissions/create-resource-contexts-under-root
+         {:conn trans-conn
+          :logger logger}
+         {:context-type :policy
+          :resource-ids (map #(get % :id) created-policies)}))
       (when (seq processed-policy-tags)
         (db.resource.tag/create-resource-tags
          trans-conn
@@ -487,6 +495,26 @@
       {:created-policies created-policies
        :new-tags-by-norm-name new-tags-by-norm-name})))
 
+(defn- handle-multiple-tags-creation
+  "Insert multiple tags with their rbac contexts or none of them if something fails"
+  [{:keys [logger conn]} processed-new-tags]
+  (let [processed-new-db-tags (mapv db.tag/tag->db-tag processed-new-tags)]
+    (when (seq processed-new-db-tags)
+      (jdbc/with-db-transaction
+        [trans-conn conn]
+        (let [tags-columns (sql-util/get-insert-columns-from-entity-col processed-new-db-tags)
+              processed-new-tag-vals (when (seq processed-new-db-tags)
+                                       (sql-util/entity-col->persistence-entity-col processed-new-db-tags))
+              created-tags (when (seq processed-new-db-tags)
+                             (db.tag/new-tags trans-conn {:insert-cols tags-columns
+                                                          :tags processed-new-tag-vals}))]
+          (srv.permissions/create-resource-contexts-under-root
+           {:conn trans-conn
+            :logger logger}
+           {:context-type :tag
+            :resource-ids (map #(get % :id) created-tags)})
+          created-tags)))))
+
 ;; TODO: Split this function/organize it better.
 (defn- handle-policy-creation-batch
   "Create policies from a batch
@@ -499,20 +527,16 @@
    The operation is atomic in the sense that either all the policies are persisted or no one, as that is more performant
    and easier to handle. However, tags are anyway created, since there is no point on rolling back that, as eventually
    those tags will be used by the incoming policies."
-  [db-conn new-policies {:keys [policy-tag-category-id] :as opts}]
+  [db-conn logger new-policies {:keys [policy-tag-category-id] :as opts}]
   (let [processed-new-policies-data (processed-new-policies-from-batch new-policies opts)
         processed-new-tags (mapv (fn [{:keys [tag-name]}]
                                    {:tag tag-name
                                     :tag_category policy-tag-category-id
                                     :review_status :SUBMITTED})
                                  (:new-tags processed-new-policies-data))
-        processed-new-db-tags (mapv db.tag/tag->db-tag processed-new-tags)
-        tags-columns (sql-util/get-insert-columns-from-entity-col processed-new-db-tags)
-        processed-new-tag-vals (when (seq processed-new-db-tags)
-                                 (sql-util/entity-col->persistence-entity-col processed-new-db-tags))
-        created-tags (when (seq processed-new-db-tags)
-                       (db.tag/new-tags db-conn {:insert-cols tags-columns
-                                                 :tags processed-new-tag-vals}))
+        created-tags (handle-multiple-tags-creation {:conn db-conn
+                                                     :logger logger}
+                                                    processed-new-tags)
         new-tags-by-norm-name (when (seq created-tags)
                                 (group-by #(str/lower-case (:tag %)) created-tags))
         processed-new-policies (:policies processed-new-policies-data)
@@ -523,6 +547,7 @@
         processed-policies-geo-coverage (:policy-geo-coverage processed-new-policies-data)]
     (handle-policy-and-dependent-entities-creation
      db-conn
+     logger
      processed-new-policies-vals
      policy-columns
      new-tags-by-norm-name
@@ -621,8 +646,8 @@
    Before we can persist the data we need to apply some transformations to give it the right shape for the DB layer.
 
    Apart than updating policy entities, we also handle the addition of related policy-tag entities, creating new tag
-   entities as well, in a similar way as we do when creating the policies."
-  [db-conn batch-items existing-policies {:keys [policy-tag-category-id] :as opts}]
+   entities as well, in a similar way as we do when creating the policies, including permissions-related contexts."
+  [db-conn logger batch-items existing-policies {:keys [policy-tag-category-id] :as opts}]
   (let [batch-items-parsed-modif-dates (mapv #(update
                                                %
                                                :updated
@@ -650,13 +675,9 @@
                                     :tag_category policy-tag-category-id
                                     :review_status :SUBMITTED})
                                  (:new-tags processed-policies-to-update-data))
-        processed-new-db-tags (mapv db.tag/tag->db-tag processed-new-tags)
-        tags-columns (sql-util/get-insert-columns-from-entity-col processed-new-db-tags)
-        processed-new-tag-vals (when (seq processed-new-db-tags)
-                                 (sql-util/entity-col->persistence-entity-col processed-new-db-tags))
-        created-tags (when (seq processed-new-db-tags)
-                       (db.tag/new-tags db-conn {:insert-cols tags-columns
-                                                 :tags processed-new-tag-vals}))
+        created-tags (handle-multiple-tags-creation {:conn db-conn
+                                                     :logger logger}
+                                                    processed-new-tags)
         new-tags-by-norm-name (when (seq created-tags)
                                 (group-by #(str/lower-case (:tag %)) created-tags))
         ;; New tags creation code end marker
@@ -684,7 +705,7 @@
    function, so we can use this info without querying the existing tags again from the DB.
    At the end we return the merged finally created tags map, so it can be merged with existing tags for the next
    batches."
-  [{:keys [db]} batch-items opts]
+  [{:keys [db logger]} batch-items opts]
   (let [conn (:spec db)
         batch-item-ids (mapv #(util/uuid (:id %))
                              batch-items)
@@ -694,10 +715,10 @@
         new-policies (filter #(not (contains? existing-policies-set
                                               (-> % :id util/uuid)))
                              batch-items)
-        created-policies-data (handle-policy-creation-batch conn new-policies opts)
+        created-policies-data (handle-policy-creation-batch conn logger new-policies opts)
         new-tags-from-policy-creation (:new-tags-by-norm-name created-policies-data)
         updated-opts (update opts :tags-by-normalized-name #(merge % new-tags-from-policy-creation))
-        updated-policies-data (handle-policy-update-batch conn batch-items existing-policies updated-opts)
+        updated-policies-data (handle-policy-update-batch conn logger batch-items existing-policies updated-opts)
         new-tags-from-policy-update (:new-tags-by-norm-name updated-policies-data)]
     {:created-policies (count (:created-policies created-policies-data))
      :created-tags (merge new-tags-from-policy-creation new-tags-from-policy-update)
