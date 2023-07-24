@@ -19,6 +19,7 @@
             [gpml.domain.translation :as dom.translation]
             [gpml.domain.types :as dom.types]
             [gpml.handler.image :as handler.img]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
             [gpml.util.http-client :as http-client]
             [gpml.util.malli :as util.malli]
@@ -169,7 +170,7 @@
                                                          :actual (first result)})))))
 
 (defn- create-entities*
-  [tx entity-name db-create-fn db-transformer-fn relation? data-coll]
+  [tx logger entity-name db-create-fn db-transformer-fn relation? data-coll]
   (let [insert-cols (keys (first data-coll))
         insert-values (->> data-coll
                            (map db-transformer-fn)
@@ -181,7 +182,17 @@
                               (when relation?
                                 {:table (name entity-name)})))]
     (if (= (count result) (count data-coll))
-      result
+      (let [entity-res-ids (mapv #(get % :id) result)]
+        (when (and (seq entity-res-ids)
+                   (contains? #{:resource :initiative :event :tag} entity-name))
+          (srv.permissions/create-resource-contexts-under-root
+           {:conn tx
+            :logger logger}
+           ;; TODO: Make sure that `entity-name` is transformed to avoid underscores if we support more values
+           ;; in the future. For now it will not be a problem.
+           {:context-type entity-name
+            :resource-ids entity-res-ids}))
+        result)
       (throw (ex-info (str "Failed to create all " (name entity-name) "s.") {:expected (count data-coll)
                                                                              :actual (count result)})))))
 
@@ -228,11 +239,12 @@
                     data-coll))
 
 (defmulti ^:private create-entities
-  (fn [_ entity-name _] entity-name))
+  (fn [_ _ entity-name _] entity-name))
 
 (defmethod create-entities :resource
-  [tx entity-name data-coll]
+  [tx logger entity-name data-coll]
   (create-entities* tx
+                    logger
                     entity-name
                     db.resource/create-resources
                     db.resource/resource->db-resource
@@ -240,8 +252,9 @@
                     data-coll))
 
 (defmethod create-entities :event
-  [tx entity-name data-coll]
+  [tx logger entity-name data-coll]
   (create-entities* tx
+                    logger
                     entity-name
                     db.event/create-events
                     db.event/event->db-event
@@ -249,8 +262,9 @@
                     data-coll))
 
 (defmethod create-entities :tag
-  [tx entity-name data-coll]
+  [tx logger entity-name data-coll]
   (create-entities* tx
+                    logger
                     entity-name
                     db.tag/create-tags
                     db.tag/tag->db-tag
@@ -258,8 +272,9 @@
                     data-coll))
 
 (defmethod create-entities :initiative
-  [tx entity-name data-coll]
+  [tx logger entity-name data-coll]
   (create-entities* tx
+                    logger
                     entity-name
                     db.initiative/create-initiatives
                     db.initiative/initiative->db-initiative
@@ -267,8 +282,9 @@
                     data-coll))
 
 (defn- create-resource-geo-coverage-entities
-  [tx entity-name data-coll]
+  [tx logger entity-name data-coll]
   (create-entities* tx
+                    logger
                     entity-name
                     db.r.geo/create-resource-geo-coverage
                     identity
@@ -276,8 +292,9 @@
                     data-coll))
 
 (defn- create-resource-tag-entities
-  [tx entity-name data-coll]
+  [tx logger entity-name data-coll]
   (create-entities* tx
+                    logger
                     entity-name
                     db.r.tag/create-resource-tags-v2
                     identity
@@ -285,8 +302,9 @@
                     data-coll))
 
 (defn- create-resource-entity-connections
-  [tx entity-name association-type data-coll]
+  [tx logger entity-name association-type data-coll]
   (create-entities* tx
+                    logger
                     entity-name
                     db.r.conn/create-resource-connections
                     #(db.r.conn/connection->db-connection % association-type)
@@ -294,28 +312,28 @@
                     data-coll))
 
 (defmethod create-entities :organisation_initiative
-  [tx entity-name data-coll]
-  (create-resource-entity-connections tx entity-name "initiative_association" data-coll))
+  [tx logger entity-name data-coll]
+  (create-resource-entity-connections tx logger entity-name "initiative_association" data-coll))
 
 (defmethod create-entities :event_geo_coverage
-  [tx entity-name data-coll]
-  (create-resource-geo-coverage-entities tx entity-name data-coll))
+  [tx logger entity-name data-coll]
+  (create-resource-geo-coverage-entities tx logger entity-name data-coll))
 
 (defmethod create-entities :initiative_geo_coverage
-  [tx entity-name data-coll]
-  (create-resource-geo-coverage-entities tx entity-name data-coll))
+  [tx logger entity-name data-coll]
+  (create-resource-geo-coverage-entities tx logger entity-name data-coll))
 
 (defmethod create-entities :resource_tag
-  [tx entity-name data-coll]
-  (create-resource-tag-entities tx entity-name data-coll))
+  [tx logger entity-name data-coll]
+  (create-resource-tag-entities tx logger entity-name data-coll))
 
 (defmethod create-entities :event_tag
-  [tx entity-name data-coll]
-  (create-resource-tag-entities tx entity-name data-coll))
+  [tx logger entity-name data-coll]
+  (create-resource-tag-entities tx logger entity-name data-coll))
 
 (defmethod create-entities :initiative_tag
-  [tx entity-name data-coll]
-  (create-resource-tag-entities tx entity-name data-coll))
+  [tx logger entity-name data-coll]
+  (create-resource-tag-entities tx logger entity-name data-coll))
 
 (defn- handle-translations-batch-import-or-update
   [tx entity-name entities-by-brs-api-id translations-table-data]
@@ -325,14 +343,14 @@
       (save-translations tx entity-name translations-to-create-or-update))))
 
 (defn- handle-geo-coverage-batch-import
-  [tx entity-name entities-by-brs-api-id geo-coverage-table-data]
+  [tx logger entity-name entities-by-brs-api-id geo-coverage-table-data]
   (let [geo-coverage-to-create
         (build-geo-coverage-relations entity-name entities-by-brs-api-id geo-coverage-table-data)]
     (when (seq geo-coverage-to-create)
-      (create-entities tx (keyword (str (name entity-name) "_geo_coverage")) geo-coverage-to-create))))
+      (create-entities tx logger (keyword (str (name entity-name) "_geo_coverage")) geo-coverage-to-create))))
 
 (defn- handle-tags-batch-import
-  [tx entity-name entities tags-table-data {:keys [brs-tag-category-id old-tags-relations]}]
+  [tx logger entity-name entities tags-table-data {:keys [brs-tag-category-id old-tags-relations]}]
   (let [tags-without-duplicates (remove-tags-duplicates tags-table-data)
         tags (map :tag tags-without-duplicates)
         tags-db-opts {:filters (db.tag/opts->db-opts {:tags tags})}
@@ -340,19 +358,20 @@
         tags-by-tags (group-by (comp str/lower-case :tag) stored-tags)
         tags-to-create (build-tags brs-tag-category-id tags-without-duplicates (keys tags-by-tags))
         created-tags (when (seq tags-to-create)
-                       (create-entities tx :tag tags-to-create))
+                       (create-entities tx logger :tag tags-to-create))
         tags-by-tags (merge tags-by-tags (group-by (comp str/lower-case :tag) created-tags))
         tags-relations-to-create (->> (build-tags-relations entity-name entities tags-table-data tags-by-tags)
                                       (filter #(nil? (get-in old-tags-relations [[(entity-name %) (:tag %)] 0]))))
         created-tags-relations (when (seq tags-relations-to-create)
                                  (create-entities tx
+                                                  logger
                                                   (keyword (str (name entity-name) "_tag"))
                                                   tags-relations-to-create))]
     {:created-tags (count created-tags)
      :created-tags-relations (count created-tags-relations)}))
 
 (defn- handle-entity-connections
-  [tx entity-name entities connections-table-data {:keys [old-connections-relations]}]
+  [tx logger entity-name entities connections-table-data {:keys [old-connections-relations]}]
   (let [db-opts {:filters {:names (map :name connections-table-data)}}
         organisations (->> (db.organisation/get-organisations tx db-opts)
                            (group-by (comp str/lower-case :name)))
@@ -367,6 +386,7 @@
                  (filter #(nil? (get-in old-connections-relations [[(entity-name %) (:organisation %)] 0])) conns)))))]
     (when (seq connections-to-create)
       (create-entities tx
+                       logger
                        (keyword (str "organisation_" (name entity-name)))
                        connections-to-create))))
 
@@ -405,7 +425,7 @@
         {:keys [entity-table-data translations-table-data tags-table-data
                 geo-coverage-table-data connections-table-data]}
         (get-entities-and-sub-entities-data entity-name data-coll opts)
-        created-entities (create-entities tx entity-name entity-table-data)
+        created-entities (create-entities tx logger entity-name entity-table-data)
         entities-by-brs-api-id (group-by :brs_api_id created-entities)
         ;; Translations
         created-or-updated-translations
@@ -416,6 +436,7 @@
         ;; Geo Coverage
         created-geo-coverage
         (handle-geo-coverage-batch-import tx
+                                          logger
                                           entity-name
                                           entities-by-brs-api-id
                                           geo-coverage-table-data)
@@ -423,12 +444,14 @@
         {:keys [created-tags-relations created-tags]}
         (when (seq tags-table-data)
           (handle-tags-batch-import tx
+                                    logger
                                     entity-name
                                     created-entities
                                     tags-table-data opts))
         ;; Entity connections
         created-connections
         (handle-entity-connections tx
+                                   logger
                                    entity-name
                                    entities-by-brs-api-id
                                    connections-table-data
@@ -473,6 +496,7 @@
         geo-coverage-to-create (filter #(nil? (get-in old-geo-coverage-relations [[(entity-name %) (:country %)] 0])) new-geo-coverage)
         created-geo-coverage (when (seq geo-coverage-to-create)
                                (create-entities tx
+                                                logger
                                                 (keyword (str (name entity-name) "_geo_coverage"))
                                                 geo-coverage-to-create))
         ;; Tags
@@ -486,6 +510,7 @@
         {:keys [created-tags-relations created-tags]}
         (when (seq tags-table-data)
           (handle-tags-batch-import tx
+                                    logger
                                     entity-name
                                     entity-table-data
                                     tags-table-data
@@ -499,6 +524,7 @@
                                                   :filters {:resources-ids entities-ids}})
              (group-by (juxt entity-name :organisation)))
         created-connections (handle-entity-connections tx
+                                                       logger
                                                        entity-name
                                                        entities-by-brs-api-id
                                                        connections-table-data
