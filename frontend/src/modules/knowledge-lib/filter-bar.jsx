@@ -44,6 +44,7 @@ const hideFilterList = [
 ];
 
 const FilterBar = ({
+  totalCount,
   setShowFilterModal,
   filterCountries,
   updateQuery,
@@ -63,6 +64,17 @@ const FilterBar = ({
     country: false,
     multiCountry: false,
   });
+
+  const allResources = totalCount
+    ?.filter((array) =>
+      resourceTypes.some(
+        (filter) =>
+          array.topic === filter.title && filter.title !== "capacity building"
+      )
+    )
+    ?.reduce(function (acc, obj) {
+      return acc + obj.count;
+    }, 0);
 
   const isEmpty = Object.values(query).every(
     (x) => x === null || x === undefined || x?.length === 0
@@ -118,80 +130,85 @@ const FilterBar = ({
 
   return (
     <div className="filter-bar">
-      <Button className="back-btn" onClick={handleClickOverview}>
-        {/* <OverviewIcon /> */}
-        <LeftOutlined />
-        <span>Back to Overview</span>
-      </Button>
-      <ul>
-        {resourceTypes.map((it) => (
+      <div className="overview">
+        <ul className="categories">
           <li
-            key={it.key}
+            className={`${!type ? "selected" : ""}`}
             onClick={() => {
-              if (type === it.key)
-                history.push({
-                  pathname: `/knowledge/library/resource/${
-                    view ? view : "map"
-                  }`,
-                  search: search,
-                });
-              else
-                history.push({
-                  pathname: `/knowledge/library/resource/${
-                    view ? (view === "category" ? "grid" : view) : "map"
-                  }/${it.key}/`,
-                  search: search,
-                  state: { type: it.key },
-                });
+              history.push({
+                pathname: `/knowledge/library/${view ? view : ""}`,
+              });
             }}
-            className={type === it.key ? "selected" : ""}
           >
-            <div className="img-container">
-              <Icon name={`resource-types/${it.key}`} fill="#FFF" />
+            <div>
+              <Icon name={`all`} fill={`${!view ? "#06496c" : "#fff"}`} />
+              <b>{allResources}</b>
             </div>
-            <div className="label-container">
-              <span>{it.label}</span>
-            </div>
+            <span>All Resources</span>
           </li>
-        ))}
-      </ul>
-      <Button className="adv-src" onClick={() => setShowFilterModal(true)}>
+          {resourceTypes.map((t) => (
+            <li
+              className={`${type === t.key ? "selected" : ""}`}
+              key={t.key}
+              onClick={() => {
+                history.push({
+                  pathname: `/knowledge/library/${
+                    view ? (view === "category" ? "grid" : view) : "map"
+                  }/${t.key}`,
+                });
+              }}
+            >
+              <div>
+                <Icon name={`resource-types/${t.key}`} fill="#000" />
+                <b>
+                  {totalCount.find((item) => t.title === item.topic)?.count ||
+                    "XX"}
+                </b>
+              </div>
+              <span>{t.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="search-container">
+        <Button className="adv-src" onClick={() => setShowFilterModal(true)}>
+          {!isEmpty &&
+            Object.keys(query).filter((item) => !hideFilterList.includes(item))
+              .length > 0 && (
+              <div className="filter-status">
+                {Object.keys(query).filter(
+                  (item) => !hideFilterList.includes(item)
+                ).length > 0 &&
+                  Object.keys(query).filter(
+                    (item) => !hideFilterList.includes(item)
+                  ).length}
+              </div>
+            )}
+          <FilterIcon />
+          <span>Advanced Search</span>
+        </Button>
         {!isEmpty &&
           Object.keys(query).filter((item) => !hideFilterList.includes(item))
             .length > 0 && (
-            <div className="filter-status">
-              {Object.keys(query).filter(
-                (item) => !hideFilterList.includes(item)
-              ).length > 0 &&
-                Object.keys(query).filter(
-                  (item) => !hideFilterList.includes(item)
-                ).length}
-            </div>
+            <Button
+              icon={<CloseOutlined />}
+              className="reset-button"
+              onClick={() => resetFilter()}
+            >
+              Reset filters
+            </Button>
           )}
-        <FilterIcon />
-        <span>Advanced Search</span>
-      </Button>
-      {!isEmpty &&
-        Object.keys(query).filter((item) => !hideFilterList.includes(item))
-          .length > 0 && (
-          <Button
-            icon={<CloseOutlined />}
-            className="reset-button"
-            onClick={() => resetFilter()}
-          >
-            Reset filters
-          </Button>
-        )}
-      <LocationDropdown
-        {...{
-          country,
-          multiCountry,
-          countryList,
-          dropdownVisible,
-          setDropdownVisible,
-          query,
-        }}
-      />
+        <LocationDropdown
+          {...{
+            country,
+            multiCountry,
+            countryList,
+            dropdownVisible,
+            setDropdownVisible,
+            query,
+          }}
+        />
+      </div>
     </div>
   );
 };
