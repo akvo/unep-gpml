@@ -180,7 +180,10 @@
    the parsed tags to the accumulator, checking no duplicates are added.
 
    In order to parse the different tags for the group, it uses provided `target-prop-key` if present, in order
-   to access the target property where the tag content is. Some tag groups do have this and others not."
+   to access the target property where the tag content is. Some tag groups do have this and others not.
+
+   We are trimming each tag to avoid noisy whitespaces that are not supposed to be there. In most of the cases,
+   those starting or ending whitespaces are caused by the serialization of the tags in a single string."
   [tags-acc tag-group-vals leap-api-id tags-by-normalized-name target-prop-key]
   (reduce (fn [current-tags-acc field-value-item]
             (let [registered-tags-set (->> current-tags-acc
@@ -190,7 +193,7 @@
                                (get field-value-item target-prop-key)
                                field-value-item)
                   parsed-tag (when (seq parsed-val)
-                               (parse-leap-api-policy-tag leap-api-id tags-by-normalized-name parsed-val))]
+                               (parse-leap-api-policy-tag leap-api-id tags-by-normalized-name (str/trim parsed-val)))]
               (if (and (not (get registered-tags-set (:normalized-tag-name parsed-tag)))
                        (seq parsed-tag))
                 (vec (conj current-tags-acc parsed-tag))
@@ -201,7 +204,10 @@
 (defmethod parse-policy-leap-api-field :tags
   [_ field-value & {:keys [tag-groups leap-api-id tags-by-normalized-name]}]
   (reduce (fn [tags-acc {:keys [policy-item-key target-prop-key]}]
-            (let [tag-group-vals (get field-value policy-item-key [])]
+            (let [tag-group-vals (get field-value policy-item-key [])
+                  tag-group-vals (if (string? tag-group-vals)
+                                   (str/split tag-group-vals #",")
+                                   tag-group-vals)]
               (add-policy-field-tags
                tags-acc
                tag-group-vals
