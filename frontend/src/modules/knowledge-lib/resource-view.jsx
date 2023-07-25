@@ -50,18 +50,6 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
       acc + (countData?.find((it) => it.topic === topic)?.count || 0),
     0
   );
-
-  const allResources = totalCount
-    ?.filter((array) =>
-      resourceTypes.some(
-        (filter) =>
-          array.topic === filter.title && filter.title !== "capacity building"
-      )
-    )
-    ?.reduce(function (acc, obj) {
-      return acc + obj.count;
-    }, 0);
-
   const uniqueArrayByKey = (array) => [
     ...new Map(array.map((item) => [item["id"], item])).values(),
   ];
@@ -84,6 +72,9 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
       queryParams.set("capacity_building", ["true"]);
       queryParams.delete("topic");
     }
+    if (!view) {
+      queryParams.set("featured", true);
+    }
     queryParams.set("incCountsForTags", popularTags);
     queryParams.set("limit", limit);
 
@@ -93,9 +84,6 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
       .then((resp) => {
         setLoading(false);
         setData(resp?.data);
-        if (!view) {
-          setTotalCount(resp?.data?.counts);
-        }
         setCountData(resp?.data?.counts);
         setGridItems((prevItems) => {
           return uniqueArrayByKey([...prevItems, ...resp?.data?.results]);
@@ -106,6 +94,21 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         setLoading(false);
       });
   };
+
+  useEffect(() => {
+    if (totalCount.length === 0) {
+      const url = `/browse?incCountsForTags=${popularTags}`;
+      api
+        .get(url)
+        .then((resp) => {
+          setTotalCount(resp?.data?.counts);
+        })
+        .catch((err) => {
+          console.error(err);
+          setLoading(false);
+        });
+    }
+  }, [totalCount]);
 
   const updateQuery = (param, value, reset, fetch = true) => {
     if (!reset) {
