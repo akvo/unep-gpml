@@ -380,6 +380,9 @@
                           (and upcoming (= (first topic) "event"))
                           "ORDER BY json->>'start_date' ASC"
 
+                          (= order-by "featured")
+                          "ORDER BY json->>'featured' DESC, (json->>'created')::timestamptz DESC"
+
                           (seq order-by)
                           (format "ORDER BY json->>'%s' %s" order-by order)
 

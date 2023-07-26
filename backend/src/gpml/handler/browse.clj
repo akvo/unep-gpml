@@ -13,7 +13,7 @@
   (:import [java.sql SQLException]))
 
 (def ^:const topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
-(def ^:const ^:private order-by-fields ["title" "description" "id"])
+(def ^:const ^:private order-by-fields ["title" "description" "id" "featured"])
 (def ^:const ^:private default-limit 50)
 (def ^:const ^:private default-offset 0)
 
