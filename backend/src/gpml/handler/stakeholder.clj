@@ -10,6 +10,7 @@
             [gpml.handler.image :as handler.image]
             [gpml.handler.organisation :as handler.org]
             [gpml.handler.resource.geo-coverage :as handler.geo]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.handler.util :as handler.util]
@@ -25,10 +26,10 @@
                    (format "^(%1$s)((,(%1$s))+)?$")
                    re-pattern))
 
-(defmethod ig/init-key :gpml.handler.stakeholder/get [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.stakeholder/get [_ {:keys [db] :as config}]
   (fn [{{{:keys [page limit email-like roles] :as query} :query} :parameters
-        user :user approved? :approved?}]
-    (resp/response (if (or (and approved? (= (:role user) "ADMIN"))
+        user :user}]
+    (resp/response (if (or (h.r.permission/super-admin? config (:id user))
                            (= (:role user) :programmatic-access))
                      ;; FIXME: Currently hard-coded to allow only for ADMINS.
                      (let [search (and email-like (format "%%%s%%" email-like))
