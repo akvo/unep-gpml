@@ -185,8 +185,7 @@
                                         ["/stakeholder" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
                                           {:get {:summary "List Stakeholders"
-                                                 :middleware [#ig/ref :gpml.auth/auth-middleware-ckan
-                                                              #ig/ref :gpml.auth/auth-middleware-auth0-actions]
+                                                 :middleware [#ig/ref :gpml.auth/auth-middleware-auth0-actions]
                                                  :swagger {:tags ["stakeholder"]}
                                                  :parameters #ig/ref :gpml.handler.stakeholder/get-params
                                                  :handler #ig/ref :gpml.handler.stakeholder/get}}]
@@ -892,11 +891,6 @@
    :db #ig/ref :duct.database/sql}
 
   :gpml.auth/auth-middleware-gpml-programmatic
-  {:issuer #duct/env ["OIDC_ISSUER" Str]
-   :audience #duct/env ["OIDC_AUDIENCE_M2M" Str]
-   :db #ig/ref :duct.database/sql}
-
-  :gpml.auth/auth-middleware-ckan
   {:issuer #duct/env ["OIDC_ISSUER" Str]
    :audience #duct/env ["OIDC_AUDIENCE_M2M" Str]
    :db #ig/ref :duct.database/sql}

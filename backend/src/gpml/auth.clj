@@ -53,10 +53,6 @@
   (when (validate-opts opts)
     opts))
 
-(defmethod ig/prep-key :gpml.auth/auth-middleware-ckan [_ opts]
-  (when (validate-opts opts)
-    opts))
-
 (defn check-authentication
   ([request verify-fn]
    (check-authentication request verify-fn :user))
@@ -133,9 +129,6 @@
 
             :else
             (handler request)))))))
-
-(defmethod ig/init-key :gpml.auth/auth-middleware-ckan [_ opts]
-  (auth-middleware-programmatic opts))
 
 (defmethod ig/init-key :gpml.auth/auth-middleware-auth0-actions [_ opts]
   (auth-middleware-programmatic opts))
