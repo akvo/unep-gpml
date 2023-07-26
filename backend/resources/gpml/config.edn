@@ -205,8 +205,7 @@
                                                    :handler #ig/ref :gpml.handler.stakeholder.expert/post}}]
                                           ["/suggest"
                                            {:post {:summary "Suggest an expert"
-                                                   :middleware [#ig/ref :gpml.auth/auth-required
-                                                                #ig/ref :gpml.auth/approved-user]
+                                                   :middleware [#ig/ref :gpml.auth/auth-required]
                                                    :swagger {:tags ["stakeholder" "expert"]}
                                                    :parameters #ig/ref :gpml.handler.stakeholder.expert/post-suggest-params
                                                    :responses #ig/ref :gpml.handler.stakeholder.expert/post-suggest-responses
