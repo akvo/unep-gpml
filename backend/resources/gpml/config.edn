@@ -212,9 +212,7 @@
                                                    :handler #ig/ref :gpml.handler.stakeholder.expert/post-suggest}}]]
                                          ["/:id"
                                           [""
-                                           {:get {:middleware [#ig/ref :gpml.auth/auth-required
-                                                               #ig/ref :gpml.auth/approved-user
-                                                               #ig/ref :gpml.auth/admin-or-profile-owner-required-middleware]
+                                           {:get {:middleware [#ig/ref :gpml.auth/auth-required]
                                                   :summary "Get a stakeholder by id"
                                                   :swagger {:tags ["stakeholder"]}
                                                   :parameters {:path [:map [:id int?]]}
