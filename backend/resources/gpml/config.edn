@@ -217,9 +217,7 @@
                                                   :swagger {:tags ["stakeholder"]}
                                                   :parameters {:path [:map [:id int?]]}
                                                   :handler #ig/ref :gpml.handler.stakeholder/get-by-id}
-                                            :put {:middleware [#ig/ref :gpml.auth/auth-required
-                                                               #ig/ref :gpml.auth/approved-user
-                                                               #ig/ref :gpml.auth/admin-or-profile-owner-required-middleware]
+                                            :put {:middleware [#ig/ref :gpml.auth/auth-required]
                                                   :summary "Edit stakeholder's data"
                                                   :swagger {:tags ["stakeholder"]}
                                                   :parameters #ig/ref :gpml.handler.stakeholder/put-restricted-params

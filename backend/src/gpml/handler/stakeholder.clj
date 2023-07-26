@@ -562,21 +562,24 @@
 
 (defmethod ig/init-key :gpml.handler.stakeholder/put-restricted
   [_ {:keys [db logger] :as config}]
-  (fn [{{:keys [path body]} :parameters}]
-    (try
-      (jdbc/with-db-transaction [tx (:spec db)]
-        (let [old-profile (db.stakeholder/stakeholder-by-id tx path)]
-          (update-stakeholder config tx {:body-params (assoc body :id (:id path))
-                                         :old-profile old-profile})
-          (resp/status {:success? true} 204)))
-      (catch Exception e
-        (log logger :error ::failed-to-update-stakeholder {:exception-message (.getMessage e)})
-        (let [response {:status 500
-                        :body {:success? false
-                               :reason :could-not-update-stakeholder}}]
-          (if (instance? SQLException e)
-            response
-            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
+  (fn [{{:keys [path body]} :parameters user :user}]
+    (if (or (h.r.permission/super-admin? config (:id user))
+            (= (:id path) (:id user)))
+      (try
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (let [old-profile (db.stakeholder/stakeholder-by-id tx path)]
+            (update-stakeholder config tx {:body-params (assoc body :id (:id path))
+                                           :old-profile old-profile})
+            (resp/status {:success? true} 204)))
+        (catch Exception e
+          (log logger :error ::failed-to-update-stakeholder {:exception-message (.getMessage e)})
+          (let [response {:status 500
+                          :body {:success? false
+                                 :reason :could-not-update-stakeholder}}]
+            (if (instance? SQLException e)
+              response
+              (assoc-in response [:body :error-details :error] (.getMessage e))))))
+      (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/put-restricted-params [_ _]
   {:path [:map [:id int?]]
