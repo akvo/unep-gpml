@@ -129,6 +129,11 @@ VALUES (
     'Allows reading the information of a collection of assigned reviews (without specific restrictions)',
     'application'),
 (
+    '848dac22-031a-4802-a500-9dad2660d8f7',
+    'application/list-community-members',
+    'Allows reading the information of a collection of stakeholder and organisations that are considered part of the “Community”.',
+    'application'),
+(
     '31767296-c109-464e-806f-522ab9501893',
     'organisation/read',
     'Allows reading organisation data',
@@ -167,11 +172,6 @@ VALUES (
     'a188d7c6-67ed-409b-ab4c-511612c07ab6',
     'stakeholder/review',
     'Allows reviewing a stakeholder',
-    'stakeholder'),
-(
-    '7e609ca4-ef45-4a70-a313-169eaf1f7838',
-    'stakeholder/accept-invitation',
-    'Allows a stakeholder to be approved',
     'stakeholder'),
 (
     '443bc659-d508-4d35-b992-43736f2f21a2',
@@ -450,6 +450,10 @@ VALUES (
     '99646cc1-41a9-4730-968a-e97fad7532d4',
     1),
 (
+    '2ecb82a5-5aff-47ba-8889-5cfdc3199550',
+    '848dac22-031a-4802-a500-9dad2660d8f7',
+    1),
+(
     '10ee926b-cf5c-44eb-82b9-e4c3d283aff1',
     'a3e7f7ec-faea-4287-b1cc-9a5b47054450',
     1),
@@ -567,7 +571,7 @@ VALUES (
     1),
 (
     '6fd14e4b-4b52-4264-98d0-394e225829e0',
-    '7e609ca4-ef45-4a70-a313-169eaf1f7838',
+    '31767296-c109-464e-806f-522ab9501893',
     1),
 (
     '07b92a69-4504-44e2-ab64-ab6596730a87',
