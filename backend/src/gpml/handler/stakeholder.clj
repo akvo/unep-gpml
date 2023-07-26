@@ -536,14 +536,17 @@
            [:email-like {:optional true}
             string?]]})
 
-(defmethod ig/init-key :gpml.handler.stakeholder/patch [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.stakeholder/patch
+  [_ {:keys [db] :as config}]
   (fn [{{{:keys [id]} :path
          {:keys [role]} :body}
         :parameters
-        admin :admin}]
-    (let [params {:role role :reviewed_by (:id admin) :id id}
-          count (db.stakeholder/update-stakeholder-role (:spec db) params)]
-      (resp/response {:status (if (= count 1) "success" "failed")}))))
+        user :user}]
+    (if (h.r.permission/super-admin? config (:id user))
+      (let [params {:role role :reviewed_by (:id user) :id id}
+            count (db.stakeholder/update-stakeholder-role (:spec db) params)]
+        (resp/response {:status (if (= count 1) "success" "failed")}))
+      (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/patch-params [_ _]
   {:path [:map [:id int?]]
