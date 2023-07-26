@@ -73,7 +73,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
       queryParams.delete("topic");
     }
     if (!view) {
-      queryParams.set("featured", true);
+      queryParams.set("orderBy", "featured");
     }
     queryParams.set("incCountsForTags", popularTags);
     queryParams.set("limit", limit);
@@ -85,6 +85,9 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         setLoading(false);
         setData(resp?.data);
         setCountData(resp?.data?.counts);
+        if (totalCount.length === 0) {
+          setTotalCount(resp?.data?.counts);
+        }
         setGridItems((prevItems) => {
           return uniqueArrayByKey([...prevItems, ...resp?.data?.results]);
         });
@@ -95,20 +98,20 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
       });
   };
 
-  useEffect(() => {
-    if (totalCount.length === 0) {
-      const url = `/browse?incCountsForTags=${popularTags}`;
-      api
-        .get(url)
-        .then((resp) => {
-          setTotalCount(resp?.data?.counts);
-        })
-        .catch((err) => {
-          console.error(err);
-          setLoading(false);
-        });
-    }
-  }, [totalCount]);
+  // useEffect(() => {
+  //   if (totalCount.length === 0) {
+  //     const url = `/browse?incCountsForTags=${popularTags}`;
+  //     api
+  //       .get(url)
+  //       .then((resp) => {
+  //         setTotalCount(resp?.data?.counts);
+  //       })
+  //       .catch((err) => {
+  //         console.error(err);
+  //         setLoading(false);
+  //       });
+  //   }
+  // }, [totalCount, popularTags]);
 
   const updateQuery = (param, value, reset, fetch = true) => {
     if (!reset) {
