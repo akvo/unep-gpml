@@ -194,6 +194,11 @@ VALUES (
     'Allows bookmarking a event',
     'event'),
 (
+    '2545c58c-a25a-4589-956b-e7e8a3da00e3',
+    'event/read-draft',
+    'Allows reading a non-published event',
+    'event'),
+(
     'bed4b800-d125-453b-9d57-dd3634c7fc42',
     'policy/update',
     'Allows updating a policy',
@@ -212,6 +217,11 @@ VALUES (
     '2c72189e-4df8-4094-bda5-46ef1966e881',
     'policy/bookmark',
     'Allows bookmarking a policy',
+    'policy'),
+(
+    'cdfcb227-c061-4a8d-bc4c-c9f8752558fd',
+    'policy/read-draft',
+    'Allows reading a non-published policy',
     'policy'),
 (
     'ca62191f-9bdc-453f-b4cf-0c5b9875ba05',
@@ -234,6 +244,11 @@ VALUES (
     'Allows bookmarking a technology',
     'technology'),
 (
+    '9b81c8e9-c548-44a9-824f-3c154db5d677',
+    'technology/read-draft',
+    'Allows reading a non-published technology',
+    'technology'),
+(
     '7bc64778-0eb4-453a-837c-f6545d72e1f7',
     'resource/update',
     'Allows updating a resource',
@@ -254,6 +269,11 @@ VALUES (
     'Allows bookmarking a resource',
     'resource'),
 (
+    'e07541f8-2051-4a28-92e5-33e501dc0470',
+    'resource/read-draft',
+    'Allows reading a non-published resource',
+    'resource'),
+(
     'd3423859-9091-4b5d-a753-7685dbafbe12',
     'initiative/update',
     'Allows updating an initiative',
@@ -272,6 +292,11 @@ VALUES (
     '35d3b83d-f465-49a8-845c-2c4bd271cfe5',
     'initiative/bookmark',
     'Allows bookmark an initiative',
+    'initiative'),
+(
+    'be224256-a77c-4e97-a3b6-006e291355f5',
+    'initiative/read-draft',
+    'Allows reading a non-published initiative',
     'initiative'),
 (
     'b28a3fdb-80fc-47d5-8bb1-724be9b11f50',
@@ -317,6 +342,11 @@ VALUES (
     'd4a80431-de1f-4c97-9824-7249ea7a7a50',
     'case-study/bookmark',
     'Allows bookmarking a case study',
+    'case-study'),
+(
+    'e030ad4b-52e7-4074-9434-9f85ddc11d7d',
+    'case-study/read-draft',
+    'Allows reading a non-published case study',
     'case-study'),
 (
     '7fac407c-f16f-4579-8bea-3f98474e6ad4',
@@ -558,6 +588,30 @@ VALUES (
     'e73f86ad-c0db-4eb1-99a7-123c45a1230a',
     1),
 (
+    '2a06dc77-50f4-4b99-8599-54f73052775b',
+    '2545c58c-a25a-4589-956b-e7e8a3da00e3',
+    1),
+(
+    '2a06dc77-50f4-4b99-8599-54f73052775b',
+    'cdfcb227-c061-4a8d-bc4c-c9f8752558fd',
+    1),
+(
+    '2a06dc77-50f4-4b99-8599-54f73052775b',
+    '9b81c8e9-c548-44a9-824f-3c154db5d677',
+    1),
+(
+    '2a06dc77-50f4-4b99-8599-54f73052775b',
+    'e07541f8-2051-4a28-92e5-33e501dc0470',
+    1),
+(
+    '2a06dc77-50f4-4b99-8599-54f73052775b',
+    'be224256-a77c-4e97-a3b6-006e291355f5',
+    1),
+(
+    '2a06dc77-50f4-4b99-8599-54f73052775b',
+    'e030ad4b-52e7-4074-9434-9f85ddc11d7d',
+    1),
+(
     '6fd14e4b-4b52-4264-98d0-394e225829e0',
     'aa110699-ac08-4516-bf4e-5e68e035f7c0',
     1),
@@ -600,6 +654,30 @@ VALUES (
 (
     '07b92a69-4504-44e2-ab64-ab6596730a87',
     'be3a9fc5-d0e5-4c34-949e-d81f93506b9a',
+    1),
+(
+    '07b92a69-4504-44e2-ab64-ab6596730a87',
+    '2545c58c-a25a-4589-956b-e7e8a3da00e3',
+    1),
+(
+    '07b92a69-4504-44e2-ab64-ab6596730a87',
+    'cdfcb227-c061-4a8d-bc4c-c9f8752558fd',
+    1),
+(
+    '07b92a69-4504-44e2-ab64-ab6596730a87',
+    '9b81c8e9-c548-44a9-824f-3c154db5d677',
+    1),
+(
+    '07b92a69-4504-44e2-ab64-ab6596730a87',
+    'e07541f8-2051-4a28-92e5-33e501dc0470',
+    1),
+(
+    '07b92a69-4504-44e2-ab64-ab6596730a87',
+    'be224256-a77c-4e97-a3b6-006e291355f5',
+    1),
+(
+    '07b92a69-4504-44e2-ab64-ab6596730a87',
+    'e030ad4b-52e7-4074-9434-9f85ddc11d7d',
     1);
 --;;
 COMMIT;
