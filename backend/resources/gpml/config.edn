@@ -278,9 +278,7 @@
                                            :put {:summary "Update a tag"
                                                  :swagger {:tags ["tag"]}
                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                              #ig/ref :gpml.auth/auth-required
-                                                              #ig/ref :gpml.auth/approved-user
-                                                              #ig/ref :gpml.auth/admin-required-middleware]
+                                                              #ig/ref :gpml.auth/auth-required]
                                                  :responses #ig/ref :gpml.handler.tag/put-response
                                                  :parameters #ig/ref :gpml.handler.tag/put-params
                                                  :handler #ig/ref :gpml.handler.tag/put}}]

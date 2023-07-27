@@ -1,6 +1,8 @@
 (ns gpml.handler.tag
   (:require [clojure.string :as str]
             [gpml.db.tag :as db.tag]
+            [gpml.handler.resource.permission :as h.r.permission]
+            [gpml.handler.responses :as r]
             [gpml.service.permissions :as srv.permissions]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
@@ -142,8 +144,10 @@
 
 (defmethod ig/init-key :gpml.handler.tag/put
   [_ config]
-  (fn [req]
-    (resp/response (update-tag config req))))
+  (fn [{:keys [user] :as req}]
+    (if (h.r.permission/super-admin? config (:id user))
+      (resp/response (update-tag config req))
+      (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.tag/put-params
   [_ _]
