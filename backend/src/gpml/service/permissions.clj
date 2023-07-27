@@ -93,3 +93,13 @@
                                 individual-connections-for-perms)]
     (when (seq roles-assignments)
       (assign-roles-to-users config roles-assignments))))
+
+(defn make-user-super-admin
+  "Makes the provided user (by id) a super admin in RBAC"
+  [{:keys [conn logger]} user-id]
+  (rbac/add-super-admin! conn logger user-id))
+
+(defn remove-user-from-super-admins
+  "Removes the provided user (by id) from the RBAC registry of super admins"
+  [{:keys [conn logger]} user-id]
+  (rbac/remove-super-admin! conn logger user-id))

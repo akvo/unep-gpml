@@ -537,15 +537,42 @@
             string?]]})
 
 (defmethod ig/init-key :gpml.handler.stakeholder/patch
-  [_ {:keys [db] :as config}]
+  [_ {:keys [db logger] :as config}]
   (fn [{{{:keys [id]} :path
          {:keys [role]} :body}
         :parameters
         user :user}]
     (if (h.r.permission/super-admin? config (:id user))
-      (let [params {:role role :reviewed_by (:id user) :id id}
-            count (db.stakeholder/update-stakeholder-role (:spec db) params)]
-        (resp/response {:status (if (= count 1) "success" "failed")}))
+      (try
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (let [target-user (db.stakeholder/stakeholder-by-id tx {:id id})
+                prev-user-role (:role target-user)
+                params {:role role :reviewed_by (:id user) :id id}
+                count (db.stakeholder/update-stakeholder-role tx params)]
+            (if (or (= prev-user-role role)
+                    (not (contains? #{prev-user-role role} "ADMIN")))
+              (resp/response {:status (if (= count 1) "success" "failed")})
+              (let [{:keys [success?]} (if (= "ADMIN" prev-user-role)
+                                         (srv.permissions/remove-user-from-super-admins
+                                          {:conn tx
+                                           :logger logger}
+                                          id)
+                                         (srv.permissions/make-user-super-admin
+                                          {:conn tx
+                                           :logger logger}
+                                          id))]
+                (if success?
+                  (resp/response {:status "success"})
+                  (throw (ex-info "Error making the user super-admin in RBAC"
+                                  {:reason :error-updating-rbac-super-admins})))))))
+        (catch Throwable e
+          (log logger :error ::failed-to-update-stakeholder-role {:exception-message (.getMessage e)})
+          (let [response {:status 500
+                          :body {:success? false
+                                 :reason :could-not-update-stakeholder-role}}]
+            (if (instance? SQLException e)
+              response
+              (assoc-in response [:body :error-details :error] (.getMessage e))))))
       (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/patch-params [_ _]
