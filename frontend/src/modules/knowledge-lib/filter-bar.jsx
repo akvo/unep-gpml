@@ -136,7 +136,7 @@ const FilterBar = ({
             className={`${!type ? "selected" : ""}`}
             onClick={() => {
               history.push({
-                pathname: `/knowledge/library/${view ? view : ""}`,
+                pathname: `/knowledge/library/`,
               });
             }}
           >
