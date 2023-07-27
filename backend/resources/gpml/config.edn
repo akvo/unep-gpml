@@ -89,8 +89,7 @@
                                                  :parameters {:path [:map [:submission string?] [:id int?]]}
                                                  :handler #ig/ref :gpml.handler.submission/get-detail}}]]
                                         ["/reviewer" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                   #ig/ref :gpml.auth/auth-required
-                                                                   #ig/ref :gpml.auth/approved-user]}
+                                                                   #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:get {:summary "Get list of reviewers"
                                                  :swagger {:tags ["reviewer"]
