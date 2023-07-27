@@ -1,9 +1,9 @@
 (ns gpml.handler.event
   (:require [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
             [duct.logger :refer [log]]
             [gpml.auth :as auth]
             [gpml.db.event :as db.event]
-            [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
             [gpml.domain.types :as dom.types]
             [gpml.handler.auth :as h.auth]
@@ -14,32 +14,13 @@
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.responses :as r]
             [gpml.handler.util :as handler.util]
+            [gpml.service.association :as srv.association]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
             [gpml.util.email :as email]
             [gpml.util.sql :as sql-util]
             [integrant.core :as ig])
   (:import [java.sql SQLException]))
-
-(defn- expand-entity-associations
-  [entity-connections resource-id]
-  (vec (for [connection entity-connections]
-         {:column_name "event"
-          :topic "event"
-          :topic_id resource-id
-          :organisation (:entity connection)
-          :association (:role connection)
-          :remarks nil})))
-
-(defn- expand-individual-associations
-  [individual-connections resource-id]
-  (vec (for [connection individual-connections]
-         {:column_name "event"
-          :topic "event"
-          :topic_id resource-id
-          :stakeholder (:stakeholder connection)
-          :association (:role connection)
-          :remarks nil})))
 
 (defn- create-event
   [{:keys [logger mailjet-config] :as config}
@@ -87,7 +68,8 @@
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
                                                           api-individual-connections)))))
-        geo-coverage-type (keyword geo_coverage_type)]
+        geo-coverage-type (keyword geo_coverage_type)
+        org-associations (map #(set/rename-keys % {:entity :organisation}) entity_connections)]
     (when (not-empty tags)
       (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
                                                                              :tag-category "general"
@@ -98,26 +80,21 @@
                                                 :topic-type "event"
                                                 :stakeholder-id stakeholder-id
                                                 :roles ["owner"]}))
-    (when (not-empty entity_connections)
-      (doseq [association (expand-entity-associations entity_connections event-id)]
-        (db.favorite/new-organisation-association conn association)))
     (srv.permissions/create-resource-context
      {:conn conn
       :logger logger}
      {:context-type :event
       :resource-id event-id})
-    (when (not-empty api-individual-connections)
-      (doseq [association (expand-individual-associations api-individual-connections event-id)]
-        (db.favorite/new-stakeholder-association conn association)))
-    (srv.permissions/assign-roles-to-users-from-connections
+    (srv.association/save-associations
      {:conn conn
       :logger logger}
-     {:context-type :event
-      :resource-id event-id
-      :individual-connections (if (seq api-individual-connections)
-                                api-individual-connections
-                                [{:role "owner"
-                                  :stakeholder (:id user)}])})
+     {:org-associations org-associations
+      :sth-associations (if (seq api-individual-connections)
+                          api-individual-connections
+                          [{:role "owner"
+                            :stakeholder (:id user)}])
+      :resource-type "event"
+      :resource-id event-id})
     (when (seq related_content)
       (handler.resource.related-content/create-related-contents conn logger event-id "event" related_content))
     (when (not-empty urls)

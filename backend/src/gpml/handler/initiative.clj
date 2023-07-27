@@ -1,7 +1,7 @@
 (ns gpml.handler.initiative
   (:require [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
             [duct.logger :refer [log]]
-            [gpml.db.favorite :as db.favorite]
             [gpml.db.initiative :as db.initiative]
             [gpml.db.resource.connection :as db.resource.connection]
             [gpml.db.resource.tag :as db.resource.tag]
@@ -13,6 +13,7 @@
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.responses :as r]
             [gpml.handler.util :as util]
+            [gpml.service.association :as srv.association]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util.email :as email]
             [gpml.util.sql :as sql-util]
@@ -41,26 +42,6 @@
   {:geo_coverage_country_groups (mapv (comp #(Integer/parseInt %) name ffirst) (:q24_4 params))
    :geo_coverage_countries (mapv (comp #(Integer/parseInt %) name ffirst) (:q24_2 params))})
 
-(defn- expand-entity-associations
-  [entity-connections resource-id]
-  (vec (for [connection entity-connections]
-         {:column_name "initiative"
-          :topic "initiative"
-          :topic_id resource-id
-          :organisation (:entity connection)
-          :association (:role connection)
-          :remarks nil})))
-
-(defn- expand-individual-associations
-  [individual-connections resource-id]
-  (vec (for [connection individual-connections]
-         {:column_name "initiative"
-          :topic "initiative"
-          :topic_id resource-id
-          :stakeholder (:stakeholder connection)
-          :association (:role connection)
-          :remarks nil})))
-
 (defn- create-initiative
   [{:keys [logger mailjet-config] :as config}
    conn
@@ -82,30 +63,26 @@
                             conn
                             (update data :source #(sql-util/keyword->pg-enum % "resource_source"))))
         api-individual-connections (util/individual-connections->api-individual-connections conn individual_connections created_by)
-        geo-coverage-type (keyword (first (keys q24)))]
+        geo-coverage-type (keyword (first (keys q24)))
+        org-associations (map #(set/rename-keys % {:entity :organisation}) entity_connections)]
     (add-geo-initiative conn initiative-id geo-coverage-type (extract-geo-data data))
     (when (seq related_content)
       (handler.resource.related-content/create-related-contents conn logger initiative-id "initiative" related_content))
-    (when (not-empty entity_connections)
-      (doseq [association (expand-entity-associations entity_connections initiative-id)]
-        (db.favorite/new-organisation-association conn association)))
     (srv.permissions/create-resource-context
      {:conn conn
       :logger logger}
      {:context-type :initiative
       :resource-id initiative-id})
-    (when (not-empty api-individual-connections)
-      (doseq [association (expand-individual-associations api-individual-connections initiative-id)]
-        (db.favorite/new-stakeholder-association conn association)))
-    (srv.permissions/assign-roles-to-users-from-connections
+    (srv.association/save-associations
      {:conn conn
       :logger logger}
-     {:context-type :initiative
-      :resource-id initiative-id
-      :individual-connections (if (seq api-individual-connections)
-                                api-individual-connections
-                                [{:role "owner"
-                                  :stakeholder (:id user)}])})
+     {:org-associations org-associations
+      :sth-associations (if (seq api-individual-connections)
+                          api-individual-connections
+                          [{:role "owner"
+                            :stakeholder (:id user)}])
+      :resource-type "initiative"
+      :resource-id initiative-id})
     (when (not-empty tags)
       (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
                                                                              :tag-category "general"

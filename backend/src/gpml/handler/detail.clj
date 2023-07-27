@@ -1,21 +1,18 @@
 (ns gpml.handler.detail
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.set :as set]
-            [clojure.string :as str]
             [duct.logger :refer [log]]
             [gpml.db.action :as db.action]
             [gpml.db.action-detail :as db.action-detail]
             [gpml.db.country]
             [gpml.db.country-group :as db.country-group]
             [gpml.db.detail :as db.detail]
-            [gpml.db.favorite :as db.favorite]
             [gpml.db.initiative :as db.initiative]
             [gpml.db.language :as db.language]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.policy :as db.policy]
             [gpml.db.project :as db.project]
             [gpml.db.rbac-util :as db.rbac-util]
-            [gpml.db.resource.association :as db.res.acs]
             [gpml.db.resource.connection :as db.resource.connection]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.domain.initiative :as dom.initiative]
@@ -30,7 +27,7 @@
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
-            [gpml.service.permissions :as srv.permissions]
+            [gpml.service.association :as srv.association]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
             [medley.core :as medley])
@@ -588,105 +585,6 @@
     (-update-blank-resource-picture conn image-type resource-id image-key)
     (-update-resource-picture config conn image image-type resource-id image-key)))
 
-(defn expand-associations
-  [connections stakeholder-type topic topic-id]
-  (vec (for [connection connections]
-         (let [{:keys [id role]} connection
-               stakeholder-type-column (if (= stakeholder-type "organisation")
-                                         {:organisation (:entity connection)}
-                                         {:stakeholder (:stakeholder connection)})]
-           (if (pos-int? id)
-             {:id id
-              :table (str stakeholder-type "_" topic)
-              :topic topic
-              :updates (merge stakeholder-type-column {(keyword topic) topic-id
-                                                       :association role})}
-             (merge stakeholder-type-column {:column_name topic
-                                             :topic topic
-                                             :topic_id topic-id
-                                             :association role
-                                             :remarks nil}))))))
-
-(defn- get-associations-diff
-  [updated-acs existing-acs]
-  (reduce
-   (fn [acs-diff {:keys [id] :as acs}]
-     (let [in-existing (some #(when (= id (:id %)) %) existing-acs)
-           in-updated (some #(when (= id (:id %)) %) updated-acs)
-           to-create? (not id)]
-       (cond
-         to-create?
-         (update acs-diff :to-create conj acs)
-
-         (and in-existing (not in-updated))
-         (update acs-diff :to-delete conj in-existing)
-
-         (and in-updated in-existing (not= (:role in-updated) (:role in-existing)))
-         (update acs-diff :to-update conj (assoc in-updated :old-role (:role in-existing)))
-
-         :else
-         acs-diff)))
-   {:to-create []
-    :to-delete []
-    :to-update []}
-   (medley/distinct-by
-    (fn [x] (or (:id x) x))
-    (concat updated-acs existing-acs))))
-
-(defn- get-role-unassignments
-  [associations resource-type resource-id]
-  (keep (fn [{:keys [stakeholder role]}]
-          (when (get #{"owner" "resource_editor"} role)
-            {:user-id stakeholder
-             :role-name (keyword (str/replace role \_ \-))
-             :context-type resource-type
-             :resource-id resource-id}))
-        associations))
-
-(defn update-resource-connections
-  [{:keys [logger]} conn entity-connections individual-connections resource-type resource-id]
-  (let [existing-ecs (db.res.acs/get-resource-associations conn
-                                                           {:table (str "organisation_" resource-type)
-                                                            :resource-col resource-type
-                                                            :filters {:resource-id resource-id}})
-        {_to-create-ecs :to-create to-delete-ecs :to-delete _to-update-ecs :to-update}
-        (get-associations-diff entity-connections existing-ecs)
-        existing-ics (db.res.acs/get-resource-associations conn
-                                                           {:table (str "stakeholder_" resource-type)
-                                                            :resource-col resource-type
-                                                            :filters {:resource-id resource-id}})
-        {to-create-ics :to-create to-delete-ics :to-delete to-update-ics :to-update}
-        (get-associations-diff individual-connections existing-ics)
-        role-unassignments (get-role-unassignments to-delete-ics
-                                                   resource-type
-                                                   resource-id)]
-    (when (seq to-delete-ecs)
-      (db.favorite/delete-associations conn {:table (str "organisation_" resource-type)
-                                             :ids (map :id to-delete-ecs)}))
-    (when (seq to-delete-ics)
-      (db.favorite/delete-associations conn {:table (str "stakeholder_" resource-type)
-                                             :ids (map :id to-delete-ics)}))
-    (when (seq individual-connections)
-      (doseq [association (expand-associations individual-connections "stakeholder" resource-type resource-id)]
-        (if (contains? association :id)
-          (db.favorite/update-stakeholder-association conn association)
-          (db.favorite/new-stakeholder-association conn association))))
-    (when (seq entity-connections)
-      (doseq [association (expand-associations entity-connections "organisation" resource-type resource-id)]
-        (if (contains? association :id)
-          (db.favorite/update-stakeholder-association conn association)
-          (db.favorite/new-organisation-association conn association))))
-    (when (seq role-unassignments)
-      (srv.permissions/unassign-roles-from-users {:conn conn
-                                                  :logger logger}
-                                                 role-unassignments))
-    (when (or (seq to-create-ics) (seq to-update-ics))
-      (srv.permissions/assign-roles-to-users-from-connections {:conn conn
-                                                               :logger logger}
-                                                              {:context-type (keyword resource-type)
-                                                               :resource-id resource-id
-                                                               :individual-connections (concat to-create-ics to-update-ics)}))))
-
 (defn- update-resource
   [{:keys [logger mailjet-config] :as config}
    conn
@@ -728,7 +626,9 @@
                      (:id org)
                      (and (= -1 (:id org))
                           (handler.org/create conn logger mailjet-config org))))
-        related-contents (:related_content updates)]
+        related-contents (:related_content updates)
+        org-associations (map (fn [acs] (set/rename-keys acs {:entity :organisation})) (:entity_connections updates))
+        sth-associations (:individual_connections updates)]
     (doseq [[image-key image-data] (select-keys updates [:image :thumbnail :photo :logo])]
       (update-resource-image config conn image-data image-key table id))
     (when (seq tags)
@@ -747,13 +647,12 @@
                                                :country-states geo_coverage_country_states})
     (when (contains? #{"resource"} table)
       (update-resource-organisation conn table id org-id))
-    (update-resource-connections
-     config
-     conn
-     (:entity_connections updates)
-     (:individual_connections updates)
-     table
-     id)
+    (srv.association/save-associations {:conn conn
+                                        :logger logger}
+                                       {:org-associations org-associations
+                                        :sth-associations sth-associations
+                                        :resource-type table
+                                        :resource-id id})
     status))
 
 (defn- update-initiative
@@ -778,7 +677,9 @@
                         :geo_coverage_country_groups
                         :geo_coverage_value_subnational
                         :qimage))
-        related-contents (:related_content initiative)]
+        related-contents (:related_content initiative)
+        org-associations (map (fn [acs] (set/rename-keys acs {:entity :organisation})) (:entity_connections initiative))
+        sth-associations (:individual_connections initiative)]
     (doseq [[image-key image-data] (select-keys initiative [:qimage :thumbnail])]
       (update-resource-image config conn image-data image-key "initiative" id))
     (when (seq related-contents)
@@ -792,13 +693,12 @@
                                               {:countries geo_coverage_countries
                                                :country-groups geo_coverage_country_groups
                                                :country-states geo_coverage_country_states})
-    (update-resource-connections
-     config
-     conn
-     (:entity_connections initiative)
-     (:individual_connections initiative)
-     "initiative"
-     id)
+    (srv.association/save-associations {:conn conn
+                                        :logger logger}
+                                       {:org-associations org-associations
+                                        :sth-associations sth-associations
+                                        :resource-type "initiative"
+                                        :resource-id id})
     status))
 
 (defmethod ig/init-key :gpml.handler.detail/put
