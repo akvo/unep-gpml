@@ -79,7 +79,7 @@
       (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
                                                                              :tag-category "general"
                                                                              :resource-name "resource"
-                                                                             :resource-id resource-id}))    
+                                                                             :resource-id resource-id}))
     (srv.permissions/create-resource-context
      {:conn conn
       :logger logger}
