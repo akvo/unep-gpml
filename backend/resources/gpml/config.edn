@@ -228,8 +228,7 @@
                                                     :parameters #ig/ref :gpml.handler.stakeholder/patch-params
                                                     :handler #ig/ref :gpml.handler.stakeholder/patch}}]
                                           ["/associated-topics"
-                                           {:get {:middleware [#ig/ref :gpml.auth/auth-required
-                                                               #ig/ref :gpml.auth/approved-user]
+                                           {:get {:middleware [#ig/ref :gpml.auth/auth-required]
                                                   :summary "Get stakeholder associated topics"
                                                   :swagger {:tags ["stakeholder"]}
                                                   :parameters #ig/ref :gpml.handler.stakeholder-association/get-associated-topics-params
