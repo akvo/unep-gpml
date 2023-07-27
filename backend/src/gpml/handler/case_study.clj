@@ -1,8 +1,8 @@
 (ns gpml.handler.case-study
   (:require [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
             [duct.logger :refer [log]]
             [gpml.db.case-study :as db.case-study]
-            [gpml.db.favorite :as db.favorite]
             [gpml.domain.case-study :as dom.case-study]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.geo-coverage :as handler.geo]
@@ -11,6 +11,7 @@
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.responses :as r]
             [gpml.handler.util :as handler.util]
+            [gpml.service.association :as srv.association]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util.email :as email]
             [gpml.util.malli :as util.malli]
@@ -43,28 +44,6 @@
                         related_content))
     (throw (ex-info "Failed to create case study's related content" {}))))
 
-;; TODO: Move it to share space or it will be removed when refactoring permissions.
-(defn- expand-entity-associations
-  [entity-connections resource-id]
-  (vec (for [connection entity-connections]
-         {:column_name "case_study"
-          :topic "case_study"
-          :topic_id resource-id
-          :organisation (:entity connection)
-          :association (:role connection)
-          :remarks nil})))
-
-;; TODO: Move it to share space or it will be removed when refactoring permissions.
-(defn- expand-individual-associations
-  [individual-connections resource-id]
-  (vec (for [connection individual-connections]
-         {:column_name "case_study"
-          :topic "case_study"
-          :topic_id resource-id
-          :stakeholder (:stakeholder connection)
-          :association (:role connection)
-          :remarks nil})))
-
 (defn- create-case-study
   [{:keys [logger mailjet-config] :as config}
    conn
@@ -89,7 +68,8 @@
                             conn
                             {:insert-cols insert-cols
                              :insert-values insert-values})
-        cs-id (-> cs-creation-result first :id)]
+        cs-id (-> cs-creation-result first :id)
+        org-associations (map #(set/rename-keys % {:entity :organisation}) entity_connections)]
     (when (not-empty tags)
       (handler.resource.tag/create-resource-tags
        conn
@@ -107,26 +87,21 @@
                          geo_coverage_country_states)
     (when (seq related_content)
       (handle-related-content conn logger cs-id related_content))
-    (when (not-empty entity_connections)
-      (doseq [association (expand-entity-associations entity_connections cs-id)]
-        (db.favorite/new-organisation-association conn association)))
     (srv.permissions/create-resource-context
      {:conn conn
       :logger logger}
      {:context-type :case-study
       :resource-id cs-id})
-    (when (not-empty api-individual-connections)
-      (doseq [association (expand-individual-associations api-individual-connections cs-id)]
-        (db.favorite/new-stakeholder-association conn association)))
-    (srv.permissions/assign-roles-to-users-from-connections
+    (srv.association/save-associations
      {:conn conn
       :logger logger}
-     {:context-type :case-study
-      :resource-id cs-id
-      :individual-connections (if (seq api-individual-connections)
-                                api-individual-connections
-                                [{:role "owner"
-                                  :stakeholder (:id user)}])})
+     {:org-associations org-associations
+      :sth-associations (if (seq api-individual-connections)
+                          api-individual-connections
+                          [{:role "owner"
+                            :stakeholder (:id user)}])
+      :resource-type "case-study"
+      :resource-id cs-id})
     (email/notify-admins-pending-approval
      conn
      mailjet-config

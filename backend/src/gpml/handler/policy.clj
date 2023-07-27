@@ -1,7 +1,7 @@
 (ns gpml.handler.policy
   (:require [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
             [duct.logger :refer [log]]
-            [gpml.db.favorite :as db.favorite]
             [gpml.db.policy :as db.policy]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.policy :as dom.policy]
@@ -13,6 +13,7 @@
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.responses :as r]
             [gpml.handler.util :as handler.util]
+            [gpml.service.association :as srv.association]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
             [gpml.util.email :as email]
@@ -23,26 +24,6 @@
             [malli.util :as mu]
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
-
-(defn- expand-entity-associations
-  [entity-connections resource-id]
-  (vec (for [connection entity-connections]
-         {:column_name "policy"
-          :topic "policy"
-          :topic_id resource-id
-          :organisation (:entity connection)
-          :association (:role connection)
-          :remarks nil})))
-
-(defn- expand-individual-associations
-  [individual-connections resource-id]
-  (vec (for [connection individual-connections]
-         {:column_name "policy"
-          :topic "policy"
-          :topic_id resource-id
-          :stakeholder (:stakeholder connection)
-          :association (:role connection)
-          :remarks nil})))
 
 (defn- create-policy
   [{:keys [logger mailjet-config] :as config}
@@ -102,7 +83,8 @@
                                                      (map #(when (= (:role %) "owner")
                                                              (:stakeholder %))
                                                           api-individual-connections)))))
-        geo-coverage-type (keyword geo_coverage_type)]
+        geo-coverage-type (keyword geo_coverage_type)
+        org-associations (map #(set/rename-keys % {:entity :organisation}) entity_connections)]
     (when (seq related_content)
       (handler.resource.related-content/create-related-contents conn logger policy-id "policy" related_content))
     (when (not-empty tags)
@@ -115,27 +97,22 @@
                                                 :topic-type "policy"
                                                 :stakeholder-id stakeholder-id
                                                 :roles ["owner"]}))
-    (when (not-empty entity_connections)
-      (doseq [association (expand-entity-associations entity_connections policy-id)]
-        (db.favorite/new-organisation-association conn association)))
     (srv.permissions/create-resource-context
      {:conn conn
       :logger logger}
      {:context-type :policy
       :resource-id policy-id
       :entity-connections entity_connections})
-    (when (not-empty api-individual-connections)
-      (doseq [association (expand-individual-associations api-individual-connections policy-id)]
-        (db.favorite/new-stakeholder-association conn association)))
-    (srv.permissions/assign-roles-to-users-from-connections
+    (srv.association/save-associations
      {:conn conn
       :logger logger}
-     {:context-type :policy
-      :resource-id policy-id
-      :individual-connections (if (seq api-individual-connections)
-                                api-individual-connections
-                                [{:role "owner"
-                                  :stakeholder (:id user)}])})
+     {:org-associations org-associations
+      :sth-associations (if (seq api-individual-connections)
+                          api-individual-connections
+                          [{:role "owner"
+                            :stakeholder (:id user)}])
+      :resource-type "policy"
+      :resource-id policy-id})
     (handler.geo/create-resource-geo-coverage conn
                                               :policy
                                               policy-id
