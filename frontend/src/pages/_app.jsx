@@ -3,6 +3,8 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import Head from "next/head";
 import "../main.scss";
 import withLayout from "../layouts/withLayout";
+import "swiper/css";
+import "swiper/css/navigation";
 
 function MyApp({ Component, pageProps }) {
   const [setStakeholderSignupModalVisible] = useState(false);
@@ -26,9 +28,7 @@ function MyApp({ Component, pageProps }) {
         <meta name="description" content="GPML Digital Platform" />
         <title>UNEP GPML Digital Platform</title>
       </Head>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <Layout {...pageProps} />
     </div>
   );
 }

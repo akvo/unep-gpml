@@ -456,16 +456,22 @@ const Stats = () => {
     organisations: s?.organisations,
     nonMemberOrganisations: s?.nonMemberOrganisations,
   }));
+
+  console.log(organisations, nonMemberOrganisations);
   const [governmentsCount, setGovernmentsCount] = useState(0);
 
-  // useEffect(() => {
-  //   api.get(`/community?representativeGroup=Government`).then((resp) => {
-  //     const governments = resp.data.counts.find(
-  //       (count) => count?.networkType?.toLowerCase() === "organisation"
-  //     );
-  //     setGovernmentsCount(governments?.count || 0);
-  //   });
-  // }, []);
+  useEffect(() => {
+    api
+      .get(
+        `https://digital.gpmarinelitter.org/api/community?representativeGroup=Government`
+      )
+      .then((resp) => {
+        const governments = resp.data.counts.find(
+          (count) => count?.networkType?.toLowerCase() === "organisation"
+        );
+        setGovernmentsCount(governments?.count || 0);
+      });
+  }, []);
 
   return (
     <div className={styles.stats}>

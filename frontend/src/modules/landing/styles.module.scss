@@ -442,8 +442,10 @@
       text-transform: uppercase;
       margin-bottom: 25px;
     }
-    .swiper {
-      overflow: visible;
+    :global {
+      .swiper {
+        overflow: visible;
+      }
     }
     .card {
       box-shadow: 0px 4px 44px rgba(24, 22, 47, 0.1);
