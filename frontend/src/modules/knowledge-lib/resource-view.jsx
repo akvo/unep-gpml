@@ -3,22 +3,17 @@ import classNames from "classnames";
 import { CSSTransition } from "react-transition-group";
 import api from "../../utils/api";
 import FilterBar from "./filter-bar";
+import { resourceTypes } from "./filter-bar";
 import FilterModal from "./filter-modal";
 import ResourceCards, {
   ResourceCard,
 } from "../../components/resource-cards/resource-cards";
 import { LoadingOutlined, DownOutlined } from "@ant-design/icons";
 import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
-import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
-import { ReactComponent as TopicIcon } from "../../images/topic-view.svg";
-import { ReactComponent as GridIcon } from "../../images/grid-view.svg";
-import { ReactComponent as GraphIcon } from "../../images/graph-view.svg";
 import { ReactComponent as SearchIcon } from "../../images/search-icon.svg";
 import { Button } from "antd";
 import Maps from "../map/map";
-import { UIStore } from "../../store";
 import { isEmpty } from "lodash";
-import { Link, useHistory } from "react-router-dom";
 import { useQuery, topicNames } from "../../utils/misc";
 import TopicView from "./topic-view";
 import { useParams, useLocation, withRouter } from "react-router-dom";
@@ -39,6 +34,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [countData, setCountData] = useState([]);
+  const [totalCount, setTotalCount] = useState([]);
   const [filterCountries, setFilterCountries] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const [catData, setCatData] = useState([]);
@@ -54,6 +50,17 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
       acc + (countData?.find((it) => it.topic === topic)?.count || 0),
     0
   );
+
+  const allResources = totalCount
+    ?.filter((array) =>
+      resourceTypes.some(
+        (filter) =>
+          array.topic === filter.title && filter.title !== "capacity building"
+      )
+    )
+    ?.reduce(function (acc, obj) {
+      return acc + obj.count;
+    }, 0);
 
   const uniqueArrayByKey = (array) => [
     ...new Map(array.map((item) => [item["id"], item])).values(),
@@ -86,6 +93,9 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
       .then((resp) => {
         setLoading(false);
         setData(resp?.data);
+        if (!view) {
+          setTotalCount(resp?.data?.counts);
+        }
         setCountData(resp?.data?.counts);
         setGridItems((prevItems) => {
           return uniqueArrayByKey([...prevItems, ...resp?.data?.results]);
@@ -192,7 +202,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
 
   const handleCategoryFilter = (key) => {
     history.push({
-      pathname: `/knowledge/library/resource/${
+      pathname: `/knowledge/library/${
         view ? (view === "category" ? "grid" : view) : "map"
       }/${key.replace(/_/g, "-")}/`,
       search: search,
@@ -217,6 +227,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           history,
           type,
           view,
+          totalCount,
           fetchData,
           setFilterCountries,
           setMultiCountryCountries,
@@ -267,16 +278,14 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             </div>
           </button>
         </div>
-        {(view === "map" || view === "topic") && (
+        {(view === "map" || !view || view === "topic") && (
           <div style={{ position: "relative" }}>
             <ResourceCards
               items={data?.results}
               showMoreCardAfter={20}
               showMoreCardClick={() => {
                 history.push({
-                  pathname: `/knowledge/library/resource/grid/${
-                    type ? type : ""
-                  }`,
+                  pathname: `/knowledge/library/grid/${type ? type : ""}`,
                   search: history.location.search,
                 });
               }}
@@ -295,7 +304,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             )}
           </div>
         )}
-        {view === "map" && (
+        {(view === "map" || !view) && (
           <Maps
             query={query}
             box={box}
@@ -457,8 +466,9 @@ const GridView = ({
 };
 
 const ViewSwitch = ({ type, view, history }) => {
-  const viewOptions = ["map", "topic", "grid", "category"];
+  const viewOptions = ["map", "grid", "category"];
   const [visible, setVisible] = useState(false);
+  view = !view ? "map" : view;
 
   return (
     <div className="view-switch-container">
@@ -487,7 +497,7 @@ const ViewSwitch = ({ type, view, history }) => {
                   onClick={() => {
                     setVisible(!visible);
                     history.push({
-                      pathname: `/knowledge/library/resource/${viewOption}/${
+                      pathname: `/knowledge/library/${viewOption}/${
                         type && viewOption !== "category" ? type : ""
                       }`,
                       search: history.location.search,
