@@ -160,15 +160,16 @@
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defmethod ig/init-key :gpml.handler.resource.translation/delete
-  [_ {:keys [db logger]}]
+  [_ {:keys [db logger] :as config}]
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
     (try
-      (let [authorized? (some? (res-permission/get-resource-if-allowed (:spec db)
-                                                                       user
-                                                                       (handler.util/get-internal-topic-type topic-type)
-                                                                       topic-id
-                                                                       {:read? false}))]
+      (let [authorized? (res-permission/operation-allowed?
+                         config
+                         {:user-id (:id user)
+                          :entity-type topic-type
+                          :entity-id topic-id
+                          :operation-type :update})]
         (if authorized?
           (let [conn (:spec db)
                 resource-col (keyword (str topic-type translation-entity-id-sufix))

@@ -430,8 +430,7 @@
                                                               :query #ig/ref :gpml.handler.resource.translation/query-params}
                                                  :handler #ig/ref :gpml.handler.resource.translation/get}
                                            :delete {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                 #ig/ref :gpml.auth/auth-required
-                                                                 #ig/ref :gpml.auth/approved-user]
+                                                                 #ig/ref :gpml.auth/auth-required]
                                                     :summary "Remove specific resource translations"
                                                     :swagger {:tags ["remove resource translations"]}
                                                     :parameters {:path [:map
