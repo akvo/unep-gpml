@@ -4,6 +4,7 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.organisation :as dom.organisation]
             [gpml.handler.resource.geo-coverage :as handler.geo]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.responses :as r]
             [gpml.service.permissions :as srv.permissions]
@@ -71,15 +72,25 @@
   (fn [_]
     (resp/response (db.organisation/all-members (:spec db)))))
 
-(defmethod ig/init-key :gpml.handler.organisation/get-id [_ {:keys [db]}]
-  (fn [{{:keys [path]} :parameters}]
-    (let [conn (:spec db)
-          organisation (db.organisation/organisation-by-id conn path)
-          seeks (:tags (first (db.organisation/organisation-tags conn path)))
-          geo-coverage (let [data (db.organisation/geo-coverage-v2 conn organisation)]
-                         {:geo_coverage_countries      (vec (filter some? (mapv :country data)))
-                          :geo_coverage_country_groups (vec (filter some? (mapv :country_group data)))})]
-      (resp/response (merge (assoc organisation :expertise seeks) geo-coverage)))))
+(defmethod ig/init-key :gpml.handler.organisation/get-id
+  [_ {:keys [db] :as config}]
+  (fn [{{:keys [path]} :parameters user :user}]
+    ;; Here we are not checking for any specific organisation, hence we pass the root application resource id.
+    (if (h.r.permission/operation-allowed?
+         config
+         {:user-id (:id user)
+          :entity-type :organisation
+          :entity-id srv.permissions/root-app-resource-id
+          :operation-type :read
+          :custom-context-type srv.permissions/root-app-context-type})
+      (let [conn (:spec db)
+            organisation (db.organisation/organisation-by-id conn path)
+            seeks (:tags (first (db.organisation/organisation-tags conn path)))
+            geo-coverage (let [data (db.organisation/geo-coverage-v2 conn organisation)]
+                           {:geo_coverage_countries (vec (filter some? (mapv :country data)))
+                            :geo_coverage_country_groups (vec (filter some? (mapv :country_group data)))})]
+        (resp/response (merge (assoc organisation :expertise seeks) geo-coverage)))
+      (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.organisation/post
   [_ {:keys [db mailjet-config logger]}]
@@ -141,10 +152,18 @@
             [:tag_category string?]]]]]
         handler.geo/api-geo-coverage-schemas))
 
-(defmethod ig/init-key :gpml.handler.organisation/put [_ {:keys [db logger mailjet-config]}]
-  (fn [{:keys [body-params referrer parameters]}]
-    (let [org-id (update-org db logger mailjet-config (assoc body-params :id (:id (:path parameters))))]
-      (resp/created referrer (assoc body-params :id org-id)))))
+(defmethod ig/init-key :gpml.handler.organisation/put
+  [_ {:keys [db logger mailjet-config] :as config}]
+  (fn [{:keys [body-params referrer parameters user]}]
+    (if (h.r.permission/operation-allowed?
+         config
+         {:user-id (:id user)
+          :entity-type :organisation
+          :entity-id (:id (:path parameters))
+          :operation-type :update})
+      (let [org-id (update-org db logger mailjet-config (assoc body-params :id (:id (:path parameters))))]
+        (resp/created referrer (assoc body-params :id org-id)))
+      (r/forbidden {:message "Unauthorized"}))))
 
 ;; TODO: We are not skipping extra params, as for example we don't want `is_member` to be updatable
 ;; from this endpoint, so we should skip the ones not expected.
@@ -172,12 +191,21 @@
             [:tag_category {:optional true} string?]]]]]
         handler.geo/api-geo-coverage-schemas))
 
-(defmethod ig/init-key :gpml.handler.organisation/put-to-member [_ {:keys [db logger mailjet-config]}]
-  (fn [{:keys [body-params parameters]}]
+(defmethod ig/init-key :gpml.handler.organisation/put-to-member
+  [_ {:keys [db logger mailjet-config] :as config}]
+  (fn [{:keys [body-params parameters user]}]
     (try
-      (update-org (:spec db) logger mailjet-config (assoc body-params :id (:id (:path parameters))
-                                                          :is_member true))
-      (r/ok {:success? true})
+      (if (h.r.permission/operation-allowed?
+           config
+           {:user-id (:id user)
+            :entity-type :organisation
+            :entity-id (:id (:path parameters))
+            :operation-type :update})
+        (do
+          (update-org (:spec db) logger mailjet-config (assoc body-params :id (:id (:path parameters))
+                                                              :is_member true))
+          (r/ok {:success? true}))
+        (r/forbidden {:message "Unauthorized"}))
       (catch Throwable e
         (log logger :error ::failed-to-convert-org-to-member {:exception-message (ex-message e)})
         (let [response {:success? false

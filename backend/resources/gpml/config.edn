@@ -312,15 +312,15 @@
                                           [""
                                            {:get {:summary "Get organisation by id"
                                                   :swagger {:tags ["organisation"]}
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
                                                   :parameters {:path [:map [:id int?]]}
                                                   :handler #ig/ref :gpml.handler.organisation/get-id}
                                             :put {:summary "Update organisation by id and body params"
                                                   :swagger {:tags ["organisation"]
                                                             :security [{:id_token []}]}
                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                               #ig/ref :gpml.auth/auth-required
-                                                               #ig/ref :gpml.auth/approved-user
-                                                               #ig/ref :gpml.auth/restrict-to-organisation-admin-or-owner]
+                                                               #ig/ref :gpml.auth/auth-required]
                                                   :parameters {:path [:map [:id int?]]
                                                                :body #ig/ref :gpml.handler.organisation/put-params}
                                                   :handler #ig/ref :gpml.handler.organisation/put}}]
@@ -335,6 +335,8 @@
                                           ["/members"
                                            {:get {:summary "List all members belonging to a given organisation"
                                                   :swagger {:tags ["organisation detail"]}
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
                                                   :parameters #ig/ref :gpml.handler.organisation-detail/get-members-params
                                                   :handler #ig/ref :gpml.handler.organisation-detail/get-members}}]
                                           ["/content"
@@ -886,7 +888,6 @@
 
   :gpml.auth/auth-required {}
   :gpml.auth/restrict-to-admin-and-comment-author-middleware {:db #ig/ref :duct.database/sql}
-  :gpml.auth/restrict-to-organisation-admin-or-owner {:db #ig/ref :duct.database/sql}
   :gpml.auth/approved-user {:db #ig/ref :duct.database/sql}
   :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}
   :gpml.auth/admin-or-reviewer-required-middleware {:db #ig/ref :duct.database/sql}

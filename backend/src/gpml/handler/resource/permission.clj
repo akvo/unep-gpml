@@ -111,7 +111,8 @@
 ;; TODO: Add pre condition for ensuring a valid operation-type value
 (defn operation-allowed?
   "FIXME: Add docstring"
-  [{:keys [db logger]} {:keys [user-id entity-type entity-id operation-type root-context? custom-permission]}]
+  [{:keys [db logger]}
+   {:keys [user-id entity-type entity-id operation-type root-context? custom-permission custom-context-type]}]
   (let [context-type-entity (entity-type->context-type (name entity-type))
         [context-type resource-id] (if-not root-context?
                                      [context-type-entity entity-id]
@@ -126,7 +127,14 @@
                              :else
                              (name operation-type))
         permission (keyword (name context-type) permission-ns-name)]
-    (rbac/has-permission (:spec db) logger user-id resource-id context-type permission)))
+    (rbac/has-permission
+     (:spec db)
+     logger
+     user-id
+     resource-id
+     (if custom-context-type
+       custom-context-type
+       context-type) permission)))
 
 (defn super-admin?
   "FIXME: Add docstring"
