@@ -14,6 +14,7 @@
             [gpml.db.project :as db.project]
             [gpml.db.rbac-util :as db.rbac-util]
             [gpml.db.resource.connection :as db.resource.connection]
+            [gpml.db.resource.detail :as db.resource.detail]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.domain.initiative :as dom.initiative]
             [gpml.domain.resource :as dom.resource]
@@ -481,25 +482,35 @@
        :reason :not-found})))
 
 (defmethod ig/init-key :gpml.handler.detail/get
-  [_ {:keys [logger] :as config}]
+  [_ {:keys [db logger] :as config}]
   (fn [{{:keys [path query]} :parameters user :user}]
     (try
       (let [topic-type (:topic-type path)
             topic-id (:topic-id path)
+            resource (db.resource.detail/get-resource (:spec db)
+                                                      {:table-name topic-type
+                                                       :id topic-id})
+            draft? (not= "APPROVED" (:review_status resource))
             authorized? (if-not (or (= topic-type "stakeholder")
                                     (= topic-type "organisation"))
-                          true
-                          ;; Platform resources (topics) are public
-                          ;; except for stakeholders. To view
-                          ;; stakeholder's data calling users needs to
+                          (if draft?
+                            (handler.res-permission/operation-allowed?
+                             config
+                             {:user-id (:id user)
+                              :entity-type topic-type
+                              :entity-id topic-id
+                              :operation-type :read-draft})
+                            true)
+                          ;; Platform resources (topics) are public (approved ones)
+                          ;; except for stakeholders and organisations. To view
+                          ;; any of those entity's data, users needs to
                           ;; be approved and have the
-                          ;; `stakeholder/read` permission.
+                          ;; `stakeholder/read` or `organisation/read` permission.
                           (handler.res-permission/operation-allowed?
                            config
                            {:user-id (:id user)
                             :entity-type topic-type
-                            :operation-type :read
-                            :root-context? false}))]
+                            :operation-type :read}))]
         (if-not authorized?
           (r/forbidden {:message "Unauthorized"})
           (let [result (get-detail config topic-id topic-type query)]
