@@ -118,17 +118,21 @@
           translations))
 
 (defmethod ig/init-key :gpml.handler.resource.translation/put
-  [_ {:keys [db logger]}]
+  [_ {:keys [db logger] :as config}]
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
     (try
-      (let [submission (res-permission/get-resource-if-allowed (:spec db)
-                                                               user
-                                                               (handler.util/get-internal-topic-type topic-type)
-                                                               topic-id
-                                                               {:read? false})]
-        (if (some? submission)
-          (if (valid-translation-languages? (:translations body) (:language submission))
+      (let [resource (db.resource.detail/get-resource (:spec db)
+                                                      {:table-name topic-type
+                                                       :id topic-id})
+            authorized? (res-permission/operation-allowed?
+                         config
+                         {:user-id (:id user)
+                          :entity-type topic-type
+                          :entity-id topic-id
+                          :operation-type :update})]
+        (if authorized?
+          (if (valid-translation-languages? (:translations body) (:language resource))
             (let [conn (:spec db)
                   resource-col (keyword (str topic-type translation-entity-id-sufix))
                   parsed-translations (mapv #(api-translation-translation % resource-col topic-id)

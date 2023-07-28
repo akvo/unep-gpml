@@ -440,8 +440,7 @@
                                                                  :body #ig/ref :gpml.handler.resource.translation/delete-params}
                                                     :handler #ig/ref :gpml.handler.resource.translation/delete}
                                            :put {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                              #ig/ref :gpml.auth/auth-required
-                                                              #ig/ref :gpml.auth/approved-user]
+                                                              #ig/ref :gpml.auth/auth-required]
                                                  :summary "Create or edit resource translations"
                                                  :swagger {:tags ["create resource translations"
                                                                   "edit resource translations"]
