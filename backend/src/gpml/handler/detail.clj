@@ -29,6 +29,7 @@
             [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.service.association :as srv.association]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
             [medley.core :as medley])
@@ -504,13 +505,15 @@
                           ;; Platform resources (topics) are public (approved ones)
                           ;; except for stakeholders and organisations. To view
                           ;; any of those entity's data, users needs to
-                          ;; be approved and have the
+                          ;; have the
                           ;; `stakeholder/read` or `organisation/read` permission.
                           (handler.res-permission/operation-allowed?
                            config
                            {:user-id (:id user)
                             :entity-type topic-type
-                            :operation-type :read}))]
+                            :entity-id srv.permissions/root-app-resource-id
+                            :operation-type :read
+                            :custom-context-type srv.permissions/root-app-context-type}))]
         (if-not authorized?
           (r/forbidden {:message "Unauthorized"})
           (let [result (get-detail config topic-id topic-type query)]

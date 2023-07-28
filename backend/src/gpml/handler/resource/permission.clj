@@ -134,7 +134,8 @@
      resource-id
      (if custom-context-type
        custom-context-type
-       context-type) permission)))
+       context-type)
+     permission)))
 
 (defn super-admin?
   "FIXME: Add docstring"
