@@ -1,6 +1,7 @@
 (ns gpml.handler.resource.translation
   (:require [clojure.string :as str]
             [duct.logger :refer [log]]
+            [gpml.db.resource.detail :as db.resource.detail]
             [gpml.db.resource.translation :as db.res-translation]
             [gpml.domain.translation :as dom.translation]
             [gpml.domain.types :as dom.types]
@@ -210,7 +211,7 @@
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defmethod ig/init-key :gpml.handler.resource.translation/get
-  [_ {:keys [db logger]}]
+  [_ {:keys [db logger] :as config}]
   (fn [{{:keys [path query]} :parameters user :user}]
     (try
       (let [conn (:spec db)
@@ -218,11 +219,18 @@
             resource-col (keyword (str topic-type translation-entity-id-sufix))
             topic-id (:topic-id path)
             langs-only? (:langs-only query)
-            authorized? (some? (res-permission/get-resource-if-allowed conn
-                                                                       user
-                                                                       (handler.util/get-internal-topic-type topic-type)
-                                                                       topic-id
-                                                                       {:read? true}))]
+            resource (db.resource.detail/get-resource (:spec db)
+                                                      {:table-name topic-type
+                                                       :id topic-id})
+            draft? (not= "APPROVED" (:review_status resource))
+            authorized? (if draft?
+                          (res-permission/operation-allowed?
+                           config
+                           {:user-id (:id user)
+                            :entity-type topic-type
+                            :entity-id topic-id
+                            :operation-type :read-draft})
+                          true)]
         (if authorized?
           (let [table-name (str topic-type translation-table-sufix)
                 result (if langs-only?

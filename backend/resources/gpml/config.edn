@@ -421,8 +421,7 @@
                                                  :handler #ig/ref :gpml.handler.detail/put}}]]
                                         ["/translations"
                                          ["/{topic-type}/{topic-id}"
-                                          {:get {:middleware [#ig/ref :gpml.auth/auth-middleware]
-                                                 :summary "Get the translations for a specific resource"
+                                          {:get {:summary "Get the translations for a specific resource"
                                                  :swagger {:tags ["get resource translations"]}
                                                  :parameters {:path [:map
                                                                      [:topic-type
