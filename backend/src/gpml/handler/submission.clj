@@ -188,7 +188,7 @@
     (resp/response detail)))
 
 (defmethod ig/init-key :gpml.handler.submission/get-detail
-  [_ {:keys [db logger] :as config}]
+  [_ {:keys [logger] :as config}]
   (fn [{{:keys [path]} :parameters user :user}]
     (try
       (let [user-id (:id user)

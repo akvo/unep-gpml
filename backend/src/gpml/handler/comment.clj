@@ -12,8 +12,7 @@
             [integrant.core :as ig]
             [java-time :as time]
             [java-time.pre-java8 :as time-pre-j8]
-            [java-time.temporal]
-            [ring.util.response :as resp]))
+            [java-time.temporal]))
 
 (def id-param
   [:id

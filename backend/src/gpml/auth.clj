@@ -1,7 +1,5 @@
 (ns gpml.auth
-  (:require [gpml.db.comment :as db.comment]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.util :as util]
+  (:require [gpml.db.stakeholder :as db.stakeholder]
             [integrant.core :as ig]
             [malli.core :as malli])
   (:import [com.auth0.jwk JwkProvider JwkProviderBuilder]
