@@ -335,6 +335,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             useVerticalLegend
             showLegend={true}
             path="knowledge"
+            zoom={1.1}
           />
         )}
         {view === "grid" && (

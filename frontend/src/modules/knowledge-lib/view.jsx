@@ -33,16 +33,16 @@ function Library({ setLoginVisible, isAuthenticated }) {
     landing: s.landing,
   }));
 
-  // useEffect(() => {
-  //   if (!modalVisible) {
-  //     const previousHref = router.asPath;
-  //     window.history.pushState(
-  //       { urlPath: `/${previousHref}` },
-  //       "",
-  //       `${previousHref}`
-  //     );
-  //   }
-  // }, [modalVisible]);
+  useEffect(() => {
+    if (!modalVisible) {
+      const previousHref = router.asPath;
+      window.history.pushState(
+        { urlPath: `/${previousHref}` },
+        "",
+        `${previousHref}`
+      );
+    }
+  }, [modalVisible]);
 
   const showModal = ({ e, type, id }) => {
     console.log("setModalVisible");
@@ -56,16 +56,6 @@ function Library({ setLoginVisible, isAuthenticated }) {
       bodyScrollLock.enable();
     }
   };
-
-  useEffect(() => {
-    // api
-    //   .get(`https://digital.gpmarinelitter.org/api/landing?entityGroup=topic`)
-    //   .then((resp) => {
-    //     UIStore.update((e) => {
-    //       e.landing = resp.data;
-    //     });
-    //   });
-  }, []);
 
   return (
     <div className={styles.knowledgeLib}>

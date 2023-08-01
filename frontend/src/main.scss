@@ -1261,8 +1261,6 @@ path {
     background-color: unset;
     cursor: pointer;
     svg {
-      width: 32px;
-      height: 32px;
       margin-right: 7px;
       transition: all 0.15s ease-out;
     }
@@ -1719,4 +1717,32 @@ path {
 
 .scroll-disabled {
   overflow: hidden;
+}
+.ant-modal-content {
+  .custom-button {
+    border-radius: 50px;
+    line-height: 16px;
+    font-weight: 700;
+    background: #05f081;
+    color: #fff;
+    border: 1px solid #05f081;
+    &:disabled {
+      opacity: 0.4;
+    }
+  }
+  .close-button {
+    border-radius: 50px;
+    line-height: 16px;
+  }
+  .ant-input,
+  .ant-input-number-input,
+  .ant-picker,
+  .ant-select,
+  .ant-select-selector {
+    background-color: #edf2f6;
+  }
+
+  .ant-select-selector {
+    background-color: #edf2f6 !important;
+  }
 }
