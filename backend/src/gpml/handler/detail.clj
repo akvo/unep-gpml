@@ -320,9 +320,11 @@
     :or {owners? true tags? true entity-connections? true
          stakeholder-connections? true related-content? true
          affiliation? false}}]
-  (let [api-resource-type (-> (:type resource)
-                              str/lower-case
-                              (str/replace #" " "_"))]
+  (let [api-resource-type (if-not (= "resource" resource-type)
+                            resource-type
+                            (-> (:type resource)
+                                str/lower-case
+                                (str/replace #" " "_")))]
     (cond-> (assoc resource :type api-resource-type)
       tags?
       (assoc :tags (db.resource.tag/get-resource-tags db {:table (str resource-type "_tag")
