@@ -718,10 +718,14 @@
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
     (try
-      (let [authorized? (handler.res-permission/operation-allowed?
+      (let [rbac-entity-type (-> topic-type
+                                 resolve-resource-type
+                                 (str/replace \_ \-)
+                                 keyword)
+            authorized? (handler.res-permission/operation-allowed?
                          config
                          {:user-id (:id user)
-                          :entity-type topic-type
+                          :entity-type rbac-entity-type
                           :entity-id topic-id
                           :operation-type :update
                           :root-context? false})]
