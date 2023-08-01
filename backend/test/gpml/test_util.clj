@@ -17,8 +17,8 @@
         info {:picture "https://picsum.photos/200"
               :cv nil
               :title "Mr."
-              :first_name "First name"
-              :last_name "Last name"
+              :first_name "John"
+              :last_name "Doe"
               :affiliation nil
               :email email
               :linked_in nil

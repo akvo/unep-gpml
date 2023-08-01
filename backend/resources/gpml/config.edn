@@ -805,7 +805,7 @@
   :gpml.handler.activity/get-recent #ig/ref :gpml.config/common
   :gpml.handler.activity/get-response {}
 
-  :gpml.handler.community/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.community/get #ig/ref :gpml.config/common
   :gpml.handler.community/get-params {}
 
   :gpml.handler.export/get {:db #ig/ref :duct.database/sql
