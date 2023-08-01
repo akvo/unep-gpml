@@ -60,4 +60,6 @@ SELECT
 FROM
     users_with_permission_granted;
 
-
+-- :name unassign-all-roles :execute :affected
+DELETE FROM rbac_role_assignment
+WHERE user_id = :user-id;

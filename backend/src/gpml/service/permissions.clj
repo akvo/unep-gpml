@@ -1,5 +1,6 @@
 (ns gpml.service.permissions
-  (:require [dev.gethop.rbac :as rbac]))
+  (:require [dev.gethop.rbac :as rbac]
+            [gpml.db.rbac-util :as db.rbac-util]))
 
 (def ^:const root-app-resource-id 0)
 (def ^:const root-app-context-type :application)
@@ -41,6 +42,11 @@
                                            :user {:id user-id}})
                                         role-unassignments)]
     (rbac/unassign-roles! conn logger parsed-role-unassignments)))
+
+(defn unassign-all-roles
+  "FIXME: Add docstring"
+  [{:keys [conn]} user-id]
+  (db.rbac-util/unassign-all-roles conn {:user-id user-id}))
 
 (defn create-resource-context
   "FIXME: Add docstring"
