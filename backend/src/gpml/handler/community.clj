@@ -1,10 +1,13 @@
 (ns gpml.handler.community
   (:require [clojure.string :as str]
+            [duct.logger :refer [log]]
             [gpml.db.community :as db.community]
             [gpml.db.country-group :as db.country-group]
+            [gpml.handler.resource.permission :as h.r.permission]
+            [gpml.handler.responses :as r]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util.regular-expressions :as util.regex]
-            [integrant.core :as ig]
-            [ring.util.response :as resp]))
+            [integrant.core :as ig]))
 
 (def ^:const community-network-types ["organisation" "stakeholder"])
 (def ^:const geo-coverage-types ["Transnational" "National" "Global" "Sub-national"])
@@ -163,23 +166,42 @@
                                            (str/join " & ")))))
 
 (defn get-community-members
-  [db query-params]
-  (let [conn (:spec db)
-        opts (api-params->opts query-params)
-        modified-filters (if (get-in opts [:filters :transnational])
-                           (let [opts {:filters {:country-groups (get-in opts [:filters :transnational])}}
-                                 country-group-countries (db.country-group/get-country-groups-countries conn opts)
-                                 geo-coverage-countries (map :id country-group-countries)]
-                             (assoc-in opts [:filters :country] (set (concat
-                                                                      (get-in opts [:filters :country])
-                                                                      geo-coverage-countries))))
-                           opts)]
-    {:results (db.community/get-community-members conn modified-filters)
-     :counts (db.community/get-community-members conn (assoc modified-filters :count-only? true))}))
+  [{:keys [db logger] :as config} {:keys [user] :as req}]
+  (try
+    (if-not (h.r.permission/operation-allowed?
+             config
+             {:user-id (:id user)
+              :entity-type :application
+              :entity-id srv.permissions/root-app-resource-id
+              :custom-permission :list-community-members
+              :root-context? true})
+      (r/forbidden {:message "Unauthorized"})
+      (let [conn (:spec db)
+            query-params (get-in req [:parameters :query])
+            opts (api-params->opts query-params)
+            modified-filters (if (get-in opts [:filters :transnational])
+                               (let [opts {:filters {:country-groups (get-in opts [:filters :transnational])}}
+                                     country-group-countries (db.country-group/get-country-groups-countries conn opts)
+                                     geo-coverage-countries (map :id country-group-countries)]
+                                 (assoc-in opts [:filters :country] (set (concat
+                                                                          (get-in opts [:filters :country])
+                                                                          geo-coverage-countries))))
+                               opts)]
+        (r/ok {:results (db.community/get-community-members conn modified-filters)
+               :counts (db.community/get-community-members conn (assoc modified-filters :count-only? true))})))
+    (catch Throwable t
+      (let [log-data {:exception-message (ex-message t)
+                      :exception-data (ex-data t)
+                      :context-data (get-in req [:parameters :query])}]
+        (log logger :error :failed-to-get-community-members log-data)
+        (log logger :debug :failed-to-get-community-members (assoc log-data :stack-trace (.getStackTrace t)))
+        (r/server-error {:success? false
+                         :reason :failed-to-get-community-members
+                         :error-details {:msg (:exception-message log-data)}})))))
 
-(defmethod ig/init-key :gpml.handler.community/get [_ {:keys [db]}]
-  (fn [{{:keys [query]} :parameters}]
-    (resp/response (get-community-members db query))))
+(defmethod ig/init-key :gpml.handler.community/get [_ config]
+  (fn [req]
+    (get-community-members config req)))
 
 (defmethod ig/init-key :gpml.handler.community/get-params [_ _]
   get-community-members-query-params)
