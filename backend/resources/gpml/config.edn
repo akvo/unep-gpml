@@ -77,7 +77,6 @@
                                                  :parameters #ig/ref :gpml.handler.submission/get-params
                                                  :handler #ig/ref :gpml.handler.submission/get}
                                            :put {:summary "Approve or reject a pending submission"
-                                                 :middleware [#ig/ref :gpml.auth/admin-required-middleware]
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters {:body #ig/ref :gpml.handler.submission/put-params}
                                                  :handler #ig/ref :gpml.handler.submission/put}}]
