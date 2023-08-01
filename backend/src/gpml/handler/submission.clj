@@ -1,13 +1,17 @@
 (ns gpml.handler.submission
-  (:require [clojure.set :as set]
+  (:require [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
+            [clojure.string :as str]
             [duct.logger :refer [log]]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.resource.tag :as db.resource.tag]
-            [gpml.db.review :as db.review]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.submission :as db.submission]
+            [gpml.handler.resource.permission :as h.r.permission]
+            [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.handler.util :as handler.util]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util.auth0 :as auth0]
             [gpml.util.email :as email]
             [gpml.util.postgresql :as pg-util]
@@ -75,15 +79,18 @@
          (merge item (handler.stakeholder.tag/unwrap-tags (assoc item :tags tags))))))
    submission-data))
 
-(defmethod ig/init-key :gpml.handler.submission/get [_ {:keys [db auth0]}]
-  (fn [{{:keys [query]} :parameters}]
-    (let [submission (-> (db.submission/pages (:spec db) query) :result)
-          profiles (filter #(= "profile" (:type %)) (:data submission))
-          submission (-> (if (not-empty profiles)
-                           (assoc submission :data (pending-profiles-response (:data submission) auth0))
-                           submission)
-                         (update :data #(add-stakeholder-tags (:spec db) %)))]
-      (resp/response submission))))
+(defmethod ig/init-key :gpml.handler.submission/get
+  [_ {:keys [db auth0] :as config}]
+  (fn [{:keys [user] {:keys [query]} :parameters}]
+    (if-not (h.r.permission/super-admin? config (:id user))
+      (r/forbidden {:message "Unauthorized"})
+      (let [submission (-> (db.submission/pages (:spec db) query) :result)
+            profiles (filter #(= "profile" (:type %)) (:data submission))
+            submission (-> (if (not-empty profiles)
+                             (assoc submission :data (pending-profiles-response (:data submission) auth0))
+                             submission)
+                           (update :data #(add-stakeholder-tags (:spec db) %)))]
+        (resp/response submission)))))
 
 (defmethod ig/init-key :gpml.handler.submission/put [_ {:keys [db mailjet-config]}]
   (fn [{:keys [body-params admin]}]

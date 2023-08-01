@@ -73,7 +73,6 @@
                                                                     403 {:description "Insufficient permissions"}}}
                                          [""
                                           {:get {:summary "Get the list of submissions"
-                                                 :middleware [#ig/ref :gpml.auth/admin-required-middleware]
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters #ig/ref :gpml.handler.submission/get-params
                                                  :handler #ig/ref :gpml.handler.submission/get}
