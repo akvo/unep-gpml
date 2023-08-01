@@ -3,7 +3,6 @@
             [clojure.set :as set]
             [duct.logger :refer [log]]
             [gpml.db.policy :as db.policy]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.policy :as dom.policy]
             [gpml.handler.auth :as h.auth]
             [gpml.handler.image :as handler.image]
