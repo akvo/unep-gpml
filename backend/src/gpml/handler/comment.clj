@@ -189,7 +189,7 @@
               result (comment->api-comment (db.comment/create-comment (:spec db) comment))]
           (when (seq result)
             (future (send-new-comment-created-notification config comment)))
-          {:comment result}))
+          (r/ok {:comment result})))
       (catch Throwable t
         (let [log-data {:exception-message (ex-message t)
                         :exception-data (ex-data t)
@@ -253,7 +253,7 @@
 
 (defmethod ig/init-key :gpml.handler.comment/post [_ config]
   (fn [req]
-    (resp/response (create-comment config req))))
+    (create-comment config req)))
 
 (defmethod ig/init-key :gpml.handler.comment/get [_ config]
   (fn [req]
