@@ -3,25 +3,19 @@ import classNames from "classnames";
 import { CSSTransition } from "react-transition-group";
 import api from "../../utils/api";
 import FilterBar from "./filter-bar";
+import { resourceTypes } from "./filter-bar";
 import FilterModal from "./filter-modal";
 import ResourceCards, {
   ResourceCard,
 } from "../../components/resource-cards/resource-cards";
 import { LoadingOutlined, DownOutlined } from "@ant-design/icons";
-import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
-import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
-import { ReactComponent as TopicIcon } from "../../images/topic-view.svg";
-import { ReactComponent as GridIcon } from "../../images/grid-view.svg";
-import { ReactComponent as GraphIcon } from "../../images/graph-view.svg";
-import { ReactComponent as SearchIcon } from "../../images/search-icon.svg";
+import SortIcon from "../../images/knowledge-library/sort-icon.svg";
+import SearchIcon from "../../images/search-icon.svg";
 import { Button } from "antd";
 import Maps from "../map/map";
-import { UIStore } from "../../store";
 import { isEmpty } from "lodash";
-import { Link, useHistory } from "react-router-dom";
 import { useQuery, topicNames } from "../../utils/misc";
 import TopicView from "./topic-view";
-import { useParams, useLocation, withRouter } from "react-router-dom";
 
 const resourceTopic = [
   "action_plan",
@@ -35,17 +29,22 @@ const resourceTopic = [
 
 function ResourceView({ history, popularTags, landing, box, showModal }) {
   const query = useQuery();
+
   const [isAscending, setIsAscending] = useState(null);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [countData, setCountData] = useState([]);
+  const [totalCount, setTotalCount] = useState([]);
   const [filterCountries, setFilterCountries] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const [catData, setCatData] = useState([]);
   const [gridItems, setGridItems] = useState([]);
   const [pageNumber, setPageNumber] = useState(false);
-  const { type, view } = useParams();
-  const { pathname, search } = useLocation();
+  const [view, type] = history.query.slug || [];
+  const { slug, ...queryParams } = history.query;
+  const { pathname } = history;
+  const search = new URLSearchParams(history.query).toString();
+  console.log(history.query.slug);
   const [showFilterModal, setShowFilterModal] = useState(false);
 
   const limit = 30;
@@ -55,6 +54,17 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
     0
   );
 
+  const allResources = totalCount
+    ?.filter((array) =>
+      resourceTypes.some(
+        (filter) =>
+          array.topic === filter.title && filter.title !== "capacity building"
+      )
+    )
+    ?.reduce(function (acc, obj) {
+      return acc + obj.count;
+    }, 0);
+
   const uniqueArrayByKey = (array) => [
     ...new Map(array.map((item) => [item["id"], item])).values(),
   ];
@@ -62,30 +72,39 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   const fetchData = (searchParams) => {
     setLoading(true);
     const queryParams = new URLSearchParams(searchParams);
-    if (type || history?.location?.state?.type)
-      queryParams.set(
-        "topic",
-        history?.location?.state?.type
-          ? history?.location?.state?.type.replace(/-/g, "_")
-          : type.replace(/-/g, "_")
-      );
+    console.log(queryParams);
+    queryParams.delete("slug");
 
-    if (
-      type === "capacity-building" ||
-      history?.location?.state?.type === "capacity-building"
-    ) {
-      queryParams.set("capacity_building", ["true"]);
-      queryParams.delete("topic");
-    }
+    if (type || history?.location?.state?.type)
+      if (
+        type === "capacity-building" ||
+        history?.location?.state?.type === "capacity-building"
+      ) {
+        queryParams.set(
+          "topic",
+          history?.location?.state?.type
+            ? history?.location?.state?.type.replace(/-/g, "_")
+            : type.replace(/-/g, "_")
+        );
+
+        queryParams.set("capacity_building", ["true"]);
+        queryParams.delete("topic");
+      }
     queryParams.set("incCountsForTags", popularTags);
     queryParams.set("limit", limit);
 
-    const url = `/browse?${String(queryParams)}`;
+    const url = `https://digital.gpmarinelitter.org/api/browse?${String(
+      queryParams
+    )}`;
+    console.log(view, totalCount);
     api
       .get(url)
       .then((resp) => {
         setLoading(false);
         setData(resp?.data);
+        if (totalCount.length === 0) {
+          setTotalCount(resp?.data?.counts);
+        }
         setCountData(resp?.data?.counts);
         setGridItems((prevItems) => {
           return uniqueArrayByKey([...prevItems, ...resp?.data?.results]);
@@ -122,19 +141,23 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
     const newParams = new URLSearchParams(pureQuery);
 
     newParams.delete("offset");
+    const newQueryStr = newParams.toString();
 
-    if (param === "replace")
-      history.replace({
-        pathname: pathname,
-        search: newParams.toString(),
-        state: { type: type },
-      });
-    else
-      history.push({
-        pathname: pathname,
-        search: newParams.toString(),
-        state: { type: type },
-      });
+    // if (param === "replace")
+    //   router.replace(
+    //     {
+    //       pathname: router.pathname,
+    //       query: newParams.toString(),
+    //     },
+    //     undefined,
+    //     { shallow: true }
+    //   );
+    // else
+    //   router.push({
+    //     pathname: router.pathname,
+    //     query: newParams.toString(),
+    //   });
+
     if (fetch && view !== "category") fetchData(pureQuery);
 
     if (view === "category") loadAllCat(pureQuery);
@@ -149,7 +172,11 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
 
     const queryParams = new URLSearchParams(filter);
     const promiseArray = resourceTopic.map((url) =>
-      api.get(`/browse?topic=${url}&${String(queryParams)}`)
+      api.get(
+        `https://digital.gpmarinelitter.org/api/browse?topic=${url}&${String(
+          queryParams
+        )}`
+      )
     );
 
     Promise.all(promiseArray)
@@ -169,12 +196,12 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   };
 
   useMemo(() => {
-    if ((pathname || search) && !loading) updateQuery("replace");
+    // if ((pathname || search) && !loading) updateQuery("replace");
   }, [pathname, search]);
 
   useEffect(() => {
     if (data.length === 0) updateQuery();
-  }, [data, view]);
+  }, []);
 
   const clickCountry = (name) => {
     const val = query["country"];
@@ -192,7 +219,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
 
   const handleCategoryFilter = (key) => {
     history.push({
-      pathname: `/knowledge/library/resource/${
+      pathname: `/knowledge/library/${
         view ? (view === "category" ? "grid" : view) : "map"
       }/${key.replace(/_/g, "-")}/`,
       search: search,
@@ -217,6 +244,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           history,
           type,
           view,
+          totalCount,
           fetchData,
           setFilterCountries,
           setMultiCountryCountries,
@@ -245,7 +273,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
               <SearchIcon />
             </div>
           </div>
-          <ViewSwitch {...{ type, view, history }} />
+          <ViewSwitch {...{ type, view, history, queryParams }} />
           <button
             className="sort-by-button"
             onClick={() => {
@@ -267,16 +295,14 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             </div>
           </button>
         </div>
-        {(view === "map" || view === "topic") && (
+        {(view === "map" || !view || view === "topic") && (
           <div style={{ position: "relative" }}>
             <ResourceCards
               items={data?.results}
               showMoreCardAfter={20}
               showMoreCardClick={() => {
                 history.push({
-                  pathname: `/knowledge/library/resource/grid/${
-                    type ? type : ""
-                  }`,
+                  pathname: `/knowledge/library/grid/${type ? type : ""}`,
                   search: history.location.search,
                 });
               }}
@@ -295,7 +321,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             )}
           </div>
         )}
-        {view === "map" && (
+        {(view === "map" || !view) && (
           <Maps
             query={query}
             box={box}
@@ -310,20 +336,6 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             showLegend={true}
             path="knowledge"
           />
-        )}
-        {view === "topic" && (
-          <div className="topic-view-container">
-            <TopicView
-              results={data?.results}
-              fetch={true}
-              loading={loading}
-              countData={countData.filter(
-                (count) => count.topic !== "gpml_member_entities"
-              )}
-              updateQuery={updateQuery}
-              query={query}
-            />
-          </div>
         )}
         {view === "grid" && (
           <GridView
@@ -456,9 +468,12 @@ const GridView = ({
   );
 };
 
-const ViewSwitch = ({ type, view, history }) => {
-  const viewOptions = ["map", "topic", "grid", "category"];
+const ViewSwitch = ({ type, view, history, queryParams }) => {
+  const viewOptions = ["map", "grid", "category"];
   const [visible, setVisible] = useState(false);
+  view = !view ? "map" : view;
+
+  console.log(history);
 
   return (
     <div className="view-switch-container">
@@ -487,10 +502,10 @@ const ViewSwitch = ({ type, view, history }) => {
                   onClick={() => {
                     setVisible(!visible);
                     history.push({
-                      pathname: `/knowledge/library/resource/${viewOption}/${
+                      pathname: `/knowledge/library/${viewOption}/${
                         type && viewOption !== "category" ? type : ""
                       }`,
-                      search: history.location.search,
+                      query: queryParams,
                     });
                   }}
                 >
@@ -504,4 +519,4 @@ const ViewSwitch = ({ type, view, history }) => {
   );
 };
 
-export default withRouter(ResourceView);
+export default ResourceView;
