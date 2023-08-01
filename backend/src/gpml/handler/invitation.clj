@@ -81,14 +81,14 @@
                           (conj invitations (merge invitation stakeholder-w-unwrapped-tags))))
                       []
                       invitations))))
-    (catch Exception e
-      (log logger :error ::get-invitations {:exception-message (.getMessage e)})
-      (if (instance? SQLException e)
+    (catch Throwable t
+      (log logger :error ::get-invitations {:exception-message (.getMessage t)})
+      (if (instance? SQLException t)
         (r/server-error {:success? false
-                         :reason (pg-util/get-sql-state e)})
+                         :reason (pg-util/get-sql-state t)})
         (r/server-error {:success? false
                          :reason :could-not-get-invitations
-                         :error-details {:message (.getMessage e)}})))))
+                         :error-details {:message (.getMessage t)}})))))
 
 (defn- accept-invitation
   [{:keys [db logger]}
