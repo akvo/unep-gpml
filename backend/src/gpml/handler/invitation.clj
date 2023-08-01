@@ -92,25 +92,28 @@
 
 (defn- accept-invitation
   [{:keys [db logger]}
-   {{:keys [query path]} :parameters}]
+   {{:keys [query path]} :parameters user :user}]
   (try
     (let [opts (api-opts->opts (merge query path))
-          accepted-at (-> (time/instant) (time-pre-j8/sql-timestamp "UTC"))
-          affected-rows (db.invitation/accept-invitation (:spec db) (merge opts
-                                                                           {:accepted-at accepted-at}))]
-      (if (= affected-rows 1)
-        (resp/response {:success? true})
-        {:status 500
-         :body {:success? false
-                :reason :could-not-update-invitation}}))
+          invitation (db.invitation/get-invitations (:spec db)
+                                                    {:filters {:ids [(:id opts)]}})]
+      (if-not (= (:stakeholder_id invitation) (:id user))
+        (r/forbidden {:message "Unauthorized"})
+        (let [accepted-at (-> (time/instant) (time-pre-j8/sql-timestamp "UTC"))
+              affected-rows (db.invitation/accept-invitation (:spec db) (merge opts
+                                                                               {:accepted-at accepted-at}))]
+          (if (= affected-rows 1)
+            (r/ok {:success? true})
+            (r/server-error {:success? false
+                             :reason :could-not-update-invitation})))))
     (catch Exception e
       (log logger :error ::accept-invitation {:exception-message (.getMessage e)})
       (if (instance? SQLException e)
-        {:success? false
-         :reason (pg-util/get-sql-state e)}
-        {:success? false
-         :reason :could-not-update-invitation
-         :error-details {:message (.getMessage e)}}))))
+        (r/server-error {:success? false
+                         :reason (pg-util/get-sql-state e)})
+        (r/server-error {:success? false
+                         :reason :could-not-update-invitation
+                         :error-details {:message (.getMessage e)}})))))
 
 (defmethod ig/init-key :gpml.handler.invitation/get [_ config]
   (fn [req]
