@@ -402,49 +402,57 @@
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/suggested-profiles
-  [_ {:keys [db]}]
-  (fn [{:keys [jwt-claims parameters]}]
-    (if-let [stakeholder (db.stakeholder/stakeholder-by-email (:spec db) {:email (:email jwt-claims)})]
-      (let [{page :page limit :limit} (:query parameters)
-            tags (db.resource.tag/get-resource-tags (:spec db) {:table "stakeholder_tag"
-                                                                :resource-col "stakeholder"
-                                                                :resource-id (:id stakeholder)})
-            offerings-ids (->> tags
-                               (filter #(= (:tag_relation_category %) "offering"))
-                               (mapv #(get % :id)))
-            seekings-ids (->> tags
-                              (filter #(= (:tag_relation_category %) "seeking"))
-                              (mapv #(get % :id)))
-            stakeholders (db.stakeholder/get-suggested-stakeholders
-                          (:spec db)
-                          {:seeking-ids-for-offerings seekings-ids
-                           :offering-ids-for-seekings offerings-ids
-                           :stakeholder-id (:id stakeholder)
-                           :offset (* limit page)
-                           :limit limit})]
-        (cond
-          (and (seq stakeholders) (= (count stakeholders) limit))
-          (resp/response {:suggested_profiles (mapv #(get-stakeholder-profile db %) stakeholders)})
+  [_ {:keys [db] :as config}]
+  (fn [{:keys [jwt-claims parameters user]}]
+    (if-not (h.r.permission/operation-allowed?
+             config
+             {:user-id (:id user)
+              :entity-type :application
+              :entity-id srv.permissions/root-app-resource-id
+              :custom-permission :read-suggested-profiles
+              :root-context? true})
+      (r/forbidden {:message "Unauthorized"})
+      (if-let [stakeholder (db.stakeholder/stakeholder-by-email (:spec db) {:email (:email jwt-claims)})]
+        (let [{page :page limit :limit} (:query parameters)
+              tags (db.resource.tag/get-resource-tags (:spec db) {:table "stakeholder_tag"
+                                                                  :resource-col "stakeholder"
+                                                                  :resource-id (:id stakeholder)})
+              offerings-ids (->> tags
+                                 (filter #(= (:tag_relation_category %) "offering"))
+                                 (mapv #(get % :id)))
+              seekings-ids (->> tags
+                                (filter #(= (:tag_relation_category %) "seeking"))
+                                (mapv #(get % :id)))
+              stakeholders (db.stakeholder/get-suggested-stakeholders
+                            (:spec db)
+                            {:seeking-ids-for-offerings seekings-ids
+                             :offering-ids-for-seekings offerings-ids
+                             :stakeholder-id (:id stakeholder)
+                             :offset (* limit page)
+                             :limit limit})]
+          (cond
+            (and (seq stakeholders) (= (count stakeholders) limit))
+            (resp/response {:suggested_profiles (mapv #(get-stakeholder-profile db %) stakeholders)})
 
-          (not (seq stakeholders))
-          (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
-                                                    (:spec db)
-                                                    {:limit limit
-                                                     :stakeholder-ids [(:id stakeholder)]})
-                                                   (mapv #(get-stakeholder-profile db %)))})
+            (not (seq stakeholders))
+            (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
+                                                      (:spec db)
+                                                      {:limit limit
+                                                       :stakeholder-ids [(:id stakeholder)]})
+                                                     (mapv #(get-stakeholder-profile db %)))})
 
-          :else
-          (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
-                                                    (:spec db)
-                                                    {:limit (- limit (count stakeholders))
-                                                     :stakeholder-ids (conj
-                                                                       (->> stakeholders
-                                                                            (mapv #(get % :id))
-                                                                            (remove nil?))
-                                                                       (:id stakeholder))})
-                                                   (apply conj (vec stakeholders))
-                                                   (mapv #(get-stakeholder-profile db %)))})))
-      (resp/response {}))))
+            :else
+            (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
+                                                      (:spec db)
+                                                      {:limit (- limit (count stakeholders))
+                                                       :stakeholder-ids (conj
+                                                                         (->> stakeholders
+                                                                              (mapv #(get % :id))
+                                                                              (remove nil?))
+                                                                         (:id stakeholder))})
+                                                     (apply conj (vec stakeholders))
+                                                     (mapv #(get-stakeholder-profile db %)))})))
+        (resp/response {})))))
 
 (def org-schema
   (into [:map
