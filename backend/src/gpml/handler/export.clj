@@ -7,6 +7,7 @@
             [gpml.db.topic :as db.topic]
             [gpml.domain.export :as dom.exp]
             [gpml.domain.types :as dom.types]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
             [gpml.util :as util]
             [gpml.util.csv :as csv]
@@ -92,11 +93,13 @@
 
 (defmethod ig/init-key :gpml.handler.export/get
   [_ {:keys [logger] :as config}]
-  (fn [{{:keys [path query]} :parameters}]
+  (fn [{{:keys [path query]} :parameters user :user}]
     (try
-      (let [export-type (:export-type path)
-            review-status (:review_status query)]
-        (r/ok (export config export-type review-status)))
+      (if-not (h.r.permission/super-admin? config (:id user))
+        (r/forbidden {:message "Unauthorized"})
+        (let [export-type (:export-type path)
+              review-status (:review_status query)]
+          (r/ok (export config export-type review-status))))
       (catch Exception e
         (log logger :error :failed-to-create-export-file {:exception (class e)
                                                           :exception-message (ex-message e)})

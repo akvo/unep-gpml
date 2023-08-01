@@ -474,9 +474,7 @@
                                                 :parameters {:query #ig/ref :gpml.handler.community/get-params}
                                                 :handler #ig/ref :gpml.handler.community/get}}]
                                         ["/export" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                 #ig/ref :gpml.auth/auth-required
-                                                                 #ig/ref :gpml.auth/approved-user
-                                                                 #ig/ref :gpml.auth/admin-required-middleware]}
+                                                                 #ig/ref :gpml.auth/auth-required]}
                                          ["/{export-type}"
                                           {:get {:summary "Export all individuals"
                                                  :swagger {:tags ["export"]}
