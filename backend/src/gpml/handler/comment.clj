@@ -219,7 +219,7 @@
       (if-not (= (:author_id comment) (:id user))
         (r/forbidden {:message "Unauthorized"})
         (let [comment (api-comment->comment body-params)]
-          {:updated-comments (db.comment/update-comment (:spec db) comment)})))
+          (r/ok {:updated-comments (db.comment/update-comment (:spec db) comment)}))))
     (catch Throwable t
       (let [log-data {:exception-message (ex-message t)
                       :exception-data (ex-data t)
@@ -261,7 +261,7 @@
 
 (defmethod ig/init-key :gpml.handler.comment/put [_ config]
   (fn [req]
-    (resp/response (update-comment config req))))
+    (update-comment config req)))
 
 (defmethod ig/init-key :gpml.handler.comment/delete [_ config]
   (fn [req]
