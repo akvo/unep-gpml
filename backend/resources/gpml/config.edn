@@ -881,11 +881,8 @@
    :db #ig/ref :duct.database/sql}
 
   :gpml.auth/auth-required {}
-  :gpml.auth/restrict-to-admin-and-comment-author-middleware {:db #ig/ref :duct.database/sql}
   :gpml.auth/approved-user {:db #ig/ref :duct.database/sql}
   :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}
-  :gpml.auth/admin-or-reviewer-required-middleware {:db #ig/ref :duct.database/sql}
-  :gpml.auth/admin-or-profile-owner-required-middleware {}
 
   :gpml.handler.monitoring/collector {}
 

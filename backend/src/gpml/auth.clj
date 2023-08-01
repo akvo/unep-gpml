@@ -165,35 +165,6 @@
         {:status 403
          :body {:message "Unauthorized"}}))))
 
-(defmethod ig/init-key :gpml.auth/admin-or-profile-owner-required-middleware [_ _]
-  (fn [handler]
-    (fn [{:keys [user parameters] :as request}]
-      (if (or (= "ADMIN" (:role user))
-              (= (get-in parameters [:path :id]) (:id user)))
-        (handler (assoc request :admin user))
-        {:status 403
-         :body {:message "Unauthorized"}}))))
-
-(defmethod ig/init-key :gpml.auth/admin-or-reviewer-required-middleware [_ _]
-  (fn [handler]
-    (fn [{:keys [user approved?] :as request}]
-      (if (and approved? (contains? #{"ADMIN" "REVIEWER"} (:role user)))
-        (handler (assoc request :reviewer user))
-        {:status 403
-         :body {:message "Unauthorized"}}))))
-
-(defmethod ig/init-key :gpml.auth/restrict-to-admin-and-comment-author-middleware
-  [_ {:keys [db]}]
-  (fn [handler]
-    (fn [{:keys [user parameters] :as request}]
-      (let [{:keys [path body]} parameters
-            comment (first (db.comment/get-resource-comments (:spec db) {:id (util/uuid (or (:id path) (:id body)))}))]
-        (if (or (some #{(:role user)} ["ADMIN"])
-                (= (:author_id comment) (:id user)))
-          (handler request)
-          {:status 403
-           :body {:message "Unauthorized"}})))))
-
 (def owners-schema
   [:owners {:optional true}
    [:vector integer?]])
