@@ -513,8 +513,6 @@
                                                                      #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:get {:summary "Get invitations"
-                                                 :middleware [#ig/ref :gpml.auth/approved-user
-                                                              #ig/ref :gpml.auth/admin-required-middleware]
                                                  :swagger {:tags ["invitation"]}
                                                  :parameters #ig/ref :gpml.handler.invitation/get-params
                                                  :handler #ig/ref :gpml.handler.invitation/get}}]

@@ -3,6 +3,8 @@
             [duct.logger :refer [log]]
             [gpml.db.invitation :as db.invitation]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.handler.resource.permission :as h.r.permission]
+            [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.util :as util]
             [gpml.util.postgresql :as pg-util]
@@ -59,34 +61,34 @@
     (assoc :id (util/uuid id))))
 
 (defn- get-invitations
-  [{:keys [db logger]}
-   {{:keys [query]} :parameters}]
+  [{:keys [db logger] :as config}
+   {{:keys [query]} :parameters user :user}]
   (try
-    (let [opts (api-opts->opts query)
-          invitations (db.invitation/get-invitations (:spec db) opts)
-          stakeholders (->> (db.stakeholder/get-stakeholders (:spec db)
-                                                             {:filters {:ids (map :stakeholder_id invitations)}})
-                            (group-by :id))]
-      (resp/response (reduce (fn [invitations {:keys [stakeholder_id] :as invitation}]
-                               (let [stakeholder (-> stakeholders
-                                                     (get stakeholder_id)
-                                                     first
-                                                     (select-keys [:first_name :last_name :tags]))
-                                     stakeholder-w-unwrapped-tags (-> (merge stakeholder (handler.stakeholder.tag/unwrap-tags stakeholder))
-                                                                      (dissoc :tags))]
-                                 (conj invitations (merge invitation stakeholder-w-unwrapped-tags))))
-                             []
-                             invitations)))
+    (if-not (h.r.permission/super-admin? config (:id user))
+      (r/forbidden {:message "Unauthorized"})
+      (let [opts (api-opts->opts query)
+            invitations (db.invitation/get-invitations (:spec db) opts)
+            stakeholders (->> (db.stakeholder/get-stakeholders (:spec db)
+                                                               {:filters {:ids (map :stakeholder_id invitations)}})
+                              (group-by :id))]
+        (r/ok (reduce (fn [invitations {:keys [stakeholder_id] :as invitation}]
+                        (let [stakeholder (-> stakeholders
+                                              (get stakeholder_id)
+                                              first
+                                              (select-keys [:first_name :last_name :tags]))
+                              stakeholder-w-unwrapped-tags (-> (merge stakeholder (handler.stakeholder.tag/unwrap-tags stakeholder))
+                                                               (dissoc :tags))]
+                          (conj invitations (merge invitation stakeholder-w-unwrapped-tags))))
+                      []
+                      invitations))))
     (catch Exception e
       (log logger :error ::get-invitations {:exception-message (.getMessage e)})
       (if (instance? SQLException e)
-        {:status 500
-         :body {:success? false
-                :reason (pg-util/get-sql-state e)}}
-        {:status 500
-         :body {:success? false
-                :reason :could-not-get-invitations
-                :error-details {:message (.getMessage e)}}}))))
+        (r/server-error {:success? false
+                         :reason (pg-util/get-sql-state e)})
+        (r/server-error {:success? false
+                         :reason :could-not-get-invitations
+                         :error-details {:message (.getMessage e)}})))))
 
 (defn- accept-invitation
   [{:keys [db logger]}
