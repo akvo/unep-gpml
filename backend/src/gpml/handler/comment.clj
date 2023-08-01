@@ -1,8 +1,12 @@
 (ns gpml.handler.comment
-  (:require [gpml.db.comment :as db.comment]
+  (:require [duct.logger :refer [log]]
+            [gpml.db.comment :as db.comment]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.stakeholder-association :as db.stakeholder-association]
             [gpml.domain.types :as dom.types]
+            [gpml.handler.resource.permission :as h.r.permission]
+            [gpml.handler.responses :as r]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
             [gpml.util.email :as email]
             [integrant.core :as ig]
@@ -169,13 +173,32 @@
                           [])))))
 
 (defn- create-comment
-  [{:keys [db] :as config} req]
-  (let [body-params (get-in req [:parameters :body])
-        comment (api-comment->comment body-params)
-        result (comment->api-comment (db.comment/create-comment (:spec db) comment))]
-    (when (seq result)
-      (future (send-new-comment-created-notification config comment)))
-    {:comment result}))
+  [{:keys [db logger] :as config} req]
+  (let [user (:user req)]
+    (try
+      (if-not (h.r.permission/operation-allowed?
+               config
+               {:user-id (:id user)
+                :entity-type :application
+                :entity-id srv.permissions/root-app-resource-id
+                :custom-permission :create-comment
+                :root-context? true})
+        (r/forbidden {:message "Unauthorized"})
+        (let [body-params (get-in req [:parameters :body])
+              comment (api-comment->comment body-params)
+              result (comment->api-comment (db.comment/create-comment (:spec db) comment))]
+          (when (seq result)
+            (future (send-new-comment-created-notification config comment)))
+          {:comment result}))
+      (catch Throwable t
+        (let [log-data {:exception-message (ex-message t)
+                        :exception-data (ex-data t)
+                        :context-data (get-in req [:parameters :body])}]
+          (log logger :error ::failed-to-create-comment log-data)
+          (log logger :debug ::failed-to-create-comment (assoc log-data :stack-trace (.getStackTrace t)))
+          (r/server-error {:sucess? false
+                           :reason :failed-to-create-comment
+                           :error-details {:msg (ex-message t)}}))))))
 
 (defn- get-resource-comments
   [{:keys [db]} {{:keys [query]} :parameters :as _req}]
