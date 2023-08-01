@@ -880,7 +880,6 @@
 
   :gpml.auth/auth-required {}
   :gpml.auth/approved-user {:db #ig/ref :duct.database/sql}
-  :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.monitoring/collector {}
 

@@ -157,14 +157,6 @@
            :body {:message "Unauthorized"
                   :reason "User must verify the email address"}})))))
 
-(defmethod ig/init-key :gpml.auth/admin-required-middleware [_ _]
-  (fn [handler]
-    (fn [{:keys [user approved?] :as request}]
-      (if (and approved? (= "ADMIN" (:role user)))
-        (handler (assoc request :admin user))
-        {:status 403
-         :body {:message "Unauthorized"}}))))
-
 (def owners-schema
   [:owners {:optional true}
    [:vector integer?]])
