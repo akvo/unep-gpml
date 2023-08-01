@@ -82,7 +82,6 @@
                                                  :handler #ig/ref :gpml.handler.submission/put}}]
                                          ["/{submission}/{id}"
                                           {:get {:summary "Get the details of a submission"
-                                                 :middleware [#ig/ref :gpml.auth/admin-or-reviewer-required-middleware]
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters {:path [:map [:submission string?] [:id int?]]}
                                                  :handler #ig/ref :gpml.handler.submission/get-detail}}]]

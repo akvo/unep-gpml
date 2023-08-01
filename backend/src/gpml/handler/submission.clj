@@ -191,29 +191,28 @@
   [_ {:keys [db logger] :as config}]
   (fn [{{:keys [path]} :parameters user :user}]
     (try
-      (if-not (= "REVIEWER" (:role user))
-        (get-detail config path)
-        (let [topic-type (:submission path)
-              topic-id (:id path)
-              review (first (db.review/reviews-filter (:spec db) {:topic-type (handler.util/get-internal-topic-type topic-type)
-                                                                  :topic-id topic-id}))]
-          (if (= (:id user) (:reviewer review))
-            (get-detail config path)
-            {:status 403
-             :body {:success? false
-                    :reason :unauthorized}})))
-      (catch Exception e
-        (log logger :error ::failed-to-get-submission-detail {:exception-message (.getMessage e)
+      (let [user-id (:id user)
+            resource-id (:id path)
+            resource-type (handler.util/get-internal-topic-type (:submission path))]
+        (if-not (h.r.permission/operation-allowed? config {:user-id user-id
+                                                           :entity-id resource-id
+                                                           :entity-type (keyword (str/replace resource-type \_ \-))
+                                                           :operation-type :review
+                                                           :root-context? false})
+          (r/forbidden {:message "Unauthorized"})
+          (get-detail config path)))
+      (catch Throwable t
+        (log logger :error ::failed-to-get-submission-detail {:exception-message (ex-message t)
+                                                              :exception-data (ex-data t)
+                                                              :stack-trace (.getStackTrace t)
                                                               :context-data {:params path
                                                                              :user user}})
-        (if (instance? SQLException e)
-          {:status 500
-           :body {:success? false
-                  :reason (pg-util/get-sql-state e)}}
-          {:status 500
-           :body {:success? false
-                  :reason :could-not-submission-get-details
-                  :error-details {:error (.getMessage e)}}})))))
+        (if (instance? SQLException t)
+          (r/server-error {:success? false
+                           :reason (pg-util/get-sql-state t)})
+          (r/server-error {:success? false
+                           :reason :could-not-submission-get-details
+                           :error-details {:error (ex-message t)}}))))))
 
 (defmethod ig/init-key :gpml.handler.submission/get-params [_ _]
   {:query
