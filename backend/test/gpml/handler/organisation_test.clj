@@ -33,15 +33,17 @@
 
 (deftest create-organisation-test
   (let [system          (ig/init fixtures/*system* [::organisation/post ::stakeholder/post])
+        config (get system [:duct/const :gpml.config/common])
+        conn (get-in config [:db :spec])
         profile-handler (::stakeholder/post system)
-        org-handler     (::organisation/post system)
-        db              (-> system :duct.database.sql/hikaricp :spec)]
+        org-handler     (::organisation/post system)]
     (testing "New profile is created with new organisation"
       (let [email (format "created_by_%s@akvo.org" (fixtures/uuid))
-            profile (create-random-stakeholder db {:first-name "John"
-                                                   :last-name "Doe"
-                                                   :email email
-                                                   :review-status "SUBMITTED"})
+
+            profile (create-random-stakeholder conn {:first-name "John"
+                                                     :last-name "Doe"
+                                                     :email email
+                                                     :review-status "SUBMITTED"})
             body-params     {:name              "test10001"
                              :geo_coverage_type "global"
                              :country           nil
@@ -72,10 +74,10 @@
         (is (= :can-not-create-member-org-if-user-does-not-exist (:reason body)))))
     (testing "Trying to create a member organisation with REJECTED user status should fail"
       (let [email (format "created_by_%s@akvo.org" (fixtures/uuid))
-            _ (create-random-stakeholder db {:first-name "John"
-                                             :last-name "Doe"
-                                             :email email
-                                             :review-status "REJECTED"})
+            _ (create-random-stakeholder conn {:first-name "John"
+                                               :last-name "Doe"
+                                               :email email
+                                               :review-status "REJECTED"})
             body-params  {:name "test10002"
                           :is_member true
                           :geo_coverage_type "global"
@@ -90,17 +92,17 @@
         (is (= :can-not-create-member-org-if-user-is-in-rejected-state (:reason body)))))
     (testing "Trying to create an organisation with an existing name should fail"
       (let [email (format "created_by_%s@akvo.org" (fixtures/uuid))
-            _ (create-random-stakeholder db {:first-name "John"
-                                             :last-name "Doe"
-                                             :email email
-                                             :review-status "SUBMITTED"})
+            _ (create-random-stakeholder conn {:first-name "John"
+                                               :last-name "Doe"
+                                               :email email
+                                               :review-status "SUBMITTED"})
             body-params  {:name "test10002"
                           :is_member true
                           :geo_coverage_type "global"
                           :country nil
                           :type "Company"
                           :url "mycompany.org"}
-            _ (db.organisation/new-organisation db body-params)
+            _ (db.organisation/new-organisation conn body-params)
             {:keys [status body]} (org-handler (-> (mock/request :post "/")
                                                    (assoc :jwt-claims {:email email})
                                                    (assoc :body-params body-params)))]
