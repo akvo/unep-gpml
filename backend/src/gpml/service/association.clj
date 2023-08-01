@@ -85,6 +85,11 @@
         :resource-id resource-id}))
    sth-associations))
 
+(defn get-associations
+  "FIXME:"
+  [{:keys [conn _logger]} opts]
+  (db.res.acs/get-resource-associations conn opts))
+
 (defn save-sth-associations
   "FIXME:"
   [{:keys [conn logger]} {:keys [sth-associations resource-type resource-id]}]

@@ -357,7 +357,8 @@
                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                      [:topic-id int?]]}
                                                  :handler #ig/ref :gpml.handler.favorite/get}}]]
-                                        ["/auth" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
+                                        ["/auth" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]}
                                          ["/{topic-type}/{topic-id}"
                                           [""
                                            {:get {:summary "Get auth details for a specific topic"
