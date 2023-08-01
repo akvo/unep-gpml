@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./filter-modal.scss";
+// import "./filter.module.scss";
 import {
   Row,
   Col,
@@ -15,7 +15,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import isEmpty from "lodash/isEmpty";
 import values from "lodash/values";
 import flatten from "lodash/flatten";
-import { withRouter } from "react-router-dom";
 import { eventTrack } from "../../utils/misc";
 import { UIStore } from "../../store";
 import { SearchOutlined } from "@ant-design/icons";

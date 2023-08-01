@@ -1,57 +1,140 @@
 @import "../../vars.scss";
 
-#login {
-  padding: 60px 0px;
-  background: url("../../images/auth/auth-background.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  .ant-input,
-  .ant-input-number-input,
-  .ant-picker,
-  .ant-select,
-  .ant-select-selector,
-  .ant-input-affix-wrapper {
-    background-color: #edf2f6;
-    border: none !important;
-    border-radius: 5px;
+.login {
+  :global {
+    .ant-modal-content {
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
+      border-radius: 10px;
+      padding: 5px 5px;
+      margin: 40px 0px;
+    }
+  }
+  :global {
+    .ant-modal-body {
+      padding: 0;
+      .register-text {
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 26px;
+        text-align: center;
+        color: #a5b0c9;
+        padding: 0 2vw;
+      }
+      .terms {
+        background: #bbedda;
+        padding: 6px 0px;
+        h4 {
+          margin-bottom: 0px;
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 23px;
+          color: #18162f;
+          text-align: center;
+          a {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+
+  :global {
+    .ant-modal-header {
+      border: none;
+      .signinButton {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .header-text {
+          color: #09689a;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 26px;
+          padding: 0;
+          margin-bottom: 0;
+        }
+        div {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          p {
+            margin-bottom: 0;
+            padding-right: 5px;
+            line-height: 1.5715;
+          }
+        }
+      }
+      .connectBackButton {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px;
+        color: #000000;
+        padding: 0;
+      }
+    }
+  }
+  label {
     font-weight: 500;
-    font-size: 16px;
-    // padding: 0px 11px;
-    height: 42px;
-    color: #a5b0c9;
-    &::placeholder {
-      color: #a5b0c9;
-      font-size: 16px;
-      font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #000000;
+    p {
+      margin-bottom: 0px;
+      span {
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 17px;
+        color: rgba(56, 78, 133, 0.6);
+        padding-left: 10px;
+      }
     }
-    input {
-      height: 42px;
-    }
+  }
+
+  :global {
+    .ant-input,
+    .ant-input-number-input,
+    .ant-picker,
     .ant-select,
-    .ant-select-selector {
+    .ant-select-selector,
+    .ant-input-affix-wrapper {
+      background-color: #edf2f6;
+      border: none !important;
+      border-radius: 5px;
+      font-weight: 500;
+      font-size: 16px;
+      // padding: 0px 11px;
       height: 42px;
-    }
-    .ant-select-selection-placeholder {
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 42px;
       color: #a5b0c9;
-    }
-    .ant-select-selection-item {
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 42px;
-      color: #a5b0c9;
+      &::placeholder {
+        color: #a5b0c9;
+        font-size: 16px;
+        font-weight: 500;
+      }
+      input {
+        height: 42px;
+      }
+      .ant-select,
+      .ant-select-selector {
+        height: 42px;
+      }
+      .ant-select-selection-placeholder {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 42px;
+        color: #a5b0c9;
+      }
+      .ant-select-selection-item {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 42px;
+        color: #a5b0c9;
+      }
     }
   }
   .wave-background {
     position: relative;
     z-index: 9;
     border-radius: 10px;
-    background-color: #fff;
-    width: 650px;
-    margin-left: auto;
-    margin-right: auto;
     &::after {
       content: "";
       position: absolute;
@@ -193,34 +276,18 @@
       }
     }
   }
-  .auth-container {
+  .authContainer {
     opacity: 1;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    .signup-wrapper {
+    .signupWrapper {
       flex: 1;
       display: flex;
       flex-direction: column;
-      padding: 20px 10px;
-      .register-text {
-        font-weight: 400;
-        font-size: 18px;
-        line-height: 26px;
-        text-align: center;
-        color: #a5b0c9;
-        padding: 0 2vw;
-      }
-      .signin-button {
-        button {
-          color: #09689a;
-          font-weight: 500;
-          font-size: 18px;
-          line-height: 26px;
-        }
-      }
-      .auth-buttons {
+      padding: 40px 0px;
+      .authButtons {
         height: 100%;
         display: flex;
         align-items: center;
@@ -263,13 +330,11 @@
         }
       }
     }
-    .login-wrapper {
-      padding: 20px 0px;
-      .connect-button {
+    .loginWrapper {
+      .connectButton {
         display: flex;
         justify-content: space-between;
         width: 100%;
-        padding: 0 5px;
         button {
           color: #09689a;
           font-weight: 500;
@@ -277,33 +342,25 @@
           line-height: 26px;
         }
       }
-      .connect-back-button {
-        font-weight: 500;
-        font-size: 14px;
-        line-height: 20px;
-        color: #000000;
-      }
-      .login-form {
+      .loginForm {
         padding: 30px 20px;
-        .ant-form-item-label {
-          padding-bottom: 5px;
-          label {
-            font-weight: 500;
-            font-size: 14px;
-            line-height: 20px;
-            color: #000000;
+        :global {
+          .ant-form-item-label {
+            padding-bottom: 5px;
           }
         }
-        .ant-input-password {
-          border: none !important;
-          padding: 0px 11px;
-          background: #edf2f7;
-          border-radius: 5px;
-          .ant-form-item-has-success {
-            border: none;
+        :global {
+          .ant-input-password {
+            border: none !important;
+            padding: 0px 11px;
+            background: #edf2f7;
+            border-radius: 5px;
+            .ant-form-item-has-success {
+              border: none;
+            }
           }
         }
-        .login-button {
+        .loginButton {
           font-weight: 500;
           font-size: 18px;
           line-height: 36px;
@@ -326,7 +383,7 @@
             }
           }
         }
-        .forgot-password {
+        .forgotPassword {
           font-weight: 500;
           font-size: 16px;
           line-height: 23px;
@@ -334,11 +391,13 @@
           display: block;
           margin: 10px auto 0;
         }
-        .ant-divider-horizontal {
-          border-top: 0.4px solid #000000;
-          margin: 40px 0px 60px 0px;
+        :global {
+          .ant-divider-horizontal {
+            border-top: 0.4px solid #000000;
+            margin: 40px 0px 60px 0px;
+          }
         }
-        .join-wrapper {
+        .joinWrapper {
           text-align: center;
           padding-bottom: 30px;
           h2 {
@@ -348,25 +407,12 @@
             color: #18162f;
           }
         }
-        .error {
-          color: red;
-          margin-bottom: 0px;
+        :global {
+          .error {
+            color: red;
+            margin-bottom: 0px;
+          }
         }
-      }
-    }
-  }
-  .terms {
-    background: rgb(109 181 176 / 31%);
-    padding: 6px 0px;
-    h4 {
-      margin-bottom: 0px;
-      font-weight: 400;
-      font-size: 16px;
-      line-height: 23px;
-      color: #18162f;
-      text-align: center;
-      a {
-        font-size: 16px;
       }
     }
   }

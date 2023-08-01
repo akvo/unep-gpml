@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
+import GlobeIcon from "../../images/transnational.svg";
 import { Button, Dropdown, Menu } from "antd";
 
 function LocationDropdown({

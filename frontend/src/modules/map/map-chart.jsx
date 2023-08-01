@@ -24,10 +24,11 @@ import { topicNames, tTypes } from "../../utils/misc";
 import { curr, snakeToCamel } from "./utils";
 import { UIStore } from "../../store";
 import VerticalLegend from "./vertical-legend";
+import { useDeviceSize } from "../landing/landing";
 
 const geoUrl = "/unep-gpml.topo.json";
 const colorRange = ["#bbedda", "#a7e1cb", "#92d5bd", "#7dcaaf", "#67bea1"];
-const { innerWidth, innerHeight } = window;
+
 const unsettledTerritoryIsoCode = [
   "xJL",
   "xAB",
@@ -69,6 +70,7 @@ const MapChart = ({
     countries: s.countries,
   }));
 
+  const [width, height] = useDeviceSize();
   const history = useHistory();
   const mapMaxZoom = 9.2;
   const mapMinZoom = 1.1500000000000024;
@@ -143,7 +145,7 @@ const MapChart = ({
       setMapPos({
         left: 0,
         right: 0,
-        height: innerHeight + innerHeight / 1.5,
+        height: height + height / 1.5,
         width: box[0].offsetWidth / 4,
       });
     }

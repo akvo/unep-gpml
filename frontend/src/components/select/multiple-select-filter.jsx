@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Space, Tag, Select } from "antd";
 import isEmpty from "lodash/isEmpty";
-import "./styles.scss";
+import "./style.module.scss";
 
 const MultipleSelectFilter = ({
   title,

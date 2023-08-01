@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import "./map-styles.scss";
+import "./map.module.scss";
 import ReactTooltip from "react-tooltip";
 import { LoadingOutlined, DownOutlined } from "@ant-design/icons";
 import MapChart from "./map-chart";

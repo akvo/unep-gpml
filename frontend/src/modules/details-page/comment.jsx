@@ -1,5 +1,5 @@
 import React from "react";
-import "./styles.scss";
+import "./style.module.scss";
 import {
   Col,
   Modal,

@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.scss";
+import "./style.module.scss";
 import { Col, Avatar } from "antd";
 import classNames from "classnames";
 import { ArrowRightOutlined } from "@ant-design/icons";
@@ -14,12 +14,7 @@ import { topicNames } from "../../utils/misc";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination as SwiperPagination, Navigation } from "swiper";
-// swiper bundle styles
-import "swiper/swiper.min.css";
-import "swiper/modules/free-mode/free-mode.min.css";
-import "swiper/modules/navigation/navigation.scss";
-import "swiper/modules/pagination/pagination.min.css";
-import { Link } from "react-router-dom";
+import { Link } from "next/link";
 
 const Card = ({ showMoreCardClick, showMoreCardHref, children }) => {
   if (showMoreCardClick) {
@@ -31,8 +26,8 @@ const Card = ({ showMoreCardClick, showMoreCardHref, children }) => {
   }
   if (showMoreCardHref) {
     return (
-      <Link className="card" to={showMoreCardHref}>
-        {children}
+      <Link href={showMoreCardHref}>
+        <a className="card">{children}</a>
       </Link>
     );
   }
@@ -219,22 +214,22 @@ export const ResourceCard = ({ item, index, showModal }) => {
   if (!thumbnail || thumbnail == null) {
     return (
       <div className="resource-card nothumb" key={item.id}>
-        <Link
+        {/* <Link
           id={item.id}
-          to={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
+          href={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
           type={getType(item?.type)?.replace("_", "-")}
           onClick={showModal}
           className="nothumb-container"
         >
           {innerContent}
-        </Link>
+        </Link> */}
       </div>
     );
   }
   return (
     <div className="resource-card" key={item.id}>
-      <Link
-        to={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
+      {/* <Link
+        href={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
         id={item.id}
         type={getType(item?.type)?.replace("_", "-")}
         className="description-holder"
@@ -247,7 +242,7 @@ export const ResourceCard = ({ item, index, showModal }) => {
         onClick={showModal}
       >
         {innerContent}
-      </Link>
+      </Link> */}
       <div className="thumb-container">
         <img src={thumbnail} alt={item?.type} />
       </div>
