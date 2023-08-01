@@ -4,9 +4,9 @@ import CaseStudies from "../case-studies/view";
 import KnowledgeLibrary from "../knowledge-library/view";
 import CapacityBuilding from "../capacity-building/view";
 import LeftSidebar from "../../components/left-sidebar/left-sidebar";
-import { ReactComponent as IconLibrary } from "../../images/capacity-building/ic-knowledge-library.svg";
-import { ReactComponent as IconLearning } from "../../images/capacity-building/ic-capacity-building.svg";
-import { ReactComponent as IconCaseStudies } from "../../images/capacity-building/ic-case-studies.svg";
+import IconLibrary from "../../images/capacity-building/ic-knowledge-library.svg";
+import IconLearning from "../../images/capacity-building/ic-capacity-building.svg";
+import IconCaseStudies from "../../images/capacity-building/ic-case-studies.svg";
 import KnowledgeLib from "../knowledge-lib/view";
 
 const sidebar = [
