@@ -1,4 +1,4 @@
--- :name pages :? :1
+-- :name pages :query :one
 -- :doc Get paginated submission contents
 WITH
 submission AS (
@@ -47,19 +47,99 @@ submission AS (
     order by created
 ),
 authz AS (
-    select s.id, s.type,
-    COALESCE(json_agg(json_build_object('id', st.id, 'email', st.email)) FILTER (WHERE st.email IS NOT NULL AND a.roles ??| array['owner']), '[]') AS owners,
-    COALESCE(json_agg(json_build_object('id', st.id, 'email', st.email)) FILTER (WHERE st.email IS NOT NULL AND a.roles ??| array['focal-point']), '[]') AS focal_points
+    SELECT s.id, 'stakeholder' as type, '[]'::jsonb AS owners, '[]'::jsonb AS focal_points
     FROM submission s
-    LEFT JOIN topic_stakeholder_auth a ON a.topic_type = s.topic::topic_type AND a.topic_id = s.id AND a.roles ??| array['owner', 'focal-point']
-    LEFT JOIN stakeholder st ON a.stakeholder = st.id
-    GROUP BY s.id, s.type),
+    WHERE s.type = 'stakeholder'
+    UNION
+    SELECT s.id, 'organisation' as type, '[]'::jsonb AS owners,
+    COALESCE(jsonb_agg(jsonb_build_object('id', st.id, 'email', st.email)), '[]'::jsonb) AS focal_points
+    FROM submission s
+    INNER JOIN stakeholder_organisation a ON a.organisation = s.id AND a.association = 'focal-point'
+    INNER JOIN stakeholder st ON a.stakeholder = st.id
+    WHERE s.type = 'organisation'
+    GROUP BY s.id, s.type
+    UNION
+    SELECT s.id, 'organisation' as type, '[]'::jsonb AS owners,
+    COALESCE(jsonb_agg(jsonb_build_object('id', st.id, 'email', st.email)), '[]'::jsonb) AS focal_points
+    FROM submission s
+    INNER JOIN stakeholder_organisation a ON a.organisation = s.id AND a.association = 'focal-point'
+    INNER JOIN stakeholder st ON a.stakeholder = st.id
+    WHERE s.topic = 'non_member_organisation'
+    GROUP BY s.id, s.type
+    UNION
+    SELECT s.id, 'organisation' as type, '[]'::jsonb AS owners,
+    COALESCE(jsonb_agg(jsonb_build_object('id', st.id, 'email', st.email)), '[]'::jsonb) AS focal_points
+    FROM submission s
+    INNER JOIN stakeholder_organisation a ON a.organisation = s.id AND a.association = 'focal-point'
+    INNER JOIN stakeholder st ON a.stakeholder = st.id
+    WHERE s.type = 'organisation' AND s.topic = 'non_member_organisation'
+    GROUP BY s.id, s.type
+    UNION
+    SELECT s.id, 'tag' as type, '[]'::jsonb AS owners,'[]'::jsonb AS focal_points
+    FROM submission s
+    WHERE s.type = 'tag'
+    UNION
+    SELECT s.id, 'event' as type,
+    COALESCE(jsonb_agg(jsonb_build_object('id', st.id, 'email', st.email)), '[]'::jsonb) AS owners,
+    '[]'::jsonb AS focal_points
+    FROM submission s
+    INNER JOIN stakeholder_event a ON a.event = s.id AND a.association = 'owner'
+    INNER JOIN stakeholder st ON a.stakeholder = st.id
+    WHERE s.type = 'event'
+    GROUP BY s.id, s.type
+    UNION
+    SELECT s.id, REPLACE(LOWER(s.type), ' ', '_') as type,
+    COALESCE(jsonb_agg(jsonb_build_object('id', st.id, 'email', st.email)), '[]'::jsonb) AS owners,
+    '[]'::jsonb AS focal_points
+    FROM submission s
+    INNER JOIN stakeholder_resource a ON a.resource = s.id AND a.association = 'owner'
+    INNER JOIN stakeholder st ON a.stakeholder = st.id
+    WHERE s.topic = 'resource'
+    GROUP BY s.id, s.type
+    UNION
+    SELECT s.id, 'initiative' as type,
+    COALESCE(jsonb_agg(jsonb_build_object('id', st.id, 'email', st.email)), '[]'::jsonb) AS owners,
+    '[]'::jsonb AS focal_points
+    FROM submission s
+    INNER JOIN stakeholder_initiative a ON a.initiative = s.id AND a.association = 'owner'
+    INNER JOIN stakeholder st ON a.stakeholder = st.id
+    WHERE s.type = 'initiative'
+    GROUP BY s.id, s.type
+    UNION
+    SELECT s.id, 'technology' as type,
+    COALESCE(jsonb_agg(jsonb_build_object('id', st.id, 'email', st.email)), '[]'::jsonb) AS owners,
+    '[]'::jsonb AS focal_points
+    FROM submission s
+    INNER JOIN stakeholder_technology a ON a.technology = s.id AND a.association = 'owner'
+    INNER JOIN stakeholder st ON a.stakeholder = st.id
+    WHERE s.type = 'technology'
+    GROUP BY s.id, s.type
+    UNION
+    SELECT s.id, 'policy' as type,
+    COALESCE(jsonb_agg(jsonb_build_object('id', st.id, 'email', st.email)), '[]'::jsonb) AS owners,
+    '[]'::jsonb AS focal_points
+    FROM submission s
+    INNER JOIN stakeholder_policy a ON a.policy = s.id AND a.association = 'owner'
+    INNER JOIN stakeholder st ON a.stakeholder = st.id
+    WHERE s.type = 'policy'
+    GROUP BY s.id, s.type
+    UNION
+    SELECT s.id, 'case_study' as type,
+    COALESCE(jsonb_agg(jsonb_build_object('id', st.id, 'email', st.email)), '[]'::jsonb) AS owners,
+    '[]'::jsonb AS focal_points
+    FROM submission s
+    INNER JOIN stakeholder_case_study a ON a.case_study = s.id AND a.association = 'owner'
+    INNER JOIN stakeholder st ON a.stakeholder = st.id
+    WHERE s.type = 'case_study'
+    GROUP BY s.id, s.type
+    ),
 reviewers AS (
- select s.id, s.type, s.review_status, COALESCE(json_agg(json_build_object ('id', r.reviewer, 'review_status', r.review_status)) FILTER (WHERE r.reviewer IS NOT NULL), '[]') as reviewers  from submission s
+ SELECT s.id, s.type, s.review_status, COALESCE(json_agg(json_build_object ('id', r.reviewer, 'review_status', r.review_status)) FILTER (WHERE r.reviewer IS NOT NULL), '[]') as reviewers
+ FROM submission s
     LEFT JOIN review r ON r.topic_type = s.topic::topic_type AND r.topic_id = s.id
     GROUP BY s.id, s.review_status, s.type),
 data AS (
-    SELECT s.id, s.type, s.topic, s.title, s.featured, TO_CHAR(s.created, 'DD/MM/YYYY HH12:MI pm') as created, c.email as created_by, '/submission/' || s.type || '/' || s.id as preview, COALESCE(s.review_status, 'SUBMITTED') AS review_status, s.role, a.owners, a.focal_points, s.image, r.reviewers
+    SELECT s.id, s.type, s.topic, s.title, s.featured, TO_CHAR(s.created, 'DD/MM/YYYY HH12:MI pm') as created, c.email as created_by, '/submission/' || s.type || '/' || s.id as preview, COALESCE(s.review_status, 'SUBMITTED') AS review_status, s.role, COALESCE(a.owners, '[]') AS owners, COALESCE(a.focal_points, '[]') AS focal_points, s.image, r.reviewers
     FROM submission s
     LEFT JOIN stakeholder c ON c.id = s.created_by
     LEFT JOIN authz a on s.id=a.id and s.type=a.type
@@ -100,13 +180,13 @@ SELECT json_build_object(
     ) / :limit,
     'limit', :limit) as result;
 
--- :name detail :? :1
+-- :name detail :query :one
 -- :doc get detail of submission
 SELECT *
 from :i:table-name
 where id = :id::integer;
 
--- :name update-submission :! :n
+-- :name update-submission :execute :affected
 -- :doc approve or reject submission
 update :i:table-name
 set reviewed_at = now(),
