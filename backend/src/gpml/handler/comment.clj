@@ -201,12 +201,22 @@
                            :error-details {:msg (ex-message t)}}))))))
 
 (defn- get-resource-comments
-  [{:keys [db]} {{:keys [query]} :parameters :as _req}]
-  (let [opts (api-opts->opts query)
-        comments (db.comment/get-resource-comments (:spec db) opts)]
-    {:comments (-> (map comment->api-comment comments)
-                   (util/build-hierarchy {} :parent_id)
-                   :children)}))
+  [{:keys [db logger]} {{:keys [query]} :parameters :as req}]
+  (try
+    (let [opts (api-opts->opts query)
+          comments (db.comment/get-resource-comments (:spec db) opts)]
+      (r/ok {:comments (-> (map comment->api-comment comments)
+                           (util/build-hierarchy {} :parent_id)
+                           :children)}))
+    (catch Throwable t
+      (let [log-data {:exception-message (ex-message t)
+                      :exception-data (ex-data t)
+                      :context-data (get-in req [:parameters :query])}]
+        (log logger :error ::failed-to-get-comments log-data)
+        (log logger :debug ::failed-to-get-comments (assoc log-data :stack-trace (.getStackTrace t)))
+        (r/server-error {:sucess? false
+                         :reason :failed-to-get-comments
+                         :error-details {:msg (ex-message t)}})))))
 
 (defn- update-comment
   [{:keys [db logger]} req]
@@ -257,7 +267,7 @@
 
 (defmethod ig/init-key :gpml.handler.comment/get [_ config]
   (fn [req]
-    (resp/response (get-resource-comments config req))))
+    (get-resource-comments config req)))
 
 (defmethod ig/init-key :gpml.handler.comment/put [_ config]
   (fn [req]
