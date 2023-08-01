@@ -231,8 +231,25 @@
                          :error-details {:msg (ex-message t)}})))))
 
 (defn- delete-comment
-  [{:keys [db]} {{{:keys [id]} :path} :parameters :as _req}]
-  {:deleted-comments (db.comment/delete-comment (:spec db) {:id id})})
+  [{:keys [db logger] :as config} {{{:keys [id]} :path} :parameters user :user :as req}]
+  (try
+    (let [comment (first (db.comment/get-resource-comments
+                          (:spec db)
+                          {:id id}))]
+      (if-not (or (= (:author_id comment) (:id user))
+                  (h.r.permission/super-admin? config (:id user)))
+        (r/forbidden {:message "Unauthorized"})
+        (r/ok {:deleted-comments (db.comment/delete-comment (:spec db) {:id id})})))
+    (catch Throwable t
+      (let [log-data {:exception-message (ex-message t)
+                      :exception-data (ex-data t)
+                      :context-data {:comment-id (get-in req [:parameters :path])
+                                     :user user}}]
+        (log logger :error ::failed-to-delete-comment log-data)
+        (log logger :debug ::failed-to-delete-comment (assoc log-data :stack-trace (.getStackTrace t)))
+        (r/server-error {:sucess? false
+                         :reason :failed-to-delete-comment
+                         :error-details {:msg (ex-message t)}})))))
 
 (defmethod ig/init-key :gpml.handler.comment/post [_ config]
   (fn [req]
@@ -248,7 +265,7 @@
 
 (defmethod ig/init-key :gpml.handler.comment/delete [_ config]
   (fn [req]
-    (resp/response (delete-comment config req))))
+    (delete-comment config req)))
 
 (defmethod ig/init-key :gpml.handler.comment/post-params [_ _]
   {:body create-comment-params})
