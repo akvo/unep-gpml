@@ -1,6 +1,7 @@
 (ns gpml.handler.detail
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.set :as set]
+            [clojure.string :as str]
             [duct.logger :refer [log]]
             [gpml.db.action :as db.action]
             [gpml.db.action-detail :as db.action-detail]
@@ -319,30 +320,32 @@
     :or {owners? true tags? true entity-connections? true
          stakeholder-connections? true related-content? true
          affiliation? false}}]
-  (let [resolved-resource-type (resolve-resource-type resource-type)]
-    (cond-> (assoc resource :type resource-type)
+  (let [api-resource-type (-> (:type resource)
+                              str/lower-case
+                              (str/replace #" " "_"))]
+    (cond-> (assoc resource :type api-resource-type)
       tags?
-      (assoc :tags (db.resource.tag/get-resource-tags db {:table (str (resolve-resource-type resource-type) "_tag")
-                                                          :resource-col (resolve-resource-type resource-type)
+      (assoc :tags (db.resource.tag/get-resource-tags db {:table (str resource-type "_tag")
+                                                          :resource-col resource-type
                                                           :resource-id id}))
 
       entity-connections?
       (assoc :entity_connections (db.resource.connection/get-resource-entity-connections db {:resource-id id
-                                                                                             :resource-type resolved-resource-type}))
+                                                                                             :resource-type resource-type}))
 
       stakeholder-connections?
       (->> (add-stakeholder-connections db))
 
       related-content?
-      (assoc :related_content (expand-related-content db id (resolve-resource-type resource-type)))
+      (assoc :related_content (expand-related-content db id resource-type))
 
       (and affiliation? affiliation)
       (assoc :affiliation (db.organisation/organisation-by-id db {:id affiliation}))
 
       owners?
       (assoc :owners (->> (db.rbac-util/get-users-with-granted-permission-on-resource db {:resource-id id
-                                                                                          :context-type-name resolved-resource-type
-                                                                                          :permission-name (str resolved-resource-type "/" "update")})
+                                                                                          :context-type-name resource-type
+                                                                                          :permission-name (str resource-type "/" "update")})
                           (mapv :user_id))))))
 
 (defmulti extra-details (fn [_ resource-type _] resource-type) :default :nothing)
@@ -365,16 +368,10 @@
    (when-let [headquarters-country (:country technology)]
      {:headquarters (first (gpml.db.country/get-countries db {:filters {:ids [headquarters-country]}}))})))
 
-(defmethod extra-details "technical_resource" [db resource-type resource]
-  (add-extra-details db resource resource-type {}))
-
-(defmethod extra-details "financing_resource" [db resource-type resource]
-  (add-extra-details db resource resource-type {}))
-
 (defmethod extra-details "case_study" [db resource-type resource]
   (add-extra-details db resource resource-type {}))
 
-(defmethod extra-details "action_plan" [db resource-type resource]
+(defmethod extra-details "resource" [db resource-type resource]
   (add-extra-details db resource resource-type {}))
 
 (defmethod extra-details "event" [db resource-type event]
@@ -486,8 +483,9 @@
   [_ {:keys [db logger] :as config}]
   (fn [{{:keys [path query]} :parameters user :user}]
     (try
-      (let [topic-type (:topic-type path)
+      (let [topic-type (resolve-resource-type (:topic-type path))
             topic-id (:topic-id path)
+            rbac-entity-type (keyword (str/replace topic-type \_ \-))
             resource (db.resource.detail/get-resource (:spec db)
                                                       {:table-name topic-type
                                                        :id topic-id})
@@ -498,7 +496,7 @@
                             (handler.res-permission/operation-allowed?
                              config
                              {:user-id (:id user)
-                              :entity-type topic-type
+                              :entity-type rbac-entity-type
                               :entity-id topic-id
                               :operation-type :read-draft})
                             true)
@@ -510,7 +508,7 @@
                           (handler.res-permission/operation-allowed?
                            config
                            {:user-id (:id user)
-                            :entity-type topic-type
+                            :entity-type rbac-entity-type
                             :entity-id srv.permissions/root-app-resource-id
                             :operation-type :read
                             :custom-context-type srv.permissions/root-app-context-type}))]
@@ -522,16 +520,16 @@
                 (r/not-found result)
                 (r/server-error result))
               (r/ok (:resource-details result))))))
-      (catch Exception e
-        (log logger :error ::failed-to-get-resource-details {:exception-message (.getMessage e)
+      (catch Throwable t
+        (log logger :error ::failed-to-get-resource-details {:exception-message (.getMessage t)
                                                              :context-data {:path-params path
                                                                             :user user}})
-        (if (instance? SQLException e)
+        (if (instance? SQLException t)
           (r/server-error {:success? true
-                           :reason (pg-util/get-sql-state e)})
+                           :reason (pg-util/get-sql-state t)})
           (r/server-error {:success? true
                            :reason :could-not-get-resource-details
-                           :error-details {:error (.getMessage e)}}))))))
+                           :error-details {:error (.getMessage t)}}))))))
 
 (def put-params
   ;; FIXME: Add validation
