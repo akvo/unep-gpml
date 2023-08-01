@@ -496,8 +496,7 @@
                                                  :handler #ig/ref :gpml.handler.comment/get}
                                            :put {:summary "Update a comment details"
                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                              #ig/ref :gpml.auth/auth-required
-                                                              #ig/ref :gpml.auth/restrict-to-admin-and-comment-author-middleware]
+                                                              #ig/ref :gpml.auth/auth-required]
                                                  :swagger {:tags ["comment"] :security [{:id_token []}]}
                                                  :responses #ig/ref :gpml.handler.comment/put-response
                                                  :parameters #ig/ref :gpml.handler.comment/put-params

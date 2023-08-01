@@ -209,10 +209,26 @@
                    :children)}))
 
 (defn- update-comment
-  [{:keys [db]} req]
-  (let [body-params (get-in req [:parameters :body])
-        comment (api-comment->comment body-params)]
-    {:updated-comments (db.comment/update-comment (:spec db) comment)}))
+  [{:keys [db logger]} req]
+  (try
+    (let [user (:user req)
+          body-params (get-in req [:parameters :body])
+          comment (first (db.comment/get-resource-comments
+                          (:spec db)
+                          {:id (:id body-params)}))]
+      (if-not (= (:author_id comment) (:id user))
+        (r/forbidden {:message "Unauthorized"})
+        (let [comment (api-comment->comment body-params)]
+          {:updated-comments (db.comment/update-comment (:spec db) comment)})))
+    (catch Throwable t
+      (let [log-data {:exception-message (ex-message t)
+                      :exception-data (ex-data t)
+                      :context-data (get-in req [:parameters :body])}]
+        (log logger :error ::failed-to-update-comment log-data)
+        (log logger :debug ::failed-to-update-comment (assoc log-data :stack-trace (.getStackTrace t)))
+        (r/server-error {:sucess? false
+                         :reason :failed-to-update-comment
+                         :error-details {:msg (ex-message t)}})))))
 
 (defn- delete-comment
   [{:keys [db]} {{{:keys [id]} :path} :parameters :as _req}]
