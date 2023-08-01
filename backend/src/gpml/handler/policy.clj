@@ -128,7 +128,7 @@
 
 (defmethod ig/init-key :gpml.handler.policy/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params parameters user] :as req}]
+  (fn [{:keys [body-params parameters user] :as req}]
     (try
       (if-not (h.r.permission/operation-allowed?
                config
@@ -138,8 +138,7 @@
                 :root-context? true})
         (r/forbidden {:message "Unauthorized"})
         (jdbc/with-db-transaction [tx (:spec db)]
-          (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
-                policy-id (create-policy
+          (let [policy-id (create-policy
                            config
                            tx
                            user
