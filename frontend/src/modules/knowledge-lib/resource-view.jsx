@@ -9,14 +9,13 @@ import ResourceCards, {
   ResourceCard,
 } from "../../components/resource-cards/resource-cards";
 import { LoadingOutlined, DownOutlined } from "@ant-design/icons";
-import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
-import { ReactComponent as SearchIcon } from "../../images/search-icon.svg";
+import SortIcon from "../../images/knowledge-library/sort-icon.svg";
+import SearchIcon from "../../images/search-icon.svg";
 import { Button } from "antd";
 import Maps from "../map/map";
 import { isEmpty } from "lodash";
 import { useQuery, topicNames } from "../../utils/misc";
 import TopicView from "./topic-view";
-import { useParams, useLocation, withRouter } from "react-router-dom";
 
 const resourceTopic = [
   "action_plan",
@@ -30,6 +29,7 @@ const resourceTopic = [
 
 function ResourceView({ history, popularTags, landing, box, showModal }) {
   const query = useQuery();
+
   const [isAscending, setIsAscending] = useState(null);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -40,8 +40,10 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   const [catData, setCatData] = useState([]);
   const [gridItems, setGridItems] = useState([]);
   const [pageNumber, setPageNumber] = useState(false);
-  const { type, view } = useParams();
-  const { pathname, search } = useLocation();
+  const [type, view] = history.query.slug || [];
+  const { pathname } = history;
+  const search = new URLSearchParams(history.query).toString();
+
   const [showFilterModal, setShowFilterModal] = useState(false);
 
   const limit = 30;
@@ -87,7 +89,9 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
     queryParams.set("incCountsForTags", popularTags);
     queryParams.set("limit", limit);
 
-    const url = `/browse?${String(queryParams)}`;
+    const url = `https://digital.gpmarinelitter.org/api/browse?${String(
+      queryParams
+    )}`;
     api
       .get(url)
       .then((resp) => {
@@ -132,19 +136,23 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
     const newParams = new URLSearchParams(pureQuery);
 
     newParams.delete("offset");
+    const newQueryStr = newParams.toString();
 
-    if (param === "replace")
-      history.replace({
-        pathname: pathname,
-        search: newParams.toString(),
-        state: { type: type },
-      });
-    else
-      history.push({
-        pathname: pathname,
-        search: newParams.toString(),
-        state: { type: type },
-      });
+    // if (param === "replace")
+    //   router.replace(
+    //     {
+    //       pathname: router.pathname,
+    //       query: newParams.toString(),
+    //     },
+    //     undefined,
+    //     { shallow: true }
+    //   );
+    // else
+    //   router.push({
+    //     pathname: router.pathname,
+    //     query: newParams.toString(),
+    //   });
+
     if (fetch && view !== "category") fetchData(pureQuery);
 
     if (view === "category") loadAllCat(pureQuery);
@@ -159,7 +167,11 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
 
     const queryParams = new URLSearchParams(filter);
     const promiseArray = resourceTopic.map((url) =>
-      api.get(`/browse?topic=${url}&${String(queryParams)}`)
+      api.get(
+        `https://digital.gpmarinelitter.org/api/browse?topic=${url}&${String(
+          queryParams
+        )}`
+      )
     );
 
     Promise.all(promiseArray)
@@ -179,12 +191,12 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   };
 
   useMemo(() => {
-    if ((pathname || search) && !loading) updateQuery("replace");
+    // if ((pathname || search) && !loading) updateQuery("replace");
   }, [pathname, search]);
 
   useEffect(() => {
     if (data.length === 0) updateQuery();
-  }, [data, view]);
+  }, []);
 
   const clickCountry = (name) => {
     const val = query["country"];
@@ -304,7 +316,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             )}
           </div>
         )}
-        {(view === "map" || !view) && (
+        {/* {(view === "map" || !view) && (
           <Maps
             query={query}
             box={box}
@@ -401,9 +413,9 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
               </Fragment>
             ))}
           </div>
-        )}
+        )} */}
       </div>
-      <FilterModal
+      {/* <FilterModal
         {...{
           query,
           setShowFilterModal,
@@ -417,7 +429,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           loadAllCat,
           view,
         }}
-      />
+      /> */}
     </Fragment>
   );
 }
@@ -514,4 +526,4 @@ const ViewSwitch = ({ type, view, history }) => {
   );
 };
 
-export default withRouter(ResourceView);
+export default ResourceView;

@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "antd";
 import { useQuery } from "../../utils/misc";
-import { Icon } from "../../components/svg-icon/svg-icon";
-import { ReactComponent as FilterIcon } from "../../images/knowledge-library/filter-icon.svg";
-import { ReactComponent as OverviewIcon } from "../../images/overview.svg";
+// import { Icon } from "../../components/svg-icon/svg-icon";
+import FilterIcon from "../../images/knowledge-library/filter-icon.svg";
 import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
 import LocationDropdown from "../../components/location-dropdown/location-dropdown";
 import api from "../../utils/api";
 import { LeftOutlined, CloseOutlined } from "@ant-design/icons";
-import { withRouter } from "react-router-dom";
 
 export const resourceTypes = [
   {
@@ -141,7 +139,7 @@ const FilterBar = ({
             }}
           >
             <div>
-              <Icon name={`all`} fill={`${!view ? "#06496c" : "#fff"}`} />
+              {/* <Icon name={`all`} fill={`${!view ? "#06496c" : "#fff"}`} /> */}
               <b>{allResources}</b>
             </div>
             <span>All Resources</span>
@@ -159,7 +157,7 @@ const FilterBar = ({
               }}
             >
               <div>
-                <Icon name={`resource-types/${t.key}`} fill="#000" />
+                {/* <Icon name={`resource-types/${t.key}`} fill="#000" /> */}
                 <b>
                   {totalCount.find((item) => t.title === item.topic)?.count ||
                     "XX"}
@@ -213,4 +211,4 @@ const FilterBar = ({
   );
 };
 
-export default withRouter(FilterBar);
+export default FilterBar;

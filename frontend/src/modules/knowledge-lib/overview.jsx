@@ -3,7 +3,7 @@ import humps from "humps";
 import api from "../../utils/api";
 import { resourceTypes } from "./filter-bar";
 import ResourceCards from "../../components/resource-cards/resource-cards";
-import { Icon } from "../../components/svg-icon/svg-icon";
+// import { Icon } from "../../components/svg-icon/svg-icon";
 import Maps from "../map/map";
 import TopicView from "./topic-view";
 import { Card, Col, Row } from "antd";
@@ -61,7 +61,7 @@ const Overview = ({
           }}
         >
           <div>
-            <Icon name={`all`} fill="#000" />
+            {/* <Icon name={`all`} fill="#000" /> */}
             <b>{allResources}</b>
           </div>
           <span>All Resources</span>
@@ -69,7 +69,7 @@ const Overview = ({
         {resourceTypes.map((type) => (
           <li onClick={handleClickCategory(type.key)} key={type.key}>
             <div>
-              <Icon name={`resource-types/${type.key}`} fill="#000" />
+              {/* <Icon name={`resource-types/${type.key}`} fill="#000" /> */}
               <b>
                 {countData.find((item) => type.title === item.topic)?.count ||
                   "XX"}

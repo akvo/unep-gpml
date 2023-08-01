@@ -2,6 +2,7 @@ import humps from "humps";
 import auth0 from "auth0-js";
 import ReactGA from "react-ga4";
 import { useLocation } from "react-router-dom";
+import { useRouter } from "next/router";
 
 export const tTypes = [
   "project",
@@ -202,13 +203,17 @@ export const eventTrack = (category, action, label) => {
 };
 
 export const useQuery = () => {
-  const srcParams = new URLSearchParams(useLocation().search);
+  const { query } = useRouter();
+
   const ret = {};
-  for (var key of srcParams.keys()) {
-    ret[key] = srcParams
-      .get(key)
-      .split(",")
-      .filter((it) => it !== "");
+
+  for (let key in query) {
+    if (typeof query[key] === "string") {
+      ret[key] = query[key].split(",").filter((it) => it !== "");
+    } else {
+      ret[key] = query[key];
+    }
   }
+
   return ret;
 };

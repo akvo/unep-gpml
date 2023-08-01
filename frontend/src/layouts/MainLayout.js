@@ -15,7 +15,13 @@ const MainLayout = ({ children, isIndexPage }) => {
           setShowMenu={setShowMenu}
           showMenu={showMenu}
         />
-      ) : null}
+      ) : (
+        <MenuBar
+          setLoginVisible={setLoginVisible}
+          setShowMenu={setShowMenu}
+          showMenu={showMenu}
+        />
+      )}
       {children}
       <Footer />
     </>

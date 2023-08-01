@@ -242,9 +242,11 @@ const TheJourney = () => {
 
 export const useDeviceSize = () => {
   const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
 
   const handleWindowResize = () => {
     setWidth(window.innerWidth);
+    setHeight(window.innerHeight);
   };
 
   useEffect(() => {
@@ -253,7 +255,7 @@ export const useDeviceSize = () => {
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
-  return [width];
+  return [width, height];
 };
 
 const Connect = () => {
@@ -457,7 +459,6 @@ const Stats = () => {
     nonMemberOrganisations: s?.nonMemberOrganisations,
   }));
 
-  console.log(organisations, nonMemberOrganisations);
   const [governmentsCount, setGovernmentsCount] = useState(0);
 
   useEffect(() => {
