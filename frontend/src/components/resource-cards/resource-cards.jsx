@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.module.scss";
+import styles from "./style.module.scss";
 import { Col, Avatar } from "antd";
 import classNames from "classnames";
 import { ArrowRightOutlined } from "@ant-design/icons";
@@ -14,7 +14,7 @@ import { topicNames } from "../../utils/misc";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination as SwiperPagination, Navigation } from "swiper";
-import { Link } from "next/link";
+import Link from "next/link";
 
 const Card = ({ showMoreCardClick, showMoreCardHref, children }) => {
   if (showMoreCardClick) {
@@ -70,7 +70,7 @@ const ResourceCards = ({
       }}
       navigation={true}
       modules={[SwiperPagination, Navigation]}
-      className="resource-cards"
+      className={`${styles.resourceCards} resource-cards`}
     >
       {firstCard && <SwiperSlide>{firstCard}</SwiperSlide>}
       {items?.slice(0, showMoreCardAfter).map((item) => {
@@ -214,35 +214,43 @@ export const ResourceCard = ({ item, index, showModal }) => {
   if (!thumbnail || thumbnail == null) {
     return (
       <div className="resource-card nothumb" key={item.id}>
-        {/* <Link
-          id={item.id}
+        <Link
           href={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
-          type={getType(item?.type)?.replace("_", "-")}
-          onClick={showModal}
-          className="nothumb-container"
+          legacyBehavior
         >
-          {innerContent}
-        </Link> */}
+          <a
+            id={item.id}
+            type={getType(item?.type)?.replace("_", "-")}
+            onClick={showModal}
+            className="nothumb-container"
+          >
+            {innerContent}
+          </a>
+        </Link>
       </div>
     );
   }
   return (
     <div className="resource-card" key={item.id}>
-      {/* <Link
+      <Link
         href={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
-        id={item.id}
-        type={getType(item?.type)?.replace("_", "-")}
-        className="description-holder"
-        style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${thumbnail})`,
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-        }}
-        onClick={showModal}
+        legacyBehavior
       >
-        {innerContent}
-      </Link> */}
+        <a
+          id={item.id}
+          type={getType(item?.type)?.replace("_", "-")}
+          className="description-holder"
+          style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${thumbnail})`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+          }}
+          onClick={showModal}
+        >
+          {innerContent}
+        </a>
+      </Link>
       <div className="thumb-container">
         <img src={thumbnail} alt={item?.type} />
       </div>

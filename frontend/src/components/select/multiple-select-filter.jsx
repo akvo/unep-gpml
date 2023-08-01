@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Space, Tag, Select } from "antd";
 import isEmpty from "lodash/isEmpty";
-import "./style.module.scss";
+import styles from "./style.module.scss";
 
 const MultipleSelectFilter = ({
   title,
@@ -14,7 +14,7 @@ const MultipleSelectFilter = ({
   clear,
 }) => {
   return (
-    <Col span={span} className="multiselection-filter">
+    <Col span={span} className={styles.multiselectionFilter}>
       <Space align="middle">
         <div className="filter-title multiple-filter-title">{title}</div>
         {!isEmpty(query?.[flag]) && clear ? (

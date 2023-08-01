@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import "./map.module.scss";
+import styles from "./map.module.scss";
 import ReactTooltip from "react-tooltip";
 import { LoadingOutlined, DownOutlined } from "@ant-design/icons";
 import MapChart from "./map-chart";
@@ -31,10 +31,10 @@ const Maps = ({
   const [tooltipContent, setTooltipContent] = useState("");
 
   return (
-    <div id="map-landing">
+    <div className={`${styles.mapLanding} map-landing`}>
       <div className="landing-container map-container">
         {!isLoaded() && (
-          <h2 className="loading" id="map-loader">
+          <h2 className="loading map-loader">
             <LoadingOutlined spin /> Loading
           </h2>
         )}
@@ -68,7 +68,10 @@ const Maps = ({
             }}
           />
           {useTooltips && (
-            <ReactTooltip type="light" className="opaque map-tooltip-wrapper">
+            <ReactTooltip
+              type="light"
+              className={`${styles.mapTooltipWrapper} opaque`}
+            >
               {tooltipContent}
             </ReactTooltip>
           )}

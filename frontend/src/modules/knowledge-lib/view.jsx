@@ -45,6 +45,7 @@ function Library({ setLoginVisible, isAuthenticated }) {
   // }, [modalVisible]);
 
   const showModal = ({ e, type, id }) => {
+    console.log("setModalVisible");
     e.preventDefault();
     if (type && id) {
       const detailUrl = `/${type}/${id}`;

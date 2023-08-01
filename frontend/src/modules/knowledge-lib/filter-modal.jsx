@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import "./filter.module.scss";
+import styles from "./filter.module.scss";
 import {
   Row,
   Col,
@@ -149,7 +149,7 @@ const FilterModal = ({
   return (
     <Modal
       centered
-      className="filter-modal"
+      className={styles.filterModal}
       title="Filters"
       visible={showFilterModal}
       onCancel={() => setShowFilterModal(false)}

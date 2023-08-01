@@ -123,7 +123,7 @@ const MapChart = ({
     zoom: mapMinZoom,
   });
 
-  const viewport = window.innerWidth;
+  const viewport = width;
 
   const [mapPos, setMapPos] = useState({
     left: 0,

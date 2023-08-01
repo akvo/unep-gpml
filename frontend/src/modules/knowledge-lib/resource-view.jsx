@@ -40,10 +40,11 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   const [catData, setCatData] = useState([]);
   const [gridItems, setGridItems] = useState([]);
   const [pageNumber, setPageNumber] = useState(false);
-  const [type, view] = history.query.slug || [];
+  const [view, type] = history.query.slug || [];
+  const { slug, ...queryParams } = history.query;
   const { pathname } = history;
   const search = new URLSearchParams(history.query).toString();
-
+  console.log(history.query.slug);
   const [showFilterModal, setShowFilterModal] = useState(false);
 
   const limit = 30;
@@ -71,33 +72,37 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   const fetchData = (searchParams) => {
     setLoading(true);
     const queryParams = new URLSearchParams(searchParams);
-    if (type || history?.location?.state?.type)
-      queryParams.set(
-        "topic",
-        history?.location?.state?.type
-          ? history?.location?.state?.type.replace(/-/g, "_")
-          : type.replace(/-/g, "_")
-      );
+    console.log(queryParams);
+    queryParams.delete("slug");
 
-    if (
-      type === "capacity-building" ||
-      history?.location?.state?.type === "capacity-building"
-    ) {
-      queryParams.set("capacity_building", ["true"]);
-      queryParams.delete("topic");
-    }
+    if (type || history?.location?.state?.type)
+      if (
+        type === "capacity-building" ||
+        history?.location?.state?.type === "capacity-building"
+      ) {
+        queryParams.set(
+          "topic",
+          history?.location?.state?.type
+            ? history?.location?.state?.type.replace(/-/g, "_")
+            : type.replace(/-/g, "_")
+        );
+
+        queryParams.set("capacity_building", ["true"]);
+        queryParams.delete("topic");
+      }
     queryParams.set("incCountsForTags", popularTags);
     queryParams.set("limit", limit);
 
     const url = `https://digital.gpmarinelitter.org/api/browse?${String(
       queryParams
     )}`;
+    console.log(view, totalCount);
     api
       .get(url)
       .then((resp) => {
         setLoading(false);
         setData(resp?.data);
-        if (!view) {
+        if (totalCount.length === 0) {
           setTotalCount(resp?.data?.counts);
         }
         setCountData(resp?.data?.counts);
@@ -268,7 +273,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
               <SearchIcon />
             </div>
           </div>
-          <ViewSwitch {...{ type, view, history }} />
+          <ViewSwitch {...{ type, view, history, queryParams }} />
           <button
             className="sort-by-button"
             onClick={() => {
@@ -316,7 +321,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             )}
           </div>
         )}
-        {/* {(view === "map" || !view) && (
+        {(view === "map" || !view) && (
           <Maps
             query={query}
             box={box}
@@ -331,20 +336,6 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             showLegend={true}
             path="knowledge"
           />
-        )}
-        {view === "topic" && (
-          <div className="topic-view-container">
-            <TopicView
-              results={data?.results}
-              fetch={true}
-              loading={loading}
-              countData={countData.filter(
-                (count) => count.topic !== "gpml_member_entities"
-              )}
-              updateQuery={updateQuery}
-              query={query}
-            />
-          </div>
         )}
         {view === "grid" && (
           <GridView
@@ -413,9 +404,9 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
               </Fragment>
             ))}
           </div>
-        )} */}
+        )}
       </div>
-      {/* <FilterModal
+      <FilterModal
         {...{
           query,
           setShowFilterModal,
@@ -429,7 +420,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           loadAllCat,
           view,
         }}
-      /> */}
+      />
     </Fragment>
   );
 }
@@ -477,10 +468,12 @@ const GridView = ({
   );
 };
 
-const ViewSwitch = ({ type, view, history }) => {
+const ViewSwitch = ({ type, view, history, queryParams }) => {
   const viewOptions = ["map", "grid", "category"];
   const [visible, setVisible] = useState(false);
   view = !view ? "map" : view;
+
+  console.log(history);
 
   return (
     <div className="view-switch-container">
@@ -512,7 +505,7 @@ const ViewSwitch = ({ type, view, history }) => {
                       pathname: `/knowledge/library/${viewOption}/${
                         type && viewOption !== "category" ? type : ""
                       }`,
-                      search: history.location.search,
+                      query: queryParams,
                     });
                   }}
                 >

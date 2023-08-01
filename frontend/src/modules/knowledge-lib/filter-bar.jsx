@@ -171,8 +171,9 @@ const FilterBar = ({
       <div className="search-container">
         <Button className="adv-src" onClick={() => setShowFilterModal(true)}>
           {!isEmpty &&
-            Object.keys(query).filter((item) => !hideFilterList.includes(item))
-              .length > 0 && (
+            Object.keys(query).filter(
+              (item) => !hideFilterList.includes(item) && item !== "slug"
+            ).length > 0 && (
               <div className="filter-status">
                 {Object.keys(query).filter(
                   (item) => !hideFilterList.includes(item)
@@ -186,8 +187,9 @@ const FilterBar = ({
           <span>Advanced Search</span>
         </Button>
         {!isEmpty &&
-          Object.keys(query).filter((item) => !hideFilterList.includes(item))
-            .length > 0 && (
+          Object.keys(query).filter(
+            (item) => !hideFilterList.includes(item) && item !== "slug"
+          ).length > 0 && (
             <Button
               icon={<CloseOutlined />}
               className="reset-button"
