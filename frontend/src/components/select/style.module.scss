@@ -1,9 +1,11 @@
 @import "../../vars.scss";
 
-.multiselection-filter,
+.multiselectionFilter,
 .country-filter-tab .ant-select-multiple {
-  .ant-select-multiple {
-    width: 100%;
+  :global {
+    .ant-select-multiple {
+      width: 100%;
+    }
   }
 
   .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
@@ -21,38 +23,12 @@
     }
   }
 
-  .ant-select-selection-placeholder {
-    font-weight: 700;
-    padding-left: 30px;
-  }
-
-  .ant-select-selector {
-    background: $grey05 !important;
-    border: 0 !important;
-    border-radius: 5px !important;
-    background-image: url("../../images/knowledge-library/search-icon.svg"),
-      url("../../images/knowledge-library/chevron-down-grey.svg") !important;
-    background-repeat: no-repeat !important;
-    background-position: calc(15px) center, calc(100% - 10px) center !important;
-  }
-
   .ant-space-item {
     align-self: center;
   }
 
   .ant-select-selection-item-remove {
     display: none;
-  }
-
-  .ant-select-selection-overflow {
-    padding-left: 35px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-
-    .ant-select-selection-item {
-      background-color: #c3dbe7;
-      border-radius: 4px;
-    }
   }
 
   // .ant-select-clear {
