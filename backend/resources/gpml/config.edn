@@ -429,8 +429,7 @@
                                                  :handler #ig/ref :gpml.handler.activity/get-recent}}]]
                                         ["/community"
                                          {:get {:summary "Browse community members"
-                                                :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                             #ig/ref :gpml.auth/auth-required]
+                                                :middleware [#ig/ref :gpml.auth/auth-middleware]
                                                 :swagger {:tags ["community"]}
                                                 :parameters {:query #ig/ref :gpml.handler.community/get-params}
                                                 :handler #ig/ref :gpml.handler.community/get}}]
