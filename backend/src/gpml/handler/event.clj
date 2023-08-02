@@ -6,7 +6,6 @@
             [gpml.db.event :as db.event]
             [gpml.db.language :as db.language]
             [gpml.domain.types :as dom.types]
-            [gpml.handler.auth :as h.auth]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.permission :as h.r.permission]
@@ -64,10 +63,6 @@
                   (update data :source #(sql-util/keyword->pg-enum % "resource_source"))
                   (db.event/new-event conn) :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
-        owners (distinct (remove nil? (flatten (conj owners
-                                                     (map #(when (= (:role %) "owner")
-                                                             (:stakeholder %))
-                                                          api-individual-connections)))))
         geo-coverage-type (keyword geo_coverage_type)
         org-associations (map #(set/rename-keys % {:entity :organisation}) entity_connections)]
     (when (not-empty tags)
@@ -75,11 +70,6 @@
                                                                              :tag-category "general"
                                                                              :resource-name "event"
                                                                              :resource-id event-id}))
-    (doseq [stakeholder-id owners]
-      (h.auth/grant-topic-to-stakeholder! conn {:topic-id event-id
-                                                :topic-type "event"
-                                                :stakeholder-id stakeholder-id
-                                                :roles ["owner"]}))
     (srv.permissions/create-resource-context
      {:conn conn
       :logger logger}

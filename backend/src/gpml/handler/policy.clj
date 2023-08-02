@@ -4,7 +4,6 @@
             [duct.logger :refer [log]]
             [gpml.db.policy :as db.policy]
             [gpml.domain.policy :as dom.policy]
-            [gpml.handler.auth :as h.auth]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.permission :as h.r.permission]
@@ -78,10 +77,6 @@
                    (util/update-if-not-nil data :source #(sql-util/keyword->pg-enum % "resource_source"))
                    (db.policy/new-policy conn) :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
-        owners (distinct (remove nil? (flatten (conj owners
-                                                     (map #(when (= (:role %) "owner")
-                                                             (:stakeholder %))
-                                                          api-individual-connections)))))
         geo-coverage-type (keyword geo_coverage_type)
         org-associations (map #(set/rename-keys % {:entity :organisation}) entity_connections)]
     (when (seq related_content)
@@ -91,11 +86,6 @@
                                                                              :tag-category "general"
                                                                              :resource-name "policy"
                                                                              :resource-id policy-id}))
-    (doseq [stakeholder-id owners]
-      (h.auth/grant-topic-to-stakeholder! conn {:topic-id policy-id
-                                                :topic-type "policy"
-                                                :stakeholder-id stakeholder-id
-                                                :roles ["owner"]}))
     (srv.permissions/create-resource-context
      {:conn conn
       :logger logger}

@@ -1,9 +1,7 @@
 (ns gpml.handler.auth
   (:require [clojure.java.jdbc :as jdbc]
-            [clojure.set :as set]
             [clojure.string :as str]
             [duct.logger :refer [log]]
-            [gpml.db.topic-stakeholder-auth :as db.ts-auth]
             [gpml.domain.stakeholder :as dom.stakeholder]
             [gpml.domain.topic-stakeholder-auth :as dom.ts-auth]
             [gpml.domain.types :as dom.types]
@@ -20,15 +18,6 @@
    [:topic-type (apply conj [:enum] dom.types/topic-types)]
    [:topic-id [:int {:min 0}]]
    [:stakeholder [:int {:min 0}]]])
-
-(defn grant-topic-to-stakeholder!
-  [conn {:keys [topic-id topic-type stakeholder-id roles]}]
-  {:pre [(empty? (set/difference (set roles) dom.ts-auth/role-types))]}
-  (let [opts {:topic-id    topic-id
-              :topic-type  topic-type
-              :stakeholder stakeholder-id
-              :roles       roles}]
-    (db.ts-auth/new-auth conn opts)))
 
 (defn- ->sth-associations
   [stakeholders resource-type associations]
