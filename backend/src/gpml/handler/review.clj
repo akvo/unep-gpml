@@ -190,10 +190,20 @@
   [_ {:keys [db mailjet-config logger] :as config}]
   (fn [{{{:keys [topic-type topic-id]} :path
          {:keys [reviewers]} :body} :parameters
-        user :user}]
-    (if (h.r.permission/super-admin? config (:id user))
-      (new-multiple-review logger db mailjet-config topic-type topic-id reviewers (:id user))
-      (r/forbidden {:message "Unauthorized"}))))
+        user :user
+        :as req}]
+    (try
+      (if (h.r.permission/super-admin? config (:id user))
+        (new-multiple-review logger db mailjet-config topic-type topic-id reviewers (:id user))
+        (r/forbidden {:message "Unauthorized"}))
+      (catch Throwable t
+        (let [log-data {:exception-message (ex-message t)
+                        :exception-data (ex-data t)
+                        :context-data {:req-params (:parameters req)
+                                       :user-id (:id user)}}]
+          (log logger :error :failed-add-multiple-reviews log-data)
+          (log logger :debug :failed-add-multiple-reviews (assoc log-data :stack-trace (.getStackTrace t)))
+          (r/server-error {:success? false}))))))
 
 (defn- get-reviews [db topic-type topic-id]
   (let [conn (:spec db)
