@@ -689,20 +689,20 @@
   :gpml.handler.initiative/post-params {}
 
   :gpml.handler.stakeholder/get-params {}
-  :gpml.handler.stakeholder/patch {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder/patch #ig/ref :gpml.config/common
   :gpml.handler.stakeholder/patch-params {}
-  :gpml.handler.stakeholder/profile {:db #ig/ref :duct.database/sql}
-  :gpml.handler.stakeholder/get {:db #ig/ref :duct.database/sql}
-  :gpml.handler.stakeholder/get-by-id {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder/profile #ig/ref :gpml.config/common
+  :gpml.handler.stakeholder/get #ig/ref :gpml.config/common
+  :gpml.handler.stakeholder/get-by-id #ig/ref :gpml.config/common
   :gpml.handler.stakeholder/post #ig/ref :gpml.config/common
   :gpml.handler.stakeholder/post-params {}
   :gpml.handler.stakeholder/put #ig/ref :gpml.config/common
   :gpml.handler.stakeholder/put-restricted #ig/ref :gpml.config/common
   :gpml.handler.stakeholder/put-restricted-params {}
-  :gpml.handler.stakeholder-association/get-associated-topics {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder-association/get-associated-topics #ig/ref :gpml.config/common
   :gpml.handler.stakeholder-association/get-associated-topics-params {}
 
-  :gpml.handler.stakeholder/suggested-profiles {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder/suggested-profiles #ig/ref :gpml.config/common
   :gpml.handler.stakeholder/suggested-profiles-params {}
 
   :gpml.handler.stakeholder.expert/get #ig/ref :gpml.config/common
