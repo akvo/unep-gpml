@@ -7,6 +7,7 @@
             [gpml.fixtures :as fixtures]
             [gpml.handler.project :as sut]
             [gpml.seeder.main :as seeder]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.test-util :as test-util]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
@@ -54,14 +55,17 @@
    :idp_usernames ["auth0|123"]})
 
 (deftest create-project-test
-  (let [db (test-util/db-test-conn)
-        system (-> fixtures/*system*
+  (let [system (-> fixtures/*system*
                    (ig/init [::sut/post]))
+        config (get system [:duct/const :gpml.config/common])
+        conn (get-in config [:db :spec])
         handler (::sut/post system)
-        profile (make-profile "John" "Doe" "mail@org.com")
-        _ (seeder/seed db {:country? true})
-        sth-id (:id (db.stakeholder/new-stakeholder db profile))]
-    (testing "Happy path"
+        _ (seeder/seed conn {:country? true})
+        sth-id (test-util/create-test-stakeholder config
+                                                  "john.doe@mail.invalid"
+                                                  "APPROVED"
+                                                  "USER")]
+    (testing "Create a project successfully"
       (let [project-payload (random-project-data)
             request (-> (mock/request :post "/")
                         (assoc :parameters {:body project-payload})
@@ -74,10 +78,19 @@
       (let [project-payload (random-project-data)
             request (-> (mock/request :post "/")
                         (assoc :parameters {:body project-payload}))
-            {:keys [status body]} (handler request)]
-        (is (= 500 status))
-        (is (not (:success? body)))
-        (is (seq (:error-details body)))))
+            {:keys [status]} (handler request)]
+        (is (= 403 status))))
+    (testing "Creation should fail if user doesn't have enough permissions"
+      (let [sth-id (test-util/create-test-stakeholder config
+                                                      "john.doe2@mail.invalid"
+                                                      "SUBMITTED"
+                                                      "USER")
+            project-payload (random-project-data)
+            request (-> (mock/request :post "/")
+                        (assoc :parameters {:body project-payload}
+                               :user {:id sth-id}))
+            {:keys [status]} (handler request)]
+        (is (= 403 status))))
     (testing "Parameter validation should fail when passing bad parameters"
       (let [project-payload (-> (random-project-data)
                                 (assoc :geo_coverage_type "test"))
@@ -91,15 +104,29 @@
         (is (some #{::m/missing-key} (map :type (:errors (m/explain create-project-schema project-payload)))))))))
 
 (deftest update-project-test
-  (let [db (test-util/db-test-conn)
-        system (-> fixtures/*system*
+  (let [system (-> fixtures/*system*
                    (ig/init [::sut/put]))
+        config (get system [:duct/const :gpml.config/common])
+        conn (get-in config [:db :spec])
+        logger (get config :logger)
         handler (::sut/put system)
-        profile (make-profile "John" "Doe" "mail@org.com")
-        _ (seeder/seed db {:country? true})
-        sth-id (:id (db.stakeholder/new-stakeholder db profile))
-        project-id (create-random-project db sth-id)]
-    (testing "Happy path"
+        _ (seeder/seed conn {:country? true})
+        sth-id (test-util/create-test-stakeholder config
+                                                  "john.doe@mail.invalid"
+                                                  "APPROVED"
+                                                  "USER")
+        project-id (create-random-project conn sth-id)
+        _ (srv.permissions/create-resource-context {:conn conn
+                                                    :logger logger}
+                                                   {:context-type :project
+                                                    :resource-id project-id})
+        _ (srv.permissions/assign-roles-to-users {:conn conn
+                                                  :logger (:logger config)}
+                                                 [{:role-name :resource-owner
+                                                   :context-type :project
+                                                   :resource-id project-id
+                                                   :user-id sth-id}])]
+    (testing "Update project successfully"
       (let [project-payload (random-project-data)
             request (-> (mock/request :put "/")
                         (assoc :parameters {:path {:id project-id}
@@ -108,6 +135,18 @@
             {:keys [status body]} (handler request)]
         (is (= 200 status))
         (is (:success? body))))
+    (testing "Update project fails for user without enough permissions"
+      (let [sth-id (test-util/create-test-stakeholder config
+                                                      "john.doe2@mail.invalid"
+                                                      "APPROVED"
+                                                      "USER")
+            project-payload (random-project-data)
+            request (-> (mock/request :put "/")
+                        (assoc :parameters {:path {:id project-id}
+                                            :body project-payload})
+                        (assoc :user {:id sth-id}))
+            {:keys [status]} (handler request)]
+        (is (= 403 status))))
     (testing "Parameter validation should fail when passing bad parameters"
       (let [project-payload (-> (random-project-data)
                                 (assoc :geo_coverage_type "test"))
@@ -119,15 +158,29 @@
         (is (some #{::m/missing-key} (map :type (:errors (m/explain update-project-schema {})))))))))
 
 (deftest get-project-test
-  (let [db (test-util/db-test-conn)
-        system (-> fixtures/*system*
+  (let [system (-> fixtures/*system*
                    (ig/init [::sut/get-by-id]))
+        config (get system [:duct/const :gpml.config/common])
+        conn (get-in config [:db :spec])
+        logger (get config :logger)
         handler (::sut/get-by-id system)
-        profile (make-profile "John" "Doe" "mail@org.com")
-        _ (seeder/seed db {:country? true})
-        sth-id (:id (db.stakeholder/new-stakeholder db profile))
-        project-id (create-random-project db sth-id)]
-    (testing "Happy path"
+        _ (seeder/seed conn {:country? true})
+        sth-id (test-util/create-test-stakeholder config
+                                                  "john.doe@mail.invalid"
+                                                  "APPROVED"
+                                                  "USER")
+        project-id (create-random-project conn sth-id)
+        _ (srv.permissions/create-resource-context {:conn conn
+                                                    :logger logger}
+                                                   {:context-type :project
+                                                    :resource-id project-id})
+        _ (srv.permissions/assign-roles-to-users {:conn conn
+                                                  :logger (:logger config)}
+                                                 [{:role-name :resource-owner
+                                                   :context-type :project
+                                                   :resource-id project-id
+                                                   :user-id sth-id}])]
+    (testing "Getting a project successfully"
       (let [request (-> (mock/request :get "/")
                         (assoc :parameters {:path {:id project-id}}
                                :user {:id sth-id}))
@@ -135,6 +188,16 @@
         (is (= 200 status))
         (is (:success? body))
         (is (= project-id (get-in body [:project :id])))))
+    (testing "An unapproved user doesn't have enough permission to see a project details"
+      (let [sth-id (test-util/create-test-stakeholder config
+                                                      "john.doe2@mail.invalid"
+                                                      "SUBMITTED"
+                                                      "USER")
+            request (-> (mock/request :get "/")
+                        (assoc :parameters {:path {:id project-id}}
+                               :user {:id sth-id}))
+            {:keys [status]} (handler request)]
+        (is (= 403 status))))
     (testing "Parameter validation should fail when passing bad parameters"
       (let [get-project-schema (:path (ig/init-key ::sut/get-by-id-params {}))]
         (is (not (m/validate get-project-schema {:id "foo"})))))
@@ -144,23 +207,35 @@
         (is (some #{::m/missing-key} (map :type (:errors (m/explain get-project-schema {})))))))))
 
 (deftest get-projects-test
-  (let [db (test-util/db-test-conn)
-        system (-> fixtures/*system*
+  (let [system (-> fixtures/*system*
                    (ig/init [::sut/get]))
+        config (get system [:duct/const :gpml.config/common])
+        conn (get-in config [:db :spec])
         handler (::sut/get system)
-        profile (make-profile "John" "Doe" "mail@org.com")
-        _ (seeder/seed db {:country? true})
-        sth-id (:id (db.stakeholder/new-stakeholder db profile))
-        project-id-1 (create-random-project db sth-id)
-        _project-id-2 (create-random-project db sth-id)]
-    (testing "Happy path"
+        _ (seeder/seed conn {:country? true})
+        sth-id (test-util/create-test-stakeholder config
+                                                  "john.doe@mail.invalid"
+                                                  "APPROVED"
+                                                  "USER")
+        project-id-1 (create-random-project conn sth-id)
+        _project-id-2 (create-random-project conn sth-id)]
+    (testing "Get projects successfully"
       (let [request (-> (mock/request :get "/")
                         (assoc :user {:id sth-id}))
             {:keys [status body]} (handler request)]
         (is (= 200 status))
         (is (:success? body))
         (is (= 2 (count (:projects body))))))
-    (testing "Happy path applying filters"
+    (testing "Unapproved user doesn't have enough permissions"
+      (let [sth-id (test-util/create-test-stakeholder config
+                                                      "john.doe2@mail.invalid"
+                                                      "SUBMITTED"
+                                                      "USER")
+            request (-> (mock/request :get "/")
+                        (assoc :user {:id sth-id}))
+            {:keys [status]} (handler request)]
+        (is (= 403 status))))
+    (testing "Applying filters"
       (let [request (-> (mock/request :get "/")
                         (assoc :parameters {:query {:ids [project-id-1]}}
                                :user {:id sth-id}))
@@ -177,12 +252,27 @@
   (let [db (test-util/db-test-conn)
         system (-> fixtures/*system*
                    (ig/init [::sut/delete]))
+        config (get system [:duct/const :gpml.config/common])
+        conn (get-in config [:db :spec])
+        logger (get config :logger)
         handler (::sut/delete system)
-        profile (make-profile "John" "Doe" "mail@org.com")
         _ (seeder/seed db {:country? true})
-        sth-id (:id (db.stakeholder/new-stakeholder db profile))
-        project-id (create-random-project db sth-id)]
-    (testing "Happy path"
+        sth-id (test-util/create-test-stakeholder config
+                                                  "john.doe@mail.invalid"
+                                                  "APPROVED"
+                                                  "USER")
+        project-id (create-random-project db sth-id)
+        _ (srv.permissions/create-resource-context {:conn conn
+                                                    :logger logger}
+                                                   {:context-type :project
+                                                    :resource-id project-id})
+        _ (srv.permissions/assign-roles-to-users {:conn conn
+                                                  :logger (:logger config)}
+                                                 [{:role-name :resource-owner
+                                                   :context-type :project
+                                                   :resource-id project-id
+                                                   :user-id sth-id}])]
+    (testing "Delete a project successfully"
       (let [request (-> (mock/request :delete "/")
                         (assoc :parameters {:path {:id project-id}}
                                :user {:id sth-id}))
@@ -191,6 +281,16 @@
         (is (= 200 status))
         (is (:success? body))
         (is (not (seq project)))))
+    (testing "User doesn't have enought permissions to delete a project"
+      (let [sth-id (test-util/create-test-stakeholder config
+                                                      "john.doe2@mail.invalid"
+                                                      "APPROVED"
+                                                      "USER")
+            request (-> (mock/request :delete "/")
+                        (assoc :parameters {:path {:id project-id}}
+                               :user {:id sth-id}))
+            {:keys [status]} (handler request)]
+        (is (= 403 status))))
     (testing "Parameter validation should fail when passing bad parameters"
       (let [delete-project-schema (:path (ig/init-key ::sut/delete-params {}))]
         (is (not (m/validate delete-project-schema {:id "foo"})))))
