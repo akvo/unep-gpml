@@ -34,6 +34,10 @@
     (db.stakeholder/update-stakeholder-status conn (assoc sth :review_status review-status))
     (db.stakeholder/update-stakeholder-role conn (assoc sth :role role))
     (db.stakeholder/stakeholder-by-id conn sth)
+    (srv.permissions/create-resource-context {:conn conn
+                                              :logger logger}
+                                             {:context-type :stakeholder
+                                              :resource-id sth-id})
     (cond
       (and (get #{"USER" "REVIEWER"} role)
            (= review-status "APPROVED"))
