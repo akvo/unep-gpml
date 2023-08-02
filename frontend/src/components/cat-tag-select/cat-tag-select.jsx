@@ -31,7 +31,7 @@ function slug(text) {
 }
 const CategorisedTags = ({ handleChange, value }) => {
   return (
-    <ul className="cat-tag-dropdown">
+    <ul className={styles.catTagDropdown}>
       {catTags.map((cat) => (
         <li>
           <h4>{cat.title}</h4>

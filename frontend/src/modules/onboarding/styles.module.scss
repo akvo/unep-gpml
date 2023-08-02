@@ -221,6 +221,19 @@
       .ant-select,
       .ant-select-selector {
         height: 100%;
+        background-color: #edf2f6;
+        border: none;
+        border-radius: 5px;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 38px;
+        color: #6e6e6e;
+        width: 100%;
+        &::placeholder {
+          color: #a5b0c9;
+          font-size: 16px;
+          font-weight: 500;
+        }
         .ant-select-selection-overflow {
           height: 100%;
           .ant-select-selection-overflow-item {
