@@ -13,9 +13,7 @@
             [gpml.service.association :as srv.association]
             [integrant.core :as ig]
             [malli.util :as mu]
-            [medley.core :as medley]
-            [ring.util.response :as resp])
-  (:import [java.sql SQLException]))
+            [medley.core :as medley]))
 
 (def ^:private shared-path-params
   [:map
@@ -31,40 +29,6 @@
               :stakeholder stakeholder-id
               :roles       roles}]
     (db.ts-auth/new-auth conn opts)))
-
-(defn- max-focal-points?
-  "Checks whether a resource has reached the maximum amount of focal
-  points roles assignment."
-  [conn resource-id]
-  (let [focal-points (srv.association/get-associations {:conn conn}
-                                                       {:table "stakeholder_organisation"
-                                                        :resource-col "organisation"
-                                                        :resource-assoc-type "organisation_association"
-                                                        :filters {:resource-id resource-id
-                                                                  :associations ["focal-point"]}})]
-    (= (count focal-points) dom.ts-auth/max-focal-points)))
-
-(defmethod ig/init-key :gpml.handler.auth/get-topic-auth
-  [_ {:keys [db logger]}]
-  (fn [{{:keys [path]} :parameters user :user}]
-    (try
-      (let [conn (:spec db)
-            authorized? user
-            path (update path :topic-type util/get-internal-topic-type)]
-        (if authorized?
-          (if-let [data (db.ts-auth/get-auth-by-topic conn path)]
-            (resp/response (assoc (merge path {:auth-stakeholders data}) :success? true))
-            util/not-found)
-          util/unauthorized))
-      (catch Exception e
-        (log logger :error ::failed-to-get-topic-auth {:exception-message (.getMessage e)
-                                                       :context-data path})
-        (let [response {:status 500
-                        :body {:success? false
-                               :reason :failed-to-get-topic-auth}}]
-          (if (instance? SQLException e)
-            response
-            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defn- ->sth-associations
   [stakeholders resource-type associations]
@@ -116,118 +80,13 @@
                                                                    :exception-data (ex-data t)
                                                                    :stack-trace (.getStackTrace t)
                                                                    :context-data path})
-        (let [{:keys [reason]} (ex-data t)
-              response (if (= reason :maximum-focal-points-reached)
-                         {:success? false
-                          :reason reason}
-                         {:success? false
-                          :reason :failed-to-grant-topic-to-stakeholder})]
-          (if (instance? SQLException t)
-            (r/server-error response)
-            (r/server-error (assoc-in response [:error-details :error] (.getMessage t)))))))))
-
-(defmethod ig/init-key :gpml.handler.auth/get-topic-stakeholder-auth
-  [_ {:keys [db logger]}]
-  (fn [{{:keys [path]} :parameters user :user}]
-    (try
-      (let [conn (:spec db)
-            authorized? user
-            path (update path :topic-type util/get-internal-topic-type)]
-        (if authorized?
-          (if-let [data (db.ts-auth/get-auth-by-topic-and-stakeholder conn path)]
-            (resp/response (assoc (merge path data) :success? true))
-            util/not-found)
-          util/unauthorized))
-      (catch Exception e
-        (log logger :error ::failed-to-get-stakeholder-auth {:exception-message (.getMessage e)
-                                                             :context-data path})
-        (let [response {:status 500
-                        :body {:success? false
-                               :reason :failed-to-get-topic-stakeholder-auth}}]
-          (if (instance? SQLException e)
-            response
-            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
-
-(defmethod ig/init-key :gpml.handler.auth/new-roles [_ {:keys [db logger]}]
-  (fn [{{:keys [path body]} :parameters user :user}]
-    (try
-      (let [conn (:spec db)
-            authorized? user
-            path (update path :topic-type util/get-internal-topic-type)]
-        (if authorized?
-          (if (and (= "organisation" (:topic-type path))
-                   (get (set (:roles body)) "focal-point")
-                   (max-focal-points? conn path))
-            (resp/bad-request {:success? false
-                               :reason :maximum-focal-points-reached})
-            (do
-              (db.ts-auth/new-auth conn (merge path body))
-              (resp/response (assoc (merge path body) :success? true))))
-          util/unauthorized))
-      (catch Exception e
-        (log logger :error ::failed-to-add-new-roles-to-stakeholder {:exception-message (.getMessage e)
-                                                                     :context-data {:path path
-                                                                                    :body body}})
-        (let [response {:status 500
-                        :body {:success? false
-                               :reason :failed-to-add-new-roles-to-stakeholder}}]
-          (if (instance? SQLException e)
-            response
-            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
-
-(defmethod ig/init-key :gpml.handler.auth/update-roles
-  [_ {:keys [db logger]}]
-  (fn [{{:keys [path body]} :parameters user :user}]
-    (try
-      (let [conn (:spec db)
-            authorized? user
-            path (update path :topic-type util/get-internal-topic-type)]
-        (if authorized?
-          (if (and (= "organisation" (:topic-type path))
-                   (get (set (:roles body)) "focal-point")
-                   (max-focal-points? conn path))
-            (resp/bad-request {:success? false
-                               :reason :maximum-focal-points-reached})
-            (do
-              (db.ts-auth/update-auth conn (merge path body))
-              (resp/response (assoc (merge path body) :success? true))))
-          util/unauthorized))
-      (catch Exception e
-        (log logger :error ::failed-to-update-roles {:exception-message (.getMessage e)
-                                                     :context-data {:path path
-                                                                    :body body}})
-        (let [response {:status 500
-                        :body {:success? false
-                               :reason :failed-to-update-roles}}]
-          (if (instance? SQLException e)
-            response
-            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
-
-(defmethod ig/init-key :gpml.handler.auth/delete
-  [_ {:keys [db logger]}]
-  (fn [{{:keys [path body]} :parameters user :user}]
-    (try
-      (let [conn (:spec db)
-            authorized? user
-            path (update path :topic-type util/get-internal-topic-type)]
-        (if authorized?
-          (do
-            (db.ts-auth/delete-auth conn path)
-            (resp/response (assoc (merge path body) :success? true)))
-          util/unauthorized))
-      (catch Exception e
-        (log logger :error ::failed-to-delete-topic-stakeholder-auth {:exception-message (.getMessage e)
-                                                                      :context-data {:path path
-                                                                                     :body body}})
-        (let [response {:status 500
-                        :body {:success? false
-                               :reason :failed-to-delete-topic-stakeholder-auth}}]
-          (if (instance? SQLException e)
-            response
-            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
-
-(defmethod ig/init-key :gpml.handler.auth/get-topic-auth-params [_ _]
-  {:path (mu/dissoc shared-path-params :stakeholder)})
+        (let [{:keys [reason]} (ex-data t)]
+          (if (= reason :maximum-focal-points-reached)
+            (r/bad-request {:success? false
+                            :reason reason})
+            (r/server-error {:success? false
+                             :reason :failed-to-grant-topic-to-stakeholder
+                             :error-details {:error (ex-message t)}})))))))
 
 (defmethod ig/init-key :gpml.handler.auth/post-topic-auth-params [_ _]
   {:path (mu/dissoc shared-path-params :stakeholder)
@@ -236,17 +95,3 @@
            [:vector (-> dom.stakeholder/Stakeholder
                         (mu/select-keys [:id])
                         (mu/assoc :roles (mu/get dom.ts-auth/TopicStakeholderAuth :roles)))]]]})
-
-(defmethod ig/init-key :gpml.handler.auth/delete-params [_ _]
-  {:path shared-path-params})
-
-(defmethod ig/init-key :gpml.handler.auth/new-roles-params [_ _]
-  {:path shared-path-params
-   :body (mu/select-keys dom.ts-auth/TopicStakeholderAuth [:roles])})
-
-(defmethod ig/init-key :gpml.handler.auth/get-topic-stakeholder-auth-params [_ _]
-  {:path shared-path-params})
-
-(defmethod ig/init-key :gpml.handler.auth/update-roles-params [_ _]
-  {:path shared-path-params
-   :body (mu/select-keys dom.ts-auth/TopicStakeholderAuth [:roles])})

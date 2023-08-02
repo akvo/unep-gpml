@@ -348,35 +348,11 @@
                                                                #ig/ref :gpml.auth/auth-required]}
                                          ["/{topic-type}/{topic-id}"
                                           [""
-                                           {:get {:summary "Get auth details for a specific topic"
-                                                  :swagger {:tags ["topic auth detail"]}
-                                                  :parameters #ig/ref :gpml.handler.auth/get-topic-auth-params
-                                                  :handler #ig/ref :gpml.handler.auth/get-topic-auth}
-                                            :post {:summary "Add stakeholders auth roles to topic"
+                                           {:post {:summary "Add stakeholders auth roles to topic"
                                                    :swagger {:tags ["topic auth stakeholder"]
                                                              :security [{:id_token []}]}
                                                    :parameters #ig/ref :gpml.handler.auth/post-topic-auth-params
-                                                   :handler #ig/ref :gpml.handler.auth/post-topic-auth}}]
-                                          ["/{stakeholder}"
-                                           {:put {:summary "Update stakeholder auth roles"
-                                                  :swagger {:tags ["topic auth stakeholder"]
-                                                            :security [{:id_token []}]}
-                                                  :parameters #ig/ref :gpml.handler.auth/update-roles-params
-                                                  :handler #ig/ref :gpml.handler.auth/update-roles}
-                                            :post {:summary "Add stakeholder auth roles to topic"
-                                                   :swagger {:tags ["topic auth stakeholder"]
-                                                             :security [{:id_token []}]}
-                                                   :parameters #ig/ref :gpml.handler.auth/new-roles-params
-                                                   :handler #ig/ref :gpml.handler.auth/new-roles}
-                                            :delete {:summary "Delete auth details for a specific resource and stakeholder"
-                                                     :swagger {:tags ["topic stakeholder auth detail"]
-                                                               :security [{:id_token []}]}
-                                                     :parameters #ig/ref :gpml.handler.auth/delete-params
-                                                     :handler #ig/ref :gpml.handler.auth/delete}
-                                            :get {:summary "Get auth details for a specific resource and stakeholder"
-                                                  :swagger {:tags ["topic stakeholder auth detail"]}
-                                                  :parameters #ig/ref :gpml.handler.auth/get-topic-stakeholder-auth-params
-                                                  :handler #ig/ref :gpml.handler.auth/get-topic-stakeholder-auth}}]]]
+                                                   :handler #ig/ref :gpml.handler.auth/post-topic-auth}}]]]
                                         ["/detail"
                                          ["/{topic-type}/{topic-id}"
                                           {:get {:middleware [#ig/ref :gpml.auth/auth-middleware]
@@ -733,18 +709,8 @@
                          :sentry {:dsn #duct/env "SENTRY_DSN"
                                   :environment #duct/env "ENV_NAME"}}
 
-  :gpml.handler.auth/get-topic-stakeholder-auth #ig/ref :gpml.config/common
-  :gpml.handler.auth/get-topic-auth #ig/ref :gpml.config/common
   :gpml.handler.auth/post-topic-auth #ig/ref :gpml.config/common
-  :gpml.handler.auth/new-roles #ig/ref :gpml.config/common
-  :gpml.handler.auth/update-roles #ig/ref :gpml.config/common
-  :gpml.handler.auth/delete #ig/ref :gpml.config/common
-  :gpml.handler.auth/get-topic-stakeholder-auth-params {}
-  :gpml.handler.auth/get-topic-auth-params {}
   :gpml.handler.auth/post-topic-auth-params {}
-  :gpml.handler.auth/new-roles-params {}
-  :gpml.handler.auth/update-roles-params {}
-  :gpml.handler.auth/delete-params {}
 
   :gpml.handler.comment/post #ig/ref :gpml.config/common
   :gpml.handler.comment/post-params {}
