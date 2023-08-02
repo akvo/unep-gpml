@@ -53,19 +53,6 @@
                                                  :swagger {:tags ["browse"]}
                                                  :parameters {:query #ig/ref :gpml.handler.browse/query-params}
                                                  :handler #ig/ref :gpml.handler.browse/get}}]]
-                                        ["/archive" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                  #ig/ref :gpml.auth/auth-required
-                                                                  #ig/ref :gpml.auth/approved-user]}
-                                         [""
-                                          {:get {:summary "Get the list approved submissions"
-                                                 :swagger {:tags ["archive"] :security [{:id_token []}]}
-                                                 :parameters {:query [:map
-                                                                      [:only {:optional true} [:enum "resources" "stakeholders" "tags" "entities"]]
-                                                                      [:page {:optional true
-                                                                              :default 1} int?]
-                                                                      [:limit {:optional true
-                                                                               :default 10} int?]]}
-                                                 :handler #ig/ref :gpml.handler.archive/get}}]]
                                         ["/submission" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                      #ig/ref :gpml.auth/auth-required
                                                                      #ig/ref :gpml.auth/approved-user]
@@ -643,8 +630,6 @@
   :gpml.handler.browse/get {:db #ig/ref :duct.database/sql
                             :logger #ig/ref :duct/logger}
   :gpml.handler.browse/query-params {}
-
-  :gpml.handler.archive/get {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.submission/get #ig/ref :gpml.config/common
   :gpml.handler.submission/get-params {}
