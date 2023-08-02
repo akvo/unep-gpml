@@ -24,7 +24,7 @@
             [gpml.handler.initiative :as handler.initiative]
             [gpml.handler.organisation :as handler.org]
             [gpml.handler.resource.geo-coverage :as handler.geo]
-            [gpml.handler.resource.permission :as handler.res-permission]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.responses :as r]
@@ -425,10 +425,10 @@
             topic-type (resolve-resource-type (:topic-type path))]
         (if (= topic-type "stakeholder")
           (r/forbidden {:message "Unauthorized"})
-          (let [authorized? (handler.res-permission/operation-allowed?
+          (let [authorized? (h.r.permission/operation-allowed?
                              config
                              {:user-id (:id user)
-                              :entity-type topic-type
+                              :entity-type (h.r.permission/entity-type->context-type topic-type)
                               :entity-id topic-id
                               :operation-type :delete
                               :root-context? false})]
@@ -487,7 +487,7 @@
     (try
       (let [topic-type (resolve-resource-type (:topic-type path))
             topic-id (:topic-id path)
-            rbac-entity-type (keyword (str/replace topic-type \_ \-))
+            rbac-entity-type (h.r.permission/entity-type->context-type topic-type)
             resource (db.resource.detail/get-resource (:spec db)
                                                       {:table-name topic-type
                                                        :id topic-id})
@@ -495,7 +495,7 @@
             authorized? (if-not (or (= topic-type "stakeholder")
                                     (= topic-type "organisation"))
                           (if draft?
-                            (handler.res-permission/operation-allowed?
+                            (h.r.permission/operation-allowed?
                              config
                              {:user-id (:id user)
                               :entity-type rbac-entity-type
@@ -507,7 +507,7 @@
                           ;; any of those entity's data, users needs to
                           ;; have the
                           ;; `stakeholder/read` or `organisation/read` permission.
-                          (handler.res-permission/operation-allowed?
+                          (h.r.permission/operation-allowed?
                            config
                            {:user-id (:id user)
                             :entity-type rbac-entity-type
@@ -720,14 +720,10 @@
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
     (try
-      (let [rbac-entity-type (-> topic-type
-                                 resolve-resource-type
-                                 (str/replace \_ \-)
-                                 keyword)
-            authorized? (handler.res-permission/operation-allowed?
+      (let [authorized? (h.r.permission/operation-allowed?
                          config
                          {:user-id (:id user)
-                          :entity-type rbac-entity-type
+                          :entity-type (h.r.permission/entity-type->context-type topic-type)
                           :entity-id topic-id
                           :operation-type :update
                           :root-context? false})]
@@ -741,19 +737,7 @@
             (if (= status 1)
               (r/ok {:success? true})
               (r/server-error {:success? false
-                               :reason :failed-to-update-resource-details}))))
-        ;; FIXME: review if this logic still makes sense in this endpoint.
-        ;; (jdbc/with-db-transaction [tx (:spec db)]
-        ;;   (let [status (if (= topic-type "initiative")
-        ;;                  (update-initiative config tx topic-id body)
-        ;;                  (update-resource config tx topic-type topic-id body))]
-        ;;     (when (and (= status 1) (= review_status "REJECTED"))
-        ;;       (db.submission/update-submission
-        ;;        tx
-        ;;        {:table-name (util/get-internal-topic-type topic-type)
-        ;;         :id topic-id
-        ;;         :review_status "SUBMITTED"}))))
-        )
+                               :reason :failed-to-update-resource-details})))))
 
       (catch Exception e
         (log logger :error ::failed-to-update-resource-details {:exception-message (.getMessage e)
