@@ -3,43 +3,46 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
             [gpml.handler.stakeholder :as stakeholder]
+            [gpml.test-util :as test-util]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 
-(defn- new-stakeholder [db email first_name last_name role review_status]
-  (let [info {:picture "https://picsum.photos/200"
-              :affiliation nil
-              :country nil
-              :representation ""
-              :geo_coverage_type nil
-              :title "Mr."
-              :first_name first_name
-              :last_name last_name
-              :public_email true
-              :email email
-              :idp_usernames ["auth0|123"]}
-        sth (db.stakeholder/new-stakeholder db info)]
-    (db.stakeholder/update-stakeholder-status db (assoc sth :review_status review_status))
-    (db.stakeholder/update-stakeholder-role db (assoc sth :role role))
-    sth))
-
 (deftest get-stakeholders-public-test
   (let [system (ig/init fixtures/*system* [::stakeholder/get])
+        config (get system [:duct/const :gpml.config/common])
+        conn (get-in config [:db :spec])
         handler (::stakeholder/get system)
-        db (-> system :duct.database.sql/hikaricp :spec)
         ;; Reviewers
-        _ (new-stakeholder db "reviewer-approved@org.com" "R" "A" "REVIEWER" "APPROVED")
-        _ (new-stakeholder db "reviewer-submitted@org.com" "R" "S" "REVIEWER" "SUBMITTED")
+        _ (test-util/create-test-stakeholder config
+                                             "reviewer-approved@org.com"
+                                             "APPROVED"
+                                             "REVIEWER")
+        _ (test-util/create-test-stakeholder config
+                                             "reviewer-submitted@org.com"
+                                             "SUBMITTED"
+                                             "REVIEWER")
         ;; Admins
-        admin-id (new-stakeholder db "admin-approved@org.com" "A" "A" "ADMIN" "APPROVED")
-        admin (db.stakeholder/stakeholder-by-id db admin-id)
-        _ (new-stakeholder db "admin-submitted@org.com" "A" "S" "ADMIN" "SUBMITTED")
+        admin-id (test-util/create-test-stakeholder config
+                                                    "admin-approved@org.com"
+                                                    "APPROVED"
+                                                    "ADMIN")
+        admin (db.stakeholder/stakeholder-by-id conn {:id admin-id})
+        _ (test-util/create-test-stakeholder config
+                                             "admin-submitted@org.com"
+                                             "SUBMITTED"
+                                             "ADMIN")
         ;; User
-        user-id (new-stakeholder db "user-approved@org.com" "U" "A" "USER" "APPROVED")
-        user (db.stakeholder/stakeholder-by-id db user-id)
-        _ (new-stakeholder db "user-submitted@org.com" "U" "S" "USER" "SUBMITTED")]
+        user-id (test-util/create-test-stakeholder config
+                                                   "user-approved@org.com"
+                                                   "APPROVED"
+                                                   "USER")
+        user (db.stakeholder/stakeholder-by-id conn {:id user-id})
+        _ (test-util/create-test-stakeholder config
+                                             "user-submitted@org.com"
+                                             "SUBMITTED"
+                                             "USER")]
 
     (testing "Get stakeholders WITHOUT authenticating"
       (let [resp (handler (mock/request :get "/"))
@@ -106,21 +109,35 @@
 
 (deftest stakeholder-patch-test
   (let [system (ig/init fixtures/*system* [::stakeholder/patch])
+        config (get system [:duct/const :gpml.config/common])
+        conn (get-in config [:db :spec])
         handler (::stakeholder/patch system)
-        db (-> system :duct.database.sql/hikaricp :spec)
         ;; Admins
-        admin-id (new-stakeholder db "admin-approved@org.com" "A" "A" "ADMIN" "APPROVED")
+        admin-id (test-util/create-test-stakeholder config
+                                                    "admin-approved@org.com"
+                                                    "APPROVED"
+                                                    "ADMIN")
         ;; User
-        user-id (new-stakeholder db "user-approved@org.com" "U" "A" "USER" "APPROVED")]
+        user-id (test-util/create-test-stakeholder config
+                                                   "user-approved@org.com"
+                                                   "APPROVED"
+                                                   "USER")]
 
     (testing "Change USER to REVIEWER"
       (let [resp (handler (-> (mock/request :patch "/")
                               (assoc
-                               :admin admin-id
-                               :parameters {:path user-id
+                               :user {:id admin-id}
+                               :parameters {:path {:id user-id}
                                             :body {:role "REVIEWER"}})))
             body (:body resp)
-            user (db.stakeholder/stakeholder-by-id db user-id)]
+            user (db.stakeholder/stakeholder-by-id conn {:id user-id})]
         (is (= 200 (:status resp)))
         (is (= "success" (:status body)))
-        (is (= "REVIEWER" (:role user)))))))
+        (is (= "REVIEWER" (:role user)))))
+    (testing "Change USER to REVIEWER fails because user doesn't have enough permissions"
+      (let [resp (handler (-> (mock/request :patch "/")
+                              (assoc
+                               :user {:id user-id}
+                               :parameters {:path {:id user-id}
+                                            :body {:role "REVIEWER"}})))]
+        (is (= 403 (:status resp)))))))
