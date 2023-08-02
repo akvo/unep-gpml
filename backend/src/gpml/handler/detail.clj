@@ -347,7 +347,7 @@
       owners?
       (assoc :owners (->> (db.rbac-util/get-users-with-granted-permission-on-resource db {:resource-id id
                                                                                           :context-type-name resource-type
-                                                                                          :permission-name (str resource-type "/" "update")})
+                                                                                          :permission-name (str resource-type "/" "delete")})
                           (mapv :user_id))))))
 
 (defmulti extra-details (fn [_ resource-type _] resource-type) :default :nothing)
