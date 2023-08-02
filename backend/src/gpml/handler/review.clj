@@ -225,7 +225,7 @@
       (if (h.r.permission/operation-allowed?
            config
            {:user-id (:id user)
-            :entity-type topic-type
+            :entity-type (h.r.permission/entity-type->context-type topic-type)
             :entity-id topic-id
             :operation-type :review})
         (update-review-status db mailjet-config topic-type topic-id review-status review-comment user)
