@@ -1,10 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { LinkedinOutlined, YoutubeOutlined } from "@ant-design/icons";
-import unepLogo from "./images/footer-logo.svg";
-import { Link } from "react-router-dom";
-import { UIStore } from "./store.js";
-import logo from "./images/GPML-logo-alone.svg";
-import { Button, Input, notification, Alert } from "antd";
+import Link from "next/link";
+import Image from "next/image";
+import { Button, Input, notification } from "antd";
 import api from "./utils/api";
 import { CSSTransition } from "react-transition-group";
 
@@ -76,7 +74,7 @@ const Footer = ({ setShowMenu }) => {
               </a>
             </li>
             <li>
-              <Link to="/about-us">About the GPML Digital platform</Link>
+              <Link href="/about-us">About the GPML Digital platform</Link>
             </li>
           </ul>
         </div>
@@ -86,15 +84,14 @@ const Footer = ({ setShowMenu }) => {
               <h4>GPML Tools</h4>
             </li>
             <li>
-              <Link
+              <div
                 onClick={(e) => {
                   e.preventDefault();
                   setShowMenu(true);
                 }}
-                to="/"
               >
                 Show all tools
-              </Link>
+              </div>
             </li>
           </ul>
         </div>
@@ -145,7 +142,7 @@ const Footer = ({ setShowMenu }) => {
               <li>
                 <h5>Powered by</h5>
               </li>
-              <img src={logo} className="logo" alt="GPML" />
+              <img src="/GPML-logo-alone.svg" className="logo" alt="GPML" />
             </ul>
           </div>
           <div className="col">
@@ -190,7 +187,7 @@ const Footer = ({ setShowMenu }) => {
       <div className="second-footer">
         <div className="ui container unep">
           <div>
-            <img src={unepLogo} alt="unep" />
+            <img src="/footer-logo.svg" alt="unep" />
             <ul className="horizonList">
               <li className="copyright">
                 <p className="copy-right">© UNEP</p>
