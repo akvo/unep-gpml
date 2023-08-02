@@ -14,7 +14,7 @@ import {
 } from "antd";
 const { Title } = Typography;
 const { Dragger } = Upload;
-import "./styles.scss";
+import "./styles.module.scss";
 import { FileTextOutlined } from "@ant-design/icons";
 import { Form as FinalForm, Field } from "react-final-form";
 import { auth0Client } from "../../utils/misc";
@@ -125,10 +125,7 @@ function EmailJoin({ setSignUp, children }) {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    localStorage.setItem(
-      "redirect_on_login",
-      JSON.stringify(history.location)
-    );
+    localStorage.setItem("redirect_on_login", JSON.stringify(history.location));
     auth0Client.redirect.signupAndLogin(
       {
         connection: "Username-Password-Authentication",

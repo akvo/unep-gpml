@@ -708,7 +708,7 @@ const UIStore = new Store({
   icons: icons,
   placeholder: placeholder,
   selectedMainContentType: "initiative",
-  landing: null,
+  landing: {},
   stakeholders: null,
   highlight: false,
   disclaimer: null,

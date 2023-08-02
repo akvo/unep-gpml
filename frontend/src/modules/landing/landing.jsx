@@ -1,31 +1,28 @@
 import React, { useState } from "react";
 import { Button, Card } from "antd";
-import "./styles.scss";
-import { ReactComponent as Down } from "../../images/down.svg";
-import { ReactComponent as PlasticLitter } from "../../images/plastic-litter.svg";
-import MenuBar from "./menu-bar";
-import Footer from "../../footer";
+import styles from "./styles.module.scss";
+import Down from "../../images/down.svg";
+import PlasticLitter from "../../images/plastic-litter.svg";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper";
 import { UIStore } from "../../store";
-import { ReactComponent as ActionPlanIcon } from "../../images/actionplan.svg";
-import { ReactComponent as KnowledgeIcon } from "../../images/knowledge.svg";
-import { ReactComponent as DataSetIcon } from "../../images/datasets.svg";
+import ActionPlanIcon from "../../images/actionplan.svg";
+import KnowledgeIcon from "../../images/knowledge.svg";
+import DataSetIcon from "../../images/datasets.svg";
 import user1img from "../../images/our-community/cassia-patel.jpg";
 import api from "../../utils/api";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const Landing = ({ setLoginVisible, history, ...props }) => {
   return (
-    <div id="landingb">
-      <MenuBar {...props} setLoginVisible={setLoginVisible} />
-      <div className="hero">
-        <div className="litter">
+    <div className={styles.landingb}>
+      <div className={styles.hero}>
+        <div className={styles.litter}>
           <PlasticLitter />
         </div>
-        <div className="content">
+        <div className={styles.content}>
           <h1>
             The Global Partnership on Plastic Pollution and Marine Litter
             Digital Platform
@@ -45,7 +42,7 @@ const Landing = ({ setLoginVisible, history, ...props }) => {
           )}
         </div>
         <div
-          className="next-btn"
+          className={styles.nextBtn}
           onClick={(e, v) => {
             window.scrollTo({
               top: window.innerHeight - 80,
@@ -56,7 +53,7 @@ const Landing = ({ setLoginVisible, history, ...props }) => {
           <Down />
         </div>
       </div>
-      <div className="workspace">
+      <div className={styles.workspace}>
         <img src="/person-workspace.svg" />
         <h3>All the tools you need to act, in one place.</h3>
         <Button
@@ -76,7 +73,6 @@ const Landing = ({ setLoginVisible, history, ...props }) => {
       <Stats />
       <Act {...{ setLoginVisible }} />
       <AnyQuestions />
-      <Footer setShowMenu={props.setShowMenu} />
     </div>
   );
 };
@@ -122,17 +118,17 @@ const TheJourney = () => {
     };
   }, []);
   return (
-    <div className="journey" ref={topRef}>
+    <div className={styles.journey} ref={topRef}>
       <img ref={svgRef} src="/plastic-journey.svg" />
-      <div className="contents">
-        <div className="screen-view">
+      <div className={styles.contents}>
+        <div className={styles.screenView}>
           <h1>THE PLASTICS JOURNEY</h1>
-          <div className="mobile-only img">
+          <div className={`${styles.mobileOnly} ${styles.img}`}>
             <img src="/plastic-journey.svg" />
           </div>
         </div>
-        <div className="screen-view">
-          <div className="pane">
+        <div className={styles.screenView}>
+          <div className={styles.pane}>
             <h3>FROM SOURCE TO SEA ACROSS THE PLASTICS life cycle</h3>
             <p>
               Plastics can have environmental, economic, health and social
@@ -142,12 +138,12 @@ const TheJourney = () => {
             </p>
             {/* <Button type="ghost" size="large">Learn More</Button> */}
           </div>
-          <div className="mobile-only img">
+          <div className={`${styles.mobileOnly} ${styles.img}`}>
             <img src="/plastic-journey.svg" />
           </div>
         </div>
-        <div className="screen-view">
-          <div className="pane">
+        <div className={styles.screenView}>
+          <div className={styles.pane}>
             <h3>PLASTIC POLLUTION PATHWAYS INCLUDE</h3>
             <h4>Airborne</h4>
             <p>
@@ -163,12 +159,12 @@ const TheJourney = () => {
               including into lakes and oceans.
             </p>
           </div>
-          <div className="mobile-only img">
+          <div className={`${styles.mobileOnly} ${styles.img}`}>
             <img src="/plastic-journey.svg" />
           </div>
         </div>
-        <div className="screen-view">
-          <div className="pane">
+        <div className={styles.screenView}>
+          <div className={styles.pane}>
             <h3>PLASTIC POLLUTION SOURCES INCLUDE</h3>
             <h4>Agriculture</h4>
             <p>
@@ -190,12 +186,12 @@ const TheJourney = () => {
               industrial goods during transportation.
             </p>
           </div>
-          <div className="mobile-only img">
+          <div className={`${styles.mobileOnly} ${styles.img}`}>
             <img src="/plastic-journey.svg" />
           </div>
         </div>
-        <div className="screen-view">
-          <div className="pane">
+        <div className={styles.screenView}>
+          <div className={styles.pane}>
             <h3>PLASTIC POLLUTION SOURCES, PATHWAYS AND SINKS INCLUDE</h3>
             <h4>Wastewater including sewage – source and pathway</h4>
             <p>
@@ -214,12 +210,12 @@ const TheJourney = () => {
               infiltration into groundwater.
             </p>
           </div>
-          <div className="mobile-only img">
+          <div className={`${styles.mobileOnly} ${styles.img}`}>
             <img src="/plastic-journey.svg" />
           </div>
         </div>
-        <div className="screen-view">
-          <div className="pane">
+        <div className={styles.screenView}>
+          <div className={styles.pane}>
             <h3>FURTHER PLASTIC POLLUTION SOURCES INCLUDE</h3>
             <h4>Tourism</h4>
             <p>
@@ -244,22 +240,42 @@ const TheJourney = () => {
   );
 };
 
+export const useDeviceSize = () => {
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  const handleWindowResize = () => {
+    setWidth(window.innerWidth);
+    setHeight(window.innerHeight);
+  };
+
+  useEffect(() => {
+    handleWindowResize();
+    window.addEventListener("resize", handleWindowResize);
+    return () => window.removeEventListener("resize", handleWindowResize);
+  }, []);
+
+  return [width, height];
+};
+
 const Connect = () => {
+  const [width] = useDeviceSize();
+
   return (
-    <div className="connect">
+    <div className={styles.connect}>
       <h2>Connect with the network</h2>
       <Swiper
-        spaceBetween={window.innerWidth <= 1024 ? 20 : 40}
+        spaceBetween={width <= 1024 ? 20 : 40}
         slidesPerView="auto"
-        slidesPerGroup={window.innerWidth <= 1024 ? 1 : 4}
+        slidesPerGroup={width <= 1024 ? 1 : 4}
         pagination={{
           clickable: true,
         }}
         navigation={true}
         modules={[Pagination, Navigation]}
       >
-        <SwiperSlide className="card casestudy">
-          <div className="label">REGIONAL NODE SPOTLIGHT</div>
+        <SwiperSlide className={`${styles.card} ${styles.casestudy}`}>
+          <div className={styles.label}>REGIONAL NODE SPOTLIGHT</div>
           <img src="/node-spotlight.jpg" />{" "}
           <h4>
             Cooperative actions from Caribbean fisheries officials after a
@@ -287,8 +303,8 @@ const Connect = () => {
             Prevent Abandoned, Lost or Otherwise Discarded Fishing Gear.
           </p>
         </SwiperSlide>
-        <SwiperSlide className="card nowpap">
-          <div className="label">REGIONAL NODE SPOTLIGHT</div>
+        <SwiperSlide className={`${styles.card} ${styles.nowpap}`}>
+          <div className={styles.label}>REGIONAL NODE SPOTLIGHT</div>
           <img src="/nowpap.jpg" />
           <h4>
             A NOWPAP-organised international coastal cleanup campaign in Dalian,
@@ -335,8 +351,8 @@ const Connect = () => {
             .
           </p>
         </SwiperSlide>
-        <SwiperSlide className="card spotlight">
-          <div className="label">featured case study</div>
+        <SwiperSlide className={`${styles.card} ${styles.spotlight}`}>
+          <div className={styles.label}>featured case study</div>
           <img src="/featured-case-study.jpg" />
           <h4>
             Costa Rica: Becoming The First Country To Eliminate Single-Use
@@ -365,7 +381,7 @@ const Connect = () => {
             Compostable, and Compostable” and other types.
           </p>
         </SwiperSlide>
-        <SwiperSlide className="card testimonial">
+        <SwiperSlide className={`${styles.card} ${styles.testimonial}`}>
           <img src={user1img} />
           <h4>Cassia Patel</h4>
           <h5>Program Director, Oceanic Global</h5>
@@ -374,7 +390,7 @@ const Connect = () => {
             fighting against our marine plastic crisis.
           </blockquote>
         </SwiperSlide>
-        <SwiperSlide className="card testimonial">
+        <SwiperSlide className={`${styles.card} ${styles.testimonial}`}>
           <img src="https://digital.gpmarinelitter.org/image/profile/27" />
           <h4>Marvin Burman</h4>
           <h5>
@@ -386,7 +402,7 @@ const Connect = () => {
             accessing and managing data.
           </blockquote>
         </SwiperSlide>
-        <SwiperSlide className="card testimonial">
+        <SwiperSlide className={`${styles.card} ${styles.testimonial}`}>
           <img src="https://digital.gpmarinelitter.org/image/profile/30" />
           <h4>Fadilah Ali</h4>
           <h5>
@@ -423,9 +439,9 @@ const Partners = () => {
     };
   }, []);
   return (
-    <div className="partners" ref={ref}>
+    <div className={styles.partners} ref={ref}>
       <h3>Our partners</h3>
-      <div className="img-container">
+      <div className={styles.imgContainer}>
         <img ref={imgRef} src="/partners.png" />
       </div>
     </div>
@@ -442,6 +458,7 @@ const Stats = () => {
     organisations: s?.organisations,
     nonMemberOrganisations: s?.nonMemberOrganisations,
   }));
+
   const [governmentsCount, setGovernmentsCount] = useState(0);
 
   useEffect(() => {
@@ -454,13 +471,13 @@ const Stats = () => {
   }, []);
 
   return (
-    <div className="stats">
-      <div className="row">
-        <div className="stat">
+    <div className={styles.stats}>
+      <div className={styles.row}>
+        <div className={styles.stat}>
           <b>{governmentsCount}</b>
           <i>Governments</i>
         </div>
-        <div className="stat">
+        <div className={styles.stat}>
           <b>
             {organisations?.length +
               nonMemberOrganisations?.length -
@@ -468,25 +485,25 @@ const Stats = () => {
           </b>
           <i>Organisations</i>
         </div>
-        <div className="stat">
+        <div className={styles.stat}>
           <b>{stakeholders?.length}</b>
           <i>Individuals</i>
         </div>
-        <div className="stat">
+        <div className={styles.stat}>
           <b>2</b>
           <i>Communities of Practise</i>
         </div>
       </div>
-      <div className="row">
-        <div className="stat">
+      <div className={styles.row}>
+        <div className={styles.stat}>
           <b>5</b>
           <i>Centers of Excellence</i>
         </div>
-        <div className="stat">
+        <div className={styles.stat}>
           <b>16</b>
           <i>Sectors</i>
         </div>
-        <div className="stat">
+        <div className={styles.stat}>
           <b>5</b>
           <i>Regions</i>
         </div>
@@ -569,27 +586,27 @@ const Act = ({ setLoginVisible }) => {
   }, [resources]);
 
   return (
-    <div className="act">
+    <div className={styles.act}>
       <h3>Act now</h3>
-      <div className="act-cards">
+      <div className={styles.actCards}>
         {data.map((item) => (
-          <Card className="act-card">
+          <Card className={styles.actCard} key={item.title}>
             <div
-              className="act-contents"
+              className={styles.actContents}
               style={{ backgroundColor: item?.background }}
             >
-              <h4 className="act-title">{item?.title}</h4>
-              <div className="act-data-contents">
+              <h4 className={styles.actTitle}>{item?.title}</h4>
+              <div className={styles.actDataContents}>
                 {item?.icon}
                 <div>
-                  <span className="count">{item?.count} </span>
-                  <span className="name">{item?.name}</span>
+                  <span className={styles.count}>{item?.count} </span>
+                  <span className={styles.name}>{item?.name}</span>
                 </div>
               </div>
-              <div className="created-by">
+              <div className={styles.createdBy}>
                 Created by
                 <br />
-                <div className="entity-creators">
+                <div className={styles.entityCreators}>
                   {item?.entityCount} entities
                 </div>
               </div>
@@ -606,14 +623,14 @@ const Act = ({ setLoginVisible }) => {
 
 const AnyQuestions = () => {
   return (
-    <div className="any-questions">
-      <div className="image-wrapper">
+    <div className={styles.anyQuestions}>
+      <div className={styles.imageWrapper}>
         <img src="/help-center.svg" alt="help-center-icon" loading="lazy" />
       </div>
-      <div className="content-container">
+      <div className={styles.contentContainer}>
         <h3>Any Questions?</h3>
         <p>Visit the Help Center for FAQs, tutorials and more.</p>
-        <Link to="/help-center">
+        <Link href="/help-center">
           <Button type="ghost" size="large">
             Find your answers &#62;
           </Button>
