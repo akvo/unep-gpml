@@ -1,6 +1,6 @@
 import { Select } from "antd";
 import catTags from "../../utils/cat-tags.json";
-import "./style.scss";
+import styles from "./style.module.scss";
 import { toTitleCase } from "../../utils/misc";
 
 const CatTagSelect = ({
