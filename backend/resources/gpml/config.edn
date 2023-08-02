@@ -646,12 +646,10 @@
 
   :gpml.handler.archive/get {:db #ig/ref :duct.database/sql}
 
-  :gpml.handler.submission/get {:db #ig/ref :duct.database/sql
-                                :auth0 #ig/ref :gpml.config/auth0}
+  :gpml.handler.submission/get #ig/ref :gpml.config/common
   :gpml.handler.submission/get-params {}
   :gpml.handler.submission/get-detail #ig/ref :gpml.config/common
-  :gpml.handler.submission/put {:db #ig/ref :duct.database/sql
-                                :mailjet-config #ig/ref :gpml.config/mailjet}
+  :gpml.handler.submission/put #ig/ref :gpml.config/common
   :gpml.handler.submission/put-params {}
 
   :gpml.handler.review/get-reviewers #ig/ref :gpml.config/common
