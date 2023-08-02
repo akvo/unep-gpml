@@ -14,8 +14,11 @@ import DataSetIcon from "../../images/datasets.svg";
 import user1img from "../../images/our-community/cassia-patel.jpg";
 import api from "../../utils/api";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Landing = ({ setLoginVisible, history, ...props }) => {
+  const router = useRouter();
+
   return (
     <div className={styles.landingb}>
       <div className={styles.hero}>
@@ -70,7 +73,7 @@ const Landing = ({ setLoginVisible, history, ...props }) => {
       <TheJourney />
       <Connect />
       <Partners />
-      <Stats />
+      <Stats router={router} communityData={props.communityData} />
       <Act {...{ setLoginVisible }} />
       <AnyQuestions />
     </div>
@@ -448,7 +451,7 @@ const Partners = () => {
   );
 };
 
-const Stats = () => {
+const Stats = ({ router, communityData }) => {
   const {
     stakeholders,
     organisations,
@@ -462,12 +465,10 @@ const Stats = () => {
   const [governmentsCount, setGovernmentsCount] = useState(0);
 
   useEffect(() => {
-    api.get(`/community?representativeGroup=Government`).then((resp) => {
-      const governments = resp.data.counts.find(
-        (count) => count?.networkType?.toLowerCase() === "organisation"
-      );
-      setGovernmentsCount(governments?.count || 0);
-    });
+    const governments = communityData.counts.find(
+      (count) => count?.networkType?.toLowerCase() === "organisation"
+    );
+    setGovernmentsCount(governments?.count || 0);
   }, []);
 
   return (

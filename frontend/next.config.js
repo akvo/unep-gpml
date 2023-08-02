@@ -1,9 +1,10 @@
 module.exports = {
+  reactStrictMode: false,
   async rewrites() {
     return [
       {
         source: "/api/:path*",
-        destination: "https://digital.gpmarinelitter.org/api/:path*",
+        destination: "https://unep-gpml.akvotest.org/api/:path*",
       },
       {
         source: "/image/:path*",

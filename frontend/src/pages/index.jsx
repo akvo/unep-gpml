@@ -4,12 +4,14 @@ import api from "../utils/api";
 import { UIStore } from "../store";
 import { uniqBy, sortBy } from "lodash";
 
-function HomePage({ data }) {
+function HomePage({ isAuthenticated, data, communityData }) {
   UIStore.update((s) => {
     Object.assign(s, data);
   });
 
-  return <Landing />;
+  return (
+    <Landing communityData={communityData} isAuthenticated={isAuthenticated} />
+  );
 }
 
 export default HomePage;
@@ -24,6 +26,9 @@ export async function getServerSideProps() {
     api.get("https://digital.gpmarinelitter.org/api/nav"),
     api.get("https://digital.gpmarinelitter.org/api/stakeholder"),
     api.get("https://digital.gpmarinelitter.org/api/non-member-organisation"),
+    api.get(
+      "https://digital.gpmarinelitter.org/api/community?representativeGroup=Government"
+    ),
   ]);
 
   const [
@@ -35,6 +40,7 @@ export async function getServerSideProps() {
     nav,
     stakeholder,
     nonMemberOrganisations,
+    community,
   ] = res;
 
   const data = {
@@ -58,9 +64,12 @@ export async function getServerSideProps() {
     stakeholders: stakeholder.data,
   };
 
+  const communityData = community.data;
+
   return {
     props: {
       data,
+      communityData,
     },
   };
 }

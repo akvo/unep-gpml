@@ -9,6 +9,7 @@ import { UIStore } from "../store";
 import { auth0Client } from "../utils/misc";
 import api from "../utils/api";
 import { useRouter } from "next/router";
+import { updateStatusProfile } from "../utils/profile";
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -163,7 +164,11 @@ function MyApp({ Component, pageProps }) {
           typeof window !== "undefined" ? window.location.origin : ""
         }
       >
-        <Layout {...pageProps} />
+        <Layout
+          {...pageProps}
+          isAuthenticated={isAuthenticated}
+          auth0Client={auth0Client}
+        />
       </Auth0Provider>
     </div>
   );

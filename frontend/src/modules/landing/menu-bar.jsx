@@ -104,11 +104,7 @@ const MenuBar = ({
           <div
             className="all-tools-btn"
             onClick={() => {
-              if (router.pathname === "/")
-                router.push({
-                  pathname: "/",
-                  search: "?ref=all_tools",
-                });
+              if (router.pathname === "/") router.push("/?ref=all_tools");
               else setShowMenu(true);
               bodyScrollLock.enable();
             }}
@@ -166,9 +162,7 @@ const MenuBar = ({
               className={styles.closeBtn}
               onClick={() => {
                 if (router.pathname === "/") {
-                  router.push({
-                    pathname: "/",
-                  });
+                  router.push("/");
                 }
                 setShowMenu(false);
                 bodyScrollLock.disable();
