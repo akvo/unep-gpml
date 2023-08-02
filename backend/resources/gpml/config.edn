@@ -657,12 +657,10 @@
   :gpml.handler.review/get-reviewers #ig/ref :gpml.config/common
   :gpml.handler.review/get-reviewers-params {}
   :gpml.handler.review/get-reviewers-responses {}
-  :gpml.handler.review/get-reviews {:db #ig/ref :duct.database/sql}
-  :gpml.handler.review/new-multiple-review {:db #ig/ref :duct.database/sql
-                                            :mailjet-config #ig/ref :gpml.config/mailjet}
-  :gpml.handler.review/update-review {:db #ig/ref :duct.database/sql
-                                      :mailjet-config #ig/ref :gpml.config/mailjet}
-  :gpml.handler.review/list-user-reviews {:db #ig/ref :duct.database/sql}
+  :gpml.handler.review/get-reviews #ig/ref :gpml.config/common
+  :gpml.handler.review/new-multiple-review #ig/ref :gpml.config/common
+  :gpml.handler.review/update-review #ig/ref :gpml.config/common
+  :gpml.handler.review/list-user-reviews #ig/ref :gpml.config/common
   :gpml.handler.review/list-user-reviews-params {}
   :gpml.handler.review/review-status-params {}
 
