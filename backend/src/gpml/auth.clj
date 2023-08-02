@@ -140,21 +140,6 @@
         {:status (:status request)
          :body {:message (:auth-error-message request)}}))))
 
-(defmethod ig/init-key :gpml.auth/approved-user [_ _]
-  (fn [handler]
-    (fn [{:keys [approved? jwt-claims] :as request}]
-      (if approved?
-        (handler request)
-        (if (:email_verified jwt-claims)
-          {:status 403
-           :headers {"content-type" "unauthorized"}
-           :body {:message "Unauthorized"
-                  :reason "User does not exist or is not approved yet"}}
-          {:status 403
-           :headers {"content-type" "unauthorized"}
-           :body {:message "Unauthorized"
-                  :reason "User must verify the email address"}})))))
-
 (def owners-schema
   [:owners {:optional true}
    [:vector integer?]])

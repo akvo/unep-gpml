@@ -54,8 +54,7 @@
                                                  :parameters {:query #ig/ref :gpml.handler.browse/query-params}
                                                  :handler #ig/ref :gpml.handler.browse/get}}]]
                                         ["/submission" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                     #ig/ref :gpml.auth/auth-required
-                                                                     #ig/ref :gpml.auth/approved-user]
+                                                                     #ig/ref :gpml.auth/auth-required]
                                                         :responses {401 {:description "Need authentication"}
                                                                     403 {:description "Insufficient permissions"}}}
                                          [""
@@ -363,8 +362,7 @@
                                                                      [:topic-id int?]]}
                                                  :handler #ig/ref :gpml.handler.detail/get}
                                            :delete {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                 #ig/ref :gpml.auth/auth-required
-                                                                 #ig/ref :gpml.auth/approved-user]
+                                                                 #ig/ref :gpml.auth/auth-required]
                                                     :summary "remove specific resource"
                                                     :swagger {:tags ["resource detail"]}
                                                     :parameters {:path [:map
@@ -372,8 +370,7 @@
                                                                         [:topic-id int?]]}
                                                     :handler #ig/ref :gpml.handler.detail/delete}
                                            :put {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                              #ig/ref :gpml.auth/auth-required
-                                                              #ig/ref :gpml.auth/approved-user]
+                                                              #ig/ref :gpml.auth/auth-required]
                                                  :summary "Edit the details for a specific resource"
                                                  :swagger {:tags ["resource detail"]
                                                            :security [{:id_token []}]}
@@ -824,7 +821,6 @@
    :db #ig/ref :duct.database/sql}
 
   :gpml.auth/auth-required {}
-  :gpml.auth/approved-user {:db #ig/ref :duct.database/sql}
 
   :gpml.handler.monitoring/collector {}
 
