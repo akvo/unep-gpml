@@ -35,7 +35,7 @@
     (db.stakeholder/update-stakeholder-role conn (assoc sth :role role))
     (db.stakeholder/stakeholder-by-id conn sth)
     (cond
-      (and (= role "USER")
+      (and (get #{"USER" "REVIEWER"} role)
            (= review-status "APPROVED"))
       (srv.permissions/assign-roles-to-users
        {:conn conn
@@ -45,7 +45,7 @@
          :resource-id srv.permissions/root-app-resource-id
          :user-id sth-id}])
 
-      (and (= role "USER")
+      (and (get #{"USER" "REVIEWER"} role)
            (= review-status "SUBMITTED"))
       (srv.permissions/assign-roles-to-users
        {:conn conn
