@@ -10,8 +10,8 @@ INSERT INTO initiative(
 -- :name initiative-by-id :query :one
 SELECT i.*, COALESCE(json_agg(acs.stakeholder) FILTER (WHERE acs.stakeholder IS NOT NULL), '[]') as owners
 FROM initiative i
-LEFT JOIN stakeholder_initiative acs ON acs.initiative = i.id
-WHERE i.id = :id AND association = 'owner'
+LEFT JOIN stakeholder_initiative acs ON acs.initiative = i.id AND association = 'owner'
+WHERE i.id = :id
 GROUP BY i.id;
 
 -- :name delete-initiative-geo-coverage :execute :affected

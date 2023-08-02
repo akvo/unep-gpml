@@ -85,8 +85,8 @@ SELECT
     (SELECT json_agg(coalesce(country, country_group))
 	FROM technology_geo_coverage WHERE technology = :id) AS geo_coverage_value
 FROM technology t
-LEFT JOIN stakeholder_technology acs ON acs.technology = t.id
-WHERE t.id = :id AND acs.association = 'owner'
+LEFT JOIN stakeholder_technology acs ON acs.technology = t.id AND acs.association = 'owner'
+WHERE t.id = :id
 GROUP BY t.id;
 
 -- :name pending-technology :? :1
