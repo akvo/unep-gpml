@@ -1,7 +1,6 @@
 (ns gpml.handler.project-test
   (:require [clojure.test :refer :all]
             [gpml.db.project :as db.prj]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.project :as dom.prj]
             [gpml.domain.types :as dom.types]
             [gpml.fixtures :as fixtures]
@@ -35,24 +34,6 @@
         created-project (db.prj/create-projects db {:insert-cols (map name (keys db-project))
                                                     :insert-values [(vals db-project)]})]
     (-> created-project first :id)))
-
-(defn- make-profile [first-name last-name email]
-  {:picture nil
-   :cv nil
-   :title "mr."
-   :first_name first-name
-   :last_name last-name
-   :affiliation nil
-   :email email
-   :linked_in nil
-   :twitter nil
-   :url nil
-   :country nil
-   :representation "test"
-   :about "Lorem Ipsum"
-   :geo_coverage_type "global"
-   :role "USER"
-   :idp_usernames ["auth0|123"]})
 
 (deftest create-project-test
   (let [system (-> fixtures/*system*
