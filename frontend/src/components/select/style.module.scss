@@ -6,78 +6,52 @@
     .ant-select-multiple {
       width: 100%;
     }
+  }
 
-    .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
-      margin-top: 30px;
-      top: 990px !important;
+  .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
+    margin-top: 30px;
+    top: 990px !important;
+  }
+
+  .ant-select-selection-placeholder,
+  .ant-select-selection-placeholder {
+    font-size: 16px;
+    color: $grey04;
+
+    @media (max-width: 540px) {
+      font-size: 14px;
     }
+  }
 
-    .ant-select-selection-placeholder,
-    .ant-select-selection-placeholder {
-      font-size: 16px;
-      color: $grey04;
+  .ant-space-item {
+    align-self: center;
+  }
 
-      @media (max-width: 540px) {
-        font-size: 14px;
-      }
+  .ant-select-selection-item-remove {
+    display: none;
+  }
+
+  // .ant-select-clear {
+  //   opacity: 0;
+  // }
+
+  .ant-select-selection-search-input {
+    width: 100%;
+    display: block;
+  }
+
+  .ant-select-selection-item-content {
+    font-weight: 700;
+    font-size: 16px;
+    color: $blue06;
+
+    overflow: visible;
+
+    @media (max-width: 540px) {
+      font-size: 14px;
     }
-
-    .ant-select-selection-placeholder {
-      font-weight: 700;
-      padding-left: 30px;
-    }
-
-    .ant-select-selector {
-      background: $grey05 !important;
-      border: 0 !important;
-      border-radius: 5px !important;
-      background-image: url("../../images/knowledge-library/search-icon.svg"),
-        url("../../images/knowledge-library/chevron-down-grey.svg") !important;
-      background-repeat: no-repeat !important;
-      background-position: calc(15px) center, calc(100% - 10px) center !important;
-    }
-
-    .ant-space-item {
-      align-self: center;
-    }
-
-    .ant-select-selection-item-remove {
-      display: none;
-    }
-
-    .ant-select-selection-overflow {
-      padding-left: 35px;
-      padding-top: 4px;
-      padding-bottom: 4px;
-
-      .ant-select-selection-item {
-        background-color: #c3dbe7;
-        border-radius: 4px;
-      }
-    }
-
-    // .ant-select-clear {
-    //   opacity: 0;
-    // }
-
-    .ant-select-selection-search-input {
-      width: 100%;
-      display: block;
-    }
-
-    .ant-select-selection-item-content {
-      font-weight: 700;
-      font-size: 16px;
-      color: $blue06;
-
-      overflow: visible;
-
-      @media (max-width: 540px) {
-        font-size: 14px;
-      }
-      .anticon-close-circle {
-        opacity: 0;
-      }
+    .anticon-close-circle {
+      opacity: 0;
     }
   }
 }

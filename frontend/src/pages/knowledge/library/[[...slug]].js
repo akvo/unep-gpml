@@ -18,11 +18,12 @@ function KnowledgeLibrary({}) {
       });
   };
 
-  useEffect(() => {
-    if (Object.keys(landing).length === 0) {
-      fetchMapData();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window !== "undefined" && Object.keys(landing).length === 0) {
+  //     console.log(Object.keys(landing).length);
+  //     // fetchMapData();
+  //   }
+  // }, []);
 
   return <KnowledgeLib />;
 }

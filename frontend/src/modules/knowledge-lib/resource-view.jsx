@@ -44,7 +44,6 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   const { slug, ...queryParams } = history.query;
   const { pathname } = history;
   const search = new URLSearchParams(history.query).toString();
-  console.log(history.query.slug);
   const [showFilterModal, setShowFilterModal] = useState(false);
 
   const limit = 30;
@@ -72,7 +71,6 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   const fetchData = (searchParams) => {
     setLoading(true);
     const queryParams = new URLSearchParams(searchParams);
-    console.log(queryParams);
     queryParams.delete("slug");
 
     if (type || history?.location?.state?.type)
@@ -93,10 +91,8 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
     queryParams.set("incCountsForTags", popularTags);
     queryParams.set("limit", limit);
 
-    const url = `https://digital.gpmarinelitter.org/api/browse?${String(
-      queryParams
-    )}`;
-    console.log(view, totalCount);
+    const url = `/browse?${String(queryParams)}`;
+
     api
       .get(url)
       .then((resp) => {
@@ -172,11 +168,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
 
     const queryParams = new URLSearchParams(filter);
     const promiseArray = resourceTopic.map((url) =>
-      api.get(
-        `https://digital.gpmarinelitter.org/api/browse?topic=${url}&${String(
-          queryParams
-        )}`
-      )
+      api.get(`/browse?topic=${url}&${String(queryParams)}`)
     );
 
     Promise.all(promiseArray)
@@ -473,8 +465,6 @@ const ViewSwitch = ({ type, view, history, queryParams }) => {
   const viewOptions = ["map", "grid", "category"];
   const [visible, setVisible] = useState(false);
   view = !view ? "map" : view;
-
-  console.log(history);
 
   return (
     <div className="view-switch-container">

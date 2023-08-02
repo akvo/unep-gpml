@@ -462,16 +462,12 @@ const Stats = () => {
   const [governmentsCount, setGovernmentsCount] = useState(0);
 
   useEffect(() => {
-    api
-      .get(
-        `https://digital.gpmarinelitter.org/api/community?representativeGroup=Government`
-      )
-      .then((resp) => {
-        const governments = resp.data.counts.find(
-          (count) => count?.networkType?.toLowerCase() === "organisation"
-        );
-        setGovernmentsCount(governments?.count || 0);
-      });
+    api.get(`/community?representativeGroup=Government`).then((resp) => {
+      const governments = resp.data.counts.find(
+        (count) => count?.networkType?.toLowerCase() === "organisation"
+      );
+      setGovernmentsCount(governments?.count || 0);
+    });
   }, []);
 
   return (
@@ -594,7 +590,7 @@ const Act = ({ setLoginVisible }) => {
       <h3>Act now</h3>
       <div className={styles.actCards}>
         {data.map((item) => (
-          <Card className={styles.actCard}>
+          <Card className={styles.actCard} key={item.title}>
             <div
               className={styles.actContents}
               style={{ backgroundColor: item?.background }}

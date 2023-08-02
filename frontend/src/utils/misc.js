@@ -178,16 +178,15 @@ export const toTitleCase = (phrase) => {
     .join(" ");
 };
 
-const domain =
-  typeof window !== "undefined"
-    ? window.__ENV__.auth0.domain.replace(/(https:\/\/|\/)/gi, "")
-    : "";
+const domain = "https://unep-gpml-test.eu.auth0.com/".replace(
+  /(https:\/\/|\/)/gi,
+  ""
+);
 
 export const auth0Client = new auth0.WebAuth({
   domain: domain,
-  clientID: typeof window !== "undefined" ? window.__ENV__.auth0.clientId : "",
-  audience:
-    typeof window !== "undefined" ? `${window.__ENV__.auth0.audience}` : "",
+  clientID: "dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J",
+  audience: "https://unep-gpml-test.eu.auth0.com/api/v2/",
   redirectUri: typeof window !== "undefined" ? window.location.origin : "",
   scope: "openid profile email",
   responseType: "token id_token",

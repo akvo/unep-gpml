@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import React from "react";
 import { Input, Button, Layout, Menu, Dropdown } from "antd";
 import Dots3x3 from "../../images/3x3.svg";
 import AtlasSvg from "../../images/book-atlas.svg";
@@ -117,7 +117,9 @@ const MenuBar = ({
             <span>All Tools</span>
           </div>
           {Object.keys(pathContent).map((path) => (
-            <>{currentPath === path && <Item to={path} />}</>
+            <React.Fragment key={path}>
+              {currentPath === path && <Item to={path} />}
+            </React.Fragment>
           ))}
           <div className="rightside">
             <Search router={router} />

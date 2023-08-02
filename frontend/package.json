@@ -51,7 +51,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start"
   },
