@@ -3,8 +3,7 @@
             [gpml.auth :as auth]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
-            [integrant.core :as ig]
-            [ring.mock.request :as mock]))
+            [integrant.core :as ig]))
 
 (use-fixtures :each fixtures/with-test-system)
 
