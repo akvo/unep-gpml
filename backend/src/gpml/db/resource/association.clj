@@ -8,6 +8,7 @@
          update-stakeholder-association
          update-organisation-association
          delete-stakeholder-associations
-         delete-organisation-associations)
+         delete-organisation-associations
+         get-sth-org-focal-point-resources-associations)
 
 (hugsql/def-db-fns "gpml/db/resource/association.sql" {:quoting :ansi})

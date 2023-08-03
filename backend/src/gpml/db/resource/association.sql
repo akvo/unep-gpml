@@ -46,3 +46,35 @@ INSERT INTO
 VALUES
 --~ (format "(:organisation, :resource-id, :association::%s_association, :remarks)" (:resource-col params))
 ;
+
+-- :name get-sth-org-focal-point-resources-associations :query :many
+-- :doc Get the associations of a organisation given focal-point stakeholder association
+WITH org_associations AS (
+	SELECT organisation, 'event' AS resource_type, event AS resource_id
+	FROM organisation_event
+	WHERE organisation = :org-id AND association = 'owner'
+	UNION
+	SELECT organisation, 'policy' AS resource_type, policy AS resource_id
+	FROM organisation_policy
+	WHERE organisation = :org-id AND association = 'owner'
+	UNION
+	SELECT organisation, 'technology' AS resource_type, technology AS resource_id
+	FROM organisation_technology
+	WHERE organisation = :org-id AND association = 'owner'
+	UNION
+	SELECT organisation, 'resource' AS resource_type, resource AS resource_id
+	FROM organisation_resource
+	WHERE organisation = :org-id AND association = 'owner'
+	UNION
+	SELECT organisation, 'initiative' AS resource_type, initiative AS resource_id
+	FROM organisation_initiative
+	WHERE organisation = :org-id AND association = 'owner'
+	UNION
+	SELECT organisation, 'case_study' AS resource_type, case_study AS resource_id
+	FROM organisation_case_study
+	WHERE organisation = :org-id AND association = 'owner'
+)
+SELECT so.stakeholder AS stakeholder_id, oacs.resource_id, oacs.resource_type
+FROM stakeholder_organisation so
+INNER JOIN org_associations oacs ON so.organisation = oacs.organisation
+WHERE so.stakeholder = :sth-id AND so.association = 'focal-point';

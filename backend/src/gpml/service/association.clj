@@ -44,7 +44,7 @@
            {:user-id stakeholder
             :role-name :resource-owner
             :resource-id resource-id
-            :context-type resource-type})
+            :context-type (keyword resource-type)})
          focal-points)))
 
 (defn org-associations->rbac-role-unassignments
@@ -73,16 +73,57 @@
    []
    org-associations))
 
+(defn- get-sth-org-focal-point-role-unassignments
+  "Gets the role unassignments for a stakeholder `sth-id` that is
+  associated with an organisation `org-id` as a
+  `focal-point`. Stakeholders can do operations on behalf of an
+  organisation on those resources where the organisation has an
+  association of `owner`. When this happens, the `focal-point`s of the
+  organisation gain `resource-owner` RBAC role's collection of
+  permissions on that resource to act on behalf of the organisation."
+  [conn org-id sth-id]
+  (let [associations (db.res.acs/get-sth-org-focal-point-resources-associations
+                      conn
+                      {:org-id org-id
+                       :sth-id sth-id})]
+    (if (seq associations)
+      (reduce
+       (fn [role-unassignments {:keys [stakeholder_id resource_type resource_id]}]
+         (conj role-unassignments {:user-id stakeholder_id
+                                   :role-name :resource-owner
+                                   :context-type (keyword (str/replace resource_type \_ \-))
+                                   :resource-id resource_id}))
+       []
+       associations)
+      [])))
+
 (defn sth-associations->rbac-role-unassignments
   "FIXME:"
-  [sth-associations resource-type resource-id]
-  (keep
-   (fn [{:keys [stakeholder old-role role]}]
-     (when (get #{"owner" "resource_editor"} (or old-role role))
-       {:user-id stakeholder
-        :role-name (keyword (str/replace role \_ \-))
-        :context-type resource-type
-        :resource-id resource-id}))
+  [conn sth-associations resource-type resource-id]
+  (reduce
+   (fn [role-unassignments {:keys [stakeholder organisation old-role role]}]
+     (cond
+       ;; If the association is with an organisation we have to get
+       ;; all the `owner` associations of that organisation with
+       ;; platform resources. Because of permission inheritance, we
+       ;; then have to create role unassignments for all those
+       ;; resources with each resource. Since, an organisation's
+       ;; `focal-point` has ownership rights on all organisation
+       ;; resources (only on organisation `owner` associations).
+       organisation
+       (apply conj role-unassignments (get-sth-org-focal-point-role-unassignments conn
+                                                                                  organisation
+                                                                                  stakeholder))
+
+       (get #{"owner" "resource_editor"} (or old-role role))
+       (conj role-unassignments {:user-id stakeholder
+                                 :role-name (keyword (str/replace role \_ \-))
+                                 :context-type (keyword resource-type)
+                                 :resource-id resource-id})
+
+       :else
+       role-unassignments))
+   []
    sth-associations))
 
 (defn get-associations
@@ -109,9 +150,11 @@
         (get-associations-diff sth-associations old-associations)
         to-save (concat to-create to-update)
         sth-to-assign (remove #(get old-resource-owners-editors (:stakeholder %)) to-save)
-        role-unassingments (sth-associations->rbac-role-unassignments (concat to-delete to-update)
-                                                                      resource-type
-                                                                      resource-id)]
+        role-unassingments (sth-associations->rbac-role-unassignments
+                            conn
+                            (concat to-delete to-update)
+                            resource-type
+                            resource-id)]
     (when (seq to-delete)
       (db.res.acs/delete-stakeholder-associations conn
                                                   {:table-suffix table-suffix
