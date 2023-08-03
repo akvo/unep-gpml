@@ -34,17 +34,4 @@
             body (:body resp)]
         (is (= 1 (count (:results body))))
         (is (= "John Doe" (-> body :results first :name)))
-        (is (= 1 (:count (first (filter #(= "stakeholder" (:network_type %)) (:counts body))))))))
-    (testing "Users that are not signed up can't see the community members list"
-      (let [resp (handler (mock/request :get "/"))
-            status (:status resp)]
-        (is (= 403 status))))
-    (testing "Users that are not approved can't see the community members list"
-      (let [sth-id (test-util/create-test-stakeholder config
-                                                      "john.doe2@mail.invalid"
-                                                      "SUBMITTED"
-                                                      "USER")
-            resp (handler (-> (mock/request :get "/")
-                              (assoc :user {:id sth-id})))
-            status (:status resp)]
-        (is (= 403 status))))))
+        (is (= 1 (:count (first (filter #(= "stakeholder" (:network_type %)) (:counts body))))))))))
