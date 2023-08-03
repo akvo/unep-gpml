@@ -20,11 +20,10 @@
    [:stakeholder [:int {:min 0}]]])
 
 (defn- ->sth-associations
-  [stakeholders resource-type associations]
+  [stakeholders associations]
   (reduce (fn [updated-associations {:keys [id roles]}]
             (let [old-acs (medley/find-first (fn [acs]
                                                (and (= (:stakeholder acs) id)
-                                                    (= (get acs (keyword resource-type)) resource-type)
                                                     (= (:role acs) (first roles))))
                                              associations)
                   role (first roles)]
@@ -54,7 +53,7 @@
                                                                  {:table (str "stakeholder_" resource-type)
                                                                   :resource-col resource-type
                                                                   :filters {:resource-id resource-id}})
-                  sth-associations (->sth-associations stakeholders resource-type associations)]
+                  sth-associations (->sth-associations stakeholders associations)]
               (if (and (= "organisation" resource-type)
                        (> (count sth-associations) dom.ts-auth/max-focal-points))
                 (throw (ex-info "Maximum focal points reached" {:reason :maximum-focal-points-reached}))

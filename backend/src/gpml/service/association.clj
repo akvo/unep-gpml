@@ -34,38 +34,30 @@
 
 (defn- get-sth-org-role-assignments
   [conn resource-type resource-id org-id]
-  (when-let [focal-points (seq (db.res.acs/get-resource-associations conn
-                                                                     {:table "stakeholder_organisation"
-                                                                      :resource-col "organisation"
-                                                                      :resource-assoc-type "organisation_association"
-                                                                      :filters {:resource-id org-id
-                                                                                :associations ["focal-point"]}}))]
-    (map (fn [{:keys [stakeholder]}]
-           {:user-id stakeholder
-            :role-name :resource-owner
-            :resource-id resource-id
-            :context-type (keyword resource-type)})
-         focal-points)))
-
-(defn org-associations->rbac-role-unassignments
-  "FIXME:"
-  [conn resource-type resource-id org-associations]
-  (reduce
-   (fn [org-role-unassignments {:keys [organisation old-role role]}]
-     (when (get #{"owner"} (or old-role role))
-       (let [rbac-role-unassignments (get-sth-org-role-assignments conn resource-type resource-id organisation)]
-         (if (seq rbac-role-unassignments)
-           (concat org-role-unassignments rbac-role-unassignments)
-           org-role-unassignments))))
-   []
-   org-associations))
+  (if-let [focal-points (seq (db.res.acs/get-resource-associations
+                              conn
+                              {:table "stakeholder_organisation"
+                               :resource-col "organisation"
+                               :resource-assoc-type "organisation_association"
+                               :filters {:resource-id org-id
+                                         :associations ["focal-point"]}}))]
+    (reduce
+     (fn [role-assignments {:keys [stakeholder]}]
+       (conj role-assignments {:user-id stakeholder
+                               :role-name :resource-owner
+                               :resource-id resource-id
+                               :context-type (keyword resource-type)}))
+     []
+     focal-points)
+    []))
 
 (defn org-associations->rbac-role-assignments
   "FIXME:"
   [conn resource-type resource-id org-associations]
   (reduce
-   (fn [org-role-assignments {:keys [organisation role]}]
-     (when (get #{"owner"} role)
+   (fn [org-role-assignments {:keys [organisation old-role role]}]
+     (if-not (get #{"owner"} (or old-role role))
+       org-role-assignments
        (let [rbac-role-assignments (get-sth-org-role-assignments conn resource-type resource-id organisation)]
          (if (seq rbac-role-assignments)
            (concat org-role-assignments rbac-role-assignments)
@@ -82,7 +74,7 @@
   organisation gain `resource-owner` RBAC role's collection of
   permissions on that resource to act on behalf of the organisation."
   [conn org-id sth-id]
-  (let [associations (db.res.acs/get-sth-org-focal-point-resources-associations
+  (let [associations (db.res.acs/get-sth-org-focal-point-resources-associations*
                       conn
                       {:org-id org-id
                        :sth-id sth-id})]
@@ -97,11 +89,27 @@
        associations)
       [])))
 
+(defn- get-sth-org-focal-point-role-assignments
+  [conn org-id sth-id]
+  (let [associations (db.res.acs/get-all-organisation-owner-associations*
+                      conn
+                      {:org-id org-id})]
+    (if (seq associations)
+      (reduce
+       (fn [role-assignments {:keys [resource_type resource_id]}]
+         (conj role-assignments {:user-id sth-id
+                                 :role-name :resource-owner
+                                 :context-type (keyword (str/replace resource_type \_ \-))
+                                 :resource-id resource_id}))
+       []
+       associations)
+      [])))
+
 (defn sth-associations->rbac-role-unassignments
   "FIXME:"
   [conn sth-associations resource-type resource-id]
   (reduce
-   (fn [role-unassignments {:keys [stakeholder organisation old-role role]}]
+   (fn [role-unassignments {:keys [stakeholder old-role role]}]
      (cond
        ;; If the association is with an organisation we have to get
        ;; all the `owner` associations of that organisation with
@@ -110,19 +118,45 @@
        ;; resources with each resource. Since, an organisation's
        ;; `focal-point` has ownership rights on all organisation
        ;; resources (only on organisation `owner` associations).
-       organisation
-       (apply conj role-unassignments (get-sth-org-focal-point-role-unassignments conn
-                                                                                  organisation
-                                                                                  stakeholder))
+       (= "organisation" resource-type)
+       (apply conj role-unassignments (get-sth-org-focal-point-role-unassignments
+                                       conn
+                                       resource-id
+                                       stakeholder))
 
        (get #{"owner" "resource_editor"} (or old-role role))
        (conj role-unassignments {:user-id stakeholder
-                                 :role-name (keyword (str/replace role \_ \-))
+                                 :role-name (if (= "owner" role)
+                                              :resource-owner
+                                              :resource-editor)
                                  :context-type (keyword resource-type)
                                  :resource-id resource-id})
 
        :else
        role-unassignments))
+   []
+   sth-associations))
+
+(defn- sth-associations->rbac-role-assignments
+  [conn sth-associations resource-type resource-id]
+  (reduce
+   (fn [role-assignments {:keys [stakeholder role]}]
+     (cond
+       (= "organisation" resource-type)
+       (apply conj role-assignments (get-sth-org-focal-point-role-assignments conn
+                                                                              resource-id
+                                                                              stakeholder))
+
+       (get #{"owner" "resource_editor"} role)
+       (conj role-assignments {:user-id stakeholder
+                               :role-name (if (= "owner" role)
+                                            :resource-owner
+                                            :resource-editor)
+                               :context-type (keyword resource-type)
+                               :resource-id resource-id})
+
+       :else
+       role-assignments))
    []
    sth-associations))
 
@@ -133,32 +167,41 @@
 
 (defn save-sth-associations
   "FIXME:"
-  [{:keys [conn logger]} {:keys [sth-associations resource-type resource-id]}]
+  [{:keys [conn] :as config}
+   {:keys [sth-associations resource-type resource-id]}]
   (let [table-suffix (str/replace resource-type \- \_)
         old-resource-owners-editors
-        (->> (db.rbac-util/get-users-with-granted-permission-on-resource conn
-                                                                         {:resource-id resource-id
-                                                                          :context-type-name resource-type
-                                                                          :permission-name (str resource-type "/update")})
+        (->> (db.rbac-util/get-users-with-granted-permission-on-resource
+              conn
+              {:resource-id resource-id
+               :context-type-name resource-type
+               :permission-name (str resource-type "/update")})
              (map :user_id)
              set)
-        old-associations (db.res.acs/get-resource-associations conn
-                                                               {:table (str "stakeholder_" table-suffix)
-                                                                :resource-col resource-type
-                                                                :filters {:resource-id resource-id}})
+        old-associations (db.res.acs/get-resource-associations
+                          conn
+                          {:table (str "stakeholder_" table-suffix)
+                           :resource-col resource-type
+                           :filters {:resource-id resource-id}})
         {:keys [to-create to-update to-delete]}
         (get-associations-diff sth-associations old-associations)
-        to-save (concat to-create to-update)
-        sth-to-assign (remove #(get old-resource-owners-editors (:stakeholder %)) to-save)
+        to-save (->> (concat to-create to-update)
+                     (remove #(get old-resource-owners-editors (:stakeholder %))))
         role-unassingments (sth-associations->rbac-role-unassignments
                             conn
                             (concat to-delete to-update)
                             resource-type
-                            resource-id)]
+                            resource-id)
+        role-assignments (sth-associations->rbac-role-assignments
+                          conn
+                          to-save
+                          resource-type
+                          resource-id)]
     (when (seq to-delete)
-      (db.res.acs/delete-stakeholder-associations conn
-                                                  {:table-suffix table-suffix
-                                                   :ids (map :id to-delete)}))
+      (db.res.acs/delete-stakeholder-associations
+       conn
+       {:table-suffix table-suffix
+        :ids (map :id to-delete)}))
     (when (seq to-save)
       (doseq [{:keys [id stakeholder role]} to-save
               :let [db-opts (cond-> {:table-suffix table-suffix
@@ -173,46 +216,51 @@
           (db.res.acs/update-stakeholder-association conn db-opts)
           (db.res.acs/create-stakeholder-association conn db-opts))))
     (when (seq role-unassingments)
-      (srv.permissions/unassign-roles-from-users {:conn conn
-                                                  :logger logger}
-                                                 role-unassingments))
-    (when (seq sth-to-assign)
-      (srv.permissions/assign-roles-to-users-from-connections {:conn conn
-                                                               :logger logger}
-                                                              {:context-type (keyword resource-type)
-                                                               :resource-id resource-id
-                                                               :individual-connections sth-to-assign}))))
+      (srv.permissions/unassign-roles-from-users
+       config
+       role-unassingments))
+    (when (seq role-assignments)
+      (srv.permissions/assign-roles-to-users
+       config
+       role-assignments))))
 
 (defn save-org-associations
   "FIXME:"
-  [{:keys [conn logger]} {:keys [org-associations resource-type resource-id]}]
+  [{:keys [conn] :as config}
+   {:keys [org-associations resource-type resource-id]}]
   (let [table-suffix (str/replace resource-type \- \_)
-        old-resource-owners (->> (db.rbac-util/get-users-with-granted-permission-on-resource conn
-                                                                                             {:resource-id resource-id
-                                                                                              :context-type-name resource-type
-                                                                                              :permission-name (str resource-type "/delete")})
+        old-resource-owners (->> (db.rbac-util/get-users-with-granted-permission-on-resource
+                                  conn
+                                  {:resource-id resource-id
+                                   :context-type-name resource-type
+                                   :permission-name (str resource-type "/delete")})
                                  (map :user_id)
                                  set)
-        old-associations (db.res.acs/get-resource-associations conn
-                                                               {:table (str "organisation_" table-suffix)
-                                                                :resource-col resource-type
-                                                                :filters {:resource-id resource-id}})
+        old-associations (db.res.acs/get-resource-associations
+                          conn
+                          {:table (str "organisation_" table-suffix)
+                           :resource-col resource-type
+                           :filters {:resource-id resource-id}})
         {:keys [to-create to-delete to-update]}
         (get-associations-diff org-associations old-associations)
         to-save (concat to-create to-update)
-        role-unassignments (org-associations->rbac-role-unassignments conn
-                                                                      resource-type
-                                                                      resource-id
-                                                                      (concat to-delete to-update))
-        role-assignments (->> (org-associations->rbac-role-assignments conn
-                                                                       resource-type
-                                                                       resource-id
-                                                                       to-save)
-                              (remove #(get old-resource-owners (:user-id %))))]
+        role-unassignments (org-associations->rbac-role-assignments
+                            conn
+                            resource-type
+                            resource-id
+                            (concat to-delete to-update))
+        role-assignments (->> (org-associations->rbac-role-assignments
+                               conn
+                               resource-type
+                               resource-id
+                               to-save)
+                              (remove #(get old-resource-owners (:user-id %)))
+                              (medley/distinct-by (juxt :user-id :resource-id)))]
     (when (seq to-delete)
-      (db.res.acs/delete-organisation-associations conn
-                                                   {:table-suffix table-suffix
-                                                    :ids (map :id to-delete)}))
+      (db.res.acs/delete-organisation-associations
+       conn
+       {:table-suffix table-suffix
+        :ids (map :id to-delete)}))
     (when (seq to-save)
       (doseq [{:keys [id organisation role]} to-save
               :let [db-opts (cond-> {:table-suffix table-suffix
@@ -227,13 +275,13 @@
           (db.res.acs/update-organisation-association conn db-opts)
           (db.res.acs/create-organisation-association conn db-opts))))
     (when (seq role-unassignments)
-      (srv.permissions/unassign-roles-from-users {:conn conn
-                                                  :logger logger}
-                                                 role-unassignments))
+      (srv.permissions/unassign-roles-from-users
+       config
+       role-unassignments))
     (when (seq role-assignments)
-      (srv.permissions/assign-roles-to-users {:conn conn
-                                              :logger logger}
-                                             role-assignments))))
+      (srv.permissions/assign-roles-to-users
+       config
+       role-assignments))))
 
 (defn save-associations
   "FIXME:"
