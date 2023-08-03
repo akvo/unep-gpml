@@ -18,11 +18,11 @@
 ;; FIXME: refactor favorite logic. It's entangled with follower and permissions.
 
 (def associations
-  {:resource #{"owner" "reviewer" "user" "interested in" "other"}
-   :technology #{"owner" "user" "reviewer" "interested in" "other"}
-   :event #{"resource person" "organiser" "participant" "sponsor" "host" "interested in" "other"}
-   :initiative #{"owner" "implementor" "reviewer" "user" "interested in" "other"}
-   :policy #{"regulator" "implementor" "reviewer" "interested in" "other"}
+  {:resource #{"owner" "resource_editor" "reviewer" "user" "interested in" "other"}
+   :technology #{"owner" "user" "resource_editor" "reviewer" "interested in" "other"}
+   :event #{"resource person" "resource_editor" "organiser" "participant" "sponsor" "host" "interested in" "other"}
+   :initiative #{"owner" "resource_editor" "implementor" "reviewer" "user" "interested in" "other"}
+   :policy #{"regulator" "resource_editor" "implementor" "reviewer" "interested in" "other"}
    :organisation #{"interested in" "other"}
    :stakeholder #{"interested in" "other"}})
 
