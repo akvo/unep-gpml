@@ -4,8 +4,7 @@
             [gpml.handler.auth :as auth]
             [gpml.seeder.main :as seeder]
             [gpml.test-util :as test-util]
-            [integrant.core :as ig]
-            [ring.mock.request :as mock]))
+            [integrant.core :as ig]))
 
 (use-fixtures :each fixtures/with-test-system)
 

@@ -1,7 +1,6 @@
 (ns gpml.handler.comment-test
   (:require [clojure.test :refer [deftest is testing use-fixtures]]
             [gpml.db.comment :as db.comment]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
             [gpml.handler.comment :as sut]
             [gpml.seeder.main :as seeder]
@@ -51,7 +50,7 @@
             request (-> (mock/request :post "/")
                         (assoc :parameters {:body comment-payload}
                                :user {:id sth-id}))
-            {:keys [status body]} (handler request)]
+            {:keys [status]} (handler request)]
         (is (= 403 status))))
     (testing "Fails validation due to missing required parameters"
       (let [comment-payload (dissoc (random-comment-data sth-id 1 "event") :author_id)]
