@@ -160,6 +160,20 @@
    []
    sth-associations))
 
+(defn- get-resource-owners-to-keep
+  [conn resource-id resource-table-suffix org-associations]
+  (let [owner-orgs (map :organisation (filter #(= "owner" (:role %)) org-associations))]
+    (if (seq owner-orgs)
+      (->> (db.res.acs/get-orgs-focal-points-associations-on-resource
+            conn
+            {:org-resource-table (str "organisation_" resource-table-suffix)
+             :org-resource-col resource-table-suffix
+             :org-resource-id resource-id
+             :orgs-ids owner-orgs})
+           (map :stakeholder)
+           set)
+      #{})))
+
 (defn get-associations
   "FIXME:"
   [{:keys [conn _logger]} opts]
@@ -187,7 +201,7 @@
         (get-associations-diff sth-associations old-associations)
         to-save (->> (concat to-create to-update)
                      (remove #(get old-resource-owners-editors (:stakeholder %))))
-        role-unassingments (sth-associations->rbac-role-unassignments
+        role-unassignments (sth-associations->rbac-role-unassignments
                             conn
                             (concat to-delete to-update)
                             resource-type
@@ -215,10 +229,10 @@
         (if id
           (db.res.acs/update-stakeholder-association conn db-opts)
           (db.res.acs/create-stakeholder-association conn db-opts))))
-    (when (seq role-unassingments)
+    (when (seq role-unassignments)
       (srv.permissions/unassign-roles-from-users
        config
-       role-unassingments))
+       role-unassignments))
     (when (seq role-assignments)
       (srv.permissions/assign-roles-to-users
        config
@@ -244,11 +258,41 @@
         {:keys [to-create to-delete to-update]}
         (get-associations-diff org-associations old-associations)
         to-save (concat to-create to-update)
-        role-unassignments (org-associations->rbac-role-assignments
-                            conn
-                            resource-type
-                            resource-id
-                            (concat to-delete to-update))
+        ;; Organisation association are very tricky because they have
+        ;; the `focal-point` system. If organisation A has focal point
+        ;; Z, and organisation B has focal-point Z and Y it can lead
+        ;; to duplicates and removal of permissions from focal points
+        ;; when there shouldn't be. There are two problems here in the
+        ;; context of a specific resource F:
+        ;;
+        ;; 1 - When stakeholder Z is assigned as focal point of both
+        ;; org A and B, at time of assigning them the RBAC permissions
+        ;; we'll encounter two role assignments with the same role,
+        ;; user and context (for resource F). Because both orgs have
+        ;; the same focal-point. To solve that we remove the
+        ;; duplicates and assign the permission once.
+        ;;
+        ;; 2 - If we remove org A from the resource association,
+        ;; stakeholder Z should lose their permission on resource F
+        ;; BUT org B is still associated as owner of resource F and
+        ;; stakeholder Z is a focal-point of org B. Therefore, we
+        ;; cannot remove its permissions.
+        ;;
+        ;; These are very extreme use cases where one stakeholder is a
+        ;; focal-point of two different organisation that are
+        ;; associated as owners of a resource.
+        resource-owners-to-keep (get-resource-owners-to-keep
+                                 conn
+                                 resource-id
+                                 table-suffix
+                                 org-associations)
+        role-unassignments (->> (org-associations->rbac-role-assignments
+                                 conn
+                                 resource-type
+                                 resource-id
+                                 (concat to-delete to-update))
+                                (remove #(get resource-owners-to-keep (:user-id %)))
+                                (medley/distinct-by (juxt :user-id :resource-id)))
         role-assignments (->> (org-associations->rbac-role-assignments
                                conn
                                resource-type

@@ -11,7 +11,8 @@
          delete-organisation-associations
          get-sth-org-focal-point-resources-associations
          get-all-organisation-owner-associations
-         all-organisation-resource-owner-associations-query)
+         all-organisation-resource-owner-associations-query
+         get-orgs-focal-points-associations-on-resource)
 
 (hugsql/def-db-fns "gpml/db/resource/association.sql" {:quoting :ansi})
 

@@ -82,8 +82,18 @@ FROM stakeholder_organisation so
 INNER JOIN org_associations oacs ON so.organisation = oacs.organisation
 WHERE so.stakeholder = :sth-id AND so.association = 'focal-point';
 
--- :name get-all-organisation-owner-associations
+-- :name get-all-organisation-owner-associations :query :many
 WITH org_associations AS (
   :snip:all-organisation-resource-owner-associations-query
 )
 SELECT * FROM org_associations;
+
+-- :name get-orgs-focal-points-associations-on-resource :query :many
+SELECT so.*, so.association as role
+FROM stakeholder_organisation so
+INNER JOIN :i:org-resource-table ort ON so.organisation = ort.organisation
+WHERE so.organisation IN (:v*:orgs-ids)
+AND so.association = 'focal-point'
+AND ort.association = 'owner'
+--~ (format "AND ort.%s = %d" (:org-resource-col params) (:org-resource-id params))
+;
