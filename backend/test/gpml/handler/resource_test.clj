@@ -2,15 +2,15 @@
   (:require [clojure.string :as s]
             [clojure.test :refer [deftest is testing use-fixtures]]
             [gpml.db.language :as db.language]
+            [gpml.db.rbac-util :as db.rbac-util]
             [gpml.db.resource :as db.resource]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.tag :as db.tag]
-            [gpml.db.topic-stakeholder-auth :as db.ts-auth]
             [gpml.domain.types :as dom.types]
             [gpml.fixtures :as fixtures]
             [gpml.handler.image :as image]
             [gpml.handler.profile-test :as profile-test]
             [gpml.handler.resource :as resource]
+            [gpml.test-util :as test-util]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
 
@@ -44,65 +44,79 @@
   (is (= content-type "image/png")))
 
 (deftest handler-post-test
-  (testing "New resource is created"
-    (let [system (ig/init fixtures/*system* [::resource/post])
-          handler (::resource/post system)
-          db (-> system :duct.database.sql/hikaricp :spec)
-          ;; create new country [IDN SPA]
-          ;; create new country group [Africa Asia Europe]
-          ;; create new organisation [Akvo]
-          ;; create new general 3 tags
-          data (profile-test/seed-important-database db)
-          ;; create new resource category tag
-          _ (do (db.tag/new-tag-category db {:category "financing mechanism"})
-                (db.tag/new-tag db {:tag "RT 1" :tag_category 2})
-                (db.tag/new-tag db {:tag "RT 2" :tag_category 2}))
-          ;; create new language
-          _ (db.language/new-language db {:iso_code "id"
-                                          :english_name "Indonesian"
-                                          :native_name "Bahasa Indonesia"})
-          ;; create new user name John
-          user (db.stakeholder/new-stakeholder db (profile-test/new-profile 1))
-          _ (db.stakeholder/update-stakeholder-status db (assoc user :review_status "APPROVED"))
-          ;; create John create new resource with available organisation
-          payload (new-resource data)
-          resp-one (with-redefs [image/upload-blob fake-upload-blob]
-                     (handler (-> (mock/request :post "/")
-                                  (assoc :jwt-claims {:email "john@org"})
-                                  (assoc :body-params payload)
-                                  (assoc :parameters {:body {:source dom.types/default-resource-source}}))))
-          ;; create John create new resource with new organisation
-          resp-two (with-redefs [image/upload-blob fake-upload-blob]
-                     (handler (-> (mock/request :post "/")
-                                  (assoc :jwt-claims {:email "john@org"})
-                                  (assoc :body-params
-                                         (assoc (new-resource (merge data {:owners [(:id user)]}))
-                                                :org {:id -1
-                                                      :name "New Era"
-                                                      :geo_coverage_type "global"
-                                                      :country (-> (:countries data) second :id)}))
-                                  (assoc :parameters {:body {:source dom.types/default-resource-source}}))))
-          resource-one (db.resource/resource-by-id db (:body resp-one))
-          resource-two (db.resource/resource-by-id db (:body resp-two))]
-      (is (not-empty (db.ts-auth/get-auth-by-topic db {:topic-id (:id resource-one) :topic-type "resource"})))
-      (is (= (:id user) (:stakeholder (first (db.ts-auth/get-auth-by-topic db {:topic-id (:id resource-two) :topic-type "resource"})))))
-      (is (= 201 (:status resp-one)))
-      (let [image-one (:image resource-one)]
-        (is (s/includes? image-one "images/resource-"))
-        (is (s/ends-with? image-one "uploaded.png"))
-        (is (s/starts-with? image-one "https://storage.googleapis.com/")))
-      (is (s/ends-with? (:image resource-one) "uploaded.png"))
-      (is (= (dissoc (assoc (new-resource data)
-                            :id 10001
-                            :value "2000"
-                            :tags (map #(:id %) (:tags data))
-                            :created_by 10001) :image :owners)
-             (dissoc resource-one :image :owners)))
-      (is (= (dissoc (assoc (new-resource data)
-                            :id 10002
-                            :image "/image/resource/2"
-                            :value "2000"
-                            :tags (map #(:id %) (:tags data))
-                            :created_by 10001) :image :owners)
-             (dissoc resource-two :image)))
-      (is (= (:url payload) (:url resource-one))))))
+  (let [system (ig/init fixtures/*system* [::resource/post])
+        config (get system [:duct/const :gpml.config/common])
+        conn (get-in config [:db :spec])
+        handler (::resource/post system)
+        data (profile-test/seed-important-database conn)]
+    (testing "New resource is created"
+      (let [;; create new resource category tag
+            _ (do (db.tag/new-tag-category conn {:category "financing mechanism"})
+                  (db.tag/new-tag conn {:tag "RT 1" :tag_category 2})
+                  (db.tag/new-tag conn {:tag "RT 2" :tag_category 2}))
+            ;; create new language
+            _ (db.language/new-language conn {:iso_code "id"
+                                              :english_name "Indonesian"
+                                              :native_name "Bahasa Indonesia"})
+            ;; create new user name John
+            sth-id (test-util/create-test-stakeholder config
+                                                      "john.doe@mail.invalid"
+                                                      "APPROVED"
+                                                      "USER")
+            ;; create John create new resource with available organisation
+            payload (new-resource data)
+            resp-one (with-redefs [image/upload-blob fake-upload-blob]
+                       (handler (-> (mock/request :post "/")
+                                    (assoc :user {:id sth-id}
+                                           :parameters {:body {:source dom.types/default-resource-source}}
+                                           :body-params payload))))
+            ;; create John create new resource with new organisation
+            resp-two (with-redefs [image/upload-blob fake-upload-blob]
+                       (handler (-> (mock/request :post "/")
+                                    (assoc :user {:id sth-id}
+                                           :parameters {:body {:source dom.types/default-resource-source}}
+                                           :body-params
+                                           (assoc (new-resource (merge data {:owners [sth-id]}))
+                                                  :org {:id -1
+                                                        :name "New Era"
+                                                        :geo_coverage_type "global"
+                                                        :country (-> (:countries data) second :id)})))))
+            resource-one (db.resource/resource-by-id conn (:body resp-one))
+            resource-two (db.resource/resource-by-id conn (:body resp-two))
+            owners (db.rbac-util/get-users-with-granted-permission-on-resource conn {:context-type-name "resource"
+                                                                                     :resource-id (:id resource-one)
+                                                                                     :permission-name "resource/delete"})]
+        (is (get (set (map :user_id owners)) sth-id))
+        (is (= 201 (:status resp-one)))
+        (let [image-one (:image resource-one)]
+          (is (s/includes? image-one "images/resource-"))
+          (is (s/ends-with? image-one "uploaded.png"))
+          (is (s/starts-with? image-one "https://storage.googleapis.com/")))
+        (is (s/ends-with? (:image resource-one) "uploaded.png"))
+        (is (= (dissoc (assoc (new-resource data)
+                              :id 10001
+                              :value "2000"
+                              :tags (map :id (:tags data))
+                              :created_by 10001) :image :owners)
+               (dissoc resource-one :image :owners)))
+        (is (= (dissoc (assoc (new-resource data)
+                              :id 10002
+                              :image "/image/resource/2"
+                              :value "2000"
+                              :tags (map :id (:tags data))
+                              :created_by 10001) :image :owners)
+               (dissoc resource-two :image)))
+        (is (= (:url payload) (:url resource-one)))))
+    (testing "Unapproved users doesn't have enough permissions to create a new resource"
+      (let [sth-id (test-util/create-test-stakeholder config
+                                                      "john.doe2@mail.invalid"
+                                                      "SUBMITTED"
+                                                      "USER")
+            ;; create John create new resource with available organisation
+            payload (new-resource data)
+            resp-one (with-redefs [image/upload-blob fake-upload-blob]
+                       (handler (-> (mock/request :post "/")
+                                    (assoc :user {:id sth-id}
+                                           :parameters {:body {:source dom.types/default-resource-source}}
+                                           :body-params payload))))]
+        (is (= 403 (:status resp-one)))))))

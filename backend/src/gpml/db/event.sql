@@ -65,8 +65,8 @@ UPDATE event
 -- :name event-by-id :query :one
 -- :doc Returns the data for a given event
   WITH owners_data AS (
-   SELECT COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') AS owners, authz.topic_id
- FROM  topic_stakeholder_auth authz WHERE authz.topic_type::text='event' AND authz.topic_id=:id
+   SELECT COALESCE(json_agg(acs.stakeholder) FILTER (WHERE acs.stakeholder IS NOT NULL), '[]') AS owners, acs.event AS topic_id
+ FROM  stakeholder_event acs WHERE acs.event = :id AND acs.association = 'owner'
 GROUP BY topic_id
    )
 SELECT
@@ -90,7 +90,7 @@ SELECT
     e.review_status,
     (SELECT json_agg(tag) FROM event_tag WHERE event = :id) AS tags,
     (SELECT json_agg(COALESCE(country, country_group))
-        FROM event_geo_coverage WHERE event = :id) as geo_coverage_value,
+	FROM event_geo_coverage WHERE event = :id) as geo_coverage_value,
       COALESCE(owners_data.owners, '[]') AS owners
 FROM v_event_data e
 LEFT JOIN owners_data ON owners_data.topic_id=:id
