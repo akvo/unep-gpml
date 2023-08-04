@@ -10,9 +10,11 @@
             [gpml.handler.image :as handler.image]
             [gpml.handler.organisation :as handler.org]
             [gpml.handler.resource.geo-coverage :as handler.geo]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.handler.util :as handler.util]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util.email :as email]
             [gpml.util.geo :as geo]
             [integrant.core :as ig]
@@ -24,10 +26,10 @@
                    (format "^(%1$s)((,(%1$s))+)?$")
                    re-pattern))
 
-(defmethod ig/init-key :gpml.handler.stakeholder/get [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.stakeholder/get [_ {:keys [db] :as config}]
   (fn [{{{:keys [page limit email-like roles] :as query} :query} :parameters
-        user :user approved? :approved?}]
-    (resp/response (if (or (and approved? (= (:role user) "ADMIN"))
+        user :user}]
+    (resp/response (if (or (h.r.permission/super-admin? config (:id user))
                            (= (:role user) :programmatic-access))
                      ;; FIXME: Currently hard-coded to allow only for ADMINS.
                      (let [search (and email-like (format "%%%s%%" email-like))
@@ -165,7 +167,17 @@
 
       (= -1 (:id org))
       (assoc :affiliation (if (= -1 (:id org))
-                            (handler.org/create tx logger mailjet-config org)
+                            (let [org-id (handler.org/create tx logger mailjet-config (dissoc org :id))]
+                              (srv.permissions/assign-roles-to-users-from-connections
+                               {:conn tx
+                                :logger logger}
+                               {:context-type :organisation
+                                :resource-id org-id
+                                :individual-connections [{:role "owner"
+                                                          :stakeholder (:id new-profile)}]})
+                              org-id)
+                            ;; TODO: We are not sure if we should remove the ownership-related role assignment
+                            ;; from the user to the previous organisation, if he has changed it here.
                             (:id org)))
       (and
        (contains? body-params :org)
@@ -213,44 +225,24 @@
       (resp/response (get-stakeholder-profile db stakeholder))
       (resp/response {}))))
 
-(defn- make-affiliation*
-  [conn logger mailjet-config org]
-  (let [org-id (handler.org/create conn logger mailjet-config org)]
-    (email/notify-admins-pending-approval conn
-                                          mailjet-config
-                                          {:title (:name org) :type "organisation"})
-    org-id))
-
-(defn- make-affiliation
-  "Creates a new organisation for affiliation. If the organisation
-  with the same name exists and it is a `non_member` organisation we
-  MUST let the new organisation to be created and remove the
-  `non_member`. If the existing organisation is already a `member`
-  then we should return an error letting the caller know that an
-  organisation with the same name exists. "
-  [conn logger mailjet-config org]
-  (if (:id org)
-    {:success? true
-     :org-id (:id org)}
-    (try
-      (if-let [old-org (first (db.organisation/get-organisations conn
-                                                                 {:filters {:name (:name org)
-                                                                            :is_member false}}))]
-        (do
-          (db.organisation/delete-organisation conn {:id (:id old-org)})
-          {:success? true
-           :org-id (make-affiliation* conn logger mailjet-config org)})
-        {:success? true
-         :org-id (make-affiliation* conn logger mailjet-config org)})
-      (catch Exception e
-        {:success? false
-         :reason :could-not-create-org
-         :error-details {:message (.getMessage e)}}))))
-
-(defn- create-stakeholder
-  [conn new-sth]
-  (let [result (db.stakeholder/new-stakeholder conn new-sth)]
-    (:id result)))
+(defn- create-stakeholder!
+  [conn logger new-sth]
+  (let [result (db.stakeholder/new-stakeholder conn new-sth)
+        sth-id (:id result)
+        role-assignments [{:role-name :unapproved-user
+                           :context-type :application
+                           :resource-id srv.permissions/root-app-resource-id
+                           :user-id sth-id}]]
+    (srv.permissions/create-resource-context
+     {:conn conn
+      :logger logger}
+     {:context-type :stakeholder
+      :resource-id sth-id})
+    (srv.permissions/assign-roles-to-users
+     {:conn conn
+      :logger logger}
+     role-assignments)
+    sth-id))
 
 (defn- update-stakeholder-profile
   [conn old-sth new-sth]
@@ -272,6 +264,8 @@
     (db.stakeholder/update-stakeholder conn to-update)
     (:id old-sth)))
 
+;; FIXME: The permissions metadata adding part is not right, as we are re-creating org related to the new stakeholder,
+;; so we need to handle that and ensure we get the right resource-id for the permissions.
 (defn- save-stakeholder
   [{:keys [db logger mailjet-config] :as config}
    {{:keys [body]} :parameters
@@ -292,7 +286,7 @@
             old-sth (db.stakeholder/stakeholder-by-email tx {:email (:email new-sth)})
             sth-id (if old-sth
                      (update-stakeholder-profile tx old-sth new-sth)
-                     (create-stakeholder tx new-sth))
+                     (create-stakeholder! tx logger new-sth))
             tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body)
             save-tags-result (if-not (seq tags)
                                {:success? true}
@@ -335,26 +329,24 @@
                               (let [old-org (first (db.organisation/get-organisations tx
                                                                                       {:filters {:id (:id org)}}))]
                                 (if-not (:is_member old-org)
-                                  {:success? (boolean (handler.org/update-org tx
-                                                                              logger
-                                                                              mailjet-config
-                                                                              {:id (:id org)
-                                                                               :created_by sth-id}))}
+                                  (do
+                                    ;; We assign `resource-owner` role to the stakeholder that has created the org,
+                                    ;; as it is a non-member organisation that he can edit without being approved yet.
+                                    (srv.permissions/assign-roles-to-users-from-connections
+                                     {:conn tx
+                                      :logger logger}
+                                     {:context-type :organisation
+                                      :resource-id (:id org)
+                                      :individual-connections [{:role "owner"
+                                                                :stakeholder sth-id}]})
+                                    {:success? (boolean (handler.org/update-org tx
+                                                                                logger
+                                                                                mailjet-config
+                                                                                {:id (:id org)
+                                                                                 :created_by sth-id}))})
+                                  ;; This means the org is a MEMBER, approved organisation, where the stakeholder
+                                  ;; should not have ownership permissions, so we don't need to do anything else.
                                   {:success? true}))
-
-                              ;; This case will happen when the user
-                              ;; joins the GPML partnership and
-                              ;; creates a new MEMBER organisation.
-                              ;; Note that we also update the
-                              ;; stakeholder with the org-id because
-                              ;; it's a new organisation.
-                              (seq org)
-                              (let [{:keys [success? org-id] :as result}
-                                    (make-affiliation tx logger mailjet-config (assoc org :created_by sth-id))]
-                                (if success?
-                                  {:success? (= 1 (db.stakeholder/update-stakeholder tx {:affiliation org-id
-                                                                                         :id sth-id}))}
-                                  result))
 
                               :else
                               {:success? true})
@@ -410,49 +402,57 @@
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/suggested-profiles
-  [_ {:keys [db]}]
-  (fn [{:keys [jwt-claims parameters]}]
-    (if-let [stakeholder (db.stakeholder/stakeholder-by-email (:spec db) {:email (:email jwt-claims)})]
-      (let [{page :page limit :limit} (:query parameters)
-            tags (db.resource.tag/get-resource-tags (:spec db) {:table "stakeholder_tag"
-                                                                :resource-col "stakeholder"
-                                                                :resource-id (:id stakeholder)})
-            offerings-ids (->> tags
-                               (filter #(= (:tag_relation_category %) "offering"))
-                               (mapv #(get % :id)))
-            seekings-ids (->> tags
-                              (filter #(= (:tag_relation_category %) "seeking"))
-                              (mapv #(get % :id)))
-            stakeholders (db.stakeholder/get-suggested-stakeholders
-                          (:spec db)
-                          {:seeking-ids-for-offerings seekings-ids
-                           :offering-ids-for-seekings offerings-ids
-                           :stakeholder-id (:id stakeholder)
-                           :offset (* limit page)
-                           :limit limit})]
-        (cond
-          (and (seq stakeholders) (= (count stakeholders) limit))
-          (resp/response {:suggested_profiles (mapv #(get-stakeholder-profile db %) stakeholders)})
+  [_ {:keys [db] :as config}]
+  (fn [{:keys [jwt-claims parameters user]}]
+    (if-not (h.r.permission/operation-allowed?
+             config
+             {:user-id (:id user)
+              :entity-type :application
+              :entity-id srv.permissions/root-app-resource-id
+              :custom-permission :read-suggested-profiles
+              :root-context? true})
+      (r/forbidden {:message "Unauthorized"})
+      (if-let [stakeholder (db.stakeholder/stakeholder-by-email (:spec db) {:email (:email jwt-claims)})]
+        (let [{page :page limit :limit} (:query parameters)
+              tags (db.resource.tag/get-resource-tags (:spec db) {:table "stakeholder_tag"
+                                                                  :resource-col "stakeholder"
+                                                                  :resource-id (:id stakeholder)})
+              offerings-ids (->> tags
+                                 (filter #(= (:tag_relation_category %) "offering"))
+                                 (mapv #(get % :id)))
+              seekings-ids (->> tags
+                                (filter #(= (:tag_relation_category %) "seeking"))
+                                (mapv #(get % :id)))
+              stakeholders (db.stakeholder/get-suggested-stakeholders
+                            (:spec db)
+                            {:seeking-ids-for-offerings seekings-ids
+                             :offering-ids-for-seekings offerings-ids
+                             :stakeholder-id (:id stakeholder)
+                             :offset (* limit page)
+                             :limit limit})]
+          (cond
+            (and (seq stakeholders) (= (count stakeholders) limit))
+            (resp/response {:suggested_profiles (mapv #(get-stakeholder-profile db %) stakeholders)})
 
-          (not (seq stakeholders))
-          (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
-                                                    (:spec db)
-                                                    {:limit limit
-                                                     :stakeholder-ids [(:id stakeholder)]})
-                                                   (mapv #(get-stakeholder-profile db %)))})
+            (not (seq stakeholders))
+            (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
+                                                      (:spec db)
+                                                      {:limit limit
+                                                       :stakeholder-ids [(:id stakeholder)]})
+                                                     (mapv #(get-stakeholder-profile db %)))})
 
-          :else
-          (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
-                                                    (:spec db)
-                                                    {:limit (- limit (count stakeholders))
-                                                     :stakeholder-ids (conj
-                                                                       (->> stakeholders
-                                                                            (mapv #(get % :id))
-                                                                            (remove nil?))
-                                                                       (:id stakeholder))})
-                                                   (apply conj (vec stakeholders))
-                                                   (mapv #(get-stakeholder-profile db %)))})))
-      (resp/response {}))))
+            :else
+            (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
+                                                      (:spec db)
+                                                      {:limit (- limit (count stakeholders))
+                                                       :stakeholder-ids (conj
+                                                                         (->> stakeholders
+                                                                              (mapv #(get % :id))
+                                                                              (remove nil?))
+                                                                         (:id stakeholder))})
+                                                     (apply conj (vec stakeholders))
+                                                     (mapv #(get-stakeholder-profile db %)))})))
+        (resp/response {})))))
 
 (def org-schema
   (into [:map
@@ -544,43 +544,80 @@
            [:email-like {:optional true}
             string?]]})
 
-(defmethod ig/init-key :gpml.handler.stakeholder/patch [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.stakeholder/patch
+  [_ {:keys [db logger] :as config}]
   (fn [{{{:keys [id]} :path
          {:keys [role]} :body}
         :parameters
-        admin :admin}]
-    (let [params {:role role :reviewed_by (:id admin) :id id}
-          count (db.stakeholder/update-stakeholder-role (:spec db) params)]
-      (resp/response {:status (if (= count 1) "success" "failed")}))))
+        user :user}]
+    (if (h.r.permission/super-admin? config (:id user))
+      (try
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (let [target-user (db.stakeholder/stakeholder-by-id tx {:id id})
+                prev-user-role (:role target-user)
+                params {:role role :reviewed_by (:id user) :id id}
+                count (db.stakeholder/update-stakeholder-role tx params)]
+            (if (or (= prev-user-role role)
+                    (not (contains? #{prev-user-role role} "ADMIN")))
+              (resp/response {:status (if (= count 1) "success" "failed")})
+              (let [{:keys [success?]} (if (= "ADMIN" prev-user-role)
+                                         (srv.permissions/remove-user-from-super-admins
+                                          {:conn tx
+                                           :logger logger}
+                                          id)
+                                         (srv.permissions/make-user-super-admin
+                                          {:conn tx
+                                           :logger logger}
+                                          id))]
+                (if success?
+                  (resp/response {:status "success"})
+                  (throw (ex-info "Error making the user super-admin in RBAC"
+                                  {:reason :error-updating-rbac-super-admins})))))))
+        (catch Throwable e
+          (log logger :error ::failed-to-update-stakeholder-role {:exception-message (.getMessage e)})
+          (let [response {:status 500
+                          :body {:success? false
+                                 :reason :could-not-update-stakeholder-role}}]
+            (if (instance? SQLException e)
+              response
+              (assoc-in response [:body :error-details :error] (.getMessage e))))))
+      (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/patch-params [_ _]
   {:path [:map [:id int?]]
    :body [:map [:role
                 (apply conj [:enum] dom.stakeholder/role-types)]]})
 
-(defmethod ig/init-key :gpml.handler.stakeholder/get-by-id [_ {:keys [db]}]
-  (fn [{{:keys [path]} :parameters}]
-    (let [stakeholder (db.stakeholder/get-stakeholder-by-id (:spec db) path)]
-      (resp/response
-       (get-stakeholder-profile db stakeholder)))))
+(defmethod ig/init-key :gpml.handler.stakeholder/get-by-id
+  [_ {:keys [db] :as config}]
+  (fn [{{:keys [path]} :parameters user :user}]
+    (if (or (h.r.permission/super-admin? config (:id user))
+            (= (:id path) (:id user)))
+      (let [stakeholder (db.stakeholder/get-stakeholder-by-id (:spec db) path)]
+        (resp/response
+         (get-stakeholder-profile db stakeholder)))
+      (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/put-restricted
   [_ {:keys [db logger] :as config}]
-  (fn [{{:keys [path body]} :parameters}]
-    (try
-      (jdbc/with-db-transaction [tx (:spec db)]
-        (let [old-profile (db.stakeholder/stakeholder-by-id tx path)]
-          (update-stakeholder config tx {:body-params (assoc body :id (:id path))
-                                         :old-profile old-profile})
-          (resp/status {:success? true} 204)))
-      (catch Exception e
-        (log logger :error ::failed-to-update-stakeholder {:exception-message (.getMessage e)})
-        (let [response {:status 500
-                        :body {:success? false
-                               :reason :could-not-update-stakeholder}}]
-          (if (instance? SQLException e)
-            response
-            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
+  (fn [{{:keys [path body]} :parameters user :user}]
+    (if (or (h.r.permission/super-admin? config (:id user))
+            (= (:id path) (:id user)))
+      (try
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (let [old-profile (db.stakeholder/stakeholder-by-id tx path)]
+            (update-stakeholder config tx {:body-params (assoc body :id (:id path))
+                                           :old-profile old-profile})
+            (resp/status {:success? true} 204)))
+        (catch Exception e
+          (log logger :error ::failed-to-update-stakeholder {:exception-message (.getMessage e)})
+          (let [response {:status 500
+                          :body {:success? false
+                                 :reason :could-not-update-stakeholder}}]
+            (if (instance? SQLException e)
+              response
+              (assoc-in response [:body :error-details :error] (.getMessage e))))))
+      (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/put-restricted-params [_ _]
   {:path [:map [:id int?]]

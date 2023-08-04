@@ -3,6 +3,8 @@
             [gpml.db.favorite :as db.favorite]
             [gpml.db.stakeholder-association :as db.stakeholder-association]
             [gpml.domain.resource :as dom.resource]
+            [gpml.handler.resource.permission :as h.r.permission]
+            [gpml.handler.responses :as r]
             [gpml.util :as util]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
@@ -23,24 +25,32 @@
       (assoc :type (:topic associated-topics))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder-association/get-associated-topics
-  [_ {:keys [db]}]
-  (fn [{:keys [parameters]}]
-    (let [{:keys [association limit page]} (api-associated-topics-opts->associated-topics-opts (:query parameters))
-          common-params {:stakeholder-id (-> parameters :path :id)
-                         :association association}
-          associated-topics
-          (db.stakeholder-association/get-stakeholder-associated-topics (:spec db)
-                                                                        (merge common-params
-                                                                               {:limit limit
-                                                                                :offset (* limit page)}))
-          associated-topics-count
-          (db.stakeholder-association/get-stakeholder-associated-topics (:spec db)
-                                                                        (merge common-params {:count-only? true}))]
-      (resp/response
-       {:success? true
-        :associated_topics (map associated-topics->api-associated-topics associated-topics)
-        :count (-> associated-topics-count first :count)}))))
+  [_ {:keys [db] :as config}]
+  (fn [{:keys [parameters user]}]
+    (if (h.r.permission/operation-allowed?
+         config
+         {:user-id (:id user)
+          :entity-type :application
+          :custom-permission :read-suggested-profiles
+          :root-context? true})
+      (let [{:keys [association limit page]} (api-associated-topics-opts->associated-topics-opts (:query parameters))
+            common-params {:stakeholder-id (-> parameters :path :id)
+                           :association association}
+            associated-topics
+            (db.stakeholder-association/get-stakeholder-associated-topics (:spec db)
+                                                                          (merge common-params
+                                                                                 {:limit limit
+                                                                                  :offset (* limit page)}))
+            associated-topics-count
+            (db.stakeholder-association/get-stakeholder-associated-topics (:spec db)
+                                                                          (merge common-params {:count-only? true}))]
+        (resp/response
+         {:success? true
+          :associated_topics (map associated-topics->api-associated-topics associated-topics)
+          :count (-> associated-topics-count first :count)}))
+      (r/forbidden {:message "Unauthorized"}))))
 
+;; FIXME: These defaults for both `page` and `limit` params are not working. The endpoint crashes without them.
 (defmethod ig/init-key :gpml.handler.stakeholder-association/get-associated-topics-params
   [_ _]
   {:path [:map [:id pos-int?]]

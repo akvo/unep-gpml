@@ -1,6 +1,9 @@
 (ns gpml.handler.tag
   (:require [clojure.string :as str]
             [gpml.db.tag :as db.tag]
+            [gpml.handler.resource.permission :as h.r.permission]
+            [gpml.handler.responses :as r]
+            [gpml.service.permissions :as srv.permissions]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -72,13 +75,20 @@
   "Creates N `tags` given a `tag-category`. `tags` are expected to have
   to have the following structure:
   - `[{:tag \"some tag\"} . . .]`"
-  [conn tags tag-category]
+  [conn logger tags tag-category]
   (let [tag-category ((comp :id first) (db.tag/get-tag-categories conn {:filters {:categories [tag-category]}}))
         new-tags (filter (comp not :id) tags)
         tags-to-create (map #(vector % tag-category) (map :tag new-tags))
-        tag-entity-columns ["tag" "tag_category"]]
-    (map :id (db.tag/new-tags conn {:tags tags-to-create
-                                    :insert-cols tag-entity-columns}))))
+        tag-entity-columns ["tag" "tag_category"]
+        created-tag-ids (map :id (db.tag/new-tags conn {:tags tags-to-create
+                                                        :insert-cols tag-entity-columns}))]
+    (doseq [tag-id created-tag-ids]
+      (srv.permissions/create-resource-context
+       {:conn conn
+        :logger logger}
+       {:context-type :tag
+        :resource-id tag-id}))
+    created-tag-ids))
 
 (defn all-tags
   [db]
@@ -134,8 +144,10 @@
 
 (defmethod ig/init-key :gpml.handler.tag/put
   [_ config]
-  (fn [req]
-    (resp/response (update-tag config req))))
+  (fn [{:keys [user] :as req}]
+    (if (h.r.permission/super-admin? config (:id user))
+      (resp/response (update-tag config req))
+      (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.tag/put-params
   [_ _]

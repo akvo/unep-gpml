@@ -5,6 +5,8 @@
             [gpml.db.country-group :as db.country-group]
             [gpml.db.invitation :as db.invitation]
             [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.handler.resource.permission :as h.r.permission]
+            [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.util :as util]
             [gpml.util.email :as email]
@@ -274,13 +276,22 @@ User %s is suggesting an expert with the following information:
 
 (defmethod ig/init-key :gpml.handler.stakeholder.expert/post
   [_ config]
-  (fn [req]
-    (invite-experts config req)))
+  (fn [{:keys [user] :as req}]
+    (if (h.r.permission/super-admin? config (:id user))
+      (invite-experts config req)
+      (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder.expert/post-suggest
   [_ config]
-  (fn [req]
-    (suggest-expert config req)))
+  (fn [{:keys [user] :as req}]
+    (if (h.r.permission/operation-allowed?
+         config
+         {:user-id (:id user)
+          :entity-type :application
+          :custom-permission :suggest-experts
+          :root-context? true})
+      (suggest-expert config req)
+      (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder.expert/get-params
   [_ _]
