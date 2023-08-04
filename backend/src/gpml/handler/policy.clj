@@ -1,16 +1,18 @@
 (ns gpml.handler.policy
   (:require [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
             [duct.logger :refer [log]]
-            [gpml.db.favorite :as db.favorite]
             [gpml.db.policy :as db.policy]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.policy :as dom.policy]
-            [gpml.handler.auth :as h.auth]
             [gpml.handler.image :as handler.image]
             [gpml.handler.resource.geo-coverage :as handler.geo]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
+            [gpml.handler.responses :as r]
             [gpml.handler.util :as handler.util]
+            [gpml.service.association :as srv.association]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
             [gpml.util.email :as email]
             [gpml.util.malli :as util.malli]
@@ -21,28 +23,10 @@
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
-(defn- expand-entity-associations
-  [entity-connections resource-id]
-  (vec (for [connection entity-connections]
-         {:column_name "policy"
-          :topic "policy"
-          :topic_id resource-id
-          :organisation (:entity connection)
-          :association (:role connection)
-          :remarks nil})))
-
-(defn- expand-individual-associations
-  [individual-connections resource-id]
-  (vec (for [connection individual-connections]
-         {:column_name "policy"
-          :topic "policy"
-          :topic_id resource-id
-          :stakeholder (:stakeholder connection)
-          :association (:role connection)
-          :remarks nil})))
-
 (defn- create-policy
-  [{:keys [logger mailjet-config] :as config} conn
+  [{:keys [logger mailjet-config] :as config}
+   conn
+   user
    {:keys [title original_title abstract url
            data_source type_of_law record_number
            first_publication_date latest_amendment_date
@@ -93,11 +77,8 @@
                    (util/update-if-not-nil data :source #(sql-util/keyword->pg-enum % "resource_source"))
                    (db.policy/new-policy conn) :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
-        owners (distinct (remove nil? (flatten (conj owners
-                                                     (map #(when (= (:role %) "owner")
-                                                             (:stakeholder %))
-                                                          api-individual-connections)))))
-        geo-coverage-type (keyword geo_coverage_type)]
+        geo-coverage-type (keyword geo_coverage_type)
+        org-associations (map #(set/rename-keys % {:entity :organisation}) entity_connections)]
     (when (seq related_content)
       (handler.resource.related-content/create-related-contents conn logger policy-id "policy" related_content))
     (when (not-empty tags)
@@ -105,17 +86,22 @@
                                                                              :tag-category "general"
                                                                              :resource-name "policy"
                                                                              :resource-id policy-id}))
-    (doseq [stakeholder-id owners]
-      (h.auth/grant-topic-to-stakeholder! conn {:topic-id policy-id
-                                                :topic-type "policy"
-                                                :stakeholder-id stakeholder-id
-                                                :roles ["owner"]}))
-    (when (not-empty entity_connections)
-      (doseq [association (expand-entity-associations entity_connections policy-id)]
-        (db.favorite/new-organisation-association conn association)))
-    (when (not-empty api-individual-connections)
-      (doseq [association (expand-individual-associations api-individual-connections policy-id)]
-        (db.favorite/new-stakeholder-association conn association)))
+    (srv.permissions/create-resource-context
+     {:conn conn
+      :logger logger}
+     {:context-type :policy
+      :resource-id policy-id
+      :entity-connections entity_connections})
+    (srv.association/save-associations
+     {:conn conn
+      :logger logger}
+     {:org-associations org-associations
+      :sth-associations (if (seq api-individual-connections)
+                          api-individual-connections
+                          [{:role "owner"
+                            :stakeholder (:id user)}])
+      :resource-type "policy"
+      :resource-id policy-id})
     (handler.geo/create-resource-geo-coverage conn
                                               :policy
                                               policy-id
@@ -131,18 +117,26 @@
 
 (defmethod ig/init-key :gpml.handler.policy/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params parameters] :as req}]
+  (fn [{:keys [body-params parameters user] :as req}]
     (try
-      (jdbc/with-db-transaction [tx (:spec db)]
-        (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
-              policy-id (create-policy config
-                                       tx
-                                       (assoc body-params
-                                              :created_by (:id user)
-                                              :source (get-in parameters [:body :source])))]
-          (resp/created (:referrer req) {:success? true
-                                         :message "New policy created"
-                                         :id policy-id})))
+      (if-not (h.r.permission/operation-allowed?
+               config
+               {:user-id (:id user)
+                :entity-type :policy
+                :operation-type :create
+                :root-context? true})
+        (r/forbidden {:message "Unauthorized"})
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (let [policy-id (create-policy
+                           config
+                           tx
+                           user
+                           (assoc body-params
+                                  :created_by (:id user)
+                                  :source (get-in parameters [:body :source])))]
+            (resp/created (:referrer req) {:success? true
+                                           :message "New policy created"
+                                           :id policy-id}))))
       (catch Exception e
         (log logger :error ::failed-to-create-policy {:exception-message (.getMessage e)})
         (let [response {:status 500

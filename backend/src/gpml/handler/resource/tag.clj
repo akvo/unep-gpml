@@ -46,7 +46,7 @@
                                                :tags (prep-resource-tags resource-name resource-id tags-ids tag-category)})
         {:success? true})
       (try
-        (let [new-tags-ids (handler.tag/create-tags conn tags tag-category)
+        (let [new-tags-ids (handler.tag/create-tags conn logger tags tag-category)
               tags-to-add (concat (remove nil? tags-ids) new-tags-ids)
               resource-tags-to-add (prep-resource-tags resource-name resource-id tags-to-add tag-category)
               new-tags (db.resource.tag/create-resource-tags conn {:table table

@@ -30,7 +30,8 @@
              (gpml.scheduler.brs-api-importer/handle-import)]}
 
   :unresolved-var
-  {:exclude [gpml.handler.responses]}
+  {:exclude [gpml.handler.responses
+             java-time.pre-java8/sql-timestamp]}
 
   :single-key-in
   {:level :warning}

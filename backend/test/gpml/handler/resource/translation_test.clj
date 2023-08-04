@@ -4,6 +4,8 @@
             [gpml.fixtures :as fixtures]
             [gpml.handler.resource.translation :as res-translation]
             [gpml.seeder.main :as seeder]
+            [gpml.service.permissions :as srv.permissions]
+            [gpml.test-util :as test-util]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
 
@@ -38,27 +40,66 @@
 ;; NOTE: We are just using Event resource type as example for tests since the rest are the same.
 (deftest handler-put-test
   (let [system (ig/init fixtures/*system* [::res-translation/put])
+        config (get system [:duct/const :gpml.config/common])
+        conn (get-in config [:db :spec])
+        logger (get config :logger)
         handler (::res-translation/put system)
-        db (-> system :duct.database.sql/hikaricp :spec)
-        admin {:id 0 :role "ADMIN"}
-        event (db.event/new-event db event-data)]
-    (seeder/seed-languages db)
+        admin-id (test-util/create-test-stakeholder config
+                                                    "john.doe@mail.invalid"
+                                                    "APPROVED"
+                                                    "ADMIN")
+        sth-id (test-util/create-test-stakeholder config
+                                                  "john.doe2@mail.invalid"
+                                                  "APPROVED"
+                                                  "USER")
+        event (db.event/new-event conn event-data)
+        _ (srv.permissions/create-resource-context {:conn conn
+                                                    :logger logger}
+                                                   {:context-type :event
+                                                    :resource-id (:id event)})
+        _ (srv.permissions/assign-roles-to-users {:conn conn
+                                                  :logger (:logger config)}
+                                                 [{:role-name :resource-owner
+                                                   :context-type :event
+                                                   :resource-id (:id event)
+                                                   :user-id sth-id}])]
+    (seeder/seed-languages conn)
     (testing "Creating translations for an event"
       (let [translations (assoc translations-event-data :topic-id (:id event))
             resp (handler (-> (mock/request :put "/")
                               (assoc :jwt-claims {:email "john@org"}
-                                     :user admin
+                                     :user {:id admin-id}
                                      :parameters
                                      {:path {:topic-type "event" :topic-id (:id event)}
                                       :body translations})))]
         (is (= 200 (:status resp)))))
+    (testing "Creating translations for an event with normal user with enough permissions"
+      (let [translations (assoc translations-event-data :topic-id (:id event))
+            resp (handler (-> (mock/request :put "/")
+                              (assoc :user {:id sth-id}
+                                     :parameters
+                                     {:path {:topic-type "event" :topic-id (:id event)}
+                                      :body translations})))]
+        (is (= 200 (:status resp)))))
+    (testing "Creating translations for an event with user without enough permissions"
+      (let [sth-id (test-util/create-test-stakeholder config
+                                                      "john.doe3@mail.invalid"
+                                                      "APPROVED"
+                                                      "USER")
+            translations (assoc translations-event-data :topic-id (:id event))
+            resp (handler (-> (mock/request :put "/")
+                              (assoc :user {:id sth-id}
+                                     :parameters
+                                     {:path {:topic-type "event" :topic-id (:id event)}
+                                      :body translations})))]
+        (is (= 403 (:status resp)))))
     (testing "Updating translations for an event"
       (let [translations (-> translations-event-data
                              (assoc :topic-id (:id event))
                              (update-in [:translations 0 :value] #(str % " edited")))
             resp (handler (-> (mock/request :put "/")
                               (assoc :jwt-claims {:email "john@org"}
-                                     :user admin
+                                     :user {:id admin-id}
                                      :parameters
                                      {:path {:topic-type "event" :topic-id (:id event)}
                                       :body translations})))]
@@ -77,7 +118,7 @@
                              (assoc-in [:translations 0 :language] (:language event-data)))
             resp (handler (-> (mock/request :put "/")
                               (assoc :jwt-claims {:email "john@org"}
-                                     :user admin
+                                     :user {:id admin-id}
                                      :parameters
                                      {:path {:topic-type "event" :topic-id (:id event)}
                                       :body translations})))]
@@ -88,7 +129,7 @@
                              (assoc :topic-type "stakeholder"))
             resp (handler (-> (mock/request :put "/")
                               (assoc :jwt-claims {:email "john@org"}
-                                     :user admin
+                                     :user {:id admin-id}
                                      :parameters
                                      {:path {:topic-type "stakeholder" :topic-id (:id event)}
                                       :body translations})))]

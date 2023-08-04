@@ -123,7 +123,7 @@
 
 (defn- build-topic-data-query
   [entity-name
-   {:keys [entity tag representative-group
+   {:keys [id entity tag representative-group
            geo-coverage-types sub-content-type
            search-text review-status featured capacity-building upcoming] :as _params}
    {:keys [search-text-fields] :as _opts}]
@@ -148,6 +148,9 @@
                             ""
                             (format "LEFT JOIN %s_geo_coverage eg ON eg.%s = e.id" entity-name entity-name))
         where-cond (cond-> "WHERE 1=1"
+                     id
+                     (str " AND e.id = :id")
+
                      (seq review-status)
                      (str " AND e.review_status = :review-status::REVIEW_STATUS")
 

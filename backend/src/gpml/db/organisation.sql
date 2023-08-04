@@ -109,6 +109,7 @@ update organisation set id = :id
 --~ (when (contains? params :representative_group_academia_research) ",representative_group_academia_research= :representative_group_academia_research")
 --~ (when (contains? params :geo_coverage_type) ",geo_coverage_type= :geo_coverage_type::geo_coverage_type")
 --~ (when (contains? params :created_by) ",created_by= :created_by")
+--~ (when (contains? params :is_member) ",is_member= :is_member")
 where id = :id
 
 -- :name geo-coverage-v2 :? :*
