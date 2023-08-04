@@ -20,15 +20,15 @@
   [conn {:keys [org-id]}]
   (get-all-organisation-owner-associations
    conn
-   {:all-organisation-resource-owner-associations-query
-    (all-organisation-resource-owner-associations-query
-     {:org-id org-id})}))
+   {:org-id org-id
+    :all-organisation-resource-owner-associations-query
+    (all-organisation-resource-owner-associations-query {})}))
 
 (defn get-sth-org-focal-point-resources-associations*
-  [conn {:keys [org-id sth-id]}]
+  [conn opts]
   (get-sth-org-focal-point-resources-associations
    conn
-   {:sth-id sth-id
-    :all-organisation-resource-owner-associations-query
-    (all-organisation-resource-owner-associations-query
-     {:org-id org-id})}))
+   (merge
+    opts
+    {:all-organisation-resource-owner-associations-query
+     (all-organisation-resource-owner-associations-query {})})))

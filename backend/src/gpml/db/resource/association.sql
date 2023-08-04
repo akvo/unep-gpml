@@ -50,43 +50,47 @@ VALUES
 -- :snip all-organisation-resource-owner-associations-query
 SELECT organisation, 'event' AS resource_type, event AS resource_id
 FROM organisation_event
-WHERE organisation = :org-id AND association = 'owner'
+WHERE association = 'owner'
 UNION
 SELECT organisation, 'policy' AS resource_type, policy AS resource_id
 FROM organisation_policy
-WHERE organisation = :org-id AND association = 'owner'
+WHERE association = 'owner'
 UNION
 SELECT organisation, 'technology' AS resource_type, technology AS resource_id
 FROM organisation_technology
-WHERE organisation = :org-id AND association = 'owner'
+WHERE association = 'owner'
 UNION
 SELECT organisation, 'resource' AS resource_type, resource AS resource_id
 FROM organisation_resource
-WHERE organisation = :org-id AND association = 'owner'
+WHERE association = 'owner'
 UNION
 SELECT organisation, 'initiative' AS resource_type, initiative AS resource_id
 FROM organisation_initiative
-WHERE organisation = :org-id AND association = 'owner'
+WHERE association = 'owner'
 UNION
 SELECT organisation, 'case_study' AS resource_type, case_study AS resource_id
 FROM organisation_case_study
-WHERE organisation = :org-id AND association = 'owner'
+WHERE association = 'owner'
 
 -- :name get-sth-org-focal-point-resources-associations :query :many
 -- :doc Get the associations of a organisation given focal-point stakeholder association
 WITH org_associations AS (
   :snip:all-organisation-resource-owner-associations-query
 )
-SELECT so.stakeholder AS stakeholder_id, oacs.resource_id, oacs.resource_type
+SELECT so.stakeholder AS stakeholder_id, so.organisation AS organisation_id, oacs.resource_id, oacs.resource_type
 FROM stakeholder_organisation so
 INNER JOIN org_associations oacs ON so.organisation = oacs.organisation
-WHERE so.stakeholder = :sth-id AND so.association = 'focal-point';
+WHERE so.stakeholder = :sth-id AND so.association = 'focal-point'
+--~ (when (get params :in-org-id) " AND so.organisation = :in-org-id")
+--~ (when (get params :not-in-org-id) " AND so.organisation != :not-in-org-id")
+;
 
 -- :name get-all-organisation-owner-associations :query :many
 WITH org_associations AS (
   :snip:all-organisation-resource-owner-associations-query
 )
-SELECT * FROM org_associations;
+SELECT * FROM org_associations
+WHERE organisation = :org-id;
 
 -- :name get-orgs-focal-points-associations-on-resource :query :many
 SELECT so.*, so.association as role

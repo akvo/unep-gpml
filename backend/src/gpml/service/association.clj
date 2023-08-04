@@ -74,19 +74,28 @@
   organisation gain `resource-owner` RBAC role's collection of
   permissions on that resource to act on behalf of the organisation."
   [conn org-id sth-id]
-  (let [associations (db.res.acs/get-sth-org-focal-point-resources-associations*
-                      conn
-                      {:org-id org-id
-                       :sth-id sth-id})]
-    (if (seq associations)
-      (reduce
-       (fn [role-unassignments {:keys [stakeholder_id resource_type resource_id]}]
-         (conj role-unassignments {:user-id stakeholder_id
-                                   :role-name :resource-owner
-                                   :context-type (keyword (str/replace resource_type \_ \-))
-                                   :resource-id resource_id}))
-       []
-       associations)
+  (let [org-associations (db.res.acs/get-sth-org-focal-point-resources-associations*
+                          conn
+                          {:in-org-id org-id
+                           :sth-id sth-id})]
+    (if (seq org-associations)
+      (let [other-orgs-associations (db.res.acs/get-sth-org-focal-point-resources-associations*
+                                     conn
+                                     {:not-in-org-id org-id
+                                      :sth-id sth-id})]
+        (reduce
+         (fn [role-unassignments {:keys [stakeholder_id resource_type resource_id]}]
+           (if (medley/find-first (fn [other-org-acs]
+                                    (and (= resource_type (:resource_type other-org-acs))
+                                         (= resource_id (:resource_id other-org-acs))))
+                                  other-orgs-associations)
+             role-unassignments
+             (conj role-unassignments {:user-id stakeholder_id
+                                       :role-name :resource-owner
+                                       :context-type (keyword (str/replace resource_type \_ \-))
+                                       :resource-id resource_id})))
+         []
+         org-associations))
       [])))
 
 (defn- get-sth-org-focal-point-role-assignments
