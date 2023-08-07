@@ -59,7 +59,8 @@ ON CONFLICT DO NOTHING;
 --;; Tag contexts
 INSERT INTO rbac_context(id, context_type_name, resource_id, parent)
 SELECT uuid_generate_v4(), 'tag', id, '00000000-0000-0000-0000-000000000000'
-FROM tag;
+FROM tag
+ON CONFLICT DO NOTHING;
 --;;
 --;; Project contexts
 INSERT INTO rbac_context(id, context_type_name, resource_id, parent)
@@ -74,7 +75,8 @@ INNER JOIN topic_stakeholder_auth tsa ON tsa.stakeholder = s.id AND tsa.topic_ty
 INNER JOIN event r ON r.id = tsa.topic_id
 INNER JOIN rbac_context rc ON rc.resource_id = r.id AND rc.context_type_name = 'event'
 WHERE tsa.roles ??| array['owner']
-GROUP BY s.id, rc.id, r.id;
+GROUP BY s.id, rc.id, r.id
+ON CONFLICT DO NOTHING;
 --;;
 --;; Event resource-owner rbac_role_assignment from stakeholder_event table
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -95,7 +97,8 @@ INNER JOIN stakeholder_event se ON se.stakeholder = s.id
 INNER JOIN event r ON r.id = se.event
 INNER JOIN rbac_context rc ON rc.resource_id = r.id AND rc.context_type_name = 'event'
 WHERE se.association = 'resource_editor'
-GROUP BY s.id, rc.id, r.id;
+GROUP BY s.id, rc.id, r.id
+ON CONFLICT DO NOTHING;
 --;;
 --;; Policy resource-owner rbac_role_assignment
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -105,7 +108,8 @@ INNER JOIN topic_stakeholder_auth tsa ON tsa.stakeholder = s.id AND tsa.topic_ty
 INNER JOIN policy r ON r.id = tsa.topic_id
 INNER JOIN rbac_context rc ON rc.resource_id = r.id AND rc.context_type_name = 'policy'
 WHERE tsa.roles ??| array['owner']
-GROUP BY s.id, rc.id, r.id;
+GROUP BY s.id, rc.id, r.id
+ON CONFLICT DO NOTHING;
 --;;
 --;; Policy resource-owner rbac_role_assignment from stakeholder_policy table
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -126,7 +130,8 @@ INNER JOIN stakeholder_policy sp ON sp.stakeholder = s.id
 INNER JOIN policy r ON r.id = sp.policy
 INNER JOIN rbac_context rc ON rc.resource_id = r.id AND rc.context_type_name = 'policy'
 WHERE sp.association = 'resource_editor'
-GROUP BY s.id, rc.id, r.id;
+GROUP BY s.id, rc.id, r.id
+ON CONFLICT DO NOTHING;
 --;;
 --;; Technology resource-owner rbac_role_assignment
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -136,7 +141,8 @@ INNER JOIN topic_stakeholder_auth tsa ON tsa.stakeholder = s.id AND tsa.topic_ty
 INNER JOIN technology r ON r.id = tsa.topic_id
 INNER JOIN rbac_context rc ON rc.resource_id = r.id AND rc.context_type_name = 'technology'
 WHERE tsa.roles ??| array['owner']
-GROUP BY s.id, rc.id, r.id;
+GROUP BY s.id, rc.id, r.id
+ON CONFLICT DO NOTHING;
 --;;
 --;; Technology resource-owner rbac_role_assignment from stakeholder_technology table
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -157,7 +163,8 @@ INNER JOIN stakeholder_technology st ON st.stakeholder = s.id
 INNER JOIN technology r ON r.id = st.technology
 INNER JOIN rbac_context rc ON rc.resource_id = r.id AND rc.context_type_name = 'technology'
 WHERE st.association = 'resource_editor'
-GROUP BY s.id, rc.id, r.id;
+GROUP BY s.id, rc.id, r.id
+ON CONFLICT DO NOTHING;
 --;;
 --;; Initiative resource-owner rbac_role_assignment
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -167,7 +174,8 @@ INNER JOIN topic_stakeholder_auth tsa ON tsa.stakeholder = s.id AND tsa.topic_ty
 INNER JOIN initiative r ON r.id = tsa.topic_id
 INNER JOIN rbac_context rc ON rc.resource_id = r.id AND rc.context_type_name = 'initiative'
 WHERE tsa.roles ??| array['owner']
-GROUP BY s.id, rc.id, r.id;
+GROUP BY s.id, rc.id, r.id
+ON CONFLICT DO NOTHING;
 --;;
 --;; Initiative resource-owner rbac_role_assignment from stakeholder_initiative table
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -188,7 +196,8 @@ INNER JOIN stakeholder_initiative si ON si.stakeholder = s.id
 INNER JOIN initiative r ON r.id = si.initiative
 INNER JOIN rbac_context rc ON rc.resource_id = r.id AND rc.context_type_name = 'initiative'
 WHERE si.association = 'resource_editor'
-GROUP BY s.id, rc.id, r.id;
+GROUP BY s.id, rc.id, r.id
+ON CONFLICT DO NOTHING;
 --;;
 --;; Resource resource-owner rbac_role_assignment
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -198,7 +207,8 @@ INNER JOIN topic_stakeholder_auth tsa ON tsa.stakeholder = s.id AND tsa.topic_ty
 INNER JOIN resource r ON r.id = tsa.topic_id
 INNER JOIN rbac_context rc ON rc.resource_id = r.id AND rc.context_type_name = 'resource'
 WHERE tsa.roles ??| array['owner']
-GROUP BY s.id, rc.id, r.id;
+GROUP BY s.id, rc.id, r.id
+ON CONFLICT DO NOTHING;
 --;;
 --;; Resource resource-owner rbac_role_assignment from stakeholder_resource table
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -219,7 +229,8 @@ INNER JOIN stakeholder_resource sr ON sr.stakeholder = s.id
 INNER JOIN resource r ON r.id = sr.resource
 INNER JOIN rbac_context rc ON rc.resource_id = r.id AND rc.context_type_name = 'resource'
 WHERE sr.association = 'resource_editor'
-GROUP BY s.id, rc.id, r.id;
+GROUP BY s.id, rc.id, r.id
+ON CONFLICT DO NOTHING;
 --;;
 --;; Case Study resource-owner rbac_role_assignment
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -229,7 +240,8 @@ INNER JOIN topic_stakeholder_auth tsa ON tsa.stakeholder = s.id AND tsa.topic_ty
 INNER JOIN case_study r ON r.id = tsa.topic_id
 INNER JOIN rbac_context rc ON rc.resource_id = r.id AND rc.context_type_name = 'case-study'
 WHERE tsa.roles ??| array['owner']
-GROUP BY s.id, rc.id, r.id;
+GROUP BY s.id, rc.id, r.id
+ON CONFLICT DO NOTHING;
 --;;
 --;; Case Study resource-owner rbac_role_assignment from stakeholder_case_study table
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -250,7 +262,8 @@ INNER JOIN stakeholder_case_study scs ON scs.stakeholder = s.id
 INNER JOIN case_study r ON r.id = scs.case_study
 INNER JOIN rbac_context rc ON rc.resource_id = r.id AND rc.context_type_name = 'case-study'
 WHERE scs.association = 'resource_editor'
-GROUP BY s.id, rc.id, r.id;
+GROUP BY s.id, rc.id, r.id
+ON CONFLICT DO NOTHING;
 --;;
 --;; Project resource-owner rbac_role_assignment from project table
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -258,7 +271,8 @@ SELECT '2a06dc77-50f4-4b99-8599-54f73052775b', rc.id, s.id
 FROM stakeholder s
 INNER JOIN project p ON p.stakeholder_id = s.id
 INNER JOIN rbac_context rc ON rc.resource_id = p.id AND rc.context_type_name = 'project'
-GROUP BY s.id, rc.id, p.id;
+GROUP BY s.id, rc.id, p.id
+ON CONFLICT DO NOTHING;
 --;;
 --;; Stakeholder approved-user rbac_role_assignment
 --;; Regardless of being super admins all the approved users should have this role, in case at some point they stop
@@ -283,7 +297,8 @@ FROM stakeholder s
 INNER JOIN review re ON re.reviewer = s.id
 INNER JOIN rbac_context rc ON rc.resource_id = re.topic_id AND rc.context_type_name = REPLACE(re.topic_type::TEXT, '_', '-')
 WHERE re.topic_type != 'non_member_organisation' AND rc.context_type_name NOT IN ('application', 'project', 'comment')
-GROUP BY s.id, rc.id, re.id;
+GROUP BY s.id, rc.id, re.id
+ON CONFLICT DO NOTHING;
 --;;
 --;; resource-reviewer role assigments for non member orgs
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -292,7 +307,8 @@ FROM stakeholder s
 INNER JOIN review re ON re.reviewer = s.id
 INNER JOIN rbac_context rc ON rc.resource_id = re.topic_id AND rc.context_type_name = 'organisation'
 WHERE re.topic_type = 'non_member_organisation'
-GROUP BY s.id, rc.id, re.id;
+GROUP BY s.id, rc.id, re.id
+ON CONFLICT DO NOTHING;
 --;;
 --;; organisation_resource resource-owner permission inheritance
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -300,7 +316,8 @@ SELECT '2a06dc77-50f4-4b99-8599-54f73052775b', rc.id, tsa.stakeholder
 FROM organisation_resource orgr
 INNER JOIN topic_stakeholder_auth tsa ON orgr.organisation = tsa.topic_id AND tsa.topic_type = 'organisation'
 INNER JOIN rbac_context rc ON rc.resource_id = orgr.resource AND rc.context_type_name = 'resource'
-WHERE orgr.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner'];
+WHERE orgr.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner']
+ON CONFLICT DO NOTHING;
 --;;
 --;; add focal-point associations to organisation_resource
 INSERT INTO stakeholder_organisation (stakeholder, organisation, association)
@@ -308,7 +325,8 @@ SELECT tsa.stakeholder, orgr.organisation, 'focal-point'
 FROM organisation_resource orgr
 INNER JOIN topic_stakeholder_auth tsa ON orgr.organisation = topic_id AND topic_type = 'organisation'
 INNER JOIN rbac_context rc ON rc.resource_id = orgr.resource AND rc.context_type_name = 'resource'
-WHERE orgr.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner'];
+WHERE orgr.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner']
+ON CONFLICT DO NOTHING;
 --;;
 --;; organisation_event resource-owner permission inheritance
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -316,7 +334,8 @@ SELECT '2a06dc77-50f4-4b99-8599-54f73052775b', rc.id, tsa.stakeholder
 FROM organisation_event orge
 INNER JOIN topic_stakeholder_auth tsa ON orge.organisation = tsa.topic_id AND tsa.topic_type = 'organisation'
 INNER JOIN rbac_context rc ON rc.resource_id = orge.event AND rc.context_type_name = 'event'
-WHERE orge.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner'];
+WHERE orge.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner']
+ON CONFLICT DO NOTHING;
 --;;
 --;; add focal-point associations to organisation_event
 INSERT INTO stakeholder_organisation (stakeholder, organisation, association)
@@ -324,7 +343,8 @@ SELECT tsa.stakeholder, orge.organisation, 'focal-point'
 FROM organisation_event orge
 INNER JOIN topic_stakeholder_auth tsa ON orge.organisation = tsa.topic_id AND tsa.topic_type = 'organisation'
 INNER JOIN rbac_context rc ON rc.resource_id = orge.event AND rc.context_type_name = 'event'
-WHERE orge.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner'];
+WHERE orge.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner']
+ON CONFLICT DO NOTHING;
 --;;
 --;; organisation_initiative resource-owner permission inheritance
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -332,7 +352,8 @@ SELECT '2a06dc77-50f4-4b99-8599-54f73052775b', rc.id, tsa.stakeholder
 FROM organisation_initiative orgi
 INNER JOIN topic_stakeholder_auth tsa ON orgi.organisation = tsa.topic_id AND tsa.topic_type = 'organisation'
 INNER JOIN rbac_context rc ON rc.resource_id = orgi.initiative AND rc.context_type_name = 'initiative'
-WHERE orgi.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner'];
+WHERE orgi.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner']
+ON CONFLICT DO NOTHING;
 --;;
 --;; add focal-point associations to organisation_initiative
 INSERT INTO stakeholder_organisation (stakeholder, organisation, association)
@@ -340,7 +361,8 @@ SELECT tsa.stakeholder, orgi.organisation, 'focal-point'
 FROM organisation_initiative orgi
 INNER JOIN topic_stakeholder_auth tsa ON orgi.organisation = tsa.topic_id AND tsa.topic_type = 'organisation'
 INNER JOIN rbac_context rc ON rc.resource_id = orgi.initiative AND rc.context_type_name = 'initiative'
-WHERE orgi.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner'];
+WHERE orgi.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner']
+ON CONFLICT DO NOTHING;
 --;;
 --;; organisation_technology resource-owner permission inheritance
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -348,7 +370,8 @@ SELECT '2a06dc77-50f4-4b99-8599-54f73052775b', rc.id, tsa.stakeholder
 FROM organisation_technology orgt
 INNER JOIN topic_stakeholder_auth tsa ON orgt.organisation = tsa.topic_id AND tsa.topic_type = 'organisation'
 INNER JOIN rbac_context rc ON rc.resource_id = orgt.technology AND rc.context_type_name = 'technology'
-WHERE orgt.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner'];
+WHERE orgt.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner']
+ON CONFLICT DO NOTHING;
 --;;
 --;; add focal-point associations to organisation_technology
 INSERT INTO stakeholder_organisation (stakeholder, organisation, association)
@@ -356,7 +379,8 @@ SELECT tsa.stakeholder, orgt.organisation, 'focal-point'
 FROM organisation_technology orgt
 INNER JOIN topic_stakeholder_auth tsa ON orgt.organisation = tsa.topic_id AND tsa.topic_type = 'organisation'
 INNER JOIN rbac_context rc ON rc.resource_id = orgt.technology AND rc.context_type_name = 'technology'
-WHERE orgt.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner'];
+WHERE orgt.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner']
+ON CONFLICT DO NOTHING;
 --;;
 --;; organisation_policy resource-owner permission inheritance
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -364,7 +388,8 @@ SELECT '2a06dc77-50f4-4b99-8599-54f73052775b', rc.id, tsa.stakeholder
 FROM organisation_policy orgp
 INNER JOIN topic_stakeholder_auth tsa ON orgp.organisation = tsa.topic_id AND tsa.topic_type = 'organisation'
 INNER JOIN rbac_context rc ON rc.resource_id = orgp.policy AND rc.context_type_name = 'policy'
-WHERE orgp.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner'];
+WHERE orgp.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner']
+ON CONFLICT DO NOTHING;
 --;;
 --;; add focal-point associations to organisation_policy
 INSERT INTO stakeholder_organisation (stakeholder, organisation, association)
@@ -372,7 +397,8 @@ SELECT tsa.stakeholder, orgp.organisation, 'focal-point'
 FROM organisation_policy orgp
 INNER JOIN topic_stakeholder_auth tsa ON orgp.organisation = tsa.topic_id AND tsa.topic_type = 'organisation'
 INNER JOIN rbac_context rc ON rc.resource_id = orgp.policy AND rc.context_type_name = 'policy'
-WHERE orgp.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner'];
+WHERE orgp.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner']
+ON CONFLICT DO NOTHING;
 --;;
 --;; organisation_case_study resource-owner permission inheritance
 INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
@@ -380,7 +406,8 @@ SELECT '2a06dc77-50f4-4b99-8599-54f73052775b', rc.id, tsa.stakeholder
 FROM organisation_case_study orgcs
 INNER JOIN topic_stakeholder_auth tsa ON orgcs.organisation = tsa.topic_id AND tsa.topic_type = 'organisation'
 INNER JOIN rbac_context rc ON rc.resource_id = orgcs.case_study AND rc.context_type_name = 'case-study'
-WHERE orgcs.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner'];
+WHERE orgcs.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner']
+ON CONFLICT DO NOTHING;
 --;;
 --;; add focal-point associations to organisation_case_study
 INSERT INTO stakeholder_organisation (stakeholder, organisation, association)
@@ -388,6 +415,7 @@ SELECT tsa.stakeholder, orgcs.organisation, 'focal-point'
 FROM organisation_case_study orgcs
 INNER JOIN topic_stakeholder_auth tsa ON orgcs.organisation = tsa.topic_id AND tsa.topic_type = 'organisation'
 INNER JOIN rbac_context rc ON rc.resource_id = orgcs.case_study AND rc.context_type_name = 'case-study'
-WHERE orgcs.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner'];
+WHERE orgcs.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner']
+ON CONFLICT DO NOTHING;
 --;;
 COMMIT;
