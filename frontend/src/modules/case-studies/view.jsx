@@ -1,15 +1,12 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Button, Carousel, Row, Col, Layout, Select } from "antd";
+import { Button, Carousel, Row, Col, Select } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
-
-import "./styles.scss";
+import styles from "./styles.module.scss";
 import datastudies from "./json/case-studies.json";
 import CaseStudy from "./CaseStudy";
-import { ReactComponent as DropdownIcon } from "../../images/case-studies/ic-dropdown.svg";
+import DropdownIcon from "../../images/case-studies/ic-dropdown.svg";
 import { titleCase } from "../../utils/string";
 import { eventTrack } from "../../utils/misc";
-
-const { Header, Content } = Layout;
 
 const CaseStudies = () => {
   const [isShownDropdown, setIsShownDropdown] = useState(false);
@@ -35,7 +32,7 @@ const CaseStudies = () => {
     });
   }, []);
   return (
-    <Row id="case-study" ref={caseStudyReff}>
+    <Row className={styles.caseStudy} ref={caseStudyReff}>
       <Col span={24} className="ui-header">
         <div className="ui-container">
           <Row gutter={[8, 16]} className="header-form">
