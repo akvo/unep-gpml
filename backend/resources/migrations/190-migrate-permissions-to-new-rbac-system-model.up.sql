@@ -281,7 +281,7 @@ INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
 SELECT '10ee926b-cf5c-44eb-82b9-e4c3d283aff1', rc.id, s.id
 FROM stakeholder s
 INNER JOIN review re ON re.reviewer = s.id
-INNER JOIN rbac_context rc ON rc.resource_id = re.topic_id AND rc.context_type_name::topic_type = re.topic_type
+INNER JOIN rbac_context rc ON rc.resource_id = re.topic_id AND rc.context_type_name = REPLACE(re.topic_type::TEXT, '_', '-')
 WHERE re.topic_type != 'non_member_organisation' AND rc.context_type_name NOT IN ('application', 'project', 'comment')
 GROUP BY s.id, rc.id, re.id;
 --;;
@@ -379,7 +379,7 @@ INSERT INTO rbac_role_assignment(role_id, context_id, user_id)
 SELECT '2a06dc77-50f4-4b99-8599-54f73052775b', rc.id, tsa.stakeholder
 FROM organisation_case_study orgcs
 INNER JOIN topic_stakeholder_auth tsa ON orgcs.organisation = tsa.topic_id AND tsa.topic_type = 'organisation'
-INNER JOIN rbac_context rc ON rc.resource_id = orgcs.case_study AND rc.context_type_name = 'case_study'
+INNER JOIN rbac_context rc ON rc.resource_id = orgcs.case_study AND rc.context_type_name = 'case-study'
 WHERE orgcs.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner'];
 --;;
 --;; add focal-point associations to organisation_case_study
@@ -387,7 +387,7 @@ INSERT INTO stakeholder_organisation (stakeholder, organisation, association)
 SELECT tsa.stakeholder, orgcs.organisation, 'focal-point'
 FROM organisation_case_study orgcs
 INNER JOIN topic_stakeholder_auth tsa ON orgcs.organisation = tsa.topic_id AND tsa.topic_type = 'organisation'
-INNER JOIN rbac_context rc ON rc.resource_id = orgcs.case_study AND rc.context_type_name = 'case_study'
+INNER JOIN rbac_context rc ON rc.resource_id = orgcs.case_study AND rc.context_type_name = 'case-study'
 WHERE orgcs.association = 'owner' AND tsa.roles ??| array['focal-point', 'owner'];
 --;;
 COMMIT;
