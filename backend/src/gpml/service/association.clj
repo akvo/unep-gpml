@@ -204,7 +204,7 @@
         old-associations (db.res.acs/get-resource-associations
                           conn
                           {:table (str "stakeholder_" table-suffix)
-                           :resource-col resource-type
+                           :resource-col table-suffix
                            :filters {:resource-id resource-id}})
         {:keys [to-create to-update to-delete]}
         (get-associations-diff sth-associations old-associations)
@@ -262,7 +262,7 @@
         old-associations (db.res.acs/get-resource-associations
                           conn
                           {:table (str "organisation_" table-suffix)
-                           :resource-col resource-type
+                           :resource-col table-suffix
                            :filters {:resource-id resource-id}})
         {:keys [to-create to-delete to-update]}
         (get-associations-diff org-associations old-associations)
