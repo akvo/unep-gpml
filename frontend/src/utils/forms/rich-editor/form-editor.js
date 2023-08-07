@@ -1,7 +1,8 @@
 /* eslint-disable no-else-return */
 import { UIStore } from "../../../store";
 import React, { useState, useCallback, useEffect } from "react";
-import RichTextEditor from "react-rte";
+import dynamic from "next/dynamic";
+const RichTextEditor = dynamic(() => import("react-rte"), { ssr: false });
 
 const RichWidget = ({
   autofocus,
