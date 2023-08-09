@@ -73,7 +73,8 @@
       (let [file (:file get-file-result)
             get-file-url-result (get-file-url config file)]
         (if (:success? get-file-url-result)
-          (assoc file :url (:url get-file-url-result))
+          {:success? true
+           :file (assoc file :url (:url get-file-url-result))}
           get-file-url-result)))))
 
 (defn- upload-file
