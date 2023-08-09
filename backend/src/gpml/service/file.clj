@@ -65,6 +65,17 @@
     (get-private-file-url config file)
     (get-public-file-url config file)))
 
+(defn add-files-urls
+  [config files]
+  (map
+   (fn [file]
+     (let [{:keys [success? url]}
+           (get-file-url config file)]
+       (if success?
+         (assoc file :url url)
+         file)))
+   files))
+
 (defn get-file
   [config conn search-opts]
   (let [get-file-result (db.file/get-file conn search-opts)]
