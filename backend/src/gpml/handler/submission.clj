@@ -7,15 +7,19 @@
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.submission :as db.submission]
+            [gpml.domain.file :as dom.file]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.handler.util :as handler.util]
+            [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util.auth0 :as auth0]
             [gpml.util.email :as email]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
+            [malli.core :as m]
+            [malli.transform :as mt]
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
@@ -59,11 +63,29 @@
                       d)) data)]
     data))
 
-(defn- submission-detail [conn params]
-  (let [data (db.submission/detail conn params)
+(defn- get-image-key
+  [entity-key]
+  (case entity-key
+    :stakeholder :picture_id
+    :organisation :logo_id
+    :image_id))
+
+(defn- submission-detail
+  [config conn params]
+  (let [entity-key (keyword (:table-name params))
+        data (db.submission/detail conn params)
         creator-id (:created_by data)
-        creator (db.stakeholder/stakeholder-by-id conn {:id creator-id})]
+        creator (db.stakeholder/stakeholder-by-id conn {:id creator-id})
+        image-id (get data (get-image-key entity-key))
+        thumbnail-id (when-not (get #{:organisation :stakeholder} entity-key)
+                       (:thumbnail_id data))
+        image-file (when image-id
+                     (:file (srv.file/get-file config conn {:filters {:id image-id}})))
+        thumbnail-file (when thumbnail-id
+                         (:file (srv.file/get-file config conn {:filters {:id thumbnail-id}})))]
     (assoc data
+           :image (:url image-file)
+           :thumbnail (:url thumbnail-file)
            :created_by_email (:email creator)
            :creator creator)))
 
@@ -79,18 +101,40 @@
          (merge item (handler.stakeholder.tag/unwrap-tags (assoc item :tags tags))))))
    submission-data))
 
+(defn- add-images-urls
+  [config submissions]
+  (map
+   (fn [submission]
+     (if-not (get-in submission [:image :id])
+       (assoc submission :image nil)
+       (let [image-file (m/decode dom.file/file-schema (:image submission) mt/string-transformer)
+             {:keys [url]} (srv.file/get-file-url config image-file)]
+         (assoc submission :image url))))
+   submissions))
+
 (defmethod ig/init-key :gpml.handler.submission/get
-  [_ {:keys [db auth0] :as config}]
+  [_ {:keys [db auth0 logger] :as config}]
   (fn [{:keys [user] {:keys [query]} :parameters}]
-    (if-not (h.r.permission/super-admin? config (:id user))
-      (r/forbidden {:message "Unauthorized"})
-      (let [submission (-> (db.submission/pages (:spec db) query) :result)
-            profiles (filter #(= "profile" (:type %)) (:data submission))
-            submission (-> (if (not-empty profiles)
-                             (assoc submission :data (pending-profiles-response (:data submission) auth0))
-                             submission)
-                           (update :data #(add-stakeholder-tags (:spec db) %)))]
-        (resp/response submission)))))
+    (try
+      (if-not (h.r.permission/super-admin? config (:id user))
+        (r/forbidden {:message "Unauthorized"})
+        (let [submission (-> (db.submission/pages (:spec db) query) :result)
+              profiles (filter #(= "profile" (:type %)) (:data submission))
+              submission (-> (if (not-empty profiles)
+                               (assoc submission :data (pending-profiles-response (:data submission) auth0))
+                               submission)
+                             (update :data #(->> %
+                                                 (add-stakeholder-tags (:spec db))
+                                                 (add-images-urls config))))]
+          (resp/response submission)))
+      (catch Throwable t
+        (let [log-data {:exception-message (ex-message t)
+                        :exception-data (ex-data t)
+                        :context-data query}]
+          (log logger :error :failed-to-update-submission log-data)
+          (log logger :debug :failed-to-update-submission (assoc log-data :stack-trace (.getStackTrace t)))
+          (r/server-error {:success? false
+                           :reason :failed-to-update-submission}))))))
 
 (defn- handle-stakeholder-role-change
   [config stakeholder-id review-status]
@@ -137,7 +181,7 @@
               (throw (ex-info "Failed to update submission" {:reason :update-unexpected-number-of-affected-records
                                                              :expected 1
                                                              :actual affected}))
-              (let [resource-details (submission-detail tx submission)]
+              (let [resource-details (submission-detail config tx submission)]
                 (when (= resource-type "stakeholder")
                   (handle-stakeholder-role-change {:conn tx
                                                    :logger logger}
@@ -148,12 +192,15 @@
                        :message "Successfuly Updated"
                        :data resource-details}))))))
       (catch Throwable t
-        (log logger :error :failed-to-update-submission {:exception-message (ex-message t)
-                                                         :exception-data (ex-data t)
-                                                         :context-data body-params
-                                                         :stack-trace (map str (.getStackTrace t))})
-        (r/server-error {:success? false
-                         :reason :failed-to-update-submission})))))
+        (let [log-data {:exception-message (ex-message t)
+                        :exception-data (ex-data t)
+                        :context-data body-params}]
+          (log logger :error :failed-to-update-submission {:exception-message (ex-message t)
+                                                           :exception-data (ex-data t)
+                                                           :context-data body-params})
+          (log logger :debug :failed-to-update-submission (assoc log-data :stack-trace (.getStackTrace t)))
+          (r/server-error {:success? false
+                           :reason :failed-to-update-submission}))))))
 
 (defn- add-stakeholder-extra-details
   [conn stakeholder]
@@ -173,13 +220,13 @@
       (assoc :email email))))
 
 (defn- get-detail
-  [{:keys [db]} params]
+  [{:keys [db] :as config} params]
   (let [conn (:spec db)
         submission (:submission params)
         initiative? (= submission "initiative")
         table-name (handler.util/get-internal-topic-type submission)
         params (conj params {:table-name table-name})
-        detail (submission-detail conn params)
+        detail (submission-detail config conn params)
         detail (if (= submission "stakeholder")
                  (add-stakeholder-extra-details conn detail)
                  detail)

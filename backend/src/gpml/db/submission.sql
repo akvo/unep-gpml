@@ -2,49 +2,67 @@
 -- :doc Get paginated submission contents
 WITH
 submission AS (
-    SELECT s.id, 'stakeholder' AS type, 'stakeholder' AS topic, CONCAT(s.title, '. ', s.last_name,' ', s.first_name) as title, s.id as created_by, s.created, s.role, s.review_status, s.picture as image, NULL::boolean as featured
+    SELECT s.id, 'stakeholder' AS type, 'stakeholder' AS topic, CONCAT(s.title, '. ', s.last_name,' ', s.first_name) as title, s.id as created_by, s.created, s.role, s.review_status, jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility) as image, NULL::boolean as featured
     FROM stakeholder s
+    LEFT JOIN file f ON s.picture_id = f.id
 --~ (when (= "experts" (:only params)) " JOIN stakeholder_tag st ON s.id = st.stakeholder AND st.tag_relation_category = 'expertise' ")
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
+    GROUP BY s.id, f.id
     UNION
-    SELECT id, 'organisation' AS type, 'organisation' AS topic, name as title, id as created_by, created, 'USER' as role, review_status, logo as image, NULL::boolean as featured
-    FROM organisation
+    SELECT o.id, 'organisation' AS type, 'organisation' AS topic, o.name as title, o.id as created_by, o.created, 'USER' as role, o.review_status, jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility) as image, NULL::boolean as featured
+    FROM organisation o
+    LEFT JOIN file f ON o.logo_id = f.id
     WHERE is_member = true
 --~ (when (:review_status params) " AND review_status = :review_status::review_status ")
+    GROUP BY o.id, f.id
     UNION
-    SELECT id, 'organisation' AS type, 'non_member_organisation' AS topic, name as title, id as created_by, created, 'USER' as role, review_status, logo as image, NULL::boolean as featured
-    FROM organisation
+    SELECT o.id, 'organisation' AS type, 'non_member_organisation' AS topic, o.name as title, o.id as created_by, o.created, 'USER' as role, o.review_status, jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility) as image, NULL::boolean as featured
+    FROM organisation o
+    LEFT JOIN file f ON o.logo_id = f.id
     WHERE is_member = false
 --~ (when (:review_status params) " AND review_status = :review_status::review_status ")
+    GROUP BY o.id, f.id
     UNION
     SELECT id, 'tag' AS type, 'tag' AS topic, tag as title, NULL as created_by, NULL as created, NULL as role, review_status, NULL as image, NULL::boolean as featured
     FROM tag
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     UNION
-    SELECT id, 'event' AS type, 'event' AS topic, title, created_by, created, 'USER' as role, review_status, image, featured
-    FROM event
+    SELECT e.id, 'event' AS type, 'event' AS topic, e.title, e.created_by, e.created, 'USER' as role, e.review_status, jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility) as image, e.featured
+    FROM event e
+    LEFT JOIN file f ON e.image_id = f.id
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
+    GROUP BY e.id, f.id
     UNION
-    SELECT id, 'technology' AS type, 'technology' AS topic, name as title, created_by, created, 'USER' as role, review_status, image, featured
-    FROM technology
+    SELECT t.id, 'technology' AS type, 'technology' AS topic, t.name as title, t.created_by, t.created, 'USER' as role, t.review_status, jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility) as image, t.featured
+    FROM technology t
+    LEFT JOIN file f ON t.image_id = f.id
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
+    GROUP BY t.id, f.id
     UNION
-    SELECT id, 'policy' AS type, 'policy' AS topic, title, created_by, created, 'USER' as role, review_status, image as picture, featured
-    FROM policy
+    SELECT p.id, 'policy' AS type, 'policy' AS topic, p.title, p.created_by, p.created, 'USER' as role, p.review_status, jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility) as image, p.featured
+    FROM policy p
+    LEFT JOIN file f ON p.image_id = f.id
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
+    GROUP BY p.id, f.id
     UNION
-    SELECT id, REPLACE(LOWER(type), ' ', '_') AS type, 'resource' AS topic, title, created_by, created, 'USER' as role, review_status, image, featured
-    FROM resource
+    SELECT r.id, REPLACE(LOWER(r.type), ' ', '_') AS type, 'resource' AS topic, r.title, r.created_by, r.created, 'USER' as role, r.review_status, jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility) AS image, r.featured
+    FROM resource r
+    LEFT JOIN file f ON r.image_id = f.id
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
+    GROUP BY r.id, f.id
     UNION
-    SELECT id, 'initiative' AS type, 'initiative' AS topic, replace(q2::text,'"','') as title, created_by, created, 'USER' as role, review_status, '' as image, featured
-    FROM initiative
+    SELECT i.id, 'initiative' AS type, 'initiative' AS topic, replace(i.q2::text,'"','') as title, i.created_by, i.created, 'USER' as role, i.review_status, jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility) AS image, i.featured
+    FROM initiative i
+    LEFT JOIN file f ON i.image_id = f.id
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
+    GROUP BY i.id, f.id
     UNION
-    SELECT id, 'case_study' AS type, 'case_study' AS topic, title, created_by, created, 'USER' as role, review_status, image, featured
-    FROM case_study
+    SELECT cs.id, 'case_study' AS type, 'case_study' AS topic, cs.title, cs.created_by, cs.created, 'USER' as role, cs.review_status, jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility) AS image, cs.featured
+    FROM case_study cs
+    LEFT JOIN file f ON cs.image_id = f.id
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
-    order by created
+    GROUP BY cs.id, f.id
+    ORDER BY created
 ),
 authz AS (
     SELECT s.id, 'stakeholder' as type, '[]'::jsonb AS owners, '[]'::jsonb AS focal_points
@@ -183,8 +201,8 @@ SELECT json_build_object(
 -- :name detail :query :one
 -- :doc get detail of submission
 SELECT *
-from :i:table-name
-where id = :id::integer;
+FROM :i:table-name
+WHERE id = :id::integer;
 
 -- :name update-submission :execute :affected
 -- :doc approve or reject submission
