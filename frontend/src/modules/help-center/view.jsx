@@ -85,7 +85,7 @@ function HelpCenter() {
                     src="https://www.youtube.com/embed/videoseries?list=PLOlw9GG0Pf9iilXoal3dNxnRlM4xn8pII"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
+                    allowFullScreen
                   />
                 </Col>
               </Row>

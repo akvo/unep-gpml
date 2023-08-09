@@ -2039,7 +2039,7 @@ const ProjectView = ({ profile, ...props }) => {
                 return (
                   <Panel
                     className={classNames({ completed: isCompleted })}
-                    key={index}
+                    key={item.key}
                     header={
                       <>
                         <div className="steps-item-icon">
@@ -2061,7 +2061,6 @@ const ProjectView = ({ profile, ...props }) => {
                         </div>
                       </>
                     }
-                    key={item.key}
                   >
                     <div className="sub-stages">
                       <Collapse

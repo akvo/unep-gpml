@@ -7,12 +7,19 @@ const withLayout = (Component) => {
   const WithLayoutComponent = (props) => {
     const router = useRouter();
     const isIndexPage = router.pathname === "/";
-    const { isAuthenticated, auth0Client, profile, ...rest } = props;
+    const {
+      isAuthenticated,
+      auth0Client,
+      profile,
+      setLoginVisible,
+      ...rest
+    } = props;
 
     return (
       <MainLayout
         isIndexPage={isIndexPage}
         isAuthenticated={isAuthenticated}
+        setLoginVisible={setLoginVisible}
         auth0Client={auth0Client}
         profile={profile}
       >

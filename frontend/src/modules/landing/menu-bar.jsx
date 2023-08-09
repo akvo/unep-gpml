@@ -93,8 +93,9 @@ const MenuBar = ({
           {isAuthenticated && (
             <Link
               href="/workspace"
-              className="btn-workspace menu-btn"
-              activeClassName="selected"
+              className={`btn-workspace menu-btn  ${
+                router.pathname === "/workspace" ? "selected" : ""
+              }`}
               aria-label="Workspace"
             >
               <HomeOutlined />
@@ -126,6 +127,7 @@ const MenuBar = ({
             ) : (
               [
                 <AddButton
+                  key="addButton"
                   {...{
                     isAuthenticated,
                     setLoginVisible,
@@ -134,7 +136,10 @@ const MenuBar = ({
                     setWarningModalVisible,
                   }}
                 />,
-                <UserButton {...{ auth0Client, isRegistered, profile }} />,
+                <UserButton
+                  key="userButton"
+                  {...{ auth0Client, isRegistered, profile }}
+                />,
               ]
             )}
           </div>
