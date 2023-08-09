@@ -7,7 +7,6 @@ DELETE FROM file
 WHERE id = :id;
 
 -- :name get-files* :query :many
--- :doc asasa
 SELECT *
 FROM file
 WHERE 1=1
