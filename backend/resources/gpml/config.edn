@@ -583,6 +583,7 @@
    :app-name #duct/env ["APP_NAME" Str]
    :app-domain #duct/env ["APP_DOMAIN" Str]
    :app-user-admin #duct/env ["APP_USER_ADMIN" Str]
+   :storage-api-host-name #duct/env ["GCS_API_HOST_NAME" Str]
    :storage-bucket-name #duct/env ["GCS_BUCKET_NAME" Str]
    :private-storage-bucket-name #duct/env ["GCS_PRIVATE_BUCKET_NAME" Str]
    :private-storage-signed-url-lifespan 10080
