@@ -3,7 +3,6 @@
             [gpml.boundary.port.storage-client :as port])
   (:import [clj_gcp.storage.core GCSStorageClient]
            [com.google.cloud.storage BlobId BlobInfo Storage Storage$SignUrlOption]
-           [com.google.auth.oauth2 ServiceAccountCredentials]
            [java.util.concurrent TimeUnit]))
 
 (defn- delete-blob

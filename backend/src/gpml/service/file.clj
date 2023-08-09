@@ -64,7 +64,14 @@
 
 (defn get-file
   [config conn search-opts]
-  (db.file/get-file conn search-opts))
+  (let [get-file-result (db.file/get-file conn search-opts)]
+    (if-not (:success? get-file-result)
+      get-file-result
+      (let [file (:file get-file-result)
+            get-file-url-result (get-file-url config file)]
+        (if (:success? get-file-url-result)
+          (assoc file :url (:url get-file-url-result))
+          get-file-url-result)))))
 
 (defn- upload-file
   [{:keys [storage-client-adapter] :as config}
