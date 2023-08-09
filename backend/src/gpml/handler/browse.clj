@@ -250,25 +250,16 @@
     true
     (assoc :review-status "APPROVED")))
 
-(defn- add-files-urls
-  [config files]
-  (map
-   (fn [file]
-     (let [decoded-file (m/decode dom.file/file-schema
-                                  file
-                                  mt/string-transformer)
-           {:keys [url]}
-           (srv.file/get-file-url config decoded-file)]
-       (assoc file :url url)))
-   files))
-
 (defn- resource->api-resource
   [config resource]
   (let [conn (get-in config [:db :spec])
         {:keys [topic json]} resource
         resource-type (handler.util/get-internal-topic-type topic)
         {:keys [id image_id thumbnail_id]} json
-        files (medley/index-by :id (add-files-urls config (:files json)))
+        files (->> (:files json)
+                   (map dom.file/decode-file)
+                   (srv.file/add-files-urls config)
+                   (medley/index-by (comp str :id)))
         connections (db.resource.connection/get-resource-stakeholder-connections
                      conn
                      {:resource-type resource-type
