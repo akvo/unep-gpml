@@ -17,6 +17,7 @@
             [gpml.db.resource.connection :as db.resource.connection]
             [gpml.db.resource.detail :as db.resource.detail]
             [gpml.db.resource.tag :as db.resource.tag]
+            [gpml.domain.file :as dom.file]
             [gpml.domain.initiative :as dom.initiative]
             [gpml.domain.resource :as dom.resource]
             [gpml.domain.types :as dom.types]
@@ -30,6 +31,7 @@
             [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.service.association :as srv.association]
+            [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
@@ -313,84 +315,107 @@
                                :tags))))]
     (assoc resource :stakeholder_connections sth-conns)))
 
+(defn- add-files-urls
+  [config resource]
+  (let [{:keys [files image_id thumbnail_id picture_id logo_id]} resource
+        resource-type (:type resource)
+        files-w-urls (->> files
+                          (map dom.file/decode-file)
+                          (srv.file/add-files-urls config)
+                          (medley/index-by (comp str :id)))]
+    (cond-> resource
+      (= "stakeholder" resource-type)
+      (assoc :picture (get-in files-w-urls [picture_id :url]))
+
+      (= "organisation" resource-type)
+      (assoc :logo (get-in files-w-urls [logo_id :url]))
+
+      :else
+      (assoc :image (get-in files-w-urls [image_id :url])
+             :thumbnail (get-in files-w-urls [thumbnail_id :url])))))
+
 (defn- add-extra-details
-  [db {:keys [id affiliation] :as resource} resource-type
-   {:keys [owners? tags? entity-connections?
+  [{:keys [db] :as config} {:keys [id affiliation] :as resource} resource-type
+   {:keys [files-urls? owners? tags? entity-connections?
            stakeholder-connections? related-content? affiliation?]
-    :or {owners? true tags? true entity-connections? true
+    :or {files-urls? true owners? true tags? true entity-connections? true
          stakeholder-connections? true related-content? true
          affiliation? false}}]
-  (let [api-resource-type (if-not (= "resource" resource-type)
+  (let [conn (:spec db)
+        api-resource-type (if-not (= "resource" resource-type)
                             resource-type
                             (-> (:type resource)
                                 str/lower-case
                                 (str/replace #" " "_")))]
     (cond-> (assoc resource :type api-resource-type)
       tags?
-      (assoc :tags (db.resource.tag/get-resource-tags db {:table (str resource-type "_tag")
-                                                          :resource-col resource-type
-                                                          :resource-id id}))
+      (assoc :tags (db.resource.tag/get-resource-tags conn {:table (str resource-type "_tag")
+                                                            :resource-col resource-type
+                                                            :resource-id id}))
 
       entity-connections?
-      (assoc :entity_connections (db.resource.connection/get-resource-entity-connections db {:resource-id id
-                                                                                             :resource-type resource-type}))
+      (assoc :entity_connections (db.resource.connection/get-resource-entity-connections conn {:resource-id id
+                                                                                               :resource-type resource-type}))
 
       stakeholder-connections?
-      (->> (add-stakeholder-connections db))
+      (->> (add-stakeholder-connections conn))
 
       related-content?
-      (assoc :related_content (expand-related-content db id resource-type))
+      (assoc :related_content (expand-related-content conn id resource-type))
 
       (and affiliation? affiliation)
-      (assoc :affiliation (db.organisation/organisation-by-id db {:id affiliation}))
+      (assoc :affiliation (db.organisation/organisation-by-id conn {:id affiliation}))
 
       owners?
-      (assoc :owners (->> (db.rbac-util/get-users-with-granted-permission-on-resource db {:resource-id id
-                                                                                          :context-type-name resource-type
-                                                                                          :permission-name (str resource-type "/" "update")})
-                          (mapv :user_id))))))
+      (assoc :owners (->> (db.rbac-util/get-users-with-granted-permission-on-resource conn {:resource-id id
+                                                                                            :context-type-name resource-type
+                                                                                            :permission-name (str resource-type "/" "update")})
+                          (mapv :user_id)))
+
+      files-urls?
+      (->> (add-files-urls config)))))
 
 (defmulti extra-details (fn [_ resource-type _] resource-type) :default :nothing)
 
-(defmethod extra-details "initiative" [db resource-type initiative]
+(defmethod extra-details "initiative" [{:keys [db] :as config} resource-type initiative]
   (merge
-   (add-extra-details db initiative resource-type {})
-   (dom.initiative/parse-initiative-details (db.initiative/initiative-by-id db initiative))))
+   (add-extra-details config initiative resource-type {})
+   (dom.initiative/parse-initiative-details (db.initiative/initiative-by-id (:spec db) initiative))))
 
-(defmethod extra-details "policy" [db resource-type policy]
+(defmethod extra-details "policy" [{:keys [db] :as config} resource-type policy]
   (merge
-   (add-extra-details db policy resource-type {})
-   {:language (db.policy/language-by-policy-id db (select-keys policy [:id]))}
+   (add-extra-details config policy resource-type {})
+   {:language (db.policy/language-by-policy-id (:spec db) (select-keys policy [:id]))}
    (when-let [implementing-mea (:implementing_mea policy)]
-     {:implementing_mea (:name (db.country-group/country-group-by-id db {:id implementing-mea}))})))
+     {:implementing_mea (:name (db.country-group/country-group-by-id (:spec db) {:id implementing-mea}))})))
 
-(defmethod extra-details "technology" [db resource-type technology]
+(defmethod extra-details "technology" [{:keys [db] :as config} resource-type technology]
   (merge
-   (add-extra-details db technology resource-type {})
+   (add-extra-details config technology resource-type {})
    (when-let [headquarters-country (:country technology)]
-     {:headquarters (first (gpml.db.country/get-countries db {:filters {:ids [headquarters-country]}}))})))
+     {:headquarters (first (gpml.db.country/get-countries (:spec db) {:filters {:ids [headquarters-country]}}))})))
 
-(defmethod extra-details "case_study" [db resource-type resource]
-  (add-extra-details db resource resource-type {}))
+(defmethod extra-details "case_study" [config resource-type resource]
+  (add-extra-details config resource resource-type {}))
 
-(defmethod extra-details "resource" [db resource-type resource]
-  (add-extra-details db resource resource-type {}))
+(defmethod extra-details "resource" [config resource-type resource]
+  (add-extra-details config resource resource-type {}))
 
-(defmethod extra-details "event" [db resource-type event]
-  (add-extra-details db event resource-type {}))
+(defmethod extra-details "event" [config resource-type event]
+  (add-extra-details config event resource-type {}))
 
-(defmethod extra-details "organisation" [db resource-type organisation]
-  (add-extra-details db organisation resource-type {:tags? true
-                                                    :entity-connections? false
-                                                    :stakeholder-connections? false
-                                                    :related-content? false}))
+(defmethod extra-details "organisation" [config resource-type organisation]
+  (add-extra-details config organisation resource-type {:tags? true
+                                                        :entity-connections? false
+                                                        :stakeholder-connections? false
+                                                        :related-content? false}))
 
-(defmethod extra-details "stakeholder" [db resource-type stakeholder]
-  (let [details (add-extra-details db stakeholder resource-type {:tags? true
-                                                                 :entity-connections? false
-                                                                 :stakeholder-connections? false
-                                                                 :related-content? false
-                                                                 :affiliation? true})]
+(defmethod extra-details "stakeholder" [config resource-type stakeholder]
+  (let [details (add-extra-details config stakeholder resource-type {:tags? true
+                                                                     :entity-connections? false
+                                                                     :stakeholder-connections? false
+                                                                     :related-content? false
+                                                                     :affiliation? true})]
     (merge details (handler.stakeholder.tag/unwrap-tags details))))
 
 (defmethod extra-details :nothing [_ _ _]
@@ -471,13 +496,13 @@
         (merge json))))
 
 (defn- get-detail
-  [{:keys [db]} topic-id topic-type query]
+  [{:keys [db] :as config} topic-id topic-type query]
   (let [conn (:spec db)
         resource-details (-> (get-detail* conn topic-type topic-id query)
                              (dissoc :tags :remarks :name :abstract :description))]
     (if (seq resource-details)
       {:success? true
-       :resource-details (extra-details conn topic-type resource-details)}
+       :resource-details (extra-details config topic-type resource-details)}
       {:success? false
        :reason :not-found})))
 
