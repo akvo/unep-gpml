@@ -43,9 +43,12 @@
     result))
 
 (defn- get-public-file-url
-  [{:keys [storage-api-host-name]} file]
+  [{:keys [storage-api-host-name public-storage-bucket-name]} file]
   {:success? true
-   :url (format "https://%s/%s" storage-api-host-name (:object-key file))})
+   :url (format "https://%s/%s/%s"
+                storage-api-host-name
+                public-storage-bucket-name
+                (:object-key file))})
 
 (defn- get-private-file-url
   [{:keys [storage-client-adapter
