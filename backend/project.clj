@@ -50,7 +50,8 @@
                  [diehard "0.10.3"]
                  [org.jsoup/jsoup "1.15.3"]
                  [ring-cors "0.1.13"]
-                 [dev.gethop/rbac "0.1.0-alpha-7"]]
+                 [dev.gethop/rbac "0.1.0-alpha-7"]
+                 [camel-snake-kebab "0.4.3"]]
   :plugins [[duct/lein-duct "0.12.1"]]
   :main ^:skip-aot gpml.main
   :resource-paths ["resources" "target/resources"]
