@@ -62,7 +62,7 @@
         file-id (util/uuid)]
     {:id file-id
      :object-key (create-file-object-key entity-key file-key file-id)
-     :name (format "%s-%s" (name entity-key) (util/uuid))
+     :name (format "%s-%s" (name entity-key) file-id)
      :alt-desc nil
      :type content-type
      :extension extension
