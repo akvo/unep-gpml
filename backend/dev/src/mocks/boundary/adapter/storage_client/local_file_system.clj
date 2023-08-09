@@ -17,7 +17,7 @@
        :error-details {:exception-message (ex-message e)}})))
 
 (extend-type FileSystemStorageClient
-  port/StorageClientDeleteBlob
+  port/StorageClient
   (delete-blob [this bucket-name blob-name]
     (delete-blob this bucket-name blob-name)))
 
