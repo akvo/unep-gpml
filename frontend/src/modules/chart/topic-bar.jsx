@@ -1,6 +1,6 @@
 import React from "react";
 import { titleCase } from "../../utils/string";
-import "./topic-bar.scss";
+import "./style.module.scss";
 
 const TopicBar = ({
   selectedTopic,

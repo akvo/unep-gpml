@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.scss";
+import styles from "./style.module.scss";
 import { Col, Avatar } from "antd";
 import classNames from "classnames";
 import { ArrowRightOutlined } from "@ant-design/icons";
@@ -14,12 +14,7 @@ import { topicNames } from "../../utils/misc";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination as SwiperPagination, Navigation } from "swiper";
-// swiper bundle styles
-import "swiper/swiper.min.css";
-import "swiper/modules/free-mode/free-mode.min.css";
-import "swiper/modules/navigation/navigation.scss";
-import "swiper/modules/pagination/pagination.min.css";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const Card = ({ showMoreCardClick, showMoreCardHref, children }) => {
   if (showMoreCardClick) {
@@ -31,8 +26,8 @@ const Card = ({ showMoreCardClick, showMoreCardHref, children }) => {
   }
   if (showMoreCardHref) {
     return (
-      <Link className="card" to={showMoreCardHref}>
-        {children}
+      <Link href={showMoreCardHref}>
+        <a className="card">{children}</a>
       </Link>
     );
   }
@@ -75,7 +70,7 @@ const ResourceCards = ({
       }}
       navigation={true}
       modules={[SwiperPagination, Navigation]}
-      className="resource-cards"
+      className={`${styles.resourceCards} resource-cards`}
     >
       {firstCard && <SwiperSlide>{firstCard}</SwiperSlide>}
       {items?.slice(0, showMoreCardAfter).map((item) => {
@@ -220,13 +215,17 @@ export const ResourceCard = ({ item, index, showModal }) => {
     return (
       <div className="resource-card nothumb" key={item.id}>
         <Link
-          id={item.id}
-          to={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
-          type={getType(item?.type)?.replace("_", "-")}
-          onClick={showModal}
-          className="nothumb-container"
+          href={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
+          legacyBehavior
         >
-          {innerContent}
+          <a
+            id={item.id}
+            type={getType(item?.type)?.replace("_", "-")}
+            onClick={showModal}
+            className="nothumb-container"
+          >
+            {innerContent}
+          </a>
         </Link>
       </div>
     );
@@ -234,19 +233,23 @@ export const ResourceCard = ({ item, index, showModal }) => {
   return (
     <div className="resource-card" key={item.id}>
       <Link
-        to={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
-        id={item.id}
-        type={getType(item?.type)?.replace("_", "-")}
-        className="description-holder"
-        style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${thumbnail})`,
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-        }}
-        onClick={showModal}
+        href={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
+        legacyBehavior
       >
-        {innerContent}
+        <a
+          id={item.id}
+          type={getType(item?.type)?.replace("_", "-")}
+          className="description-holder"
+          style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${thumbnail})`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+          }}
+          onClick={showModal}
+        >
+          {innerContent}
+        </a>
       </Link>
       <div className="thumb-container">
         <img src={thumbnail} alt={item?.type} />

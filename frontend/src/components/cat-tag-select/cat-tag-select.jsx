@@ -1,6 +1,6 @@
 import { Select } from "antd";
 import catTags from "../../utils/cat-tags.json";
-import "./style.scss";
+import styles from "./style.module.scss";
 import { toTitleCase } from "../../utils/misc";
 
 const CatTagSelect = ({
@@ -31,7 +31,7 @@ function slug(text) {
 }
 const CategorisedTags = ({ handleChange, value }) => {
   return (
-    <ul className="cat-tag-dropdown">
+    <ul className={styles.catTagDropdown}>
       {catTags.map((cat) => (
         <li>
           <h4>{cat.title}</h4>

@@ -16,19 +16,21 @@ import {
   ArrowRightOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import { Link, useHistory, useLocation, withRouter } from "react-router-dom";
-import "./styles.scss";
+import { useHistory } from "react-router-dom";
+import styles from "./styles.module.scss";
 import "react-multi-carousel/lib/styles.css";
 import moment from "moment";
 import { UIStore } from "../../store";
 import imageNotFound from "../../images/image-not-found.png";
 import { TrimText } from "../../utils/string";
 import api from "../../utils/api";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
   const history = useHistory();
-  const location = useLocation();
-  const path = location?.pathname;
+  const router = useRouter();
+  const path = router.pathname;
   const dateNow = moment().format("YYYY/MM/DD");
   const [event, setEvent] = useState([]);
   const [data, setData] = useState(null);
@@ -80,10 +82,13 @@ const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
 
       const year = new Date().getFullYear();
 
-      const futureDate = moment.parseZone(`${year + 5}/04/01`).format("YYYY/MM/DD");
+      const futureDate = moment
+        .parseZone(`${year + 5}/04/01`)
+        .format("YYYY/MM/DD");
 
       if (!eventNow.length && searchNextEvent && filterDate <= futureDate) {
-        const nextDay = moment.parseZone(filterDate, "YYYY/MM/DD")
+        const nextDay = moment
+          .parseZone(filterDate, "YYYY/MM/DD")
           .add(1, "days")
           .format("YYYY/MM/DD");
 
@@ -132,18 +137,20 @@ const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
   }, []);
 
   return (
-    <div className="event section-container">
+    <div className={styles.event}>
       <div className="ui container">
         <div className="section-title white">
           <h2>
             Upcoming Events{" "}
             <span className="see-more-link">
-              <Link to="/knowledge/library?topic=event">
-                See all <RightOutlined />
+              <Link href="/knowledge/library?topic=event" legacyBehavior>
+                <a>
+                  See all <RightOutlined />
+                </a>
               </Link>
             </span>
           </h2>
-          {path === "/connect/events" && (
+          {path === "/events" && (
             <Button
               onClick={() => {
                 if (isAuthenticated) {
@@ -236,14 +243,16 @@ const renderEventContent = (history, event, eventCarousel, onThisDayText) => {
           event.map((x, i) => {
             const { id, title, description, type, image } = x;
 
-            const startDate = moment.parseZone(x.startDate).format("YYYY/MM/DD");
+            const startDate = moment
+              .parseZone(x.startDate)
+              .format("YYYY/MM/DD");
             const endDate = moment.parseZone(x.endDate).format("YYYY/MM/DD");
-            const startDateText = moment.parseZone(startDate, "YYYY/MM/DD").format(
-              "DD MMMM YYYY"
-            );
-            const endDateText = moment.parseZone(endDate, "YYYY/MM/DD").format(
-              "DD MMMM YYYY"
-            );
+            const startDateText = moment
+              .parseZone(startDate, "YYYY/MM/DD")
+              .format("DD MMMM YYYY");
+            const endDateText = moment
+              .parseZone(endDate, "YYYY/MM/DD")
+              .format("DD MMMM YYYY");
             const dateText =
               startDate < endDate
                 ? `${startDateText} - ${endDateText}`
@@ -275,8 +284,10 @@ const renderEventContent = (history, event, eventCarousel, onThisDayText) => {
                 </div>
                 <div className="item-footer">
                   <span className="read-more">
-                    <Link to={`/event/${id}`}>
-                      Read more <ArrowRightOutlined />
+                    <Link href={`/event/${id}`}>
+                      <a>
+                        Read more <ArrowRightOutlined />
+                      </a>
                     </Link>
                   </span>
                   {x?.recording && (
@@ -410,4 +421,4 @@ const calendarHeader = ({ value, onChange, isShownAddButton }) => {
   );
 };
 
-export default withRouter(EventCalendar);
+export default EventCalendar;

@@ -1,5 +1,5 @@
 import React from "react";
-import "./styles.scss";
+import "./style.module.scss";
 import { Col, Popover, Input, Button, Select } from "antd";
 const { Option } = Select;
 import { eventTrack } from "../../utils/misc";

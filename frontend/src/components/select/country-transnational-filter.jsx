@@ -6,7 +6,7 @@ import { UIStore } from "../../store";
 import { TrimText } from "../../utils/string";
 import { multicountryGroups } from "../../modules/knowledge-library/multicountry";
 import { OptGroup } from "rc-select";
-import "./styles.scss";
+import "./style.module.scss";
 import api from "../../utils/api";
 
 const { TabPane } = Tabs;
@@ -36,6 +36,8 @@ const CountryTransnationalFilter = ({
   );
 
   const isLoaded = () => !isEmpty(countries) && !isEmpty(transnationalOptions);
+
+  console.log(countries);
 
   const countryOpts = isLoaded()
     ? countries

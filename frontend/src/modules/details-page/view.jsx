@@ -6,7 +6,7 @@ import React, {
   useCallback,
   useRef,
 } from "react";
-import "./styles.scss";
+import "./style.module.scss";
 import {
   Row,
   Col,
