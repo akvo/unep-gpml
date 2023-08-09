@@ -9,7 +9,6 @@ INSERT INTO event(
     geo_coverage_type,
     country,
     city,
-    image,
     language
 --~ (when (contains? params :id) ", id")
 --~ (when (contains? params :review_status) ", review_status")
@@ -23,6 +22,8 @@ INSERT INTO event(
 --~ (when (contains? params :subnational_city) ", subnational_city")
 --~ (when (contains? params :document_preview) ", document_preview")
 --~ (when (contains? params :source) ", source")
+--~ (when (contains? params :image_id) ", image_id")
+--~ (when (contains? params :thumbnail_id) ", thumbnail_id")
 )
 VALUES(
     :title,
@@ -33,7 +34,6 @@ VALUES(
     :geo_coverage_type::geo_coverage_type,
     :country,
     :city,
-    :image,
     :language
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :review_status) ", :v:review_status::review_status")
@@ -47,6 +47,8 @@ VALUES(
 --~ (when (contains? params :subnational_city) ", :subnational_city")
 --~ (when (contains? params :document_preview) ", :document_preview")
 --~ (when (contains? params :source) ", :source")
+--~ (when (contains? params :image_id) ", :image_id")
+--~ (when (contains? params :thumbnail_id) ", :thumbnail_id")
 ) RETURNING id;
 
 -- :name add-event-language-urls :returning-execute :one
