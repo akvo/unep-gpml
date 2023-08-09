@@ -14,8 +14,6 @@
             [gpml.util.postgresql :as pg-util]
             [gpml.util.regular-expressions :as util.regex]
             [integrant.core :as ig]
-            [malli.core :as m]
-            [malli.transform :as mt]
             [medley.core :as medley])
   (:import [java.sql SQLException]))
 
