@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./styles.scss";
+import styles from "./styles.module.scss";
 import { Collapse, Checkbox, Button, Radio } from "antd";
 import api from "../../utils/api";
 import {
@@ -9,15 +9,16 @@ import {
   SendOutlined,
   CheckCircleOutlined,
 } from "@ant-design/icons";
-import { ReactComponent as AtlasSvg } from "../../images/book-atlas.svg";
-import { ReactComponent as AnalyticAndStatisticSvg } from "../../images/analytic-and-statistic-icon.svg";
-import { ReactComponent as DataCatalogueSvg } from "../../images/data-catalogue-icon.svg";
-import { ReactComponent as CaseStudiesSvg } from "../../images/capacity-building/ic-case-studies.svg";
-import { ReactComponent as CapacityBuildingSvg } from "../../images/capacity-building/ic-capacity-building.svg";
-import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
-import { Link } from "react-router-dom";
+import AtlasSvg from "../../images/book-atlas.svg";
+import AnalyticAndStatisticSvg from "../../images/analytic-and-statistic-icon.svg";
+import DataCatalogueSvg from "../../images/data-catalogue-icon.svg";
+import CaseStudiesSvg from "../../images/capacity-building/ic-case-studies.svg";
+import CapacityBuildingSvg from "../../images/capacity-building/ic-capacity-building.svg";
+import IconForum from "../../images/events/forum-icon.svg";
 import { stages } from "./get-started";
 import classNames from "classnames";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const { Panel } = Collapse;
 
@@ -1951,14 +1952,17 @@ const getCheckListObject = (stage) => {
   return checklist;
 };
 
-const ProjectView = ({ match: { params }, profile, ...props }) => {
+const ProjectView = ({ profile, ...props }) => {
+  const router = useRouter();
+  const { id } = router.query;
+
   const [projectDetail, setProjectDetail] = useState({});
   const [checklist, setChecklist] = useState({});
 
   useEffect(() => {
-    if (params?.id && profile && profile.reviewStatus === "APPROVED") {
+    if (id && profile && profile.reviewStatus === "APPROVED") {
       api
-        .getRaw(`/project/${params?.id}`)
+        .getRaw(`/project/${id}`)
         .then((resp) => {
           setProjectDetail(JSON.parse(resp?.data).project);
           setChecklist(
@@ -1981,7 +1985,7 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
       [title]: { ...checklist[title], [name]: value },
     };
     api
-      .putRaw(`/project/${params?.id}`, { checklist: data })
+      .putRaw(`/project/${id}`, { checklist: data })
       .then((resp) => {
         console.log(resp);
       })
@@ -1989,7 +1993,7 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
   };
 
   return (
-    <div id="project">
+    <div className={styles.project}>
       <div className="project-container">
         <div className="project-header">
           <div className="title-container">
@@ -2035,6 +2039,7 @@ const ProjectView = ({ match: { params }, profile, ...props }) => {
                 return (
                   <Panel
                     className={classNames({ completed: isCompleted })}
+                    key={index}
                     header={
                       <>
                         <div className="steps-item-icon">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Auth0Provider } from "@auth0/auth0-react";
 import Head from "next/head";
 import "../main.scss";
+import "../buttons.scss";
 import withLayout from "../layouts/withLayout";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -13,6 +14,12 @@ import { updateStatusProfile } from "../utils/profile";
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
+  const { profile } = UIStore.useState((s) => ({
+    profile: s.profile,
+    disclaimer: s.disclaimer,
+    nav: s.nav,
+    tags: s.tags,
+  }));
   const [setStakeholderSignupModalVisible] = useState(false);
   const [warningModalVisible, setWarningModalVisible] = useState(false);
   const [filters, setFilters] = useState(null);
@@ -168,6 +175,7 @@ function MyApp({ Component, pageProps }) {
           {...pageProps}
           isAuthenticated={isAuthenticated}
           auth0Client={auth0Client}
+          profile={profile}
         />
       </Auth0Provider>
     </div>
