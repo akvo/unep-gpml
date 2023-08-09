@@ -584,6 +584,9 @@
    :app-domain #duct/env ["APP_DOMAIN" Str]
    :app-user-admin #duct/env ["APP_USER_ADMIN" Str]
    :storage-bucket-name #duct/env ["GCS_BUCKET_NAME" Str]
+   :private-storage-bucket-name #duct/env ["GCS_PRIVATE_BUCKET_NAME" Str]
+   :private-storage-signed-url-lifespan 10080
+   :public-storage-bucket-name #duct/env ["GCS_PUBLIC_BUCKET_NAME" Str]
    :brs-entities-to-import #ig/ref :gpml.config/brs-gpml-entities-mapping
    :subscribe-settings {:management-dest-email #duct/env ["SUBSCRIPTIONS_MANAGEMENT_EMAIL" Str]}
    :contact-settings {:cobsea {:dest-email #duct/env ["CONTACT_COBSEA_MANAGEMENT_EMAIL" Str]}}}
