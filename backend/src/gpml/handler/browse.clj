@@ -4,12 +4,19 @@
             [gpml.db.country-group :as db.country-group]
             [gpml.db.resource.connection :as db.resource.connection]
             [gpml.db.topic :as db.topic]
+            [gpml.domain.file :as dom.file]
             [gpml.domain.resource :as dom.resource]
             [gpml.domain.types :as dom.types]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
+            [gpml.handler.util :as handler.util]
+            [gpml.service.file :as srv.file]
             [gpml.util.postgresql :as pg-util]
             [gpml.util.regular-expressions :as util.regex]
-            [integrant.core :as ig])
+            [integrant.core :as ig]
+            [malli.core :as m]
+            [malli.transform :as mt]
+            [medley.core :as medley])
   (:import [java.sql SQLException]))
 
 (def ^:const topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
@@ -243,21 +250,37 @@
     true
     (assoc :review-status "APPROVED")))
 
-(defn- result->result-with-connections
-  [db {:keys [type] :as result}]
-  (let [resource-type (cond
-                        (some #{type} dom.resource/types)
-                        "resource"
+(defn- add-files-urls
+  [config files]
+  (map
+   (fn [file]
+     (let [decoded-file (m/decode dom.file/file-schema
+                                  file
+                                  mt/string-transformer)
+           {:keys [url]}
+           (srv.file/get-file-url config decoded-file)]
+       (assoc file :url url)))
+   files))
 
-                        :else
-                        type)]
-    (->> {:resource-type resource-type
-          :resource-id (:id result)}
-         (db.resource.connection/get-resource-stakeholder-connections db)
-         (assoc result :stakeholder_connections))))
+(defn- resource->api-resource
+  [config resource]
+  (let [conn (get-in config [:db :spec])
+        {:keys [topic json]} resource
+        resource-type (handler.util/get-internal-topic-type topic)
+        {:keys [id image_id thumbnail_id]} json
+        files (medley/index-by :id (add-files-urls config (:files json)))
+        connections (db.resource.connection/get-resource-stakeholder-connections
+                     conn
+                     {:resource-type resource-type
+                      :resource-id id})]
+    (assoc json
+           :type topic
+           :image (get-in files [image_id :url])
+           :thumbnail (get-in files [thumbnail_id :url])
+           :stakeholder_connections connections)))
 
 (defn- browse-response
-  [{:keys [logger] {db :spec} :db} query approved? admin]
+  [{:keys [logger] {db :spec} :db :as config} query approved? admin]
   (try
     (let [{:keys [countries country-groups] :as modified-filters}
           (->> query
@@ -286,8 +309,7 @@
           get-topics-start-time (System/currentTimeMillis)
           results (->> modified-filters
                        (db.topic/get-topics db)
-                       (map (fn [{:keys [json topic]}]
-                              (assoc json :type topic))))
+                       (map (partial resource->api-resource config)))
           get-topics-exec-time (- (System/currentTimeMillis) get-topics-start-time)
           count-topics-start-time (System/currentTimeMillis)
           counts (->> (assoc modified-filters :count-only? true)
@@ -296,16 +318,16 @@
       (log logger :info ::query-exec-time {:get-topics-exec-time (str get-topics-exec-time "ms")
                                            :count-topics-exec-time (str count-topics-exec-time "ms")})
       (r/ok {:success? true
-             :results (map #(result->result-with-connections db %) results)
+             :results results
              :counts counts}))
-    (catch Exception e
-      (log logger :error :failed-to-get-topics {:exception-message (.getMessage e)
+    (catch Throwable t
+      (log logger :error :failed-to-get-topics {:exception-message (ex-message t)
                                                 :context-data {:query-params query}})
       (let [response {:success? false
                       :reason :could-not-get-topics}]
-        (if (instance? SQLException e)
-          (r/server-error (assoc-in response [:body :error-details :error] (pg-util/get-sql-state e)))
-          (r/server-error (assoc-in response [:body :error-details :error] (.getMessage e))))))))
+        (if (instance? SQLException t)
+          (r/server-error (assoc-in response [:error-details :error] (pg-util/get-sql-state t)))
+          (r/server-error (assoc-in response [:error-details :error] (ex-message t))))))))
 
 (defmethod ig/init-key :gpml.handler.browse/get [_ config]
   (fn [{{:keys [query]} :parameters
@@ -315,7 +337,7 @@
      config
      (merge query {:user-id (:id user)})
      approved?
-     (= "ADMIN" (:role user)))))
+     (h.r.permission/super-admin? config (:id user)))))
 
 (defmethod ig/init-key :gpml.handler.browse/query-params [_ _]
   api-opts-schema)

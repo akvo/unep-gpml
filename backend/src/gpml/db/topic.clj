@@ -147,6 +147,15 @@
         geo-coverage-join (if (= entity-name "stakeholder")
                             ""
                             (format "LEFT JOIN %s_geo_coverage eg ON eg.%s = e.id" entity-name entity-name))
+        files-join (cond
+                     (= entity-name "stakeholder")
+                     "LEFT JOIN file f ON e.picture_id = f.id"
+
+                     (= entity-name "organisation")
+                     "LEFT JOIN file f ON e.logo_id = f.id"
+
+                     :else
+                     "LEFT JOIN file f ON f.id IN (e.image_id, e.thumbnail_id)")
         where-cond (cond-> "WHERE 1=1"
                      id
                      (str " AND e.id = :id")
@@ -185,9 +194,11 @@
      "SELECT
        %s,
        %s
+       json_agg(jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files,
        json_agg(json_build_object('id', t.id, 'tag', t.tag)) FILTER (WHERE t.id IS NOT NULL) AS tags
    FROM %s e
    LEFT JOIN %s_tag et ON et.%s = e.id LEFT JOIN tag t ON et.tag = t.id
+   %s
    %s
    %s
    %s
@@ -195,6 +206,7 @@
      (concat [table-specific-cols]
              [geo-coverage-select]
              (repeat 3 entity-name)
+             [files-join]
              [entity-connections-join]
              [geo-coverage-join]
              [where-cond]))))
