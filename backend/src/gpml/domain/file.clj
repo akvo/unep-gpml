@@ -3,7 +3,8 @@
             [gpml.domain.miscellaneous :as dom.misc]
             [gpml.domain.types :as dom.types]
             [gpml.util :as util]
-            [malli.core :as m])
+            [malli.core :as m]
+            [malli.transform :as mt])
   (:import [java.io File]))
 
 (def ^:const object-key-pattern
@@ -54,6 +55,10 @@
       (str/replace #"ENTITY-KEY" (name entity-key))
       (str/replace #"FILE-KEY" (name file-key))
       (str/replace #"FILE-ID" (str file-id))))
+
+(defn decode-file
+  [file]
+  (m/decode file-schema file mt/string-transformer))
 
 (defn base64->file
   [payload entity-key file-key visibility]
