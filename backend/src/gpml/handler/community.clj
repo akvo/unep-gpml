@@ -3,9 +3,12 @@
             [duct.logger :refer [log]]
             [gpml.db.community :as db.community]
             [gpml.db.country-group :as db.country-group]
+            [gpml.domain.file :as dom.file]
             [gpml.handler.responses :as r]
+            [gpml.service.file :as srv.file]
             [gpml.util.regular-expressions :as util.regex]
-            [integrant.core :as ig]))
+            [integrant.core :as ig]
+            [medley.core :as medley]))
 
 (def ^:const community-network-types ["organisation" "stakeholder"])
 (def ^:const geo-coverage-types ["Transnational" "National" "Global" "Sub-national"])
@@ -163,8 +166,23 @@
                                            (re-seq #"\w+")
                                            (str/join " & ")))))
 
+(defn- community-member->api-community-member
+  [config community-member]
+  (let [{files :files member-type :type
+         picture-id :picture_id logo-id :logo_id} community-member
+        files-w-urls (->> files
+                          (map dom.file/decode-file)
+                          (srv.file/add-files-urls config)
+                          (medley/index-by (comp str :id)))]
+    (cond-> community-member
+      (= "stakeholder" member-type)
+      (assoc :picture (get-in files-w-urls [picture-id :url]))
+
+      (= "organisation" member-type)
+      (assoc :logo (get-in files-w-urls [logo-id :url])))))
+
 (defn get-community-members
-  [{:keys [db logger]} req]
+  [{:keys [db logger] :as config} req]
   (try
     (let [conn (:spec db)
           query-params (get-in req [:parameters :query])
@@ -176,8 +194,10 @@
                                (assoc-in opts [:filters :country] (set (concat
                                                                         (get-in opts [:filters :country])
                                                                         geo-coverage-countries))))
-                             opts)]
-      (r/ok {:results (db.community/get-community-members conn modified-filters)
+                             opts)
+          results (->> (db.community/get-community-members conn modified-filters)
+                       (map (partial community-member->api-community-member config)))]
+      (r/ok {:results results
              :counts (db.community/get-community-members conn (assoc modified-filters :count-only? true))}))
     (catch Throwable t
       (let [log-data {:exception-message (ex-message t)
