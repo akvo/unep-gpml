@@ -279,61 +279,6 @@
     }
   }
 }
-
-.location-filter-dropdown {
-  max-height: 300px;
-  background-color: #ffffff;
-  width: 400px;
-  padding: 20px;
-  background: #ffffff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-  .ant-tabs {
-    background: rgba(255, 255, 255, 0.05);
-    box-shadow: 0px 0px 4px rgb(0 0 0 / 25%);
-    border-radius: 5px;
-    .ant-tabs-nav-list {
-      width: 100%;
-      .ant-tabs-tab {
-        flex: 0 0 50%;
-        margin-left: 0 !important;
-        border: none;
-        background: #d9e7f0;
-        padding: 10px 16px;
-        border-radius: 0px;
-        &:first-child {
-          border-radius: 5px 0px 0px 0px;
-        }
-        &:nth-child(2) {
-          border-radius: 0px 5px 0px 0px;
-        }
-        &.ant-tabs-tab-active {
-          background-color: #ffffff;
-        }
-        .ant-tabs-tab-btn {
-          font-weight: 500;
-          font-size: 16px;
-          line-height: 14px;
-          color: #000000;
-        }
-      }
-    }
-    .ant-tabs-nav {
-      &::before {
-        border: none;
-      }
-      padding-bottom: 10px;
-      margin-bottom: 0px;
-    }
-    .ant-select {
-      width: 100%;
-    }
-    .ant-tabs-content-holder {
-      padding: 10px;
-    }
-  }
-}
-
 .expert-card {
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
   border-radius: 5px;

@@ -27,7 +27,7 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
-import "./styles.scss";
+import "./style.module.scss";
 import common from "./common";
 import ExampleIcon from "../../images/examples.png";
 import InfoBlue from "../../images/i-blue.png";
@@ -38,10 +38,11 @@ import { useQuery } from "../../utils/misc";
 import moment from "moment";
 import { Link, useLocation } from "react-router-dom";
 const { Step } = Steps;
-import RichTextEditor from "react-rte";
+import dynamic from "next/dynamic";
+const RichTextEditor = dynamic(() => import("react-rte"), { ssr: false });
 
 export const getTypeByResource = (type) => {
-  console.log(type,"type")
+  console.log(type, "type");
   let t = "";
   let name = "";
   let translations = "";
@@ -156,7 +157,13 @@ const toolbarConfig = {
   ],
 };
 
-const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match: { params }, ...props }) => {
+const FlexibleForms = ({
+  isAuthenticated,
+  setLoginVisible,
+  loadingProfile,
+  match: { params },
+  ...props
+}) => {
   const {
     tabs,
     getSchema,
@@ -168,7 +175,7 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
     getTranslationForm,
   } = common;
   const query = useQuery();
-  
+
   const caseStudy = {
     code: "case_study",
     name: "Case Study",
@@ -285,20 +292,17 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
       setLabel(state?.state?.label);
     }
   }, [state]);
-  
+
   useEffect(() => {
     if (!isAuthenticated && loadingProfile) {
       setLoginVisible(true);
     }
   }, [isAuthenticated, loadingProfile]);
-  
+
   useEffect(() => {
     if (profile && profile.role === "ADMIN") {
       UIStore.update((e) => {
-        e.mainContentType =   [
-          ...e.mainContentType,
-          caseStudy,
-        ];
+        e.mainContentType = [...e.mainContentType, caseStudy];
       });
     }
   }, [profile]);

@@ -5,7 +5,7 @@ module.exports = function (app) {
     ["/api", "/image", "/env.js", "/cv"],
     createProxyMiddleware({
       target: process.env.REACT_APP_FEENV
-        ? "https://unep-gpml.akvotest.org/"
+        ? "https://digital.gpmarinelitter.org/"
         : "http://backend:3000",
       changeOrigin: true,
     })
