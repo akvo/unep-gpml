@@ -13,8 +13,6 @@ insert into technology(
     remarks,
     review_status,
     url,
-    image,
-    logo,
     language
 --~ (when (contains? params :id) ", id")
 --~ (when (contains? params :created_by) ", created_by")
@@ -24,6 +22,8 @@ insert into technology(
 --~ (when (contains? params :headquarter) ", headquarter")
 --~ (when (contains? params :document_preview) ", document_preview")
 --~ (when (contains? params :source) ", source")
+--~ (when (contains? params :image_id) ", image_id")
+--~ (when (contains? params :thumbnail_id) ", thumbnail_id")
 )
 values(
     :name,
@@ -38,8 +38,6 @@ values(
     :remarks,
     :v:review_status::review_status,
     :url,
-    :image,
-    :logo,
     :language
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :created_by) ", :created_by")
@@ -49,6 +47,8 @@ values(
 --~ (when (contains? params :headquarter) ", :headquarter")
 --~ (when (contains? params :document_preview) ", :document_preview")
 --~ (when (contains? params :source) ", :source")
+--~ (when (contains? params :image_id) ", :image_id")
+--~ (when (contains? params :thumbnail_id) ", :thumbnail_id")
 )
 returning id;
 
@@ -113,13 +113,13 @@ select
     headquarter,
     document_preview,
     (select json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
-        from technology_language_url plu
-        left join language l on l.id = plu.language
-        where plu.technology = :id) as urls,
+	from technology_language_url plu
+	left join language l on l.id = plu.language
+	where plu.technology = :id) as urls,
     (select json_agg(tag)
-        from technology_tag where technology = :id) as tags,
+	from technology_tag where technology = :id) as tags,
     (select created_by
-        from technology where id = :id) as created_by
+	from technology where id = :id) as created_by
 from v_technology_data
 where id = :id
 
