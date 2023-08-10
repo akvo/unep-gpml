@@ -6,7 +6,7 @@
             [gpml.db.resource.connection :as db.resource.connection]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.domain.types :as dom.types]
-            [gpml.handler.image :as handler.image]
+            [gpml.handler.file :as handler.file]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
@@ -48,14 +48,19 @@
    user
    {:keys [q24 tags related_content created_by
            entity_connections individual_connections qimage thumbnail capacity_building] :as initiative}]
-  (let [data (cond-> initiative
-               true
-               (dissoc :tags :owners :entity_connections
-                       :individual_connections :related_content)
+  (let [image-id (when (seq qimage)
+                   (handler.file/create-file config conn qimage :initiative :images :public))
+        thumbnail-id (when (seq thumbnail)
+                       (handler.file/create-file config conn thumbnail :initiative :images :public))
+        data (cond-> (dissoc initiative
+                             :tags :owners :entity_connections
+                             :individual_connections :related_content
+                             :qimage :thumbnail)
+               image-id
+               (assoc :image_id image-id)
 
-               true
-               (assoc :qimage (handler.image/assoc-image config conn qimage "initiative")
-                      :thumbnail (handler.image/assoc-image config conn thumbnail "initiative"))
+               thumbnail-id
+               (assoc :thumbnail_id thumbnail-id)
 
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
