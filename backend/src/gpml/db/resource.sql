@@ -13,7 +13,6 @@ INSERT INTO resource(
 --~ (when (contains? params :value) ", value")
 --~ (when (contains? params :value_currency) ", value_currency")
 --~ (when (contains? params :value_remarks) ", value_remarks")
---~ (when (contains? params :image) ", image")
 --~ (when (contains? params :attachments) ", attachments")
 --~ (when (contains? params :remarks) ", remarks")
 --~ (when (contains? params :id) ", id")
@@ -28,6 +27,8 @@ INSERT INTO resource(
 --~ (when (contains? params :subnational_city) ", subnational_city")
 --~ (when (contains? params :document_preview) ", document_preview")
 --~ (when (contains? params :source) ", source")
+--~ (when (contains? params :image_id) ", image_id")
+--~ (when (contains? params :thumbnail_id) ", thumbnail_id")
 )
 VALUES(
     :title,
@@ -42,7 +43,6 @@ VALUES(
 --~ (when (contains? params :value) ", :value")
 --~ (when (contains? params :value_currency) ", :value_currency")
 --~ (when (contains? params :value_remarks) ", :value_remarks")
---~ (when (contains? params :image) ", :image")
 --~ (when (contains? params :attachments) ", :v:attachments::jsonb")
 --~ (when (contains? params :remarks) ", :remarks")
 --~ (when (contains? params :id) ", :id")
@@ -57,6 +57,8 @@ VALUES(
 --~ (when (contains? params :subnational_city) ", :subnational_city")
 --~ (when (contains? params :document_preview) ", :document_preview")
 --~ (when (contains? params :source) ", :source")
+--~ (when (contains? params :image_id) ", :image_id")
+--~ (when (contains? params :thumbnail_id) ", :thumbnail_id")
 )
 returning id;
 
@@ -86,13 +88,13 @@ SELECT
     document_preview,
     language,
     (select json_agg(json_build_object('url',rlu.url, 'lang', l.iso_code))
-        from resource_language_url rlu
-        left join language l on l.id = rlu.language
-        where rlu.resource = :id) as urls,
+	from resource_language_url rlu
+	left join language l on l.id = rlu.language
+	where rlu.resource = :id) as urls,
     (select json_agg(coalesce(country, country_group))
-        from resource_geo_coverage where resource = :id) as geo_coverage_value,
+	from resource_geo_coverage where resource = :id) as geo_coverage_value,
     (select json_agg(tag)
-        from resource_tag where resource = :id) as tags
+	from resource_tag where resource = :id) as tags
 FROM resource r
 WHERE id = :id
 
