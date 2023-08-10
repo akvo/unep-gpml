@@ -5,8 +5,8 @@
             [gpml.auth :as auth]
             [gpml.db.event :as db.event]
             [gpml.db.language :as db.language]
-            [gpml.domain.file :as dom.file]
             [gpml.domain.types :as dom.types]
+            [gpml.handler.file :as handler.file]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
@@ -14,7 +14,6 @@
             [gpml.handler.responses :as r]
             [gpml.handler.util :as handler.util]
             [gpml.service.association :as srv.association]
-            [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
             [gpml.util.email :as email]
@@ -35,7 +34,11 @@
            recording document_preview related_content
            entity_connections individual_connections language
            capacity_building source]}]
-  (let [data (cond-> {:title title
+  (let [image-id (when (seq image)
+                   (handler.file/create-file config conn image :event :images :public))
+        thumbnail-id (when (seq thumbnail)
+                       (handler.file/create-file config conn thumbnail :event :images :public))
+        data (cond-> {:title title
                       :start_date start_date
                       :end_date end_date
                       :description (or description "")
@@ -57,7 +60,13 @@
                       :language language
                       :source source}
                (not (nil? capacity_building))
-               (assoc :capacity_building capacity_building))
+               (assoc :capacity_building capacity_building)
+
+               image-id
+               (assoc :image_id image-id)
+
+               thumbnail-id
+               (assoc :thumbnail_id thumbnail-id))
         event-id (->>
                   (update data :source #(sql-util/keyword->pg-enum % "resource_source"))
                   (db.event/new-event conn) :id)
@@ -101,20 +110,6 @@
                                               {:countries geo_coverage_countries
                                                :country-groups geo_coverage_country_groups
                                                :country-states geo_coverage_country_states})
-    (when (seq image)
-      (let [image-file (dom.file/base64->file image :event :images :public)
-            result (srv.file/create-file config conn image-file)]
-        (if-not (:success? result)
-          (throw (ex-info "Failed to upload image" {:result result}))
-          (db.event/update-event conn {:id event-id
-                                       :updates {:image_id (get-in result [:file :id])}}))))
-    (when (seq thumbnail)
-      (let [thumbnail-file (dom.file/base64->file thumbnail :event :images :public)
-            result (srv.file/create-file config conn thumbnail-file)]
-        (if-not (:success? result)
-          (throw (ex-info "Failed to upload thumbnail" {:result result}))
-          (db.event/update-event conn {:id event-id
-                                       :updates {:thumbnail_id (get-in result [:file :id])}}))))
     (email/notify-admins-pending-approval
      conn
      mailjet-config
