@@ -49,6 +49,13 @@
      {:optional true}
      inst?]]))
 
+(def ^:const mime-types->common-extensions-mapping
+  "There are much more mime-types and extensions but we are just mapping
+  the ones used in GPML and omiting those that can be inferred from
+  the mime-type directly."
+  {"application/vnd.oasis.opendocument.text" "odt"
+   "application/vnd.openxmlformats-officedocument.wordprocessingml.document" "docx"})
+
 (defn create-file-object-key
   [entity-key file-key file-id]
   (-> object-key-pattern
@@ -62,14 +69,15 @@
 
 (defn base64->file
   [payload entity-key file-key visibility]
-  (let [[_ ^String content-type ^String content] (re-find #"^data:(\S+);base64,(.*)$" payload)
-        [_ extension] (str/split content-type #"\/")
+  (let [[_ ^String mime-type ^String content] (re-find #"^data:(\S+);base64,(.*)$" payload)
+        [_ mime-type-suffix] (str/split mime-type #"\/")
+        extension (get mime-types->common-extensions-mapping mime-type mime-type-suffix)
         file-id (util/uuid)]
     {:id file-id
      :object-key (create-file-object-key entity-key file-key file-id)
      :name (format "%s-%s" (name entity-key) file-id)
      :alt-desc nil
-     :type content-type
+     :type mime-type
      :extension extension
      :visibility visibility
      :content content}))
