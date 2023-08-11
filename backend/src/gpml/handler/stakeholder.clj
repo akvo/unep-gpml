@@ -406,13 +406,11 @@
                 (apply conj [:enum] dom.stakeholder/role-types)]]})
 
 (defmethod ig/init-key :gpml.handler.stakeholder/get-by-id
-  [_ {:keys [db] :as config}]
+  [_ config]
   (fn [{{:keys [path]} :parameters user :user}]
     (if (or (h.r.permission/super-admin? config (:id user))
             (= (:id path) (:id user)))
-      (let [stakeholder (db.stakeholder/get-stakeholder-by-id (:spec db) path)]
-        (resp/response
-         (get-stakeholder-profile db stakeholder)))
+      (r/ok (get-stakeholder-profile config (:id path)))
       (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/put-restricted
