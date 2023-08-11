@@ -58,7 +58,7 @@
        :authenticated? false} "not-a-valid-token" [false "IDToken can't be verified"])))
 
 (deftest test-check-approved
-  (testing "Testing check-approved logic"
+  (testing "Testing get-user-info logic"
     (let [system (-> fixtures/*system*
                      (ig/init [::auth/auth-middleware]))
           db (-> system :duct.database.sql/hikaricp :spec)
@@ -70,7 +70,7 @@
           unapproved (new-stakeholder db 2 "foo@bar.org" "USER" "SUBMITTED")]
 
       (are [expected auth-header]
-          (= expected (auth/check-approved db auth-header))
+          (= expected (auth/get-user-info db auth-header))
 
         ;; Anonymous user
         {:approved? false :user nil} {:authenticated? false}
@@ -79,10 +79,6 @@
         {:approved? false :user nil}
         {:jwt-claims unapproved}
 
-        ;; Unapproved email user
-        {:approved? false :user unapproved}
-        {:jwt-claims (assoc unapproved :email_verified true)}
-
         ;; Approved, verified email user
         {:approved? true :user approved}
-        {:jwt-claims (assoc approved :email_verified true)}))))
+        {:jwt-claims approved}))))
