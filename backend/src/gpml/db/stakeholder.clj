@@ -1,7 +1,7 @@
 (ns gpml.db.stakeholder
   {:ns-tracker/resource-deps ["stakeholder.sql"]}
-  (:require [hugsql.core :as hugsql]
-            [gpml.db.jdbc-util :as jdbc-util]))
+  (:require [gpml.db.jdbc-util :as jdbc-util]
+            [hugsql.core :as hugsql]))
 
 (declare delete-stakeholder*
          all-public-stakeholders
