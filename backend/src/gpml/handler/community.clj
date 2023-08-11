@@ -179,7 +179,7 @@
       (assoc :picture (get-in files-w-urls [picture-id :url]))
 
       (= "organisation" member-type)
-      (assoc :logo (get-in files-w-urls [logo-id :url])))))
+      (assoc :picture (get-in files-w-urls [logo-id :url])))))
 
 (defn get-community-members
   [{:keys [db logger] :as config} req]
