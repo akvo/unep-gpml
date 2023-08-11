@@ -21,7 +21,6 @@
             [gpml.domain.initiative :as dom.initiative]
             [gpml.domain.resource :as dom.resource]
             [gpml.domain.types :as dom.types]
-            [gpml.handler.image :as handler.image]
             [gpml.handler.initiative :as handler.initiative]
             [gpml.handler.organisation :as handler.org]
             [gpml.handler.resource.geo-coverage :as handler.geo]
@@ -33,6 +32,7 @@
             [gpml.service.association :as srv.association]
             [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
+            [gpml.util :as util]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
             [medley.core :as medley])
@@ -604,25 +604,70 @@
       :id id
       :organisation org-id})))
 
-(defn -update-blank-resource-picture
-  [conn image-type resource-id image-key]
-  (db.detail/update-resource-table
-   conn
-   {:table image-type :id resource-id :updates {image-key ""}}))
-
-(defn -update-resource-picture
-  [config conn image image-type resource-id image-key]
-  (let [url (handler.image/assoc-image config conn image image-type)]
-    (when-not (and image (= image url))
+(defn update-blank-resource-image
+  [config conn resource-type resource-id file-id-key old-file-id]
+  (let [result (srv.file/delete-file config conn {:id old-file-id})]
+    (if (:success? result)
+      (throw (ex-info "Failed to delete old resource image file" {:result result}))
       (db.detail/update-resource-table
        conn
-       {:table image-type :id resource-id :updates {image-key url}}))))
+       {:table resource-type
+        :id resource-id
+        :updates {file-id-key nil}}))))
+
+(defn- update-resource-image**
+  [config conn resource-type resource-id file-id-key image-payload]
+  (let [new-file (dom.file/base64->file image-payload
+                                        (keyword resource-type)
+                                        :images
+                                        :public)
+        result (srv.file/create-file config conn new-file)]
+    (if-not (:success? result)
+      (throw (ex-info "Failed to update resource image file" {:result result}))
+      (db.detail/update-resource-table
+       conn
+       {:table resource-type
+        :id resource-id
+        :updates {file-id-key (get-in result [:file :id])}}))))
+
+(defn- update-resource-image*
+  [config conn resource-type resource-id file-id-key old-file-id image-payload]
+  (if-not old-file-id
+    (update-resource-image** config
+                             conn
+                             resource-type
+                             resource-id
+                             file-id-key
+                             image-payload)
+    (let [result (srv.file/delete-file config conn {:id old-file-id})]
+      (if (:success? result)
+        (throw (ex-info "Failed to delete old resource image file" {:result result}))
+        (update-resource-image** config
+                                 conn
+                                 resource-type
+                                 resource-id
+                                 file-id-key
+                                 image-payload)))))
 
 (defn update-resource-image
-  [config conn image image-key image-type resource-id]
-  (if (empty? image)
-    (-update-blank-resource-picture conn image-type resource-id image-key)
-    (-update-resource-picture config conn image image-type resource-id image-key)))
+  [config conn resource-type resource-id image-key image-payload]
+  (let [resource (get-detail* conn resource-type resource-id {})
+        file-id-key (keyword (str (name image-key) "_id"))
+        old-file-id (util/uuid (get resource file-id-key))]
+    (if-not (seq image-payload)
+      (update-blank-resource-image config
+                                   conn
+                                   resource-type
+                                   resource-id
+                                   file-id-key
+                                   old-file-id)
+      (update-resource-image* config
+                              conn
+                              resource-type
+                              resource-id
+                              file-id-key
+                              old-file-id
+                              image-payload))))
 
 (defn- update-resource
   [{:keys [logger mailjet-config] :as config}
@@ -668,8 +713,8 @@
         related-contents (:related_content updates)
         org-associations (map (fn [acs] (set/rename-keys acs {:entity :organisation})) (:entity_connections updates))
         sth-associations (:individual_connections updates)]
-    (doseq [[image-key image-data] (select-keys updates [:image :thumbnail :photo :logo])]
-      (update-resource-image config conn image-data image-key table id))
+    (doseq [[image-key image-data] (select-keys updates [:image :thumbnail])]
+      (update-resource-image config conn table id image-key image-data))
     (when (seq tags)
       (update-resource-tags conn logger mailjet-config table id tags))
     (when (seq related-contents)
@@ -719,8 +764,9 @@
         related-contents (:related_content initiative)
         org-associations (map (fn [acs] (set/rename-keys acs {:entity :organisation})) (:entity_connections initiative))
         sth-associations (:individual_connections initiative)]
-    (doseq [[image-key image-data] (select-keys initiative [:qimage :thumbnail])]
-      (update-resource-image config conn image-data image-key "initiative" id))
+    (doseq [[image-key image-data] (select-keys initiative [:qimage :thumbnail])
+            :let [image-key (if (= image-key :qimage) :image image-key)]]
+      (update-resource-image config conn "initiative" id image-key image-data))
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn logger id "initiative" related-contents))
     (when (seq tags)
