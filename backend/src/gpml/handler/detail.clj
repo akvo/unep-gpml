@@ -303,9 +303,9 @@
      related-contents)))
 
 (defn- add-stakeholder-connections
-  [db resource]
+  [db resource-type resource]
   (let [search-opts {:resource-id (:id resource)
-                     :resource-type (resolve-resource-type (:type resource))}
+                     :resource-type resource-type}
         sth-conns (->> (db.resource.connection/get-resource-stakeholder-connections db search-opts)
                        (map (fn [sth-conn]
                               (dissoc
@@ -358,7 +358,7 @@
                                                                                                :resource-type resource-type}))
 
       stakeholder-connections?
-      (->> (add-stakeholder-connections conn))
+      (->> (add-stakeholder-connections conn resource-type))
 
       related-content?
       (assoc :related_content (expand-related-content conn id resource-type))
