@@ -100,57 +100,57 @@ set reviewed_at = now(),
 --~ (when (contains? params :reviewed_by) ",reviewed_by = :reviewed_by::integer")
 where id = :id;
 
--- :name new-stakeholder :<! :1
+-- :name new-stakeholder :returning-execute :one
 -- :doc Insert a new stakeholder
 insert into stakeholder(
     first_name,
     last_name,
     email
 --~ (when (contains? params :title) ", title")
---~ (when (contains? params :picture) ", picture")
 --~ (when (contains? params :country) ", country")
 --~ (when (contains? params :idp_usernames) ", idp_usernames")
 --~ (when (contains? params :affiliation) ",affiliation")
 --~ (when (contains? params :linked_in) ",linked_in")
 --~ (when (contains? params :twitter) ",twitter")
---~ (when (contains? params :cv) ",cv")
 --~ (when (contains? params :about) ",about")
 --~ (when (contains? params :organisation_role) ",organisation_role")
 --~ (when (contains? params :public_email) ",public_email")
 --~ (when (contains? params :public_database) ",public_database")
 --~ (when (contains? params :job_title) ",job_title")
 --~ (when (contains? params :id) ",id")
+--~ (when (contains? params :picture_id) ", picture_id")
+--~ (when (contains? params :cv_id) ",cv_id")
 ) values(
     :first_name,
     :last_name,
     :email
 --~ (when (contains? params :title) ", :title")
---~ (when (contains? params :picture) ", :picture")
 --~ (when (contains? params :country) ", :country::integer")
 --~ (when (contains? params :idp_usernames) ", :idp_usernames::jsonb")
 --~ (when (contains? params :affiliation) ",:affiliation")
 --~ (when (contains? params :linked_in) ",:linked_in")
 --~ (when (contains? params :twitter) ",:twitter")
---~ (when (contains? params :cv) ",:cv")
 --~ (when (contains? params :about) ",:about")
 --~ (when (contains? params :organisation_role) ",:organisation_role")
 --~ (when (contains? params :public_email) ",:public_email")
 --~ (when (contains? params :public_database) ",:public_database")
 --~ (when (contains? params :job_title) ",:job_title")
 --~ (when (contains? params :id) ",:id")
+--~ (when (contains? params :picture_id) ", :picture_id")
+--~ (when (contains? params :cv_id) ",:cv_id")
 ) RETURNING id;
 
 -- :name update-stakeholder-role :! :n
 -- :doc Update stakeholder role
 update stakeholder
     set role = :v:role::stakeholder_role,
-        modified = now(),
-        reviewed_at = now()
+	modified = now(),
+	reviewed_at = now()
 --~ (when (contains? params :reviewed_by) ",reviewed_by = :reviewed_by::integer")
 --~ (when (contains? params :review_status) ",review_status = :v:review_status::review_status")
 where id = :id;
 
--- :name update-stakeholder :! :n
+-- :name update-stakeholder :execute :affected
 -- :doc Update stakeholder column
 update stakeholder set
 --~ (when (contains? params :title) "title = :title,")
@@ -159,8 +159,6 @@ update stakeholder set
 --~ (when (contains? params :affiliation) "affiliation= :v:affiliation::integer, ")
 --~ (when (contains? params :linked_in) "linked_in= :linked_in,")
 --~ (when (contains? params :twitter) "twitter= :twitter,")
---~ (when (contains? params :picture) "picture= :picture,")
---~ (when (contains? params :cv) "cv= :cv, ")
 --~ (when (contains? params :country) "country= :v:country::integer,")
 --~ (when (contains? params :organisation_role) "organisation_role= :organisation_role,")
 --~ (when (contains? params :geo_coverage_type) "geo_coverage_type= :v:geo_coverage_type::geo_coverage_type,")
@@ -169,6 +167,8 @@ update stakeholder set
 --~ (when (contains? params :public_database) "public_database= :public_database::boolean,")
 --~ (when (contains? params :job_title) "job_title= :job_title,")
 --~ (when (contains? params :idp_usernames) "idp_usernames= :idp_usernames::jsonb,")
+--~ (when (contains? params :picture_id) "picture_id= :picture_id,")
+--~ (when (contains? params :cv_id) "cv_id= :cv_id, ")
     modified = now()
 where id = :id;
 
