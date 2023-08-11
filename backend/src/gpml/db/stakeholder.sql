@@ -88,60 +88,9 @@ select
     s.review_status from stakeholder s
 where s.email = :email;
 
--- :name admin-by-email :? :1
--- :doc Get an admin id by email
-select id from stakeholder
- where email = :email
-   and review_status = 'APPROVED'
-   and role = 'ADMIN';
-
 -- :name approved-stakeholder-by-email :? :1
 -- :doc Get an stakeholder by email filtering by approved
 select * from stakeholder where email = :email and review_status = 'APPROVED';
-
--- :name pending-approval :? :*
--- :doc Get unapproved of stakeholder profile
-select
-    s.id,
-    s.title,
-    s.first_name,
-    s.last_name,
-    s.email,
-    s.idp_usernames,
-    s.picture as photo,
-    s.linked_in,
-    s.twitter,
-    to_json(o.*) AS org,
-    s.organisation_role,
-    s.about,
-    s.role,
-    s.job_title,
-    s.geo_coverage_type,
-    geo.geo_coverage_values,
-    c.name as country,
-    s.reviewed_at,
-    s.reviewed_by,
-    s.review_status,
-    tag.tags
-FROM (((stakeholder s
-        LEFT JOIN (
-            SELECT st.stakeholder,
-            json_agg(t.*) AS tags
-            FROM (stakeholder_tag st JOIN (
-                    SELECT tg.id, tg.tag, tc.category
-                    FROM tag tg
-                    LEFT JOIN tag_category tc ON tg.tag_category = tc.id) t ON ((st.tag = t.id)))
-            GROUP BY st.stakeholder) tag ON ((s.id = tag.stakeholder)))
-            LEFT JOIN (
-                SELECT sg.stakeholder, json_agg(COALESCE(c_1.iso_code, (cg.name)::bpchar))
-                AS geo_coverage_values
-                FROM ((stakeholder_geo_coverage sg
-                    LEFT JOIN country c_1 ON ((sg.country = c_1.id)))
-                    LEFT JOIN country_group cg ON ((sg.country_group = cg.id)))
-                GROUP BY sg.stakeholder) geo ON ((s.id = geo.stakeholder))
-            LEFT JOIN country c ON ((s.country = c.id)))
-    LEFT JOIN organisation o ON ((s.affiliation = o.id)))
-where s.review_status = 'SUBMITTED' order by s.created desc;
 
 -- :name update-stakeholder-status :! :n
 -- :doc Approve stakeholder
@@ -232,10 +181,6 @@ select * from stakeholder_picture where id = :id
 insert into stakeholder_picture (picture)
 values(:picture) returning id;
 
--- :name delete-stakeholder-image-by-id :! :n
--- :doc remove Stakeholder image
-delete from stakeholder_picture where id = :id
-
 -- :name stakeholder-cv-by-id :? :1
 -- :doc Get Stakeholder cv by id
 select * from stakeholder_cv where id = :id
@@ -245,40 +190,10 @@ select * from stakeholder_cv where id = :id
 insert into stakeholder_cv (cv)
 values(:cv) returning id;
 
--- :name delete-stakeholder-cv-by-id :! :n
--- :doc remove stakeholder cv
-delete from stakeholder_cv where id = :id
-
--- :name get-stakeholder-geo :? :*
--- :doc get stakeholder geocoverage
-select * from stakeholder_geo_coverage
-where stakeholder = :id;
-
 -- :name add-stakeholder-geo :? :*
 -- :doc add stakeholder geo
 insert into stakeholder_geo_coverage(stakeholder, country_group, country)
 values :t*:geo RETURNING *;
-
--- :name delete-stakeholder-geo :! :n
--- :doc remove stakeholder geo
-delete from stakeholder_geo_coverage where stakeholder = :id
-
--- :name stakeholder-tags :? :*
--- :doc get stakeholder tags
-select json_agg(st.tag) as tags, tc.category from stakeholder_tag st
-left join tag t on t.id = st.tag
-left join tag_category tc on t.tag_category = tc.id
-where st.stakeholder = :id
-group by tc.category;
-
--- :name add-stakeholder-tags :<! :1
--- :doc add stakeholder tags
-insert into stakeholder_tag(stakeholder, tag)
-values :t*:tags RETURNING id;
-
--- :name delete-stakeholder-tags :! :n
--- :doc remove stakeholder-tags
-delete from stakeholder_tag where stakeholder = :id
 
 -- :name get-admins :?
 -- :doc Get information of all the admins
@@ -290,26 +205,26 @@ select id, first_name, last_name, email from stakeholder
 -- :doc Get distinct stakeholders based on matching seeking and offerings.
 WITH suggested_stakeholders AS (
     SELECT
-        DISTINCT s.*
+	DISTINCT s.*
     FROM
-        stakeholder s
-        JOIN stakeholder_tag st ON s.id = st.stakeholder
-        JOIN tag t ON st.tag = t.id
+	stakeholder s
+	JOIN stakeholder_tag st ON s.id = st.stakeholder
+	JOIN tag t ON st.tag = t.id
     WHERE
-        t.id IN (:v*:seeking-ids-for-offerings)
-        AND s.id != :stakeholder-id
-        AND st.tag_relation_category = 'offering'
+	t.id IN (:v*:seeking-ids-for-offerings)
+	AND s.id != :stakeholder-id
+	AND st.tag_relation_category = 'offering'
     UNION
     SELECT
-        DISTINCT s.*
+	DISTINCT s.*
     FROM
-        stakeholder s
-        JOIN stakeholder_tag st ON s.id = st.stakeholder
-        JOIN tag t ON st.tag = t.id
+	stakeholder s
+	JOIN stakeholder_tag st ON s.id = st.stakeholder
+	JOIN tag t ON st.tag = t.id
     WHERE
-        t.id IN (:v*:offering-ids-for-seekings)
-        AND s.id != :stakeholder-id
-        AND st.tag_relation_category = 'seeking')
+	t.id IN (:v*:offering-ids-for-seekings)
+	AND s.id != :stakeholder-id
+	AND st.tag_relation_category = 'seeking')
 SELECT *
 FROM
     suggested_stakeholders
