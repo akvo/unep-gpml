@@ -88,6 +88,14 @@
            :file (assoc file :url (:url get-file-url-result))}
           get-file-url-result)))))
 
+(defn get-files
+  [config conn search-opts]
+  (let [result (db.file/get-files conn search-opts)]
+    (if-not (:success? result)
+      result
+      {:success? true
+       :files (add-files-urls config (:files result))})))
+
 (defn- upload-file
   [{:keys [storage-client-adapter] :as config}
    {:keys [object-key content type visibility]}]
