@@ -421,6 +421,7 @@
       (try
         (let [tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body)]
           (update-stakeholder config (assoc body
+                                            :id (:id path)
                                             :tags tags
                                             :photo {:payload (:photo body)
                                                     :user-agent (get-in req [:headers "user-agent"])}))
