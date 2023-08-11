@@ -21,7 +21,7 @@
             [gpml.handler.image :as handler.img]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
-            [gpml.util.http-client :as http-client]
+            [gpml.util.image :as util.image]
             [gpml.util.malli :as util.malli]
             [gpml.util.sql :as sql-util]
             [integrant.core :as ig]
@@ -540,19 +540,6 @@
                                                     :finished-at (.toString (jt/instant end-time))
                                                     :time-elapsed (str (- end-time start-time) "ms")})))
 
-(defn- download-image
-  [logger url]
-  (let [{:keys [status headers body]}
-        (http-client/do-request logger
-                                {:method :get
-                                 :url url
-                                 :as :byte-array}
-                                {})]
-    (when (<= 200 status 299)
-      (->> body
-           util/encode-base64
-           (util/add-base64-header (get headers "Content-Type"))))))
-
 (defn- with-safe-db-transaction
   [?tx logger entity-name data-coll {:keys [update?] :as opts}]
   (try
@@ -578,7 +565,7 @@
      (let [url (or image qimage)]
        (if-not url
          (conj acc entity)
-         (let [downloaded-image (download-image logger url)
+         (let [downloaded-image (util.image/download-image logger url)
                image-url (when-not (nil? downloaded-image)
                            (handler.img/assoc-image config tx downloaded-image (name entity-name)))]
            (if (= entity-name :initiative)
