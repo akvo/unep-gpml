@@ -60,7 +60,9 @@
    e.q24_subnational_city,
    e.qimage AS image,
    e.thumbnail,
-   e.capacity_building")
+   e.capacity_building,
+   e.image_id,
+   e.thumbnail_id")
 
 (def ^:const ^:private policy-cols
   "e.abstract AS summary,
