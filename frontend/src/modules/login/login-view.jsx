@@ -1,21 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  Carousel,
   Col,
   Row,
   Typography,
   Button,
-  Avatar,
   Form,
   Input,
   Divider,
   notification,
-  Modal,
 } from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
-import "./login-style.scss";
-import DataHubIcon from "../../images/auth/data-hub.png";
-import NetworkIcon from "../../images/auth/network.png";
+import styles from "./login-style.module.scss";
 import { ReactComponent as LinkedinIcon } from "../../images/auth/linkedin.svg";
 import { ReactComponent as GoogleIcon } from "../../images/auth/google.svg";
 import { ReactComponent as EmailIcon } from "../../images/auth/email.svg";
@@ -27,7 +21,6 @@ import ForgotPassword from "./forgot-password";
 import SignUp from "../email-signup/view";
 
 function Login({ handleOnClickBtnNext, visible, close }) {
-  const history = useHistory();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [signin, setSignIn] = useState(false);

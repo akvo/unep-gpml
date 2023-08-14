@@ -1,23 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Button, Image } from "antd";
-import { Link } from "react-router-dom";
-
-import "./styles.scss";
-import imageNotFound from "../../images/image-not-found.png";
-
+import styles from "./styles.module.scss";
 import issueGraphics from "./issue-section-content";
-import timelineAndRoadmapGraphic from "../../images/timeline-roadmap-graphic.png";
-import ourCommunity from "../../images/about-our-community.png";
-import DPIcons from "../../images/GPML-dp-icons.png";
-import featureComponent from "../../images/feature-component-graphic.png";
-import GpmlHistory from "../../images/GPML-history.png";
-import fullConceptDocImage from "../../images/full-concept-doc.png";
-import summaryDocImage from "../../images/summary-doc.png";
-
 import { UIStore } from "../../store";
 import sumBy from "lodash/sumBy";
 import isEmpty from "lodash/isEmpty";
 import api from "../../utils/api";
+import Link from "next/link";
 
 const summary = [
   {
@@ -101,7 +90,7 @@ const AboutUs = () => {
   }, [stakeholders, entityCount]);
 
   return (
-    <div id="about-us">
+    <div className={styles.aboutUs}>
       {renderSectionIssue()}
       {renderSectionSummary(nav, totalResources, stakeholdersCount)}
       {renderSectionMission()}
@@ -123,7 +112,7 @@ const renderSectionIssue = () => {
           <div className="item-title text-white">{title}</div>
           <div className="item-box">
             {image && <div className="item-svg">{image}</div>}
-            {!image && <Image preview={false} src={imageNotFound} />}
+            {!image && <img src="/image-not-found.png" />}
             <div className="item-description text-white">{description}</div>
           </div>
         </div>
@@ -156,7 +145,7 @@ const renderSectionIssue = () => {
           </div>
         </div>
         <div className="section-issue-graphic">
-          <Image src={DPIcons} preview={false} />
+          <img src="/GPML-dp-icons.png" />
         </div>
       </div>
     </div>
@@ -265,7 +254,7 @@ const renderSectionInfo = () => {
         </div>
         <div className="section-info-button-wrapper">
           <a target="_blank" href="/GPML_One-pager.pdf" className="doc-wrapper">
-            <img src={summaryDocImage} alt="summary-document" />
+            <img src="/summary-doc.png" alt="summary-document" />
             <Button type="ghost" className="btn-item">
               Download Summary (1 Page)
             </Button>
@@ -275,7 +264,7 @@ const renderSectionInfo = () => {
             href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf"
             className="doc-wrapper"
           >
-            <img src={fullConceptDocImage} alt="full-concept-document" />
+            <img src="/full-concept-doc.png" alt="full-concept-document" />
             <Button type="ghost" className="btn-item">
               Download Full Concept Document
             </Button>
@@ -320,7 +309,7 @@ const renderSectionTimelineAndRoadmap = () => {
         </div>
       </div>
       <div className="section-timeline-roadmap-graphic">
-        <Image src={timelineAndRoadmapGraphic} preview={false} />
+        <img src="/timeline-roadmap-graphic.png" />
       </div>
     </div>
   );
@@ -354,7 +343,7 @@ const renderSectionKeyFeaturesAndComponents = () => {
           </Button>
         </div>
         <div className="section-feature-component-graphic">
-          <Image src={featureComponent} width="90%" preview={false} />
+          <img src="/feature-component-graphic.png" />
         </div>
       </div>
     </div>
@@ -377,13 +366,15 @@ const renderSectionCommunity = () => {
             participating in global/regional multilateral processes; other major
             groups and stakeholders; and private citizens.
           </p>
-          <Link to="/onboarding">
-            <Button type="ghost">Sign up to find out more</Button>
+          <Link href="/onboarding" legacyBehavior>
+            <a>
+              <Button type="ghost">Sign up to find out more</Button>
+            </a>
           </Link>
         </div>
       </div>
       <div className="section-community-graphic">
-        <Image src={ourCommunity} preview={false} />
+        <img src="/about-our-community.png" />
       </div>
     </div>
   );
@@ -416,7 +407,7 @@ const renderSectionHistory = () => {
         </div>
       </div>
       <div className="section-history-graphic">
-        <Image src={GpmlHistory} preview={false} />
+        <img src="/GPML-history.png" />
       </div>
     </div>
   );

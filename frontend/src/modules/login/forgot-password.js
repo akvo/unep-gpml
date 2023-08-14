@@ -11,9 +11,7 @@ import {
   Divider,
   notification,
 } from "antd";
-import "./styles.scss";
-import { useHistory, useLocation } from "react-router-dom";
-const { Title, Link } = Typography;
+import styles from "./styles.module.scss";
 import { Form as FinalForm, Field } from "react-final-form";
 import { auth0Client } from "../../utils/misc";
 
@@ -55,10 +53,10 @@ function ForgotPassword({ setSignIn, setForgotPassword, children }) {
   };
 
   return (
-    <div className="auth-container" style={{ paddingBottom: 40 }}>
-      <div className="login-wrapper">
+    <div className={styles.authContainer} style={{ paddingBottom: 40 }}>
+      <div className={styles.loginWrapper}>
         {children && children}
-        <div className="login-form">
+        <div className={styles.loginForm}>
           <FinalForm
             initialValues={initialValues}
             validate={checkValidation}
@@ -73,7 +71,7 @@ function ForgotPassword({ setSignIn, setForgotPassword, children }) {
                         <>
                           <Input {...input} placeholder="Enter your email" />
                           {meta.touched && meta.error && (
-                            <p color="error" className="error">
+                            <p color="error" className={styles.error}>
                               {meta.error}
                             </p>
                           )}
@@ -84,7 +82,7 @@ function ForgotPassword({ setSignIn, setForgotPassword, children }) {
                   <Button
                     type="primary"
                     shape="round"
-                    className="login-button"
+                    className={styles.loginButton}
                     onClick={() => handleSubmit()}
                     style={{ marginTop: 20 }}
                   >
