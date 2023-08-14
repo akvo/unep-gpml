@@ -33,7 +33,7 @@ const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
   const path = router.pathname;
   const dateNow = moment().format("YYYY/MM/DD");
   const [event, setEvent] = useState([]);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(dateNow);
 
   const eventCarousel = useRef(null);
@@ -114,7 +114,7 @@ const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
       : moment.parseZone(selectedDate, "YYYY/MM/DD").format("DD MMM YYYY");
 
   useEffect(() => {
-    if (!data) {
+    if (data.length === 0) {
       api
         .get("browse?topic=event")
         .then((resp) => {

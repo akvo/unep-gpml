@@ -12,7 +12,6 @@ import ActionPlanIcon from "../../images/actionplan.svg";
 import KnowledgeIcon from "../../images/knowledge.svg";
 import DataSetIcon from "../../images/datasets.svg";
 import user1img from "../../images/our-community/cassia-patel.jpg";
-import api from "../../utils/api";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -451,21 +450,23 @@ const Partners = () => {
   );
 };
 
-const Stats = ({ router, communityData }) => {
+const Stats = ({ router }) => {
   const {
     stakeholders,
     organisations,
     nonMemberOrganisations,
+    community,
   } = UIStore.useState((s) => ({
     stakeholders: s?.stakeholders?.stakeholders,
     organisations: s?.organisations,
     nonMemberOrganisations: s?.nonMemberOrganisations,
+    community: s?.community,
   }));
 
   const [governmentsCount, setGovernmentsCount] = useState(0);
 
   useEffect(() => {
-    const governments = communityData.counts.find(
+    const governments = community?.counts?.find(
       (count) => count?.networkType?.toLowerCase() === "organisation"
     );
     setGovernmentsCount(governments?.count || 0);

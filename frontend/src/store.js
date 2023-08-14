@@ -692,6 +692,7 @@ const UIStore = new Store({
   profile: {},
   organisations: [],
   nonMemberOrganisations: [],
+  community: [],
   languages: languages,
   geoCoverageTypeOptions: geoCoverageTypeOptions,
   entityRoleOptions: entityRole,

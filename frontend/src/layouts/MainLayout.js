@@ -8,6 +8,7 @@ const MainLayout = ({
   isIndexPage,
   isAuthenticated,
   auth0Client,
+  profile,
 }) => {
   const [loginVisible, setLoginVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
@@ -21,6 +22,7 @@ const MainLayout = ({
           showMenu={showMenu}
           isAuthenticated={isAuthenticated}
           auth0Client={auth0Client}
+          profile={profile}
         />
       ) : (
         <MenuBar
@@ -29,6 +31,7 @@ const MainLayout = ({
           showMenu={showMenu}
           isAuthenticated={isAuthenticated}
           auth0Client={auth0Client}
+          profile={profile}
         />
       )}
       {children}

@@ -1,6 +1,7 @@
 /* eslint-disable no-else-return */
 import { UIStore } from "../../../store";
 import React, { useState, useCallback, useEffect } from "react";
+import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 const RichTextEditor = dynamic(() => import("react-rte"), { ssr: false });
 
@@ -23,18 +24,20 @@ const RichWidget = ({
 }) => {
   const handleChange = (value) => {
     setEditorValue(value);
-    onChange(value === "" ? options.emptyValue : value.toString("html"));
+    if (onChange) {
+      onChange(value === "" ? options.emptyValue : value.toString("html"));
+    }
   };
 
-  const [editorValue, setEditorValue] = useState(
-    RichTextEditor.createValueFromString("", "html")
-  );
-
+  const [editorValue, setEditorValue] = useState();
+  const router = useRouter();
   useEffect(() => {
-    setEditorValue(
-      RichTextEditor.createValueFromString(value ? value : "", "html")
-    );
-  }, [value]);
+    const importModule = async () => {
+      const module = await import("react-rte");
+      setEditorValue(module.createValueFromString(value ? value : "", "html"));
+    };
+    importModule();
+  }, [router.pathname]);
 
   const toolbarConfig = {
     // Optionally specify the groups to display (displayed in the order listed).
@@ -62,6 +65,10 @@ const RichWidget = ({
       { label: "OL", style: "ordered-list-item" },
     ],
   };
+
+  if (!editorValue) {
+    return null;
+  }
 
   return (
     <RichTextEditor

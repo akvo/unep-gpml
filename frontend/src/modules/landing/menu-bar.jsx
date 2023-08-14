@@ -384,6 +384,7 @@ const AddButton = ({
   setLoginVisible,
   profile,
 }) => {
+  console.log(profile);
   if (isAuthenticated) {
     if (profile?.reviewStatus === "APPROVED") {
       return (
