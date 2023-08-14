@@ -26,7 +26,8 @@
          get-recent-active-stakeholders
          get-experts
          create-stakeholders
-         get-stakeholders)
+         get-stakeholders
+         get-stakeholders-files-to-migrate)
 
 (hugsql/def-db-fns "gpml/db/stakeholder.sql" {:quoting :ansi})
 

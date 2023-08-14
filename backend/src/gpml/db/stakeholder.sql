@@ -318,3 +318,45 @@ GROUP BY s.id
 -- :name delete-stakeholder* :execute :affected
 DELETE FROM stakeholder
 WHERE id = :id;
+
+-- :name get-stakeholders-files-to-migrate
+-- :doc this query is for file migration purposes and will be removed.
+WITH stakeholder_files_refs AS (
+	SELECT id, 'picture' AS file_type, picture AS reference FROM stakeholder
+	WHERE picture ILIKE '/image/profile/%'
+	AND picture_id IS NULL
+	UNION
+	SELECT id, 'cv' AS file_type, cv AS reference FROM stakeholder
+	WHERE cv ILIKE '/cv/profile/%' AND cv_id IS NULL
+),
+stakeholder_db_files AS (
+	SELECT sfr.id, 'picture' AS file_type, 'images' AS file_key, sp.picture AS content
+	FROM stakeholder_files_refs sfr
+	LEFT JOIN stakeholder_picture sp ON substring(sfr.reference FROM '^\/image\/profile\/([0-9]+)$')::INTEGER = sp.id
+	WHERE sp.picture IS NOT NULL AND sfr.file_type = 'picture'
+	UNION
+	SELECT sfr.id, 'cv' AS file_type, 'cvs' AS file_key, scv.cv AS content
+	FROM stakeholder_files_refs sfr
+	LEFT JOIN stakeholder_cv scv ON substring(sfr.reference FROM '^\/cv\/profile\/([0-9]+)$')::INTEGER = scv.id
+	WHERE scv.cv IS NOT NULL AND sfr.file_type = 'cv'
+),
+stakeholder_files_to_migrate AS (
+	SELECT id, file_type, file_key, content
+	FROM stakeholder_db_files
+	UNION
+	SELECT id, 'picture' AS file_type, 'images' AS file_key, picture AS content
+	FROM stakeholder
+	WHERE picture IS NOT NULL
+	AND (picture NOT ILIKE 'https://storage.googleapis.com/%' AND picture NOT ILIKE '/image/profile/%')
+	AND picture_id IS NULL
+	UNION
+	SELECT id, 'cv' AS file_type, 'cvs' AS file_key, cv AS content
+	FROM stakeholder
+	WHERE cv IS NOT NULL
+	AND (cv NOT ILIKE 'https://storage.googleapis.com/%' AND cv NOT ILIKE '/cv/profile/%')
+	AND cv_id IS NULL
+)
+SELECT * FROM stakeholder_files_to_migrate
+ORDER BY id
+--~ (when (:limit params) " LIMIT :limit")
+;
