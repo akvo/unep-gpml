@@ -755,11 +755,9 @@
   :gpml.handler.export/get #ig/ref :gpml.config/common
   :gpml.handler.export/get-params {}
 
-  :gpml.handler.invitation/get {:db #ig/ref :duct.database/sql
-                                :logger #ig/ref :duct/logger}
+  :gpml.handler.invitation/get #ig/ref :gpml.config/common
   :gpml.handler.invitation/get-params {}
-  :gpml.handler.invitation/put {:db #ig/ref :duct.database/sql
-                                :logger #ig/ref :duct/logger}
+  :gpml.handler.invitation/put #ig/ref :gpml.config/common
   :gpml.handler.invitation/put-params {}
 
   :gpml.handler.project/post #ig/ref :gpml.config/common
