@@ -4,17 +4,23 @@ select id, name from organisation order by id
 
 -- :name all-public-entities :? :*
 -- :doc Get all member organisations
-SELECT * FROM organisation
+SELECT o.*, jsonb_agg(DISTINCT jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files
+FROM organisation o
+LEFT JOIN file f ON o.logo_id = f.id
 WHERE is_member = true
 --~ (when (:review-status params) "AND review_status = (:v:review-status)::review_status")
-ORDER BY id;
+GROUP BY o.id
+ORDER BY o.id;
 
 -- :name all-public-non-member-entities :? :*
 -- :doc Get all non member organisations
-SELECT * FROM organisation
+SELECT o.*, jsonb_agg(DISTINCT jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files
+FROM organisation o
+LEFT JOIN file f ON o.logo_id = f.id
 WHERE is_member = false
 --~ (when (:review-status params) "AND review_status = (:v:review-status)::review_status")
-ORDER BY id;
+GROUP BY o.id
+ORDER BY o.id;
 
 -- :name all-members :? :*
 -- :doc Get all member organisations

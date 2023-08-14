@@ -752,8 +752,7 @@
   :gpml.handler.community/get #ig/ref :gpml.config/common
   :gpml.handler.community/get-params {}
 
-  :gpml.handler.export/get {:db #ig/ref :duct.database/sql
-                            :app-domain #duct/env ["APP_DOMAIN" Str]}
+  :gpml.handler.export/get #ig/ref :gpml.config/common
   :gpml.handler.export/get-params {}
 
   :gpml.handler.invitation/get {:db #ig/ref :duct.database/sql

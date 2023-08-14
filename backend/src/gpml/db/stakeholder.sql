@@ -10,9 +10,12 @@ order by id;
 
 -- :name all-public-users :? :*
 -- :doc Get all stakeholders
-select * from stakeholder
---~ (when (:review-status params) "WHERE review_status = (:v:review-status)::review_status")
-order by id;
+SELECT s.*, jsonb_agg(DISTINCT jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files
+FROM stakeholder s
+LEFT JOIN file f ON s.picture_id = f.id
+--~ (when (:review-status params) "WHERE s.review_status = (:v:review-status)::review_status")
+GROUP BY s.id
+ORDER BY s.id;
 
 -- :name list-stakeholder-paginated :? :*
 -- :doc Get paginated list of stakeholders

@@ -121,11 +121,14 @@ WITH flat_topic AS (
     NULL AS q1_1,
     NULL AS q35_1,
     NULL AS q1_1_1,
-    array_to_string(array_remove(array_agg(o.name), NULL), ', ') AS entity_connections
+    array_to_string(array_remove(array_agg(o.name), NULL), ', ') AS entity_connections,
+    r.image_id,
+    jsonb_agg(DISTINCT jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files
   FROM resource r
   LEFT JOIN related_content rc ON r.id = rc.resource_id AND resource_table_name = 'resource'::regclass
   LEFT JOIN organisation_resource oe ON oe.resource = r.id
   LEFT JOIN organisation o ON o.id = oe.organisation
+  LEFT JOIN file f ON r.image_id = f.id
   --~ (when (:review-status params) "WHERE r.review_status = (:v:review-status)::review_status")
   GROUP BY r.id
 UNION ALL
@@ -239,11 +242,14 @@ UNION ALL
     NULL AS q1_1,
     NULL AS q35_1,
     NULL AS q1_1_1,
-    array_to_string(array_remove(array_agg(o.name), NULL), ', ') AS entity_connections
+    array_to_string(array_remove(array_agg(o.name), NULL), ', ') AS entity_connections,
+    e.image_id,
+    jsonb_agg(DISTINCT jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files
     FROM event e
     LEFT JOIN related_content rc ON e.id = rc.resource_id AND resource_table_name = 'event'::regclass
     LEFT JOIN organisation_event oe ON oe.event = e.id
     LEFT JOIN organisation o ON o.id = oe.organisation
+    LEFT JOIN file f ON e.image_id = f.id
     --~ (when (:review-status params) "WHERE e.review_status = (:v:review-status)::review_status")
     GROUP BY e.id
 UNION ALL
@@ -357,16 +363,19 @@ UNION ALL
     i.q1_1::text,
     i.q35_1::text,
     i.q1_1_1::text,
-    array_to_string(array_remove(array_agg(o.name), NULL), ', ') AS entity_connections
+    array_to_string(array_remove(array_agg(o.name), NULL), ', ') AS entity_connections,
+    i.image_id,
+    jsonb_agg(DISTINCT jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files
     FROM initiative i
     LEFT JOIN related_content rc ON i.id = rc.resource_id AND resource_table_name = 'initiative'::regclass
     LEFT JOIN organisation_initiative oe ON oe.initiative = i.id
     LEFT JOIN organisation o ON o.id = oe.organisation
-        --~ (when (:review-status params) "WHERE i.review_status = (:v:review-status)::review_status")
+    LEFT JOIN file f ON i.image_id = f.id
+	--~ (when (:review-status params) "WHERE i.review_status = (:v:review-status)::review_status")
   GROUP BY i.id
 UNION ALL
   SELECT
-  	'policy'::text AS topic,
+	'policy'::text AS topic,
     p.id,
     0 AS version,
     NULL::json AS submitting_as,
@@ -475,11 +484,14 @@ UNION ALL
     NULL AS q1_1,
     NULL AS q35_1,
     NULL AS q1_1_1,
-    array_to_string(array_remove(array_agg(o.name), NULL), ', ') AS entity_connections
+    array_to_string(array_remove(array_agg(o.name), NULL), ', ') AS entity_connections,
+    p.image_id,
+    jsonb_agg(DISTINCT jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files
   FROM policy p
   LEFT JOIN related_content rc ON p.id = rc.resource_id AND resource_table_name = 'policy'::regclass
   LEFT JOIN organisation_policy oe ON oe.policy = p.id
   LEFT JOIN organisation o ON o.id = oe.organisation
+  LEFT JOIN file f ON p.image_id = f.id
   --~ (when (:review-status params) "WHERE p.review_status = (:v:review-status)::review_status")
   GROUP BY p.id
 UNION ALL
@@ -593,11 +605,14 @@ UNION ALL
     NULL AS q1_1,
     NULL AS q35_1,
     NULL AS q1_1_1,
-    array_to_string(array_remove(array_agg(o.name), NULL), ', ') AS entity_connections
+    array_to_string(array_remove(array_agg(o.name), NULL), ', ') AS entity_connections,
+    t.image_id,
+    jsonb_agg(DISTINCT jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files
   FROM technology t
   LEFT JOIN related_content rc ON t.id = rc.resource_id AND resource_table_name = 'technology'::regclass
   LEFT JOIN organisation_technology oe ON oe.technology = t.id
   LEFT JOIN organisation o ON o.id = oe.organisation
+  LEFT JOIN file f ON t.image_id = f.id
   --~ (when (:review-status params) "WHERE t.review_status = (:v:review-status)::review_status")
   GROUP BY t.id
 )
