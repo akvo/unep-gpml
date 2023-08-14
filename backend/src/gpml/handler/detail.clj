@@ -709,7 +709,7 @@
                     (or
                      (:id org)
                      (and (= -1 (:id org))
-                          (handler.org/create conn logger mailjet-config org))))
+                          (handler.org/create config conn org))))
         related-contents (:related_content updates)
         org-associations (map (fn [acs] (set/rename-keys acs {:entity :organisation})) (:entity_connections updates))
         sth-associations (:individual_connections updates)]

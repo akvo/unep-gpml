@@ -139,9 +139,8 @@
                              :reason :failed-to-assign-sth-owner-role-to-organisation
                              :error-details {:result result})
                       (let [success? (boolean (handler.org/update-org
+                                               config
                                                conn
-                                               logger
-                                               mailjet-config
                                                {:id (:id org)
                                                 :created_by sth-id}))]
                         (if success?
@@ -323,7 +322,7 @@
               (let [org (:org stakeholder)
                     result (try
                              {:success? true
-                              :org-id (handler.org/create conn logger mailjet-config (dissoc org :id))}
+                              :org-id (handler.org/create config conn (dissoc org :id))}
                              (catch Throwable t
                                {:success? false
                                 :error-details {:exception-message (ex-message t)}}))]
