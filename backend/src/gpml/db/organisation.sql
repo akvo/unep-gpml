@@ -161,3 +161,13 @@ WHERE 1=1
 --~(when (get-in params [:filters :name]) " AND LOWER(:filters.name) = LOWER(name)")
 --~(when (true? (get-in params [:filters :is_member])) " AND is_member IS TRUE")
 --~(when (false? (get-in params [:filters :is_member])) " AND is_member IS FALSE")
+
+-- :name get-organisation-files-to-migrate
+SELECT id, 'logo' AS file_type, 'images' AS file_key, logo AS content
+FROM organisation
+WHERE logo NOT LIKE 'https://storage.googleapis.com/%'
+AND logo IS NOT NULL
+AND logo_id IS NULL
+ORDER BY created
+--~ (when (:limit params) " LIMIT :limit")
+;
