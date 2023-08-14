@@ -137,3 +137,31 @@ SET
       " = :updates." (name field))))
 ~*/
 WHERE id = :id;
+
+-- :name get-events-files-to-migrate :query :many
+-- :doc this query is for file migration purposes and will be removed.
+WITH event_images_refs AS (
+	SELECT id, 'image' AS file_type, image AS reference FROM event
+	WHERE image ILIKE '/image/event/%'
+	AND image_id IS NULL
+	UNION
+	SELECT id, 'thumbnail' AS file_type, thumbnail AS reference FROM event
+	WHERE thumbnail ILIKE '/image/event/%'
+	AND thumbnail_id IS NULL
+),
+events_files_to_migrate AS (
+       SELECT eir.id, 'image' AS file_type, 'images' AS file_key, ei.image AS content
+       FROM event_images_refs eir
+       LEFT JOIN event_image ei ON substring(eir.reference FROM '^\/image\/event\/([0-9]+)$')::INTEGER = ei.id
+       WHERE ei.image IS NOT NULL AND eir.file_type = 'image'
+       UNION
+       SELECT eir.id, 'thumbnail' AS file_type, 'images' AS file_key, ei.image AS content
+       FROM event_images_refs eir
+       LEFT JOIN event_image ei ON substring(eir.reference FROM '^\/image\/event\/([0-9]+)$')::INTEGER = ei.id
+       WHERE ei.image IS NOT NULL AND eir.file_type = 'thumbnail'
+)
+SELECT *
+FROM events_files_to_migrate
+ORDER BY id
+--~ (when (:limit params) " LIMIT :limit")
+;
