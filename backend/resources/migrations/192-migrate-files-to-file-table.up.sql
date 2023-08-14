@@ -95,7 +95,7 @@ SELECT uuid_generate_v4(),
        substring(image from 'images\/([a-zA-Z0-9_]+)\.') AS name,
        concat_ws('/', 'image',lower(substring(image FROM '\.([^\.]*)$'))) AS type,
        substring(image FROM '\.([^\.]*)$') AS extension,
-       'public' AS visibility
+       (CASE WHEN entity_type = 'organisation' THEN 'private' ELSE 'public' END)::FILE_VISIBILITY AS visibility
 FROM entity_images
 WHERE image ilike 'https://storage.googleapis.com%'
       -- The following takes care of both NULLs and empty string with
