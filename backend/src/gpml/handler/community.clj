@@ -168,18 +168,13 @@
 
 (defn- community-member->api-community-member
   [config community-member]
-  (let [{files :files member-type :type
-         picture-id :picture_id logo-id :logo_id} community-member
+  (let [{files :files picture-id :picture_id} community-member
         files-w-urls (->> files
                           (map dom.file/decode-file)
                           (srv.file/add-files-urls config)
-                          (medley/index-by (comp str :id)))]
-    (cond-> community-member
-      (= "stakeholder" member-type)
-      (assoc :picture (get-in files-w-urls [picture-id :url]))
-
-      (= "organisation" member-type)
-      (assoc :picture (get-in files-w-urls [logo-id :url])))))
+                          (medley/index-by :id))
+        picture-file-url (get-in files-w-urls [picture-id :url])]
+    (assoc community-member :picture picture-file-url)))
 
 (defn get-community-members
   [{:keys [db logger] :as config} req]
