@@ -7,7 +7,6 @@
             [gpml.db.tag :as db.tag]
             [gpml.domain.types :as dom.types]
             [gpml.fixtures :as fixtures]
-            [gpml.handler.image :as image]
             [gpml.handler.profile-test :as profile-test]
             [gpml.handler.resource :as resource]
             [gpml.test-util :as test-util]
@@ -40,9 +39,6 @@
    :owners (:owners data)
    :language "en"})
 
-(defn fake-upload-blob [_ _ _ content-type]
-  (is (= content-type "image/png")))
-
 (deftest handler-post-test
   (let [system (ig/init fixtures/*system* [::resource/post])
         config (get system [:duct/const :gpml.config/common])
@@ -65,22 +61,20 @@
                                                       "USER")
             ;; create John create new resource with available organisation
             payload (new-resource data)
-            resp-one (with-redefs [image/upload-blob fake-upload-blob]
-                       (handler (-> (mock/request :post "/")
-                                    (assoc :user {:id sth-id}
-                                           :parameters {:body {:source dom.types/default-resource-source}}
-                                           :body-params payload))))
+            resp-one (handler (-> (mock/request :post "/")
+                                  (assoc :user {:id sth-id}
+                                         :parameters {:body {:source dom.types/default-resource-source}}
+                                         :body-params payload)))
             ;; create John create new resource with new organisation
-            resp-two (with-redefs [image/upload-blob fake-upload-blob]
-                       (handler (-> (mock/request :post "/")
-                                    (assoc :user {:id sth-id}
-                                           :parameters {:body {:source dom.types/default-resource-source}}
-                                           :body-params
-                                           (assoc (new-resource (merge data {:owners [sth-id]}))
-                                                  :org {:id -1
-                                                        :name "New Era"
-                                                        :geo_coverage_type "global"
-                                                        :country (-> (:countries data) second :id)})))))
+            resp-two (handler (-> (mock/request :post "/")
+                                  (assoc :user {:id sth-id}
+                                         :parameters {:body {:source dom.types/default-resource-source}}
+                                         :body-params
+                                         (assoc (new-resource (merge data {:owners [sth-id]}))
+                                                :org {:id -1
+                                                      :name "New Era"
+                                                      :geo_coverage_type "global"
+                                                      :country (-> (:countries data) second :id)}))))
             resource-one (db.resource/resource-by-id conn (:body resp-one))
             resource-two (db.resource/resource-by-id conn (:body resp-two))
             owners (db.rbac-util/get-users-with-granted-permission-on-resource conn {:context-type-name "resource"
@@ -114,9 +108,8 @@
                                                       "USER")
             ;; create John create new resource with available organisation
             payload (new-resource data)
-            resp-one (with-redefs [image/upload-blob fake-upload-blob]
-                       (handler (-> (mock/request :post "/")
-                                    (assoc :user {:id sth-id}
-                                           :parameters {:body {:source dom.types/default-resource-source}}
-                                           :body-params payload))))]
+            resp-one (handler (-> (mock/request :post "/")
+                                  (assoc :user {:id sth-id}
+                                         :parameters {:body {:source dom.types/default-resource-source}}
+                                         :body-params payload)))]
         (is (= 403 (:status resp-one)))))))
