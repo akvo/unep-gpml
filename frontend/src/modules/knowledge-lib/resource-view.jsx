@@ -44,7 +44,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   const [pageNumber, setPageNumber] = useState(false);
   const [view, type] = history.query.slug || [];
   const { slug, ...queryParams } = history.query;
-  const { pathname } = history;
+  const { pathname, asPath } = history;
   const search = new URLSearchParams(history.query).toString();
   const [showFilterModal, setShowFilterModal] = useState(false);
 
@@ -283,10 +283,13 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
               items={data?.results}
               showMoreCardAfter={20}
               showMoreCardClick={() => {
-                history.push({
-                  pathname: `/knowledge/library/grid/${type ? type : ""}`,
-                  search: history.location.search,
-                });
+                history.push(
+                  {
+                    pathname: `/knowledge/library/grid/${type ? type : ""}`,
+                    query: queryParams,
+                  },
+                  `/knowledge/library/grid/${type ? type : ""}`
+                );
               }}
               showModal={(e) =>
                 showModal({
@@ -397,7 +400,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           updateQuery,
           fetchData,
           filterCountries,
-          pathname,
+          asPath,
           history,
           setGridItems,
           loadAllCat,
@@ -482,12 +485,17 @@ const ViewSwitch = ({ type, view, history, queryParams }) => {
                   key={viewOption}
                   onClick={() => {
                     setVisible(!visible);
-                    history.push({
-                      pathname: `/knowledge/library/${viewOption}/${
+                    history.push(
+                      {
+                        pathname: `/knowledge/library/${viewOption}/${
+                          type && viewOption !== "category" ? type : ""
+                        }`,
+                        query: queryParams,
+                      },
+                      `/knowledge/library/${viewOption}/${
                         type && viewOption !== "category" ? type : ""
-                      }`,
-                      query: queryParams,
-                    });
+                      }`
+                    );
                   }}
                 >
                   {viewOption} view

@@ -41,12 +41,7 @@ const CategorisedTags = ({ handleChange, value }) => {
               .map((tag) => (
                 <li onClick={() => handleChange(tag)} key={tag}>
                   <div className="img-container">
-                    <img
-                      src={
-                        require(`../../images/cat-tags/${slug(tag)}.svg`)
-                          .default
-                      }
-                    />
+                    <img src={`/cat-tags/${slug(tag)}.svg`} />
                   </div>
                   <div className="label-container">
                     <span>{tag}</span>

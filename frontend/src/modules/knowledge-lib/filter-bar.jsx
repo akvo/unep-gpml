@@ -104,6 +104,7 @@ const FilterBar = ({
         updateQuery,
         multiCountryCountries,
         setMultiCountryCountries,
+        history,
       }}
       country={query?.country?.map((x) => parseInt(x)) || []}
       multiCountry={query?.transnational?.map((x) => parseInt(x)) || []}

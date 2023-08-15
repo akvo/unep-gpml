@@ -9,8 +9,9 @@ const MainLayout = ({
   isAuthenticated,
   auth0Client,
   profile,
+  loginVisible,
+  setLoginVisible,
 }) => {
-  const [loginVisible, setLoginVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   return (
     <>

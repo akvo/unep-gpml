@@ -79,6 +79,7 @@ function MyApp({ Component, pageProps }) {
   const [_expiresAt, setExpiresAt] = useState(null);
   const [idToken, setIdToken] = useState(null);
   const [authResult, setAuthResult] = useState(null);
+  const [loginVisible, setLoginVisible] = useState(false);
 
   const isAuthenticated = new Date().getTime() < _expiresAt;
 
@@ -206,6 +207,8 @@ function MyApp({ Component, pageProps }) {
     ""
   );
 
+  console.log(pageProps);
+
   return (
     <div id="root">
       <Head>
@@ -224,8 +227,11 @@ function MyApp({ Component, pageProps }) {
         <Layout
           {...pageProps}
           isAuthenticated={isAuthenticated}
+          loadingProfile={loadingProfile}
           auth0Client={auth0Client}
           profile={profile}
+          loginVisible={loginVisible}
+          setLoginVisible={setLoginVisible}
         />
       </Auth0Provider>
     </div>

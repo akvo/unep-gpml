@@ -183,8 +183,8 @@ const MenuBar = ({
             </div>
             <h5>Community</h5>
             <div className={styles.row}>
-              <Item to="/connect/community" {...{ setShowMenu }} />
-              <Item to="/connect/experts" {...{ setShowMenu }} />
+              <Item to="/community" {...{ setShowMenu }} />
+              <Item to="/experts" {...{ setShowMenu }} />
               <Item to="/events" {...{ setShowMenu }} />
               <Item to="/partners" {...{ setShowMenu }} />
               <Item
@@ -262,13 +262,13 @@ const pathContent = {
     icon: <CapacityBuildingSvg />,
     iconClass: "learning",
   },
-  "/connect/community": {
+  "/community": {
     title: "Members",
     iconClass: "tools-community-icon",
     subtitle: "Directory of GPML network entities and individuals",
     icon: <IconCommunity />,
   },
-  "/connect/experts": {
+  "/experts": {
     title: "Experts",
     iconClass: "tools-experts-icon",
     subtitle: "Tool to find an expert and experts' groups",
@@ -353,12 +353,12 @@ const Search = ({ router }) => {
   const handleSearch = (src) => {
     if (src) {
       router.push({
-        pathname: `/knowledge/library/resource/category`,
+        pathname: `/knowledge/library/grid`,
         query: { q: src.trim() },
       });
     } else {
       router.push({
-        pathname: `/knowledge/library/resource/category`,
+        pathname: `/knowledge/library/grid`,
       });
     }
   };
@@ -370,6 +370,7 @@ const Search = ({ router }) => {
         className="input-src"
         placeholder="Search"
         suffix={<SearchOutlined />}
+        onChange={(e) => setSearch(e.target.value)}
         onPressEnter={(e) => handleSearch(e.target.value)}
         onSubmit={(e) => setSearch(e.target.value)}
       />
