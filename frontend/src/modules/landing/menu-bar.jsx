@@ -185,8 +185,8 @@ const MenuBar = ({
             <div className={styles.row}>
               <Item to="/connect/community" {...{ setShowMenu }} />
               <Item to="/connect/experts" {...{ setShowMenu }} />
-              <Item to="/connect/events" {...{ setShowMenu }} />
-              <Item to="/connect/partners" {...{ setShowMenu }} />
+              <Item to="/events" {...{ setShowMenu }} />
+              <Item to="/partners" {...{ setShowMenu }} />
               <Item
                 href="https://communities.gpmarinelitter.org"
                 title="Engage"
@@ -274,12 +274,12 @@ const pathContent = {
     subtitle: "Tool to find an expert and experts' groups",
     icon: <ExpertIcon />,
   },
-  "/connect/events": {
+  "/events": {
     title: "Events",
     subtitle: "Global events calendar",
     icon: <IconEvent />,
   },
-  "/connect/partners": {
+  "/partners": {
     title: "Partners",
     iconClass: "tools-partners-icon",
     subtitle: "Directory of partners of the GPML Digital Platform",

@@ -34,7 +34,9 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [countData, setCountData] = useState([]);
-  const [totalCount, setTotalCount] = useState([]);
+  const [totalCount, setTotalCount] = useState(
+    history.query.totalCount ? JSON.parse(history.query.totalCount) : []
+  );
   const [filterCountries, setFilterCountries] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const [catData, setCatData] = useState([]);
@@ -72,7 +74,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
     setLoading(true);
     const queryParams = new URLSearchParams(searchParams);
     queryParams.delete("slug");
-
+    console.log(queryParams, "queryParams");
     if (type || history?.location?.state?.type)
       if (
         type === "capacity-building" ||
@@ -90,7 +92,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
       }
     queryParams.set("incCountsForTags", popularTags);
     queryParams.set("limit", limit);
-
+    queryParams.delete("totalCount");
     const url = `/browse?${String(queryParams)}`;
 
     api
@@ -99,7 +101,11 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         setLoading(false);
         setData(resp?.data);
         if (totalCount.length === 0) {
-          setTotalCount(resp?.data?.counts);
+          setTotalCount(
+            history.query.totalCount
+              ? JSON.parse(history.query.totalCount)
+              : resp?.data?.counts
+          );
         }
         setCountData(resp?.data?.counts);
         setGridItems((prevItems) => {
@@ -137,22 +143,6 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
     const newParams = new URLSearchParams(pureQuery);
 
     newParams.delete("offset");
-    const newQueryStr = newParams.toString();
-
-    // if (param === "replace")
-    //   router.replace(
-    //     {
-    //       pathname: router.pathname,
-    //       query: newParams.toString(),
-    //     },
-    //     undefined,
-    //     { shallow: true }
-    //   );
-    // else
-    //   router.push({
-    //     pathname: router.pathname,
-    //     query: newParams.toString(),
-    //   });
 
     if (fetch && view !== "category") fetchData(pureQuery);
 
