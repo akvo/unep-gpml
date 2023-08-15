@@ -117,7 +117,7 @@
   [_ {:keys [logger] :as config}]
   (fn [{:keys [parameters] :as _req}]
     (try
-      (let [{:keys [entity-key limit]} parameters]
+      (let [{:keys [entity-key limit]} (:body parameters)]
         (future (migrate-entity-files config entity-key (cond-> {}
                                                           limit
                                                           (assoc :limit limit))))
