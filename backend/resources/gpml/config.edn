@@ -3,10 +3,6 @@
   :gpml.handler.main/handler {:routes [["/"
                                         {:get {:no-doc true
                                                :handler #ig/ref :gpml.handler.main/root}}]
-                                       ["/image/{image_type}/{id}"
-                                        {:get {:no-doc true
-                                               :handler #ig/ref :gpml.handler.image/get
-                                               :parameters {:path [:map [:image_type string?] [:id int?]]}}}]
                                        ["/cv/profile/{id}"
                                         {:get {:no-doc true
                                                :handler #ig/ref :gpml.handler.file/profile-cv
@@ -697,9 +693,6 @@
   :gpml.handler.organisation/get-id #ig/ref :gpml.config/common
   :gpml.handler.programmatic.organisation/post #ig/ref :gpml.config/common
   :gpml.handler.programmatic.organisation/post-params {}
-
-  :gpml.handler.image/get {:db #ig/ref :duct.database/sql
-                           :logger #ig/ref :duct/logger}
 
   :gpml.handler.file/profile-cv {:db #ig/ref :duct.database/sql}
 
