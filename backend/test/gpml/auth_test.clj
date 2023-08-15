@@ -26,7 +26,7 @@
 
 (defn- new-stakeholder [db id email role review_status]
   (let [info {:id id
-              :picture "https://picsum.photos/200"
+              :picture nil
               :cv nil
               :title "Mr."
               :first_name "First name"
@@ -75,8 +75,11 @@
         ;; Anonymous user
         {:approved? false :user nil} {:authenticated? false}
 
-        ;; Unverified email user
-        {:approved? false :user nil}
+        ;; Unverified email user should be able to use the application
+        ;; but will be restricted with RBAC permissions until GPML
+        ;; admins approves the user and also making sure their verify
+        ;; their emails.
+        {:approved? false :user unapproved}
         {:jwt-claims unapproved}
 
         ;; Approved, verified email user

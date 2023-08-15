@@ -87,6 +87,8 @@ SELECT
     created_by,
     document_preview,
     language,
+    image_id,
+    thumbnail_id,
     (select json_agg(json_build_object('url',rlu.url, 'lang', l.iso_code))
 	from resource_language_url rlu
 	left join language l on l.id = rlu.language

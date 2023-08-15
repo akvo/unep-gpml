@@ -52,18 +52,19 @@ select
     s.idp_usernames,
     s.public_email,
     s.public_database,
-    s.picture as photo,
     s.linked_in,
     s.twitter,
     s.about,
     s.role,
     s.job_title,
-    s.cv,
     s.country,
     s.affiliation,
     s.reviewed_at,
     s.reviewed_by,
-    s.review_status from stakeholder s
+    s.review_status,
+    s.picture_id,
+    s.cv_id
+from stakeholder s
 where s.id = :id;
 
 -- :name stakeholder-by-email :? :1
@@ -77,18 +78,19 @@ select
     s.idp_usernames,
     s.public_email,
     s.public_database,
-    s.picture as photo,
     s.linked_in,
     s.twitter,
     s.about,
     s.role,
     s.job_title,
-    s.cv,
     s.country,
     s.affiliation,
     s.reviewed_at,
     s.reviewed_by,
-    s.review_status from stakeholder s
+    s.review_status,
+    s.picture_id,
+    s.cv_id
+from stakeholder s
 where s.email = :email;
 
 -- :name approved-stakeholder-by-email :? :1

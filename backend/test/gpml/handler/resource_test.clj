@@ -82,24 +82,21 @@
                                                                                      :permission-name "resource/delete"})]
         (is (get (set (map :user_id owners)) sth-id))
         (is (= 201 (:status resp-one)))
-        (let [image-one (:image resource-one)]
-          (is (s/includes? image-one "images/resource-"))
-          (is (s/ends-with? image-one "uploaded.png"))
-          (is (s/starts-with? image-one "https://storage.googleapis.com/")))
-        (is (s/ends-with? (:image resource-one) "uploaded.png"))
+        (is (uuid? (:image_id resource-one)))
         (is (= (dissoc (assoc (new-resource data)
                               :id 10001
                               :value "2000"
                               :tags (map :id (:tags data))
-                              :created_by 10001) :image :owners)
-               (dissoc resource-one :image :owners)))
+                              :created_by 10001)
+                       :image :owners)
+               (dissoc resource-one :image :owners :image_id :thumbnail_id)))
         (is (= (dissoc (assoc (new-resource data)
                               :id 10002
-                              :image "/image/resource/2"
                               :value "2000"
                               :tags (map :id (:tags data))
-                              :created_by 10001) :image :owners)
-               (dissoc resource-two :image)))
+                              :created_by 10001)
+                       :image :owners)
+               (dissoc resource-two :image :image_id :thumbnail_id)))
         (is (= (:url payload) (:url resource-one)))))
     (testing "Unapproved users doesn't have enough permissions to create a new resource"
       (let [sth-id (test-util/create-test-stakeholder config
