@@ -179,7 +179,7 @@
       ;; stakeholder fields. We would need to sync with FE to change
       ;; this.
       (r/created (-> (merge body new-sth)
-                     (dissoc :affiliation :picture)
+                     (dissoc :affiliation :picture :cv :photo)
                      (assoc :org (db.organisation/organisation-by-id
                                   conn
                                   {:id (:affiliation new-sth)})))))

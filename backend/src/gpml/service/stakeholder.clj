@@ -243,9 +243,9 @@
             [{{:keys [cv]} :stakeholder old-stakeholder :old-stakeholder :as context}]
             (if-not (seq cv)
               context
-              (let [old-picture-id (:picture-id old-stakeholder)
-                    result (if (:picture-id old-stakeholder)
-                             (srv.file/delete-file config conn {:id old-picture-id})
+              (let [old-cv-id (:cv-id old-stakeholder)
+                    result (if (:cv-id old-stakeholder)
+                             (srv.file/delete-file config conn {:id old-cv-id})
                              {:success? true})]
                 (if-not (:success? result)
                   (assoc context
