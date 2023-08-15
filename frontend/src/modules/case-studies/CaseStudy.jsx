@@ -2,7 +2,6 @@ import React from "react";
 import { Row, Col, Typography, Tooltip, Button, Avatar } from "antd";
 
 import datastakeholders from "./json/stakeholders.json";
-import iconGlobe from "../../images/case-studies/globe-outline.svg";
 import { titleCase } from "../../utils/string";
 
 const { Title, Paragraph, Text } = Typography;
@@ -66,7 +65,10 @@ const CaseStudy = ({
             <Col>
               <div style={{ display: "flex", gap: 5, minHeight: 32 }}>
                 <div style={{ margin: "auto" }}>
-                  <img src={iconGlobe} style={{ width: 32, height: 32 }} />
+                  <img
+                    src="/case-studies/globe-outline.svg"
+                    style={{ width: 32, height: 32 }}
+                  />
                 </div>
                 <div style={{ margin: "auto" }}>
                   <Text>{geo_coverage}</Text>
