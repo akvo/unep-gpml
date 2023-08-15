@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { UIStore } from "../../../store";
 import { Store } from "pullstate";
 import { Modal, Button } from "antd";
-import "./modal-style.scss";
+import "./modal.module.scss";
 import { withTheme } from "@rjsf/core";
 import { Theme as AntDTheme } from "@rjsf/antd";
 import { schema, uiSchema } from "./form-schema";
