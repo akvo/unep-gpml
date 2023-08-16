@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Auth0Provider } from "@auth0/auth0-react";
 import Head from "next/head";
-import "../main.scss";
-import "../buttons.scss";
-import withLayout from "../layouts/withLayout";
+// import '../main.scss'
+// import '../buttons.scss'
+import {withLayout} from "../layouts/MainLayout";
 import "swiper/css";
 import "swiper/css/navigation";
 import { UIStore } from "../store";
@@ -12,6 +12,7 @@ import api from "../utils/api";
 import { useRouter } from "next/router";
 import { updateStatusProfile } from "../utils/profile";
 import { uniqBy, sortBy } from "lodash";
+import { withNewLayout } from "../layouts/new-layout";
 
 const res = await Promise.all([
   api.get("https://digital.gpmarinelitter.org/api/tag"),
@@ -64,17 +65,18 @@ UIStore.update((s) => {
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
+  if(router.pathname !== '/landing'){
+    import('../main.scss')
+    import('../buttons.scss')
+  } else {
+    import('../styles/base.scss')
+  }
   const { profile } = UIStore.useState((s) => ({
     profile: s.profile,
     disclaimer: s.disclaimer,
     nav: s.nav,
     tags: s.tags,
   }));
-  const [setStakeholderSignupModalVisible] = useState(false);
-  const [warningModalVisible, setWarningModalVisible] = useState(false);
-  const [filters, setFilters] = useState(null);
-  const [filterMenu, setFilterMenu] = useState(null);
-  const [showResponsiveMenu, setShowResponsiveMenu] = useState(false);
   const [loadingProfile, setLoadingProfile] = useState(false);
   const [_expiresAt, setExpiresAt] = useState(null);
   const [idToken, setIdToken] = useState(null);
@@ -200,6 +202,7 @@ function MyApp({ Component, pageProps }) {
   }, [idToken, authResult]);
 
   const Layout = withLayout(Component);
+  const NewLayout = withNewLayout(Component)
 
   const domain = "https://unep-gpml-test.eu.auth0.com/".replace(
     /(https:\/\/|\/)/gi,
@@ -221,12 +224,21 @@ function MyApp({ Component, pageProps }) {
           typeof window !== "undefined" ? window.location.origin : ""
         }
       >
+        {router.pathname !== '/landing' &&
         <Layout
           {...pageProps}
-          isAuthenticated={isAuthenticated}
-          auth0Client={auth0Client}
-          profile={profile}
+          {...{
+            isAuthenticated, auth0Client, profile
+          }}
         />
+        }
+        {router.pathname === '/landing' && 
+        <NewLayout
+          {...pageProps}
+          {...{
+            isAuthenticated, auth0Client, profile
+          }}
+        />}
       </Auth0Provider>
     </div>
   );
