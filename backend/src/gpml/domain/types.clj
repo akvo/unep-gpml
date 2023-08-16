@@ -1,6 +1,7 @@
 (ns gpml.domain.types
   "Well-known domain global types definitions. These types are used
-  across the domain model by several entities.")
+  across the domain model by several entities."
+  (:require [malli.core :as m]))
 
 ;; TODO: Refactor enums to be keywords instead of strings.
 (def ^:const review-statuses
@@ -77,3 +78,26 @@
     "financing_resource"
     "technical_resource"
     "action_plan"})
+
+(def ^:const file-visibility
+  "Informs about a file's accessability privilegies."
+  #{:private
+    :public})
+
+(def ^:const enum-types
+  {:review-status review-statuses
+   :reviewer-status reviewer-review-statuses
+   :geo-coverage-type geo-coverage-types
+   :association-type association-types
+   :resource-source resource-source-types
+   :topic-entity-table topic-entity-tables
+   :topic-type topic-types
+   :resource-type resources-types
+   :file-visibility file-visibility})
+
+(defn get-type-schema
+  [type-name]
+  (m/schema
+   [:and
+    [:keyword]
+    (apply conj [:enum] (get enum-types type-name))]))

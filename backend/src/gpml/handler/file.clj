@@ -1,9 +1,19 @@
 (ns gpml.handler.file
   (:require [gpml.db.stakeholder :as db.stakeholder]
+            [gpml.domain.file :as dom.file]
+            [gpml.service.file :as srv.file]
             [integrant.core :as ig]
             [ring.util.response :as resp])
   (:import java.io.ByteArrayInputStream
            java.util.Base64))
+
+(defn create-file
+  [config conn file-payload entity-key file-key visibility-key]
+  (let [file (dom.file/base64->file file-payload entity-key file-key visibility-key)
+        result (srv.file/create-file config conn file)]
+    (if (:success? result)
+      (get-in result [:file :id])
+      (throw (ex-info "Failed to create file" {})))))
 
 (defmethod ig/init-key :gpml.handler.file/profile-cv [_ {:keys [db]}]
   (fn [{{{:keys [id]} :path} :parameters :as req}]

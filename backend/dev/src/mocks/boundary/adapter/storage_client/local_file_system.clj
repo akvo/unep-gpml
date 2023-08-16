@@ -16,8 +16,21 @@
        :reason :could-not-delete-file
        :error-details {:exception-message (ex-message e)}})))
 
+(defn- get-blob-signed-url
+  [{:keys [base-path]} bucket-name blob-name]
+  (try
+    (let [file (io/file base-path bucket-name blob-name)]
+      {:success? true
+       :url (.toURL (.toURI file))})
+    (catch Throwable t
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
+
 (extend-type FileSystemStorageClient
-  port/StorageClientDeleteBlob
+  port/StorageClient
+  (get-blob-signed-url [this bucket-name blob-name _url-lifespan]
+    (get-blob-signed-url this bucket-name blob-name))
   (delete-blob [this bucket-name blob-name]
     (delete-blob this bucket-name blob-name)))
 
