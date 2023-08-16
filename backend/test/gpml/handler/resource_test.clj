@@ -1,6 +1,5 @@
 (ns gpml.handler.resource-test
-  (:require [clojure.string :as s]
-            [clojure.test :refer [deftest is testing use-fixtures]]
+  (:require [clojure.test :refer [deftest is testing use-fixtures]]
             [gpml.db.language :as db.language]
             [gpml.db.rbac-util :as db.rbac-util]
             [gpml.db.resource :as db.resource]

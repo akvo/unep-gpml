@@ -4,6 +4,7 @@
             [hugsql.core :as hugsql]))
 
 (declare delete-stakeholder*
+         all-stakeholder
          all-public-stakeholders
          all-public-users
          list-stakeholder-paginated
