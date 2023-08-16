@@ -12,6 +12,7 @@
                  [duct/module.web "0.7.1" :exclusions [medley ring/ring-core]]
                  [org.postgresql/postgresql "42.2.18"]
                  [com.google.cloud.sql/postgres-socket-factory "1.2.0"]
+                 [com.google.cloud/google-cloud-storage "2.26.0"]
                  [metosin/reitit-ring "0.5.18" :exclusions [ring/ring-core]]
                  [metosin/reitit-malli "0.5.18" :exclusions [org.clojure/tools.reader
                                                              org.clojure/core.rrb-vector]]
