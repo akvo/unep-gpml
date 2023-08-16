@@ -6,7 +6,7 @@
             [gpml.db.event :as db.event]
             [gpml.db.language :as db.language]
             [gpml.domain.types :as dom.types]
-            [gpml.handler.image :as handler.image]
+            [gpml.handler.file :as handler.file]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
@@ -34,13 +34,15 @@
            recording document_preview related_content
            entity_connections individual_connections language
            capacity_building source]}]
-  (let [data (cond-> {:title title
+  (let [image-id (when (seq image)
+                   (handler.file/create-file config conn image :event :images :public))
+        thumbnail-id (when (seq thumbnail)
+                       (handler.file/create-file config conn thumbnail :event :images :public))
+        data (cond-> {:title title
                       :start_date start_date
                       :end_date end_date
                       :description (or description "")
                       :remarks remarks
-                      :image (handler.image/assoc-image config conn image "event")
-                      :thumbnail (handler.image/assoc-image config conn thumbnail "event")
                       :geo_coverage_type geo_coverage_type
                       :geo_coverage_value geo_coverage_value
                       :geo_coverage_countries geo_coverage_countries
@@ -58,7 +60,13 @@
                       :language language
                       :source source}
                (not (nil? capacity_building))
-               (assoc :capacity_building capacity_building))
+               (assoc :capacity_building capacity_building)
+
+               image-id
+               (assoc :image_id image-id)
+
+               thumbnail-id
+               (assoc :thumbnail_id thumbnail-id))
         event-id (->>
                   (update data :source #(sql-util/keyword->pg-enum % "resource_source"))
                   (db.event/new-event conn) :id)
@@ -188,13 +196,14 @@
                         :message "New event created"
                         :id (:id result)})))
         (r/forbidden {:message "Unauthorized"}))
-      (catch Throwable e
-        (log logger :error ::failed-to-create-event {:exception-message (.getMessage e)})
+      (catch Throwable t
+        (log logger :error ::failed-to-create-event {:exception-message (.getMessage t)
+                                                     :exception-data (ex-data t)})
         (let [response {:success? false
-                        :reason :could-not-create-event}]
-          (if (instance? SQLException e)
+                        :reason :failed-to-create-event}]
+          (if (instance? SQLException t)
             (r/server-error response)
-            (r/server-error (assoc-in response [:error-details :error] (ex-message e)))))))))
+            (r/server-error (assoc-in response [:error-details :error] (ex-message t)))))))))
 
 (defmethod ig/init-key :gpml.handler.event/post-params [_ _]
   post-params)

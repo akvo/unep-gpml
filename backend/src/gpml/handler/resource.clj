@@ -7,7 +7,7 @@
             [gpml.db.language :as db.language]
             [gpml.db.resource :as db.resource]
             [gpml.domain.types :as dom.types]
-            [gpml.handler.image :as handler.image]
+            [gpml.handler.file :as handler.file]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
@@ -37,7 +37,11 @@
            first_publication_date latest_amendment_date document_preview
            entity_connections individual_connections language
            capacity_building source]}]
-  (let [data (cond-> {:type resource_type
+  (let [image-id (when (seq image)
+                   (handler.file/create-file config conn image :resource :images :public))
+        thumbnail-id (when (seq thumbnail)
+                       (handler.file/create-file config conn thumbnail :resource :images :public))
+        data (cond-> {:type resource_type
                       :title title
                       :publish_year publish_year
                       :summary summary
@@ -46,8 +50,6 @@
                       :value_remarks value_remarks
                       :valid_from valid_from
                       :valid_to valid_to
-                      :image (handler.image/assoc-image config conn image "resource")
-                      :thumbnail (handler.image/assoc-image config conn thumbnail "resource")
                       :geo_coverage_type geo_coverage_type
                       :geo_coverage_value geo_coverage_value
                       :geo_coverage_countries geo_coverage_countries
@@ -66,7 +68,13 @@
                       :language language
                       :source source}
                (not (nil? capacity_building))
-               (assoc :capacity_building capacity_building))
+               (assoc :capacity_building capacity_building)
+
+               image-id
+               (assoc :image_id image-id)
+
+               thumbnail-id
+               (assoc :thumbnail_id thumbnail-id))
         resource-id (:id (db.resource/new-resource
                           conn
                           (update data :source #(sql-util/keyword->pg-enum % "resource_source"))))

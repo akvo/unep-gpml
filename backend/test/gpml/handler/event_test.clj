@@ -23,7 +23,7 @@
    :geo_coverage_type "global"
    :country (get-in data [:countries 0 :id])
    :city "string"
-   :image "image" :url "url"
+   :url "url"
    :language "en"})
 
 (deftest handler-post-test

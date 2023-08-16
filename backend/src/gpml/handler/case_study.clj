@@ -4,7 +4,7 @@
             [duct.logger :refer [log]]
             [gpml.db.case-study :as db.case-study]
             [gpml.domain.case-study :as dom.case-study]
-            [gpml.handler.image :as handler.image]
+            [gpml.handler.file :as handler.file]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
@@ -53,14 +53,17 @@
                 tags geo_coverage_type individual_connections entity_connections related_content
                 image thumbnail created_by]} body
         case-study (apply dissoc body dom.case-study/entity-relation-keys)
-        image-url (handler.image/assoc-image config conn image "case_study")
-        thumbnail-url (handler.image/assoc-image config conn thumbnail "case_study")
+        image-id (when (seq image)
+                   (handler.file/create-file config conn image :case_study :images :public))
+        thumbnail-id (when (seq thumbnail)
+                       (handler.file/create-file config conn thumbnail :case_study :images :public))
         api-individual-connections (handler.util/individual-connections->api-individual-connections
                                     conn
                                     individual_connections
                                     created_by)
         db-case-study (-> case-study
-                          (assoc :image image-url :thumbnail thumbnail-url)
+                          (assoc :image_id image-id :thumbnail_id thumbnail-id)
+                          (dissoc :image :thumbnail)
                           db.case-study/case-study->db-case-study)
         insert-cols (sql-util/get-insert-columns-from-entity-col [db-case-study])
         insert-values (sql-util/entity-col->persistence-entity-col [db-case-study])
