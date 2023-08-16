@@ -63,7 +63,9 @@ const NewLayout = ({
           <div className="container">
             GPML Digital Platform
             <nav>
-              <Button type="primary">Join Now</Button>
+              <Button type="primary" size="small" className="noicon">
+                Join Now
+              </Button>
             </nav>
           </div>
         </div>

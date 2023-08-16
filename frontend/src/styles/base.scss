@@ -1,32 +1,17 @@
-$primaryGreen: #00f1bf;
-$primaryPurple: #7468ff;
-$primaryBlue: #86c5ff;
-$primaryViolet: #ac85ff;
-$primaryDarkBlue: #01124c;
-
-$fzXXXL: 64px;
-$lhXXXL: 72px;
-$fzXXL: 48px;
-$lhXXL: 56px;
-$fzXL: 38px;
-$lhXL: 48px;
-$fzL: 32px;
-$lhL: 36px;
-$fzM: 24px;
-$lhM: 28px;
-$fzS: 18px;
-$lhS: 24px;
-$fzXS: 16px;
-$lhXS: 22px;
-$fzXXS: 14px;
-$lhXXS: 20px;
+@import 'vars.scss';
+@import 'btns.scss';
 
 body {
   color: $primaryDarkBlue;
   font-family: var(--font-dm-sans), sans-serif;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 h1 {
   font-family: var(--font-archia), sans-serif;
+  font-size: $fzXXXL;
+  line-height: $lhXXXL;
 }
 
 .p-l {
@@ -40,4 +25,27 @@ h1 {
 .p-s {
   font-size: 16px;
   line-height: 20px;
+}
+.container {
+  margin: 0 40px;
+  @media screen and (min-width: 1240px) {
+    margin: 0 auto;
+    width: 1148px;
+  }
+}
+.top-bar {
+  height: 90px;
+  padding: 23px 0;
+  box-sizing: border-box;
+  background-color: $primaryDarkBlue;
+  color: white;
+  .container {
+    display: flex;
+  }
+  nav {
+    margin-left: auto;
+    .ant-btn-primary {
+      margin-top: 0px;
+    }
+  }
 }
