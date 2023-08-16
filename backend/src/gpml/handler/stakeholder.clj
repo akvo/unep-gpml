@@ -58,8 +58,7 @@
            public_email affiliation
            job_title twitter
            country about
-           cv photo
-           org tags]}]
+           cv picture org tags]}]
   {:title             title
    :first_name        first_name
    :last_name         last_name
@@ -74,7 +73,7 @@
    :affiliation       affiliation
    :job_title         job_title
    :cv                cv
-   :photo             photo
+   :picture           picture
    :org               org
    :tags              tags})
 
@@ -161,8 +160,8 @@
                                        :affiliation (:id org)
                                        :email (:email jwt-claims)
                                        :idp_usernames [(:sub jwt-claims)]
-                                       :photo {:payload (:photo body)
-                                               :user-agent (get headers "user-agent")}
+                                       :picture {:payload (:picture body)
+                                                 :user-agent (get headers "user-agent")}
                                        :tags tags
                                        :org org))
           old-sth (db.stakeholder/stakeholder-by-email conn {:email (:email new-sth)})
@@ -179,7 +178,7 @@
       ;; stakeholder fields. We would need to sync with FE to change
       ;; this.
       (r/created (-> (merge body new-sth)
-                     (dissoc :affiliation :picture :cv :photo)
+                     (dissoc :affiliation :picture :cv)
                      (assoc :org (db.organisation/organisation-by-id
                                   conn
                                   {:id (:affiliation new-sth)})))))
@@ -205,8 +204,8 @@
       (let [tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body-params)]
         (update-stakeholder config (assoc body-params
                                           :id (:id user)
-                                          :photo {:payload (:photo body-params)
-                                                  :user-agent (get headers "user-agent")}
+                                          :picture {:payload (:picture body-params)
+                                                    :user-agent (get headers "user-agent")}
                                           :tags tags))
         (resp/status {:success? true} 204))
       (catch Exception e
@@ -330,7 +329,7 @@
    [:last_name string?]
    [:linked_in {:optional true} string?]
    [:twitter {:optional true} string?]
-   [:photo {:optional true} string?]
+   [:picture {:optional true} string?]
    [:cv {:optional true} string?]
    [:about {:optional true} string?]
    [:country {:optional true} int?]
@@ -423,8 +422,8 @@
           (update-stakeholder config (assoc body
                                             :id (:id path)
                                             :tags tags
-                                            :photo {:payload (:photo body)
-                                                    :user-agent (get-in req [:headers "user-agent"])}))
+                                            :picture {:payload (:picture body)
+                                                      :user-agent (get-in req [:headers "user-agent"])}))
           (resp/status {:success? true} 204))
         (catch Exception e
           (log logger :error ::failed-to-update-stakeholder {:exception-message (.getMessage e)})
@@ -446,7 +445,7 @@
           [:job_title {:optional true} string?]
           [:linked_in {:optional true} string?]
           [:twitter {:optional true} string?]
-          [:photo {:optional true} string?]
+          [:picture {:optional true} string?]
           [:cv {:optional true} string?]
           [:about {:optional true} string?]
           [:country {:optional true} int?]

@@ -20,10 +20,10 @@
         transactions
         [{:txn-fn
           (fn create-picture-file
-            [{{:keys [photo]} :stakeholder :as context}]
-            (if-not (:payload photo)
+            [{{:keys [picture]} :stakeholder :as context}]
+            (if-not (:payload picture)
               context
-              (let [{:keys [payload user-agent]} photo
+              (let [{:keys [payload user-agent]} picture
                     picture (if (util/try-url-str payload)
                               (util.image/download-image logger payload {:headers {:user-agent user-agent}})
                               payload)
@@ -208,8 +208,8 @@
                        :error-details {:result result}))))}
          {:txn-fn
           (fn update-picture-file
-            [{{:keys [photo]} :stakeholder old-stakeholder :old-stakeholder :as context}]
-            (if-not (:payload photo)
+            [{{:keys [picture]} :stakeholder old-stakeholder :old-stakeholder :as context}]
+            (if-not (:payload picture)
               context
               (let [old-picture-id (:picture-id old-stakeholder)
                     result (if (:picture-id old-stakeholder)
@@ -220,7 +220,7 @@
                          :success? false
                          :reason :failed-to-delete-old-picture
                          :error-details {:result result})
-                  (let [{:keys [payload user-agent]} photo
+                  (let [{:keys [payload user-agent]} picture
                         new-picture (if (util/try-url-str payload)
                                       (util.image/download-image logger payload {:headers {:user-agent user-agent}})
                                       payload)

@@ -78,7 +78,7 @@
             body-params (assoc (new-profile 1)
                                :org (:org data)
                                :country (-> (:countries data) first :id)
-                               :photo picture)
+                               :picture picture)
             {:keys [status body]}
             (handler (-> (mock/request :post "/")
                          (assoc :jwt-claims {:email "john@org" :picture "test.jpg" :sub "auth0|123"})
@@ -133,7 +133,7 @@
                                      :type "Company"
                                      :url "mycompany.org"}
                                :country (-> (:countries data) first :id)
-                               :photo picture)
+                               :picture picture)
             resp (handler (-> (mock/request :post "/")
                               (assoc :jwt-claims {:email "john@org" :picture "test.jpg" :sub "auth0|123"})
                               (assoc :parameters {:body  body-params})))]
@@ -172,10 +172,10 @@
           body-params (assoc (new-profile 1)
                              :org nil
                              :country (-> (:countries data) first :id))
-          ;; John trying to sign up without any organisation and leave photo, twitter, and linkedin blank
+          ;; John trying to sign up without any organisation and leave picture, twitter, and linkedin blank
           resp (handler (-> (mock/request :post "/")
                             (assoc :jwt-claims {:email "john@org"})
-                            (assoc :parameters {:body  (dissoc body-params :twitter :linkedin :photo)})))]
+                            (assoc :parameters {:body  (dissoc body-params :twitter :linkedin :picture)})))]
       (is (= 201 (:status resp)))
       (is (= "John" (-> (:body resp) :first_name)))
       (is (= "Doe" (-> (:body resp) :last_name)))
@@ -210,7 +210,7 @@
                                           :first_name "Mark"
                                           :org {:id 1 :name "Akvo" :url "https://akvo.org"}
                                           :job_title "Developer"
-                                          :photo picture
+                                          :picture picture
                                           :cv picture
                                           :public_email true))))
           profile (db.stakeholder/stakeholder-by-id conn {:id 10001})]
@@ -259,9 +259,8 @@
                                           :first_name "Mark"
                                           :org {:id 1 :name "Akvo" :url "https://akvo.org"}
                                           :job_title "Developer"
-                                          :photo "https://ui-avatars.com/api/?size=480&name=John+Doe"
-                                          :cv nil
-                                          :picture nil))))
+                                          :picture "https://ui-avatars.com/api/?size=480&name=John+Doe"
+                                          :cv nil))))
           profile (db.stakeholder/stakeholder-by-id db {:id 10001})]
       (is (= 204 (:status resp)))
       (is (= {:id 10001,
