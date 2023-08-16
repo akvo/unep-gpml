@@ -323,15 +323,16 @@
                           (map dom.file/decode-file)
                           (srv.file/add-files-urls config)
                           (medley/index-by (comp str :id)))]
-    (cond-> resource
+    (cond
       (= "stakeholder" resource-type)
-      (assoc :picture (get-in files-w-urls [picture_id :url]))
+      (assoc resource :picture (get-in files-w-urls [picture_id :url]))
 
       (= "organisation" resource-type)
-      (assoc :logo (get-in files-w-urls [logo_id :url]))
+      (assoc resource :logo (get-in files-w-urls [logo_id :url]))
 
       :else
-      (assoc :image (get-in files-w-urls [image_id :url])
+      (assoc resource
+             :image (get-in files-w-urls [image_id :url])
              :thumbnail (get-in files-w-urls [thumbnail_id :url])))))
 
 (defn- add-extra-details
