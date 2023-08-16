@@ -17,7 +17,6 @@ insert into policy(
     remarks,
     review_status,
     url,
-    image,
     language
 --~ (when (contains? params :id) ", id")
 --~ (when (contains? params :created_by) ", created_by")
@@ -27,6 +26,8 @@ insert into policy(
 --~ (when (contains? params :subnational_city) ", subnational_city")
 --~ (when (contains? params :document_preview) ", document_preview")
 --~ (when (contains? params :source) ", source")
+--~ (when (contains? params :image_id) ", image_id")
+--~ (when (contains? params :thumbnail_id) ", thumbnail_id")
 )
 values(
     :title,
@@ -45,7 +46,6 @@ values(
     :remarks,
     :v:review_status::review_status,
     :url,
-    :image,
     :language
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :created_by) ", :created_by")
@@ -55,6 +55,8 @@ values(
 --~ (when (contains? params :subnational_city) ", :subnational_city")
 --~ (when (contains? params :document_preview) ", :document_preview")
 --~ (when (contains? params :source) ", :source")
+--~ (when (contains? params :image_id) ", :image_id")
+--~ (when (contains? params :thumbnail_id) ", :thumbnail_id")
 )
 returning id;
 
@@ -88,7 +90,7 @@ select
     language,
     (select json_agg(tag) from policy_tag where policy = :id) as tags,
     (select json_agg(coalesce(country, country_group))
-        from policy_geo_coverage where policy = :id) as geo_coverage_value
+	from policy_geo_coverage where policy = :id) as geo_coverage_value
 from policy
 where id = :id
 
@@ -116,9 +118,9 @@ select
     document_preview,
     language
     (select json_agg(tag)
-        from policy_tag where policy = :id) as tags,
+	from policy_tag where policy = :id) as tags,
     (select created_by
-        from policy where id = :id) as created_by
+	from policy where id = :id) as created_by
 from v_policy_data
 where id = :id
 

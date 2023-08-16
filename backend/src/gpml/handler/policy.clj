@@ -4,7 +4,7 @@
             [duct.logger :refer [log]]
             [gpml.db.policy :as db.policy]
             [gpml.domain.policy :as dom.policy]
-            [gpml.handler.image :as handler.image]
+            [gpml.handler.file :as handler.file]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
@@ -39,7 +39,11 @@
            document_preview related_content topics
            attachments remarks entity_connections individual_connections
            capacity_building source]}]
-  (let [data (cond-> {:title title
+  (let [image-id (when (seq image)
+                   (handler.file/create-file config conn image :policy :images :public))
+        thumbnail-id (when (seq thumbnail)
+                       (handler.file/create-file config conn thumbnail :policy :images :public))
+        data (cond-> {:title title
                       :original_title original_title
                       :abstract abstract
                       :url url
@@ -55,8 +59,6 @@
                       :sub_content_type sub_content_type
                       :document_preview document_preview
                       :topics (pg-util/->JDBCArray topics "text")
-                      :image (handler.image/assoc-image config conn image "policy")
-                      :thumbnail (handler.image/assoc-image config conn thumbnail "policy")
                       :geo_coverage_type geo_coverage_type
                       :geo_coverage_value geo_coverage_value
                       :geo_coverage_countries geo_coverage_countries
@@ -72,7 +74,13 @@
                (assoc :capacity_building capacity_building)
 
                (not (nil? source))
-               (assoc :source source))
+               (assoc :source source)
+
+               image-id
+               (assoc :image_id image-id)
+
+               thumbnail-id
+               (assoc :thumbnail_id thumbnail-id))
         policy-id (->>
                    (util/update-if-not-nil data :source #(sql-util/keyword->pg-enum % "resource_source"))
                    (db.policy/new-policy conn) :id)

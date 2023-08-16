@@ -18,10 +18,11 @@
             [gpml.domain.resource :as dom.resource]
             [gpml.domain.translation :as dom.translation]
             [gpml.domain.types :as dom.types]
-            [gpml.handler.image :as handler.img]
+            [gpml.handler.file :as handler.file]
+            [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
-            [gpml.util.http-client :as http-client]
+            [gpml.util.image :as util.image]
             [gpml.util.malli :as util.malli]
             [gpml.util.sql :as sql-util]
             [integrant.core :as ig]
@@ -540,19 +541,6 @@
                                                     :finished-at (.toString (jt/instant end-time))
                                                     :time-elapsed (str (- end-time start-time) "ms")})))
 
-(defn- download-image
-  [logger url]
-  (let [{:keys [status headers body]}
-        (http-client/do-request logger
-                                {:method :get
-                                 :url url
-                                 :as :byte-array}
-                                {})]
-    (when (<= 200 status 299)
-      (->> body
-           util/encode-base64
-           (util/add-base64-header (get headers "Content-Type"))))))
-
 (defn- with-safe-db-transaction
   [?tx logger entity-name data-coll {:keys [update?] :as opts}]
   (try
@@ -572,27 +560,29 @@
          :error-details error-details}))))
 
 (defn- add-gpml-image-url
-  [config tx logger entity-name data-coll]
+  [config conn logger entity-name data-coll]
   (reduce
    (fn [acc {:keys [image qimage] :as entity}]
      (let [url (or image qimage)]
        (if-not url
          (conj acc entity)
-         (let [downloaded-image (download-image logger url)
-               image-url (when-not (nil? downloaded-image)
-                           (handler.img/assoc-image config tx downloaded-image (name entity-name)))]
-           (if (= entity-name :initiative)
-             (conj acc (assoc entity :qimage image-url))
-             (conj acc (assoc entity :image image-url)))))))
+         (let [downloaded-image (util.image/download-image logger url)
+               image-id (when-not (nil? downloaded-image)
+                          (handler.file/create-file config
+                                                    conn
+                                                    downloaded-image
+                                                    entity-name
+                                                    :images
+                                                    :public))]
+           (conj acc (assoc entity :image_id image-id))))))
    []
    data-coll))
 
 (defn- delete-images
-  [config images-urls]
-  (doseq [img-url images-urls
-          :when (seq img-url)
-          :let [[resource-name img-name] (subvec (str/split img-url #"/") 4 6)]]
-    (handler.img/delete-blob config (str resource-name "/" img-name))))
+  [{:keys [db] :as config} images-ids]
+  (doseq [image-id images-ids
+          :when image-id]
+    (srv.file/delete-file config (:spec db) {:id image-id})))
 
 (defmulti ^:private save-as-gpml-entity
   (fn [_ entity-name _ _]
@@ -605,7 +595,7 @@
           result (with-safe-db-transaction (:spec db) logger entity-name updated-data-coll opts)]
       (if (:success? result)
         result
-        (delete-images config (map :image updated-data-coll))))
+        (delete-images config (map :image_id updated-data-coll))))
     (catch Throwable e
       (let [error-details {:entity-name entity-name
                            :exception-message (ex-message e)
@@ -640,7 +630,7 @@
           result (with-safe-db-transaction (:spec db) logger entity-name updated-data-coll opts)]
       (if (:success? result)
         result
-        (delete-images config (map :qimage updated-data-coll))))
+        (delete-images config (map :image_id updated-data-coll))))
     (catch Throwable e
       (let [error-details {:entity-name entity-name
                            :exception-message (ex-message e)
