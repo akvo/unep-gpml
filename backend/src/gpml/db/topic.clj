@@ -302,9 +302,17 @@
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn generate-topic-query
   "Generates the SQL to query topic's (resources) data."
-  [params opts]
-  (let [opts (merge generic-cte-opts (when (seq (:tables opts))
-                                       (update opts :tables rename-tables)))
+  [{:keys [topic sub-content-type] :as params}]
+  (let [tables (if (seq topic)
+                 topic
+                 (:tables gpml.db.topic/generic-cte-opts))
+        ;; If we ever need to add
+        ;; `sub_content_type` to case study, remove
+        ;; this conditional and binding.
+        filtered-tables (if (seq sub-content-type)
+                          (vec (remove #{"case_study"} tables))
+                          tables)
+        opts (merge generic-cte-opts {:tables (rename-tables filtered-tables)})
         topic-data-ctes (generate-ctes :data params opts)
         topic-ctes (generate-ctes :topic params opts)
         topic-cte (generate-topic-cte {} opts)]
