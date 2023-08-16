@@ -4,7 +4,9 @@
             [gpml.util.sql :as sql-util]
             [hugsql.core :as hugsql]))
 
-(declare create-case-studies)
+(declare create-case-studies
+         update-case-study
+         get-case-studies-files-to-migrate)
 
 (hugsql/def-db-fns "gpml/db/case_study.sql")
 

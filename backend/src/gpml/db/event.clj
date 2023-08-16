@@ -14,7 +14,8 @@
          create-events
          get-events
          update-event
-         create-event-images)
+         create-event-images
+         get-events-files-to-migrate)
 
 (hugsql/def-db-fns "gpml/db/event.sql" {:quoting :ansi})
 

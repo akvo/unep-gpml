@@ -1,12 +1,15 @@
 (ns gpml.handler.organisation
-  (:require [duct.logger :refer [log]]
+  (:require [clojure.java.jdbc :as jdbc]
+            [duct.logger :refer [log]]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.organisation :as dom.organisation]
+            [gpml.handler.file :as handler.file]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.tag :as handler.resource.tag]
             [gpml.handler.responses :as r]
+            [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util.geo :as geo]
             [gpml.util.malli :as util.malli]
@@ -16,13 +19,20 @@
   (:import [java.sql SQLException]))
 
 (defn create
-  [conn logger mailjet-config
-   {:keys [geo_coverage_type
+  [{:keys [logger mailjet-config] :as config}
+   conn
+   {:keys [logo
+           geo_coverage_type
            geo_coverage_country_groups
            geo_coverage_countries
            geo_coverage_country_states] :as org}]
-  (let [geo-coverage-type (keyword geo_coverage_type)
-        org-id (:id (db.organisation/new-organisation conn org))]
+  (let [logo-id (when (seq logo)
+                  (handler.file/create-file config conn logo :organisation :images :private))
+        geo-coverage-type (keyword geo_coverage_type)
+        org-id (:id (db.organisation/new-organisation conn
+                                                      (cond-> (dissoc org :logo)
+                                                        logo-id
+                                                        (assoc :logo_id logo-id))))]
     (handler.geo/create-resource-geo-coverage conn
                                               :organisation
                                               org-id
@@ -45,15 +55,35 @@
       :resource-id org-id})
     org-id))
 
+(defn- handle-logo-update
+  [config conn org-id logo-payload]
+  (let [old-org (db.organisation/organisation-by-id conn {:id org-id})
+        old-logo-id (:logo_id old-org)
+        delete-result (if-not old-logo-id
+                        {:success? true}
+                        (srv.file/delete-file config conn {:id old-logo-id}))]
+    (if (:success? delete-result)
+      (when (seq logo-payload)
+        (handler.file/create-file config
+                                  conn
+                                  logo-payload
+                                  :organisation
+                                  :images
+                                  :private))
+      (throw (ex-info "Failed to delete old organisation logo" {:result delete-result})))))
+
 (defn update-org
-  [conn logger mailjet-config
-   {:keys [geo_coverage_type
+  [{:keys [logger mailjet-config] :as config}
+   conn
+   {:keys [logo
+           geo_coverage_type
            geo_coverage_country_groups
            geo_coverage_countries
            geo_coverage_country_states] :as org}]
-  (let [geo-coverage-type (keyword geo_coverage_type)
-        org-id (do (db.organisation/update-organisation conn org)
-                   (:id org))]
+  (let [org-id (:id org)
+        new-logo-id (handle-logo-update config conn org-id logo)
+        geo-coverage-type (keyword geo_coverage_type)
+        org-id (db.organisation/update-organisation conn (assoc org :logo_id new-logo-id))]
     (handler.geo/update-resource-geo-coverage conn
                                               :organisation
                                               org-id
@@ -93,7 +123,7 @@
       (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.organisation/post
-  [_ {:keys [db mailjet-config logger]}]
+  [_ {:keys [db logger] :as config}]
   (fn [{:keys [body-params referrer jwt-claims]}]
     (try
       (let [org-creator (when (seq (:email jwt-claims))
@@ -111,17 +141,20 @@
                   :reason :can-not-create-member-org-if-user-is-in-rejected-state}}
 
           :else
-          (let [org-id (create (:spec db) logger mailjet-config (assoc body-params :created_by (:id org-creator)))]
-            (when (:id org-creator)
-              (srv.permissions/assign-roles-to-users-from-connections
-               {:conn (:spec db)
-                :logger logger}
-               {:context-type :organisation
-                :resource-id org-id
-                :individual-connections [{:role "owner"
-                                          :stakeholder (:id org-creator)}]}))
-            (resp/created referrer {:success? true
-                                    :org (assoc body-params :id org-id)}))))
+          (jdbc/with-db-transaction [tx (:spec db)]
+            (let [org-id (create config
+                                 tx
+                                 (assoc body-params :created_by (:id org-creator)))]
+              (when (:id org-creator)
+                (srv.permissions/assign-roles-to-users-from-connections
+                 {:conn tx
+                  :logger logger}
+                 {:context-type :organisation
+                  :resource-id org-id
+                  :individual-connections [{:role "owner"
+                                            :stakeholder (:id org-creator)}]}))
+              (resp/created referrer {:success? true
+                                      :org (assoc body-params :id org-id)})))))
       (catch Exception e
         (log logger :error ::create-org-failed {:exception-message (.getMessage e)})
         (if (instance? SQLException e)
@@ -153,17 +186,30 @@
         handler.geo/api-geo-coverage-schemas))
 
 (defmethod ig/init-key :gpml.handler.organisation/put
-  [_ {:keys [db logger mailjet-config] :as config}]
+  [_ {:keys [db logger] :as config}]
   (fn [{:keys [body-params referrer parameters user]}]
-    (if (h.r.permission/operation-allowed?
-         config
-         {:user-id (:id user)
-          :entity-type :organisation
-          :entity-id (:id (:path parameters))
-          :operation-type :update})
-      (let [org-id (update-org db logger mailjet-config (assoc body-params :id (:id (:path parameters))))]
-        (resp/created referrer (assoc body-params :id org-id)))
-      (r/forbidden {:message "Unauthorized"}))))
+    (try
+      (if (h.r.permission/operation-allowed?
+           config
+           {:user-id (:id user)
+            :entity-type :organisation
+            :entity-id (:id (:path parameters))
+            :operation-type :update})
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (let [org-id (update-org config tx (assoc body-params :id (:id (:path parameters))))]
+            (resp/created referrer (assoc body-params :id org-id))))
+        (r/forbidden {:message "Unauthorized"}))
+      (catch Throwable t
+        (prn t)
+        (let [log-data {:exception-message (ex-message t)
+                        :exception-data (ex-data t)
+                        :context-data (assoc body-params
+                                             :id (get-in parameters [:path :id]))}]
+          (log logger :error :failed-to-update-organisation log-data)
+          (log logger :debug :failed-to-update-organisation (assoc log-data :stack-trace (.getStackTrace t)))
+          (r/server-error {:success? false
+                           :reason :exception
+                           :error-details log-data}))))))
 
 ;; TODO: We are not skipping extra params, as for example we don't want `is_member` to be updatable
 ;; from this endpoint, so we should skip the ones not expected.
@@ -192,7 +238,7 @@
         handler.geo/api-geo-coverage-schemas))
 
 (defmethod ig/init-key :gpml.handler.organisation/put-to-member
-  [_ {:keys [db logger mailjet-config] :as config}]
+  [_ {:keys [db logger] :as config}]
   (fn [{:keys [body-params parameters user]}]
     (try
       (if (h.r.permission/operation-allowed?
@@ -201,9 +247,10 @@
             :entity-type :organisation
             :entity-id (:id (:path parameters))
             :operation-type :update})
-        (do
-          (update-org (:spec db) logger mailjet-config (assoc body-params :id (:id (:path parameters))
-                                                              :is_member true))
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (update-org config tx (assoc body-params
+                                       :id (:id (:path parameters))
+                                       :is_member true))
           (r/ok {:success? true}))
         (r/forbidden {:message "Unauthorized"}))
       (catch Throwable e

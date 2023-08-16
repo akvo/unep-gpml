@@ -17,10 +17,10 @@
             [gpml.db.resource.connection :as db.resource.connection]
             [gpml.db.resource.detail :as db.resource.detail]
             [gpml.db.resource.tag :as db.resource.tag]
+            [gpml.domain.file :as dom.file]
             [gpml.domain.initiative :as dom.initiative]
             [gpml.domain.resource :as dom.resource]
             [gpml.domain.types :as dom.types]
-            [gpml.handler.image :as handler.image]
             [gpml.handler.initiative :as handler.initiative]
             [gpml.handler.organisation :as handler.org]
             [gpml.handler.resource.geo-coverage :as handler.geo]
@@ -30,7 +30,9 @@
             [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.service.association :as srv.association]
+            [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
+            [gpml.util :as util]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
             [medley.core :as medley])
@@ -301,9 +303,9 @@
      related-contents)))
 
 (defn- add-stakeholder-connections
-  [db resource]
+  [db resource-type resource]
   (let [search-opts {:resource-id (:id resource)
-                     :resource-type (resolve-resource-type (:type resource))}
+                     :resource-type resource-type}
         sth-conns (->> (db.resource.connection/get-resource-stakeholder-connections db search-opts)
                        (map (fn [sth-conn]
                               (dissoc
@@ -313,84 +315,108 @@
                                :tags))))]
     (assoc resource :stakeholder_connections sth-conns)))
 
+(defn- add-files-urls
+  [config resource]
+  (let [{:keys [files image_id thumbnail_id picture_id logo_id]} resource
+        resource-type (:type resource)
+        files-w-urls (->> files
+                          (map dom.file/decode-file)
+                          (srv.file/add-files-urls config)
+                          (medley/index-by (comp str :id)))]
+    (cond
+      (= "stakeholder" resource-type)
+      (assoc resource :picture (get-in files-w-urls [picture_id :url]))
+
+      (= "organisation" resource-type)
+      (assoc resource :logo (get-in files-w-urls [logo_id :url]))
+
+      :else
+      (assoc resource
+             :image (get-in files-w-urls [image_id :url])
+             :thumbnail (get-in files-w-urls [thumbnail_id :url])))))
+
 (defn- add-extra-details
-  [db {:keys [id affiliation] :as resource} resource-type
-   {:keys [owners? tags? entity-connections?
+  [{:keys [db] :as config} {:keys [id affiliation] :as resource} resource-type
+   {:keys [files-urls? owners? tags? entity-connections?
            stakeholder-connections? related-content? affiliation?]
-    :or {owners? true tags? true entity-connections? true
+    :or {files-urls? true owners? true tags? true entity-connections? true
          stakeholder-connections? true related-content? true
          affiliation? false}}]
-  (let [api-resource-type (if-not (= "resource" resource-type)
+  (let [conn (:spec db)
+        api-resource-type (if-not (= "resource" resource-type)
                             resource-type
                             (-> (:type resource)
                                 str/lower-case
                                 (str/replace #" " "_")))]
     (cond-> (assoc resource :type api-resource-type)
       tags?
-      (assoc :tags (db.resource.tag/get-resource-tags db {:table (str resource-type "_tag")
-                                                          :resource-col resource-type
-                                                          :resource-id id}))
+      (assoc :tags (db.resource.tag/get-resource-tags conn {:table (str resource-type "_tag")
+                                                            :resource-col resource-type
+                                                            :resource-id id}))
 
       entity-connections?
-      (assoc :entity_connections (db.resource.connection/get-resource-entity-connections db {:resource-id id
-                                                                                             :resource-type resource-type}))
+      (assoc :entity_connections (db.resource.connection/get-resource-entity-connections conn {:resource-id id
+                                                                                               :resource-type resource-type}))
 
       stakeholder-connections?
-      (->> (add-stakeholder-connections db))
+      (->> (add-stakeholder-connections conn resource-type))
 
       related-content?
-      (assoc :related_content (expand-related-content db id resource-type))
+      (assoc :related_content (expand-related-content conn id resource-type))
 
       (and affiliation? affiliation)
-      (assoc :affiliation (db.organisation/organisation-by-id db {:id affiliation}))
+      (assoc :affiliation (db.organisation/organisation-by-id conn {:id affiliation}))
 
       owners?
-      (assoc :owners (->> (db.rbac-util/get-users-with-granted-permission-on-resource db {:resource-id id
-                                                                                          :context-type-name resource-type
-                                                                                          :permission-name (str resource-type "/" "update")})
-                          (mapv :user_id))))))
+      (assoc :owners (->> (db.rbac-util/get-users-with-granted-permission-on-resource conn {:resource-id id
+                                                                                            :context-type-name resource-type
+                                                                                            :permission-name (str resource-type "/" "update")})
+                          (mapv :user_id)))
+
+      files-urls?
+      (->> (add-files-urls config)))))
 
 (defmulti extra-details (fn [_ resource-type _] resource-type) :default :nothing)
 
-(defmethod extra-details "initiative" [db resource-type initiative]
+(defmethod extra-details "initiative" [{:keys [db] :as config} resource-type initiative]
   (merge
-   (add-extra-details db initiative resource-type {})
-   (dom.initiative/parse-initiative-details (db.initiative/initiative-by-id db initiative))))
+   (add-extra-details config initiative resource-type {})
+   (dom.initiative/parse-initiative-details (db.initiative/initiative-by-id (:spec db) initiative))))
 
-(defmethod extra-details "policy" [db resource-type policy]
+(defmethod extra-details "policy" [{:keys [db] :as config} resource-type policy]
   (merge
-   (add-extra-details db policy resource-type {})
-   {:language (db.policy/language-by-policy-id db (select-keys policy [:id]))}
+   (add-extra-details config policy resource-type {})
+   {:language (db.policy/language-by-policy-id (:spec db) (select-keys policy [:id]))}
    (when-let [implementing-mea (:implementing_mea policy)]
-     {:implementing_mea (:name (db.country-group/country-group-by-id db {:id implementing-mea}))})))
+     {:implementing_mea (:name (db.country-group/country-group-by-id (:spec db) {:id implementing-mea}))})))
 
-(defmethod extra-details "technology" [db resource-type technology]
+(defmethod extra-details "technology" [{:keys [db] :as config} resource-type technology]
   (merge
-   (add-extra-details db technology resource-type {})
+   (add-extra-details config technology resource-type {})
    (when-let [headquarters-country (:country technology)]
-     {:headquarters (first (gpml.db.country/get-countries db {:filters {:ids [headquarters-country]}}))})))
+     {:headquarters (first (gpml.db.country/get-countries (:spec db) {:filters {:ids [headquarters-country]}}))})))
 
-(defmethod extra-details "case_study" [db resource-type resource]
-  (add-extra-details db resource resource-type {}))
+(defmethod extra-details "case_study" [config resource-type resource]
+  (add-extra-details config resource resource-type {}))
 
-(defmethod extra-details "resource" [db resource-type resource]
-  (add-extra-details db resource resource-type {}))
+(defmethod extra-details "resource" [config resource-type resource]
+  (add-extra-details config resource resource-type {}))
 
-(defmethod extra-details "event" [db resource-type event]
-  (add-extra-details db event resource-type {}))
+(defmethod extra-details "event" [config resource-type event]
+  (add-extra-details config event resource-type {}))
 
-(defmethod extra-details "organisation" [db resource-type organisation]
-  (add-extra-details db organisation resource-type {:tags? true
-                                                    :entity-connections? false
-                                                    :stakeholder-connections? false
-                                                    :related-content? false}))
+(defmethod extra-details "organisation" [config resource-type organisation]
+  (add-extra-details config organisation resource-type {:tags? true
+                                                        :entity-connections? false
+                                                        :stakeholder-connections? false
+                                                        :related-content? false}))
 
-(defmethod extra-details "stakeholder" [db resource-type stakeholder]
-  (let [details (add-extra-details db stakeholder resource-type {:tags? true
-                                                                 :entity-connections? false
-                                                                 :stakeholder-connections? false
-                                                                 :related-content? false
-                                                                 :affiliation? true})]
+(defmethod extra-details "stakeholder" [config resource-type stakeholder]
+  (let [details (add-extra-details config stakeholder resource-type {:tags? true
+                                                                     :entity-connections? false
+                                                                     :stakeholder-connections? false
+                                                                     :related-content? false
+                                                                     :affiliation? true})]
     (merge details (handler.stakeholder.tag/unwrap-tags details))))
 
 (defmethod extra-details :nothing [_ _ _]
@@ -471,13 +497,13 @@
         (merge json))))
 
 (defn- get-detail
-  [{:keys [db]} topic-id topic-type query]
+  [{:keys [db] :as config} topic-id topic-type query]
   (let [conn (:spec db)
         resource-details (-> (get-detail* conn topic-type topic-id query)
                              (dissoc :tags :remarks :name :abstract :description))]
     (if (seq resource-details)
       {:success? true
-       :resource-details (extra-details conn topic-type resource-details)}
+       :resource-details (extra-details config topic-type resource-details)}
       {:success? false
        :reason :not-found})))
 
@@ -579,25 +605,70 @@
       :id id
       :organisation org-id})))
 
-(defn -update-blank-resource-picture
-  [conn image-type resource-id image-key]
-  (db.detail/update-resource-table
-   conn
-   {:table image-type :id resource-id :updates {image-key ""}}))
-
-(defn -update-resource-picture
-  [config conn image image-type resource-id image-key]
-  (let [url (handler.image/assoc-image config conn image image-type)]
-    (when-not (and image (= image url))
+(defn update-blank-resource-image
+  [config conn resource-type resource-id file-id-key old-file-id]
+  (let [result (srv.file/delete-file config conn {:id old-file-id})]
+    (if (:success? result)
+      (throw (ex-info "Failed to delete old resource image file" {:result result}))
       (db.detail/update-resource-table
        conn
-       {:table image-type :id resource-id :updates {image-key url}}))))
+       {:table resource-type
+        :id resource-id
+        :updates {file-id-key nil}}))))
+
+(defn- update-resource-image**
+  [config conn resource-type resource-id file-id-key image-payload]
+  (let [new-file (dom.file/base64->file image-payload
+                                        (keyword resource-type)
+                                        :images
+                                        :public)
+        result (srv.file/create-file config conn new-file)]
+    (if-not (:success? result)
+      (throw (ex-info "Failed to update resource image file" {:result result}))
+      (db.detail/update-resource-table
+       conn
+       {:table resource-type
+        :id resource-id
+        :updates {file-id-key (get-in result [:file :id])}}))))
+
+(defn- update-resource-image*
+  [config conn resource-type resource-id file-id-key old-file-id image-payload]
+  (if-not old-file-id
+    (update-resource-image** config
+                             conn
+                             resource-type
+                             resource-id
+                             file-id-key
+                             image-payload)
+    (let [result (srv.file/delete-file config conn {:id old-file-id})]
+      (if (:success? result)
+        (throw (ex-info "Failed to delete old resource image file" {:result result}))
+        (update-resource-image** config
+                                 conn
+                                 resource-type
+                                 resource-id
+                                 file-id-key
+                                 image-payload)))))
 
 (defn update-resource-image
-  [config conn image image-key image-type resource-id]
-  (if (empty? image)
-    (-update-blank-resource-picture conn image-type resource-id image-key)
-    (-update-resource-picture config conn image image-type resource-id image-key)))
+  [config conn resource-type resource-id image-key image-payload]
+  (let [resource (get-detail* conn resource-type resource-id {})
+        file-id-key (keyword (str (name image-key) "_id"))
+        old-file-id (util/uuid (get resource file-id-key))]
+    (if-not (seq image-payload)
+      (update-blank-resource-image config
+                                   conn
+                                   resource-type
+                                   resource-id
+                                   file-id-key
+                                   old-file-id)
+      (update-resource-image* config
+                              conn
+                              resource-type
+                              resource-id
+                              file-id-key
+                              old-file-id
+                              image-payload))))
 
 (defn- update-resource
   [{:keys [logger mailjet-config] :as config}
@@ -639,12 +710,12 @@
                     (or
                      (:id org)
                      (and (= -1 (:id org))
-                          (handler.org/create conn logger mailjet-config org))))
+                          (handler.org/create config conn org))))
         related-contents (:related_content updates)
         org-associations (map (fn [acs] (set/rename-keys acs {:entity :organisation})) (:entity_connections updates))
         sth-associations (:individual_connections updates)]
-    (doseq [[image-key image-data] (select-keys updates [:image :thumbnail :photo :logo])]
-      (update-resource-image config conn image-data image-key table id))
+    (doseq [[image-key image-data] (select-keys updates [:image :thumbnail])]
+      (update-resource-image config conn table id image-key image-data))
     (when (seq tags)
       (update-resource-tags conn logger mailjet-config table id tags))
     (when (seq related-contents)
@@ -694,8 +765,9 @@
         related-contents (:related_content initiative)
         org-associations (map (fn [acs] (set/rename-keys acs {:entity :organisation})) (:entity_connections initiative))
         sth-associations (:individual_connections initiative)]
-    (doseq [[image-key image-data] (select-keys initiative [:qimage :thumbnail])]
-      (update-resource-image config conn image-data image-key "initiative" id))
+    (doseq [[image-key image-data] (select-keys initiative [:qimage :thumbnail])
+            :let [image-key (if (= image-key :qimage) :image image-key)]]
+      (update-resource-image config conn "initiative" id image-key image-data))
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn logger id "initiative" related-contents))
     (when (seq tags)

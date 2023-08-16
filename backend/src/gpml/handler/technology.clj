@@ -7,7 +7,7 @@
             [gpml.db.language :as db.language]
             [gpml.db.technology :as db.technology]
             [gpml.domain.types :as dom.types]
-            [gpml.handler.image :as handler.image]
+            [gpml.handler.file :as handler.file]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
@@ -35,10 +35,14 @@
            tags url urls created_by image owners info_docs
            sub_content_type related_content
            headquarter document_preview
-           logo thumbnail attachments remarks
+           thumbnail attachments remarks
            entity_connections individual_connections language
            capacity_building source]}]
-  (let [data (cond-> {:name name
+  (let [image-id (when (seq image)
+                   (handler.file/create-file config conn image :technology :images :public))
+        thumbnail-id (when (seq thumbnail)
+                       (handler.file/create-file config conn thumbnail :technology :images :public))
+        data (cond-> {:name name
                       :year_founded year_founded
                       :organisation_type organisation_type
                       :development_stage development_stage
@@ -46,9 +50,6 @@
                       :email email
                       :url url
                       :country country
-                      :image (handler.image/assoc-image config conn image "technology")
-                      :logo (handler.image/assoc-image config conn logo "technology")
-                      :thumbnail (handler.image/assoc-image config conn thumbnail "technology")
                       :geo_coverage_type geo_coverage_type
                       :geo_coverage_value geo_coverage_value
                       :geo_coverage_countries geo_coverage_countries
@@ -66,7 +67,13 @@
                       :language language
                       :source source}
                (not (nil? capacity_building))
-               (assoc :capacity_building capacity_building))
+               (assoc :capacity_building capacity_building)
+
+               image-id
+               (assoc :image_id image-id)
+
+               thumbnail-id
+               (assoc :thumbnail_id thumbnail-id))
         technology-id (->>
                        (update data :source #(sql-util/keyword->pg-enum % "resource_source"))
                        (db.technology/new-technology conn)
