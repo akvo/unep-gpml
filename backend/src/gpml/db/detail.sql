@@ -1,6 +1,6 @@
 -- :name get-topic-details :query :one
 -- :doc Get details about a particular topic
---~ (#'gpml.db.topic/generate-topic-query params {:tables [(:topic-type params)]})
+--~ (#'gpml.db.topic/generate-topic-query (assoc params :topic [(:topic-type params)]))
 SELECT * FROM cte_topic;
 
 -- :name get-entity-details :query :one
