@@ -1,7 +1,7 @@
 -- :name get-topics :? :*
 -- :doc Gets the list of topics. If count-only? parameter is set to true, the query will only group and count the topics.
 -- :require [gpml.db.topic]
---~ (#'gpml.db.topic/generate-topic-query params (if (seq (:topic params)) {:tables (:topic params)} gpml.db.topic/generic-cte-opts))
+--~ (#'gpml.db.topic/generate-topic-query params)
 ,
 cte_results AS (
 --~ (#'gpml.db.topic/generate-filter-topic-snippet params)
@@ -362,11 +362,11 @@ UNION ALL
     LEFT JOIN related_content rc ON i.id = rc.resource_id AND resource_table_name = 'initiative'::regclass
     LEFT JOIN organisation_initiative oe ON oe.initiative = i.id
     LEFT JOIN organisation o ON o.id = oe.organisation
-        --~ (when (:review-status params) "WHERE i.review_status = (:v:review-status)::review_status")
+	--~ (when (:review-status params) "WHERE i.review_status = (:v:review-status)::review_status")
   GROUP BY i.id
 UNION ALL
   SELECT
-  	'policy'::text AS topic,
+	'policy'::text AS topic,
     p.id,
     0 AS version,
     NULL::json AS submitting_as,
