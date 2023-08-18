@@ -1,0 +1,15 @@
+$grid-columns: 12;
+$grid-column-width: 4.5rem;
+$grid-gutter-width: 1.75rem;
+
+@mixin make-grid() {
+  display: grid;
+  grid-template-columns: repeat($grid-columns, $grid-column-width);
+  grid-gap: $grid-gutter-width;
+}
+
+@mixin make-column($span: 1) {
+  $span: min($span, $grid-columns); // Ensure span doesn't exceed max columns
+  width: ($span * $grid-column-width) + (($span - 1) * $grid-gutter-width);
+  grid-column: span $span / span $span;
+}
