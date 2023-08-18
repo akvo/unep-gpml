@@ -15,7 +15,7 @@ export const whoAreWe = {
   ],
   contents: [
     {
-      caption: "Who are we?",
+      caption: "WHO ARE WE?",
       heading: {
         strong: "The #1 global platform",
         text: "on plastic pollution decisions.",
@@ -24,7 +24,7 @@ export const whoAreWe = {
         "The plastic action platform brings decision-making power to countries and active organisations by integrating data, crowdsourcing knowledge, and fostering collaborations to co-create and advance solutions to end plastic pollution.",
     },
     {
-      caption: "What we do?",
+      caption: "WHAT WE DO?",
       heading: {
         strong: "The #1 global platform",
         text: "on plastic pollution decisions.",
@@ -42,7 +42,7 @@ export const whoAreWe = {
         "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas alias, corporis amet officiis, ratione consectetur, quia hic repudiandae temporibus repellendus similique at eveniet qui obcaecati iusto quam facilis ut fuga.",
     },
     {
-      caption: "What is the connection between this platform and GPML?",
+      caption: "Why to join the partnership?",
       heading: {
         strong: "The #1 global platform",
         text: "on plastic pollution decisions.",
