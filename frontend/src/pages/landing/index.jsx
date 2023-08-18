@@ -3,6 +3,7 @@ import { Button } from 'antd'
 import styles from './index.module.scss'
 import { CirclePointer } from '../../components/icons'
 import { VerticalTabs } from '../../components/vertical-tabs';
+import { whatWeAre } from '../../ui-text'
 
 const Landing = () => (
   <div id="landing" className={styles.landing}>
@@ -19,35 +20,31 @@ const Landing = () => (
       <div className="container">
         <VerticalTabs>
           <VerticalTabs.Items>
-            <VerticalTabs.Item>Who are we?</VerticalTabs.Item>
-            <VerticalTabs.Item>What we do?</VerticalTabs.Item>
-            <VerticalTabs.Item>
-              What is the connection between this platform and GPML?
-            </VerticalTabs.Item>
-            <VerticalTabs.Item>Why to join the partnership?</VerticalTabs.Item>
+            {whatWeAre.navs.map((nav, nx) => (
+              <VerticalTabs.Item className={styles.verticalTabsItem} key={nx}>
+                <span>{nav.text}</span>
+                <CirclePointer />
+              </VerticalTabs.Item>
+            ))}
           </VerticalTabs.Items>
-          <VerticalTabs.Content>
-            <div className={styles.verticalTabsContent}>
-              <strong>Who are we?</strong>
-              <h2>
-                <strong>The #1 global platform</strong>
-                <br />
-                on plastic pollution decisions.
-              </h2>
-              <p>
-                The plastic action platform brings decision-making power to
-                countries and active organisations by integrating data,
-                crowdsourcing knowledge, and fostering collaborations to co-create
-                and advance solutions to end plastic pollution.
-              </p>
-            </div>
-          </VerticalTabs.Content>
+          {whatWeAre.contents.map((content, cx) => (
+            <VerticalTabs.Content key={cx}>
+              <div className={styles.verticalTabsContent}>
+                <strong>{content?.caption}</strong>
+                <h2>
+                  <strong>{content?.heading?.strong}</strong>
+                  <br />
+                  {content?.heading?.text}
+                </h2>
+                <p>{content?.text}</p>
+              </div>
+            </VerticalTabs.Content>
+          ))}
         </VerticalTabs>
       </div>
     </div>
   </div>
-)
-
+);
 
 
 export default Landing
