@@ -46,16 +46,43 @@
     text-align: left;
   }
   h2 {
+    width: 80%;
+    font-family: var(--font-archia), sans-serif;
     font-size: 48px;
     font-weight: 400;
     line-height: 56px;
     letter-spacing: 0px;
     text-align: left;
-    margin-block-start: .5rem;
+    margin-block-start: 0.5rem;
   }
   p {
     @include paragraph-L();
     font-family: var(--font-dm-sans), sans-serif;
     text-align: left;
+  }
+}
+
+.verticalTabsItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  span {
+    width: 80%;
+    font-family: var(--font-archia), sans-serif;
+    font-size: $fzXS;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0px;
+    text-align: left;
+  }
+  svg {
+    path {
+      stroke: $primaryWhite;
+    }
+    circle {
+      stroke: transparent;
+      fill: $primaryPurple;
+    }
   }
 }
