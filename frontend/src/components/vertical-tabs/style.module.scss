@@ -17,11 +17,11 @@
 }
 
 .item {
+  cursor: pointer;
   font-size: $fzS;
   padding: 1.3rem 1.5rem;
-  border-radius: .5rem;
-  background-color: $primaryWhite;
-  border: 1px solid gray;
+  border-radius: 0.5rem;
+  background-color: $primaryGrey;
   &:not(:last-child) {
     margin-bottom: 1rem;
   }
@@ -32,5 +32,23 @@
   padding: 1.5rem 0;
   @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
     @include make-column(5);
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.activeItem {
+  background-color: $primaryWhite;
+  box-shadow: $shadow-lg;
+  svg {
+    circle {
+      fill: $primaryDarkBlue !important;
+    }
   }
 }
