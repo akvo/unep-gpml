@@ -1,0 +1,54 @@
+@import "../../styles/vars.scss";
+@import "../../styles/grid.scss";
+
+.container {
+  @include make-grid();
+}
+
+.items {
+  @include make-column(4);
+  list-style: none;
+  margin-block-start: 0;
+  padding-inline-start: 0;
+  padding-top: 1.5rem;
+  @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+    @include make-column(3);
+  }
+}
+
+.item {
+  cursor: pointer;
+  font-size: $fzS;
+  padding: 1.3rem 1.5rem;
+  border-radius: 0.5rem;
+  background-color: $primaryGrey;
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}
+
+.content {
+  @include make-column(8);
+  padding: 1.5rem 0;
+  @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+    @include make-column(5);
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.activeItem {
+  background-color: $primaryWhite;
+  box-shadow: $shadow-lg;
+  svg {
+    circle {
+      fill: $primaryDarkBlue !important;
+    }
+  }
+}
