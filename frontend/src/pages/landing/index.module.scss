@@ -1,4 +1,5 @@
-@import '../../styles/vars.scss';
+@import "../../styles/vars.scss";
+@import "../../styles/typography.scss";
 
 .landing {
   :global(.hero) {
@@ -19,7 +20,7 @@
         display: inline-block;
         position: relative;
         &:after {
-          content: ' ';
+          content: " ";
           background-color: $primaryGreen;
           position: absolute;
           width: 100%;
@@ -30,5 +31,31 @@
         }
       }
     }
+  }
+}
+.verticalTabsContent {
+  strong {
+    font-weight: 700;
+  }
+  strong:not(h2 > strong) {
+    font-family: var(--font-archia), sans-serif;
+    font-size: 16px;
+    color: $primaryPurple;
+    line-height: 20px;
+    letter-spacing: 0.2em;
+    text-align: left;
+  }
+  h2 {
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 56px;
+    letter-spacing: 0px;
+    text-align: left;
+    margin-block-start: .5rem;
+  }
+  p {
+    @include paragraph-L();
+    font-family: var(--font-dm-sans), sans-serif;
+    text-align: left;
   }
 }
