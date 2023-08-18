@@ -173,6 +173,21 @@ spec:
             secretKeyRef:
               name: unep-gpml
               key: cors_allowed_origins
+        - name: GCS_PRIVATE_BUCKET_NAME
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: gcs-private-bucket-name
+        - name: GCS_PUBLIC_BUCKET_NAME
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: gcs-public-bucket-name
+        - name: GCS_API_HOST_NAME
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: gcs-api-host-name
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/secrets/cloudsql/credentials.json"
         readinessProbe:
