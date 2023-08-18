@@ -1,1 +1,1 @@
-export * from "./what-we-are";
+export * from "./who-are-we";

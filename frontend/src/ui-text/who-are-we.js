@@ -1,7 +1,7 @@
-export const whatWeAre = {
+export const whoAreWe = {
   navs: [
     {
-      text: "What we are?",
+      text: "Who are we?",
     },
     {
       text: "What we do?",
@@ -15,7 +15,7 @@ export const whatWeAre = {
   ],
   contents: [
     {
-      caption: "What we are?",
+      caption: "Who are we?",
       heading: {
         strong: "The #1 global platform",
         text: "on plastic pollution decisions.",
