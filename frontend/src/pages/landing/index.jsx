@@ -3,7 +3,7 @@ import { Button } from 'antd'
 import styles from './index.module.scss'
 import { CirclePointer } from '../../components/icons'
 import { VerticalTabs } from '../../components/vertical-tabs';
-import { whatWeAre } from '../../ui-text'
+import { whoAreWe } from '../../ui-text'
 
 const Landing = () => (
   <div id="landing" className={styles.landing}>
@@ -20,14 +20,14 @@ const Landing = () => (
       <div className="container">
         <VerticalTabs>
           <VerticalTabs.Items>
-            {whatWeAre.navs.map((nav, nx) => (
+            {whoAreWe.navs.map((nav, nx) => (
               <VerticalTabs.Item className={styles.verticalTabsItem} key={nx}>
                 <span>{nav.text}</span>
                 <CirclePointer />
               </VerticalTabs.Item>
             ))}
           </VerticalTabs.Items>
-          {whatWeAre.contents.map((content, cx) => (
+          {whoAreWe.contents.map((content, cx) => (
             <VerticalTabs.Content key={cx}>
               <div className={styles.verticalTabsContent}>
                 <strong>{content?.caption}</strong>
