@@ -236,6 +236,9 @@
         }
       }
     }
+    .ant-tabs .ant-tabs-tab-active .p-l {
+      line-height: 34px;
+    }
     .ant-tabs .ant-tabs-tab-active,
     .ant-collapse-item-active {
       background-color: $primaryWhite;
@@ -251,6 +254,9 @@
     .ant-collapse-item-active .ant-collapse-header {
       padding: 0;
       background-color: $primaryWhite;
+    }
+    .ant-collapse-content-active .p-s {
+      line-height: 22px;
     }
   }
 }
