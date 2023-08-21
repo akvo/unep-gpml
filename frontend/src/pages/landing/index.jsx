@@ -21,14 +21,18 @@ const Landing = () => (
         <VerticalTabs>
           <VerticalTabs.Items>
             {whoAreWe.navs.map((nav, nx) => (
-              <VerticalTabs.Item className={styles.verticalTabsItem} key={nx} tabKey={nx}>
+              <VerticalTabs.Item
+                className={styles.verticalTabsItem}
+                key={nx}
+                tabKey={nx + 1}
+              >
                 <span>{nav.text}</span>
                 <CirclePointer />
               </VerticalTabs.Item>
             ))}
           </VerticalTabs.Items>
           {whoAreWe.contents.map((content, cx) => (
-            <VerticalTabs.Content key={cx} tabKey={cx}>
+            <VerticalTabs.Content key={cx} tabKey={cx + 1}>
               <div className={styles.verticalTabsContent}>
                 <strong>{content?.caption}</strong>
                 <h2>
