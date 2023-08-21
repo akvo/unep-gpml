@@ -36,7 +36,7 @@ services:
   frontend:
     image: akvo/akvo-node-18-alpine:20220923.084347.0558ee6
     ports:
-      - 3001:3001
+      - 3001:80
     command: ["./start.sh"]
     restart: unless-stopped
 volumes:
