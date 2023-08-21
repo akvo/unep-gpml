@@ -1,5 +1,5 @@
-@import 'vars.scss';
-@import 'btns.scss';
+@import "vars.scss";
+@import "btns.scss";
 
 body {
   color: $primaryDarkBlue;
@@ -51,4 +51,22 @@ h1 {
       margin-top: 0px;
     }
   }
+}
+
+.heading-s {
+  font-size: $fzS;
+  line-height: 24px;
+  letter-spacing: 0px;
+}
+
+.heading-s.bold {
+  font-weight: 700;
+}
+
+.caps-heading-1 {
+  font-size: $fzXS;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: 0.2em;
+  text-align: left;
 }
