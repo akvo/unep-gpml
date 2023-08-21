@@ -1,13 +1,11 @@
 (ns gpml.handler.resource-test
-  (:require [clojure.string :as s]
-            [clojure.test :refer [deftest is testing use-fixtures]]
+  (:require [clojure.test :refer [deftest is testing use-fixtures]]
             [gpml.db.language :as db.language]
             [gpml.db.rbac-util :as db.rbac-util]
             [gpml.db.resource :as db.resource]
             [gpml.db.tag :as db.tag]
             [gpml.domain.types :as dom.types]
             [gpml.fixtures :as fixtures]
-            [gpml.handler.image :as image]
             [gpml.handler.profile-test :as profile-test]
             [gpml.handler.resource :as resource]
             [gpml.test-util :as test-util]
@@ -40,9 +38,6 @@
    :owners (:owners data)
    :language "en"})
 
-(defn fake-upload-blob [_ _ _ content-type]
-  (is (= content-type "image/png")))
-
 (deftest handler-post-test
   (let [system (ig/init fixtures/*system* [::resource/post])
         config (get system [:duct/const :gpml.config/common])
@@ -65,22 +60,20 @@
                                                       "USER")
             ;; create John create new resource with available organisation
             payload (new-resource data)
-            resp-one (with-redefs [image/upload-blob fake-upload-blob]
-                       (handler (-> (mock/request :post "/")
-                                    (assoc :user {:id sth-id}
-                                           :parameters {:body {:source dom.types/default-resource-source}}
-                                           :body-params payload))))
+            resp-one (handler (-> (mock/request :post "/")
+                                  (assoc :user {:id sth-id}
+                                         :parameters {:body {:source dom.types/default-resource-source}}
+                                         :body-params payload)))
             ;; create John create new resource with new organisation
-            resp-two (with-redefs [image/upload-blob fake-upload-blob]
-                       (handler (-> (mock/request :post "/")
-                                    (assoc :user {:id sth-id}
-                                           :parameters {:body {:source dom.types/default-resource-source}}
-                                           :body-params
-                                           (assoc (new-resource (merge data {:owners [sth-id]}))
-                                                  :org {:id -1
-                                                        :name "New Era"
-                                                        :geo_coverage_type "global"
-                                                        :country (-> (:countries data) second :id)})))))
+            resp-two (handler (-> (mock/request :post "/")
+                                  (assoc :user {:id sth-id}
+                                         :parameters {:body {:source dom.types/default-resource-source}}
+                                         :body-params
+                                         (assoc (new-resource (merge data {:owners [sth-id]}))
+                                                :org {:id -1
+                                                      :name "New Era"
+                                                      :geo_coverage_type "global"
+                                                      :country (-> (:countries data) second :id)}))))
             resource-one (db.resource/resource-by-id conn (:body resp-one))
             resource-two (db.resource/resource-by-id conn (:body resp-two))
             owners (db.rbac-util/get-users-with-granted-permission-on-resource conn {:context-type-name "resource"
@@ -88,24 +81,21 @@
                                                                                      :permission-name "resource/delete"})]
         (is (get (set (map :user_id owners)) sth-id))
         (is (= 201 (:status resp-one)))
-        (let [image-one (:image resource-one)]
-          (is (s/includes? image-one "images/resource-"))
-          (is (s/ends-with? image-one "uploaded.png"))
-          (is (s/starts-with? image-one "https://storage.googleapis.com/")))
-        (is (s/ends-with? (:image resource-one) "uploaded.png"))
+        (is (uuid? (:image_id resource-one)))
         (is (= (dissoc (assoc (new-resource data)
                               :id 10001
                               :value "2000"
                               :tags (map :id (:tags data))
-                              :created_by 10001) :image :owners)
-               (dissoc resource-one :image :owners)))
+                              :created_by 10001)
+                       :image :owners)
+               (dissoc resource-one :image :owners :image_id :thumbnail_id)))
         (is (= (dissoc (assoc (new-resource data)
                               :id 10002
-                              :image "/image/resource/2"
                               :value "2000"
                               :tags (map :id (:tags data))
-                              :created_by 10001) :image :owners)
-               (dissoc resource-two :image)))
+                              :created_by 10001)
+                       :image :owners)
+               (dissoc resource-two :image :image_id :thumbnail_id)))
         (is (= (:url payload) (:url resource-one)))))
     (testing "Unapproved users doesn't have enough permissions to create a new resource"
       (let [sth-id (test-util/create-test-stakeholder config
@@ -114,9 +104,8 @@
                                                       "USER")
             ;; create John create new resource with available organisation
             payload (new-resource data)
-            resp-one (with-redefs [image/upload-blob fake-upload-blob]
-                       (handler (-> (mock/request :post "/")
-                                    (assoc :user {:id sth-id}
-                                           :parameters {:body {:source dom.types/default-resource-source}}
-                                           :body-params payload))))]
+            resp-one (handler (-> (mock/request :post "/")
+                                  (assoc :user {:id sth-id}
+                                         :parameters {:body {:source dom.types/default-resource-source}}
+                                         :body-params payload)))]
         (is (= 403 (:status resp-one)))))))

@@ -7,14 +7,13 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.stakeholder :as dom.stakeholder]
             [gpml.domain.types :as dom.types]
-            [gpml.handler.image :as handler.image]
-            [gpml.handler.organisation :as handler.org]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.handler.util :as handler.util]
             [gpml.service.permissions :as srv.permissions]
+            [gpml.service.stakeholder :as srv.stakeholder]
             [gpml.util.email :as email]
             [gpml.util.geo :as geo]
             [integrant.core :as ig]
@@ -53,27 +52,13 @@
                                                     (select-keys stakeholder (conj common-keys :email))
                                                     (select-keys stakeholder common-keys))))))}))))
 
-(defn assoc-cv [conn cv]
-  (cond
-    (nil? cv) nil
-    (re-find #"^\/cv\/" cv) cv
-    :else (str/join ["/cv/profile/"
-                     (:id (db.stakeholder/new-stakeholder-cv conn {:cv cv}))])))
-
-(defn- make-profile [{:keys [title
-                             first_name
-                             last_name
-                             email
-                             idp_usernames
-                             linked_in
-                             public_database
-                             public_email
-                             cv
-                             affiliation
-                             job_title
-                             twitter picture
-                             country
-                             about]}]
+(defn- make-profile
+  [{:keys [title first_name last_name email
+           idp_usernames linked_in public_database
+           public_email affiliation
+           job_title twitter
+           country about
+           cv picture org tags]}]
   {:title             title
    :first_name        first_name
    :last_name         last_name
@@ -81,302 +66,131 @@
    :idp_usernames     idp_usernames
    :linked_in         linked_in
    :twitter           twitter
-   :picture           picture
-   :cv                cv
    :about             about
    :country           country
    :public_email      (boolean public_email)
    :public_database   public_database
    :affiliation       affiliation
-   :job_title         job_title})
+   :job_title         job_title
+   :cv                cv
+   :picture           picture
+   :org               org
+   :tags              tags})
 
 (defn- create-profile
-  [{:keys [id photo picture about
-           title first_name role
-           last_name idp_usernames
-           linked_in cv twitter email
-           affiliation job_title
-           country geo_coverage_type
-           reviewed_at reviewed_by review_status
-           organisation_role public_email]}
-   tags
-   org]
+  [{:keys [id about
+           title first-name role
+           last-name idp-usernames
+           linked-in cv picture twitter email
+           affiliation job-title
+           country geo-coverage-type
+           reviewed-at reviewed-by review-status
+           organisation-role public-email tags org]}]
   (let [{:keys [seeking offering expertise]} (->> tags
                                                   (group-by :tag_relation_category)
                                                   (reduce-kv (fn [m k v] (assoc m (keyword k) (map :tag v))) {}))]
     {:id id
      :title title
      :affiliation affiliation
-     :job_title job_title
-     :first_name first_name
-     :last_name last_name
+     :job_title job-title
+     :first_name first-name
+     :last_name last-name
      :email email
-     :idp_usernames idp_usernames
-     :linked_in linked_in
+     :idp_usernames idp-usernames
+     :linked_in linked-in
      :twitter twitter
-     :photo photo
-     :picture picture
-     :cv cv
      :country country
      :seeking seeking
      :offering offering
      :expertise expertise
      :tags tags
-     :geo_coverage_type geo_coverage_type
+     :geo_coverage_type geo-coverage-type
      :org org
      :about about
      :role role
-     :organisation_role organisation_role
-     :reviewed_at reviewed_at
-     :reviewed_by reviewed_by
-     :review_status review_status
-     :public_email public_email}))
+     :organisation_role organisation-role
+     :reviewed_at reviewed-at
+     :reviewed_by reviewed-by
+     :review_status review-status
+     :public_email public-email
+     :cv cv
+     :picture picture}))
 
-(defn- create-new-profile
-  [{:keys [logger mailjet-config] :as config} tx new-profile body-params]
-  (let [{:keys [org]} body-params]
-    (cond-> new-profile
-      (:photo body-params)
-      (assoc :picture
-             (cond
-               (re-find #"^\/image|^http" (:photo body-params))
-               (:photo body-params)
-               (re-find #"^data:" (:photo body-params))
-               (handler.image/assoc-image config tx (:photo body-params) "profile")))
+(defn- get-stakeholder-profile
+  [config stakeholder-id]
+  (let [result (srv.stakeholder/get-stakeholder-profile config stakeholder-id)]
+    (if (:success? result)
+      (create-profile (:stakeholder result))
+      {})))
 
-      (and
-       (contains? body-params :photo)
-       (nil? (get body-params :photo)))
-      (assoc :picture nil)
+(defmethod ig/init-key :gpml.handler.stakeholder/profile
+  [_ config]
+  (fn [{:keys [user]}]
+    (if-let [user-id (:id user)]
+      (r/ok (get-stakeholder-profile config user-id))
+      (r/ok {}))))
 
-      (:cv body-params)
-      (assoc :cv
-             (if (re-find #"^\/cv" (:cv body-params))
-               (:cv body-params)
-               (assoc-cv tx (:cv body-params))))
-
-      (and
-       (contains? body-params :cv)
-       (nil? (get body-params :cv)))
-      (assoc :cv nil)
-
-      (and
-       (:id org)
-       (not= -1 (:id org)))
-      (assoc :affiliation (:id org))
-
-      (= -1 (:id org))
-      (assoc :affiliation (if (= -1 (:id org))
-                            (let [org-id (handler.org/create tx logger mailjet-config (dissoc org :id))]
-                              (srv.permissions/assign-roles-to-users-from-connections
-                               {:conn tx
-                                :logger logger}
-                               {:context-type :organisation
-                                :resource-id org-id
-                                :individual-connections [{:role "owner"
-                                                          :stakeholder (:id new-profile)}]})
-                              org-id)
-                            ;; TODO: We are not sure if we should remove the ownership-related role assignment
-                            ;; from the user to the previous organisation, if he has changed it here.
-                            (:id org)))
-      (and
-       (contains? body-params :org)
-       (nil? (get body-params :org)))
-      (assoc :affiliation nil))))
-
-(defn- get-stakeholder-profile [db stakeholder]
-  (let [conn (:spec db)
-        tags (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
-                                                      :resource-col "stakeholder"
-                                                      :resource-id (:id stakeholder)})
-        org (db.organisation/organisation-by-id conn {:id (:affiliation stakeholder)})]
-    (create-profile stakeholder tags org)))
+(defn- create-stakeholder
+  [config stakeholder]
+  (let [result (srv.stakeholder/create-stakeholder config
+                                                   stakeholder)]
+    (if (:success? result)
+      (get-in result [:stakeholder :id])
+      (throw (ex-info "Failed to create stakeholder" result)))))
 
 (defn- update-stakeholder
-  [{:keys [logger mailjet-config] :as config} tx {:keys [body-params old-profile]}]
-  (let [{:keys [id org]} body-params
-        new-profile (merge
-                     old-profile
-                     (if (:id org)
-                       (-> body-params (assoc :affiliation (:id org)) (dissoc :org :org-name))
-                       body-params))
-        profile (create-new-profile config tx new-profile body-params)
-        tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body-params)]
-    (db.stakeholder/update-stakeholder tx profile)
-    (when (and (some? (:photo old-profile))
-               (not= (:photo old-profile) (:picture profile))
-               (not= "http" (re-find #"^http" (:photo old-profile))))
-      (let [photo-url (str/split (:photo old-profile) #"\/image\/profile\/")]
-        (when (= 2 (count photo-url))
-          (let [old-pic (-> photo-url second Integer/parseInt)]
-            (db.stakeholder/delete-stakeholder-image-by-id tx {:id old-pic})))))
-    (when (and (some? (:cv old-profile))
-               (not= (:cv old-profile) (:cv profile)))
-      (let [old-cv (-> (str/split (:cv old-profile) #"/cv/profile/") second Integer/parseInt)]
-        (db.stakeholder/delete-stakeholder-cv-by-id tx {:id old-cv})))
-    (when (not-empty tags)
-      (handler.stakeholder.tag/save-stakeholder-tags tx logger mailjet-config {:tags tags
-                                                                               :stakeholder-id id
-                                                                               :update? true}))))
-
-(defmethod ig/init-key :gpml.handler.stakeholder/profile [_ {:keys [db]}]
-  (fn [{:keys [jwt-claims]}]
-    (if-let [stakeholder (db.stakeholder/stakeholder-by-email (:spec db) jwt-claims)]
-      (resp/response (get-stakeholder-profile db stakeholder))
-      (resp/response {}))))
-
-(defn- create-stakeholder!
-  [conn logger new-sth]
-  (let [result (db.stakeholder/new-stakeholder conn new-sth)
-        sth-id (:id result)
-        role-assignments [{:role-name :unapproved-user
-                           :context-type :application
-                           :resource-id srv.permissions/root-app-resource-id
-                           :user-id sth-id}]]
-    (srv.permissions/create-resource-context
-     {:conn conn
-      :logger logger}
-     {:context-type :stakeholder
-      :resource-id sth-id})
-    (srv.permissions/assign-roles-to-users
-     {:conn conn
-      :logger logger}
-     role-assignments)
-    sth-id))
-
-(defn- update-stakeholder-profile
-  [conn old-sth new-sth]
-  (let [idp-usernames (-> (concat (:idp_usernames old-sth)
-                                  (:idp_usernames new-sth))
-                          distinct
-                          vec)
-        expert? (seq (db.stakeholder/get-experts conn {:filters {:ids [(:id old-sth)]}
-                                                       :page-size 0
-                                                       :offset 0}))
-        to-update (merge
-                   (assoc (select-keys new-sth [:affiliation])
-                          :id (:id old-sth)
-                          :idp_usernames idp-usernames
-                          :non_member_organisation nil)
-                   (when (and expert?
-                              (= (:review_status old-sth) "INVITED"))
-                     {:review_status "APPROVED"}))]
-    (db.stakeholder/update-stakeholder conn to-update)
-    (:id old-sth)))
+  [config stakeholder]
+  (let [result (srv.stakeholder/update-stakeholder config
+                                                   stakeholder)]
+    (if (:success? result)
+      (get-in result [:stakeholder :id])
+      (throw (ex-info "Failed to update stakeholder" {:result result})))))
 
 ;; FIXME: The permissions metadata adding part is not right, as we are re-creating org related to the new stakeholder,
 ;; so we need to handle that and ensure we get the right resource-id for the permissions.
 (defn- save-stakeholder
   [{:keys [db logger mailjet-config] :as config}
    {{:keys [body]} :parameters
-    :keys [jwt-claims] :as _req}]
+    :keys [jwt-claims headers] :as _req}]
   (try
-    (jdbc/with-db-transaction [tx (:spec db)]
-      (let [org (:org body)
-            new-sth (make-profile (assoc body
-                                         :affiliation (:id org)
-                                         :email (:email jwt-claims)
-                                         :idp_usernames [(:sub jwt-claims)]
-                                         :cv (or (assoc-cv tx (:cv body))
-                                                 (:cv body))
-                                         :picture (handler.image/assoc-image config
-                                                                             tx
-                                                                             (:photo body)
-                                                                             "profile")))
-            old-sth (db.stakeholder/stakeholder-by-email tx {:email (:email new-sth)})
-            sth-id (if old-sth
-                     (update-stakeholder-profile tx old-sth new-sth)
-                     (create-stakeholder! tx logger new-sth))
-            tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body)
-            save-tags-result (if-not (seq tags)
-                               {:success? true}
-                               (handler.stakeholder.tag/save-stakeholder-tags tx
-                                                                              logger
-                                                                              mailjet-config
-                                                                              {:tags tags
-                                                                               :stakeholder-id sth-id
-                                                                               :handle-errors? true}))
-            save-org-result (cond
-                              ;; The user is being created with either:
-                              ;;
-                              ;; 1. A new non-member
-                              ;; organisation. This is an assumption
-                              ;; that both FE and BE are aligned
-                              ;; with. New users are only allowed to
-                              ;; SELECT an existing MEMBER
-                              ;; organisation or CREATE a
-                              ;; NON-MEMBER. If they choose to create
-                              ;; a non-member, the org will be created
-                              ;; before the user profile is
-                              ;; submitted. Once they submit the
-                              ;; profile, the non-member organisation
-                              ;; will be passed as payload. So here
-                              ;; with `(not (:is_member org))` we are
-                              ;; signaling that it's a new non-member
-                              ;; organisation.
-                              ;;
-                              ;; 2. If the user selected a member
-                              ;; organisation, then it isn't a new
-                              ;; organisation and we shouldn't do
-                              ;; anything.
-                              ;;
-                              ;; Signaling that it's a new
-                              ;; organisation means that the user is
-                              ;; the creator and we should set the
-                              ;; `created_by` field in the
-                              ;; organisation's entity table.
-                              (:id org)
-                              (let [old-org (first (db.organisation/get-organisations tx
-                                                                                      {:filters {:id (:id org)}}))]
-                                (if-not (:is_member old-org)
-                                  (do
-                                    ;; We assign `resource-owner` role to the stakeholder that has created the org,
-                                    ;; as it is a non-member organisation that he can edit without being approved yet.
-                                    (srv.permissions/assign-roles-to-users-from-connections
-                                     {:conn tx
-                                      :logger logger}
-                                     {:context-type :organisation
-                                      :resource-id (:id org)
-                                      :individual-connections [{:role "owner"
-                                                                :stakeholder sth-id}]})
-                                    {:success? (boolean (handler.org/update-org tx
-                                                                                logger
-                                                                                mailjet-config
-                                                                                {:id (:id org)
-                                                                                 :created_by sth-id}))})
-                                  ;; This means the org is a MEMBER, approved organisation, where the stakeholder
-                                  ;; should not have ownership permissions, so we don't need to do anything else.
-                                  {:success? true}))
-
-                              :else
-                              {:success? true})
-            new-sth (db.stakeholder/stakeholder-by-id tx {:id sth-id})]
-        (when-not (:success? save-tags-result)
-          (throw (ex-info "Failed to save stakeholder tags." save-tags-result)))
-        (when-not (:success? save-org-result)
-          (throw (ex-info "Failed to create or update organisation." save-org-result)))
-        (when-not old-sth
-          (email/notify-admins-pending-approval tx
-                                                mailjet-config
-                                                (merge new-sth {:type "stakeholder"})))
-        ;; FIXME: we are not adding the `:success?` key here because
-        ;; it would break the FE, as it expects a JSON with the
-        ;; stakeholder fields. We would need to sync with FE to change
-        ;; this.
-        (r/created (-> (merge body new-sth)
-                       (dissoc :affiliation :picture)
-                       (assoc :org (db.organisation/organisation-by-id
-                                    tx
-                                    {:id (:affiliation new-sth)}))))))
-    (catch Exception e
-      (let [{:keys [reason]} (ex-data e)]
-        (log logger :error ::failed-to-create-or-update-stakeholder {:exception-message (ex-message e)})
+    (let [conn (:spec db)
+          org (:org body)
+          tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body)
+          new-sth (make-profile (assoc body
+                                       :affiliation (:id org)
+                                       :email (:email jwt-claims)
+                                       :idp_usernames [(:sub jwt-claims)]
+                                       :picture {:payload (:picture body)
+                                                 :user-agent (get headers "user-agent")}
+                                       :tags tags
+                                       :org org))
+          old-sth (db.stakeholder/stakeholder-by-email conn {:email (:email new-sth)})
+          sth-id (if old-sth
+                   (update-stakeholder config (assoc new-sth :id (:id old-sth)))
+                   (create-stakeholder config new-sth))
+          new-sth (db.stakeholder/stakeholder-by-id conn {:id sth-id})]
+      (when-not old-sth
+        (email/notify-admins-pending-approval conn
+                                              mailjet-config
+                                              (merge new-sth {:type "stakeholder"})))
+      ;; FIXME: we are not adding the `:success?` key here because
+      ;; it would break the FE, as it expects a JSON with the
+      ;; stakeholder fields. We would need to sync with FE to change
+      ;; this.
+      (r/created (-> (merge body new-sth)
+                     (dissoc :affiliation :picture :cv)
+                     (assoc :org (db.organisation/organisation-by-id
+                                  conn
+                                  {:id (:affiliation new-sth)})))))
+    (catch Throwable t
+      (let [{:keys [reason]} (ex-data t)]
+        (log logger :error ::failed-to-create-or-update-stakeholder {:exception-message (ex-message t)})
         (if (= reason :organisation-name-already-exists)
           (r/conflict {:success? false
                        :reason reason})
           (r/server-error {:success? false
                            :reason :failed-to-create-or-update-profile
-                           :error-details {:error (ex-message e)}}))))))
+                           :error-details {:error (ex-message t)}}))))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post
   [_ config]
@@ -384,14 +198,16 @@
     (save-stakeholder config req)))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/put
-  [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params]}]
+  [_ {:keys [logger] :as config}]
+  (fn [{:keys [body-params headers user]}]
     (try
-      (jdbc/with-db-transaction [tx (:spec db)]
-        (let [old-profile (db.stakeholder/stakeholder-by-email tx jwt-claims)]
-          (update-stakeholder config tx {:body-params body-params
-                                         :old-profile old-profile})
-          (resp/status {:success? true} 204)))
+      (let [tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body-params)]
+        (update-stakeholder config (assoc body-params
+                                          :id (:id user)
+                                          :picture {:payload (:picture body-params)
+                                                    :user-agent (get headers "user-agent")}
+                                          :tags tags))
+        (resp/status {:success? true} 204))
       (catch Exception e
         (log logger :error ::failed-to-update-stakeholder {:exception-message (.getMessage e)})
         (let [response {:status 500
@@ -513,7 +329,7 @@
    [:last_name string?]
    [:linked_in {:optional true} string?]
    [:twitter {:optional true} string?]
-   [:photo {:optional true} string?]
+   [:picture {:optional true} string?]
    [:cv {:optional true} string?]
    [:about {:optional true} string?]
    [:country {:optional true} int?]
@@ -589,26 +405,26 @@
                 (apply conj [:enum] dom.stakeholder/role-types)]]})
 
 (defmethod ig/init-key :gpml.handler.stakeholder/get-by-id
-  [_ {:keys [db] :as config}]
+  [_ config]
   (fn [{{:keys [path]} :parameters user :user}]
     (if (or (h.r.permission/super-admin? config (:id user))
             (= (:id path) (:id user)))
-      (let [stakeholder (db.stakeholder/get-stakeholder-by-id (:spec db) path)]
-        (resp/response
-         (get-stakeholder-profile db stakeholder)))
+      (r/ok (get-stakeholder-profile config (:id path)))
       (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/put-restricted
-  [_ {:keys [db logger] :as config}]
-  (fn [{{:keys [path body]} :parameters user :user}]
+  [_ {:keys [logger] :as config}]
+  (fn [{{:keys [path body]} :parameters user :user :as req}]
     (if (or (h.r.permission/super-admin? config (:id user))
             (= (:id path) (:id user)))
       (try
-        (jdbc/with-db-transaction [tx (:spec db)]
-          (let [old-profile (db.stakeholder/stakeholder-by-id tx path)]
-            (update-stakeholder config tx {:body-params (assoc body :id (:id path))
-                                           :old-profile old-profile})
-            (resp/status {:success? true} 204)))
+        (let [tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body)]
+          (update-stakeholder config (assoc body
+                                            :id (:id path)
+                                            :tags tags
+                                            :picture {:payload (:picture body)
+                                                      :user-agent (get-in req [:headers "user-agent"])}))
+          (resp/status {:success? true} 204))
         (catch Exception e
           (log logger :error ::failed-to-update-stakeholder {:exception-message (.getMessage e)})
           (let [response {:status 500
@@ -629,7 +445,7 @@
           [:job_title {:optional true} string?]
           [:linked_in {:optional true} string?]
           [:twitter {:optional true} string?]
-          [:photo {:optional true} string?]
+          [:picture {:optional true} string?]
           [:cv {:optional true} string?]
           [:about {:optional true} string?]
           [:country {:optional true} int?]

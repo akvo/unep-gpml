@@ -78,9 +78,9 @@
       :auth-error-message "Authentication required"
       :status 401})))
 
-(defn check-approved [conn {:keys [jwt-claims]}]
+(defn get-user-info
+  [conn {:keys [jwt-claims]}]
   (let [stakeholder (and (:email jwt-claims)
-                         (:email_verified jwt-claims)
                          (db.stakeholder/stakeholder-by-email conn jwt-claims))]
     {:approved? (= "APPROVED" (:review_status stakeholder))
      :user (or stakeholder nil)}))
@@ -103,7 +103,7 @@
               auth-info (check-authentication
                          request
                          (id-token-verifier signature-verifier opts))
-              user-info (check-approved conn auth-info)]
+              user-info (get-user-info conn auth-info)]
           (handler (merge request auth-info user-info)))))))
 
 (defn- auth-middleware-programmatic

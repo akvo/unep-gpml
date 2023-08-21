@@ -12,6 +12,7 @@
                  [duct/module.web "0.7.1" :exclusions [medley ring/ring-core]]
                  [org.postgresql/postgresql "42.2.18"]
                  [com.google.cloud.sql/postgres-socket-factory "1.2.0"]
+                 [com.google.cloud/google-cloud-storage "2.26.0" :exclusions [org.checkerframework/checker-qual]]
                  [metosin/reitit-ring "0.5.18" :exclusions [ring/ring-core]]
                  [metosin/reitit-malli "0.5.18" :exclusions [org.clojure/tools.reader
                                                              org.clojure/core.rrb-vector]]
@@ -50,7 +51,8 @@
                  [diehard "0.10.3"]
                  [org.jsoup/jsoup "1.15.3"]
                  [ring-cors "0.1.13"]
-                 [dev.gethop/rbac "0.1.0-alpha-7"]]
+                 [dev.gethop/rbac "0.1.0-alpha-7"]
+                 [camel-snake-kebab "0.4.3"]]
   :plugins [[duct/lein-duct "0.12.1"]]
   :main ^:skip-aot gpml.main
   :resource-paths ["resources" "target/resources"]
