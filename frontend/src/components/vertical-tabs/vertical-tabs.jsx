@@ -14,7 +14,7 @@ const VerticalTabs = ({ children, defaultKey = 1 }) => {
         });
       }
       if (child.type.name === "Content") {
-        const keyProp = child?.props?.key || index;
+        const keyProp = child?.props?.tabKey || index;
         const visible = activeKey === keyProp;
         return React.cloneElement(child, {
           indexKey: index,
@@ -50,11 +50,11 @@ const Item = ({
   children,
   activeKey,
   indexKey,
-  key,
+  tabKey,
   onClick,
   className = null,
 }) => {
-  const keyValue = key || indexKey;
+  const keyValue = tabKey || indexKey;
   const activeClass = activeKey === keyValue ? styles.activeItem : null;
   return (
     <li
@@ -71,16 +71,16 @@ const Item = ({
 const Content = ({
   children,
   indexKey,
-  key,
+  tabKey,
   className = null,
   visible = true,
 }) => {
   const isVisible = visible ? styles.show : styles.hidden;
-  const keyValue = key || indexKey;
+  const keyValue = tabKey || indexKey;
   return (
     <div
       className={classNames(styles.content, isVisible, className)}
-      key={keyValue}
+      tabkey={keyValue}
     >
       {children}
     </div>
