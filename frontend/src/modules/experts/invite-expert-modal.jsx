@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import "./invite-expert-modal.scss";
+import styles from "./invite-expert-modal.module.scss";
 import { Modal, Button, Input, Select, notification } from "antd";
 import { Form, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
@@ -74,7 +74,7 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
   return (
     <Modal
       centered
-      className="invite-expert-modal"
+      className={styles.inviteExpertModal}
       title="Suggest an expert"
       visible={isShownModal}
       onCancel={() => setIsShownModal(false)}

@@ -3,7 +3,7 @@ import { UIStore } from "../../store";
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Row, Col, Card, Steps, Switch, Button } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import "./styles.scss";
+import "./style.module.scss";
 import AddInitiativeForm from "./form";
 import StickyBox from "react-sticky-box";
 import { schema } from "./schema";

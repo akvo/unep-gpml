@@ -1,13 +1,11 @@
 import { Col, Row, Tabs } from "antd";
-import React, { Fragment, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import "./styles.scss";
+import React from "react";
+import styles from "./styles.module.scss";
 const { TabPane } = Tabs;
 
 function HelpCenter() {
-  const history = useHistory();
   return (
-    <div id="helpCenter">
+    <div className={styles.helpCenter}>
       <div className="section-container">
         <div className="ui container">
           <Tabs
@@ -87,7 +85,7 @@ function HelpCenter() {
                     src="https://www.youtube.com/embed/videoseries?list=PLOlw9GG0Pf9iilXoal3dNxnRlM4xn8pII"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
+                    allowFullScreen
                   />
                 </Col>
               </Row>

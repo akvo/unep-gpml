@@ -2,7 +2,8 @@ import { Store } from "pullstate";
 import { schema } from "./form-schema";
 import cloneDeep from "lodash/cloneDeep";
 import { Form, Input } from "antd";
-import RichTextEditor from "react-rte";
+import dynamic from "next/dynamic";
+const RichTextEditor = dynamic(() => import("react-rte"), { ssr: false });
 
 const initialData = {
   tabs: ["S1"],
