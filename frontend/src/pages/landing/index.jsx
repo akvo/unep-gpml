@@ -1,7 +1,7 @@
-import { Button } from 'antd'
+import { Button, Tag } from 'antd'
 import Image from 'next/image'
 import styles from './index.module.scss'
-import { CirclePointer } from '../../components/icons'
+import { CirclePointer, Magnifier, Localiser } from '../../components/icons'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -63,61 +63,88 @@ const Hero = () => {
     _setTimeout(false)
   }
   return (
-    <div className="hero">
-      <div className="container">
-        <div className="text">
-          <h1>
-            Empowering
-            <br />
-            <b className={classNames({ timeout })}>{selected}</b>
-            <br />
-            to end plastic pollution
-          </h1>
-          <div className="p-container">
-            {items.map((item) => (
-              <AnimatePresence>
-                {item.group === selected && (
-                  <motion.p
-                    transition={{
-                      type: 'spring',
-                      damping: 15,
-                      stiffness: 100,
-                    }}
-                    initial={{ opacity: 0, transform: `translateY(-30px)` }}
-                    animate={{ opacity: 1, transform: `translateY(0px)` }}
-                    exit={{ opacity: 0, transform: `translateY(30px)` }}
-                    className="p-l"
-                    key={`p-${item.group}`}
-                  >
-                    {item.text}
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            ))}
+    <>
+      <div className="hero">
+        <div className="container">
+          <div className="text">
+            <h1>
+              Empowering
+              <br />
+              <b className={classNames({ timeout })}>{selected}</b>
+              <br />
+              to end plastic pollution
+            </h1>
+            <div className="p-container">
+              {items.map((item) => (
+                <AnimatePresence>
+                  {item.group === selected && (
+                    <motion.p
+                      transition={{
+                        type: 'spring',
+                        damping: 15,
+                        stiffness: 100,
+                      }}
+                      initial={{ opacity: 0, transform: `translateY(-30px)` }}
+                      animate={{ opacity: 1, transform: `translateY(0px)` }}
+                      exit={{ opacity: 0, transform: `translateY(30px)` }}
+                      className="p-l"
+                      key={`p-${item.group}`}
+                    >
+                      {item.text}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              ))}
+            </div>
+            <Button type="primary" size="large">
+              Join Now <CirclePointer />
+            </Button>
           </div>
-          <Button type="primary" size="large">
-            Join Now <CirclePointer />
-          </Button>
-        </div>
-        <div className="globe">
-          <Image src="/globe.jpg" width={1022} height={770} />
-          <div className="labels">
-            {items.map((item) => (
-              <div
-                onClick={handleClickLabel(item)}
-                key={item.group}
-                className={classNames(
-                  `label l-${item.group.toLowerCase().replace(' ', '-')}`,
-                  { selected: selected === item.group }
-                )}
-              >
-                <span>{item.group}</span>
-              </div>
-            ))}
+          <div className="globe">
+            <Image src="/globe.jpg" width={1022} height={770} />
+            <div className="labels">
+              {items.map((item) => (
+                <div
+                  onClick={handleClickLabel(item)}
+                  key={item.group}
+                  className={classNames(
+                    `label l-${item.group.toLowerCase().replace(' ', '-')}`,
+                    { selected: selected === item.group }
+                  )}
+                >
+                  <span>{item.group}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <div className="container">
+        <div className="search-bar">
+          <div className="bar">
+            <input
+              placeholder="Search in the resource database..."
+              type="text"
+              className="h-m"
+            />
+            <div className="localisation h-xs">
+              <Localiser />
+              Globally
+            </div>
+            <Button type="primary" size="small" className="left-icon">
+              <Magnifier />
+              Search
+            </Button>
+          </div>
+          <div className="tags">
+            <b>Suggested search:</b>
+            <Tag className="h-xxs">Case Studies</Tag>
+            <Tag className="h-xxs">Plastic Strategies</Tag>
+            <Tag className="h-xxs">Plastic Solutions</Tag>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
 
