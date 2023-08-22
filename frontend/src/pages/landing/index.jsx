@@ -1,11 +1,10 @@
-import { Button, Tabs, Collapse } from 'antd'
-import Image from 'next/image'
-import styles from './index.module.scss'
-import { CirclePointer } from '../../components/icons'
-import { useEffect, useRef, useState } from 'react'
-import classNames from 'classnames'
-import { whoAreWe } from "../../ui-text";
-import { motion, AnimatePresence } from 'framer-motion'
+import { Button, Tabs, Collapse } from "antd";
+import Image from "next/image";
+import styles from "./index.module.scss";
+import { CirclePointer } from "../../components/icons";
+import { useEffect, useRef, useState } from "react";
+import classNames from "classnames";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Landing = () => (
   <div id="landing" className={styles.landing}>
@@ -124,34 +123,67 @@ const Hero = () => {
 }
 
 const WhoAreWe = () => {
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState("1");
   const [activeAccordion, setActiveAccordion] = useState("1");
+
+  const items = [
+    {
+      id: 1,
+      title: "Who are we?",
+      description:
+        "The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform is a multi-stakeholder, knowledge sharing and networking tool which aims to facilitate action on plastic pollution and marine litter reduction and prevention.",
+    },
+    {
+      id: 2,
+      title: "What we do?",
+      description:
+        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.",
+    },
+    {
+      id: 3,
+      title: "What is the connection between this platform and GPML?",
+      description:
+        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.",
+    },
+    {
+      id: 4,
+      title: "Why to join the partnership?",
+      description:
+        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.",
+    },
+  ];
   return (
-    <div className={styles.whoAreWe}>
+    <div className={styles.about}>
       <div className="container">
         <div className="who-are-we-lg-md">
           <Tabs
             tabPosition="left"
             activeKey={activeTab}
             onChange={(key) => setActiveTab(key)}
-            items={whoAreWe.map((item) => {
-              return {
-                label: (
-                  <span className={styles.whoAreWeItem}>
-                    <span className="h6 bold">{item.title}</span>
-                    <CirclePointer />
-                  </span>
-                ),
-                key: item.id,
-                children: activeTab === item.id && (
+          >
+            {items.map((item) => {
+              return (
+                <Tabs.TabPane
+                  tab={
+                    <span className="tab-label">
+                      <span className="h6 bold">{item.title}</span>
+                      <CirclePointer />
+                    </span>
+                  }
+                  key={item.id}
+                >
                   <div>
-                    <strong className="caps-heading-1">{item.title}</strong>
-                    <p className="p-l">{item.description}</p>
+                    {`${item.id}` === activeTab && (
+                      <div>
+                        <strong className="caps-heading-1">{item.title}</strong>
+                        <p className="p-l">{item.description}</p>
+                      </div>
+                    )}
                   </div>
-                ),
-              };
+                </Tabs.TabPane>
+              );
             })}
-          />
+          </Tabs>
         </div>
         <div className="who-are-we-mobile">
           <Collapse
@@ -163,11 +195,9 @@ const WhoAreWe = () => {
             )}
             accordion
           >
-            {whoAreWe.map((item) => (
+            {items.map((item) => (
               <Collapse.Panel
-                header={
-                  <strong className="h6 bold">{item.title}</strong>
-                }
+                header={<strong className="h6 bold">{item.title}</strong>}
                 key={`${item.id}`}
               >
                 {activeAccordion === `${item.id}` && (
@@ -182,4 +212,4 @@ const WhoAreWe = () => {
   );
 };
 
-export default Landing
+export default Landing;
