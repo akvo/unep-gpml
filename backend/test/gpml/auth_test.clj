@@ -70,7 +70,7 @@
           unapproved (new-stakeholder db 2 "foo@bar.org" "USER" "SUBMITTED")]
 
       (are [expected auth-header]
-          (= expected (auth/get-user-info db auth-header))
+           (= expected (auth/get-user-info db auth-header))
 
         ;; Anonymous user
         {:approved? false :user nil} {:authenticated? false}
