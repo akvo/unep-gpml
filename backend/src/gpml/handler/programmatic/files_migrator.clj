@@ -19,7 +19,7 @@
    [:entity-key
     [:and
      [:keyword]
-     (apply conj [:enum ] available-entities)]]
+     (apply conj [:enum] available-entities)]]
    [:limit {:optional true} pos-int?]])
 
 (defn- get-file-payload
