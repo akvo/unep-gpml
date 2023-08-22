@@ -1,6 +1,6 @@
 
-export const CirclePointer = () => (
-  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const CirclePointer = ({ rotate = 0 }) => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" transform={`rotate(${rotate})`}>
     <circle cx={16} cy={16} r={15} fill="#020A5B" stroke="#020A5B" strokeWidth={2} />
     <path d="M13.5566 22L19.5566 16L13.5566 10" stroke="white" strokeWidth="2"/>
   </svg>

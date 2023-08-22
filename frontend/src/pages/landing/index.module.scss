@@ -1,4 +1,4 @@
-@import '../../styles/vars.scss';
+@import "../../styles/vars.scss";
 
 @keyframes timeout {
   from {
@@ -41,7 +41,7 @@
         // text-transform: lowercase;
         white-space: nowrap;
         &:after {
-          content: ' ';
+          content: " ";
           background-color: $primaryGreen;
           position: absolute;
           width: 100%;
@@ -185,6 +185,113 @@
           }
         }
       }
+    }
+  }
+}
+
+.whoAreWe {
+  padding: 24px 0;
+  :global {
+    .who-are-we-mobile {
+      display: none;
+      @media (max-width: 640px) {
+        display: block;
+      }
+    }
+    .who-are-we-lg-md {
+      display: block;
+      @media (max-width: 640px) {
+        display: none;
+      }
+    }
+    .ant-tabs,
+    .ant-collapse-header {
+      display: flex;
+      gap: 32px;
+      padding: 20px 12px;
+    }
+    .ant-collapse {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ant-collapse-header {
+      flex-direction: row-reverse;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ant-collapse-item {
+      border-radius: 8px;
+    }
+    .ant-collapse-item .p-s {
+      color: $primaryDarkBlue4;
+    }
+    .ant-tabs {
+      flex-direction: row;
+    }
+    .ant-tabs .ant-tabs-nav {
+      max-width: 460px;
+    }
+    .ant-tabs .ant-tabs-content-holder {
+      width: 650px;
+    }
+    .ant-tabs .caps-heading-1 {
+      font-family: var(--font-archia), sans-serif;
+      color: $primaryPurple;
+      text-transform: uppercase;
+    }
+    .ant-tabs .ant-tabs-tab {
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+    .ant-tabs .ant-tabs-tab,
+    .ant-collapse-header {
+      font-family: var(--font-archia), sans-serif;
+      border-radius: 8px;
+      background-color: $primaryGrey;
+      svg {
+        path {
+          stroke: $primaryWhite;
+        }
+        circle {
+          stroke: transparent;
+          fill: $primaryPurple;
+        }
+      }
+    }
+    .ant-tabs .ant-tabs-tab-active .p-l {
+      line-height: 34px;
+    }
+    .ant-tabs .ant-tabs-tab-active,
+    .ant-collapse-item-active {
+      background-color: $primaryWhite;
+      box-shadow: 0px 40px 32px -20px rgba(101, 93, 122, 0.06),
+        0px 20px 44px 0px rgba(101, 93, 122, 0.06);
+      svg circle {
+        fill: $primaryDarkBlue;
+      }
+    }
+    .ant-collapse-item-active {
+      padding: 20px 12px;
+    }
+    .ant-collapse-item-active .ant-collapse-header {
+      padding: 0;
+      background-color: $primaryWhite;
+    }
+    .ant-collapse-content-active .p-s {
+      line-height: 22px;
+    }
+  }
+}
+.whoAreWeItem {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  :global {
+    span {
+      width: 70%;
     }
   }
 }
