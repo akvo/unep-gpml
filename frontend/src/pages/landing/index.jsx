@@ -138,7 +138,7 @@ const WhoAreWe = () => {
               return {
                 label: (
                   <span className={styles.whoAreWeItem}>
-                    <span className="heading-s bold">{item.title}</span>
+                    <span className="h6 bold">{item.title}</span>
                     <CirclePointer />
                   </span>
                 ),
@@ -166,7 +166,7 @@ const WhoAreWe = () => {
             {whoAreWe.map((item) => (
               <Collapse.Panel
                 header={
-                  <strong className="heading-s bold">{item.title}</strong>
+                  <strong className="h6 bold">{item.title}</strong>
                 }
                 key={`${item.id}`}
               >

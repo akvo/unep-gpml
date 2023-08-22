@@ -13,7 +13,11 @@ h1 {
   font-size: $fzXXXL;
   line-height: $lhXXXL;
 }
-
+h6, .h6 {
+  font-family: var(--font-archia), sans-serif;
+  font-size: $fzS;
+  line-height: $lhS;
+}
 .p-l {
   font-size: 22px;
   line-height: 32px;
@@ -53,13 +57,7 @@ h1 {
   }
 }
 
-.heading-s {
-  font-size: $fzS;
-  line-height: 24px;
-  letter-spacing: 0px;
-}
-
-.heading-s.bold {
+h6.bold, .h6.bold {
   font-weight: 700;
 }
 
