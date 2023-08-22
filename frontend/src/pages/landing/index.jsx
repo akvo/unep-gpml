@@ -114,6 +114,7 @@ const ActNow = () => {
       singleLink: true,
       title: "Communities of practise",
       linkText: "Track progress",
+      badge: true,
     },
     {
       bgColor: "blue",
@@ -157,6 +158,7 @@ const ActNow = () => {
                   linkText={item.linkText}
                   linkTextTwo={item.linkTextTwo}
                   content={item.content}
+                  badge={item.badge}
                 />
               </SwiperSlide>
             ))}
@@ -176,8 +178,10 @@ const ActNowCard = ({
   linkTextTwo,
   content,
   title,
+  badge = false,
 }) => (
   <div className={`card card--${bgColor}`}>
+    {badge && <span className="card-badge">Coming soon</span>}
     <h2>{title}</h2>
     <p>{content}</p>
     {singleLink ? (
