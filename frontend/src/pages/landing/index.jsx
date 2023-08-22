@@ -90,6 +90,40 @@ const Hero = () => {
 
 const ActNow = () => {
   const [width] = useDeviceSize();
+  const items = [
+    {
+      linkText: "Track progress",
+      content:
+        "Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities",
+      bgColor: "purple",
+      singleLink: true,
+      title: "Communities of practise",
+    },
+    {
+      bgColor: "green",
+      content:
+        "Reduce your country’s footprint. Create and advance your plastic startegy.",
+      linkText: "Track progress",
+      title: "Plastic Strategies",
+      linkTextTwo: "Track action",
+    },
+    {
+      bgColor: "violet",
+      content:
+        "Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities",
+      singleLink: true,
+      title: "Communities of practise",
+      linkText: "Track progress",
+    },
+    {
+      bgColor: "blue",
+      content:
+        "Start your own initiative. get inspired by others who are making progress to end plastic pollution.",
+      linkText: "Track progress",
+      title: "Country Progress",
+      linkTextTwo: "Track action",
+    },
+  ];
   return (
     <section className="act-now">
       <div className="container act-now-container">
@@ -114,38 +148,18 @@ const ActNow = () => {
               clickable: true,
             }}
           >
-            <SwiperSlide>
-              <ActNowCard
-                bgColor="purple"
-                singleLink={true}
-                linkText="Track progress"
-                content="Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ActNowCard
-                bgColor="green"
-                content="Reduce your country’s footprint. Create and advance your plastic startegy."
-                linkText="Track progress"
-                linkTextTwo="Track action"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ActNowCard
-                bgColor="violet"
-                content="Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities"
-                singleLink={true}
-                linkText="Track progress"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ActNowCard
-                bgColor="blue"
-                content="Start your own initiative. get inspired by others who are making progress to end plastic pollution."
-                linkText="Track progress"
-                linkTextTwo="Track action"
-              />
-            </SwiperSlide>
+            {items.map((item) => (
+              <SwiperSlide>
+                <ActNowCard
+                  bgColor={item.bgColor}
+                  singleLink={item.singleLink}
+                  title={item.title}
+                  linkText={item.linkText}
+                  linkTextTwo={item.linkTextTwo}
+                  content={item.content}
+                />
+              </SwiperSlide>
+            ))}
           </Swiper>
         </div>
       </div>
@@ -161,9 +175,10 @@ const ActNowCard = ({
   linkText,
   linkTextTwo,
   content,
+  title,
 }) => (
   <div className={`card card--${bgColor}`}>
-    <h2>Communities of practise</h2>
+    <h2>{title}</h2>
     <p>{content}</p>
     {singleLink ? (
       <div className="single-link">
