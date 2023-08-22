@@ -1,5 +1,14 @@
 @import "../../styles/vars.scss";
 
+@keyframes timeout {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 .landing {
   :global(.hero) {
     background-color: $primaryDarkBlue;
@@ -12,6 +21,13 @@
       max-width: 640px;
       position: relative;
       z-index: 1;
+      :global(.p-container) {
+        height: 188px;
+        position: relative;
+        p {
+          position: absolute;
+        }
+      }
     }
     h1 {
       font-weight: normal;
@@ -33,6 +49,12 @@
           z-index: -1;
           left: 0;
           bottom: 0px;
+          transform-origin: 0px 0px;
+        }
+        &:global(.timeout) {
+          &:after {
+            animation: timeout 5s linear infinite;
+          }
         }
       }
     }
@@ -60,6 +82,7 @@
         left: 370px;
         :global(.label) {
           height: 35px;
+          cursor: pointer;
           line-height: 35px;
           color: white;
           padding: 0 15px 0 40px;
