@@ -1,4 +1,4 @@
-@import "../../styles/vars.scss";
+@import '../../styles/vars.scss';
 
 @keyframes timeout {
   from {
@@ -41,7 +41,7 @@
         // text-transform: lowercase;
         white-space: nowrap;
         &:after {
-          content: " ";
+          content: ' ';
           background-color: $primaryGreen;
           position: absolute;
           width: 100%;
@@ -243,6 +243,17 @@
     .ant-tabs .ant-tabs-tab {
       padding: 20px 24px;
       margin-bottom: 24px;
+      transition: all 0.3s ease-out;
+      &:hover:not(.ant-tabs-tab-active) {
+        svg {
+          circle {
+            fill: $primaryDarkBlue;
+          }
+          path {
+            transform: translateX(3px);
+          }
+        }
+      }
     }
     .ant-tabs .tab-label {
       cursor: pointer;
@@ -262,10 +273,12 @@
       svg {
         path {
           stroke: $primaryWhite;
+          transition: all 0.25s ease-out;
         }
         circle {
           stroke: transparent;
           fill: $primaryPurple;
+          transition: all 0.25s ease-out;
         }
       }
     }
