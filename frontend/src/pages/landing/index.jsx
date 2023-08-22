@@ -1,10 +1,10 @@
-import { Button, Tabs, Collapse } from "antd";
-import Image from "next/image";
-import styles from "./index.module.scss";
-import { CirclePointer } from "../../components/icons";
-import { useEffect, useRef, useState } from "react";
-import classNames from "classnames";
-import { motion, AnimatePresence } from "framer-motion";
+import { Button, Tabs, Collapse } from 'antd'
+import Image from 'next/image'
+import styles from './index.module.scss'
+import { CirclePointer } from '../../components/icons'
+import { useEffect, useRef, useState } from 'react'
+import classNames from 'classnames'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const Landing = () => (
   <div id="landing" className={styles.landing}>
@@ -123,35 +123,35 @@ const Hero = () => {
 }
 
 const WhoAreWe = () => {
-  const [activeTab, setActiveTab] = useState("1");
-  const [activeAccordion, setActiveAccordion] = useState("1");
+  const [activeTab, setActiveTab] = useState('1')
+  const [activeAccordion, setActiveAccordion] = useState('1')
 
   const items = [
     {
       id: 1,
-      title: "Who are we?",
+      title: 'Who are we?',
       description:
-        "The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform is a multi-stakeholder, knowledge sharing and networking tool which aims to facilitate action on plastic pollution and marine litter reduction and prevention.",
+        'The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform is a multi-stakeholder, knowledge sharing and networking tool which aims to facilitate action on plastic pollution and marine litter reduction and prevention.',
     },
     {
       id: 2,
-      title: "What we do?",
+      title: 'What we do?',
       description:
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.",
+        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.',
     },
     {
       id: 3,
-      title: "What is the connection between this platform and GPML?",
+      title: 'What is the connection between this platform and GPML?',
       description:
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.",
+        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.',
     },
     {
       id: 4,
-      title: "Why to join the partnership?",
+      title: 'Why to join the partnership?',
       description:
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.",
+        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.',
     },
-  ];
+  ]
   return (
     <div className={styles.about}>
       <div className="container">
@@ -181,7 +181,7 @@ const WhoAreWe = () => {
                     )}
                   </div>
                 </Tabs.TabPane>
-              );
+              )
             })}
           </Tabs>
         </div>
@@ -209,7 +209,7 @@ const WhoAreWe = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Landing;
+export default Landing
