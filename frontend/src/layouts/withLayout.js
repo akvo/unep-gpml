@@ -12,6 +12,7 @@ const withLayout = (Component) => {
       auth0Client,
       profile,
       setLoginVisible,
+      loginVisible,
       ...rest
     } = props;
 
@@ -22,6 +23,7 @@ const withLayout = (Component) => {
         setLoginVisible={setLoginVisible}
         auth0Client={auth0Client}
         profile={profile}
+        loginVisible={loginVisible}
       >
         <Component {...props} />
       </MainLayout>

@@ -117,14 +117,19 @@ function MyApp({ Component, pageProps }) {
         return console.log(err);
       }
       if (authResult) {
-        const redirectLocation =
-          localStorage.getItem("redirect_on_login") === "undefined"
-            ? "/"
-            : JSON.parse(localStorage.getItem("redirect_on_login"));
-        router.push({
-          pathname: redirectLocation.pathname,
-          ...(redirectLocation?.search && { query: redirectLocation?.search }),
-        });
+        const storedLocation = localStorage.getItem("redirect_on_login");
+        const redirectLocation = storedLocation
+          ? JSON.parse(storedLocation)
+          : null;
+
+        if (redirectLocation) {
+          router.push({
+            pathname: redirectLocation.pathname,
+            query: redirectLocation.query,
+          });
+        } else {
+          router.push("/");
+        }
         setSession(authResult);
         api.setToken(authResult.idToken);
         if (
@@ -206,8 +211,6 @@ function MyApp({ Component, pageProps }) {
     /(https:\/\/|\/)/gi,
     ""
   );
-
-  console.log(pageProps);
 
   return (
     <div id="root">
