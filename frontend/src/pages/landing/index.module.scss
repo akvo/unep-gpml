@@ -213,7 +213,7 @@
     .ant-collapse {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 24px;
     }
     .ant-collapse-header {
       flex-direction: row-reverse;
@@ -259,7 +259,7 @@
         }
       }
     }
-    .ant-tabs .ant-tabs-tab-active .p-l {
+    .p-l {
       line-height: 34px;
     }
     .ant-tabs .ant-tabs-tab-active,
