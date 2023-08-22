@@ -23,8 +23,10 @@ ORDER BY id
 --~ (when (:limit params) " LIMIT :limit")
 ;
 
--- :name update-case-study
+-- :name update-case-study :execute :affected
 -- :doc this query is for file migration purposes and will be removed.
+UPDATE case_study
+SET
 /*~
 (str/join ","
   (for [[field _] (:updates params)]
