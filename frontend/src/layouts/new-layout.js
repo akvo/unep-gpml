@@ -4,6 +4,7 @@ import { isEmpty } from 'lodash'
 import { Button } from 'antd'
 import localFont from 'next/font/local'
 import { DM_Sans } from 'next/font/google'
+import Image from 'next/image'
 import Footer from '../footer'
 import Login from '../modules/login/view'
 
@@ -61,7 +62,13 @@ const NewLayout = ({
       <div>
         <div className="top-bar">
           <div className="container">
-            GPML Digital Platform
+            <Image
+              className="gpml-white"
+              src="/GPML-White-logo.svg"
+              alt="GPML Digital Platform"
+              width={244}
+              height={74}
+            />
             <nav>
               <Button type="primary" size="small" className="noicon">
                 Join Now
