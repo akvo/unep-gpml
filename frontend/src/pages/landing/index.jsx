@@ -1,14 +1,15 @@
-import { Button } from 'antd'
-import Image from 'next/image'
-import styles from './index.module.scss'
-import { CirclePointer } from '../../components/icons'
-import { useEffect, useRef, useState } from 'react'
-import classNames from 'classnames'
-import { motion, AnimatePresence } from 'framer-motion'
+import { Button, Tabs, Collapse } from "antd";
+import Image from "next/image";
+import styles from "./index.module.scss";
+import { CirclePointer } from "../../components/icons";
+import { useEffect, useRef, useState } from "react";
+import classNames from "classnames";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Landing = () => (
   <div id="landing" className={styles.landing}>
     <Hero />
+    <WhoAreWe />
   </div>
 )
 
@@ -121,4 +122,94 @@ const Hero = () => {
   )
 }
 
-export default Landing
+const WhoAreWe = () => {
+  const [activeTab, setActiveTab] = useState("1");
+  const [activeAccordion, setActiveAccordion] = useState("1");
+
+  const items = [
+    {
+      id: 1,
+      title: "Who are we?",
+      description:
+        "The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform is a multi-stakeholder, knowledge sharing and networking tool which aims to facilitate action on plastic pollution and marine litter reduction and prevention.",
+    },
+    {
+      id: 2,
+      title: "What we do?",
+      description:
+        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.",
+    },
+    {
+      id: 3,
+      title: "What is the connection between this platform and GPML?",
+      description:
+        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.",
+    },
+    {
+      id: 4,
+      title: "Why to join the partnership?",
+      description:
+        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.",
+    },
+  ];
+  return (
+    <div className={styles.about}>
+      <div className="container">
+        <div className="who-are-we-lg-md">
+          <Tabs
+            tabPosition="left"
+            activeKey={activeTab}
+            onChange={(key) => setActiveTab(key)}
+          >
+            {items.map((item) => {
+              return (
+                <Tabs.TabPane
+                  tab={
+                    <span className="tab-label">
+                      <span className="h6 bold">{item.title}</span>
+                      <CirclePointer />
+                    </span>
+                  }
+                  key={item.id}
+                >
+                  <div>
+                    {`${item.id}` === activeTab && (
+                      <div>
+                        <strong className="caps-heading-1">{item.title}</strong>
+                        <p className="p-l">{item.description}</p>
+                      </div>
+                    )}
+                  </div>
+                </Tabs.TabPane>
+              );
+            })}
+          </Tabs>
+        </div>
+        <div className="who-are-we-mobile">
+          <Collapse
+            bordered={false}
+            activeKey={activeAccordion}
+            onChange={setActiveAccordion}
+            expandIcon={({ isActive }) => (
+              <CirclePointer rotate={isActive ? -90 : 90} />
+            )}
+            accordion
+          >
+            {items.map((item) => (
+              <Collapse.Panel
+                header={<strong className="h6 bold">{item.title}</strong>}
+                key={`${item.id}`}
+              >
+                {activeAccordion === `${item.id}` && (
+                  <p className="p-s">{item.description}</p>
+                )}
+              </Collapse.Panel>
+            ))}
+          </Collapse>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Landing;
