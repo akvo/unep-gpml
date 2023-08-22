@@ -8,6 +8,21 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.h-m {
+  font-family: var(--font-archia), sans-serif;
+  font-size: $fzM;
+  line-height: $lhM;
+}
+.h-xs {
+  font-family: var(--font-archia), sans-serif;
+  font-size: $fzXS;
+  line-height: $lhXS;
+}
+.h-xxs {
+  font-family: var(--font-archia), sans-serif;
+  font-size: $fzXXS;
+  line-height: $lhXXS;
+}
 h1 {
   font-family: var(--font-archia), sans-serif;
   font-size: $fzXXXL;
@@ -56,6 +71,10 @@ h6, .h6 {
   position: sticky;
   z-index: 2;
   top: 0;
+  img.gpml-white {
+    margin-left: -15px;
+    margin-top: -12px;
+  }
   .container {
     display: flex;
   }

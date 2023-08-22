@@ -25,7 +25,7 @@
   &.ant-btn-primary {
     background-color: $primaryGreen;
     border-color: $primaryGreen;
-    &:not(.noicon) {
+    &:not(.noicon):not(.left-icon) {
       padding-right: 60px;
     }
   }
@@ -38,6 +38,13 @@
   }
   &.ant-btn-sm {
     padding: 8px 18px;
+  }
+  &.left-icon {
+    svg {
+      position: static;
+      margin-right: 15px;
+      transform: translateY(2px);
+    }
   }
   &:hover,
   &:active,

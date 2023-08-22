@@ -1,12 +1,12 @@
-import { Button, Tabs, Collapse, Card } from "antd";
-import Image from "next/image";
-import Link from "next/link";
-import styles from "./index.module.scss";
-import { CirclePointer } from "../../components/icons";
-import { useEffect, useRef, useState } from "react";
-import classNames from "classnames";
-import { motion, AnimatePresence } from "framer-motion";
-import moment from "moment";
+import { Button, Tabs, Collapse, Card, Tag } from 'antd'
+import Image from 'next/image'
+import Link from 'next/link'
+import styles from './index.module.scss'
+import { CirclePointer, Magnifier, Localiser } from '../../components/icons'
+import { useEffect, useRef, useState } from 'react'
+import classNames from 'classnames'
+import { motion, AnimatePresence } from 'framer-motion'
+import moment from 'moment'
 
 const Landing = () => (
   <div id="landing" className={styles.landing}>
@@ -67,94 +67,121 @@ const Hero = () => {
     _setTimeout(false)
   }
   return (
-    <div className="hero">
-      <div className="container">
-        <div className="text">
-          <h1>
-            Empowering
-            <br />
-            <b className={classNames({ timeout })}>{selected}</b>
-            <br />
-            to end plastic pollution
-          </h1>
-          <div className="p-container">
-            {items.map((item) => (
-              <AnimatePresence>
-                {item.group === selected && (
-                  <motion.p
-                    transition={{
-                      type: 'spring',
-                      damping: 15,
-                      stiffness: 100,
-                    }}
-                    initial={{ opacity: 0, transform: `translateY(-30px)` }}
-                    animate={{ opacity: 1, transform: `translateY(0px)` }}
-                    exit={{ opacity: 0, transform: `translateY(30px)` }}
-                    className="p-l"
-                    key={`p-${item.group}`}
-                  >
-                    {item.text}
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            ))}
+    <>
+      <div className="hero">
+        <div className="container">
+          <div className="text">
+            <h1>
+              Empowering
+              <br />
+              <b className={classNames({ timeout })}>{selected}</b>
+              <br />
+              to end plastic pollution
+            </h1>
+            <div className="p-container">
+              {items.map((item) => (
+                <AnimatePresence>
+                  {item.group === selected && (
+                    <motion.p
+                      transition={{
+                        type: 'spring',
+                        damping: 15,
+                        stiffness: 100,
+                      }}
+                      initial={{ opacity: 0, transform: `translateY(-30px)` }}
+                      animate={{ opacity: 1, transform: `translateY(0px)` }}
+                      exit={{ opacity: 0, transform: `translateY(30px)` }}
+                      className="p-l"
+                      key={`p-${item.group}`}
+                    >
+                      {item.text}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              ))}
+            </div>
+            <Button type="primary" size="large">
+              Join Now <CirclePointer />
+            </Button>
           </div>
-          <Button type="primary" size="large">
-            Join Now <CirclePointer />
-          </Button>
-        </div>
-        <div className="globe">
-          <Image src="/globe.jpg" width={1022} height={770} />
-          <div className="labels">
-            {items.map((item) => (
-              <div
-                onClick={handleClickLabel(item)}
-                key={item.group}
-                className={classNames(
-                  `label l-${item.group.toLowerCase().replace(' ', '-')}`,
-                  { selected: selected === item.group }
-                )}
-              >
-                <span>{item.group}</span>
-              </div>
-            ))}
+          <div className="globe">
+            <Image src="/globe.jpg" width={1022} height={770} />
+            <div className="labels">
+              {items.map((item) => (
+                <div
+                  onClick={handleClickLabel(item)}
+                  key={item.group}
+                  className={classNames(
+                    `label l-${item.group.toLowerCase().replace(' ', '-')}`,
+                    { selected: selected === item.group }
+                  )}
+                >
+                  <span>{item.group}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <div className="container">
+        <div className="search-bar">
+          <div className="bar">
+            <input
+              placeholder="Search in the resource database..."
+              type="text"
+              className="h-m"
+            />
+            <div className="localisation h-xs">
+              <Localiser />
+              Globally
+            </div>
+            <Button type="primary" size="small" className="left-icon">
+              <Magnifier />
+              Search
+            </Button>
+          </div>
+          <div className="tags">
+            <b>Suggested search:</b>
+            <Tag className="h-xxs">Case Studies</Tag>
+            <Tag className="h-xxs">Plastic Strategies</Tag>
+            <Tag className="h-xxs">Plastic Solutions</Tag>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
 
 const WhoAreWe = () => {
-  const [activeTab, setActiveTab] = useState("1");
-  const [activeAccordion, setActiveAccordion] = useState("1");
+  const [activeTab, setActiveTab] = useState('1')
+  const [activeAccordion, setActiveAccordion] = useState('1')
 
   const items = [
     {
       id: 1,
-      title: "Who are we?",
+      title: 'Who are we?',
       description:
-        "The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform is a multi-stakeholder, knowledge sharing and networking tool which aims to facilitate action on plastic pollution and marine litter reduction and prevention.",
+        'The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform is a multi-stakeholder, knowledge sharing and networking tool which aims to facilitate action on plastic pollution and marine litter reduction and prevention.',
     },
     {
       id: 2,
-      title: "What we do?",
+      title: 'What we do?',
       description:
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.",
+        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.',
     },
     {
       id: 3,
-      title: "What is the connection between this platform and GPML?",
+      title: 'What is the connection between this platform and GPML?',
       description:
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.",
+        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.',
     },
     {
       id: 4,
-      title: "Why to join the partnership?",
+      title: 'Why to join the partnership?',
       description:
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.",
+        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.',
     },
-  ];
+  ]
   return (
     <div className={styles.about}>
       <div className="container">
@@ -184,7 +211,7 @@ const WhoAreWe = () => {
                     )}
                   </div>
                 </Tabs.TabPane>
-              );
+              )
             })}
           </Tabs>
         </div>
@@ -212,42 +239,42 @@ const WhoAreWe = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const LatestNews = () => {
   const items = [
     {
       id: 111,
-      badge: "NEWS",
-      image: "/news/news 34624185_1.png",
-      published_at: "2023-10-18T07:56:55.667029+00:00",
-      title: "WATCH: The 7th International Marine Debris Conference ",
+      badge: 'NEWS',
+      image: '/news/news 34624185_1.png',
+      published_at: '2023-10-18T07:56:55.667029+00:00',
+      title: 'WATCH: The 7th International Marine Debris Conference ',
       excerpt:
-        "Join a 90-minute interactive workshop, to discuss a risk assessment approach",
-      url: "/landing",
+        'Join a 90-minute interactive workshop, to discuss a risk assessment approach',
+      url: '/landing',
     },
     {
       id: 112,
-      badge: "EDITORIAL",
-      image: "/news/news 34624185_2.png",
+      badge: 'EDITORIAL',
+      image: '/news/news 34624185_2.png',
       published_at: null,
-      title: "DISCOVER: Opportunities and Resources!",
+      title: 'DISCOVER: Opportunities and Resources!',
       excerpt:
-        "The CASSINI EU Maritime Prize for Digital Space Applications is looking",
-      url: "/landing",
+        'The CASSINI EU Maritime Prize for Digital Space Applications is looking',
+      url: '/landing',
     },
     {
       id: 113,
-      badge: "BLOGPOST",
-      image: "/news/news 34624185_3.png",
-      published_at: "2023-08-01T07:56:55.667029+00:00",
-      title: "REGISTER: GPML Interactive Workshop",
+      badge: 'BLOGPOST',
+      image: '/news/news 34624185_3.png',
+      published_at: '2023-08-01T07:56:55.667029+00:00',
+      title: 'REGISTER: GPML Interactive Workshop',
       excerpt:
-        "Join a 90-minute interactive workshop, to discuss a risk assessment approach",
-      url: "/landing",
+        'Join a 90-minute interactive workshop, to discuss a risk assessment approach',
+      url: '/landing',
     },
-  ];
+  ]
   return (
     <div className={styles.latestNews}>
       <div className="container">
@@ -267,7 +294,7 @@ const LatestNews = () => {
         </div>
         <div className="news-wrapper news-items">
           {items.map((item, dx) => {
-            const badgeColor = ["blue", "green", "purple"];
+            const badgeColor = ['blue', 'green', 'purple']
             return (
               <Card
                 cover={
@@ -278,11 +305,11 @@ const LatestNews = () => {
                     {item.published_at && (
                       <span className="date">
                         <span className="h5 bold">
-                          {moment(item.published_at).format("DD")}
+                          {moment(item.published_at).format('DD')}
                         </span>
                         <br />
                         <span className="month">
-                          {moment(item.published_at).format("MMM")}
+                          {moment(item.published_at).format('MMM')}
                         </span>
                       </span>
                     )}
@@ -295,12 +322,12 @@ const LatestNews = () => {
                 <p className="p-m">{item.excerpt}</p>
                 <Link href={item.url}>Read More</Link>
               </Card>
-            );
+            )
           })}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Landing;
+export default Landing
