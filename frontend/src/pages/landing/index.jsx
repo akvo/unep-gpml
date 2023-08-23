@@ -1,5 +1,6 @@
-import { Button, Tabs, Collapse, Tag, Input } from 'antd'
+import { Button, Tabs, Collapse, Card, Tag, Input } from 'antd'
 import Image from 'next/image'
+import Link from 'next/link'
 import styles from './index.module.scss'
 import {
   CirclePointer,
@@ -12,6 +13,7 @@ import classNames from 'classnames'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
+import moment from 'moment'
 import { useDeviceSize } from '../../modules/landing/landing'
 
 const pagination = {
@@ -26,6 +28,7 @@ const Landing = () => (
     <Hero />
     <WhoAreWe />
     <ActNow />
+    <LatestNews />
   </div>
 )
 
@@ -369,5 +372,105 @@ const ActNowCard = ({ item }) => (
     </div>
   </div>
 )
+
+const LatestNews = () => {
+  const items = [
+    {
+      id: 111,
+      badge: 'NEWS',
+      image: '/news/watch-the-7th-international-marine-debris-conference.jpg',
+      published_at: '2023-10-18T07:56:55.667029+00:00',
+      title: 'WATCH: The 7th International Marine Debris Conference',
+      excerpt:
+        'Join a 90-minute interactive workshop, to discuss a risk assessment approach',
+      url: '/landing',
+    },
+    {
+      id: 112,
+      badge: 'EDITORIAL',
+      image: '/news/discover-opportunities-and-resources.jpg',
+      published_at: null,
+      title: 'DISCOVER: Opportunities and Resources!',
+      excerpt:
+        'The CASSINI EU Maritime Prize for Digital Space Applications is looking',
+      url: '/landing',
+    },
+    {
+      id: 113,
+      badge: 'BLOGPOST',
+      image: '/news/register-gpml-interactive-workshop.jpg',
+      published_at: '2023-08-01T07:56:55.667029+00:00',
+      title: 'REGISTER: GPML Interactive Workshop',
+      excerpt:
+        'Join a 90-minute interactive workshop, to discuss a risk assessment approach',
+      url: '/landing',
+    },
+  ]
+  return (
+    <div className={styles.latestNews}>
+      <div className="container">
+        <div className="news-wrapper hide-sm">
+          <strong className="caps-heading-1">HIGHLIGHTS</strong>
+          <h2>
+            <strong>Latest news:</strong>
+            <br />
+            How is the network co-solutioning?
+          </h2>
+        </div>
+        <div className="news-wrapper hide-sm">
+          <p className="p-l">
+            Learn about inspiring co-soluting efforts from the GPML network and
+            all the other actors contributing to the plastic action platform.
+          </p>
+        </div>
+        <div className="news-wrapper news-items">
+          {items.map((item, dx) => {
+            const badgeColor = ['blue', 'green', 'purple']
+            return (
+              <Card
+                cover={
+                  <div className="cover-image-container">
+                    <div className="cover-image-overlay">
+                      <span className={`badge ${badgeColor?.[dx]}`}>
+                        {item.badge}
+                      </span>
+                      {item.published_at && (
+                        <span className="date">
+                          <span>
+                            <span className="h5 bold">
+                              {moment(item.published_at).format('DD')}
+                            </span>
+                            <br />
+                            <span className="month">
+                              {moment(item.published_at).format('MMM')}
+                            </span>
+                          </span>
+                        </span>
+                      )}
+                    </div>
+                    <Image
+                      alt={item.title}
+                      src={item.image}
+                      width={366}
+                      height={220}
+                    />
+                  </div>
+                }
+                key={dx}
+              >
+                <h5 className="bold">{item.title}</h5>
+                <p className="p-m">{item.excerpt}</p>
+                <Link href={item.url} className="read-more">
+                  <span>Read More</span>
+                  <ArrowRight />
+                </Link>
+              </Card>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export default Landing

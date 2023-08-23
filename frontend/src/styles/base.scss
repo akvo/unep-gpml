@@ -51,6 +51,18 @@ h1 {
     line-height: $lhL;
   }
 }
+h2,
+.h2 {
+  font-family: var(--font-archia), sans-serif;
+  font-size: $fzXXL;
+  line-height: $lhXXL;
+}
+h5,
+.h5 {
+  font-family: var(--font-archia), sans-serif;
+  font-size: $fzM;
+  line-height: $lhM;
+}
 h6,
 .h6 {
   font-family: var(--font-archia), sans-serif;
@@ -126,6 +138,12 @@ h6,
 }
 
 h6.bold,
+.h6.bold,
+h5.bold,
+.h5.bold,
+h2.bold,
+.h2.bold,
+h6.bold,
 .h6.bold {
   font-weight: 700;
 }
@@ -148,4 +166,7 @@ h6.bold,
   @media screen and (min-width: 768px) {
     display: none;
   }
+}
+img {
+  display: block;
 }
