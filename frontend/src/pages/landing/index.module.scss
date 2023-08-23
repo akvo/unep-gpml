@@ -278,10 +278,6 @@
         .wrapper {
           padding: 48px 70px;
           h3 {
-            font-size: 48px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 56px;
             color: white;
             margin: 0;
             padding: 18px 0px 32px 0px;
@@ -294,10 +290,6 @@
           }
           p {
             margin: 0;
-            font-size: 22px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 34px;
             color: white;
             max-width: 80%;
           }
@@ -323,15 +315,7 @@
           > :last-child {
             margin-top: auto;
           }
-          h2 {
-            margin: 0;
-            font-size: 24px;
-            font-style: normal;
-            font-weight: 600;
-            line-height: 28px;
-          }
           p {
-            margin: 0;
             padding-bottom: 20px;
           }
           .card-badge {
@@ -373,15 +357,9 @@
         }
       }
     }
-    .page-heading {
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: 20px;
-      letter-spacing: 3.2px;
+    .page-sub-heading {
+      color: #7468ff;
       text-transform: uppercase;
-      color: $primaryPurple;
-      margin: 0;
     }
     @media only screen and (max-width: 474px) {
       .act-now {
