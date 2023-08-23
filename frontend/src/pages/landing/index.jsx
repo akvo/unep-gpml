@@ -1,16 +1,31 @@
 import { Button, Tabs, Collapse, Tag, Input } from 'antd'
 import Image from 'next/image'
 import styles from './index.module.scss'
-import { CirclePointer, Magnifier, Localiser } from '../../components/icons'
+import {
+  CirclePointer,
+  Magnifier,
+  Localiser,
+  ArrowRight,
+} from '../../components/icons'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination } from 'swiper'
 import { useDeviceSize } from '../../modules/landing/landing'
+
+const pagination = {
+  clickable: true,
+  renderBullet: function (index, className) {
+    return '<div class="' + className + '">' + '<span/>' + '</div>'
+  },
+}
 
 const Landing = () => (
   <div id="landing" className={styles.landing}>
     <Hero />
     <WhoAreWe />
+    <ActNow />
   </div>
 )
 
@@ -261,5 +276,98 @@ const WhoAreWe = () => {
     </div>
   )
 }
+
+const ActNow = () => {
+  const [width] = useDeviceSize()
+  const items = [
+    {
+      content:
+        'Start your own initiative. Get inspired by others who are making progress to end plastic pollution.',
+      bgColor: 'purple',
+      title: 'Communities of practise',
+      links: [{ label: 'Track progress', url: '#' }],
+    },
+    {
+      bgColor: 'green',
+      content:
+        'Reduce your country’s footprint. Create and advance your plastic startegy.',
+      title: 'Plastic Strategies',
+      links: [
+        { label: 'Track progress', url: '#' },
+        { label: 'Track action', url: '#' },
+      ],
+    },
+    {
+      bgColor: 'violet',
+      content:
+        'Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities',
+      title: 'Communities of practise',
+      label: 'Coming soon',
+      links: [{ label: 'Track progress', url: '#' }],
+    },
+    {
+      bgColor: 'blue',
+      content:
+        'Start your own initiative. get inspired by others who are making progress to end plastic pollution.',
+      title: 'Country Progress',
+      links: [
+        { label: 'Track progress', url: '#' },
+        { label: 'Track action', url: '#' },
+      ],
+    },
+  ]
+  return (
+    <section className={styles.actNow}>
+      <div className="container act-now-container">
+        <div className="wrapper">
+          <PageHeading title="Why should I care?" />
+          <h3 className="h-xxl">
+            Act Now: <br /> <span>Co-solution with the plastic network</span>
+          </h3>
+          <p className="p-l">
+            Avoid duplication of efforts. By using the platform you can match
+            with other organisations and governments to create shared solutions
+            to end plastic pollution.
+          </p>
+        </div>
+      </div>
+      <div className="container slider-container">
+        <div className="slider-wrapper">
+          <Swiper
+            spaceBetween={20}
+            slidesPerView={width <= 1024 ? 'auto' : 4}
+            pagination={pagination}
+            modules={[Pagination]}
+          >
+            {items.map((item) => (
+              <SwiperSlide>
+                <ActNowCard item={item} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+const PageHeading = ({ title }) => (
+  <div className="caps-heading-1 page-sub-heading">{title}</div>
+)
+
+const ActNowCard = ({ item }) => (
+  <div className={`card card--${item?.bgColor}`}>
+    {item?.label && <span className="card-label">{item?.label}</span>}
+    <h2 className="h-m">{item?.title}</h2>
+    <p className="p-s">{item?.content}</p>
+    <div className={item.links.lenght === 1 ? 'monolink' : 'multilink'}>
+      {item.links.map((link) => (
+        <Button type="link">
+          {link.label} <ArrowRight />
+        </Button>
+      ))}
+    </div>
+  </div>
+)
 
 export default Landing
