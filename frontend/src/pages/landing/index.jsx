@@ -2,7 +2,12 @@ import { Button, Tabs, Collapse, Card, Tag } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './index.module.scss'
-import { CirclePointer, Magnifier, Localiser } from '../../components/icons'
+import {
+  CirclePointer,
+  Magnifier,
+  Localiser,
+  ArrowRight,
+} from '../../components/icons'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -320,7 +325,10 @@ const LatestNews = () => {
               >
                 <h5 className="bold">{item.title}</h5>
                 <p className="p-m">{item.excerpt}</p>
-                <Link href={item.url}>Read More</Link>
+                <Link href={item.url} className="read-more">
+                  <span>Read More</span>
+                  <ArrowRight />
+                </Link>
               </Card>
             )
           })}
