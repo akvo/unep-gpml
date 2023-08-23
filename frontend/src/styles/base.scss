@@ -1,5 +1,5 @@
-@import "vars.scss";
-@import "btns.scss";
+@import 'vars.scss';
+@import 'btns.scss';
 
 body {
   color: $primaryDarkBlue;
@@ -28,7 +28,8 @@ h1 {
   font-size: $fzXXXL;
   line-height: $lhXXXL;
 }
-h6, .h6 {
+h6,
+.h6 {
   font-family: var(--font-archia), sans-serif;
   font-size: $fzS;
   line-height: $lhS;
@@ -59,11 +60,11 @@ h6, .h6 {
   background-color: $primaryDarkBlue;
   color: white;
   position: sticky;
-  z-index: 2;
+  z-index: 20;
   top: 0;
   img.gpml-white {
     margin-left: -15px;
-    margin-top: -12px;
+    margin-top: -14px;
   }
   .container {
     display: flex;
@@ -76,7 +77,8 @@ h6, .h6 {
   }
 }
 
-h6.bold, .h6.bold {
+h6.bold,
+.h6.bold {
   font-weight: 700;
 }
 
