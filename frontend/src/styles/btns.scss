@@ -30,24 +30,30 @@
     }
   }
   &.ant-btn-default {
-    display: flex;
-    align-items: center;
-    background-color: transparent;
+    background-color: $primaryDarkBlue;
     border-color: $primaryDarkBlue;
-    color: $primaryDarkBlue;
-    svg {
-      position: relative;
-      top: 0 !important;
-      right: 0 !important;
-      padding-left: 10px;
+    color: white;
+    &:not(.noicon):not(.left-icon) {
+      padding-right: 40px;
     }
-    &:hover {
-      background-color: $primaryDarkBlue;
+    svg {
+      top: 12px;
+      path {
+        stroke: white;
+      }
+    }
+    &:hover,
+    &:active,
+    &:disabled {
+      background-color: transparent;
       border-color: $primaryDarkBlue;
-      color: white;
+      color: $primaryDarkBlue;
       svg {
         path {
-          stroke: white;
+          stroke: $primaryDarkBlue;
+        }
+        circle {
+          fill: $primaryGreen4;
         }
       }
     }
