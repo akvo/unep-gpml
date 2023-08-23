@@ -447,3 +447,169 @@
     }
   }
 }
+
+.latestNews {
+  :global {
+    .container .news-wrapper {
+      margin-bottom: 18px;
+    }
+    .container .news-wrapper .p-l {
+      width: 70%;
+      @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+        width: 80%;
+      }
+    }
+    .container .news-wrapper.hide-sm {
+      display: block;
+      @media only screen and (max-width: 640px) {
+        display: none;
+      }
+    }
+    .caps-heading-1 {
+      font-family: var(--font-archia), sans-serif;
+      color: $primaryPurple;
+    }
+    h2 {
+      font-weight: 500;
+      margin-block-start: 12px;
+      margin-block-end: 0;
+    }
+    h2 strong {
+      font-weight: 700;
+    }
+    .ant-card-body h5 {
+      margin-block-start: 18px;
+      margin-block-end: 8px;
+    }
+    .ant-card-body p {
+      margin-block-start: 0;
+      margin-block-end: 8px;
+    }
+    .ant-card-body .read-more {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+      color: $primaryDarkBlue;
+      font-size: $fzXS;
+      line-height: $lhXS;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    .news-items .ant-card .ant-card-cover img {
+      width: 100%;
+      border-radius: 1rem;
+    }
+    .news-items .ant-card .ant-card-cover .cover-image-container {
+      position: relative;
+      padding: 4px;
+      .cover-image-overlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: fit-content;
+        padding: 1.5rem 1.3rem 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .cover-image-overlay .badge {
+        width: fit-content;
+        padding: 8px;
+        border-radius: 12px;
+      }
+      .badge.blue {
+        background-color: $primaryBlue;
+        color: $primaryWhite;
+      }
+      .badge.green {
+        background-color: $primaryGreen;
+      }
+      .badge.purple {
+        background-color: $primaryPurple;
+        color: $primaryWhite;
+      }
+      .cover-image-overlay .date {
+        width: fit-content;
+        padding: .5rem 1rem;
+        background-color: $primaryWhite;
+        border-radius: 4px;
+      }
+      .cover-image-overlay .date .month {
+        text-transform: uppercase;
+      }
+      .badge, .date .month {
+        font-family: var(--font-archia), sans-serif;
+        font-size: 12px;
+        line-height: 14px;
+        font-weight: 700;
+      }
+    }
+    .news-items {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 24px;
+      row-gap: 24px;
+      @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      @media only screen and (max-width: 640px) {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}
+
+.trustedSection {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  border-radius: 40px;
+  background-color: $primaryDarkBlue;
+  @media only screen and (max-width: 640px) {
+    flex-direction: column-reverse;
+    border-radius: 16px;
+    padding-bottom: 12px;
+  }
+  :global {
+    .trusted-text {
+      max-width: 575px;
+      margin: 0 2rem 2rem;
+      @media only screen and (max-width: 640px) {
+        margin: 0 12px 12px;
+        text-align: center;
+      }
+    }
+    .trusted-text h3.semibold {
+      color: $primaryWhite;
+      margin-block-end: 24px;
+      @media only screen and (max-width: 768px) {
+        font-size: $fzL;
+        line-height: $lhL;
+      }
+    }
+    .trusted-circle {
+      width: 100%;
+      height: auto;
+      border-top-right-radius: 40px;
+      border-bottom-right-radius: 40px;
+      background-image: url('/trusted-circles.svg');
+      background-repeat: no-repeat;
+      background-size: 125% 327px;
+      background-position: right bottom;
+      @media only screen and (min-device-width: 820px) and (max-device-width: 960px) {
+        background-size: 310px 520px;
+      }
+      @media only screen and (min-device-width: 768px) and (max-device-width: 819px) {
+        background-size: 310px 420px;
+      }
+      @media only screen and (max-width: 640px) {
+        height: 15rem;
+        border-top-left-radius: 16px;
+        border-bottom-right-radius: 0;
+        background-image: url('/trusted-circles-mobile.svg');
+        background-position: left top;
+      }
+    }
+  }
+}
