@@ -29,6 +29,29 @@
       padding-right: 60px;
     }
   }
+  &.ant-btn-default {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border-color: $primaryDarkBlue;
+    color: $primaryDarkBlue;
+    svg {
+      position: relative;
+      top: 0 !important;
+      right: 0 !important;
+      padding-left: 10px;
+    }
+    &:hover {
+      background-color: $primaryDarkBlue;
+      border-color: $primaryDarkBlue;
+      color: white;
+      svg {
+        path {
+          stroke: white;
+        }
+      }
+    }
+  }
   &.ant-btn-lg {
     padding: 16px 24px;
     svg {
@@ -38,6 +61,38 @@
   }
   &.ant-btn-sm {
     padding: 8px 18px;
+  }
+  &.ant-btn-link {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px;
+    color: $primaryDarkBlue;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    text-decoration-line: underline;
+    transition: all 0.2s ease-out;
+    svg {
+      position: relative;
+      top: 0;
+      right: 0;
+      padding-left: 10px;
+      path {
+        stroke: $primaryDarkBlue;
+      }
+    }
+    &:hover {
+      background-color: transparent;
+      color: $primaryPurple;
+      svg {
+        path {
+          stroke: $primaryPurple;
+          transform: translateX(2px);
+        }
+      }
+    }
   }
   &.left-icon {
     svg {
