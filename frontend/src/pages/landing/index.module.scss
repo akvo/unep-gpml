@@ -489,20 +489,23 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      gap: 0.5rem;
+      gap: 8px;
       color: $primaryDarkBlue;
       font-size: $fzXS;
       line-height: $lhXS;
       font-weight: 500;
-      margin-bottom: 1rem;
+      margin-bottom: 16px;
     }
     .news-items .ant-card .ant-card-cover img {
       width: 100%;
-      border-radius: 1rem;
+      border-radius: 16px;
     }
     .news-items .ant-card .ant-card-cover .cover-image-container {
       position: relative;
       padding: 0px;
+      img {
+        object-fit: cover;
+      }
       .cover-image-overlay {
         position: absolute;
         top: 0;
