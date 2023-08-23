@@ -252,9 +252,9 @@ const LatestNews = () => {
     {
       id: 111,
       badge: 'NEWS',
-      image: '/news/news 34624185_1.png',
+      image: '/news/watch-the-7th-international-marine-debris-conference.png',
       published_at: '2023-10-18T07:56:55.667029+00:00',
-      title: 'WATCH: The 7th International Marine Debris Conference ',
+      title: 'WATCH: The 7th International Marine Debris Conference',
       excerpt:
         'Join a 90-minute interactive workshop, to discuss a risk assessment approach',
       url: '/landing',
@@ -262,7 +262,7 @@ const LatestNews = () => {
     {
       id: 112,
       badge: 'EDITORIAL',
-      image: '/news/news 34624185_2.png',
+      image: '/news/discover-opportunities-and-resources.png',
       published_at: null,
       title: 'DISCOVER: Opportunities and Resources!',
       excerpt:
@@ -272,7 +272,7 @@ const LatestNews = () => {
     {
       id: 113,
       badge: 'BLOGPOST',
-      image: '/news/news 34624185_3.png',
+      image: '/news/register-gpml-interactive-workshop.png',
       published_at: '2023-08-01T07:56:55.667029+00:00',
       title: 'REGISTER: GPML Interactive Workshop',
       excerpt:
@@ -318,7 +318,12 @@ const LatestNews = () => {
                         </span>
                       </span>
                     )}
-                    <img alt={item.title} src={item.image} />
+                    <Image
+                      alt={item.title}
+                      src={item.image}
+                      width={366}
+                      height={220}
+                    />
                   </div>
                 }
                 key={dx}
