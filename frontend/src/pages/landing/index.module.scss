@@ -30,7 +30,6 @@
         font-weight: 600;
         display: inline-block;
         position: relative;
-        // text-transform: lowercase;
         white-space: nowrap;
         &:after {
           content: ' ';
@@ -95,6 +94,7 @@
             font-weight: 600;
             border-radius: 43px;
             overflow: hidden;
+            transition: all 0.3s ease-out;
             span {
               position: relative;
               z-index: 2;
@@ -188,6 +188,75 @@
           }
         }
       }
+      @media screen and (max-width: $bpMobile) {
+        padding-top: 0px;
+        .text {
+          max-width: auto;
+          margin-top: -100px;
+          :global(.p-container) {
+            height: 220px;
+          }
+        }
+        .globe {
+          right: 0;
+          position: static;
+          margin-left: -25px;
+          img {
+            margin-top: -30px;
+            // width: calc(100vw);
+            // height: auto;
+          }
+          :global(.labels) {
+            top: 0;
+            left: 0px;
+            :global(.label) {
+              height: 23px;
+              font-size: 11px;
+              &:not(.selected) {
+                line-height: 23px;
+                padding-left: 35px;
+                span {
+                  &:before {
+                    transform: scale(0.8);
+                    left: -25px;
+                    top: -1.5px;
+                  }
+                }
+              }
+              &:global(.selected) {
+                font-size: $fzXS;
+                font-weight: bold;
+                height: 35px;
+                line-height: 35px;
+              }
+              &:nth-child(1) {
+                left: 24px;
+                top: 175px;
+              }
+              &:nth-child(2) {
+                left: 55px;
+                top: 235px;
+              }
+              &:nth-child(3) {
+                left: 130px;
+                top: 280px;
+              }
+              &:nth-child(4) {
+                left: 220px;
+                top: 150px;
+              }
+              &:nth-child(5) {
+                left: 80px;
+                top: 80px;
+              }
+              &:nth-child(6) {
+                left: 190px;
+                top: 90px;
+              }
+            }
+          }
+        }
+      }
     }
   }
   :global {
@@ -206,6 +275,7 @@
       z-index: 5;
       padding: 20px 40px;
       box-sizing: border-box;
+      overflow: hidden;
 
       .bar {
         display: flex;
