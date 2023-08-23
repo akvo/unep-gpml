@@ -416,7 +416,11 @@
       margin-block-start: 0;
       margin-block-end: 8px;
     }
-    .ant-card-body a {
+    .ant-card-body .read-more {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: .5rem;
       color: $primaryDarkBlue;
       font-size: $fzXS;
       line-height: $lhXS;
