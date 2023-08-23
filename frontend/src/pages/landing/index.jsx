@@ -252,37 +252,39 @@ const ActNow = () => {
   const [width] = useDeviceSize()
   const items = [
     {
-      linkText: 'Track progress',
       content:
         'Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities',
       bgColor: 'purple',
-      singleLink: true,
       title: 'Communities of practise',
+      links: [{ label: 'Track progress', url: '#' }],
     },
     {
       bgColor: 'green',
       content:
         'Reduce your country’s footprint. Create and advance your plastic startegy.',
-      linkText: 'Track progress',
       title: 'Plastic Strategies',
-      linkTextTwo: 'Track action',
+      links: [
+        { label: 'Track progress', url: '#' },
+        { label: 'Track action', url: '#' },
+      ],
     },
     {
       bgColor: 'violet',
       content:
         'Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities',
-      singleLink: true,
       title: 'Communities of practise',
-      linkText: 'Track progress',
       badge: true,
+      links: [{ label: 'Track progress', url: '#' }],
     },
     {
       bgColor: 'blue',
       content:
         'Start your own initiative. get inspired by others who are making progress to end plastic pollution.',
-      linkText: 'Track progress',
       title: 'Country Progress',
-      linkTextTwo: 'Track action',
+      links: [
+        { label: 'Track progress', url: '#' },
+        { label: 'Track action', url: '#' },
+      ],
     },
   ]
   return (
@@ -330,22 +332,13 @@ const ActNowCard = ({ item }) => (
     {item?.badge && <span className="card-badge">Coming soon</span>}
     <h2 className="h-m">{item?.title}</h2>
     <p className="p-s">{item?.content}</p>
-    {item?.singleLink ? (
-      <div className="single-link">
+    <div className={item.links.lenght === 1 ? 'monolink' : 'multilink'}>
+      {item.links.map((link) => (
         <Button type="link">
-          {item?.linkText} <ArrowRight />
+          {link.label} <ArrowRight />
         </Button>
-      </div>
-    ) : (
-      <div className="multiple-link">
-        <Button type="link">
-          {item?.linkText} <ArrowRight />
-        </Button>
-        <Button type="link">
-          {item?.linkTextTwo} <ArrowRight />
-        </Button>
-      </div>
-    )}
+      ))}
+    </div>
   </div>
 )
 
