@@ -18,6 +18,7 @@ const Landing = () => (
     <Hero />
     <WhoAreWe />
     <ActNow />
+    <Features />
   </div>
 )
 
@@ -285,7 +286,7 @@ const ActNow = () => {
     },
   ]
   return (
-    <section className="act-now">
+    <section className={styles.actNow}>
       <div className="container act-now-container">
         <div className="wrapper">
           <PageHeading title="Why should I care?" />
@@ -310,15 +311,7 @@ const ActNow = () => {
           >
             {items.map((item) => (
               <SwiperSlide>
-                <ActNowCard
-                  bgColor={item.bgColor}
-                  singleLink={item.singleLink}
-                  title={item.title}
-                  linkText={item.linkText}
-                  linkTextTwo={item.linkTextTwo}
-                  content={item.content}
-                  badge={item.badge}
-                />
+                <ActNowCard item={item} />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -332,36 +325,103 @@ const PageHeading = ({ title }) => (
   <div className="caps-heading-1 page-sub-heading">{title}</div>
 )
 
-const ActNowCard = ({
-  bgColor,
-  singleLink = false,
-  linkText,
-  linkTextTwo,
-  content,
-  title,
-  badge = false,
-}) => (
-  <div className={`card card--${bgColor}`}>
-    {badge && <span className="card-badge">Coming soon</span>}
-    <h2 className="h-m">{title}</h2>
-    <p className="p-s">{content}</p>
-    {singleLink ? (
+const ActNowCard = ({ item }) => (
+  <div className={`card card--${item?.bgColor}`}>
+    {item?.badge && <span className="card-badge">Coming soon</span>}
+    <h2 className="h-m">{item?.title}</h2>
+    <p className="p-s">{item?.content}</p>
+    {item?.singleLink ? (
       <div className="single-link">
         <Button type="link">
-          {linkText} <ArrowRight />
+          {item?.linkText} <ArrowRight />
         </Button>
       </div>
     ) : (
       <div className="multiple-link">
         <Button type="text">
-          {linkText} <ArrowRight />
+          {item?.linkText} <ArrowRight />
         </Button>
         <Button type="text">
-          {linkTextTwo} <ArrowRight />
+          {item?.linkTextTwo} <ArrowRight />
         </Button>
       </div>
     )}
   </div>
 )
+
+const Features = () => {
+  const items = [
+    {
+      title: 'Data tools',
+      content:
+        'Access a suite of powerful data tools tailored for tackling plastic pollution and marine litter. Utilize comprehensive data sets, layers and statistics to  gain valuable insights that empower informed decision-making and drive effective action.',
+    },
+    {
+      title: 'Workspace',
+      content:
+        'Elevate your mission to address plastic pollution and marine litter through our integrated workspace feature. This feature enables you to coordinate with partners, centralize resources, strategize actions, and drive collective solutions',
+    },
+    {
+      title: 'Match-making',
+      content:
+        'Discover like-minded individuals and organizations passionate about combating plastic pollution and marine litter through our innovative matchmaking feature. Connect with fellow advocates, researchers, and activists to amplify your impact and collaborate on meaningful projects for a cleaner and healthier ocean ecosystem.',
+      badge: true,
+    },
+    {
+      title: 'Match-making two',
+      content:
+        'Discover like-minded individuals and organizations passionate about combating plastic pollution and marine litter through our innovative matchmaking feature. Connect with fellow advocates, researchers, and activists to amplify your impact and collaborate on meaningful projects for a cleaner and healthier ocean ecosystem.',
+    },
+  ]
+  return (
+    <section className={styles.features}>
+      <div className="container">
+        <div className="title-wrapper">
+          <div className="title-holder">
+            <PageHeading title="HOW DOES IT WORK?" />
+            <h2 className="h-xxl">
+              Features & Benefits <span>of using the platform</span>
+            </h2>
+            <p className="p-l">
+              The platform offers a wide range of tools to support your
+              decision-making and help a global network of actors to work
+              together to create shared solutions to end plastic pollution.
+            </p>
+          </div>
+          <div>
+            <Button type="default" size="large">
+              View All Features <ArrowRight />
+            </Button>
+          </div>
+        </div>
+        <div className="slider-wrapper">
+          <Swiper
+            spaceBetween={20}
+            slidesPerView={'auto'}
+            pagination={{
+              clickable: true,
+            }}
+          >
+            {items.map((item) => (
+              <SwiperSlide>
+                <FeatureCard item={item} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+const FeatureCard = ({ badge }) => {
+  return (
+    <div className="feature-card">
+      <div className="card-title-container">
+        {badge && <span className="card-badge">Coming soon</span>}
+      </div>
+    </div>
+  )
+}
 
 export default Landing

@@ -11,7 +11,6 @@ body {
 .h-m {
   font-size: $fzM;
   line-height: $lhM;
-  font-weight: 600;
 }
 .h-xs {
   font-size: $fzXS;
@@ -24,7 +23,6 @@ body {
 .h-xxl {
   font-size: $fzXXL;
   line-height: $lhXXL;
-  font-weight: $fwXXL;
 }
 h1,
 h2,
@@ -53,7 +51,6 @@ h6,
 .p-l {
   font-size: $pfL;
   line-height: $plhL;
-  font-weight: 400;
 }
 .p-m {
   font-size: $fzS;
@@ -62,7 +59,6 @@ h6,
 .p-s {
   font-size: $pfS;
   line-height: $plhS;
-  font-weight: 400;
 }
 .container {
   margin: 0 40px;

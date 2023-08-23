@@ -116,18 +116,18 @@ export const Localiser = () => (
 export const ArrowRight = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="18"
+    width="24"
     height="24"
-    viewBox="0 0 18 24"
+    viewBox="0 0 24 24"
     fill="none"
   >
-    <g clip-path="url(#clip0_1028_2040)">
-      <path d="M9.5 18L15.5 12L9.5 6" stroke="white" stroke-width="1.5" />
-      <path d="M0.5 12L15.5 12" stroke="white" stroke-width="1.5" />
+    <g clip-path="url(#clip0_905_2364)">
+      <path d="M16 18L22 12L16 6" stroke="#020A5B" stroke-width="2" />
+      <path d="M-1 12H22" stroke="#020A5B" stroke-width="2" />
     </g>
     <defs>
-      <clipPath id="clip0_1028_2040">
-        <rect width="17" height="24" fill="white" transform="translate(0.5)" />
+      <clipPath id="clip0_905_2364">
+        <rect width="24" height="24" fill="white" />
       </clipPath>
     </defs>
   </svg>

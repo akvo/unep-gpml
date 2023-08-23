@@ -258,9 +258,13 @@
         }
       }
     }
+    .page-sub-heading {
+      color: #7468ff;
+      text-transform: uppercase;
+    }
   }
-  :global {
-    .act-now {
+  .actNow {
+    :global {
       padding: 80px 0;
       .act-now-container {
         background: linear-gradient(
@@ -291,7 +295,7 @@
           p {
             margin: 0;
             color: white;
-            max-width: 80%;
+            max-width: 85%;
           }
         }
       }
@@ -357,12 +361,8 @@
         }
       }
     }
-    .page-sub-heading {
-      color: #7468ff;
-      text-transform: uppercase;
-    }
     @media only screen and (max-width: 474px) {
-      .act-now {
+      :global {
         padding: 32px 0px;
         .act-now-container {
           border-radius: 20px;
@@ -400,6 +400,27 @@
               width: 80%;
             }
           }
+        }
+      }
+    }
+  }
+  .features {
+    :global {
+      .title-wrapper {
+        display: flex;
+        justify-content: space-between;
+        .page-sub-heading {
+          padding-bottom: 18px;
+        }
+        h2 {
+          padding-bottom: 24px;
+          span {
+            display: block;
+            font-weight: 400;
+          }
+        }
+        .p-l {
+          max-width: 734px;
         }
       }
     }
