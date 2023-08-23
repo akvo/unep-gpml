@@ -780,6 +780,7 @@
 }
 
 .latestNews {
+  margin-bottom: 80px;
   :global {
     .container .news-wrapper {
       margin-bottom: 18px;
@@ -814,7 +815,7 @@
     }
     .ant-card-body p {
       margin-block-start: 0;
-      margin-block-end: 8px;
+      margin-block-end: 15px;
     }
     .ant-card-body .read-more {
       display: flex;

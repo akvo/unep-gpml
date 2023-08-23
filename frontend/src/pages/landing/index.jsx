@@ -460,9 +460,11 @@ const LatestNews = () => {
               >
                 <h5 className="bold">{item.title}</h5>
                 <p className="p-m">{item.excerpt}</p>
-                <Link href={item.url} className="read-more">
-                  <span>Read More</span>
-                  <ArrowRight />
+                <Link href={item.url}>
+                  <Button type="link">
+                    Read More
+                    <ArrowRight />
+                  </Button>
                 </Link>
               </Card>
             )
