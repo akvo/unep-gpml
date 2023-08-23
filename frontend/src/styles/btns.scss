@@ -67,51 +67,13 @@
     font-style: normal;
     font-weight: 500;
     line-height: 22px;
-    color: white;
-    border: none;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    text-decoration-line: underline;
-    &:hover {
-      background-color: transparent;
-      color: $primaryGreen;
-      svg {
-        path {
-          stroke: $primaryGreen;
-        }
-      }
-    }
-    svg {
-      position: relative;
-      top: 0;
-      right: 0;
-      padding-left: 10px;
-      path {
-        stroke: white;
-      }
-    }
-  }
-  &.ant-btn-text {
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 22px;
     color: $primaryDarkBlue;
     border: none;
     padding: 0;
     display: flex;
     align-items: center;
     text-decoration-line: underline;
-    &:hover {
-      background-color: transparent;
-      color: white;
-      svg {
-        path {
-          stroke: white;
-        }
-      }
-    }
+    transition: all 0.2s ease-out;
     svg {
       position: relative;
       top: 0;
@@ -119,6 +81,16 @@
       padding-left: 10px;
       path {
         stroke: $primaryDarkBlue;
+      }
+    }
+    &:hover {
+      background-color: transparent;
+      color: $primaryPurple;
+      svg {
+        path {
+          stroke: $primaryPurple;
+          transform: translateX(2px);
+        }
       }
     }
   }

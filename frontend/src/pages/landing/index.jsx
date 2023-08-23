@@ -338,10 +338,10 @@ const ActNowCard = ({ item }) => (
       </div>
     ) : (
       <div className="multiple-link">
-        <Button type="text">
+        <Button type="link">
           {item?.linkText} <ArrowRight />
         </Button>
-        <Button type="text">
+        <Button type="link">
           {item?.linkTextTwo} <ArrowRight />
         </Button>
       </div>

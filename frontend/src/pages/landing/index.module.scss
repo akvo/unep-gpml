@@ -358,6 +358,23 @@
             background-color: $primaryBlue;
             color: $primaryDarkBlue;
           }
+          &.card--purple,
+          &.card--violet {
+            .ant-btn-link {
+              color: white;
+              svg {
+                path {
+                  stroke: white;
+                }
+              }
+              &:hover {
+                color: $primaryDarkBlue;
+                svg path {
+                  stroke: $primaryDarkBlue;
+                }
+              }
+            }
+          }
         }
       }
     }
