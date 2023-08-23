@@ -268,7 +268,7 @@ const LatestNews = () => {
     {
       id: 111,
       badge: 'NEWS',
-      image: '/news/watch-the-7th-international-marine-debris-conference.png',
+      image: '/news/watch-the-7th-international-marine-debris-conference.jpg',
       published_at: '2023-10-18T07:56:55.667029+00:00',
       title: 'WATCH: The 7th International Marine Debris Conference',
       excerpt:
@@ -278,7 +278,7 @@ const LatestNews = () => {
     {
       id: 112,
       badge: 'EDITORIAL',
-      image: '/news/discover-opportunities-and-resources.png',
+      image: '/news/discover-opportunities-and-resources.jpg',
       published_at: null,
       title: 'DISCOVER: Opportunities and Resources!',
       excerpt:
@@ -288,7 +288,7 @@ const LatestNews = () => {
     {
       id: 113,
       badge: 'BLOGPOST',
-      image: '/news/register-gpml-interactive-workshop.png',
+      image: '/news/register-gpml-interactive-workshop.jpg',
       published_at: '2023-08-01T07:56:55.667029+00:00',
       title: 'REGISTER: GPML Interactive Workshop',
       excerpt:
@@ -320,20 +320,22 @@ const LatestNews = () => {
               <Card
                 cover={
                   <div className="cover-image-container">
-                    <span className={`badge ${badgeColor?.[dx]}`}>
-                      {item.badge}
-                    </span>
-                    {item.published_at && (
-                      <span className="date">
-                        <span className="h5 bold">
-                          {moment(item.published_at).format('DD')}
-                        </span>
-                        <br />
-                        <span className="month">
-                          {moment(item.published_at).format('MMM')}
-                        </span>
+                    <div className="cover-image-overlay">
+                      <span className={`badge ${badgeColor?.[dx]}`}>
+                        {item.badge}
                       </span>
-                    )}
+                      {item.published_at && (
+                        <span className="date">
+                          <span className="h5 bold">
+                            {moment(item.published_at).format('DD')}
+                          </span>
+                          <br />
+                          <span className="month">
+                            {moment(item.published_at).format('MMM')}
+                          </span>
+                        </span>
+                      )}
+                    </div>
                     <Image
                       alt={item.title}
                       src={item.image}
