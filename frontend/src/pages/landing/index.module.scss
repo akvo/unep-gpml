@@ -378,3 +378,110 @@
     }
   }
 }
+
+.latestNews {
+  :global {
+    .container .news-wrapper {
+      margin-bottom: 18px;
+    }
+    .container .news-wrapper .p-l {
+      width: 70%;
+      @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+        width: 80%;
+      }
+    }
+    .container .news-wrapper.hide-sm {
+      display: block;
+      @media only screen and (max-width: 640px) {
+        display: none;
+      }
+    }
+    .caps-heading-1 {
+      font-family: var(--font-archia), sans-serif;
+      color: $primaryPurple;
+    }
+    h2 {
+      font-weight: 500;
+      margin-block-start: 12px;
+      margin-block-end: 0;
+    }
+    h2 strong {
+      font-weight: 700;
+    }
+    .ant-card-body h5 {
+      margin-block-start: 18px;
+      margin-block-end: 8px;
+    }
+    .ant-card-body p {
+      margin-block-start: 0;
+      margin-block-end: 8px;
+    }
+    .ant-card-body .read-more {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: .5rem;
+      color: $primaryDarkBlue;
+      font-size: $fzXS;
+      line-height: $lhXS;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    .news-items .ant-card .ant-card-cover img {
+      width: 100%;
+      border-radius: 1rem;
+    }
+    .news-items .ant-card .ant-card-cover .cover-image-container {
+      position: relative;
+      padding: 4px;
+      .badge {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        padding: 8px;
+      }
+      .badge.blue {
+        background-color: $primaryBlue;
+        color: $primaryWhite;
+      }
+      .badge.green {
+        background-color: $primaryGreen;
+      }
+      .badge.purple {
+        background-color: $primaryPurple;
+        color: $primaryWhite;
+      }
+      .date {
+        position: absolute;
+        bottom: 1.5rem;
+        left: 18px;
+        padding: .5rem 1rem;
+        background-color: $primaryWhite;
+        border-radius: 4px;
+        line-height: 14px;
+      }
+      .date .month {
+        text-transform: uppercase;
+      }
+      .badge, .date .month {
+        font-family: var(--font-archia), sans-serif;
+        font-size: 12px;
+        line-height: 14px;
+        font-weight: 700;
+        border-radius: 12px;
+      }
+    }
+    .news-items {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 24px;
+      row-gap: 24px;
+      @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      @media only screen and (max-width: 640px) {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}
