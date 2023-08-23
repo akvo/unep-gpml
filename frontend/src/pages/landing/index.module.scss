@@ -502,43 +502,52 @@
     }
     .news-items .ant-card .ant-card-cover .cover-image-container {
       position: relative;
-      padding: 4px;
+      padding: 0px;
       .cover-image-overlay {
         position: absolute;
         top: 0;
         bottom: 0;
         width: fit-content;
-        padding: 1.5rem 1.3rem 2rem;
+        padding: 15px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        .badge {
+          width: fit-content;
+          height: 24px;
+          line-height: 24px;
+          padding: 0 10px;
+          border-radius: 12px;
+          &.blue {
+            background-color: $primaryBlue;
+            color: $primaryWhite;
+          }
+          &.green {
+            background-color: $primaryGreen;
+          }
+          &.purple {
+            background-color: $primaryPurple;
+            color: $primaryWhite;
+          }
+        }
+        .date {
+          width: 60px;
+          height: 60px;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: space-around;
+          // padding: 0.5rem 1rem;
+          background-color: $primaryWhite;
+          border-radius: 4px;
+          line-height: 10px;
+          .month {
+            text-transform: uppercase;
+          }
+        }
       }
-      .cover-image-overlay .badge {
-        width: fit-content;
-        padding: 8px;
-        border-radius: 12px;
-      }
-      .badge.blue {
-        background-color: $primaryBlue;
-        color: $primaryWhite;
-      }
-      .badge.green {
-        background-color: $primaryGreen;
-      }
-      .badge.purple {
-        background-color: $primaryPurple;
-        color: $primaryWhite;
-      }
-      .cover-image-overlay .date {
-        width: fit-content;
-        padding: .5rem 1rem;
-        background-color: $primaryWhite;
-        border-radius: 4px;
-      }
-      .cover-image-overlay .date .month {
-        text-transform: uppercase;
-      }
-      .badge, .date .month {
+      .badge,
+      .date .month {
         font-family: var(--font-archia), sans-serif;
         font-size: 12px;
         line-height: 14px;
