@@ -367,11 +367,16 @@
         margin-top: -150px;
         .slider-wrapper {
           padding: 0px 40px;
+          .swiper {
+            @media screen and (max-width: $bpMobile) {
+              overflow: visible;
+            }
+          }
           .swiper-slide {
             height: auto;
           }
           .swiper-wrapper {
-            @media only screen and (max-width: 640px) {
+            @media screen and (max-width: $bpMobile) {
               padding-bottom: 80px;
             }
           }
@@ -433,7 +438,7 @@
         }
       }
     }
-    @media only screen and (max-width: 474px) {
+    @media screen and (max-width: $bpMobile) {
       :global {
         padding: 32px 0px;
         .act-now-container {
@@ -465,7 +470,9 @@
           }
         }
         .slider-container {
-          margin: 20px 0px 0px 20px;
+          margin: 20px 0px 0px 0px;
+          padding: 0px 0px 0px 20px;
+          overflow: hidden;
           .slider-wrapper {
             padding: 0;
             .swiper-slide {
@@ -500,7 +507,7 @@
         padding: 42px 40px 30px 50px;
         padding-left: calc((100% - 1148px) / 2);
         overflow: hidden;
-        @media only screen and (max-width: 640px) {
+        @media screen and (max-width: $bpMobile) {
           padding: 0px 0px 30px 20px;
         }
         .slider-wrapper {
@@ -514,7 +521,7 @@
               position: relative;
               background-color: $primaryDarkBlue;
               padding: 50px 32px 25px 32px;
-              @media only screen and (max-width: 640px) {
+              @media screen and (max-width: $bpMobile) {
                 padding: 50px 24px 25px 24px;
               }
               &.card--data-tool {
@@ -548,7 +555,7 @@
           }
           .card-content-container {
             padding: 32px;
-            @media only screen and (max-width: 640px) {
+            @media screen and (max-width: $bpMobile) {
               padding: 24px;
             }
           }
@@ -557,7 +564,7 @@
             overflow: visible;
             .swiper-slide {
               width: 395px;
-              @media only screen and (max-width: 640px) {
+              @media screen and (max-width: $bpMobile) {
                 width: 320px;
               }
             }
@@ -616,13 +623,13 @@
   :global {
     .who-are-we-mobile {
       display: none;
-      @media only screen and (max-width: 640px) {
+      @media screen and (max-width: $bpMobile) {
         display: block;
       }
     }
     .who-are-we-lg-md {
       display: block;
-      @media only screen and (max-width: 640px) {
+      @media screen and (max-width: $bpMobile) {
         display: none;
       }
     }
