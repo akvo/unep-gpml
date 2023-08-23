@@ -465,6 +465,19 @@
         }
       }
     }
+    .ant-collapse-header[aria-expanded='false']:hover {
+      svg {
+        circle {
+          fill: $primaryDarkBlue;
+        }
+        path {
+          transform: translateX(3px);
+        }
+      }
+    }
+    .ant-collapse-header .ant-collapse-expand-icon {
+      cursor: pointer;
+    }
     .p-l {
       line-height: 34px;
     }
