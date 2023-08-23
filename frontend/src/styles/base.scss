@@ -1,5 +1,5 @@
-@import 'vars.scss';
-@import 'btns.scss';
+@import "vars.scss";
+@import "btns.scss";
 
 body {
   color: $primaryDarkBlue;
@@ -8,12 +8,31 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.h-m {
+  font-family: var(--font-archia), sans-serif;
+  font-size: $fzM;
+  line-height: $lhM;
+}
+.h-xs {
+  font-family: var(--font-archia), sans-serif;
+  font-size: $fzXS;
+  line-height: $lhXS;
+}
+.h-xxs {
+  font-family: var(--font-archia), sans-serif;
+  font-size: $fzXXS;
+  line-height: $lhXXS;
+}
 h1 {
   font-family: var(--font-archia), sans-serif;
   font-size: $fzXXXL;
   line-height: $lhXXXL;
 }
-
+h6, .h6 {
+  font-family: var(--font-archia), sans-serif;
+  font-size: $fzS;
+  line-height: $lhS;
+}
 .p-l {
   font-size: 22px;
   line-height: 32px;
@@ -42,6 +61,10 @@ h1 {
   position: sticky;
   z-index: 2;
   top: 0;
+  img.gpml-white {
+    margin-left: -15px;
+    margin-top: -12px;
+  }
   .container {
     display: flex;
   }
@@ -51,4 +74,16 @@ h1 {
       margin-top: 0px;
     }
   }
+}
+
+h6.bold, .h6.bold {
+  font-weight: 700;
+}
+
+.caps-heading-1 {
+  font-size: $fzXS;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: 0.2em;
+  text-align: left;
 }
