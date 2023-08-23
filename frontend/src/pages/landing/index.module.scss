@@ -258,6 +258,189 @@
         }
       }
     }
+    .page-sub-heading {
+      color: #7468ff;
+      text-transform: uppercase;
+    }
+  }
+  .actNow {
+    :global {
+      padding: 80px 0;
+      .act-now-container {
+        background: linear-gradient(
+            139deg,
+            rgba(0, 25, 72, 1) 0%,
+            rgba(0, 25, 72, 0) 100%
+          ),
+          url('/act-now.jpg');
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        border-radius: 40px;
+        padding-bottom: 150px;
+        position: relative;
+        .wrapper {
+          padding: 48px 70px;
+          h3 {
+            color: white;
+            margin: 0;
+            padding: 18px 0px 32px 0px;
+            span {
+              font-size: 48px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 56px;
+            }
+          }
+          p {
+            margin: 0;
+            color: white;
+            max-width: 85%;
+          }
+        }
+      }
+      .slider-container {
+        margin-top: -150px;
+        .slider-wrapper {
+          padding: 0px 40px;
+          .swiper-slide {
+            height: auto;
+          }
+        }
+        .card {
+          border-radius: 16px;
+          padding: 24px;
+          color: white;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          height: 100%;
+          box-sizing: border-box;
+          > :last-child {
+            margin-top: auto;
+          }
+          p {
+            padding-bottom: 20px;
+          }
+          .card-badge {
+            background-color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 14px;
+            letter-spacing: 0.24px;
+            text-transform: uppercase;
+            color: $primaryDarkBlue;
+            display: inline-block;
+            width: fit-content;
+            padding: 4px 8px;
+          }
+          .multilink {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+          }
+          .monolink {
+            padding-bottom: 20px;
+          }
+          &.card--purple {
+            background-color: $primaryPurple;
+          }
+          &.card--green {
+            background-color: $primaryGreen;
+            color: $primaryDarkBlue;
+          }
+          &.card--violet {
+            background-color: $primaryViolet;
+          }
+          &.card--blue {
+            background-color: $primaryBlue;
+            color: $primaryDarkBlue;
+          }
+          &.card--purple,
+          &.card--violet {
+            .ant-btn-link {
+              color: white;
+              svg {
+                path {
+                  stroke: white;
+                }
+              }
+              &:hover {
+                color: $primaryDarkBlue;
+                svg path {
+                  stroke: $primaryDarkBlue;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    @media only screen and (max-width: 474px) {
+      :global {
+        padding: 32px 0px;
+        .act-now-container {
+          border-radius: 20px;
+          margin: 0 20px;
+          background: $primaryDarkBlue;
+          padding-bottom: 0px;
+          .wrapper {
+            padding: 24px 16px;
+            h3 {
+              font-size: 32px;
+              font-style: normal;
+              font-weight: 700;
+              line-height: 36px;
+              padding-bottom: 24px;
+              span {
+                font-size: 32px;
+                font-weight: 400;
+                line-height: 36px;
+              }
+            }
+            p {
+              font-size: 18px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 28px;
+              max-width: 100%;
+            }
+          }
+        }
+        .slider-container {
+          margin: 20px 0px 0px 20px;
+          .slider-wrapper {
+            padding: 0;
+            .swiper-slide {
+              width: 80%;
+            }
+          }
+        }
+      }
+    }
+  }
+  .features {
+    :global {
+      .title-wrapper {
+        display: flex;
+        justify-content: space-between;
+        .page-sub-heading {
+          padding-bottom: 18px;
+        }
+        h2 {
+          padding-bottom: 24px;
+          span {
+            display: block;
+            font-weight: 400;
+          }
+        }
+        .p-l {
+          max-width: 734px;
+        }
+      }
+    }
   }
 }
 
