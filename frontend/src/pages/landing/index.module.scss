@@ -461,6 +461,11 @@
                 background-position: right;
                 background-repeat: no-repeat;
               }
+              &.card--ai-innovations {
+                background-image: url('/ai-innovations.svg');
+                background-position: right;
+                background-repeat: no-repeat;
+              }
               .card-label {
                 position: absolute;
                 top: 16px;
