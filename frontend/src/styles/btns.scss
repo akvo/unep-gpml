@@ -39,6 +39,63 @@
   &.ant-btn-sm {
     padding: 8px 18px;
   }
+  &.ant-btn-link {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px;
+    color: white;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    text-decoration-line: underline;
+    &:hover {
+      background-color: transparent;
+      color: $primaryGreen;
+      svg {
+        path {
+          stroke: $primaryGreen;
+        }
+      }
+    }
+    svg {
+      position: relative;
+      top: 0;
+      right: 0;
+      padding-left: 10px;
+    }
+  }
+  &.ant-btn-text {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px;
+    color: $primaryDarkBlue;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    text-decoration-line: underline;
+    &:hover {
+      background-color: transparent;
+      color: white;
+      svg {
+        path {
+          stroke: white;
+        }
+      }
+    }
+    svg {
+      position: relative;
+      top: 0;
+      right: 0;
+      padding-left: 10px;
+      path {
+        stroke: $primaryDarkBlue;
+      }
+    }
+  }
   &.left-icon {
     svg {
       position: static;

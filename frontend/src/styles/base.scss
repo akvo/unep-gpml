@@ -1,5 +1,5 @@
-@import "vars.scss";
-@import "btns.scss";
+@import 'vars.scss';
+@import 'btns.scss';
 
 body {
   color: $primaryDarkBlue;
@@ -9,41 +9,60 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 .h-m {
-  font-family: var(--font-archia), sans-serif;
   font-size: $fzM;
   line-height: $lhM;
+  font-weight: 600;
 }
 .h-xs {
-  font-family: var(--font-archia), sans-serif;
   font-size: $fzXS;
   line-height: $lhXS;
 }
 .h-xxs {
-  font-family: var(--font-archia), sans-serif;
   font-size: $fzXXS;
   line-height: $lhXXS;
 }
-h1 {
+.h-xxl {
+  font-size: $fzXXL;
+  line-height: $lhXXL;
+  font-weight: $fwXXL;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-archia), sans-serif;
+  margin: 0;
+}
+
+p {
+  font-family: var(--font-dm-sans), sans-serif;
+  margin: 0;
+}
+
+h1 {
   font-size: $fzXXXL;
   line-height: $lhXXXL;
 }
-h6, .h6 {
-  font-family: var(--font-archia), sans-serif;
+h6,
+.h6 {
   font-size: $fzS;
   line-height: $lhS;
 }
 .p-l {
-  font-size: 22px;
-  line-height: 32px;
+  font-size: $pfL;
+  line-height: $plhL;
+  font-weight: 400;
 }
 .p-m {
   font-size: $fzS;
   line-height: $lhS;
 }
 .p-s {
-  font-size: 16px;
-  line-height: 20px;
+  font-size: $pfS;
+  line-height: $plhS;
+  font-weight: 400;
 }
 .container {
   margin: 0 40px;
@@ -76,11 +95,13 @@ h6, .h6 {
   }
 }
 
-h6.bold, .h6.bold {
+h6.bold,
+.h6.bold {
   font-weight: 700;
 }
 
 .caps-heading-1 {
+  font-family: var(--font-archia), sans-serif;
   font-size: $fzXS;
   font-weight: 700;
   line-height: 20px;
