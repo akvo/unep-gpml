@@ -489,7 +489,7 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      gap: .5rem;
+      gap: 0.5rem;
       color: $primaryDarkBlue;
       font-size: $fzXS;
       line-height: $lhXS;
@@ -503,11 +503,20 @@
     .news-items .ant-card .ant-card-cover .cover-image-container {
       position: relative;
       padding: 4px;
-      .badge {
+      .cover-image-overlay {
         position: absolute;
-        top: 18px;
-        left: 18px;
+        top: 0;
+        bottom: 0;
+        width: 85%;
+        margin: 1.5rem 1.3rem 1.8rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .cover-image-overlay .badge {
+        width: fit-content;
         padding: 8px;
+        border-radius: 12px;
       }
       .badge.blue {
         background-color: $primaryBlue;
@@ -520,16 +529,13 @@
         background-color: $primaryPurple;
         color: $primaryWhite;
       }
-      .date {
-        position: absolute;
-        bottom: 1.5rem;
-        left: 18px;
+      .cover-image-overlay .date {
+        width: fit-content;
         padding: .5rem 1rem;
         background-color: $primaryWhite;
         border-radius: 4px;
-        line-height: 14px;
       }
-      .date .month {
+      .cover-image-overlay .date .month {
         text-transform: uppercase;
       }
       .badge, .date .month {
@@ -537,7 +543,6 @@
         font-size: 12px;
         line-height: 14px;
         font-weight: 700;
-        border-radius: 12px;
       }
     }
     .news-items {
