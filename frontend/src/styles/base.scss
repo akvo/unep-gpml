@@ -46,15 +46,24 @@ p {
 h1 {
   font-size: $fzXXXL;
   line-height: $lhXXXL;
+  @media screen and (max-width: $bpMobile) {
+    font-size: $fzL;
+    line-height: $lhL;
+  }
 }
 h6,
 .h6 {
+  font-family: var(--font-archia), sans-serif;
   font-size: $fzS;
   line-height: $lhS;
 }
 .p-l {
-  font-size: $pfL;
-  line-height: $plhL;
+  font-size: 22px;
+  line-height: 32px;
+  @media screen and (max-width: $bpMobile) {
+    font-size: $fzS;
+    line-height: $lhS;
+  }
 }
 .p-m {
   font-size: $fzS;
@@ -70,6 +79,9 @@ h6,
     margin: 0 auto;
     width: 1148px;
   }
+  @media screen and (max-width: 768px) {
+    margin: 0 25px;
+  }
 }
 .top-bar {
   height: 90px;
@@ -78,11 +90,29 @@ h6,
   background-color: $primaryDarkBlue;
   color: white;
   position: sticky;
-  z-index: 2;
+  z-index: 20;
   top: 0;
   img.gpml-white {
+  }
+  .logo-container {
     margin-left: -15px;
-    margin-top: -12px;
+    margin-top: -14px;
+  }
+  @media screen and (max-width: $bpMobile) {
+    height: 70px;
+    padding: 12px 0;
+    .logo-container {
+      margin-top: -3px;
+      margin-left: -5px;
+      img {
+        height: 50px;
+        object-fit: contain;
+        object-position: 0 0;
+        // width: 50px;
+      }
+      width: 150px;
+      overflow: hidden;
+    }
   }
   .container {
     display: flex;
@@ -107,4 +137,15 @@ h6.bold,
   line-height: 20px;
   letter-spacing: 0.2em;
   text-align: left;
+}
+
+.hide-mobile {
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+}
+.hide-desktop {
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
 }
