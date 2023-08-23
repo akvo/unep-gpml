@@ -301,6 +301,11 @@
           .swiper-slide {
             height: auto;
           }
+          .swiper-wrapper {
+            @media only screen and (max-width: 640px) {
+              padding-bottom: 80px;
+            }
+          }
         }
         .card {
           border-radius: 16px;
@@ -427,7 +432,7 @@
         padding-left: calc((100% - 1148px) / 2);
         overflow: hidden;
         @media only screen and (max-width: 640px) {
-          padding: 20px 0px 30px 20px;
+          padding: 0px 0px 30px 20px;
         }
         .slider-wrapper {
           .feature-card {
@@ -482,32 +487,6 @@
                 width: 320px;
               }
             }
-            .swiper-pagination {
-              .swiper-pagination-bullet {
-                width: 20px;
-                height: 20px;
-                background-color: transparent;
-                position: relative;
-                &.swiper-pagination-bullet-active {
-                  border: 1px solid $primaryDarkBlue;
-                  span {
-                    background: $primaryDarkBlue;
-                  }
-                }
-                opacity: 1;
-                span {
-                  background: $primaryDarkBlue2;
-                  display: flex;
-                  width: 12px;
-                  height: 12px;
-                  border-radius: 50%;
-                  position: absolute;
-                  top: 50%;
-                  left: 50%;
-                  transform: translate(-50%, -50%);
-                }
-              }
-            }
           }
         }
       }
@@ -526,6 +505,35 @@
     display: inline-block;
     width: fit-content;
     padding: 4px 8px;
+  }
+
+  :global(.swiper-pagination) {
+    :global {
+      .swiper-pagination-bullet {
+        width: 20px;
+        height: 20px;
+        background-color: transparent;
+        position: relative;
+        &.swiper-pagination-bullet-active {
+          border: 1px solid $primaryDarkBlue;
+          span {
+            background: $primaryDarkBlue;
+          }
+        }
+        opacity: 1;
+        span {
+          background: $primaryDarkBlue2;
+          display: flex;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
   }
 }
 

@@ -14,6 +14,13 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
 import { useDeviceSize } from '../../modules/landing/landing'
 
+const pagination = {
+  clickable: true,
+  renderBullet: function (index, className) {
+    return '<div class="' + className + '">' + '<span/>' + '</div>'
+  },
+}
+
 const Landing = () => (
   <div id="landing" className={styles.landing}>
     <Hero />
@@ -308,9 +315,8 @@ const ActNow = () => {
           <Swiper
             spaceBetween={20}
             slidesPerView={width <= 1024 ? 'auto' : 4}
-            pagination={{
-              clickable: true,
-            }}
+            pagination={pagination}
+            modules={[Pagination]}
           >
             {items.map((item) => (
               <SwiperSlide>
@@ -371,13 +377,6 @@ const Features = () => {
         'Discover like-minded individuals and organizations passionate about combating plastic pollution and marine litter through our innovative matchmaking feature. Connect with fellow advocates, researchers, and activists to amplify your impact and collaborate on meaningful projects for a cleaner and healthier ocean ecosystem.',
     },
   ]
-
-  const pagination = {
-    clickable: true,
-    renderBullet: function (index, className) {
-      return '<div class="' + className + '">' + '<span/>' + '</div>'
-    },
-  }
 
   return (
     <section className={styles.features}>
