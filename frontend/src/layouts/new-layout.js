@@ -62,13 +62,15 @@ const NewLayout = ({
       <div>
         <div className="top-bar">
           <div className="container">
-            <Image
-              className="gpml-white"
-              src="/GPML-White-logo.svg"
-              alt="GPML Digital Platform"
-              width={244}
-              height={74}
-            />
+            <div className="logo-container">
+              <Image
+                className="gpml-white"
+                src="/GPML-White-logo.svg"
+                alt="GPML Digital Platform"
+                width={244}
+                height={74}
+              />
+            </div>
             <nav>
               <Button type="primary" size="small" className="noicon">
                 Join Now
