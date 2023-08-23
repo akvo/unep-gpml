@@ -1,15 +1,23 @@
-import { Button, Tabs, Collapse } from 'antd'
+import { Button, Tabs, Collapse, Card, Tag } from 'antd'
 import Image from 'next/image'
+import Link from 'next/link'
 import styles from './index.module.scss'
-import { CirclePointer } from '../../components/icons'
+import {
+  CirclePointer,
+  Magnifier,
+  Localiser,
+  ArrowRight,
+} from '../../components/icons'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { motion, AnimatePresence } from 'framer-motion'
+import moment from 'moment'
 
 const Landing = () => (
   <div id="landing" className={styles.landing}>
     <Hero />
     <WhoAreWe />
+    <LatestNews />
   </div>
 )
 
@@ -64,61 +72,88 @@ const Hero = () => {
     _setTimeout(false)
   }
   return (
-    <div className="hero">
-      <div className="container">
-        <div className="text">
-          <h1>
-            Empowering
-            <br />
-            <b className={classNames({ timeout })}>{selected}</b>
-            <br />
-            to end plastic pollution
-          </h1>
-          <div className="p-container">
-            {items.map((item) => (
-              <AnimatePresence>
-                {item.group === selected && (
-                  <motion.p
-                    transition={{
-                      type: 'spring',
-                      damping: 15,
-                      stiffness: 100,
-                    }}
-                    initial={{ opacity: 0, transform: `translateY(-30px)` }}
-                    animate={{ opacity: 1, transform: `translateY(0px)` }}
-                    exit={{ opacity: 0, transform: `translateY(30px)` }}
-                    className="p-l"
-                    key={`p-${item.group}`}
-                  >
-                    {item.text}
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            ))}
+    <>
+      <div className="hero">
+        <div className="container">
+          <div className="text">
+            <h1>
+              Empowering
+              <br />
+              <b className={classNames({ timeout })}>{selected}</b>
+              <br />
+              to end plastic pollution
+            </h1>
+            <div className="p-container">
+              {items.map((item) => (
+                <AnimatePresence>
+                  {item.group === selected && (
+                    <motion.p
+                      transition={{
+                        type: 'spring',
+                        damping: 15,
+                        stiffness: 100,
+                      }}
+                      initial={{ opacity: 0, transform: `translateY(-30px)` }}
+                      animate={{ opacity: 1, transform: `translateY(0px)` }}
+                      exit={{ opacity: 0, transform: `translateY(30px)` }}
+                      className="p-l"
+                      key={`p-${item.group}`}
+                    >
+                      {item.text}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              ))}
+            </div>
+            <Button type="primary" size="large">
+              Join Now <CirclePointer />
+            </Button>
           </div>
-          <Button type="primary" size="large">
-            Join Now <CirclePointer />
-          </Button>
-        </div>
-        <div className="globe">
-          <Image src="/globe.jpg" width={1022} height={770} />
-          <div className="labels">
-            {items.map((item) => (
-              <div
-                onClick={handleClickLabel(item)}
-                key={item.group}
-                className={classNames(
-                  `label l-${item.group.toLowerCase().replace(' ', '-')}`,
-                  { selected: selected === item.group }
-                )}
-              >
-                <span>{item.group}</span>
-              </div>
-            ))}
+          <div className="globe">
+            <Image src="/globe.jpg" width={1022} height={770} />
+            <div className="labels">
+              {items.map((item) => (
+                <div
+                  onClick={handleClickLabel(item)}
+                  key={item.group}
+                  className={classNames(
+                    `label l-${item.group.toLowerCase().replace(' ', '-')}`,
+                    { selected: selected === item.group }
+                  )}
+                >
+                  <span>{item.group}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <div className="container">
+        <div className="search-bar">
+          <div className="bar">
+            <input
+              placeholder="Search in the resource database..."
+              type="text"
+              className="h-m"
+            />
+            <div className="localisation h-xs">
+              <Localiser />
+              Globally
+            </div>
+            <Button type="primary" size="small" className="left-icon">
+              <Magnifier />
+              Search
+            </Button>
+          </div>
+          <div className="tags">
+            <b>Suggested search:</b>
+            <Tag className="h-xxs">Case Studies</Tag>
+            <Tag className="h-xxs">Plastic Strategies</Tag>
+            <Tag className="h-xxs">Plastic Solutions</Tag>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
 
@@ -206,6 +241,97 @@ const WhoAreWe = () => {
               </Collapse.Panel>
             ))}
           </Collapse>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const LatestNews = () => {
+  const items = [
+    {
+      id: 111,
+      badge: 'NEWS',
+      image: '/news/news 34624185_1.png',
+      published_at: '2023-10-18T07:56:55.667029+00:00',
+      title: 'WATCH: The 7th International Marine Debris Conference ',
+      excerpt:
+        'Join a 90-minute interactive workshop, to discuss a risk assessment approach',
+      url: '/landing',
+    },
+    {
+      id: 112,
+      badge: 'EDITORIAL',
+      image: '/news/news 34624185_2.png',
+      published_at: null,
+      title: 'DISCOVER: Opportunities and Resources!',
+      excerpt:
+        'The CASSINI EU Maritime Prize for Digital Space Applications is looking',
+      url: '/landing',
+    },
+    {
+      id: 113,
+      badge: 'BLOGPOST',
+      image: '/news/news 34624185_3.png',
+      published_at: '2023-08-01T07:56:55.667029+00:00',
+      title: 'REGISTER: GPML Interactive Workshop',
+      excerpt:
+        'Join a 90-minute interactive workshop, to discuss a risk assessment approach',
+      url: '/landing',
+    },
+  ]
+  return (
+    <div className={styles.latestNews}>
+      <div className="container">
+        <div className="news-wrapper hide-sm">
+          <strong className="caps-heading-1">HIGHLIGHTS</strong>
+          <h2>
+            <strong>Latest news:</strong>
+            <br />
+            How is the network co-solutioning?
+          </h2>
+        </div>
+        <div className="news-wrapper hide-sm">
+          <p className="p-l">
+            Learn about inspiring co-soluting efforts from the GPML network and
+            all the other actors contributing to the plastic action platform.
+          </p>
+        </div>
+        <div className="news-wrapper news-items">
+          {items.map((item, dx) => {
+            const badgeColor = ['blue', 'green', 'purple']
+            return (
+              <Card
+                cover={
+                  <div className="cover-image-container">
+                    <span className={`badge ${badgeColor?.[dx]}`}>
+                      {item.badge}
+                    </span>
+                    {item.published_at && (
+                      <span className="date">
+                        <span className="h5 bold">
+                          {moment(item.published_at).format('DD')}
+                        </span>
+                        <br />
+                        <span className="month">
+                          {moment(item.published_at).format('MMM')}
+                        </span>
+                      </span>
+                    )}
+                    <img alt={item.title} src={item.image} />
+                  </div>
+                }
+                key={dx}
+              >
+                <h5 className="bold">{item.title}</h5>
+                <p className="p-m">{item.excerpt}</p>
+                <Link href={item.url} className="read-more">
+                  <span>Read More</span>
+                  <ArrowRight />
+                </Link>
+              </Card>
+            )
+          })}
         </div>
       </div>
     </div>

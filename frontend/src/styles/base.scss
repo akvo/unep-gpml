@@ -8,10 +8,35 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.h-m {
+  font-family: var(--font-archia), sans-serif;
+  font-size: $fzM;
+  line-height: $lhM;
+}
+.h-xs {
+  font-family: var(--font-archia), sans-serif;
+  font-size: $fzXS;
+  line-height: $lhXS;
+}
+.h-xxs {
+  font-family: var(--font-archia), sans-serif;
+  font-size: $fzXXS;
+  line-height: $lhXXS;
+}
 h1 {
   font-family: var(--font-archia), sans-serif;
   font-size: $fzXXXL;
   line-height: $lhXXXL;
+}
+h2, .h2 {
+  font-family: var(--font-archia), sans-serif;
+  font-size: $fzXXL;
+  line-height: $lhXXL;
+}
+h5, .h5 {
+  font-family: var(--font-archia), sans-serif;
+  font-size: $fzM;
+  line-height: $lhM;
 }
 h6, .h6 {
   font-family: var(--font-archia), sans-serif;
@@ -46,6 +71,10 @@ h6, .h6 {
   position: sticky;
   z-index: 2;
   top: 0;
+  img.gpml-white {
+    margin-left: -15px;
+    margin-top: -12px;
+  }
   .container {
     display: flex;
   }
@@ -57,7 +86,9 @@ h6, .h6 {
   }
 }
 
-h6.bold, .h6.bold {
+h6.bold, .h6.bold,
+h5.bold, .h5.bold,
+h2.bold, .h2.bold {
   font-weight: 700;
 }
 
