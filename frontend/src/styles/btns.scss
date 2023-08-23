@@ -29,6 +29,23 @@
       padding-right: 60px;
     }
   }
+  &.ant-btn-background-ghost {
+    background-color: transparent;
+    border-color: $primaryDarkBlue;
+    color: $primaryDarkBlue;
+    &:hover,
+    &:active,
+    &:disabled {
+      background-color: $primaryDarkBlue;
+      border-color: $primaryDarkBlue;
+      color: white;
+      svg {
+        path {
+          stroke: white;
+        }
+      }
+    }
+  }
   &.ant-btn-default {
     background-color: $primaryDarkBlue;
     border-color: $primaryDarkBlue;
