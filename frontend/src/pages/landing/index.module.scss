@@ -507,8 +507,8 @@
         position: absolute;
         top: 0;
         bottom: 0;
-        width: 85%;
-        margin: 1.5rem 1.3rem 1.8rem;
+        width: fit-content;
+        padding: 1.5rem 1.3rem 2rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
