@@ -370,6 +370,7 @@
           .swiper {
             @media screen and (max-width: $bpMobile) {
               overflow: visible;
+              padding-right: 20px;
             }
           }
           .swiper-slide {
