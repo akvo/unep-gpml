@@ -1,4 +1,4 @@
-import { Button, Tabs, Collapse, Tag } from 'antd'
+import { Button, Tabs, Collapse, Tag, Input } from 'antd'
 import Image from 'next/image'
 import styles from './index.module.scss'
 import { CirclePointer, Magnifier, Localiser } from '../../components/icons'
@@ -139,21 +139,28 @@ const Hero = () => {
       <div className="container">
         <div className="search-bar">
           <div className="bar">
-            <input
-              placeholder="Search in the resource database..."
+            <Input
+              prefix={width < 768 && <Magnifier />}
+              placeholder="Search the resource database..."
               type="text"
-              className="h-m"
             />
             <div className="localisation h-xs">
               <Localiser />
-              Globally
+              <span className="hide-mobile">Globally</span>
             </div>
-            <Button type="primary" size="small" className="left-icon">
+            <Button
+              type="primary"
+              size="small"
+              className="left-icon hide-mobile"
+            >
               <Magnifier />
               Search
             </Button>
           </div>
-          <div className="tags">
+          <Button type="primary" className="hide-desktop noicon">
+            Search
+          </Button>
+          <div className="tags hide-mobile">
             <b>Suggested search:</b>
             <Tag className="h-xxs">Case Studies</Tag>
             <Tag className="h-xxs">Plastic Strategies</Tag>
