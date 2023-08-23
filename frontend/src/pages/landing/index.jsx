@@ -326,12 +326,14 @@ const LatestNews = () => {
                       </span>
                       {item.published_at && (
                         <span className="date">
-                          <span className="h5 bold">
-                            {moment(item.published_at).format('DD')}
-                          </span>
-                          <br />
-                          <span className="month">
-                            {moment(item.published_at).format('MMM')}
+                          <span>
+                            <span className="h5 bold">
+                              {moment(item.published_at).format('DD')}
+                            </span>
+                            <br />
+                            <span className="month">
+                              {moment(item.published_at).format('MMM')}
+                            </span>
                           </span>
                         </span>
                       )}
