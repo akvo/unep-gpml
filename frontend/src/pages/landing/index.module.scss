@@ -545,6 +545,9 @@
             text-transform: uppercase;
           }
         }
+        img {
+          object-fit: cover;
+        }
       }
       .badge,
       .date .month {
