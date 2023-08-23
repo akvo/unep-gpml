@@ -82,7 +82,10 @@ const Hero = () => {
               width={width}
               height={width / 0.77}
             />
-            <div className="labels">
+            <div
+              className="labels"
+              style={width < 768 ? { transform: `scale(${width / 390})` } : {}}
+            >
               {items.map((item) => (
                 <div
                   onClick={handleClickLabel(item)}
