@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { motion, AnimatePresence } from 'framer-motion'
 import moment from 'moment'
+import { useDeviceSize } from '../../modules/landing/landing'
 
 const Landing = () => (
   <div id="landing" className={styles.landing}>
@@ -25,6 +26,7 @@ const Hero = () => {
   const [selected, setSelected] = useState('Governments')
   const [timeout, _setTimeout] = useState(true)
   const intidRef = useRef()
+  const [width] = useDeviceSize()
   const items = [
     {
       group: 'Governments',
@@ -37,7 +39,7 @@ const Hero = () => {
         'The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models.',
     },
     {
-      group: 'Scientific Communities',
+      group: 'Scientific Community',
       text:
         'The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers.',
     },
@@ -75,6 +77,37 @@ const Hero = () => {
     <>
       <div className="hero">
         <div className="container">
+          <div className="globe">
+            <Image
+              className="hide-mobile"
+              src="/globe.jpg"
+              width={1022}
+              height={770}
+            />
+            <Image
+              className="hide-desktop"
+              src="/globe-mobile.jpg"
+              width={width}
+              height={width / 0.77}
+            />
+            <div
+              className="labels"
+              style={width < 768 ? { transform: `scale(${width / 390})` } : {}}
+            >
+              {items.map((item) => (
+                <div
+                  onClick={handleClickLabel(item)}
+                  key={item.group}
+                  className={classNames(
+                    `label l-${item.group.toLowerCase().replace(' ', '-')}`,
+                    { selected: selected === item.group }
+                  )}
+                >
+                  <span>{item.group}</span>
+                </div>
+              ))}
+            </div>
+          </div>
           <div className="text">
             <h1>
               Empowering
@@ -108,23 +141,6 @@ const Hero = () => {
             <Button type="primary" size="large">
               Join Now <CirclePointer />
             </Button>
-          </div>
-          <div className="globe">
-            <Image src="/globe.jpg" width={1022} height={770} />
-            <div className="labels">
-              {items.map((item) => (
-                <div
-                  onClick={handleClickLabel(item)}
-                  key={item.group}
-                  className={classNames(
-                    `label l-${item.group.toLowerCase().replace(' ', '-')}`,
-                    { selected: selected === item.group }
-                  )}
-                >
-                  <span>{item.group}</span>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>

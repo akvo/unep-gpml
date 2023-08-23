@@ -46,6 +46,11 @@
       transform: translateY(2px);
     }
   }
+  @media screen and (max-width: $bpMobile) {
+    &.ant-btn-sm {
+      padding: 6px 18px;
+    }
+  }
   &:hover,
   &:active,
   &:disabled {
