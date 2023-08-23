@@ -529,23 +529,6 @@
   .features {
     padding: 0px 0px 80px 0px;
     :global {
-      .title-wrapper {
-        display: flex;
-        justify-content: space-between;
-        .page-sub-heading {
-          padding-bottom: 18px;
-        }
-        h2 {
-          padding-bottom: 24px;
-          span {
-            display: block;
-            font-weight: 400;
-          }
-        }
-        .p-l {
-          max-width: 734px;
-        }
-      }
       .slider-container {
         padding: 42px 40px 30px 50px;
         padding-left: calc((100% - 1148px) / 2);
@@ -614,6 +597,181 @@
           }
         }
       }
+    }
+  }
+  .ourVoices {
+    padding: 80px 0px;
+    @media screen and (max-width: $bpMobile) {
+      padding: 40px 0px;
+    }
+    :global {
+      .page-sub-heading {
+        padding-bottom: 18px;
+      }
+      .h-xxl {
+        span {
+          @media screen and (max-width: $bpMobile) {
+            display: block;
+          }
+        }
+      }
+      .group-wrapper {
+        .group-one {
+          display: flex;
+          position: relative;
+          padding: 48px 0px;
+          @media screen and (max-width: $bpMobile) {
+            flex-direction: column;
+            padding: 24px 0px 0px;
+          }
+          .group-card {
+            bottom: 0px;
+            right: 0;
+            @media screen and (max-width: $bpMobile) {
+              top: -10px;
+            }
+            .label-s {
+              background-color: $primaryGreen;
+              width: fit-content;
+            }
+          }
+        }
+        .group-two {
+          display: flex;
+          position: relative;
+          justify-content: flex-end;
+          padding: 48px 0px;
+          @media screen and (max-width: $bpMobile) {
+            flex-direction: column-reverse;
+            padding: 24px 0px;
+          }
+          .group-card {
+            bottom: 0px;
+            left: 0;
+            @media screen and (max-width: $bpMobile) {
+              top: -10px;
+            }
+            .label-s {
+              background-color: $primaryViolet;
+              color: white;
+              width: fit-content;
+            }
+          }
+        }
+        .group-card {
+          padding: 32px;
+          background-color: $primaryGrey;
+          width: 500px;
+          border-radius: 16px;
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          position: absolute;
+          .ant-btn-default {
+            width: fit-content;
+            @media screen and (max-width: $bpMobile) {
+              width: auto;
+            }
+          }
+          @media screen and (max-width: $bpMobile) {
+            width: auto;
+            position: relative;
+            padding: 12px;
+            gap: 12px;
+          }
+        }
+      }
+    }
+  }
+  .activities {
+    :global {
+      .title-holder {
+        max-width: 800px;
+        .page-sub-heading,
+        .h-xxl {
+          padding-bottom: 18px;
+        }
+      }
+      .activity-box-wrapper {
+        padding-top: 22px;
+        ul {
+          padding: 0;
+          display: flex;
+          justify-content: space-between;
+          list-style-type: none;
+          flex-wrap: wrap;
+          column-gap: 20px;
+          row-gap: 20px;
+          li {
+            width: 190px;
+            text-align: center;
+            align-content: flex-start;
+            @media screen and (max-width: $bpMobile) {
+              width: 126px;
+            }
+            &:nth-child(1) {
+              .icon {
+                background-color: $primaryBlue;
+              }
+            }
+            &:nth-child(2),
+            &:nth-child(4) {
+              .icon {
+                background-color: $primaryPurple;
+              }
+            }
+            &:nth-child(3) {
+              .icon {
+                background-color: $primaryGreen;
+              }
+            }
+            &:nth-child(5) {
+              .icon {
+                background-color: $primaryPurple4;
+              }
+            }
+            .icon {
+              width: 126px;
+              height: 126px;
+              margin: 0 auto;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 16px;
+              margin-bottom: 24px;
+            }
+            .h-m {
+              font-weight: 600;
+              @media screen and (max-width: $bpMobile) {
+                font-size: 18px;
+                line-height: 24px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  :global(.title-wrapper) {
+    display: flex;
+    justify-content: space-between;
+    @media screen and (max-width: $bpMobile) {
+      flex-direction: column;
+      button {
+        margin-top: 24px;
+        width: 100%;
+      }
+    }
+    .page-sub-heading {
+      padding-bottom: 18px;
+    }
+    h2 {
+      span {
+        font-weight: 400;
+      }
+    }
+    .p-l {
+      max-width: 734px;
     }
   }
   :global(.card-label) {

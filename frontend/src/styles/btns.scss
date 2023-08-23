@@ -29,25 +29,48 @@
       padding-right: 60px;
     }
   }
-  &.ant-btn-default {
-    display: flex;
-    align-items: center;
+  &.ant-btn-background-ghost {
     background-color: transparent;
     border-color: $primaryDarkBlue;
     color: $primaryDarkBlue;
-    svg {
-      position: relative;
-      top: 0 !important;
-      right: 0 !important;
-      padding-left: 10px;
-    }
-    &:hover {
+    &:hover,
+    &:active,
+    &:disabled {
       background-color: $primaryDarkBlue;
       border-color: $primaryDarkBlue;
       color: white;
       svg {
         path {
           stroke: white;
+        }
+      }
+    }
+  }
+  &.ant-btn-default {
+    background-color: $primaryDarkBlue;
+    border-color: $primaryDarkBlue;
+    color: white;
+    &:not(.noicon):not(.left-icon) {
+      padding-right: 40px;
+    }
+    svg {
+      top: 12px;
+      path {
+        stroke: white;
+      }
+    }
+    &:hover,
+    &:active,
+    &:disabled {
+      background-color: transparent;
+      border-color: $primaryDarkBlue;
+      color: $primaryDarkBlue;
+      svg {
+        path {
+          stroke: $primaryDarkBlue;
+        }
+        circle {
+          fill: $primaryGreen4;
         }
       }
     }
