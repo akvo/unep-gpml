@@ -267,12 +267,7 @@
     :global {
       padding: 80px 0;
       .act-now-container {
-        background: linear-gradient(
-            139deg,
-            rgba(0, 25, 72, 1) 0%,
-            rgba(0, 25, 72, 0) 100%
-          ),
-          url('/act-now.jpg');
+        background: url('/act-now.jpg');
         background-size: cover;
         background-position: center center;
         background-repeat: no-repeat;
@@ -321,20 +316,6 @@
           }
           p {
             padding-bottom: 20px;
-          }
-          .card-badge {
-            background-color: white;
-            border-radius: 12px;
-            font-size: 12px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 14px;
-            letter-spacing: 0.24px;
-            text-transform: uppercase;
-            color: $primaryDarkBlue;
-            display: inline-block;
-            width: fit-content;
-            padding: 4px 8px;
           }
           .multilink {
             display: flex;
@@ -422,6 +403,7 @@
     }
   }
   .features {
+    padding: 0px 0px 80px 0px;
     :global {
       .title-wrapper {
         display: flex;
@@ -440,7 +422,110 @@
           max-width: 734px;
         }
       }
+      .slider-container {
+        padding: 42px 40px 30px 50px;
+        padding-left: calc((100% - 1148px) / 2);
+        overflow: hidden;
+        @media only screen and (max-width: 640px) {
+          padding: 20px 0px 30px 20px;
+        }
+        .slider-wrapper {
+          .feature-card {
+            max-width: 400px;
+            border: 1px solid $primaryDarkBlue2;
+            border-radius: 15px;
+            box-sizing: border-box;
+            overflow: hidden;
+            .card-title-container {
+              position: relative;
+              background-color: $primaryDarkBlue;
+              padding: 50px 32px 25px 32px;
+              @media only screen and (max-width: 640px) {
+                padding: 50px 24px 25px 24px;
+              }
+              &.card--data-tool {
+                background-image: url('/date-tools.svg');
+              }
+              &.card--workspace-feature {
+                background-image: url('/workspace-feature.svg');
+                background-position: right;
+                background-repeat: no-repeat;
+              }
+              &.card--match-making {
+                background-image: url('/match-making.svg');
+                background-position: right;
+                background-repeat: no-repeat;
+              }
+              .card-label {
+                position: absolute;
+                top: 16px;
+              }
+              .h-l {
+                color: white;
+                text-transform: capitalize;
+                font-weight: 600;
+              }
+            }
+          }
+          .card-content-container {
+            padding: 32px;
+            @media only screen and (max-width: 640px) {
+              padding: 24px;
+            }
+          }
+          .swiper {
+            padding-bottom: 80px;
+            overflow: visible;
+            .swiper-slide {
+              width: 395px;
+              @media only screen and (max-width: 640px) {
+                width: 320px;
+              }
+            }
+            .swiper-pagination {
+              .swiper-pagination-bullet {
+                width: 20px;
+                height: 20px;
+                background-color: transparent;
+                position: relative;
+                &.swiper-pagination-bullet-active {
+                  border: 1px solid $primaryDarkBlue;
+                  span {
+                    background: $primaryDarkBlue;
+                  }
+                }
+                opacity: 1;
+                span {
+                  background: $primaryDarkBlue2;
+                  display: flex;
+                  width: 12px;
+                  height: 12px;
+                  border-radius: 50%;
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                }
+              }
+            }
+          }
+        }
+      }
     }
+  }
+  :global(.card-label) {
+    background-color: white;
+    border-radius: 12px;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 14px;
+    letter-spacing: 0.24px;
+    text-transform: uppercase;
+    color: $primaryDarkBlue;
+    display: inline-block;
+    width: fit-content;
+    padding: 4px 8px;
   }
 }
 
