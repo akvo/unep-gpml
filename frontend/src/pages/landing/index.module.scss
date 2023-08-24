@@ -369,6 +369,295 @@
         }
       }
     }
+    .page-sub-heading {
+      color: #7468ff;
+      text-transform: uppercase;
+    }
+  }
+  .actNow {
+    :global {
+      padding: 80px 0;
+      .act-now-container {
+        background: url('/act-now.jpg');
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        border-radius: 40px;
+        padding-bottom: 150px;
+        position: relative;
+        .wrapper {
+          padding: 48px 70px;
+          h3 {
+            color: white;
+            margin: 0;
+            padding: 18px 0px 32px 0px;
+            span {
+              font-size: 48px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 56px;
+            }
+          }
+          p {
+            margin: 0;
+            color: white;
+            max-width: 85%;
+          }
+        }
+      }
+      .slider-container {
+        margin-top: -150px;
+        .slider-wrapper {
+          padding: 0px 40px;
+          .swiper {
+            @media screen and (max-width: $bpMobile) {
+              overflow: visible;
+              padding-right: 20px;
+            }
+          }
+          .swiper-slide {
+            height: auto;
+          }
+          .swiper-wrapper {
+            @media screen and (max-width: $bpMobile) {
+              padding-bottom: 80px;
+            }
+          }
+        }
+        .card {
+          border-radius: 16px;
+          padding: 24px;
+          color: white;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          height: 100%;
+          box-sizing: border-box;
+          > :last-child {
+            margin-top: auto;
+          }
+          p {
+            padding-bottom: 20px;
+          }
+          .multilink {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+          }
+          .monolink {
+            padding-bottom: 20px;
+          }
+          &.card--purple {
+            background-color: $primaryPurple;
+          }
+          &.card--green {
+            background-color: $primaryGreen;
+            color: $primaryDarkBlue;
+          }
+          &.card--violet {
+            background-color: $primaryViolet;
+          }
+          &.card--blue {
+            background-color: $primaryBlue;
+            color: $primaryDarkBlue;
+          }
+          &.card--purple,
+          &.card--violet {
+            .ant-btn-link {
+              color: white;
+              svg {
+                path {
+                  stroke: white;
+                }
+              }
+              &:hover {
+                color: $primaryDarkBlue;
+                svg path {
+                  stroke: $primaryDarkBlue;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    @media screen and (max-width: $bpMobile) {
+      :global {
+        padding: 32px 0px;
+        .act-now-container {
+          border-radius: 20px;
+          margin: 0 20px;
+          background: $primaryDarkBlue;
+          padding-bottom: 0px;
+          .wrapper {
+            padding: 24px 16px;
+            h3 {
+              font-size: 32px;
+              font-style: normal;
+              font-weight: 700;
+              line-height: 36px;
+              padding-bottom: 24px;
+              span {
+                font-size: 32px;
+                font-weight: 400;
+                line-height: 36px;
+              }
+            }
+            p {
+              font-size: 18px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 28px;
+              max-width: 100%;
+            }
+          }
+        }
+        .slider-container {
+          margin: 20px 0px 0px 0px;
+          padding: 0px 0px 0px 20px;
+          overflow: hidden;
+          .slider-wrapper {
+            padding: 0;
+            .swiper-slide {
+              width: 80%;
+            }
+          }
+        }
+      }
+    }
+  }
+  .features {
+    padding: 0px 0px 80px 0px;
+    :global {
+      .title-wrapper {
+        display: flex;
+        justify-content: space-between;
+        .page-sub-heading {
+          padding-bottom: 18px;
+        }
+        h2 {
+          padding-bottom: 24px;
+          span {
+            display: block;
+            font-weight: 400;
+          }
+        }
+        .p-l {
+          max-width: 734px;
+        }
+      }
+      .slider-container {
+        padding: 42px 40px 30px 50px;
+        padding-left: calc((100% - 1148px) / 2);
+        overflow: hidden;
+        @media screen and (max-width: $bpMobile) {
+          padding: 0px 0px 30px 20px;
+        }
+        .slider-wrapper {
+          .feature-card {
+            max-width: 400px;
+            border: 1px solid $primaryDarkBlue2;
+            border-radius: 15px;
+            box-sizing: border-box;
+            overflow: hidden;
+            .card-title-container {
+              position: relative;
+              background-color: $primaryDarkBlue;
+              padding: 50px 32px 25px 32px;
+              @media screen and (max-width: $bpMobile) {
+                padding: 50px 24px 25px 24px;
+              }
+              &.card--data-tool {
+                background-image: url('/date-tools.svg');
+              }
+              &.card--workspace-feature {
+                background-image: url('/workspace-feature.svg');
+                background-position: right;
+                background-repeat: no-repeat;
+              }
+              &.card--match-making {
+                background-image: url('/match-making.svg');
+                background-position: right;
+                background-repeat: no-repeat;
+              }
+              &.card--ai-innovations {
+                background-image: url('/ai-innovations.svg');
+                background-position: right;
+                background-repeat: no-repeat;
+              }
+              .card-label {
+                position: absolute;
+                top: 16px;
+              }
+              .h-l {
+                color: white;
+                text-transform: capitalize;
+                font-weight: 600;
+              }
+            }
+          }
+          .card-content-container {
+            padding: 32px;
+            @media screen and (max-width: $bpMobile) {
+              padding: 24px;
+            }
+          }
+          .swiper {
+            padding-bottom: 80px;
+            overflow: visible;
+            .swiper-slide {
+              width: 395px;
+              @media screen and (max-width: $bpMobile) {
+                width: 320px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  :global(.card-label) {
+    background-color: white;
+    border-radius: 12px;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 14px;
+    letter-spacing: 0.24px;
+    text-transform: uppercase;
+    color: $primaryDarkBlue;
+    display: inline-block;
+    width: fit-content;
+    padding: 4px 8px;
+  }
+
+  :global(.swiper-pagination) {
+    :global {
+      .swiper-pagination-bullet {
+        width: 20px;
+        height: 20px;
+        background-color: transparent;
+        position: relative;
+        &.swiper-pagination-bullet-active {
+          border: 1px solid $primaryDarkBlue;
+          span {
+            background: $primaryDarkBlue;
+          }
+        }
+        opacity: 1;
+        span {
+          background: $primaryDarkBlue2;
+          display: flex;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
   }
 }
 
@@ -377,13 +666,13 @@
   :global {
     .who-are-we-mobile {
       display: none;
-      @media only screen and (max-width: 640px) {
+      @media screen and (max-width: $bpMobile) {
         display: block;
       }
     }
     .who-are-we-lg-md {
       display: block;
-      @media only screen and (max-width: 640px) {
+      @media screen and (max-width: $bpMobile) {
         display: none;
       }
     }
@@ -499,6 +788,134 @@
     }
     .ant-collapse-content-active .p-s {
       line-height: 22px;
+    }
+  }
+}
+
+.latestNews {
+  margin-bottom: 80px;
+  :global {
+    .container .news-wrapper {
+      margin-bottom: 18px;
+    }
+    .container .news-wrapper .p-l {
+      width: 70%;
+      @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+        width: 80%;
+      }
+    }
+    .container .news-wrapper.hide-sm {
+      display: block;
+      @media only screen and (max-width: 640px) {
+        display: none;
+      }
+    }
+    .caps-heading-1 {
+      font-family: var(--font-archia), sans-serif;
+      color: $primaryPurple;
+    }
+    h2 {
+      font-weight: 500;
+      margin-block-start: 12px;
+      margin-block-end: 0;
+    }
+    h2 strong {
+      font-weight: 700;
+    }
+    .ant-card-body h5 {
+      margin-block-start: 18px;
+      margin-block-end: 8px;
+    }
+    .ant-card-body p {
+      margin-block-start: 0;
+      margin-block-end: 15px;
+    }
+    .ant-card-body .read-more {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+      color: $primaryDarkBlue;
+      font-size: $fzXS;
+      line-height: $lhXS;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+    .news-items .ant-card .ant-card-cover img {
+      width: 100%;
+      border-radius: 16px;
+    }
+    .news-items .ant-card .ant-card-cover .cover-image-container {
+      position: relative;
+      padding: 0px;
+      img {
+        object-fit: cover;
+      }
+      .cover-image-overlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: fit-content;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .badge {
+          width: fit-content;
+          height: 24px;
+          line-height: 24px;
+          padding: 0 10px;
+          border-radius: 12px;
+          &.blue {
+            background-color: $primaryBlue;
+            color: $primaryWhite;
+          }
+          &.green {
+            background-color: $primaryGreen;
+          }
+          &.purple {
+            background-color: $primaryPurple;
+            color: $primaryWhite;
+          }
+        }
+        .date {
+          width: 60px;
+          height: 60px;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: space-around;
+          // padding: 0.5rem 1rem;
+          background-color: $primaryWhite;
+          border-radius: 4px;
+          line-height: 10px;
+          .month {
+            text-transform: uppercase;
+          }
+        }
+        img {
+          object-fit: cover;
+        }
+      }
+      .badge,
+      .date .month {
+        font-family: var(--font-archia), sans-serif;
+        font-size: 12px;
+        line-height: 14px;
+        font-weight: 700;
+      }
+    }
+    .news-items {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 24px;
+      row-gap: 24px;
+      @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      @media only screen and (max-width: 640px) {
+        grid-template-columns: 1fr;
+      }
     }
   }
 }
