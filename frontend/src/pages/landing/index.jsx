@@ -258,9 +258,7 @@ const WhoAreWe = () => {
             bordered={false}
             activeKey={activeAccordion}
             onChange={setActiveAccordion}
-            expandIcon={({ isActive }) => (
-              <CirclePointer rotate={isActive ? -90 : 90} />
-            )}
+            expandIcon={() => <CirclePointer />}
             accordion
           >
             {items.map((item) => (
