@@ -426,6 +426,7 @@ const LatestNews = () => {
             const badgeColor = ['blue', 'green', 'purple']
             return (
               <Card
+                bordered={false}
                 cover={
                   <div className="cover-image-container">
                     <div className="cover-image-overlay">

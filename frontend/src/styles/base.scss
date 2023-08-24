@@ -1,3 +1,4 @@
+@import 'antd/dist/antd.css';
 @import 'vars.scss';
 @import 'btns.scss';
 
@@ -159,12 +160,12 @@ h6.bold,
 
 .hide-mobile {
   @media screen and (max-width: 768px) {
-    display: none;
+    display: none !important;
   }
 }
 .hide-desktop {
   @media screen and (min-width: 768px) {
-    display: none;
+    display: none !important;
   }
 }
 img {
