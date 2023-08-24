@@ -29,6 +29,8 @@ const Landing = () => (
     <WhoAreWe />
     <ActNow />
     <LatestNews />
+    <Trusted />
+    <Partners />
   </div>
 )
 
@@ -471,6 +473,83 @@ const LatestNews = () => {
           })}
         </div>
       </div>
+    </div>
+  )
+}
+
+const Trusted = () => {
+  return (
+    <div className="container">
+      <div className={styles.trustedSection}>
+        <div className="trusted-text">
+          <h3 className="semibold">
+            Trusted data and information badge system and validation process.
+          </h3>
+          <Button type="primary" size="large">
+            Discover
+            <CirclePointer />
+          </Button>
+        </div>
+        <div className="trusted-circle" />
+      </div>
+    </div>
+  )
+}
+
+const Partners = () => {
+  const items = [
+    {
+      id: 1,
+      name: 'IMO',
+      url: '/partners/partner-imo.png',
+    },
+    {
+      id: 2,
+      name: 'SEA Solutions',
+      url: '/partners/partner-sea-os-solutions.png',
+    },
+    {
+      id: 3,
+      name: 'Ocean conservancy',
+      url: '/partners/parner-ocean-conservancy.png',
+    },
+    {
+      id: 4,
+      name: 'FAO',
+      url: '/partners/partner-fao.png',
+    },
+    {
+      id: 5,
+      name: 'INFORMEA',
+      url: '/partners/partner-informea.png',
+    },
+    {
+      id: 6,
+      name: 'Duke',
+      url: '/partners/partner-duke.png',
+    },
+    {
+      id: 7,
+      name: 'GESAMP',
+      url: '/partners/partner-gesamp.png',
+    },
+  ]
+  return (
+    <div className={styles.partnerSection}>
+      <h2 className="semibold">Our partners</h2>
+      <div className="partner-container">
+        <div className="partner-items">
+          {items.map((item, ix) => (
+            <span className="partner-item" key={ix}>
+              <Image alt={item.name} src={item.url} width={200} height={97} />
+            </span>
+          ))}
+        </div>
+      </div>
+      <Button type="primary" size="large" ghost>
+        See all partners
+        <ArrowRight />
+      </Button>
     </div>
   )
 }

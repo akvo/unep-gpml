@@ -57,6 +57,12 @@ h2,
   font-size: $fzXXL;
   line-height: $lhXXL;
 }
+h3,
+.h3 {
+  font-family: var(--font-archia), sans-serif;
+  font-size: $fzXL;
+  line-height: $lhXL;
+}
 h5,
 .h5 {
   font-family: var(--font-archia), sans-serif;
@@ -146,6 +152,12 @@ h2.bold,
 h6.bold,
 .h6.bold {
   font-weight: 700;
+}
+h2.semibold,
+.h2.semibold,
+h3.semibold,
+.h3.semibold {
+  font-weight: 600;
 }
 
 .caps-heading-1 {
