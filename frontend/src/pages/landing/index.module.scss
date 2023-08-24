@@ -283,8 +283,10 @@
         border-bottom: 1px solid $primaryDarkBlue2;
         input[type='text'] {
           flex: 1;
-          border: none;
-          outline: none;
+          border: none !important;
+          outline: none !important;
+          box-shadow: none !important;
+          padding: 0;
           margin-top: -3px;
           font-size: $fzM !important;
           font: var(--font-archia), sans-serif;
@@ -314,12 +316,15 @@
           margin-right: 10px;
         }
         .ant-tag {
-          padding: 5px 12px 5px 12px;
+          padding: 0 12px;
           border-radius: 100px;
-          line-height: 32px !important;
           border: 2px solid $primaryDarkBlue2;
           font-weight: 600;
           margin-right: 8px;
+          font-size: $fzXXS;
+          font-family: var(--font-archia), sans-serif;
+          height: 32px;
+          line-height: 28px;
           cursor: pointer;
           transition: all 0.25s ease-out;
           &:hover {
@@ -390,6 +395,7 @@
           padding: 48px 70px;
           h3 {
             color: white;
+            font-weight: 600;
             margin: 0;
             padding: 18px 0px 32px 0px;
             span {
@@ -434,6 +440,9 @@
           gap: 12px;
           height: 100%;
           box-sizing: border-box;
+          h2 {
+            font-weight: 600;
+          }
           > :last-child {
             margin-top: auto;
           }
@@ -464,17 +473,20 @@
           }
           &.card--purple,
           &.card--violet {
-            .ant-btn-link {
+            h2 {
               color: white;
+            }
+            .ant-btn-link {
+              color: white !important;
               svg {
                 path {
-                  stroke: white;
+                  stroke: white !important;
                 }
               }
               &:hover {
-                color: $primaryDarkBlue;
+                color: $primaryDarkBlue !important;
                 svg path {
-                  stroke: $primaryDarkBlue;
+                  stroke: $primaryDarkBlue !important;
                 }
               }
             }
