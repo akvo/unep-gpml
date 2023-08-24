@@ -29,6 +29,7 @@ const Landing = () => (
     <WhoAreWe />
     <ActNow />
     <LatestNews />
+    <Trusted />
   </div>
 )
 
@@ -470,6 +471,25 @@ const LatestNews = () => {
             )
           })}
         </div>
+      </div>
+    </div>
+  )
+}
+
+const Trusted = () => {
+  return (
+    <div className="container">
+      <div className={styles.trustedSection}>
+        <div className="trusted-text">
+          <h3 className="semibold">
+            Trusted data and information badge system and validation process.
+          </h3>
+          <Button type="primary" size="large">
+            Discover
+            <CirclePointer />
+          </Button>
+        </div>
+        <div className="trusted-circle" />
       </div>
     </div>
   )
