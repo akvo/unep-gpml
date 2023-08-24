@@ -754,6 +754,20 @@
         }
       }
     }
+    .ant-collapse-header {
+      .ant-collapse-expand-icon svg {
+        transition: transform 0.3s ease-in-out;
+        transform: rotate(90deg);
+      }
+      &[aria-expanded='true'] {
+        .ant-collapse-expand-icon svg {
+          transform: rotate(270deg);
+        }
+      }
+    }
+    .ant-collapse-header .ant-collapse-expand-icon {
+      cursor: pointer;
+    }
     .p-l {
       line-height: 34px;
     }
