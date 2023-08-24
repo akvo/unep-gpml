@@ -8,23 +8,42 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.h-l {
+  font-size: $fzL;
+  line-height: $lhL;
+}
 .h-m {
-  font-family: var(--font-archia), sans-serif;
   font-size: $fzM;
   line-height: $lhM;
 }
 .h-xs {
-  font-family: var(--font-archia), sans-serif;
   font-size: $fzXS;
   line-height: $lhXS;
 }
 .h-xxs {
-  font-family: var(--font-archia), sans-serif;
   font-size: $fzXXS;
   line-height: $lhXXS;
 }
-h1 {
+.h-xxl {
+  font-size: $fzXXL;
+  line-height: $lhXXL;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-archia), sans-serif;
+  margin: 0;
+}
+
+p {
+  font-family: var(--font-dm-sans), sans-serif;
+  margin: 0;
+}
+
+h1 {
   font-size: $fzXXXL;
   line-height: $lhXXXL;
   @media screen and (max-width: $bpMobile) {
@@ -69,8 +88,8 @@ h6,
   line-height: $lhS;
 }
 .p-s {
-  font-size: 16px;
-  line-height: 20px;
+  font-size: $pfS;
+  line-height: $plhS;
 }
 .container {
   margin: 0 40px;
@@ -140,6 +159,7 @@ h3.semibold,
 }
 
 .caps-heading-1 {
+  font-family: var(--font-archia), sans-serif;
   font-size: $fzXS;
   font-weight: 700;
   line-height: 20px;
@@ -156,4 +176,7 @@ h3.semibold,
   @media screen and (min-width: 768px) {
     display: none;
   }
+}
+img {
+  display: block;
 }
