@@ -29,6 +29,7 @@ const Landing = () => (
     <WhoAreWe />
     <ActNow />
     <LatestNews />
+    <Trusted />
   </div>
 )
 
@@ -240,14 +241,10 @@ const WhoAreWe = () => {
                   }
                   key={item.id}
                 >
-                  <div>
-                    {`${item.id}` === activeTab && (
-                      <div>
-                        <strong className="caps-heading-1">{item.title}</strong>
-                        <p className="p-l">{item.description}</p>
-                      </div>
-                    )}
-                  </div>
+                  <strong className="caps-heading-1">{item.title}</strong>
+                  <br />
+                  <br />
+                  <p className="p-l">{item.description}</p>
                 </Tabs.TabPane>
               )
             })}
@@ -258,9 +255,7 @@ const WhoAreWe = () => {
             bordered={false}
             activeKey={activeAccordion}
             onChange={setActiveAccordion}
-            expandIcon={({ isActive }) => (
-              <CirclePointer rotate={isActive ? -90 : 90} />
-            )}
+            expandIcon={() => <CirclePointer />}
             accordion
           >
             {items.map((item) => (
@@ -268,9 +263,7 @@ const WhoAreWe = () => {
                 header={<strong className="h6 bold">{item.title}</strong>}
                 key={`${item.id}`}
               >
-                {activeAccordion === `${item.id}` && (
-                  <p className="p-s">{item.description}</p>
-                )}
+                <p className="p-s">{item.description}</p>
               </Collapse.Panel>
             ))}
           </Collapse>
@@ -471,6 +464,25 @@ const LatestNews = () => {
             )
           })}
         </div>
+      </div>
+    </div>
+  )
+}
+
+const Trusted = () => {
+  return (
+    <div className="container">
+      <div className={styles.trustedSection}>
+        <div className="trusted-text">
+          <h3 className="semibold">
+            Trusted data and information badge system and validation process.
+          </h3>
+          <Button type="primary" size="large">
+            Discover
+            <CirclePointer />
+          </Button>
+        </div>
+        <div className="trusted-circle" />
       </div>
     </div>
   )
