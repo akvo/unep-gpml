@@ -1,6 +1,7 @@
 (ns gpml.service.file
   (:require [clj-gcp.storage.core :as storage-client]
             [duct.logger :refer [log]]
+            [gpml.boundary.adapter.storage-client.gcs]      ;; We need to require it to extend the Record there
             [gpml.boundary.port.storage-client :as storage-client-ext]
             [gpml.db.file :as db.file]
             [gpml.util :as util]
@@ -54,6 +55,7 @@
   [{:keys [storage-client-adapter
            private-storage-bucket-name
            private-storage-signed-url-lifespan]} file]
+  (prn "get private url method")
   (storage-client-ext/get-blob-signed-url storage-client-adapter
                                           private-storage-bucket-name
                                           (:object-key file)
