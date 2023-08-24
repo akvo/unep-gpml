@@ -763,14 +763,19 @@
       margin-left: 0;
       border-left: none;
     }
-    .ant-tabs-left > .ant-tabs-content-holder > .ant-tabs-content > .ant-tabs-tabpane {
+    .ant-tabs-left
+      > .ant-tabs-content-holder
+      > .ant-tabs-content
+      > .ant-tabs-tabpane {
       padding-left: 0;
     }
     .ant-tabs-ink-bar {
       background-color: transparent;
     }
     .ant-tabs .ant-tabs-tab,
-    .ant-collapse > .ant-collapse-item:not(.ant-collapse-item-active) > .ant-collapse-header {
+    .ant-collapse
+      > .ant-collapse-item:not(.ant-collapse-item-active)
+      > .ant-collapse-header {
       font-family: var(--font-archia), sans-serif;
       background-color: $primaryGrey;
       svg {
@@ -975,13 +980,13 @@
   :global {
     .trusted-text {
       max-width: 575px;
-      margin: 60px 0 44px 42px;
+      margin: 50px 0 44px 42px;
       @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
         margin: 42px 0 42px 42px;
       }
       @media only screen and (max-width: 640px) {
         margin: 8px;
-        padding: 20px 8px 16px;
+        padding: 20px 8px 7px;
         text-align: center;
         h3.bold {
           letter-spacing: -0.013em;
