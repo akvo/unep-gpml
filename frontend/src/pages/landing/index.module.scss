@@ -754,13 +754,14 @@
         }
       }
     }
-    .ant-collapse-header[aria-expanded='false']:hover {
-      svg {
-        circle {
-          fill: $primaryDarkBlue;
-        }
-        path {
-          transform: translateX(3px);
+    .ant-collapse-header {
+      .ant-collapse-expand-icon svg {
+        transition: transform 0.3s ease-in-out;
+        transform: rotate(90deg);
+      }
+      &[aria-expanded='true'] {
+        .ant-collapse-expand-icon svg {
+          transform: rotate(270deg);
         }
       }
     }
