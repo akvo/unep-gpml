@@ -241,14 +241,10 @@ const WhoAreWe = () => {
                   }
                   key={item.id}
                 >
-                  <div>
-                    {`${item.id}` === activeTab && (
-                      <div>
-                        <strong className="caps-heading-1">{item.title}</strong>
-                        <p className="p-l">{item.description}</p>
-                      </div>
-                    )}
-                  </div>
+                  <strong className="caps-heading-1">{item.title}</strong>
+                  <br />
+                  <br />
+                  <p className="p-l">{item.description}</p>
                 </Tabs.TabPane>
               )
             })}
@@ -259,9 +255,7 @@ const WhoAreWe = () => {
             bordered={false}
             activeKey={activeAccordion}
             onChange={setActiveAccordion}
-            expandIcon={({ isActive }) => (
-              <CirclePointer rotate={isActive ? -90 : 90} />
-            )}
+            expandIcon={() => <CirclePointer />}
             accordion
           >
             {items.map((item) => (
@@ -269,9 +263,7 @@ const WhoAreWe = () => {
                 header={<strong className="h6 bold">{item.title}</strong>}
                 key={`${item.id}`}
               >
-                {activeAccordion === `${item.id}` && (
-                  <p className="p-s">{item.description}</p>
-                )}
+                <p className="p-s">{item.description}</p>
               </Collapse.Panel>
             ))}
           </Collapse>
@@ -429,6 +421,7 @@ const LatestNews = () => {
             const badgeColor = ['blue', 'green', 'purple']
             return (
               <Card
+                bordered={false}
                 cover={
                   <div className="cover-image-container">
                     <div className="cover-image-overlay">
