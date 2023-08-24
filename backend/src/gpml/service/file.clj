@@ -55,7 +55,6 @@
   [{:keys [storage-client-adapter
            private-storage-bucket-name
            private-storage-signed-url-lifespan]} file]
-  (prn "get private url method")
   (storage-client-ext/get-blob-signed-url storage-client-adapter
                                           private-storage-bucket-name
                                           (:object-key file)
