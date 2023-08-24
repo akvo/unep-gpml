@@ -872,7 +872,6 @@
           align-items: center;
           flex-direction: column;
           justify-content: space-around;
-          // padding: 0.5rem 1rem;
           background-color: $primaryWhite;
           border-radius: 4px;
           line-height: 10px;
@@ -921,10 +920,15 @@
   :global {
     .trusted-text {
       max-width: 575px;
-      margin: 0 2rem 2rem;
+      margin: 32px;
       @media only screen and (max-width: 640px) {
-        margin: 0 12px 12px;
+        margin: 12px;
+        padding: 0 16px;
         text-align: center;
+        .ant-btn.ant-btn-primary.ant-btn-lg {
+          width: 100%;
+          border-radius: 100px;
+        }
       }
     }
     .trusted-text h3.semibold {
@@ -951,11 +955,11 @@
         background-size: 310px 420px;
       }
       @media only screen and (max-width: 640px) {
-        height: 15rem;
+        height: 252px;
         border-top-left-radius: 16px;
         border-bottom-right-radius: 0;
         background-image: url('/trusted-circles-mobile.svg');
-        background-position: left top;
+        background-position: center top;
       }
     }
   }
