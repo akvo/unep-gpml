@@ -529,7 +529,9 @@ const Partners = () => {
   ]
   return (
     <div className={styles.partnerSection}>
-      <h2 className="semibold">Our partners</h2>
+      <div className="container">
+        <h2 className="semibold">Our partners</h2>
+      </div>
       <div className="partner-container">
         <div className="partner-items">
           {items.map((item, ix) => (
@@ -539,10 +541,12 @@ const Partners = () => {
           ))}
         </div>
       </div>
-      <Button type="primary" size="large" ghost>
-        See all partners
-        <ArrowRight />
-      </Button>
+      <div className="partner-button">
+        <Button size="large" ghost>
+          See all partners
+          <ArrowRight />
+        </Button>
+      </div>
     </div>
   )
 }
