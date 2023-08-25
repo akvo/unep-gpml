@@ -538,6 +538,7 @@ const Activities = () => {
 }
 
 const OurVoices = () => {
+  const [width] = useDeviceSize()
   return (
     <section className={styles.ourVoices}>
       <div className="container">
@@ -552,7 +553,13 @@ const OurVoices = () => {
         </div>
         <div className="group-wrapper">
           <div className="group-one">
-            <img src="/voices-group-one.jpg" />
+            <img
+              src={
+                width >= 768
+                  ? `/voices-group-one.jpg`
+                  : '/voices-group-one-mobile.jpg'
+              }
+            />
             <div className="group-card">
               <div className="label-s">WASTE PICKERS</div>
               <p className="p-l">
@@ -575,7 +582,13 @@ const OurVoices = () => {
                 Explore whole story <ArrowRight />
               </Button>
             </div>
-            <img src="/voices-group-one.jpg" />
+            <img
+              src={
+                width >= 768
+                  ? `/voices-group-two.jpg`
+                  : '/voices-group-two-mobile.jpg'
+              }
+            />
           </div>
         </div>
       </div>
