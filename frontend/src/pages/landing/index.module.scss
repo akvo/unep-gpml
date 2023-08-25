@@ -1034,3 +1034,89 @@
     }
   }
 }
+
+.partnerSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 41px;
+  padding: 80px 0;
+  @media only screen and (max-width: 640px) {
+    gap: 32px;
+    padding: 32px 0;
+  }
+  :global {
+    .partner-container {
+      max-width: 1366px;
+      @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+        max-width: 768px;
+      }
+      @media only screen and (max-width: 640px) {
+        width: 100%;
+      }
+    }
+    .partner-container .partner-items {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 62px;
+      overflow-x: auto;
+      @media only screen and (max-width: 640px) {
+        gap: 42.64px;
+      }
+    }
+    .partner-container .partner-items .partner-item {
+      width: 100%;
+      @media only screen and (max-width: 640px) {
+        width: 111px;
+      }
+    }
+    .partner-container .partner-items .partner-item img {
+      width: 100%;
+      height: auto;
+      -webkit-filter: grayscale(1);
+      filter: grayscale(1);
+      &:hover {
+        -webkit-filter: grayscale(0);
+        filter: none;
+      }
+      @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+        width: 210px;
+      }
+      @media only screen and (max-width: 640px) {
+        width: inherit;
+        max-width: 110px;
+      }
+    }
+    .container h2.semibold {
+      color: $primaryDarkBlue;
+      text-align: center;
+      @media only screen and (max-width: 640px) {
+        font-size: $fzL;
+        line-height: $lhL;
+      }
+    }
+    .partner-button {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      padding: 0 25px;
+    }
+    .partner-button .ant-btn.ant-btn-background-ghost:hover {
+      svg path {
+        transform: translateX(3px);
+      }
+    }
+    @media only screen and (max-width: 640px) {
+      .partner-button .ant-btn.ant-btn-background-ghost {
+        width: 100% !important;
+        justify-content: space-between;
+        & > span {
+          padding-left: 25%;
+        }
+      }
+    }
+  }
+}
