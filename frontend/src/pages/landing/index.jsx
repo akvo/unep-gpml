@@ -30,6 +30,8 @@ const Landing = () => (
     <ActNow />
     <LatestNews />
     <Trusted />
+    <Partners />
+    <HelpCentre />
   </div>
 )
 
@@ -483,6 +485,93 @@ const Trusted = () => {
           </Button>
         </div>
         <div className="trusted-circle" />
+      </div>
+    </div>
+  )
+}
+
+const Partners = () => {
+  const items = [
+    {
+      id: 1,
+      name: 'IMO',
+      url: '/partners/partner-imo.png',
+    },
+    {
+      id: 2,
+      name: 'SEA Solutions',
+      url: '/partners/partner-sea-os-solutions.png',
+    },
+    {
+      id: 3,
+      name: 'Ocean conservancy',
+      url: '/partners/parner-ocean-conservancy.png',
+    },
+    {
+      id: 4,
+      name: 'FAO',
+      url: '/partners/partner-fao.png',
+    },
+    {
+      id: 5,
+      name: 'INFORMEA',
+      url: '/partners/partner-informea.png',
+    },
+    {
+      id: 6,
+      name: 'Duke',
+      url: '/partners/partner-duke.png',
+    },
+    {
+      id: 7,
+      name: 'GESAMP',
+      url: '/partners/partner-gesamp.png',
+    },
+  ]
+  return (
+    <div className={styles.partnerSection}>
+      <div className="container">
+        <h2 className="semibold">Our partners</h2>
+      </div>
+      <div className="partner-container">
+        <div className="partner-items">
+          {items.map((item, ix) => (
+            <span className="partner-item" key={ix}>
+              <Image alt={item.name} src={item.url} width={200} height={97} />
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="partner-button">
+        <Button size="large" ghost>
+          See all partners
+          <ArrowRight />
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+const HelpCentre = () => {
+  return (
+    <div className={styles.helpCentreSection}>
+      <Image
+        src="/globe-help-centre.svg"
+        alt="CTA Help centre"
+        width={64}
+        height={64}
+      />
+      <div className="help-centre-text">
+        <h2 className="bold">Any Questions?</h2>
+        <h6 className="semibold">
+          Visit the Help Center for FAGs, tutorials and more
+        </h6>
+      </div>
+      <div className="help-centre-button">
+        <Button className="secondary">
+          Visit the Help Centre
+          <ArrowRight />
+        </Button>
       </div>
     </div>
   )
