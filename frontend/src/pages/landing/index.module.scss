@@ -1034,3 +1034,95 @@
     }
   }
 }
+
+.partnership {
+  padding: 80px 0px;
+  :global {
+    .content-container {
+      display: flex;
+      flex-direction: row;
+      border-radius: 40px;
+      background-color: $primaryDarkBlue;
+      padding-bottom: 20px;
+      .partnership-content-wrapper {
+        padding: 70px 0px 70px 170px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        h2 {
+          color: white;
+          font-weight: 600;
+          max-width: 661px;
+        }
+        p {
+          color: white;
+          max-width: 575px;
+        }
+        .ant-btn {
+          width: fit-content !important;
+        }
+      }
+    }
+    .links-container {
+      padding: 0px 60px;
+      margin-top: -40px;
+      .links-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 20px;
+        height: 100%;
+        border-radius: 16px;
+        padding: 32px;
+        border: 1px solid $primaryDarkBlue2;
+        background-color: $primaryGrey;
+        .h-m {
+          color: $primaryDarkBlue;
+          font-weight: 700;
+        }
+        p {
+          font-size: 20px;
+          line-height: normal;
+          font-weight: 400;
+        }
+        .link-list {
+          padding: 0;
+          margin: 0;
+          list-style-type: none;
+          li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 18px;
+            font-size: 20px;
+            font-weight: 400;
+            line-height: normal;
+            font-family: var(--font-dm-sans), sans-serif;
+            &:last-child {
+              margin-bottom: 0px;
+            }
+            svg {
+              margin-right: 12px;
+              circle {
+                fill: $primaryGrey;
+              }
+              path {
+                stroke: $primaryDarkBlue;
+              }
+            }
+          }
+        }
+        .icon-list {
+          list-style-type: none;
+          padding: 0;
+          margin: 0;
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          li {
+            height: 32px;
+          }
+        }
+      }
+    }
+  }
+}
