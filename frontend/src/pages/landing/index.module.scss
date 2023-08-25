@@ -1114,7 +1114,8 @@
         width: 100% !important;
         justify-content: space-between;
         & > span {
-          padding-left: 25%;
+          width: 100%;
+          text-align: center;
         }
       }
     }
