@@ -719,7 +719,7 @@ const HelpCentre = () => {
         </h6>
       </div>
       <div className="help-centre-button">
-        <Button className="secondary">
+        <Button>
           Visit the Help Centre
           <ArrowRight />
         </Button>
