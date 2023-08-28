@@ -512,25 +512,25 @@ const Activities = () => {
             </li>
             <li>
               <div className="icon">
-                <img src="/activity-policy.svg" />
+                <img src="/activity-bookmark.svg" />
               </div>
               <p className="h-m">Guidelines standards & harmonization</p>
             </li>
             <li>
               <div className="icon">
-                <img src="/activity-policy.svg" />
+                <img src="/activity-money.svg" />
               </div>
               <p className="h-m">Sustainable & innovative financing</p>
             </li>
             <li>
               <div className="icon">
-                <img src="/activity-policy.svg" />
+                <img src="/activity-plans.svg" />
               </div>
               <p className="h-m">National action plans</p>
             </li>
             <li>
               <div className="icon">
-                <img src="/activity-policy.svg" />
+                <img src="/activity-access.svg" />
               </div>
               <p className="h-m">Access to all</p>
             </li>
