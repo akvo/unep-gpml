@@ -82,16 +82,6 @@
           }
         }
       }
-      &.secondary {
-        background-color: $primaryDarkBlue;
-        color: $primaryWhite;
-        svg path {
-          stroke: $primaryWhite;
-        }
-        &:hover {
-          background: linear-gradient(to bottom, $primaryDarkBlue, #05208e);
-        }
-      }
     }
     &.ant-btn-lg {
       padding: 16px 24px;
