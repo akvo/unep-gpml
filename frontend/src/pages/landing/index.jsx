@@ -1,5 +1,4 @@
-import { Button, Tabs, Collapse, Card, Tag, Form, Input } from 'antd'
-import { TwitterCircleFilled } from '@ant-design/icons'
+import { Button, Tabs, Collapse, Card, Tag, Input, Col, Row, Form } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './index.module.scss'
@@ -8,8 +7,10 @@ import {
   Magnifier,
   Localiser,
   ArrowRight,
-  FacebookCircleFilled,
-  LinkedinCircleFilled,
+  LongArrowRight,
+  FacebookIcon,
+  LinkedinIcon,
+  TwitterIcon,
 } from '../../components/icons'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
@@ -32,7 +33,9 @@ const Landing = () => (
     <WhoAreWe />
     <ActNow />
     <LatestNews />
+    <OurVoices />
     <Trusted />
+    <Partnership />
     <Partners />
     <HelpCentre />
     <Footer />
@@ -475,6 +478,68 @@ const LatestNews = () => {
   )
 }
 
+const OurVoices = () => {
+  const [width] = useDeviceSize()
+  return (
+    <section className={styles.ourVoices}>
+      <div className="container">
+        <div className="title-wrapper">
+          <div className="title-holder">
+            <PageHeading title="Our Voices" />
+            <h2 className="h-xxl">
+              Uniting Waste Pickers and Indigenous Communities:{' '}
+              <span>Take Action for Sustainable Empowerment</span>
+            </h2>
+          </div>
+        </div>
+        <div className="group-wrapper">
+          <div className="group-one">
+            <img
+              src={
+                width < 768
+                  ? '/voices-group-one-mobile.jpg'
+                  : '/voices-group-one.jpg'
+              }
+            />
+            <div className="group-card">
+              <div className="label-s">
+                <span>WASTE PICKERS</span>
+              </div>
+              <p className="p-l">
+                Cooperative actions for Caribbean fisheries officials after a
+                successful ghost gear retrieval training in Panama{' '}
+              </p>
+              <Button>
+                Explore whole story <LongArrowRight />
+              </Button>
+            </div>
+          </div>
+          <div className="group-two">
+            <div className="group-card">
+              <div className="label-s">
+                <span>Indigenous People</span>
+              </div>
+              <p className="p-l">
+                Cooperative actions for Caribbean fisheries officials after a
+                successful ghost gear retrieval training in Panama{' '}
+              </p>
+              <Button>
+                Explore whole story <LongArrowRight />
+              </Button>
+            </div>
+            <img
+              src={
+                width < 768
+                  ? '/voices-group-two-mobile.jpg'
+                  : '/voices-group-two.jpg'
+              }
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
 const Trusted = () => {
   return (
     <div className="container">
@@ -491,6 +556,87 @@ const Trusted = () => {
         <div className="trusted-circle" />
       </div>
     </div>
+  )
+}
+
+const Partnership = () => {
+  return (
+    <section className={styles.partnership}>
+      <div className="container content-container">
+        <div className="partnership-content-wrapper">
+          <h2 className="h-xxl">
+            Join the Global Partnership on Plastic Pollution and Marine Litter
+          </h2>
+          <p className="h-m">
+            Become part of GPML to collaborate with thousands of organisations
+            and individuals from around the world
+          </p>
+          <Button type="primary" size="large">
+            Join now
+            <CirclePointer />
+          </Button>
+        </div>
+      </div>
+      <div className="container links-container">
+        <Row gutter={24}>
+          <Col lg={8} xl={8}>
+            <div className="links-card">
+              <h3 className="h-m">Become part of the network</h3>
+              <ul className="link-list">
+                <li>
+                  <CirclePointer />
+                  Sign Up
+                </li>
+                <li>
+                  <CirclePointer />
+                  Join the GPML
+                </li>
+                <li>
+                  <CirclePointer />
+                  Become a partnerL
+                </li>
+              </ul>
+            </div>
+          </Col>
+          <Col lg={8} xl={8}>
+            <div className="links-card">
+              <h3 className="h-m">Co-solution with our network</h3>
+              <ul className="link-list">
+                <li>
+                  <CirclePointer />
+                  Network with others
+                </li>
+                <li>
+                  <CirclePointer />
+                  Share your knowledge
+                </li>
+                <li>
+                  <CirclePointer />
+                  Share your data
+                </li>
+              </ul>
+            </div>
+          </Col>
+          <Col lg={8} xl={8}>
+            <div className="links-card">
+              <h3 className="h-m">Spread the word</h3>
+              <p>Follow us on social media to be part of the movement. </p>
+              <ul className="icon-list">
+                <li>
+                  <FacebookIcon />
+                </li>
+                <li>
+                  <LinkedinIcon />
+                </li>
+                <li>
+                  <TwitterIcon />
+                </li>
+              </ul>
+            </div>
+          </Col>
+        </Row>
+      </div>
+    </section>
   )
 }
 
@@ -538,19 +684,21 @@ const Partners = () => {
         <h2 className="semibold">Our partners</h2>
       </div>
       <div className="partner-container">
-        <div className="partner-items">
+        <ul className="partner-items">
           {items.map((item, ix) => (
-            <span className="partner-item" key={ix}>
+            <li key={ix}>
               <Image alt={item.name} src={item.url} width={200} height={97} />
-            </span>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
-      <div className="partner-button">
-        <Button size="large" ghost>
-          See all partners
-          <ArrowRight />
-        </Button>
+      <div className="partner-button-container">
+        <div className="container">
+          <Button size="large" ghost>
+            See all partners
+            <ArrowRight />
+          </Button>
+        </div>
       </div>
     </div>
   )
@@ -568,11 +716,11 @@ const HelpCentre = () => {
       <div className="help-centre-text">
         <h2 className="bold">Any Questions?</h2>
         <h6 className="semibold">
-          Visit the Help Center for FAGs, tutorials and more
+          Visit the Help Center for FAQs, tutorials and more
         </h6>
       </div>
       <div className="help-centre-button">
-        <Button className="secondary">
+        <Button>
           Visit the Help Centre
           <ArrowRight />
         </Button>
@@ -679,7 +827,7 @@ const Footer = () => {
                         aria-label="facebook-circle"
                         className="anticon"
                       >
-                        <FacebookCircleFilled />
+                        <FacebookIcon />
                       </span>
                     </a>
                   </li>
@@ -689,7 +837,7 @@ const Footer = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <TwitterCircleFilled />
+                      <TwitterIcon />
                     </a>
                   </li>
                   <li>

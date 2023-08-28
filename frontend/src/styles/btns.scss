@@ -34,18 +34,69 @@
       &:not(.noicon):not(.left-icon) {
         padding-right: 60px;
       }
+      &:active:not(:disabled) {
+        background-color: $primaryGreen;
+        svg {
+          path {
+            transform: translateX(2px);
+          }
+        }
+      }
     }
     &.ant-btn-default {
       display: flex;
       align-items: center;
-      background-color: transparent;
+      background-color: $primaryDarkBlue;
       border-color: $primaryDarkBlue;
-      color: $primaryDarkBlue;
+      color: white;
+      transition: all 0.2s ease-out;
       svg {
         position: relative;
         top: 0 !important;
         right: 0 !important;
         padding-left: 10px;
+        transition: all 0.2s ease-out;
+        path {
+          stroke: white;
+        }
+      }
+      &:hover {
+        background-color: transparent;
+        border-color: $primaryDarkBlue;
+        color: $primaryDarkBlue;
+        padding-right: 28px;
+        svg {
+          transform: translateX(8px);
+          path {
+            stroke: $primaryDarkBlue;
+          }
+        }
+      }
+      &:active {
+        background-color: $primaryDarkBlue5;
+        border-color: $primaryDarkBlue5;
+        color: white;
+        svg {
+          path {
+            stroke: white;
+          }
+        }
+      }
+    }
+    &.ant-btn-lg {
+      padding: 16px 24px;
+      svg {
+        right: 12px;
+        top: 12px;
+      }
+    }
+    &.ant-btn-background-ghost {
+      background-color: transparent;
+      color: $primaryDarkBlue;
+      svg {
+        path {
+          stroke: $primaryDarkBlue;
+        }
       }
       &:hover {
         background-color: $primaryDarkBlue;
@@ -56,27 +107,6 @@
             stroke: white;
           }
         }
-      }
-      &.secondary {
-        background-color: $primaryDarkBlue;
-        color: $primaryWhite;
-        svg path {
-          stroke: $primaryWhite;
-        }
-        &:hover {
-          background-color: $primaryGreen;
-          color: $primaryDarkBlue;
-          svg path {
-            stroke: $primaryDarkBlue;
-          }
-        }
-      }
-    }
-    &.ant-btn-lg {
-      padding: 16px 24px;
-      svg {
-        right: 12px;
-        top: 12px;
       }
     }
     &.ant-btn-sm {
@@ -132,6 +162,13 @@
       &.ant-btn-sm {
         padding: 6px 18px;
       }
+      &.ant-btn-lg {
+        padding: 12px 24px;
+        svg {
+          right: 8px;
+          top: 8px;
+        }
+      }
     }
     &:hover,
     &:active,
@@ -144,14 +181,6 @@
         }
         circle {
           fill: $primaryGreen4;
-        }
-      }
-    }
-    &:active:not(:disabled) {
-      background-color: $primaryGreen;
-      svg {
-        path {
-          transform: translateX(2px);
         }
       }
     }
