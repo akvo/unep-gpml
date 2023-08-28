@@ -533,19 +533,21 @@ const Partners = () => {
         <h2 className="semibold">Our partners</h2>
       </div>
       <div className="partner-container">
-        <div className="partner-items">
+        <ul className="partner-items">
           {items.map((item, ix) => (
-            <span className="partner-item" key={ix}>
+            <li key={ix}>
               <Image alt={item.name} src={item.url} width={200} height={97} />
-            </span>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
-      <div className="partner-button">
-        <Button size="large" ghost>
-          See all partners
-          <ArrowRight />
-        </Button>
+      <div className="partner-button-container">
+        <div className="container">
+          <Button size="large" ghost>
+            See all partners
+            <ArrowRight />
+          </Button>
+        </div>
       </div>
     </div>
   )
