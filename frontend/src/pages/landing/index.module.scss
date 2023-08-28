@@ -1037,6 +1037,9 @@
 
 .partnership {
   padding: 80px 0px;
+  @media screen and (max-width: $bpMobile) {
+    padding: 24px 0px;
+  }
   :global {
     .content-container {
       display: flex;
