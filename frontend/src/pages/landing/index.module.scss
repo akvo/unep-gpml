@@ -632,6 +632,17 @@
         img {
           border-radius: 16px;
         }
+        button {
+          width: fit-content !important;
+          @media screen and (max-width: $bpMobile) {
+            width: 100% !important;
+            justify-content: space-between;
+            span {
+              width: 100%;
+              text-align: center;
+            }
+          }
+        }
         .group-one {
           display: flex;
           position: relative;
