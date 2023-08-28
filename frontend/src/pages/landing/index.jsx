@@ -29,6 +29,8 @@ const Landing = () => (
     <ActNow />
     <LatestNews />
     <Activities />
+    <Trusted />
+    <Partners />
   </div>
 )
 
@@ -240,14 +242,10 @@ const WhoAreWe = () => {
                   }
                   key={item.id}
                 >
-                  <div>
-                    {`${item.id}` === activeTab && (
-                      <div>
-                        <strong className="caps-heading-1">{item.title}</strong>
-                        <p className="p-l">{item.description}</p>
-                      </div>
-                    )}
-                  </div>
+                  <strong className="caps-heading-1">{item.title}</strong>
+                  <br />
+                  <br />
+                  <p className="p-l">{item.description}</p>
                 </Tabs.TabPane>
               )
             })}
@@ -258,9 +256,7 @@ const WhoAreWe = () => {
             bordered={false}
             activeKey={activeAccordion}
             onChange={setActiveAccordion}
-            expandIcon={({ isActive }) => (
-              <CirclePointer rotate={isActive ? -90 : 90} />
-            )}
+            expandIcon={() => <CirclePointer />}
             accordion
           >
             {items.map((item) => (
@@ -268,9 +264,7 @@ const WhoAreWe = () => {
                 header={<strong className="h6 bold">{item.title}</strong>}
                 key={`${item.id}`}
               >
-                {activeAccordion === `${item.id}` && (
-                  <p className="p-s">{item.description}</p>
-                )}
+                <p className="p-s">{item.description}</p>
               </Collapse.Panel>
             ))}
           </Collapse>
@@ -428,6 +422,7 @@ const LatestNews = () => {
             const badgeColor = ['blue', 'green', 'purple']
             return (
               <Card
+                bordered={false}
                 cover={
                   <div className="cover-image-container">
                     <div className="cover-image-overlay">
@@ -492,8 +487,9 @@ const Activities = () => {
             </p>
           </div>
           <div>
-            <Button type="primary" size="large" ghost>
-              Visit the website <ArrowRight />
+            <Button size="large" ghost>
+              Visit the website
+              <ArrowRight />
             </Button>
           </div>
         </div>
@@ -537,6 +533,89 @@ const Activities = () => {
         </div>
       </div>
     </section>
+  )
+}
+
+const Trusted = () => {
+  return (
+    <div className="container">
+      <div className={styles.trustedSection}>
+        <div className="trusted-text">
+          <h3 className="semibold">
+            Trusted data and information badge system and validation process.
+          </h3>
+          <Button type="primary" size="large">
+            Discover
+            <CirclePointer />
+          </Button>
+        </div>
+        <div className="trusted-circle" />
+      </div>
+    </div>
+  )
+}
+
+const Partners = () => {
+  const items = [
+    {
+      id: 1,
+      name: 'IMO',
+      url: '/partners/partner-imo.png',
+    },
+    {
+      id: 2,
+      name: 'SEA Solutions',
+      url: '/partners/partner-sea-os-solutions.png',
+    },
+    {
+      id: 3,
+      name: 'Ocean conservancy',
+      url: '/partners/parner-ocean-conservancy.png',
+    },
+    {
+      id: 4,
+      name: 'FAO',
+      url: '/partners/partner-fao.png',
+    },
+    {
+      id: 5,
+      name: 'INFORMEA',
+      url: '/partners/partner-informea.png',
+    },
+    {
+      id: 6,
+      name: 'Duke',
+      url: '/partners/partner-duke.png',
+    },
+    {
+      id: 7,
+      name: 'GESAMP',
+      url: '/partners/partner-gesamp.png',
+    },
+  ]
+  return (
+    <div className={styles.partnerSection}>
+      <div className="container">
+        <h2 className="semibold">Our partners</h2>
+      </div>
+      <div className="partner-container">
+        <ul className="partner-items">
+          {items.map((item, ix) => (
+            <li key={ix}>
+              <Image alt={item.name} src={item.url} width={200} height={97} />
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="partner-button-container">
+        <div className="container">
+          <Button size="large" ghost>
+            See all partners
+            <ArrowRight />
+          </Button>
+        </div>
+      </div>
+    </div>
   )
 }
 
