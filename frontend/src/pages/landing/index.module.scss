@@ -988,16 +988,14 @@
         flex-direction: column;
         gap: 24px;
         @media screen and (max-width: $bpMobile) {
-          padding: 22px;
+          padding: 25px;
         }
         h2 {
           color: white;
           font-weight: 600;
           max-width: 661px;
           @media screen and (max-width: $bpMobile) {
-            max-width: 100%;
-            font-size: 32px;
-            line-height: 36px;
+            max-width: 230px;
           }
         }
         p {

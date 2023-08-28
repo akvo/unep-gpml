@@ -9,6 +9,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.h-xxl {
+  font-size: $fzXXL;
+  line-height: $lhXXL;
+  @media screen and (max-width: $bpMobile) {
+    font-size: $fzL;
+    line-height: $lhL;
+  }
+}
 .h-l {
   font-size: $fzL;
   line-height: $lhL;
@@ -24,10 +32,6 @@ body {
 .h-xxs {
   font-size: $fzXXS;
   line-height: $lhXXS;
-}
-.h-xxl {
-  font-size: $fzXXL;
-  line-height: $lhXXL;
 }
 h1,
 h2,
