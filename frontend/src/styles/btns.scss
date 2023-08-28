@@ -38,14 +38,43 @@
     &.ant-btn-default {
       display: flex;
       align-items: center;
-      background-color: transparent;
+      background-color: $primaryDarkBlue;
       border-color: $primaryDarkBlue;
-      color: $primaryDarkBlue;
+      color: white;
       svg {
         position: relative;
         top: 0 !important;
         right: 0 !important;
         padding-left: 10px;
+        path {
+          stroke: white;
+        }
+      }
+      &:hover {
+        background-color: transparent;
+        border-color: $primaryDarkBlue;
+        color: $primaryDarkBlue;
+        svg {
+          path {
+            stroke: $primaryDarkBlue;
+          }
+        }
+      }
+    }
+    &.ant-btn-lg {
+      padding: 16px 24px;
+      svg {
+        right: 12px;
+        top: 12px;
+      }
+    }
+    &.ant-btn-background-ghost {
+      background-color: transparent;
+      color: $primaryDarkBlue;
+      svg {
+        path {
+          stroke: $primaryDarkBlue;
+        }
       }
       &:hover {
         background-color: $primaryDarkBlue;
@@ -56,13 +85,6 @@
             stroke: white;
           }
         }
-      }
-    }
-    &.ant-btn-lg {
-      padding: 16px 24px;
-      svg {
-        right: 12px;
-        top: 12px;
       }
     }
     &.ant-btn-sm {

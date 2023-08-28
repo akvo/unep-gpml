@@ -29,6 +29,7 @@ const Landing = () => (
     <WhoAreWe />
     <ActNow />
     <LatestNews />
+    <OurVoices />
     <Trusted />
     <Partners />
   </div>
@@ -470,6 +471,68 @@ const LatestNews = () => {
   )
 }
 
+const OurVoices = () => {
+  const [width] = useDeviceSize()
+  return (
+    <section className={styles.ourVoices}>
+      <div className="container">
+        <div className="title-wrapper">
+          <div className="title-holder">
+            <PageHeading title="Our Voices" />
+            <h2 className="h-xxl">
+              Uniting Waste Pickers and Indigenous Communities:{' '}
+              <span>Take Action for Sustainable Empowerment</span>
+            </h2>
+          </div>
+        </div>
+        <div className="group-wrapper">
+          <div className="group-one">
+            <img
+              src={
+                width < 768
+                  ? '/voices-group-one-mobile.jpg'
+                  : '/voices-group-one.jpg'
+              }
+            />
+            <div className="group-card">
+              <div className="label-s">
+                <span>WASTE PICKERS</span>
+              </div>
+              <p className="p-l">
+                Cooperative actions for Caribbean fisheries officials after a
+                successful ghost gear retrieval training in Panama{' '}
+              </p>
+              <Button size="default">
+                Explore whole story <ArrowRight />
+              </Button>
+            </div>
+          </div>
+          <div className="group-two">
+            <div className="group-card">
+              <div className="label-s">
+                <span>Indigenous People</span>
+              </div>
+              <p className="p-l">
+                Cooperative actions for Caribbean fisheries officials after a
+                successful ghost gear retrieval training in Panama{' '}
+              </p>
+              <Button size="default">
+                Explore whole story <ArrowRight />
+              </Button>
+            </div>
+            <img
+              src={
+                width < 768
+                  ? '/voices-group-two-mobile.jpg'
+                  : '/voices-group-two.jpg'
+              }
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
 const Trusted = () => {
   return (
     <div className="container">
