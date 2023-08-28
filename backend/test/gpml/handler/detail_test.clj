@@ -36,7 +36,6 @@
    :remarks nil
    :review_status nil
    :document_preview false
-   :image nil
    :language default-lang-iso-code})
 
 (def technology-data
@@ -53,8 +52,6 @@
    :year_founded 2021
    :review_status nil
    :document_preview false
-   :image nil
-   :logo nil
    :tags nil
    :language default-lang-iso-code})
 
@@ -69,7 +66,6 @@
    :remarks nil
    :document_preview false
    :review_status nil
-   :image nil
    :tags nil
    :language default-lang-iso-code})
 
