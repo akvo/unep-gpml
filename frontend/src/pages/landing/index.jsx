@@ -1,4 +1,5 @@
-import { Button, Tabs, Collapse, Card, Tag, Input } from 'antd'
+import { Button, Tabs, Collapse, Card, Tag, Form, Input } from 'antd'
+import { TwitterCircleFilled } from '@ant-design/icons'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './index.module.scss'
@@ -7,6 +8,8 @@ import {
   Magnifier,
   Localiser,
   ArrowRight,
+  FacebookCircleFilled,
+  LinkedinCircleFilled,
 } from '../../components/icons'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
@@ -30,6 +33,9 @@ const Landing = () => (
     <ActNow />
     <LatestNews />
     <Trusted />
+    <Partners />
+    <HelpCentre />
+    <Footer />
   </div>
 )
 
@@ -313,7 +319,7 @@ const ActNow = () => {
     },
   ]
   return (
-    <section className={styles.actNow}>
+    <div className={styles.actNow}>
       <div className="container act-now-container">
         <div className="wrapper">
           <PageHeading title="Why should I care?" />
@@ -343,7 +349,7 @@ const ActNow = () => {
           </Swiper>
         </div>
       </div>
-    </section>
+    </div>
   )
 }
 
@@ -485,6 +491,241 @@ const Trusted = () => {
         <div className="trusted-circle" />
       </div>
     </div>
+  )
+}
+
+const Partners = () => {
+  const items = [
+    {
+      id: 1,
+      name: 'IMO',
+      url: '/partners/partner-imo.png',
+    },
+    {
+      id: 2,
+      name: 'SEA Solutions',
+      url: '/partners/partner-sea-os-solutions.png',
+    },
+    {
+      id: 3,
+      name: 'Ocean conservancy',
+      url: '/partners/parner-ocean-conservancy.png',
+    },
+    {
+      id: 4,
+      name: 'FAO',
+      url: '/partners/partner-fao.png',
+    },
+    {
+      id: 5,
+      name: 'INFORMEA',
+      url: '/partners/partner-informea.png',
+    },
+    {
+      id: 6,
+      name: 'Duke',
+      url: '/partners/partner-duke.png',
+    },
+    {
+      id: 7,
+      name: 'GESAMP',
+      url: '/partners/partner-gesamp.png',
+    },
+  ]
+  return (
+    <div className={styles.partnerSection}>
+      <div className="container">
+        <h2 className="semibold">Our partners</h2>
+      </div>
+      <div className="partner-container">
+        <div className="partner-items">
+          {items.map((item, ix) => (
+            <span className="partner-item" key={ix}>
+              <Image alt={item.name} src={item.url} width={200} height={97} />
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="partner-button">
+        <Button size="large" ghost>
+          See all partners
+          <ArrowRight />
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+const HelpCentre = () => {
+  return (
+    <div className={styles.helpCentreSection}>
+      <Image
+        src="/globe-help-centre.svg"
+        alt="CTA Help centre"
+        width={64}
+        height={64}
+      />
+      <div className="help-centre-text">
+        <h2 className="bold">Any Questions?</h2>
+        <h6 className="semibold">
+          Visit the Help Center for FAGs, tutorials and more
+        </h6>
+      </div>
+      <div className="help-centre-button">
+        <Button className="secondary">
+          Visit the Help Centre
+          <ArrowRight />
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+const Footer = () => {
+  const [form] = Form.useForm()
+
+  const onFinish = (values) => {
+    console.log('Finish:', values)
+  }
+  return (
+    <footer className={styles.footerSection}>
+      <div className="container">
+        <div className="footer-items">
+          <div className="footer-item">
+            <strong className="p-l">GPML Digital Platform</strong>
+            <div className="contact-us">
+              <p className="p-m">Contact Us</p>
+              <a href="mailto:unep-gpmarinelitter@un.org" className="p-m">
+                unep-gpmarinelitter@un.org
+              </a>
+            </div>
+          </div>
+          <div className="footer-item">
+            <h6 className="title">About us</h6>
+            <ul>
+              <li>
+                <Link href="/landing">Who we are</Link>
+              </li>
+              <li>
+                <Link href="/landing">What we do</Link>
+              </li>
+              <li>
+                <Link href="/landing">About the GPML Digital platform</Link>
+              </li>
+            </ul>
+          </div>
+          <div className="footer-item">
+            <h6 className="title">GPML Tools</h6>
+            <ul>
+              <li>
+                <Link href="/landing">Show all tools</Link>
+              </li>
+            </ul>
+          </div>
+          <div className="footer-item">
+            <h6 className="title">Join Newsletter</h6>
+            <div className="footer-newsletter">
+              <div>
+                <p className="h-xs">
+                  Stay tuned with the GPML latest news and events!
+                </p>
+              </div>
+              <div className="newsletter-form">
+                <Form
+                  form={form}
+                  name="newsletter"
+                  layout="inline"
+                  onFinish={onFinish}
+                >
+                  <Form.Item
+                    name="email"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please input your email',
+                      },
+                    ]}
+                  >
+                    <Input type="email" placeholder="Enter your email" />
+                  </Form.Item>
+                  <Form.Item shouldUpdate>
+                    {() => (
+                      <Button
+                        htmlType="submit"
+                        disabled={
+                          !form.isFieldsTouched(true) ||
+                          !!form
+                            .getFieldsError()
+                            .filter(({ errors }) => errors.length).length
+                        }
+                      >
+                        <ArrowRight width={14} />
+                      </Button>
+                    )}
+                  </Form.Item>
+                </Form>
+              </div>
+              <div>
+                <h6>Follow Us</h6>
+                <ul className="social-links">
+                  <li>
+                    <a
+                      href="https://facebook.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span
+                        role="img"
+                        aria-label="facebook-circle"
+                        className="anticon"
+                      >
+                        <FacebookCircleFilled />
+                      </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="http://twitter.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <TwitterCircleFilled />
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://linkedin.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span
+                        role="img"
+                        aria-label="linkedin-circle"
+                        className="anticon"
+                      >
+                        <LinkedinCircleFilled />
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div className="footer-bar">
+          <div>
+            <p className="h-xxs">
+              Copyright © {moment().format('YYYY')} All rights reserved
+            </p>
+          </div>
+          <div className="footer-confirm-cookies">
+            <p className="h-xxs">We use cookies for better service.</p>
+            <Button type="link">Accept</Button>
+          </div>
+        </div>
+      </div>
+    </footer>
   )
 }
 
