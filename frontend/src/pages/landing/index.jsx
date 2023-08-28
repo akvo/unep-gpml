@@ -29,7 +29,6 @@ const Landing = () => (
     <ActNow />
     <LatestNews />
     <Activities />
-    <OurVoices />
   </div>
 )
 
@@ -535,65 +534,6 @@ const Activities = () => {
               <p className="h-m">Access to all</p>
             </li>
           </ul>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-const OurVoices = () => {
-  const [width] = useDeviceSize()
-  return (
-    <section className={styles.ourVoices}>
-      <div className="container">
-        <div className="title-wrapper">
-          <div className="title-holder">
-            <PageHeading title="Our Voices" />
-            <h2 className="h-xxl">
-              Uniting Waste Pickers and Indigenous Communities:{' '}
-              <span>Take Action for Sustainable Empowerment</span>
-            </h2>
-          </div>
-        </div>
-        <div className="group-wrapper">
-          <div className="group-one">
-            <img
-              src={
-                width >= 768
-                  ? `/voices-group-one.jpg`
-                  : '/voices-group-one-mobile.jpg'
-              }
-            />
-            <div className="group-card">
-              <div className="label-s">WASTE PICKERS</div>
-              <p className="p-l">
-                Cooperative actions for Caribbean fisheries officials after a
-                successful ghost gear retrieval training in Panama{' '}
-              </p>
-              <Button size="default">
-                Explore whole story <ArrowRight />
-              </Button>
-            </div>
-          </div>
-          <div className="group-two">
-            <div className="group-card">
-              <div className="label-s">WASTE PICKERS</div>
-              <p className="p-l">
-                Cooperative actions for Caribbean fisheries officials after a
-                successful ghost gear retrieval training in Panama{' '}
-              </p>
-              <Button size="default">
-                Explore whole story <ArrowRight />
-              </Button>
-            </div>
-            <img
-              src={
-                width >= 768
-                  ? `/voices-group-two.jpg`
-                  : '/voices-group-two-mobile.jpg'
-              }
-            />
-          </div>
         </div>
       </div>
     </section>
