@@ -1034,3 +1034,98 @@
     }
   }
 }
+
+.partnerSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 41px;
+  padding: 80px 0;
+  @media only screen and (max-width: 640px) {
+    gap: 32px;
+    padding: 32px 0;
+  }
+  :global {
+    .partner-container {
+      max-width: 1366px;
+      @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+        max-width: 768px;
+      }
+      @media only screen and (max-width: 640px) {
+        width: 100%;
+      }
+    }
+    .partner-container .partner-items {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 62px;
+      overflow-x: auto;
+      padding-right: 30px;
+      @media only screen and (max-width: $bpMobile) {
+        padding-bottom: 10px;
+        gap: 42.64px;
+      }
+      li {
+        width: 100%;
+        @media only screen and (max-width: $bpMobile) {
+          width: 111px;
+        }
+        img {
+          width: 100%;
+          height: auto;
+          -webkit-filter: grayscale(1);
+          filter: grayscale(1);
+          &:hover {
+            -webkit-filter: grayscale(0);
+            filter: none;
+          }
+          @media only screen and (min-device-width: $bpMobile) and (max-device-width: 1024px) {
+            width: 210px;
+          }
+          @media only screen and (max-width: $bpMobile) {
+            width: inherit;
+            max-width: 110px;
+          }
+        }
+      }
+    }
+    .container h2.semibold {
+      color: $primaryDarkBlue;
+      text-align: center;
+      @media only screen and (max-width: $bpMobile) {
+        font-size: $fzL;
+        line-height: $lhL;
+      }
+    }
+    .partner-button-container {
+      display: flex;
+      flex-direction: row;
+      .container {
+        align-items: center;
+        justify-content: center;
+        display: flex;
+      }
+
+      @media screen and (max-width: $bpMobile) {
+        width: 100%;
+        .container {
+          flex: 1;
+        }
+        .ant-btn {
+          width: 100% !important;
+          justify-content: space-between;
+          & > span {
+            width: 100%;
+            text-align: center;
+          }
+        }
+      }
+    }
+    .partner-button .ant-btn.ant-btn-background-ghost:hover {
+      svg path {
+        transform: translateX(3px);
+      }
+    }
+  }
+}
