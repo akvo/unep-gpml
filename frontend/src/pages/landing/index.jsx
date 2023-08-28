@@ -715,7 +715,7 @@ const HelpCentre = () => {
       <div className="help-centre-text">
         <h2 className="bold">Any Questions?</h2>
         <h6 className="semibold">
-          Visit the Help Center for FAGs, tutorials and more
+          Visit the Help Center for FAQs, tutorials and more
         </h6>
       </div>
       <div className="help-centre-button">
