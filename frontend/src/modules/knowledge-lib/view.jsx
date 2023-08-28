@@ -48,10 +48,10 @@ function Library({ setLoginVisible, isAuthenticated }) {
     console.log("setModalVisible");
     e.preventDefault();
     if (type && id) {
-      const detailUrl = `/${type}/${id}`;
       e.preventDefault();
+      const detailUrl = `/${type}/${id}`;
       setParams({ type, id });
-      router.push(detailUrl);
+      window.history.pushState({}, "", detailUrl);
       setModalVisible(true);
       bodyScrollLock.enable();
     }
