@@ -146,7 +146,7 @@
     (tht/thread-transactions logger transactions context)))
 
 (defn delete-file
-  [{:keys [storage-client-adapter logger] :as config} conn search-filters]
+  [{:keys [storage-client-adapter logger] :as config} conn search-filters & {:keys [skip-obj-storage?]}]
   (let [context {:success? true
                  :search-filters search-filters}
         transactions
@@ -179,9 +179,11 @@
          {:txn-fn
           (fn delete-file-in-obj-storage [{:keys [file] :as context}]
             (let [{:keys [success?] :as result}
-                  (storage-client-ext/delete-blob storage-client-adapter
-                                                  (get-bucket-name config (:visibility file))
-                                                  (:object-key file))]
+                  (if-not skip-obj-storage?
+                    (storage-client-ext/delete-blob storage-client-adapter
+                                                    (get-bucket-name config (:visibility file))
+                                                    (:object-key file))
+                    {:success? true})]
               (if-not success?
                 (do
                   (log logger :error ::delete-file-in-obj-storage-error {:object-key (:object-key file)

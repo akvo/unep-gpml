@@ -797,35 +797,52 @@
   [_ {:keys [db logger] :as config}]
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
         user :user}]
-    (try
-      (let [authorized? (h.r.permission/operation-allowed?
-                         config
-                         {:user-id (:id user)
-                          :entity-type (h.r.permission/entity-type->context-type topic-type)
-                          :entity-id topic-id
-                          :operation-type :update
-                          :root-context? false})]
-        (if-not authorized?
-          (r/forbidden {:message "Unauthorized"})
-          (let [conn (:spec db)
-                status (jdbc/with-db-transaction [tx conn]
-                         (if (= topic-type "initiative")
-                           (update-initiative config tx topic-id body)
-                           (update-resource config tx topic-type topic-id body)))]
-            (if (= status 1)
-              (r/ok {:success? true})
-              (r/server-error {:success? false
-                               :reason :failed-to-update-resource-details})))))
+    (let [initiative? (= topic-type "initiative")
+          resource-type (cond
+                          (contains? dom.resource/types topic-type) "resource"
+                          :else topic-type)]
+      (try
+        (let [authorized? (h.r.permission/operation-allowed?
+                           config
+                           {:user-id (:id user)
+                            :entity-type (h.r.permission/entity-type->context-type topic-type)
+                            :entity-id topic-id
+                            :operation-type :update
+                            :root-context? false})]
+          (if-not authorized?
+            (r/forbidden {:message "Unauthorized"})
+            (let [conn (:spec db)
+                  status (jdbc/with-db-transaction [tx conn]
+                           (if initiative?
+                             (update-initiative config tx topic-id body)
+                             (update-resource config tx topic-type topic-id body)))]
+              (if (= status 1)
+                (r/ok {:success? true})
+                (r/server-error {:success? false
+                                 :reason :failed-to-update-resource-details})))))
 
-      (catch Exception e
-        (log logger :error ::failed-to-update-resource-details {:exception-message (.getMessage e)
-                                                                :context-data {:path-params path
-                                                                               :body-params body}})
-        (let [response {:success? false
-                        :reason :failed-to-update-resource-details}]
-          (if (instance? SQLException e)
-            (r/server-error response)
-            (r/server-error (assoc-in response [:error-details :error] (.getMessage e)))))))))
+        (catch Exception e
+          (log logger :error ::failed-to-update-resource-details {:exception-message (.getMessage e)
+                                                                  :context-data {:path-params path
+                                                                                 :body-params body}})
+          ;; TODO: Improve this: we are re-doing some things that we do in the successful path.
+          ;; Besides, we should try to wrap this code as well inside another try-catch block.
+          (doseq [[image-key _] (select-keys body [(if initiative? :qimage :image) :thumbnail])
+                  :let [conn (:spec db)
+                        resource (get-detail* conn resource-type topic-id {})
+                        resolved-img-key (if (and initiative?
+                                                  (= :qimage image-key))
+                                           :image
+                                           image-key)
+                        file-id-key (keyword (str (name resolved-img-key) "_id"))
+                        old-file-id (util/uuid (get resource file-id-key))]]
+            (when old-file-id
+              (srv.file/delete-file config conn {:id old-file-id} :skip-obj-storage? true)))
+          (let [response {:success? false
+                          :reason :failed-to-update-resource-details}]
+            (if (instance? SQLException e)
+              (r/server-error response)
+              (r/server-error (assoc-in response [:error-details :error] (.getMessage e))))))))))
 
 (defmethod ig/init-key :gpml.handler.detail/put-params [_ _]
   put-params)
