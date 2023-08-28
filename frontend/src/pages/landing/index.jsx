@@ -1,4 +1,4 @@
-import { Button, Tabs, Collapse, Card, Tag, Input } from 'antd'
+import { Button, Tabs, Collapse, Card, Tag, Input, Col, Row } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './index.module.scss'
@@ -7,6 +7,9 @@ import {
   Magnifier,
   Localiser,
   ArrowRight,
+  FacebookIcon,
+  LinkedinIcon,
+  TwitterIcon,
 } from '../../components/icons'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
@@ -30,6 +33,7 @@ const Landing = () => (
     <ActNow />
     <LatestNews />
     <Trusted />
+    <Partnership />
     <Partners />
   </div>
 )
@@ -486,6 +490,87 @@ const Trusted = () => {
         <div className="trusted-circle" />
       </div>
     </div>
+  )
+}
+
+const Partnership = () => {
+  return (
+    <section className={styles.partnership}>
+      <div className="container content-container">
+        <div className="partnership-content-wrapper">
+          <h2 className="h-xxl">
+            Join the Global Partnership on Plastic Pollution and Marine Litter
+          </h2>
+          <p className="h-m">
+            Become part of GPML to collaborate with thousands of organisations
+            and individuals from around the world
+          </p>
+          <Button type="primary" size="large">
+            Join now
+            <CirclePointer />
+          </Button>
+        </div>
+      </div>
+      <div className="container links-container">
+        <Row gutter={24}>
+          <Col lg={8} xl={8}>
+            <div className="links-card">
+              <h3 className="h-m">Become part of the network</h3>
+              <ul className="link-list">
+                <li>
+                  <CirclePointer />
+                  Sign Up
+                </li>
+                <li>
+                  <CirclePointer />
+                  Join the GPML
+                </li>
+                <li>
+                  <CirclePointer />
+                  Become a partnerL
+                </li>
+              </ul>
+            </div>
+          </Col>
+          <Col lg={8} xl={8}>
+            <div className="links-card">
+              <h3 className="h-m">Co-solution with our network</h3>
+              <ul className="link-list">
+                <li>
+                  <CirclePointer />
+                  Network with others
+                </li>
+                <li>
+                  <CirclePointer />
+                  Share your knowledge
+                </li>
+                <li>
+                  <CirclePointer />
+                  Share your data
+                </li>
+              </ul>
+            </div>
+          </Col>
+          <Col lg={8} xl={8}>
+            <div className="links-card">
+              <h3 className="h-m">Spread the word</h3>
+              <p>Follow us on social media to be part of the movement. </p>
+              <ul className="icon-list">
+                <li>
+                  <FacebookIcon />
+                </li>
+                <li>
+                  <LinkedinIcon />
+                </li>
+                <li>
+                  <TwitterIcon />
+                </li>
+              </ul>
+            </div>
+          </Col>
+        </Row>
+      </div>
+    </section>
   )
 }
 
