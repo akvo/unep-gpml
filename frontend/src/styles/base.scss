@@ -28,6 +28,10 @@ body {
 .h-xxl {
   font-size: $fzXXL;
   line-height: $lhXXL;
+  @media screen and (max-width: $bpMobile) {
+    font-size: $fzL;
+    line-height: $lhL;
+  }
 }
 h1,
 h2,
@@ -182,6 +186,21 @@ h3.semibold,
 }
 img {
   display: block;
+}
+
+.label-s {
+  font-family: var(--font-archia), sans-serif;
+  display: inline-flex;
+  border-radius: 100px;
+  height: 24px;
+  padding: 4px 8px;
+  align-items: center;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 14px;
+  letter-spacing: 0.24px;
+  text-transform: uppercase;
 }
 
 ul {
