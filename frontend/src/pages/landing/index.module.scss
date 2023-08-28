@@ -962,6 +962,131 @@
   }
 }
 
+.partnership {
+  padding: 80px 0px;
+  @media screen and (max-width: $bpMobile) {
+    padding: 24px 0px;
+  }
+  :global {
+    .content-container {
+      display: flex;
+      flex-direction: row;
+      border-radius: 40px;
+      padding-bottom: 20px;
+      background-image: url('/partnership-landing-desktop.jpg');
+      @media screen and (max-width: $bpMobile) {
+        border-radius: 16px;
+        padding-bottom: 0px;
+        padding-top: 40px;
+        background-image: url('/partnership-mobile.jpg');
+        background-size: cover;
+      }
+
+      .partnership-content-wrapper {
+        padding: 70px 0px 70px 170px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        @media screen and (max-width: $bpMobile) {
+          padding: 22px;
+        }
+        h2 {
+          color: white;
+          font-weight: 600;
+          max-width: 661px;
+          @media screen and (max-width: $bpMobile) {
+            max-width: 100%;
+            font-size: 32px;
+            line-height: 36px;
+          }
+        }
+        p {
+          color: white;
+          max-width: 575px;
+          @media screen and (max-width: $bpMobile) {
+            font-size: 18px;
+            line-height: 28px;
+          }
+        }
+        .ant-btn {
+          width: fit-content !important;
+          @media screen and (max-width: $bpMobile) {
+            width: auto !important;
+          }
+        }
+      }
+    }
+    .links-container {
+      padding: 0px 60px;
+      margin-top: -40px;
+      @media screen and (max-width: $bpMobile) {
+        padding: 0px;
+        margin-top: 24px;
+        .ant-row {
+          gap: 24px;
+        }
+      }
+      .links-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 20px;
+        height: 100%;
+        border-radius: 16px;
+        padding: 32px;
+        border: 1px solid $primaryDarkBlue2;
+        background-color: $primaryGrey;
+        .h-m {
+          color: $primaryDarkBlue;
+          font-weight: 700;
+        }
+        p {
+          font-size: 20px;
+          line-height: normal;
+          font-weight: 400;
+        }
+        .link-list {
+          padding: 0;
+          margin: 0;
+          list-style-type: none;
+          li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 18px;
+            font-size: 20px;
+            font-weight: 400;
+            line-height: normal;
+            font-family: var(--font-dm-sans), sans-serif;
+            &:last-child {
+              margin-bottom: 0px;
+            }
+            svg {
+              margin-right: 12px;
+              circle {
+                fill: $primaryGrey;
+              }
+              path {
+                stroke: $primaryDarkBlue;
+              }
+            }
+          }
+        }
+        .icon-list {
+          list-style-type: none;
+          padding: 0;
+          margin: 0;
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          li {
+            height: 32px;
+          }
+        }
+      }
+    }
+  }
+}
+
 .trustedSection {
   display: flex;
   flex-direction: row;
