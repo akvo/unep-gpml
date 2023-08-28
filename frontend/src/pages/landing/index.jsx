@@ -504,7 +504,11 @@ const Activities = () => {
               <div className="icon">
                 <img src="/activity-policy.svg" />
               </div>
-              <p className="h-m">Science policy</p>
+              <p className="h-m">
+                Science
+                <br />
+                policy
+              </p>
             </li>
             <li>
               <div className="icon">
