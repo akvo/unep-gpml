@@ -132,3 +132,23 @@ export const ArrowRight = () => (
     </defs>
   </svg>
 )
+
+export const LongArrowRight = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g clip-path="url(#clip0_905_2455)">
+      <path d="M16 18L22 12L16 6" stroke="white" stroke-width="2" />
+      <path d="M-1 12H22" stroke="white" stroke-width="2" />
+    </g>
+    <defs>
+      <clipPath id="clip0_905_2455">
+        <rect width="24" height="24" fill="white" />
+      </clipPath>
+    </defs>
+  </svg>
+)

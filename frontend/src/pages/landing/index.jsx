@@ -7,6 +7,7 @@ import {
   Magnifier,
   Localiser,
   ArrowRight,
+  LongArrowRight,
 } from '../../components/icons'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
@@ -502,8 +503,8 @@ const OurVoices = () => {
                 Cooperative actions for Caribbean fisheries officials after a
                 successful ghost gear retrieval training in Panama{' '}
               </p>
-              <Button size="default">
-                Explore whole story <ArrowRight />
+              <Button>
+                Explore whole story <LongArrowRight />
               </Button>
             </div>
           </div>
@@ -516,8 +517,8 @@ const OurVoices = () => {
                 Cooperative actions for Caribbean fisheries officials after a
                 successful ghost gear retrieval training in Panama{' '}
               </p>
-              <Button size="default">
-                Explore whole story <ArrowRight />
+              <Button>
+                Explore whole story <LongArrowRight />
               </Button>
             </div>
             <img

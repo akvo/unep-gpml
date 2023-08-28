@@ -34,6 +34,14 @@
       &:not(.noicon):not(.left-icon) {
         padding-right: 60px;
       }
+      &:active:not(:disabled) {
+        background-color: $primaryGreen;
+        svg {
+          path {
+            transform: translateX(2px);
+          }
+        }
+      }
     }
     &.ant-btn-default {
       display: flex;
@@ -41,11 +49,13 @@
       background-color: $primaryDarkBlue;
       border-color: $primaryDarkBlue;
       color: white;
+      transition: all 0.2s ease-out;
       svg {
         position: relative;
         top: 0 !important;
         right: 0 !important;
         padding-left: 10px;
+        transition: all 0.2s ease-out;
         path {
           stroke: white;
         }
@@ -54,9 +64,21 @@
         background-color: transparent;
         border-color: $primaryDarkBlue;
         color: $primaryDarkBlue;
+        padding-right: 28px;
         svg {
+          transform: translateX(8px);
           path {
             stroke: $primaryDarkBlue;
+          }
+        }
+      }
+      &:active {
+        background-color: $primaryDarkBlue5;
+        border-color: $primaryDarkBlue5;
+        color: white;
+        svg {
+          path {
+            stroke: white;
           }
         }
       }
@@ -159,14 +181,6 @@
         }
         circle {
           fill: $primaryGreen4;
-        }
-      }
-    }
-    &:active:not(:disabled) {
-      background-color: $primaryGreen;
-      svg {
-        path {
-          transform: translateX(2px);
         }
       }
     }
