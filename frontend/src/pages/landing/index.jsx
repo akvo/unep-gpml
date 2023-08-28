@@ -37,6 +37,7 @@ const Landing = () => (
     <Trusted />
     <Partnership />
     <Partners />
+    <HelpCentre />
   </div>
 )
 
@@ -697,6 +698,31 @@ const Partners = () => {
             <ArrowRight />
           </Button>
         </div>
+      </div>
+    </div>
+  )
+}
+
+const HelpCentre = () => {
+  return (
+    <div className={styles.helpCentreSection}>
+      <Image
+        src="/globe-help-centre.svg"
+        alt="CTA Help centre"
+        width={64}
+        height={64}
+      />
+      <div className="help-centre-text">
+        <h2 className="bold">Any Questions?</h2>
+        <h6 className="semibold">
+          Visit the Help Center for FAQs, tutorials and more
+        </h6>
+      </div>
+      <div className="help-centre-button">
+        <Button>
+          Visit the Help Centre
+          <ArrowRight />
+        </Button>
       </div>
     </div>
   )
