@@ -512,7 +512,7 @@ const Partnership = () => {
       </div>
       <div className="container links-container">
         <Row gutter={24}>
-          <Col span={8}>
+          <Col lg={8} xl={8}>
             <div className="links-card">
               <h3 className="h-m">Become part of the network</h3>
               <ul className="link-list">
@@ -531,7 +531,7 @@ const Partnership = () => {
               </ul>
             </div>
           </Col>
-          <Col span={8}>
+          <Col lg={8} xl={8}>
             <div className="links-card">
               <h3 className="h-m">Co-solution with our network</h3>
               <ul className="link-list">
@@ -550,7 +550,7 @@ const Partnership = () => {
               </ul>
             </div>
           </Col>
-          <Col span={8}>
+          <Col lg={8} xl={8}>
             <div className="links-card">
               <h3 className="h-m">Spread the word</h3>
               <p>Follow us on social media to be part of the movement. </p>

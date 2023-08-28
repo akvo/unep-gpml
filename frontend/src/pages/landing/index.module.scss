@@ -1042,17 +1042,31 @@
       display: flex;
       flex-direction: row;
       border-radius: 40px;
-      background-color: $primaryDarkBlue;
       padding-bottom: 20px;
+      background-image: url('/partnership-landing-desktop.jpg');
+      @media screen and (max-width: $bpMobile) {
+        border-radius: 16px;
+        padding-bottom: 0px;
+        padding-top: 40px;
+      }
+
       .partnership-content-wrapper {
         padding: 70px 0px 70px 170px;
         display: flex;
         flex-direction: column;
         gap: 24px;
+        @media screen and (max-width: $bpMobile) {
+          padding: 22px;
+        }
         h2 {
           color: white;
           font-weight: 600;
           max-width: 661px;
+          @media screen and (max-width: $bpMobile) {
+            max-width: 100%;
+            font-size: 32px;
+            line-height: 36px;
+          }
         }
         p {
           color: white;
@@ -1060,12 +1074,22 @@
         }
         .ant-btn {
           width: fit-content !important;
+          @media screen and (max-width: $bpMobile) {
+            width: auto !important;
+          }
         }
       }
     }
     .links-container {
       padding: 0px 60px;
       margin-top: -40px;
+      @media screen and (max-width: $bpMobile) {
+        padding: 0px;
+        margin-top: 20px;
+        .ant-row {
+          gap: 20px;
+        }
+      }
       .links-card {
         display: flex;
         flex-direction: column;
