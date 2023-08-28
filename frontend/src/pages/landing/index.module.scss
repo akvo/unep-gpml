@@ -542,23 +542,6 @@
   .features {
     padding: 0px 0px 80px 0px;
     :global {
-      .title-wrapper {
-        display: flex;
-        justify-content: space-between;
-        .page-sub-heading {
-          padding-bottom: 18px;
-        }
-        h2 {
-          padding-bottom: 24px;
-          span {
-            display: block;
-            font-weight: 400;
-          }
-        }
-        .p-l {
-          max-width: 734px;
-        }
-      }
       .slider-container {
         padding: 42px 40px 30px 50px;
         padding-left: calc((100% - 1148px) / 2);
@@ -627,6 +610,119 @@
           }
         }
       }
+    }
+  }
+  .ourVoices {
+    padding: 80px 0px;
+    @media screen and (max-width: $bpMobile) {
+      padding: 40px 0px;
+    }
+    :global {
+      .page-sub-heading {
+        padding-bottom: 18px;
+      }
+      .h-xxl {
+        span {
+          @media screen and (max-width: $bpMobile) {
+            display: block;
+          }
+        }
+      }
+      .group-wrapper {
+        img {
+          border-radius: 16px;
+        }
+        button {
+          width: fit-content !important;
+          @media screen and (max-width: $bpMobile) {
+            width: 100% !important;
+            justify-content: space-between;
+            span {
+              width: 100%;
+              text-align: center;
+            }
+          }
+        }
+        .group-one {
+          display: flex;
+          position: relative;
+          padding: 48px 0px;
+          @media screen and (max-width: $bpMobile) {
+            flex-direction: column;
+            padding: 24px 0px 0px;
+          }
+          .group-card {
+            bottom: 0px;
+            right: 0;
+            @media screen and (max-width: $bpMobile) {
+              top: -20px;
+            }
+            .label-s {
+              background-color: $primaryGreen;
+              width: fit-content;
+            }
+          }
+        }
+        .group-two {
+          display: flex;
+          position: relative;
+          justify-content: flex-end;
+          padding: 48px 0px;
+          @media screen and (max-width: $bpMobile) {
+            flex-direction: column-reverse;
+            padding: 14px 0px;
+          }
+          .group-card {
+            bottom: 0px;
+            left: 0;
+            @media screen and (max-width: $bpMobile) {
+              top: -20px;
+            }
+            .label-s {
+              background-color: $primaryViolet;
+              color: white;
+              width: fit-content;
+            }
+          }
+        }
+        .group-card {
+          padding: 32px;
+          background-color: $primaryGrey;
+          width: 500px;
+          border-radius: 16px;
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          position: absolute;
+          .ant-btn-default {
+            width: fit-content;
+            @media screen and (max-width: $bpMobile) {
+              width: auto;
+            }
+          }
+          @media screen and (max-width: $bpMobile) {
+            width: auto;
+            position: relative;
+            padding: 12px;
+            gap: 12px;
+          }
+        }
+      }
+    }
+  }
+  :global(.title-wrapper) {
+    display: flex;
+    justify-content: space-between;
+    .page-sub-heading {
+      padding-bottom: 18px;
+    }
+    h2 {
+      span {
+        font-weight: 400;
+      }
+    }
+    .p-l {
+      max-width: 734px;
     }
   }
   :global(.card-label) {

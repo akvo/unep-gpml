@@ -28,6 +28,10 @@ body {
 .h-xxl {
   font-size: $fzXXL;
   line-height: $lhXXL;
+  @media screen and (max-width: $bpMobile) {
+    font-size: $fzL;
+    line-height: $lhL;
+  }
 }
 h1,
 h2,
@@ -184,6 +188,23 @@ img {
   display: block;
 }
 
+.label-s {
+  font-family: var(--font-archia), sans-serif;
+  width: fit-content;
+  height: 24px;
+  line-height: 23px;
+  padding: 0 5px;
+  border-radius: 12px;
+  span {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 14px;
+    letter-spacing: 0.24px;
+    text-transform: uppercase;
+    padding: 4px;
+  }
+}
 ul {
   list-style: none;
 }
