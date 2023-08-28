@@ -822,13 +822,7 @@ const Footer = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <span
-                        role="img"
-                        aria-label="facebook-circle"
-                        className="anticon"
-                      >
-                        <FacebookIcon />
-                      </span>
+                      <FacebookIcon />
                     </a>
                   </li>
                   <li>
@@ -846,13 +840,7 @@ const Footer = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <span
-                        role="img"
-                        aria-label="linkedin-circle"
-                        className="anticon"
-                      >
-                        <LinkedinCircleFilled />
-                      </span>
+                      <LinkedinIcon />
                     </a>
                   </li>
                 </ul>
