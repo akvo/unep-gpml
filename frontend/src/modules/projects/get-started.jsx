@@ -4,12 +4,10 @@ import { Button } from "antd";
 // import Swiper from 'swiper'
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import { Pagination, Navigation } from "swiper";
-import "./get-started.scss";
-import "swiper/swiper.min.css";
-import "swiper/modules/pagination/pagination.min.css";
+import styles from "./get-started.module.scss";
 import { useRef } from "react";
-import { Link } from "react-router-dom";
 import CreateProjectModal from "../workspace/create-project-modal";
+import Link from "next/link";
 
 const quiz = [
   {
@@ -152,13 +150,15 @@ const GetStarted = () => {
     swiperRef.current.allowSlideNext = false;
   };
   return (
-    <div id="get-started">
+    <div className={styles.getStarted}>
       <header>
         <h4>Start Your Action Plan</h4>
-        <Link to="/workspace">
-          <Button type="link" icon={<CloseOutlined />}>
-            Cancel
-          </Button>
+        <Link href="/workspace" legacyBehavior>
+          <a>
+            <Button type="link" icon={<CloseOutlined />}>
+              Cancel
+            </Button>
+          </a>
         </Link>
       </header>
       <div className="quiz">
@@ -172,7 +172,7 @@ const GetStarted = () => {
           modules={[Pagination, Navigation]}
         >
           {quiz.map((it, index) => (
-            <SwiperSlide>
+            <SwiperSlide key={index}>
               <div className="content">
                 <h2>{it.q}</h2>
                 <ul>

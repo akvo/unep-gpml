@@ -34,9 +34,9 @@ services:
       - ~/.lein:/root/.lein:delegated
 
   frontend:
-    image: akvo/akvo-node-14-alpine:20210106.152005.1864760
+    image: akvo/akvo-node-18-alpine:20220923.084347.0558ee6
     ports:
-      - 3001:3001
+      - 3001:80
     command: ["./start.sh"]
     restart: unless-stopped
 volumes:
