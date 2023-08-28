@@ -57,6 +57,20 @@
           }
         }
       }
+      &.secondary {
+        background-color: $primaryDarkBlue;
+        color: $primaryWhite;
+        svg path {
+          stroke: $primaryWhite;
+        }
+        &:hover {
+          background-color: $primaryGreen;
+          color: $primaryDarkBlue;
+          svg path {
+            stroke: $primaryDarkBlue;
+          }
+        }
+      }
     }
     &.ant-btn-lg {
       padding: 16px 24px;
