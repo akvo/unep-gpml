@@ -616,6 +616,9 @@
         }
       }
       .group-wrapper {
+        img {
+          border-radius: 16px;
+        }
         .group-one {
           display: flex;
           position: relative;
@@ -628,7 +631,7 @@
             bottom: 0px;
             right: 0;
             @media screen and (max-width: $bpMobile) {
-              top: -10px;
+              top: -20px;
             }
             .label-s {
               background-color: $primaryGreen;
@@ -643,13 +646,13 @@
           padding: 48px 0px;
           @media screen and (max-width: $bpMobile) {
             flex-direction: column-reverse;
-            padding: 24px 0px;
+            padding: 14px 0px;
           }
           .group-card {
             bottom: 0px;
             left: 0;
             @media screen and (max-width: $bpMobile) {
-              top: -10px;
+              top: -20px;
             }
             .label-s {
               background-color: $primaryViolet;

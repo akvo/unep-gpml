@@ -477,6 +477,7 @@ const LatestNews = () => {
 }
 
 const OurVoices = () => {
+  const [width] = useDeviceSize()
   return (
     <section className={styles.ourVoices}>
       <div className="container">
@@ -491,9 +492,17 @@ const OurVoices = () => {
         </div>
         <div className="group-wrapper">
           <div className="group-one">
-            <img src="/voices-group-one.jpg" />
+            <img
+              src={
+                width < 768
+                  ? '/voices-group-one-mobile.jpg'
+                  : '/voices-group-one.jpg'
+              }
+            />
             <div className="group-card">
-              <div className="label-s">WASTE PICKERS</div>
+              <div className="label-s">
+                <span>WASTE PICKERS</span>
+              </div>
               <p className="p-l">
                 Cooperative actions for Caribbean fisheries officials after a
                 successful ghost gear retrieval training in Panama{' '}
@@ -505,7 +514,9 @@ const OurVoices = () => {
           </div>
           <div className="group-two">
             <div className="group-card">
-              <div className="label-s">WASTE PICKERS</div>
+              <div className="label-s">
+                <span>Indigenous People</span>
+              </div>
               <p className="p-l">
                 Cooperative actions for Caribbean fisheries officials after a
                 successful ghost gear retrieval training in Panama{' '}
@@ -514,7 +525,13 @@ const OurVoices = () => {
                 Explore whole story <ArrowRight />
               </Button>
             </div>
-            <img src="/voices-group-one.jpg" />
+            <img
+              src={
+                width < 768
+                  ? '/voices-group-two-mobile.jpg'
+                  : '/voices-group-two.jpg'
+              }
+            />
           </div>
         </div>
       </div>
