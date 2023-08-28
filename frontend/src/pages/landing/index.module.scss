@@ -1003,6 +1003,10 @@
         p {
           color: white;
           max-width: 575px;
+          @media screen and (max-width: $bpMobile) {
+            font-size: 18px;
+            line-height: 28px;
+          }
         }
         .ant-btn {
           width: fit-content !important;
