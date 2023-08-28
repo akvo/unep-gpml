@@ -41,6 +41,7 @@
       background-color: transparent;
       border-color: $primaryDarkBlue;
       color: $primaryDarkBlue;
+      transition: background 0.3s ease;
       svg {
         position: relative;
         top: 0 !important;
@@ -64,11 +65,7 @@
           stroke: $primaryWhite;
         }
         &:hover {
-          background-color: $primaryGreen;
-          color: $primaryDarkBlue;
-          svg path {
-            stroke: $primaryDarkBlue;
-          }
+          background: linear-gradient(to bottom, $primaryDarkBlue, #05208e);
         }
       }
     }
