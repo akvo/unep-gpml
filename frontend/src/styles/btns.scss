@@ -118,6 +118,13 @@
       &.ant-btn-sm {
         padding: 6px 18px;
       }
+      &.ant-btn-lg {
+        padding: 12px 24px;
+        svg {
+          right: 8px;
+          top: 8px;
+        }
+      }
     }
     &:hover,
     &:active,
