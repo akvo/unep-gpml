@@ -1521,15 +1521,11 @@
     }
     .footer-item .footer-newsletter .newsletter-form .ant-btn.ant-btn-default {
       background-color: $primaryPurple !important;
-      color: $primaryWhite !important;
       padding: 5px 0 !important;
       border-radius: 90px !important;
       border-color: transparent !important;
-      svg path {
-        stroke: $primaryWhite;
-      }
       &:disabled {
-        background: $primaryPurple2 !important;
+        background: $primaryGrey !important;
       }
     }
     .footer-item .footer-newsletter .ant-form-inline .ant-form-item {
