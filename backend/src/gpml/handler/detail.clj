@@ -607,14 +607,20 @@
 
 (defn update-blank-resource-image
   [config conn resource-type resource-id file-id-key old-file-id]
-  (let [result (srv.file/delete-file config conn {:id old-file-id})]
-    (if (:success? result)
-      (db.detail/update-resource-table
-       conn
-       {:table resource-type
-        :id resource-id
-        :updates {file-id-key nil}})
-      (throw (ex-info "Failed to delete old resource image file" {:result result})))))
+  (if old-file-id
+    (let [result (srv.file/delete-file config conn {:id old-file-id})]
+      (if (:success? result)
+        (db.detail/update-resource-table
+         conn
+         {:table resource-type
+          :id resource-id
+          :updates {file-id-key nil}})
+        (throw (ex-info "Failed to delete old resource image file" {:result result}))))
+    (db.detail/update-resource-table
+     conn
+     {:table resource-type
+      :id resource-id
+      :updates {file-id-key nil}})))
 
 (defn- update-resource-image**
   [config conn resource-type resource-id file-id-key image-payload]
