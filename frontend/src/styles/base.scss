@@ -1,3 +1,4 @@
+@import 'antd/dist/antd.css';
 @import 'vars.scss';
 @import 'btns.scss';
 
@@ -60,6 +61,12 @@ h2,
   font-family: var(--font-archia), sans-serif;
   font-size: $fzXXL;
   line-height: $lhXXL;
+}
+h3,
+.h3 {
+  font-family: var(--font-archia), sans-serif;
+  font-size: $fzXL;
+  line-height: $lhXL;
 }
 h5,
 .h5 {
@@ -151,6 +158,12 @@ h6.bold,
 .h6.bold {
   font-weight: 700;
 }
+h2.semibold,
+.h2.semibold,
+h3.semibold,
+.h3.semibold {
+  font-weight: 600;
+}
 
 .caps-heading-1 {
   font-family: var(--font-archia), sans-serif;
@@ -163,12 +176,12 @@ h6.bold,
 
 .hide-mobile {
   @media screen and (max-width: 768px) {
-    display: none;
+    display: none !important;
   }
 }
 .hide-desktop {
   @media screen and (min-width: 768px) {
-    display: none;
+    display: none !important;
   }
 }
 img {
@@ -191,4 +204,7 @@ img {
     text-transform: uppercase;
     padding: 4px;
   }
+}
+ul {
+  list-style: none;
 }
