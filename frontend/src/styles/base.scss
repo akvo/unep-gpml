@@ -77,8 +77,8 @@ h6,
   line-height: $lhS;
 }
 .p-l {
-  font-size: 22px;
-  line-height: 32px;
+  font-size: $pfL;
+  line-height: $plhL;
   @media screen and (max-width: $bpMobile) {
     font-size: $fzS;
     line-height: $lhS;
