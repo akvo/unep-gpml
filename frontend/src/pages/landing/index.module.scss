@@ -1042,7 +1042,7 @@
     }
     .container .news-wrapper .p-l {
       width: 70%;
-      @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+      @media only screen and (min-device-width: $bpMobile) and (max-device-width: 1024px) {
         width: 80%;
       }
     }
@@ -1291,7 +1291,7 @@
   min-height: 325px;
   border-radius: 40px;
   background-color: $primaryDarkBlue;
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: $bpMobile) {
     min-height: auto;
   }
   @media only screen and (max-width: 640px) {
@@ -1303,7 +1303,7 @@
     .trusted-text {
       max-width: 575px;
       margin: 50px 0 44px 42px;
-      @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+      @media only screen and (min-device-width: $bpMobile) and (max-device-width: 1024px) {
         margin: 42px 0 42px 42px;
       }
       @media only screen and (max-width: 640px) {
@@ -1318,7 +1318,7 @@
     .trusted-text h3.semibold {
       color: $primaryWhite;
       margin-block-end: 24px;
-      @media only screen and (max-width: 768px) {
+      @media only screen and (max-width: $bpMobile) {
         font-size: $fzL;
         line-height: $lhL;
       }
@@ -1335,7 +1335,7 @@
       @media only screen and (min-device-width: 820px) and (max-device-width: 1024px) {
         background-size: 125% 550px;
       }
-      @media only screen and (min-device-width: 768px) and (max-device-width: 819px) {
+      @media only screen and (min-device-width: $bpMobile) and (max-device-width: 819px) {
         background-size: 310px 480px;
       }
       @media only screen and (max-width: 640px) {
@@ -1370,7 +1370,7 @@
   :global {
     .partner-container {
       max-width: 1366px;
-      @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+      @media only screen and (min-device-width: $bpMobile) and (max-device-width: 1024px) {
         max-width: 768px;
       }
       @media only screen and (max-width: 640px) {
@@ -1694,6 +1694,98 @@
     @media only screen and (max-width: 640px) {
       .container {
         margin: 0 16px;
+      }
+    }
+  }
+}
+
+.showCasingSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 42px;
+  height: 173px;
+  margin-bottom: 74px;
+  @media only screen and (max-width: 640px) {
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 32px;
+    min-height: 334px;
+  }
+  :global {
+    .caption-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 18px;
+      h2 {
+        color: $primaryDarkBlue;
+      }
+    }
+    .powered-by-container {
+      .caps-heading-1.page-sub-heading {
+        text-align: center;
+        margin-bottom: 7px;
+      }
+      .powered-by-images {
+        display: inline-flex;
+        align-items: flex-start;
+        gap: 24px;
+      }
+    }
+  }
+}
+
+.statsSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 53px;
+  @media only screen and (max-width: $bpMobile) {
+    gap: 32px;
+  }
+  :global {
+    .stats-container,
+    .summaries-container {
+      width: 100%;
+    }
+    ul.stats {
+      padding-inline-start: 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      column-gap: 86px;
+      row-gap: 86px;
+      @media only screen and (max-width: $bpMobile) {
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 0;
+        row-gap: 22px;
+      }
+      li {
+        border-top: 1px solid $primaryBlue2;
+        h2,
+        strong {
+          color: $primaryDarkBlue;
+        }
+        h2 {
+          font-weight: 700;
+          margin-bottom: 16px;
+        }
+        strong {
+          font-family: var(--font-archia);
+          font-weight: 700;
+          letter-spacing: 3.2px;
+        }
+        &:not(:last-child) {
+          border-right: 1px solid $primaryDarkBlue2;
+          padding-right: 86px;
+          @media only screen and (max-width: $bpMobile) {
+            border-right: none;
+            padding-right: 44px;
+          }
+        }
+        @media only screen and (max-width: $bpMobile) {
+          padding-top: 22px;
+        }
       }
     }
   }
