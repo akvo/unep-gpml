@@ -343,15 +343,22 @@
           display: flex;
           margin-bottom: 10px;
           padding-bottom: 10px;
-          input {
-            font-size: $fzXXS;
-            line-height: 30px;
-            font-weight: 600;
-            padding-left: 10px;
+          input[type='text'] {
+            font-size: $fzXXS !important;
+            line-height: 30px !important;
+            font-weight: 600 !important;
+            padding-left: 10px !important;
           }
           .ant-input-affix-wrapper {
             flex: 1;
             display: flex;
+            border: none;
+            padding: 2px 0 0 2px;
+            box-shadow: none;
+            .ant-input-prefix {
+              margin-right: 0;
+              transform: translateY(-2px);
+            }
           }
           .localisation {
             margin-top: 0;
@@ -371,7 +378,7 @@
           }
         }
         .ant-btn.hide-desktop {
-          width: 100%;
+          width: 100% !important;
         }
       }
     }
