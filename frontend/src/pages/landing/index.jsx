@@ -1,4 +1,4 @@
-import { Button, Tabs, Collapse, Card, Tag, Input, Col, Row } from 'antd'
+import { Button, Tabs, Collapse, Card, Tag, Input, Col, Row, Form } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './index.module.scss'
@@ -37,6 +37,8 @@ const Landing = () => (
     <Trusted />
     <Partnership />
     <Partners />
+    <HelpCentre />
+    <Footer />
   </div>
 )
 
@@ -320,7 +322,7 @@ const ActNow = () => {
     },
   ]
   return (
-    <section className={styles.actNow}>
+    <div className={styles.actNow}>
       <div className="container act-now-container">
         <div className="wrapper">
           <PageHeading title="Why should I care?" />
@@ -350,7 +352,7 @@ const ActNow = () => {
           </Swiper>
         </div>
       </div>
-    </section>
+    </div>
   )
 }
 
@@ -699,6 +701,151 @@ const Partners = () => {
         </div>
       </div>
     </div>
+  )
+}
+
+const HelpCentre = () => {
+  return (
+    <div className={styles.helpCentreSection}>
+      <Image
+        src="/globe-help-centre.svg"
+        alt="CTA Help centre"
+        width={64}
+        height={64}
+      />
+      <div className="help-centre-text">
+        <h2 className="bold">Any Questions?</h2>
+        <h6 className="semibold">
+          Visit the Help Center for FAQs, tutorials and more
+        </h6>
+      </div>
+      <div className="help-centre-button">
+        <Button>
+          Visit the Help Centre
+          <ArrowRight />
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+const Footer = () => {
+  const [form] = Form.useForm()
+
+  const onFinish = (values) => {
+    console.log('Finish:', values)
+  }
+  return (
+    <footer className={styles.footerSection}>
+      <div className="container">
+        <div className="footer-items">
+          <div className="footer-item">
+            <strong className="p-l">GPML Digital Platform</strong>
+            <div className="contact-us">
+              <p className="p-m">Contact Us</p>
+              <a href="mailto:unep-gpmarinelitter@un.org" className="p-m">
+                unep-gpmarinelitter@un.org
+              </a>
+            </div>
+          </div>
+          <div className="footer-item">
+            <h6 className="title">About us</h6>
+            <ul>
+              <li>
+                <Link href="/landing">Who we are</Link>
+              </li>
+              <li>
+                <Link href="/landing">What we do</Link>
+              </li>
+              <li>
+                <Link href="/landing">About the GPML Digital platform</Link>
+              </li>
+            </ul>
+          </div>
+          <div className="footer-item">
+            <h6 className="title">GPML Tools</h6>
+            <ul>
+              <li>
+                <Link href="/landing">Show all tools</Link>
+              </li>
+            </ul>
+          </div>
+          <div className="footer-item">
+            <h6 className="title">Join Newsletter</h6>
+            <div className="footer-newsletter">
+              <div>
+                <p className="h-xs">
+                  Stay tuned with the GPML latest news and events!
+                </p>
+              </div>
+              <div className="newsletter-form">
+                <Form
+                  form={form}
+                  name="newsletter"
+                  layout="inline"
+                  onFinish={onFinish}
+                >
+                  <Form.Item name="email">
+                    <Input type="email" placeholder="Enter your email" />
+                  </Form.Item>
+                  <Form.Item shouldUpdate>
+                    {() => (
+                      <button type="submit">
+                        <ArrowRight viewBox="0 0 15 24" />
+                      </button>
+                    )}
+                  </Form.Item>
+                </Form>
+              </div>
+              <div>
+                <h6>Follow Us</h6>
+                <ul className="social-links">
+                  <li>
+                    <a
+                      href="https://facebook.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FacebookIcon />
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="http://twitter.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <TwitterIcon />
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://linkedin.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <LinkedinIcon />
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div className="footer-bar">
+          <div>
+            <p className="h-xxs">
+              Copyright © {moment().format('YYYY')} All rights reserved
+            </p>
+          </div>
+          <div className="footer-confirm-cookies">
+            <p className="h-xxs">We use cookies for better service.</p>
+            <Button type="link">Accept</Button>
+          </div>
+        </div>
+      </div>
+    </footer>
   )
 }
 
