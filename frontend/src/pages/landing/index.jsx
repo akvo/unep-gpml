@@ -785,30 +785,14 @@ const Footer = () => {
                   layout="inline"
                   onFinish={onFinish}
                 >
-                  <Form.Item
-                    name="email"
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please input your email',
-                      },
-                    ]}
-                  >
+                  <Form.Item name="email">
                     <Input type="email" placeholder="Enter your email" />
                   </Form.Item>
                   <Form.Item shouldUpdate>
                     {() => (
-                      <Button
-                        htmlType="submit"
-                        disabled={
-                          !form.isFieldsTouched(true) ||
-                          !!form
-                            .getFieldsError()
-                            .filter(({ errors }) => errors.length).length
-                        }
-                      >
-                        <ArrowRight width={14} />
-                      </Button>
+                      <button type="submit">
+                        <ArrowRight viewBox="0 0 15 24" />
+                      </button>
                     )}
                   </Form.Item>
                 </Form>
