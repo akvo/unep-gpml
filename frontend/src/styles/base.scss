@@ -9,6 +9,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.h-xxl {
+  font-size: $fzXXL;
+  line-height: $lhXXL;
+  @media screen and (max-width: $bpMobile) {
+    font-size: $fzL;
+    line-height: $lhL;
+  }
+}
 .h-l {
   font-size: $fzL;
   line-height: $lhL;
@@ -24,14 +32,6 @@ body {
 .h-xxs {
   font-size: $fzXXS;
   line-height: $lhXXS;
-}
-.h-xxl {
-  font-size: $fzXXL;
-  line-height: $lhXXL;
-  @media screen and (max-width: $bpMobile) {
-    font-size: $fzL;
-    line-height: $lhL;
-  }
 }
 h1,
 h2,
@@ -81,8 +81,8 @@ h6,
   line-height: $lhS;
 }
 .p-l {
-  font-size: 22px;
-  line-height: 32px;
+  font-size: $pfL;
+  line-height: $plhL;
   @media screen and (max-width: $bpMobile) {
     font-size: $fzS;
     line-height: $lhS;
@@ -115,8 +115,6 @@ h6,
   position: sticky;
   z-index: 20;
   top: 0;
-  img.gpml-white {
-  }
   .logo-container {
     margin-left: -15px;
     margin-top: -14px;
@@ -190,19 +188,21 @@ img {
 
 .label-s {
   font-family: var(--font-archia), sans-serif;
-  display: inline-flex;
-  border-radius: 100px;
+  width: fit-content;
   height: 24px;
-  padding: 4px 8px;
-  align-items: center;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 14px;
-  letter-spacing: 0.24px;
-  text-transform: uppercase;
+  line-height: 23px;
+  padding: 0 5px;
+  border-radius: 12px;
+  span {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 14px;
+    letter-spacing: 0.24px;
+    text-transform: uppercase;
+    padding: 4px;
+  }
 }
-
 ul {
   list-style: none;
 }

@@ -1,4 +1,4 @@
-import { Button, Tabs, Collapse, Card, Tag, Input } from 'antd'
+import { Button, Tabs, Collapse, Card, Tag, Input, Col, Row } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './index.module.scss'
@@ -7,6 +7,10 @@ import {
   Magnifier,
   Localiser,
   ArrowRight,
+  LongArrowRight,
+  FacebookIcon,
+  LinkedinIcon,
+  TwitterIcon,
 } from '../../components/icons'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
@@ -29,8 +33,11 @@ const Landing = () => (
     <ActNow />
     <LatestNews />
     <Activities />
+    <OurVoices />
     <Trusted />
+    <Partnership />
     <Partners />
+    <HelpCentre />
   </div>
 )
 
@@ -470,6 +477,97 @@ const LatestNews = () => {
   )
 }
 
+const OurVoices = () => {
+  const [width] = useDeviceSize()
+  return (
+    <section className={styles.activities}>
+      <div className="container">
+        <div className="title-wrapper">
+          <div className="title-holder">
+            <PageHeading title="HOW DOES IT WORK?" />
+            <h2 className="h-xxl">
+              Learn more <span>about activities</span>
+            </h2>
+            <p className="p-l">
+              The platform offers a wide range of tools to support your
+              decision-making and help a global network of actors to work
+              together to create shared solutions to end plastic pollution.
+            </p>
+          </div>
+          <div>
+            <Button size="large" ghost>
+              Visit the website
+              <ArrowRight />
+            </Button>
+          </div>
+        </div>
+        <div className="group-wrapper">
+          <div className="group-one">
+            <img
+              src={
+                width < 768
+                  ? '/voices-group-one-mobile.jpg'
+                  : '/voices-group-one.jpg'
+              }
+            />
+            <div className="group-card">
+              <div className="label-s">
+                <span>WASTE PICKERS</span>
+              </div>
+              <p className="p-l">
+                Cooperative actions for Caribbean fisheries officials after a
+                successful ghost gear retrieval training in Panama{' '}
+              </p>
+              <Button>
+                Explore whole story <LongArrowRight />
+              </Button>
+            </div>
+          </div>
+          <div className="group-two">
+            <div className="group-card">
+              <div className="label-s">
+                <span>Indigenous People</span>
+              </div>
+              <p className="p-l">
+                Cooperative actions for Caribbean fisheries officials after a
+                successful ghost gear retrieval training in Panama{' '}
+              </p>
+              <Button>
+                Explore whole story <LongArrowRight />
+              </Button>
+            </div>
+            <img
+              src={
+                width < 768
+                  ? '/voices-group-two-mobile.jpg'
+                  : '/voices-group-two.jpg'
+              }
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+const Trusted = () => {
+  return (
+    <div className="container">
+      <div className={styles.trustedSection}>
+        <div className="trusted-text">
+          <h3 className="semibold">
+            Trusted data and information badge system and validation process.
+          </h3>
+          <Button type="primary" size="large">
+            Discover
+            <CirclePointer />
+          </Button>
+        </div>
+        <div className="trusted-circle" />
+      </div>
+    </div>
+  )
+}
+
 const Activities = () => {
   return (
     <section className={styles.activities}>
@@ -536,22 +634,84 @@ const Activities = () => {
   )
 }
 
-const Trusted = () => {
+const Partnership = () => {
   return (
-    <div className="container">
-      <div className={styles.trustedSection}>
-        <div className="trusted-text">
-          <h3 className="semibold">
-            Trusted data and information badge system and validation process.
-          </h3>
+    <section className={styles.partnership}>
+      <div className="container content-container">
+        <div className="partnership-content-wrapper">
+          <h2 className="h-xxl">
+            Join the Global Partnership on Plastic Pollution and Marine Litter
+          </h2>
+          <p className="h-m">
+            Become part of GPML to collaborate with thousands of organisations
+            and individuals from around the world
+          </p>
           <Button type="primary" size="large">
-            Discover
+            Join now
             <CirclePointer />
           </Button>
         </div>
-        <div className="trusted-circle" />
       </div>
-    </div>
+      <div className="container links-container">
+        <Row gutter={24}>
+          <Col lg={8} xl={8}>
+            <div className="links-card">
+              <h3 className="h-m">Become part of the network</h3>
+              <ul className="link-list">
+                <li>
+                  <CirclePointer />
+                  Sign Up
+                </li>
+                <li>
+                  <CirclePointer />
+                  Join the GPML
+                </li>
+                <li>
+                  <CirclePointer />
+                  Become a partnerL
+                </li>
+              </ul>
+            </div>
+          </Col>
+          <Col lg={8} xl={8}>
+            <div className="links-card">
+              <h3 className="h-m">Co-solution with our network</h3>
+              <ul className="link-list">
+                <li>
+                  <CirclePointer />
+                  Network with others
+                </li>
+                <li>
+                  <CirclePointer />
+                  Share your knowledge
+                </li>
+                <li>
+                  <CirclePointer />
+                  Share your data
+                </li>
+              </ul>
+            </div>
+          </Col>
+          <Col lg={8} xl={8}>
+            <div className="links-card">
+              <h3 className="h-m">Spread the word</h3>
+              <p>Follow us on social media to be part of the movement. </p>
+              <ul className="icon-list">
+                <li>
+                  <FacebookIcon />
+                </li>
+                <li>
+                  <LinkedinIcon />
+                </li>
+                <li>
+                  <TwitterIcon />
+                </li>
+              </ul>
+            </div>
+          </Col>
+        </Row>
+      </div>
+    </section>
   )
 }
 
@@ -614,6 +774,31 @@ const Partners = () => {
             <ArrowRight />
           </Button>
         </div>
+      </div>
+    </div>
+  )
+}
+
+const HelpCentre = () => {
+  return (
+    <div className={styles.helpCentreSection}>
+      <Image
+        src="/globe-help-centre.svg"
+        alt="CTA Help centre"
+        width={64}
+        height={64}
+      />
+      <div className="help-centre-text">
+        <h2 className="bold">Any Questions?</h2>
+        <h6 className="semibold">
+          Visit the Help Center for FAQs, tutorials and more
+        </h6>
+      </div>
+      <div className="help-centre-button">
+        <Button>
+          Visit the Help Centre
+          <ArrowRight />
+        </Button>
       </div>
     </div>
   )
