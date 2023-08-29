@@ -19,6 +19,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
 import moment from 'moment'
 import { useDeviceSize } from '../../modules/landing/landing'
+
 const pagination = {
   clickable: true,
   renderBullet: function (index, className) {
@@ -32,9 +33,9 @@ const Landing = () => (
     <WhoAreWe />
     <ActNow />
     <LatestNews />
+    <Trusted />
     <Activities />
     <OurVoices />
-    <Trusted />
     <Partnership />
     <Partners />
     <HelpCentre />
@@ -477,8 +478,7 @@ const LatestNews = () => {
   )
 }
 
-const OurVoices = () => {
-  const [width] = useDeviceSize()
+const Activities = () => {
   return (
     <section className={styles.activities}>
       <div className="container">
@@ -499,6 +499,63 @@ const OurVoices = () => {
               Visit the website
               <ArrowRight />
             </Button>
+          </div>
+        </div>
+        <div className="activity-box-wrapper">
+          <ul>
+            <li>
+              <div className="icon">
+                <img src="/activity-policy.svg" />
+              </div>
+              <p className="h-m">
+                Science
+                <br />
+                policy
+              </p>
+            </li>
+            <li>
+              <div className="icon">
+                <img src="/activity-bookmark.svg" />
+              </div>
+              <p className="h-m">Guidelines standards & harmonization</p>
+            </li>
+            <li>
+              <div className="icon">
+                <img src="/activity-money.svg" />
+              </div>
+              <p className="h-m">Sustainable & innovative financing</p>
+            </li>
+            <li>
+              <div className="icon">
+                <img src="/activity-plans.svg" />
+              </div>
+              <p className="h-m">National action plans</p>
+            </li>
+            <li>
+              <div className="icon">
+                <img src="/activity-access.svg" />
+              </div>
+              <p className="h-m">Access to all</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+const OurVoices = () => {
+  const [width] = useDeviceSize()
+  return (
+    <section className={styles.ourVoices}>
+      <div className="container">
+        <div className="title-wrapper">
+          <div className="title-holder">
+            <PageHeading title="Our Voices" />
+            <h2 className="h-xxl">
+              Uniting Waste Pickers and Indigenous Communities:{' '}
+              <span>Take Action for Sustainable Empowerment</span>
+            </h2>
           </div>
         </div>
         <div className="group-wrapper">
@@ -565,72 +622,6 @@ const Trusted = () => {
         <div className="trusted-circle" />
       </div>
     </div>
-  )
-}
-
-const Activities = () => {
-  return (
-    <section className={styles.activities}>
-      <div className="container">
-        <div className="title-wrapper">
-          <div className="title-holder">
-            <PageHeading title="HOW DOES IT WORK?" />
-            <h2 className="h-xxl">
-              Learn more <span>about activities</span>
-            </h2>
-            <p className="p-l">
-              The platform offers a wide range of tools to support your
-              decision-making and help a global network of actors to work
-              together to create shared solutions to end plastic pollution.
-            </p>
-          </div>
-          <div>
-            <Button size="large" ghost>
-              Visit the website
-              <ArrowRight />
-            </Button>
-          </div>
-        </div>
-        <div className="activity-box-wrapper">
-          <ul>
-            <li>
-              <div className="icon">
-                <img src="/activity-policy.svg" />
-              </div>
-              <p className="h-m">
-                Science
-                <br />
-                policy
-              </p>
-            </li>
-            <li>
-              <div className="icon">
-                <img src="/activity-bookmark.svg" />
-              </div>
-              <p className="h-m">Guidelines standards & harmonization</p>
-            </li>
-            <li>
-              <div className="icon">
-                <img src="/activity-money.svg" />
-              </div>
-              <p className="h-m">Sustainable & innovative financing</p>
-            </li>
-            <li>
-              <div className="icon">
-                <img src="/activity-plans.svg" />
-              </div>
-              <p className="h-m">National action plans</p>
-            </li>
-            <li>
-              <div className="icon">
-                <img src="/activity-access.svg" />
-              </div>
-              <p className="h-m">Access to all</p>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
   )
 }
 
