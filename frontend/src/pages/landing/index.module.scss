@@ -1658,6 +1658,12 @@
             }
           }
         }
+        &:nth-of-type(1) {
+          width: 325px;
+          @media only screen and (max-width: $bpMobile) {
+            width: 100%;
+          }
+        }
       }
     }
     .footer-bar,
