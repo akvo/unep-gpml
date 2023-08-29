@@ -1410,10 +1410,10 @@
 
 .footerSection {
   background-color: $primaryDarkBlue;
-  padding: 82px 0 34px;
+  padding: 82px 0 32px;
   color: $primaryWhite;
   @media only screen and (max-width: 640px) {
-    padding: 24px 0 34px;
+    padding: 24px 0 36px;
   }
   :global {
     h6 {
@@ -1485,7 +1485,11 @@
       }
     }
     .footer-item ul.social-links {
-      margin-block-start: 12px;
+      margin-block-start: 16px;
+      margin-block-end: 45px;
+      @media only screen and (max-width: 640px) {
+        margin-block-end: 16px;
+      }
     }
     .footer-item ul.social-links li {
       display: inline;
@@ -1508,6 +1512,10 @@
       gap: 24px;
     }
     .footer-item .footer-newsletter .newsletter-form {
+      display: flex;
+      flex-direction: column;
+      justify-items: center;
+      justify-content: center;
       width: 352px;
       height: 48px;
       padding: 4px 0;
@@ -1519,13 +1527,18 @@
       align-items: flex-start;
       justify-content: center;
     }
-    .footer-item .footer-newsletter .newsletter-form .ant-btn.ant-btn-default {
-      background-color: $primaryPurple !important;
-      padding: 5px 0 !important;
-      border-radius: 90px !important;
-      border-color: transparent !important;
-      &:disabled {
-        background: $primaryGrey !important;
+    .footer-item .footer-newsletter .newsletter-form button[type='submit'] {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      background-color: $primaryPurple;
+      padding: 3px;
+      border-radius: 90px;
+      border-color: transparent;
+      cursor: pointer;
+      svg path {
+        stroke: $primaryWhite;
       }
     }
     .footer-item .footer-newsletter .ant-form-inline .ant-form-item {
@@ -1542,12 +1555,16 @@
     .ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input:hover {
       background-color: transparent;
       color: $primaryWhite;
+      &:-webkit-autofill {
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: $primaryWhite;
+      }
     }
     .footer-item .footer-newsletter .ant-input {
       border: none;
     }
     .footer-item .footer-newsletter .ant-form-item:nth-of-type(1) {
-      width: 85%;
+      width: 84%;
     }
     .footer-item .footer-newsletter .ant-form-item:nth-of-type(2) {
       padding-left: 8px;
@@ -1558,9 +1575,10 @@
       justify-content: space-between;
     }
     .footer-bar {
+      padding-top: 32px;
       gap: 32px;
       @media only screen and (max-width: 640px) {
-        margin-top: 32px;
+        padding-top: 36px;
         flex-direction: column;
         gap: 12px;
       }
