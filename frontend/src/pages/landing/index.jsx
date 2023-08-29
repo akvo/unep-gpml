@@ -778,7 +778,7 @@ const Footer = () => {
                   Stay tuned with the GPML latest news and events!
                 </p>
               </div>
-              <div className="newsletter-form">
+              <div className="newsletter-container">
                 <Form
                   form={form}
                   name="newsletter"
