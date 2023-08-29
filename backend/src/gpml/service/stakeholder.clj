@@ -133,7 +133,7 @@
                                  :resource-id (:id org)
                                  :individual-connections [{:role "owner"
                                                            :stakeholder sth-id}]})]
-                    (if-not (:success? result)
+                    (if-not (-> result first :success?)
                       (assoc context
                              :success? false
                              :reason :failed-to-assign-sth-owner-role-to-organisation
