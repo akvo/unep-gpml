@@ -200,7 +200,6 @@
             (resp/created referrer (assoc body-params :id org-id))))
         (r/forbidden {:message "Unauthorized"}))
       (catch Throwable t
-        (prn t)
         (let [log-data {:exception-message (ex-message t)
                         :exception-data (ex-data t)
                         :context-data (assoc body-params
