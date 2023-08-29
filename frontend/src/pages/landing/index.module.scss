@@ -548,13 +548,20 @@
   }
   .features {
     padding: 0px 0px 80px 0px;
+    @media screen and (max-width: $bpMobile) {
+      padding: 0px 0px 32px 0px;
+    }
     :global {
+      .page-sub-heading,
+      .h-xxl {
+        padding-bottom: 18px;
+      }
       .slider-container {
         padding: 42px 40px 30px 50px;
         padding-left: calc((100% - 1148px) / 2);
         overflow: hidden;
         @media screen and (max-width: $bpMobile) {
-          padding: 0px 0px 30px 20px;
+          padding: 0px 0px 0px 20px;
         }
         .slider-wrapper {
           .feature-card {
@@ -1036,6 +1043,9 @@
 
 .latestNews {
   margin-bottom: 80px;
+  @media screen and (max-width: $bpMobile) {
+    margin-bottom: 20px;
+  }
   :global {
     .container .news-wrapper {
       margin-bottom: 18px;
