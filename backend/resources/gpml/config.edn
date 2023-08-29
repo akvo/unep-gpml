@@ -379,6 +379,7 @@
                                          ["/{topic-type}/{topic-id}"
                                           {:get {:summary "Get the translations for a specific resource"
                                                  :swagger {:tags ["get resource translations"]}
+                                                 :middleware [#ig/ref :gpml.auth/auth-middleware]
                                                  :parameters {:path [:map
                                                                      [:topic-type
                                                                       #ig/ref :gpml.handler.resource.translation/topics]
