@@ -113,11 +113,15 @@ export const Localiser = () => (
   </svg>
 )
 
-export const ArrowRight = () => (
+export const ArrowRight = ({
+  width = 23,
+  height = 24,
+  viewBox = '0 0 23 24',
+}) => (
   <svg
-    width="23"
-    height="24"
-    viewBox="0 0 23 24"
+    width={width}
+    height={height}
+    viewBox={viewBox}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
