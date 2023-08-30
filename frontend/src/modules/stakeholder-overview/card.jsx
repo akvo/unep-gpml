@@ -93,7 +93,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                         backgroundColor: randomColor(
                           profile?.firstName
                             ? profile?.firstName.substring(0, 1)
-                            : profile?.name.substring(0, 1)
+                            : profile?.name?.substring(0, 1)
                         ),
                         verticalAlign: "middle",
                         fontSize: "62px",
