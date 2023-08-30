@@ -74,22 +74,21 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
     setLoading(true);
     const queryParams = new URLSearchParams(searchParams);
     queryParams.delete("slug");
-    console.log(queryParams, "queryParams");
     if (type || history?.location?.state?.type)
-      if (
-        type === "capacity-building" ||
-        history?.location?.state?.type === "capacity-building"
-      ) {
-        queryParams.set(
-          "topic",
-          history?.location?.state?.type
-            ? history?.location?.state?.type.replace(/-/g, "_")
-            : type.replace(/-/g, "_")
-        );
+      queryParams.set(
+        "topic",
+        history?.location?.state?.type
+          ? history?.location?.state?.type.replace(/-/g, "_")
+          : type.replace(/-/g, "_")
+      );
 
-        queryParams.set("capacity_building", ["true"]);
-        queryParams.delete("topic");
-      }
+    if (
+      type === "capacity-building" ||
+      history?.location?.state?.type === "capacity-building"
+    ) {
+      queryParams.set("capacity_building", ["true"]);
+      queryParams.delete("topic");
+    }
     queryParams.set("incCountsForTags", popularTags);
     queryParams.set("limit", limit);
     queryParams.delete("totalCount");

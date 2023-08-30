@@ -4,7 +4,6 @@ import NewDetailsView from "../../modules/details-page/view";
 const Details = ({ setLoginVisible, isAuthenticated }) => {
   const router = useRouter();
   const { type, id } = router.query;
-  console.log(type, id);
   if (
     ![
       "initiative",

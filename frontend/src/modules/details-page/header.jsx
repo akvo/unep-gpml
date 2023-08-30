@@ -196,7 +196,7 @@ export const HeaderButtons = ({
           shape="round"
           size="middle"
           ghost
-          onClick={handleEditBtn}
+          onClick={() => handleEditBtn(type)}
         >
           Edit
         </Button>

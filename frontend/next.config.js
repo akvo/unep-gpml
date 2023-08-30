@@ -4,7 +4,9 @@ module.exports = {
     return [
       {
         source: "/api/:path*",
-        destination: "https://unep-gpml.akvotest.org/api/:path*",
+        destination: process.env.REACT_APP_FEENV
+          ? "https://digital.gpmarinelitter.org/api/:path*"
+          : "https://unep-gpml.akvotest.org/api/:path*",
       },
       {
         source: "/image/:path*",

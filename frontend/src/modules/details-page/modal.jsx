@@ -33,6 +33,8 @@ const DetailModal = ({
       footer={false}
     >
       <DetailsView
+        type={match?.params?.type}
+        id={match?.params?.id}
         {...{
           match,
           setFilterMenu,

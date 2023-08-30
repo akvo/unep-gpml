@@ -108,7 +108,6 @@ const DetailsView = ({
   isAuthenticated,
 }) => {
   const [showLess, setShowLess] = useState(true);
-
   const {
     profile,
     countries,
@@ -214,7 +213,7 @@ const DetailsView = ({
       e.disclaimer = null;
     });
     window.scrollTo({ top: 0 });
-  }, [profile, router]);
+  }, [router]);
 
   const getComment = async (id, type) => {
     let res = await api.get(
@@ -227,55 +226,54 @@ const DetailsView = ({
     }
   };
 
-  const handleEditBtn = () => {
+  const handleEditBtn = (type = null) => {
     eventTrack("Resource view", "Update", "Button");
     let form = null;
-    let type = null;
     let link = null;
     switch (type) {
       case "initiative":
         form = "initiative";
-        link = "edit-initiative";
+        link = "edit/initiative";
         type = "initiative";
         break;
       case "action-plan":
         form = "actionPlan";
-        link = "edit-action-plan";
+        link = "edit/action-plan";
         type = "action_plan";
         break;
       case "policy":
         form = "policy";
-        link = "edit-policy";
+        link = "edit/policy";
         type = "policy";
         break;
       case "technical-resource":
         form = "technicalResource";
-        link = "edit-technical-resource";
+        link = "edit/technical-resource";
         type = "technical_resource";
         break;
       case "financing-resource":
         form = "financingResource";
-        link = "edit-financing-resource";
+        link = "edit/financing-resource";
         type = "financing_resource";
         break;
       case "technology":
         form = "technology";
-        link = "edit-technology";
+        link = "edit/technology";
         type = "technology";
         break;
       case "event":
         form = "event";
-        link = "edit-event";
+        link = "edit/event";
         type = "event";
         break;
       case "case-study":
         form = "caseStudy";
-        link = "edit-case-study";
+        link = "edit/case-study";
         type = "case_study";
         break;
       default:
         form = "entity";
-        link = "edit-entity";
+        link = "edit/entity";
         type = "initiative";
         break;
     }
@@ -292,11 +290,13 @@ const DetailsView = ({
         flexible: 1,
       };
     });
-
-    router.push({
-      pathname: `/${link}/${id}`,
-      query: { type: type },
-    });
+    router.push(
+      {
+        pathname: `/${link}/${id}`,
+        query: { type: type },
+      },
+      `/${link}/${id}`
+    );
   };
 
   const handleDeleteBtn = () => {
