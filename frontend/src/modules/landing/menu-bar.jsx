@@ -1,32 +1,21 @@
-import {
-  Link,
-  NavLink,
-  Route,
-  Switch,
-  withRouter,
-  useHistory,
-  useLocation,
-} from "react-router-dom";
+import React from "react";
 import { Input, Button, Layout, Menu, Dropdown } from "antd";
-import classNames from "classnames";
-import { ReactComponent as Dots3x3 } from "../../images/3x3.svg";
-import { ReactComponent as AtlasSvg } from "../../images/book-atlas.svg";
-import { ReactComponent as CaseStudiesSvg } from "../../images/capacity-building/ic-case-studies.svg";
-import { ReactComponent as CapacityBuildingSvg } from "../../images/capacity-building/ic-capacity-building.svg";
-import { ReactComponent as IconEvent } from "../../images/event-icon.svg";
-import { ReactComponent as IconForum } from "../../images/events/forum-icon.svg";
-import { ReactComponent as IconCommunity } from "../../images/events/community-icon.svg";
-import { ReactComponent as IconPartner } from "../../images/stakeholder-overview/partner-icon.svg";
-import { ReactComponent as ExpertIcon } from "../../images/stakeholder-overview/expert-icon.svg";
-import { ReactComponent as AnalyticAndStatisticSvg } from "../../images/analytic-and-statistic-icon.svg";
-import { ReactComponent as DataCatalogueSvg } from "../../images/data-catalogue-icon.svg";
-import { ReactComponent as ExploreSvg } from "../../images/explore-icon.svg";
-import { ReactComponent as GlossarySvg } from "../../images/glossary-icon.svg";
-import { ReactComponent as MapSvg } from "../../images/map-icon.svg";
-import { ReactComponent as HelpCenterSvg } from "../../images/help-center-icon.svg";
-import { ReactComponent as AboutSvg } from "../../images/about-icon.svg";
-
-import logo from "../../images/GPML-logo-alone.svg";
+import Dots3x3 from "../../images/3x3.svg";
+import AtlasSvg from "../../images/book-atlas.svg";
+import CaseStudiesSvg from "../../images/capacity-building/ic-case-studies.svg";
+import CapacityBuildingSvg from "../../images/capacity-building/ic-capacity-building.svg";
+import IconEvent from "../../images/event-icon.svg";
+import IconForum from "../../images/events/forum-icon.svg";
+import IconCommunity from "../../images/events/community-icon.svg";
+import IconPartner from "../../images/stakeholder-overview/partner-icon.svg";
+import ExpertIcon from "../../images/stakeholder-overview/expert-icon.svg";
+import AnalyticAndStatisticSvg from "../../images/analytic-and-statistic-icon.svg";
+import DataCatalogueSvg from "../../images/data-catalogue-icon.svg";
+import ExploreSvg from "../../images/explore-icon.svg";
+import GlossarySvg from "../../images/glossary-icon.svg";
+import MapSvg from "../../images/map-icon.svg";
+import HelpCenterSvg from "../../images/help-center-icon.svg";
+import AboutSvg from "../../images/about-icon.svg";
 import { useEffect, useRef, useState } from "react";
 import {
   CloseOutlined,
@@ -36,7 +25,10 @@ import {
 } from "@ant-design/icons";
 import { CSSTransition } from "react-transition-group";
 import bodyScrollLock from "../details-page/scroll-utils";
-import { UIStore } from "../../store.js";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import styles from "./styles.module.scss";
+import { UIStore } from "../../store";
 
 const MenuBar = ({
   updateQuery,
@@ -49,9 +41,9 @@ const MenuBar = ({
   showMenu,
   setShowMenu,
 }) => {
+  const router = useRouter();
   const domRef = useRef();
-  const history = useHistory();
-  const { search, pathname } = useLocation();
+  const { query } = router;
   useEffect(() => {
     const listen = (e) => {
       if (
@@ -82,41 +74,39 @@ const MenuBar = ({
   };
 
   useEffect(() => {
-    const query = new URLSearchParams(search);
-    const param = query.get("ref");
-    if (param && param === "all_tools" && pathname === "/") {
+    const param = query.ref;
+    if (param && param === "all_tools" && router.pathname === "/") {
       setShowMenu(true);
       bodyScrollLock.enable();
     }
-  }, [search, pathname]);
+  }, [query, router.pathname]);
+
+  const currentPath = router.asPath;
 
   return (
     <>
       <Layout.Header className="nav-header-container" ref={domRef}>
         <div className="ui container">
-          <Link to="/" className="logo-a">
-            <img src={logo} className="logo" alt="GPML" />
+          <Link href="/" className="logo-a">
+            <img src="/GPML-logo-alone.svg" className="logo" />
             <div className="beta">beta</div>
           </Link>
           {isAuthenticated && (
-            <NavLink
-              to="/workspace"
-              className="btn-workspace menu-btn"
-              activeClassName="selected"
+            <Link
+              href="/workspace"
+              className={`btn-workspace menu-btn  ${
+                router.pathname === "/workspace" ? "selected" : ""
+              }`}
               aria-label="Workspace"
             >
               <HomeOutlined />
               <span className="text">Workspace</span>
-            </NavLink>
+            </Link>
           )}
           <div
             className="all-tools-btn"
             onClick={() => {
-              if (pathname === "/")
-                history.push({
-                  pathname: "/",
-                  search: "?ref=all_tools",
-                });
+              if (router.pathname === "/") router.push("/?ref=all_tools");
               else setShowMenu(true);
               bodyScrollLock.enable();
             }}
@@ -124,15 +114,13 @@ const MenuBar = ({
             <Dots3x3 />
             <span>All Tools</span>
           </div>
-          <Switch>
-            {Object.keys(pathContent).map((path) => (
-              <Route path={path}>
-                <Item to={path} />
-              </Route>
-            ))}
-          </Switch>
+          {Object.keys(pathContent).map((path) => (
+            <React.Fragment key={path}>
+              {currentPath === path && <Item to={path} />}
+            </React.Fragment>
+          ))}
           <div className="rightside">
-            <Search updateQuery={updateQuery} />
+            <Search router={router} />
             {!isAuthenticated ? (
               <Button type="ghost" onClick={() => setLoginVisible(true)}>
                 Sign in
@@ -140,15 +128,19 @@ const MenuBar = ({
             ) : (
               [
                 <AddButton
+                  key="addButton"
                   {...{
                     isAuthenticated,
                     setLoginVisible,
-                    history,
+                    router,
                     profile,
                     setWarningModalVisible,
                   }}
                 />,
-                <UserButton {...{ auth0Client, isRegistered, profile }} />,
+                <UserButton
+                  key="userButton"
+                  {...{ auth0Client, isRegistered, profile }}
+                />,
               ]
             )}
           </div>
@@ -162,18 +154,21 @@ const MenuBar = ({
           exit: 200,
         }}
         unmountOnExit
-        classNames="full-menu"
+        classNames={{
+          enter: styles.fullMenuEnter,
+          enterActive: styles.fullMenuEnterActive,
+          exit: styles.fullMenuExit,
+          exitActive: styles.fullMenuExitActive,
+        }}
       >
-        <div className="full-menu">
-          <div className="contents">
+        <div className={styles.fullMenu}>
+          <div className={styles.contents}>
             <h2>All tools</h2>
             <div
-              className="close-btn"
+              className={styles.closeBtn}
               onClick={() => {
-                if (pathname === "/") {
-                  history.push({
-                    pathname: "/",
-                  });
+                if (router.pathname === "/") {
+                  router.push("/");
                 }
                 setShowMenu(false);
                 bodyScrollLock.disable();
@@ -182,17 +177,17 @@ const MenuBar = ({
               <CloseOutlined />
             </div>
             <h5>Information</h5>
-            <div className="row">
+            <div className={styles.row}>
               <Item to="/knowledge/library" {...{ setShowMenu }} />
               <Item to="/knowledge/case-studies" {...{ setShowMenu }} />
               <Item to="/knowledge/capacity-development" {...{ setShowMenu }} />
             </div>
             <h5>Community</h5>
-            <div className="row">
-              <Item to="/connect/community" {...{ setShowMenu }} />
-              <Item to="/connect/experts" {...{ setShowMenu }} />
-              <Item to="/connect/events" {...{ setShowMenu }} />
-              <Item to="/connect/partners" {...{ setShowMenu }} />
+            <div className={styles.row}>
+              <Item to="/community" {...{ setShowMenu }} />
+              <Item to="/experts" {...{ setShowMenu }} />
+              <Item to="/events" {...{ setShowMenu }} />
+              <Item to="/partners" {...{ setShowMenu }} />
               <Item
                 href="https://communities.gpmarinelitter.org"
                 title="Engage"
@@ -201,7 +196,7 @@ const MenuBar = ({
               />
             </div>
             <h5>Data hub</h5>
-            <div className="row">
+            <div className={styles.row}>
               <Item
                 href="https://datahub.gpmarinelitter.org"
                 title="Analytics & statistics"
@@ -239,7 +234,7 @@ const MenuBar = ({
               />
             </div>
             <h5>Looking for more?</h5>
-            <div className="row">
+            <div className={styles.row}>
               <Item to="/help-center" {...{ setShowMenu }} />
               <Item to="/about-us" {...{ setShowMenu }} />
             </div>
@@ -268,24 +263,24 @@ const pathContent = {
     icon: <CapacityBuildingSvg />,
     iconClass: "learning",
   },
-  "/connect/community": {
+  "/community": {
     title: "Members",
     iconClass: "tools-community-icon",
     subtitle: "Directory of GPML network entities and individuals",
     icon: <IconCommunity />,
   },
-  "/connect/experts": {
+  "/experts": {
     title: "Experts",
     iconClass: "tools-experts-icon",
     subtitle: "Tool to find an expert and experts' groups",
     icon: <ExpertIcon />,
   },
-  "/connect/events": {
+  "/events": {
     title: "Events",
     subtitle: "Global events calendar",
     icon: <IconEvent />,
   },
-  "/connect/partners": {
+  "/partners": {
     title: "Partners",
     iconClass: "tools-partners-icon",
     subtitle: "Directory of partners of the GPML Digital Platform",
@@ -315,6 +310,7 @@ const Item = ({ title, subtitle, icon, iconClass, to, href, setShowMenu }) => {
     title = pathContent[to].title;
     subtitle = pathContent[to].subtitle;
   }
+
   const contents = (
     <>
       <div className={["icon", iconClass].filter((it) => it != null).join(" ")}>
@@ -332,124 +328,155 @@ const Item = ({ title, subtitle, icon, iconClass, to, href, setShowMenu }) => {
   };
   if (to != null) {
     return (
-      <Link className="menu-item" to={to} onClick={handleClick}>
-        {contents}
+      <Link href={to} legacyBehavior>
+        <a className={`${styles.menuItem} menu-item`} onClick={handleClick}>
+          {contents}
+        </a>
       </Link>
     );
   } else if (href != null) {
     return (
-      <a className="menu-item" href={href} onClick={handleClick}>
+      <a
+        className={`${styles.menuItem} menu-item`}
+        href={href}
+        onClick={handleClick}
+      >
         {contents}
       </a>
     );
   }
-  return <div className="menu-item">{contents}</div>;
+  return <div className={`${styles.menuItem} menu-item`}>{contents}</div>;
 };
 
-const Search = withRouter(({ history, updateQuery }) => {
+const Search = ({ router }) => {
   const [search, setSearch] = useState("");
 
   const handleSearch = (src) => {
-    const path = history.location.pathname;
     if (src) {
-      history.push(`/knowledge/library/resource/category?q=${src.trim()}`);
+      router.push({
+        pathname: `/knowledge/library/grid`,
+        query: { q: src.trim() },
+      });
     } else {
-      history.push(`/knowledge/library/resource/category`);
+      router.push({
+        pathname: `/knowledge/library/grid`,
+      });
     }
   };
 
   return (
     <div className="src">
       <Input
+        value={search}
         className="input-src"
         placeholder="Search"
         suffix={<SearchOutlined />}
+        onChange={(e) => setSearch(e.target.value)}
         onPressEnter={(e) => handleSearch(e.target.value)}
         onSubmit={(e) => setSearch(e.target.value)}
       />
     </div>
   );
-});
+};
 
-const AddButton = withRouter(
-  ({
-    isAuthenticated,
-    setWarningModalVisible,
-    history,
-    setLoginVisible,
-    profile,
-  }) => {
-    if (isAuthenticated) {
-      if (profile?.reviewStatus === "APPROVED") {
-        return (
-          <>
-            <Link to="/flexible-forms">
-              <Button type="primary">Add Content</Button>
-            </Link>
-          </>
-        );
-      }
+const AddButton = ({
+  isAuthenticated,
+  setWarningModalVisible,
+  router,
+  setLoginVisible,
+  profile,
+}) => {
+  const addContentClick = () => {
+    router.push("/flexible-forms");
+    UIStore.update((e) => {
+      e.formEdit = {
+        ...e.formEdit,
+        flexible: {
+          status: "add",
+          id: null,
+        },
+      };
+      e.formStep = {
+        ...e.formStep,
+        flexible: 1,
+      };
+    });
+  };
+
+  if (isAuthenticated) {
+    if (profile?.reviewStatus === "APPROVED") {
       return (
-        <Button
-          type="primary"
-          onClick={() => {
-            profile?.reviewStatus === "SUBMITTED"
-              ? setWarningModalVisible(true)
-              : history.push("/onboarding");
-          }}
-        >
-          Add Content
-        </Button>
+        <>
+          {/* <Link href="/flexible-forms"> */}
+          <Button onClick={addContentClick} type="primary">
+            Add Content
+          </Button>
+          {/* </Link> */}
+        </>
       );
     }
     return (
-      <Button type="primary" onClick={() => setLoginVisible(true)}>
+      <Button
+        type="primary"
+        onClick={() => {
+          profile?.reviewStatus === "SUBMITTED"
+            ? setWarningModalVisible(true)
+            : router.push({
+                pathname: "/onboarding",
+              });
+        }}
+      >
         Add Content
       </Button>
     );
   }
-);
+  return (
+    <Button type="primary" onClick={() => setLoginVisible(true)}>
+      Add Content
+    </Button>
+  );
+};
 
-const UserButton = withRouter(
-  ({ history, isRegistered, profile, auth0Client }) => {
-    return (
-      <Dropdown
-        overlayClassName="user-btn-dropdown-wrapper"
-        overlay={
-          <Menu className="user-btn-dropdown">
-            <Menu.Item
-              key="profile"
-              onClick={() => {
-                history.push(
-                  `/${isRegistered(profile) ? "profile" : "onboarding"}`
-                );
-              }}
-            >
-              Profile
-            </Menu.Item>
-            <Menu.Item
-              key="logout"
-              onClick={() => {
-                auth0Client.logout({ returnTo: window.location.origin });
-              }}
-            >
-              Logout
-            </Menu.Item>
-          </Menu>
-        }
-        trigger={["click"]}
+const UserButton = ({ router, isRegistered, profile, auth0Client }) => {
+  return (
+    <Dropdown
+      overlayClassName="user-btn-dropdown-wrapper"
+      overlay={
+        <Menu className="user-btn-dropdown">
+          <Menu.Item
+            key="profile"
+            onClick={() => {
+              router.push({
+                pathname: `/${
+                  isRegistered(profile) ? "profile" : "onboarding"
+                }`,
+              });
+            }}
+          >
+            Profile
+          </Menu.Item>
+          <Menu.Item
+            key="logout"
+            onClick={() => {
+              auth0Client.logout({ returnTo: window.location.origin });
+            }}
+          >
+            Logout
+          </Menu.Item>
+        </Menu>
+      }
+      trigger={["click"]}
+      placement="bottomRight"
+    >
+      <Button
+        type="ghost"
         placement="bottomRight"
-      >
-        <Button
-          type="ghost"
-          placement="bottomRight"
-          className="profile-button"
-          shape="circle"
-          icon={<UserOutlined />}
-        />
-      </Dropdown>
-    );
-  }
-);
+        className="profile-button"
+        shape="circle"
+        icon={<UserOutlined />}
+      />
+    </Dropdown>
+  );
+};
 
 export default MenuBar;

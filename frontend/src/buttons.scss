@@ -1,8 +1,8 @@
 .ant-btn {
-  font-weight: 500;
-  font-size: 1.125em;
-  line-height: 2.2;
-  padding: 0 1.2em;
+  // font-weight: 500;
+  // font-size: 1.125em;
+  // line-height: 2.2;
+  // padding: 0 1.2em;
   &.ant-btn-ghost {
     border: 2px solid #18162f;
     color: #18162f;
@@ -12,19 +12,19 @@
       color: white;
     }
   }
-  &.ant-btn-lg {
-    border-width: 3px;
-    font-size: 1.375em;
-    line-height: 2.2;
-    padding: 0 30px;
-  }
+  // &.ant-btn-lg {
+  //   border-width: 3px;
+  //   font-size: 1.375em;
+  //   line-height: 2.2;
+  //   padding: 0 30px;
+  // }
   &.ant-btn-primary {
     background-color: #00ff7f;
     border-color: #00ff7f;
     // font-weight: 500;
     // font-size: 22px;
     color: #0055a5;
-    height: auto;
+    // height: auto;
     // line-height: 60px;
     // padding: 0 50px;
     transition: all 0.19s ease-out;
@@ -40,7 +40,7 @@
     }
   }
   &.ant-btn-link {
-    color: #fff;
+    color: #fff !important;
     padding: 0;
     &:hover {
       color: #ffb400;

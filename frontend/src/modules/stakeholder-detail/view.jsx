@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import "./styles.scss";
+import styles from "./styles.module.scss";
 import { UIStore } from "../../store";
 import {
   Row,
@@ -16,9 +16,9 @@ import StickyBox from "react-sticky-box";
 import ReadMoreReact from "read-more-less-react";
 import "read-more-less-react/dist/index.css";
 import LocationImage from "../../images/location.svg";
-import { ReactComponent as TrashIcon } from "../../images/resource-detail/trash-icn.svg";
-import { ReactComponent as EditIcon } from "../../images/resource-detail/edit-icn.svg";
-import { ReactComponent as FollowIcon } from "../../images/resource-detail/follow-icn.svg";
+import TrashIcon from "../../images/resource-detail/trash-icn.svg";
+import EditIcon from "../../images/resource-detail/edit-icn.svg";
+import FollowIcon from "../../images/resource-detail/follow-icn.svg";
 import {
   LinkedinOutlined,
   TwitterOutlined,
@@ -26,12 +26,14 @@ import {
   LoadingOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import api from "../../utils/api";
 import { resourceTypeToTopicType } from "../../utils/misc";
 import isEmpty from "lodash/isEmpty";
 import { eventTrack, randomColor } from "../../utils/misc";
 import ResourceCards from "../../components/resource-cards/resource-cards";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 const usePrevious = (value) => {
   const ref = useRef();
@@ -55,7 +57,7 @@ const SharePanel = ({
   profile,
   isAuthenticated,
   data,
-  params,
+  id,
   relation,
   history,
   handleRelationChange,
@@ -64,10 +66,8 @@ const SharePanel = ({
     isAuthenticated &&
     profile.reviewStatus === "APPROVED" &&
     (profile.role === "ADMIN" ||
-      profile.id === Number(params.id) ||
-      data.owners.includes(profile.id)) &&
-    (params.type !== "initiative" ||
-      (params.type === "initiative" && params.id > 10000));
+      profile.id === Number(id) ||
+      data.owners.includes(id));
 
   const handleChangeRelation = (relationType) => {
     let association = relation ? [...relation.association] : [];
@@ -77,9 +77,9 @@ const SharePanel = ({
       association = association.filter((it) => it !== relationType);
     }
     handleRelationChange({
-      topicId: parseInt(params.id),
+      topicId: parseInt(id),
       association,
-      topic: resourceTypeToTopicType(params.type),
+      topic: resourceTypeToTopicType("stakeholder"),
     });
   };
 
@@ -95,7 +95,7 @@ const SharePanel = ({
         ...e.formEdit,
         signUp: {
           status: "edit",
-          id: params.id,
+          id: id,
         },
       };
       e.formStep = {
@@ -103,10 +103,13 @@ const SharePanel = ({
         stakeholder: 1,
       };
     });
-    history.push({
-      pathname: `/edit-stakeholder/${params.id}`,
-      state: { formType: "stakeholder" },
-    });
+    history.push(
+      {
+        pathname: `/edit/stakeholder/${id}`,
+        query: { formType: "stakeholder" },
+      },
+      `/edit/stakeholder/${id}`
+    );
   };
 
   return (
@@ -155,7 +158,7 @@ const SharePanel = ({
               onOk() {
                 eventTrack("Stakeholder view", "Delete", "Button");
                 return api
-                  .delete(`/detail/${params.type}/${params.id}`)
+                  .delete(`/detail/stakeholder/${id}`)
                   .then((res) => {
                     notification.success({
                       message: "Entity deleted successfully",
@@ -182,12 +185,7 @@ const SharePanel = ({
   );
 };
 
-const StakeholderDetail = ({
-  match: { params },
-  setLoginVisible,
-  setFilterMenu,
-  isAuthenticated,
-}) => {
+const StakeholderDetail = ({ setLoginVisible, isAuthenticated }) => {
   const {
     profile,
     countries,
@@ -205,7 +203,7 @@ const StakeholderDetail = ({
     transnationalOptions: s.transnationalOptions,
     icons: s.icons,
   }));
-  const history = useHistory();
+  const router = useRouter();
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const [ownedResources, setOwnedResources] = useState([]);
@@ -217,15 +215,14 @@ const StakeholderDetail = ({
   const [warningVisible, setWarningVisible] = useState(false);
 
   const prevValue = usePrevious(data);
+  const { id } = router.query;
 
   const relation = relations.find(
-    (it) =>
-      it.topicId === parseInt(params.id) &&
-      it.topic === resourceTypeToTopicType(params.type)
+    (it) => it.topicId === parseInt(id) && it.topic === "stakeholder"
   );
 
   const isConnectStakeholders = ["organisation", "stakeholder"].includes(
-    params?.type
+    "stakeholder"
   );
   const breadcrumbLink = isConnectStakeholders ? "stakeholders" : "browse";
 
@@ -245,9 +242,7 @@ const StakeholderDetail = ({
       searchParms.set("limit", 20);
       searchParms.set("page", n);
       searchParms.set("association", "owner");
-      const url = `/stakeholder/${params.id}/associated-topics?${String(
-        searchParms
-      )}`;
+      const url = `/stakeholder/${id}/associated-topics?${String(searchParms)}`;
       api
         .get(url)
         .then((d) => {
@@ -263,7 +258,7 @@ const StakeholderDetail = ({
           // redirectError(err, history);
         });
     },
-    [params, history]
+    [router]
   );
 
   const getBookedResources = useCallback(
@@ -273,9 +268,7 @@ const StakeholderDetail = ({
       searchParms.set("limit", 20);
       searchParms.set("page", n);
       searchParms.set("association", "interested in");
-      const url = `/stakeholder/${params.id}/associated-topics?${String(
-        searchParms
-      )}`;
+      const url = `/stakeholder/${id}/associated-topics?${String(searchParms)}`;
       api
         .get(url)
         .then((d) => {
@@ -291,36 +284,36 @@ const StakeholderDetail = ({
           // redirectError(err, history);
         });
     },
-    [params, history]
+    [router]
   );
 
   useEffect(() => {
-    isLoaded() &&
+    if (isLoaded()) {
       !data &&
-      params?.type &&
-      params?.id &&
-      api
-        .get(`/detail/${params.type}/${params.id}`)
-        .then((d) => {
-          setData(d.data);
-          getOwnedResources(0);
-          getBookedResources(0);
-        })
-        .catch((err) => {
-          console.error(err);
-          // redirectError(err, history);
-        });
-    if (isLoaded() && profile.reviewStatus === "APPROVED") {
-      setTimeout(() => {
-        api.get(`/favorite/${params.type}/${params.id}`).then((resp) => {
-          setRelations(resp.data);
-        });
-      }, 100);
+        id &&
+        api
+          .get(`/detail/stakeholder/${id}`)
+          .then((d) => {
+            setData(d.data);
+            getOwnedResources(0);
+            getBookedResources(0);
+          })
+          .catch((err) => {
+            console.error(err);
+            // redirectError(err, history);
+          });
+      if (isLoaded() && profile.reviewStatus === "APPROVED") {
+        setTimeout(() => {
+          api.get(`/favorite/stakeholder/${id}`).then((resp) => {
+            setRelations(resp.data);
+          });
+        }, 100);
+      }
+      UIStore.update((e) => {
+        e.disclaimer = null;
+      });
+      window.scrollTo({ top: 0 });
     }
-    UIStore.update((e) => {
-      e.disclaimer = null;
-    });
-    window.scrollTo({ top: 0 });
   }, [isLoaded]);
 
   useEffect(() => {
@@ -371,7 +364,7 @@ const StakeholderDetail = ({
   }
 
   return (
-    <div id="stakeholder-detail">
+    <div className={styles.stakeholderDetail}>
       <StickyBox style={{ zIndex: 10 }}>
         <div className="topbar-container">
           <div className="ui container">
@@ -456,7 +449,7 @@ const StakeholderDetail = ({
                   <List itemLayout="horizontal">
                     <List.Item className="location">
                       <List.Item.Meta
-                        avatar={<Avatar src={LocationImage} />}
+                        avatar={<Avatar src="/location.svg" />}
                         title={
                           countries.find((it) => it.id === data?.country)?.name
                         }
@@ -489,8 +482,11 @@ const StakeholderDetail = ({
                             />
                           }
                           title={
-                            <Link to={`/organisation/${data?.affiliation?.id}`}>
-                              {data?.affiliation?.name}
+                            <Link
+                              href={`/organisation/${data?.affiliation?.id}`}
+                              legacyBehavior
+                            >
+                              <a>{data?.affiliation?.name}</a>
                             </Link>
                           }
                           description={"Entity"}
@@ -670,9 +666,9 @@ const StakeholderDetail = ({
                     profile={profile}
                     isAuthenticated={isAuthenticated}
                     data={data}
-                    params={params}
+                    id={id}
                     relation={relation}
-                    history={history}
+                    history={router}
                     handleRelationChange={handleRelationChange}
                   />
                 </div>
