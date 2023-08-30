@@ -28,6 +28,7 @@ import bodyScrollLock from "../details-page/scroll-utils";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "./styles.module.scss";
+import { UIStore } from "../../store";
 
 const MenuBar = ({
   updateQuery,
@@ -385,14 +386,32 @@ const AddButton = ({
   setLoginVisible,
   profile,
 }) => {
-  console.log(profile);
+  const addContentClick = () => {
+    router.push("/flexible-forms");
+    UIStore.update((e) => {
+      e.formEdit = {
+        ...e.formEdit,
+        flexible: {
+          status: "add",
+          id: null,
+        },
+      };
+      e.formStep = {
+        ...e.formStep,
+        flexible: 1,
+      };
+    });
+  };
+
   if (isAuthenticated) {
     if (profile?.reviewStatus === "APPROVED") {
       return (
         <>
-          <Link href="/flexible-forms">
-            <Button type="primary">Add Content</Button>
-          </Link>
+          {/* <Link href="/flexible-forms"> */}
+          <Button onClick={addContentClick} type="primary">
+            Add Content
+          </Button>
+          {/* </Link> */}
         </>
       );
     }

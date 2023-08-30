@@ -231,7 +231,6 @@ const FlexibleForms = ({
   const formData = initialFormData.useState();
   const { editId, data } = formData;
   const { status } = formEdit.flexible;
-  console.log(status, "formEdit");
   const btnSubmit = useRef();
   const [displayModal, setDisplayModal] = useState(false);
   const [sending, setSending] = useState(false);
