@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, notification } from "react";
-import "./styles.scss";
+import styles from "./styles.module.scss";
 import { Button, Typography, Steps } from "antd";
 import { Form } from "react-final-form";
 import AffiliationOption from "./affiliation-option";
@@ -10,22 +10,21 @@ import FormFour from "./form-four";
 import { UIStore } from "../../store";
 import { useLocation } from "react-router-dom";
 import api from "../../utils/api";
-import { useHistory } from "react-router-dom";
-import GettingStartedIcon from "../../images/auth/surfer.svg";
-import waveSvg from "../../images/auth/wave.svg";
 import { setIn } from "final-form";
+import { useRouter } from "next/router";
+import { useDeviceSize } from "../landing/landing";
 
 function Authentication() {
   const formRef = useRef();
   const surferRef = useRef();
-  const location = useLocation();
-  let history = useHistory();
+  const router = useRouter();
+  const query = router.query.data;
   const [affiliation, setAffiliation] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
   const [initialValues, setInitialValues] = useState({});
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [width, height] = useDeviceSize();
   const {
     tags,
     nonMemberOrganisations,
@@ -81,16 +80,12 @@ function Authentication() {
     setLoading(true);
     let data = {
       ...values,
-      ...(location?.state?.data &&
-        !location?.state.data.hasOwnProperty("exp") &&
-        location?.state?.data),
-      ...(location?.state?.data &&
-        location?.state.data.hasOwnProperty(
+      ...(query && !query?.hasOwnProperty("exp") && query?.data),
+      ...(query &&
+        query?.hasOwnProperty(
           "https://digital.gpmarinelitter.org/user_metadata"
         ) &&
-        location?.state?.data?.[
-          "https://digital.gpmarinelitter.org/user_metadata"
-        ]),
+        query?.["https://digital.gpmarinelitter.org/user_metadata"]),
     };
 
     data.offering = [
@@ -114,27 +109,22 @@ function Authentication() {
       data.cv = await getBase64(data.cv);
     }
 
-    if (location?.state?.data.hasOwnProperty("given_name")) {
-      data.firstName = location?.state?.data.given_name;
+    if (query?.hasOwnProperty("given_name")) {
+      data.firstName = query?.given_name;
     }
-    if (location?.state?.data.hasOwnProperty("family_name")) {
-      data.lastName = location?.state?.data.family_name;
+    if (query?.hasOwnProperty("family_name")) {
+      data.lastName = query?.family_name;
     }
-    if (location?.state?.data.hasOwnProperty("email")) {
-      data.email = location?.state?.data.email;
+    if (query?.hasOwnProperty("email")) {
+      data.email = query?.email;
     }
-    if (location?.state?.data.hasOwnProperty("picture")) {
-      data.photo = location?.state?.data.picture;
+    if (query?.hasOwnProperty("picture")) {
+      data.photo = query?.picture;
     }
-    if (
-      location?.state?.data.hasOwnProperty(
-        "https://digital.gpmarinelitter.org/country"
-      )
-    ) {
+    if (query?.hasOwnProperty("https://digital.gpmarinelitter.org/country")) {
       data.country = countries.find(
         (country) =>
-          country.name ===
-          location?.state?.data["https://digital.gpmarinelitter.org/country"]
+          country.name === query?.["https://digital.gpmarinelitter.org/country"]
       )?.id;
     }
     if (data.country) {
@@ -156,14 +146,14 @@ function Authentication() {
       .post("/profile", data)
       .then((res) => {
         setLoading(false);
-        window.scrollTo({ top: 0 });
+        // window.scrollTo({ top: 0 });
         UIStore.update((e) => {
           e.profile = {
             ...res.data,
-            emailVerified: location?.state.data.email_verified,
+            emailVerified: query?.email_verified,
           };
         });
-        history.push("/workspace");
+        router.push("/workspace");
       })
       .catch((err) => {
         setLoading(false);
@@ -225,7 +215,7 @@ function Authentication() {
   };
 
   return (
-    <div id="onboarding">
+    <div className={styles.onboarding}>
       <Form
         initialValues={initialValues}
         validate={(values) => {
@@ -275,8 +265,7 @@ function Authentication() {
                   style={{
                     marginLeft: -(
                       currentStep *
-                      (window.innerWidth -
-                        2 * (window.innerWidth < 1024 ? 20 : 170))
+                      (width - 2 * (width < 1024 ? 20 : 170))
                     ),
                   }}
                 >
@@ -288,7 +277,7 @@ function Authentication() {
                   </div>
                   <div className="image-wrapper">
                     <img
-                      src={GettingStartedIcon}
+                      src="/auth/surfer.svg"
                       alt="getting-started"
                       ref={surferRef}
                     />
@@ -332,7 +321,12 @@ function Authentication() {
                     error={error}
                   />
                 </div>
-                <Wave step={currentStep} surferRef={surferRef} />
+                <Wave
+                  step={currentStep}
+                  surferRef={surferRef}
+                  width={width}
+                  height={height}
+                />
                 {currentStep > 0 && (
                   <Button className="step-button-back" onClick={previous}>
                     {"<"} Back
@@ -364,14 +358,11 @@ function Authentication() {
   );
 }
 
-const Wave = ({ step, surferRef }) => {
+const Wave = ({ step, surferRef, width, height }) => {
   const ref = useRef();
   const listener = (e) => {
-    const axx = (window.innerWidth / 2 - e.x) / (window.innerWidth / 2);
-    const axy = Math.max(
-      0,
-      (window.innerHeight / 1.2 - e.y) / (window.innerHeight / 1.2)
-    );
+    const axx = (width / 2 - e.x) / (width / 2);
+    const axy = Math.max(0, (height / 1.2 - e.y) / (height / 1.2));
     ref.current.style.marginLeft = `${axx * 100}px`;
     ref.current.style.marginBottom = `${-axy * 100}px`;
     surferRef.current.style.transform = `translate(${axx * 70}px, ${
@@ -385,8 +376,8 @@ const Wave = ({ step, surferRef }) => {
     };
   }, []);
   return (
-    <div className="wave" style={{ left: -(step * (window.innerWidth + 200)) }}>
-      <img src={waveSvg} ref={ref} />
+    <div className="wave" style={{ left: -(step * (width + 200)) }}>
+      <img src="/auth/wave.svg" ref={ref} />
     </div>
   );
 };

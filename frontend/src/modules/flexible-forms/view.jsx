@@ -27,21 +27,20 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
-import "./styles.scss";
+import styles from "./style.module.scss";
 import common from "./common";
-import ExampleIcon from "../../images/examples.png";
-import InfoBlue from "../../images/i-blue.png";
 import FlexibleForm from "./form";
 import isEmpty from "lodash/isEmpty";
 import api from "../../utils/api";
 import { useQuery } from "../../utils/misc";
 import moment from "moment";
-import { Link, useLocation } from "react-router-dom";
 const { Step } = Steps;
-import RichTextEditor from "react-rte";
+import dynamic from "next/dynamic";
+const RichTextEditor = dynamic(() => import("react-rte"), { ssr: false });
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 export const getTypeByResource = (type) => {
-  console.log(type,"type")
   let t = "";
   let name = "";
   let translations = "";
@@ -156,7 +155,14 @@ const toolbarConfig = {
   ],
 };
 
-const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match: { params }, ...props }) => {
+const FlexibleForms = ({
+  isAuthenticated,
+  setLoginVisible,
+  loadingProfile,
+  id,
+  type,
+  ...props
+}) => {
   const {
     tabs,
     getSchema,
@@ -168,7 +174,7 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
     getTranslationForm,
   } = common;
   const query = useQuery();
-  
+
   const caseStudy = {
     code: "case_study",
     name: "Case Study",
@@ -219,10 +225,12 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
   } = storeData;
 
   const tabsData = tabs;
-  const state = useLocation();
+  const router = useRouter();
+  const { pathname, query: state } = router;
+
   const formData = initialFormData.useState();
   const { editId, data } = formData;
-  const { status, id } = formEdit.flexible;
+  const { status } = formEdit.flexible;
   const btnSubmit = useRef();
   const [displayModal, setDisplayModal] = useState(false);
   const [sending, setSending] = useState(false);
@@ -239,12 +247,7 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
     disabled: true,
     type: "default",
   });
-  const [value, setValue] = useState([
-    {
-      lang: "",
-      value: RichTextEditor.createEmptyValue(),
-    },
-  ]);
+  const [value, setValue] = useState();
   const [formSchema, setFormSchema] = useState({
     schema: schema[selectedMainContentType],
   });
@@ -280,25 +283,30 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
   ]);
 
   useEffect(() => {
-    if (state?.state?.type && status !== "edit") {
-      setMainType(state?.state?.type);
-      setLabel(state?.state?.label);
+    const importModule = async () => {
+      const module = await import("react-rte");
+      setValue(module.createEmptyValue());
+    };
+    importModule();
+  }, []);
+
+  useEffect(() => {
+    if (type && status !== "edit") {
+      setMainType(type);
+      // setLabel(state?.state?.label);
     }
-  }, [state]);
-  
+  }, [type]);
+
   useEffect(() => {
     if (!isAuthenticated && loadingProfile) {
       setLoginVisible(true);
     }
   }, [isAuthenticated, loadingProfile]);
-  
+
   useEffect(() => {
     if (profile && profile.role === "ADMIN") {
       UIStore.update((e) => {
-        e.mainContentType =   [
-          ...e.mainContentType,
-          caseStudy,
-        ];
+        e.mainContentType = [...e.mainContentType, caseStudy];
       });
     }
   }, [profile]);
@@ -501,30 +509,27 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
   };
 
   useEffect(() => {
-    if (state?.state?.type) {
+    if (type) {
       handleOnTabChange("S3");
     }
-  }, [state]);
+  }, [type]);
 
   useEffect(() => {
-    if (status === "edit" || params?.id) {
-      const dataId = Number(params?.id || id);
-      setMainType(getTypeByResource(state?.state.type).type);
-      setLabel(getTypeByResource(state?.state.type).name);
+    if (status === "edit" || id) {
+      const dataId = Number(id);
+      setMainType(getTypeByResource(type).type);
+      setLabel(getTypeByResource(type).name);
       setFormSchema({
-        schema: schema[getTypeByResource(state?.state.type).type],
+        schema: schema[getTypeByResource(type).type],
       });
       UIStore.update((event) => {
-        event.selectedMainContentType = getTypeByResource(
-          state?.state.type
-        ).type;
+        event.selectedMainContentType = getTypeByResource(type).type;
       });
       api
         .get(
           `/translations/${
-            getTypeByResource(state?.state?.type?.replace("-", "_"))
-              .translations
-          }/${params?.id}`
+            getTypeByResource(type?.replace("-", "_")).translations
+          }/${id}`
         )
         .then((resp) => {
           setLanguages(Object.keys(resp?.data?.title));
@@ -535,10 +540,10 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
               if (key === "infoDocs") {
                 infoValue.push({
                   lang: item,
-                  value: RichTextEditor.createValueFromString(
-                    resp?.data[key][item],
-                    "html"
-                  ),
+                  // value: RichTextEditor.createValueFromString(
+                  //   resp?.data[key][item],
+                  //   "html"
+                  // ),
                 });
               }
               if (key !== "infoDocs")
@@ -554,7 +559,7 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
         })
         .catch((e) => console.log(e));
 
-      if (state?.state.type === "initiative") {
+      if (type === "initiative") {
         api.getRaw(`/initiative/${dataId}`).then((d) => {
           let data = JSON.parse(d.data);
           setSubType(data.sub_content_type);
@@ -573,7 +578,7 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
           setSubType(data.sub_content_type);
         });
       } else {
-        api.get(`/detail/${state?.state.type}/${dataId}`).then((d) => {
+        api.get(`/detail/${type}/${dataId}`).then((d) => {
           setSubType(d?.subContentType);
           let newData = [];
           if (d.data.organisations) {
@@ -596,26 +601,26 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
           initialFormData.update((e) => {
             e.data = revertFormData(d.data);
             e.editId = true;
-            e.type = state?.state.type;
+            e.type = type;
           });
           setSubType(d?.data.subContentType);
         });
       }
     }
-  }, [status, schema, initialFormData, state]);
+  }, [status, schema, initialFormData, type]);
 
-  useEffect(() => {
-    UIStore.update((e) => {
-      e.disclaimer = null;
-      e.formEdit = {
-        ...e.formEdit,
-        flexible: {
-          status: "add",
-          id: null,
-        },
-      };
-    });
-  }, [props]);
+  // useEffect(() => {
+  //   UIStore.update((e) => {
+  //     e.disclaimer = null;
+  //     e.formEdit = {
+  //       ...e.formEdit,
+  //       flexible: {
+  //         status: "add",
+  //         id: null,
+  //       },
+  //     };
+  //   });
+  // }, [props]);
 
   useEffect(() => {
     const search = mainContentType.find((element) => element.code === mainType)
@@ -642,7 +647,6 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
     id,
     data,
     editId,
-    params,
     isLoaded,
     profile,
   ]);
@@ -1122,7 +1126,7 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
   };
 
   return (
-    <div id="flexible-forms">
+    <div className={styles.flexibleForms}>
       <StickyBox style={{ zIndex: 10 }}>
         <div className="form-info-wrapper">
           <div className="ui container">
@@ -1245,8 +1249,8 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
                       </p>
                       <p>
                         You can access existing content via the{" "}
-                        <Link to="/knowledge/library">
-                          Knowledge Exchange Library.
+                        <Link href="/knowledge/library" legacyBehavior>
+                          <a>Knowledge Exchange Library.</a>
                         </Link>
                         Make sure to browse around and leave a review under the
                         resources you enjoy the most!
@@ -1266,7 +1270,9 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
                       <div className="button-wrapper">
                         <h5>Pick the main content type</h5>
                         <Button
-                          icon={<img src={ExampleIcon} alt="Example button" />}
+                          icon={
+                            <img src="/examples.png" alt="Example button" />
+                          }
                           size="large"
                           onClick={() => setDisplayModal(!displayModal)}
                         >
@@ -1277,7 +1283,7 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
                         <div className={`Modal ${displayModal ? "Show" : ""}`}>
                           <Button
                             icon={
-                              <img src={ExampleIcon} alt="Example button" />
+                              <img src="/examples.png" alt="Example button" />
                             }
                             size="large"
                             onClick={() => setDisplayModal(!displayModal)}
@@ -1311,15 +1317,11 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
                         style={{ width: displayModal ? "50%" : "100%" }}
                       >
                         {mainContentType.map((item) => {
-                          const img = require(`../../images/${item?.code?.replace(
+                          const img = `/${item?.code?.replace(/_/g, "-")}.svg`;
+                          const imgSelected = `/${item?.code?.replace(
                             /_/g,
                             "-"
-                          )}.svg`).default;
-                          const imgSelected = require(`../../images/${item?.code?.replace(
-                            /_/g,
-                            "-"
-                          )}-selected.svg`).default;
-
+                          )}-selected.svg`;
                           const name =
                             item?.name?.toLowerCase() === "capacity building"
                               ? "Capacity Development"
@@ -1353,7 +1355,7 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
                                     <h2>{name}</h2>
                                     <Popover content={item.desc}>
                                       <div className="info-icon-wrapper">
-                                        <img src={InfoBlue} />
+                                        <img src="/i-blue.png" />
                                       </div>
                                     </Popover>
                                   </div>
@@ -1397,7 +1399,7 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
                                   {item.title}
                                   <Popover content={item.des}>
                                     <div className="info-icon-wrapper">
-                                      <img src={InfoBlue} />
+                                      <img src="/i-blue.png" />
                                     </div>
                                   </Popover>
                                 </div>
@@ -1454,7 +1456,7 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
                       <div>
                         <Dropdown
                           overlay={
-                            <ul className="translation-dropdown">
+                            <ul className={styles.translationDropdown}>
                               {languageOptions
                                 .filter(
                                   (ln) =>
@@ -1512,7 +1514,7 @@ const FlexibleForms = ({ isAuthenticated, setLoginVisible, loadingProfile, match
                     mainType={label && label}
                     subContentType={subType && subType}
                     capacityBuilding={capacityBuilding && capacityBuilding}
-                    type={state && state?.state ? state?.state.type : ""}
+                    type={type ? type : ""}
                     translations={translations}
                     source={
                       query?.source?.toString() === "cobsea" ? "cobsea" : ""

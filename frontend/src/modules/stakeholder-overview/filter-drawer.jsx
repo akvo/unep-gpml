@@ -2,23 +2,20 @@ import React from "react";
 import { Row, Col, Space, Drawer, Tag, Card, Button } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";
-
 import humps from "humps";
 import isEmpty from "lodash/isEmpty";
-
 import { UIStore } from "../../store";
-import api from "../../utils/api";
 import { entityName, networkNames, networkTypes } from "../../utils/misc";
 
 import MultipleSelectFilter from "../../components/select/multiple-select-filter";
 import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
 
-import { ReactComponent as BusinessIcon } from "../../images/stakeholder-overview/business-icon.svg";
-import { ReactComponent as AchievementIcon } from "../../images/stakeholder-overview/medal-icon.svg";
-import { ReactComponent as PartnerIcon } from "../../images/stakeholder-overview/partner-icon.svg";
-import { ReactComponent as GPMLLogo } from "../../images/stakeholder-overview/gpml-logo.svg";
-import { ReactComponent as CommunityIcon } from "../../images/stakeholder-overview/community-outlined.svg";
-import { ReactComponent as UnionIcon } from "../../images/stakeholder-overview/union-outlined.svg";
+import BusinessIcon from "../../images/stakeholder-overview/business-icon.svg";
+import AchievementIcon from "../../images/stakeholder-overview/medal-icon.svg";
+import PartnerIcon from "../../images/stakeholder-overview/partner-icon.svg";
+import GPMLLogo from "../../images/stakeholder-overview/gpml-logo.svg";
+import CommunityIcon from "../../images/stakeholder-overview/community-outlined.svg";
+import UnionIcon from "../../images/stakeholder-overview/union-outlined.svg";
 
 const FilterDrawer = ({
   query,
