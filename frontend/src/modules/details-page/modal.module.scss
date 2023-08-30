@@ -1,0 +1,36 @@
+@import "../../vars.scss";
+
+.scroll-disabled {
+  overflow: hidden;
+  position: fixed;
+}
+
+.detailModal {
+  width: 1024px !important;
+  @media (max-width: 600px) {
+    width: 100% !important;
+    max-width: 100%;
+    margin: 0;
+  }
+  :global {
+    .ant-modal-close {
+      position: sticky;
+      left: 100%;
+      z-index: 9999;
+      float: right;
+    }
+    .detail-view-wrapper {
+      padding-top: 0;
+
+      .detail-view {
+        margin: 0;
+      }
+    }
+    .ant-modal-body {
+      padding: 0;
+    }
+    .ant-modal-footer {
+      display: none;
+    }
+  }
+}

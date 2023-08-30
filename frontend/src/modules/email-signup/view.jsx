@@ -14,12 +14,13 @@ import {
 } from "antd";
 const { Title } = Typography;
 const { Dragger } = Upload;
-import "./styles.scss";
+import styles from "./styles.module.scss";
 import { FileTextOutlined } from "@ant-design/icons";
 import { Form as FinalForm, Field } from "react-final-form";
 import { auth0Client } from "../../utils/misc";
 import { UIStore } from "../../store";
 import { useHistory } from "react-router-dom";
+import { useRouter } from "next/router";
 
 const mountedStyle = {
   animation: "inAnimation 250ms ease-in",
@@ -31,6 +32,7 @@ const unmountedStyle = {
 
 function EmailJoin({ setSignUp, children }) {
   let history = useHistory();
+  const router = useRouter();
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
   }));
@@ -127,7 +129,10 @@ function EmailJoin({ setSignUp, children }) {
     setLoading(true);
     localStorage.setItem(
       "redirect_on_login",
-      JSON.stringify(history.location)
+      JSON.stringify({
+        pathname: router.pathname,
+        query: router.query,
+      })
     );
     auth0Client.redirect.signupAndLogin(
       {
@@ -151,10 +156,13 @@ function EmailJoin({ setSignUp, children }) {
           return err;
         } else {
           setLoading(false);
-          history.push({
-            pathname: "onboarding",
-            state: { data: data },
-          });
+          router.push(
+            {
+              pathname: "/onboarding",
+              query: { data: data },
+            },
+            "/onboarding"
+          );
         }
       }
     );
@@ -169,7 +177,7 @@ function EmailJoin({ setSignUp, children }) {
   };
 
   return (
-    <div id="signup">
+    <div className={styles.signup}>
       {children && children}
       <Row className="join-form">
         <Col span={24}>

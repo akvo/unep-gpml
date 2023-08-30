@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Pagination, Tag } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useAuth0 } from "@auth0/auth0-react";
-
-import "./styles.scss";
+import styles from "./styles.module.scss";
 
 import { UIStore } from "../../store";
 import { useQuery } from "./common";
@@ -25,7 +24,7 @@ import StakeholderList from "./stakeholder-list";
 import { multicountryGroups } from "../knowledge-library/multicountry";
 import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
 import DownArrow from "../../images/knowledge-library/chevron-down.svg";
-import { useHistory } from "react-router-dom";
+import { useRouter } from "next/router";
 
 let tmid;
 
@@ -52,7 +51,7 @@ const StakeholderOverview = ({
     entityRoleOptions: s.entityRoleOptions,
     tags: Object.values(s.tags).flat(),
   }));
-  const history = useHistory();
+  const router = useRouter();
   const [filterCountries, setFilterCountries] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const { isLoading } = useAuth0();
@@ -273,8 +272,7 @@ const StakeholderOverview = ({
     setFilters(pureQuery);
 
     const newParams = new URLSearchParams(pureQuery);
-
-    history.push(`/connect/community?${newParams.toString()}`);
+    router.push(`/community?${newParams.toString()}`);
 
     setLandingQuery(newParams.toString());
     clearTimeout(tmid);
@@ -392,7 +390,10 @@ const StakeholderOverview = ({
     .filter((item) => item);
 
   return (
-    <div id="stakeholder-overview" className="stakeholder-overview">
+    <div
+      id="stakeholder-overview"
+      className={`${styles.stakeholderOverview} stakeholder-overview`}
+    >
       <div>
         {isValidUser && (
           <Header
