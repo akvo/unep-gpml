@@ -4,5 +4,5 @@
 set -eu
 
 yarn install --no-progress
-
+yarn build
 yarn start

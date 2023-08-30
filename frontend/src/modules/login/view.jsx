@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  Carousel,
   Col,
   Row,
   Typography,
   Button,
-  Avatar,
   Form,
   Input,
   Divider,
@@ -13,23 +11,20 @@ import {
   Modal,
 } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import "./styles.scss";
-import DataHubIcon from "../../images/auth/data-hub.png";
-import NetworkIcon from "../../images/auth/network.png";
-import { ReactComponent as LinkedinIcon } from "../../images/auth/linkedin.svg";
-import { ReactComponent as GoogleIcon } from "../../images/auth/google.svg";
-import { ReactComponent as EmailIcon } from "../../images/auth/email.svg";
-import { useHistory, useLocation } from "react-router-dom";
-const { Title, Link } = Typography;
+import styles from "./styles.module.scss";
+import LinkedinIcon from "../../images/auth/linkedin.svg";
+import GoogleIcon from "../../images/auth/google.svg";
+import EmailIcon from "../../images/auth/email.svg";
+const { Title } = Typography;
 import { Form as FinalForm, Field } from "react-final-form";
 import { auth0Client } from "../../utils/misc";
 import ForgotPassword from "./forgot-password";
 import SignUp from "../email-signup/view";
 import { eventTrack } from "../../utils/misc";
+import { useRouter } from "next/router";
 
-function Login({ handleOnClickBtnNext, visible, close }) {
-  const history = useHistory();
-  const location = useLocation();
+function Login({ visible, close }) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [signin, setSignIn] = useState(false);
   const [signup, setSignUp] = useState(false);
@@ -40,20 +35,17 @@ function Login({ handleOnClickBtnNext, visible, close }) {
   const formRef = useRef();
 
   useEffect(() => {
-    if (location?.state) {
+    if (Object.keys(router?.query).length) {
       setSignIn(true);
     }
-  }, [location]);
+  }, [router]);
 
   const handleOnLogin = async (values) => {
     eventTrack("Authentication", "Email", "Button");
     setLoading(true);
     const username = values.email;
     const password = values.password;
-    localStorage.setItem(
-      "redirect_on_login",
-      JSON.stringify(history.location)
-    );
+    localStorage.setItem("redirect_on_login", JSON.stringify(router.asPath));
     auth0Client.login(
       {
         realm: "Username-Password-Authentication",
@@ -78,10 +70,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
 
   const handleGoogleLogin = () => {
     eventTrack("Authentication", "Google", "Button");
-    localStorage.setItem(
-      "redirect_on_login",
-      JSON.stringify(history.location)
-    );
+    localStorage.setItem("redirect_on_login", JSON.stringify(router.asPath));
     try {
       auth0Client.authorize(
         {
@@ -98,10 +87,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
 
   const handleLinkedinLogin = () => {
     eventTrack("Authentication", "Linkedin", "Button");
-    localStorage.setItem(
-      "redirect_on_login",
-      JSON.stringify(history.location)
-    );
+    localStorage.setItem("redirect_on_login", JSON.stringify(router.asPath));
     try {
       auth0Client.authorize(
         {
@@ -131,7 +117,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
     <Modal
       title={
         <>
-          <div className="signin-button">
+          <div className="signinButton">
             <p className="header-text">
               {!signin
                 ? "SIGN IN"
@@ -149,7 +135,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
             ) : forgotPassword ? (
               <Button
                 type="text"
-                className="connect-back-button"
+                className={styles.connectBackButton}
                 onClick={() => {
                   setSignIn(true);
                   setForgotPassword(false);
@@ -160,7 +146,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
             ) : signup ? (
               <Button
                 type="text"
-                className="connect-back-button"
+                className={styles.connectBackButton}
                 onClick={() => setSignUp(!signup)}
               >
                 {"<"} Back to connect options
@@ -168,7 +154,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
             ) : (
               <Button
                 type="text"
-                className="connect-back-button"
+                className={styles.connectBackButton}
                 onClick={() => setSignIn(!signin)}
               >
                 {"<"} Back to connect options
@@ -180,7 +166,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
       centered
       visible={visible}
       footer={false}
-      className="login"
+      className={styles.login}
       closable={false}
       onCancel={close}
     >
@@ -195,10 +181,10 @@ function Login({ handleOnClickBtnNext, visible, close }) {
             ) : signup ? (
               <SignUp setSignUp={setSignUp} />
             ) : (
-              <div className="auth-container">
+              <div className={styles.authContainer}>
                 {!signin ? (
-                  <div className="signup-wrapper">
-                    <div className="auth-buttons">
+                  <div className={styles.signupWrapper}>
+                    <div className={styles.authButtons}>
                       <Button
                         type="primary"
                         shape="round"
@@ -229,12 +215,13 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                     </div>
                     <p className="register-text">
                       Once you have an account you can register your
-                      organisation and apply for Global Partnership on Plastic Pollution and Marine Litter membership
+                      organisation and apply for Global Partnership on Plastic
+                      Pollution and Marine Litter membership
                     </p>
                   </div>
                 ) : (
-                  <div className="login-wrapper">
-                    <div className="login-form">
+                  <div className={styles.loginWrapper}>
+                    <div className={styles.loginForm}>
                       <FinalForm
                         initialValues={initialValues}
                         validate={checkValidation}
@@ -281,7 +268,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                                 style={{ marginTop: 50 }}
                                 type="primary"
                                 shape="round"
-                                className="login-button"
+                                className={styles.loginButton}
                                 loading={loading}
                                 onClick={() => handleSubmit()}
                               >
@@ -289,7 +276,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                               </Button>{" "}
                               <Button
                                 type="text"
-                                className="forgot-password"
+                                className={styles.forgotPassword}
                                 onClick={() =>
                                   setForgotPassword(!forgotPassword)
                                 }
@@ -301,12 +288,12 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                         }}
                       />
                       <Divider />
-                      <div className="join-wrapper">
+                      <div className={styles.joinWrapper}>
                         <Title level={2}>Don’t have an account yet?</Title>
                         <Button
                           type="primary"
                           shape="round"
-                          className="login-button"
+                          className={styles.loginButton}
                           onClick={() => setSignUp(true)}
                         >
                           JOIN WITH EMAIL

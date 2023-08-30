@@ -8,21 +8,23 @@ import {
   LoadingOutlined,
   RightOutlined,
 } from "@ant-design/icons";
-import "./styles.scss";
+import styles from "./styles.module.scss";
 import SignUpForm from "./form";
 import StickyBox from "react-sticky-box";
-import { useLocation } from "react-router-dom";
 import cloneDeep from "lodash/cloneDeep";
 import isEmpty from "lodash/isEmpty";
 import xor from "lodash/xor";
 import api from "../../utils/api";
 import entity from "./entity";
 import stakeholder from "./stakeholder";
+import { useRouter } from "next/router";
 
 const { Step } = Steps;
 
 const SignUp = ({ match: { params }, ...props }) => {
-  const location = useLocation();
+  const router = useRouter();
+  const { state } = router.query;
+  const parsedState = state ? JSON.parse(state) : null;
   const isEntityType = props.formType === "entity" ? true : false;
   const isStakeholderType = !isEntityType;
   const {
@@ -123,18 +125,18 @@ const SignUp = ({ match: { params }, ...props }) => {
   }, [profile]);
 
   useEffect(() => {
-    if (location?.state?.data?.id) {
+    if (parsedState?.id) {
       signUpData.update((e) => {
         e.data = {
           ...e.data,
           S3: {
             ...e.data.S3,
-            ["org.name"]: location.state.data.name,
+            ["org.name"]: parsedState?.name,
           },
         };
       });
     }
-  }, [formData, location]);
+  }, [formData, parsedState]);
 
   useEffect(() => {
     const dataId = Number(params?.id || id);
@@ -369,7 +371,7 @@ const SignUp = ({ match: { params }, ...props }) => {
   };
 
   return (
-    <div id="add-sign-up">
+    <div className={styles.addSignUp}>
       <StickyBox style={{ zIndex: 10 }}>
         <div className="form-info-wrapper">
           <div className="ui container">
@@ -395,7 +397,6 @@ const SignUp = ({ match: { params }, ...props }) => {
                       disabled={disabledBtn.disabled}
                       loading={sending}
                       type={disabledBtn.type}
-                      size="large"
                       onClick={(e) => handleOnClickBtnSubmit(e)}
                     >
                       SUBMIT
@@ -518,6 +519,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                         setDisabledBtn={setDisabledBtn}
                         hideEntityPersonalDetail={hideEntityPersonalDetail}
                         tabsData={tabsData}
+                        match={{ params: {} }}
                       />
                       {((getTabStepIndex().tabIndex === 2 &&
                         isEntityType &&

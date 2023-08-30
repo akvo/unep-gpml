@@ -1,5 +1,5 @@
 import React from "react";
-import "./styles.scss";
+import "./style.module.scss";
 import { Col, Popover, Input, Button, Select } from "antd";
 const { Option } = Select;
 import { eventTrack } from "../../utils/misc";
@@ -15,7 +15,8 @@ import classNames from "classnames";
 
 export const HeaderButtons = ({
   data,
-  topic,
+  type,
+  id,
   handleEditBtn,
   handleDeleteBtn,
   canEdit,
@@ -28,8 +29,6 @@ export const HeaderButtons = ({
   selectedLanguage,
   setLanguage,
 }) => {
-  const { type, id } = topic;
-
   const bookmarked =
     relation &&
     relation.association &&
@@ -197,7 +196,7 @@ export const HeaderButtons = ({
           shape="round"
           size="middle"
           ghost
-          onClick={handleEditBtn}
+          onClick={() => handleEditBtn(type)}
         >
           Edit
         </Button>
@@ -250,7 +249,8 @@ const Header = ({
   LeftImage,
   profile,
   isAuthenticated,
-  params,
+  type,
+  id,
   handleEditBtn,
   handleDeleteBtn,
   allowBookmark,
@@ -270,7 +270,8 @@ const Header = ({
     LeftImage,
     profile,
     isAuthenticated,
-    params,
+    type,
+    id,
     handleEditBtn,
     handleDeleteBtn,
     allowBookmark,
@@ -297,8 +298,8 @@ const Header = ({
         profile.id === params.createdBy ||
         data.owners.includes(profile.id) ||
         find) &&
-      ((params.type !== "initiative" && !noEditTopics.has(params.type)) ||
-        (params.type === "initiative" && params.id > 10000));
+      ((type !== "initiative" && !noEditTopics.has(type)) ||
+        (type === "initiative" && id > 10000));
 
     const canDelete = () =>
       isAuthenticated &&
@@ -310,7 +311,9 @@ const Header = ({
         data={data}
         handleDeleteBtn={handleDeleteBtn}
         canDelete={canDelete}
-        topic={{ ...data, ...params }}
+        topic={{ ...data }}
+        type={type}
+        id={id}
         handleEditBtn={handleEditBtn}
         canEdit={canEdit}
         relation={relation.relation}
@@ -328,7 +331,7 @@ const Header = ({
   return (
     <div className="detail-header">
       <h3 className="detail-resource-type content-heading">
-        {topicNames(params?.type)}
+        {topicNames(type)}
       </h3>
       <h4 className="detail-resource-title">
         {selectedLanguage ? translations?.title[selectedLanguage] : data?.title}
@@ -338,7 +341,8 @@ const Header = ({
         LeftImage,
         profile,
         isAuthenticated,
-        params,
+        type,
+        id,
         handleEditBtn,
         handleDeleteBtn,
         allowBookmark,
