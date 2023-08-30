@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "antd";
 import { useQuery } from "../../utils/misc";
-import { Icon } from "../../components/svg-icon/svg-icon";
-import { ReactComponent as FilterIcon } from "../../images/knowledge-library/filter-icon.svg";
-import { ReactComponent as OverviewIcon } from "../../images/overview.svg";
+// import { Icon } from "../../components/svg-icon/svg-icon";
+import FilterIcon from "../../images/knowledge-library/filter-icon.svg";
 import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
 import LocationDropdown from "../../components/location-dropdown/location-dropdown";
 import api from "../../utils/api";
 import { LeftOutlined, CloseOutlined } from "@ant-design/icons";
-import { withRouter } from "react-router-dom";
 
 export const resourceTypes = [
   {
@@ -44,6 +42,7 @@ const hideFilterList = [
 ];
 
 const FilterBar = ({
+  totalCount,
   setShowFilterModal,
   filterCountries,
   updateQuery,
@@ -63,6 +62,17 @@ const FilterBar = ({
     country: false,
     multiCountry: false,
   });
+
+  const allResources = totalCount
+    ?.filter((array) =>
+      resourceTypes.some(
+        (filter) =>
+          array.topic === filter.title && filter.title !== "capacity building"
+      )
+    )
+    ?.reduce(function (acc, obj) {
+      return acc + obj.count;
+    }, 0);
 
   const isEmpty = Object.values(query).every(
     (x) => x === null || x === undefined || x?.length === 0
@@ -94,6 +104,7 @@ const FilterBar = ({
         updateQuery,
         multiCountryCountries,
         setMultiCountryCountries,
+        history,
       }}
       country={query?.country?.map((x) => parseInt(x)) || []}
       multiCountry={query?.transnational?.map((x) => parseInt(x)) || []}
@@ -118,82 +129,110 @@ const FilterBar = ({
 
   return (
     <div className="filter-bar">
-      <Button className="back-btn" onClick={handleClickOverview}>
-        {/* <OverviewIcon /> */}
-        <LeftOutlined />
-        <span>Back to Overview</span>
-      </Button>
-      <ul>
-        {resourceTypes.map((it) => (
+      <div className="overview">
+        <ul className="categories">
           <li
-            key={it.key}
+            className={`${!type ? "selected" : ""}`}
             onClick={() => {
-              if (type === it.key)
-                history.push({
-                  pathname: `/knowledge/library/resource/${
-                    view ? view : "map"
-                  }`,
-                  search: search,
-                });
-              else
-                history.push({
-                  pathname: `/knowledge/library/resource/${
-                    view ? (view === "category" ? "grid" : view) : "map"
-                  }/${it.key}/`,
-                  search: search,
-                  state: { type: it.key },
-                });
+              history.push(
+                {
+                  pathname: `/knowledge/library`,
+                  query: {
+                    totalCount: JSON.stringify(totalCount),
+                  },
+                },
+                "/knowledge/library"
+              );
             }}
-            className={type === it.key ? "selected" : ""}
           >
-            <div className="img-container">
-              <Icon name={`resource-types/${it.key}`} fill="#FFF" />
+            <div>
+              {/* <Icon name={`all`} fill={`${!view ? "#06496c" : "#fff"}`} /> */}
+              <b>{allResources}</b>
             </div>
-            <div className="label-container">
-              <span>{it.label}</span>
-            </div>
+            <span>All Resources</span>
           </li>
-        ))}
-      </ul>
-      <Button className="adv-src" onClick={() => setShowFilterModal(true)}>
-        {!isEmpty &&
-          Object.keys(query).filter((item) => !hideFilterList.includes(item))
-            .length > 0 && (
-            <div className="filter-status">
-              {Object.keys(query).filter(
-                (item) => !hideFilterList.includes(item)
-              ).length > 0 &&
-                Object.keys(query).filter(
+          {resourceTypes.map((t) => (
+            <li
+              className={`${type === t.key ? "selected" : ""}`}
+              key={t.key}
+              onClick={() => {
+                history.push(
+                  {
+                    pathname: `/knowledge/library/${
+                      view ? (view === "category" ? "grid" : view) : "map"
+                    }/${t.key}`,
+                    query: {
+                      ...history.query,
+                      totalCount: JSON.stringify(totalCount),
+                    },
+                  },
+                  `/knowledge/library/${
+                    view ? (view === "category" ? "grid" : view) : "map"
+                  }/${t.key}`
+                );
+              }}
+            >
+              <div>
+                {/* <Icon name={`resource-types/${t.key}`} fill="#000" /> */}
+                <b>
+                  {totalCount.find((item) => t.title === item.topic)?.count ||
+                    "XX"}
+                </b>
+              </div>
+              <span>{t.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="search-container">
+        <Button className="adv-src" onClick={() => setShowFilterModal(true)}>
+          {!isEmpty &&
+            Object.keys(query).filter(
+              (item) =>
+                !hideFilterList.includes(item) &&
+                item !== "slug" &&
+                item !== "totalCount"
+            ).length > 0 && (
+              <div className="filter-status">
+                {Object.keys(query).filter(
                   (item) => !hideFilterList.includes(item)
-                ).length}
-            </div>
+                ).length > 0 &&
+                  Object.keys(query).filter(
+                    (item) => !hideFilterList.includes(item)
+                  ).length}
+              </div>
+            )}
+          <FilterIcon />
+          <span>Advanced Search</span>
+        </Button>
+        {!isEmpty &&
+          Object.keys(query).filter(
+            (item) =>
+              !hideFilterList.includes(item) &&
+              item !== "slug" &&
+              item !== "totalCount"
+          ).length > 0 && (
+            <Button
+              icon={<CloseOutlined />}
+              className="reset-button"
+              onClick={() => resetFilter()}
+            >
+              Reset filters
+            </Button>
           )}
-        <FilterIcon />
-        <span>Advanced Search</span>
-      </Button>
-      {!isEmpty &&
-        Object.keys(query).filter((item) => !hideFilterList.includes(item))
-          .length > 0 && (
-          <Button
-            icon={<CloseOutlined />}
-            className="reset-button"
-            onClick={() => resetFilter()}
-          >
-            Reset filters
-          </Button>
-        )}
-      <LocationDropdown
-        {...{
-          country,
-          multiCountry,
-          countryList,
-          dropdownVisible,
-          setDropdownVisible,
-          query,
-        }}
-      />
+        <LocationDropdown
+          {...{
+            country,
+            multiCountry,
+            countryList,
+            dropdownVisible,
+            setDropdownVisible,
+            query,
+          }}
+        />
+      </div>
     </div>
   );
 };
 
-export default withRouter(FilterBar);
+export default FilterBar;
