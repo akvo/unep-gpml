@@ -23,7 +23,6 @@ import {
   LoadingOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import { useHistory } from "react-router-dom";
 import api from "../../utils/api";
 import { resourceTypeToTopicType } from "../../utils/misc";
 
@@ -266,10 +265,13 @@ const StakeholderDetail = ({
         entity: 1,
       };
     });
-    history.push({
-      pathname: `/edit-entity/${id}`,
-      state: { formType: "entity" },
-    });
+    router.push(
+      {
+        pathname: `/edit/entity/${id}`,
+        query: { formType: "entity" },
+      },
+      `/edit/entity/${id}`
+    );
   };
 
   useEffect(() => {
@@ -285,7 +287,7 @@ const StakeholderDetail = ({
           })
           .catch((err) => {
             console.error(err);
-            redirectError(err, history);
+            redirectError(err, router);
           });
       if (isLoaded() && profile.reviewStatus === "APPROVED") {
         setTimeout(() => {
@@ -496,7 +498,7 @@ const StakeholderDetail = ({
                     id={id}
                     relation={relation}
                     handleEditBtn={handleEditBtn}
-                    history={history}
+                    history={router}
                     handleRelationChange={handleRelationChange}
                   />
                 </div>
@@ -542,7 +544,7 @@ const StakeholderDetail = ({
                         <div
                           className="slider-card"
                           onClick={() => {
-                            history.push({
+                            router.push({
                               pathname: `/stakeholder/${item.id}`,
                             });
                           }}

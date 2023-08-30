@@ -103,10 +103,13 @@ const SharePanel = ({
         stakeholder: 1,
       };
     });
-    history.push({
-      pathname: `/edit-stakeholder/${id}`,
-      query: { formType: "stakeholder" },
-    });
+    history.push(
+      {
+        pathname: `/edit/stakeholder/${id}`,
+        query: { formType: "stakeholder" },
+      },
+      `/edit/stakeholder/${id}`
+    );
   };
 
   return (

@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import FlexibleForms from "../../modules/flexible-forms/view";
+import EntityFormView from "../../modules/entity-edit-signup/view";
 
 const EditPage = ({ setLoginVisible, isAuthenticated, loadingProfile }) => {
   const router = useRouter();
@@ -27,6 +28,10 @@ const EditPage = ({ setLoginVisible, isAuthenticated, loadingProfile }) => {
         {...{ setLoginVisible, isAuthenticated, loadingProfile, type, id }}
       />
     );
+  }
+
+  if (["stakeholder", "entity"].includes(slugType)) {
+    return <EntityFormView match={{ params: { id: id } }} />;
   }
 
   return <div>Not Found</div>;
