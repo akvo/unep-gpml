@@ -29,12 +29,12 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "./styles.module.scss";
 import { UIStore } from "../../store";
+import { isRegistered } from "../../utils/profile";
 
 const MenuBar = ({
   updateQuery,
   isAuthenticated,
   setWarningModalVisible,
-  isRegistered,
   profile,
   setLoginVisible,
   auth0Client,
@@ -139,7 +139,7 @@ const MenuBar = ({
                 />,
                 <UserButton
                   key="userButton"
-                  {...{ auth0Client, isRegistered, profile }}
+                  {...{ auth0Client, isRegistered, profile, router }}
                 />,
               ]
             )}
