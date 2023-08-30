@@ -257,18 +257,16 @@ const ShowcasingAndStats = () => {
             ))}
           </ul>
         </div>
-        <div className="summaries-container">
-          <ul className="summaries">
-            <li>
-              <span>195 Governements</span>
-            </li>
-            <li>
-              <span>1358 Organizations</span>
-            </li>
-            <li>
-              <span>1251 Individuals</span>
-            </li>
-          </ul>
+        <div className="summaries">
+          <span className="purple">
+            <h5>195 Governements</h5>
+          </span>
+          <span className="green">
+            <h5>1358 Organizations</h5>
+          </span>
+          <span className="blue">
+            <h5>1251 Individuals</h5>
+          </span>
         </div>
       </div>
     </div>
