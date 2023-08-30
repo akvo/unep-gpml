@@ -30,6 +30,7 @@ const pagination = {
 const Landing = () => (
   <div id="landing" className={styles.landing}>
     <Hero />
+    <ShowcasingAndStats />
     <WhoAreWe />
     <ActNow />
     <LatestNews />
@@ -199,6 +200,77 @@ const Hero = () => {
         </div>
       </div>
     </>
+  )
+}
+
+const ShowcasingAndStats = () => {
+  const items = [
+    {
+      value: '2370',
+      label: 'NUMBER OF RESOURCES',
+    },
+    {
+      value: '300',
+      label: 'DATA LAYERS',
+    },
+    {
+      value: '70',
+      label: 'ACTION PLANS',
+    },
+    {
+      value: '45K',
+      label: 'COMMUNITIES OF PRACTICE',
+    },
+  ]
+  return (
+    <div className="container">
+      <div className={styles.showCasingSection}>
+        <div className="caption-container">
+          <PageHeading title="SHOWCASING" />
+          <h2>Already on the platform</h2>
+        </div>
+        <div className="powered-by-container">
+          <PageHeading title="POWERED BY:" />
+          <div className="powered-by-images">
+            <Image
+              src="/powered-by-unep.svg"
+              alt="UNEP"
+              width={146}
+              height={146}
+            />
+            <Image
+              src="/powered-by-gpml.svg"
+              alt="GPML"
+              width={146}
+              height={146}
+            />
+          </div>
+        </div>
+      </div>
+      <div className={styles.statsSection}>
+        <div className="stats-container">
+          <ul className="stats">
+            {items.map((item, ix) => (
+              <li key={ix}>
+                <h2>{item.value}</h2>
+                <strong className="h-xs">{item.label}</strong>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="summaries">
+          <span className="purple">
+            <h5>195 Governements</h5>
+          </span>
+          <span className="green">
+            <h5>1358 Organizations</h5>
+          </span>
+          <span className="blue">
+            <h5>1251 Individuals</h5>
+          </span>
+        </div>
+      </div>
+    </div>
   )
 }
 
