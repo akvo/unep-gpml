@@ -119,15 +119,14 @@
 (defn- get-stakeholder-profile
   [config stakeholder-id]
   (let [result (srv.stakeholder/get-stakeholder-profile config stakeholder-id)]
-    (if (:success? result)
-      (create-profile (:stakeholder result))
-      {})))
+    (when (:success? result)
+      (create-profile (:stakeholder result)))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/profile
   [_ config]
   (fn [{:keys [user]}]
     (if-let [user-id (:id user)]
-      (r/ok (get-stakeholder-profile config user-id))
+      (r/ok (or (get-stakeholder-profile config user-id) {}))
       (r/ok {}))))
 
 (defn- create-stakeholder
@@ -248,14 +247,18 @@
                              :limit limit})]
           (cond
             (and (seq stakeholders) (= (count stakeholders) limit))
-            (resp/response {:suggested_profiles (mapv #(get-stakeholder-profile db %) stakeholders)})
+            (resp/response {:suggested_profiles (->> stakeholders
+                                                     (mapv #(get-stakeholder-profile config (:id %)))
+                                                     (remove nil?)
+                                                     vec)})
 
-            (not (seq stakeholders))
-            (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
-                                                      (:spec db)
-                                                      {:limit limit
-                                                       :stakeholder-ids [(:id stakeholder)]})
-                                                     (mapv #(get-stakeholder-profile db %)))})
+            (not (seq stakeholders)) (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
+                                                                               (:spec db)
+                                                                               {:limit limit
+                                                                                :stakeholder-ids [(:id stakeholder)]})
+                                                                              (mapv #(get-stakeholder-profile config (:id %)))
+                                                                              (remove nil?)
+                                                                              vec)})
 
             :else
             (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
@@ -267,8 +270,10 @@
                                                                               (remove nil?))
                                                                          (:id stakeholder))})
                                                      (apply conj (vec stakeholders))
-                                                     (mapv #(get-stakeholder-profile db %)))})))
-        (resp/response {})))))
+                                                     (mapv #(get-stakeholder-profile config (:id %)))
+                                                     (remove nil?)
+                                                     vec)})))
+        (resp/response {:suggested_profiles []})))))
 
 (def org-schema
   (into [:map
@@ -409,7 +414,7 @@
   (fn [{{:keys [path]} :parameters user :user}]
     (if (or (h.r.permission/super-admin? config (:id user))
             (= (:id path) (:id user)))
-      (r/ok (get-stakeholder-profile config (:id path)))
+      (r/ok (or (get-stakeholder-profile config (:id path)) {}))
       (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/put-restricted
