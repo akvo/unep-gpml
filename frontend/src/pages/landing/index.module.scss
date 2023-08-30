@@ -548,18 +548,24 @@
   }
   .features {
     padding: 0px 0px 80px 0px;
+    @media screen and (max-width: $bpMobile) {
+      padding: 0px 0px 32px 0px;
+    }
     :global {
+      .page-sub-heading,
+      .h-xxl {
+        padding-bottom: 18px;
+      }
       .slider-container {
         padding: 42px 40px 30px 50px;
         padding-left: calc((100% - 1148px) / 2);
         overflow: hidden;
         @media screen and (max-width: $bpMobile) {
-          padding: 0px 0px 30px 20px;
+          padding: 0px 0px 0px 20px;
         }
         .slider-wrapper {
           .feature-card {
             max-width: 400px;
-            border: 1px solid $primaryDarkBlue2;
             border-radius: 15px;
             box-sizing: border-box;
             overflow: hidden;
@@ -567,6 +573,9 @@
               position: relative;
               background-color: $primaryDarkBlue;
               padding: 50px 32px 25px 32px;
+              h3 {
+                margin: 0;
+              }
               @media screen and (max-width: $bpMobile) {
                 padding: 50px 24px 25px 24px;
               }
@@ -601,6 +610,10 @@
           }
           .card-content-container {
             padding: 32px;
+            border: 1px solid $primaryDarkBlue2;
+            border-top: none;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
             @media screen and (max-width: $bpMobile) {
               padding: 24px;
             }
@@ -1036,6 +1049,9 @@
 
 .latestNews {
   margin-bottom: 80px;
+  @media screen and (max-width: $bpMobile) {
+    margin-bottom: 20px;
+  }
   :global {
     .container .news-wrapper {
       margin-bottom: 18px;

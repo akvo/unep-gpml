@@ -33,6 +33,7 @@ const Landing = () => (
     <WhoAreWe />
     <ActNow />
     <LatestNews />
+    <Features />
     <Trusted />
     <Activities />
     <OurVoices />
@@ -290,7 +291,13 @@ const ActNow = () => {
       content:
         'Start your own initiative. Get inspired by others who are making progress to end plastic pollution.',
       bgColor: 'purple',
-      title: 'Communities of practise',
+      title: (
+        <>
+          Case
+          <br />
+          Studies
+        </>
+      ),
       links: [{ label: 'Track progress', url: '#' }],
     },
     {
@@ -913,6 +920,103 @@ const Footer = () => {
         </div>
       </div>
     </footer>
+  )
+}
+
+const Features = () => {
+  const [width] = useDeviceSize()
+  const items = [
+    {
+      title: 'Data tools',
+      key: 'data-tool',
+      content:
+        'Access a suite of powerful data tools tailored for tackling plastic pollution and marine litter. Utilize comprehensive data sets, layers and statistics to  gain valuable insights that empower informed decision-making and drive effective action.',
+    },
+    {
+      label: 'Coming soon',
+      title: 'Workspace',
+      key: 'workspace-feature',
+      content:
+        'Elevate your mission to address plastic pollution and marine litter through our integrated workspace feature. This feature enables you to coordinate with partners, centralize resources, strategize actions, and drive collective solutions',
+    },
+    {
+      title: 'Match-making',
+      key: 'match-making',
+      content:
+        'Discover like-minded individuals and organizations passionate about combating plastic pollution and marine litter through our innovative matchmaking feature. Connect with fellow advocates, researchers, and activists to amplify your impact and collaborate on meaningful projects for a cleaner and healthier ocean ecosystem.',
+    },
+    {
+      label: 'Coming soon',
+      title: 'AI Innovations',
+      key: 'ai-innovations',
+      content:
+        'By leveraging AI and innovation, the platform will enable proactive strategies and solutions that efficiently combat plastic pollution and marine litter',
+    },
+  ]
+
+  const pagination = {
+    clickable: true,
+    renderBullet: function (index, className) {
+      return '<div class="' + className + '">' + '<span/>' + '</div>'
+    },
+  }
+
+  return (
+    <section className={styles.features}>
+      {width >= 1024 && (
+        <div className="container">
+          <div className="title-wrapper">
+            <div className="title-holder">
+              <PageHeading title="HOW DOES IT WORK?" />
+              <h2 className="h-xxl">
+                Features & Benefits <span>of using the platform</span>
+              </h2>
+              <p className="p-l">
+                The platform offers a wide range of tools to support your
+                decision-making and help a global network of actors to work
+                together to create shared solutions to end plastic pollution.
+              </p>
+            </div>
+            <div>
+              <Button size="large" ghost>
+                View All Features
+                <ArrowRight />
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="slider-container">
+        <div className="slider-wrapper">
+          <Swiper
+            spaceBetween={20}
+            slidesPerView={'auto'}
+            pagination={pagination}
+            modules={[Pagination]}
+          >
+            {items.map((item) => (
+              <SwiperSlide>
+                <FeatureCard item={item} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+const FeatureCard = ({ item }) => {
+  return (
+    <div className="feature-card">
+      <div className={`card-title-container card--${item?.key}`}>
+        {item?.label && <span className="card-label">{item?.label}</span>}
+        <h3 className="h-l">{item.title}</h3>
+      </div>
+      <div className="card-content-container">
+        <p className="p-l">{item?.content}</p>
+      </div>
+    </div>
   )
 }
 
