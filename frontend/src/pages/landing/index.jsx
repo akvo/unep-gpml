@@ -291,7 +291,13 @@ const ActNow = () => {
       content:
         'Start your own initiative. Get inspired by others who are making progress to end plastic pollution.',
       bgColor: 'purple',
-      title: 'Communities of practise',
+      title: (
+        <>
+          Case
+          <br />
+          Studies
+        </>
+      ),
       links: [{ label: 'Track progress', url: '#' }],
     },
     {
@@ -940,9 +946,11 @@ const Features = () => {
         'Discover like-minded individuals and organizations passionate about combating plastic pollution and marine litter through our innovative matchmaking feature. Connect with fellow advocates, researchers, and activists to amplify your impact and collaborate on meaningful projects for a cleaner and healthier ocean ecosystem.',
     },
     {
-      title: 'Match-making two',
+      label: 'Coming soon',
+      title: 'AI Innovations',
+      key: 'ai-innovations',
       content:
-        'Discover like-minded individuals and organizations passionate about combating plastic pollution and marine litter through our innovative matchmaking feature. Connect with fellow advocates, researchers, and activists to amplify your impact and collaborate on meaningful projects for a cleaner and healthier ocean ecosystem.',
+        'By leveraging AI and innovation, the platform will enable proactive strategies and solutions that efficiently combat plastic pollution and marine litter',
     },
   ]
 
