@@ -18,6 +18,7 @@ import api from "../../utils/api";
 import entity from "./entity";
 import stakeholder from "./stakeholder";
 import { useRouter } from "next/router";
+import { useDeviceSize } from "../landing/landing";
 
 const { Step } = Steps;
 
@@ -35,9 +36,9 @@ const SignUp = ({ match: { params }, ...props }) => {
     signUpData,
     loadTabs,
   } = isEntityType ? entity : stakeholder;
-
-  const minHeightContainer = innerHeight * 0.8;
-  const minHeightCard = innerHeight * 0.75;
+  const [height] = useDeviceSize();
+  const minHeightContainer = height * 0.8;
+  const minHeightCard = height * 0.75;
 
   const storeData = UIStore.useState((s) => ({
     stakeholders: s.stakeholders?.stakeholders,

@@ -459,7 +459,9 @@ function ProfileLayout({ children }) {
               lg={18}
               className={menu !== "admin-section" ? "content-wrapper" : ""}
             >
-              {React.cloneElement(children, additionalProps)}
+              {children &&
+                React.isValidElement(children) &&
+                React.cloneElement(children, additionalProps)}
             </Col>
           </Row>
         </div>
