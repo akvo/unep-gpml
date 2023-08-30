@@ -297,7 +297,7 @@ function ProfileLayout({ children }) {
   };
 
   const handleOnClickMenu = (menuKey) => {
-    history.push(getMenuRoute(menuKey));
+    router.push(getMenuRoute(menuKey));
     setMenu(menuKey);
   };
 
@@ -388,7 +388,7 @@ function ProfileLayout({ children }) {
             onClick={() =>
               it.key !== "profil-section"
                 ? handleOnClickMenu(it.key)
-                : history.push(`/stakeholder/${profile.id}`)
+                : router.push(`/stakeholder/${profile.id}`)
             }
           >
             {menuText}
@@ -410,6 +410,22 @@ function ProfileLayout({ children }) {
     onSubmit: onSubmit,
     handleSubmitRef: handleSubmitRef,
     saving: saving,
+    reviewerRoles: reviewerRoles,
+    reviewItems: reviewItems,
+    setReviewItems: setReviewItems,
+    reviewedItems: reviewedItems,
+    setReviewedItems: setReviewedItems,
+    stakeholdersData: stakeholdersData,
+    setStakeholdersData: setStakeholdersData,
+    resourcesData: resourcesData,
+    setResourcesData: setResourcesData,
+    entitiesData: entitiesData,
+    nonMemberEntitiesData: nonMemberEntitiesData,
+    setEntitiesData: setEntitiesData,
+    setNonMemberEntitiesData: setNonMemberEntitiesData,
+    tagsData: tagsData,
+    setTagsData: setTagsData,
+    adminRoles: adminRoles,
   };
 
   return (
