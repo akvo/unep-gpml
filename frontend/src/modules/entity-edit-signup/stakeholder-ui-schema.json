@@ -31,7 +31,7 @@
       "ui:widget": "TextIconWidget",
       "ui:icon": "twitter"
     },
-    "photo": {
+    "picture": {
       "ui:options": { "accept": "image/*" },
       "ui:widget": "file"
     },
@@ -48,7 +48,7 @@
       "publicEmail",
       "linkedIn",
       "twitter",
-      "photo",
+      "picture",
       "country"
     ]
   },

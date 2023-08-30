@@ -1,109 +1,90 @@
 import React, { useState } from "react";
 import { Row, Col, Button, Input, Space, Select } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-
-import "./header.scss";
-import FilterIcon from "../../images/knowledge-library/filter-icon.svg";
-import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
-import { withRouter, useHistory } from "react-router-dom";
+import styles from "./header.module.scss";
+import { useHistory } from "react-router-dom";
 import { KNOWLEDGE_LIBRARY } from "../map/map";
 import { eventTrack } from "../../utils/misc";
-import GlobeOutlined from "../../images/knowledge-library/globe-outline.svg";
-import TooltipOutlined from "../../images/knowledge-library/tooltip-outlined.svg";
-import { ReactComponent as DownArrow } from "../../images/knowledge-library/chevron-down.svg";
-import topicViewIcon from "../../images/knowledge-library/topic-view-icon.svg";
-import { ReactComponent as IconExchange } from "../../images/capacity-building/ic-exchange.svg";
+import DownArrow from "../../images/knowledge-library/chevron-down.svg";
 
-const KnowledgeLibrarySearch = withRouter(
-  ({ history, updateQuery, isShownForm, setIsShownForm }) => {
-    const [search, setSearch] = useState("");
-    const handleSearch = (src) => {
-      eventTrack("Communities", "Search", "Button");
-      if (src) {
-        history.push(`?q=${src.trim()}`);
-        updateQuery("q", src.trim());
-      } else {
-        updateQuery("q", "");
-      }
-      setSearch("");
-      setIsShownForm(false);
-    };
+const KnowledgeLibrarySearch = ({
+  history,
+  updateQuery,
+  isShownForm,
+  setIsShownForm,
+}) => {
+  const [search, setSearch] = useState("");
+  const handleSearch = (src) => {
+    eventTrack("Communities", "Search", "Button");
+    if (src) {
+      history.push(`?q=${src.trim()}`);
+      updateQuery("q", src.trim());
+    } else {
+      updateQuery("q", "");
+    }
+    setSearch("");
+    setIsShownForm(false);
+  };
 
-    return (
-      <>
-        <div className="src mobile-src">
-          <Input
-            className="input-src"
-            placeholder="Search resources"
-            value={search}
-            suffix={<SearchOutlined />}
-            onPressEnter={(e) => handleSearch(e.target.value)}
-            onChange={(e) => setSearch(e.target.value)}
+  return (
+    <>
+      <div className="src mobile-src">
+        <Input
+          className="input-src"
+          placeholder="Search resources"
+          value={search}
+          suffix={<SearchOutlined />}
+          onPressEnter={(e) => handleSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+      <div className="src desktop-src">
+        <Input
+          className="input-src"
+          placeholder="Search resources"
+          value={search}
+          suffix={<SearchOutlined />}
+          onPressEnter={(e) => handleSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+    </>
+  );
+};
+
+const StakeholderOverviewSearch = ({
+  history,
+  updateQuery,
+  setView,
+  isShownForm,
+  setIsShownForm,
+}) => {
+  const [search, setSearch] = useState("");
+  const handleSearch = (src) => {
+    eventTrack("Knowledge library", "Search", "Button");
+    if (src) {
+      history.push(`?q=${src.trim()}`);
+      updateQuery("q", src.trim());
+    } else {
+      updateQuery("q", "");
+    }
+    setSearch("");
+    setIsShownForm(false);
+  };
+
+  return (
+    <>
+      <div className="src mobile-src">
+        {!isShownForm && (
+          <Button
+            onClick={() => setIsShownForm(!isShownForm)}
+            type="primary"
+            shape="circle"
+            size="small"
+            icon={<SearchOutlined />}
           />
-        </div>
-        <div className="src desktop-src">
-          <Input
-            className="input-src"
-            placeholder="Search resources"
-            value={search}
-            suffix={<SearchOutlined />}
-            onPressEnter={(e) => handleSearch(e.target.value)}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-      </>
-    );
-  }
-);
-
-const StakeholderOverviewSearch = withRouter(
-  ({ history, updateQuery, setView, isShownForm, setIsShownForm }) => {
-    const [search, setSearch] = useState("");
-    const handleSearch = (src) => {
-      eventTrack("Knowledge library", "Search", "Button");
-      if (src) {
-        history.push(`?q=${src.trim()}`);
-        updateQuery("q", src.trim());
-      } else {
-        updateQuery("q", "");
-      }
-      setSearch("");
-      setIsShownForm(false);
-    };
-
-    return (
-      <>
-        <div className="src mobile-src">
-          {!isShownForm && (
-            <Button
-              onClick={() => setIsShownForm(!isShownForm)}
-              type="primary"
-              shape="circle"
-              size="small"
-              icon={<SearchOutlined />}
-            />
-          )}
-          {isShownForm && (
-            <Input
-              className="input-src"
-              placeholder="Search the community"
-              value={search}
-              suffix={<SearchOutlined />}
-              onPressEnter={(e) => handleSearch(e.target.value)}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                if (e.target.value.length >= 3) {
-                  history.push(`?q=${e.target.value.trim()}`);
-                  updateQuery("q", e.target.value.trim());
-                }
-                if (e.target.value.length === 0) {
-                  updateQuery("q", "");
-                }
-              }}
-            />
-          )}
-        </div>
-        <div className="src desktop-src">
+        )}
+        {isShownForm && (
           <Input
             className="input-src"
             placeholder="Search the community"
@@ -121,11 +102,30 @@ const StakeholderOverviewSearch = withRouter(
               }
             }}
           />
-        </div>
-      </>
-    );
-  }
-);
+        )}
+      </div>
+      <div className="src desktop-src">
+        <Input
+          className="input-src"
+          placeholder="Search the community"
+          value={search}
+          suffix={<SearchOutlined />}
+          onPressEnter={(e) => handleSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            if (e.target.value.length >= 3) {
+              history.push(`?q=${e.target.value.trim()}`);
+              updateQuery("q", e.target.value.trim());
+            }
+            if (e.target.value.length === 0) {
+              updateQuery("q", "");
+            }
+          }}
+        />
+      </div>
+    </>
+  );
+};
 
 const Header = ({
   setView,
@@ -150,17 +150,25 @@ const Header = ({
         </button>
         <span className="label text-white">{`${view} view`}</span>
         {view === "map" ? (
-          <img src={GlobeOutlined} alt="globe-icon" className="filter-img" />
+          <img
+            src="/knowledge-library/globe-outline.svg"
+            alt="globe-icon"
+            className="filter-img"
+          />
         ) : (
-          <img src={topicViewIcon} alt="topic-icon" className="filter-img" />
+          <img
+            src="/knowledge-library/topic-view-icon.svg"
+            alt="topic-icon"
+            className="filter-img"
+          />
         )}
       </div>
     </>
   );
 
   return (
-    <Col span={24} className="ui-header">
-      <div className="ui-container">
+    <Col span={24} className={`${styles.uiHeader} ui-header`}>
+      <div className={`${styles.uiContainer} ui-container`}>
         <Row
           type="flex"
           justify="space-between"
@@ -196,7 +204,7 @@ const Header = ({
                     <div className="filter-status">{filterTagValue.length}</div>
                   )}
                   <img
-                    src={FilterIcon}
+                    src="/knowledge-library/filter-icon.svg"
                     className="filter-icon"
                     alt="config-icon"
                   />
@@ -213,7 +221,7 @@ const Header = ({
           {/* Map/Topic view dropdown */}
           <Col lg={2} md={4} sm={6} className="select-wrapper">
             <Select
-              dropdownClassName="overlay-dropdown"
+              dropdownClassName={styles.overlayDropdown}
               className="view-selection"
               value={view}
               onChange={(val) => setView(val)}
@@ -230,7 +238,7 @@ const Header = ({
                     </button>
                     <span className="label text-white">{`${view} view`}</span>
                     <img
-                      src={GlobeOutlined}
+                      src="/knowledge-library/globe-outline.svg"
                       alt="globe-icon"
                       className="filter-img"
                     />
@@ -250,7 +258,7 @@ const Header = ({
                     </button>
                     <span className="label text-white">{`${view} view`}</span>
                     <img
-                      src={topicViewIcon}
+                      src="/knowledge-library/topic-view-icon.svg"
                       alt="topic-icon"
                       className="filter-img"
                     />
