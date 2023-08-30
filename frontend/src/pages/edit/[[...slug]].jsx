@@ -10,7 +10,18 @@ const EditPage = ({ setLoginVisible, isAuthenticated, loadingProfile }) => {
   const slugType = slug[0];
   const id = slug[1];
 
-  if (["technology", "policy", "action-plan"].includes(slugType)) {
+  if (
+    [
+      "technology",
+      "policy",
+      "action-plan",
+      "financing-resource",
+      "technical-resource",
+      "initiative",
+      "case-study",
+      "event",
+    ].includes(slugType)
+  ) {
     return (
       <FlexibleForms
         {...{ setLoginVisible, isAuthenticated, loadingProfile, type, id }}
