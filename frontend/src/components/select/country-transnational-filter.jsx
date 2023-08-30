@@ -6,7 +6,7 @@ import { UIStore } from "../../store";
 import { TrimText } from "../../utils/string";
 import { multicountryGroups } from "../../modules/knowledge-library/multicountry";
 import { OptGroup } from "rc-select";
-import "./styles.scss";
+import "./style.module.scss";
 import api from "../../utils/api";
 
 const { TabPane } = Tabs;
@@ -26,6 +26,7 @@ const CountryTransnationalFilter = ({
   disable,
   setDisable,
   fetch,
+  history,
 }) => {
   const { countries, transnationalOptions, landing } = UIStore.useState(
     (s) => ({
@@ -61,7 +62,18 @@ const CountryTransnationalFilter = ({
         ...(val.length > 0 ? { multiCountry: true } : { multiCountry: false }),
       });
     }
-    updateQuery("country", val, false);
+    let updatedQuery = { ...history.query };
+    delete updatedQuery.totalCount;
+
+    if (val && val.length > 0) {
+      updatedQuery.country = val.toString();
+    } else {
+      delete updatedQuery.country;
+    }
+    history.push({
+      pathname: history.pathname,
+      query: updatedQuery,
+    });
   };
 
   const handleChangeMultiCountry = (val) => {

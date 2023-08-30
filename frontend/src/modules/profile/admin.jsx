@@ -38,7 +38,7 @@ import {
 } from "@ant-design/icons";
 import Avatar from "antd/lib/avatar/avatar";
 import Expert from "./expert";
-import { ReactComponent as IconExpert } from "../../images/expert-icon.svg";
+import IconExpert from "../../images/expert-icon.svg";
 import debouce from "lodash.debounce";
 
 const { Search } = Input;
