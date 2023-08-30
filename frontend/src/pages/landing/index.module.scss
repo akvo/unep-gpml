@@ -534,7 +534,7 @@
         }
         .slider-container {
           margin: 20px 0px 0px 0px;
-          padding: 0px 0px 0px 20px;
+          padding: 0px 20px 0px 20px;
           overflow: hidden;
           .slider-wrapper {
             padding: 0;
@@ -561,7 +561,7 @@
         padding-left: calc((100% - 1148px) / 2);
         overflow: hidden;
         @media screen and (max-width: $bpMobile) {
-          padding: 0px 0px 0px 20px;
+          padding: 0px 20px 0px 20px;
         }
         .slider-wrapper {
           .feature-card {
