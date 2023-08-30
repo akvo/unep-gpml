@@ -1,13 +1,12 @@
 import React from "react";
-import "./invite-expert-card.scss";
+import styles from "./invite-expert-card.module.scss";
 import { Card, Button } from "antd";
-import MegaphoneIcon from "../../images/stakeholder-overview/megaphone-icon.svg";
 
 const InviteExpertCard = ({ setIsShownModal }) => {
   return (
-    <Card className="invite-expert-card">
+    <Card className={styles.inviteExpertCard}>
       <div className="invite-expert-image-wrapper">
-        <img src={MegaphoneIcon} alt="" />
+        <img src="/stakeholder-overview/megaphone-icon.svg" alt="" />
       </div>
       <div>
         <h3 className="invite-expert-text">Do you know an expert?</h3>
