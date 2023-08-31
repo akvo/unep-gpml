@@ -8,6 +8,7 @@
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
             [gpml.util.email :as email]
             [gpml.util.postgresql :as pg-util]
@@ -179,6 +180,8 @@
       (log logger :error ::send-invitation-emails-failed {:exception-message (.getMessage e)
                                                           :context-data {:invitations invitations}}))))
 
+;; TODO: Improve how we deal with errors here, since we should rollback invitation processes one by one, as otherwise
+;; we might rollback all of them while the notifications or some of them have been sent already.
 (defn- invite-experts
   [{:keys [db mailjet-config logger] :as config}
    {{:keys [body]} :parameters}]
@@ -202,21 +205,48 @@
            logger
            mailjet-config
            {:tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags {:expertise expertise})
-            :stakeholder-id stakeholder-id}))
+            :stakeholder-id stakeholder-id})
+          (let [{:keys [success?]} (srv.permissions/create-resource-context
+                                    {:conn conn
+                                     :logger logger}
+                                    {:context-type :stakeholder
+                                     :resource-id stakeholder-id})]
+            (if-not success?
+              (throw (ex-info
+                      "Failing creating stakeholder rbac context"
+                      {:reason :failing-creating-stakeholder-rbac-context
+                       :stakeholder-id stakeholder-id}))
+              (let [role-assignments [{:role-name :unapproved-user
+                                       :context-type :application
+                                       :resource-id srv.permissions/root-app-resource-id
+                                       :user-id stakeholder-id}]
+                    result (first (srv.permissions/assign-roles-to-users
+                                   {:conn conn
+                                    :logger logger}
+                                   role-assignments))]
+                (when-not (:success? result)
+                  (throw (ex-info
+                          "Failing assigning roles to stakeholder"
+                          {:reason :failing-assigning-roles-to-stakeholder
+                           :role-assignments role-assignments})))))))
         (future (send-invitation-emails config invitations))
-        (resp/response {:success? true
-                        :invited-experts (map #(update % :id str) invitations)})))
-    (catch Exception e
-      (log logger :error ::invite-experts-error {:exception-message (.getMessage e)})
-      (if (instance? SQLException e)
-        {:status 500
-         :body {:success? false
-                :reason (if (= :unique-constraint-violation (pg-util/get-sql-state e))
-                          :stakeholder-email-already-exists
-                          (pg-util/get-sql-state e))}}
-        {:status 500
-         :body {:success? false
-                :reason :could-not-create-expert}}))))
+        (r/ok {:success? true
+               :invited-experts (map #(update % :id str) invitations)})))
+    (catch Throwable t
+      (log logger :error ::invite-experts-error {:exception-message (ex-message t)
+                                                 :exception-data (ex-data t)
+                                                 :stack-trace (.getStackTrace t)
+                                                 :context-data body})
+      (if (instance? SQLException t)
+        (r/server-error
+         {:success? false
+          :reason (if (= :unique-constraint-violation (pg-util/get-sql-state t))
+                    :stakeholder-email-already-exists
+                    (pg-util/get-sql-state t))})
+        (let [{:keys [reason]} (ex-data t)]
+          (r/server-error
+           {:success? false
+            :reason reason}))))))
 
 (defn- generate-admins-expert-suggestion-text
   [{:keys [email expertise suggested_expertise] :as expert}
