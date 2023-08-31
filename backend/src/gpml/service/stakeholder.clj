@@ -388,17 +388,13 @@
                                     distinct
                                     vec)
                   org-id (get-in stakeholder [:org :id])
-                  affiliation (if (and (:affiliation old-stakeholder)
-                                       (not org-id))
-                                nil
-                                org-id)
+                  affiliation org-id
                   picture-id (:id picture-file)
                   cv-id (:id cv-file)
                   affected (db.stakeholder/update-stakeholder conn
                                                               (cond-> (assoc stakeholder
                                                                              :affiliation affiliation
-                                                                             :idp_usernames idp-usernames
-                                                                             :non_member_organisation nil)
+                                                                             :idp_usernames idp-usernames)
                                                                 picture-id
                                                                 (assoc :picture_id picture-id)
 

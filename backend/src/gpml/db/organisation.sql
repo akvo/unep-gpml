@@ -116,6 +116,7 @@ update organisation set id = :id
 --~ (when (contains? params :created_by) ",created_by= :created_by")
 --~ (when (contains? params :is_member) ",is_member= :is_member")
 --~ (when (contains? params :logo_id) ", logo_id= :logo_id")
+--~ (when (contains? params :review_status) ", review_status= :review_status::review_status")
 where id = :id
 
 -- :name geo-coverage-v2 :? :*
