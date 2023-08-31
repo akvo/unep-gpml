@@ -83,7 +83,6 @@ const Workspace = ({ profile }) => {
       },
     });
   };
-  console.log(profile.org);
   return (
     <div className={styles.workspace}>
       <div className={styles.workspaceContentWrapper}>

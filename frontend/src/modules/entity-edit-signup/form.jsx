@@ -36,16 +36,8 @@ const Form = withTheme(AntDTheme);
 function getChangedFields(original, updated) {
   let changes = {};
 
-  const keysToExclude = [
-    "org",
-    "orgHeadquarter",
-    "publicDatabase",
-    "representation",
-    "version",
-  ];
-
   Object.keys(updated).forEach((key) => {
-    if (!isEqual(original[key], updated[key]) && !keysToExclude.includes(key)) {
+    if (!isEqual(original[key], updated[key])) {
       changes[key] = updated[key];
     }
   });

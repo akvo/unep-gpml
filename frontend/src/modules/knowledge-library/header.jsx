@@ -6,9 +6,10 @@ import { useHistory } from "react-router-dom";
 import { KNOWLEDGE_LIBRARY } from "../map/map";
 import { eventTrack } from "../../utils/misc";
 import DownArrow from "../../images/knowledge-library/chevron-down.svg";
+import { useRouter } from "next/router";
 
 const KnowledgeLibrarySearch = ({
-  history,
+  router,
   updateQuery,
   isShownForm,
   setIsShownForm,
@@ -17,7 +18,7 @@ const KnowledgeLibrarySearch = ({
   const handleSearch = (src) => {
     eventTrack("Communities", "Search", "Button");
     if (src) {
-      history.push(`?q=${src.trim()}`);
+      router.push(`?q=${src.trim()}`);
       updateQuery("q", src.trim());
     } else {
       updateQuery("q", "");
@@ -53,7 +54,7 @@ const KnowledgeLibrarySearch = ({
 };
 
 const StakeholderOverviewSearch = ({
-  history,
+  router,
   updateQuery,
   setView,
   isShownForm,
@@ -63,7 +64,16 @@ const StakeholderOverviewSearch = ({
   const handleSearch = (src) => {
     eventTrack("Knowledge library", "Search", "Button");
     if (src) {
-      history.push(`?q=${src.trim()}`);
+      // router.push(`?q=${src.trim()}`);
+      router.push(
+        {
+          pathname: router.pathname,
+          query: { ...router.query, q: src.trim() },
+        },
+        undefined,
+        { shallow: true }
+      );
+
       updateQuery("q", src.trim());
     } else {
       updateQuery("q", "");
@@ -94,7 +104,7 @@ const StakeholderOverviewSearch = ({
             onChange={(e) => {
               setSearch(e.target.value);
               if (e.target.value.length >= 3) {
-                history.push(`?q=${e.target.value.trim()}`);
+                router.push(`?q=${e.target.value.trim()}`);
                 updateQuery("q", e.target.value.trim());
               }
               if (e.target.value.length === 0) {
@@ -113,13 +123,13 @@ const StakeholderOverviewSearch = ({
           onPressEnter={(e) => handleSearch(e.target.value)}
           onChange={(e) => {
             setSearch(e.target.value);
-            if (e.target.value.length >= 3) {
-              history.push(`?q=${e.target.value.trim()}`);
-              updateQuery("q", e.target.value.trim());
-            }
-            if (e.target.value.length === 0) {
-              updateQuery("q", "");
-            }
+            // if (e.target.value.length >= 3) {
+            //   router.push(`?q=${e.target.value.trim()}`);
+            //   updateQuery("q", e.target.value.trim());
+            // }
+            // if (e.target.value.length === 0) {
+            //   updateQuery("q", "");
+            // }
           }}
         />
       </div>
@@ -136,8 +146,9 @@ const Header = ({
   updateQuery,
   view,
 }) => {
-  const history = useHistory();
-  const path = history?.location?.pathname;
+  const router = useRouter();
+  const path = router.pathname;
+
   const [isShownForm, setIsShownForm] = useState(false);
 
   const selectionValue = (
@@ -183,11 +194,11 @@ const Header = ({
                 {/* <Search updateQuery={updateQuery} /> */}
                 {path === KNOWLEDGE_LIBRARY ? (
                   <KnowledgeLibrarySearch
-                    {...{ updateQuery, isShownForm, setIsShownForm }}
+                    {...{ updateQuery, isShownForm, setIsShownForm, router }}
                   />
                 ) : (
                   <StakeholderOverviewSearch
-                    {...{ updateQuery, isShownForm, setIsShownForm }}
+                    {...{ updateQuery, isShownForm, setIsShownForm, router }}
                   />
                 )}
                 <Button
