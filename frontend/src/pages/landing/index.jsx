@@ -137,7 +137,7 @@ const Hero = () => {
               <br />
               <b className={classNames({ timeout })}>{selected}</b>
               <br />
-              to end plastic pollution
+              to address plastic pollution
             </h1>
             <div className="p-container">
               {items.map((item) => (
