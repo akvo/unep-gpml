@@ -1,8 +1,6 @@
 import React from "react";
 import { Button, Modal } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-import "./unathenticated-page.scss";
-import { Link } from "react-router-dom";
+import styles from "./unathenticated-page.module.scss";
 
 const UnathenticatedPage = ({
   unAthenticatedModal,

@@ -11,11 +11,7 @@ import {
 import ReactGA from "react-ga4";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Input, Button, Menu, Dropdown, Layout } from "antd";
-import {
-  UserOutlined,
-  SearchOutlined,
-  CloseCircleOutlined,
-} from "@ant-design/icons";
+import { CloseCircleOutlined } from "@ant-design/icons";
 import OldLanding from "./modules/landing/new-home";
 import Browse from "./modules/browse/view";
 import Stakeholders from "./modules/stakeholders/view";
@@ -868,110 +864,5 @@ const Root = () => {
     </>
   );
 };
-
-const Search = withRouter(({ history, updateQuery }) => {
-  const [search, setSearch] = useState("");
-
-  const handleSearch = (src) => {
-    const path = history.location.pathname;
-    if (src) {
-      history.push(`/knowledge/library?q=${src.trim()}`);
-      updateQuery("q", src.trim());
-    } else {
-      updateQuery("q", src.trim());
-    }
-  };
-
-  return (
-    <div className="src">
-      <Input
-        className="input-src"
-        placeholder="Search"
-        suffix={<SearchOutlined />}
-        onPressEnter={(e) => handleSearch(e.target.value)}
-        onSubmit={(e) => setSearch(e.target.value)}
-      />
-    </div>
-  );
-});
-
-const UserButton = withRouter(({ history, logout, isRegistered, profile }) => {
-  return (
-    <Dropdown
-      overlayClassName="user-btn-dropdown-wrapper"
-      overlay={
-        <Menu className="user-btn-dropdown">
-          <Menu.Item
-            onClick={() => {
-              history.push(
-                `/${isRegistered(profile) ? "profile" : "onboarding"}`
-              );
-            }}
-          >
-            Profile
-          </Menu.Item>
-          <Menu.Item
-            onClick={() =>
-              auth0Client.logout({ returnTo: window.location.origin })
-            }
-          >
-            Logout
-          </Menu.Item>
-        </Menu>
-      }
-      trigger={["click"]}
-      placement="bottomRight"
-    >
-      <Button
-        type="ghost"
-        placement="bottomRight"
-        className="left white"
-        shape="circle"
-        icon={<UserOutlined />}
-      />
-    </Dropdown>
-  );
-});
-
-const AddButton = withRouter(
-  ({
-    isAuthenticated,
-    setStakeholderSignupModalVisible,
-    setWarningModalVisible,
-    loginWithPopup,
-    history,
-    setLoginVisible,
-  }) => {
-    const profile = UIStore.useState((s) => s.profile);
-    if (isAuthenticated) {
-      if (profile?.reviewStatus === "APPROVED") {
-        return (
-          <>
-            <Link to="/flexible-forms">
-              <Button type="primary">Add Content</Button>
-            </Link>
-          </>
-        );
-      }
-      return (
-        <Button
-          type="primary"
-          onClick={() => {
-            profile?.reviewStatus === "SUBMITTED"
-              ? setWarningModalVisible(true)
-              : history.push("/onboarding");
-          }}
-        >
-          Add Content
-        </Button>
-      );
-    }
-    return (
-      <Button type="primary" onClick={() => setLoginVisible(true)}>
-        Add Content
-      </Button>
-    );
-  }
-);
 
 export default Root;
