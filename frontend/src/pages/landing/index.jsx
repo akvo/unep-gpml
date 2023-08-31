@@ -1,4 +1,4 @@
-import { Button, Tabs, Collapse, Card, Tag, Input, Col, Row, Form } from 'antd'
+import { Tabs, Collapse, Card, Tag, Input, Col, Row, Form } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './index.module.scss'
@@ -7,7 +7,6 @@ import {
   Magnifier,
   Localiser,
   ArrowRight,
-  LongArrowRight,
   FacebookIcon,
   LinkedinIcon,
   TwitterIcon,
@@ -19,6 +18,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
 import moment from 'moment'
 import { useDeviceSize } from '../../modules/landing/landing'
+import Button from '../../components/button'
 
 const pagination = {
   clickable: true,
@@ -161,8 +161,8 @@ const Hero = () => {
                 </AnimatePresence>
               ))}
             </div>
-            <Button type="primary" size="large">
-              Join Now <CirclePointer />
+            <Button type="primary" size="large" withArrow>
+              Join Now
             </Button>
           </div>
         </div>
@@ -447,8 +447,8 @@ const ActNowCard = ({ item }) => (
     <p className="p-s">{item?.content}</p>
     <div className={item.links.lenght === 1 ? 'monolink' : 'multilink'}>
       {item.links.map((link) => (
-        <Button type="link">
-          {link.label} <ArrowRight />
+        <Button type="link" withArrow>
+          {link.label}
         </Button>
       ))}
     </div>
@@ -544,9 +544,8 @@ const LatestNews = () => {
                 <h5 className="bold">{item.title}</h5>
                 <p className="p-m">{item.excerpt}</p>
                 <Link href={item.url}>
-                  <Button type="link">
+                  <Button type="link" withArrow>
                     Read More
-                    <ArrowRight />
                   </Button>
                 </Link>
               </Card>
@@ -575,9 +574,8 @@ const Activities = () => {
             </p>
           </div>
           <div>
-            <Button size="large" ghost>
+            <Button size="large" ghost withArrow>
               Visit the website
-              <ArrowRight />
             </Button>
           </div>
         </div>
@@ -655,9 +653,7 @@ const OurVoices = () => {
                 Cooperative actions for Caribbean fisheries officials after a
                 successful ghost gear retrieval training in Panama{' '}
               </p>
-              <Button>
-                Explore whole story <LongArrowRight />
-              </Button>
+              <Button withArrow>Explore whole story</Button>
             </div>
           </div>
           <div className="group-two">
@@ -669,9 +665,7 @@ const OurVoices = () => {
                 Cooperative actions for Caribbean fisheries officials after a
                 successful ghost gear retrieval training in Panama{' '}
               </p>
-              <Button>
-                Explore whole story <LongArrowRight />
-              </Button>
+              <Button withArrow>Explore whole story</Button>
             </div>
             <img
               src={
@@ -694,9 +688,8 @@ const Trusted = () => {
           <h3 className="semibold">
             Trusted data and information badge system and validation process.
           </h3>
-          <Button type="primary" size="large">
+          <Button withArrow type="primary" size="large">
             Discover
-            <CirclePointer />
           </Button>
         </div>
         <div className="trusted-circle" />
@@ -717,9 +710,8 @@ const Partnership = () => {
             Become part of GPML to collaborate with thousands of organisations
             and individuals from around the world
           </p>
-          <Button type="primary" size="large">
+          <Button withArrow type="primary" size="large">
             Join now
-            <CirclePointer />
           </Button>
         </div>
       </div>
@@ -840,9 +832,8 @@ const Partners = () => {
       </div>
       <div className="partner-button-container">
         <div className="container">
-          <Button size="large" ghost>
+          <Button withArrow size="large" ghost>
             See all partners
-            <ArrowRight />
           </Button>
         </div>
       </div>
@@ -866,10 +857,7 @@ const HelpCentre = () => {
         </h6>
       </div>
       <div className="help-centre-button">
-        <Button>
-          Visit the Help Centre
-          <ArrowRight />
-        </Button>
+        <Button withArrow>Visit the Help Centre</Button>
       </div>
     </div>
   )
@@ -1050,9 +1038,8 @@ const Features = () => {
               </p>
             </div>
             <div>
-              <Button size="large" ghost>
+              <Button withArrow size="large" ghost>
                 View All Features
-                <ArrowRight />
               </Button>
             </div>
           </div>
