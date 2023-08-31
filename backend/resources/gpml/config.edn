@@ -303,14 +303,14 @@
                                                   :parameters {:path [:map [:id int?]]
                                                                :body #ig/ref :gpml.handler.organisation/put-params}
                                                   :handler #ig/ref :gpml.handler.organisation/put}}]
-                                          ["/to-member"
-                                           {:put {:summary "Convert organisation by id to member and update its data"
+                                          ["/request-membership"
+                                           {:put {:summary "Request owned organisation by id to become a member and update its data"
                                                   :swagger {:tags ["organisation"]
                                                             :security [{:id_token []}]}
                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
                                                                #ig/ref :gpml.auth/auth-required]
-                                                  :parameters #ig/ref :gpml.handler.organisation/put-to-member-params
-                                                  :handler #ig/ref :gpml.handler.organisation/put-to-member}}]
+                                                  :parameters #ig/ref :gpml.handler.organisation/put-req-member-params
+                                                  :handler #ig/ref :gpml.handler.organisation/put-req-member}}]
                                           ["/members"
                                            {:get {:summary "List all members belonging to a given organisation"
                                                   :swagger {:tags ["organisation detail"]}
@@ -689,8 +689,8 @@
   :gpml.handler.organisation/put #ig/ref :gpml.config/common
   :gpml.handler.organisation/post-params {}
   :gpml.handler.organisation/put-params {}
-  :gpml.handler.organisation/put-to-member #ig/ref :gpml.config/common
-  :gpml.handler.organisation/put-to-member-params {}
+  :gpml.handler.organisation/put-req-member #ig/ref :gpml.config/common
+  :gpml.handler.organisation/put-req-member-params {}
   :gpml.handler.organisation/get-id #ig/ref :gpml.config/common
   :gpml.handler.programmatic.organisation/post #ig/ref :gpml.config/common
   :gpml.handler.programmatic.organisation/post-params {}

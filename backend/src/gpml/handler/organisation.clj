@@ -11,6 +11,7 @@
             [gpml.handler.responses :as r]
             [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
+            [gpml.util.email :as email]
             [gpml.util.geo :as geo]
             [gpml.util.malli :as util.malli]
             [gpml.util.postgresql :as pg-util]
@@ -196,7 +197,9 @@
             :entity-id (:id (:path parameters))
             :operation-type :update})
         (jdbc/with-db-transaction [tx (:spec db)]
-          (let [org-id (update-org config tx (assoc body-params :id (:id (:path parameters))))]
+          (let [org-id (update-org config tx (-> body-params
+                                                 (assoc :id (:id (:path parameters)))
+                                                 (dissoc :review_status)))]
             (resp/created referrer (assoc body-params :id org-id))))
         (r/forbidden {:message "Unauthorized"}))
       (catch Throwable t
@@ -236,8 +239,8 @@
             [:tag_category {:optional true} string?]]]]]
         handler.geo/api-geo-coverage-schemas))
 
-(defmethod ig/init-key :gpml.handler.organisation/put-to-member
-  [_ {:keys [db logger] :as config}]
+(defmethod ig/init-key :gpml.handler.organisation/put-req-member
+  [_ {:keys [db logger mailjet-config] :as config}]
   (fn [{:keys [body-params parameters user]}]
     (try
       (if (h.r.permission/operation-allowed?
@@ -246,21 +249,38 @@
             :entity-type :organisation
             :entity-id (:id (:path parameters))
             :operation-type :update})
-        (jdbc/with-db-transaction [tx (:spec db)]
-          (update-org config tx (assoc body-params
-                                       :id (:id (:path parameters))
-                                       :is_member true))
-          (r/ok {:success? true}))
+        (let [org-id (:id (:path parameters))
+              organisation (db.organisation/organisation-by-id (:spec db) {:id org-id})
+              {:keys [is_member review_status]} organisation
+              result (cond
+                       is_member {:success? false
+                                  :reason :entity-already-member}
+                       (= "REJECTED" review_status) {:success? false
+                                                     :reason :entity-rejected}
+                       :else (jdbc/with-db-transaction [tx (:spec db)]
+                               (update-org config tx (assoc body-params
+                                                            :id org-id
+                                                            :is_member true
+                                                            :review_status "SUBMITTED"))
+                               {:success? true}))]
+          (if (:success? result)
+            (do
+              (email/notify-admins-pending-approval
+               (:spec db)
+               mailjet-config
+               (merge body-params {:type "organisation"}))
+              (r/ok result))
+            (r/server-error result)))
         (r/forbidden {:message "Unauthorized"}))
       (catch Throwable e
-        (log logger :error ::failed-to-convert-org-to-member {:exception-message (ex-message e)})
+        (log logger :error ::failed-to-req-org-to-member-conversion {:exception-message (ex-message e)})
         (let [response {:success? false
-                        :reason :could-not-convert-org-to-member}]
+                        :reason :could-not-req-org-to-member-conversion}]
           (if (instance? SQLException e)
             (r/server-error response)
             (r/server-error (assoc-in response [:error-details :error] (ex-message e)))))))))
 
-(defmethod ig/init-key :gpml.handler.organisation/put-to-member-params [_ _]
+(defmethod ig/init-key :gpml.handler.organisation/put-req-member-params [_ _]
   {:path [:map [:id int?]]
    :body (-> dom.organisation/Organisation
              (util.malli/dissoc
