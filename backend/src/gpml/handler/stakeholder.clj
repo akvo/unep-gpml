@@ -201,11 +201,12 @@
   (fn [{:keys [body-params headers user]}]
     (try
       (let [tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body-params)]
-        (update-stakeholder config (assoc body-params
-                                          :id (:id user)
-                                          :picture {:payload (:picture body-params)
-                                                    :user-agent (get headers "user-agent")}
-                                          :tags tags))
+        (update-stakeholder config (-> body-params
+                                       (assoc :id (:id user)
+                                              :picture {:payload (:picture body-params)
+                                                        :user-agent (get headers "user-agent")}
+                                              :tags tags)
+                                       (dissoc :review_status)))
         (resp/status {:success? true} 204))
       (catch Exception e
         (log logger :error ::failed-to-update-stakeholder {:exception-message (.getMessage e)})

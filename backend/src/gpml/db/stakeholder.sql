@@ -174,6 +174,7 @@ update stakeholder set
 --~ (when (contains? params :idp_usernames) "idp_usernames= :idp_usernames::jsonb,")
 --~ (when (contains? params :picture_id) "picture_id= :picture_id,")
 --~ (when (contains? params :cv_id) "cv_id= :cv_id, ")
+--~ (when (contains? params :review_status) "review_status= :review_status::review_status,")
     modified = now()
 where id = :id;
 

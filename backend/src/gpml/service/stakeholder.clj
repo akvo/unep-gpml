@@ -1,5 +1,6 @@
 (ns gpml.service.stakeholder
-  (:require [gpml.db.organisation :as db.organisation]
+  (:require [duct.logger :refer [log]]
+            [gpml.db.organisation :as db.organisation]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.file :as dom.file]
@@ -318,12 +319,89 @@
           (fn get-experts
             [{:keys [old-stakeholder] :as context}]
             (let [expert? (seq (db.stakeholder/get-experts conn {:filters {:ids [(:id old-stakeholder)]}
-                                                                 :page-size 0
+                                                                 :page-size 1
                                                                  :offset 0}))]
-              (assoc context :expert? expert?)))}
+              (assoc context :expert? expert?)))
+          :rollback-fn
+          (fn rollback-unassign-unapproved-user-role
+            [{:keys [old-stakeholder invited-expert?] :as context}]
+            (if invited-expert?
+              (let [role-assignments [{:role-name :unapproved-user
+                                       :context-type :application
+                                       :resource-id srv.permissions/root-app-resource-id
+                                       :user-id (:id old-stakeholder)}]
+                    result (first (srv.permissions/assign-roles-to-users
+                                   {:conn conn
+                                    :logger logger}
+                                   role-assignments))]
+                (when-not (:success? result)
+                  (log logger :error ::rollback-unassign-unapproved-user-role {:reason result})))
+              (dissoc context :invited-expert?)))}
+         {:txn-fn
+          (fn unassign-unapproved-user-role
+            [{:keys [old-stakeholder expert?] :as context}]
+            (if (and expert?
+                     (= (:review-status old-stakeholder) "INVITED"))
+              (let [role-unassignments [{:role-name :unapproved-user
+                                         :context-type :application
+                                         :resource-id srv.permissions/root-app-resource-id
+                                         :user-id (:id old-stakeholder)}]
+                    result (first (srv.permissions/unassign-roles-from-users
+                                   {:conn conn
+                                    :logger logger}
+                                   role-unassignments))]
+                (if (:success? result)
+                  (assoc context :invited-expert? true)
+                  (assoc context
+                         :success? false
+                         :reason :failed-to-remove-unapproved-user-role
+                         :error-details {:result result})))
+              context))
+          :rollback-fn
+          (fn rollback-assign-approved-user-role
+            [{:keys [old-stakeholder invited-expert?] :as context}]
+            (if invited-expert?
+              (let [role-unassignments [{:role-name :approved-user
+                                         :context-type :application
+                                         :resource-id srv.permissions/root-app-resource-id
+                                         :user-id (:id old-stakeholder)}]
+                    result (first (srv.permissions/unassign-roles-from-users
+                                   {:conn conn
+                                    :logger logger}
+                                   role-unassignments))]
+                (when-not (:success? result)
+                  (log logger :error ::rollback-assign-approved-user-role {:reason result}))
+                context)
+              context))}
+         {:txn-fn
+          (fn assign-approved-user-role
+            [{:keys [old-stakeholder invited-expert?] :as context}]
+            (if invited-expert?
+              (let [role-assignments [{:role-name :approved-user
+                                       :context-type :application
+                                       :resource-id srv.permissions/root-app-resource-id
+                                       :user-id (:id old-stakeholder)}]
+                    result (first (srv.permissions/assign-roles-to-users
+                                   {:conn conn
+                                    :logger logger}
+                                   role-assignments))]
+                (if (:success? result)
+                  context
+                  (assoc context
+                         :success? false
+                         :reason :failed-to-add-approved-user-role
+                         :error-details {:result result})))
+              context))
+          :rollback-fn
+          (fn rollback-update-stakeholder
+            [{:keys [old-stakeholder] :as context}]
+            (let [affected (db.stakeholder/update-stakeholder conn old-stakeholder)]
+              (when-not (= 1 affected)
+                (log logger :error ::rollback-update-stakeholder {:id (:id old-stakeholder)})))
+            context)}
          {:txn-fn
           (fn update-stakeholder
-            [{:keys [stakeholder old-stakeholder expert? picture-file cv-file] :as context}]
+            [{:keys [stakeholder old-stakeholder invited-expert? picture-file cv-file] :as context}]
             (let [idp-usernames (-> (concat (:idp-usernames old-stakeholder)
                                             (:idp_usernames stakeholder))
                                     distinct
@@ -342,8 +420,7 @@
                                                                 cv-id
                                                                 (assoc :cv_id cv-id)
 
-                                                                (and expert?
-                                                                     (= (:review-status old-stakeholder) "INVITED"))
+                                                                invited-expert?
                                                                 (assoc :review_status "APPROVED")))]
               (if (= 1 affected)
                 context
