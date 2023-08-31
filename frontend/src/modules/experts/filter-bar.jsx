@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../../utils/api";
 import catTags from "../../utils/cat-tags.json";
-import { Icon } from "../../components/svg-icon/svg-icon";
+// import { Icon } from "../../components/svg-icon/svg-icon";
 import { useQuery } from "../../utils/misc";
 import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
 import LocationDropdown from "../../components/location-dropdown/location-dropdown";
@@ -107,7 +107,10 @@ const FilterBar = ({
     />
   );
 
-  const title = (title) => title?.toLowerCase() === "capacity building" ? "Capacity Development" : title;
+  const title = (title) =>
+    title?.toLowerCase() === "capacity building"
+      ? "Capacity Development"
+      : title;
 
   return (
     <div className="filter-bar">
@@ -121,7 +124,7 @@ const FilterBar = ({
               {catTags.map((cat, index) => {
                 return (
                   <li onClick={handleClick0(index)}>
-                    <Icon name={`cat-tags/${slug(cat.title)}`} fill="#67BEA1" />
+                    {/* <Icon name={`cat-tags/${slug(cat.title)}`} fill="#67BEA1" /> */}
                     <span>{title(cat.title)}</span>
                   </li>
                 );
@@ -134,10 +137,10 @@ const FilterBar = ({
         <div className="level-1">
           <div className={`selected-btn s${filter[0]}`} onClick={handleBack}>
             <small>&lt; Back to categories</small>
-            <Icon
+            {/* <Icon
               name={`cat-tags/${slug(catTags[filter[0]].title)}`}
               fill="#67BEA1"
-            />
+            /> */}
             <div>
               <strong>{title(catTags[filter[0]].title)}</strong>
               <small>Sub-topics</small>
@@ -152,7 +155,7 @@ const FilterBar = ({
                 }
               >
                 <div className="img-container">
-                  <Icon name={`cat-tags/${slug(tag)}`} fill="#67BEA1" />
+                  {/* <Icon name={`cat-tags/${slug(tag)}`} fill="#67BEA1" /> */}
                 </div>
                 <div className="label-container">
                   <span>{tag}</span>

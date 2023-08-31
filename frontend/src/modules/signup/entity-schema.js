@@ -71,7 +71,7 @@ export const schema = {
           title: "Twitter",
           type: "string",
         },
-        photo: {
+        picture: {
           title: "Photo",
           type: "string",
           format: "data-url",

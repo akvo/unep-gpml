@@ -10,24 +10,21 @@ import {
   notification,
 } from "antd";
 const { Title } = Typography;
-import "./styles.scss";
-import { useHistory, Link } from "react-router-dom";
-import { ReactComponent as DataCatalogueSvg } from "../../images/data-catalogue-icon.svg";
-import { ReactComponent as MatchSvg } from "../../images/match.svg";
-import { ReactComponent as UploadSvg } from "../../images/upload.svg";
-import { ReactComponent as TransnationalSvg } from "../../images/transnational.svg";
-import { ReactComponent as TrashSvg } from "../../images/resource-detail/trash-icn.svg";
-import { ReactComponent as ShareSvg } from "../../images/resource-detail/share-icn.svg";
-import { ReactComponent as EditSvg } from "../../images/resource-detail/edit-icn.svg";
-import NetworkIcon from "../../images/auth/network.png";
-import {
-  FilePdfOutlined,
-  PlusCircleOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
+import styles from "./styles.module.scss";
+import DataCatalogueSvg from "../../images/data-catalogue-icon.svg";
+import MatchSvg from "../../images/match.svg";
+import UploadSvg from "../../images/upload.svg";
+import TransnationalSvg from "../../images/transnational.svg";
+import TrashSvg from "../../images/resource-detail/trash-icn.svg";
+import ShareSvg from "../../images/resource-detail/share-icn.svg";
+import EditSvg from "../../images/resource-detail/edit-icn.svg";
+import { FilePdfOutlined, DeleteOutlined } from "@ant-design/icons";
 import api from "../../utils/api";
+import Link from "next/link";
+import { useRouter } from "next/router";
+
 const Workspace = ({ profile }) => {
-  const history = useHistory();
+  const router = useRouter();
   const [isFocal, setIsFocal] = useState(false);
   const [projects, setProjects] = useState([]);
 
@@ -86,11 +83,10 @@ const Workspace = ({ profile }) => {
       },
     });
   };
-
   return (
-    <div id="workspace">
-      <div className="workspace-content-wrapper">
-        <div className="workspace-container">
+    <div className={styles.workspace}>
+      <div className={styles.workspaceContentWrapper}>
+        <div className={styles.workspaceContainer}>
           {profile &&
             profile?.emailVerified &&
             profile?.reviewStatus === "SUBMITTED" && (
@@ -140,10 +136,13 @@ const Workspace = ({ profile }) => {
                         type="primary"
                         shape="round"
                         onClick={() =>
-                          history.push({
-                            pathname: "entity-signup",
-                            state: { data: profile.org },
-                          })
+                          router.push(
+                            {
+                              pathname: "/entity-signup",
+                              query: { state: JSON.stringify(profile.org) },
+                            },
+                            "/entity-signup"
+                          )
                         }
                       >
                         JOIN GPML
@@ -166,7 +165,7 @@ const Workspace = ({ profile }) => {
                     <div>
                       <div className="slider-wrapper">
                         <Avatar
-                          src={NetworkIcon}
+                          src="/auth/network.png"
                           style={{
                             borderRadius: "initial",
                             margin: "0 auto 40px auto",
@@ -183,7 +182,7 @@ const Workspace = ({ profile }) => {
                     <div>
                       <div className="slider-wrapper">
                         <Avatar
-                          src={NetworkIcon}
+                          src="/auth/network.png"
                           style={{
                             borderRadius: "initial",
                             margin: "0 auto 40px auto",
@@ -210,23 +209,25 @@ const Workspace = ({ profile }) => {
                   {projects?.map((item) => (
                     <li key={item.id}>
                       <Link
-                        className="all-projects"
-                        to={`/projects/${item.id}`}
+                        href={`/projects/${item.id}`}
                         key={item.id}
+                        legacyBehavior
                       >
-                        <div className="content">
-                          {/* <p>Action Plan</p> */}
-                          <h2>{item.title}</h2>
-                          <div className="transnational">
-                            <TransnationalSvg />
-                            <span>{item.geoCoverageType}</span>
+                        <a className="all-projects">
+                          <div className="content">
+                            {/* <p>Action Plan</p> */}
+                            <h2>{item.title}</h2>
+                            <div className="transnational">
+                              <TransnationalSvg />
+                              <span>{item.geoCoverageType}</span>
+                            </div>
                           </div>
-                        </div>
+                        </a>
                       </Link>
                       <div className="actions">
                         <ShareSvg />
                         <EditSvg
-                          onClick={() => history.push(`/projects/${item.id}`)}
+                          onClick={() => router.push(`/projects/${item.id}`)}
                         />
                         <TrashSvg onClick={() => handleDeleteBtn(item.id)} />
                       </div>
@@ -264,8 +265,10 @@ const Workspace = ({ profile }) => {
                       to manage it in the platform.
                     </p>
                     <div>
-                      <Link to="/projects/get-started">
-                        <Button type="primary">Get Started</Button>
+                      <Link href="/projects/get-started" legacyBehavior>
+                        <a>
+                          <Button type="primary">Get Started</Button>
+                        </a>
                       </Link>
                     </div>
                   </div>
@@ -362,7 +365,7 @@ const Workspace = ({ profile }) => {
                     (!profile?.emailVerified ||
                       profile?.reviewStatus === "SUBMITTED")
                   }
-                  onClick={() => history.push("/flexible-forms")}
+                  onClick={() => router.push("/flexible-forms")}
                 >
                   Add content
                 </Button>
@@ -377,7 +380,7 @@ const Workspace = ({ profile }) => {
                     (!profile?.emailVerified ||
                       profile?.reviewStatus === "SUBMITTED")
                   }
-                  onClick={() => history.push("/connect/community")}
+                  onClick={() => router.push("/connect/community")}
                 >
                   Connect
                 </Button>
@@ -394,7 +397,7 @@ const Workspace = ({ profile }) => {
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
+                allowFullScreen
               ></iframe>
             </Col>
           </Row>

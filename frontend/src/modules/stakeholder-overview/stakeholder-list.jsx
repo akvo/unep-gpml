@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { Card, Row, Col, Pagination, Avatar } from "antd";
 import { TrimText } from "../../utils/string";
 import { isEmpty } from "lodash";
-import "./stakeholder-list.scss";
+import styles from "./stakeholder-list.module.scss";
 import { LoadingOutlined } from "@ant-design/icons";
+import Link from "next/link";
 
 const StakeholderList = ({
   view,
@@ -25,7 +25,7 @@ const StakeholderList = ({
   const pageNumber = query?.page?.map((count) => Number(count))[0];
 
   return (
-    <div className="stakeholder-list ">
+    <div className={`${styles.stakeholderList} stakeholder-list`}>
       <Row>
         {listVisible && (
           <div style={{ width: "100%" }}>
@@ -95,60 +95,62 @@ const ResourceItem = ({ results, view }) => {
     const linkTo = `/${type}/${id}`;
 
     return (
-      <Link className="resource-item-wrapper" key={`${type}-${id}`} to={linkTo}>
-        <Card className="resource-item" id="stakeholder-item">
-          <div className="item-body">
-            <div className="resource-images-extra-wrapper">
-              <div className="resource-image-wrapper">
-                <img
-                  className="resource-item-image"
-                  src={result?.logo || result?.picture}
-                  alt=""
-                />
-              </div>
-              {result?.affiliation && result?.affiliation?.length !== 0 && (
-                <div className="list-affiliation-image-wrapper">
-                  <Avatar
-                    size={32}
-                    style={{
-                      border: "none",
-                    }}
-                    src={
-                      result?.affiliation?.logo ? (
-                        result?.affiliation?.logo
-                      ) : (
-                        <Avatar
-                          style={{
-                            backgroundColor: "#006776",
-                            verticalAlign: "middle",
-                            border: "none",
-                          }}
-                          size={32}
-                        >
-                          {result?.affiliation?.name?.substring(0, 2)}
-                        </Avatar>
-                      )
-                    }
+      <Link key={`${type}-${id}`} href={linkTo} legacyBehavior>
+        <a className="resource-item-wrapper">
+          <Card className="resource-item" id="stakeholder-item">
+            <div className="item-body">
+              <div className="resource-images-extra-wrapper">
+                <div className="resource-image-wrapper">
+                  <img
+                    className="resource-item-image"
+                    src={result?.logo || result?.picture}
+                    alt=""
                   />
                 </div>
-              )}
-            </div>
-            <div className="resource-details">
-              <b className="title">
-                <TrimText text={stakeholderName} max={64} />
-              </b>
-              <div>
-                {result?.type === "stakeholder"
-                  ? result?.jobTitle && (
-                      <span className="entity-name">
-                        <TrimText text={result?.jobTitle} max={40} />
-                      </span>
-                    )
-                  : ""}
+                {result?.affiliation && result?.affiliation?.length !== 0 && (
+                  <div className="list-affiliation-image-wrapper">
+                    <Avatar
+                      size={32}
+                      style={{
+                        border: "none",
+                      }}
+                      src={
+                        result?.affiliation?.logo ? (
+                          result?.affiliation?.logo
+                        ) : (
+                          <Avatar
+                            style={{
+                              backgroundColor: "#006776",
+                              verticalAlign: "middle",
+                              border: "none",
+                            }}
+                            size={32}
+                          >
+                            {result?.affiliation?.name?.substring(0, 2)}
+                          </Avatar>
+                        )
+                      }
+                    />
+                  </div>
+                )}
+              </div>
+              <div className="resource-details">
+                <b className="title">
+                  <TrimText text={stakeholderName} max={64} />
+                </b>
+                <div>
+                  {result?.type === "stakeholder"
+                    ? result?.jobTitle && (
+                        <span className="entity-name">
+                          <TrimText text={result?.jobTitle} max={40} />
+                        </span>
+                      )
+                    : ""}
+                </div>
               </div>
             </div>
-          </div>
-        </Card>
+          </Card>
+        </a>
       </Link>
     );
   });
