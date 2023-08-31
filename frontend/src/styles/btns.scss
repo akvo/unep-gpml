@@ -64,11 +64,17 @@
         background-color: transparent;
         border-color: $primaryDarkBlue;
         color: $primaryDarkBlue;
-        padding-right: 28px;
         svg {
-          transform: translateX(8px);
           path {
             stroke: $primaryDarkBlue;
+          }
+        }
+      }
+      &.withArrow {
+        &:hover {
+          padding-right: 28px;
+          svg {
+            transform: translateX(8px);
           }
         }
       }
