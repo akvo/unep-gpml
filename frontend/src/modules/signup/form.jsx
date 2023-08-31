@@ -29,6 +29,7 @@ import stakeholderUiSchema from "./stakeholder-ui-schema.json";
 import { tagsMap, tagsMapExpertise } from "../../utils/misc";
 
 import { UIStore } from "../../store";
+import { useRouter } from "next/router";
 
 const Form = withTheme(AntDTheme);
 
@@ -48,6 +49,7 @@ const SignUpForm = ({
   tabsData,
   match: { params },
 }) => {
+  const router = useRouter();
   const {
     countries,
     organisations,
@@ -249,11 +251,17 @@ const SignUpForm = ({
       // add filtered profile to data payload
       data = { ...filteredProfile, ...data };
     }
-
+    const finalData = {
+      org: { ...data.org, id: data.affiliation },
+    };
     if (status === "add" && !params?.id) {
       api
-        .post("/profile", data)
+        .put("/profile", finalData)
         .then((res) => {
+          api.put(
+            `/organisation/${data.affiliation}/request-membership`,
+            data.org
+          );
           UIStore.update((e) => {
             e.formStep = {
               ...e.formStep,
@@ -263,6 +271,7 @@ const SignUpForm = ({
           });
           updateStatusProfile(res.data);
 
+          router.push(`/workspace`);
           //            scroll top
           window.scrollTo({ top: 0 });
           signUpData.update((e) => {
@@ -301,7 +310,7 @@ const SignUpForm = ({
             e.data = initialSignUpData;
           });
           setDisabledBtn({ disabled: true, type: "default" });
-          history.push(`/initiative/${id || params?.id}`);
+          router.push(`/initiative/${id || params?.id}`);
         })
         .catch(() => {
           notification.error({ message: "An error occured" });
