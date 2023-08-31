@@ -315,65 +315,6 @@
               :update? true})
             (dissoc context :old-tags))}
          {:txn-fn
-          (fn create-new-org-if-necessary
-            [{:keys [stakeholder] :as context}]
-            (if-not (= -1 (get-in stakeholder [:org :id]))
-              context
-              (let [org (:org stakeholder)
-                    result (try
-                             {:success? true
-                              :org-id (handler.org/create config conn (dissoc org :id))}
-                             (catch Throwable t
-                               {:success? false
-                                :error-details {:exception-message (ex-message t)}}))]
-                (if (:success? result)
-                  (-> context
-                      (assoc-in [:stakeholder :org :id] (:org-id result))
-                      (assoc :new-org-id (:org-id result)))
-                  (assoc context
-                         :success? false
-                         :reason :failed-to-create-stakeholder-organisation
-                         :error-details {:result result})))))
-          :rollback-fn
-          (fn rollbac-create-org-if-necessary
-            [{:keys [new-org-id] :as context}]
-            (if new-org-id
-              (do
-                (db.organisation/delete-organisation conn {:id new-org-id})
-                (dissoc context :new-org-id))
-              context))}
-         {:txn-fn
-          (fn assign-role-to-new-organisation
-            [{:keys [stakeholder new-org-id] :as context}]
-            (if-not new-org-id
-              context
-              (let [result (first (srv.permissions/assign-roles-to-users-from-connections
-                                   {:conn conn
-                                    :logger logger}
-                                   {:context-type :organisation
-                                    :resource-id new-org-id
-                                    :individual-connections [{:role "owner"
-                                                              :stakeholder (:id stakeholder)}]}))]
-                (if (:success? result)
-                  context
-                  (assoc context
-                         :success? false
-                         :reason :failed-to-assign-stakeholder-permissions-on-organisation
-                         :error-details {:result result})))))
-          :rollback-fn
-          (fn rollback-assign-role-to-new-organisation
-            [{:keys [stakeholder new-org-id] :as context}]
-            (if new-org-id
-              (do
-                (srv.permissions/unassign-roles-from-users {:conn conn
-                                                            :logger logger}
-                                                           [{:role-name :resource-owner
-                                                             :context-type :organisation
-                                                             :resource-id new-org-id
-                                                             :user-id (:id stakeholder)}])
-                context)
-              context))}
-         {:txn-fn
           (fn get-experts
             [{:keys [old-stakeholder] :as context}]
             (let [expert? (seq (db.stakeholder/get-experts conn {:filters {:ids [(:id old-stakeholder)]}
