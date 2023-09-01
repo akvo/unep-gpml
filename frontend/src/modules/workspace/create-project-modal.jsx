@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./create-project-modal.scss";
+import styles from "./create-project-modal.module.scss";
 import { Select, Input, Button, Modal, notification } from "antd";
 import { Field, Form } from "react-final-form";
 import api from "../../utils/api";
@@ -18,7 +18,7 @@ const CreateProjectModal = ({
   setShowCreateProjectModal,
   showCreateProjectModal,
   stage,
-  answers
+  answers,
 }) => {
   const { countries, transnationalOptions } = UIStore.currentState;
   const history = useHistory();

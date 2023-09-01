@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { AppstoreOutlined, LoadingOutlined } from "@ant-design/icons";
-import "./style.scss";
+import styles from "./styles.module.scss";
 import api from "../../utils/api";
 import { UIStore } from "../../store";
 import catTags from "../../utils/cat-tags.json";
-
 import { isEmpty } from "lodash";
 import { useQuery } from "../../utils/misc";
-import { ReactComponent as SortIcon } from "../../images/knowledge-library/sort-icon.svg";
-import { ReactComponent as GlobeIcon } from "../../images/transnational.svg";
+import SortIcon from "../../images/knowledge-library/sort-icon.svg";
+import GlobeIcon from "../../images/transnational.svg";
 
 import Maps from "../map/map";
 import ExpertCarousel from "./expert-carousel";
@@ -16,7 +15,7 @@ import FilterBar from "./filter-bar";
 import InviteExpertModal from "./invite-expert-modal";
 import ExpertCard from "./expert-card";
 import UnathenticatedPage from "../stakeholder-overview/unathenticated-page";
-import InviteExpertCard from './invite-expert-card';
+import InviteExpertCard from "./invite-expert-card";
 
 const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
   const { countries, organisations } = UIStore.useState((s) => ({
@@ -24,7 +23,7 @@ const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
     organisations: s.organisations,
   }));
 
-  const box = document.getElementsByClassName("experts");
+  let box = "";
   const query = useQuery();
 
   const [view, setView] = useState("map");
@@ -39,6 +38,13 @@ const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
   const [filter, setFilter] = useState([]);
   const [isShownModal, setIsShownModal] = useState(false);
   const [unAthenticatedModal, setUnathenticatedModal] = useState(false);
+
+  useEffect(() => {
+    const boxes = document.getElementsByClassName("experts");
+    if (boxes && boxes.length > 0) {
+      box = boxes[0];
+    }
+  }, []);
 
   const fetchExperts = (params) => {
     const url = `/stakeholder/expert/list`;
@@ -119,7 +125,7 @@ const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
   }, [isAuthenticated, loadingProfile]);
 
   return (
-    <div id="experts" className="experts">
+    <div id="experts" className={`${styles.experts} experts`}>
       <FilterBar
         {...{ filter, setFilter, filterCountries, setFilterCountries }}
       />

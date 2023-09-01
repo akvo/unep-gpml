@@ -29,585 +29,580 @@ import stakeholderUiSchema from "./stakeholder-ui-schema.json";
 import { tagsMap, tagsMapExpertise } from "../../utils/misc";
 
 import { UIStore } from "../../store";
-import { withRouter } from "react-router-dom";
+import { useRouter } from "next/router";
 
 const Form = withTheme(AntDTheme);
 
-const SignUpForm = withRouter(
-  ({
-    btnSubmit,
-    sending,
-    setSending,
-    formType,
-    highlight,
-    setHighlight,
-    isStakeholderType,
-    isEntityType,
-    formSchema,
-    setDisabledBtn,
-    history,
-    hideEntityPersonalDetail,
-    tabsData,
-    match: { params },
-  }) => {
-    const {
-      countries,
-      organisations,
-      tags,
-      formEdit,
-      profile,
-    } = UIStore.currentState;
-    const { status, id } = formEdit.signUp;
-    const { initialSignUpData, signUpData } = isEntityType
-      ? entity
-      : stakeholder;
-    const uiSchema = isEntityType ? entityUiSchema : stakeholderUiSchema;
-    const signUpFormData = signUpData.useState();
-    const [dependValue, setDependValue] = useState([]);
-    const [editCheck, setEditCheck] = useState(true);
+const SignUpForm = ({
+  btnSubmit,
+  sending,
+  setSending,
+  formType,
+  highlight,
+  setHighlight,
+  isStakeholderType,
+  isEntityType,
+  formSchema,
+  setDisabledBtn,
+  history,
+  hideEntityPersonalDetail,
+  tabsData,
+  match: { params },
+}) => {
+  const router = useRouter();
+  const {
+    countries,
+    organisations,
+    tags,
+    formEdit,
+    profile,
+  } = UIStore.currentState;
+  const { status, id } = formEdit.signUp;
+  const { initialSignUpData, signUpData } = isEntityType ? entity : stakeholder;
+  const uiSchema = isEntityType ? entityUiSchema : stakeholderUiSchema;
+  const signUpFormData = signUpData.useState();
+  const [dependValue, setDependValue] = useState([]);
+  const [editCheck, setEditCheck] = useState(true);
 
-    const handleOnSubmit = ({ formData }) => {
-      // # Transform data before sending to endpoint
-      let data = {};
+  const handleOnSubmit = ({ formData }) => {
+    // # Transform data before sending to endpoint
+    let data = {};
 
-      transformFormData(data, formData, formSchema.schema.properties, true);
+    transformFormData(data, formData, formSchema.schema.properties, true);
 
-      data.version = parseInt(formSchema.schema.version);
+    data.version = parseInt(formSchema.schema.version);
 
-      setSending(true);
+    setSending(true);
 
-      if (isEntityType) {
-        let data2 = handleGeoCoverageValue(
-          cloneDeep(formData.S5),
-          formData.S5,
-          countries
-        );
+    if (isEntityType) {
+      let data2 = handleGeoCoverageValue(
+        cloneDeep(formData.S5),
+        formData.S5,
+        countries
+      );
 
-        feedCountry(data, formData, "S2");
+      feedCountry(data, formData, "S2");
 
-        data.title = formData.S2.title;
+      data.title = formData.S2.title;
 
-        if (data2.geoCoverageType) {
-          data.geoCoverageType = data2.geoCoverageType;
+      if (data2.geoCoverageType) {
+        data.geoCoverageType = data2.geoCoverageType;
+      }
+      if (data2.geoCoverageValue) {
+        data.geoCoverageValue = data2.geoCoverageValue;
+      }
+      feedSeeking(data, formData, tags); // TODO check paths
+
+      feedOffering(data, formData, tags); // TODO check paths
+
+      if (formData.S3["org.name"]) {
+        data.org = {};
+        data.org.name = formData.S3["org.name"];
+        data.org.type = formData.S3["org.representativeGroup"];
+        data.org.representativeGroupGovernment =
+          formData.S3["org.representativeGroupGovernment"];
+        data.org.representativeGroupPrivateSector =
+          formData.S3["org.representativeGroupPrivateSector"];
+        data.org.representativeGroupAcademiaResearch =
+          formData.S3["org.representativeGroupAcademiaResearch"];
+        data.org.representativeGroupCivilSociety =
+          formData.S3["org.representativeGroupCivilSociety"];
+        data.org.representativeGroupOther =
+          formData.S3["org.representativeGroupOther"];
+        data.org.program = formData.S3["org.program"];
+        data.org.url = formData.S3["org.url"];
+        data.org.logo = data.orgLogo;
+
+        delete data.org_name;
+        delete data.org_representativeGroup;
+        delete data.org_representativeGroupGovernment;
+        delete data.org_representativeGroupPrivateSector;
+        delete data.org_representativeGroupAcademiaResearch;
+        delete data.org_representativeGroupCivilSociety;
+        delete data.org_representativeGroupOther;
+        delete data.org_program;
+        delete data.org_url;
+
+        if (data.orgHeadquarter?.[formData.S5.orgHeadquarter]) {
+          data.org.country = formData.S5.orgHeadquarter;
+          delete data.orgHeadquarter;
         }
-        if (data2.geoCoverageValue) {
-          data.geoCoverageValue = data2.geoCoverageValue;
+        if (data.orgSubnationalArea) {
+          data.org.subnationalArea = data.orgSubnationalArea;
         }
-        feedSeeking(data, formData, tags); // TODO check paths
-
-        feedOffering(data, formData, tags); // TODO check paths
-
-        if (formData.S3["org.name"]) {
-          data.org = {};
-          data.org.name = formData.S3["org.name"];
-          data.org.type = formData.S3["org.representativeGroup"];
-          data.org.representativeGroupGovernment =
-            formData.S3["org.representativeGroupGovernment"];
-          data.org.representativeGroupPrivateSector =
-            formData.S3["org.representativeGroupPrivateSector"];
-          data.org.representativeGroupAcademiaResearch =
-            formData.S3["org.representativeGroupAcademiaResearch"];
-          data.org.representativeGroupCivilSociety =
-            formData.S3["org.representativeGroupCivilSociety"];
-          data.org.representativeGroupOther =
-            formData.S3["org.representativeGroupOther"];
-          data.org.program = formData.S3["org.program"];
-          data.org.url = formData.S3["org.url"];
-          data.org.logo = data.orgLogo;
-
-          delete data.org_name;
-          delete data.org_representativeGroup;
-          delete data.org_representativeGroupGovernment;
-          delete data.org_representativeGroupPrivateSector;
-          delete data.org_representativeGroupAcademiaResearch;
-          delete data.org_representativeGroupCivilSociety;
-          delete data.org_representativeGroupOther;
-          delete data.org_program;
-          delete data.org_url;
-
-          if (data.orgHeadquarter?.[formData.S5.orgHeadquarter]) {
-            data.org.country = formData.S5.orgHeadquarter;
-            delete data.orgHeadquarter;
-          }
-          if (data.orgSubnationalArea) {
-            data.org.subnationalArea = data.orgSubnationalArea;
-          }
-          delete data.orgSubnationalArea;
-          if (data.geoCoverageType) {
-            data.org.geoCoverageType = data.geoCoverageType;
-            data.org.geoCoverageValue = data.geoCoverageValue;
-            if (data.geoCoverageType === "transnational") {
-              if (data.geoCoverageValue && data.geoCoverageValue.length > 0) {
-                data.org.geoCoverageCountryGroups = data.geoCoverageValue;
-              }
-              if (
-                formData.S5.geoCoverageCountries &&
-                formData.S5.geoCoverageCountries.length > 0
-              ) {
-                data.org.geoCoverageCountries = formData.S5.geoCoverageCountries.map(
-                  (x) => parseInt(x)
-                );
-              }
+        delete data.orgSubnationalArea;
+        if (data.geoCoverageType) {
+          data.org.geoCoverageType = data.geoCoverageType;
+          data.org.geoCoverageValue = data.geoCoverageValue;
+          if (data.geoCoverageType === "transnational") {
+            if (data.geoCoverageValue && data.geoCoverageValue.length > 0) {
+              data.org.geoCoverageCountryGroups = data.geoCoverageValue;
             }
-            if (data.geoCoverageType === "national") {
+            if (
+              formData.S5.geoCoverageCountries &&
+              formData.S5.geoCoverageCountries.length > 0
+            ) {
               data.org.geoCoverageCountries = formData.S5.geoCoverageCountries.map(
                 (x) => parseInt(x)
               );
-              delete data.org.geoCoverageValue;
             }
           }
-          delete data.geoCoverageType;
-          delete data.geoCoverageValue;
-          delete data.orgName;
-          delete data.orgRepresentative;
-          delete data.orgDescription;
-          delete data.orgUrl;
-          delete data.orgLogo;
-          delete data.geoCoverageValueTransnational;
-          delete data.geoCoverageCountries;
-
-          if (data.registeredStakeholders) {
-            data.org.registeredStakeholders = formData.S5.registeredStakeholders.map(
-              (x) => Number(x)
+          if (data.geoCoverageType === "national") {
+            data.org.geoCoverageCountries = formData.S5.geoCoverageCountries.map(
+              (x) => parseInt(x)
             );
-            delete data.registeredStakeholders;
+            delete data.org.geoCoverageValue;
           }
-          if (data.otherStakeholders) {
-            data.org.otherStakeholders = data.otherStakeholders;
-            delete data.otherStakeholders;
-          }
-          data.org.authorizeSubmission = data.authorizeSubmission;
-          delete data.authorizeSubmission;
+        }
+        delete data.geoCoverageType;
+        delete data.geoCoverageValue;
+        delete data.orgName;
+        delete data.orgRepresentative;
+        delete data.orgDescription;
+        delete data.orgUrl;
+        delete data.orgLogo;
+        delete data.geoCoverageValueTransnational;
+        delete data.geoCoverageCountries;
 
-          if (data.orgExpertise) {
-            data.org.tags = tagsMapExpertise(
-              data.orgExpertise,
-              "general",
-              tags
-            );
-            delete data.orgExpertise;
-            delete data.expertise;
-          }
-        }
-      } else {
-        data.org = {};
-        feedCountry(data, formData, "S1");
-        feedSeeking(data, formData, tags);
-        data.title = formData.S1.title;
-        feedOffering(data, formData, tags);
-        if (data.companyName?.[formData["S2"].companyName]) {
-          data.nonMemberOrganisation = formData["S2"].companyName;
-          delete data.org;
-        }
-        delete data.companyName;
-        if (data.orgName) {
-          data.org.id = formData.S2.orgName;
-        }
-        if (data.privateCitizen) {
-          delete data.privateCitizen;
-          delete data.org;
-        }
-        data.representation = "";
-        if (formData.S2["newCompanyName"]) {
-          let data2 = handleGeoCoverageValue(
-            cloneDeep(formData.S2),
-            formData.S2,
-            countries
+        if (data.registeredStakeholders) {
+          data.org.registeredStakeholders = formData.S5.registeredStakeholders.map(
+            (x) => Number(x)
           );
-          data2.name = data2.newCompanyName;
-          data2.country = data2.newCompanyHeadquarter;
-          data2.subnationalAreaOnly = data2.newCompanySubnationalAreaOnly;
-          delete data2.newCompanySubnationalAreaOnly;
-          delete data2.newCompanyName;
-          delete data2.newCompanyHeadquarter;
-          delete data2.companyName;
-          delete data2.privateCitizen;
-          data.new_org = data2;
-          delete data.geoCoverageType;
-          delete data.geoCoverageValue;
-          delete data.newCompanyHeadquarter;
-          delete data.newCompanySubnationalAreaOnly;
-          delete data.newCompanyName;
-          delete data.geoCoverageValueTransnational;
+          delete data.registeredStakeholders;
+        }
+        if (data.otherStakeholders) {
+          data.org.otherStakeholders = data.otherStakeholders;
+          delete data.otherStakeholders;
+        }
+        data.org.authorizeSubmission = data.authorizeSubmission;
+        delete data.authorizeSubmission;
+
+        if (data.orgExpertise) {
+          data.org.tags = tagsMapExpertise(data.orgExpertise, "general", tags);
+          delete data.orgExpertise;
+          delete data.expertise;
         }
       }
-
-      if (hideEntityPersonalDetail) {
-        delete data.title;
-        // get personal details data from profile
-        // filter null value
-        let filteredProfile = {};
-        Object.keys(profile).forEach((key) => {
-          if (profile[key]) {
-            filteredProfile = {
-              ...filteredProfile,
-              [key]: profile[key],
-            };
-          }
-        });
-        if (filteredProfile.hasOwnProperty("seeking")) {
-          delete filteredProfile.seeking;
-        }
-        if (filteredProfile.hasOwnProperty("offering")) {
-          delete filteredProfile.offering;
-        }
-        if (filteredProfile.hasOwnProperty("tags")) {
-          delete filteredProfile.tags;
-        }
-        // add filtered profile to data payload
-        data = { ...filteredProfile, ...data };
+    } else {
+      data.org = {};
+      feedCountry(data, formData, "S1");
+      feedSeeking(data, formData, tags);
+      data.title = formData.S1.title;
+      feedOffering(data, formData, tags);
+      if (data.companyName?.[formData["S2"].companyName]) {
+        data.nonMemberOrganisation = formData["S2"].companyName;
+        delete data.org;
       }
-
-      if (status === "add" && !params?.id) {
-        api
-          .post("/profile", data)
-          .then((res) => {
-            UIStore.update((e) => {
-              e.formStep = {
-                ...e.formStep,
-                signUp: 2,
-              };
-              e.profile = { ...res.data };
-            });
-            updateStatusProfile(res.data);
-
-            //            scroll top
-            window.scrollTo({ top: 0 });
-            signUpData.update((e) => {
-              e.data = initialSignUpData;
-            });
-            setDisabledBtn({ disabled: true, type: "default" });
-          })
-          .catch((err) => {
-            notification.error({
-              message: err?.response?.data?.reason
-                ? err?.response?.data?.reason
-                : "An error occured",
-            });
-          })
-          .finally(() => {
-            setSending(false);
-          });
+      delete data.companyName;
+      if (data.orgName) {
+        data.org.id = formData.S2.orgName;
       }
-      if (status === "edit" || params?.id) {
-        api
-          .put(`/detail/initiative/${id || params?.id}`, data)
-          .then(() => {
-            notification.success({ message: "Update success" });
-            UIStore.update((e) => {
-              e.formEdit = {
-                ...e.formEdit,
-                signup: {
-                  status: "add",
-                  id: null,
-                },
-              };
-            });
-            // scroll top
-            window.scrollTo({ top: 0 });
-            signUpData.update((e) => {
-              e.data = initialSignUpData;
-            });
-            setDisabledBtn({ disabled: true, type: "default" });
-            history.push(`/initiative/${id || params?.id}`);
-          })
-          .catch(() => {
-            notification.error({ message: "An error occured" });
-          })
-          .finally(() => {
-            setSending(false);
-          });
+      if (data.privateCitizen) {
+        delete data.privateCitizen;
+        delete data.org;
       }
-    };
-
-    const handleFormOnChange = useCallback(
-      ({ formData, schema }) => {
-        // delete members/non-members value when private citizen true
-        if (!isEntityType && formData?.S2?.privateCitizen) {
-          formData?.S2?.orgName && delete formData?.S2?.orgName;
-          formData?.S2?.companyName && delete formData?.S2?.companyName;
-        }
-        // delete members value when non-members selected
-        if (!isEntityType && formData?.S2?.companyName) {
-          formData?.S2?.orgName && delete formData?.S2?.orgName;
-        }
-        // delete non-members value when members selected
-        if (!isEntityType && formData?.S2?.orgName) {
-          formData?.S2?.companyName && delete formData?.S2?.companyName;
-          formData?.S2?.newCompanyName && delete formData?.S2?.newCompanyName;
-          formData?.S2?.newCompanyHeadquarter &&
-            delete formData?.S2?.newCompanyHeadquarter;
-          formData?.S2?.geoCoverageType && delete formData?.S2?.geoCoverageType;
-          formData?.S2?.newCompanySubnationalAreaOnly &&
-            delete formData?.S2?.newCompanySubnationalAreaOnly;
-        }
-
-        if (formData?.S3?.seekingSuggestedTags) {
-          let array =
-            Object.values(tags)
-              .flat()
-              .find(
-                (o) =>
-                  o.tag === formData?.S3?.seekingSuggestedTags.toLowerCase()
-              )?.id || formData?.S3?.seekingSuggestedTags.toLowerCase();
-
-          signUpData.update((e) => {
-            e.data = {
-              ...e.data,
-              S3: {
-                ...e.data.S3,
-                seeking: [
-                  ...(e.data.S3.seeking ? e.data.S3.seeking : []),
-                  array,
-                ],
-              },
-            };
-          });
-        } else if (formData?.S3?.offeringSuggestedTags) {
-          let array =
-            Object.values(tags)
-              .flat()
-              .find(
-                (o) =>
-                  o.tag === formData?.S3?.offeringSuggestedTags.toLowerCase()
-              )?.id || formData?.S3?.offeringSuggestedTags.toLowerCase();
-
-          signUpData.update((e) => {
-            e.data = {
-              ...e.data,
-              S3: {
-                ...e.data.S3,
-                offering: [
-                  ...(e.data.S3.offering ? e.data.S3.offering : []),
-                  array,
-                ],
-              },
-            };
-          });
-        } else {
-          signUpData.update((e) => {
-            e.data = {
-              ...e.data,
-              ...formData,
-            };
-          });
-        }
-
-        // to overide validation
-        let dependFields = [];
-        let requiredFields = [];
-        // this function eliminate required key from required list when that required form appear (show)
-        collectDependSchemaRefactor(
-          dependFields,
-          formData,
-          formSchema.schema,
-          requiredFields
+      data.representation = "";
+      if (formData.S2["newCompanyName"]) {
+        let data2 = handleGeoCoverageValue(
+          cloneDeep(formData.S2),
+          formData.S2,
+          countries
         );
-        setDependValue(dependFields);
-        const stakeholderSections = new Set(["S1", "S2", "S3"]);
-        const requiredFilledIn = checkRequiredFieldFilledIn(
-          formData,
-          dependFields,
-          isEntityType
-            ? requiredFields
-            : requiredFields.filter((x) => stakeholderSections.has(x.key))
-        );
-        let sectionRequiredFields = {};
-        let groupRequiredFields = {};
-        requiredFields.forEach(({ group, key, required }) => {
-          let index = group ? group : key;
-          let filterRequired = required.filter((r) =>
-            requiredFilledIn.includes(r)
-          );
-          sectionRequiredFields = {
-            ...sectionRequiredFields,
-            [index]: sectionRequiredFields?.[index]
-              ? sectionRequiredFields?.[index].concat(filterRequired)
-              : filterRequired,
+        data2.name = data2.newCompanyName;
+        data2.country = data2.newCompanyHeadquarter;
+        data2.subnationalAreaOnly = data2.newCompanySubnationalAreaOnly;
+        delete data2.newCompanySubnationalAreaOnly;
+        delete data2.newCompanyName;
+        delete data2.newCompanyHeadquarter;
+        delete data2.companyName;
+        delete data2.privateCitizen;
+        data.new_org = data2;
+        delete data.geoCoverageType;
+        delete data.geoCoverageValue;
+        delete data.newCompanyHeadquarter;
+        delete data.newCompanySubnationalAreaOnly;
+        delete data.newCompanyName;
+        delete data.geoCoverageValueTransnational;
+      }
+    }
+
+    if (hideEntityPersonalDetail) {
+      delete data.title;
+      // get personal details data from profile
+      // filter null value
+      let filteredProfile = {};
+      Object.keys(profile).forEach((key) => {
+        if (profile[key]) {
+          filteredProfile = {
+            ...filteredProfile,
+            [key]: profile[key],
           };
-          if (!group) {
-            groupRequiredFields = {
-              ...groupRequiredFields,
-              [key]: {
-                ...groupRequiredFields[key],
-                required: {
-                  [key]: filterRequired,
-                },
-              },
+        }
+      });
+      if (filteredProfile.hasOwnProperty("seeking")) {
+        delete filteredProfile.seeking;
+      }
+      if (filteredProfile.hasOwnProperty("offering")) {
+        delete filteredProfile.offering;
+      }
+      if (filteredProfile.hasOwnProperty("tags")) {
+        delete filteredProfile.tags;
+      }
+      // add filtered profile to data payload
+      data = { ...filteredProfile, ...data };
+    }
+    const finalData = {
+      org: { ...data.org, id: data.affiliation },
+    };
+    if (status === "add" && !params?.id) {
+      api
+        .put("/profile", finalData)
+        .then((res) => {
+          api.put(
+            `/organisation/${data.affiliation}/request-membership`,
+            data.org
+          );
+          UIStore.update((e) => {
+            e.formStep = {
+              ...e.formStep,
+              signUp: 2,
             };
-          }
-          if (group) {
-            groupRequiredFields = {
-              ...groupRequiredFields,
-              [group]: {
-                ...groupRequiredFields[group],
-                required: {
-                  ...groupRequiredFields?.[group]?.required,
-                  [key]: filterRequired,
-                },
-              },
-            };
-          }
+            e.profile = { ...res.data };
+          });
+          updateStatusProfile(res.data);
+
+          router.push(`/workspace`);
+          //            scroll top
+          window.scrollTo({ top: 0 });
+          signUpData.update((e) => {
+            e.data = initialSignUpData;
+          });
+          setDisabledBtn({ disabled: true, type: "default" });
+        })
+        .catch((err) => {
+          notification.error({
+            message: err?.response?.data?.reason
+              ? err?.response?.data?.reason
+              : "An error occured",
+          });
+        })
+        .finally(() => {
+          setSending(false);
         });
-        signUpData.update((e) => {
-          let formSections = null;
-          if (isEntityType) {
-            formSections = {
-              S1: {
-                ...e.data.S1,
-                required: groupRequiredFields["S1"].required,
-              },
-              S3: {
-                ...e.data.S3,
-                required: groupRequiredFields["S3"].required,
-              },
-              S4: {
-                ...e.data.S4,
-                required: groupRequiredFields["S4"].required,
-              },
-              S5: {
-                ...e.data.S5,
-                required: groupRequiredFields["S5"].required,
+    }
+    if (status === "edit" || params?.id) {
+      api
+        .put(`/detail/initiative/${id || params?.id}`, data)
+        .then(() => {
+          notification.success({ message: "Update success" });
+          UIStore.update((e) => {
+            e.formEdit = {
+              ...e.formEdit,
+              signup: {
+                status: "add",
+                id: null,
               },
             };
-            // add S2- Personal Details here
-            if (!hideEntityPersonalDetail) {
-              formSections = {
-                ...formSections,
-                S2: {
-                  ...e.data.S2,
-                  required: groupRequiredFields["S2"].required,
-                },
-              };
-            }
-          } else {
-            formSections = {
-              S1: {
-                ...e.data.S1,
-                required: groupRequiredFields["S1"].required,
+          });
+          // scroll top
+          window.scrollTo({ top: 0 });
+          signUpData.update((e) => {
+            e.data = initialSignUpData;
+          });
+          setDisabledBtn({ disabled: true, type: "default" });
+          router.push(`/initiative/${id || params?.id}`);
+        })
+        .catch(() => {
+          notification.error({ message: "An error occured" });
+        })
+        .finally(() => {
+          setSending(false);
+        });
+    }
+  };
+
+  const handleFormOnChange = useCallback(
+    ({ formData, schema }) => {
+      // delete members/non-members value when private citizen true
+      if (!isEntityType && formData?.S2?.privateCitizen) {
+        formData?.S2?.orgName && delete formData?.S2?.orgName;
+        formData?.S2?.companyName && delete formData?.S2?.companyName;
+      }
+      // delete members value when non-members selected
+      if (!isEntityType && formData?.S2?.companyName) {
+        formData?.S2?.orgName && delete formData?.S2?.orgName;
+      }
+      // delete non-members value when members selected
+      if (!isEntityType && formData?.S2?.orgName) {
+        formData?.S2?.companyName && delete formData?.S2?.companyName;
+        formData?.S2?.newCompanyName && delete formData?.S2?.newCompanyName;
+        formData?.S2?.newCompanyHeadquarter &&
+          delete formData?.S2?.newCompanyHeadquarter;
+        formData?.S2?.geoCoverageType && delete formData?.S2?.geoCoverageType;
+        formData?.S2?.newCompanySubnationalAreaOnly &&
+          delete formData?.S2?.newCompanySubnationalAreaOnly;
+      }
+
+      if (formData?.S3?.seekingSuggestedTags) {
+        let array =
+          Object.values(tags)
+            .flat()
+            .find(
+              (o) => o.tag === formData?.S3?.seekingSuggestedTags.toLowerCase()
+            )?.id || formData?.S3?.seekingSuggestedTags.toLowerCase();
+
+        signUpData.update((e) => {
+          e.data = {
+            ...e.data,
+            S3: {
+              ...e.data.S3,
+              seeking: [...(e.data.S3.seeking ? e.data.S3.seeking : []), array],
+            },
+          };
+        });
+      } else if (formData?.S3?.offeringSuggestedTags) {
+        let array =
+          Object.values(tags)
+            .flat()
+            .find(
+              (o) => o.tag === formData?.S3?.offeringSuggestedTags.toLowerCase()
+            )?.id || formData?.S3?.offeringSuggestedTags.toLowerCase();
+
+        signUpData.update((e) => {
+          e.data = {
+            ...e.data,
+            S3: {
+              ...e.data.S3,
+              offering: [
+                ...(e.data.S3.offering ? e.data.S3.offering : []),
+                array,
+              ],
+            },
+          };
+        });
+      } else {
+        signUpData.update((e) => {
+          e.data = {
+            ...e.data,
+            ...formData,
+          };
+        });
+      }
+
+      // to overide validation
+      let dependFields = [];
+      let requiredFields = [];
+      // this function eliminate required key from required list when that required form appear (show)
+      collectDependSchemaRefactor(
+        dependFields,
+        formData,
+        formSchema.schema,
+        requiredFields
+      );
+      setDependValue(dependFields);
+      const stakeholderSections = new Set(["S1", "S2", "S3"]);
+      const requiredFilledIn = checkRequiredFieldFilledIn(
+        formData,
+        dependFields,
+        isEntityType
+          ? requiredFields
+          : requiredFields.filter((x) => stakeholderSections.has(x.key))
+      );
+      let sectionRequiredFields = {};
+      let groupRequiredFields = {};
+      requiredFields.forEach(({ group, key, required }) => {
+        let index = group ? group : key;
+        let filterRequired = required.filter((r) =>
+          requiredFilledIn.includes(r)
+        );
+        sectionRequiredFields = {
+          ...sectionRequiredFields,
+          [index]: sectionRequiredFields?.[index]
+            ? sectionRequiredFields?.[index].concat(filterRequired)
+            : filterRequired,
+        };
+        if (!group) {
+          groupRequiredFields = {
+            ...groupRequiredFields,
+            [key]: {
+              ...groupRequiredFields[key],
+              required: {
+                [key]: filterRequired,
               },
+            },
+          };
+        }
+        if (group) {
+          groupRequiredFields = {
+            ...groupRequiredFields,
+            [group]: {
+              ...groupRequiredFields[group],
+              required: {
+                ...groupRequiredFields?.[group]?.required,
+                [key]: filterRequired,
+              },
+            },
+          };
+        }
+      });
+      signUpData.update((e) => {
+        let formSections = null;
+        if (isEntityType) {
+          formSections = {
+            S1: {
+              ...e.data.S1,
+              required: groupRequiredFields["S1"].required,
+            },
+            S3: {
+              ...e.data.S3,
+              required: groupRequiredFields["S3"].required,
+            },
+            S4: {
+              ...e.data.S4,
+              required: groupRequiredFields["S4"].required,
+            },
+            S5: {
+              ...e.data.S5,
+              required: groupRequiredFields["S5"].required,
+            },
+          };
+          // add S2- Personal Details here
+          if (!hideEntityPersonalDetail) {
+            formSections = {
+              ...formSections,
               S2: {
                 ...e.data.S2,
                 required: groupRequiredFields["S2"].required,
               },
-              S3: {
-                ...e.data.S3,
-                required: groupRequiredFields["S3"].required,
-              },
             };
           }
-
-          e.data = {
-            ...e.data,
-            required: sectionRequiredFields,
-            ...formSections,
+        } else {
+          formSections = {
+            S1: {
+              ...e.data.S1,
+              required: groupRequiredFields["S1"].required,
+            },
+            S2: {
+              ...e.data.S2,
+              required: groupRequiredFields["S2"].required,
+            },
+            S3: {
+              ...e.data.S3,
+              required: groupRequiredFields["S3"].required,
+            },
           };
-        });
-        // enable btn submit
-        requiredFilledIn.length === 0 &&
-          setDisabledBtn({ disabled: false, type: "primary" });
-        requiredFilledIn.length !== 0 &&
-          setDisabledBtn({ disabled: true, type: "default" });
-      },
-      [
-        isEntityType,
-        signUpData,
-        formSchema,
-        setDisabledBtn,
-        hideEntityPersonalDetail,
-      ]
-    );
+        }
 
-    const handleTransformErrors = (errors, dependValue) => {
-      // custom errors handle
-      [".S1", ".S3", ".S4"].forEach((x) => {
-        let index = dependValue.indexOf(x);
-        index !== -1 && dependValue.splice(index, 1);
+        e.data = {
+          ...e.data,
+          required: sectionRequiredFields,
+          ...formSections,
+        };
       });
-      const res = overideValidation(errors, dependValue);
-      res.length === 0 && setHighlight(false);
-      if (res.length > 0) {
-        const descriptionList = res.map((r, index) => {
-          const { property, message } = r;
-          const tabSection = property
-            .replace(".", "")
-            .replace("['", "_")
-            .replace("']", "_")
-            .split("_")[0];
-          const tabSectionTitle = tabsData.find((x) => x.key === tabSection)
-            ?.title;
-          return (
-            <li key={`${property}-${index}`}>
-              {tabSectionTitle}:{" "}
-              <Typography.Text type="danger">{message}</Typography.Text>
-            </li>
-          );
-        });
-        notification.error({
-          message: "Error",
-          description: <ul>{descriptionList}</ul>,
-        });
-      }
-      return res;
-    };
+      // enable btn submit
+      requiredFilledIn.length === 0 &&
+        setDisabledBtn({ disabled: false, type: "primary" });
+      requiredFilledIn.length !== 0 &&
+        setDisabledBtn({ disabled: true, type: "default" });
+    },
+    [
+      isEntityType,
+      signUpData,
+      formSchema,
+      setDisabledBtn,
+      hideEntityPersonalDetail,
+    ]
+  );
 
-    useEffect(() => {
+  const handleTransformErrors = (errors, dependValue) => {
+    // custom errors handle
+    [".S1", ".S3", ".S4"].forEach((x) => {
+      let index = dependValue.indexOf(x);
+      index !== -1 && dependValue.splice(index, 1);
+    });
+    const res = overideValidation(errors, dependValue);
+    res.length === 0 && setHighlight(false);
+    if (res.length > 0) {
+      const descriptionList = res.map((r, index) => {
+        const { property, message } = r;
+        const tabSection = property
+          .replace(".", "")
+          .replace("['", "_")
+          .replace("']", "_")
+          .split("_")[0];
+        const tabSectionTitle = tabsData.find((x) => x.key === tabSection)
+          ?.title;
+        return (
+          <li key={`${property}-${index}`}>
+            {tabSectionTitle}:{" "}
+            <Typography.Text type="danger">{message}</Typography.Text>
+          </li>
+        );
+      });
+      notification.error({
+        message: "Error",
+        description: <ul>{descriptionList}</ul>,
+      });
+    }
+    return res;
+  };
+
+  useEffect(() => {
+    handleFormOnChange({
+      formData: signUpFormData.data,
+      schema: formSchema.schema,
+    });
+  }, [formSchema, signUpFormData, handleFormOnChange]);
+
+  useEffect(() => {
+    if (
+      (status === "edit" || params?.id) &&
+      editCheck &&
+      signUpFormData.data?.["S1"]?.["S1_LN"]["S1_1"]
+      //TODO: review this condition
+    ) {
       handleFormOnChange({
         formData: signUpFormData.data,
         schema: formSchema.schema,
       });
-    }, [formSchema, signUpFormData, handleFormOnChange]);
+      setEditCheck(false);
+    }
+  }, [
+    handleFormOnChange,
+    editCheck,
+    status,
+    signUpFormData,
+    formSchema,
+    params,
+  ]);
 
-    useEffect(() => {
-      if (
-        (status === "edit" || params?.id) &&
-        editCheck &&
-        signUpFormData.data?.["S1"]?.["S1_LN"]["S1_1"]
-        //TODO: review this condition
-      ) {
-        handleFormOnChange({
-          formData: signUpFormData.data,
-          schema: formSchema.schema,
-        });
-        setEditCheck(false);
-      }
-    }, [
-      handleFormOnChange,
-      editCheck,
-      status,
-      signUpFormData,
-      formSchema,
-      params,
-    ]);
-
-    return (
-      <div className="add-sign-up-form">
-        <>
-          <Form
-            idPrefix="signUp"
-            schema={formSchema.schema}
-            uiSchema={uiSchema}
-            formData={signUpFormData.data}
-            onChange={(e) => handleFormOnChange(e)}
-            onSubmit={(e) => handleOnSubmit(e)}
-            ArrayFieldTemplate={ArrayFieldTemplate}
-            ObjectFieldTemplate={ObjectFieldTemplate}
-            FieldTemplate={FieldTemplate}
-            widgets={widgets}
-            customFormats={customFormats}
-            transformErrors={(errors) =>
-              handleTransformErrors(errors, dependValue)
-            }
-            showErrorList={false}
-          >
-            <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
-              Fire
-            </button>
-          </Form>
-        </>
-      </div>
-    );
-  }
-);
+  return (
+    <div className="add-sign-up-form">
+      <>
+        <Form
+          idPrefix="signUp"
+          schema={formSchema.schema}
+          uiSchema={uiSchema}
+          formData={signUpFormData.data}
+          onChange={(e) => handleFormOnChange(e)}
+          onSubmit={(e) => handleOnSubmit(e)}
+          ArrayFieldTemplate={ArrayFieldTemplate}
+          ObjectFieldTemplate={ObjectFieldTemplate}
+          FieldTemplate={FieldTemplate}
+          widgets={widgets}
+          customFormats={customFormats}
+          transformErrors={(errors) =>
+            handleTransformErrors(errors, dependValue)
+          }
+          showErrorList={false}
+        >
+          <button ref={btnSubmit} type="submit" style={{ display: "none" }}>
+            Fire
+          </button>
+        </Form>
+      </>
+    </div>
+  );
+};
 
 export default SignUpForm;
