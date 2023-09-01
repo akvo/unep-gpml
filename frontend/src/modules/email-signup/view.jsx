@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef } from 'react'
 import {
   Col,
   Row,
@@ -11,124 +11,124 @@ import {
   Select,
   Tag,
   notification,
-} from "antd";
-const { Title } = Typography;
-const { Dragger } = Upload;
-import "./styles.module.scss";
-import { FileTextOutlined } from "@ant-design/icons";
-import { Form as FinalForm, Field } from "react-final-form";
-import { auth0Client } from "../../utils/misc";
-import { UIStore } from "../../store";
-import { useHistory } from "react-router-dom";
+} from 'antd'
+const { Title } = Typography
+const { Dragger } = Upload
+import styles from './styles.module.scss'
+import { FileTextOutlined } from '@ant-design/icons'
+import { Form as FinalForm, Field } from 'react-final-form'
+import { auth0Client } from '../../utils/misc'
+import { UIStore } from '../../store'
+import { useHistory } from 'react-router-dom'
 
 const mountedStyle = {
-  animation: "inAnimation 250ms ease-in",
-};
+  animation: 'inAnimation 250ms ease-in',
+}
 const unmountedStyle = {
-  animation: "outAnimation 270ms ease-out",
-  animationFillMode: "forwards",
-};
+  animation: 'outAnimation 270ms ease-out',
+  animationFillMode: 'forwards',
+}
 
 function EmailJoin({ setSignUp, children }) {
-  let history = useHistory();
+  let history = useHistory()
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
-  }));
-  const [initialValues, setInitialValues] = useState({ publicEmail: false });
-  const [loading, setLoading] = useState(false);
-  const formRef = useRef();
+  }))
+  const [initialValues, setInitialValues] = useState({ publicEmail: false })
+  const [loading, setLoading] = useState(false)
+  const formRef = useRef()
 
   const checkValidation = (values) => {
-    const errors = {};
+    const errors = {}
     if (!values.email?.trim()) {
-      errors.email = "Please enter email address";
+      errors.email = 'Please enter email address'
     }
     if (!values.title?.trim()) {
-      errors.title = "Please select title";
+      errors.title = 'Please select title'
     }
     if (!values.firstName?.trim()) {
-      errors.firstName = "Please select first name";
+      errors.firstName = 'Please select first name'
     }
     if (!values.lastName?.trim()) {
-      errors.lastName = "Please select last name";
+      errors.lastName = 'Please select last name'
     }
     if (!values.country) {
-      errors.country = "Please select country";
+      errors.country = 'Please select country'
     }
     if (!values.password) {
-      console.log(values);
-      const uppercaseRegExp = /(?=.*?[A-Z])/;
-      const lowercaseRegExp = /(?=.*?[a-z])/;
-      const digitsRegExp = /(?=.*?[0-9])/;
-      const specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
-      const minLengthRegExp = /.{8,}/;
-      const passwordLength = values?.password?.length;
-      const uppercasePassword = uppercaseRegExp.test(values.password);
-      const lowercasePassword = lowercaseRegExp.test(values.password);
-      const digitsPassword = digitsRegExp.test(values.password);
-      const specialCharPassword = specialCharRegExp.test(values.password);
-      const minLengthPassword = minLengthRegExp.test(values.password);
-      let errMsg = "";
+      console.log(values)
+      const uppercaseRegExp = /(?=.*?[A-Z])/
+      const lowercaseRegExp = /(?=.*?[a-z])/
+      const digitsRegExp = /(?=.*?[0-9])/
+      const specialCharRegExp = /(?=.*?[#?!@$%^&*-])/
+      const minLengthRegExp = /.{8,}/
+      const passwordLength = values?.password?.length
+      const uppercasePassword = uppercaseRegExp.test(values.password)
+      const lowercasePassword = lowercaseRegExp.test(values.password)
+      const digitsPassword = digitsRegExp.test(values.password)
+      const specialCharPassword = specialCharRegExp.test(values.password)
+      const minLengthPassword = minLengthRegExp.test(values.password)
+      let errMsg = ''
       if (passwordLength === 0) {
-        errMsg = "Password is empty";
+        errMsg = 'Password is empty'
       } else if (!uppercasePassword) {
-        errMsg = "At least one Uppercase";
+        errMsg = 'At least one Uppercase'
       } else if (!lowercasePassword) {
-        errMsg = "At least one Lowercase";
+        errMsg = 'At least one Lowercase'
       } else if (!digitsPassword) {
-        errMsg = "At least one digit";
+        errMsg = 'At least one digit'
       } else if (!specialCharPassword) {
-        errMsg = "At least one Special Characters";
+        errMsg = 'At least one Special Characters'
       } else if (!minLengthPassword) {
-        errMsg = "At least minumum 8 characters";
+        errMsg = 'At least minumum 8 characters'
       } else {
-        errMsg = "";
+        errMsg = ''
       }
-      errors.password = errMsg;
+      errors.password = errMsg
     }
     if (!values.confirm) {
-      errors.confirm = "Required";
+      errors.confirm = 'Required'
     } else if (values.confirm !== values.password) {
-      errors.confirm = "Must match";
+      errors.confirm = 'Must match'
     }
-    return errors;
-  };
+    return errors
+  }
 
   const passwordValidation = (value) => {
-    const uppercaseRegExp = /(?=.*?[A-Z])/;
-    const lowercaseRegExp = /(?=.*?[a-z])/;
-    const digitsRegExp = /(?=.*?[0-9])/;
-    const specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
-    const minLengthRegExp = /.{8,}/;
-    const passwordLength = value?.length;
-    const uppercasePassword = uppercaseRegExp.test(value);
-    const lowercasePassword = lowercaseRegExp.test(value);
-    const digitsPassword = digitsRegExp.test(value);
-    const specialCharPassword = specialCharRegExp.test(value);
-    const minLengthPassword = minLengthRegExp.test(value);
+    const uppercaseRegExp = /(?=.*?[A-Z])/
+    const lowercaseRegExp = /(?=.*?[a-z])/
+    const digitsRegExp = /(?=.*?[0-9])/
+    const specialCharRegExp = /(?=.*?[#?!@$%^&*-])/
+    const minLengthRegExp = /.{8,}/
+    const passwordLength = value?.length
+    const uppercasePassword = uppercaseRegExp.test(value)
+    const lowercasePassword = lowercaseRegExp.test(value)
+    const digitsPassword = digitsRegExp.test(value)
+    const specialCharPassword = specialCharRegExp.test(value)
+    const minLengthPassword = minLengthRegExp.test(value)
     if (passwordLength === 0) {
-      return "Password is empty";
+      return 'Password is empty'
     } else if (!uppercasePassword) {
-      return "At least one Uppercase";
+      return 'At least one Uppercase'
     } else if (!lowercasePassword) {
-      return "At least one Lowercase";
+      return 'At least one Lowercase'
     } else if (!digitsPassword) {
-      return "At least one digit";
+      return 'At least one digit'
     } else if (!specialCharPassword) {
-      return "At least one Special Characters";
+      return 'At least one Special Characters'
     } else if (!minLengthPassword) {
-      return "At least minumum 8 characters";
+      return 'At least minumum 8 characters'
     } else {
-      return "";
+      return ''
     }
-  };
+  }
 
   const onSubmit = async (data) => {
-    setLoading(true);
-    localStorage.setItem("redirect_on_login", JSON.stringify(history.location));
+    setLoading(true)
+    localStorage.setItem('redirect_on_login', JSON.stringify(history.location))
     auth0Client.redirect.signupAndLogin(
       {
-        connection: "Username-Password-Authentication",
+        connection: 'Username-Password-Authentication',
         email: data.email,
         password: data.password,
         user_metadata: {
@@ -139,34 +139,34 @@ function EmailJoin({ setSignUp, children }) {
       },
       function (err) {
         if (err) {
-          setLoading(false);
-          if (err?.code === "invalid_signup") {
+          setLoading(false)
+          if (err?.code === 'invalid_signup') {
             notification.error({
-              message: "user already exist",
-            });
+              message: 'user already exist',
+            })
           }
-          return err;
+          return err
         } else {
-          setLoading(false);
+          setLoading(false)
           history.push({
-            pathname: "onboarding",
+            pathname: 'onboarding',
             state: { data: data },
-          });
+          })
         }
       }
-    );
-  };
+    )
+  }
 
   const handleFileChange = ({ file, fileList }) => {
-    formRef.current?.change("photo", file);
-  };
+    formRef.current?.change('photo', file)
+  }
 
   const handleFileRemove = ({ file }) => {
-    formRef.current?.change("photo", "");
-  };
+    formRef.current?.change('photo', '')
+  }
 
   return (
-    <div id="signup">
+    <div className={styles.signUp}>
       {children && children}
       <Row className="join-form">
         <Col span={24}>
@@ -175,13 +175,17 @@ function EmailJoin({ setSignUp, children }) {
             validate={checkValidation}
             onSubmit={onSubmit}
             render={({ handleSubmit, submitting, form }) => {
-              formRef.current = form;
+              formRef.current = form
               return (
                 <Form layout="vertical">
                   <Field name="email">
                     {({ input, meta }) => (
                       <Form.Item label="Email">
-                        <Input {...input} placeholder="Enter your email" />
+                        <Input
+                          {...input}
+                          status={meta.touched && meta.error ? 'error' : null}
+                          placeholder="Enter your email"
+                        />
                         {meta.touched && meta.error && (
                           <p
                             color="error"
@@ -200,11 +204,11 @@ function EmailJoin({ setSignUp, children }) {
                             key="publicEmail"
                             name="publicEmail"
                             onChange={(checked) =>
-                              formRef.current?.change("publicEmail", checked)
+                              formRef.current?.change('publicEmail', checked)
                             }
                           />
                           &nbsp;&nbsp;&nbsp;
-                          {"Show my email address on public listing"}
+                          {'Show my email address on public listing'}
                         </div>
                       </Form.Item>
                     )}
@@ -260,18 +264,22 @@ function EmailJoin({ setSignUp, children }) {
                     </Field>
                   </Form.Item>
                   <Input.Group compact className="title-group">
-                    <Form.Item label="Title" name={"title"}>
+                    <Form.Item
+                      label="Title"
+                      name={'title'}
+                      className="title-dropdown-container"
+                    >
                       <Field name="title">
                         {({ input, meta }) => (
                           <>
-                            {" "}
+                            {' '}
                             <Select
                               onChange={(value) => input.onChange(value)}
                               virtual={false}
                               placeholder="Title"
                               allowClear
                             >
-                              {["Mr", "Mrs", "Ms", "Dr", "Prof"].map((it) => (
+                              {['Mr', 'Mrs', 'Ms', 'Dr', 'Prof'].map((it) => (
                                 <Select.Option value={it} key={it}>
                                   {it}
                                 </Select.Option>
@@ -400,7 +408,7 @@ function EmailJoin({ setSignUp, children }) {
                               </p>
                             )}
                           </>
-                        );
+                        )
                       }}
                     </Field>
                   </Form.Item>
@@ -411,16 +419,16 @@ function EmailJoin({ setSignUp, children }) {
                     className="next-button"
                     onClick={() => handleSubmit()}
                   >
-                    Next {">"}
+                    Next {'>'}
                   </Button>
                 </Form>
-              );
+              )
             }}
           />
         </Col>
       </Row>
     </div>
-  );
+  )
 }
 
-export default EmailJoin;
+export default EmailJoin

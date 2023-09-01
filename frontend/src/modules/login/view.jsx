@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react'
 import {
   Col,
   Row,
@@ -9,155 +9,158 @@ import {
   Divider,
   notification,
   Modal,
-} from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
-import styles from "./styles.module.scss";
-import LinkedinIcon from "../../images/auth/linkedin.svg";
-import GoogleIcon from "../../images/auth/google.svg";
-import EmailIcon from "../../images/auth/email.svg";
-const { Title } = Typography;
-import { Form as FinalForm, Field } from "react-final-form";
-import { auth0Client } from "../../utils/misc";
-import ForgotPassword from "./forgot-password";
-import SignUp from "../email-signup/view";
-import { eventTrack } from "../../utils/misc";
-import { useRouter } from "next/router";
+} from 'antd'
+import { CloseCircleOutlined, LeftOutlined } from '@ant-design/icons'
+import styles from './styles.module.scss'
+import LinkedinIcon from '../../images/auth/linkedin.svg'
+import GoogleIcon from '../../images/auth/google.svg'
+import EmailIcon from '../../images/auth/email.svg'
+const { Title } = Typography
+import { Form as FinalForm, Field } from 'react-final-form'
+import { auth0Client } from '../../utils/misc'
+import ForgotPassword from './forgot-password'
+import SignUp from '../email-signup/view'
+import { eventTrack } from '../../utils/misc'
+import { useRouter } from 'next/router'
 
 function Login({ visible, close }) {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [signin, setSignIn] = useState(false);
-  const [signup, setSignUp] = useState(false);
-  const [forgotPassword, setForgotPassword] = useState(false);
-  const [form] = Form.useForm();
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [signin, setSignIn] = useState(false)
+  const [signup, setSignUp] = useState(false)
+  const [forgotPassword, setForgotPassword] = useState(false)
+  const [form] = Form.useForm()
 
-  const [initialValues, setInitialValues] = useState({});
-  const formRef = useRef();
+  const [initialValues, setInitialValues] = useState({})
+  const formRef = useRef()
 
   useEffect(() => {
     if (Object.keys(router?.query).length) {
-      setSignIn(true);
+      setSignIn(true)
     }
-  }, [router]);
+  }, [router])
 
   const handleOnLogin = async (values) => {
-    eventTrack("Authentication", "Email", "Button");
-    setLoading(true);
-    const username = values.email;
-    const password = values.password;
-    localStorage.setItem("redirect_on_login", JSON.stringify(router.asPath));
+    eventTrack('Authentication', 'Email', 'Button')
+    setLoading(true)
+    const username = values.email
+    const password = values.password
+    localStorage.setItem('redirect_on_login', JSON.stringify(router.asPath))
     auth0Client.login(
       {
-        realm: "Username-Password-Authentication",
+        realm: 'Username-Password-Authentication',
         username,
         password,
       },
       (err, authResult) => {
         if (err) {
-          console.log(err);
-          setLoading(false);
+          console.log(err)
+          setLoading(false)
           notification.error({
             message: err.description,
-          });
-          return;
+          })
+          return
         }
         if (authResult) {
-          setLoading(false);
+          setLoading(false)
         }
       }
-    );
-  };
+    )
+  }
 
   const handleGoogleLogin = () => {
-    eventTrack("Authentication", "Google", "Button");
-    localStorage.setItem("redirect_on_login", JSON.stringify(router.asPath));
+    eventTrack('Authentication', 'Google', 'Button')
+    localStorage.setItem('redirect_on_login', JSON.stringify(router.asPath))
     try {
       auth0Client.authorize(
         {
-          connection: "google-oauth2",
+          connection: 'google-oauth2',
         },
         (error, response) => {
-          console.log(response);
+          console.log(response)
         }
-      );
+      )
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   const handleLinkedinLogin = () => {
-    eventTrack("Authentication", "Linkedin", "Button");
-    localStorage.setItem("redirect_on_login", JSON.stringify(router.asPath));
+    eventTrack('Authentication', 'Linkedin', 'Button')
+    localStorage.setItem('redirect_on_login', JSON.stringify(router.asPath))
     try {
       auth0Client.authorize(
         {
-          connection: "linkedin",
+          connection: 'linkedin',
         },
         (error, response) => {
-          console.log(response);
+          console.log(response)
         }
-      );
+      )
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   const checkValidation = (values) => {
-    const errors = {};
+    const errors = {}
     if (!values.email?.trim()) {
-      errors.email = "Please enter email address";
+      errors.email = 'Please enter email address'
     }
     if (!values.password?.trim()) {
-      errors.password = "Please enter password";
+      errors.password = 'Please enter password'
     }
-    return errors;
-  };
+    return errors
+  }
 
   return (
     <Modal
       title={
         <>
           <div className="signinButton">
-            <p className="header-text">
+            <h6 className="header-text">
               {!signin
-                ? "SIGN IN"
+                ? 'Sign in'
                 : forgotPassword
-                ? "FORGOT PASSWORD"
+                ? 'Forgot password'
                 : signup
-                ? "JOIN WITH EMAIL"
-                : "CONTINUE WITH EMAIL"}
-            </p>
+                ? 'Join with email'
+                : 'Continue with email'}
+            </h6>
             {!signin ? (
-              <div onClick={close}>
-                <p>CANCEL</p>
+              <Button type="link" onClick={close}>
+                CANCEL
                 <CloseCircleOutlined />
-              </div>
+              </Button>
             ) : forgotPassword ? (
               <Button
-                type="text"
+                type="link"
                 className={styles.connectBackButton}
+                icon={<LeftOutlined />}
                 onClick={() => {
-                  setSignIn(true);
-                  setForgotPassword(false);
+                  setSignIn(true)
+                  setForgotPassword(false)
                 }}
               >
-                {"<"} Back to connect options
+                Back to connect options
               </Button>
             ) : signup ? (
               <Button
-                type="text"
+                type="link"
                 className={styles.connectBackButton}
+                icon={<LeftOutlined />}
                 onClick={() => setSignUp(!signup)}
               >
-                {"<"} Back to connect options
+                Back to connect options
               </Button>
             ) : (
               <Button
-                type="text"
+                type="link"
                 className={styles.connectBackButton}
+                icon={<LeftOutlined />}
                 onClick={() => setSignIn(!signin)}
               >
-                {"<"} Back to connect options
+                Back to connect options
               </Button>
             )}
           </div>
@@ -186,27 +189,18 @@ function Login({ visible, close }) {
                   <div className={styles.signupWrapper}>
                     <div className={styles.authButtons}>
                       <Button
-                        type="primary"
-                        shape="round"
                         icon={<LinkedinIcon />}
                         onClick={handleLinkedinLogin}
                       >
                         CONTINUE WITH LINKEDIN
                       </Button>
-                      <Button
-                        type="primary"
-                        shape="round"
-                        icon={<GoogleIcon />}
-                        onClick={handleGoogleLogin}
-                      >
+                      <Button icon={<GoogleIcon />} onClick={handleGoogleLogin}>
                         CONTINUE WITH GOOGLE
                       </Button>
                       <div className="separator">
                         <Title level={4}>or</Title>
                       </div>
                       <Button
-                        type="primary"
-                        shape="round"
                         icon={<EmailIcon />}
                         onClick={() => setSignIn(!signin)}
                       >
@@ -227,7 +221,7 @@ function Login({ visible, close }) {
                         validate={checkValidation}
                         onSubmit={handleOnLogin}
                         render={({ handleSubmit, submitting, form }) => {
-                          formRef.current = form;
+                          formRef.current = form
                           return (
                             <Form layout="vertical">
                               <Form.Item label="Email">
@@ -237,6 +231,11 @@ function Login({ visible, close }) {
                                       <Input
                                         {...input}
                                         placeholder="Enter your email"
+                                        status={
+                                          meta.touched && meta.error
+                                            ? 'error'
+                                            : null
+                                        }
                                       />
                                       {meta.touched && meta.error && (
                                         <p color="error" className="error">
@@ -254,6 +253,11 @@ function Login({ visible, close }) {
                                       <Input.Password
                                         {...input}
                                         placeholder="Enter your password"
+                                        status={
+                                          meta.touched && meta.error
+                                            ? 'error'
+                                            : null
+                                        }
                                       />
                                       {meta.touched && meta.error && (
                                         <p color="error" className="error">
@@ -273,9 +277,9 @@ function Login({ visible, close }) {
                                 onClick={() => handleSubmit()}
                               >
                                 LOGIN WITH EMAIL
-                              </Button>{" "}
+                              </Button>{' '}
                               <Button
-                                type="text"
+                                type="link"
                                 className={styles.forgotPassword}
                                 onClick={() =>
                                   setForgotPassword(!forgotPassword)
@@ -284,7 +288,7 @@ function Login({ visible, close }) {
                                 Forgot password?
                               </Button>
                             </Form>
-                          );
+                          )
                         }}
                       />
                       <Divider />
@@ -308,7 +312,7 @@ function Login({ visible, close }) {
         </Row>
         <div className="terms">
           <Title level={4}>
-            By signing up you are agreeing to our{" "}
+            By signing up you are agreeing to our{' '}
             <a
               href="/privacy-policy-and-terms-of-use.pdf"
               target="_blank"
@@ -322,7 +326,7 @@ function Login({ visible, close }) {
         </div>
       </div>
     </Modal>
-  );
+  )
 }
 
-export default Login;
+export default Login

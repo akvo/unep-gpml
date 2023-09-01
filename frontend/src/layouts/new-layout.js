@@ -59,6 +59,7 @@ const NewLayout = ({
           --font-archia: ${archia.style.fontFamily};
         }
       `}</style>
+      <Login visible={loginVisible} close={() => setLoginVisible(false)} />
       <div>
         <div className="top-bar">
           <div className="container">
@@ -72,9 +73,27 @@ const NewLayout = ({
               />
             </div>
             <nav>
-              <Button type="primary" size="small" className="noicon">
-                Join Now
-              </Button>
+              {isAuthenticated ? (
+                <Button
+                  type="primary"
+                  size="small"
+                  className="noicon"
+                  onClick={() => {
+                    auth0Client.logout({ returnTo: window.location.origin })
+                  }}
+                >
+                  Logout
+                </Button>
+              ) : (
+                <Button
+                  type="primary"
+                  size="small"
+                  className="noicon"
+                  onClick={() => setLoginVisible(true)}
+                >
+                  Join Now
+                </Button>
+              )}
             </nav>
           </div>
         </div>
