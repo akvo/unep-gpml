@@ -17,6 +17,9 @@ services:
   frontend:
     network_mode: service:mainnetwork
     image: eu.gcr.io/akvo-lumen/unep-gpml/frontend:latest
+  nginx:
+    network_mode: service:mainnetwork
+    image: eu.gcr.io/akvo-lumen/unep-gpml/nginx:latest
   ci:
     network_mode: service:mainnetwork
     image: alpine:3.12
@@ -31,3 +34,4 @@ services:
       - db
       - backend
       - frontend
+      - nginx
