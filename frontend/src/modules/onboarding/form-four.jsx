@@ -20,6 +20,7 @@ import {
   UploadOutlined,
 } from "@ant-design/icons";
 import { Field } from "react-final-form";
+import FormLabel from "../../components/form-label";
 
 function FormFour({ validate }) {
   return (
@@ -31,11 +32,9 @@ function FormFour({ validate }) {
         <Field name="about" validate={validate}>
           {({ input, meta }) => (
             <div className="field-wrapper">
-              <div class="ant-col ant-form-item-label">
-                <label for="about" class="" title="">
-                  Short Bio
-                </label>
-              </div>
+              <FormLabel for="about" meta={meta}>
+                Short Bio
+              </FormLabel>
               <TextArea
                 onChange={(e) => input.onChange(e.target.value)}
                 placeholder="Max 500 letters"
