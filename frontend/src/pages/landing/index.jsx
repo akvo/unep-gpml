@@ -1006,7 +1006,11 @@ const Footer = () => {
                   onFinish={onFinish}
                 >
                   <Form.Item name="email">
-                    <Input type="email" placeholder="Enter your email" />
+                    <Input
+                      type="email"
+                      placeholder="Enter your email"
+                      bordered={false}
+                    />
                   </Form.Item>
                   <Form.Item shouldUpdate>
                     {() => (
