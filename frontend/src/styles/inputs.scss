@@ -19,12 +19,12 @@
           box-shadow: 0px 0px 0px 2px $systemInfo3;
         }
       }
-      .ant-input-affix-wrapper {
-        .ant-input {
-          height: auto;
-          background: transparent;
-          border-radius: 0;
-        }
+      .ant-input-affix-wrapper .ant-input,
+      .ant-input.ant-input-borderless {
+        color: inherit;
+        height: auto;
+        background: transparent;
+        border-radius: 0;
       }
       .ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input,
       .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
