@@ -74,7 +74,9 @@
 (defn create-tags
   "Creates N `tags` given a `tag-category`. `tags` are expected to have
   to have the following structure:
-  - `[{:tag \"some tag\"} . . .]`"
+  - `[{:tag \"some tag\"} . . .]`
+  In the case the tag existed beforehand we check if the related rbac context exist before trying
+  to create those contexts, so we create only the ones for the truly new tags."
   [conn logger tags tag-category]
   (let [tag-category ((comp :id first) (db.tag/get-tag-categories conn {:filters {:categories [tag-category]}}))
         new-tags (filter (comp not :id) tags)
@@ -82,12 +84,19 @@
         tag-entity-columns ["tag" "tag_category"]
         created-tag-ids (map :id (db.tag/new-tags conn {:tags tags-to-create
                                                         :insert-cols tag-entity-columns}))]
-    (doseq [tag-id created-tag-ids]
-      (srv.permissions/create-resource-context
-       {:conn conn
-        :logger logger}
-       {:context-type :tag
-        :resource-id tag-id}))
+    (doseq [tag-id created-tag-ids
+            :let [{:keys [success?]} (srv.permissions/get-resource-context
+                                      {:conn conn
+                                       :logger logger}
+                                      :tag
+                                      tag-id)
+                  ctx-exists? success?]]
+      (when-not ctx-exists?
+        (srv.permissions/create-resource-context
+         {:conn conn
+          :logger logger}
+         {:context-type :tag
+          :resource-id tag-id})))
     created-tag-ids))
 
 (defn all-tags
