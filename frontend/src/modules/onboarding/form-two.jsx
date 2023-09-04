@@ -66,7 +66,7 @@ function FormTwo({
             };
             return (
               <>
-                <div style={{ marginTop: 20, color: "#A5B0C9" }}>
+                <div className="label-text">
                   Can't see what you're looking for?
                 </div>
                 <Select
