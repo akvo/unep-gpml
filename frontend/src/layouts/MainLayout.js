@@ -13,29 +13,35 @@ const MainLayout = ({
   profile,
   loginVisible,
   setLoginVisible,
+  loadingProfile,
 }) => {
-  const [loginVisible, setLoginVisible] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   return (
     <>
       <Login visible={loginVisible} close={() => setLoginVisible(false)} />
       {isIndexPage ? (
         <MenuBar
-          setLoginVisible={setLoginVisible}
-          setShowMenu={setShowMenu}
-          showMenu={showMenu}
-          isAuthenticated={isAuthenticated}
-          auth0Client={auth0Client}
-          profile={profile}
+          {...{
+            loadingProfile,
+            setLoginVisible,
+            setShowMenu,
+            showMenu,
+            isAuthenticated,
+            auth0Client,
+            profile,
+          }}
         />
       ) : (
         <MenuBar
-          setLoginVisible={setLoginVisible}
-          setShowMenu={setShowMenu}
-          showMenu={showMenu}
-          isAuthenticated={isAuthenticated}
-          auth0Client={auth0Client}
-          profile={profile}
+          {...{
+            loadingProfile,
+            setLoginVisible,
+            setShowMenu,
+            showMenu,
+            isAuthenticated,
+            auth0Client,
+            profile,
+          }}
         />
       )}
       {children}
@@ -52,17 +58,23 @@ export const withLayout = (Component) => {
       isAuthenticated,
       auth0Client,
       profile,
+      loginVisible,
       setLoginVisible,
+      loadingProfile,
       ...rest
     } = props
 
     return (
       <MainLayout
-        isIndexPage={isIndexPage}
-        isAuthenticated={isAuthenticated}
-        setLoginVisible={setLoginVisible}
-        auth0Client={auth0Client}
-        profile={profile}
+        {...{
+          isIndexPage,
+          isAuthenticated,
+          loginVisible,
+          setLoginVisible,
+          auth0Client,
+          profile,
+          loadingProfile,
+        }}
       >
         <Component {...props} />
       </MainLayout>

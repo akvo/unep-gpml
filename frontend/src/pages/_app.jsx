@@ -29,11 +29,6 @@ function MyApp({ Component, pageProps }) {
     nav: s.nav,
     tags: s.tags,
   }))
-  const [setStakeholderSignupModalVisible] = useState(false)
-  const [warningModalVisible, setWarningModalVisible] = useState(false)
-  const [filters, setFilters] = useState(null)
-  const [filterMenu, setFilterMenu] = useState(null)
-  const [showResponsiveMenu, setShowResponsiveMenu] = useState(false)
   const [loadingProfile, setLoadingProfile] = useState(false)
   const [_expiresAt, setExpiresAt] = useState(null)
   const [idToken, setIdToken] = useState(null)
@@ -250,6 +245,7 @@ function MyApp({ Component, pageProps }) {
               profile,
               loginVisible,
               setLoginVisible,
+              loadingProfile,
             }}
           />
         )}
@@ -262,6 +258,7 @@ function MyApp({ Component, pageProps }) {
               profile,
               loginVisible,
               setLoginVisible,
+              loadingProfile,
             }}
           />
         )}
