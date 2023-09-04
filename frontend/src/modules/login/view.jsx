@@ -191,10 +191,15 @@ function Login({ visible, close }) {
                       <Button
                         icon={<LinkedinIcon />}
                         onClick={handleLinkedinLogin}
+                        ghost
                       >
                         CONTINUE WITH LINKEDIN
                       </Button>
-                      <Button icon={<GoogleIcon />} onClick={handleGoogleLogin}>
+                      <Button
+                        icon={<GoogleIcon />}
+                        onClick={handleGoogleLogin}
+                        ghost
+                      >
                         CONTINUE WITH GOOGLE
                       </Button>
                       <div className="separator">
@@ -203,6 +208,7 @@ function Login({ visible, close }) {
                       <Button
                         icon={<EmailIcon />}
                         onClick={() => setSignIn(!signin)}
+                        ghost
                       >
                         CONTINUE WITH EMAIL
                       </Button>
@@ -270,11 +276,10 @@ function Login({ visible, close }) {
                               </Form.Item>
                               <Button
                                 style={{ marginTop: 50 }}
-                                type="primary"
-                                shape="round"
                                 className={styles.loginButton}
                                 loading={loading}
                                 onClick={() => handleSubmit()}
+                                ghost
                               >
                                 LOGIN WITH EMAIL
                               </Button>{' '}
@@ -295,10 +300,9 @@ function Login({ visible, close }) {
                       <div className={styles.joinWrapper}>
                         <Title level={2}>Don’t have an account yet?</Title>
                         <Button
-                          type="primary"
-                          shape="round"
                           className={styles.loginButton}
                           onClick={() => setSignUp(true)}
+                          ghost
                         >
                           JOIN WITH EMAIL
                         </Button>
