@@ -58,6 +58,11 @@
     :parent-resource-id root-app-resource-id
     :parent-context-type root-app-context-type}))
 
+(defn get-resource-context
+  "FIXME: Add docstring"
+  [{:keys [conn logger]} context-type resource-id]
+  (rbac/get-context conn logger context-type resource-id))
+
 (defn create-resource-contexts-under-root
   "Create multiple rbac contexts under the same (root) parent
 
