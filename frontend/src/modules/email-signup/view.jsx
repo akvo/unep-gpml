@@ -3,7 +3,6 @@ import {
   Col,
   Row,
   Typography,
-  Button,
   Form,
   Input,
   Upload,
@@ -19,7 +18,8 @@ import { FileTextOutlined } from '@ant-design/icons'
 import { Form as FinalForm, Field } from 'react-final-form'
 import { auth0Client } from '../../utils/misc'
 import { UIStore } from '../../store'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
+import Button from '../../components/button'
 
 const mountedStyle = {
   animation: 'inAnimation 250ms ease-in',
@@ -30,7 +30,7 @@ const unmountedStyle = {
 }
 
 function EmailJoin({ setSignUp, children }) {
-  let history = useHistory()
+  const router = useRouter()
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
   }))
@@ -125,7 +125,7 @@ function EmailJoin({ setSignUp, children }) {
 
   const onSubmit = async (data) => {
     setLoading(true)
-    localStorage.setItem('redirect_on_login', JSON.stringify(history.location))
+    localStorage.setItem('redirect_on_login', JSON.stringify(router.asPath))
     auth0Client.redirect.signupAndLogin(
       {
         connection: 'Username-Password-Authentication',
@@ -148,9 +148,9 @@ function EmailJoin({ setSignUp, children }) {
           return err
         } else {
           setLoading(false)
-          history.push({
+          router.push({
             pathname: 'onboarding',
-            state: { data: data },
+            query: { data },
           })
         }
       }
@@ -219,6 +219,7 @@ function EmailJoin({ setSignUp, children }) {
                         <>
                           <Input.Password
                             {...input}
+                            status={meta.touched && meta.error ? 'error' : null}
                             placeholder="Choose your password"
                           />
                           {meta.touched && meta.error && (
@@ -244,6 +245,7 @@ function EmailJoin({ setSignUp, children }) {
                         <>
                           <Input.Password
                             {...input}
+                            status={meta.touched && meta.error ? 'error' : null}
                             placeholder="Retype your password"
                           />
                           {meta.touched && meta.error && (
@@ -274,6 +276,9 @@ function EmailJoin({ setSignUp, children }) {
                           <>
                             {' '}
                             <Select
+                              status={
+                                meta.touched && meta.error ? 'error' : null
+                              }
                               onChange={(value) => input.onChange(value)}
                               virtual={false}
                               placeholder="Title"
@@ -306,7 +311,13 @@ function EmailJoin({ setSignUp, children }) {
                       <Field name="lastName">
                         {({ input, meta }) => (
                           <>
-                            <Input {...input} placeholder="Last Name" />
+                            <Input
+                              {...input}
+                              status={
+                                meta.touched && meta.error ? 'error' : null
+                              }
+                              placeholder="Last Name"
+                            />
                             {meta.touched && meta.error && (
                               <p
                                 color="error"
@@ -329,7 +340,11 @@ function EmailJoin({ setSignUp, children }) {
                     <Field name="firstName">
                       {({ input, meta }) => (
                         <>
-                          <Input {...input} placeholder="First Name" />
+                          <Input
+                            {...input}
+                            status={meta.touched && meta.error ? 'error' : null}
+                            placeholder="First Name"
+                          />
                           {meta.touched && meta.error && (
                             <p
                               color="error"
@@ -387,6 +402,9 @@ function EmailJoin({ setSignUp, children }) {
                                   .toLowerCase()
                                   .includes(input.toLowerCase())
                               }
+                              status={
+                                meta.touched && meta.error ? 'error' : null
+                              }
                             >
                               {countries?.map((it) => (
                                 <Select.Option value={it.id} key={it.id}>
@@ -418,8 +436,9 @@ function EmailJoin({ setSignUp, children }) {
                     htmlType="submit"
                     className="next-button"
                     onClick={() => handleSubmit()}
+                    withArrow="link"
                   >
-                    Next {'>'}
+                    Next
                   </Button>
                 </Form>
               )
