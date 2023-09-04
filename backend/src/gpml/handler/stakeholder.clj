@@ -145,8 +145,6 @@
       (get-in result [:stakeholder :id])
       (throw (ex-info "Failed to update stakeholder" {:result result})))))
 
-;; FIXME: The permissions metadata adding part is not right, as we are re-creating org related to the new stakeholder,
-;; so we need to handle that and ensure we get the right resource-id for the permissions.
 (defn- save-stakeholder
   [{:keys [db logger mailjet-config] :as config}
    {{:keys [body]} :parameters

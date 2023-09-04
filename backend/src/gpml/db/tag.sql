@@ -25,7 +25,7 @@ values (:tag, :tag_category) returning id
 -- :name new-tags :query :many
 -- :doc Insert new tag
 insert into tag (:i*:insert-cols)
-values :t*:tags RETURNING *;
+values :t*:tags ON CONFLICT (LOWER(tag)) DO UPDATE SET tag = tag.tag RETURNING *;
 
 -- :name tag-by-category :? :* :1
 -- :doc Get tag by category
