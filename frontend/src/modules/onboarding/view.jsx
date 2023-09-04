@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, notification } from "react";
 import styles from "./styles.module.scss";
-import { Button, Typography, Steps } from "antd";
+import { Typography, Steps } from "antd";
 import { Form } from "react-final-form";
 import AffiliationOption from "./affiliation-option";
 import FormOne from "./form-one";
@@ -13,6 +13,7 @@ import api from "../../utils/api";
 import { setIn } from "final-form";
 import { useRouter } from "next/router";
 import { useDeviceSize } from "../landing/landing";
+import Button from "../../components/button"
 
 function Authentication() {
   const formRef = useRef();
@@ -283,8 +284,8 @@ function Authentication() {
                     />
                   </div>
                   <div className="button-bottom-panel">
-                    <Button className="step-button-next" onClick={() => next()}>
-                      Next {">"}
+                    <Button className="step-button-next" onClick={() => next()} ghost>
+                      Next
                     </Button>
                   </div>
                 </div>
@@ -329,15 +330,16 @@ function Authentication() {
                 />
                 {currentStep > 0 && (
                   <Button className="step-button-back" onClick={previous}>
-                    {"<"} Back
+                    Back
                   </Button>
                 )}
                 {currentStep < 5 && currentStep > 1 && (
                   <Button
                     className="step-button-next abs"
                     onClick={() => next()}
+                    withArrow="link"
                   >
-                    Next {">"}
+                    Next
                   </Button>
                 )}
                 {currentStep === 5 && (
@@ -346,7 +348,7 @@ function Authentication() {
                     onClick={handleSubmit}
                     loading={loading}
                   >
-                    Submit {">"}
+                    Submit
                   </Button>
                 )}
               </div>
