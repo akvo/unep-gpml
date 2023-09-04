@@ -19,6 +19,7 @@ import { Pagination } from 'swiper'
 import moment from 'moment'
 import { useDeviceSize } from '../../modules/landing/landing'
 import Button from '../../components/button'
+import Login from '../../modules/login/view'
 
 const pagination = {
   clickable: true,
@@ -46,6 +47,7 @@ const Landing = () => (
 )
 
 const Hero = () => {
+  const [loginVisible, setLoginVisible] = useState(false)
   const [selected, setSelected] = useState('Governments')
   const [timeout, _setTimeout] = useState(true)
   const intidRef = useRef()
@@ -98,6 +100,7 @@ const Hero = () => {
   }
   return (
     <>
+      <Login visible={loginVisible} close={() => setLoginVisible(false)} />
       <div className="hero">
         <div className="container">
           <div className="globe">
@@ -161,7 +164,12 @@ const Hero = () => {
                 </AnimatePresence>
               ))}
             </div>
-            <Button type="primary" size="large" withArrow>
+            <Button
+              type="primary"
+              size="large"
+              onClick={() => setLoginVisible(true)}
+              withArrow
+            >
               Join Now
             </Button>
           </div>
@@ -998,7 +1006,11 @@ const Footer = () => {
                   onFinish={onFinish}
                 >
                   <Form.Item name="email">
-                    <Input type="email" placeholder="Enter your email" />
+                    <Input
+                      type="email"
+                      placeholder="Enter your email"
+                      bordered={false}
+                    />
                   </Form.Item>
                   <Form.Item shouldUpdate>
                     {() => (
