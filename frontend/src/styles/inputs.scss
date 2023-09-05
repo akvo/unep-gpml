@@ -76,28 +76,37 @@
     }
     .ant-form-item-label {
       padding-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       & > label {
         font-size: $fzXXS;
         font-weight: 500;
         line-height: $lhXXS;
         color: $primaryDarkBlue;
-      }
-      .feedback-wrapper {
-        height: 16px;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        .feedback-text {
-          font-size: $fzXXS;
-          line-height: $lhXXS;
-          &.error {
-            color: $systemError3;
-          }
-          &.success {
-            color: $systemSuccess4;
+        width: 100%;
+        .hasFeedback {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .feedback-wrapper {
+            height: 16px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            .feedback-text {
+              font-size: $fzXXS;
+              line-height: $lhXXS;
+              &.error {
+                color: $systemError3;
+              }
+              &.success {
+                color: $systemSuccess4;
+              }
+            }
+            .optional {
+              font-size: $fzXXS;
+              line-height: $fzXXS;
+              color: $primaryDarkBlue4;
+            }
           }
         }
       }
