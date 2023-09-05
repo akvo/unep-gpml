@@ -1,7 +1,6 @@
 import { Select } from "antd";
 import catTags from "../../utils/cat-tags.json";
 import styles from "./style.module.scss";
-import { toTitleCase } from "../../utils/misc";
 
 const CatTagSelect = ({
   handleChange,
@@ -41,12 +40,7 @@ const CategorisedTags = ({ handleChange, value }) => {
               .map((tag) => (
                 <li onClick={() => handleChange(tag)} key={tag}>
                   <div className="img-container">
-                    <img
-                      src={
-                        require(`../../images/cat-tags/${slug(tag)}.svg`)
-                          .default
-                      }
-                    />
+                    <img src={`/cat-tags/${slug(tag)}.svg`} alt={tag} />
                   </div>
                   <div className="label-container">
                     <span>{tag}</span>
