@@ -1,6 +1,5 @@
 @import '../../vars.scss';
 @import '../../styles/vars.scss';
-@import '../../styles/btns.scss';
 
 .login {
   :global {
@@ -54,23 +53,10 @@
           font-weight: 700;
         }
         .ant-btn.ant-btn-link {
+          font-size: $fzXS;
+          line-height: $lhXS;
           color: $primaryDarkBlue;
-          font-weight: 500;
-          text-decoration-line: none;
-          &:hover {
-            color: $primaryPurple;
-          }
-          & > span + .anticon {
-            margin-left: 0;
-          }
-          span {
-            text-transform: lowercase;
-            &::first-letter {
-              text-transform: uppercase;
-            }
-          }
         }
-
         .header-text {
           color: $primaryDarkBlue;
           font-size: $fzS;
@@ -99,22 +85,6 @@
         line-height: 20px;
         color: #000000;
         padding: 0;
-      }
-    }
-  }
-  label {
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 20px;
-    color: #000000;
-    p {
-      margin-bottom: 0px;
-      span {
-        font-weight: 500;
-        font-size: 12px;
-        line-height: 17px;
-        color: rgba(56, 78, 133, 0.6);
-        padding-left: 10px;
       }
     }
   }

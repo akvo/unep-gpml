@@ -69,7 +69,7 @@ function MyApp({ Component, pageProps }) {
   const newLayoutRoutes = ['/landing', '/onboarding']
   if (!newLayoutRoutes.includes(router.pathname)) {
     import('../main.scss')
-    import('../buttons.scss')
+    // import('../buttons.scss')
   } else {
     import('../styles/base.scss')
   }
