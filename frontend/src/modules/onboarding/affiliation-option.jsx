@@ -15,7 +15,7 @@ function AffiliationOption({ handleAffiliationChange, next }) {
               handleAffiliationChange(false);
               next();
             }}
-            className="small"
+            size="small"
           >
             Yes
           </Button>
@@ -26,7 +26,7 @@ function AffiliationOption({ handleAffiliationChange, next }) {
               handleAffiliationChange(true);
               next(1);
             }}
-            className="small"
+            size="small"
           >
             No
           </Button>

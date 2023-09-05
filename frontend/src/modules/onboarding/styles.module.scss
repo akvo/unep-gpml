@@ -53,6 +53,9 @@
         font-weight: 500;
         line-height: $lhXXS;
       }
+      h2 {
+        color: $primaryDarkBlue;
+      }
     }
     .getting-started.slide {
       position: relative;
@@ -432,9 +435,6 @@
             border-color: $blue12;
             color: #fff;
             background: $blue12;
-          }
-          &.small {
-            padding: 4px 20px !important;
           }
         }
         div {
