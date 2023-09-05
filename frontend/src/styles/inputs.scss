@@ -1,0 +1,111 @@
+#root,
+.ant-modal-root {
+  .ant-form {
+    .ant-input,
+    .ant-input-affix-wrapper {
+      height: 54px;
+    }
+    .ant-input,
+    .ant-select-selection-search-input,
+    .ant-select-selector,
+    .ant-input-affix-wrapper {
+      border-radius: 8px;
+      color: $primaryDarkBlue;
+      background-color: $primaryGrey;
+      &::placeholder {
+        color: $primaryDarkBlue4;
+      }
+      &:focus {
+        box-shadow: 0px 0px 0px 2px $systemInfo3;
+      }
+    }
+    .ant-input-affix-wrapper .ant-input,
+    .ant-input.ant-input-borderless {
+      color: inherit;
+      height: auto;
+      background: transparent;
+      border-radius: 0;
+    }
+    .ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input,
+    .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+    .ant-select-status-error.ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer)
+      .ant-select-selector {
+      border-width: 2px;
+      border-color: $systemError3 !important;
+    }
+    .ant-select {
+      border-radius: 8px;
+      &.ant-select-single {
+        .ant-select-selector {
+          height: 50px;
+        }
+        &.ant-select-show-arrow {
+          .ant-select-selection-item,
+          .ant-select-selection-placeholder {
+            display: flex;
+            align-items: center;
+            z-index: 1;
+          }
+          .ant-select-selection-item {
+            color: $primaryDarkBlue;
+          }
+        }
+      }
+    }
+    .ant-input-status-error {
+      &:not(.ant-checkbox-wrapper) {
+        border: 2px solid $systemError3;
+      }
+      .ant-checkbox-inner {
+        border: 2px solid $systemError3;
+      }
+      .ant-select-selector {
+        border: none;
+      }
+    }
+    .ant-switch:focus,
+    .ant-switch-checked:focus {
+      outline-width: 2px;
+      outline-offset: 2px;
+      outline-color: $primaryPurple;
+      outline-style: solid;
+      box-shadow: none;
+    }
+    .ant-switch-checked {
+      background-color: $primaryPurple;
+    }
+    .ant-form-item-label {
+      padding-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      & > label {
+        font-size: $fzXXS;
+        font-weight: 500;
+        line-height: $lhXXS;
+        color: $primaryDarkBlue;
+      }
+      .feedback-wrapper {
+        height: 16px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        .feedback-text {
+          font-size: $fzXXS;
+          line-height: $lhXXS;
+          &.error {
+            color: $systemError3;
+          }
+          &.success {
+            color: $systemSuccess4;
+          }
+        }
+      }
+    }
+    .ant-select-selection-search-input {
+      &:focus {
+        box-shadow: none;
+      }
+    }
+  }
+}

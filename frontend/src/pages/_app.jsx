@@ -68,7 +68,7 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter()
   if (router.pathname !== '/landing') {
     import('../main.scss')
-    import('../buttons.scss')
+    // import('../buttons.scss')
   } else {
     import('../styles/base.scss')
   }
