@@ -32,17 +32,16 @@ function FormFour({ validate }) {
         <Field name="about" validate={validate}>
           {({ input, meta }) => (
             <div className="field-wrapper">
-              <FormLabel for="about" meta={meta}>
-                Short Bio
+              <FormLabel label="Short Bio" for="about" meta={meta}>
+                <TextArea
+                  onChange={(e) => input.onChange(e.target.value)}
+                  placeholder="Max 500 letters"
+                  maxLength={500}
+                  className={`${
+                    meta.touched && meta.error ? "ant-input-status-error" : ""
+                  }`}
+                />
               </FormLabel>
-              <TextArea
-                onChange={(e) => input.onChange(e.target.value)}
-                placeholder="Max 500 letters"
-                maxLength={500}
-                className={`${
-                  meta.touched && meta.error ? "ant-input-status-error" : ""
-                }`}
-              />
             </div>
           )}
         </Field>
@@ -50,40 +49,27 @@ function FormFour({ validate }) {
           <Col sm={24} md={12}>
             <Field name="linkedin">
               {({ input, meta }) => (
-                <div className="field-wrapper">
-                  <div class="ant-col ant-form-item-label">
-                    <label for="bio" class="" title="">
-                      <p>
-                        Linkedin <span>OPTIONAL</span>
-                      </p>
-                    </label>
-                  </div>
+                <FormLabel for="linkedin" label="Linkedin" meta={meta} isOptional>
                   <Input
                     onChange={(e) => input.onChange(e.target.value)}
                     placeholder="Username"
                     prefix={<LinkedinOutlined />}
+                    id="linkedin"
                   />
-                </div>
+                </FormLabel>
               )}
             </Field>
           </Col>
           <Col sm={24} md={12}>
             <Field name="twitter">
               {({ input, meta }) => (
-                <div className="field-wrapper">
-                  <div class="ant-col ant-form-item-label">
-                    <label for="twitter" class="" title="">
-                      <p>
-                        Twitter <span>OPTIONAL</span>
-                      </p>
-                    </label>
-                  </div>
+                <FormLabel for="twitter" label="Twitter" meta={meta} isOptional>
                   <Input
                     onChange={(e) => input.onChange(e.target.value)}
                     placeholder="Username"
                     prefix={<TwitterOutlined />}
                   />
-                </div>
+                </FormLabel>
               )}
             </Field>
           </Col>
@@ -93,9 +79,7 @@ function FormFour({ validate }) {
             <div className="field-wrapper">
               <div class="ant-col ant-form-item-label">
                 <label for="cv" class="" title="">
-                  <p>
-                    CV / Portfolio <span>OPTIONAL</span>
-                  </p>
+                  CV / Portfolio <span>(Optional)</span>
                 </label>
               </div>
               <br />

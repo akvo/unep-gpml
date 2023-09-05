@@ -4,6 +4,8 @@ import { Col, Row, Typography, Select, List } from "antd";
 import { Field } from "react-final-form";
 const { Title, Link } = Typography;
 import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
+import FormItem from "../../components/form-label";
+import FormLabel from "../../components/form-label";
 
 function FormThree({
   handleSeekingSuggestedTag,
@@ -32,8 +34,11 @@ function FormThree({
       <div className="ant-form ant-form-vertical">
         <Field name="seeking" style={{ width: "100%" }}>
           {({ input, meta }) => {
+            const hasError = error && !meta.valid
+            const validVal = input?.value && meta.valid ? 'success' : null
+            const validateStatus = hasError ? 'error' : validVal
             return (
-              <>
+              <FormLabel for="seeking" validateStatus={validateStatus}>
                 <CatTagSelect
                   handleChange={handleSeekingSuggestedTag}
                   meta={meta}
@@ -41,7 +46,7 @@ function FormThree({
                   value={input.value ? input.value : undefined}
                   handleRemove={handleRemove}
                 />
-              </>
+              </FormLabel>
             );
           }}
         </Field>
@@ -64,11 +69,11 @@ function FormThree({
                 );
               }
             };
+            const hasError = error && !meta.valid
+            const validVal = input?.value && meta.valid ? 'success' : null
+            const validateStatus = hasError ? 'error' : validVal
             return (
-              <>
-                <div className="label-text">
-                  Can't see what you're looking for?
-                </div>
+              <FormItem for="other" label="Can't see what you're looking for?" validateStatus={validateStatus}>
                 <Select
                   placeholder="Suggest categories"
                   allowClear
@@ -79,7 +84,7 @@ function FormThree({
                   onSearch={handleSearch}
                   value={input.value ? input.value : undefined}
                   className={`dont-show ${
-                    error && !meta.valid ? "ant-input-status-error" : ""
+                    hasError ? "ant-input-status-error" : ""
                   }`}
                 >
                   {filteredOptions?.map((item) => (
@@ -88,7 +93,7 @@ function FormThree({
                     </Select.Option>
                   ))}
                 </Select>
-              </>
+              </FormItem>
             );
           }}
         </Field>
