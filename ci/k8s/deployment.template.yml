@@ -22,8 +22,8 @@ spec:
         prometheus.io/port: '3000'
     spec:
       containers:
-      - name: frontend
-        image: eu.gcr.io/akvo-lumen/unep-gpml/frontend:${CI_COMMIT}
+      - name: nginx
+        image: eu.gcr.io/akvo-lumen/unep-gpml/nginx:${CI_COMMIT}
         ports:
         - containerPort: 80
         resources:
@@ -33,6 +33,17 @@ spec:
           limits:
             cpu: "200m"
             memory: "64Mi"
+      - name: frontend
+        image: eu.gcr.io/akvo-lumen/unep-gpml/frontend:${CI_COMMIT}
+        ports:
+        - containerPort: 3001
+        resources:
+          requests:
+            cpu: "300m"
+            memory: "200Mi"
+          limits:
+            cpu: "600m"
+            memory: "1000Mi"
       - name: backend
         image: eu.gcr.io/akvo-lumen/unep-gpml/backend:${CI_COMMIT}
         ports:
