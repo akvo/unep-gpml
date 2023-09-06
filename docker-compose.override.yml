@@ -1,5 +1,15 @@
 version: "3"
 services:
+  mainnetwork:
+    image: alpine:3.14
+    command: ["tail", "-f", "/dev/null"]
+    ports:
+      - 3000:3000
+      - 3001:3001
+      - 80:80
+      - 5050:5050
+      - 47480:47480
+      - 47481:47481
   db:
     ports:
       - 5432:5432
@@ -9,35 +19,36 @@ services:
       - PGADMIN_LISTEN_PORT=5050
       - PGADMIN_DEFAULT_EMAIL=dev@akvo.org
       - PGADMIN_DEFAULT_PASSWORD=password
-    ports:
-      - 5050:5050
     volumes:
       - ./pgadmin4/servers.json:/pgadmin4/servers.json
       - pg-admin-data:/var/lib/pgadmin
     depends_on:
       - db
+    network_mode: service:mainnetwork
   backend:
     image: akvo/akvo-clojure-lein:20210124.114043.4437caf
     command: ["lein", "repl", ":headless"]
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/credentials/cloud-database-service-account.json
       - APP_USER_ADMIN=deden@akvo.org
-    ports:
-      - 3000:3000
-      - 47480:47480
-      - 47481:47481
     volumes:
       - ./backend:/app
       - ~/.m2:/home/akvo/.m2
       - ~/.lein:/home/akvo/.lein
       - ~/.m2:/root/.m2:delegated
       - ~/.lein:/root/.lein:delegated
-
+    network_mode: service:mainnetwork
   frontend:
     image: akvo/akvo-node-18-alpine:20220923.084347.0558ee6
-    ports:
-      - 3001:80
     command: ["./start.sh"]
     restart: unless-stopped
+    network_mode: service:mainnetwork
+
+  nginx:
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    network_mode: service:mainnetwork
+
 volumes:
   pg-admin-data:
