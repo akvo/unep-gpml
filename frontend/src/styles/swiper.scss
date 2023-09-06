@@ -1,0 +1,23 @@
+.swiper {
+  padding-bottom: 33px;
+  padding-left: 25px;
+  padding-right: 25px;
+  .swiper-pagination {
+    position: absolute;
+    bottom: 0px;
+  }
+  .swiper-button-next,
+  .swiper-button-prev {
+    transform: translateY(-10px);
+  }
+  .swiper-button-disabled {
+    opacity: 0;
+  }
+}
+.swiper-pagination-bullet-active {
+  background-color: #ffb800;
+}
+.swiper-button-prev,
+.swiper-button-next {
+  color: #ffb800;
+}
