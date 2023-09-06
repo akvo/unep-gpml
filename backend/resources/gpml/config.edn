@@ -551,7 +551,28 @@
                                                   :swagger {:tags ["case-study"]}
                                                   :handler #ig/ref :gpml.handler.case-study/post
                                                   :parameters #ig/ref :gpml.handler.case-study/post-params
-                                                  :responses #ig/ref :gpml.handler.case-study/post-responses}}]]]]
+                                                  :responses #ig/ref :gpml.handler.case-study/post-responses}}]]
+                                        ["/chat"
+                                         ["/curated-channel"
+                                          [""
+                                           {:get {:summary "Get the list of curated channels"
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :swagger {:tags ["chat"]}
+                                                  :handler #ig/ref :gpml.handler.chat-curated-channel/get}
+                                            :post {:summary "Add a channel to the curated list"
+                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                #ig/ref :gpml.auth/auth-required]
+                                                   :swagger {:tags ["chat"]}
+                                                   :handler #ig/ref :gpml.handler.chat-curated-channel/post
+                                                   :parameters #ig/ref :gpml.handler.chat-curated-channel/post-params}}]
+                                          ["/:id"
+                                           {:delete {:summary "Delete a channel from the curated list"
+                                                     :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                  #ig/ref :gpml.auth/auth-required]
+                                                     :swagger {:tags ["chat"]}
+                                                     :handler #ig/ref :gpml.handler.chat-curated-channel/delete
+                                                     :parameters #ig/ref :gpml.handler.chat-curated-channel/delete-params}}]]]]]
                               :logger #ig/ref :duct.logger/timbre
                               :cors-allowed-origins #ig/ref :gpml.handler.main/cors-allowed-origins}
 
@@ -798,6 +819,12 @@
 
   :gpml.handler.programmatic.files-migrator/post #ig/ref :gpml.config/common
   :gpml.handler.programmatic.files-migrator/post-params #ig/ref :gpml.config/common
+
+  :gpml.handler.chat-curated-channel/get #ig/ref :gpml.config/common
+  :gpml.handler.chat-curated-channel/post #ig/ref :gpml.config/common
+  :gpml.handler.chat-curated-channel/delete #ig/ref :gpml.config/common
+  :gpml.handler.chat-curated-channel/post-params {}
+  :gpml.handler.chat-curated-channel/delete-params {}
 
   :clj-gcp.storage/client {}
 
