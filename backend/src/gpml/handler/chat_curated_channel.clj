@@ -4,6 +4,24 @@
             [gpml.service.chat-curated-channel :as srv.cc-channel]
             [integrant.core :as ig]))
 
+(def ^:private create-chat-curated-channel-params-schema
+  [:map
+   [:id
+    {:optional false
+     :swagger {:description "The ID of the chat channel"
+               :type "string"
+               :allowEmptyValue false}}
+    [:string {:min 1}]]])
+
+(def ^:private delete-chat-curated-channel-params-schema
+  [:map
+   [:id
+    {:optional false
+     :swagger {:description "The ID of the chat channel"
+               :type "string"
+               :allowEmptyValue false}}
+    [:string {:min 1}]]])
+
 (defn- get-chat-curated-channels
   [config _req]
   (let [result (srv.cc-channel/get-chat-curated-channels config
@@ -52,8 +70,8 @@
 
 (defmethod ig/init-key :gpml.handler.chat-curated-channel/post-params
   [_ _]
-  {:body [:map [:id [:string {:min 1}]]]})
+  {:body create-chat-curated-channel-params-schema})
 
 (defmethod ig/init-key :gpml.handler.chat-curated-channel/delete-params
   [_ _]
-  {:path [:map [:id [:string {:min 1}]]]})
+  {:path delete-chat-curated-channel-params-schema})
