@@ -53,6 +53,7 @@
   },
   "scripts": {
     "dev": "next dev -p 3001",
+    "dev-fe": "REACT_APP_FEENV=true next dev -p 3001",
     "build": "next build",
     "start": "next start -p 3001"
   },
