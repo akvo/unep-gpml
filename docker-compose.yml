@@ -47,6 +47,7 @@ services:
   frontend:
     environment:
       - PORT=3001
+      - APP_DOMAIN
     volumes:
       - ./frontend:/app:delegated
     working_dir: /app
