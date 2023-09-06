@@ -8,14 +8,15 @@ import FilterModal from "./filter-modal";
 import ResourceCards, {
   ResourceCard,
 } from "../../components/resource-cards/resource-cards";
-import { LoadingOutlined, DownOutlined } from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons";
 import SortIcon from "../../images/knowledge-library/sort-icon.svg";
 import SearchIcon from "../../images/search-icon.svg";
-import { Button } from "antd";
+// import { Button } from "antd";
 import Maps from "../map/map";
 import { isEmpty } from "lodash";
 import { useQuery, topicNames } from "../../utils/misc";
-import TopicView from "./topic-view";
+import { ChevronDown } from "../../components/icons";
+import Button from "../../components/button";
 
 const resourceTopic = [
   "action_plan",
@@ -252,14 +253,17 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         <div className="list-toolbar">
           <div className="quick-search">
             <div className="count">
-              {view === "grid"
-                ? `Showing ${gridItems?.length} of ${totalItems}`
-                : view === "category"
-                ? `${catData?.reduce(
-                    (count, current) => count + current?.count,
-                    0
-                  )}`
-                : `Showing ${!loading ? data?.results?.length : ""}`}
+              <small>SHOWING:</small>
+              <b>
+                {view === "grid"
+                  ? `${gridItems?.length} of ${totalItems}`
+                  : view === "category"
+                  ? `${catData?.reduce(
+                      (count, current) => count + current?.count,
+                      0
+                    )}`
+                  : `${!loading ? data?.results?.length : "..."}`}
+              </b>
             </div>
             <div className="search-icon">
               <SearchIcon />
@@ -283,7 +287,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             />
             <div className="sort-button-text">
               <span>Sort by:</span>
-              <b>{!isAscending ? `A>Z` : "Z>A"}</b>
+              <b>{!isAscending ? `A > Z` : "Z > A"}</b>
             </div>
           </button>
         </div>
@@ -370,12 +374,12 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
                       </div>
                       <Button
                         type="link"
-                        block
                         onClick={() => {
                           handleCategoryFilter(d.categories);
                         }}
+                        withArrow="link"
                       >
-                        See all {`>`}
+                        See all
                       </Button>
                     </div>
                     <ResourceCards
@@ -473,9 +477,10 @@ const ViewSwitch = ({ type, view, history, queryParams }) => {
         onClick={() => {
           setVisible(!visible);
         }}
+        size="small"
       >
-        <DownOutlined />
-        {view} view
+        <span>{view} view</span>
+        <ChevronDown />
       </div>
       <CSSTransition
         in={visible}
