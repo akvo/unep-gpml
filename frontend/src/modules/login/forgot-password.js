@@ -80,11 +80,10 @@ function ForgotPassword({ setSignIn, setForgotPassword, children }) {
                     </Field>
                   </Form.Item>
                   <Button
-                    type="primary"
-                    shape="round"
                     className={styles.loginButton}
                     onClick={() => handleSubmit()}
                     style={{ marginTop: 20 }}
+                    ghost
                   >
                     SEND ME A LINK
                   </Button>{" "}
