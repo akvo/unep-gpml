@@ -7,9 +7,8 @@ import {
   Magnifier,
   Localiser,
   ArrowRight,
-  FacebookIcon,
   LinkedinIcon,
-  TwitterIcon,
+  YoutubeIcon,
 } from '../../components/icons'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
@@ -405,9 +404,7 @@ const ActNow = () => {
     <div className={styles.actNow}>
       <div className="container act-now-container">
         <div className="wrapper">
-          <div className="caps-heading-1 page-sub-heading">
-            Why should I care?
-          </div>
+          <div className="caps-heading-1 page-sub-heading">Why us?</div>
           <h3 className="h-xxl">
             Act Now: <br /> <span>Co-solution with the plastic network</span>
           </h3>
@@ -657,15 +654,17 @@ const Activities = () => {
         <div className="title-wrapper">
           <div className="title-holder">
             <div className="caps-heading-1 page-sub-heading">
-              HOW DOES IT WORK?
+              WHAT IS THE FOCUS OF GPML?
             </div>
             <h2 className="h-xxl">
-              Learn more <span>about activities</span>
+              <span>GPML’s</span> Action Tracks
             </h2>
             <p className="p-l">
-              The platform offers a wide range of tools to support your
-              decision-making and help a global network of actors to work
-              together to create shared solutions to end plastic pollution.
+              The current core work of the GPML is organized through the
+              following five Action Tracks, with the aim of advancing priority
+              issues by connecting key stakeholders and facilitating
+              collaboration and coordination. The platform offers a wide range
+              of tools to facilitate this work.
             </p>
           </div>
           <div>
@@ -839,13 +838,22 @@ const Partnership = () => {
               <p>Follow us on social media to be part of the movement. </p>
               <ul className="icon-list">
                 <li>
-                  <FacebookIcon />
+                  <a
+                    href="https://ke.linkedin.com/company/global-partnership-on-marine-litter"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <LinkedinIcon />
+                  </a>
                 </li>
                 <li>
-                  <LinkedinIcon />
-                </li>
-                <li>
-                  <TwitterIcon />
+                  <a
+                    href="https://www.youtube.com/channel/UCoWXFwDeoD4c9GoXzFdm9Bg"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <YoutubeIcon />
+                  </a>
                 </li>
               </ul>
             </div>
@@ -1014,29 +1022,20 @@ const Footer = () => {
                 <ul className="social-links">
                   <li>
                     <a
-                      href="https://facebook.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FacebookIcon />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="http://twitter.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <TwitterIcon />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://linkedin.com/"
+                      href="https://ke.linkedin.com/company/global-partnership-on-marine-litter"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       <LinkedinIcon />
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.youtube.com/channel/UCoWXFwDeoD4c9GoXzFdm9Bg"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <YoutubeIcon />
                     </a>
                   </li>
                 </ul>
