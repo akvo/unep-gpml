@@ -828,6 +828,12 @@
 
   :clj-gcp.storage/client {}
 
+  :gpml.boundary.adapter.chat/rocket-chat
+  {:api-url #duct/env ["CHAT_API_URL" Str]
+   :api-key #duct/env ["CHAT_API_KEY" Str]
+   :api-user-id #duct/env ["CHAT_API_USER_ID" Str]
+   :logger #ig/ref :duct/logger}
+
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources
                           :logger #ig/ref :duct/logger
                           :strategy :raise-error}
