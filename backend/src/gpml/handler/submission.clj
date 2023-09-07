@@ -1,17 +1,25 @@
 (ns gpml.handler.submission
-  (:require [clojure.set :as set]
+  (:require [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
+            [clojure.string :as str]
             [duct.logger :refer [log]]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.resource.tag :as db.resource.tag]
-            [gpml.db.review :as db.review]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.submission :as db.submission]
+            [gpml.domain.file :as dom.file]
+            [gpml.handler.resource.permission :as h.r.permission]
+            [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.handler.util :as handler.util]
+            [gpml.service.file :as srv.file]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util.auth0 :as auth0]
             [gpml.util.email :as email]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
+            [malli.core :as m]
+            [malli.transform :as mt]
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
@@ -55,11 +63,29 @@
                       d)) data)]
     data))
 
-(defn- submission-detail [conn params]
-  (let [data (db.submission/detail conn params)
+(defn- get-image-key
+  [entity-key]
+  (case entity-key
+    :stakeholder :picture_id
+    :organisation :logo_id
+    :image_id))
+
+(defn- submission-detail
+  [config conn params]
+  (let [entity-key (keyword (:table-name params))
+        data (db.submission/detail conn params)
         creator-id (:created_by data)
-        creator (db.stakeholder/stakeholder-by-id conn {:id creator-id})]
+        creator (db.stakeholder/stakeholder-by-id conn {:id creator-id})
+        image-id (get data (get-image-key entity-key))
+        thumbnail-id (when-not (get #{:organisation :stakeholder} entity-key)
+                       (:thumbnail_id data))
+        image-file (when image-id
+                     (:file (srv.file/get-file config conn {:filters {:id image-id}})))
+        thumbnail-file (when thumbnail-id
+                         (:file (srv.file/get-file config conn {:filters {:id thumbnail-id}})))]
     (assoc data
+           :image (:url image-file)
+           :thumbnail (:url thumbnail-file)
            :created_by_email (:email creator)
            :creator creator)))
 
@@ -75,33 +101,106 @@
          (merge item (handler.stakeholder.tag/unwrap-tags (assoc item :tags tags))))))
    submission-data))
 
-(defmethod ig/init-key :gpml.handler.submission/get [_ {:keys [db auth0]}]
-  (fn [{{:keys [query]} :parameters}]
-    (let [submission (-> (db.submission/pages (:spec db) query) :result)
-          profiles (filter #(= "profile" (:type %)) (:data submission))
-          submission (-> (if (not-empty profiles)
-                           (assoc submission :data (pending-profiles-response (:data submission) auth0))
-                           submission)
-                         (update :data #(add-stakeholder-tags (:spec db) %)))]
-      (resp/response submission))))
+(defn- add-images-urls
+  [config submissions]
+  (map
+   (fn [submission]
+     (if-not (get-in submission [:image :id])
+       (assoc submission :image nil)
+       (let [image-file (m/decode dom.file/file-schema (:image submission) mt/string-transformer)
+             {:keys [url]} (srv.file/get-file-url config image-file)]
+         (assoc submission :image url))))
+   submissions))
 
-(defmethod ig/init-key :gpml.handler.submission/put [_ {:keys [db mailjet-config]}]
-  (fn [{:keys [body-params admin]}]
-    (let [data (assoc (set/rename-keys body-params {:item_type :table-name})
-                      :reviewed_by (:id admin))
-          review-status (:review_status body-params)
-          _ (db.submission/update-submission (:spec db) data)
-          detail (submission-detail (:spec db) data)
-          creator (:creator detail)]
-      (email/send-email mailjet-config
-                        email/unep-sender
-                        (email/notify-user-review-subject mailjet-config review-status (:table-name data) detail)
-                        (list {:Name (email/get-user-full-name creator) :Email (:email creator)})
-                        (list (if (= review-status "APPROVED")
-                                (email/notify-user-review-approved-text mailjet-config (:table-name data) detail)
-                                (email/notify-user-review-rejected-text mailjet-config (:table-name data) detail)))
-                        (list nil))
-      (assoc (resp/status 200) :body {:message "Successfuly Updated" :data detail}))))
+(defmethod ig/init-key :gpml.handler.submission/get
+  [_ {:keys [db auth0 logger] :as config}]
+  (fn [{:keys [user] {:keys [query]} :parameters}]
+    (try
+      (if-not (h.r.permission/super-admin? config (:id user))
+        (r/forbidden {:message "Unauthorized"})
+        (let [submission (-> (db.submission/pages (:spec db) query) :result)
+              profiles (filter #(= "profile" (:type %)) (:data submission))
+              submission (-> (if (not-empty profiles)
+                               (assoc submission :data (pending-profiles-response (:data submission) auth0))
+                               submission)
+                             (update :data #(->> %
+                                                 (add-stakeholder-tags (:spec db))
+                                                 (add-images-urls config))))]
+          (resp/response submission)))
+      (catch Throwable t
+        (let [log-data {:exception-message (ex-message t)
+                        :exception-data (ex-data t)
+                        :context-data query}]
+          (log logger :error :failed-to-update-submission log-data)
+          (log logger :debug :failed-to-update-submission (assoc log-data :stack-trace (.getStackTrace t)))
+          (r/server-error {:success? false
+                           :reason :failed-to-update-submission}))))))
+
+(defn- handle-stakeholder-role-change
+  [config stakeholder-id review-status]
+  (if (= review-status "APPROVED")
+    (let [result (first (srv.permissions/unassign-roles-from-users config
+                                                                   [{:role-name :unapproved-user
+                                                                     :context-type :application
+                                                                     :resource-id srv.permissions/root-app-resource-id
+                                                                     :user-id stakeholder-id}]))]
+      (if (:success? result)
+        (srv.permissions/assign-roles-to-users config
+                                               [{:role-name :approved-user
+                                                 :context-type :application
+                                                 :resource-id srv.permissions/root-app-resource-id
+                                                 :user-id stakeholder-id}])
+        (throw (ex-info "Failed to unassign role from user" {:user-id stakeholder-id}))))
+    (srv.permissions/unassign-all-roles config stakeholder-id)))
+
+(defn- notify-admins-submission-status
+  [{:keys [mailjet-config]} resource-type resource-details]
+  (let [creator (:creator resource-details)
+        review-status (:review_status resource-details)]
+    (email/send-email mailjet-config
+                      email/unep-sender
+                      (email/notify-user-review-subject mailjet-config review-status resource-type resource-details)
+                      (list {:Name (email/get-user-full-name creator) :Email (:email creator)})
+                      (list (if (= review-status "APPROVED")
+                              (email/notify-user-review-approved-text mailjet-config resource-type resource-details)
+                              (email/notify-user-review-rejected-text mailjet-config resource-type resource-details)))
+                      (list nil))))
+
+(defmethod ig/init-key :gpml.handler.submission/put
+  [_ {:keys [db logger] :as config}]
+  (fn [{:keys [body-params user]}]
+    (try
+      (if-not (h.r.permission/super-admin? config (:id user))
+        (r/forbidden {:message "Unauthorized"})
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (let [submission (assoc (set/rename-keys body-params {:item_type :table-name})
+                                  :reviewed_by (:id user))
+                resource-type (:table-name submission)
+                affected (db.submission/update-submission tx submission)]
+            (if-not (= affected 1)
+              (throw (ex-info "Failed to update submission" {:reason :update-unexpected-number-of-affected-records
+                                                             :expected 1
+                                                             :actual affected}))
+              (let [resource-details (submission-detail config tx submission)]
+                (when (= resource-type "stakeholder")
+                  (handle-stakeholder-role-change {:conn tx
+                                                   :logger logger}
+                                                  (:id submission)
+                                                  (:review_status submission)))
+                (notify-admins-submission-status config resource-type resource-details)
+                (r/ok {:success? true
+                       :message "Successfuly Updated"
+                       :data resource-details}))))))
+      (catch Throwable t
+        (let [log-data {:exception-message (ex-message t)
+                        :exception-data (ex-data t)
+                        :context-data body-params}]
+          (log logger :error :failed-to-update-submission {:exception-message (ex-message t)
+                                                           :exception-data (ex-data t)
+                                                           :context-data body-params})
+          (log logger :debug :failed-to-update-submission (assoc log-data :stack-trace (.getStackTrace t)))
+          (r/server-error {:success? false
+                           :reason :failed-to-update-submission}))))))
 
 (defn- add-stakeholder-extra-details
   [conn stakeholder]
@@ -121,13 +220,13 @@
       (assoc :email email))))
 
 (defn- get-detail
-  [{:keys [db]} params]
+  [{:keys [db] :as config} params]
   (let [conn (:spec db)
         submission (:submission params)
         initiative? (= submission "initiative")
         table-name (handler.util/get-internal-topic-type submission)
         params (conj params {:table-name table-name})
-        detail (submission-detail conn params)
+        detail (submission-detail config conn params)
         detail (if (= submission "stakeholder")
                  (add-stakeholder-extra-details conn detail)
                  detail)
@@ -136,32 +235,31 @@
     (resp/response detail)))
 
 (defmethod ig/init-key :gpml.handler.submission/get-detail
-  [_ {:keys [db logger] :as config}]
+  [_ {:keys [logger] :as config}]
   (fn [{{:keys [path]} :parameters user :user}]
     (try
-      (if-not (= "REVIEWER" (:role user))
-        (get-detail config path)
-        (let [topic-type (:submission path)
-              topic-id (:id path)
-              review (first (db.review/reviews-filter (:spec db) {:topic-type (handler.util/get-internal-topic-type topic-type)
-                                                                  :topic-id topic-id}))]
-          (if (= (:id user) (:reviewer review))
-            (get-detail config path)
-            {:status 403
-             :body {:success? false
-                    :reason :unauthorized}})))
-      (catch Exception e
-        (log logger :error ::failed-to-get-submission-detail {:exception-message (.getMessage e)
+      (let [user-id (:id user)
+            resource-id (:id path)
+            resource-type (handler.util/get-internal-topic-type (:submission path))]
+        (if-not (h.r.permission/operation-allowed? config {:user-id user-id
+                                                           :entity-id resource-id
+                                                           :entity-type (keyword (str/replace resource-type \_ \-))
+                                                           :operation-type :review
+                                                           :root-context? false})
+          (r/forbidden {:message "Unauthorized"})
+          (get-detail config path)))
+      (catch Throwable t
+        (log logger :error ::failed-to-get-submission-detail {:exception-message (ex-message t)
+                                                              :exception-data (ex-data t)
+                                                              :stack-trace (.getStackTrace t)
                                                               :context-data {:params path
                                                                              :user user}})
-        (if (instance? SQLException e)
-          {:status 500
-           :body {:success? false
-                  :reason (pg-util/get-sql-state e)}}
-          {:status 500
-           :body {:success? false
-                  :reason :could-not-submission-get-details
-                  :error-details {:error (.getMessage e)}}})))))
+        (if (instance? SQLException t)
+          (r/server-error {:success? false
+                           :reason (pg-util/get-sql-state t)})
+          (r/server-error {:success? false
+                           :reason :could-not-submission-get-details
+                           :error-details {:error (ex-message t)}}))))))
 
 (defmethod ig/init-key :gpml.handler.submission/get-params [_ _]
   {:query

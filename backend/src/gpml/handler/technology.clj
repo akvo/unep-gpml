@@ -1,48 +1,31 @@
 (ns gpml.handler.technology
   (:require [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
             [duct.logger :refer [log]]
             [gpml.auth :as auth]
             [gpml.db.country :as db.country]
-            [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.technology :as db.technology]
             [gpml.domain.types :as dom.types]
-            [gpml.handler.auth :as h.auth]
-            [gpml.handler.image :as handler.image]
+            [gpml.handler.file :as handler.file]
             [gpml.handler.resource.geo-coverage :as handler.geo]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
+            [gpml.handler.responses :as r]
             [gpml.handler.util :as handler.util]
+            [gpml.service.association :as srv.association]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
             [gpml.util.email :as email]
             [gpml.util.sql :as sql-util]
-            [integrant.core :as ig]
-            [ring.util.response :as resp])
+            [integrant.core :as ig])
   (:import [java.sql SQLException]))
 
-(defn- expand-entity-associations
-  [entity-connections resource-id]
-  (vec (for [connection entity-connections]
-         {:column_name "technology"
-          :topic "technology"
-          :topic_id resource-id
-          :organisation (:entity connection)
-          :association (:role connection)
-          :remarks nil})))
-
-(defn- expand-individual-associations
-  [individual-connections resource-id]
-  (vec (for [connection individual-connections]
-         {:column_name "technology"
-          :topic "technology"
-          :topic_id resource-id
-          :stakeholder (:stakeholder connection)
-          :association (:role connection)
-          :remarks nil})))
-
 (defn- create-technology
-  [{:keys [logger mailjet-config] :as config} conn
+  [{:keys [logger mailjet-config] :as config}
+   conn
+   user
    {:keys [name organisation_type
            development_stage specifications_provided
            year_founded email country
@@ -52,10 +35,14 @@
            tags url urls created_by image owners info_docs
            sub_content_type related_content
            headquarter document_preview
-           logo thumbnail attachments remarks
+           thumbnail attachments remarks
            entity_connections individual_connections language
            capacity_building source]}]
-  (let [data (cond-> {:name name
+  (let [image-id (when (seq image)
+                   (handler.file/create-file config conn image :technology :images :public))
+        thumbnail-id (when (seq thumbnail)
+                       (handler.file/create-file config conn thumbnail :technology :images :public))
+        data (cond-> {:name name
                       :year_founded year_founded
                       :organisation_type organisation_type
                       :development_stage development_stage
@@ -63,9 +50,6 @@
                       :email email
                       :url url
                       :country country
-                      :image (handler.image/assoc-image config conn image "technology")
-                      :logo (handler.image/assoc-image config conn logo "technology")
-                      :thumbnail (handler.image/assoc-image config conn thumbnail "technology")
                       :geo_coverage_type geo_coverage_type
                       :geo_coverage_value geo_coverage_value
                       :geo_coverage_countries geo_coverage_countries
@@ -83,32 +67,39 @@
                       :language language
                       :source source}
                (not (nil? capacity_building))
-               (assoc :capacity_building capacity_building))
+               (assoc :capacity_building capacity_building)
+
+               image-id
+               (assoc :image_id image-id)
+
+               thumbnail-id
+               (assoc :thumbnail_id thumbnail-id))
         technology-id (->>
                        (update data :source #(sql-util/keyword->pg-enum % "resource_source"))
                        (db.technology/new-technology conn)
                        :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
-        owners (distinct (remove nil? (flatten (conj owners
-                                                     (map #(when (= (:role %) "owner")
-                                                             (:stakeholder %))
-                                                          api-individual-connections)))))
-        geo-coverage-type (keyword geo_coverage_type)]
+        geo-coverage-type (keyword geo_coverage_type)
+        org-associations (map #(set/rename-keys % {:entity :organisation}) entity_connections)]
     (when (seq related_content)
       (handler.resource.related-content/create-related-contents conn logger technology-id "technology" related_content))
     (when headquarter
       (db.country/add-country-headquarter conn {:id country :headquarter headquarter}))
-    (doseq [stakeholder-id owners]
-      (h.auth/grant-topic-to-stakeholder! conn {:topic-id technology-id
-                                                :topic-type "technology"
-                                                :stakeholder-id stakeholder-id
-                                                :roles ["owner"]}))
-    (when (not-empty entity_connections)
-      (doseq [association (expand-entity-associations entity_connections technology-id)]
-        (db.favorite/new-organisation-association conn association)))
-    (when (not-empty api-individual-connections)
-      (doseq [association (expand-individual-associations api-individual-connections technology-id)]
-        (db.favorite/new-stakeholder-association conn association)))
+    (srv.permissions/create-resource-context
+     {:conn conn
+      :logger logger}
+     {:context-type :technology
+      :resource-id technology-id})
+    (srv.association/save-associations
+     {:conn conn
+      :logger logger}
+     {:org-associations org-associations
+      :sth-associations (if (seq api-individual-connections)
+                          api-individual-connections
+                          [{:role "owner"
+                            :stakeholder (:id user)}])
+      :resource-type "technology"
+      :resource-id technology-id})
     (when (not-empty tags)
       (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
                                                                              :tag-category "general"
@@ -137,25 +128,34 @@
 
 (defmethod ig/init-key :gpml.handler.technology/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params parameters] :as req}]
+  (fn [{:keys [body-params parameters user]}]
     (try
-      (jdbc/with-db-transaction [tx (:spec db)]
-        (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
-              technology-id (create-technology config tx (assoc body-params
-                                                                :created_by (:id user)
-                                                                :source (get-in parameters [:body :source])))]
-          (resp/created (:referrer req) {:success? true
-                                         :message "New technology created"
-                                         :id technology-id})))
+      (if-not (h.r.permission/operation-allowed?
+               config
+               {:user-id (:id user)
+                :entity-type :technology
+                :operation-type :create
+                :root-context? true})
+        (r/forbidden {:message "Unauthorized"})
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (let [technology-id (create-technology
+                               config
+                               tx
+                               user
+                               (assoc body-params
+                                      :created_by (:id user)
+                                      :source (get-in parameters [:body :source])))]
+            (r/created {:success? true
+                        :message "New technology created"
+                        :id technology-id}))))
       (catch Exception e
         (log logger :error ::failed-to-create-technology {:exception-message (.getMessage e)})
-        (let [response {:status 500
-                        :body {:success? false
-                               :reason :could-not-create-technology}}]
+        (let [response {:success? false
+                        :reason :could-not-create-technology}]
 
           (if (instance? SQLException e)
-            response
-            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
+            (r/server-error response)
+            (r/server-error (assoc-in response [:body :error-details :error] (.getMessage e)))))))))
 
 (def ^:private post-params
   (into [:map

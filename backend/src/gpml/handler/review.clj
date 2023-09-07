@@ -7,7 +7,10 @@
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.stakeholder :as dom.stakeholder]
             [gpml.domain.types :as dom.types]
+            [gpml.handler.resource.permission :as h.r.permission]
+            [gpml.handler.responses :as r]
             [gpml.handler.util :as util]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util.email :as email]
             [gpml.util.regular-expressions :as util.regex]
             [integrant.core :as ig]
@@ -66,7 +69,7 @@
           (assoc response :error-details {:error (.getMessage e)}))))))
 
 (defn- new-review*
-  [{:keys [conn mailjet-config topic-type topic-id assigned-by]} c reviewer-id]
+  [{:keys [logger conn mailjet-config topic-type topic-id assigned-by]} c reviewer-id]
   (let [params {:topic-type topic-type
                 :topic-id topic-id
                 :assigned-by assigned-by
@@ -74,7 +77,15 @@
         reviewer (db.stakeholder/stakeholder-by-id conn {:id reviewer-id})
         reviewer-name (email/get-user-full-name reviewer)
         new-review (db.review/new-review conn params)
-        review (db.review/review-by-id conn new-review)]
+        review (db.review/review-by-id conn new-review)
+        role-assignments [{:role-name :resource-reviewer
+                           :context-type (h.r.permission/entity-type->context-type topic-type)
+                           :resource-id topic-id
+                           :user-id reviewer-id}]]
+    (srv.permissions/assign-roles-to-users
+     {:conn conn
+      :logger logger}
+     role-assignments)
     (email/send-email mailjet-config
                       email/unep-sender
                       (format "[%s] Review requested on new %s" (:app-name mailjet-config) topic-type)
@@ -84,11 +95,12 @@
     (conj c review)))
 
 (defn- new-multiple-review
-  [db mailjet-config topic-type topic-id reviewers assigned-by]
+  [logger db mailjet-config topic-type topic-id reviewers assigned-by]
   (let [topic-type* (util/get-internal-topic-type topic-type)]
     (jdbc/with-db-transaction [conn (:spec db)]
       (db.review/delete-reviews conn {:topic-type topic-type* :topic-id topic-id})
-      (resp/response {:reviews (reduce (partial new-review* {:conn conn
+      (resp/response {:reviews (reduce (partial new-review* {:logger logger
+                                                             :conn conn
                                                              :mailjet-config mailjet-config
                                                              :topic-type topic-type*
                                                              :topic-id topic-id
@@ -97,42 +109,48 @@
                                        reviewers)}))))
 
 (defn- change-reviewers
-  [db mailjet-config topic-type topic-id reviewers admin]
+  [logger db mailjet-config topic-type topic-id reviewers user]
   (let [topic-type* (util/get-internal-topic-type topic-type)
-        assigned-by (:id admin)]
-    (if (= "ADMIN" (:role admin))
-      (jdbc/with-db-transaction [conn (:spec db)]
-        (let [reviews (db.review/reviews-filter conn {:topic-type topic-type* :topic-id topic-id})
-              current-reviewers (set (map :reviewer reviews))
-              [reviewers-to-delete reviewers-to-create reviewers-to-keep] (let [news (set reviewers)
-                                                                                olds (set current-reviewers)
-                                                                                to-keep (set/intersection news olds)
-                                                                                to-delete (set/difference olds news)
-                                                                                to-create (set/difference news olds)]
-                                                                            [to-delete to-create to-keep])
-              reviews-to-delete (filter #(contains? reviewers-to-delete (:reviewer %)) reviews)]
-          (doseq [r reviews-to-delete]
-            (db.review/delete-review-by-id conn {:id (:id r)}))
-          (resp/response {:reviews (into
-                                    reviewers-to-keep
-                                    (reduce (partial new-review* {:conn conn
-                                                                  :mailjet-config mailjet-config
-                                                                  :topic-type topic-type*
-                                                                  :topic-id topic-id
-                                                                  :assigned-by assigned-by}) [] reviewers-to-create))})))
-      {:status 403 :body {:message "Cannot update reviewers for this topic"}})))
-
-(def resp403 {:status 403 :body {:message "Cannot update review for this topic"}})
+        assigned-by (:id user)]
+    (jdbc/with-db-transaction [tx (:spec db)]
+      (let [reviews (db.review/reviews-filter tx {:topic-type topic-type* :topic-id topic-id})
+            current-reviewers (set (map :reviewer reviews))
+            [reviewers-to-delete reviewers-to-create reviewers-to-keep] (let [news (set reviewers)
+                                                                              olds (set current-reviewers)
+                                                                              to-keep (set/intersection news olds)
+                                                                              to-delete (set/difference olds news)
+                                                                              to-create (set/difference news olds)]
+                                                                          [to-delete to-create to-keep])
+            reviews-to-delete (filter #(contains? reviewers-to-delete (:reviewer %)) reviews)]
+        (doseq [r reviews-to-delete]
+          (let [review-id (:id r)
+                role-unassignments [{:role-name :resource-reviewer
+                                     :context-type (h.r.permission/entity-type->context-type topic-type)
+                                     :resource-id topic-id
+                                     :user-id (:reviewer r)}]]
+            (db.review/delete-review-by-id tx {:id review-id})
+            (srv.permissions/unassign-roles-from-users
+             {:conn tx
+              :logger logger}
+             role-unassignments)))
+        (resp/response {:reviews (into
+                                  reviewers-to-keep
+                                  (reduce (partial new-review* {:logger logger
+                                                                :conn tx
+                                                                :mailjet-config mailjet-config
+                                                                :topic-type topic-type*
+                                                                :topic-id topic-id
+                                                                :assigned-by assigned-by}) [] reviewers-to-create))})))))
 
 (defn- update-review-status
-  [db mailjet-config topic-type topic-id review-status review-comment reviewer]
+  [db mailjet-config topic-type topic-id review-status review-comment user]
   (let [topic-type* (util/get-internal-topic-type topic-type)]
     (jdbc/with-db-transaction [conn (:spec db)]
       (if-let [review (first (db.review/reviews-filter
                               conn
-                              {:topic-type topic-type* :topic-id topic-id :reviewer (:id reviewer)}))]
-        ;; If assigned to the current-user
-        (if (= (:reviewer review) (:id reviewer))
+                              {:topic-type topic-type* :topic-id topic-id :reviewer (:id user)}))]
+                                ;; If assigned to the current-user
+        (if (= (:reviewer review) (:id user))
           (let [review-id (db.review/update-review-status
                            conn
                            {:id (:id review)
@@ -147,8 +165,8 @@
                                      (email/get-user-full-name admin) (:app-domain mailjet-config) topic-type (:title review) review-status review-comment))
                               (list nil))
             (resp/response review-id))
-          resp403)
-        resp403))))
+          (r/not-found))
+        (r/not-found)))))
 
 (defn- list-reviews
   [db reviewer page limit status only]
@@ -163,14 +181,29 @@
 
 (defmethod ig/init-key :gpml.handler.review/get-reviewers
   [_ config]
-  (fn [{{:keys [query]} :parameters}]
-    (get-reviewers config query)))
+  (fn [{{:keys [query]} :parameters user :user}]
+    (if (h.r.permission/super-admin? config (:id user))
+      (get-reviewers config query)
+      (r/forbidden {:message "Unauthorized"}))))
 
-(defmethod ig/init-key :gpml.handler.review/new-multiple-review [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.review/new-multiple-review
+  [_ {:keys [db mailjet-config logger] :as config}]
   (fn [{{{:keys [topic-type topic-id]} :path
          {:keys [reviewers]} :body} :parameters
-        admin :admin}]
-    (new-multiple-review db mailjet-config topic-type topic-id reviewers (:id admin))))
+        user :user
+        :as req}]
+    (try
+      (if (h.r.permission/super-admin? config (:id user))
+        (new-multiple-review logger db mailjet-config topic-type topic-id reviewers (:id user))
+        (r/forbidden {:message "Unauthorized"}))
+      (catch Throwable t
+        (let [log-data {:exception-message (ex-message t)
+                        :exception-data (ex-data t)
+                        :context-data {:req-params (:parameters req)
+                                       :user-id (:id user)}}]
+          (log logger :error :failed-add-multiple-reviews log-data)
+          (log logger :debug :failed-add-multiple-reviews (assoc log-data :stack-trace (.getStackTrace t)))
+          (r/server-error {:success? false}))))))
 
 (defn- get-reviews [db topic-type topic-id]
   (let [conn (:spec db)
@@ -180,22 +213,43 @@
                  {:topic-type topic-type :topic-id topic-id})]
     (resp/response reviews)))
 
-(defmethod ig/init-key :gpml.handler.review/update-review [_ {:keys [db mailjet-config]}]
+(defmethod ig/init-key :gpml.handler.review/update-review
+  [_ {:keys [logger db mailjet-config] :as config}]
   (fn [{{{:keys [topic-type topic-id]} :path
          {:keys [review-status review-comment reviewers]} :body} :parameters
-        current-user :reviewer}]
+        user :user}]
     (if reviewers
-      (change-reviewers db mailjet-config topic-type topic-id reviewers current-user)
-      (update-review-status db mailjet-config topic-type topic-id review-status review-comment current-user))))
+      (if (h.r.permission/super-admin? config (:id user))
+        (change-reviewers logger db mailjet-config topic-type topic-id reviewers user)
+        (r/forbidden {:message "Unauthorized"}))
+      (if (h.r.permission/operation-allowed?
+           config
+           {:user-id (:id user)
+            :entity-type (h.r.permission/entity-type->context-type topic-type)
+            :entity-id topic-id
+            :operation-type :review})
+        (update-review-status db mailjet-config topic-type topic-id review-status review-comment user)
+        (r/forbidden {:message "Unauthorized"})))))
 
-(defmethod ig/init-key :gpml.handler.review/get-reviews [_ {:keys [db]}]
-  (fn [{{{:keys [topic-type topic-id]} :path} :parameters}]
-    (get-reviews db topic-type topic-id)))
+(defmethod ig/init-key :gpml.handler.review/get-reviews
+  [_ {:keys [db] :as config}]
+  (fn [{{{:keys [topic-type topic-id]} :path} :parameters user :user}]
+    (if (h.r.permission/super-admin? config (:id user))
+      (get-reviews db topic-type topic-id)
+      (r/forbidden {:message "Unauthorized"}))))
 
-(defmethod ig/init-key :gpml.handler.review/list-user-reviews [_ {:keys [db]}]
+(defmethod ig/init-key :gpml.handler.review/list-user-reviews
+  [_ {:keys [db] :as config}]
   (fn [{{{:keys [page limit review-status only]} :query} :parameters
-        reviewer :reviewer}]
-    (list-reviews db reviewer page limit review-status only)))
+        user :user}]
+    (if (h.r.permission/operation-allowed?
+         config
+         {:user-id (:id user)
+          :entity-type :application
+          :custom-permission :list-assigned-reviews
+          :root-context? true})
+      (list-reviews db user page limit review-status only)
+      (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.review/get-reviewers-params [_ _]
   (let [possible-roles-txt (str/join "|" dom.stakeholder/role-types)

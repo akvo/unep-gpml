@@ -1,6 +1,9 @@
 (ns gpml.handler.activity
   (:require [clojure.string :as str]
             [gpml.db.activity :as db.activity]
+            [gpml.handler.resource.permission :as h.r.permission]
+            [gpml.handler.responses :as r]
+            [gpml.service.permissions :as srv.permissions]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
 
@@ -28,10 +31,18 @@
    [:metadata {:optional true} [:maybe map?]]])
 
 (defmethod ig/init-key :gpml.handler.activity/get-recent
-  [_ {:keys [db]}]
-  (fn [_]
-    (let [result (db.activity/get-recent-activities (:spec db))]
-      (resp/response result))))
+  [_ {:keys [db] :as config}]
+  (fn [{:keys [user]}]
+    (if-not (h.r.permission/operation-allowed?
+             config
+             {:user-id (:id user)
+              :entity-type :application
+              :entity-id srv.permissions/root-app-resource-id
+              :custom-permission :read-activities
+              :root-context? true})
+      (r/forbidden {:message "Unauthorized"})
+      (let [result (db.activity/get-recent-activities (:spec db))]
+        (resp/response result)))))
 
 (defmethod ig/init-key :gpml.handler.activity/get-response
   [_ _]

@@ -1,48 +1,31 @@
 (ns gpml.handler.resource
   (:require [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
             [duct.logger :refer [log]]
             [gpml.auth :as auth]
             [gpml.db.activity :as db.activity]
-            [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
             [gpml.db.resource :as db.resource]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.types :as dom.types]
-            [gpml.handler.auth :as h.auth]
-            [gpml.handler.image :as handler.image]
+            [gpml.handler.file :as handler.file]
             [gpml.handler.resource.geo-coverage :as handler.geo]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
+            [gpml.handler.responses :as r]
             [gpml.handler.util :as handler.util]
+            [gpml.service.association :as srv.association]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
             [gpml.util.email :as email]
             [gpml.util.sql :as sql-util]
-            [integrant.core :as ig]
-            [ring.util.response :as resp])
+            [integrant.core :as ig])
   (:import [java.sql SQLException]))
 
-(defn- expand-entity-associations
-  [entity-connections resource-id]
-  (vec (for [connection entity-connections]
-         {:column_name "resource"
-          :topic "resource"
-          :topic_id resource-id
-          :organisation (:entity connection)
-          :association (:role connection)
-          :remarks nil})))
-
-(defn- expand-individual-associations
-  [individual-connections resource-id]
-  (vec (for [connection individual-connections]
-         {:column_name "resource"
-          :topic "resource"
-          :topic_id resource-id
-          :stakeholder (:stakeholder connection)
-          :association (:role connection)
-          :remarks nil})))
-
 (defn- create-resource
-  [{:keys [logger mailjet-config] :as config} conn
+  [{:keys [logger mailjet-config] :as config}
+   conn
+   user
    {:keys [resource_type title publish_year
            summary value value_currency
            value_remarks valid_from valid_to image
@@ -50,11 +33,15 @@
            geo_coverage_countries geo_coverage_country_groups
            geo_coverage_value_subnational_city geo_coverage_country_states
            attachments country urls tags remarks thumbnail
-           created_by url owners info_docs sub_content_type related_content
+           created_by url info_docs sub_content_type related_content
            first_publication_date latest_amendment_date document_preview
            entity_connections individual_connections language
            capacity_building source]}]
-  (let [data (cond-> {:type resource_type
+  (let [image-id (when (seq image)
+                   (handler.file/create-file config conn image :resource :images :public))
+        thumbnail-id (when (seq thumbnail)
+                       (handler.file/create-file config conn thumbnail :resource :images :public))
+        data (cond-> {:type resource_type
                       :title title
                       :publish_year publish_year
                       :summary summary
@@ -63,8 +50,6 @@
                       :value_remarks value_remarks
                       :valid_from valid_from
                       :valid_to valid_to
-                      :image (handler.image/assoc-image config conn image "resource")
-                      :thumbnail (handler.image/assoc-image config conn thumbnail "resource")
                       :geo_coverage_type geo_coverage_type
                       :geo_coverage_value geo_coverage_value
                       :geo_coverage_countries geo_coverage_countries
@@ -83,34 +68,41 @@
                       :language language
                       :source source}
                (not (nil? capacity_building))
-               (assoc :capacity_building capacity_building))
+               (assoc :capacity_building capacity_building)
+
+               image-id
+               (assoc :image_id image-id)
+
+               thumbnail-id
+               (assoc :thumbnail_id thumbnail-id))
         resource-id (:id (db.resource/new-resource
                           conn
                           (update data :source #(sql-util/keyword->pg-enum % "resource_source"))))
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
-        owners (distinct (remove nil? (flatten (conj owners
-                                                     (map #(when (= (:role %) "owner")
-                                                             (:stakeholder %))
-                                                          api-individual-connections)))))
-        geo-coverage-type (keyword geo_coverage_type)]
+        geo-coverage-type (keyword geo_coverage_type)
+        org-associations (map #(set/rename-keys % {:entity :organisation}) entity_connections)]
     (when (seq related_content)
       (handler.resource.related-content/create-related-contents conn logger resource-id "resource" related_content))
-    (doseq [stakeholder-id owners]
-      (h.auth/grant-topic-to-stakeholder! conn {:topic-id resource-id
-                                                :topic-type "resource"
-                                                :stakeholder-id stakeholder-id
-                                                :roles ["owner"]}))
     (when (not-empty tags)
       (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
                                                                              :tag-category "general"
                                                                              :resource-name "resource"
                                                                              :resource-id resource-id}))
-    (when (not-empty entity_connections)
-      (doseq [association (expand-entity-associations entity_connections resource-id)]
-        (db.favorite/new-organisation-association conn association)))
-    (when (not-empty api-individual-connections)
-      (doseq [association (expand-individual-associations api-individual-connections resource-id)]
-        (db.favorite/new-stakeholder-association conn association)))
+    (srv.permissions/create-resource-context
+     {:conn conn
+      :logger logger}
+     {:context-type :resource
+      :resource-id resource-id})
+    (srv.association/save-associations
+     {:conn conn
+      :logger logger}
+     {:org-associations org-associations
+      :sth-associations (if (seq api-individual-connections)
+                          api-individual-connections
+                          [{:role "owner"
+                            :stakeholder (:id user)}])
+      :resource-type "resource"
+      :resource-id resource-id})
     (when (not-empty urls)
       (let [lang-urls (map #(vector resource-id
                                     (->> % :lang
@@ -134,33 +126,40 @@
 
 (defmethod ig/init-key :gpml.handler.resource/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params parameters] :as req}]
+  (fn [{:keys [body-params parameters user]}]
     (try
-      (jdbc/with-db-transaction [tx (:spec db)]
-        (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
-              resource-id (create-resource config
-                                           tx
-                                           (assoc body-params
-                                                  :created_by (:id user)
-                                                  :source (get-in parameters [:body :source])))
-              activity {:id (util/uuid)
-                        :type "create_resource"
-                        :owner_id (:id user)
-                        :metadata {:resource_id resource-id
-                                   :resource_type (:resource_type body-params)}}]
-          (db.activity/create-activity tx activity)
-          (resp/created (:referrer req) {:success? true
-                                         :message "New resource created"
-                                         :id resource-id})))
+      (if-not (h.r.permission/operation-allowed?
+               config
+               {:user-id (:id user)
+                :entity-type :resource
+                :operation-type :create
+                :root-context? true})
+        (r/forbidden {:message "Unauthorized"})
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (let [resource-id (create-resource
+                             config
+                             tx
+                             user
+                             (assoc body-params
+                                    :created_by (:id user)
+                                    :source (get-in parameters [:body :source])))
+                activity {:id (util/uuid)
+                          :type "create_resource"
+                          :owner_id (:id user)
+                          :metadata {:resource_id resource-id
+                                     :resource_type (:resource_type body-params)}}]
+            (db.activity/create-activity tx activity)
+            (r/created {:success? true
+                        :message "New resource created"
+                        :id resource-id}))))
       (catch Exception e
         (log logger :error ::failed-to-create-resource {:exception-message (.getMessage e)})
-        (let [response {:status 500
-                        :body {:success? false
-                               :reason :could-not-create-resource}}]
+        (let [response {:success? false
+                        :reason :could-not-create-resource}]
 
           (if (instance? SQLException e)
-            response
-            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
+            (r/server-error response)
+            (r/server-error (assoc-in response [:body :error-details :error] (.getMessage e)))))))))
 
 (def ^:private post-params
   [:and

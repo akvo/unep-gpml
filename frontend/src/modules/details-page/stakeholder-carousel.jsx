@@ -1,7 +1,7 @@
 import React from "react";
 import "./stakeholder.module.scss";
 import { Card, Avatar } from "antd";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { UIStore } from "../../store";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -49,48 +49,51 @@ const StakeholderCarousel = ({ stakeholders }) => {
             return (
               <SwiperSlide key={stakeholder?.name}>
                 <Link
-                  to={
+                  href={
                     stakeholder?.type === "entity"
                       ? `/organisation/${stakeholder?.entityId}`
                       : `/stakeholder/${stakeholder?.stakeholderId}`
                   }
+                  legacyBehavior
                 >
-                  <Card
-                    className="connection-card"
-                    key={stakeholder?.stakeholderId}
-                  >
-                    <div
-                      className={`connection-image-wrapper ${
-                        !stakeholder?.image && "connection-no-image-wrapper"
-                      }`}
+                  <a>
+                    <Card
+                      className="connection-card"
+                      key={stakeholder?.stakeholderId}
                     >
-                      <Avatar
-                        className="connection-image"
-                        src={stakeholder.image}
-                        style={{ backgroundColor: colour() }}
-                        alt={stakeholder?.name}
+                      <div
+                        className={`connection-image-wrapper ${
+                          !stakeholder?.image && "connection-no-image-wrapper"
+                        }`}
                       >
-                        {!stakeholder?.image && <CircledUserIcon />}
-                        <span>{initial}</span>
-                      </Avatar>
-                    </div>
-                    <ul className="connection-detail-list">
-                      <li className="list-item connection-name">
-                        {stakeholder?.name}
-                      </li>
-                      {stakeholder?.type !== "entity" && country && (
-                        <li className="list-item connection-location">
-                          <LocationIcon />
-                          <span>{country}</span>
+                        <Avatar
+                          className="connection-image"
+                          src={stakeholder.image}
+                          style={{ backgroundColor: colour() }}
+                          alt={stakeholder?.name}
+                        >
+                          {!stakeholder?.image && <CircledUserIcon />}
+                          <span>{initial}</span>
+                        </Avatar>
+                      </div>
+                      <ul className="connection-detail-list">
+                        <li className="list-item connection-name">
+                          {stakeholder?.name}
                         </li>
-                      )}
-                      {stakeholder?.type === "entity" ? (
-                        <li className="list-item  connection-role">ENTITY</li>
-                      ) : stakeholder?.role === "owner" ? (
-                        <li className="list-item  connection-role">OWNER</li>
-                      ) : null}
-                    </ul>
-                  </Card>
+                        {stakeholder?.type !== "entity" && country && (
+                          <li className="list-item connection-location">
+                            <LocationIcon />
+                            <span>{country}</span>
+                          </li>
+                        )}
+                        {stakeholder?.type === "entity" ? (
+                          <li className="list-item  connection-role">ENTITY</li>
+                        ) : stakeholder?.role === "owner" ? (
+                          <li className="list-item  connection-role">OWNER</li>
+                        ) : null}
+                      </ul>
+                    </Card>
+                  </a>
                 </Link>
               </SwiperSlide>
             );

@@ -3,10 +3,6 @@
   :gpml.handler.main/handler {:routes [["/"
                                         {:get {:no-doc true
                                                :handler #ig/ref :gpml.handler.main/root}}]
-                                       ["/image/{image_type}/{id}"
-                                        {:get {:no-doc true
-                                               :handler #ig/ref :gpml.handler.image/get
-                                               :parameters {:path [:map [:image_type string?] [:id int?]]}}}]
                                        ["/cv/profile/{id}"
                                         {:get {:no-doc true
                                                :handler #ig/ref :gpml.handler.file/profile-cv
@@ -53,45 +49,26 @@
                                                  :swagger {:tags ["browse"]}
                                                  :parameters {:query #ig/ref :gpml.handler.browse/query-params}
                                                  :handler #ig/ref :gpml.handler.browse/get}}]]
-                                        ["/archive" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                  #ig/ref :gpml.auth/auth-required
-                                                                  #ig/ref :gpml.auth/approved-user]}
-                                         [""
-                                          {:get {:summary "Get the list approved submissions"
-                                                 :swagger {:tags ["archive"] :security [{:id_token []}]}
-                                                 :parameters {:query [:map
-                                                                      [:only {:optional true} [:enum "resources" "stakeholders" "tags" "entities"]]
-                                                                      [:page {:optional true
-                                                                              :default 1} int?]
-                                                                      [:limit {:optional true
-                                                                               :default 10} int?]]}
-                                                 :handler #ig/ref :gpml.handler.archive/get}}]]
                                         ["/submission" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                     #ig/ref :gpml.auth/auth-required
-                                                                     #ig/ref :gpml.auth/approved-user]
+                                                                     #ig/ref :gpml.auth/auth-required]
                                                         :responses {401 {:description "Need authentication"}
                                                                     403 {:description "Insufficient permissions"}}}
                                          [""
                                           {:get {:summary "Get the list of submissions"
-                                                 :middleware [#ig/ref :gpml.auth/admin-required-middleware]
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters #ig/ref :gpml.handler.submission/get-params
                                                  :handler #ig/ref :gpml.handler.submission/get}
                                            :put {:summary "Approve or reject a pending submission"
-                                                 :middleware [#ig/ref :gpml.auth/admin-required-middleware]
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters {:body #ig/ref :gpml.handler.submission/put-params}
                                                  :handler #ig/ref :gpml.handler.submission/put}}]
                                          ["/{submission}/{id}"
                                           {:get {:summary "Get the details of a submission"
-                                                 :middleware [#ig/ref :gpml.auth/admin-or-reviewer-required-middleware]
                                                  :swagger {:tags ["submission"] :security [{:id_token []}]}
                                                  :parameters {:path [:map [:submission string?] [:id int?]]}
                                                  :handler #ig/ref :gpml.handler.submission/get-detail}}]]
                                         ["/reviewer" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                   #ig/ref :gpml.auth/auth-required
-                                                                   #ig/ref :gpml.auth/approved-user
-                                                                   #ig/ref :gpml.auth/admin-required-middleware]}
+                                                                   #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:get {:summary "Get list of reviewers"
                                                  :swagger {:tags ["reviewer"]
@@ -100,18 +77,15 @@
                                                  :parameters #ig/ref :gpml.handler.review/get-reviewers-params
                                                  :responses #ig/ref :gpml.handler.review/get-reviewers-responses}}]]
                                         ["/review" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                 #ig/ref :gpml.auth/auth-required
-                                                                 #ig/ref :gpml.auth/approved-user]}
+                                                                 #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:get {:summary "Get list of reviews assigned to current user"
-                                                 :middleware [#ig/ref :gpml.auth/admin-or-reviewer-required-middleware]
                                                  :swagger {:tags ["review"]
                                                            :security [{:id_token []}]}
                                                  :parameters #ig/ref :gpml.handler.review/list-user-reviews-params
                                                  :handler #ig/ref :gpml.handler.review/list-user-reviews}}]
                                          ["/{topic-type}/{topic-id}"
                                           {:get {:summary "Get reviews for a submission"
-                                                 :middleware [#ig/ref :gpml.auth/admin-required-middleware]
                                                  :swagger {:tags ["review"]
                                                            :security [{:id_token []}]}
                                                  :parameters {:path [:map
@@ -119,7 +93,6 @@
                                                                      [:topic-id int?]]}
                                                  :handler #ig/ref :gpml.handler.review/get-reviews}
                                            :post {:summary "Assign reviewers for a submission"
-                                                  :middleware [#ig/ref :gpml.auth/admin-required-middleware]
                                                   :swagger {:tags ["review"]
                                                             :security [{:id_token []}]}
                                                   :parameters {:path [:map
@@ -129,7 +102,6 @@
                                                                       [:reviewers [:vector int?]]]}
                                                   :handler #ig/ref :gpml.handler.review/new-multiple-review}
                                            :patch {:summary "Update review for a submission"
-                                                   :middleware [#ig/ref :gpml.auth/admin-or-reviewer-required-middleware]
                                                    :swagger {:tags ["review"]
                                                              :security [{:id_token []}]}
                                                    :parameters {:path [:map
@@ -143,8 +115,7 @@
                                                                         [:reviewers [:vector int?]]]]}
                                                    :handler #ig/ref :gpml.handler.review/update-review}}]]
                                         ["/event" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                #ig/ref :gpml.auth/auth-required
-                                                                #ig/ref :gpml.auth/approved-user]}
+                                                                #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:post {:summary "Create a new event"
                                                   :swagger {:tags ["event"]
@@ -152,8 +123,7 @@
                                                   :parameters {:body #ig/ref :gpml.handler.event/post-params}
                                                   :handler #ig/ref :gpml.handler.event/post}}]]
                                         ["/resource" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                   #ig/ref :gpml.auth/auth-required
-                                                                   #ig/ref :gpml.auth/approved-user]}
+                                                                   #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:post {:summary "Create a new resource"
                                                   :swagger {:tags ["resource"]
@@ -161,8 +131,7 @@
                                                   :parameters {:body #ig/ref :gpml.handler.resource/post-params}
                                                   :handler #ig/ref :gpml.handler.resource/post}}]]
                                         ["/policy" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                 #ig/ref :gpml.auth/auth-required
-                                                                 #ig/ref :gpml.auth/approved-user]}
+                                                                 #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:post {:summary "Create a new policy"
                                                   :swagger {:tags ["policy"]
@@ -172,8 +141,7 @@
                                         ["/initiative"
                                          [""
                                           {:post {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                               #ig/ref :gpml.auth/auth-required
-                                                               #ig/ref :gpml.auth/approved-user]
+                                                               #ig/ref :gpml.auth/auth-required]
                                                   :summary "Create a new initiative"
                                                   :swagger {:tags ["initiative"]
                                                             :security [{:id_token []}]}
@@ -185,8 +153,7 @@
                                                  :parameters {:path [:map [:id int?]]}
                                                  :handler #ig/ref :gpml.handler.initiative/get}}]]
                                         ["/technology" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                     #ig/ref :gpml.auth/auth-required
-                                                                     #ig/ref :gpml.auth/approved-user]}
+                                                                     #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:post {:summary "Create a new technology"
                                                   :swagger {:tags ["technology"]
@@ -196,8 +163,7 @@
                                         ["/stakeholder" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                                          [""
                                           {:get {:summary "List Stakeholders"
-                                                 :middleware [#ig/ref :gpml.auth/auth-middleware-ckan
-                                                              #ig/ref :gpml.auth/auth-middleware-auth0-actions]
+                                                 :middleware [#ig/ref :gpml.auth/auth-middleware-auth0-actions]
                                                  :swagger {:tags ["stakeholder"]}
                                                  :parameters #ig/ref :gpml.handler.stakeholder/get-params
                                                  :handler #ig/ref :gpml.handler.stakeholder/get}}]
@@ -210,47 +176,37 @@
                                                   :handler #ig/ref :gpml.handler.stakeholder.expert/get}}]
                                           ["/invite"
                                            {:post {:summary "Invite an expert"
-                                                   :middleware [#ig/ref :gpml.auth/auth-required
-                                                                #ig/ref :gpml.auth/approved-user
-                                                                #ig/ref :gpml.auth/admin-required-middleware]
+                                                   :middleware [#ig/ref :gpml.auth/auth-required]
                                                    :swagger {:tags ["stakeholder" "expert"]}
                                                    :parameters #ig/ref :gpml.handler.stakeholder.expert/post-params
                                                    :responses #ig/ref :gpml.handler.stakeholder.expert/post-response
                                                    :handler #ig/ref :gpml.handler.stakeholder.expert/post}}]
                                           ["/suggest"
                                            {:post {:summary "Suggest an expert"
-                                                   :middleware [#ig/ref :gpml.auth/auth-required
-                                                                #ig/ref :gpml.auth/approved-user]
+                                                   :middleware [#ig/ref :gpml.auth/auth-required]
                                                    :swagger {:tags ["stakeholder" "expert"]}
                                                    :parameters #ig/ref :gpml.handler.stakeholder.expert/post-suggest-params
                                                    :responses #ig/ref :gpml.handler.stakeholder.expert/post-suggest-responses
                                                    :handler #ig/ref :gpml.handler.stakeholder.expert/post-suggest}}]]
                                          ["/:id"
                                           [""
-                                           {:get {:middleware [#ig/ref :gpml.auth/auth-required
-                                                               #ig/ref :gpml.auth/approved-user
-                                                               #ig/ref :gpml.auth/admin-or-profile-owner-required-middleware]
+                                           {:get {:middleware [#ig/ref :gpml.auth/auth-required]
                                                   :summary "Get a stakeholder by id"
                                                   :swagger {:tags ["stakeholder"]}
                                                   :parameters {:path [:map [:id int?]]}
                                                   :handler #ig/ref :gpml.handler.stakeholder/get-by-id}
-                                            :put {:middleware [#ig/ref :gpml.auth/auth-required
-                                                               #ig/ref :gpml.auth/approved-user
-                                                               #ig/ref :gpml.auth/admin-or-profile-owner-required-middleware]
+                                            :put {:middleware [#ig/ref :gpml.auth/auth-required]
                                                   :summary "Edit stakeholder's data"
                                                   :swagger {:tags ["stakeholder"]}
                                                   :parameters #ig/ref :gpml.handler.stakeholder/put-restricted-params
                                                   :handler #ig/ref :gpml.handler.stakeholder/put-restricted}
-                                            :patch {:middleware [#ig/ref :gpml.auth/auth-required
-                                                                 #ig/ref :gpml.auth/approved-user
-                                                                 #ig/ref :gpml.auth/admin-required-middleware]
+                                            :patch {:middleware [#ig/ref :gpml.auth/auth-required]
                                                     :summary "Edit stakeholder's data"
                                                     :swagger {:tags ["stakeholder"]}
                                                     :parameters #ig/ref :gpml.handler.stakeholder/patch-params
                                                     :handler #ig/ref :gpml.handler.stakeholder/patch}}]
                                           ["/associated-topics"
-                                           {:get {:middleware [#ig/ref :gpml.auth/auth-required
-                                                               #ig/ref :gpml.auth/approved-user]
+                                           {:get {:middleware [#ig/ref :gpml.auth/auth-required]
                                                   :summary "Get stakeholder associated topics"
                                                   :swagger {:tags ["stakeholder"]}
                                                   :parameters #ig/ref :gpml.handler.stakeholder-association/get-associated-topics-params
@@ -301,9 +257,7 @@
                                            :put {:summary "Update a tag"
                                                  :swagger {:tags ["tag"]}
                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                              #ig/ref :gpml.auth/auth-required
-                                                              #ig/ref :gpml.auth/approved-user
-                                                              #ig/ref :gpml.auth/admin-required-middleware]
+                                                              #ig/ref :gpml.auth/auth-required]
                                                  :responses #ig/ref :gpml.handler.tag/put-response
                                                  :parameters #ig/ref :gpml.handler.tag/put-params
                                                  :handler #ig/ref :gpml.handler.tag/put}}]
@@ -337,21 +291,31 @@
                                           [""
                                            {:get {:summary "Get organisation by id"
                                                   :swagger {:tags ["organisation"]}
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
                                                   :parameters {:path [:map [:id int?]]}
                                                   :handler #ig/ref :gpml.handler.organisation/get-id}
                                             :put {:summary "Update organisation by id and body params"
                                                   :swagger {:tags ["organisation"]
                                                             :security [{:id_token []}]}
                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                               #ig/ref :gpml.auth/auth-required
-                                                               #ig/ref :gpml.auth/approved-user
-                                                               #ig/ref :gpml.auth/restrict-to-organisation-admin-or-owner]
+                                                               #ig/ref :gpml.auth/auth-required]
                                                   :parameters {:path [:map [:id int?]]
                                                                :body #ig/ref :gpml.handler.organisation/put-params}
                                                   :handler #ig/ref :gpml.handler.organisation/put}}]
+                                          ["/request-membership"
+                                           {:put {:summary "Request owned organisation by id to become a member and update its data"
+                                                  :swagger {:tags ["organisation"]
+                                                            :security [{:id_token []}]}
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :parameters #ig/ref :gpml.handler.organisation/put-req-member-params
+                                                  :handler #ig/ref :gpml.handler.organisation/put-req-member}}]
                                           ["/members"
                                            {:get {:summary "List all members belonging to a given organisation"
                                                   :swagger {:tags ["organisation detail"]}
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
                                                   :parameters #ig/ref :gpml.handler.organisation-detail/get-members-params
                                                   :handler #ig/ref :gpml.handler.organisation-detail/get-members}}]
                                           ["/content"
@@ -375,38 +339,15 @@
                                                                      [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                                      [:topic-id int?]]}
                                                  :handler #ig/ref :gpml.handler.favorite/get}}]]
-                                        ["/auth" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
+                                        ["/auth" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]}
                                          ["/{topic-type}/{topic-id}"
                                           [""
-                                           {:get {:summary "Get auth details for a specific topic"
-                                                  :swagger {:tags ["topic auth detail"]}
-                                                  :parameters #ig/ref :gpml.handler.auth/get-topic-auth-params
-                                                  :handler #ig/ref :gpml.handler.auth/get-topic-auth}
-                                            :post {:summary "Add stakeholders auth roles to topic"
+                                           {:post {:summary "Add stakeholders auth roles to topic"
                                                    :swagger {:tags ["topic auth stakeholder"]
                                                              :security [{:id_token []}]}
                                                    :parameters #ig/ref :gpml.handler.auth/post-topic-auth-params
-                                                   :handler #ig/ref :gpml.handler.auth/post-topic-auth}}]
-                                          ["/{stakeholder}"
-                                           {:put {:summary "Update stakeholder auth roles"
-                                                  :swagger {:tags ["topic auth stakeholder"]
-                                                            :security [{:id_token []}]}
-                                                  :parameters #ig/ref :gpml.handler.auth/update-roles-params
-                                                  :handler #ig/ref :gpml.handler.auth/update-roles}
-                                            :post {:summary "Add stakeholder auth roles to topic"
-                                                   :swagger {:tags ["topic auth stakeholder"]
-                                                             :security [{:id_token []}]}
-                                                   :parameters #ig/ref :gpml.handler.auth/new-roles-params
-                                                   :handler #ig/ref :gpml.handler.auth/new-roles}
-                                            :delete {:summary "Delete auth details for a specific resource and stakeholder"
-                                                     :swagger {:tags ["topic stakeholder auth detail"]
-                                                               :security [{:id_token []}]}
-                                                     :parameters #ig/ref :gpml.handler.auth/delete-params
-                                                     :handler #ig/ref :gpml.handler.auth/delete}
-                                            :get {:summary "Get auth details for a specific resource and stakeholder"
-                                                  :swagger {:tags ["topic stakeholder auth detail"]}
-                                                  :parameters #ig/ref :gpml.handler.auth/get-topic-stakeholder-auth-params
-                                                  :handler #ig/ref :gpml.handler.auth/get-topic-stakeholder-auth}}]]]
+                                                   :handler #ig/ref :gpml.handler.auth/post-topic-auth}}]]]
                                         ["/detail"
                                          ["/{topic-type}/{topic-id}"
                                           {:get {:middleware [#ig/ref :gpml.auth/auth-middleware]
@@ -417,8 +358,7 @@
                                                                      [:topic-id int?]]}
                                                  :handler #ig/ref :gpml.handler.detail/get}
                                            :delete {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                 #ig/ref :gpml.auth/auth-required
-                                                                 #ig/ref :gpml.auth/approved-user]
+                                                                 #ig/ref :gpml.auth/auth-required]
                                                     :summary "remove specific resource"
                                                     :swagger {:tags ["resource detail"]}
                                                     :parameters {:path [:map
@@ -426,8 +366,7 @@
                                                                         [:topic-id int?]]}
                                                     :handler #ig/ref :gpml.handler.detail/delete}
                                            :put {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                              #ig/ref :gpml.auth/auth-required
-                                                              #ig/ref :gpml.auth/approved-user]
+                                                              #ig/ref :gpml.auth/auth-required]
                                                  :summary "Edit the details for a specific resource"
                                                  :swagger {:tags ["resource detail"]
                                                            :security [{:id_token []}]}
@@ -438,9 +377,9 @@
                                                  :handler #ig/ref :gpml.handler.detail/put}}]]
                                         ["/translations"
                                          ["/{topic-type}/{topic-id}"
-                                          {:get {:middleware [#ig/ref :gpml.auth/auth-middleware]
-                                                 :summary "Get the translations for a specific resource"
+                                          {:get {:summary "Get the translations for a specific resource"
                                                  :swagger {:tags ["get resource translations"]}
+                                                 :middleware [#ig/ref :gpml.auth/auth-middleware]
                                                  :parameters {:path [:map
                                                                      [:topic-type
                                                                       #ig/ref :gpml.handler.resource.translation/topics]
@@ -448,8 +387,7 @@
                                                               :query #ig/ref :gpml.handler.resource.translation/query-params}
                                                  :handler #ig/ref :gpml.handler.resource.translation/get}
                                            :delete {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                 #ig/ref :gpml.auth/auth-required
-                                                                 #ig/ref :gpml.auth/approved-user]
+                                                                 #ig/ref :gpml.auth/auth-required]
                                                     :summary "Remove specific resource translations"
                                                     :swagger {:tags ["remove resource translations"]}
                                                     :parameters {:path [:map
@@ -459,8 +397,7 @@
                                                                  :body #ig/ref :gpml.handler.resource.translation/delete-params}
                                                     :handler #ig/ref :gpml.handler.resource.translation/delete}
                                            :put {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                              #ig/ref :gpml.auth/auth-required
-                                                              #ig/ref :gpml.auth/approved-user]
+                                                              #ig/ref :gpml.auth/auth-required]
                                                  :summary "Create or edit resource translations"
                                                  :swagger {:tags ["create resource translations"
                                                                   "edit resource translations"]
@@ -494,9 +431,7 @@
                                                 :parameters {:query #ig/ref :gpml.handler.community/get-params}
                                                 :handler #ig/ref :gpml.handler.community/get}}]
                                         ["/export" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                 #ig/ref :gpml.auth/auth-required
-                                                                 #ig/ref :gpml.auth/approved-user
-                                                                 #ig/ref :gpml.auth/admin-required-middleware]}
+                                                                 #ig/ref :gpml.auth/auth-required]}
                                          ["/{export-type}"
                                           {:get {:summary "Export all individuals"
                                                  :swagger {:tags ["export"]}
@@ -518,8 +453,7 @@
                                                  :handler #ig/ref :gpml.handler.comment/get}
                                            :put {:summary "Update a comment details"
                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                              #ig/ref :gpml.auth/auth-required
-                                                              #ig/ref :gpml.auth/restrict-to-admin-and-comment-author-middleware]
+                                                              #ig/ref :gpml.auth/auth-required]
                                                  :swagger {:tags ["comment"] :security [{:id_token []}]}
                                                  :responses #ig/ref :gpml.handler.comment/put-response
                                                  :parameters #ig/ref :gpml.handler.comment/put-params
@@ -527,8 +461,7 @@
                                          ["/:id"
                                           {:delete {:summary "Delete a comment"
                                                     :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                 #ig/ref :gpml.auth/auth-required
-                                                                 #ig/ref :gpml.auth/restrict-to-admin-and-comment-author-middleware]
+                                                                 #ig/ref :gpml.auth/auth-required]
                                                     :swagger {:tags ["comment"] :security [{:id_token []}]}
                                                     :responses #ig/ref :gpml.handler.comment/delete-response
                                                     :parameters #ig/ref :gpml.handler.comment/delete-params
@@ -537,8 +470,6 @@
                                                                      #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:get {:summary "Get invitations"
-                                                 :middleware [#ig/ref :gpml.auth/approved-user
-                                                              #ig/ref :gpml.auth/admin-required-middleware]
                                                  :swagger {:tags ["invitation"]}
                                                  :parameters #ig/ref :gpml.handler.invitation/get-params
                                                  :handler #ig/ref :gpml.handler.invitation/get}}]
@@ -548,8 +479,7 @@
                                                  :parameters #ig/ref :gpml.handler.invitation/put-params
                                                  :handler #ig/ref :gpml.handler.invitation/put}}]]
                                         ["/project" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                  #ig/ref :gpml.auth/auth-required
-                                                                  #ig/ref :gpml.auth/approved-user]}
+                                                                  #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:post {:summary "Create a project"
                                                   :swagger {:tags ["project"]}
@@ -564,19 +494,16 @@
                                          ["/:id"
                                           {:get {:summary "Get a project"
                                                  :swagger {:tags ["project"]}
-                                                 :middleware [#ig/ref :gpml.auth/restrict-to-project-owner]
                                                  :parameters #ig/ref :gpml.handler.project/get-by-id-params
                                                  :responses #ig/ref :gpml.handler.project/get-by-id-responses
                                                  :handler #ig/ref :gpml.handler.project/get-by-id}
                                            :put {:summary "Update a project"
                                                  :swagger {:tags ["project"]}
-                                                 :middleware [#ig/ref :gpml.auth/restrict-to-project-owner]
                                                  :parameters #ig/ref :gpml.handler.project/put-params
                                                  :responses #ig/ref :gpml.handler.project/put-responses
                                                  :handler #ig/ref :gpml.handler.project/put}
                                            :delete {:summary "Delete a project"
                                                     :swagger {:tags ["project"]}
-                                                    :middleware [#ig/ref :gpml.auth/restrict-to-project-owner]
                                                     :parameters #ig/ref :gpml.handler.project/delete-params
                                                     :responses #ig/ref :gpml.handler.project/delete-responses
                                                     :handler #ig/ref :gpml.handler.project/delete}}]]
@@ -601,7 +528,12 @@
                                           {:post {:summary "Creates case studies from a JSON file"
                                                   :swagger {:tags ["case study" "programmatic"]}
                                                   :parameters #ig/ref :gpml.handler.programmatic.case-study/post-params
-                                                  :handler #ig/ref :gpml.handler.programmatic.case-study/post}}]]
+                                                  :handler #ig/ref :gpml.handler.programmatic.case-study/post}}]
+                                         ["/files-migrator"
+                                          {:post {:summary "Runs file migration for a given entity"
+                                                  :swagger {:tags ["file migrator" "programmatic"]}
+                                                  :parameters #ig/ref :gpml.handler.programmatic.files-migrator/post-params
+                                                  :handler #ig/ref :gpml.handler.programmatic.files-migrator/post}}]]
                                         ["/subscribe"
                                          {:post {:summary "Send an email to GPML Secretariat about a new subscription request"
                                                  :swagger {:tags ["subscribe"]}
@@ -613,8 +545,7 @@
                                                  :handler #ig/ref :gpml.handler.contact/post
                                                  :parameters #ig/ref :gpml.handler.contact/post-params}}]
                                         ["/case-study" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                                     #ig/ref :gpml.auth/auth-required
-                                                                     #ig/ref :gpml.auth/approved-user]}
+                                                                     #ig/ref :gpml.auth/auth-required]}
                                          [""
                                           {:post {:summary "Create a new case study"
                                                   :swagger {:tags ["case-study"]}
@@ -654,7 +585,11 @@
    :app-name #duct/env ["APP_NAME" Str]
    :app-domain #duct/env ["APP_DOMAIN" Str]
    :app-user-admin #duct/env ["APP_USER_ADMIN" Str]
+   :storage-api-host-name #duct/env ["GCS_API_HOST_NAME" Str]
    :storage-bucket-name #duct/env ["GCS_BUCKET_NAME" Str]
+   :private-storage-bucket-name #duct/env ["GCS_PRIVATE_BUCKET_NAME" Str]
+   :private-storage-signed-url-lifespan 10080
+   :public-storage-bucket-name #duct/env ["GCS_PUBLIC_BUCKET_NAME" Str]
    :brs-entities-to-import #ig/ref :gpml.config/brs-gpml-entities-mapping
    :subscribe-settings {:management-dest-email #duct/env ["SUBSCRIPTIONS_MANAGEMENT_EMAIL" Str]}
    :contact-settings {:cobsea {:dest-email #duct/env ["CONTACT_COBSEA_MANAGEMENT_EMAIL" Str]}}}
@@ -670,29 +605,22 @@
   :gpml.handler.country/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.country-group/get {:db #ig/ref :duct.database/sql}
 
-  :gpml.handler.browse/get {:db #ig/ref :duct.database/sql
-                            :logger #ig/ref :duct/logger}
+  :gpml.handler.browse/get #ig/ref :gpml.config/common
   :gpml.handler.browse/query-params {}
 
-  :gpml.handler.archive/get {:db #ig/ref :duct.database/sql}
-
-  :gpml.handler.submission/get {:db #ig/ref :duct.database/sql
-                                :auth0 #ig/ref :gpml.config/auth0}
+  :gpml.handler.submission/get #ig/ref :gpml.config/common
   :gpml.handler.submission/get-params {}
   :gpml.handler.submission/get-detail #ig/ref :gpml.config/common
-  :gpml.handler.submission/put {:db #ig/ref :duct.database/sql
-                                :mailjet-config #ig/ref :gpml.config/mailjet}
+  :gpml.handler.submission/put #ig/ref :gpml.config/common
   :gpml.handler.submission/put-params {}
 
   :gpml.handler.review/get-reviewers #ig/ref :gpml.config/common
   :gpml.handler.review/get-reviewers-params {}
   :gpml.handler.review/get-reviewers-responses {}
-  :gpml.handler.review/get-reviews {:db #ig/ref :duct.database/sql}
-  :gpml.handler.review/new-multiple-review {:db #ig/ref :duct.database/sql
-                                            :mailjet-config #ig/ref :gpml.config/mailjet}
-  :gpml.handler.review/update-review {:db #ig/ref :duct.database/sql
-                                      :mailjet-config #ig/ref :gpml.config/mailjet}
-  :gpml.handler.review/list-user-reviews {:db #ig/ref :duct.database/sql}
+  :gpml.handler.review/get-reviews #ig/ref :gpml.config/common
+  :gpml.handler.review/new-multiple-review #ig/ref :gpml.config/common
+  :gpml.handler.review/update-review #ig/ref :gpml.config/common
+  :gpml.handler.review/list-user-reviews #ig/ref :gpml.config/common
   :gpml.handler.review/list-user-reviews-params {}
   :gpml.handler.review/review-status-params {}
 
@@ -719,20 +647,20 @@
   :gpml.handler.initiative/post-params {}
 
   :gpml.handler.stakeholder/get-params {}
-  :gpml.handler.stakeholder/patch {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder/patch #ig/ref :gpml.config/common
   :gpml.handler.stakeholder/patch-params {}
-  :gpml.handler.stakeholder/profile {:db #ig/ref :duct.database/sql}
-  :gpml.handler.stakeholder/get {:db #ig/ref :duct.database/sql}
-  :gpml.handler.stakeholder/get-by-id {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder/profile #ig/ref :gpml.config/common
+  :gpml.handler.stakeholder/get #ig/ref :gpml.config/common
+  :gpml.handler.stakeholder/get-by-id #ig/ref :gpml.config/common
   :gpml.handler.stakeholder/post #ig/ref :gpml.config/common
   :gpml.handler.stakeholder/post-params {}
   :gpml.handler.stakeholder/put #ig/ref :gpml.config/common
   :gpml.handler.stakeholder/put-restricted #ig/ref :gpml.config/common
   :gpml.handler.stakeholder/put-restricted-params {}
-  :gpml.handler.stakeholder-association/get-associated-topics {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder-association/get-associated-topics #ig/ref :gpml.config/common
   :gpml.handler.stakeholder-association/get-associated-topics-params {}
 
-  :gpml.handler.stakeholder/suggested-profiles {:db #ig/ref :duct.database/sql}
+  :gpml.handler.stakeholder/suggested-profiles #ig/ref :gpml.config/common
   :gpml.handler.stakeholder/suggested-profiles-params {}
 
   :gpml.handler.stakeholder.expert/get #ig/ref :gpml.config/common
@@ -755,20 +683,17 @@
   :gpml.handler.tag/put-params {}
   :gpml.handler.tag/put-response {}
 
-  :gpml.handler.non-member-organisation/get {:db #ig/ref :duct.database/sql}
-  :gpml.handler.organisation/get {:db #ig/ref :duct.database/sql}
-  :gpml.handler.organisation/post {:db #ig/ref :duct.database/sql
-                                   :mailjet-config #ig/ref :gpml.config/mailjet
-                                   :logger #ig/ref :duct/logger}
-  :gpml.handler.organisation/put {:db #ig/ref :gpml.db/spec}
+  :gpml.handler.non-member-organisation/get #ig/ref :gpml.config/common
+  :gpml.handler.organisation/get #ig/ref :gpml.config/common
+  :gpml.handler.organisation/post #ig/ref :gpml.config/common
+  :gpml.handler.organisation/put #ig/ref :gpml.config/common
   :gpml.handler.organisation/post-params {}
   :gpml.handler.organisation/put-params {}
-  :gpml.handler.organisation/get-id {:db #ig/ref :duct.database/sql}
+  :gpml.handler.organisation/put-req-member #ig/ref :gpml.config/common
+  :gpml.handler.organisation/put-req-member-params {}
+  :gpml.handler.organisation/get-id #ig/ref :gpml.config/common
   :gpml.handler.programmatic.organisation/post #ig/ref :gpml.config/common
   :gpml.handler.programmatic.organisation/post-params {}
-
-  :gpml.handler.image/get {:db #ig/ref :duct.database/sql
-                           :logger #ig/ref :duct/logger}
 
   :gpml.handler.file/profile-cv {:db #ig/ref :duct.database/sql}
 
@@ -782,30 +707,19 @@
                          :sentry {:dsn #duct/env "SENTRY_DSN"
                                   :environment #duct/env "ENV_NAME"}}
 
-  :gpml.handler.auth/get-topic-stakeholder-auth #ig/ref :gpml.config/common
-  :gpml.handler.auth/get-topic-auth #ig/ref :gpml.config/common
   :gpml.handler.auth/post-topic-auth #ig/ref :gpml.config/common
-  :gpml.handler.auth/new-roles #ig/ref :gpml.config/common
-  :gpml.handler.auth/update-roles #ig/ref :gpml.config/common
-  :gpml.handler.auth/delete #ig/ref :gpml.config/common
-  :gpml.handler.auth/get-topic-stakeholder-auth-params {}
-  :gpml.handler.auth/get-topic-auth-params {}
   :gpml.handler.auth/post-topic-auth-params {}
-  :gpml.handler.auth/new-roles-params {}
-  :gpml.handler.auth/update-roles-params {}
-  :gpml.handler.auth/delete-params {}
 
-  :gpml.handler.comment/post {:db #ig/ref :duct.database/sql
-                              :mailjet-config #ig/ref :gpml.config/mailjet}
+  :gpml.handler.comment/post #ig/ref :gpml.config/common
   :gpml.handler.comment/post-params {}
   :gpml.handler.comment/post-response {}
-  :gpml.handler.comment/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.comment/get #ig/ref :gpml.config/common
   :gpml.handler.comment/get-params {}
   :gpml.handler.comment/get-response {}
-  :gpml.handler.comment/put {:db #ig/ref :duct.database/sql}
+  :gpml.handler.comment/put #ig/ref :gpml.config/common
   :gpml.handler.comment/put-params {}
   :gpml.handler.comment/put-response {}
-  :gpml.handler.comment/delete {:db #ig/ref :duct.database/sql}
+  :gpml.handler.comment/delete #ig/ref :gpml.config/common
   :gpml.handler.comment/delete-params {}
   :gpml.handler.comment/delete-response {}
   :gpml.handler.detail/topics {}
@@ -831,21 +745,18 @@
   :gpml.handler.organisation-detail/get-members {:db #ig/ref :duct.database/sql}
   :gpml.handler.organisation-detail/get-members-params {}
 
-  :gpml.handler.activity/get-recent {:db #ig/ref :duct.database/sql}
+  :gpml.handler.activity/get-recent #ig/ref :gpml.config/common
   :gpml.handler.activity/get-response {}
 
-  :gpml.handler.community/get {:db #ig/ref :duct.database/sql}
+  :gpml.handler.community/get #ig/ref :gpml.config/common
   :gpml.handler.community/get-params {}
 
-  :gpml.handler.export/get {:db #ig/ref :duct.database/sql
-                            :app-domain #duct/env ["APP_DOMAIN" Str]}
+  :gpml.handler.export/get #ig/ref :gpml.config/common
   :gpml.handler.export/get-params {}
 
-  :gpml.handler.invitation/get {:db #ig/ref :duct.database/sql
-                                :logger #ig/ref :duct/logger}
+  :gpml.handler.invitation/get #ig/ref :gpml.config/common
   :gpml.handler.invitation/get-params {}
-  :gpml.handler.invitation/put {:db #ig/ref :duct.database/sql
-                                :logger #ig/ref :duct/logger}
+  :gpml.handler.invitation/put #ig/ref :gpml.config/common
   :gpml.handler.invitation/put-params {}
 
   :gpml.handler.project/post #ig/ref :gpml.config/common
@@ -885,6 +796,9 @@
   :gpml.handler.country-state/get-params {}
   :gpml.handler.country-state/get-responses {}
 
+  :gpml.handler.programmatic.files-migrator/post #ig/ref :gpml.config/common
+  :gpml.handler.programmatic.files-migrator/post-params #ig/ref :gpml.config/common
+
   :clj-gcp.storage/client {}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources
@@ -902,24 +816,12 @@
    :audience #duct/env ["OIDC_AUDIENCE_M2M" Str]
    :db #ig/ref :duct.database/sql}
 
-  :gpml.auth/auth-middleware-ckan
-  {:issuer #duct/env ["OIDC_ISSUER" Str]
-   :audience #duct/env ["OIDC_AUDIENCE_M2M" Str]
-   :db #ig/ref :duct.database/sql}
-
   :gpml.auth/auth-middleware-auth0-actions
   {:issuer #duct/env ["OIDC_ISSUER" Str]
    :audience #duct/env ["OIDC_AUDIENCE_AUTH0_ACTIONS" Str]
    :db #ig/ref :duct.database/sql}
 
   :gpml.auth/auth-required {}
-  :gpml.auth/restrict-to-admin-and-comment-author-middleware {:db #ig/ref :duct.database/sql}
-  :gpml.auth/restrict-to-organisation-admin-or-owner {:db #ig/ref :duct.database/sql}
-  :gpml.auth/approved-user {:db #ig/ref :duct.database/sql}
-  :gpml.auth/admin-required-middleware {:db #ig/ref :duct.database/sql}
-  :gpml.auth/admin-or-reviewer-required-middleware {:db #ig/ref :duct.database/sql}
-  :gpml.auth/restrict-to-project-owner #ig/ref :gpml.config/common
-  :gpml.auth/admin-or-profile-owner-required-middleware {}
 
   :gpml.handler.monitoring/collector {}
 
@@ -966,9 +868,9 @@
   ;; End of base configuration
   }
 
- :duct.profile/dev   #duct/include "dev"
- :duct.profile/local #duct/include "local"
- :duct.profile/test  #duct/include "test"
+ :duct.profile/dev   #duct/include "dev.edn"
+ :duct.profile/local #duct/include "local.edn"
+ :duct.profile/test  #duct/include "test.edn"
  :duct.profile/prod
  {:gpml.handler.main/handler {:collector #ig/ref :gpml.handler.monitoring/collector}
   :duct.server.http/jetty {:configurator #ig/ref :gpml.handler.monitoring/jetty-configurator}

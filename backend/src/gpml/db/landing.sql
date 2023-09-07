@@ -2,7 +2,7 @@
 -- :doc Gets the entity count per country.
 -- :require [gpml.db.topic]
 /*~ (if (= (:entity-group params) :topic)
-(#'gpml.db.topic/generate-topic-query params gpml.db.topic/generic-cte-opts)
+(#'gpml.db.topic/generate-topic-query params)
 (#'gpml.db.topic/generate-entity-topic-query params gpml.db.topic/generic-entity-cte-opts))
 ~*/
 ,
@@ -11,8 +11,8 @@ filtered_entities AS (
 ),
 transnational_counts_per_country AS (
   SELECT cgc.country AS country_id,
-         topic,
-         COUNT(DISTINCT json->>'id') AS topic_count
+	 topic,
+	 COUNT(DISTINCT json->>'id') AS topic_count
   FROM filtered_entities
   LEFT JOIN json_array_elements_text((json->>'geo_coverage_values')::JSON) cgcs
   ON json->>'geo_coverage_values' IS NOT NULL
@@ -23,8 +23,8 @@ transnational_counts_per_country AS (
 ),
 country_group_counts AS (
   SELECT (country_groups.value)::TEXT::INT AS country_group_id,
-         topic,
-         COUNT(topic) AS topic_count
+	 topic,
+	 COUNT(topic) AS topic_count
   FROM filtered_entities
   LEFT JOIN json_array_elements_text((json->>'geo_coverage_country_groups')::JSON) country_groups
   ON json->>'geo_coverage_country_groups' IS NOT NULL
@@ -34,8 +34,8 @@ country_group_counts AS (
 country_counts AS (
 /*~ (if (= (:entity-group params) :topic) */
   SELECT (countries.value)::TEXT::INT AS country_id,
-         topic,
-         COUNT(topic) AS topic_count
+	 topic,
+	 COUNT(topic) AS topic_count
   FROM filtered_entities
   LEFT JOIN json_array_elements_text((json->>'geo_coverage_countries')::JSON) countries
   ON json->>'geo_coverage_countries' IS NOT NULL
@@ -82,285 +82,285 @@ country_group_counts_agg AS (
 -- :doc Get summary of count of entities and number of countries
 WITH initiative_countries AS (
     SELECT
-        c.id
+	c.id
     FROM
-        initiative_geo_coverage ig,
-        country_group_country cgc
-        JOIN country c ON cgc.country = c.id
+	initiative_geo_coverage ig,
+	country_group_country cgc
+	JOIN country c ON cgc.country = c.id
     WHERE
-        ig.country_group = cgc.country_group
+	ig.country_group = cgc.country_group
     UNION
     SELECT
-        ig.country AS id
+	ig.country AS id
     FROM
-        initiative_geo_coverage ig
+	initiative_geo_coverage ig
     WHERE
-        ig.country IS NOT NULL
+	ig.country IS NOT NULL
 ),
 resource_countries AS (
     SELECT
-        c.id,
-        r.type
+	c.id,
+	r.type
     FROM
-        resource_geo_coverage rg
-        LEFT JOIN resource r ON rg.resource = r.id,
-        country_group_country cgc
-        JOIN country c ON cgc.country = c.id
+	resource_geo_coverage rg
+	LEFT JOIN resource r ON rg.resource = r.id,
+	country_group_country cgc
+	JOIN country c ON cgc.country = c.id
     WHERE
-        rg.country_group = cgc.country_group
+	rg.country_group = cgc.country_group
     UNION
     SELECT
-        rg.country AS id,
-        r.type
+	rg.country AS id,
+	r.type
     FROM
-        resource_geo_coverage rg
-        LEFT JOIN resource r ON rg.resource = r.id
+	resource_geo_coverage rg
+	LEFT JOIN resource r ON rg.resource = r.id
     WHERE
-        rg.country IS NOT NULL
+	rg.country IS NOT NULL
 ),
 event_countries AS (
     SELECT
-        c.id
+	c.id
     FROM
-        event_geo_coverage e,
-        country_group_country cgc
-        JOIN country c ON cgc.country = c.id
+	event_geo_coverage e,
+	country_group_country cgc
+	JOIN country c ON cgc.country = c.id
     WHERE
-        e.country_group = cgc.country_group
+	e.country_group = cgc.country_group
     UNION
     SELECT
-        e.country AS id
+	e.country AS id
     FROM
-        event_geo_coverage e
+	event_geo_coverage e
     WHERE
-        e.country IS NOT NULL
+	e.country IS NOT NULL
 ),
 policy_countries AS (
     SELECT
-        c.id
+	c.id
     FROM
-        policy_geo_coverage p,
-        country_group_country cgc
-        JOIN country c ON cgc.country = c.id
+	policy_geo_coverage p,
+	country_group_country cgc
+	JOIN country c ON cgc.country = c.id
     WHERE
-        p.country_group = cgc.country_group
+	p.country_group = cgc.country_group
     UNION
     SELECT
-        p.country AS id
+	p.country AS id
     FROM
-        policy_geo_coverage p
+	policy_geo_coverage p
     WHERE
-        p.country IS NOT NULL
+	p.country IS NOT NULL
 ),
 technology_countries AS (
     SELECT
-        c.id
+	c.id
     FROM
-        technology_geo_coverage t,
-        country_group_country cgc
-        JOIN country c ON cgc.country = c.id
+	technology_geo_coverage t,
+	country_group_country cgc
+	JOIN country c ON cgc.country = c.id
     WHERE
-        t.country_group = cgc.country_group
+	t.country_group = cgc.country_group
     UNION
     SELECT
-        t.country AS id
+	t.country AS id
     FROM
-        technology_geo_coverage t
+	technology_geo_coverage t
     WHERE
-        t.country IS NOT NULL
+	t.country IS NOT NULL
 ),
 stakeholder_countries AS (
     SELECT
-        country AS id
+	country AS id
     FROM
-        stakeholder
+	stakeholder
     WHERE
-        country IS NOT NULL
-        AND review_status = 'APPROVED'
+	country IS NOT NULL
+	AND review_status = 'APPROVED'
 ),
 organisation_countries AS (
     WITH approved_orgs AS (
-        SELECT
-            o.country,
-            o.country_group
-        FROM
-            organisation_geo_coverage o
-        LEFT JOIN organisation org ON o.organisation = org.id
+	SELECT
+	    o.country,
+	    o.country_group
+	FROM
+	    organisation_geo_coverage o
+	LEFT JOIN organisation org ON o.organisation = org.id
     WHERE
-        org.review_status = 'APPROVED' AND is_member IS TRUE
+	org.review_status = 'APPROVED' AND is_member IS TRUE
 )
     SELECT
-        c.id
+	c.id
     FROM
-        approved_orgs o,
-        country_group_country cgc
-        JOIN country c ON cgc.country = c.id
+	approved_orgs o,
+	country_group_country cgc
+	JOIN country c ON cgc.country = c.id
     WHERE
-        o.country_group = cgc.country_group
+	o.country_group = cgc.country_group
     UNION
     SELECT
-        o.country AS id
+	o.country AS id
     FROM
-        approved_orgs o
+	approved_orgs o
     WHERE
-        o.country IS NOT NULL
+	o.country IS NOT NULL
 ),
 non_member_organisation_countries AS (
     WITH approved_orgs AS (
-        SELECT
-            o.organisation,
-            o.country,
-            o.country_group
-        FROM
-            organisation_geo_coverage o
-        LEFT JOIN organisation org ON o.organisation = org.id
-        WHERE
-            org.review_status = 'APPROVED'
-            AND org.is_member IS FALSE
+	SELECT
+	    o.organisation,
+	    o.country,
+	    o.country_group
+	FROM
+	    organisation_geo_coverage o
+	LEFT JOIN organisation org ON o.organisation = org.id
+	WHERE
+	    org.review_status = 'APPROVED'
+	    AND org.is_member IS FALSE
 ),
     country_counts AS (
-        SELECT
-            o.organisation AS id,
-            COUNT(c.id) AS country_count
-        FROM
-           approved_orgs o,
-           country_group_country cgc
-        JOIN country c ON cgc.country = c.id
-        WHERE
-           o.country_group = cgc.country_group
-        GROUP BY
-           o.organisation
-        UNION
-        SELECT
-           o.organisation AS id,
-           COUNT(o.country) AS country_count
-        FROM
-           approved_orgs o
-        WHERE
-           o.country IS NOT NULL
-        GROUP BY
-           o.organisation
+	SELECT
+	    o.organisation AS id,
+	    COUNT(c.id) AS country_count
+	FROM
+	   approved_orgs o,
+	   country_group_country cgc
+	JOIN country c ON cgc.country = c.id
+	WHERE
+	   o.country_group = cgc.country_group
+	GROUP BY
+	   o.organisation
+	UNION
+	SELECT
+	   o.organisation AS id,
+	   COUNT(o.country) AS country_count
+	FROM
+	   approved_orgs o
+	WHERE
+	   o.country IS NOT NULL
+	GROUP BY
+	   o.organisation
 )
     SELECT
-        id,
-        SUM(country_count) AS country_count
+	id,
+	SUM(country_count) AS country_count
     FROM
-        country_counts
+	country_counts
     GROUP BY
-        id
+	id
 ),
 country_counts AS (
     SELECT
-        COUNT(*) AS country,
-        'initiative' AS data
+	COUNT(*) AS country,
+	'initiative' AS data
     FROM
-        initiative_countries
+	initiative_countries
     UNION
     SELECT
-        COUNT(*) AS country,
-        replace(lower(type), ' ', '_') AS data
+	COUNT(*) AS country,
+	replace(lower(type), ' ', '_') AS data
     FROM
-        resource_countries
+	resource_countries
     WHERE
-        type IS NOT NULL
+	type IS NOT NULL
     GROUP BY
-        data
+	data
     UNION
     SELECT
-        COUNT(*) AS country,
-        'event' AS data
+	COUNT(*) AS country,
+	'event' AS data
     FROM
-        event_countries
+	event_countries
     UNION
     SELECT
-        COUNT(*) AS country,
-        'policy' AS data
+	COUNT(*) AS country,
+	'policy' AS data
     FROM
-        policy_countries
+	policy_countries
     UNION
     SELECT
-        COUNT(*) AS country,
-        'technology' AS data
+	COUNT(*) AS country,
+	'technology' AS data
     FROM
-        technology_countries
+	technology_countries
     UNION
     SELECT
-        COUNT(*) AS country,
-        'organisation' AS data
+	COUNT(*) AS country,
+	'organisation' AS data
     FROM
-        organisation_countries
+	organisation_countries
     UNION
     SELECT
-        COUNT(*) AS country,
-        'stakeholder' AS data
+	COUNT(*) AS country,
+	'stakeholder' AS data
     FROM
-        stakeholder_countries
+	stakeholder_countries
 ),
 totals AS (
     SELECT
-        COUNT(*) AS total,
-        'initiative' AS data,
-        1 AS o
+	COUNT(*) AS total,
+	'initiative' AS data,
+	1 AS o
     FROM
-        initiative
+	initiative
     WHERE
-        review_status = 'APPROVED'
+	review_status = 'APPROVED'
     UNION
     SELECT
-        COUNT(*) AS total,
-        REPLACE(LOWER(type), ' ', '_') AS data,
-        2 AS o
+	COUNT(*) AS total,
+	REPLACE(LOWER(type), ' ', '_') AS data,
+	2 AS o
     FROM
-        resource
+	resource
     WHERE
-        review_status = 'APPROVED'
-        AND type IS NOT NULL
+	review_status = 'APPROVED'
+	AND type IS NOT NULL
     GROUP BY
-        data
+	data
     UNION
     SELECT
-        COUNT(*) AS total,
-        'event' AS data,
-        3 AS o
+	COUNT(*) AS total,
+	'event' AS data,
+	3 AS o
     FROM
-        event
+	event
     WHERE
-        event.review_status = 'APPROVED'
+	event.review_status = 'APPROVED'
     UNION
     SELECT
-        COUNT(*) AS total,
-        'policy' AS data,
-        4 AS o
+	COUNT(*) AS total,
+	'policy' AS data,
+	4 AS o
     FROM
-        policy
+	policy
     WHERE
-        review_status = 'APPROVED'
+	review_status = 'APPROVED'
     UNION
     SELECT
-        COUNT(*) AS total,
-        'technology' AS data,
-        5 AS o
+	COUNT(*) AS total,
+	'technology' AS data,
+	5 AS o
     FROM
-        technology
+	technology
     WHERE
-        review_status = 'APPROVED'
+	review_status = 'APPROVED'
     UNION
     SELECT
-        COUNT(*) AS total,
-        'organisation' AS data,
-        6 AS o
+	COUNT(*) AS total,
+	'organisation' AS data,
+	6 AS o
     FROM
-        organisation
+	organisation
     WHERE
-        review_status = 'APPROVED'
-        AND is_member IS TRUE
+	review_status = 'APPROVED'
+	AND is_member IS TRUE
     UNION
     SELECT
-        COUNT(*) AS total,
-        'stakeholder' AS data,
-        7 AS o
+	COUNT(*) AS total,
+	'stakeholder' AS data,
+	7 AS o
     FROM
-        stakeholder
+	stakeholder
     WHERE
     review_status = 'APPROVED'
 )

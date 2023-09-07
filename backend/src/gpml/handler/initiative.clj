@@ -1,18 +1,20 @@
 (ns gpml.handler.initiative
   (:require [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
             [duct.logger :refer [log]]
-            [gpml.db.favorite :as db.favorite]
             [gpml.db.initiative :as db.initiative]
             [gpml.db.resource.connection :as db.resource.connection]
             [gpml.db.resource.tag :as db.resource.tag]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.tag :as db.tag]
             [gpml.domain.types :as dom.types]
-            [gpml.handler.auth :as h.auth]
-            [gpml.handler.image :as handler.image]
+            [gpml.handler.file :as handler.file]
             [gpml.handler.resource.geo-coverage :as handler.geo]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
+            [gpml.handler.resource.tag :as handler.resource.tag]
+            [gpml.handler.responses :as r]
             [gpml.handler.util :as util]
+            [gpml.service.association :as srv.association]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util.email :as email]
             [gpml.util.sql :as sql-util]
             [integrant.core :as ig]
@@ -40,115 +42,93 @@
   {:geo_coverage_country_groups (mapv (comp #(Integer/parseInt %) name ffirst) (:q24_4 params))
    :geo_coverage_countries (mapv (comp #(Integer/parseInt %) name ffirst) (:q24_2 params))})
 
-(defn- expand-entity-associations
-  [entity-connections resource-id]
-  (vec (for [connection entity-connections]
-         {:column_name "initiative"
-          :topic "initiative"
-          :topic_id resource-id
-          :organisation (:entity connection)
-          :association (:role connection)
-          :remarks nil})))
-
-(defn- expand-individual-associations
-  [individual-connections resource-id]
-  (vec (for [connection individual-connections]
-         {:column_name "initiative"
-          :topic "initiative"
-          :topic_id resource-id
-          :stakeholder (:stakeholder connection)
-          :association (:role connection)
-          :remarks nil})))
-
-(defn- add-tags
-  [conn mailjet-config tags initiative-id]
-  (let [tag-ids (map #(:id %) tags)]
-    (if-not (some nil? tag-ids)
-      (db.initiative/add-initiative-tags conn {:tags (map #(vector initiative-id %) tag-ids)})
-      (let [tag-category (:id (db.tag/tag-category-by-category-name conn {:category "general"}))
-            new-tags (filter #(not (contains? % :id)) tags)
-            tags-to-db (map #(vector % tag-category) (vec (map #(:tag %) new-tags)))
-            tag-entity-columns ["tag" "tag_category"]
-            new-tag-ids (map #(:id %) (db.tag/new-tags conn {:tags tags-to-db
-                                                             :insert-cols tag-entity-columns}))]
-        (db.initiative/add-initiative-tags conn {:tags (map #(vector initiative-id %) (concat (remove nil? tag-ids) new-tag-ids))})
-        (map
-         #(email/notify-admins-pending-approval
-           conn
-           mailjet-config
-           (merge % {:type "tag"}))
-         new-tags)))))
-
 (defn- create-initiative
   [{:keys [logger mailjet-config] :as config}
-   tx
-   {:keys [q24 tags owners related_content created_by
+   conn
+   user
+   {:keys [q24 tags related_content created_by
            entity_connections individual_connections qimage thumbnail capacity_building] :as initiative}]
-  (let [data (cond-> initiative
-               true
-               (dissoc :tags :owners :entity_connections
-                       :individual_connections :related_content)
+  (let [image-id (when (seq qimage)
+                   (handler.file/create-file config conn qimage :initiative :images :public))
+        thumbnail-id (when (seq thumbnail)
+                       (handler.file/create-file config conn thumbnail :initiative :images :public))
+        data (cond-> (dissoc initiative
+                             :tags :owners :entity_connections
+                             :individual_connections :related_content
+                             :qimage :thumbnail)
+               image-id
+               (assoc :image_id image-id)
 
-               true
-               (assoc :qimage (handler.image/assoc-image config tx qimage "initiative")
-                      :thumbnail (handler.image/assoc-image config tx thumbnail "initiative"))
+               thumbnail-id
+               (assoc :thumbnail_id thumbnail-id)
 
                (not (nil? capacity_building))
                (assoc :capacity_building capacity_building))
         initiative-id (:id (db.initiative/new-initiative
-                            tx
+                            conn
                             (update data :source #(sql-util/keyword->pg-enum % "resource_source"))))
-        api-individual-connections (util/individual-connections->api-individual-connections tx individual_connections created_by)
-        owners (distinct (remove nil? (flatten (conj owners
-                                                     (map #(when (= (:role %) "owner")
-                                                             (:stakeholder %))
-                                                          api-individual-connections)))))
-        geo-coverage-type (keyword (first (keys q24)))]
-    (add-geo-initiative tx initiative-id geo-coverage-type (extract-geo-data data))
-    (doseq [stakeholder-id owners]
-      (h.auth/grant-topic-to-stakeholder! tx {:topic-id initiative-id
-                                              :topic-type "initiative"
-                                              :stakeholder-id stakeholder-id
-                                              :roles ["owner"]}))
+        api-individual-connections (util/individual-connections->api-individual-connections conn individual_connections created_by)
+        geo-coverage-type (keyword (first (keys q24)))
+        org-associations (map #(set/rename-keys % {:entity :organisation}) entity_connections)]
+    (add-geo-initiative conn initiative-id geo-coverage-type (extract-geo-data data))
     (when (seq related_content)
-      (handler.resource.related-content/create-related-contents tx logger initiative-id "initiative" related_content))
-    (when (not-empty entity_connections)
-      (doseq [association (expand-entity-associations entity_connections initiative-id)]
-        (db.favorite/new-organisation-association tx association)))
-    (when (not-empty api-individual-connections)
-      (doseq [association (expand-individual-associations api-individual-connections initiative-id)]
-        (db.favorite/new-stakeholder-association tx association)))
+      (handler.resource.related-content/create-related-contents conn logger initiative-id "initiative" related_content))
+    (srv.permissions/create-resource-context
+     {:conn conn
+      :logger logger}
+     {:context-type :initiative
+      :resource-id initiative-id})
+    (srv.association/save-associations
+     {:conn conn
+      :logger logger}
+     {:org-associations org-associations
+      :sth-associations (if (seq api-individual-connections)
+                          api-individual-connections
+                          [{:role "owner"
+                            :stakeholder (:id user)}])
+      :resource-type "initiative"
+      :resource-id initiative-id})
     (when (not-empty tags)
-      (add-tags tx mailjet-config tags initiative-id))
+      (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
+                                                                             :tag-category "general"
+                                                                             :resource-name "initiative"
+                                                                             :resource-id initiative-id}))
     (email/notify-admins-pending-approval
-     tx
+     conn
      mailjet-config
      {:type "initiative" :title (:q2 data)})
     initiative-id))
 
 (defmethod ig/init-key :gpml.handler.initiative/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params parameters] :as req}]
+  (fn [{:keys [body-params parameters user]}]
     (try
-      (jdbc/with-db-transaction [tx (:spec db)]
-        (let [user (db.stakeholder/stakeholder-by-email tx jwt-claims)
-              initiative-id (create-initiative config
-                                               tx
-                                               (assoc body-params
-                                                      :created_by (:id user)
-                                                      :source (get-in parameters [:body :source])))]
-          (resp/created (:referrer req) {:success? true
-                                         :message "New initiative created"
-                                         :id initiative-id})))
+      (if-not (h.r.permission/operation-allowed?
+               config
+               {:user-id (:id user)
+                :entity-type :initiative
+                :operation-type :create
+                :root-context? true})
+        (r/forbidden {:message "Unauthorized"})
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (let [initiative-id (create-initiative
+                               config
+                               tx
+                               user
+                               (assoc body-params
+                                      :created_by (:id user)
+                                      :source (get-in parameters [:body :source])))]
+            (r/created {:success? true
+                        :message "New initiative created"
+                        :id initiative-id}))))
       (catch Exception e
         (log logger :error ::failed-to-create-initiative {:exception-message (.getMessage e)})
-        (let [response {:status 500
-                        :body {:success? false
-                               :reason :could-not-create-initiative}}]
+        (let [response {:success? false
+                        :reason :could-not-create-initiative}]
 
           (if (instance? SQLException e)
-            response
-            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
+            (r/server-error response)
+            (r/server-error (assoc-in response [:body :error-details :error] (.getMessage e)))))))))
 
 (defn- expand-related-initiative-content
   [conn initiative-id]

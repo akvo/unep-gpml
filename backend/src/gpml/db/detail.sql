@@ -1,39 +1,14 @@
--- :name get-topic-details :? :1
+-- :name get-topic-details :query :one
 -- :doc Get details about a particular topic
-SELECT json::jsonb,
-COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners
- FROM (
-    --~ (#'gpml.db.topic/generate-topic-query params {:tables [(:topic-type params)]})
-    SELECT * FROM cte_topic
-    ) t
-   left join topic_stakeholder_auth authz ON authz.topic_type::text=t.topic AND authz.topic_id=(t.json->>'id')::int
- WHERE topic = :topic-type
-   AND (json->>'id')::int = :topic-id
-   GROUP BY json::jsonb;
+--~ (#'gpml.db.topic/generate-topic-query (assoc params :topic [(:topic-type params)]))
+SELECT * FROM cte_topic;
 
--- :name get-entity-details :? :1
+-- :name get-entity-details :query :one
 -- :doc Get details about a particular stakeholder or organisation
-SELECT json::jsonb,
-COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners
- FROM (
- --~ (#'gpml.db.topic/generate-entity-topic-query params {:tables [(:topic-type params)]})
-    SELECT * FROM cte_topic
-    ) t
-   left join topic_stakeholder_auth authz ON authz.topic_type::text=t.topic AND authz.topic_id=(t.json->>'id')::int
- WHERE topic = :topic-type
-   AND (json->>'id')::int = :topic-id
-   GROUP BY json::jsonb;
+--~ (#'gpml.db.topic/generate-entity-topic-query params {:tables [(:topic-type params)]})
+SELECT * FROM cte_topic;
 
--- :name get-stakeholder-tags :? :1
--- :doc Get Stakehodler tags
-SELECT json_object_agg(category,tag) AS data FROM (
-    SELECT string_agg(t.tag,', ') AS tag, tc.category FROM stakeholder_tag st
-    LEFT JOIN tag t ON st.tag = t.id
-    LEFT JOIN tag_category tc ON t.tag_category = tc.id
-WHERE st.stakeholder = :id
-GROUP BY tc.category) AS data;
-
--- :name update-initiative :! :n
+-- :name update-initiative :execute :affected
 -- :doc Update the specified initiative row
 -- :require [gpml.util.sql]
 UPDATE initiative SET
@@ -47,26 +22,16 @@ update :i:table set
 --~ (#'gpml.util.sql/generate-update-resource params)
 where id = :id
 
--- :name delete-resource-related-data :! :n
+-- :name delete-resource-related-data :execute :affected
 -- :doc Delete the data related to a specified resource
 delete from :i:table where :i:resource_type = :id
 
--- :name add-resource-related-tags :<! :*
--- :doc Add tags to a resource
-insert into :i:table (:i:resource_type, tag)
-values :t*:tags RETURNING id;
-
--- :name add-resource-related-language-urls :<! :*
+-- :name add-resource-related-language-urls :returning-execute :many
 -- :doc Add language URLs to a resource
 insert into :i:table (:i:resource_type, language, url)
 values :t*:urls RETURNING id;
 
--- :name add-resource-related-geo :<! :*
--- :doc Add geo coverage values to a resource
-insert into :i:table (:i:resource_type, country_group, country)
-values :t*:geo RETURNING id;
-
--- :name add-resource-related-org :<! :1
+-- :name add-resource-related-org :returning-execute :one
 -- :doc Add an organisation related to a resource
 insert into :i:table (:i:resource_type, organisation)
 values (:id, :organisation) RETURNING id;

@@ -6,7 +6,7 @@ import React, {
   useCallback,
   useRef,
 } from "react";
-import "./style.module.scss";
+import styles from "./style.module.scss";
 import {
   Row,
   Col,
@@ -42,10 +42,11 @@ import ResourceCards from "../../components/resource-cards/resource-cards";
 import Comments from "./comment";
 import Header from "./header";
 import StakeholderCarousel from "./stakeholder-carousel";
-import { ReactComponent as LocationImage } from "../../images/location.svg";
-import { ReactComponent as TransnationalImage } from "../../images/transnational.svg";
-import { ReactComponent as CityImage } from "../../images/city-icn.svg";
+import LocationImage from "../../images/location.svg";
+import TransnationalImage from "../../images/transnational.svg";
+import CityImage from "../../images/city-icn.svg";
 import { getTypeByResource, languageOptions } from "../flexible-forms/view";
+import { useRouter } from "next/router";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
@@ -100,13 +101,13 @@ const renderCountries = (data, countries) => {
 };
 
 const DetailsView = ({
-  match: { params },
+  type,
+  id,
   setLoginVisible,
   setFilterMenu,
   isAuthenticated,
 }) => {
   const [showLess, setShowLess] = useState(true);
-
   const {
     profile,
     countries,
@@ -121,8 +122,7 @@ const DetailsView = ({
     icons: s.icons,
     placeholder: s.placeholder,
   }));
-  const history = useHistory();
-  const location = useLocation();
+  const router = useRouter();
   const [data, setData] = useState(null);
   const [relations, setRelations] = useState([]);
   const [comments, setComments] = useState([]);
@@ -136,16 +136,13 @@ const DetailsView = ({
 
   const relation = relations.find(
     (it) =>
-      it.topicId === parseInt(params.id) &&
-      it.topic === resourceTypeToTopicType(params.type.replace("-", "_"))
+      it.topicId === parseInt(id) &&
+      it.topic === resourceTypeToTopicType(type.replace("-", "_"))
   );
 
-  const isConnectStakeholders = ["organisation", "stakeholder"].includes(
-    params?.type
-  );
+  const isConnectStakeholders = ["organisation", "stakeholder"].includes(type);
 
-  const allowBookmark =
-    params.type !== "stakeholder" || profile.id !== params.id;
+  const allowBookmark = type !== "stakeholder" || profile.id !== id;
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
@@ -174,16 +171,16 @@ const DetailsView = ({
   };
 
   useEffect(() => {
-    params?.type &&
-      params?.id &&
+    type &&
+      id &&
       api
-        .get(`/detail/${params?.type.replace("-", "_")}/${params?.id}`)
+        .get(`/detail/${type.replace("-", "_")}/${id}`)
         .then((d) => {
           api
             .get(
               `/translations/${
-                getTypeByResource(params?.type.replace("-", "_")).translations
-              }/${params?.id}`
+                getTypeByResource(type.replace("-", "_")).translations
+              }/${id}`
             )
             .then((resp) => {
               setTranslations({
@@ -199,7 +196,7 @@ const DetailsView = ({
             })
             .catch((e) => console.log(e));
           setData(d.data);
-          getComment(params?.id, params?.type.replace("-", "_"));
+          getComment(id, type.replace("-", "_"));
         })
         .catch((err) => {
           console.error(err);
@@ -207,18 +204,16 @@ const DetailsView = ({
         });
     if (profile.reviewStatus === "APPROVED") {
       setTimeout(() => {
-        api
-          .get(`/favorite/${params?.type?.replace("-", "_")}/${params?.id}`)
-          .then((resp) => {
-            setRelations(resp.data);
-          });
+        api.get(`/favorite/${type?.replace("-", "_")}/${id}`).then((resp) => {
+          setRelations(resp.data);
+        });
       }, 100);
     }
     UIStore.update((e) => {
       e.disclaimer = null;
     });
     window.scrollTo({ top: 0 });
-  }, [profile, location]);
+  }, [router]);
 
   const getComment = async (id, type) => {
     let res = await api.get(
@@ -231,55 +226,54 @@ const DetailsView = ({
     }
   };
 
-  const handleEditBtn = () => {
+  const handleEditBtn = (type = null) => {
     eventTrack("Resource view", "Update", "Button");
     let form = null;
-    let type = null;
     let link = null;
-    switch (params.type) {
+    switch (type) {
       case "initiative":
         form = "initiative";
-        link = "edit-initiative";
+        link = "edit/initiative";
         type = "initiative";
         break;
       case "action-plan":
         form = "actionPlan";
-        link = "edit-action-plan";
+        link = "edit/action-plan";
         type = "action_plan";
         break;
       case "policy":
         form = "policy";
-        link = "edit-policy";
+        link = "edit/policy";
         type = "policy";
         break;
       case "technical-resource":
         form = "technicalResource";
-        link = "edit-technical-resource";
+        link = "edit/technical-resource";
         type = "technical_resource";
         break;
       case "financing-resource":
         form = "financingResource";
-        link = "edit-financing-resource";
+        link = "edit/financing-resource";
         type = "financing_resource";
         break;
       case "technology":
         form = "technology";
-        link = "edit-technology";
+        link = "edit/technology";
         type = "technology";
         break;
       case "event":
         form = "event";
-        link = "edit-event";
+        link = "edit/event";
         type = "event";
         break;
       case "case-study":
         form = "caseStudy";
-        link = "edit-case-study";
+        link = "edit/case-study";
         type = "case_study";
         break;
       default:
         form = "entity";
-        link = "edit-entity";
+        link = "edit/entity";
         type = "initiative";
         break;
     }
@@ -288,7 +282,7 @@ const DetailsView = ({
         ...e.formEdit,
         flexible: {
           status: "edit",
-          id: params.id,
+          id: id,
         },
       };
       e.formStep = {
@@ -296,11 +290,13 @@ const DetailsView = ({
         flexible: 1,
       };
     });
-
-    history.push({
-      pathname: `/${link}/${params.id}`,
-      state: { type: type },
-    });
+    router.push(
+      {
+        pathname: `/${link}/${id}`,
+        query: { type: type },
+      },
+      `/${link}/${id}`
+    );
   };
 
   const handleDeleteBtn = () => {
@@ -315,7 +311,7 @@ const DetailsView = ({
       okType: "danger",
       onOk() {
         return api
-          .delete(`/detail/${params?.type.replace("-", "_")}/${params?.id}`)
+          .delete(`/detail/${type.replace("-", "_")}/${id}`)
           .then((res) => {
             notification.success({
               message: "Resource deleted successfully",
@@ -383,9 +379,9 @@ const DetailsView = ({
     });
 
   return (
-    <div className="detail-view-wrapper">
+    <div className={`${styles.detailViewWrapper} detail-view-wrapper`}>
       <div
-        id="detail-view"
+        className="detail-view"
         style={!isAuthenticated ? { paddingBottom: "1px" } : { padding: 0 }}
       >
         <Header
@@ -394,7 +390,8 @@ const DetailsView = ({
             LeftImage,
             profile,
             isAuthenticated,
-            params,
+            type,
+            id,
             handleEditBtn,
             handleDeleteBtn,
             allowBookmark,
@@ -623,7 +620,7 @@ const DetailsView = ({
           </Col>
         )}
 
-        <Records {...{ countries, languages, params, data, profile }} />
+        <Records {...{ countries, languages, type, data, profile }} />
 
         {/* RELATED CONTENT */}
         {data?.relatedContent &&
@@ -647,7 +644,8 @@ const DetailsView = ({
         <Comments
           {...{
             profile,
-            params,
+            type,
+            id,
             comment,
             comments,
             editComment,
@@ -667,8 +665,8 @@ const DetailsView = ({
   );
 };
 
-const Records = ({ countries, languages, params, data }) => {
-  const mapping = detailMaps[params.type.replace("-", "_")];
+const Records = ({ countries, languages, type, data }) => {
+  const mapping = detailMaps[type.replace("-", "_")];
   if (!mapping) {
     return;
   }
@@ -714,7 +712,7 @@ const Records = ({ countries, languages, params, data }) => {
     }
 
     return (
-      <Fragment key={`${params.type}-${name}`}>
+      <Fragment key={`${type}-${name}`}>
         {displayEntry && (
           <div key={name + index} className="record-row">
             <div className="record-name">{name}</div>
@@ -770,24 +768,24 @@ const Records = ({ countries, languages, params, data }) => {
                 type === "array" &&
                 data[key].map((tag) => Object.values(tag)[0]).join(", ")}
               {key !== "tags" &&
-                params.type === "initiative" &&
+                type === "initiative" &&
                 data[key] &&
                 value === "join" &&
                 type === "array" &&
                 data[key]?.length !== 0 &&
                 data[key]?.map((x) => x.name).join(", ")}
               {key !== "tags" &&
-                params.type !== "initiative" &&
+                type !== "initiative" &&
                 data[key] &&
                 value === "join" &&
                 type === "array" &&
                 data[key].join(", ")}
-              {params.type === "initiative" &&
+              {type === "initiative" &&
                 value === "custom" &&
                 type === "array" &&
                 data[key][customValue] &&
                 data[key][customValue]?.map((x) => x.name).join(", ")}
-              {params.type !== "initiative" &&
+              {type !== "initiative" &&
                 value === "custom" &&
                 type === "array" &&
                 data[key][customValue] &&

@@ -43,7 +43,6 @@ const FlexibleForm = ({
   isEntityType,
   formSchema,
   setDisabledBtn,
-  history,
   hideEntityPersonalDetail,
   tabsData,
   mainType,
@@ -385,13 +384,13 @@ const FlexibleForm = ({
           });
           setDisabledBtn({ disabled: true, type: "default" });
           notification.success({ message: "Resource successfully updated" });
-          history.push(`/${type.replace("_", "-")}/${id || params}`);
+          router.push(`/${type.replace("_", "-")}/${id || params}`);
         })
         .catch(() => {
           initialFormData.update((e) => {
             e.data = initialData;
           });
-          history.push(`/${type.replace("_", "-")}/${id || params}`);
+          router.push(`/${type.replace("_", "-")}/${id || params}`);
           notification.error({ message: "An error occured" });
         })
         .finally(() => {
@@ -631,14 +630,14 @@ const FlexibleForm = ({
           });
           setDisabledBtn({ disabled: true, type: "default" });
           notification.success({ message: "Resource successfully updated" });
-          history.push(`/initiative/${id || params}`);
+          router.push(`/initiative/${id || params}`);
         })
         .catch((e) => {
           console.log(e.response);
           initialFormData.update((e) => {
             e.data = initialData;
           });
-          history.push(`/initiative/${id || params}`);
+          router.push(`/initiative/${id || params}`);
           notification.error({ message: "An error occured" });
         })
         .finally(() => {
@@ -885,13 +884,13 @@ const FlexibleForm = ({
           });
           setDisabledBtn({ disabled: true, type: "default" });
           notification.success({ message: "Resource successfully updated" });
-          history.push(`/${type}/${id || params}`);
+          router.push(`/${type}/${id || params}`);
         })
         .catch(() => {
           initialFormData.update((e) => {
             e.data = initialData;
           });
-          history.push(`/${type}/${id || params}`);
+          router.push(`/${type}/${id || params}`);
           notification.error({ message: "An error occured" });
         })
         .finally(() => {
@@ -1125,13 +1124,13 @@ const FlexibleForm = ({
           });
           setDisabledBtn({ disabled: true, type: "default" });
           notification.success({ message: "Resource successfully updated" });
-          history.push(`/${type}/${id || params}`);
+          router.push(`/${type}/${id || params}`);
         })
         .catch(() => {
           initialFormData.update((e) => {
             e.data = initialData;
           });
-          history.push(`/${type}/${id || params}`);
+          router.push(`/${type}/${id || params}`);
           notification.error({ message: "An error occured" });
         })
         .finally(() => {
@@ -1367,13 +1366,13 @@ const FlexibleForm = ({
           });
           setDisabledBtn({ disabled: true, type: "default" });
           notification.success({ message: "Resource successfully updated" });
-          history.push(`/${type}/${id || params}`);
+          router.push(`/${type}/${id || params}`);
         })
         .catch(() => {
           initialFormData.update((e) => {
             e.data = initialData;
           });
-          history.push(`/${type}/${id || params}`);
+          router.push(`/${type}/${id || params}`);
           notification.error({ message: "An error occured" });
         })
         .finally(() => {
@@ -1609,13 +1608,13 @@ const FlexibleForm = ({
           });
           setDisabledBtn({ disabled: true, type: "default" });
           notification.success({ message: "Resource successfully updated" });
-          history.push(`/case-study/${id || params}`);
+          router.push(`/case-study/${id || params}`);
         })
         .catch(() => {
           initialFormData.update((e) => {
             e.data = initialData;
           });
-          history.push(`/case-study/${id || params}`);
+          router.push(`/case-study/${id || params}`);
           notification.error({ message: "An error occured" });
         })
         .finally(() => {

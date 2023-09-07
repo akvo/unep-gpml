@@ -1,5 +1,5 @@
-@import '../../vars.scss';
-.signUp {
+@import "../../vars.scss";
+.signup {
   :global {
     .bg-white {
       background-color: #fff;
@@ -21,9 +21,9 @@
       z-index: 9;
       border-radius: 10px;
       &::after {
-        content: '';
+        content: "";
         position: absolute;
-        background: url('../../images/auth/wave.png');
+        background: url("../../images/auth/wave.png");
         width: 100%;
         height: 350px;
         bottom: 0;

@@ -26,6 +26,7 @@ const CountryTransnationalFilter = ({
   disable,
   setDisable,
   fetch,
+  history,
 }) => {
   const { countries, transnationalOptions, landing } = UIStore.useState(
     (s) => ({
@@ -36,8 +37,6 @@ const CountryTransnationalFilter = ({
   );
 
   const isLoaded = () => !isEmpty(countries) && !isEmpty(transnationalOptions);
-
-  console.log(countries);
 
   const countryOpts = isLoaded()
     ? countries
@@ -63,7 +62,18 @@ const CountryTransnationalFilter = ({
         ...(val.length > 0 ? { multiCountry: true } : { multiCountry: false }),
       });
     }
-    updateQuery("country", val, false);
+    let updatedQuery = { ...history.query };
+    delete updatedQuery.totalCount;
+
+    if (val && val.length > 0) {
+      updatedQuery.country = val.toString();
+    } else {
+      delete updatedQuery.country;
+    }
+    history.push({
+      pathname: history.pathname,
+      query: updatedQuery,
+    });
   };
 
   const handleChangeMultiCountry = (val) => {

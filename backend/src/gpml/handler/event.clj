@@ -1,47 +1,30 @@
 (ns gpml.handler.event
   (:require [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
             [duct.logger :refer [log]]
             [gpml.auth :as auth]
             [gpml.db.event :as db.event]
-            [gpml.db.favorite :as db.favorite]
             [gpml.db.language :as db.language]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.types :as dom.types]
-            [gpml.handler.auth :as h.auth]
-            [gpml.handler.image :as handler.image]
+            [gpml.handler.file :as handler.file]
             [gpml.handler.resource.geo-coverage :as handler.geo]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.resource.related-content :as handler.resource.related-content]
             [gpml.handler.resource.tag :as handler.resource.tag]
+            [gpml.handler.responses :as r]
             [gpml.handler.util :as handler.util]
+            [gpml.service.association :as srv.association]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
             [gpml.util.email :as email]
             [gpml.util.sql :as sql-util]
-            [integrant.core :as ig]
-            [ring.util.response :as resp])
+            [integrant.core :as ig])
   (:import [java.sql SQLException]))
 
-(defn- expand-entity-associations
-  [entity-connections resource-id]
-  (vec (for [connection entity-connections]
-         {:column_name "event"
-          :topic "event"
-          :topic_id resource-id
-          :organisation (:entity connection)
-          :association (:role connection)
-          :remarks nil})))
-
-(defn- expand-individual-associations
-  [individual-connections resource-id]
-  (vec (for [connection individual-connections]
-         {:column_name "event"
-          :topic "event"
-          :topic_id resource-id
-          :stakeholder (:stakeholder connection)
-          :association (:role connection)
-          :remarks nil})))
-
 (defn- create-event
-  [{:keys [logger mailjet-config] :as config} conn
+  [{:keys [logger mailjet-config] :as config}
+   conn
+   user
    {:keys [tags urls title start_date end_date
            description remarks geo_coverage_type
            country city geo_coverage_value image thumbnail
@@ -51,13 +34,15 @@
            recording document_preview related_content
            entity_connections individual_connections language
            capacity_building source]}]
-  (let [data (cond-> {:title title
+  (let [image-id (when (seq image)
+                   (handler.file/create-file config conn image :event :images :public))
+        thumbnail-id (when (seq thumbnail)
+                       (handler.file/create-file config conn thumbnail :event :images :public))
+        data (cond-> {:title title
                       :start_date start_date
                       :end_date end_date
                       :description (or description "")
                       :remarks remarks
-                      :image (handler.image/assoc-image config conn image "event")
-                      :thumbnail (handler.image/assoc-image config conn thumbnail "event")
                       :geo_coverage_type geo_coverage_type
                       :geo_coverage_value geo_coverage_value
                       :geo_coverage_countries geo_coverage_countries
@@ -75,32 +60,39 @@
                       :language language
                       :source source}
                (not (nil? capacity_building))
-               (assoc :capacity_building capacity_building))
+               (assoc :capacity_building capacity_building)
+
+               image-id
+               (assoc :image_id image-id)
+
+               thumbnail-id
+               (assoc :thumbnail_id thumbnail-id))
         event-id (->>
                   (update data :source #(sql-util/keyword->pg-enum % "resource_source"))
                   (db.event/new-event conn) :id)
         api-individual-connections (handler.util/individual-connections->api-individual-connections conn individual_connections created_by)
-        owners (distinct (remove nil? (flatten (conj owners
-                                                     (map #(when (= (:role %) "owner")
-                                                             (:stakeholder %))
-                                                          api-individual-connections)))))
-        geo-coverage-type (keyword geo_coverage_type)]
+        geo-coverage-type (keyword geo_coverage_type)
+        org-associations (map #(set/rename-keys % {:entity :organisation}) entity_connections)]
     (when (not-empty tags)
       (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
                                                                              :tag-category "general"
                                                                              :resource-name "event"
                                                                              :resource-id event-id}))
-    (doseq [stakeholder-id owners]
-      (h.auth/grant-topic-to-stakeholder! conn {:topic-id event-id
-                                                :topic-type "event"
-                                                :stakeholder-id stakeholder-id
-                                                :roles ["owner"]}))
-    (when (not-empty entity_connections)
-      (doseq [association (expand-entity-associations entity_connections event-id)]
-        (db.favorite/new-organisation-association conn association)))
-    (when (not-empty api-individual-connections)
-      (doseq [association (expand-individual-associations api-individual-connections event-id)]
-        (db.favorite/new-stakeholder-association conn association)))
+    (srv.permissions/create-resource-context
+     {:conn conn
+      :logger logger}
+     {:context-type :event
+      :resource-id event-id})
+    (srv.association/save-associations
+     {:conn conn
+      :logger logger}
+     {:org-associations org-associations
+      :sth-associations (if (seq api-individual-connections)
+                          api-individual-connections
+                          [{:role "owner"
+                            :stakeholder (:id user)}])
+      :resource-type "event"
+      :resource-id event-id})
     (when (seq related_content)
       (handler.resource.related-content/create-related-contents conn logger event-id "event" related_content))
     (when (not-empty urls)
@@ -183,25 +175,35 @@
 
 (defmethod ig/init-key :gpml.handler.event/post
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [jwt-claims body-params parameters] :as req}]
+  (fn [{:keys [body-params parameters user]}]
     (try
-      (jdbc/with-db-transaction [tx (:spec db)]
-        (let [result (create-event config tx (assoc body-params
-                                                    :created_by
-                                                    (-> (db.stakeholder/stakeholder-by-email tx jwt-claims) :id)
-                                                    :source (get-in parameters [:body :source])))]
-          (resp/created (:referrer req) {:success? true
-                                         :message "New event created"
-                                         :id (:id result)})))
-      (catch Exception e
-        (log logger :error ::failed-to-create-event {:exception-message (.getMessage e)})
-        (let [response {:status 500
-                        :body {:success? false
-                               :reason :could-not-create-event}}]
-
-          (if (instance? SQLException e)
-            response
-            (assoc-in response [:body :error-details :error] (.getMessage e))))))))
+      (if (h.r.permission/operation-allowed?
+           config
+           {:user-id (:id user)
+            :entity-type :event
+            :operation-type :create
+            :root-context? true})
+        (jdbc/with-db-transaction [tx (:spec db)]
+          (let [result (create-event
+                        config
+                        tx
+                        user
+                        (assoc body-params
+                               :created_by
+                               (:id user)
+                               :source (get-in parameters [:body :source])))]
+            (r/created {:success? true
+                        :message "New event created"
+                        :id (:id result)})))
+        (r/forbidden {:message "Unauthorized"}))
+      (catch Throwable t
+        (log logger :error ::failed-to-create-event {:exception-message (.getMessage t)
+                                                     :exception-data (ex-data t)})
+        (let [response {:success? false
+                        :reason :failed-to-create-event}]
+          (if (instance? SQLException t)
+            (r/server-error response)
+            (r/server-error (assoc-in response [:error-details :error] (ex-message t)))))))))
 
 (defmethod ig/init-key :gpml.handler.event/post-params [_ _]
   post-params)

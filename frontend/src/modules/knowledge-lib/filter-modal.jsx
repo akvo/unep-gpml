@@ -25,7 +25,7 @@ const FilterModal = ({
   setShowFilterModal,
   showFilterModal,
   fetchData,
-  pathname,
+  asPath,
   history,
   setGridItems,
 }) => {
@@ -135,14 +135,15 @@ const FilterModal = ({
     setShowFilterModal(false);
 
     const newQuery = {
-      // ...(Object.keys(filter).length > 0 && query),
       ...filter,
     };
 
     const newParams = new URLSearchParams(newQuery);
+    newParams.delete("totalCount");
+    newParams.delete("slug");
     history.push({
-      pathname: pathname,
-      search: newParams.toString(),
+      pathname: asPath,
+      query: newParams.toString(),
     });
   };
 
