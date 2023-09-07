@@ -332,10 +332,10 @@ function Authentication() {
                 />
                 {currentStep > 0 && (
                   <Button
-                    type="ghost"
                     className="step-button-back"
                     onClick={previous}
                     size="small"
+                    ghost
                   >
                     Back
                   </Button>
