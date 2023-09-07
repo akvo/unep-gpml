@@ -100,19 +100,12 @@
           display: flex;
           align-items: flex-start;
           padding-top: 20px;
-          .ant-row {
+          .ant-row:not(.title-dropdown-container) {
             flex: 1;
           }
-          .ant-form-item {
-            &:nth-of-type(1) {
-              .ant-row {
-                width: 150px;
-                margin-right: 30px;
-              }
-            }
-            &:nth-of-type(2) {
-              width: 100%;
-            }
+          .ant-row.title-dropdown-container {
+            width: 150px;
+            margin-right: 24px;
           }
         }
         .ant-row {
