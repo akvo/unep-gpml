@@ -1648,9 +1648,8 @@
                   -webkit-text-fill-color: $primaryWhite;
                 }
               }
-              .ant-input {
-                border: none;
-                box-shadow: none;
+              .ant-form-item-control-input-content {
+                color: $primaryWhite;
               }
               .ant-form-item {
                 margin-right: 0;
