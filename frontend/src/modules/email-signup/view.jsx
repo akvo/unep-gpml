@@ -124,8 +124,14 @@ function EmailJoin({ setSignUp, children }) {
   }
 
   const onSubmit = async (data) => {
-    setLoading(true)
-    localStorage.setItem('redirect_on_login', JSON.stringify(router.asPath))
+    setLoading(true);
+    localStorage.setItem(
+      "redirect_on_login",
+      JSON.stringify({
+        pathname: router.pathname,
+        query: router.query,
+      })
+    );
     auth0Client.redirect.signupAndLogin(
       {
         connection: 'Username-Password-Authentication',
@@ -147,11 +153,14 @@ function EmailJoin({ setSignUp, children }) {
           }
           return err
         } else {
-          setLoading(false)
-          router.push({
-            pathname: 'onboarding',
-            query: { data },
-          })
+          setLoading(false);
+          router.push(
+            {
+              pathname: "/onboarding",
+              query: { data: data },
+            },
+            "/onboarding"
+          );
         }
       }
     )
@@ -166,7 +175,7 @@ function EmailJoin({ setSignUp, children }) {
   }
 
   return (
-    <div className={styles.signUp}>
+    <div className={styles.signup}>
       {children && children}
       <Row className="join-form">
         <Col span={24}>

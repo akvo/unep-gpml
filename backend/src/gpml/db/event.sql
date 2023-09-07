@@ -9,7 +9,6 @@ INSERT INTO event(
     geo_coverage_type,
     country,
     city,
-    image,
     language
 --~ (when (contains? params :id) ", id")
 --~ (when (contains? params :review_status) ", review_status")
@@ -23,6 +22,8 @@ INSERT INTO event(
 --~ (when (contains? params :subnational_city) ", subnational_city")
 --~ (when (contains? params :document_preview) ", document_preview")
 --~ (when (contains? params :source) ", source")
+--~ (when (contains? params :image_id) ", image_id")
+--~ (when (contains? params :thumbnail_id) ", thumbnail_id")
 )
 VALUES(
     :title,
@@ -33,7 +34,6 @@ VALUES(
     :geo_coverage_type::geo_coverage_type,
     :country,
     :city,
-    :image,
     :language
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :review_status) ", :v:review_status::review_status")
@@ -47,6 +47,8 @@ VALUES(
 --~ (when (contains? params :subnational_city) ", :subnational_city")
 --~ (when (contains? params :document_preview) ", :document_preview")
 --~ (when (contains? params :source) ", :source")
+--~ (when (contains? params :image_id) ", :image_id")
+--~ (when (contains? params :thumbnail_id) ", :thumbnail_id")
 ) RETURNING id;
 
 -- :name add-event-language-urls :returning-execute :one
@@ -65,8 +67,8 @@ UPDATE event
 -- :name event-by-id :query :one
 -- :doc Returns the data for a given event
   WITH owners_data AS (
-   SELECT COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') AS owners, authz.topic_id
- FROM  topic_stakeholder_auth authz WHERE authz.topic_type::text='event' AND authz.topic_id=:id
+   SELECT COALESCE(json_agg(acs.stakeholder) FILTER (WHERE acs.stakeholder IS NOT NULL), '[]') AS owners, acs.event AS topic_id
+ FROM  stakeholder_event acs WHERE acs.event = :id AND acs.association = 'owner'
 GROUP BY topic_id
    )
 SELECT
@@ -90,7 +92,7 @@ SELECT
     e.review_status,
     (SELECT json_agg(tag) FROM event_tag WHERE event = :id) AS tags,
     (SELECT json_agg(COALESCE(country, country_group))
-        FROM event_geo_coverage WHERE event = :id) as geo_coverage_value,
+	FROM event_geo_coverage WHERE event = :id) as geo_coverage_value,
       COALESCE(owners_data.owners, '[]') AS owners
 FROM v_event_data e
 LEFT JOIN owners_data ON owners_data.topic_id=:id
@@ -135,3 +137,31 @@ SET
       " = :updates." (name field))))
 ~*/
 WHERE id = :id;
+
+-- :name get-events-files-to-migrate :query :many
+-- :doc this query is for file migration purposes and will be removed.
+WITH event_images_refs AS (
+	SELECT id, 'image' AS file_type, image AS reference FROM event
+	WHERE image ILIKE '/image/event/%'
+	AND image_id IS NULL
+	UNION
+	SELECT id, 'thumbnail' AS file_type, thumbnail AS reference FROM event
+	WHERE thumbnail ILIKE '/image/event/%'
+	AND thumbnail_id IS NULL
+),
+events_files_to_migrate AS (
+       SELECT eir.id, 'image' AS file_type, 'images' AS file_key, ei.image AS content
+       FROM event_images_refs eir
+       LEFT JOIN event_image ei ON substring(eir.reference FROM '^\/image\/event\/([0-9]+)$')::INTEGER = ei.id
+       WHERE ei.image IS NOT NULL AND eir.file_type = 'image'
+       UNION
+       SELECT eir.id, 'thumbnail' AS file_type, 'images' AS file_key, ei.image AS content
+       FROM event_images_refs eir
+       LEFT JOIN event_image ei ON substring(eir.reference FROM '^\/image\/event\/([0-9]+)$')::INTEGER = ei.id
+       WHERE ei.image IS NOT NULL AND eir.file_type = 'thumbnail'
+)
+SELECT *
+FROM events_files_to_migrate
+ORDER BY id
+--~ (when (:limit params) " LIMIT :limit")
+;

@@ -74,16 +74,16 @@
   number of `topic-tables` it will return the results aggregated by
   each topic type. Therefore a final query is needed to aggregate the
   results by tag."
-  [_params _opts]
+  [params opts]
   (str
    "WITH popular_topics_tags_count AS ("
    (reduce (fn [acc topic]
-             (let [query (generic-more-topic-tag-count-query topic (get _params topic))]
+             (let [query (generic-more-topic-tag-count-query topic (get params topic))]
                (if (seq acc)
                  (str acc " UNION ALL " query)
                  query)))
            ""
-           _opts)
+           opts)
    ")"))
 
 (defn- generic-topic-tag-subset-query

@@ -30,7 +30,8 @@ export const CommentList = ({
   setComment,
   profile,
   getComment,
-  params,
+  type,
+  id,
   editComment,
   setEditComment,
   onEditComment,
@@ -95,10 +96,7 @@ export const CommentList = ({
                               message: "Comment deleted successfully",
                             });
 
-                            getComment(
-                              params.id,
-                              params.type.replace("-", "_")
-                            );
+                            getComment(id, type.replace("-", "_"));
                           } catch (err) {
                             console.error(err);
                             notification.error({
@@ -190,7 +188,8 @@ export const CommentList = ({
           setComment={setComment}
           profile={profile}
           getComment={getComment}
-          params={params}
+          type={type}
+          id={id}
           editComment={editComment}
           setEditComment={setEditComment}
           onEditComment={onEditComment}
@@ -208,7 +207,8 @@ const Comments = ({
   setComment,
   profile,
   getComment,
-  params,
+  type,
+  id,
   editComment,
   setEditComment,
   setLoginVisible,
@@ -226,8 +226,8 @@ const Comments = ({
     };
     const data = {
       author_id: profile.id,
-      resource_id: parseInt(params.id),
-      resource_type: resourceType(params?.type.replace("-", "_")),
+      resource_id: parseInt(id),
+      resource_type: resourceType(type.replace("-", "_")),
       ...(val.parent_id && { parent_id: val.parent_id }),
       title: val.title,
       content: val.description,
@@ -236,7 +236,7 @@ const Comments = ({
     api
       .post("/comment", data)
       .then((data) => {
-        getComment(params.id, params.type.replace("-", "_"));
+        getComment(id, type.replace("-", "_"));
       })
       .catch(() => {
         notification.error({ message: "An error occured" });
@@ -263,7 +263,7 @@ const Comments = ({
     api
       .put("/comment", val)
       .then((data) => {
-        getComment(params.id, params.type.replace("-", "_"));
+        getComment(id, type.replace("-", "_"));
       })
       .catch(() => {})
       .finally(() => {});
@@ -295,7 +295,8 @@ const Comments = ({
                 setComment={setComment}
                 profile={profile}
                 getComment={getComment}
-                params={params}
+                type={type}
+                id={id}
                 editComment={editComment}
                 setEditComment={setEditComment}
                 onEditComment={onEditComment}

@@ -3,7 +3,7 @@ import KnowledgeLib from "../../../modules/knowledge-lib/view";
 import { UIStore } from "../../../store";
 import api from "../../../utils/api";
 
-function KnowledgeLibrary({}) {
+function KnowledgeLibrary({ isAuthenticated }) {
   const { landing } = UIStore.useState((s) => ({
     landing: s.landing,
   }));
@@ -25,7 +25,7 @@ function KnowledgeLibrary({}) {
   //   }
   // }, []);
 
-  return <KnowledgeLib />;
+  return <KnowledgeLib isAuthenticated={isAuthenticated} />;
 }
 
 export default KnowledgeLibrary;

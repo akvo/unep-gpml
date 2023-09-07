@@ -1,10 +1,14 @@
 (ns gpml.handler.community
   (:require [clojure.string :as str]
+            [duct.logger :refer [log]]
             [gpml.db.community :as db.community]
             [gpml.db.country-group :as db.country-group]
+            [gpml.domain.file :as dom.file]
+            [gpml.handler.responses :as r]
+            [gpml.service.file :as srv.file]
             [gpml.util.regular-expressions :as util.regex]
             [integrant.core :as ig]
-            [ring.util.response :as resp]))
+            [medley.core :as medley]))
 
 (def ^:const community-network-types ["organisation" "stakeholder"])
 (def ^:const geo-coverage-types ["Transnational" "National" "Global" "Sub-national"])
@@ -162,24 +166,47 @@
                                            (re-seq #"\w+")
                                            (str/join " & ")))))
 
-(defn get-community-members
-  [db query-params]
-  (let [conn (:spec db)
-        opts (api-params->opts query-params)
-        modified-filters (if (get-in opts [:filters :transnational])
-                           (let [opts {:filters {:country-groups (get-in opts [:filters :transnational])}}
-                                 country-group-countries (db.country-group/get-country-groups-countries conn opts)
-                                 geo-coverage-countries (map :id country-group-countries)]
-                             (assoc-in opts [:filters :country] (set (concat
-                                                                      (get-in opts [:filters :country])
-                                                                      geo-coverage-countries))))
-                           opts)]
-    {:results (db.community/get-community-members conn modified-filters)
-     :counts (db.community/get-community-members conn (assoc modified-filters :count-only? true))}))
+(defn- community-member->api-community-member
+  [config community-member]
+  (let [{files :files picture-id :picture_id} community-member
+        files-w-urls (->> files
+                          (map dom.file/decode-file)
+                          (srv.file/add-files-urls config)
+                          (medley/index-by :id))
+        picture-file-url (get-in files-w-urls [picture-id :url])]
+    (assoc community-member :picture picture-file-url)))
 
-(defmethod ig/init-key :gpml.handler.community/get [_ {:keys [db]}]
-  (fn [{{:keys [query]} :parameters}]
-    (resp/response (get-community-members db query))))
+(defn get-community-members
+  [{:keys [db logger] :as config} req]
+  (try
+    (let [conn (:spec db)
+          query-params (get-in req [:parameters :query])
+          opts (api-params->opts query-params)
+          modified-filters (if (get-in opts [:filters :transnational])
+                             (let [opts {:filters {:country-groups (get-in opts [:filters :transnational])}}
+                                   country-group-countries (db.country-group/get-country-groups-countries conn opts)
+                                   geo-coverage-countries (map :id country-group-countries)]
+                               (assoc-in opts [:filters :country] (set (concat
+                                                                        (get-in opts [:filters :country])
+                                                                        geo-coverage-countries))))
+                             opts)
+          results (->> (db.community/get-community-members conn modified-filters)
+                       (map (partial community-member->api-community-member config)))]
+      (r/ok {:results results
+             :counts (db.community/get-community-members conn (assoc modified-filters :count-only? true))}))
+    (catch Throwable t
+      (let [log-data {:exception-message (ex-message t)
+                      :exception-data (ex-data t)
+                      :context-data (get-in req [:parameters :query])}]
+        (log logger :error :failed-to-get-community-members log-data)
+        (log logger :debug :failed-to-get-community-members (assoc log-data :stack-trace (.getStackTrace t)))
+        (r/server-error {:success? false
+                         :reason :failed-to-get-community-members
+                         :error-details {:msg (:exception-message log-data)}})))))
+
+(defmethod ig/init-key :gpml.handler.community/get [_ config]
+  (fn [req]
+    (get-community-members config req)))
 
 (defmethod ig/init-key :gpml.handler.community/get-params [_ _]
   get-community-members-query-params)

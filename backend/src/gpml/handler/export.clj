@@ -6,22 +6,37 @@
             [gpml.db.tag :as db.tag]
             [gpml.db.topic :as db.topic]
             [gpml.domain.export :as dom.exp]
+            [gpml.domain.file :as dom.file]
             [gpml.domain.types :as dom.types]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
+            [gpml.service.file :as srv.file]
             [gpml.util :as util]
             [gpml.util.csv :as csv]
-            [integrant.core :as ig]))
+            [integrant.core :as ig]
+            [medley.core :as medley]))
 
-(defn- org->export-org
-  [{:keys [app-domain]} {:keys [id logo] :as org}]
-  (-> org
-      (dissoc :is_member)
-      (assoc :platform-link (str app-domain "/organisation/" id)
-             :logo (if (and (seq logo)
-                            (seq (util/base64-headless logo))
-                            (util/base64? (util/base64-headless logo)))
-                     (str app-domain "/image/organisation/" id)
-                     logo))))
+(defn- add-export-files-urls
+  [config src-dst-files-keys-mapping {:keys [files] :as export}]
+  (if-not (seq files)
+    (apply dissoc export (concat [:files] (keys src-dst-files-keys-mapping)))
+    (let [files-w-urls (->> files
+                            (map dom.file/decode-file)
+                            (srv.file/add-files-urls config)
+                            (medley/index-by :id))
+          updated-export (reduce (fn [updated-export [src-file-key dst-file-key]]
+                                   (assoc updated-export
+                                          dst-file-key (get-in files-w-urls [(get updated-export src-file-key) :url])))
+                                 export
+                                 src-dst-files-keys-mapping)]
+      (apply dissoc updated-export (concat [:files] (keys src-dst-files-keys-mapping))))))
+
+(defn- org->org-export
+  [{:keys [app-domain] :as config} src-dst-files-keys-mapping org]
+  (as-> org export
+    (dissoc export :is_member)
+    (assoc export :platform-link (str app-domain "/organisation/" (:id org)))
+    (add-export-files-urls config src-dst-files-keys-mapping export)))
 
 (defn- create-csv-file
   [entities]
@@ -48,23 +63,28 @@
       (map #(sort-result-map sorted-export-type-columns %) exports-to-sort))))
 
 (defn- export-users
-  [{:keys [db]} review-status]
-  (let [users (db.stakeholder/all-public-users (:spec db) {:review-status review-status})
+  [{:keys [db] :as config} review-status]
+  (let [src-dst-files-keys-mapping {:picture_id :picture
+                                    :cv_id :cv}
+        users (->> (db.stakeholder/all-public-users (:spec db) {:review-status review-status})
+                   (mapv (partial add-export-files-urls config src-dst-files-keys-mapping)))
         export-users (get-export-values users dom.exp/users-key-map dom.exp/sorted-user-columns)]
     (:csv-file (create-csv-file export-users))))
 
 (defn- export-entities
   [{:keys [db] :as config} review-status]
-  (let [entities (->> (db.organisation/all-public-entities (:spec db) {:review-status review-status})
-                      (map (partial org->export-org config)))
+  (let [src-dst-files-keys-mapping {:logo_id :logo}
+        entities (->> (db.organisation/all-public-entities (:spec db) {:review-status review-status})
+                      (map (partial org->org-export config src-dst-files-keys-mapping)))
         export-entities (get-export-values entities dom.exp/entities-key-map dom.exp/sorted-entity-columns)]
     (:csv-file (create-csv-file export-entities))))
 
 (defn- export-non-member-entities
   [{:keys [db] :as config} review-status]
-  (let [non-member-entities
+  (let [src-dst-files-keys-mapping {:logo_id :logo}
+        non-member-entities
         (->> (db.organisation/all-public-non-member-entities (:spec db) {:review-status review-status})
-             (map (partial org->export-org config)))
+             (map (partial org->org-export config src-dst-files-keys-mapping)))
         export-entities
         (get-export-values non-member-entities dom.exp/entities-key-map dom.exp/sorted-entity-columns)]
     (:csv-file (create-csv-file export-entities))))
@@ -76,8 +96,10 @@
     (:csv-file (create-csv-file export-tags))))
 
 (defn- export-topics
-  [{:keys [db]} review-status]
-  (let [topics (db.topic/get-flat-topics (:spec db) {:review-status review-status})
+  [{:keys [db] :as config} review-status]
+  (let [src-dst-files-keys-mapping {:image_id :image}
+        topics (->> (db.topic/get-flat-topics (:spec db) {:review-status review-status})
+                    (map (partial add-export-files-urls config src-dst-files-keys-mapping)))
         export-topics (get-export-values topics dom.exp/topics-key-map dom.exp/sorted-topic-columns)]
     (:csv-file (create-csv-file export-topics))))
 
@@ -92,11 +114,13 @@
 
 (defmethod ig/init-key :gpml.handler.export/get
   [_ {:keys [logger] :as config}]
-  (fn [{{:keys [path query]} :parameters}]
+  (fn [{{:keys [path query]} :parameters user :user}]
     (try
-      (let [export-type (:export-type path)
-            review-status (:review_status query)]
-        (r/ok (export config export-type review-status)))
+      (if-not (h.r.permission/super-admin? config (:id user))
+        (r/forbidden {:message "Unauthorized"})
+        (let [export-type (:export-type path)
+              review-status (:review_status query)]
+          (r/ok (export config export-type review-status))))
       (catch Exception e
         (log logger :error :failed-to-create-export-file {:exception (class e)
                                                           :exception-message (ex-message e)})

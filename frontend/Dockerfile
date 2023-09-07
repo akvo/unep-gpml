@@ -1,4 +1,9 @@
-FROM nginx:1.19.6-alpine
+FROM akvo/akvo-node-18-alpine:20220923.084347.0558ee6
 
-COPY nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
-COPY build/ /app/public/
+WORKDIR /app
+
+COPY . .
+
+EXPOSE 3001
+
+CMD [ "yarn", "start" ]

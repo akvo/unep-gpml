@@ -203,29 +203,6 @@ h4 {
     margin-left: 10px;
   }
 
-  // btn primary
-  .ant-btn-primary {
-    color: #2d6796;
-    background-color: $green01;
-    border-color: $green01;
-    border-radius: 50px;
-    &:hover {
-      border-color: $yellow-highlight;
-      color: #fff;
-      background: $yellow-highlight;
-    }
-    &.black {
-      color: #fff;
-      border-color: $black;
-      background: $black;
-      &:hover {
-        border-color: $black;
-        color: $black;
-        background: #fff;
-      }
-    }
-  }
-
   // btn ghost
   .ant-btn-ghost {
     // color: $green01;
@@ -238,11 +215,6 @@ h4 {
     &.white {
       color: #fff;
       border-color: #fff;
-    }
-    &:hover {
-      // border-color: #fff;
-      // color: #fff;
-      // background: $yellow-highlight;
     }
     &.black {
       color: $black;

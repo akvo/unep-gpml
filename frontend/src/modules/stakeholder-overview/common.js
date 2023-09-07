@@ -1,7 +1,9 @@
-import { useLocation } from "react-router-dom";
+import { useRouter } from "next/router";
 
 const useQuery = () => {
-  const srcParams = new URLSearchParams(useLocation().search);
+  const router = useRouter();
+  const { query } = router;
+
   const ret = {
     country: [],
     networkType: [],
@@ -9,11 +11,12 @@ const useQuery = () => {
     page: [],
   };
 
-  for (var key of srcParams.keys()) {
-    ret[key] = srcParams
-      .get(key)
-      .split(",")
-      .filter((it) => it !== "");
+  for (let key in ret) {
+    if (query[key]) {
+      ret[key] = Array.isArray(query[key])
+        ? query[key]
+        : query[key].split(",").filter((it) => it !== "");
+    }
   }
 
   return ret;

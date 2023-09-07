@@ -31,6 +31,7 @@
            :coercion (reitit.coercion.malli/create
                       {:error-keys #{:humanized}
                        :compile mu/open-schema
+                       ;; FIXME: It should be `strip-extra-keys` instead, otherwise it's not working.
                        :skip-extra-values true
                        :default-values true
                        :encode-error (fn [error]

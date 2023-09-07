@@ -28,12 +28,13 @@ import bodyScrollLock from "../details-page/scroll-utils";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "./styles.module.scss";
+import { UIStore } from "../../store";
+import { isRegistered } from "../../utils/profile";
 
 const MenuBar = ({
   updateQuery,
   isAuthenticated,
   setWarningModalVisible,
-  isRegistered,
   profile,
   setLoginVisible,
   auth0Client,
@@ -138,7 +139,7 @@ const MenuBar = ({
                 />,
                 <UserButton
                   key="userButton"
-                  {...{ auth0Client, isRegistered, profile }}
+                  {...{ auth0Client, isRegistered, profile, router }}
                 />,
               ]
             )}
@@ -183,10 +184,10 @@ const MenuBar = ({
             </div>
             <h5>Community</h5>
             <div className={styles.row}>
-              <Item to="/connect/community" {...{ setShowMenu }} />
-              <Item to="/connect/experts" {...{ setShowMenu }} />
-              <Item to="/connect/events" {...{ setShowMenu }} />
-              <Item to="/connect/partners" {...{ setShowMenu }} />
+              <Item to="/community" {...{ setShowMenu }} />
+              <Item to="/experts" {...{ setShowMenu }} />
+              <Item to="/events" {...{ setShowMenu }} />
+              <Item to="/partners" {...{ setShowMenu }} />
               <Item
                 href="https://communities.gpmarinelitter.org"
                 title="Engage"
@@ -262,24 +263,24 @@ const pathContent = {
     icon: <CapacityBuildingSvg />,
     iconClass: "learning",
   },
-  "/connect/community": {
+  "/community": {
     title: "Members",
     iconClass: "tools-community-icon",
     subtitle: "Directory of GPML network entities and individuals",
     icon: <IconCommunity />,
   },
-  "/connect/experts": {
+  "/experts": {
     title: "Experts",
     iconClass: "tools-experts-icon",
     subtitle: "Tool to find an expert and experts' groups",
     icon: <ExpertIcon />,
   },
-  "/connect/events": {
+  "/events": {
     title: "Events",
     subtitle: "Global events calendar",
     icon: <IconEvent />,
   },
-  "/connect/partners": {
+  "/partners": {
     title: "Partners",
     iconClass: "tools-partners-icon",
     subtitle: "Directory of partners of the GPML Digital Platform",
@@ -353,12 +354,12 @@ const Search = ({ router }) => {
   const handleSearch = (src) => {
     if (src) {
       router.push({
-        pathname: `/knowledge/library/resource/category`,
+        pathname: `/knowledge/library/grid`,
         query: { q: src.trim() },
       });
     } else {
       router.push({
-        pathname: `/knowledge/library/resource/category`,
+        pathname: `/knowledge/library/grid`,
       });
     }
   };
@@ -370,6 +371,7 @@ const Search = ({ router }) => {
         className="input-src"
         placeholder="Search"
         suffix={<SearchOutlined />}
+        onChange={(e) => setSearch(e.target.value)}
         onPressEnter={(e) => handleSearch(e.target.value)}
         onSubmit={(e) => setSearch(e.target.value)}
       />
@@ -384,14 +386,32 @@ const AddButton = ({
   setLoginVisible,
   profile,
 }) => {
-  console.log(profile);
+  const addContentClick = () => {
+    router.push("/flexible-forms");
+    UIStore.update((e) => {
+      e.formEdit = {
+        ...e.formEdit,
+        flexible: {
+          status: "add",
+          id: null,
+        },
+      };
+      e.formStep = {
+        ...e.formStep,
+        flexible: 1,
+      };
+    });
+  };
+
   if (isAuthenticated) {
     if (profile?.reviewStatus === "APPROVED") {
       return (
         <>
-          <Link href="/flexible-forms">
-            <Button type="primary">Add Content</Button>
-          </Link>
+          {/* <Link href="/flexible-forms"> */}
+          <Button onClick={addContentClick} type="primary">
+            Add Content
+          </Button>
+          {/* </Link> */}
         </>
       );
     }

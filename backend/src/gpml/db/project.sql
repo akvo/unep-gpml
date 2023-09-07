@@ -54,9 +54,9 @@ WHERE 1=1
 --~ (when (get-in params [:filters :stages]) " AND p.stage = ANY(:filters.stages)")
 GROUP BY p.id
 
--- :name create-projects :execute :affected
+-- :name create-projects :returning-execute :many
 INSERT INTO project (:i*:insert-cols)
-VALUES :t*:insert-values;
+VALUES :t*:insert-values RETURNING id;
 
 -- :name update-project :execute :affected
 /* :require [clojure.string :as string]

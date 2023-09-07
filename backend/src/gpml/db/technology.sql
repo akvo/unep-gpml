@@ -13,8 +13,6 @@ insert into technology(
     remarks,
     review_status,
     url,
-    image,
-    logo,
     language
 --~ (when (contains? params :id) ", id")
 --~ (when (contains? params :created_by) ", created_by")
@@ -24,6 +22,8 @@ insert into technology(
 --~ (when (contains? params :headquarter) ", headquarter")
 --~ (when (contains? params :document_preview) ", document_preview")
 --~ (when (contains? params :source) ", source")
+--~ (when (contains? params :image_id) ", image_id")
+--~ (when (contains? params :thumbnail_id) ", thumbnail_id")
 )
 values(
     :name,
@@ -38,8 +38,6 @@ values(
     :remarks,
     :v:review_status::review_status,
     :url,
-    :image,
-    :logo,
     :language
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :created_by) ", :created_by")
@@ -49,45 +47,47 @@ values(
 --~ (when (contains? params :headquarter) ", :headquarter")
 --~ (when (contains? params :document_preview) ", :document_preview")
 --~ (when (contains? params :source) ", :source")
+--~ (when (contains? params :image_id) ", :image_id")
+--~ (when (contains? params :thumbnail_id) ", :thumbnail_id")
 )
 returning id;
 
 -- :name technology-by-id :? :1
 -- :doc returns technology data
-select
-    technology.id,
-    name,
-    year_founded,
-    country,
-    organisation_type,
-    development_stage,
-    specifications_provided,
-    email,
-    geo_coverage_type,
-    attachments,
-    remarks,
-    url,
-    image,
-    logo,
-    info_docs,
-    sub_content_type,
-    subnational_city,
-    headquarter,
-    created_by,
-    document_preview,
-    language,
-    COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners,
-    (select json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
-        from technology_language_url plu
-        left join language l on l.id = plu.language
-        where plu.technology = :id) as urls,
-    (select json_agg(tag) from technology_tag where technology = :id) as tags,
-    (select json_agg(coalesce(country, country_group))
-        from technology_geo_coverage where technology = :id) as geo_coverage_value
-from technology
-left join topic_stakeholder_auth authz ON authz.topic_type::text='technology' AND authz.topic_id=technology.id
-where technology.id = :id
-GROUP BY technology.id
+SELECT
+    t.id,
+    t.name,
+    t.year_founded,
+    t.country,
+    t.organisation_type,
+    t.development_stage,
+    t.specifications_provided,
+    t.email,
+    t.geo_coverage_type,
+    t.attachments,
+    t.remarks,
+    t.url,
+    t.image,
+    t.logo,
+    t.info_docs,
+    t.sub_content_type,
+    t.subnational_city,
+    t.headquarter,
+    t.created_by,
+    t.document_preview,
+    t.language,
+    COALESCE(json_agg(acs.stakeholder) FILTER (WHERE acs.stakeholder IS NOT NULL), '[]') as owners,
+    (SELECT json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
+	FROM technology_language_url plu
+	LEFT JOIN language l ON l.id = plu.language
+	WHERE plu.technology = :id) AS urls,
+    (SELECT json_agg(tag) FROM technology_tag WHERE technology = :id) AS tags,
+    (SELECT json_agg(coalesce(country, country_group))
+	FROM technology_geo_coverage WHERE technology = :id) AS geo_coverage_value
+FROM technology t
+LEFT JOIN stakeholder_technology acs ON acs.technology = t.id AND acs.association = 'owner'
+WHERE t.id = :id
+GROUP BY t.id;
 
 -- :name pending-technology :? :1
 -- :doc Returns the pending technology data
@@ -113,13 +113,13 @@ select
     headquarter,
     document_preview,
     (select json_agg(json_build_object('url',plu.url, 'lang', l.iso_code))
-        from technology_language_url plu
-        left join language l on l.id = plu.language
-        where plu.technology = :id) as urls,
+	from technology_language_url plu
+	left join language l on l.id = plu.language
+	where plu.technology = :id) as urls,
     (select json_agg(tag)
-        from technology_tag where technology = :id) as tags,
+	from technology_tag where technology = :id) as tags,
     (select created_by
-        from technology where id = :id) as created_by
+	from technology where id = :id) as created_by
 from v_technology_data
 where id = :id
 

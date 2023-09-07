@@ -60,7 +60,9 @@
    e.q24_subnational_city,
    e.qimage AS image,
    e.thumbnail,
-   e.capacity_building")
+   e.capacity_building,
+   e.image_id,
+   e.thumbnail_id")
 
 (def ^:const ^:private policy-cols
   "e.abstract AS summary,
@@ -123,7 +125,7 @@
 
 (defn- build-topic-data-query
   [entity-name
-   {:keys [entity tag representative-group
+   {:keys [id entity tag representative-group
            geo-coverage-types sub-content-type
            search-text review-status featured capacity-building upcoming] :as _params}
    {:keys [search-text-fields] :as _opts}]
@@ -147,7 +149,19 @@
         geo-coverage-join (if (= entity-name "stakeholder")
                             ""
                             (format "LEFT JOIN %s_geo_coverage eg ON eg.%s = e.id" entity-name entity-name))
+        files-join (cond
+                     (= entity-name "stakeholder")
+                     "LEFT JOIN file f ON e.picture_id = f.id"
+
+                     (= entity-name "organisation")
+                     "LEFT JOIN file f ON e.logo_id = f.id"
+
+                     :else
+                     "LEFT JOIN file f ON f.id IN (e.image_id, e.thumbnail_id)")
         where-cond (cond-> "WHERE 1=1"
+                     id
+                     (str " AND e.id = :id")
+
                      (seq review-status)
                      (str " AND e.review_status = :review-status::REVIEW_STATUS")
 
@@ -182,9 +196,11 @@
      "SELECT
        %s,
        %s
+       json_agg(jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files,
        json_agg(json_build_object('id', t.id, 'tag', t.tag)) FILTER (WHERE t.id IS NOT NULL) AS tags
    FROM %s e
    LEFT JOIN %s_tag et ON et.%s = e.id LEFT JOIN tag t ON et.tag = t.id
+   %s
    %s
    %s
    %s
@@ -192,6 +208,7 @@
      (concat [table-specific-cols]
              [geo-coverage-select]
              (repeat 3 entity-name)
+             [files-join]
              [entity-connections-join]
              [geo-coverage-join]
              [where-cond]))))
@@ -299,9 +316,17 @@
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn generate-topic-query
   "Generates the SQL to query topic's (resources) data."
-  [params opts]
-  (let [opts (merge generic-cte-opts (when (seq (:tables opts))
-                                       (update opts :tables rename-tables)))
+  [{:keys [topic sub-content-type] :as params}]
+  (let [tables (if (seq topic)
+                 topic
+                 (:tables gpml.db.topic/generic-cte-opts))
+        ;; If we ever need to add
+        ;; `sub_content_type` to case study, remove
+        ;; this conditional and binding.
+        filtered-tables (if (seq sub-content-type)
+                          (vec (remove #{"case_study"} tables))
+                          tables)
+        opts (merge generic-cte-opts {:tables (rename-tables filtered-tables)})
         topic-data-ctes (generate-ctes :data params opts)
         topic-ctes (generate-ctes :topic params opts)
         topic-cte (generate-topic-cte {} opts)]
@@ -379,6 +404,9 @@
                           ;; are multiple topics.
                           (and upcoming (= (first topic) "event"))
                           "ORDER BY json->>'start_date' ASC"
+
+                          (= order-by "featured")
+                          "ORDER BY json->>'featured' DESC NULLS LAST, (json->>'created')::timestamptz DESC"
 
                           (seq order-by)
                           (format "ORDER BY json->>'%s' %s" order-by order)

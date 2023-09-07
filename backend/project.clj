@@ -12,6 +12,7 @@
                  [duct/module.web "0.7.1" :exclusions [medley ring/ring-core]]
                  [org.postgresql/postgresql "42.2.18"]
                  [com.google.cloud.sql/postgres-socket-factory "1.2.0"]
+                 [com.google.cloud/google-cloud-storage "2.26.0" :exclusions [org.checkerframework/checker-qual]]
                  [metosin/reitit-ring "0.5.18" :exclusions [ring/ring-core]]
                  [metosin/reitit-malli "0.5.18" :exclusions [org.clojure/tools.reader
                                                              org.clojure/core.rrb-vector]]
@@ -20,7 +21,7 @@
                                                                   metosin/muuntaja]]
                  [metosin/reitit-swagger "0.5.18"]
                  [metosin/reitit-swagger-ui "0.5.18" :exclusions [ring/ring-core]]
-                 [metosin/jsonista "0.3.5"]
+                 [metosin/jsonista "0.3.6"]
                  [com.layerware/hugsql "0.5.1"]
                  [com.auth0/auth0 "1.25.0" :exclusions [org.jetbrains.kotlin/kotlin-stdlib-common
                                                         com.fasterxml.jackson.core/jackson-databind]]
@@ -37,7 +38,7 @@
                  [org.eclipse.jetty/jetty-server "9.4.31.v20200723"]
                  [org.eclipse.jetty/jetty-servlet "9.4.31.v20200723"]
                  [com.zaxxer/HikariCP "3.4.5" :exclusions [org.slf4j/slf4j-api]]
-                 [raven-clj "1.5.2"]
+                 [raven-clj "1.5.2" :exclusions [cheshire]]
                  [ovotech/clj-gcp "0.6.15" :exclusions [com.google.errorprone/error_prone_annotations
                                                         com.google.auth/google-auth-library-oauth2-http
                                                         com.google.guava/guava
@@ -49,7 +50,9 @@
                  [twarc "0.1.15"]
                  [diehard "0.10.3"]
                  [org.jsoup/jsoup "1.15.3"]
-                 [ring-cors "0.1.13"]]
+                 [ring-cors "0.1.13"]
+                 [dev.gethop/rbac "0.1.0-alpha-7"]
+                 [camel-snake-kebab "0.4.3"]]
   :plugins [[duct/lein-duct "0.12.1"]]
   :main ^:skip-aot gpml.main
   :resource-paths ["resources" "target/resources"]

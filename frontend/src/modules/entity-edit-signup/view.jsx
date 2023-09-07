@@ -9,7 +9,7 @@ import {
   LoadingOutlined,
   RightOutlined,
 } from "@ant-design/icons";
-// import "./styles.scss";
+import styles from "../signup/styles.module.scss";
 import SignUpForm from "./form";
 import StickyBox from "react-sticky-box";
 
@@ -19,9 +19,7 @@ import xor from "lodash/xor";
 import api from "../../utils/api";
 import entity from "./entity";
 import stakeholder from "./stakeholder";
-
-import { useLocation } from "react-router-dom";
-
+import { useRouter } from "next/router";
 const { Step } = Steps;
 
 const formDataMapping = [
@@ -189,7 +187,7 @@ const formDataMapping = [
   {
     name: "picture",
     type: "image",
-    question: "photo",
+    question: "picture",
     section: "S1",
     group: null,
   },
@@ -252,8 +250,9 @@ const formDataMapping = [
 ];
 
 const EntityEditSignUp = ({ match: { params }, ...props }) => {
-  const location = useLocation();
-  const isEntityType = location.state.formType === "entity" ? true : false;
+  const router = useRouter();
+  const { formType } = router.query;
+  const isEntityType = formType === "entity" ? true : false;
   const isStakeholderType = !isEntityType;
   const {
     tabs,
@@ -327,6 +326,7 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
     disabled: true,
     type: "default",
   });
+  const [originalData, setOriginalData] = useState({});
 
   const isAuthorizeSubmission = true;
 
@@ -456,6 +456,7 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
             editId !== dataId)
         ) {
           api.get(`/organisation/${dataId}`).then((d) => {
+            setOriginalData(d.data);
             signUpData.update((e) => {
               e.data = revertFormData(d.data);
               e.editId = dataId;
@@ -487,6 +488,7 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
                 privateCitizen: true,
               };
             }
+            setOriginalData(d.data);
             signUpData.update((e) => {
               e.data = revertFormData(d.data);
               e.editId = dataId;
@@ -669,7 +671,7 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
   };
 
   return (
-    <div id="add-sign-up">
+    <div id="add-sign-up" className={styles.addSignUp}>
       <StickyBox style={{ zIndex: 10 }}>
         <div className="form-info-wrapper">
           <div className="ui container">
@@ -695,7 +697,6 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
                       disabled={disabledBtn.disabled}
                       loading={sending}
                       type={disabledBtn.type}
-                      size="large"
                       className="submit-button"
                       onClick={(e) => handleOnClickBtnSubmit(e)}
                     >
@@ -790,6 +791,8 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
                         setDisabledBtn={setDisabledBtn}
                         hideEntityPersonalDetail={hideEntityPersonalDetail}
                         tabsData={tabsData}
+                        match={{ params: { id: params?.id } }}
+                        originalData={originalData}
                       />
                       <div className="button-row">
                         {!isFirstStep() && (
