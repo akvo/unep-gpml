@@ -144,6 +144,63 @@ h6,
       margin-top: 0px;
     }
   }
+  .ant-menu {
+    background: transparent;
+    border: none;
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    line-height: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 53px;
+    li {
+      line-height: normal;
+      height: fit-content;
+      a {
+        font-family: var(--font-archia), sans-serif;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        color: white;
+        cursor: pointer;
+        display: inline-block;
+        span {
+          padding-left: 12px;
+        }
+
+        &:hover {
+          &::after {
+            width: 100%;
+          }
+        }
+        &::after {
+          content: '';
+          display: block;
+          width: 0;
+          height: 2px;
+          background: white;
+          transition: width 0.3s;
+        }
+      }
+    }
+  }
+  .fullscreen-nav {
+    position: fixed;
+    top: 90px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    background: url('/menu-background.png');
+    background-size: cover;
+    button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+  }
 }
 
 h6.bold,

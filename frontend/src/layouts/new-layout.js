@@ -1,12 +1,75 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { isEmpty } from 'lodash'
-import { Button } from 'antd'
+import { Button, Menu } from 'antd'
 import localFont from 'next/font/local'
 import { DM_Sans } from 'next/font/google'
 import Image from 'next/image'
 import Footer from '../footer'
 import Login from '../modules/login/view'
+import { DownArrow, CloseIcon } from '../components/icons'
+import Link from 'next/link'
+import { motion, AnimatePresence } from 'framer-motion'
+
+const navVariants = {
+  open: { scale: 1, opacity: 1 },
+  closed: { scale: 0.95, opacity: 0 },
+}
+
+const menuItemVariants = {
+  open: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.5 + i * 0.1,
+    },
+  }),
+  closed: { opacity: 0, y: 50 },
+}
+const FullscreenNav = ({ isOpen, toggle }) => {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial="closed"
+          animate="open"
+          exit="closed"
+          variants={navVariants}
+          transition={{ duration: 0.5, type: 'spring', stiffness: 75 }}
+          className="fullscreen-nav"
+        >
+          <button
+            onClick={toggle}
+            style={{ position: 'absolute', top: 20, right: 20 }}
+          >
+            <CloseIcon />
+          </button>
+          <ul>
+            {menuItems.map((item, i) => (
+              <motion.li
+                key={item.key}
+                variants={menuItemVariants}
+                custom={i}
+                initial="closed"
+                animate="open"
+                exit="closed"
+              >
+                <Link href={'/'} legacyBehavior>
+                  <a>
+                    {item.label}
+                    <span>
+                      <DownArrow />
+                    </span>
+                  </a>
+                </Link>
+              </motion.li>
+            ))}
+          </ul>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+}
 
 const archia = localFont({
   src: [
@@ -42,6 +105,11 @@ const dmSans = DM_Sans({
   weight: ['400', '500', '700'],
 })
 
+const menuItems = ['Plastic', 'Tools', 'Countries', 'About'].map((key) => ({
+  key,
+  label: key,
+}))
+
 const NewLayout = ({
   children,
   isIndexPage,
@@ -51,6 +119,8 @@ const NewLayout = ({
 }) => {
   const [loginVisible, setLoginVisible] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
+  const [hoveredItemKey, setHoveredItemKey] = useState(null)
+
   return (
     <>
       <style jsx global>{`
@@ -71,8 +141,37 @@ const NewLayout = ({
                 height={74}
               />
             </div>
+            <ul className="ant-menu">
+              {menuItems.map((item) => (
+                <li
+                  key={item.key}
+                  onMouseEnter={() => setHoveredItemKey(item.key)}
+                  onMouseLeave={() => setHoveredItemKey(null)}
+                >
+                  <Link href={'/'} legacyBehavior>
+                    <a>
+                      {item.label}
+                      <span>
+                        <DownArrow />
+                      </span>
+                    </a>
+                  </Link>
+                  {hoveredItemKey === item.key && (
+                    <FullscreenNav
+                      isOpen={true}
+                      toggle={() => setHoveredItemKey(null)}
+                    />
+                  )}
+                </li>
+              ))}
+            </ul>
             <nav>
-              <Button type="primary" size="small" className="noicon">
+              <Button
+                type="primary"
+                size="small"
+                className="noicon"
+                onClick={() => setShowMenu(true)}
+              >
                 Join Now
               </Button>
             </nav>
