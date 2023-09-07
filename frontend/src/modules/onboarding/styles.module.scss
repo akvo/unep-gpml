@@ -1,4 +1,6 @@
 @import "../../vars.scss";
+@import "../../styles/vars.scss";
+@import "../../styles/btns.scss";
 
 .onboarding {
   padding: 60px 0px;
@@ -44,6 +46,16 @@
         flex-direction: column;
         justify-content: center;
       }
+      .label-text {
+        margin: 20px 0 8px;
+        color: $primaryDarkBlue;
+        font-size: $fzXXS;
+        font-weight: 500;
+        line-height: $lhXXS;
+      }
+      h2 {
+        color: $primaryDarkBlue;
+      }
     }
     .getting-started.slide {
       position: relative;
@@ -55,7 +67,7 @@
           font-weight: 500;
           font-size: 36px;
           line-height: 52px;
-          color: #18162f;
+          color: $primaryDarkBlue;
         }
       }
       .image-wrapper {
@@ -159,27 +171,11 @@
       z-index: 3;
     }
     .step-button-next {
-      border: 2px solid #18162f;
-      border-radius: 23.5px;
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 22px;
-      display: flex;
-      align-items: center;
-      text-align: center;
-      color: #18162f;
-      padding: 20px 45px;
-      background: transparent;
       &.abs {
         position: absolute;
         right: 30px;
         bottom: 26px;
         z-index: 3;
-      }
-      &:hover {
-        border-color: $blue12;
-        color: #fff;
-        background: $blue12;
       }
     }
 
@@ -275,22 +271,12 @@
         font-size: 16px;
         line-height: 42px;
       }
-      &.ant-input-status-error {
-        border: 1px solid #ff4d4f;
-      }
     }
 
     textarea {
       line-height: 20px !important;
       font-size: 16px;
       padding: 10px;
-    }
-    .ant-select-selection-item {
-    }
-    .ant-input-status-error {
-      .ant-checkbox-inner {
-        border: 1px solid #ff4d4f;
-      }
     }
     .step-form {
       .ant-upload {
