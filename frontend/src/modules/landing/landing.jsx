@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Card } from 'antd'
+import { Card } from 'antd'
 import styles from './styles.module.scss'
 import Down from '../../images/down.svg'
 import PlasticLitter from '../../images/plastic-litter.svg'
@@ -14,6 +14,7 @@ import DataSetIcon from '../../images/datasets.svg'
 import user1img from '../../images/our-community/cassia-patel.jpg'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Button from '../../components/button'
 
 const Landing = ({ setLoginVisible, history, ...props }) => {
   const router = useRouter()
@@ -38,6 +39,7 @@ const Landing = ({ setLoginVisible, history, ...props }) => {
               type="primary"
               size="large"
               onClick={() => setLoginVisible(true)}
+              withArrow
             >
               Join Now
             </Button>
@@ -65,6 +67,7 @@ const Landing = ({ setLoginVisible, history, ...props }) => {
             if (!props.isAuthenticated) setLoginVisible(true)
             else history.push('/projects/get-started')
           }}
+          withArrow
         >
           Create your workspace
         </Button>
