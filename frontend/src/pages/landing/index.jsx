@@ -968,7 +968,7 @@ const Footer = () => {
               </a>
             </div>
           </div>
-          <div className="footer-item">
+          {/* <div className="footer-item">
             <h6 className="title">About us</h6>
             <ul>
               <li>
@@ -981,7 +981,7 @@ const Footer = () => {
                 <Link href="/landing">About the GPML Digital platform</Link>
               </li>
             </ul>
-          </div>
+          </div> */}
           <div className="footer-item">
             <h6 className="title">GPML Tools</h6>
             <ul>
