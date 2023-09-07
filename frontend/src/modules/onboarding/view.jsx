@@ -214,7 +214,7 @@ function Authentication() {
 
   return (
     <div className={styles.onboarding}>
-      <Form        
+      <Form
         validate={(values) => {
           let errors = {}
           const setError = (key, value) => {
@@ -332,6 +332,7 @@ function Authentication() {
                 />
                 {currentStep > 0 && (
                   <Button
+                    type="ghost"
                     className="step-button-back"
                     onClick={previous}
                     size="small"
