@@ -235,3 +235,47 @@ export const LongArrowRight = () => (
     </defs>
   </svg>
 )
+
+export const FieldErrorIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="24"
+    viewBox="0 -2 16 16"
+    fill="none"
+  >
+    <g clip-path="url(#clip0_841_3554)">
+      <path
+        d="M8.00065 14.6667C4.31865 14.6667 1.33398 11.682 1.33398 8.00004C1.33398 4.31804 4.31865 1.33337 8.00065 1.33337C11.6827 1.33337 14.6673 4.31804 14.6673 8.00004C14.6673 11.682 11.6827 14.6667 8.00065 14.6667ZM7.33398 10V11.3334H8.66732V10H7.33398ZM7.33398 4.66671V8.66671H8.66732V4.66671H7.33398Z"
+        fill="#E00909"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0_841_3554">
+        <rect width="16" height="16" fill="white" />
+      </clipPath>
+    </defs>
+  </svg>
+)
+
+export const FieldSuccessIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="24"
+    viewBox="0 -2 16 16"
+    fill="none"
+  >
+    <g clip-path="url(#clip0_841_4454)">
+      <path
+        d="M8.00065 14.6667C4.31865 14.6667 1.33398 11.682 1.33398 8.00004C1.33398 4.31804 4.31865 1.33337 8.00065 1.33337C11.6827 1.33337 14.6673 4.31804 14.6673 8.00004C14.6673 11.682 11.6827 14.6667 8.00065 14.6667ZM7.33598 10.6667L12.0493 5.95271L11.1067 5.01004L7.33598 8.78137L5.44998 6.89537L4.50732 7.83804L7.33598 10.6667Z"
+        fill="#06D1A7"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0_841_4454">
+        <rect width="16" height="16" fill="white" />
+      </clipPath>
+    </defs>
+  </svg>
+)

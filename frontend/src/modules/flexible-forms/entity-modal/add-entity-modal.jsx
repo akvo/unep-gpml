@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { UIStore } from "../../../store";
 import { Store } from "pullstate";
 import { Modal, Button } from "antd";
-import "./modal.module.scss";
 import { withTheme } from "@rjsf/core";
 import { Theme as AntDTheme } from "@rjsf/antd";
 import { schema, uiSchema } from "./form-schema";
@@ -299,11 +298,10 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
       title="Create New Entity"
       footer={
         <div>
-          <Button className="close-button" onClick={(e) => close()}>
+          <Button onClick={(e) => close()} type="link">
             Close
           </Button>
           <Button
-            className="custom-button"
             onClick={(e) => handleOnClickBtnSubmit(e)}
             loading={sending}
             disabled={disabledBtn.disabled}
