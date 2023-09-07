@@ -59,8 +59,16 @@ frontend_build () {
 	   --tag "${image_prefix}/frontend:${CI_COMMIT}" frontend
 }
 
+
+nginx_build () {
+    docker build \
+           --tag "${image_prefix}/nginx:latest" \
+           --tag "${image_prefix}/nginx:${CI_COMMIT}" nginx
+}
+
 backend_build
 frontend_build
+nginx_build
 
 if ! dci run -T ci ./basic.sh; then
   dci logs

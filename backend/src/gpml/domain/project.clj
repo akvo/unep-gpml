@@ -1,6 +1,5 @@
 (ns gpml.domain.project
   (:require [gpml.domain.types :as dom.types]
-            [gpml.util :as util]
             [malli.core :as m]))
 
 (def project-types
@@ -16,7 +15,7 @@
   (m/schema
    [:map
     [:project_id
-     uuid?]
+     pos-int?]
     [:country_id
      pos-int?]
     [:country_group_id
@@ -29,10 +28,9 @@
     [:id
      {:swagger
       {:description "The Project's identifier"
-       :type "string"
-       :format "uuid"
+       :type "integer"
        :allowEmptyValue false}}
-     uuid?]
+     pos-int?]
     [:stakeholder_id
      {:swagger
       {:description "The Project stakeholder's (owner/creator) identifier."
@@ -101,24 +99,11 @@
       pos-int?]]
     [:source
      {:default dom.types/default-resource-source
-      :decode/string keyword
-      :decode/json keyword
       :encode/json name
       :encode/string name
       :swagger {:description "Source platform of the Project"
                 :type "string"
                 :enum dom.types/resource-source-types}}
-     (apply conj [:enum] dom.types/resource-source-types)]]))
-
-(defn create-project
-  "Creates a new project entity adding the necessary default and unique
-  values."
-  [data]
-  (-> data
-      (assoc :id (util/uuid))))
-
-(defn update-project
-  "Handle transformations to represent domain canonical entity."
-  [data]
-  (-> data
-      (util/update-if-not-nil :source keyword)))
+     [:and
+      keyword?
+      (apply conj [:enum] dom.types/resource-source-types)]]]))

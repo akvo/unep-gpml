@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import { Card } from "antd";
-import styles from "./styles.module.scss";
-import Down from "../../images/down.svg";
-import PlasticLitter from "../../images/plastic-litter.svg";
-import { useEffect } from "react";
-import { useRef } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper";
-import { UIStore } from "../../store";
-import ActionPlanIcon from "../../images/actionplan.svg";
-import KnowledgeIcon from "../../images/knowledge.svg";
-import DataSetIcon from "../../images/datasets.svg";
-import user1img from "../../images/our-community/cassia-patel.jpg";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import Button from "../../components/button";
+import React, { useState } from 'react'
+import { Card } from 'antd'
+import styles from './styles.module.scss'
+import Down from '../../images/down.svg'
+import PlasticLitter from '../../images/plastic-litter.svg'
+import { useEffect } from 'react'
+import { useRef } from 'react'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination, Navigation } from 'swiper'
+import { UIStore } from '../../store'
+import ActionPlanIcon from '../../images/actionplan.svg'
+import KnowledgeIcon from '../../images/knowledge.svg'
+import DataSetIcon from '../../images/datasets.svg'
+import user1img from '../../images/our-community/cassia-patel.jpg'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import Button from '../../components/button'
 
 const Landing = ({ setLoginVisible, history, ...props }) => {
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <div className={styles.landingb}>
@@ -50,8 +50,8 @@ const Landing = ({ setLoginVisible, history, ...props }) => {
           onClick={(e, v) => {
             window.scrollTo({
               top: window.innerHeight - 80,
-              behavior: "smooth",
-            });
+              behavior: 'smooth',
+            })
           }}
         >
           <Down />
@@ -64,8 +64,8 @@ const Landing = ({ setLoginVisible, history, ...props }) => {
           type="primary"
           size="large"
           onClick={() => {
-            if (!props.isAuthenticated) setLoginVisible(true);
-            else history.push("/projects/get-started");
+            if (!props.isAuthenticated) setLoginVisible(true)
+            else history.push('/projects/get-started')
           }}
           withArrow
         >
@@ -79,12 +79,12 @@ const Landing = ({ setLoginVisible, history, ...props }) => {
       <Act {...{ setLoginVisible }} />
       <AnyQuestions />
     </div>
-  );
-};
+  )
+}
 
 const TheJourney = () => {
-  const topRef = useRef();
-  const svgRef = useRef();
+  const topRef = useRef()
+  const svgRef = useRef()
   useEffect(() => {
     const views = [
       { scale: 0.76, x: -320, y: -78 },
@@ -93,35 +93,35 @@ const TheJourney = () => {
       { scale: 1.56, x: -907, y: -777 },
       { scale: 2.08, x: -3292, y: -1031 },
       { scale: 1.6, x: -2300, y: -850 },
-    ];
+    ]
     const scrollListener = () => {
-      const { scrollY } = window;
+      const { scrollY } = window
       if (scrollY > topRef.current.offsetTop - 80) {
-        const y = scrollY - topRef.current.offsetTop + 130;
-        const page = y / window.innerHeight;
+        const y = scrollY - topRef.current.offsetTop + 130
+        const page = y / window.innerHeight
 
-        const base = Math.floor(page);
-        const view = {};
-        if (base > 4) return;
+        const base = Math.floor(page)
+        const view = {}
+        if (base > 4) return
         view.scale =
           views[base].scale +
-          (views[base + 1].scale - views[base].scale) * (page - base);
+          (views[base + 1].scale - views[base].scale) * (page - base)
         view.x =
-          views[base].x + (views[base + 1].x - views[base].x) * (page - base);
+          views[base].x + (views[base + 1].x - views[base].x) * (page - base)
         view.y =
-          views[base].y + (views[base + 1].y - views[base].y) * (page - base);
-        position(view);
+          views[base].y + (views[base + 1].y - views[base].y) * (page - base)
+        position(view)
       }
-    };
+    }
     const position = ({ scale, x, y }) => {
-      svgRef.current.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
-    };
-    position(views[0]);
-    document.addEventListener("scroll", scrollListener);
+      svgRef.current.style.transform = `translate(${x}px, ${y}px) scale(${scale})`
+    }
+    position(views[0])
+    document.addEventListener('scroll', scrollListener)
     return () => {
-      document.removeEventListener("scroll", scrollListener);
-    };
-  }, []);
+      document.removeEventListener('scroll', scrollListener)
+    }
+  }, [])
   return (
     <div className={styles.journey} ref={topRef}>
       <img ref={svgRef} src="/plastic-journey.svg" />
@@ -242,29 +242,29 @@ const TheJourney = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export const useDeviceSize = () => {
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState(0)
+  const [height, setHeight] = useState(0)
 
   const handleWindowResize = () => {
-    setWidth(window.innerWidth);
-    setHeight(window.innerHeight);
-  };
+    setWidth(window.innerWidth)
+    setHeight(window.innerHeight)
+  }
 
   useEffect(() => {
-    handleWindowResize();
-    window.addEventListener("resize", handleWindowResize);
-    return () => window.removeEventListener("resize", handleWindowResize);
-  }, []);
+    handleWindowResize()
+    window.addEventListener('resize', handleWindowResize)
+    return () => window.removeEventListener('resize', handleWindowResize)
+  }, [])
 
-  return [width, height];
-};
+  return [width, height]
+}
 
 const Connect = () => {
-  const [width] = useDeviceSize();
+  const [width] = useDeviceSize()
 
   return (
     <div className={styles.connect}>
@@ -281,7 +281,7 @@ const Connect = () => {
       >
         <SwiperSlide className={`${styles.card} ${styles.casestudy}`}>
           <div className={styles.label}>REGIONAL NODE SPOTLIGHT</div>
-          <img src="/node-spotlight.jpg" />{" "}
+          <img src="/node-spotlight.jpg" />{' '}
           <h4>
             Cooperative actions from Caribbean fisheries officials after a
             successful ghost gear retrieval training in Panama
@@ -316,16 +316,16 @@ const Connect = () => {
             China
           </h4>
           <p>
-            The Northwest Pacific Action Plan{" "}
+            The Northwest Pacific Action Plan{' '}
             <a href="https://www.unep.org/nowpap/" target="_blank">
               (NOWPAP)
-            </a>{" "}
+            </a>{' '}
             was adopted by the People’s Republic of China, Japan, the Republic
             of Korea, and the Russian Federation in September 1994 as a part of
-            the{" "}
+            the{' '}
             <a href="http://web.unep.org/regionalseas/" target="_blank">
               Regional Seas Programme
-            </a>{" "}
+            </a>{' '}
             of the UN Environment Programme (UNEP). The overall goal is "the
             wise use, development and management of the coastal and marine
             environment so as to obtain the utmost long-term benefits for the
@@ -334,10 +334,10 @@ const Connect = () => {
             generations".
             <br />
             <br />
-            NOWPAP and the Coordinating Body on the Seas of East Asia{" "}
+            NOWPAP and the Coordinating Body on the Seas of East Asia{' '}
             <a href="https://www.unep.org/cobsea/" target="_blank">
               (COBSEA)
-            </a>{" "}
+            </a>{' '}
             recently co-organised a Technical Session on “Strengthening Regional
             Cooperation for Global Action on Marine Litter in the East Asian
             Seas and Northwest Pacific’ at the 7th International Marine Debris
@@ -346,7 +346,7 @@ const Connect = () => {
             tackling marine litter globally. Representatives of Japan, Republic
             of Korea, Thailand and Vietnam shared their insights on interagency
             coordination, monitoring for evidence-based action, and
-            strengthening regional cooperation. Read more{" "}
+            strengthening regional cooperation. Read more{' '}
             <a
               href="https://www.unep.org/nowpap/news-and-stories/press-release/strengthening-regional-cooperation-global-action-marine-litter"
               target="_blank"
@@ -387,7 +387,7 @@ const Connect = () => {
           </p>
         </SwiperSlide>
         <SwiperSlide className={`${styles.card} ${styles.testimonial}`}>
-          <img src={user1img} />
+          <img src="/cassia-patel.jpeg" />
           <h4>Cassia Patel</h4>
           <h5>Program Director, Oceanic Global</h5>
           <blockquote>
@@ -396,7 +396,7 @@ const Connect = () => {
           </blockquote>
         </SwiperSlide>
         <SwiperSlide className={`${styles.card} ${styles.testimonial}`}>
-          <img src="https://digital.gpmarinelitter.org/image/profile/27" />
+          <img src="/marvin.jpeg" />
           <h4>Marvin Burman</h4>
           <h5>
             Assistant Executive Director - Gulf and Caribbean Fisheries
@@ -408,7 +408,7 @@ const Connect = () => {
           </blockquote>
         </SwiperSlide>
         <SwiperSlide className={`${styles.card} ${styles.testimonial}`}>
-          <img src="https://digital.gpmarinelitter.org/image/profile/30" />
+          <img src="/fadilah.jpeg" />
           <h4>Fadilah Ali</h4>
           <h5>
             Assistant Executive Director - Gulf and Caribbean Fisheries
@@ -421,28 +421,28 @@ const Connect = () => {
         </SwiperSlide>
       </Swiper>
     </div>
-  );
-};
+  )
+}
 
 const Partners = () => {
-  const ref = useRef();
-  const imgRef = useRef();
+  const ref = useRef()
+  const imgRef = useRef()
   const scrollHandler = () => {
-    const y = window.scrollY + window.innerHeight - ref.current.clientHeight;
-    let subt = y - ref.current.offsetTop;
-    const max = window.innerHeight - ref.current.clientHeight - 80;
-    if (subt < 0) subt = 0;
-    else if (subt > max) subt = max;
-    const coef = subt / max;
-    const imgExx = imgRef.current.clientWidth - window.innerWidth + 100;
-    imgRef.current.style.transform = `translateX(-${coef * imgExx}px)`;
-  };
+    const y = window.scrollY + window.innerHeight - ref.current.clientHeight
+    let subt = y - ref.current.offsetTop
+    const max = window.innerHeight - ref.current.clientHeight - 80
+    if (subt < 0) subt = 0
+    else if (subt > max) subt = max
+    const coef = subt / max
+    const imgExx = imgRef.current.clientWidth - window.innerWidth + 100
+    imgRef.current.style.transform = `translateX(-${coef * imgExx}px)`
+  }
   useEffect(() => {
-    document.addEventListener("scroll", scrollHandler);
+    document.addEventListener('scroll', scrollHandler)
     return () => {
-      document.removeEventListener("scroll", scrollHandler);
-    };
-  }, []);
+      document.removeEventListener('scroll', scrollHandler)
+    }
+  }, [])
   return (
     <div className={styles.partners} ref={ref}>
       <h3>Our partners</h3>
@@ -450,8 +450,8 @@ const Partners = () => {
         <img ref={imgRef} src="/partners.png" />
       </div>
     </div>
-  );
-};
+  )
+}
 
 const Stats = ({ router }) => {
   const {
@@ -464,16 +464,16 @@ const Stats = ({ router }) => {
     organisations: s?.organisations,
     nonMemberOrganisations: s?.nonMemberOrganisations,
     community: s?.community,
-  }));
+  }))
 
-  const [governmentsCount, setGovernmentsCount] = useState(0);
+  const [governmentsCount, setGovernmentsCount] = useState(0)
 
   useEffect(() => {
     const governments = community?.counts?.find(
-      (count) => count?.networkType?.toLowerCase() === "organisation"
-    );
-    setGovernmentsCount(governments?.count || 0);
-  }, []);
+      (count) => count?.networkType?.toLowerCase() === 'organisation'
+    )
+    setGovernmentsCount(governments?.count || 0)
+  }, [])
 
   return (
     <div className={styles.stats}>
@@ -514,81 +514,81 @@ const Stats = ({ router }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const Act = ({ setLoginVisible }) => {
   const { resources } = UIStore.useState((s) => ({
     resources: s.nav?.resourceCounts,
-  }));
+  }))
 
   const organisationsCount =
-    resources?.find((data) => data?.hasOwnProperty("organisation"))[
-      "organisation"
-    ] || 0;
+    resources?.find((data) => data?.hasOwnProperty('organisation'))[
+      'organisation'
+    ] || 0
 
   const initialData = [
     {
-      title: "Share your data",
-      name: "Data layers",
-      count: "300+",
-      entityCount: "20+",
+      title: 'Share your data',
+      name: 'Data layers',
+      count: '300+',
+      entityCount: '20+',
       icon: <DataSetIcon />,
-      background: "#ECF8F6",
+      background: '#ECF8F6',
     },
-  ];
+  ]
 
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(initialData)
 
   useEffect(() => {
     const actionPlan = resources?.find((data) =>
-      data?.hasOwnProperty("actionPlan")
-    )["actionPlan"];
+      data?.hasOwnProperty('actionPlan')
+    )['actionPlan']
 
     const allResources = resources?.filter(
       (resource) =>
-        !resource?.hasOwnProperty("stakeholder") &&
-        !resource?.hasOwnProperty("organisation") &&
-        !resource?.hasOwnProperty("nonMemberOrganisation")
-    );
+        !resource?.hasOwnProperty('stakeholder') &&
+        !resource?.hasOwnProperty('organisation') &&
+        !resource?.hasOwnProperty('nonMemberOrganisation')
+    )
 
     const resourcesWithKey = allResources
       ?.map((resource) => {
         return Object.entries(resource)
-          ?.filter(([key]) => key !== "countries")
-          .flat();
+          ?.filter(([key]) => key !== 'countries')
+          .flat()
       })
-      .flat();
+      .flat()
 
     const resourceCounts = resourcesWithKey
       ?.map((item) => Number(item))
-      ?.filter((item) => !isNaN(item));
+      ?.filter((item) => !isNaN(item))
 
     const totalResourceCount = resourceCounts?.reduce(
       (acc, val) => acc + val,
       0
-    );
+    )
 
     setData([
       {
-        title: "Coordinate in a global effort ",
-        name: "Action Plans",
+        title: 'Coordinate in a global effort ',
+        name: 'Action Plans',
         count: actionPlan,
         entityCount: 28,
         icon: <ActionPlanIcon />,
-        background: "rgba(165, 176, 201, 0.2)",
+        background: 'rgba(165, 176, 201, 0.2)',
       },
       {
-        title: "Contribute to the knowledge",
-        name: "Resources",
+        title: 'Contribute to the knowledge',
+        name: 'Resources',
         count: totalResourceCount,
         entityCount: 814,
         icon: <KnowledgeIcon />,
-        background: "#F6EFDD",
+        background: '#F6EFDD',
       },
       ...initialData,
-    ]);
-  }, [resources]);
+    ])
+  }, [resources])
 
   return (
     <div className={styles.act}>
@@ -623,8 +623,8 @@ const Act = ({ setLoginVisible }) => {
         Join now
       </Button>
     </div>
-  );
-};
+  )
+}
 
 const AnyQuestions = () => {
   return (
@@ -642,7 +642,7 @@ const AnyQuestions = () => {
         </Link>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Landing;
+export default Landing

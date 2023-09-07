@@ -5,35 +5,18 @@
             [gpml.db.event :as db.event]
             [gpml.db.initiative :as db.initiative]
             [gpml.db.policy :as db.policy]
-            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.db.technology :as db.technology]
             [gpml.fixtures :as fixtures]
             [gpml.handler.detail :as detail]
             [gpml.seeder.main :as seeder]
+            [gpml.service.permissions :as srv.permissions]
+            [gpml.test-util :as test-util]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
 
 (defonce ^:private default-lang-iso-code "en")
 
 (use-fixtures :each fixtures/with-test-system)
-
-(defn- new-stakeholder [db email first_name last_name role review_status]
-  (let [info {:picture "https://picsum.photos/200"
-              :affiliation nil
-              :country nil
-              :representation ""
-              :public_email false
-              :public_database false
-              :geo_coverage_type nil
-              :title "Mr."
-              :first_name first_name
-              :last_name last_name
-              :email email
-              :idp_usernames ["auth0|123"]}
-        sth (db.stakeholder/new-stakeholder db info)]
-    (db.stakeholder/update-stakeholder-status db (assoc sth :review_status review_status))
-    (db.stakeholder/update-stakeholder-role db (assoc sth :role role))
-    sth))
 
 (def policy-data
   {:title "Policy Title"
@@ -53,7 +36,6 @@
    :remarks nil
    :review_status nil
    :document_preview false
-   :image nil
    :language default-lang-iso-code})
 
 (def technology-data
@@ -70,8 +52,6 @@
    :year_founded 2021
    :review_status nil
    :document_preview false
-   :image nil
-   :logo nil
    :tags nil
    :language default-lang-iso-code})
 
@@ -86,119 +66,204 @@
    :remarks nil
    :document_preview false
    :review_status nil
-   :image nil
    :tags nil
    :language default-lang-iso-code})
 
 (deftest handler-put-test
   (let [system (ig/init fixtures/*system* [::detail/put])
+        config (get system [:duct/const :gpml.config/common])
+        conn (get-in config [:db :spec])
         handler (::detail/put system)
-        db (-> system :duct.database.sql/hikaricp :spec)
-        admin {:id 0 :role "ADMIN"}]
+        admin-id (test-util/create-test-stakeholder config
+                                                    "john.doe.admin@mail.invalid"
+                                                    "APPROVED"
+                                                    "ADMIN")]
 
     (testing "Check editing allowed only if user has the rights"
       (let [data (seeder/parse-data
                   (slurp (io/resource "examples/initiative-national.json"))
                   {:keywords? true
                    :add-default-lang? true})
-            initiative (db.initiative/new-initiative db data)
+            initiative (db.initiative/new-initiative conn data)
+            _ (srv.permissions/create-resource-context {:conn conn
+                                                        :logger (:logger config)}
+                                                       {:context-type :initiative
+                                                        :resource-id (:id initiative)})
             edited-data (merge data {:q2 "New Title"})
             resp (handler (-> (mock/request :put "/")
-                              (assoc :jwt-claims {:email "john@org"}
-                                     :parameters
+                              (assoc :parameters
                                      {:path {:topic-type "initiative" :topic-id (:id initiative)}
-                                      :body edited-data})))
-            _ (db.initiative/initiative-by-id db initiative)]
+                                      :body edited-data}
+                                     :user {:id 999})))
+            _ (db.initiative/initiative-by-id conn initiative)]
         (is (= 403 (:status resp)))))
 
     (testing "Initiative editing"
       (let [country (db.country/new-country
-                     db {:name "Indonesia" :iso_code_a3 "IND" :description "Member State" :territory "IND"})
+                     conn
+                     {:name "Indonesia"
+                      :iso_code_a3 "IND"
+                      :description "Member State"
+                      :territory "IND"})
             data (-> (seeder/parse-data
                       (slurp (io/resource "examples/initiative-national.json"))
                       {:keywords? true
                        :add-default-lang? true})
                      (assoc :q24_2 [{(keyword (str (:id country))) "Indonesia"}]))
-            initiative (db.initiative/new-initiative db data)
+            initiative (db.initiative/new-initiative conn data)
+            _ (srv.permissions/create-resource-context {:conn conn
+                                                        :logger (:logger config)}
+                                                       {:context-type :initiative
+                                                        :resource-id (:id initiative)})
             edited-data (merge data {:q2 "New Title"})
             resp (handler (-> (mock/request :put "/")
-                              (assoc :jwt-claims {:email "john@org"}
-                                     :user admin
+                              (assoc :user {:id admin-id}
                                      :parameters
                                      {:path {:topic-type "initiative" :topic-id (:id initiative)}
                                       :body edited-data})))
-            edited-initiative (db.initiative/initiative-by-id db initiative)]
+            edited-initiative (db.initiative/initiative-by-id conn initiative)]
         (is (= 200 (:status resp)))
         (is (= (:q2 edited-data) (:q2 edited-initiative)))))
 
     (testing "Policy editing"
-      (let [policy (db.policy/new-policy db policy-data)
+      (let [policy (db.policy/new-policy conn policy-data)
+            _ (srv.permissions/create-resource-context {:conn conn
+                                                        :logger (:logger config)}
+                                                       {:context-type :policy
+                                                        :resource-id (:id policy)})
             edited-data (merge policy-data {:title "New Policy Title"})
             resp (handler (-> (mock/request :put "/")
-                              (assoc :jwt-claims {:email "john@org"}
-                                     :user admin
+                              (assoc :user {:id admin-id}
                                      :parameters
                                      {:path {:topic-type "policy" :topic-id (:id policy)}
                                       :body edited-data})))
-            edited-policy (db.policy/policy-by-id db policy)]
+            edited-policy (db.policy/policy-by-id conn policy)]
         (is (= 200 (:status resp)))
         (is (= (:title edited-data) (:title edited-policy)))))
 
     (testing "Technology editing"
-      (let [technology (db.technology/new-technology db technology-data)
+      (let [technology (db.technology/new-technology conn technology-data)
+            _ (srv.permissions/create-resource-context {:conn conn
+                                                        :logger (:logger config)}
+                                                       {:context-type :technology
+                                                        :resource-id (:id technology)})
             edited-data (merge technology-data {:name "New Technology Name"})
             resp (handler (-> (mock/request :put "/")
-                              (assoc :jwt-claims {:email "john@org"}
-                                     :user admin
+                              (assoc :user {:id admin-id}
                                      :parameters
                                      {:path {:topic-type "technology" :topic-id (:id technology)}
                                       :body edited-data})))
-            edited-technology (db.technology/technology-by-id db technology)]
+            edited-technology (db.technology/technology-by-id conn technology)]
         (is (= 200 (:status resp)))
         (is (= (:title edited-data) (:title edited-technology)))))
 
     (testing "Event editing"
-      (let [event (db.event/new-event db event-data)
+      (let [event (db.event/new-event conn event-data)
+            _ (srv.permissions/create-resource-context {:conn conn
+                                                        :logger (:logger config)}
+                                                       {:context-type :event
+                                                        :resource-id (:id event)})
             edited-data (merge event-data {:title "New Event Title"})
             resp (handler (-> (mock/request :put "/")
-                              (assoc :jwt-claims {:email "john@org"}
-                                     :user admin
+                              (assoc :user {:id admin-id}
                                      :parameters
                                      {:path {:topic-type "event" :topic-id (:id event)}
                                       :body edited-data})))
-            edited-event (db.event/event-by-id db event)]
+            edited-event (db.event/event-by-id conn event)]
+        (is (= 200 (:status resp)))
+        (is (= (:title edited-data) (:title edited-event)))))
+
+    (testing "Trying to edit a resource without the required permissions outputs unauthorized"
+      (let [sth-id (test-util/create-test-stakeholder config
+                                                      "john.doe@mail.invalid"
+                                                      "APPROVED"
+                                                      "USER")
+            event (db.event/new-event conn event-data)
+            _ (srv.permissions/create-resource-context {:conn conn
+                                                        :logger (:logger config)}
+                                                       {:context-type :event
+                                                        :resource-id (:id event)})
+            edited-data (merge event-data {:title "New Event Title"})
+            resp (handler (-> (mock/request :put "/")
+                              (assoc :user {:id sth-id}
+                                     :parameters
+                                     {:path {:topic-type "event" :topic-id (:id event)}
+                                      :body edited-data})))]
+        (is (= 403 (:status resp)))))
+
+    (testing "User can edit resource with the right permissions"
+      (let [sth-id (test-util/create-test-stakeholder config
+                                                      "john.doe2@mail.invalid"
+                                                      "APPROVED"
+                                                      "USER")
+            event (db.event/new-event conn event-data)
+            _ (srv.permissions/create-resource-context {:conn conn
+                                                        :logger (:logger config)}
+                                                       {:context-type :event
+                                                        :resource-id (:id event)})
+            _ (srv.permissions/assign-roles-to-users {:conn conn
+                                                      :logger (:logger config)}
+                                                     [{:role-name :resource-owner
+                                                       :context-type :event
+                                                       :resource-id (:id event)
+                                                       :user-id sth-id}])
+            edited-data (merge event-data {:title "New Event Title"})
+            resp (handler (-> (mock/request :put "/")
+                              (assoc :user {:id sth-id}
+                                     :parameters
+                                     {:path {:topic-type "event" :topic-id (:id event)}
+                                      :body edited-data})))
+            edited-event (db.event/event-by-id conn event)]
         (is (= 200 (:status resp)))
         (is (= (:title edited-data) (:title edited-event)))))))
 
 (deftest handler-get-test
   (let [system (ig/init fixtures/*system* [::detail/get])
+        config (get system [:duct/const :gpml.config/common])
+        conn (get-in config [:db :spec])
         handler (::detail/get system)
-        db (-> system :duct.database.sql/hikaricp :spec)
-        creator (new-stakeholder db "user-approved@org.com" "U" "A" "USER" "APPROVED")
         data (seeder/parse-data
               (slurp (io/resource "examples/initiative-national.json"))
               {:keywords? true
                :add-default-lang? true})
-        initiative (db.initiative/new-initiative db (assoc data :created_by (:id creator)))]
+        creator-id (test-util/create-test-stakeholder config
+                                                      "john.doe@mail.invalid"
+                                                      "APPROVED"
+                                                      "USER")
+        initiative (db.initiative/new-initiative conn (assoc data :created_by creator-id))
+        _ (srv.permissions/create-resource-context {:conn conn
+                                                    :logger (:logger config)}
+                                                   {:context-type :initiative
+                                                    :resource-id (:id initiative)})
+        _ (srv.permissions/assign-roles-to-users {:conn conn
+                                                  :logger (:logger config)}
+                                                 [{:role-name :resource-owner
+                                                   :context-type :initiative
+                                                   :resource-id (:id initiative)
+                                                   :user-id creator-id}])]
 
     (testing "Fetching detail of unapproved resource unauthenticated"
-      (let [resp (handler (-> (mock/request :put "/")
+      (let [resp (handler (-> (mock/request :get "/")
                               (assoc :parameters
                                      {:path {:topic-type "initiative" :topic-id (:id initiative)}})))]
         (is (= 403 (:status resp)))))
 
     (testing "Fetching detail of unapproved resource as authenticated user"
-      (let [resp (handler (-> (mock/request :put "/")
+      (let [resp (handler (-> (mock/request :get "/")
                               (assoc
-                               :user {:id 0 :role "USER"}
+                               :user {:id 999}
                                :parameters
                                {:path {:topic-type "initiative" :topic-id (:id initiative)}})))]
         (is (= 403 (:status resp)))))
 
     (testing "Fetching detail of unapproved resource as different ADMIN"
-      (let [resp (handler (-> (mock/request :get "/")
+      (let [admin-id (test-util/create-test-stakeholder config
+                                                        "john.doe.admin@mail.invalid"
+                                                        "APPROVED"
+                                                        "ADMIN")
+            resp (handler (-> (mock/request :get "/")
                               (assoc
-                               :user {:id 0 :role "ADMIN"}
+                               :user {:id admin-id}
                                :parameters
                                {:path {:topic-type "initiative" :topic-id (:id initiative)}
                                 :query {:review-status "SUBMITTED"}})))]
@@ -208,7 +273,7 @@
     (testing "Fetching detail of unapproved resource as creator"
       (let [resp (handler (-> (mock/request :get "/")
                               (assoc
-                               :user creator
+                               :user {:id creator-id}
                                :parameters
                                {:path {:topic-type "initiative" :topic-id (:id initiative)}
                                 :query {:review-status "SUBMITTED"}})))]

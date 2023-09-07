@@ -8,11 +8,11 @@ INSERT INTO initiative(
 ) returning id;
 
 -- :name initiative-by-id :query :one
-SELECT initiative.*, COALESCE(json_agg(authz.stakeholder) FILTER (WHERE authz.stakeholder IS NOT NULL), '[]') as owners
-FROM initiative
-LEFT JOIN topic_stakeholder_auth authz ON authz.topic_type::text='initiative' AND authz.topic_id=initiative.id
-WHERE initiative.id = :id
-GROUP BY initiative.id
+SELECT i.*, COALESCE(json_agg(acs.stakeholder) FILTER (WHERE acs.stakeholder IS NOT NULL), '[]') as owners
+FROM initiative i
+LEFT JOIN stakeholder_initiative acs ON acs.initiative = i.id AND association = 'owner'
+WHERE i.id = :id
+GROUP BY i.id;
 
 -- :name delete-initiative-geo-coverage :execute :affected
 -- :doc Remove specified countries or country groups from an initiative

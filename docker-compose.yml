@@ -3,7 +3,10 @@ services:
   db:
     image: postgres:12-alpine
     environment:
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - APP_DB_NAME
+      - APP_TEST_DB_NAME
     volumes:
       - pg-data:/var/lib/postgresql/data
       - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
@@ -12,35 +15,39 @@ services:
     depends_on:
       - db
     environment:
-      - DATABASE_URL=jdbc:postgresql://db/gpml?user=unep&password=password
-      - OIDC_ISSUER=https://unep-gpml-test.eu.auth0.com/
-      - OIDC_AUDIENCE=dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J
-      - OIDC_AUDIENCE_M2M=https://unep-gpml-test.eu.auth0.com/api/v2/
-      - OIDC_AUDIENCE_AUTH0_ACTIONS=ftSrE1lYDbpvnWKJkdoT8nfO1ewTdxxh
-      - APP_NAME=UNEP GPML (test)
-      - APP_USER_ADMIN=caroline.kamau@un.org
-      - APP_DOMAIN=http://localhost
+      - DATABASE_URL=jdbc:postgresql://${APP_DB_HOST}/${APP_DB_NAME}?user=${APP_DB_USER}&password=${APP_DB_PASSWORD}
+      - OIDC_ISSUER
+      - OIDC_AUDIENCE
+      - OIDC_AUDIENCE_M2M
+      - OIDC_AUDIENCE_AUTH0_ACTIONS
+      - APP_NAME
+      - APP_USER_ADMIN
+      - APP_DOMAIN
       - AUTH0_BACKEND_CLIENT_ID
       - AUTH0_BACKEND_SECRET
       - MAILJET_API_KEY
       - MAILJET_SECRET_KEY
-      - SCHEDULER_THREAD_COUNT=50
-      - SCHEDULER_TIME_ZONE=Europe/Madrid
-      - SCHEDULER_LEAP_API_POLICY_IMPORTER_CRON=0 0 2 1/14 * ? *
-      - SCHEDULER_BRS_API_IMPORTER_CRON=0 0 3 1/7 * ? *
-      - GCS_BUCKET_NAME=akvo-unep-gpml
-      - LOCAL_FS_STORAGE_BASE_PATH=/tmp/local-storage
-      - LOCAL_FS_STORAGE_BUCKET_NAME=unep-gpml-dev
-      - BRS_API_URL=https://informea.pops.int
-      - BRS_API_RECORDS_PER_PAGE=100
-      - BRS_API_PUBLICATIONS_ENDPOINT=/mfilesInformea/MFilesMea.svc/Documents
-      - BRS_API_MEETINGS_ENDPOINT=/Meetings/Conferences.svc/Meetings
-      - BRS_API_PROJECTS_ENDPOINT=/Projects/Projects.svc/Projects
+      - SCHEDULER_THREAD_COUNT
+      - SCHEDULER_TIME_ZONE
+      - SCHEDULER_LEAP_API_POLICY_IMPORTER_CRON
+      - SCHEDULER_BRS_API_IMPORTER_CRON
+      - GCS_BUCKET_NAME
+      - GCS_PRIVATE_BUCKET_NAME
+      - GCS_PUBLIC_BUCKET_NAME
+      - GCS_API_HOST_NAME
+      - LOCAL_FS_STORAGE_BASE_PATH
+      - LOCAL_FS_STORAGE_BUCKET_NAME
+      - BRS_API_URL
+      - BRS_API_RECORDS_PER_PAGE
+      - BRS_API_PUBLICATIONS_ENDPOINT
+      - BRS_API_MEETINGS_ENDPOINT
+      - BRS_API_PROJECTS_ENDPOINT
       - SUBSCRIPTIONS_MANAGEMENT_EMAIL
-      - CORS_ALLOWED_ORIGINS=localhost
+      - CORS_ALLOWED_ORIGINS
   frontend:
     environment:
       - PORT=3001
+      - APP_DOMAIN
     volumes:
       - ./frontend:/app:delegated
     working_dir: /app

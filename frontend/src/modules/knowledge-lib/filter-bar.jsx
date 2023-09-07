@@ -104,6 +104,7 @@ const FilterBar = ({
         updateQuery,
         multiCountryCountries,
         setMultiCountryCountries,
+        history,
       }}
       country={query?.country?.map((x) => parseInt(x)) || []}
       multiCountry={query?.transnational?.map((x) => parseInt(x)) || []}
@@ -133,9 +134,15 @@ const FilterBar = ({
           <li
             className={`${!type ? "selected" : ""}`}
             onClick={() => {
-              history.push({
-                pathname: `/knowledge/library`,
-              });
+              history.push(
+                {
+                  pathname: `/knowledge/library`,
+                  query: {
+                    totalCount: JSON.stringify(totalCount),
+                  },
+                },
+                "/knowledge/library"
+              );
             }}
           >
             <div>
@@ -149,11 +156,20 @@ const FilterBar = ({
               className={`${type === t.key ? "selected" : ""}`}
               key={t.key}
               onClick={() => {
-                history.push({
-                  pathname: `/knowledge/library/${
+                history.push(
+                  {
+                    pathname: `/knowledge/library/${
+                      view ? (view === "category" ? "grid" : view) : "map"
+                    }/${t.key}`,
+                    query: {
+                      ...history.query,
+                      totalCount: JSON.stringify(totalCount),
+                    },
+                  },
+                  `/knowledge/library/${
                     view ? (view === "category" ? "grid" : view) : "map"
-                  }/${t.key}`,
-                });
+                  }/${t.key}`
+                );
               }}
             >
               <div>
@@ -173,7 +189,10 @@ const FilterBar = ({
         <Button className="adv-src" type="text" onClick={() => setShowFilterModal(true)}>
           {!isEmpty &&
             Object.keys(query).filter(
-              (item) => !hideFilterList.includes(item) && item !== "slug"
+              (item) =>
+                !hideFilterList.includes(item) &&
+                item !== "slug" &&
+                item !== "totalCount"
             ).length > 0 && (
               <div className="filter-status">
                 {Object.keys(query).filter(
@@ -189,7 +208,10 @@ const FilterBar = ({
         </Button>
         {!isEmpty &&
           Object.keys(query).filter(
-            (item) => !hideFilterList.includes(item) && item !== "slug"
+            (item) =>
+              !hideFilterList.includes(item) &&
+              item !== "slug" &&
+              item !== "totalCount"
           ).length > 0 && (
             <Button
               icon={<CloseOutlined />}

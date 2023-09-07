@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Form, Switch, Select } from "antd";
 import { Form as FinalForm, FormSpy, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
-import "./styles.scss";
+import styles from "./styles.module.scss";
 import Checkbox from "antd/lib/checkbox/Checkbox";
 import {
   LinkedinOutlined,
@@ -168,7 +168,7 @@ const SignupForm = ({
   const prevVals = useRef();
   const formRef = useRef();
   const formSchemaRef = useRef(defaultFormSchema);
-  const formContainer = !isModal ? "signup-form-grid" : "signup-form";
+  const formContainer = !isModal ? "signupFormGrid" : "signupForm";
   const sectionGrid = !isModal ? "section-grid" : "section";
 
   const newSchema = cloneDeep(defaultFormSchema);
@@ -301,7 +301,7 @@ const SignupForm = ({
           return (
             <>
               {initialValues?.reviewStatus && <ReviewText {...initialValues} />}
-              <div className={formContainer}>
+              <div className={styles[formContainer]}>
                 <div className={sectionGrid}>
                   <h2>Personal details</h2>
                   <FieldsFromSchema

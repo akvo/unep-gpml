@@ -83,7 +83,6 @@ const Workspace = ({ profile }) => {
       },
     });
   };
-
   return (
     <div className={styles.workspace}>
       <div className={styles.workspaceContentWrapper}>
@@ -140,7 +139,7 @@ const Workspace = ({ profile }) => {
                           router.push(
                             {
                               pathname: "/entity-signup",
-                              query: { data: JSON.stringify(profile.org) },
+                              query: { state: JSON.stringify(profile.org) },
                             },
                             "/entity-signup"
                           )

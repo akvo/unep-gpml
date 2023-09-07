@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { Modal } from "antd";
-import "./modal.module.scss";
+import styles from "./modal.module.scss";
 import DetailsView from "./view";
 import bodyScrollLock from "./scroll-utils";
 
@@ -23,15 +23,18 @@ const DetailModal = ({
         setVisible(false);
         bodyScrollLock.disable();
       }}
-      className="detail-modal"
+      className={styles.detailModal}
       wrapClassName="detail-modal-wrapper"
       destroyOnClose={true}
       centered={desktopViewport ? false : true}
       style={{
         top: desktopViewport ? 30 : 0,
       }}
+      footer={false}
     >
       <DetailsView
+        type={match?.params?.type}
+        id={match?.params?.id}
         {...{
           match,
           setFilterMenu,

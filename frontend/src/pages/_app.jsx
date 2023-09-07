@@ -15,55 +15,6 @@ import { updateStatusProfile } from '../utils/profile'
 import { uniqBy, sortBy } from 'lodash'
 import { withNewLayout } from '../layouts/new-layout'
 
-const res = await Promise.all([
-  api.get('https://digital.gpmarinelitter.org/api/tag'),
-  api.get('https://digital.gpmarinelitter.org/api/currency'),
-  api.get('https://digital.gpmarinelitter.org/api/country'),
-  api.get('https://digital.gpmarinelitter.org/api/country-group'),
-  api.get('https://digital.gpmarinelitter.org/api/organisation'),
-  api.get('https://digital.gpmarinelitter.org/api/nav'),
-  api.get('https://digital.gpmarinelitter.org/api/stakeholder'),
-  api.get('https://digital.gpmarinelitter.org/api/non-member-organisation'),
-  api.get(
-    'https://digital.gpmarinelitter.org/api/community?representativeGroup=Government'
-  ),
-])
-
-const [
-  tag,
-  currency,
-  country,
-  countryGroup,
-  organisation,
-  nav,
-  stakeholder,
-  nonMemberOrganisations,
-  community,
-] = res
-
-const data = {
-  tags: tag.data,
-  currencies: currency.data,
-  countries: uniqBy(country.data).sort((a, b) => a.name?.localeCompare(b.name)),
-  regionOptions: countryGroup.data.filter((x) => x.type === 'region'),
-  meaOptions: countryGroup.data.filter((x) => x.type === 'mea'),
-  transnationalOptions: countryGroup.data.filter(
-    (x) => x.type === 'transnational'
-  ),
-  organisations: uniqBy(sortBy(organisation.data, ['name'])).sort((a, b) =>
-    a.name?.localeCompare(b.name)
-  ),
-  nonMemberOrganisations: uniqBy(
-    sortBy(nonMemberOrganisations.data, ['name'])
-  ).sort((a, b) => a.name?.localeCompare(b.name)),
-  nav: nav.data,
-  stakeholders: stakeholder.data,
-  community: community.data,
-}
-UIStore.update((s) => {
-  Object.assign(s, data)
-})
-
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
   const newLayoutRoutes = [
@@ -87,6 +38,7 @@ function MyApp({ Component, pageProps }) {
   const [_expiresAt, setExpiresAt] = useState(null)
   const [idToken, setIdToken] = useState(null)
   const [authResult, setAuthResult] = useState(null)
+  const [loginVisible, setLoginVisible] = useState(false)
 
   const isAuthenticated = new Date().getTime() < _expiresAt
 
@@ -96,6 +48,60 @@ function MyApp({ Component, pageProps }) {
     setAuthResult(authResult)
     scheduleTokenRenewal()
   }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await Promise.all([
+        api.get('/tag'),
+        api.get('/currency'),
+        api.get('/country'),
+        api.get('/country-group'),
+        api.get('/organisation'),
+        api.get('/nav'),
+        api.get('/stakeholder'),
+        api.get('/non-member-organisation'),
+        api.get('/community?representativeGroup=Government'),
+      ])
+
+      const [
+        tag,
+        currency,
+        country,
+        countryGroup,
+        organisation,
+        nav,
+        stakeholder,
+        nonMemberOrganisations,
+        community,
+      ] = res
+
+      const data = {
+        tags: tag.data,
+        currencies: currency.data,
+        countries: uniqBy(country.data).sort((a, b) =>
+          a.name?.localeCompare(b.name)
+        ),
+        regionOptions: countryGroup.data.filter((x) => x.type === 'region'),
+        meaOptions: countryGroup.data.filter((x) => x.type === 'mea'),
+        transnationalOptions: countryGroup.data.filter(
+          (x) => x.type === 'transnational'
+        ),
+        organisations: uniqBy(
+          sortBy(organisation.data, ['name'])
+        ).sort((a, b) => a.name?.localeCompare(b.name)),
+        nonMemberOrganisations: uniqBy(
+          sortBy(nonMemberOrganisations.data, ['name'])
+        ).sort((a, b) => a.name?.localeCompare(b.name)),
+        nav: nav.data,
+        stakeholders: stakeholder.data,
+        community: community.data,
+      }
+      UIStore.update((s) => {
+        Object.assign(s, data)
+      })
+    }
+    fetchData()
+  }, [])
 
   const renewToken = (cb) => {
     auth0Client.checkSession({}, (err, result) => {
@@ -124,14 +130,19 @@ function MyApp({ Component, pageProps }) {
         return console.log(err)
       }
       if (authResult) {
-        const redirectLocation =
-          localStorage.getItem('redirect_on_login') === 'undefined'
-            ? '/'
-            : JSON.parse(localStorage.getItem('redirect_on_login'))
-        router.push({
-          pathname: redirectLocation.pathname,
-          ...(redirectLocation?.search && { query: redirectLocation?.search }),
-        })
+        const storedLocation = localStorage.getItem('redirect_on_login')
+        const redirectLocation = storedLocation
+          ? JSON.parse(storedLocation)
+          : null
+
+        if (redirectLocation) {
+          router.push({
+            pathname: redirectLocation.pathname,
+            query: redirectLocation.query,
+          })
+        } else {
+          router.push('/')
+        }
         setSession(authResult)
         api.setToken(authResult.idToken)
         if (
@@ -237,6 +248,9 @@ function MyApp({ Component, pageProps }) {
               isAuthenticated,
               auth0Client,
               profile,
+              loginVisible,
+              setLoginVisible,
+              loadingProfile,
             }}
           />
         )}
@@ -247,6 +261,9 @@ function MyApp({ Component, pageProps }) {
               isAuthenticated,
               auth0Client,
               profile,
+              loginVisible,
+              setLoginVisible,
+              loadingProfile,
             }}
           />
         )}

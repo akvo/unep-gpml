@@ -60,7 +60,7 @@
 (deftest country-table-foreign-key-checks
   (let [db (test-util/db-test-conn)
         fkeys (db.seeder/get-foreign-key db {:table "country"})
-        fkey (mapv #(:tbl %) (:deps fkeys))]
+        fkey (mapv :tbl (:deps fkeys))]
 
     ;; Sanity checks for DB foreign keys
     (doseq [topic ["event" "organisation"

@@ -160,6 +160,7 @@ const FlexibleForms = ({
   setLoginVisible,
   loadingProfile,
   id,
+  type,
   ...props
 }) => {
   const {
@@ -290,11 +291,11 @@ const FlexibleForms = ({
   }, []);
 
   useEffect(() => {
-    if (state?.state?.type && status !== "edit") {
-      setMainType(state?.state?.type);
-      setLabel(state?.state?.label);
+    if (type && status !== "edit") {
+      setMainType(type);
+      // setLabel(state?.state?.label);
     }
-  }, [state]);
+  }, [type]);
 
   useEffect(() => {
     if (!isAuthenticated && loadingProfile) {
@@ -508,29 +509,26 @@ const FlexibleForms = ({
   };
 
   useEffect(() => {
-    if (state?.state?.type) {
+    if (type) {
       handleOnTabChange("S3");
     }
-  }, [state]);
+  }, [type]);
 
   useEffect(() => {
     if (status === "edit" || id) {
       const dataId = Number(id);
-      setMainType(getTypeByResource(state?.state.type).type);
-      setLabel(getTypeByResource(state?.state.type).name);
+      setMainType(getTypeByResource(type).type);
+      setLabel(getTypeByResource(type).name);
       setFormSchema({
-        schema: schema[getTypeByResource(state?.state.type).type],
+        schema: schema[getTypeByResource(type).type],
       });
       UIStore.update((event) => {
-        event.selectedMainContentType = getTypeByResource(
-          state?.state.type
-        ).type;
+        event.selectedMainContentType = getTypeByResource(type).type;
       });
       api
         .get(
           `/translations/${
-            getTypeByResource(state?.state?.type?.replace("-", "_"))
-              .translations
+            getTypeByResource(type?.replace("-", "_")).translations
           }/${id}`
         )
         .then((resp) => {
@@ -561,7 +559,7 @@ const FlexibleForms = ({
         })
         .catch((e) => console.log(e));
 
-      if (state?.state.type === "initiative") {
+      if (type === "initiative") {
         api.getRaw(`/initiative/${dataId}`).then((d) => {
           let data = JSON.parse(d.data);
           setSubType(data.sub_content_type);
@@ -580,7 +578,7 @@ const FlexibleForms = ({
           setSubType(data.sub_content_type);
         });
       } else {
-        api.get(`/detail/${state?.state.type}/${dataId}`).then((d) => {
+        api.get(`/detail/${type}/${dataId}`).then((d) => {
           setSubType(d?.subContentType);
           let newData = [];
           if (d.data.organisations) {
@@ -603,26 +601,26 @@ const FlexibleForms = ({
           initialFormData.update((e) => {
             e.data = revertFormData(d.data);
             e.editId = true;
-            e.type = state?.state.type;
+            e.type = type;
           });
           setSubType(d?.data.subContentType);
         });
       }
     }
-  }, [status, schema, initialFormData, state]);
+  }, [status, schema, initialFormData, type]);
 
-  useEffect(() => {
-    UIStore.update((e) => {
-      e.disclaimer = null;
-      e.formEdit = {
-        ...e.formEdit,
-        flexible: {
-          status: "add",
-          id: null,
-        },
-      };
-    });
-  }, [props]);
+  // useEffect(() => {
+  //   UIStore.update((e) => {
+  //     e.disclaimer = null;
+  //     e.formEdit = {
+  //       ...e.formEdit,
+  //       flexible: {
+  //         status: "add",
+  //         id: null,
+  //       },
+  //     };
+  //   });
+  // }, [props]);
 
   useEffect(() => {
     const search = mainContentType.find((element) => element.code === mainType)
@@ -1516,7 +1514,7 @@ const FlexibleForms = ({
                     mainType={label && label}
                     subContentType={subType && subType}
                     capacityBuilding={capacityBuilding && capacityBuilding}
-                    type={state && state?.state ? state?.state.type : ""}
+                    type={type ? type : ""}
                     translations={translations}
                     source={
                       query?.source?.toString() === "cobsea" ? "cobsea" : ""

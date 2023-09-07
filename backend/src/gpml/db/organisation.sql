@@ -4,17 +4,23 @@ select id, name from organisation order by id
 
 -- :name all-public-entities :? :*
 -- :doc Get all member organisations
-SELECT * FROM organisation
+SELECT o.*, jsonb_agg(DISTINCT jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files
+FROM organisation o
+LEFT JOIN file f ON o.logo_id = f.id
 WHERE is_member = true
 --~ (when (:review-status params) "AND review_status = (:v:review-status)::review_status")
-ORDER BY id;
+GROUP BY o.id
+ORDER BY o.id;
 
 -- :name all-public-non-member-entities :? :*
 -- :doc Get all non member organisations
-SELECT * FROM organisation
+SELECT o.*, jsonb_agg(DISTINCT jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files
+FROM organisation o
+LEFT JOIN file f ON o.logo_id = f.id
 WHERE is_member = false
 --~ (when (:review-status params) "AND review_status = (:v:review-status)::review_status")
-ORDER BY id;
+GROUP BY o.id
+ORDER BY o.id;
 
 -- :name all-members :? :*
 -- :doc Get all member organisations
@@ -60,7 +66,6 @@ insert into organisation (
 --~ (when (contains? params :country) ", country")
 --~ (when (contains? params :geo_coverage_type) ", geo_coverage_type")
 --~ (when (contains? params :url) ", url")
---~ (when (contains? params :logo) ", logo")
 --~ (when (contains? params :program) ", program")
 --~ (when (contains? params :contribution) ", contribution")
 --~ (when (contains? params :expertise) ", expertise")
@@ -68,6 +73,7 @@ insert into organisation (
 --~ (when (contains? params :second_contact) ", second_contact")
 --~ (when (contains? params :review_status) ", review_status")
 --~ (when (contains? params :is_member) ", is_member")
+--~ (when (contains? params :logo_id) ", logo_id")
 )
 values (
     :name
@@ -82,7 +88,6 @@ values (
 --~ (when (contains? params :country) ", :country::integer")
 --~ (when (contains? params :geo_coverage_type) ", :geo_coverage_type::geo_coverage_type")
 --~ (when (contains? params :url) ", :url")
---~ (when (contains? params :logo) ", :logo")
 --~ (when (contains? params :program) ", :program")
 --~ (when (contains? params :contribution) ", :contribution")
 --~ (when (contains? params :expertise) ", :expertise")
@@ -90,13 +95,13 @@ values (
 --~ (when (contains? params :second_contact) ", :second_contact")
 --~ (when (contains? params :review_status) ", :v:review_status::review_status")
 --~ (when (contains? params :is_member) ", :is_member")
+--~ (when (contains? params :logo_id) ", :logo_id")
 ) returning id;
 
 -- :name update-organisation :! :n
 -- :doc Update organisation column
 update organisation set id = :id
 --~ (when (contains? params :name) ",name= :name")
---~ (when (contains? params :logo) ",logo= :logo")
 --~ (when (contains? params :subnational_area) ",subnational_area= :subnational_area")
 --~ (when (contains? params :url) ",url= :url")
 --~ (when (contains? params :type) ",type= :type")
@@ -109,6 +114,9 @@ update organisation set id = :id
 --~ (when (contains? params :representative_group_academia_research) ",representative_group_academia_research= :representative_group_academia_research")
 --~ (when (contains? params :geo_coverage_type) ",geo_coverage_type= :geo_coverage_type::geo_coverage_type")
 --~ (when (contains? params :created_by) ",created_by= :created_by")
+--~ (when (contains? params :is_member) ",is_member= :is_member")
+--~ (when (contains? params :logo_id) ", logo_id= :logo_id")
+--~ (when (contains? params :review_status) ", review_status= :review_status::review_status")
 where id = :id
 
 -- :name geo-coverage-v2 :? :*
@@ -154,3 +162,13 @@ WHERE 1=1
 --~(when (get-in params [:filters :name]) " AND LOWER(:filters.name) = LOWER(name)")
 --~(when (true? (get-in params [:filters :is_member])) " AND is_member IS TRUE")
 --~(when (false? (get-in params [:filters :is_member])) " AND is_member IS FALSE")
+
+-- :name get-organisation-files-to-migrate
+SELECT id, 'logo' AS file_type, 'images' AS file_key, logo AS content
+FROM organisation
+WHERE logo NOT LIKE 'https://storage.googleapis.com/%'
+AND logo IS NOT NULL
+AND logo_id IS NULL
+ORDER BY created
+--~ (when (:limit params) " LIMIT :limit")
+;

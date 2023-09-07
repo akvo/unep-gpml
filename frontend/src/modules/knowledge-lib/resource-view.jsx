@@ -35,7 +35,9 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [countData, setCountData] = useState([]);
-  const [totalCount, setTotalCount] = useState([]);
+  const [totalCount, setTotalCount] = useState(
+    history.query.totalCount ? JSON.parse(history.query.totalCount) : []
+  );
   const [filterCountries, setFilterCountries] = useState([]);
   const [multiCountryCountries, setMultiCountryCountries] = useState([]);
   const [catData, setCatData] = useState([]);
@@ -43,7 +45,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   const [pageNumber, setPageNumber] = useState(false);
   const [view, type] = history.query.slug || [];
   const { slug, ...queryParams } = history.query;
-  const { pathname } = history;
+  const { pathname, asPath } = history;
   const search = new URLSearchParams(history.query).toString();
   const [showFilterModal, setShowFilterModal] = useState(false);
 
@@ -73,25 +75,24 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
     setLoading(true);
     const queryParams = new URLSearchParams(searchParams);
     queryParams.delete("slug");
-
     if (type || history?.location?.state?.type)
-      if (
-        type === "capacity-building" ||
-        history?.location?.state?.type === "capacity-building"
-      ) {
-        queryParams.set(
-          "topic",
-          history?.location?.state?.type
-            ? history?.location?.state?.type.replace(/-/g, "_")
-            : type.replace(/-/g, "_")
-        );
+      queryParams.set(
+        "topic",
+        history?.location?.state?.type
+          ? history?.location?.state?.type.replace(/-/g, "_")
+          : type.replace(/-/g, "_")
+      );
 
-        queryParams.set("capacity_building", ["true"]);
-        queryParams.delete("topic");
-      }
+    if (
+      type === "capacity-building" ||
+      history?.location?.state?.type === "capacity-building"
+    ) {
+      queryParams.set("capacity_building", ["true"]);
+      queryParams.delete("topic");
+    }
     queryParams.set("incCountsForTags", popularTags);
     queryParams.set("limit", limit);
-
+    queryParams.delete("totalCount");
     const url = `/browse?${String(queryParams)}`;
 
     api
@@ -100,7 +101,11 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         setLoading(false);
         setData(resp?.data);
         if (totalCount.length === 0) {
-          setTotalCount(resp?.data?.counts);
+          setTotalCount(
+            history.query.totalCount
+              ? JSON.parse(history.query.totalCount)
+              : resp?.data?.counts
+          );
         }
         setCountData(resp?.data?.counts);
         setGridItems((prevItems) => {
@@ -138,22 +143,6 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
     const newParams = new URLSearchParams(pureQuery);
 
     newParams.delete("offset");
-    const newQueryStr = newParams.toString();
-
-    // if (param === "replace")
-    //   router.replace(
-    //     {
-    //       pathname: router.pathname,
-    //       query: newParams.toString(),
-    //     },
-    //     undefined,
-    //     { shallow: true }
-    //   );
-    // else
-    //   router.push({
-    //     pathname: router.pathname,
-    //     query: newParams.toString(),
-    //   });
 
     if (fetch && view !== "category") fetchData(pureQuery);
 
@@ -297,10 +286,13 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
               items={data?.results}
               showMoreCardAfter={20}
               showMoreCardClick={() => {
-                history.push({
-                  pathname: `/knowledge/library/grid/${type ? type : ""}`,
-                  search: history.location.search,
-                });
+                history.push(
+                  {
+                    pathname: `/knowledge/library/grid/${type ? type : ""}`,
+                    query: queryParams,
+                  },
+                  `/knowledge/library/grid/${type ? type : ""}`
+                );
               }}
               showModal={(e) =>
                 showModal({
@@ -411,7 +403,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           updateQuery,
           fetchData,
           filterCountries,
-          pathname,
+          asPath,
           history,
           setGridItems,
           loadAllCat,
@@ -497,12 +489,17 @@ const ViewSwitch = ({ type, view, history, queryParams }) => {
                   key={viewOption}
                   onClick={() => {
                     setVisible(!visible);
-                    history.push({
-                      pathname: `/knowledge/library/${viewOption}/${
+                    history.push(
+                      {
+                        pathname: `/knowledge/library/${viewOption}/${
+                          type && viewOption !== "category" ? type : ""
+                        }`,
+                        query: queryParams,
+                      },
+                      `/knowledge/library/${viewOption}/${
                         type && viewOption !== "category" ? type : ""
-                      }`,
-                      query: queryParams,
-                    });
+                      }`
+                    );
                   }}
                 >
                   {viewOption} view
