@@ -17,7 +17,11 @@ import { withNewLayout } from '../layouts/new-layout'
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
-  const newLayoutRoutes = ['/landing', '/onboarding']
+  const newLayoutRoutes = [
+    '/landing',
+    '/onboarding',
+    '/knowledge/library/[[...slug]]',
+  ]
   if (!newLayoutRoutes.includes(router.pathname)) {
     import('../main.scss')
     // import('../buttons.scss')

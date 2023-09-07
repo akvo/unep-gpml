@@ -243,7 +243,7 @@ const MapChart = ({
           >
             <Tooltip placement="left" title="zoom out">
               <Button
-                type="secondary"
+                type="text"
                 icon={<ZoomOutOutlined />}
                 onClick={() => {
                   position.zoom > mapMinZoom &&
@@ -258,7 +258,7 @@ const MapChart = ({
             <Tooltip placement="left" title="zoom in">
               <Button
                 disabled={position.zoom >= mapMaxZoom}
-                type="secondary"
+                type="text"
                 icon={<ZoomInOutlined />}
                 onClick={() => {
                   setPosition({
@@ -270,7 +270,7 @@ const MapChart = ({
             </Tooltip>
             <Tooltip placement="left" title="reset zoom">
               <Button
-                type="secondary"
+                type="text"
                 icon={<FullscreenOutlined />}
                 onClick={() => {
                   setPosition({
@@ -320,6 +320,7 @@ const MapChart = ({
               <Button
                 className="legend-button"
                 onClick={() => setIsShownLegend(!isShownLegend)}
+                type="text"
               >
                 {isShownLegend ? (
                   <DoubleRightOutlined />
