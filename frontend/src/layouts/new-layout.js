@@ -510,10 +510,7 @@ const NewLayout = ({
           style={{ zIndex: isOpen ? 99 : 0 }}
         >
           <motion.div className="mobile-menu-background" variants={sidebar} />
-          <div className="toggle-button">
-            <MenuToggle toggle={() => toggleOpen()} isOpen={isOpen} />
-          </div>
-          <Navigation isOpen={isOpen} />
+          <Navigation isOpen={isOpen} toggleOpen={toggleOpen} />
         </motion.div>
         <FullscreenNav
           isOpen={showMenu}
