@@ -239,6 +239,10 @@ h6,
   .navigation-container {
     padding: 40px 0px;
     margin: 0 25px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
     h2 {
       color: white;
       font-size: 20px;
@@ -250,9 +254,29 @@ h6,
       margin-bottom: 16px;
       border-bottom: 1px solid $primaryGreen5;
     }
+    .social-links-container {
+      margin-bottom: 30px;
+      h6 {
+        font-family: var(--font-dm-sans), sans-serif;
+        color: white;
+        text-align: center;
+        padding-bottom: 20px;
+      }
+      .social-links {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        a {
+          color: white;
+        }
+      }
+    }
   }
   ul {
     padding: 0px;
+    width: 100%;
+    flex: 1;
     li {
       list-style: none;
       margin-bottom: 20px;

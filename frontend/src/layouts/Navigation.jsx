@@ -2,7 +2,12 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MenuItem } from './MenuItem'
 import { MenuToggle } from './MenuToggle'
-import { CirclePointer } from '../components/icons'
+import {
+  CirclePointer,
+  FacebookIcon,
+  TwitterIcon,
+  LinkedinIcon,
+} from '../components/icons'
 import { Button } from 'antd'
 
 const menuVariants = {
@@ -34,6 +39,21 @@ const contentVariants = {
       x: { type: 'tween', duration: 0.3 },
       opacity: { duration: 0.3 },
     },
+  },
+}
+
+const socialLinksVariants = {
+  open: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.5,
+      duration: 0.4,
+    },
+  },
+  closed: {
+    opacity: 0,
+    y: 50,
   },
 }
 
@@ -116,6 +136,44 @@ export const Navigation = ({ isOpen, toggleOpen }) => {
                 <MenuItem i={i.key} key={i.key} onClick={handleMenuItemClick} />
               ))}
             </motion.ul>
+            <motion.div
+              className="social-links-container"
+              variants={socialLinksVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+            >
+              <h6>Follow Us</h6>
+              <ul className="social-links">
+                <li>
+                  <a
+                    href="https://facebook.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FacebookIcon />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="http://twitter.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <TwitterIcon />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://linkedin.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <LinkedinIcon />
+                  </a>
+                </li>
+              </ul>
+            </motion.div>
           </div>
         </>
       )
