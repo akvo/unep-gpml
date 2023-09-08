@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { isEmpty } from 'lodash'
-import { Button, Menu } from 'antd'
+import { Button, Col, Row } from 'antd'
 import localFont from 'next/font/local'
 import { DM_Sans } from 'next/font/google'
 import Image from 'next/image'
@@ -10,6 +10,20 @@ import Login from '../modules/login/view'
 import { DownArrow, CloseIcon } from '../components/icons'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
+import BookIcon from '../images/book-open.svg'
+import CaseStudiesSvg from '../images/folder.svg'
+import CapacityBuildingSvg from '../images/owl.svg'
+import HelpCenterSvg from '../images/help.svg'
+import IconCommunity from '../images/community.svg'
+import ExpertIcon from '../images/education.svg'
+import IconEvent from '../images/calendar.svg'
+import IconPartner from '../images/partners.svg'
+import IconForum from '../images/engage.svg'
+import AnalyticAndStatisticSvg from '../images/statistics.svg'
+import DataCatalogueSvg from '../images/archive.svg'
+import GlossarySvg from '../images/glossary.svg'
+import MapSvg from '../images/map.svg'
+import ExploreSvg from '../images/api.svg'
 
 const navVariants = {
   open: { scale: 1, opacity: 1 },
@@ -26,7 +40,313 @@ const menuItemVariants = {
   }),
   closed: { opacity: 0, y: 50 },
 }
-const FullscreenNav = ({ isOpen, toggle }) => {
+
+const pathContent = {
+  '/knowledge/library': {
+    title: 'Knowledge library',
+    subtitle: 'Resources on marine litter and plastic pollution',
+    icon: <BookIcon />,
+  },
+  '/knowledge/case-studies': {
+    title: 'Case studies',
+    icon: <CaseStudiesSvg />,
+    subtitle: 'Compilation of actions around the world',
+    iconClass: 'casestudies',
+  },
+  '/knowledge/capacity-development': {
+    title: 'Learning center',
+    subtitle: 'Learning and capacity development resources',
+    icon: <CapacityBuildingSvg />,
+    iconClass: 'learning',
+  },
+  '/community': {
+    title: 'Members',
+    iconClass: 'tools-community-icon',
+    subtitle: 'Directory of GPML network entities and individuals',
+    icon: <IconCommunity />,
+  },
+  '/experts': {
+    title: 'Experts',
+    iconClass: 'tools-experts-icon',
+    subtitle: "Tool to find an expert and experts' groups",
+    icon: <ExpertIcon />,
+  },
+  '/events': {
+    title: 'Events',
+    subtitle: 'Global events calendar',
+    icon: <IconEvent />,
+  },
+  '/partners': {
+    title: 'Partners',
+    iconClass: 'tools-partners-icon',
+    subtitle: 'Directory of partners of the GPML Digital Platform',
+    icon: <IconPartner />,
+  },
+  // "/glossary": {
+  //   title: "Glossary",
+  //   subtitle: "Terminology and definitions",
+  //   icon: <GlossarySvg />,
+  // },
+  '/help-center': {
+    title: 'Help Center',
+    subtitle: 'Support on GPML Digital Platform',
+    icon: <HelpCenterSvg />,
+  },
+  // "/about-us": {
+  //   title: "About GPML",
+  //   subtitle: "Find out more about us",
+  //   icon: <AboutSvg />,
+  // },
+}
+
+const Item = ({ title, subtitle, icon, iconClass, to, href, setShowMenu }) => {
+  if (to != null) {
+    icon = pathContent[to].icon
+    title = pathContent[to].title
+    subtitle = pathContent[to].subtitle
+  }
+  return (
+    <>
+      <div className="icon">{icon}</div>
+      <div className="content">
+        <b className="p-s">{title}</b>
+        <span>{subtitle}</span>
+      </div>
+    </>
+  )
+}
+
+const PlasticMenu = () => {
+  return (
+    <div className="container sub-menu">
+      <Row gutter={[168, 168]}>
+        <Col span={8}>
+          <p className="p-m">Information</p>
+          <ul>
+            <motion.li
+              key={'0'}
+              custom={0}
+              variants={menuItemVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="menu-item"
+            >
+              <Item to="/knowledge/library" />
+            </motion.li>
+            <motion.li
+              key={'1'}
+              custom={1}
+              variants={menuItemVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="menu-item"
+            >
+              <Item to="/knowledge/case-studies" />
+            </motion.li>
+            <motion.li
+              key={'2'}
+              custom={2}
+              variants={menuItemVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="menu-item"
+            >
+              <Item to="/knowledge/capacity-development" />
+            </motion.li>
+            <motion.li
+              key={'3'}
+              custom={3}
+              variants={menuItemVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="menu-item"
+            >
+              <Item to="/help-center" />
+            </motion.li>
+          </ul>
+        </Col>
+        <Col span={8}>
+          <p className="p-m">Community</p>{' '}
+          <ul>
+            <motion.li
+              key={'0'}
+              custom={0}
+              variants={menuItemVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="menu-item"
+            >
+              <Item to="/community" />
+            </motion.li>
+            <motion.li
+              key={'1'}
+              custom={1}
+              variants={menuItemVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="menu-item"
+            >
+              <Item to="/experts" />
+            </motion.li>
+            <motion.li
+              key={'2'}
+              custom={2}
+              variants={menuItemVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="menu-item"
+            >
+              <Item to="/events" />
+            </motion.li>
+            <motion.li
+              key={'3'}
+              custom={3}
+              variants={menuItemVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="menu-item"
+            >
+              <Item to="/partners" />
+            </motion.li>
+            <motion.li
+              key={'4'}
+              custom={4}
+              variants={menuItemVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="menu-item"
+            >
+              <Item
+                href="https://communities.gpmarinelitter.org"
+                title="Engage"
+                subtitle="Interactive forum for collaboration"
+                icon={<IconForum />}
+              />
+            </motion.li>
+          </ul>
+        </Col>
+        <Col span={8}>
+          <p className="p-m">Data Hub</p>
+          <ul>
+            <motion.li
+              key={'0'}
+              custom={0}
+              variants={menuItemVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="menu-item"
+            >
+              <Item
+                href="https://datahub.gpmarinelitter.org"
+                title="Analytics & statistics"
+                subtitle="Metrics to measure progress"
+                icon={<AnalyticAndStatisticSvg />}
+              />
+            </motion.li>
+            <motion.li
+              key={'1'}
+              custom={1}
+              variants={menuItemVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="menu-item"
+            >
+              <Item
+                href="https://unepazecosysadlsstorage.z20.web.core.windows.net/"
+                title="Data Catalogue"
+                subtitle="Datasets on plastic pollution and marine litter"
+                icon={<DataCatalogueSvg />}
+              />
+            </motion.li>
+            <motion.li
+              key={'2'}
+              custom={2}
+              variants={menuItemVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="menu-item"
+            >
+              <Item
+                href="https://datahub.gpmarinelitter.org/pages/glossary/"
+                title="Glossary"
+                subtitle="Terminology and definitions"
+                icon=<GlossarySvg />
+              />
+            </motion.li>
+            <motion.li
+              key={'3'}
+              custom={3}
+              variants={menuItemVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="menu-item"
+            >
+              <Item
+                href="https://datahub.gpmarinelitter.org/pages/story_map"
+                title="Story Maps"
+                subtitle="Storytelling with custom maps"
+                icon={<MapSvg />}
+              />
+            </motion.li>
+            <motion.li
+              key={'4'}
+              custom={4}
+              variants={menuItemVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="menu-item"
+            >
+              <Item
+                href="https://datahub.gpmarinelitter.org/pages/api-explore"
+                title="API explore"
+                subtitle="Web services and APIs"
+                icon={<ExploreSvg />}
+              />
+            </motion.li>
+          </ul>
+        </Col>
+      </Row>
+    </div>
+  )
+}
+
+const ToolsMenu = () => (
+  <div className="submenu">
+    {/* Content specific to the Tools menu */}
+    <p>Tool 1</p>
+    <p>Tool 2</p>
+    {/* ... */}
+  </div>
+)
+
+const FullscreenNav = ({ isOpen, toggle, contentKey }) => {
+  let ContentComponent
+
+  switch (contentKey) {
+    case 'Plastic':
+      ContentComponent = PlasticMenu
+      break
+    case 'Tools':
+      ContentComponent = ToolsMenu
+      break
+    default:
+      ContentComponent = () => <div>Select a menu item...</div>
+  }
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -35,36 +355,13 @@ const FullscreenNav = ({ isOpen, toggle }) => {
           animate="open"
           exit="closed"
           variants={navVariants}
-          transition={{ duration: 0.5, type: 'spring', stiffness: 75 }}
+          transition={{ duration: 0.5 }}
           className="fullscreen-nav"
         >
-          <button
-            onClick={toggle}
-            style={{ position: 'absolute', top: 20, right: 20 }}
-          >
+          <button onClick={toggle}>
             <CloseIcon />
           </button>
-          <ul>
-            {menuItems.map((item, i) => (
-              <motion.li
-                key={item.key}
-                variants={menuItemVariants}
-                custom={i}
-                initial="closed"
-                animate="open"
-                exit="closed"
-              >
-                <Link href={'/'} legacyBehavior>
-                  <a>
-                    {item.label}
-                    <span>
-                      <DownArrow />
-                    </span>
-                  </a>
-                </Link>
-              </motion.li>
-            ))}
-          </ul>
+          <ContentComponent />
         </motion.div>
       )}
     </AnimatePresence>
@@ -118,8 +415,8 @@ const NewLayout = ({
   profile,
 }) => {
   const [loginVisible, setLoginVisible] = useState(false)
-  const [showMenu, setShowMenu] = useState(false)
   const [hoveredItemKey, setHoveredItemKey] = useState(null)
+  const [showMenu, setShowMenu] = useState(false)
 
   return (
     <>
@@ -145,8 +442,14 @@ const NewLayout = ({
               {menuItems.map((item) => (
                 <li
                   key={item.key}
-                  onMouseEnter={() => setHoveredItemKey(item.key)}
-                  onMouseLeave={() => setHoveredItemKey(null)}
+                  onMouseEnter={() => {
+                    setHoveredItemKey(item.label)
+                    setShowMenu(true)
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredItemKey(null)
+                    setShowMenu(false)
+                  }}
                 >
                   <Link href={'/'} legacyBehavior>
                     <a>
@@ -156,27 +459,23 @@ const NewLayout = ({
                       </span>
                     </a>
                   </Link>
-                  {hoveredItemKey === item.key && (
-                    <FullscreenNav
-                      isOpen={true}
-                      toggle={() => setHoveredItemKey(null)}
-                    />
-                  )}
                 </li>
               ))}
             </ul>
             <nav>
-              <Button
-                type="primary"
-                size="small"
-                className="noicon"
-                onClick={() => setShowMenu(true)}
-              >
+              <Button type="primary" size="small" className="noicon">
                 Join Now
               </Button>
             </nav>
           </div>
         </div>
+        {/* {hoveredItemKey === item.key && ( */}
+        <FullscreenNav
+          isOpen={showMenu}
+          contentKey={hoveredItemKey}
+          toggle={() => setShowMenu(!showMenu)}
+        />
+        {/* )} */}
         {children}
       </div>
     </>
