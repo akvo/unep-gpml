@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { CirclePointer } from '../components/icons'
 
 const variants = {
@@ -19,17 +19,43 @@ const variants = {
   },
 }
 
-export const MenuItem = ({ i, onClick }) => {
+export const MenuItem = ({ i, onClick, collapseMenu }) => {
+  const [isContentVisible, setContentVisible] = React.useState(false)
+  const handleItemClick = () => {
+    if (onClick) {
+      onClick(i)
+    } else {
+      setContentVisible((prev) => !prev)
+    }
+  }
+  const hoverAnimations = collapseMenu
+    ? {}
+    : { whileHover: { scale: 1.1 }, whileTap: { scale: 0.95 } }
+
   return (
     <motion.li
+      className={isContentVisible ? 'open' : ''}
       variants={variants}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
-      onClick={() => onClick(i)}
+      {...hoverAnimations}
+      onClick={handleItemClick}
     >
       <div className="sub-menu-item">
-        <p className="p-s">{i}</p>
-        <CirclePointer />
+        <div className="header">
+          <p className="p-s">{i}</p>
+          <CirclePointer />
+        </div>
+        <AnimatePresence>
+          {isContentVisible && (
+            <motion.div
+              key="content"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+            >
+              Sub-content for {i}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.li>
   )

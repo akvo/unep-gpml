@@ -57,11 +57,33 @@ const socialLinksVariants = {
   },
 }
 
+const menuItemVariants = {
+  open: {
+    height: 'auto',
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+    },
+  },
+  closed: {
+    height: 0,
+    opacity: 0,
+    transition: {
+      duration: 0.3,
+    },
+  },
+}
+
 export const Navigation = ({ isOpen, toggleOpen }) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState(null)
+  const [collapsedItems, setCollapsedItems] = useState({})
 
   const handleMenuItemClick = (item) => {
     setSelectedMenuItem(item)
+  }
+
+  const toggleItemCollapse = (key) => {
+    setCollapsedItems((prev) => ({ ...prev, [key]: !prev[key] }))
   }
 
   const renderContent = () => {
@@ -102,11 +124,7 @@ export const Navigation = ({ isOpen, toggleOpen }) => {
               {itemIds
                 .find((item) => selectedMenuItem === item.key)
                 .children.map((i) => (
-                  <MenuItem
-                    i={i.key}
-                    key={i.key}
-                    onClick={handleMenuItemClick}
-                  />
+                  <MenuItem i={i.key} collapseMenu={true} />
                 ))}
             </motion.ul>
           </div>
@@ -180,27 +198,7 @@ export const Navigation = ({ isOpen, toggleOpen }) => {
     }
   }
 
-  return (
-    <>
-      {/* <div className="toggle-button">
-        {selectedMenuItem && (
-          <Button onClick={() => setSelectedMenuItem(null)}>
-            <CirclePointer />
-            Back
-          </Button>
-        )}
-
-        <MenuToggle
-          toggle={() => {
-            toggleOpen()
-            setSelectedMenuItem(null)
-          }}
-          isOpen={isOpen}
-        />
-      </div> */}
-      <AnimatePresence mode="wait">{renderContent()}</AnimatePresence>
-    </>
-  )
+  return <AnimatePresence mode="wait">{renderContent()}</AnimatePresence>
 }
 
 const itemIds = [

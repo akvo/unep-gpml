@@ -428,6 +428,14 @@ const sidebar = {
       damping: 40,
     },
   },
+  exit: {
+    clipPath: 'circle(0px at 100% 0px)',
+    transition: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 30,
+    },
+  },
 }
 
 const NewLayout = ({
@@ -503,15 +511,23 @@ const NewLayout = ({
             </nav>
           </div>
         </div>
-        <motion.div
-          initial="closed"
-          animate={isOpen ? 'open' : 'closed'}
-          className="animation-container"
-          style={{ zIndex: isOpen ? 99 : 0 }}
-        >
-          <motion.div className="mobile-menu-background" variants={sidebar} />
-          <Navigation isOpen={isOpen} toggleOpen={toggleOpen} />
-        </motion.div>
+
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial="closed"
+              animate={isOpen ? 'open' : 'closed'}
+              exit="exit"
+              className="animation-container"
+            >
+              <motion.div
+                className="mobile-menu-background"
+                variants={sidebar}
+              />
+              <Navigation isOpen={isOpen} toggleOpen={toggleOpen} />
+            </motion.div>
+          )}
+        </AnimatePresence>
         <FullscreenNav
           isOpen={showMenu}
           contentKey={hoveredItemKey}

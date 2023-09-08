@@ -212,6 +212,7 @@ h6,
   left: 0;
   bottom: 0;
   width: 100%;
+  z-index: 99;
   .toggle-button {
     display: flex;
     align-items: center;
@@ -228,7 +229,6 @@ h6,
     }
     svg {
       circle {
-        stroke: rgba(127, 115, 255, 0.2);
         fill: rgba(127, 115, 255, 0.2);
       }
       path {
@@ -272,6 +272,37 @@ h6,
         }
       }
     }
+    .ant-collapse-borderless {
+      background-color: transparent;
+      .ant-collapse-item {
+        width: 100%;
+        padding: 5.5px 14px;
+        border-radius: 25.916px;
+        border: 1.205px solid rgba(255, 255, 255, 0.19);
+        background: rgba(255, 255, 255, 0.01);
+        backdrop-filter: blur(8.1363639832px);
+        margin-bottom: 20px;
+        .ant-collapse-header {
+          padding: 0;
+          flex-direction: row-reverse;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          span {
+            color: white;
+          }
+          .ant-collapse-expand-icon {
+            width: 32px;
+            height: 32px;
+            svg {
+              circle {
+                fill: rgba(127, 115, 255, 0.2);
+              }
+            }
+          }
+        }
+      }
+    }
   }
   ul {
     padding: 0px;
@@ -283,18 +314,27 @@ h6,
       display: flex;
       align-items: center;
       cursor: pointer;
+      // &.open {
+      //   .sub-menu-item {
+      //     border-radius: 16px;
+      //   }
+      // }
       .sub-menu-item {
-        display: flex;
         width: 100%;
-        height: 45px;
-        padding: 0px 14px;
-        align-items: center;
-        gap: 10px;
         border-radius: 25.916px;
         border: 1.205px solid rgba(255, 255, 255, 0.19);
         background: rgba(255, 255, 255, 0.01);
         backdrop-filter: blur(8.136363983154297px);
-        justify-content: space-between;
+        overflow: hidden;
+        .header {
+          display: flex;
+          width: 100%;
+          height: 45px;
+          padding: 0px 14px;
+          align-items: center;
+          gap: 10px;
+          justify-content: space-between;
+        }
         .p-s {
           font-weight: 600;
           color: white;
