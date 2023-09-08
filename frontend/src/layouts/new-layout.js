@@ -7,9 +7,9 @@ import { DM_Sans } from 'next/font/google'
 import Image from 'next/image'
 import Footer from '../footer'
 import Login from '../modules/login/view'
-import { DownArrow, CloseIcon } from '../components/icons'
+import { DownArrow, CloseIcon, MenuIcon } from '../components/icons'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useCycle } from 'framer-motion'
 import BookIcon from '../images/book-open.svg'
 import CaseStudiesSvg from '../images/folder.svg'
 import CapacityBuildingSvg from '../images/owl.svg'
@@ -24,6 +24,9 @@ import DataCatalogueSvg from '../images/archive.svg'
 import GlossarySvg from '../images/glossary.svg'
 import MapSvg from '../images/map.svg'
 import ExploreSvg from '../images/api.svg'
+import { useDeviceSize } from '../modules/landing/landing'
+import { MenuToggle } from './MenuToggle'
+import { Navigation } from './Navigation'
 
 const navVariants = {
   open: { scale: 1, opacity: 1 },
@@ -407,6 +410,26 @@ const menuItems = ['Plastic', 'Tools', 'Countries', 'About'].map((key) => ({
   label: key,
 }))
 
+const sidebar = {
+  open: (height = 1000) => ({
+    clipPath: `circle(${height * 2 + 200}px at 100% 0%)`,
+    transition: {
+      type: 'spring',
+      stiffness: 20,
+      restDelta: 2,
+    },
+  }),
+  closed: {
+    clipPath: 'circle(0px at 100% 0px)',
+    transition: {
+      delay: 0.1,
+      type: 'spring',
+      stiffness: 400,
+      damping: 40,
+    },
+  },
+}
+
 const NewLayout = ({
   children,
   isIndexPage,
@@ -417,6 +440,8 @@ const NewLayout = ({
   const [loginVisible, setLoginVisible] = useState(false)
   const [hoveredItemKey, setHoveredItemKey] = useState(null)
   const [showMenu, setShowMenu] = useState(false)
+  const [width] = useDeviceSize()
+  const [isOpen, toggleOpen] = useCycle(false, true)
 
   return (
     <>
@@ -438,44 +463,63 @@ const NewLayout = ({
                 height={74}
               />
             </div>
-            <ul className="ant-menu">
-              {menuItems.map((item) => (
-                <li
-                  key={item.key}
-                  onMouseEnter={() => {
-                    setHoveredItemKey(item.label)
-                    setShowMenu(true)
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredItemKey(null)
-                    setShowMenu(false)
-                  }}
-                >
-                  <Link href={'/'} legacyBehavior>
-                    <a>
-                      {item.label}
-                      <span>
-                        <DownArrow />
-                      </span>
-                    </a>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {width >= 768 && (
+              <ul
+                className="ant-menu"
+                // onMouseLeave={() => {
+                //   setHoveredItemKey(null)
+                //   setShowMenu(false)
+                // }}
+              >
+                {menuItems.map((item) => (
+                  <li
+                    key={item.key}
+                    onMouseEnter={() => {
+                      setHoveredItemKey(item.label)
+                      setShowMenu(true)
+                    }}
+                  >
+                    <Link href={'/'} legacyBehavior>
+                      <a>
+                        {item.label}
+                        <span>
+                          <DownArrow />
+                        </span>
+                      </a>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
             <nav>
               <Button type="primary" size="small" className="noicon">
                 Join Now
               </Button>
+              {width <= 768 && (
+                <div className="toggle-button">
+                  <MenuToggle toggle={() => toggleOpen()} isOpen={isOpen} />
+                </div>
+              )}
             </nav>
           </div>
         </div>
-        {/* {hoveredItemKey === item.key && ( */}
+        <motion.div
+          initial="closed"
+          animate={isOpen ? 'open' : 'closed'}
+          className="animation-container"
+          style={{ zIndex: isOpen ? 99 : 0 }}
+        >
+          <motion.div className="mobile-menu-background" variants={sidebar} />
+          <div className="toggle-button">
+            <MenuToggle toggle={() => toggleOpen()} isOpen={isOpen} />
+          </div>
+          <Navigation isOpen={isOpen} />
+        </motion.div>
         <FullscreenNav
           isOpen={showMenu}
           contentKey={hoveredItemKey}
           toggle={() => setShowMenu(!showMenu)}
         />
-        {/* )} */}
         {children}
       </div>
     </>
