@@ -293,26 +293,13 @@
         padding: 40px 0px;
         :global {
           button {
-            font-family: var(--font-archia), sans-serif;
-            font-weight: 700;
-            font-size: $fzXS;
-            line-height: $lhXS;
-            height: 46px;
             width: 315px;
-            background-color: transparent;
             margin-bottom: 20px;
-            border: 2px solid $primaryDarkBlue;
-            border-radius: 100px;
-            color: $primaryDarkBlue;
             display: flex;
             align-items: center;
             &:hover {
-              border-color: $primaryDarkBlue;
-              color: #fff;
-              background: $primaryDarkBlue;
               path {
                 fill: #fff;
-                stroke: #fff;
               }
             }
             span {
@@ -351,26 +338,14 @@
           }
         }
         .loginButton {
-          font-family: var(--font-archia), sans-serif;
-          font-weight: 700;
-          font-size: $fzS;
-          line-height: $lhS;
           text-shadow: none;
-          height: 46px;
           width: 230px;
-          background-color: transparent;
           margin: 0 auto;
-          border: 2px solid $primaryDarkBlue;
-          color: $primaryDarkBlue;
           display: flex;
           align-items: center;
           justify-content: center;
           &:hover {
-            border-color: $primaryDarkBlue;
-            color: #fff;
-            background: $primaryDarkBlue;
             path {
-              fill: #fff;
               stroke: #fff;
             }
           }
