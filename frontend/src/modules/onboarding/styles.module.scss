@@ -81,26 +81,6 @@
       }
       .button-bottom-panel {
         padding: 40px 0px;
-        .step-button {
-          border: 2px solid #18162f;
-          border-radius: 23.5px;
-          font-weight: 700;
-          font-size: 16px;
-          line-height: 22px;
-          display: flex;
-          align-items: center;
-          text-align: center;
-          color: #18162f;
-          margin: 0 auto;
-          justify-content: center;
-          padding: 20px 45px;
-          background: transparent;
-          &:hover {
-            border-color: $blue12;
-            color: #fff;
-            background: $blue12;
-          }
-        }
       }
       .button-bottom-panel {
         position: absolute;
@@ -154,16 +134,8 @@
       justify-content: space-between;
     }
     .step-button-back {
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 22px;
       display: flex;
       align-items: center;
-      text-align: center;
-      color: #18162f;
-      background: transparent;
-      border: none;
-      box-shadow: none;
       position: absolute;
       bottom: 0;
       left: 25px;
@@ -177,106 +149,6 @@
         bottom: 26px;
         z-index: 3;
       }
-    }
-
-    label {
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 20px;
-      color: #000000;
-      p {
-        margin-bottom: 0px;
-        span {
-          font-weight: 500;
-          font-size: 12px;
-          line-height: 17px;
-          color: rgba(56, 78, 133, 0.6);
-          padding-left: 10px;
-        }
-      }
-    }
-    .ant-input,
-    .ant-input-number-input,
-    .ant-picker,
-    .ant-select,
-    .ant-select-selector,
-    .ant-input-affix-wrapper {
-      background-color: #edf2f6;
-      border: none;
-      border-radius: 5px;
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 38px;
-      color: #6e6e6e;
-      width: 100%;
-      &::placeholder {
-        color: #a5b0c9;
-        font-size: 16px;
-        font-weight: 500;
-      }
-      .ant-select,
-      .ant-select-selector {
-        height: 100%;
-        background-color: #edf2f6;
-        border: none;
-        border-radius: 5px;
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 38px;
-        color: #6e6e6e;
-        width: 100%;
-        &::placeholder {
-          color: #a5b0c9;
-          font-size: 16px;
-          font-weight: 500;
-        }
-        .ant-select-selection-overflow {
-          height: 100%;
-          .ant-select-selection-overflow-item {
-            height: 100%;
-            .ant-select-selection-search {
-              height: 100%;
-            }
-            .ant-select-selection-item {
-              height: 100%;
-              margin: 0px 5px;
-              background: #3176ae;
-              color: #fff;
-
-              background-color: #3176ae;
-              border-radius: 4px;
-              line-height: 34px !important;
-              margin: 3px 2px !important;
-              padding: 0 10px;
-              .ant-select-selection-item-remove {
-                color: rgba(255, 255, 255, 0.5);
-              }
-              svg {
-                path {
-                  fill: #fff;
-                }
-              }
-            }
-          }
-        }
-      }
-      .ant-select-selection-placeholder {
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 42px;
-        color: #a5b0c9;
-      }
-      .ant-select-selection-item {
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 42px;
-      }
-    }
-
-    textarea {
-      line-height: 20px !important;
-      font-size: 16px;
-      padding: 10px;
     }
     .step-form {
       .ant-upload {
@@ -336,23 +208,6 @@
       .ant-row {
         &:first-child {
           flex: 1;
-        }
-      }
-      .input-field {
-        background-color: #edf2f6;
-        border: none !important;
-        border-radius: 5px;
-        font-weight: 500;
-        font-size: 16px;
-        padding: 0px 11px;
-        height: 42px;
-        color: #a5b0c9;
-        width: 100%;
-        margin-bottom: 40px;
-        &::placeholder {
-          color: #a5b0c9;
-          font-size: 16px;
-          font-weight: 500;
         }
       }
 
@@ -416,27 +271,6 @@
         display: flex;
         justify-content: center;
 
-        button {
-          border: 2px solid #18162f;
-          border-radius: 23.5px;
-          font-weight: 700;
-          font-size: 16px;
-          line-height: 22px;
-          display: flex;
-          align-items: center;
-          text-align: center;
-          color: #18162f;
-          margin: 0 auto;
-          justify-content: center;
-          padding: 20px 45px;
-          background: transparent;
-          width: 150px;
-          &:hover {
-            border-color: $blue12;
-            color: #fff;
-            background: $blue12;
-          }
-        }
         div {
           text-align: center;
           h5 {
@@ -533,165 +367,6 @@
           font-size: 14px;
           line-height: 18px;
           color: #09689a;
-        }
-      }
-    }
-    .auth-container {
-      opacity: 1;
-      padding: 20px 6px 6px 6px;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      .signup-wrapper {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        .signin-button {
-          button {
-            color: #09689a;
-            font-weight: 500;
-            font-size: 18px;
-            line-height: 26px;
-          }
-        }
-        .auth-buttons {
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          padding: 40px 0px;
-          button {
-            font-weight: 500;
-            font-size: 18px;
-            line-height: 36px;
-            height: 46px;
-            width: 315px;
-            background-color: transparent;
-            margin-bottom: 20px;
-            border: 3px solid #18162f;
-            color: #18162f;
-            display: flex;
-            align-items: center;
-            &:hover {
-              border-color: $blue12;
-              color: #fff;
-              background: $blue12;
-              path {
-                fill: #fff;
-                stroke: #fff;
-              }
-            }
-            span {
-              padding-left: 20px;
-            }
-          }
-          .separator {
-            margin-bottom: 10px;
-            h4 {
-              font-weight: 500;
-              font-size: 20px;
-              line-height: 29px;
-              color: #09689a;
-            }
-          }
-        }
-      }
-      .login-wrapper {
-        .connect-button {
-          display: flex;
-          justify-content: space-between;
-          width: 100%;
-          button {
-            color: #09689a;
-            font-weight: 500;
-            font-size: 18px;
-            line-height: 26px;
-          }
-          .connect-back-button {
-            font-weight: 500;
-            font-size: 14px;
-            line-height: 20px;
-            color: #000000;
-          }
-        }
-        .login-form {
-          padding: 30px 20px;
-          .ant-form-item-label {
-            padding-bottom: 5px;
-            // label {
-            //   font-weight: 500;
-            //   font-size: 14px;
-            //   line-height: 20px;
-            //   color: #000000;
-            // }
-          }
-          .ant-input-password {
-            border: none !important;
-            padding: 0px 11px;
-            background: #edf2f7;
-            border-radius: 5px;
-            .ant-form-item-has-success {
-              border: none;
-            }
-          }
-          .login-button {
-            font-weight: 500;
-            font-size: 18px;
-            line-height: 36px;
-            height: 46px;
-            width: 230px;
-            background-color: transparent;
-            margin: 0 auto;
-            border: 3px solid #18162f;
-            color: #18162f;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            &:hover {
-              border-color: $blue12;
-              color: #fff;
-              background: $blue12;
-              path {
-                fill: #fff;
-                stroke: #fff;
-              }
-            }
-          }
-          .forgot-password {
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 23px;
-            color: #18162f;
-            display: block;
-            margin: 10px auto 0;
-          }
-          .ant-divider-horizontal {
-            border-top: 0.4px solid #000000;
-            margin: 40px 0px 60px 0px;
-          }
-          .join-wrapper {
-            text-align: center;
-            h2 {
-              font-weight: 700;
-              font-size: 24px;
-              line-height: 35px;
-              color: #18162f;
-            }
-          }
-        }
-      }
-      .terms {
-        background: rgb(109 181 176 / 31%);
-        padding: 6px 0px;
-        h4 {
-          margin-bottom: 0px;
-          font-weight: 400;
-          font-size: 16px;
-          line-height: 23px;
-          color: #18162f;
-          text-align: center;
         }
       }
     }

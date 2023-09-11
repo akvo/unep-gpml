@@ -61,7 +61,7 @@
           stroke: white;
         }
       }
-      &:hover {
+      &:hover:not(:disabled) {
         background-color: transparent;
         border-color: $primaryDarkBlue;
         color: $primaryDarkBlue;
