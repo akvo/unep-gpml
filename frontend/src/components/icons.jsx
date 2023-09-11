@@ -235,3 +235,40 @@ export const LongArrowRight = () => (
     </defs>
   </svg>
 )
+
+export const DownArrow = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="15"
+    height="9"
+    viewBox="0 0 15 9"
+    fill="none"
+  >
+    <path d="M1.5 0.999999L7.5 7L13.5 1" stroke="white" stroke-width="2" />
+  </svg>
+)
+
+export const CloseIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+  >
+    <path
+      d="M6 18.228L18.7279 5.50011"
+      stroke="white"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M19 18.228L6.27208 5.50011"
+      stroke="white"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+)
