@@ -44,70 +44,185 @@ const menuItemVariants = {
   closed: { opacity: 0, y: 50 },
 }
 
-const pathContent = {
-  '/knowledge/library': {
-    title: 'Knowledge library',
-    subtitle: 'Resources on marine litter and plastic pollution',
-    icon: <BookIcon />,
+export const menuList = [
+  {
+    key: 'Plastic',
+    children: [
+      {
+        key: 'Topics',
+      },
+      {
+        key: 'Basics',
+      },
+    ],
   },
-  '/knowledge/case-studies': {
-    title: 'Case studies',
-    icon: <CaseStudiesSvg />,
-    subtitle: 'Compilation of actions around the world',
-    iconClass: 'casestudies',
+  {
+    key: 'Tools',
+    children: [
+      {
+        key: 'Information',
+        children: [
+          {
+            to: '/knowledge/library',
+            title: 'Knowledge library',
+            subtitle: 'Resources on marine litter and plastic pollution',
+            icon: <BookIcon />,
+          },
+          {
+            to: '/knowledge/case-studies',
+            title: 'Case studies',
+            icon: <CaseStudiesSvg />,
+            subtitle: 'Compilation of actions around the world',
+            iconClass: 'casestudies',
+          },
+          {
+            to: '/knowledge/capacity-development',
+            title: 'Learning center',
+            subtitle: 'Learning and capacity development resources',
+            icon: <CapacityBuildingSvg />,
+            iconClass: 'learning',
+          },
+          {
+            to: '/help-center',
+            title: 'Help Center',
+            subtitle: 'Support on GPML Digital Platform',
+            icon: <HelpCenterSvg />,
+          },
+        ],
+      },
+      {
+        key: 'Community',
+        children: [
+          {
+            to: '/community',
+            title: 'Members',
+            iconClass: 'tools-community-icon',
+            subtitle: 'Directory of GPML network entities and individuals',
+            icon: <IconCommunity />,
+          },
+          {
+            to: '/experts',
+            title: 'Experts',
+            iconClass: 'tools-experts-icon',
+            subtitle: "Tool to find an expert and experts' groups",
+            icon: <ExpertIcon />,
+          },
+          {
+            to: '/events',
+            title: 'Events',
+            subtitle: 'Global events calendar',
+            icon: <IconEvent />,
+          },
+          {
+            to: '/partners',
+            title: 'Partners',
+            iconClass: 'tools-partners-icon',
+            subtitle: 'Directory of partners of the GPML Digital Platform',
+            icon: <IconPartner />,
+          },
+          {
+            href: 'https://communities.gpmarinelitter.org',
+            title: 'Engage',
+            subtitle: 'Interactive forum for collaboration',
+            icon: <IconForum />,
+          },
+        ],
+      },
+      {
+        key: 'Data hub',
+        children: [
+          {
+            href: 'https://datahub.gpmarinelitter.org',
+            title: 'Analytics & statistics',
+            subtitle: 'Metrics to measure progress',
+            icon: <AnalyticAndStatisticSvg />,
+          },
+          {
+            href: 'https://unepazecosysadlsstorage.z20.web.core.windows.net/',
+            title: 'Data Catalogue',
+            subtitle: 'Datasets on plastic pollution and marine litter',
+            icon: <DataCatalogueSvg />,
+          },
+          {
+            href: 'https://datahub.gpmarinelitter.org/pages/glossary/',
+            title: 'Glossary',
+            subtitle: 'Terminology and definitions',
+            icon: <GlossarySvg />,
+          },
+          {
+            href: 'https://datahub.gpmarinelitter.org/pages/story_map',
+            title: 'Story Maps',
+            subtitle: 'Storytelling with custom maps',
+            icon: <MapSvg />,
+          },
+          {
+            href: 'https://datahub.gpmarinelitter.org/pages/api-explore',
+            title: 'API explore',
+            subtitle: 'Web services and APIs',
+            icon: <ExploreSvg />,
+          },
+        ],
+      },
+    ],
   },
-  '/knowledge/capacity-development': {
-    title: 'Learning center',
-    subtitle: 'Learning and capacity development resources',
-    icon: <CapacityBuildingSvg />,
-    iconClass: 'learning',
+  {
+    key: 'Countries',
+    children: [
+      {
+        key: 'Information',
+      },
+    ],
   },
-  '/community': {
-    title: 'Members',
-    iconClass: 'tools-community-icon',
-    subtitle: 'Directory of GPML network entities and individuals',
-    icon: <IconCommunity />,
+  {
+    key: 'About Us',
+    children: [
+      {
+        key: 'The platform',
+      },
+      {
+        key: 'Our Netwrok',
+      },
+      {
+        key: 'Partnership',
+      },
+      {
+        key: 'Contact us',
+      },
+    ],
   },
-  '/experts': {
-    title: 'Experts',
-    iconClass: 'tools-experts-icon',
-    subtitle: "Tool to find an expert and experts' groups",
-    icon: <ExpertIcon />,
-  },
-  '/events': {
-    title: 'Events',
-    subtitle: 'Global events calendar',
-    icon: <IconEvent />,
-  },
-  '/partners': {
-    title: 'Partners',
-    iconClass: 'tools-partners-icon',
-    subtitle: 'Directory of partners of the GPML Digital Platform',
-    icon: <IconPartner />,
-  },
-  // "/glossary": {
-  //   title: "Glossary",
-  //   subtitle: "Terminology and definitions",
-  //   icon: <GlossarySvg />,
-  // },
-  '/help-center': {
-    title: 'Help Center',
-    subtitle: 'Support on GPML Digital Platform',
-    icon: <HelpCenterSvg />,
-  },
-  // "/about-us": {
-  //   title: "About GPML",
-  //   subtitle: "Find out more about us",
-  //   icon: <AboutSvg />,
-  // },
-}
+]
 
-const Item = ({ title, subtitle, icon, iconClass, to, href, setShowMenu }) => {
+export const Item = ({
+  title,
+  subtitle,
+  icon,
+  iconClass,
+  to,
+  href,
+  setShowMenu,
+}) => {
+  const contents = (
+    <>
+      <div className={['icon', iconClass].filter((it) => it != null).join(' ')}>
+        {icon}
+      </div>
+      <div className="content">
+        <b className="p-s">{title}</b>
+        <span>{subtitle}</span>
+      </div>
+    </>
+  )
+
   if (to != null) {
-    icon = pathContent[to].icon
-    title = pathContent[to].title
-    subtitle = pathContent[to].subtitle
+    return (
+      <Link href={to} legacyBehavior>
+        <a>{contents}</a>
+      </Link>
+    )
+  } else if (href != null) {
+    return <a href={href}>{contents}</a>
   }
+
   return (
     <>
       <div className="icon">{icon}</div>
@@ -119,230 +234,41 @@ const Item = ({ title, subtitle, icon, iconClass, to, href, setShowMenu }) => {
   )
 }
 
-const PlasticMenu = () => {
+const ToolsMenu = () => {
   return (
     <div className="container sub-menu">
       <Row gutter={[168, 168]}>
-        <Col span={8}>
-          <p className="p-m">Information</p>
-          <ul>
-            <motion.li
-              key={'0'}
-              custom={0}
-              variants={menuItemVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="menu-item"
-            >
-              <Item to="/knowledge/library" />
-            </motion.li>
-            <motion.li
-              key={'1'}
-              custom={1}
-              variants={menuItemVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="menu-item"
-            >
-              <Item to="/knowledge/case-studies" />
-            </motion.li>
-            <motion.li
-              key={'2'}
-              custom={2}
-              variants={menuItemVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="menu-item"
-            >
-              <Item to="/knowledge/capacity-development" />
-            </motion.li>
-            <motion.li
-              key={'3'}
-              custom={3}
-              variants={menuItemVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="menu-item"
-            >
-              <Item to="/help-center" />
-            </motion.li>
-          </ul>
-        </Col>
-        <Col span={8}>
-          <p className="p-m">Community</p>{' '}
-          <ul>
-            <motion.li
-              key={'0'}
-              custom={0}
-              variants={menuItemVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="menu-item"
-            >
-              <Item to="/community" />
-            </motion.li>
-            <motion.li
-              key={'1'}
-              custom={1}
-              variants={menuItemVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="menu-item"
-            >
-              <Item to="/experts" />
-            </motion.li>
-            <motion.li
-              key={'2'}
-              custom={2}
-              variants={menuItemVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="menu-item"
-            >
-              <Item to="/events" />
-            </motion.li>
-            <motion.li
-              key={'3'}
-              custom={3}
-              variants={menuItemVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="menu-item"
-            >
-              <Item to="/partners" />
-            </motion.li>
-            <motion.li
-              key={'4'}
-              custom={4}
-              variants={menuItemVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="menu-item"
-            >
-              <Item
-                href="https://communities.gpmarinelitter.org"
-                title="Engage"
-                subtitle="Interactive forum for collaboration"
-                icon={<IconForum />}
-              />
-            </motion.li>
-          </ul>
-        </Col>
-        <Col span={8}>
-          <p className="p-m">Data Hub</p>
-          <ul>
-            <motion.li
-              key={'0'}
-              custom={0}
-              variants={menuItemVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="menu-item"
-            >
-              <Item
-                href="https://datahub.gpmarinelitter.org"
-                title="Analytics & statistics"
-                subtitle="Metrics to measure progress"
-                icon={<AnalyticAndStatisticSvg />}
-              />
-            </motion.li>
-            <motion.li
-              key={'1'}
-              custom={1}
-              variants={menuItemVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="menu-item"
-            >
-              <Item
-                href="https://unepazecosysadlsstorage.z20.web.core.windows.net/"
-                title="Data Catalogue"
-                subtitle="Datasets on plastic pollution and marine litter"
-                icon={<DataCatalogueSvg />}
-              />
-            </motion.li>
-            <motion.li
-              key={'2'}
-              custom={2}
-              variants={menuItemVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="menu-item"
-            >
-              <Item
-                href="https://datahub.gpmarinelitter.org/pages/glossary/"
-                title="Glossary"
-                subtitle="Terminology and definitions"
-                icon=<GlossarySvg />
-              />
-            </motion.li>
-            <motion.li
-              key={'3'}
-              custom={3}
-              variants={menuItemVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="menu-item"
-            >
-              <Item
-                href="https://datahub.gpmarinelitter.org/pages/story_map"
-                title="Story Maps"
-                subtitle="Storytelling with custom maps"
-                icon={<MapSvg />}
-              />
-            </motion.li>
-            <motion.li
-              key={'4'}
-              custom={4}
-              variants={menuItemVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="menu-item"
-            >
-              <Item
-                href="https://datahub.gpmarinelitter.org/pages/api-explore"
-                title="API explore"
-                subtitle="Web services and APIs"
-                icon={<ExploreSvg />}
-              />
-            </motion.li>
-          </ul>
-        </Col>
+        {menuList
+          .find((item) => item.key === 'Tools')
+          ?.children.map((menu) => (
+            <Col span={8} key={menu.key}>
+              <p className="p-m">{menu.key}</p>
+              <ul>
+                {menu?.children.map((child, i) => (
+                  <motion.li
+                    key={child.title}
+                    custom={i}
+                    variants={menuItemVariants}
+                    initial="closed"
+                    animate="open"
+                    exit="closed"
+                    className="sub-menu-item"
+                  >
+                    <Item {...child} />
+                  </motion.li>
+                ))}
+              </ul>
+            </Col>
+          ))}
       </Row>
     </div>
   )
 }
 
-const ToolsMenu = () => (
-  <div className="submenu">
-    {/* Content specific to the Tools menu */}
-    <p>Tool 1</p>
-    <p>Tool 2</p>
-    {/* ... */}
-  </div>
-)
-
 const FullscreenNav = ({ isOpen, toggle, contentKey }) => {
   let ContentComponent
 
   switch (contentKey) {
-    case 'Plastic':
-      ContentComponent = PlasticMenu
-      break
     case 'Tools':
       ContentComponent = ToolsMenu
       break
@@ -459,7 +385,7 @@ const NewLayout = ({
           --font-archia: ${archia.style.fontFamily};
         }
       `}</style>
-      <div>
+      <div className="">
         <div className="top-bar">
           <div className="container">
             <div className="logo-container">
@@ -511,28 +437,29 @@ const NewLayout = ({
             </nav>
           </div>
         </div>
-
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial="closed"
-              animate={isOpen ? 'open' : 'closed'}
-              exit="exit"
-              className="animation-container"
-            >
+        <div className="navigation">
+          <AnimatePresence>
+            {isOpen && (
               <motion.div
-                className="mobile-menu-background"
-                variants={sidebar}
-              />
-              <Navigation isOpen={isOpen} toggleOpen={toggleOpen} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-        <FullscreenNav
-          isOpen={showMenu}
-          contentKey={hoveredItemKey}
-          toggle={() => setShowMenu(!showMenu)}
-        />
+                initial="closed"
+                animate={isOpen ? 'open' : 'closed'}
+                exit="exit"
+                className="animation-container"
+              >
+                <motion.div
+                  className="mobile-menu-background"
+                  variants={sidebar}
+                />
+                <Navigation isOpen={isOpen} toggleOpen={toggleOpen} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <FullscreenNav
+            isOpen={showMenu}
+            contentKey={hoveredItemKey}
+            toggle={() => setShowMenu(!showMenu)}
+          />
+        </div>
         {children}
       </div>
     </>

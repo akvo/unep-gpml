@@ -1,6 +1,7 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CirclePointer } from '../components/icons'
+import { Item } from './new-layout'
 
 const variants = {
   open: {
@@ -19,8 +20,8 @@ const variants = {
   },
 }
 
-export const MenuItem = ({ i, onClick, collapseMenu }) => {
-  const [isContentVisible, setContentVisible] = React.useState(false)
+export const MenuItem = ({ i, item, onClick, collapseMenu }) => {
+  const [isContentVisible, setContentVisible] = useState(false)
   const handleItemClick = () => {
     if (onClick) {
       onClick(i)
@@ -39,10 +40,16 @@ export const MenuItem = ({ i, onClick, collapseMenu }) => {
       {...hoverAnimations}
       onClick={handleItemClick}
     >
-      <div className="sub-menu-item">
+      <div className="sub-menu">
         <div className="header">
           <p className="p-s">{i}</p>
-          <CirclePointer />
+          <motion.div
+            animate={{ rotate: isContentVisible ? 90 : 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className={isContentVisible ? 'header-icon open' : 'header-icon'}
+          >
+            <CirclePointer />
+          </motion.div>
         </div>
         <AnimatePresence>
           {isContentVisible && (
@@ -52,7 +59,13 @@ export const MenuItem = ({ i, onClick, collapseMenu }) => {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
             >
-              Sub-content for {i}
+              <ul className="collapse-list">
+                {item?.children?.map((nav) => (
+                  <li className="sub-menu-item">
+                    <Item {...nav} />
+                  </li>
+                ))}
+              </ul>
             </motion.div>
           )}
         </AnimatePresence>

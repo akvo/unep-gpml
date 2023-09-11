@@ -9,6 +9,7 @@ import {
   LinkedinIcon,
 } from '../components/icons'
 import { Button } from 'antd'
+import { menuList } from './new-layout'
 
 const menuVariants = {
   open: {
@@ -95,6 +96,7 @@ export const Navigation = ({ isOpen, toggleOpen }) => {
           animate="center"
           exit="exit"
           variants={contentVariants}
+          className="slide-menu"
         >
           <div className="toggle-button">
             {selectedMenuItem && (
@@ -121,10 +123,10 @@ export const Navigation = ({ isOpen, toggleOpen }) => {
               animate="open"
               exit="closed"
             >
-              {itemIds
+              {menuList
                 .find((item) => selectedMenuItem === item.key)
                 .children.map((i) => (
-                  <MenuItem i={i.key} collapseMenu={true} />
+                  <MenuItem i={i.key} item={i} collapseMenu={true} />
                 ))}
             </motion.ul>
           </div>
@@ -142,7 +144,7 @@ export const Navigation = ({ isOpen, toggleOpen }) => {
               isOpen={isOpen}
             />
           </div>
-          <div className="navigation-container">
+          <div className="navigation-container" style={{ height: '100%' }}>
             <motion.ul
               key="menuList"
               variants={menuVariants}
@@ -150,7 +152,7 @@ export const Navigation = ({ isOpen, toggleOpen }) => {
               animate="open"
               exit="closed"
             >
-              {itemIds.map((i) => (
+              {menuList.map((i) => (
                 <MenuItem i={i.key} key={i.key} onClick={handleMenuItemClick} />
               ))}
             </motion.ul>
@@ -200,56 +202,3 @@ export const Navigation = ({ isOpen, toggleOpen }) => {
 
   return <AnimatePresence mode="wait">{renderContent()}</AnimatePresence>
 }
-
-const itemIds = [
-  {
-    key: 'Plastic',
-    children: [
-      {
-        key: 'Topics',
-      },
-      {
-        key: 'Basics',
-      },
-    ],
-  },
-  {
-    key: 'Tools',
-    children: [
-      {
-        key: 'Information',
-      },
-      {
-        key: 'Community',
-      },
-      {
-        key: 'Data hub',
-      },
-    ],
-  },
-  {
-    key: 'Countries',
-    children: [
-      {
-        key: 'Information',
-      },
-    ],
-  },
-  {
-    key: 'About Us',
-    children: [
-      {
-        key: 'The platform',
-      },
-      {
-        key: 'Our Netwrok',
-      },
-      {
-        key: 'Partnership',
-      },
-      {
-        key: 'Contact us',
-      },
-    ],
-  },
-]
