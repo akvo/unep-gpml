@@ -4,7 +4,7 @@ import Link from 'next/link'
 import moment from 'moment'
 
 import styles from './style.module.scss'
-import { ArrowRight, FacebookIcon, LinkedinIcon, TwitterIcon } from '../icons'
+import { ArrowRight, LinkedinIcon, YoutubeIcon } from '../icons'
 import Button from '../button'
 
 const Footer = () => {
@@ -27,7 +27,7 @@ const Footer = () => {
               </a>
             </div>
           </div>
-          <div className="footer-item">
+          {/* <div className="footer-item">
             <h6 className="title">About us</h6>
             <ul>
               <li>
@@ -40,7 +40,7 @@ const Footer = () => {
                 <Link href="/landing">About the GPML Digital platform</Link>
               </li>
             </ul>
-          </div>
+          </div> */}
           <div className="footer-item">
             <h6 className="title">GPML Tools</h6>
             <ul>
@@ -85,29 +85,20 @@ const Footer = () => {
                 <ul className="social-links">
                   <li>
                     <a
-                      href="https://facebook.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FacebookIcon />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="http://twitter.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <TwitterIcon />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://linkedin.com/"
+                      href="https://ke.linkedin.com/company/global-partnership-on-marine-litter"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       <LinkedinIcon />
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.youtube.com/channel/UCoWXFwDeoD4c9GoXzFdm9Bg"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <YoutubeIcon />
                     </a>
                   </li>
                 </ul>

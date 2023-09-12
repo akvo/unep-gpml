@@ -290,6 +290,7 @@
           margin-top: -3px;
           font-size: $fzM !important;
           font: var(--font-archia), sans-serif;
+          background-color: transparent !important;
         }
         .localisation {
           font-weight: bold;
@@ -1296,6 +1297,9 @@
           gap: 20px;
           li {
             height: 32px;
+            a {
+              color: $primaryDarkBlue;
+            }
           }
         }
       }
