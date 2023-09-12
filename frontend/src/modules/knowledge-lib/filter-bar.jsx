@@ -6,7 +6,7 @@ import FilterIcon from "../../images/knowledge-library/filter-icon.svg";
 import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
 import LocationDropdown from "../../components/location-dropdown/location-dropdown";
 import api from "../../utils/api";
-import { LeftOutlined, CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 
 export const resourceTypes = [
   {
@@ -175,8 +175,7 @@ const FilterBar = ({
               <div>
                 {/* <Icon name={`resource-types/${t.key}`} fill="#000" /> */}
                 <b>
-                  {totalCount.find((item) => t.title === item.topic)?.count ||
-                    "XX"}
+                  {totalCount.find((item) => t.title === item.topic)?.count || 0}
                 </b>
               </div>
               <span>{t.label}</span>
@@ -185,7 +184,7 @@ const FilterBar = ({
         </ul>
       </div>
       <div className="search-container">
-        <Button className="adv-src" onClick={() => setShowFilterModal(true)}>
+        <Button className="adv-src" type="text" onClick={() => setShowFilterModal(true)}>
           {!isEmpty &&
             Object.keys(query).filter(
               (item) =>
@@ -216,6 +215,7 @@ const FilterBar = ({
               icon={<CloseOutlined />}
               className="reset-button"
               onClick={() => resetFilter()}
+              type="text"
             >
               Reset filters
             </Button>
