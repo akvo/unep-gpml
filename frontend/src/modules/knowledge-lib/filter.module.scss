@@ -83,39 +83,6 @@
       }
     }
   }
-  :global {
-    .ant-modal-footer {
-      background: $primaryWhite;
-      // box-shadow: 0px -2px 2px rgba(24, 22, 47, 0.3);
-      border-radius: 0px 0px 10px 10px;
-      padding: 20px;
-      text-align: center;
-      display: flex;
-      flex-direction: row-reverse;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 12px;
-      button {
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 17px;
-        text-align: center;
-        text-transform: uppercase;
-        background-color: transparent;
-        color: #265d89;
-      }
-      .apply-button {
-        border: 1px solid #265d89;
-        border-radius: 30px;
-        background-color: transparent;
-        padding: 5px 30px;
-      }
-      .clear-button {
-        background-color: transparent;
-        border: none;
-      }
-    }
-  }
 
   @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
     .ant-modal-body {

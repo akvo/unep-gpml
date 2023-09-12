@@ -50,9 +50,10 @@
           color: #ffffff;
         }
         &.selected {
+          background-color: $primaryGrey;
           svg {
             path {
-              stroke: #ffa800;
+              stroke: $primaryDarkBlue;
             }
           }
           &:hover {
@@ -64,24 +65,37 @@
           }
         }
         &.ant-dropdown-open {
-          background: rgba(24, 22, 47, 0.65);
+          background: $primaryGrey;
           span {
-            color: #ffa800;
+            color: $primaryDarkBlue;
           }
           svg {
             path {
-              stroke: #ffa800;
+              stroke: $primaryDarkBlue;
             }
           }
         }
         &.location-filter {
+          svg path {
+            stroke: $primaryWhite;
+          }
           &.selected {
             span {
-              color: #ffa800;
+              color: $primaryDarkBlue;
             }
           }
         }
         &.adv-src {
+          &:hover {
+            svg {
+              path {
+                fill: $primaryDarkBlue;
+              }
+              circle {
+                stroke: $primaryDarkBlue;
+              }
+            }
+          }
           svg {
             margin-bottom: 8px;
           }
@@ -109,34 +123,14 @@
             font-size: 14px;
           }
         }
-      }
-      .ant-btn:first-child {
-        svg {
-          transform: translateY(6px);
-          path {
-            transition: fill 0.15s ease-out;
-          }
-        }
-        span {
-          font-size: 10px;
-          max-width: 60px;
-          line-height: 14px;
-          white-space: normal;
-          text-align: center;
-          transition: color 0.15s ease-out;
-        }
         &:hover {
+          background-color: $primaryGrey;
           span {
-            color: $primaryGreen;
+            color: $primaryDarkBlue;
           }
           svg path {
-            fill: $primaryGreen;
+            stroke: $primaryDarkBlue;
           }
-        }
-      }
-      .ant-btn:last-child {
-        path {
-          stroke: #fff;
         }
       }
       .filter-status {
@@ -439,15 +433,15 @@
             svg {
               path {
                 transition: fill 0.15s ease-out;
-                fill: #06496c;
+                fill: $primaryDarkBlue;
               }
             }
 
             &:hover {
-              color: #06496c;
+              color: $primaryDarkBlue;
               border-color: #fff;
               & > div svg path {
-                fill: #06496c;
+                fill: $primaryDarkBlue;
               }
             }
           }
