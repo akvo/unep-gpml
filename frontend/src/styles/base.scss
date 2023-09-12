@@ -221,3 +221,27 @@ ul {
   }
 }
 /* end tooltip */
+
+/* tags */
+.ant-tag {
+  display: inline-flex;
+  padding: 8px;
+  align-items: center;
+  gap: 8px;
+  color: $primaryDarkBlue;
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: $fzXXS;
+  line-height: $lhXXS;
+  font-weight: 500;
+  text-transform: capitalize;
+  border-radius: 4px;
+  border: none;
+  background-color: $primaryGrey;
+  &:focus {
+    box-shadow: 0px 0px 0px 2px $primaryPurple;
+  }
+  &[disabled] {
+    color: $primaryDarkBlue3;
+  }
+}
+/* end tags */

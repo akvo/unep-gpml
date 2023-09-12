@@ -40,6 +40,9 @@
           width: 21px;
           height: 21px;
           margin-bottom: 11px;
+          path {
+            stroke: $primaryWhite;
+          }
         }
         span {
           font-weight: 400;
@@ -56,12 +59,8 @@
               stroke: $primaryDarkBlue;
             }
           }
-          &:hover {
-            svg {
-              path {
-                stroke: #fff;
-              }
-            }
+          span {
+            color: $primaryDarkBlue;
           }
         }
         &.ant-dropdown-open {
@@ -72,16 +71,6 @@
           svg {
             path {
               stroke: $primaryDarkBlue;
-            }
-          }
-        }
-        &.location-filter {
-          svg path {
-            stroke: $primaryWhite;
-          }
-          &.selected {
-            span {
-              color: $primaryDarkBlue;
             }
           }
         }
