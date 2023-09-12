@@ -156,10 +156,11 @@ function MyApp({ Component, pageProps }) {
                 emailVerified: authResult?.idTokenPayload?.email_verified,
               }
             })
+            console.log(authResult?.idTokenPayload, authResult)
             router.push(
               {
                 pathname: '/onboarding',
-                query: { data: authResult?.idTokenPayload },
+                query: { data: JSON.stringify(authResult?.idTokenPayload) },
               },
               '/onboarding'
             )
@@ -194,10 +195,11 @@ function MyApp({ Component, pageProps }) {
         let resp = await api.get('/profile')
         setLoadingProfile(false)
         if (resp.data && Object.keys(resp.data).length === 0) {
+          console.log(authResult, 'authResult')
           router.push(
             {
               pathname: '/onboarding',
-              query: { data: authResult?.idTokenPayload },
+              query: { data: JSON.stringify(authResult?.idTokenPayload) },
             },
             '/onboarding'
           )
