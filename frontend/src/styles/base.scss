@@ -4,6 +4,7 @@
 @import 'inputs.scss';
 @import 'swiper.scss';
 @import 'dialog.scss';
+@import 'tabs.scss';
 
 body {
   color: $primaryDarkBlue;
@@ -209,3 +210,14 @@ img {
 ul {
   list-style: none;
 }
+
+/* tooltip */
+.ant-tooltip {
+  .ant-tooltip-content {
+    .ant-tooltip-inner {
+      padding: 8px 16px;
+      border-radius: 4px;
+    }
+  }
+}
+/* end tooltip */
