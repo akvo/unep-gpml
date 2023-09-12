@@ -2,84 +2,9 @@
 
 .locationFilterDropdown {
   max-height: 300px;
-  background-color: $primaryWhite;
   width: 400px;
   padding: 20px;
-  background: $primaryWhite;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-  :global {
-    .ant-tabs {
-      background: rgba(255, 255, 255, 0.05);
-      box-shadow: 0px 0px 4px rgb(0 0 0 / 25%);
-      border-radius: 5px;
-      .ant-tabs-nav-list {
-        width: 100%;
-        .ant-tabs-tab {
-          flex: 0 0 50%;
-          margin-left: 0 !important;
-          border: none;
-          background: #d9e7f0;
-          padding: 10px 16px;
-          border-radius: 0px;
-          &:first-child {
-            border-radius: 5px 0px 0px 0px;
-          }
-          &:nth-child(2) {
-            border-radius: 0px 5px 0px 0px;
-          }
-          &.ant-tabs-tab-active {
-            background-color: $primaryWhite;
-          }
-          .ant-tabs-tab-btn {
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 14px;
-            color: #000000;
-          }
-        }
-      }
-      .ant-tabs-nav {
-        &::before {
-          border: none;
-        }
-        padding-bottom: 10px;
-        margin-bottom: 0px;
-      }
-      .ant-select {
-        width: 100%;
-      }
-      .ant-tabs-content-holder {
-        padding: 10px;
-      }
-      .ant-select-selector {
-        background: $primaryGrey !important;
-        border: 0 !important;
-        border-radius: 5px !important;
-        background-image: url('/search-icon.svg'), url('/chevron-down-grey.svg') !important;
-        background-repeat: no-repeat !important;
-        background-position: calc(15px) center, calc(100% - 10px) center !important;
-      }
-      .ant-select-selection-overflow {
-        padding-left: 35px;
-        padding-top: 4px;
-        padding-bottom: 4px;
-
-        .ant-select-selection-item {
-          background-color: #c3dbe7;
-          border-radius: 4px;
-        }
-      }
-      .ant-select-selection-placeholder {
-        font-weight: 700;
-        padding-left: 30px;
-        font-size: 16px;
-        color: $primaryDarkBlue4;
-
-        @media (max-width: 540px) {
-          font-size: 14px;
-        }
-      }
-    }
+  :global(.ant-tabs) {
+    margin-top: 4px;
   }
 }
