@@ -1,19 +1,13 @@
 #root,
 .ant-modal-root {
-  .ant-input,
+  .ant-input:not(textarea),
   .ant-input-affix-wrapper {
     height: 54px;
   }
   .ant-input,
   .ant-select-selection-search-input,
-  .ant-select:not(.ant-select-customize-input) .ant-select-selector,
+  .ant-select-selector,
   .ant-input-affix-wrapper {
-    border-radius: 8px;
-    color: $primaryDarkBlue;
-    background-color: $primaryGrey;
-    &::placeholder {
-      color: $primaryDarkBlue4;
-    }
     &:focus {
       box-shadow: 0px 0px 0px 2px $systemInfo3;
     }
@@ -30,26 +24,7 @@
   .ant-select-status-error.ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer)
     .ant-select-selector {
     border-width: 2px;
-    border-color: $systemError3 !important;
-  }
-  .ant-select {
-    border-radius: 8px;
-    &.ant-select-single {
-      .ant-select-selector {
-        height: 50px;
-      }
-      &.ant-select-show-arrow {
-        .ant-select-selection-item,
-        .ant-select-selection-placeholder {
-          display: flex;
-          align-items: center;
-          z-index: 1;
-        }
-        .ant-select-selection-item {
-          color: $primaryDarkBlue;
-        }
-      }
-    }
+    border-color: $systemError3;
   }
   .ant-input-status-error {
     &:not(.ant-checkbox-wrapper) {
@@ -75,28 +50,37 @@
   }
   .ant-form-item-label {
     padding-bottom: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     & > label {
       font-size: $fzXXS;
       font-weight: 500;
       line-height: $lhXXS;
       color: $primaryDarkBlue;
-    }
-    .feedback-wrapper {
-      height: 16px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      .feedback-text {
-        font-size: $fzXXS;
-        line-height: $lhXXS;
-        &.error {
-          color: $systemError3;
-        }
-        &.success {
-          color: $systemSuccess4;
+      width: 100%;
+      .hasFeedback {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .feedback-wrapper {
+          height: 16px;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          .feedback-text {
+            font-size: $fzXXS;
+            line-height: $lhXXS;
+            &.error {
+              color: $systemError3;
+            }
+            &.success {
+              color: $systemSuccess4;
+            }
+          }
+          .optional {
+            font-size: $fzXXS;
+            line-height: $fzXXS;
+            color: $primaryDarkBlue4;
+          }
         }
       }
     }
@@ -105,5 +89,93 @@
     &:focus {
       box-shadow: none;
     }
+  }
+  .ant-input,
+  .ant-input-number-input,
+  .ant-picker,
+  .ant-select,
+  .ant-select-selector,
+  .ant-input-affix-wrapper {
+    background-color: $primaryGrey;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: $fzXS;
+    line-height: $lhXS;
+    color: $primaryDarkBlue;
+    width: 100%;
+    &::placeholder {
+      color: $primaryDarkBlue4;
+    }
+  }
+  .ant-select {
+    border-radius: 8px;
+    .ant-select-selector {
+      min-height: 50px;
+      border: none;
+      border-radius: 8px;
+      background-color: $primaryGrey;
+      .ant-select-selection-overflow {
+        height: 100%;
+        .ant-select-selection-overflow-item {
+          height: 100%;
+          .ant-select-selection-search {
+            height: 100%;
+          }
+          .ant-select-selection-item {
+            height: 100%;
+            color: $primaryWhite;
+            background-color: $primaryDarkBlue;
+            border-radius: 4px;
+            padding: 8px;
+            margin: 4px 2px;
+            .ant-select-selection-item-remove {
+              color: rgba(255, 255, 255, 0.5);
+            }
+            svg {
+              path {
+                fill: $primaryWhite;
+              }
+            }
+          }
+        }
+      }
+      .ant-select-selection-item,
+      .ant-select-selection-placeholder {
+        font-weight: 500;
+        font-size: $fzXS;
+        line-height: $lhXS;
+        color: $primaryDarkBlue4;
+      }
+      .ant-select-selection-search-input {
+        height: 50px;
+      }
+    }
+    &.ant-select-show-arrow {
+      .ant-select-selection-item,
+      .ant-select-selection-placeholder {
+        display: flex;
+        align-items: center;
+        z-index: 1;
+      }
+    }
+  }
+  textarea {
+    height: 116px;
+    font-size: $fzXS;
+    line-height: $lhXS;
+    border-radius: 8px;
+    background-color: $primaryGrey;
+    padding: 16px;
+    &::placeholder {
+      color: $primaryDarkBlue4;
+    }
+  }
+  .ant-input-group-addon {
+    border: none;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    background-color: $primaryGrey;
+    color: $primaryDarkBlue;
   }
 }
