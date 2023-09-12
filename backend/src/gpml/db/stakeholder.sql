@@ -175,6 +175,8 @@ update stakeholder set
 --~ (when (contains? params :picture_id) "picture_id= :picture_id,")
 --~ (when (contains? params :cv_id) "cv_id= :cv_id, ")
 --~ (when (contains? params :review_status) "review_status= :review_status::review_status,")
+--~ (when (contains? params :chat_account_id) "chat_account_id= :chat_account_id,")
+--~ (when (contains? params :chat_account_status) "chat_account_status= :chat_account_status::USER_CHAT_ACCOUNT_STATUS,")
     modified = now()
 where id = :id;
 
