@@ -258,7 +258,7 @@ const SignUpForm = ({
     }
 
     const finalDataProfile = {
-      org: { ...data.org },
+      org: { id: data.affiliation },
     }
 
     if (status === 'add' && !params?.id) {
