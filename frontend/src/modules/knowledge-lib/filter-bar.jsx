@@ -6,7 +6,7 @@ import FilterIcon from "../../images/knowledge-library/filter-icon.svg";
 import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
 import LocationDropdown from "../../components/location-dropdown/location-dropdown";
 import api from "../../utils/api";
-import { LoadingOutlined, CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 
 export const resourceTypes = [
   {
@@ -175,9 +175,7 @@ const FilterBar = ({
               <div>
                 {/* <Icon name={`resource-types/${t.key}`} fill="#000" /> */}
                 <b>
-                  {totalCount.find((item) => t.title === item.topic)?.count || (
-                    <LoadingOutlined spin />
-                  )}
+                  {totalCount.find((item) => t.title === item.topic)?.count || 0}
                 </b>
               </div>
               <span>{t.label}</span>

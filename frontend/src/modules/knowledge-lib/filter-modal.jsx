@@ -156,21 +156,20 @@ const FilterModal = ({
       onCancel={() => setShowFilterModal(false)}
       footer={[
         <Button
+          type="link"
+          onClick={() => setShowFilterModal(false)}
+          size="small"
+        >
+          Cancel
+        </Button>,
+        <Button
           key="submit"
           className="apply-button"
           onClick={() => handleApplyFilter()}
           size="small"
         >
           APPLY FILTERS
-        </Button>,
-        <Button
-          className="clear-button"
-          onClick={() => setShowFilterModal(false)}
-          size="small"
-          ghost
-        >
-          Cancel
-        </Button>,
+        </Button>
       ]}
     >
       <Row type="flex" gutter={[0, 24]}>
