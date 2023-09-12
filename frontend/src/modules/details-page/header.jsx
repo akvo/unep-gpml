@@ -12,6 +12,7 @@ import {
 import { resourceTypeToTopicType, topicNames } from "../../utils/misc";
 import { languageOptions } from "../flexible-forms/view";
 import classNames from "classnames";
+import { BookmarkIcon, ShareIcon } from "../../components/icons";
 
 export const HeaderButtons = ({
   data,
@@ -56,11 +57,7 @@ export const HeaderButtons = ({
     <Col className="tool-buttons">
       {data?.url && (
         <Button
-          className="view-button "
-          icon={<EyeFilled />}
-          type="primary"
-          shape="round"
-          size="middle"
+          size="small"
           onClick={(e) => {
             e.preventDefault();
             eventTrack("Resource view", "View Url", "Button");
@@ -79,15 +76,13 @@ export const HeaderButtons = ({
           }}
         >
           View
+          <EyeFilled />
         </Button>
       )}
       {data?.recording && (
         <Button
           className="recording-button two-tone-button"
-          icon={<PlayCircleTwoTone twoToneColor="#09689a" />}
-          type="primary"
-          shape="round"
-          size="middle"
+          size="small"
           ghost
           onClick={() => {
             window.open(
@@ -99,6 +94,7 @@ export const HeaderButtons = ({
           }}
         >
           Recording
+          <PlayCircleTwoTone twoToneColor="#09689a" />
         </Button>
       )}
       {data?.url && (
@@ -150,11 +146,7 @@ export const HeaderButtons = ({
         >
           <div>
             <Button
-              className="share-button two-tone-button"
-              icon={<MailTwoTone twoToneColor="#09689a" />}
-              type="primary"
-              shape="round"
-              size="middle"
+              size="small"
               ghost
               onClick={() => {
                 navigator.clipboard.writeText(
@@ -169,18 +161,16 @@ export const HeaderButtons = ({
               }}
             >
               Share
+              <ShareIcon />
             </Button>
           </div>
         </Popover>
       )}
       <Button
-        className={classNames("bookmark-button two-tone-button", {
+        className={classNames("bookmark-button", {
           bookmarked,
         })}
-        icon={<HeartTwoTone />}
-        type="primary"
-        shape="round"
-        size="middle"
+        size="small"
         ghost
         onClick={() => {
           eventTrack("Resource view", "Bookmark", "Button");
@@ -188,13 +178,12 @@ export const HeaderButtons = ({
         }}
       >
         {bookmarked ? "Bookmarked" : "Bookmark"}
+        <BookmarkIcon />
       </Button>
       {canEdit() && (
         <Button
           className="edit-button two-tone-button"
-          type="primary"
-          shape="round"
-          size="middle"
+          size="small"
           ghost
           onClick={() => handleEditBtn(type)}
         >
@@ -204,9 +193,7 @@ export const HeaderButtons = ({
       {canDelete() && (
         <Button
           className="delete-button two-tone-button"
-          type="primary"
-          shape="round"
-          size="middle"
+          size="small"
           ghost
           onClick={handleDeleteBtn}
         >

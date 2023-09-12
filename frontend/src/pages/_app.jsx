@@ -21,6 +21,7 @@ function MyApp({ Component, pageProps }) {
     '/landing',
     '/onboarding',
     '/knowledge/library/[[...slug]]',
+    '/[type]/[id]'
   ]
   if (!newLayoutRoutes.includes(router.pathname)) {
     import('../main.scss')
