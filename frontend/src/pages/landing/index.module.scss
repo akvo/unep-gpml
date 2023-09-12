@@ -1296,6 +1296,9 @@
           gap: 20px;
           li {
             height: 32px;
+            a {
+              color: $primaryDarkBlue;
+            }
           }
         }
       }
