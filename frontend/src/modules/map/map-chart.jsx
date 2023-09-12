@@ -241,7 +241,7 @@ const MapChart = ({
             className="map-buttons"
             style={{ left: listVisible ? "10px" : "330px" }}
           >
-            <Tooltip placement="left" title="zoom out">
+            <Tooltip placement="left" title="zoom out" color="#020a5b">
               <Button
                 type="text"
                 icon={<ZoomOutOutlined />}
@@ -255,7 +255,7 @@ const MapChart = ({
                 disabled={position.zoom <= mapMinZoom}
               />
             </Tooltip>
-            <Tooltip placement="left" title="zoom in">
+            <Tooltip placement="left" title="zoom in" color="#020a5b">
               <Button
                 disabled={position.zoom >= mapMaxZoom}
                 type="text"
@@ -268,7 +268,7 @@ const MapChart = ({
                 }}
               />
             </Tooltip>
-            <Tooltip placement="left" title="reset zoom">
+            <Tooltip placement="left" title="reset zoom" color="#020a5b">
               <Button
                 type="text"
                 icon={<FullscreenOutlined />}
@@ -316,7 +316,7 @@ const MapChart = ({
                 )}
               </>
             )}
-            <Tooltip placement="bottom" title={isShownLegend ? "Hide" : "Show"}>
+            <Tooltip placement="bottom" title={isShownLegend ? "Hide" : "Show"} color="#020a5b">
               <Button
                 className="legend-button"
                 onClick={() => setIsShownLegend(!isShownLegend)}
