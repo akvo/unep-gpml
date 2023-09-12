@@ -257,9 +257,13 @@ const SignUpForm = ({
       id: data.affiliation,
     }
 
+    const finalDataProfile = {
+      org: { ...data.org },
+    }
+
     if (status === 'add' && !params?.id) {
       api
-        .put('/profile', data)
+        .put('/profile', finalDataProfile)
         .then((res) => {
           api.put(
             `/organisation/${data.affiliation}/request-membership`,
