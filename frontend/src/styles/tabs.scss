@@ -1,7 +1,7 @@
 #root,
 .ant-dropdown,
 .ant-modal-root {
-  .ant-tabs {
+  .ant-tabs:not(.ant-tabs-left) {
     background-color: $primaryGrey;
     box-shadow: 0px 0px 4px rgb(0 0 0 / 25%);
     border-radius: 4px;
