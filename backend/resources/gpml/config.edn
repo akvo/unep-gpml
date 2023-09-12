@@ -558,21 +558,29 @@
                                            {:get {:summary "Get the list of curated channels"
                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
                                                                #ig/ref :gpml.auth/auth-required]
-                                                  :swagger {:tags ["chat"]}
+                                                  :swagger {:tags ["chat" "curated-channel"]}
                                                   :handler #ig/ref :gpml.handler.chat-curated-channel/get}
                                             :post {:summary "Add a channel to the curated list"
                                                    :middleware [#ig/ref :gpml.auth/auth-middleware
                                                                 #ig/ref :gpml.auth/auth-required]
-                                                   :swagger {:tags ["chat"]}
+                                                   :swagger {:tags ["chat" "curated-channel"]}
                                                    :handler #ig/ref :gpml.handler.chat-curated-channel/post
                                                    :parameters #ig/ref :gpml.handler.chat-curated-channel/post-params}}]
                                           ["/:id"
                                            {:delete {:summary "Delete a channel from the curated list"
                                                      :middleware [#ig/ref :gpml.auth/auth-middleware
                                                                   #ig/ref :gpml.auth/auth-required]
-                                                     :swagger {:tags ["chat"]}
+                                                     :swagger {:tags ["chat" "curated-channel"]}
                                                      :handler #ig/ref :gpml.handler.chat-curated-channel/delete
-                                                     :parameters #ig/ref :gpml.handler.chat-curated-channel/delete-params}}]]]]]
+                                                     :parameters #ig/ref :gpml.handler.chat-curated-channel/delete-params}}]]
+                                         ["/account"
+                                          [""
+                                           {:post {:summary "Create a chat user account"
+                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                #ig/ref :gpml.auth/auth-required]
+                                                   :swagger {:tags ["chat"]}
+                                                   :handler #ig/ref :gpml.handler.chat/post
+                                                   :parameters #ig/ref :gpml.handler.chat/post-params}}]]]]]
                               :logger #ig/ref :duct.logger/timbre
                               :cors-allowed-origins #ig/ref :gpml.handler.main/cors-allowed-origins}
 
@@ -601,6 +609,7 @@
    :scheduler #ig/ref :gpml/scheduler
    :storage-client-adapter #ig/ref :clj-gcp.storage/client
    :brs-ds-adapter #ig/ref :gpml.boundary.adapter.datasource/brs
+   :chat-adapter #ig/ref :gpml.boundary.adapter.chat/rocket-chat
    :auth0 #ig/ref :gpml.config/auth0
    :mailjet-config #ig/ref :gpml.config/mailjet
    :app-name #duct/env ["APP_NAME" Str]
@@ -825,6 +834,9 @@
   :gpml.handler.chat-curated-channel/delete #ig/ref :gpml.config/common
   :gpml.handler.chat-curated-channel/post-params {}
   :gpml.handler.chat-curated-channel/delete-params {}
+
+  :gpml.handler.chat/post #ig/ref :gpml.config/common
+  :gpml.handler.chat/post-params {}
 
   :clj-gcp.storage/client {}
 
