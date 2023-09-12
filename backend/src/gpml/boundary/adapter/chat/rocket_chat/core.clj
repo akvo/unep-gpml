@@ -94,6 +94,32 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
+(defn- delete-user-account*
+  [{:keys [logger api-url api-key api-user-id]} user-id opts]
+  (try
+    (let [req-body (cond-> {:user-id user-id}
+                     (contains? opts :confirm-relinquish)
+                     (assoc :confirm-relinquish (:confirm-relinquish opts)))
+          {:keys [status body]}
+          (http-client/do-request logger
+                                  {:url (str api-url "/users.delete")
+                                   :method :post
+                                   :body (json/->json (cske/transform-keys ->camelCaseString req-body))
+                                   :content-type :json
+                                   :headers (get-auth-headers api-key api-user-id)
+                                   :as :json-keyword-keys})]
+      (if (<= 200 status 299)
+        {:success? true}
+        {:success? false
+         :reason :failed-to-delete-user-account
+         :error-details body}))
+    (catch Throwable t
+      (log logger :error :failed-to-delete-user-account {:exception-message (ex-message t)
+                                                         :stack-trace (map str (.getStackTrace t))})
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
+
 (defn- set-user-account-active-status*
   "Actives or deactives user account. When `active?` is `false` and
   setting the `opts` `:confirm-relinquish` to `true`, allows user to
@@ -177,6 +203,10 @@
   port/Chat
   (create-user-account [this user]
     (create-user-account* this user))
+  (delete-user-account [this user-id]
+    (delete-user-account* this user-id {}))
+  (delete-user-account [this user-id opts]
+    (delete-user-account* this user-id opts))
   (set-user-account-active-status [this user-id active?]
     (set-user-account-active-status* this user-id active? {}))
   (set-user-account-active-status [this user-id active? opts]

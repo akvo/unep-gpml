@@ -2,6 +2,9 @@
 
 (defprotocol Chat
   (create-user-account [this user])
+  (delete-user-account
+    [this user-id]
+    [this user-id opts])
   (get-public-channels [this opts])
   (get-private-channels [this opts])
   (set-user-account-active-status
