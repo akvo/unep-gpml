@@ -21,11 +21,15 @@
         border-bottom: 4px solid $primaryPurple3;
         &.ant-tabs-tab-active {
           border-bottom: 4px solid $primaryPurple7;
+          .ant-tabs-tab-btn {
+            color: $primaryDarkBlue;
+          }
         }
         .ant-tabs-tab-btn {
           font-size: $fzXXS;
           line-height: $fzXXS;
           font-weight: 500;
+          color: $primaryDarkBlue;
         }
       }
     }
@@ -39,6 +43,11 @@
             background-color: $primaryWhite;
           }
         }
+      }
+    }
+    & > .ant-tabs-nav {
+      .ant-tabs-nav-list {
+        width: 100%;
       }
     }
   }
