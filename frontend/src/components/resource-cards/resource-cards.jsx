@@ -67,6 +67,8 @@ const ResourceCards = ({
       slidesPerView={"auto"}
       pagination={{
         clickable: true,
+        renderBullet: (index, className) =>
+          `<div class="${className}" key="${index}"><span/></div>`,
       }}
       navigation={true}
       modules={[SwiperPagination, Navigation]}
