@@ -23,7 +23,7 @@ const menuVariants = {
 const contentVariants = {
   enter: {
     x: '100%',
-    opacity: 1,
+    opacity: 0,
   },
   center: {
     x: 0,
@@ -55,23 +55,6 @@ const socialLinksVariants = {
   closed: {
     opacity: 0,
     y: 50,
-  },
-}
-
-const menuItemVariants = {
-  open: {
-    height: 'auto',
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-    },
-  },
-  closed: {
-    height: 0,
-    opacity: 0,
-    transition: {
-      duration: 0.3,
-    },
   },
 }
 

@@ -38,10 +38,19 @@ const menuItemVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      delay: 0.5 + i * 0.1,
+      delay: 0.2 + i * 0.1,
+      duration: 0.6,
+      ease: [0.42, 0, 0.58, 1],
     },
   }),
-  closed: { opacity: 0, y: 50 },
+  closed: {
+    opacity: 0,
+    y: 50,
+    transition: {
+      duration: 0.5,
+      ease: 'anticipate',
+    },
+  },
 }
 
 export const menuList = [
@@ -242,12 +251,21 @@ const ToolsMenu = () => {
           .find((item) => item.key === 'Tools')
           ?.children.map((menu) => (
             <Col span={8} key={menu.key}>
-              <p className="p-m">{menu.key}</p>
+              <motion.p
+                className="p-m"
+                custom={0}
+                variants={menuItemVariants}
+                initial="closed"
+                animate="open"
+                exit="closed"
+              >
+                {menu.key}
+              </motion.p>
               <ul>
                 {menu?.children.map((child, i) => (
                   <motion.li
                     key={child.title}
-                    custom={i}
+                    custom={i + 1}
                     variants={menuItemVariants}
                     initial="closed"
                     animate="open"
@@ -340,26 +358,25 @@ const sidebar = {
   open: (height = 1000) => ({
     clipPath: `circle(${height * 2 + 200}px at 100% 0%)`,
     transition: {
-      type: 'spring',
-      stiffness: 20,
-      restDelta: 2,
+      type: 'tween',
+      duration: 0.5,
+      ease: 'easeInOut',
     },
   }),
   closed: {
     clipPath: 'circle(0px at 100% 0px)',
     transition: {
-      delay: 0.1,
-      type: 'spring',
-      stiffness: 400,
-      damping: 40,
+      type: 'tween',
+      duration: 0.5,
+      ease: 'easeInOut',
     },
   },
   exit: {
     clipPath: 'circle(0px at 100% 0px)',
     transition: {
-      type: 'spring',
-      stiffness: 300,
-      damping: 30,
+      type: 'tween',
+      duration: 0.5,
+      ease: 'easeInOut',
     },
   },
 }
@@ -386,7 +403,12 @@ const NewLayout = ({
         }
       `}</style>
       <div className="">
-        <div className="top-bar">
+        <div
+          className="top-bar"
+          style={{
+            zIndex: isOpen ? 9 : 99,
+          }}
+        >
           <div className="container">
             <div className="logo-container">
               <Image
@@ -412,6 +434,9 @@ const NewLayout = ({
                       setHoveredItemKey(item.label)
                       setShowMenu(true)
                     }}
+                    className={`${
+                      hoveredItemKey === item.label ? 'selected' : ''
+                    }`}
                   >
                     <Link href={'/'} legacyBehavior>
                       <a>
@@ -439,25 +464,27 @@ const NewLayout = ({
         </div>
         <div className="navigation">
           <AnimatePresence>
-            {isOpen && (
+            <motion.div
+              initial="closed"
+              animate={isOpen ? 'open' : 'closed'}
+              exit="exit"
+              className="animation-container"
+            >
               <motion.div
-                initial="closed"
-                animate={isOpen ? 'open' : 'closed'}
-                exit="exit"
-                className="animation-container"
-              >
-                <motion.div
-                  className="mobile-menu-background"
-                  variants={sidebar}
-                />
-                <Navigation isOpen={isOpen} toggleOpen={toggleOpen} />
-              </motion.div>
-            )}
+                className="mobile-menu-background"
+                variants={sidebar}
+              />
+              <Navigation isOpen={isOpen} toggleOpen={toggleOpen} />
+            </motion.div>
           </AnimatePresence>
+
           <FullscreenNav
             isOpen={showMenu}
             contentKey={hoveredItemKey}
-            toggle={() => setShowMenu(!showMenu)}
+            toggle={() => {
+              setShowMenu(!showMenu)
+              setHoveredItemKey(null)
+            }}
           />
         </div>
         {children}

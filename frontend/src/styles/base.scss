@@ -177,6 +177,15 @@ h6,
     li {
       line-height: normal;
       height: fit-content;
+
+      &.selected {
+        a {
+          &::after {
+            width: 100%;
+          }
+        }
+      }
+
       a {
         font-family: var(--font-archia), sans-serif;
         font-size: 18px;
@@ -189,11 +198,6 @@ h6,
           padding-left: 12px;
         }
 
-        &:hover {
-          &::after {
-            width: 100%;
-          }
-        }
         &::after {
           content: '';
           display: block;
@@ -268,7 +272,8 @@ h6,
   left: 0;
   bottom: 0;
   width: 100%;
-  z-index: 99;
+  z-index: 9;
+  overflow: hidden;
   .slide-menu {
     overflow-y: scroll;
     height: 100%;
