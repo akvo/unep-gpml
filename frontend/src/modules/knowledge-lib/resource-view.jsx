@@ -8,14 +8,15 @@ import FilterModal from "./filter-modal";
 import ResourceCards, {
   ResourceCard,
 } from "../../components/resource-cards/resource-cards";
-import { LoadingOutlined, DownOutlined } from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons";
 import SortIcon from "../../images/knowledge-library/sort-icon.svg";
 import SearchIcon from "../../images/search-icon.svg";
-import { Button } from "antd";
+// import { Button } from "antd";
 import Maps from "../map/map";
 import { isEmpty } from "lodash";
 import { useQuery, topicNames } from "../../utils/misc";
-import TopicView from "./topic-view";
+import { ChevronDown } from "../../components/icons";
+import Button from "../../components/button";
 
 const resourceTopic = [
   "action_plan",
@@ -238,17 +239,20 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         }}
       />
       <div className="list-content">
-        <div className="list-toolbar">
+        <div className="list-toolbar container">
           <div className="quick-search">
             <div className="count">
-              {view === "grid"
-                ? `Showing ${gridItems?.length} of ${totalItems}`
-                : view === "category"
-                ? `${catData?.reduce(
-                    (count, current) => count + current?.count,
-                    0
-                  )}`
-                : `Showing ${!loading ? data?.results?.length : ""}`}
+              <small>SHOWING:</small>
+              <b>
+                {view === "grid"
+                  ? `${gridItems?.length} of ${totalItems}`
+                  : view === "category"
+                  ? `${catData?.reduce(
+                      (count, current) => count + current?.count,
+                      0
+                    )}`
+                  : `${!loading ? data?.results?.length : "..."}`}
+              </b>
             </div>
             <div className="search-icon">
               <SearchIcon />
@@ -272,12 +276,12 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             />
             <div className="sort-button-text">
               <span>Sort by:</span>
-              <b>{!isAscending ? `A>Z` : "Z>A"}</b>
+              <b>{!isAscending ? `A > Z` : "Z > A"}</b>
             </div>
           </button>
         </div>
         {(view === "map" || !view || view === "topic") && (
-          <div style={{ position: "relative" }}>
+          <div style={{ position: "relative" }} className="container">
             <ResourceCards
               items={data?.results}
               showMoreCardAfter={20}
@@ -323,18 +327,20 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           />
         )}
         {view === "grid" && (
-          <GridView
-            {...{
-              gridItems,
-              totalItems,
-              limit,
-              loading,
-              setPageNumber,
-              pageNumber,
-              updateQuery,
-              showModal,
-            }}
-          />
+          <div className="container">
+            <GridView
+              {...{
+                gridItems,
+                totalItems,
+                limit,
+                loading,
+                setPageNumber,
+                pageNumber,
+                updateQuery,
+                showModal,
+              }}
+            />
+          </div>
         )}
 
         {view === "category" && (
@@ -344,50 +350,52 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
                 <LoadingOutlined spin />
               </div>
             )}
-            {catData.map((d) => (
-              <Fragment key={d.categories}>
-                {d?.count > 0 && (
-                  <>
-                    <div className="header-wrapper">
-                      <div className="title-wrapper">
-                        <h4 className="cat-title">
-                          {topicNames(d.categories)}
-                        </h4>
-                        <div className="quick-search">
-                          <div className="count">{d?.count}</div>
-                          <div className="search-icon">
-                            <SearchIcon />
+            <div className="container">
+              {catData.map((d) => (
+                <Fragment key={d.categories}>
+                  {d?.count > 0 && (
+                    <>
+                      <div className="header-wrapper">
+                        <div className="title-wrapper">
+                          <h4 className="cat-title">
+                            {topicNames(d.categories)}
+                          </h4>
+                          <div className="quick-search">
+                            <div className="count">{d?.count}</div>
+                            <div className="search-icon">
+                              <SearchIcon />
+                            </div>
                           </div>
                         </div>
+                        <Button
+                          type="link"
+                          onClick={() => {
+                            handleCategoryFilter(d.categories);
+                          }}
+                          withArrow="link"
+                        >
+                          See all
+                        </Button>
                       </div>
-                      <Button
-                        type="link"
-                        block
-                        onClick={() => {
+                      <ResourceCards
+                        items={d?.data}
+                        showMoreCardAfter={20}
+                        showMoreCardClick={() => {
                           handleCategoryFilter(d.categories);
                         }}
-                      >
-                        See all {`>`}
-                      </Button>
-                    </div>
-                    <ResourceCards
-                      items={d?.data}
-                      showMoreCardAfter={20}
-                      showMoreCardClick={() => {
-                        handleCategoryFilter(d.categories);
-                      }}
-                      showModal={(e) =>
-                        showModal({
-                          e,
-                          type: e.currentTarget.type,
-                          id: e.currentTarget.id,
-                        })
-                      }
-                    />
-                  </>
-                )}
-              </Fragment>
-            ))}
+                        showModal={(e) =>
+                          showModal({
+                            e,
+                            type: e.currentTarget.type,
+                            id: e.currentTarget.id,
+                          })
+                        }
+                      />
+                    </>
+                  )}
+                </Fragment>
+              ))}
+            </div>
           </div>
         )}
       </div>
@@ -465,9 +473,10 @@ const ViewSwitch = ({ type, view, history, queryParams }) => {
         onClick={() => {
           setVisible(!visible);
         }}
+        size="small"
       >
-        <DownOutlined />
-        {view} view
+        <span>{view} view</span>
+        <ChevronDown />
       </div>
       <CSSTransition
         in={visible}

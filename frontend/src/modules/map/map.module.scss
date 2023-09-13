@@ -272,6 +272,8 @@
         height: 32px;
         margin-right: 0;
         margin-left: 0;
+        border: 1px solid #d9d9d9;
+        background: #fff;
         &:hover {
           background-color: $yellow-highlight;
           color: rgba(0, 0, 0, 0.85);
@@ -371,6 +373,10 @@
             padding: 24px !important;
           }
         }
+        .ant-btn.ant-btn-text {
+          border: 1px solid #d9d9d9;
+          background: #fff;
+        }
       }
     }
   }
@@ -408,7 +414,7 @@
     .no-legend-warning {
       font-weight: 700;
       height: 32px;
-      padding: 0 4px 0 4px;
+      padding: 0 16px;
     }
   }
   :global {

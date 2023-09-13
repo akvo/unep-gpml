@@ -1,6 +1,6 @@
 #root,
 .ant-modal-root {
-  .ant-btn {
+  .ant-btn:not(.ant-btn-text) {
     font-family: var(--font-archia), sans-serif !important;
     font-weight: 700;
     font-size: 16px;
@@ -205,6 +205,11 @@
           stroke: #ccd0db;
         }
       }
+    }
+  }
+  .ant-modal-footer {
+    .ant-btn.ant-btn-background-ghost {
+      border-color: transparent;
     }
   }
 }

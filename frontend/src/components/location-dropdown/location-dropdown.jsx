@@ -1,6 +1,7 @@
 import React from "react";
 import GlobeIcon from "../../images/transnational.svg";
 import { Button, Dropdown, Menu } from "antd";
+import styles from './style.module.scss';
 
 function LocationDropdown({
   countryList,
@@ -15,7 +16,7 @@ function LocationDropdown({
           ? "selected"
           : ""
       }`}
-      overlayClassName="location-filter-dropdown"
+      overlayClassName={styles.locationFilterDropdown}
       overlay={countryList}
       placement="bottomLeft"
       trigger={["click"]}
@@ -24,8 +25,7 @@ function LocationDropdown({
         setDropdownVisible(visible);
       }}
     >
-      <Button>
-        <GlobeIcon />
+      <Button size="small" ghost>
         <span>
           {(query?.country?.length > 0 || query?.transnational?.length > 0) &&
             (query?.transnational?.length ||
@@ -33,6 +33,7 @@ function LocationDropdown({
               0)}{" "}
           Location
         </span>
+        <GlobeIcon />
       </Button>
     </Dropdown>
   );
