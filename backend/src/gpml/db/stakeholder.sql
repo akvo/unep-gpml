@@ -63,7 +63,9 @@ select
     s.reviewed_by,
     s.review_status,
     s.picture_id,
-    s.cv_id
+    s.cv_id,
+    s.chat_account_id,
+    s.chat_account_status
 from stakeholder s
 where s.id = :id;
 
