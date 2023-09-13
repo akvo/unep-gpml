@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, notification } from 'react'
 import styles from './styles.module.scss'
-import { Button, Typography, Steps } from 'antd'
 import { Form } from 'react-final-form'
 import AffiliationOption from './affiliation-option'
 import FormOne from './form-one'
@@ -8,11 +7,12 @@ import FormTwo from './form-two'
 import FormThree from './form-three'
 import FormFour from './form-four'
 import { UIStore } from '../../store'
-import { useLocation } from 'react-router-dom'
 import api from '../../utils/api'
 import { setIn } from 'final-form'
 import { useRouter } from 'next/router'
 import { useDeviceSize } from '../landing/landing'
+import Button from '../../components/button'
+import { ArrowLeftOutlined } from '@ant-design/icons'
 
 function Authentication() {
   const formRef = useRef()
@@ -21,7 +21,6 @@ function Authentication() {
   const query = router.query.data ? JSON.parse(router.query.data) : {}
   const [affiliation, setAffiliation] = useState('')
   const [currentStep, setCurrentStep] = useState(0)
-  const [initialValues, setInitialValues] = useState({})
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
   const [width, height] = useDeviceSize()
@@ -217,7 +216,6 @@ function Authentication() {
   return (
     <div className={styles.onboarding}>
       <Form
-        initialValues={initialValues}
         validate={(values) => {
           let errors = {}
           const setError = (key, value) => {
@@ -283,8 +281,12 @@ function Authentication() {
                     />
                   </div>
                   <div className="button-bottom-panel">
-                    <Button className="step-button-next" onClick={() => next()}>
-                      Next {'>'}
+                    <Button
+                      size="small"
+                      onClick={() => next()}
+                      withArrow="link"
+                    >
+                      Next
                     </Button>
                   </div>
                 </div>
@@ -313,6 +315,7 @@ function Authentication() {
                     handleSeekingSuggestedTag={handleSeekingSuggestedTag}
                     validate={currentStep === 4 ? required : null}
                     error={error}
+                    handleRemove={handleRemove}
                   />
                 </div>
                 <div className="slide last">
@@ -328,16 +331,23 @@ function Authentication() {
                   height={height}
                 />
                 {currentStep > 0 && (
-                  <Button className="step-button-back" onClick={previous}>
-                    {'<'} Back
+                  <Button
+                    className="step-button-back"
+                    onClick={previous}
+                    size="small"
+                    icon={<ArrowLeftOutlined />}
+                  >
+                    Back
                   </Button>
                 )}
                 {currentStep < 5 && currentStep > 1 && (
                   <Button
                     className="step-button-next abs"
                     onClick={() => next()}
+                    withArrow="link"
+                    size="small"
                   >
-                    Next {'>'}
+                    Next
                   </Button>
                 )}
                 {currentStep === 5 && (
@@ -345,8 +355,9 @@ function Authentication() {
                     className="step-button-next abs"
                     onClick={handleSubmit}
                     loading={loading}
+                    size="small"
                   >
-                    Submit {'>'}
+                    Submit
                   </Button>
                 )}
               </div>
