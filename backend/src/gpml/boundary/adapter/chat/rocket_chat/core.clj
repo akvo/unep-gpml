@@ -42,7 +42,7 @@
 
 (defn- get-user-info*
   "Gets the RocketChat user information. User joined rooms can also be
-  included in the response if `:userRooms` is set to `1` in the
+  included in the response if `:user-rooms` is set to `1` in the
   `:fields` map in `opts`."
   [{:keys [logger api-url api-key api-user-id]} user-id opts]
   (try
