@@ -17,7 +17,8 @@ import { withNewLayout } from '../layouts/new-layout'
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
-  if (router.pathname !== '/landing') {
+  const newLayoutRoutes = ['/landing', '/onboarding']
+  if (!newLayoutRoutes.includes(router.pathname)) {
     import('../main.scss')
     // import('../buttons.scss')
   } else {
@@ -238,7 +239,7 @@ function MyApp({ Component, pageProps }) {
           typeof window !== 'undefined' ? window.location.origin : ''
         }
       >
-        {router.pathname !== '/landing' && (
+        {!newLayoutRoutes.includes(router.pathname) && (
           <Layout
             {...pageProps}
             {...{
@@ -251,7 +252,7 @@ function MyApp({ Component, pageProps }) {
             }}
           />
         )}
-        {router.pathname === '/landing' && (
+        {newLayoutRoutes.includes(router.pathname) && (
           <NewLayout
             {...pageProps}
             {...{

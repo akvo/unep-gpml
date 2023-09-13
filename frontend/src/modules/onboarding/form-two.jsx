@@ -3,6 +3,8 @@ import { UIStore } from "../../store";
 import { Typography, Select } from "antd";
 import { Field } from "react-final-form";
 import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
+import FormItem from "../../components/form-label";
+
 const { Title } = Typography;
 
 function FormTwo({
@@ -32,8 +34,11 @@ function FormTwo({
       <div className="ant-form ant-form-vertical">
         <Field name="offering" style={{ width: "100%" }}>
           {({ input, meta }) => {
+            const hasError = error && !meta.valid
+            const validVal = input?.value && meta.valid ? 'success' : null
+            const validateStatus = hasError ? 'error' : validVal
             return (
-              <>
+              <FormItem for="offering" validateStatus={validateStatus}>
                 <CatTagSelect
                   handleChange={handleOfferingSuggestedTag}
                   meta={meta}
@@ -41,7 +46,7 @@ function FormTwo({
                   value={input.value ? input.value : undefined}
                   handleRemove={handleRemove}
                 />
-              </>
+              </FormItem>
             );
           }}
         </Field>
@@ -64,11 +69,16 @@ function FormTwo({
                 );
               }
             };
+            const hasError = error && !meta.valid
+            const validVal = input?.value && meta.valid ? 'success' : null
+            const validateStatus = hasError ? 'error' : validVal
             return (
-              <>
-                <div style={{ marginTop: 20, color: "#A5B0C9" }}>
-                  Can't see what you're looking for?
-                </div>
+              <FormItem
+                for="offeringSuggested"
+                className="label-text"
+                label="Can't see what you're looking for?"
+                validateStatus={validateStatus}
+              >
                 <Select
                   placeholder="Suggest categories"
                   allowClear
@@ -79,7 +89,7 @@ function FormTwo({
                   onSearch={handleSearch}
                   value={input.value ? input.value : undefined}
                   className={`dont-show ${
-                    error && !meta.valid ? "ant-input-status-error" : ""
+                    hasError ? "ant-input-status-error" : ""
                   }`}
                 >
                   {filteredOptions?.map((item) => (
@@ -88,7 +98,7 @@ function FormTwo({
                     </Select.Option>
                   ))}
                 </Select>
-              </>
+              </FormItem>
             );
           }}
         </Field>
