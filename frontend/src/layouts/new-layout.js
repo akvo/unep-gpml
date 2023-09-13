@@ -1,12 +1,161 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { isEmpty } from 'lodash'
-import { Button } from 'antd'
+import { Button, Col, Row } from 'antd'
 import localFont from 'next/font/local'
 import { DM_Sans } from 'next/font/google'
 import Image from 'next/image'
 import Footer from '../footer'
 import Login from '../modules/login/view'
+import { DownArrow, CloseIcon, MenuIcon } from '../components/icons'
+import Link from 'next/link'
+import { motion, AnimatePresence, useCycle } from 'framer-motion'
+import { useDeviceSize } from '../modules/landing/landing'
+import { MenuToggle } from './MenuToggle'
+import { Navigation } from './Navigation'
+import { UIStore } from '../store'
+
+const navVariants = {
+  open: { scale: 1, opacity: 1 },
+  closed: { scale: 0.95, opacity: 0 },
+}
+
+const menuItemVariants = {
+  open: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.2 + i * 0.1,
+      duration: 0.6,
+      ease: [0.42, 0, 0.58, 1],
+    },
+  }),
+  closed: {
+    opacity: 0,
+    y: 50,
+    transition: {
+      duration: 0.5,
+      ease: 'anticipate',
+    },
+  },
+}
+
+export const Item = ({
+  title,
+  subtitle,
+  icon,
+  iconClass,
+  to,
+  href,
+  setShowMenu,
+}) => {
+  const contents = (
+    <>
+      <div className={['icon', iconClass].filter((it) => it != null).join(' ')}>
+        {icon}
+      </div>
+      <div className="content">
+        <b className="p-s">{title}</b>
+        <span>{subtitle}</span>
+      </div>
+    </>
+  )
+
+  if (to != null) {
+    return (
+      <Link href={to} legacyBehavior>
+        <a>{contents}</a>
+      </Link>
+    )
+  } else if (href != null) {
+    return <a href={href}>{contents}</a>
+  }
+
+  return (
+    <>
+      <div className="icon">{icon}</div>
+      <div className="content">
+        <b className="p-s">{title}</b>
+        <span>{subtitle}</span>
+      </div>
+    </>
+  )
+}
+
+const ToolsMenu = () => {
+  const { menuList } = UIStore.useState((s) => ({
+    menuList: s.menuList,
+  }))
+  return (
+    <div className="container sub-menu">
+      <Row gutter={[168, 168]}>
+        {menuList
+          .find((item) => item.key === 'Tools')
+          ?.children.map((menu) => (
+            <Col span={8} key={menu.key}>
+              <motion.p
+                className="p-m"
+                custom={0}
+                variants={menuItemVariants}
+                initial="closed"
+                animate="open"
+                exit="closed"
+              >
+                {menu.key}
+              </motion.p>
+              <ul>
+                {menu?.children.map((child, i) => (
+                  <motion.li
+                    key={child.title}
+                    custom={i + 1}
+                    variants={menuItemVariants}
+                    initial="closed"
+                    animate="open"
+                    exit="closed"
+                    className="sub-menu-item"
+                  >
+                    <Item {...child} />
+                  </motion.li>
+                ))}
+              </ul>
+            </Col>
+          ))}
+      </Row>
+    </div>
+  )
+}
+
+const FullscreenNav = ({ isOpen, toggle, contentKey }) => {
+  let ContentComponent
+
+  switch (contentKey) {
+    case 'Tools':
+      ContentComponent = ToolsMenu
+      break
+    default:
+      ContentComponent = () => <div>Select a menu item...</div>
+  }
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial="closed"
+          animate="open"
+          exit="closed"
+          variants={navVariants}
+          transition={{ duration: 0.5 }}
+          className="fullscreen-nav"
+        >
+          <button onClick={toggle}>
+            <CloseIcon />
+          </button>
+          <ContentComponent />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+}
 
 const archia = localFont({
   src: [
@@ -42,6 +191,38 @@ const dmSans = DM_Sans({
   weight: ['400', '500', '700'],
 })
 
+const menuItems = ['Plastic', 'Tools', 'Countries', 'About'].map((key) => ({
+  key,
+  label: key,
+}))
+
+const sidebar = {
+  open: (height = 1000) => ({
+    clipPath: `circle(${height * 2 + 200}px at 100% 0%)`,
+    transition: {
+      type: 'tween',
+      duration: 0.5,
+      ease: 'easeInOut',
+    },
+  }),
+  closed: {
+    clipPath: 'circle(0px at 100% 0px)',
+    transition: {
+      type: 'tween',
+      duration: 0.5,
+      ease: 'easeInOut',
+    },
+  },
+  exit: {
+    clipPath: 'circle(0px at 100% 0px)',
+    transition: {
+      type: 'tween',
+      duration: 0.5,
+      ease: 'easeInOut',
+    },
+  },
+}
+
 const NewLayout = ({
   children,
   isIndexPage,
@@ -50,7 +231,11 @@ const NewLayout = ({
   profile,
 }) => {
   const [loginVisible, setLoginVisible] = useState(false)
+  const [hoveredItemKey, setHoveredItemKey] = useState(null)
   const [showMenu, setShowMenu] = useState(false)
+  const [width] = useDeviceSize()
+  const [isOpen, toggleOpen] = useCycle(false, true)
+
   return (
     <>
       <style jsx global>{`
@@ -59,8 +244,13 @@ const NewLayout = ({
           --font-archia: ${archia.style.fontFamily};
         }
       `}</style>
-      <div>
-        <div className="top-bar">
+      <div className="">
+        <div
+          className="top-bar"
+          style={{
+            zIndex: isOpen ? 9 : 99,
+          }}
+        >
           <div className="container">
             <div className="logo-container">
               <Image
@@ -71,12 +261,73 @@ const NewLayout = ({
                 height={74}
               />
             </div>
+            {width >= 768 && (
+              <ul
+                className="ant-menu"
+                // onMouseLeave={() => {
+                //   setHoveredItemKey(null)
+                //   setShowMenu(false)
+                // }}
+              >
+                {menuItems.map((item) => (
+                  <li
+                    key={item.key}
+                    onMouseEnter={() => {
+                      setHoveredItemKey(item.label)
+                      setShowMenu(true)
+                    }}
+                    className={`${
+                      hoveredItemKey === item.label ? 'selected' : ''
+                    }`}
+                  >
+                    <Link href={'/'} legacyBehavior>
+                      <a>
+                        {item.label}
+                        <span>
+                          <DownArrow />
+                        </span>
+                      </a>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
             <nav>
               <Button type="primary" size="small" className="noicon">
                 Join Now
               </Button>
+              {width <= 768 && (
+                <div className="toggle-button">
+                  <MenuToggle toggle={() => toggleOpen()} isOpen={isOpen} />
+                </div>
+              )}
             </nav>
           </div>
+        </div>
+        <div className="navigation">
+          <AnimatePresence>
+            <motion.div
+              initial="closed"
+              animate={isOpen ? 'open' : 'closed'}
+              exit="exit"
+              className="animation-container"
+            >
+              <motion.div
+                className="mobile-menu-background"
+                variants={sidebar}
+              />
+              <Navigation isOpen={isOpen} toggleOpen={toggleOpen} />
+            </motion.div>
+          </AnimatePresence>
+
+          <FullscreenNav
+            isOpen={showMenu}
+            contentKey={hoveredItemKey}
+            toggle={() => {
+              setShowMenu(!showMenu)
+              setHoveredItemKey(null)
+            }}
+          />
         </div>
         {children}
       </div>
