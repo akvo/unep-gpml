@@ -187,13 +187,15 @@ const FilterBar = ({
       <div className="search-container">
         <div className="container">
           <Button onClick={() => setShowFilterModal(true)} size="small" ghost>
-            {!isEmpty &&
-              Object.keys(query).filter(
-                (item) =>
-                  !hideFilterList.includes(item) &&
-                  item !== 'slug' &&
-                  item !== 'totalCount'
-              ).length > 0 && (
+          {!isEmpty &&
+            Object.keys(query).filter(
+              (item) =>
+                !hideFilterList.includes(item) &&
+                item !== 'slug' &&
+                item !== 'totalCount'
+            ).length > 0 ? (
+              <>
+                <span>Advanced Search</span>
                 <div className="filter-status">
                   {Object.keys(query).filter(
                     (item) => !hideFilterList.includes(item)
@@ -202,9 +204,13 @@ const FilterBar = ({
                       (item) => !hideFilterList.includes(item)
                     ).length}
                 </div>
-              )}
-            <span>Advanced Search</span>
-            <SolidFilterIcon />
+              </>
+            ) : (
+              <>
+                <span>Advanced Search</span>
+                <SolidFilterIcon />
+              </>
+            )}
           </Button>
           {!isEmpty &&
             Object.keys(query).filter(
