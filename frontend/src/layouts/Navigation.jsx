@@ -11,6 +11,12 @@ import {
 import { Button } from 'antd'
 import { UIStore } from '../store'
 
+const SOCIAL_LINKS = [
+  { icon: FacebookIcon, url: 'https://facebook.com/' },
+  { icon: TwitterIcon, url: 'http://twitter.com/' },
+  { icon: LinkedinIcon, url: 'https://linkedin.com/' },
+]
+
 const menuVariants = {
   open: {
     transition: { staggerChildren: 0.07, delayChildren: 0.2 },
@@ -60,132 +66,127 @@ const socialLinksVariants = {
 
 export const Navigation = ({ isOpen, toggleOpen }) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState(null)
-  const [collapsedItems, setCollapsedItems] = useState({})
+  const { menuList } = UIStore.useState((s) => ({ menuList: s.menuList }))
 
-  const { menuList } = UIStore.useState((s) => ({
-    menuList: s.menuList,
-  }))
+  const handleMenuItemClick = (item) => setSelectedMenuItem(item)
 
-  const handleMenuItemClick = (item) => {
-    setSelectedMenuItem(item)
+  return (
+    <AnimatePresence mode="wait">
+      {selectedMenuItem ? (
+        <SubMenuContent key="sub-menu" />
+      ) : (
+        isOpen && <MainMenuContent key="main-menu" />
+      )}
+    </AnimatePresence>
+  )
+
+  function SubMenuContent() {
+    return (
+      <motion.div
+        key="screenKey"
+        variants={contentVariants}
+        initial="enter"
+        animate="center"
+        exit="exit"
+        className="slide-menu"
+      >
+        <MenuHeader />
+        <div className="navigation-container">
+          <h2>{selectedMenuItem}</h2>
+          <SubMenuItems />
+        </div>
+      </motion.div>
+    )
   }
 
-  const toggleItemCollapse = (key) => {
-    setCollapsedItems((prev) => ({ ...prev, [key]: !prev[key] }))
+  function MainMenuContent() {
+    return (
+      <>
+        <MenuHeader />
+        <div className="navigation-container" style={{ height: '100%' }}>
+          <MainMenuItems />
+          <SocialLinks />
+        </div>
+      </>
+    )
   }
 
-  const renderContent = () => {
-    if (selectedMenuItem) {
-      return (
-        <motion.div
-          key="screenKey"
-          initial="enter"
-          animate="center"
-          exit="exit"
-          variants={contentVariants}
-          className="slide-menu"
-        >
-          <div className="toggle-button">
-            {selectedMenuItem && (
-              <Button onClick={() => setSelectedMenuItem(null)}>
-                <CirclePointer />
-                Back
-              </Button>
-            )}
-
-            <MenuToggle
-              toggle={() => {
-                toggleOpen()
-                setSelectedMenuItem(null)
-              }}
-              isOpen={isOpen}
-            />
-          </div>
-          <div className="navigation-container">
-            <h2>{selectedMenuItem} </h2>
-            <motion.ul
-              key="menuList"
-              variants={menuVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-            >
-              {menuList
-                .find((item) => selectedMenuItem === item.key)
-                .children.map((i) => (
-                  <MenuItem i={i.key} item={i} collapseMenu={true} />
-                ))}
-            </motion.ul>
-          </div>
-        </motion.div>
-      )
-    } else if (isOpen) {
-      return (
-        <>
-          <div className="toggle-button" style={{ justifyContent: 'flex-end' }}>
-            <MenuToggle
-              toggle={() => {
-                toggleOpen()
-                setSelectedMenuItem(null)
-              }}
-              isOpen={isOpen}
-            />
-          </div>
-          <div className="navigation-container" style={{ height: '100%' }}>
-            <motion.ul
-              key="menuList"
-              variants={menuVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-            >
-              {menuList.map((i) => (
-                <MenuItem i={i.key} key={i.key} onClick={handleMenuItemClick} />
-              ))}
-            </motion.ul>
-            <motion.div
-              className="social-links-container"
-              variants={socialLinksVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-            >
-              <h6>Follow Us</h6>
-              <ul className="social-links">
-                <li>
-                  <a
-                    href="https://facebook.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FacebookIcon />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="http://twitter.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <TwitterIcon />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://linkedin.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <LinkedinIcon />
-                  </a>
-                </li>
-              </ul>
-            </motion.div>
-          </div>
-        </>
-      )
-    }
+  function MenuHeader() {
+    return (
+      <div
+        className="toggle-button"
+        style={selectedMenuItem ? {} : { justifyContent: 'flex-end' }}
+      >
+        {selectedMenuItem && (
+          <Button onClick={() => setSelectedMenuItem(null)}>
+            <CirclePointer />
+            Back
+          </Button>
+        )}
+        <MenuToggle toggle={handleToggle} isOpen={isOpen} />
+      </div>
+    )
   }
 
-  return <AnimatePresence mode="wait">{renderContent()}</AnimatePresence>
+  function MainMenuItems() {
+    return (
+      <motion.ul
+        key="menuList"
+        variants={menuVariants}
+        initial="closed"
+        animate="open"
+        exit="closed"
+      >
+        {menuList.map((i) => (
+          <MenuItem key={i.key} i={i.key} onClick={handleMenuItemClick} />
+        ))}
+      </motion.ul>
+    )
+  }
+
+  function SubMenuItems() {
+    const items =
+      menuList.find((item) => selectedMenuItem === item.key)?.children || []
+    return (
+      <motion.ul
+        key="menuList"
+        variants={menuVariants}
+        initial="closed"
+        animate="open"
+        exit="closed"
+      >
+        {items.map((i) => (
+          <MenuItem key={i.key} i={i.key} item={i} collapseMenu />
+        ))}
+      </motion.ul>
+    )
+  }
+
+  function SocialLinks() {
+    return (
+      <motion.div
+        className="social-links-container"
+        variants={socialLinksVariants}
+        initial="closed"
+        animate="open"
+        exit="closed"
+      >
+        <h6>Follow Us</h6>
+        <ul className="social-links">
+          {SOCIAL_LINKS.map(({ icon: Icon, url }) => (
+            <li key={url}>
+              <a href={url} target="_blank" rel="noopener noreferrer">
+                <Icon />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </motion.div>
+    )
+  }
+
+  function handleToggle() {
+    toggleOpen()
+    setSelectedMenuItem(null)
+  }
 }
