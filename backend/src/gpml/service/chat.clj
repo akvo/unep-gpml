@@ -37,11 +37,9 @@
 
 (defn create-user-account
   [{:keys [db chat-adapter logger] :as config} user-id]
-  (let [context {:success? true
-                 :user-id user-id}
-        transactions [{:txn-fn
+  (let [transactions [{:txn-fn
                        (fn get-stakeholder
-                         [{:keys [user-id]}]
+                         [{:keys [user-id] :as context}]
                          (let [search-opts {:filters {:ids [user-id]}}
                                result (db.sth/get-stakeholder (:spec db) search-opts)]
                            (if (:success? result)
@@ -57,10 +55,10 @@
                       {:txn-fn
                        (fn create-chat-user-account
                          [{:keys [stakeholder] :as context}]
-                         (let [{:keys [first-name last-name email chat-account-username]} stakeholder
+                         (let [{:keys [first-name last-name email]} stakeholder
                                user {:name (str first-name " " last-name)
                                      :email email
-                                     :username chat-account-username}
+                                     :username email}
                                result (create-user-account* config user)]
                            (if (:success? result)
                              (assoc context :chat-user-account (:user result))
@@ -84,5 +82,8 @@
                              (assoc context
                                     :success? false
                                     :reason (:reason result)
-                                    :error-details (:error-details result)))))}]]
+                                    :error-details (:error-details result)))))}]
+        context {:success? true
+                 :user-id user-id}]
+    (tht/thread-transactions logger transactions context)))
     (tht/thread-transactions logger transactions context)))
