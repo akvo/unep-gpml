@@ -25,8 +25,7 @@ function LocationDropdown({
         setDropdownVisible(visible);
       }}
     >
-      <Button type="text">
-        <GlobeIcon />
+      <Button size="small" ghost>
         <span>
           {(query?.country?.length > 0 || query?.transnational?.length > 0) &&
             (query?.transnational?.length ||
@@ -34,6 +33,7 @@ function LocationDropdown({
               0)}{" "}
           Location
         </span>
+        <GlobeIcon />
       </Button>
     </Dropdown>
   );

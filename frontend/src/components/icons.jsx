@@ -255,3 +255,24 @@ export const ChevronDown = () => (
     <path d="M1 0.999999L7 7L13 1" stroke="currentColor" stroke-width="2" />
   </svg>
 )
+
+export const SolidFilterIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    height="16"
+    width="16"
+  >
+    <g id="filter-2--funnel-filter-angle-oil">
+      <path
+        id="Union"
+        fill="currentColor"
+        fillRule="evenodd"
+        d="M23 1H1v4.914l8 8v9.39l6 -3.75v-5.64l8 -8V1Z"
+        clipRule="evenodd"
+        strokeWidth="1"
+      ></path>
+    </g>
+  </svg>
+)
