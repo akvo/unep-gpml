@@ -10,23 +10,10 @@ import Login from '../modules/login/view'
 import { DownArrow, CloseIcon, MenuIcon } from '../components/icons'
 import Link from 'next/link'
 import { motion, AnimatePresence, useCycle } from 'framer-motion'
-import BookIcon from '../images/book-open.svg'
-import CaseStudiesSvg from '../images/folder.svg'
-import CapacityBuildingSvg from '../images/owl.svg'
-import HelpCenterSvg from '../images/help.svg'
-import IconCommunity from '../images/community.svg'
-import ExpertIcon from '../images/education.svg'
-import IconEvent from '../images/calendar.svg'
-import IconPartner from '../images/partners.svg'
-import IconForum from '../images/engage.svg'
-import AnalyticAndStatisticSvg from '../images/statistics.svg'
-import DataCatalogueSvg from '../images/archive.svg'
-import GlossarySvg from '../images/glossary.svg'
-import MapSvg from '../images/map.svg'
-import ExploreSvg from '../images/api.svg'
 import { useDeviceSize } from '../modules/landing/landing'
 import { MenuToggle } from './MenuToggle'
 import { Navigation } from './Navigation'
+import { UIStore } from '../store'
 
 const navVariants = {
   open: { scale: 1, opacity: 1 },
@@ -52,154 +39,6 @@ const menuItemVariants = {
     },
   },
 }
-
-export const menuList = [
-  {
-    key: 'Plastic',
-    children: [
-      {
-        key: 'Topics',
-      },
-      {
-        key: 'Basics',
-      },
-    ],
-  },
-  {
-    key: 'Tools',
-    children: [
-      {
-        key: 'Information',
-        children: [
-          {
-            to: '/knowledge/library',
-            title: 'Knowledge library',
-            subtitle: 'Resources on marine litter and plastic pollution',
-            icon: <BookIcon />,
-          },
-          {
-            to: '/knowledge/case-studies',
-            title: 'Case studies',
-            icon: <CaseStudiesSvg />,
-            subtitle: 'Compilation of actions around the world',
-            iconClass: 'casestudies',
-          },
-          {
-            to: '/knowledge/capacity-development',
-            title: 'Learning center',
-            subtitle: 'Learning and capacity development resources',
-            icon: <CapacityBuildingSvg />,
-            iconClass: 'learning',
-          },
-          {
-            to: '/help-center',
-            title: 'Help Center',
-            subtitle: 'Support on GPML Digital Platform',
-            icon: <HelpCenterSvg />,
-          },
-        ],
-      },
-      {
-        key: 'Community',
-        children: [
-          {
-            to: '/community',
-            title: 'Members',
-            iconClass: 'tools-community-icon',
-            subtitle: 'Directory of GPML network entities and individuals',
-            icon: <IconCommunity />,
-          },
-          {
-            to: '/experts',
-            title: 'Experts',
-            iconClass: 'tools-experts-icon',
-            subtitle: "Tool to find an expert and experts' groups",
-            icon: <ExpertIcon />,
-          },
-          {
-            to: '/events',
-            title: 'Events',
-            subtitle: 'Global events calendar',
-            icon: <IconEvent />,
-          },
-          {
-            to: '/partners',
-            title: 'Partners',
-            iconClass: 'tools-partners-icon',
-            subtitle: 'Directory of partners of the GPML Digital Platform',
-            icon: <IconPartner />,
-          },
-          {
-            href: 'https://communities.gpmarinelitter.org',
-            title: 'Engage',
-            subtitle: 'Interactive forum for collaboration',
-            icon: <IconForum />,
-          },
-        ],
-      },
-      {
-        key: 'Data hub',
-        children: [
-          {
-            href: 'https://datahub.gpmarinelitter.org',
-            title: 'Analytics & statistics',
-            subtitle: 'Metrics to measure progress',
-            icon: <AnalyticAndStatisticSvg />,
-          },
-          {
-            href: 'https://unepazecosysadlsstorage.z20.web.core.windows.net/',
-            title: 'Data Catalogue',
-            subtitle: 'Datasets on plastic pollution and marine litter',
-            icon: <DataCatalogueSvg />,
-          },
-          {
-            href: 'https://datahub.gpmarinelitter.org/pages/glossary/',
-            title: 'Glossary',
-            subtitle: 'Terminology and definitions',
-            icon: <GlossarySvg />,
-          },
-          {
-            href: 'https://datahub.gpmarinelitter.org/pages/story_map',
-            title: 'Story Maps',
-            subtitle: 'Storytelling with custom maps',
-            icon: <MapSvg />,
-          },
-          {
-            href: 'https://datahub.gpmarinelitter.org/pages/api-explore',
-            title: 'API explore',
-            subtitle: 'Web services and APIs',
-            icon: <ExploreSvg />,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    key: 'Countries',
-    children: [
-      {
-        key: 'Information',
-      },
-    ],
-  },
-  {
-    key: 'About Us',
-    children: [
-      {
-        key: 'The platform',
-      },
-      {
-        key: 'Our Netwrok',
-      },
-      {
-        key: 'Partnership',
-      },
-      {
-        key: 'Contact us',
-      },
-    ],
-  },
-]
 
 export const Item = ({
   title,
@@ -244,6 +83,9 @@ export const Item = ({
 }
 
 const ToolsMenu = () => {
+  const { menuList } = UIStore.useState((s) => ({
+    menuList: s.menuList,
+  }))
   return (
     <div className="container sub-menu">
       <Row gutter={[168, 168]}>

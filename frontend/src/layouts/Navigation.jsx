@@ -9,7 +9,7 @@ import {
   LinkedinIcon,
 } from '../components/icons'
 import { Button } from 'antd'
-import { menuList } from './new-layout'
+import { UIStore } from '../store'
 
 const menuVariants = {
   open: {
@@ -61,6 +61,10 @@ const socialLinksVariants = {
 export const Navigation = ({ isOpen, toggleOpen }) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState(null)
   const [collapsedItems, setCollapsedItems] = useState({})
+
+  const { menuList } = UIStore.useState((s) => ({
+    menuList: s.menuList,
+  }))
 
   const handleMenuItemClick = (item) => {
     setSelectedMenuItem(item)
