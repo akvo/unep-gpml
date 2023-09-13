@@ -580,7 +580,13 @@
                                                                 #ig/ref :gpml.auth/auth-required]
                                                    :swagger {:tags ["chat"]}
                                                    :handler #ig/ref :gpml.handler.chat/post
-                                                   :parameters #ig/ref :gpml.handler.chat/post-params}}]]]]]
+                                                   :parameters #ig/ref :gpml.handler.chat/post-params}
+                                            :put {:summary "Update chat user account status"
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :swagger {:tags ["chat"]}
+                                                  :handler #ig/ref :gpml.handler.chat/put
+                                                  :parameters #ig/ref :gpml.handler.chat/put-params}}]]]]]
                               :logger #ig/ref :duct.logger/timbre
                               :cors-allowed-origins #ig/ref :gpml.handler.main/cors-allowed-origins}
 
@@ -837,6 +843,8 @@
 
   :gpml.handler.chat/post #ig/ref :gpml.config/common
   :gpml.handler.chat/post-params {}
+  :gpml.handler.chat/put #ig/ref :gpml.config/common
+  :gpml.handler.chat/put-params {}
 
   :clj-gcp.storage/client {}
 

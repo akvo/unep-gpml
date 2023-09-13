@@ -86,4 +86,44 @@
         context {:success? true
                  :user-id user-id}]
     (tht/thread-transactions logger transactions context)))
+
+(defn set-user-account-active-status
+  [{:keys [db chat-adapter logger]} user chat-account-status]
+  (let [transactions [{:txn-fn
+                       (fn set-chat-user-account-active-stauts
+                         [{:keys [user chat-account-status] :as context}]
+                         (let [active? (= chat-account-status :active)
+                               chat-account-id (:chat_account_id user)
+                               result (chat/set-user-account-active-status chat-adapter
+                                                                           chat-account-id
+                                                                           active?)]
+                           (if (:success? result)
+                             context
+                             (assoc context
+                                    :success? false
+                                    :reason (:reason result)
+                                    :error-details (:error-details result)))))
+                       :rollback-fn
+                       (fn rollback-set-chat-user-account-active-status
+                         [{:keys [user] :as context}]
+                         (chat/set-user-account-active-status chat-adapter
+                                                              (:chat_account_id user)
+                                                              (= (keyword (:chat_account_status user)) :active))
+                         context)}
+                      {:txn-fn
+                       (fn update-stakeholder-chat-account-status
+                         [{:keys [user chat-account-status] :as context}]
+                         (let [affected (db.sth/update-stakeholder (:spec db)
+                                                                   {:id (:id user)
+                                                                    :chat_account_status (name chat-account-status)})]
+                           (if (= affected 1)
+                             context
+                             (assoc context
+                                    :success? false
+                                    :reason :failed-to-update-stakeholder-chat-account-status
+                                    :error-details {:error-source :persistence
+                                                    :error-cause :unexpected-number-of-affected-rows}))))}]
+        context {:success? true
+                 :user user
+                 :chat-account-status chat-account-status}]
     (tht/thread-transactions logger transactions context)))
