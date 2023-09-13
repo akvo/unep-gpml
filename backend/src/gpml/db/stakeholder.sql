@@ -234,6 +234,7 @@ WITH suggested_stakeholders AS (
 SELECT *
 FROM
     suggested_stakeholders
+WHERE review_status = 'APPROVED'
 LIMIT :limit
 OFFSET :offset;
 
@@ -246,6 +247,7 @@ FROM
     stakeholder s
     JOIN activity a ON s.id = a.owner_id
     WHERE s.id NOT IN (:v*:stakeholder-ids)
+    AND s.review_status = 'APPROVED'
 ORDER BY
     s.id,
     a.created_at DESC
