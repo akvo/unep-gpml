@@ -17,7 +17,7 @@ function Authentication() {
   const formRef = useRef()
   const surferRef = useRef()
   const router = useRouter()
-  const query = router.query.data
+  const query = router.query.data ? JSON.parse(router.query.data) : {}
   const [affiliation, setAffiliation] = useState('')
   const [currentStep, setCurrentStep] = useState(0)
   const [error, setError] = useState(false)
