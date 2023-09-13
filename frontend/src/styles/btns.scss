@@ -9,7 +9,7 @@
     border: 2px solid $primaryDarkBlue;
     border-radius: 30px;
     background-color: transparent;
-    position: relative;
+    // position: relative;
     transition: background 0.2s ease-out;
     cursor: pointer;
     width: auto;
@@ -61,7 +61,7 @@
           stroke: white;
         }
       }
-      &:hover {
+      &:hover:not(:disabled) {
         background-color: transparent;
         border-color: $primaryDarkBlue;
         color: $primaryDarkBlue;

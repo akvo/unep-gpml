@@ -5,7 +5,7 @@ import { Button } from 'antd'
 import localFont from 'next/font/local'
 import { DM_Sans } from 'next/font/google'
 import Image from 'next/image'
-import Footer from '../footer'
+import Footer from '../components/footer/footer'
 import Login from '../modules/login/view'
 
 const archia = localFont({
@@ -98,6 +98,7 @@ const NewLayout = ({
           </div>
         </div>
         {children}
+        <Footer />
       </div>
     </>
   )
