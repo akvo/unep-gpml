@@ -7,6 +7,13 @@ import { DM_Sans } from 'next/font/google'
 import Image from 'next/image'
 import Footer from '../footer'
 import Login from '../modules/login/view'
+import { DownArrow } from '../components/icons'
+import Link from 'next/link'
+import { motion, AnimatePresence, useCycle } from 'framer-motion'
+import { useDeviceSize } from '../modules/landing/landing'
+import { MenuToggle } from './MenuToggle'
+import { Navigation } from './Navigation'
+import { FullscreenNav } from './FullScreenNavigation'
 
 const archia = localFont({
   src: [
@@ -42,6 +49,38 @@ const dmSans = DM_Sans({
   weight: ['400', '500', '700'],
 })
 
+const menuItems = ['Plastic', 'Tools', 'Countries', 'About'].map((key) => ({
+  key,
+  label: key,
+}))
+
+const sidebar = {
+  open: (height = 1000) => ({
+    clipPath: `circle(${height * 2 + 200}px at 100% 0%)`,
+    transition: {
+      type: 'tween',
+      duration: 0.5,
+      ease: 'easeInOut',
+    },
+  }),
+  closed: {
+    clipPath: 'circle(0px at 100% 0px)',
+    transition: {
+      type: 'tween',
+      duration: 0.5,
+      ease: 'easeInOut',
+    },
+  },
+  exit: {
+    clipPath: 'circle(0px at 100% 0px)',
+    transition: {
+      type: 'tween',
+      duration: 0.5,
+      ease: 'easeInOut',
+    },
+  },
+}
+
 const NewLayout = ({
   children,
   isIndexPage,
@@ -50,7 +89,11 @@ const NewLayout = ({
   profile,
 }) => {
   const [loginVisible, setLoginVisible] = useState(false)
+  const [hoveredItemKey, setHoveredItemKey] = useState(null)
   const [showMenu, setShowMenu] = useState(false)
+  const [width] = useDeviceSize()
+  const [isOpen, toggleOpen] = useCycle(false, true)
+
   return (
     <>
       <style jsx global>{`
@@ -59,8 +102,13 @@ const NewLayout = ({
           --font-archia: ${archia.style.fontFamily};
         }
       `}</style>
-      <div>
-        <div className="top-bar">
+      <div className="">
+        <div
+          className="top-bar"
+          style={{
+            zIndex: isOpen ? 9 : 99,
+          }}
+        >
           <div className="container">
             <div className="logo-container">
               <Image
@@ -71,12 +119,73 @@ const NewLayout = ({
                 height={74}
               />
             </div>
+            {width >= 768 && (
+              <ul
+                className="ant-menu"
+                // onMouseLeave={() => {
+                //   setHoveredItemKey(null)
+                //   setShowMenu(false)
+                // }}
+              >
+                {menuItems.map((item) => (
+                  <li
+                    key={item.key}
+                    onMouseEnter={() => {
+                      setHoveredItemKey(item.label)
+                      setShowMenu(true)
+                    }}
+                    className={`${
+                      hoveredItemKey === item.label ? 'selected' : ''
+                    }`}
+                  >
+                    <Link href={'/'} legacyBehavior>
+                      <a>
+                        {item.label}
+                        <span>
+                          <DownArrow />
+                        </span>
+                      </a>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
             <nav>
               <Button type="primary" size="small" className="noicon">
                 Join Now
               </Button>
+              {width <= 768 && (
+                <div className="toggle-button">
+                  <MenuToggle toggle={() => toggleOpen()} isOpen={isOpen} />
+                </div>
+              )}
             </nav>
           </div>
+        </div>
+        <div className="navigation">
+          <AnimatePresence>
+            <motion.div
+              initial="closed"
+              animate={isOpen ? 'open' : 'closed'}
+              exit="exit"
+              className="animation-container"
+            >
+              <motion.div
+                className="mobile-menu-background"
+                variants={sidebar}
+              />
+              <Navigation isOpen={isOpen} toggleOpen={toggleOpen} />
+            </motion.div>
+          </AnimatePresence>
+
+          <FullscreenNav
+            isOpen={showMenu}
+            contentKey={hoveredItemKey}
+            toggle={() => {
+              setShowMenu(!showMenu)
+              setHoveredItemKey(null)
+            }}
+          />
         </div>
         {children}
       </div>
