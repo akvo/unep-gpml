@@ -125,7 +125,7 @@ export const ArrowRight = ({
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0_1_4249)">
+    <g clipPath="url(#clip0_1_4249)">
       <path d="M9.75 18L15.75 12L9.75 6" stroke="#020A5B" stroke-width="1.5" />
       <path d="M0.75 12L15.75 12" stroke="#020A5B" stroke-width="1.5" />
     </g>
@@ -241,5 +241,17 @@ export const FieldSuccessIcon = () => (
         <rect width="16" height="16" fill="white" />
       </clipPath>
     </defs>
+  </svg>
+)
+
+export const ChevronDown = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="14"
+    height="9"
+    viewBox="0 0 14 9"
+    fill="none"
+  >
+    <path d="M1 0.999999L7 7L13 1" stroke="currentColor" stroke-width="2" />
   </svg>
 )

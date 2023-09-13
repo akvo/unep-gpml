@@ -1,8 +1,12 @@
 #root,
+.ant-dropdown,
 .ant-modal-root {
   .ant-input:not(textarea),
   .ant-input-affix-wrapper {
     height: 54px;
+  }
+  .ant-picker .ant-picker-input input {
+    height: 46px;
   }
   .ant-input,
   .ant-select-selection-search-input,
