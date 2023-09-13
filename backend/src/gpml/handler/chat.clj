@@ -42,6 +42,13 @@
       (r/ok {})
       (r/server-error (dissoc result :success?)))))
 
+(defn- get-user-joined-channels
+  [config {:keys [user]}]
+  (let [result (srv.chat/get-user-joined-channels config (:chat_account_id user))]
+    (if (:success? result)
+      (r/ok (cske/transform-keys ->snake_case (:channels result)))
+      (r/server-error (dissoc result :success?)))))
+
 (defn- get-private-channels
   [config _req]
   (let [result (srv.chat/get-private-channels config)]
@@ -71,3 +78,8 @@
   [_ config]
   (fn [req]
     (get-private-channels config req)))
+
+(defmethod ig/init-key :gpml.handler.chat/get-user-joined-channels
+  [_ config]
+  (fn [req]
+    (get-user-joined-channels config req)))

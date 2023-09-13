@@ -128,6 +128,10 @@
                  :chat-account-status chat-account-status}]
     (tht/thread-transactions logger transactions context)))
 
+(defn get-user-joined-channels
+  [{:keys [chat-adapter]} chat-account-id]
+  (chat/get-user-joined-channels chat-adapter chat-account-id))
+
 (defn get-private-channels
   [{:keys [chat-adapter]}]
   (chat/get-private-channels chat-adapter {}))

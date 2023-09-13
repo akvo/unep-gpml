@@ -573,8 +573,8 @@
                                                      :swagger {:tags ["chat" "curated-channel"]}
                                                      :handler #ig/ref :gpml.handler.chat-curated-channel/delete
                                                      :parameters #ig/ref :gpml.handler.chat-curated-channel/delete-params}}]]
-                                         ["/account"
-                                          [""
+                                         ["/user"
+                                          ["/account"
                                            {:post {:summary "Create a chat user account"
                                                    :middleware [#ig/ref :gpml.auth/auth-middleware
                                                                 #ig/ref :gpml.auth/auth-required]
@@ -586,10 +586,16 @@
                                                                #ig/ref :gpml.auth/auth-required]
                                                   :swagger {:tags ["chat"]}
                                                   :handler #ig/ref :gpml.handler.chat/put
-                                                  :parameters #ig/ref :gpml.handler.chat/put-params}}]]
+                                                  :parameters #ig/ref :gpml.handler.chat/put-params}}]
+                                          ["/channel"
+                                           {:get {:summary "Get all user joined channels"
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :swagger {:tags ["chat"]}
+                                                  :handler #ig/ref :gpml.handler.chat/get-user-joined-channels}}]]
                                          ["/channel"
                                           ["/private"
-                                           {:get {:summary "Get all private channels"
+                                           {:get {:summary "Get all private channels in the server"
                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
                                                                #ig/ref :gpml.auth/auth-required]
                                                   :swagger {:tags ["chat"]}
@@ -853,6 +859,7 @@
   :gpml.handler.chat/put #ig/ref :gpml.config/common
   :gpml.handler.chat/put-params {}
   :gpml.handler.chat/get-private-channels #ig/ref :gpml.config/common
+  :gpml.handler.chat/get-user-joined-channels #ig/ref :gpml.config/common
 
   :clj-gcp.storage/client {}
 
