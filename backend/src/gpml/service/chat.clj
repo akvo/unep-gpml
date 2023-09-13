@@ -127,3 +127,7 @@
                  :user user
                  :chat-account-status chat-account-status}]
     (tht/thread-transactions logger transactions context)))
+
+(defn get-private-channels
+  [{:keys [chat-adapter]}]
+  (chat/get-private-channels chat-adapter {}))

@@ -1,5 +1,7 @@
 (ns gpml.handler.chat
-  (:require [gpml.domain.types :as dom.types]
+  (:require [camel-snake-kebab.core :refer [->snake_case]]
+            [camel-snake-kebab.extras :as cske]
+            [gpml.domain.types :as dom.types]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
             [gpml.service.chat :as srv.chat]
@@ -30,7 +32,7 @@
           result (srv.chat/create-user-account config user-id)]
       (if (:success? true)
         (r/ok (:stakeholder result))
-        (r/server-error result)))))
+        (r/server-error (dissoc result :success?))))))
 
 (defn- set-user-account-active-status
   [config {:keys [user parameters]}]
@@ -38,7 +40,14 @@
         result (srv.chat/set-user-account-active-status config user chat-account-status)]
     (if (:success? result)
       (r/ok {})
-      (r/server-error result))))
+      (r/server-error (dissoc result :success?)))))
+
+(defn- get-private-channels
+  [config _req]
+  (let [result (srv.chat/get-private-channels config)]
+    (if (:success? result)
+      (r/ok (cske/transform-keys ->snake_case (:channels result)))
+      (r/server-error (dissoc result :success?)))))
 
 (defmethod ig/init-key :gpml.handler.chat/post
   [_ config]
@@ -57,3 +66,8 @@
 (defmethod ig/init-key :gpml.handler.chat/put-params
   [_ _]
   {:body set-user-account-active-status-params-schema})
+
+(defmethod ig/init-key :gpml.handler.chat/get-private-channels
+  [_ config]
+  (fn [req]
+    (get-private-channels config req)))

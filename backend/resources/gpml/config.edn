@@ -586,7 +586,14 @@
                                                                #ig/ref :gpml.auth/auth-required]
                                                   :swagger {:tags ["chat"]}
                                                   :handler #ig/ref :gpml.handler.chat/put
-                                                  :parameters #ig/ref :gpml.handler.chat/put-params}}]]]]]
+                                                  :parameters #ig/ref :gpml.handler.chat/put-params}}]]
+                                         ["/channel"
+                                          ["/private"
+                                           {:get {:summary "Get all private channels"
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :swagger {:tags ["chat"]}
+                                                  :handler #ig/ref :gpml.handler.chat/get-private-channels}}]]]]]
                               :logger #ig/ref :duct.logger/timbre
                               :cors-allowed-origins #ig/ref :gpml.handler.main/cors-allowed-origins}
 
@@ -845,6 +852,7 @@
   :gpml.handler.chat/post-params {}
   :gpml.handler.chat/put #ig/ref :gpml.config/common
   :gpml.handler.chat/put-params {}
+  :gpml.handler.chat/get-private-channels #ig/ref :gpml.config/common
 
   :clj-gcp.storage/client {}
 
