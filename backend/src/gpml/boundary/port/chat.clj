@@ -12,4 +12,5 @@
     [this user-id active? opts])
   (get-user-info
     [this user-id]
-    [this user-id opts]))
+    [this user-id opts])
+  (get-user-joined-channels [this user-id]))

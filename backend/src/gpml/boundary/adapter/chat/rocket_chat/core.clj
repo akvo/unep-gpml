@@ -199,6 +199,41 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
+(defn- get-user-joined-channels*
+  [adapter user-id]
+  (let [result (get-user-info* adapter user-id {:fields {:user-rooms 1}})]
+    (if-not (:success? result)
+      {:success? false
+       :reason :failed-to-get-user-information
+       :error-details result}
+      (let [channels (get-in result [:user :rooms])
+            public-channels-ids (->> channels
+                                     (filter #(= (:t %) "c"))
+                                     (map :rid))
+            private-channels-ids (->> channels
+                                      (filter #(= (:t %) "p"))
+                                      (map :rid))
+            {success? :success?
+             private-channels :channels
+             :as get-private-channels-result}
+            (get-private-channels* adapter
+                                   {:query {:_id {:$in private-channels-ids}}})]
+        (if-not success?
+          {:success? false
+           :reason :failed-to-get-user-private-channels
+           :error-details get-private-channels-result}
+          (let [{success? :success?
+                 public-channels :channels
+                 :as get-public-channels-result}
+                (get-public-channels* adapter
+                                      {:query {:_id {:$in public-channels-ids}}})]
+            (if success?
+              {:success? true
+               :channels (concat private-channels public-channels)}
+              {:success? false
+               :reason :failed-to-get-user-public-channels
+               :error-details get-public-channels-result})))))))
+
 (defrecord RocketChat [api-url api-key api-user-id logger]
   port/Chat
   (create-user-account [this user]
@@ -218,4 +253,6 @@
   (get-user-info [this user-id]
     (get-user-info* this user-id {}))
   (get-user-info [this user-id opts]
-    (get-user-info* this user-id opts)))
+    (get-user-info* this user-id opts))
+  (get-user-joined-channels [this user-id]
+    (get-user-joined-channels* this user-id)))
