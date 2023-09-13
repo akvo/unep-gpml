@@ -14,114 +14,14 @@
   }
   :global {
     .filter-bar {
-      background-color: $primaryDarkBlue7;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      align-items: flex-start;
       justify-content: center;
-      padding: 0px 20px;
 
       @media screen and (min-width: 0) and (max-width: 1366px) {
         overflow: scroll;
         overflow-y: hidden;
-      }
-
-      .ant-btn {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 73px;
-        height: 73px;
-        background-color: transparent;
-        border: unset;
-        border-radius: 4px;
-        cursor: pointer;
-        svg {
-          width: 21px;
-          height: 21px;
-          margin-bottom: 11px;
-          path,
-          circle {
-            stroke: $primaryWhite;
-          }
-        }
-        span {
-          font-weight: 500;
-          font-size: 10px;
-          line-height: 11px;
-          text-align: center;
-          text-transform: capitalize;
-          color: $primaryWhite;
-        }
-        &.selected {
-          background-color: $primaryGrey;
-          svg {
-            path {
-              stroke: $primaryDarkBlue;
-            }
-          }
-          span {
-            color: $primaryDarkBlue;
-          }
-        }
-        &.ant-dropdown-open {
-          background: $primaryGrey;
-          span {
-            color: $primaryDarkBlue;
-          }
-          svg {
-            path {
-              stroke: $primaryDarkBlue;
-            }
-          }
-        }
-        &.adv-src {
-          &:hover {
-            svg {
-              path {
-                fill: $primaryDarkBlue;
-              }
-              circle {
-                stroke: $primaryDarkBlue;
-              }
-            }
-          }
-          svg {
-            margin-bottom: 8px;
-          }
-          span {
-            max-width: 50px;
-            display: inline-block;
-            white-space: normal;
-          }
-        }
-        &.reset-button {
-          display: flex;
-          width: auto;
-          height: auto;
-          flex-direction: revert;
-          align-items: center;
-          justify-content: center;
-          border-radius: 20px;
-          border: 1px solid #fff;
-          padding: 5px 10px;
-          svg {
-            margin-bottom: 0px;
-            width: 15px;
-          }
-          span {
-            font-size: 14px;
-          }
-        }
-        &:hover {
-          background-color: $primaryGrey;
-          span {
-            color: $primaryDarkBlue;
-          }
-          svg path {
-            stroke: $primaryDarkBlue;
-          }
-        }
       }
       .filter-status {
         position: absolute;
@@ -140,9 +40,21 @@
         transform: translateX(-50%);
       }
       .search-container {
-        display: flex;
-        align-items: center;
-        gap: 8px;
+        width: 100%;
+        background-color: $primaryGrey;
+        padding: 8px 0;
+        .container {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          gap: 8px;
+          .ant-dropdown-trigger {
+            svg {
+              width: 24px;
+              height: 24px;
+            }
+          }
+        }
       }
     }
   }
@@ -175,32 +87,14 @@
           cursor: pointer;
           border-top-left-radius: 4px;
           border-top-right-radius: 4px;
-          // border: 1px solid #255b87;
-          // border-radius: 20px;
-          // height: 32px;
-          // margin: 0 6px;
-          // position: relative;
-          // z-index: 20;
-          // text-align: center;
-          // line-height: 30px;
-          // padding-left: 10px;
-          // &:hover,
           &.active {
             background-color: $primaryDarkBlue;
             color: #fff;
           }
-          // .anticon {
-          //   position: absolute;
-          //   left: 9px;
-          //   top: 9px;
-          // }
         }
         .view-switch-dropdown {
           position: absolute;
           z-index: 19;
-          // background-color: #fff;
-          // box-shadow: 0px 4px 4px rgb(0 0 0 / 35%);
-          // border-radius: 20px;
           top: -6px;
           width: fit-content;
           padding-top: 40px;
@@ -214,10 +108,6 @@
             box-shadow: 0px 4px 4px rgb(0 0 0 / 35%);
             padding-inline-start: 0;
             li {
-              // border: 1px solid #255b87;
-              // border-radius: 20px;
-              // height: 32px;
-              // margin: 0 6px 6px;
               line-height: 30px;
               cursor: pointer;
               transition: 0.15s ease-out;
@@ -319,14 +209,10 @@
       .items {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: space-around;
         row-gap: 20px;
+        margin-bottom: 16px;
       }
-      // .resource-card {
-      //   margin-left: 10px;
-      //   margin-right: 10px;
-      //   margin-bottom: 20px;
-      // }
       .load-more {
         border: 1px solid #265d89;
         border-radius: 30px;
@@ -379,6 +265,8 @@
   }
   :global {
     .overview {
+      width: 100%;
+      background-color: $primaryDarkBlue7;
       .loading {
         position: static;
         height: calc(100vh - 200px);
@@ -395,7 +283,6 @@
       ul.categories {
         display: flex;
         padding: 15px 0px 15px 0px;
-        background-color: $primaryDarkBlue7;
         margin-bottom: 0;
         .selected {
           background-color: #fff;
@@ -567,11 +454,8 @@
     .quick-search {
       display: flex;
       position: relative;
-      // height: 25px;
       align-items: center;
       .count {
-        // background: #ffffff;
-        // border: 1px solid #edf2f7;
         border-radius: 6px;
         padding-right: 8px;
         font-size: $fzXXS;
@@ -581,14 +465,6 @@
         flex-direction: column;
         gap: 0;
       }
-      // .search-icon {
-      //   position: absolute;
-      //   top: 50%;
-      //   right: -5px;
-      //   transform: translateY(-50%);
-      //   align-items: center;
-      //   display: flex;
-      // }
     }
   }
 }
