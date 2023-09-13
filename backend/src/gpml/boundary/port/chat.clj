@@ -2,6 +2,7 @@
 
 (defprotocol Chat
   (create-user-account [this user])
+  (update-user-account [this user-id updates])
   (delete-user-account
     [this user-id]
     [this user-id opts])

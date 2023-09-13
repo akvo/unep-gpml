@@ -94,6 +94,32 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
+(defn- update-user-account*
+  [{:keys [logger api-url api-key api-user-id]} user-id updates]
+  (try
+    (let [req-body (cske/transform-keys ->camelCaseString {:user-id user-id
+                                                           :data updates})
+          {:keys [status body]}
+          (http-client/do-request logger
+                                  {:url (str api-url "/users.update")
+                                   :method :post
+                                   :body (json/->json req-body)
+                                   :content-type :json
+                                   :headers (get-auth-headers api-key api-user-id)
+                                   :as :json-keyword-keys})]
+      (if (<= 200 status 299)
+        {:success? true
+         :user (cske/transform-keys ->kebab-case (:user body))}
+        {:success? false
+         :reason :failed-to-update-user-account
+         :error-details body}))
+    (catch Throwable t
+      (log logger :error :failed-to-update-user-account {:exception-message (ex-message t)
+                                                         :stack-trace (map str (.getStackTrace t))})
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
+
 (defn- delete-user-account*
   [{:keys [logger api-url api-key api-user-id]} user-id opts]
   (try
@@ -238,6 +264,8 @@
   port/Chat
   (create-user-account [this user]
     (create-user-account* this user))
+  (update-user-account [this user-id updates]
+    (update-user-account* this user-id updates))
   (delete-user-account [this user-id]
     (delete-user-account* this user-id {}))
   (delete-user-account [this user-id opts]
