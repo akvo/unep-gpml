@@ -1,12 +1,10 @@
-@import "../../vars.scss";
-@import "../../styles/vars.scss";
-@import "../../styles/btns.scss";
+@import '../../vars.scss';
+@import '../../styles/vars.scss';
+@import '../../styles/btns.scss';
 
 .onboarding {
   padding: 60px 0px;
-  background: url("/auth/auth-background.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-color: #e7f3ff6b;
   :global {
     .waveboard {
       background-color: #fff;
@@ -18,6 +16,8 @@
       display: flex;
       position: relative;
       border-radius: 7px;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+        0 2px 4px -2px rgb(0 0 0 / 0.1);
       .slide {
         width: 100%;
         min-width: 100%;
@@ -141,6 +141,9 @@
       left: 25px;
       bottom: 30px;
       z-index: 3;
+      svg {
+        padding-left: 0 !important;
+      }
     }
     .step-button-next {
       &.abs {
@@ -256,7 +259,7 @@
               background: #3176ae;
               border-radius: 10px;
               box-shadow: inset 0 1px rgb(0 0 0 / 25%);
-              content: "";
+              content: '';
               position: absolute;
               height: 12px;
               width: 12px;
