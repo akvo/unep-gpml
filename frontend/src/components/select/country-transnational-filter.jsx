@@ -110,7 +110,7 @@ const CountryTransnationalFilter = ({
 
   return (
     <Tabs
-      type="card"
+      type="line"
       className="country-filter-tab"
       onChange={handleChangeLocationTab}
     >
