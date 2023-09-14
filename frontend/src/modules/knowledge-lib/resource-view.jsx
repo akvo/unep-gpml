@@ -239,7 +239,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         }}
       />
       <div className="list-content">
-        <div className="list-toolbar">
+        <div className="list-toolbar container">
           <div className="quick-search">
             <div className="count">
               <small>SHOWING:</small>
@@ -281,7 +281,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           </button>
         </div>
         {(view === "map" || !view || view === "topic") && (
-          <div style={{ position: "relative" }}>
+          <div style={{ position: "relative" }} className="container">
             <ResourceCards
               items={data?.results}
               showMoreCardAfter={20}
@@ -327,18 +327,20 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           />
         )}
         {view === "grid" && (
-          <GridView
-            {...{
-              gridItems,
-              totalItems,
-              limit,
-              loading,
-              setPageNumber,
-              pageNumber,
-              updateQuery,
-              showModal,
-            }}
-          />
+          <div className="container">
+            <GridView
+              {...{
+                gridItems,
+                totalItems,
+                limit,
+                loading,
+                setPageNumber,
+                pageNumber,
+                updateQuery,
+                showModal,
+              }}
+            />
+          </div>
         )}
 
         {view === "category" && (
@@ -348,50 +350,52 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
                 <LoadingOutlined spin />
               </div>
             )}
-            {catData.map((d) => (
-              <Fragment key={d.categories}>
-                {d?.count > 0 && (
-                  <>
-                    <div className="header-wrapper">
-                      <div className="title-wrapper">
-                        <h4 className="cat-title">
-                          {topicNames(d.categories)}
-                        </h4>
-                        <div className="quick-search">
-                          <div className="count">{d?.count}</div>
-                          <div className="search-icon">
-                            <SearchIcon />
+            <div className="container">
+              {catData.map((d) => (
+                <Fragment key={d.categories}>
+                  {d?.count > 0 && (
+                    <>
+                      <div className="header-wrapper">
+                        <div className="title-wrapper">
+                          <h4 className="cat-title">
+                            {topicNames(d.categories)}
+                          </h4>
+                          <div className="quick-search">
+                            <div className="count">{d?.count}</div>
+                            <div className="search-icon">
+                              <SearchIcon />
+                            </div>
                           </div>
                         </div>
+                        <Button
+                          type="link"
+                          onClick={() => {
+                            handleCategoryFilter(d.categories);
+                          }}
+                          withArrow="link"
+                        >
+                          See all
+                        </Button>
                       </div>
-                      <Button
-                        type="link"
-                        onClick={() => {
+                      <ResourceCards
+                        items={d?.data}
+                        showMoreCardAfter={20}
+                        showMoreCardClick={() => {
                           handleCategoryFilter(d.categories);
                         }}
-                        withArrow="link"
-                      >
-                        See all
-                      </Button>
-                    </div>
-                    <ResourceCards
-                      items={d?.data}
-                      showMoreCardAfter={20}
-                      showMoreCardClick={() => {
-                        handleCategoryFilter(d.categories);
-                      }}
-                      showModal={(e) =>
-                        showModal({
-                          e,
-                          type: e.currentTarget.type,
-                          id: e.currentTarget.id,
-                        })
-                      }
-                    />
-                  </>
-                )}
-              </Fragment>
-            ))}
+                        showModal={(e) =>
+                          showModal({
+                            e,
+                            type: e.currentTarget.type,
+                            id: e.currentTarget.id,
+                          })
+                        }
+                      />
+                    </>
+                  )}
+                </Fragment>
+              ))}
+            </div>
           </div>
         )}
       </div>

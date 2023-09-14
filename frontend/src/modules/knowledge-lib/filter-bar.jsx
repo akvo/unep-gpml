@@ -7,6 +7,7 @@ import CountryTransnationalFilter from "../../components/select/country-transnat
 import LocationDropdown from "../../components/location-dropdown/location-dropdown";
 import api from "../../utils/api";
 import { CloseOutlined } from "@ant-design/icons";
+import { SolidFilterIcon } from "../../components/icons";
 
 export const resourceTypes = [
   {
@@ -130,7 +131,7 @@ const FilterBar = ({
   return (
     <div className="filter-bar">
       <div className="overview">
-        <ul className="categories">
+        <ul className="categories container">
           <li
             className={`${!type ? "selected" : ""}`}
             onClick={() => {
@@ -184,52 +185,60 @@ const FilterBar = ({
         </ul>
       </div>
       <div className="search-container">
-        <Button className="adv-src" type="text" onClick={() => setShowFilterModal(true)}>
+        <div className="container">
+          <Button onClick={() => setShowFilterModal(true)} size="small" ghost>
           {!isEmpty &&
             Object.keys(query).filter(
               (item) =>
                 !hideFilterList.includes(item) &&
-                item !== "slug" &&
-                item !== "totalCount"
-            ).length > 0 && (
-              <div className="filter-status">
-                {Object.keys(query).filter(
-                  (item) => !hideFilterList.includes(item)
-                ).length > 0 &&
-                  Object.keys(query).filter(
+                item !== 'slug' &&
+                item !== 'totalCount'
+            ).length > 0 ? (
+              <>
+                <span>Advanced Search</span>
+                <div className="filter-status">
+                  {Object.keys(query).filter(
                     (item) => !hideFilterList.includes(item)
-                  ).length}
-              </div>
+                  ).length > 0 &&
+                    Object.keys(query).filter(
+                      (item) => !hideFilterList.includes(item)
+                    ).length}
+                </div>
+              </>
+            ) : (
+              <>
+                <span>Advanced Search</span>
+                <SolidFilterIcon />
+              </>
             )}
-          <FilterIcon />
-          <span>Advanced Search</span>
-        </Button>
-        {!isEmpty &&
-          Object.keys(query).filter(
-            (item) =>
-              !hideFilterList.includes(item) &&
-              item !== "slug" &&
-              item !== "totalCount"
-          ).length > 0 && (
-            <Button
-              icon={<CloseOutlined />}
-              className="reset-button"
-              onClick={() => resetFilter()}
-              type="text"
-            >
-              Reset filters
-            </Button>
-          )}
-        <LocationDropdown
-          {...{
-            country,
-            multiCountry,
-            countryList,
-            dropdownVisible,
-            setDropdownVisible,
-            query,
-          }}
-        />
+          </Button>
+          {!isEmpty &&
+            Object.keys(query).filter(
+              (item) =>
+                !hideFilterList.includes(item) &&
+                item !== 'slug' &&
+                item !== 'totalCount'
+            ).length > 0 && (
+              <Button
+                icon={<CloseOutlined />}
+                // className="reset-button"
+                onClick={() => resetFilter()}
+                type="link"
+              >
+                Reset filters
+              </Button>
+            )}
+          <LocationDropdown
+            {...{
+              country,
+              multiCountry,
+              countryList,
+              dropdownVisible,
+              setDropdownVisible,
+              query,
+            }}
+          />
+        </div>
       </div>
     </div>
   );

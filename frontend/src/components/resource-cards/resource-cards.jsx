@@ -72,7 +72,11 @@ const ResourceCards = ({
       }}
       navigation={true}
       modules={[SwiperPagination, Navigation]}
-      className={`${styles.resourceCards} resource-cards`}
+      className={classNames(
+        styles.resourceCards,
+        'resource-cards',
+        'container'
+      )}
     >
       {firstCard && <SwiperSlide>{firstCard}</SwiperSlide>}
       {items?.slice(0, showMoreCardAfter).map((item) => {

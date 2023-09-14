@@ -2,7 +2,6 @@
 .ant-dropdown,
 .ant-modal-root {
   .ant-tabs:not(.ant-tabs-left) {
-    background-color: $primaryGrey;
     box-shadow: 0px 0px 4px rgb(0 0 0 / 25%);
     border-radius: 4px;
     &.ant-tabs-top {
@@ -12,15 +11,15 @@
     }
     .ant-tabs-nav-list {
       .ant-tabs-tab {
-        flex: 0 0 50%;
-        margin-left: 0;
+        display: flex;
+        padding: 16px 24px 12px 24px;
+        align-items: center;
+        gap: 8px;
         border: none;
-        padding: 16px 24px;
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
-        border-bottom: 4px solid $primaryPurple3;
+        border-radius: 4px;
+        background-color: $primaryGrey;
+        margin-bottom: 8px;
         &.ant-tabs-tab-active {
-          border-bottom: 4px solid $primaryPurple7;
           .ant-tabs-tab-btn {
             color: $primaryDarkBlue;
           }
@@ -30,6 +29,19 @@
           line-height: $fzXXS;
           font-weight: 500;
           color: $primaryDarkBlue;
+        }
+        &:focus {
+          border: 2px solid $primaryPurple7;
+        }
+      }
+      .ant-tabs-tab + .ant-tabs-tab {
+        margin-left: 16px;
+      }
+      .ant-tabs-ink-bar {
+        background: $primaryPurple7;
+        border-radius: 2px 2px 0px 0px;
+        &:focus {
+          background: transparent;
         }
       }
     }
@@ -46,8 +58,8 @@
       }
     }
     & > .ant-tabs-nav {
-      .ant-tabs-nav-list {
-        width: 100%;
+      .ant-tabs-ink-bar {
+        height: 4px;
       }
     }
   }
