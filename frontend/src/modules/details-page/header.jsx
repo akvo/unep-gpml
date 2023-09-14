@@ -1,18 +1,19 @@
 import React from "react";
 import "./style.module.scss";
-import { Col, Popover, Input, Button, Select } from "antd";
+import { Col, Popover, Input, Select } from "antd";
 const { Option } = Select;
 import { eventTrack } from "../../utils/misc";
 import {
+  DeleteFilled,
+  EditFilled,
   EyeFilled,
-  HeartTwoTone,
-  MailTwoTone,
   PlayCircleTwoTone,
 } from "@ant-design/icons";
 import { resourceTypeToTopicType, topicNames } from "../../utils/misc";
 import { languageOptions } from "../flexible-forms/view";
 import classNames from "classnames";
 import { BookmarkIcon, ShareIcon } from "../../components/icons";
+import Button from "../../components/button"
 
 export const HeaderButtons = ({
   data,
@@ -182,22 +183,23 @@ export const HeaderButtons = ({
       </Button>
       {canEdit() && (
         <Button
-          className="edit-button two-tone-button"
           size="small"
           ghost
           onClick={() => handleEditBtn(type)}
         >
           Edit
+          <EditFilled />
         </Button>
       )}
       {canDelete() && (
         <Button
-          className="delete-button two-tone-button"
           size="small"
+          danger
           ghost
           onClick={handleDeleteBtn}
         >
           Delete
+          <DeleteFilled />
         </Button>
       )}
       {translations && translations.hasOwnProperty("title") && (

@@ -20,7 +20,6 @@ import {
 } from "@ant-design/icons";
 import api from "../../utils/api";
 import moment from "moment";
-import TextArea from "rc-textarea";
 
 export const CommentList = ({
   item,
@@ -307,10 +306,10 @@ const Comments = ({
           <Button
             className="login-button"
             onClick={() => setLoginVisible(true)}
-            icon={<MessageOutlined twoToneColor="#09689a" />}
             shape="round"
           >
             Login to comment
+            <MessageOutlined />
           </Button>
         )}
       </Col>
