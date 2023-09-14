@@ -1,8 +1,13 @@
-import React from "react";
-import Landing from "../modules/landing/landing";
+import React from 'react'
+import Landing from '../modules/landing/landing'
 
-function HomePage({ isAuthenticated }) {
-  return <Landing isAuthenticated={isAuthenticated} />;
+function HomePage({ isAuthenticated, setLoginVisible }) {
+  return (
+    <Landing
+      isAuthenticated={isAuthenticated}
+      setLoginVisible={setLoginVisible}
+    />
+  )
 }
 
-export default HomePage;
+export default HomePage
