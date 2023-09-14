@@ -47,11 +47,13 @@
       (r/server-error (dissoc result :success?)))))
 
 (defn- get-private-channels
-  [config _req]
-  (let [result (srv.chat/get-private-channels config)]
-    (if (:success? result)
-      (r/ok (cske/transform-keys ->snake_case (:channels result)))
-      (r/server-error (dissoc result :success?)))))
+  [config {:keys [user]}]
+  (if-not (h.r.permission/super-admin? config (:id user))
+    (r/forbidden {:message "Unauthorized"})
+    (let [result (srv.chat/get-private-channels config)]
+      (if (:success? result)
+        (r/ok (cske/transform-keys ->snake_case (:channels result)))
+        (r/server-error (dissoc result :success?))))))
 
 (defmethod ig/init-key :gpml.handler.chat/post
   [_ config]
