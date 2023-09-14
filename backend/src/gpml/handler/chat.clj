@@ -25,14 +25,11 @@
     (dom.types/get-type-schema :chat-account-status)]])
 
 (defn- create-user-account
-  [config {:keys [user] :as req}]
-  (if-not (h.r.permission/super-admin? config (:id user))
-    (r/forbidden {:message "Unauthorized"})
-    (let [user-id (get-in req [:parameters :body :user_id])
-          result (srv.chat/create-user-account config user-id)]
-      (if (:success? true)
-        (r/ok (:stakeholder result))
-        (r/server-error (dissoc result :success?))))))
+  [config {:keys [user]}]
+  (let [result (srv.chat/create-user-account config (:id user))]
+    (if (:success? true)
+      (r/ok (:stakeholder result))
+      (r/server-error (dissoc result :success?)))))
 
 (defn- set-user-account-active-status
   [config {:keys [user parameters]}]
