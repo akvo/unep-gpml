@@ -1,17 +1,19 @@
 import React from "react";
 import "./style.module.scss";
-import { Col, Popover, Input, Button, Select } from "antd";
+import { Col, Popover, Input, Select } from "antd";
 const { Option } = Select;
 import { eventTrack } from "../../utils/misc";
 import {
+  DeleteFilled,
+  EditFilled,
   EyeFilled,
-  HeartTwoTone,
-  MailTwoTone,
   PlayCircleTwoTone,
 } from "@ant-design/icons";
 import { resourceTypeToTopicType, topicNames } from "../../utils/misc";
 import { languageOptions } from "../flexible-forms/view";
 import classNames from "classnames";
+import { BookmarkIcon, ShareIcon } from "../../components/icons";
+import Button from "../../components/button"
 
 export const HeaderButtons = ({
   data,
@@ -56,11 +58,7 @@ export const HeaderButtons = ({
     <Col className="tool-buttons">
       {data?.url && (
         <Button
-          className="view-button "
-          icon={<EyeFilled />}
-          type="primary"
-          shape="round"
-          size="middle"
+          size="small"
           onClick={(e) => {
             e.preventDefault();
             eventTrack("Resource view", "View Url", "Button");
@@ -79,15 +77,13 @@ export const HeaderButtons = ({
           }}
         >
           View
+          <EyeFilled />
         </Button>
       )}
       {data?.recording && (
         <Button
           className="recording-button two-tone-button"
-          icon={<PlayCircleTwoTone twoToneColor="#09689a" />}
-          type="primary"
-          shape="round"
-          size="middle"
+          size="small"
           ghost
           onClick={() => {
             window.open(
@@ -99,6 +95,7 @@ export const HeaderButtons = ({
           }}
         >
           Recording
+          <PlayCircleTwoTone twoToneColor="#09689a" />
         </Button>
       )}
       {data?.url && (
@@ -150,11 +147,7 @@ export const HeaderButtons = ({
         >
           <div>
             <Button
-              className="share-button two-tone-button"
-              icon={<MailTwoTone twoToneColor="#09689a" />}
-              type="primary"
-              shape="round"
-              size="middle"
+              size="small"
               ghost
               onClick={() => {
                 navigator.clipboard.writeText(
@@ -169,18 +162,16 @@ export const HeaderButtons = ({
               }}
             >
               Share
+              <ShareIcon />
             </Button>
           </div>
         </Popover>
       )}
       <Button
-        className={classNames("bookmark-button two-tone-button", {
+        className={classNames("bookmark-button", {
           bookmarked,
         })}
-        icon={<HeartTwoTone />}
-        type="primary"
-        shape="round"
-        size="middle"
+        size="small"
         ghost
         onClick={() => {
           eventTrack("Resource view", "Bookmark", "Button");
@@ -188,29 +179,27 @@ export const HeaderButtons = ({
         }}
       >
         {bookmarked ? "Bookmarked" : "Bookmark"}
+        <BookmarkIcon />
       </Button>
       {canEdit() && (
         <Button
-          className="edit-button two-tone-button"
-          type="primary"
-          shape="round"
-          size="middle"
+          size="small"
           ghost
           onClick={() => handleEditBtn(type)}
         >
           Edit
+          <EditFilled />
         </Button>
       )}
       {canDelete() && (
         <Button
-          className="delete-button two-tone-button"
-          type="primary"
-          shape="round"
-          size="middle"
+          size="small"
+          danger
           ghost
           onClick={handleDeleteBtn}
         >
           Delete
+          <DeleteFilled />
         </Button>
       )}
       {translations && translations.hasOwnProperty("title") && (
