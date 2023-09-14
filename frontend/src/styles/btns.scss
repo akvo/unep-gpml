@@ -61,7 +61,7 @@
           stroke: white;
         }
       }
-      &:hover:not(:disabled) {
+      &:hover:not(:disabled):not(.ant-btn-dangerous):not(.ant-btn-background-ghost) {
         background-color: transparent;
         border-color: $primaryDarkBlue;
         color: $primaryDarkBlue;
@@ -154,6 +154,22 @@
         background-color: transparent !important;
       }
     }
+    &.ant-btn-dangerous {
+      background-color: $systemError3;
+      border-color: transparent;
+      &:hover {
+        background-color: $systemError2;
+      }
+      &.ant-btn-background-ghost {
+        background-color: transparent;
+        color: $systemError3;
+        border-color: $systemError3;
+        &:hover {
+          background-color: $systemError3;
+          color: $primaryWhite;
+        }
+      }
+    }
     &.left-icon {
       svg {
         position: static;
@@ -177,7 +193,7 @@
         }
       }
     }
-    &:hover,
+    &.ant-btn-primary:hover,
     &:active,
     &:disabled {
       background-color: $primaryGreen4;
