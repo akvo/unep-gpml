@@ -46,6 +46,7 @@ const MultipleSelectFilter = ({
           onChange={(val) => updateQuery(flag, val)}
           onDeselect={(val) => updateQuery(flag, [])}
           virtual={false}
+          size="large"
         />
       </div>
     </Col>

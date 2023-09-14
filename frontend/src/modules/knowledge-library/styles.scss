@@ -102,26 +102,6 @@
       }
       .ant-drawer-header {
         background: $blue05;
-
-        .apply-button {
-          width: auto;
-          color: #ffffff;
-          padding: 4px 11px 4px 11px;
-          border: 2px solid #ffffff;
-          border-radius: 17.5px;
-          background-color: transparent;
-          margin-right: 0;
-          font-size: 14px;
-          font-weight: bold;
-          height: auto;
-
-          @media (max-width: 540px) {
-            font-size: 12px;
-          }
-          &:hover {
-            background-color: $yellow-highlight;
-          }
-        }
       }
 
       .favorites-checkbox {

@@ -1,0 +1,10 @@
+@import '../../styles/vars.scss';
+
+.locationFilterDropdown {
+  max-height: 300px;
+  width: 400px;
+  padding: 20px;
+  :global(.ant-tabs) {
+    background-color: $primaryGrey;
+  }
+}

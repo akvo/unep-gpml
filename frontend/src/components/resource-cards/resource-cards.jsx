@@ -67,10 +67,16 @@ const ResourceCards = ({
       slidesPerView={"auto"}
       pagination={{
         clickable: true,
+        renderBullet: (index, className) =>
+          `<div class="${className}" key="${index}"><span/></div>`,
       }}
       navigation={true}
       modules={[SwiperPagination, Navigation]}
-      className={`${styles.resourceCards} resource-cards`}
+      className={classNames(
+        styles.resourceCards,
+        'resource-cards',
+        'container'
+      )}
     >
       {firstCard && <SwiperSlide>{firstCard}</SwiperSlide>}
       {items?.slice(0, showMoreCardAfter).map((item) => {
@@ -213,7 +219,7 @@ export const ResourceCard = ({ item, index, showModal }) => {
   }
   if (!thumbnail || thumbnail == null) {
     return (
-      <div className="resource-card nothumb" key={item.id}>
+      <div className={`${styles['resource-card']} ${styles.nothumb}`} key={item.id}>
         <Link
           href={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
           legacyBehavior
@@ -231,7 +237,7 @@ export const ResourceCard = ({ item, index, showModal }) => {
     );
   }
   return (
-    <div className="resource-card" key={item.id}>
+    <div className={styles['resource-card']} key={item.id}>
       <Link
         href={`/${getType(item?.type)?.replace("_", "-")}/${item.id}`}
         legacyBehavior
