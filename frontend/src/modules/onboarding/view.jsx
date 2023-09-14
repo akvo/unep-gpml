@@ -12,6 +12,7 @@ import { setIn } from 'final-form'
 import { useRouter } from 'next/router'
 import { useDeviceSize } from '../landing/landing'
 import Button from '../../components/button'
+import { ArrowLeftOutlined } from '@ant-design/icons'
 
 function Authentication() {
   const formRef = useRef()
@@ -281,10 +282,9 @@ function Authentication() {
                   </div>
                   <div className="button-bottom-panel">
                     <Button
-                      className="step-button-next"
                       size="small"
                       onClick={() => next()}
-                      ghost
+                      withArrow="link"
                     >
                       Next
                     </Button>
@@ -335,7 +335,7 @@ function Authentication() {
                     className="step-button-back"
                     onClick={previous}
                     size="small"
-                    ghost
+                    icon={<ArrowLeftOutlined />}
                   >
                     Back
                   </Button>
