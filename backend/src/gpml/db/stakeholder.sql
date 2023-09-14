@@ -129,6 +129,7 @@ insert into stakeholder(
 --~ (when (contains? params :id) ",id")
 --~ (when (contains? params :picture_id) ", picture_id")
 --~ (when (contains? params :cv_id) ",cv_id")
+--~ (when (contains? params :chat_account_status) ",chat_account_status")
 ) values(
     :first_name,
     :last_name,
@@ -147,6 +148,7 @@ insert into stakeholder(
 --~ (when (contains? params :id) ",:id")
 --~ (when (contains? params :picture_id) ", :picture_id")
 --~ (when (contains? params :cv_id) ",:cv_id")
+--~ (when (contains? params :chat_account_status) ",:chat_account_status::USER_CHAT_ACCOUNT_STATUS")
 ) RETURNING id;
 
 -- :name update-stakeholder-role :! :n
