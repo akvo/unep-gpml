@@ -1,4 +1,5 @@
 @import "../../vars.scss";
+@import "../../styles/vars.scss";
 
 .blur {
   filter: blur(13px);
@@ -101,8 +102,8 @@
         padding-bottom: 0.8em;
         max-width: max-content;
         margin: auto;
-        font-size: 12px;
         text-align: center;
+        font-weight: 600;
       }
       .loading {
         font-weight: normal;
@@ -410,33 +411,35 @@
 
       .result-number,
       .ant-pagination-item a {
-        font-weight: bold;
-        font-size: 12px;
+        font-weight: 500;
+        font-size: $fzXS;
+        line-height: $lhXS;
       }
 
       .result-number {
         text-align: center;
-        color: #000000;
+        color: $primaryDarkBlue;
         margin-top: 12px;
       }
 
       .ant-pagination-item {
         width: 34px;
         height: 34px;
-        margin-right: 2px;
-        border-radius: 5px;
-
+        margin-right: 4px;
+        border-radius: 8px;
+        border: none;
         a {
           width: 100%;
           height: 100%;
           font-weight: 400;
-          color: #ffffff;
+          color: $primaryDarkBlue;
           line-height: 31px;
           border-radius: 5px;
-          background-color: $blue06;
+          background-color: $primaryGrey;
           &:hover {
-            background-color: $yellow-highlight;
-            border-color: $yellow-highlight;
+            background-color: $primaryPurple;
+            border-color: $primaryPurple;
+            color: $primaryWhite;
           }
         }
       }
@@ -451,10 +454,10 @@
       .ant-pagination-item-active {
         border: none;
         a {
-          background-color: rgba(37, 91, 135, 0.1);
-          color: $blue06;
+          background-color: $primaryPurple;
+          color: $primaryWhite;
           &:hover {
-            background-color: rgba(37, 91, 135, 0.1);
+            background-color: $primaryPurple;
           }
         }
       }
@@ -566,31 +569,31 @@
         width: 100% !important;
 
         .ant-drawer-header {
-          background: $blue05;
+          background: $primaryDarkBlue;
 
-          .apply-button {
-            width: auto;
-            color: #ffffff;
-            padding: 4px 11px 4px 11px;
-            border: 2px solid #ffffff;
-            border-radius: 17.5px;
-            background-color: transparent;
-            margin-right: 0;
-            font-size: 14px;
-            font-weight: bold;
-            height: auto;
+          // .apply-button {
+          //   width: auto;
+          //   color: #ffffff;
+          //   padding: 4px 11px 4px 11px;
+          //   border: 2px solid #ffffff;
+          //   border-radius: 17.5px;
+          //   background-color: transparent;
+          //   margin-right: 0;
+          //   font-size: 14px;
+          //   font-weight: bold;
+          //   height: auto;
 
-            @media (max-width: 540px) {
-              font-size: 12px;
-            }
-            &:hover {
-              background-color: $yellow-highlight;
-            }
-          }
+          //   @media (max-width: 540px) {
+          //     font-size: 12px;
+          //   }
+          //   &:hover {
+          //     background-color: $yellow-highlight;
+          //   }
+          // }
         }
 
         .ant-drawer-content {
-          border-bottom-right-radius: 18px;
+          // border-bottom-right-radius: 18px;
           box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.25);
         }
 
@@ -626,19 +629,19 @@
 
         .ant-drawer-close {
           top: -5px;
-
           span,
           svg {
-            display: block;
-            width: 23px;
-            height: 23px;
+            color: $primaryWhite;
           }
         }
 
         .network-card-filter {
           padding-top: 5px !important;
           padding-bottom: 5px !important;
-
+          .ant-space {
+            width: 100%;
+            justify-content: space-between;
+          }
           .ant-col {
             max-width: 100%;
           }
@@ -654,14 +657,14 @@
 
         .selection-card-type {
           border: none;
-          color: $blue06;
+          color: $primaryDarkBlue;
         }
 
         .selection-card-type,
         .clear-selection {
           display: block;
-          line-height: 30px;
-          font-size: 14px;
+          line-height: $lhXXS;
+          font-size: $fzXXS;
           font-weight: bold;
           background-color: unset;
 
@@ -676,24 +679,24 @@
           justify-content: center;
         }
 
-        .clear-selection {
-          flex-direction: row-reverse;
-          align-items: center;
-          align-self: baseline;
-          color: $blue04;
-          border: 1px solid $blue04;
-          border-radius: 20px;
-          margin-bottom: 8px;
-          cursor: pointer;
-          &:hover {
-            background-color: $yellow-highlight;
-          }
-          .anticon-close {
-            color: $blue04;
-            font-weight: bold;
-            padding-right: 3px;
-          }
-        }
+        // .clear-selection {
+        //   flex-direction: row-reverse;
+        //   align-items: center;
+        //   align-self: baseline;
+        //   color: $blue04;
+        //   border: 1px solid $blue04;
+        //   border-radius: 20px;
+        //   margin-bottom: 8px;
+        //   cursor: pointer;
+        //   &:hover {
+        //     background-color: $yellow-highlight;
+        //   }
+        //   .anticon-close {
+        //     color: $blue04;
+        //     font-weight: bold;
+        //     padding-right: 3px;
+        //   }
+        // }
 
         .drawer-card {
           width: 100px;
@@ -813,6 +816,12 @@
 
       svg {
         margin-bottom: 24px;
+      }
+    }
+
+    .country-filter-tab-wrapper {
+      .ant-tabs {
+        background-color: $primaryGrey;
       }
     }
 
@@ -953,6 +962,9 @@
               width: 25px;
               height: 25px;
             }
+          }
+          .ant-btn-link {
+            text-decoration-line: none !important;
           }
         }
       }

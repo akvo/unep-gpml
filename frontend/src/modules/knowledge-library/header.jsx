@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { Row, Col, Button, Input, Space, Select } from "antd";
+import { Row, Col, Button, Input, Select } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import styles from "./header.module.scss";
-import { useHistory } from "react-router-dom";
 import { KNOWLEDGE_LIBRARY } from "../map/map";
 import { eventTrack } from "../../utils/misc";
-import DownArrow from "../../images/knowledge-library/chevron-down.svg";
 import { useRouter } from "next/router";
+import { ChevronDown } from "../../components/icons";
+import TopicViewIcon from '../../images/knowledge-library/topic-view-icon.svg'
+import GlobeIcon from '../../images/knowledge-library/globe-outline.svg'
 
 const KnowledgeLibrarySearch = ({
   router,
@@ -156,10 +157,10 @@ const Header = ({
       <div className="selection-value">
         <button className="select-button">
           <div className="selection-arrow">
-            <DownArrow />
+            <ChevronDown />
           </div>
         </button>
-        <span className="label text-white">{`${view} view`}</span>
+        <span className="label">{`${view} view`}</span>
         {view === "map" ? (
           <img
             src="/knowledge-library/globe-outline.svg"
@@ -188,7 +189,7 @@ const Header = ({
           className="header-filter-option"
         >
           {/* Search input & filtered by list */}
-          <Col lg={22} md={20} sm={18}>
+          <Col lg={21} md={20} sm={18}>
             <Row type="flex" justify="space-between" align="middle">
               <div className="search-box search-box-mobile">
                 {/* <Search updateQuery={updateQuery} /> */}
@@ -208,17 +209,17 @@ const Header = ({
                       ? eventTrack("Knowledge library", "Filter", "Button")
                       : eventTrack("Communities", "Filter", "Button");
                   }}
-                  className="filter-icon-button"
+                  // className="filter-icon-button"
                   type="link"
                 >
                   {filterTagValue.length > 0 && (
                     <div className="filter-status">{filterTagValue.length}</div>
                   )}
-                  <img
+                  {/* <img
                     src="/knowledge-library/filter-icon.svg"
                     className="filter-icon"
                     alt="config-icon"
-                  />
+                  /> */}
                   Filter
                 </Button>
               </div>
@@ -230,29 +231,24 @@ const Header = ({
             </Row>
           </Col>
           {/* Map/Topic view dropdown */}
-          <Col lg={2} md={4} sm={6} className="select-wrapper">
+          <Col lg={3} md={4} sm={6} className="select-wrapper">
             <Select
               dropdownClassName={styles.overlayDropdown}
               className="view-selection"
               value={view}
               onChange={(val) => setView(val)}
+              showArrow={false}
             >
               <Select.Option value="map">
                 {/* Map View */}
 
                 <>
                   <div className="selection-value">
-                    <button className="select-button">
-                      <div className="selection-arrow">
-                        <DownArrow />
-                      </div>
-                    </button>
-                    <span className="label text-white">{`${view} view`}</span>
-                    <img
-                      src="/knowledge-library/globe-outline.svg"
-                      alt="globe-icon"
-                      className="filter-img"
-                    />
+                    <GlobeIcon />
+                    <span className="label">{`${view} view`}</span>
+                    <span className="selection-arrow">
+                      <ChevronDown />
+                    </span>
                   </div>
                   <span className="dropdown-label">Map View</span>
                 </>
@@ -262,17 +258,11 @@ const Header = ({
               >
                 <>
                   <div className="selection-value">
-                    <button className="select-button">
-                      <div className="selection-arrow">
-                        <DownArrow />
-                      </div>
-                    </button>
-                    <span className="label text-white">{`${view} view`}</span>
-                    <img
-                      src="/knowledge-library/topic-view-icon.svg"
-                      alt="topic-icon"
-                      className="filter-img"
-                    />
+                    <TopicViewIcon className="fill" />
+                    <span className="label">{`${view} view`}</span>
+                    <span className="selection-arrow">
+                      <ChevronDown />
+                    </span>
                   </div>
                   <span className="dropdown-label">
                     {path === KNOWLEDGE_LIBRARY ? "Topic" : "Grid"} View
