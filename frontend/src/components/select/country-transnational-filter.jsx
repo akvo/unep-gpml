@@ -3,11 +3,11 @@ import { Select, Tabs, Popover } from "antd";
 import { DownOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import isEmpty from "lodash/isEmpty";
 import { UIStore } from "../../store";
-import { TrimText } from "../../utils/string";
 import { multicountryGroups } from "../../modules/knowledge-library/multicountry";
 import { OptGroup } from "rc-select";
 import "./style.module.scss";
 import api from "../../utils/api";
+import { useRouter } from 'next/router'
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -26,8 +26,8 @@ const CountryTransnationalFilter = ({
   disable,
   setDisable,
   fetch,
-  history,
 }) => {
+  const router = useRouter()
   const { countries, transnationalOptions, landing } = UIStore.useState(
     (s) => ({
       countries: s.countries,
@@ -62,7 +62,7 @@ const CountryTransnationalFilter = ({
         ...(val.length > 0 ? { multiCountry: true } : { multiCountry: false }),
       });
     }
-    let updatedQuery = { ...history.query };
+    let updatedQuery = router.query.data ? JSON.parse(router.query.data) : {}
     delete updatedQuery.totalCount;
 
     if (val && val.length > 0) {
@@ -70,8 +70,8 @@ const CountryTransnationalFilter = ({
     } else {
       delete updatedQuery.country;
     }
-    history.push({
-      pathname: history.pathname,
+    router.push({
+      pathname: router.pathname,
       query: updatedQuery,
     });
   };

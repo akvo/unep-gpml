@@ -125,21 +125,11 @@ const FilterDrawer = ({
     >
       <Drawer
         tabIndex=""
-        tabindex=""
         title="Choose your filters below"
         placement="left"
         visible={filterVisible}
         getContainer={false}
         onClose={() => setFilterVisible(false)}
-        closeIcon={
-          <>
-            {filterTagValue.length > 0 ? (
-              <span className="apply-button">Apply</span>
-            ) : (
-              <CloseCircleOutlined className="drawer-close-icon" />
-            )}
-          </>
-        }
         style={{ position: "absolute" }}
         height="100%"
         autoFocus={false}
@@ -399,8 +389,8 @@ const FilterDrawer = ({
                 }
               }}
             >
-              <CloseCircleOutlined />
               Clear all filters
+              <CloseCircleOutlined />
             </Button>
           </Col>
         </Row>
