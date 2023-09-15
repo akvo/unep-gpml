@@ -175,8 +175,7 @@
           ;; John trying to sign up without any organisation and leave picture, twitter, and linkedin blank
           resp (handler (-> (mock/request :post "/")
                             (assoc :jwt-claims {:email "john@org"})
-                            (assoc :parameters {:body  (dissoc body-params :twitter :linkedin :picture)})))
-          _ (prn resp)]
+                            (assoc :parameters {:body  (dissoc body-params :twitter :linkedin :picture)})))]
       (is (= 201 (:status resp)))
       (is (= "John" (-> (:body resp) :first_name)))
       (is (= "Doe" (-> (:body resp) :last_name)))
