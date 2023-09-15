@@ -22,7 +22,8 @@ function MyApp({ Component, pageProps }) {
     '/onboarding',
     '/knowledge/library/[[...slug]]',
     '/[type]/[id]',
-    '/community'
+    '/community',
+    '/experts',
   ]
   if (!newLayoutRoutes.includes(router.pathname)) {
     import('../main.scss')
