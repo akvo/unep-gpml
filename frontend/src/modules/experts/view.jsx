@@ -126,9 +126,13 @@ const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
 
   return (
     <div id="experts" className={`${styles.experts} experts`}>
-      <FilterBar
-        {...{ filter, setFilter, filterCountries, setFilterCountries }}
-      />
+      <div className="filter-bar-wrapper">
+        <div className="container">
+          <FilterBar
+            {...{ filter, setFilter, filterCountries, setFilterCountries }}
+          />
+        </div>
+      </div>
       <div className="expert-list-section">
         <div className="list-toolbar">
           <div className="page-label">Total {experts?.count}</div>
