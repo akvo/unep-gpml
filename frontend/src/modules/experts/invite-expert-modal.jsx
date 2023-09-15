@@ -1,12 +1,14 @@
 import React, { useState, useRef } from "react";
 import styles from "./invite-expert-modal.module.scss";
-import { Modal, Button, Input, Select, notification } from "antd";
+import { Modal, Input, Select, notification } from "antd";
 import { Form, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import { FieldArray } from "react-final-form-arrays";
 import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
 import api from "../../utils/api";
 import { UIStore } from "../../store";
+import Button from '../../components/button'
+import FormLabel from '../../components/form-label'
 
 const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
   const storeData = UIStore.useState((s) => ({
@@ -33,14 +35,11 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
 
   const onSubmit = async (values) => {
     setLoading(true);
-
+    const [firstName, lastName] = values.name.split(" ")
     const data = {
-      ...(values.name.split(" ").length > 1 && {
-        firstName: values?.name?.split(" ")[0],
-        lastName: values?.name?.split(" ")[1],
-      }),
-      email: values?.email,
-      expertise: values?.expertise,
+      ...values,
+      firstName,
+      lastName: lastName || ' ',
       suggestedExpertise: values?.suggestedCategory?.map((item) => item.value),
     };
 
@@ -78,6 +77,27 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
       title="Suggest an expert"
       visible={isShownModal}
       onCancel={() => setIsShownModal(false)}
+      footer={(
+        <>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => setIsShownModal(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            loading={loading}
+            onClick={() => {
+              formRef.current.submit()
+            }}
+            size="small"
+            withArrow="link"
+          >
+            Submit
+          </Button>
+        </>
+      )}
     >
       <p className="paragraph">
         Thank you for suggesting an expert!
@@ -91,68 +111,67 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
             ...arrayMutators,
           }}
           initialValues={initialValues}
-          render={({ handleSubmit, form, submitting }) => {
+          render={({ handleSubmit, form }) => {
             formRef.current = form;
             return (
               <form className="invite-expert-form" onSubmit={handleSubmit}>
                 <FieldArray name="invites">
                   {({ fields }) => (
                     <div>
-                      <div className="invite-expert-input" key="name">
-                        <div className="invite-label-wrapper">
-                          <label htmlFor="name" className="" title="">
-                            Full Name
-                          </label>
-                        </div>
-                        <Field name={`name`} validate={required}>
-                          {({ input, meta }) => {
-                            return (
-                              <>
-                                <Input
-                                  onChange={(e) =>
-                                    input.onChange(e.target.value)
-                                  }
-                                  value={input.value ? input.value : ""}
-                                  placeholder="Enter expert full name"
-                                  className={`${
-                                    meta.touched && meta.error
-                                      ? "ant-input-status-error"
-                                      : ""
-                                  }`}
-                                />
-                              </>
-                            );
-                          }}
-                        </Field>
-                      </div>
+                      <Field name={`name`} validate={required}>
+                        {({ input, meta }) => {
+                          const validVal =
+                            input?.value && meta.valid ? 'success' : null
+                          const validateStatus = !meta.valid && meta?.touched
+                            ? 'error'
+                            : validVal
+                          return (
+                            <FormLabel
+                              for="name"
+                              label="Fullname"
+                              validateStatus={validateStatus}
+                            >
+                              <Input
+                                onChange={(e) => input.onChange(e.target.value)}
+                                value={input.value ? input.value : ''}
+                                placeholder="Enter expert full name"
+                                className={`${
+                                  meta.touched && meta.error
+                                    ? 'ant-input-status-error'
+                                    : ''
+                                }`}
+                              />
+                            </FormLabel>
+                          )
+                        }}
+                      </Field>
 
-                      <div className="invite-expert-input" key="email">
-                        <div className="invite-label-wrapper">
-                          <label htmlFor="email" className="" title="">
-                            Email
-                          </label>
-                        </div>
-                        <Field name={`email`} validate={required}>
-                          {({ input, meta }) => {
-                            return (
-                              <>
-                                <Input
-                                  onChange={(e) =>
-                                    input.onChange(e.target.value)
-                                  }
-                                  value={input.value ? input.value : ""}
-                                  placeholder="Enter expert email"
-                                  className={`${
-                                    meta.touched && meta.error
-                                      ? "ant-input-status-error"
-                                      : ""
-                                  }`}
-                                />
-                              </>
-                            );
-                          }}
-                        </Field>
-                      </div>
+                      <Field name={`email`} validate={required}>
+                        {({ input, meta }) => {
+                          const validVal =
+                            input?.value && meta.valid ? 'success' : null
+                          const validateStatus =
+                            !meta.valid && meta?.touched ? 'error' : validVal
+                          return (
+                            <FormLabel
+                              for="email"
+                              label="Email"
+                              validateStatus={validateStatus}
+                            >
+                              <Input
+                                onChange={(e) => input.onChange(e.target.value)}
+                                value={input.value ? input.value : ''}
+                                placeholder="Enter expert email"
+                                className={`${
+                                  meta.touched && meta.error
+                                    ? 'ant-input-status-error'
+                                    : ''
+                                }`}
+                              />
+                            </FormLabel>
+                          )
+                        }}
+                      </Field>
 
                       <div className="invite-expert-input" key="expertise">
                         <div className="invite-label-wrapper">
@@ -261,26 +280,6 @@ const InviteExpertModal = ({ setIsShownModal, isShownModal }) => {
                     </div>
                   )}
                 </FieldArray>
-                <div className="invite-expert-buttons">
-                  <Button
-                    loading={loading}
-                    disabled={submitting}
-                    onClick={handleSubmit}
-                    className="invite-submit-button"
-                    size="large"
-                    shape="round"
-                  >
-                    Submit &gt;
-                  </Button>
-                  <Button
-                    className="invite-cancel-button"
-                    size="large"
-                    shape="round"
-                    onClick={() => setIsShownModal(false)}
-                  >
-                    Cancel
-                  </Button>
-                </div>
               </form>
             );
           }}

@@ -41,6 +41,7 @@ const FormLabel = ({
   return (
     <Form.Item
       className={className}
+      colon={false}
       label={
         <span className="hasFeedback">
           <span>{label}</span>

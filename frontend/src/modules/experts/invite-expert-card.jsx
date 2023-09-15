@@ -8,12 +8,10 @@ const InviteExpertCard = ({ setIsShownModal }) => {
       <div className="invite-expert-image-wrapper">
         <img src="/stakeholder-overview/megaphone-icon.svg" alt="" />
       </div>
-      <div>
+      <div className="invite-expert-button-wrapper">
         <h3 className="invite-expert-text">Do you know an expert?</h3>
         <Button
-          shape="round"
-          size="medium"
-          className="invite-expert-button"
+          size="small"
           onClick={() => setIsShownModal(true)}
         >
           Suggest an expert
