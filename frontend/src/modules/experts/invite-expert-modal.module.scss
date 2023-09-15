@@ -1,143 +1,34 @@
-@import "../../vars.scss";
+@import '../../vars.scss';
+@import '../../styles/vars.scss';
+
 .inviteExpertModal {
   width: 100% !important;
-
+  color: $primaryDarkBlue;
   @media screen and (min-width: 840px) {
     max-width: 823px;
   }
   :global {
-    .ant-modal-header {
-      .ant-modal-title {
-        font-weight: 600;
-        font-size: 18px;
-        line-height: 26px;
-        color: #a5b0c9;
-        text-transform: uppercase;
-      }
-    }
-    .ant-modal-body {
-      padding: 17px 40px 50px 40px;
-    }
     .paragraph {
-      font-size: 14px;
-      line-height: 20px;
+      font-size: $fzXXS;
+      line-height: $lhXXS;
       margin-bottom: 31px;
     }
-
     .invite-expert-form {
+      & > div {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
       .invite-expert-input {
         .invite-label-wrapper {
-          label {
-            font-size: 16px;
-            line-height: 23px;
-            color: #18162f;
-          }
-        }
-        .ant-input::placeholder,
-        .ant-select-selection-placeholder {
-          font-weight: 500;
-          font-size: 16px;
-          line-height: 23px;
-          color: #a5b0c9;
-        }
-        .ant-input,
-        .ant-select,
-        .ant-select-selector {
-          width: 100%;
-          height: 40px;
-          border: unset;
-        }
-        .ant-input.ant-input-status-error,
-        .ant-input-status-error .ant-select-selector {
-          border: 1px solid #ff4d4f;
-          background-color: #fff !important;
-        }
-
-        &:not(:last-of-type) {
-          margin-bottom: 23px;
-        }
-
-        .cat-tag-select .ant-select-selector {
-          background-image: url("/stakeholder-overview/search-icon.svg"),
-            url("/knowledge-library/chevron-down-grey.svg");
-          background-repeat: no-repeat;
-          background-position: 14px center, calc(100% - 17px) center;
-          padding-left: 45px;
-          .ant-select-selection-search {
-            margin-left: 0;
-          }
-          .ant-select-selection-placeholder {
-            padding-left: calc(13.88px + 17.77px);
-          }
-        }
-
-        .modal-suggest-category {
-          .ant-select-selector {
-            background-image: url("/knowledge-library/chevron-down-grey.svg");
-            background-repeat: no-repeat;
-            background-position: calc(100% - 17px) center;
-          }
+          margin-bottom: 8px;
         }
       }
     }
-
-    .invite-expert-buttons {
+    .ant-form-item {
       display: flex;
-      justify-content: center;
-      margin-top: 65px;
-      button {
-        font-weight: 700;
-        font-size: 16px;
-        line-height: 22px;
-        display: flex;
-        align-items: center;
-        text-align: center;
-        color: #18162f;
-        transition: all 0.15s ease-out;
-        // &:hover {
-        //   background-color: $yellow-highlight;
-        //   transition: all 0.15s ease-out;
-        // }
-      }
-      .invite-submit-button {
-        margin-right: 16px;
-        border: 2px solid #18162f;
-        &:hover {
-          background-color: #18162f;
-          color: #fff;
-        }
-      }
-      .invite-cancel-button {
-        border: unset;
-      }
-    }
-    .ant-modal-footer {
-      display: none;
-    }
-    .ant-select-multiple {
-      .ant-select-selection-item {
-        background-color: #3276ae;
-        color: white;
-        border-radius: 3px;
-        font-weight: 500;
-      }
-      .ant-select-selection-item-remove svg {
-        fill: white;
-        opacity: 0.5;
-      }
-    }
-
-    @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
-      .ant-modal-body {
-        padding: 17px 20px 30px 20px;
-      }
-
-      .invite-expert-buttons {
-        margin-top: 30px;
-      }
-      .ant-modal-header {
-        padding: 10px 20px;
-      }
+      flex-direction: column;
+      margin-bottom: 0;
     }
   }
 }
