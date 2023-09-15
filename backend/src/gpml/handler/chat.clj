@@ -24,6 +24,15 @@
                :enum (map str dom.types/chat-account-statuses)}}
     (dom.types/get-type-schema :chat-account-status)]])
 
+(def ^:private send-private-channel-invitation-request-params-schema
+  [:map
+   [:channel_name
+    {:optional false
+     :swagger {:description "The channel name"
+               :type "string"
+               :allowEmptyValue false}}
+    [:string {:min 1}]]])
+
 (defn- create-user-account
   [config {:keys [user]}]
   (let [result (srv.chat/create-user-account config (:id user))]
@@ -55,6 +64,17 @@
         (r/ok (cske/transform-keys ->snake_case (:channels result)))
         (r/server-error (dissoc result :success?))))))
 
+(defn- send-private-channel-invitation-request
+  [config {:keys [user parameters]}]
+  (let [channel-name (get-in parameters [:body :channel_name])
+        result (srv.chat/send-private-channel-invitation-request
+                config
+                user
+                channel-name)]
+    (if (:success? result)
+      (r/ok {})
+      (r/server-error (dissoc result :success?)))))
+
 (defmethod ig/init-key :gpml.handler.chat/post
   [_ config]
   (fn [req]
@@ -82,3 +102,12 @@
   [_ config]
   (fn [req]
     (get-user-joined-channels config req)))
+
+(defmethod ig/init-key :gpml.handler.chat/send-private-channel-invitation-request
+  [_ config]
+  (fn [req]
+    (send-private-channel-invitation-request config req)))
+
+(defmethod ig/init-key :gpml.handler.chat/send-private-channel-invitation-request-params
+  [_ _]
+  {:body send-private-channel-invitation-request-params-schema})

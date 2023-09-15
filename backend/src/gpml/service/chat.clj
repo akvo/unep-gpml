@@ -1,7 +1,9 @@
 (ns gpml.service.chat
   (:require [gpml.boundary.port.chat :as chat]
+            [gpml.db.rbac-util :as db.rbac-util]
             [gpml.db.stakeholder :as db.sth]
             [gpml.util.crypto :as util.crypto]
+            [gpml.util.email :as util.email]
             [gpml.util.thread-transactions :as tht]))
 
 (def ^:private ^:const random-password-size
@@ -139,3 +141,12 @@
 (defn get-private-channels
   [{:keys [chat-adapter]}]
   (chat/get-private-channels chat-adapter {}))
+
+(defn send-private-channel-invitation-request
+  [{:keys [db mailjet-config]} user channel-name]
+  (let [super-admins (db.rbac-util/get-super-admins-details (:spec db) {})]
+    (util.email/notify-admins-new-chat-private-channel-invitation-request
+     mailjet-config
+     super-admins
+     user
+     channel-name)))
