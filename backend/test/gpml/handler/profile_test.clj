@@ -113,7 +113,7 @@
                 :public_email false
                 :public_database false
                 :idp_usernames ["auth0|123"]}
-               (dissoc body :picture_id :cv_id)))
+               (dissoc body :picture_id :cv_id :chat_account_id :chat_account_status)))
         (is (uuid? (:picture_id body)))
         (is (uuid? (:cv_id body)))
         (is (get (set (map :user_id user-ids)) (:id body)))))))
@@ -159,7 +159,7 @@
                 :public_email false
                 :public_database false
                 :idp_usernames ["auth0|123"]}
-               (dissoc (:body resp) :picture_id :cv_id)))
+               (dissoc (:body resp) :picture_id :cv_id :chat_account_id :chat_account_status)))
         (is (uuid? (:picture_id (:body resp))))
         (is (uuid? (:cv_id (:body resp))))))))
 
@@ -175,7 +175,8 @@
           ;; John trying to sign up without any organisation and leave picture, twitter, and linkedin blank
           resp (handler (-> (mock/request :post "/")
                             (assoc :jwt-claims {:email "john@org"})
-                            (assoc :parameters {:body  (dissoc body-params :twitter :linkedin :picture)})))]
+                            (assoc :parameters {:body  (dissoc body-params :twitter :linkedin :picture)})))
+          _ (prn resp)]
       (is (= 201 (:status resp)))
       (is (= "John" (-> (:body resp) :first_name)))
       (is (= "Doe" (-> (:body resp) :last_name)))
@@ -233,7 +234,7 @@
               :public_email true
               :public_database false
               :idp_usernames ["auth0|123"]}
-             (dissoc profile :picture_id :cv_id)))
+             (dissoc profile :picture_id :cv_id :chat_account_id :chat_account_status)))
       (is (uuid? (:picture_id profile)))
       (is (uuid? (:cv_id profile)))
       (is (not= old-picture-id (:picture_id profile)))
@@ -281,7 +282,7 @@
               :public_email false
               :public_database false
               :idp_usernames ["auth0|123"]}
-             (dissoc profile :picture_id :cv_id)))
+             (dissoc profile :picture_id :cv_id :chat_account_id :chat_account_status)))
       (is (uuid? (:picture_id profile)))
       (is (nil? (:cv_id profile))))))
 
