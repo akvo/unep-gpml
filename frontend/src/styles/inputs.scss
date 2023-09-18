@@ -8,7 +8,7 @@
   .ant-picker .ant-picker-input input {
     height: 46px;
   }
-  .ant-input,
+  .ant-input:not(textarea),
   .ant-select-selection-search-input,
   .ant-select-selector,
   .ant-input-affix-wrapper {

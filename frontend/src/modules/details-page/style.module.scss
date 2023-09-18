@@ -1,4 +1,6 @@
-@import "../../vars.scss";
+@import '../../vars.scss';
+@import '../../styles/vars.scss';
+
 .popover-share {
   width: 100% !important;
   max-width: 300px;
@@ -12,6 +14,7 @@
 .detailViewWrapper {
   background: #edf2f7;
   padding-top: 41px;
+  border-radius: 8px;
   @media (max-width: 600px) {
     padding-top: 0;
   }
@@ -20,6 +23,7 @@
       margin: 0 5%;
       background-color: #fff;
       padding: 0;
+      border-radius: 8px;
       @media (max-width: 600px) {
         margin: 0;
       }
@@ -37,6 +41,7 @@
         font-size: 14px;
         line-height: 24px;
         overflow-wrap: break-word;
+        color: $primaryDarkBlue;
       }
 
       .section {
@@ -58,7 +63,7 @@
         position: sticky;
         top: 0;
         border-bottom: unset;
-        padding: 20px 40px calc(20px - 14px) 40px !important;
+        padding: 20px 40px 16px 40px;
         background-color: #fff;
         z-index: 10;
         border-radius: 5px 5px 0 0;
@@ -76,6 +81,7 @@
           flex-wrap: wrap;
           margin-top: 13px;
           transition: all 0.15s ease-out;
+          gap: 10px;
           .language-select {
             margin-left: auto;
             .ant-select {
@@ -115,7 +121,6 @@
             overflow: scroll;
             overflow-y: hidden;
           }
-          button,
           a {
             display: flex;
             align-items: center;
@@ -132,85 +137,21 @@
               background: #ffb400;
             }
           }
-          .view-button {
-            border: unset !important;
-            background-color: $green01;
-            padding-top: 4px !important;
-            span {
-              display: flex;
-              min-height: 32px;
-              align-items: center;
+        }
+
+        .bookmark-button {
+          &.bookmarked {
+            background-color: $primaryGreen;
+            svg {
+              path:last-of-type {
+                fill: $primaryDarkBlue;
+              }
             }
           }
-
-          .two-tone-button,
-          .filled-heart-button {
-            background-color: #fff !important;
-          }
-          .two-tone-button,
-          .filled-heart-button,
-          .two-tone-button:hover .filled-heart-button:hover {
-            transition: all 0.15s ease-out;
-          }
-          .recording-button svg path:nth-of-type(2),
-          .share-button svg path:nth-of-type(1),
-          .share-button svg path:nth-of-type(2),
-          .bookmark-button .heart-outlined path:nth-of-type(2) {
-            fill: #e6f7ff;
-          }
-
-          .anticon {
-            display: flex;
-            align-items: center;
-            margin-left: -4px;
-          }
-          .two-tone-button:hover {
-            background-color: #09689a !important;
-            border: 2px solid #09689a;
-            color: #fff;
-          }
-          .recording-button:hover svg path:nth-of-type(2),
-          .share-button:hover svg path:nth-of-type(1),
-          .share-button:hover svg path:nth-of-type(2),
-          .share-button:hover svg path:nth-of-type(3),
-          .bookmark-button:hover svg path:nth-of-type(2) {
-            fill: #fff;
-          }
-
-          // .share-button:hover svg path:nth-of-type(1),
-          // .bookmarked path:last-of-type {
-          //   fill: #09689a;
-          // }
-
-          .bookmark-button {
+          &:hover {
             svg {
               path {
-                transition: fill 0.25s ease-out;
-              }
-              path:first-of-type {
-                fill: #0c689a;
-              }
-            }
-            &:hover {
-              svg {
-                path:first-of-type {
-                  fill: #e6f7ff;
-                }
-                path:last-of-type {
-                  fill: #0c689a;
-                }
-              }
-            }
-            &.bookmarked {
-              svg {
-                path:last-of-type {
-                  fill: #0c689a;
-                }
-              }
-              &:hover {
-                svg path:last-of-type {
-                  fill: #e6f7ff;
-                }
+                fill: $primaryWhite !important;
               }
             }
           }
@@ -227,6 +168,8 @@
           font-size: 22px;
           line-height: 32px;
           margin-bottom: 0;
+          font-weight: 700;
+          color: $primaryDarkBlue;
           @media (min-width: 900px) {
             font-size: 26px;
             line-height: 38px;
@@ -345,6 +288,7 @@
         }
         .record-table {
           width: 100%;
+          color: $primaryDarkBlue;
           .record-row:not(:last-of-type) {
             border-bottom: 0.25px solid #a5b0c9;
           }
@@ -371,12 +315,12 @@
               font-weight: 600;
               font-size: 14px;
               line-height: 20px;
-              color: #181818;
+              color: $primaryDarkBlue;
               @media (max-width: 600px) {
                 max-width: 50%;
               }
               a {
-                color: #000000;
+                color: $primaryPurple;
                 border-bottom: 2px solid #c5c5c5;
               }
             }
@@ -490,36 +434,9 @@
         display: flex;
         flex-wrap: wrap;
         margin-bottom: 0;
+        padding-inline-start: 0;
         .tag-list-item {
           margin: 0 12px 12px 0;
-          .resource-tag {
-            display: flex;
-            align-items: center;
-            position: relative;
-            padding-left: calc(24px + 14px);
-            font-weight: 500;
-            font-size: 16px;
-            color: #3176ae;
-            min-height: 35px;
-            line-height: 24px;
-            background-color: unset;
-            border: 2px solid #3176ae;
-            border-top-left-radius: 30px;
-            border-bottom-left-radius: 30px;
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
-            margin-right: 0;
-            &::before {
-              content: "";
-              display: block;
-              position: absolute;
-              left: 12px;
-              background: #3176ae;
-              width: 14px;
-              height: 14px;
-              border-radius: 50%;
-            }
-          }
         }
       }
 
@@ -590,6 +507,7 @@
       }
 
       .comment-section {
+        padding-bottom: 20px;
         .content-heading {
           margin-bottom: 0;
         }
@@ -666,35 +584,10 @@
         }
       }
 
-      .login-button {
-        display: flex;
-        align-items: center;
-        background-color: #fff;
-        border: 2px solid #09689a;
-        margin-bottom: 45px;
-        color: #09689a;
-        font-weight: 600;
-        font-size: 14px;
-        line-height: 20px;
-        transition: all 0.15s ease-out;
-        svg {
-          width: 19px;
-          height: 19px;
-          color: #1890ff;
-        }
-        &:hover {
-          color: #fff;
-          transition: all 0.15s ease-out;
-          background: #09689a;
-          svg {
-            fill: #fff;
-          }
-        }
-      }
       .input-wrapper {
         display: flex;
         align-items: center;
-        background: #f3f3f3;
+        background: $primaryGrey;
         padding: 26px 40px;
         border-radius: 0 0 5px 5px;
         @media (max-width: 600px) {
@@ -711,7 +604,7 @@
             width: 24px;
             height: 24px;
             svg {
-              color: #339cfe;
+              color: $primaryPurple7;
               width: 100%;
               height: 100%;
             }
@@ -719,18 +612,27 @@
           .comment-input {
             padding-top: 15px;
             padding-bottom: 15px;
-            background: hsl(199, 100%, 95%);
-            border: 1px solid #339cfe;
+            background: $primaryGrey;
+            border: none;
             border-radius: 5px;
             .ant-input {
               background: hsl(199, 100%, 95%);
               padding-right: 50px;
             }
+            &:hover {
+              border: 1px solid $primaryPurple2;
+            }
+            &::placeholder {
+              color: $primaryDarkBlue4;
+            }
+            &:focus {
+              box-shadow: 0px 0px 0px 2px $primaryPurple7;
+            }
           }
         }
 
         .message-icon {
-          color: #339cfe;
+          color: $primaryPurple7;
           width: 43px;
           height: 43px;
           margin-right: 27px;

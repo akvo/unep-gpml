@@ -47,6 +47,7 @@ import TransnationalImage from "../../images/transnational.svg";
 import CityImage from "../../images/city-icn.svg";
 import { getTypeByResource, languageOptions } from "../flexible-forms/view";
 import { useRouter } from "next/router";
+import { NewFileIcon } from "../../components/icons";
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
 
@@ -572,7 +573,8 @@ const DetailsView = ({
                           data?.tags.map((tag) => (
                             <li className="tag-list-item" key={tag?.tag}>
                               <Tag className="resource-tag">
-                                {tag?.tag || ""}
+                                <NewFileIcon />
+                                <span>{tag?.tag || ""}</span>
                               </Tag>
                             </li>
                           ))}
