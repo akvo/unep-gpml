@@ -142,6 +142,10 @@
   [{:keys [chat-adapter]}]
   (chat/get-private-channels chat-adapter {}))
 
+(defn get-public-channels
+  [{:keys [chat-adapter]}]
+  (chat/get-public-channels chat-adapter {}))
+
 (defn send-private-channel-invitation-request
   [{:keys [db mailjet-config]} user channel-name]
   (let [super-admins (db.rbac-util/get-super-admins-details (:spec db) {})]

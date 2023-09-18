@@ -64,6 +64,13 @@
         (r/ok (cske/transform-keys ->snake_case (:channels result)))
         (r/server-error (dissoc result :success?))))))
 
+(defn- get-public-channels
+  [config _req]
+  (let [result (srv.chat/get-public-channels config)]
+    (if (:success? result)
+      (r/ok (cske/transform-keys ->snake_case (:channels result)))
+      (r/server-error (dissoc result :success?)))))
+
 (defn- send-private-channel-invitation-request
   [config {:keys [user parameters]}]
   (let [channel-name (get-in parameters [:body :channel_name])
@@ -97,6 +104,11 @@
   [_ config]
   (fn [req]
     (get-private-channels config req)))
+
+(defmethod ig/init-key :gpml.handler.chat/get-public-channels
+  [_ config]
+  (fn [req]
+    (get-public-channels config req)))
 
 (defmethod ig/init-key :gpml.handler.chat/get-user-joined-channels
   [_ config]

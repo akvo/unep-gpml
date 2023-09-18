@@ -605,7 +605,13 @@
                                                                 #ig/ref :gpml.auth/auth-required]
                                                    :swagger {:tags ["chat"]}
                                                    :handler #ig/ref :gpml.handler.chat/send-private-channel-invitation-request
-                                                   :parameters #ig/ref :gpml.handler.chat/send-private-channel-invitation-request-params}}]]]]]
+                                                   :parameters #ig/ref :gpml.handler.chat/send-private-channel-invitation-request-params}}]
+                                          ["/public"
+                                           {:get {:summary "Get all public channels in the server"
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :swagger {:tags ["chat"]}
+                                                  :handler #ig/ref :gpml.handler.chat/get-public-channels}}]]]]]
                               :logger #ig/ref :duct.logger/timbre
                               :cors-allowed-origins #ig/ref :gpml.handler.main/cors-allowed-origins}
 
@@ -865,6 +871,7 @@
   :gpml.handler.chat/put #ig/ref :gpml.config/common
   :gpml.handler.chat/put-params {}
   :gpml.handler.chat/get-private-channels #ig/ref :gpml.config/common
+  :gpml.handler.chat/get-public-channels #ig/ref :gpml.config/common
   :gpml.handler.chat/get-user-joined-channels #ig/ref :gpml.config/common
   :gpml.handler.chat/send-private-channel-invitation-request #ig/ref :gpml.config/common
   :gpml.handler.chat/send-private-channel-invitation-request-params {}
