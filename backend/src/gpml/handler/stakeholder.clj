@@ -12,6 +12,7 @@
             [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.handler.util :as handler.util]
+            [gpml.service.chat :as srv.chat]
             [gpml.service.permissions :as srv.permissions]
             [gpml.service.stakeholder :as srv.stakeholder]
             [gpml.util.email :as email]
@@ -379,7 +380,7 @@
                 count (db.stakeholder/update-stakeholder-role tx params)]
             (if (or (= prev-user-role role)
                     (not (contains? #{prev-user-role role} "ADMIN")))
-              (resp/response {:status (if (= count 1) "success" "failed")})
+              (r/ok {:status (if (= count 1) "success" "failed")})
               (let [{:keys [success?]} (if (= "ADMIN" prev-user-role)
                                          (srv.permissions/remove-user-from-super-admins
                                           {:conn tx
@@ -389,18 +390,26 @@
                                           {:conn tx
                                            :logger logger}
                                           id))]
-                (if success?
-                  (resp/response {:status "success"})
+                (if-not success?
                   (throw (ex-info "Error making the user super-admin in RBAC"
-                                  {:reason :error-updating-rbac-super-admins})))))))
+                                  {:reason :error-updating-rbac-super-admins}))
+                  (let [roles (if (= role "ADMIN")
+                                ["user" "moderator"]
+                                ["user"])
+                        result (srv.chat/update-user-account config
+                                                             (:chat_account_id target-user)
+                                                             {:roles roles})]
+                    (if (:success? result)
+                      (r/ok {:status "success"})
+                      (throw (ex-info "Error updating user chat account role"
+                                      {:reason :error-updating-user-chat-account-role})))))))))
         (catch Throwable e
-          (log logger :error ::failed-to-update-stakeholder-role {:exception-message (.getMessage e)})
-          (let [response {:status 500
-                          :body {:success? false
-                                 :reason :could-not-update-stakeholder-role}}]
+          (log logger :error ::failed-to-update-stakeholder-role {:exception-message (ex-message e)})
+          (let [response {:success? false
+                          :reason :could-not-update-stakeholder-role}]
             (if (instance? SQLException e)
-              response
-              (assoc-in response [:body :error-details :error] (.getMessage e))))))
+              (r/server-error response)
+              (r/server-error (assoc-in response [:error-details :error] (ex-message e)))))))
       (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/patch-params [_ _]

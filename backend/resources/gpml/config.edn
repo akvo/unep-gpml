@@ -551,7 +551,67 @@
                                                   :swagger {:tags ["case-study"]}
                                                   :handler #ig/ref :gpml.handler.case-study/post
                                                   :parameters #ig/ref :gpml.handler.case-study/post-params
-                                                  :responses #ig/ref :gpml.handler.case-study/post-responses}}]]]]
+                                                  :responses #ig/ref :gpml.handler.case-study/post-responses}}]]
+                                        ["/chat"
+                                         ["/curated-channel"
+                                          [""
+                                           {:get {:summary "Get the list of curated channels"
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :swagger {:tags ["chat" "curated-channel"]}
+                                                  :handler #ig/ref :gpml.handler.chat-curated-channel/get}
+                                            :post {:summary "Add a channel to the curated list"
+                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                #ig/ref :gpml.auth/auth-required]
+                                                   :swagger {:tags ["chat" "curated-channel"]}
+                                                   :handler #ig/ref :gpml.handler.chat-curated-channel/post
+                                                   :parameters #ig/ref :gpml.handler.chat-curated-channel/post-params}}]
+                                          ["/:id"
+                                           {:delete {:summary "Delete a channel from the curated list"
+                                                     :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                  #ig/ref :gpml.auth/auth-required]
+                                                     :swagger {:tags ["chat" "curated-channel"]}
+                                                     :handler #ig/ref :gpml.handler.chat-curated-channel/delete
+                                                     :parameters #ig/ref :gpml.handler.chat-curated-channel/delete-params}}]]
+                                         ["/user"
+                                          ["/account"
+                                           {:post {:summary "Create a chat user account"
+                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                #ig/ref :gpml.auth/auth-required]
+                                                   :swagger {:tags ["chat"]}
+                                                   :handler #ig/ref :gpml.handler.chat/post
+                                                   :parameters #ig/ref :gpml.handler.chat/post-params}
+                                            :put {:summary "Update chat user account status"
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :swagger {:tags ["chat"]}
+                                                  :handler #ig/ref :gpml.handler.chat/put
+                                                  :parameters #ig/ref :gpml.handler.chat/put-params}}]
+                                          ["/channel"
+                                           {:get {:summary "Get all user joined channels"
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :swagger {:tags ["chat"]}
+                                                  :handler #ig/ref :gpml.handler.chat/get-user-joined-channels}}]]
+                                         ["/channel"
+                                          ["/private"
+                                           {:get {:summary "Get all private channels in the server"
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :swagger {:tags ["chat"]}
+                                                  :handler #ig/ref :gpml.handler.chat/get-private-channels}}
+                                           {:post {:summary "Send private channel invitation request"
+                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                #ig/ref :gpml.auth/auth-required]
+                                                   :swagger {:tags ["chat"]}
+                                                   :handler #ig/ref :gpml.handler.chat/send-private-channel-invitation-request
+                                                   :parameters #ig/ref :gpml.handler.chat/send-private-channel-invitation-request-params}}]
+                                          ["/public"
+                                           {:get {:summary "Get all public channels in the server"
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :swagger {:tags ["chat"]}
+                                                  :handler #ig/ref :gpml.handler.chat/get-public-channels}}]]]]]
                               :logger #ig/ref :duct.logger/timbre
                               :cors-allowed-origins #ig/ref :gpml.handler.main/cors-allowed-origins}
 
@@ -580,6 +640,7 @@
    :scheduler #ig/ref :gpml/scheduler
    :storage-client-adapter #ig/ref :clj-gcp.storage/client
    :brs-ds-adapter #ig/ref :gpml.boundary.adapter.datasource/brs
+   :chat-adapter #ig/ref :gpml.boundary.adapter.chat/rocket-chat
    :auth0 #ig/ref :gpml.config/auth0
    :mailjet-config #ig/ref :gpml.config/mailjet
    :app-name #duct/env ["APP_NAME" Str]
@@ -799,7 +860,29 @@
   :gpml.handler.programmatic.files-migrator/post #ig/ref :gpml.config/common
   :gpml.handler.programmatic.files-migrator/post-params #ig/ref :gpml.config/common
 
+  :gpml.handler.chat-curated-channel/get #ig/ref :gpml.config/common
+  :gpml.handler.chat-curated-channel/post #ig/ref :gpml.config/common
+  :gpml.handler.chat-curated-channel/delete #ig/ref :gpml.config/common
+  :gpml.handler.chat-curated-channel/post-params {}
+  :gpml.handler.chat-curated-channel/delete-params {}
+
+  :gpml.handler.chat/post #ig/ref :gpml.config/common
+  :gpml.handler.chat/post-params {}
+  :gpml.handler.chat/put #ig/ref :gpml.config/common
+  :gpml.handler.chat/put-params {}
+  :gpml.handler.chat/get-private-channels #ig/ref :gpml.config/common
+  :gpml.handler.chat/get-public-channels #ig/ref :gpml.config/common
+  :gpml.handler.chat/get-user-joined-channels #ig/ref :gpml.config/common
+  :gpml.handler.chat/send-private-channel-invitation-request #ig/ref :gpml.config/common
+  :gpml.handler.chat/send-private-channel-invitation-request-params {}
+
   :clj-gcp.storage/client {}
+
+  :gpml.boundary.adapter.chat/rocket-chat
+  {:api-url #duct/env ["CHAT_API_URL" Str]
+   :api-key #duct/env ["CHAT_API_KEY" Str]
+   :api-user-id #duct/env ["CHAT_API_USER_ID" Str]
+   :logger #ig/ref :duct/logger}
 
   :duct.migrator/ragtime {:migrations #ig/ref :duct.migrator.ragtime/resources
                           :logger #ig/ref :duct/logger

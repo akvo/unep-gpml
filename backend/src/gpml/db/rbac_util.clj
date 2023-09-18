@@ -3,6 +3,7 @@
   (:require [hugsql.core :as hugsql]))
 
 (declare get-users-with-granted-permission-on-resource
-         unassign-all-roles)
+         unassign-all-roles
+         get-super-admins-details)
 
 (hugsql/def-db-fns "gpml/db/rbac_util.sql")
