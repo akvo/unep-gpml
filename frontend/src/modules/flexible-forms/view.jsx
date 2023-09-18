@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import {
   Row,
   Col,
-  Button,
   Switch,
   Radio,
   Popover,
@@ -18,13 +17,11 @@ import {
 } from "antd";
 const { Panel } = Collapse;
 import {
-  LeftOutlined,
-  RightOutlined,
   LoadingOutlined,
   EditOutlined,
   CheckOutlined,
-  DownOutlined,
   DeleteOutlined,
+  ArrowLeftOutlined,
 } from "@ant-design/icons";
 import StickyBox from "react-sticky-box";
 import styles from "./style.module.scss";
@@ -39,6 +36,7 @@ import dynamic from "next/dynamic";
 const RichTextEditor = dynamic(() => import("react-rte"), { ssr: false });
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Button from '../../components/button'
 
 export const getTypeByResource = (type) => {
   let t = "";
@@ -709,7 +707,7 @@ const FlexibleForms = ({
           <span>{parentTitle}</span>
           {parentTitle === "Basic info" ? (
             <Button
-              type="ghost"
+              type="text"
               size="small"
               shape="circle"
               icon={
@@ -734,7 +732,7 @@ const FlexibleForms = ({
             />
           ) : (
             <Button
-              type="ghost"
+              type="text"
               size="small"
               shape="circle"
               icon={
@@ -756,7 +754,7 @@ const FlexibleForms = ({
     const customIcon = () => {
       index += 1;
       return (
-        <Button className="custom-step-icon" shape="circle">
+        <Button type="text" className="custom-step-icon">
           {index}
         </Button>
       );
@@ -792,7 +790,7 @@ const FlexibleForms = ({
             <span>{title}</span>
             {title === "Stakeholders connections" ? (
               <Button
-                type="ghost"
+                type="text"
                 size="small"
                 shape="circle"
                 icon={
@@ -811,14 +809,6 @@ const FlexibleForms = ({
                 style={{
                   right: "0",
                   position: "absolute",
-                  color:
-                    data?.[section]?.S4_G5?.individual &&
-                    (data?.[section]?.S4_G5?.individual[0]?.hasOwnProperty(
-                      "role"
-                    ) ||
-                      data?.[section]?.S4_G5?.entity[0]?.hasOwnProperty("role"))
-                      ? "#255B87"
-                      : "#fff",
                   borderColor: "#255B87",
                   backgroundColor: background,
                   display: display,
@@ -826,7 +816,7 @@ const FlexibleForms = ({
               />
             ) : (
               <Button
-                type="ghost"
+                type="text"
                 size="small"
                 shape="circle"
                 icon={
@@ -1141,7 +1131,7 @@ const FlexibleForms = ({
                       className="custom-button"
                       disabled={disabledBtn.disabled}
                       loading={sending}
-                      type={disabledBtn.type}
+                      type="primary"
                       size="large"
                       onClick={(e) => handleOnClickBtnSubmit(e)}
                     >
@@ -1273,7 +1263,8 @@ const FlexibleForms = ({
                           icon={
                             <img src="/examples.png" alt="Example button" />
                           }
-                          size="large"
+                          type="text"
+                          size="small"
                           onClick={() => setDisplayModal(!displayModal)}
                         >
                           SHOW EXAMPLES
@@ -1285,7 +1276,8 @@ const FlexibleForms = ({
                             icon={
                               <img src="/examples.png" alt="Example button" />
                             }
-                            size="large"
+                            type="text"
+                            size="small"
                             onClick={() => setDisplayModal(!displayModal)}
                             className="hide-button"
                           >
@@ -1353,7 +1345,7 @@ const FlexibleForms = ({
                                   </div>
                                   <div className="info-icon-container">
                                     <h2>{name}</h2>
-                                    <Popover content={item.desc}>
+                                    <Popover content={item.desc} overlayClassName={styles['ant-popover']}>
                                       <div className="info-icon-wrapper">
                                         <img src="/i-blue.png" />
                                       </div>
@@ -1397,7 +1389,7 @@ const FlexibleForms = ({
                                   }}
                                 >
                                   {item.title}
-                                  <Popover content={item.des}>
+                                  <Popover content={item.des} overlayClassName={styles['ant-popover']}>
                                     <div className="info-icon-wrapper">
                                       <img src="/i-blue.png" />
                                     </div>
@@ -1526,44 +1518,34 @@ const FlexibleForms = ({
                     <div className="center-content">
                       <p>Getting Started</p>
                     </div>
-                    <div
-                      className="next-button"
-                      onClick={(e) => handleOnClickBtnNext(e)}
-                    >
-                      <p>Next</p>
-                      <RightOutlined />
-                    </div>
+                    <Button onClick={(e) => handleOnClickBtnNext(e)} withArrow="link">
+                      Next
+                    </Button>
                   </div>
                 ) : getTabStepIndex().tabIndex === 1 ? (
                   <div className="bottom-panel">
-                    <div
-                      className="back-button"
+                    <Button
+                      icon={<ArrowLeftOutlined />}
                       onClick={(e) => handleOnClickBtnBack(e)}
                     >
-                      <LeftOutlined />
-                      <p>Back</p>
-                    </div>
+                      Back
+                    </Button>
                     <div className="center-content">
                       <p>Field to submit</p>
                       <h6>1 of 1</h6>
                     </div>
-                    <div
-                      className="next-button"
-                      onClick={(e) => handleOnClickBtnNext(e)}
-                    >
-                      <p>Next</p>
-                      <RightOutlined />
-                    </div>
+                    <Button onClick={(e) => handleOnClickBtnNext(e)} withArrow="link">
+                      Next
+                    </Button>
                   </div>
                 ) : getTabStepIndex().tabIndex === 2 ? (
                   <div className="bottom-panel">
-                    <div
-                      className="back-button"
+                    <Button
+                      icon={<ArrowLeftOutlined />}
                       onClick={(e) => handleOnClickBtnBack(e)}
                     >
-                      <LeftOutlined />
-                      <p>Back</p>
-                    </div>
+                      Back
+                    </Button>
                     <div className="center-content">
                       <p>Field to submit</p>
                       <h6>
@@ -1574,23 +1556,18 @@ const FlexibleForms = ({
                         ]?.length || 0}
                       </h6>
                     </div>
-                    <div
-                      className="next-button"
-                      onClick={(e) => handleOnClickBtnNext(e)}
-                    >
-                      <p>Next</p>
-                      <RightOutlined />
-                    </div>
+                    <Button onClick={(e) => handleOnClickBtnNext(e)} withArrow="link">
+                      Next
+                    </Button>
                   </div>
                 ) : (
                   <div className="bottom-panel">
-                    <div
-                      className="back-button"
+                    <Button
+                      icon={<ArrowLeftOutlined />}
                       onClick={(e) => handleOnClickBtnBack(e)}
                     >
-                      <LeftOutlined />
-                      <p>Back</p>
-                    </div>
+                      Back
+                    </Button>
                   </div>
                 )}
               </Col>

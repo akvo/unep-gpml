@@ -1,4 +1,5 @@
 @import "../../vars.scss";
+@import "../../styles/vars.scss";
 
 .flexibleForms {
   // padding-top: 40px;
@@ -7,6 +8,7 @@
   background: #fff;
   background-size: cover;
   background-position-y: top;
+  overflow-y: auto;
   & > .ui.container > .ant-row {
     & > .ant-col:first-child {
       * {
@@ -21,7 +23,7 @@
     }
 
     .form-info-wrapper {
-      background-color: #005b70;
+      background-color: $primaryDarkBlue7;
       padding: 20px 0;
 
       .ui.container {
@@ -53,33 +55,14 @@
           margin-left: 0;
         }
         .highlight {
+          min-width: 233px;
           font-weight: 400;
-
-          .ant-switch-small {
-            min-width: 40px;
-            height: 20px;
-            line-height: 22px;
-            border: 2px solid #fff;
-            background-color: transparent;
+          .ant-switch {
             margin-right: 5px;
-          }
-          .ant-switch-checked {
-            background-color: #1890ff;
           }
         }
         .custom-button {
-          border-radius: 50px !important;
-          line-height: 16px !important;
-          font-weight: 700 !important;
-          background: #05f081;
-          color: #fff !important;
-          border: 1px solid #05f081;
-          padding: 6.4px 15px;
-          height: 40px;
-          font-size: 16px;
-          &:disabled {
-            opacity: 0.4;
-          }
+          padding: 16px 24px !important;
         }
         .draft-button {
           border-radius: 50px;
@@ -120,6 +103,7 @@
       }
     }
     .form-container {
+      height: calc(100vh - 240px);
       .add-flexible-form {
         width: 100%;
       }
@@ -127,18 +111,6 @@
         color: $blue06;
         font-size: 16px;
         font-weight: 400;
-      }
-      input {
-        background-color: #edf2f7;
-        &::placeholder {
-          color: #a5b0c9;
-        }
-      }
-      textarea {
-        background-color: #edf2f7;
-        &::placeholder {
-          color: #a5b0c9;
-        }
       }
       .ant-input-group-addon {
         background: #ccd2e3;
@@ -178,9 +150,9 @@
               font-weight: 400 !important;
             }
             &.ant-steps-item-active {
-              background: #92adc3;
+              background: $primaryDarkBlue4;
               .ant-steps-item-title {
-                color: #fff;
+                color: $primaryWhite;
                 font-weight: 700 !important;
               }
             }
@@ -211,8 +183,8 @@
             }
           }
           .custom-step-icon {
-            background: $blue06;
-            border-color: $blue06;
+            background: $primaryDarkBlue;
+            border-color: $primaryDarkBlue;
             color: #fff;
             min-width: 32px;
             padding-right: 0;
@@ -221,10 +193,10 @@
             border-radius: 50%;
           }
           .ant-steps-item-title {
-            color: $blue06;
+            color: $primaryDarkBlue;
           }
           &.current-tabs {
-            background: rgba(49, 118, 174, 0.17);
+            background: $primaryDarkBlue2;
 
             .ant-steps-item {
               opacity: 1;
@@ -246,6 +218,8 @@
           h5 {
             font-size: 18px;
             font-weight: 700;
+            color: $primaryDarkBlue;
+            margin-bottom: 8px;
           }
           p {
             font-size: 18px;
@@ -255,8 +229,8 @@
           }
         }
         .main-content {
-          background: #ffffff;
-          border-top: 5px solid #d3dee7;
+          background: $primaryWhite;
+          border-top: 5px solid $primaryDarkBlue3;
           box-sizing: border-box;
           box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
           border-radius: 5px;
@@ -327,6 +301,7 @@
               }
               h2 {
                 font-weight: 700;
+                line-height: 35px;
               }
             }
           }
@@ -338,14 +313,14 @@
               justify-content: center;
               align-items: center;
               .info-icon-wrapper {
-                width: 28px;
-                height: 28px;
+                width: 16px;
+                height: 16px;
                 background: rgba(211, 222, 231, 0.2);
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 border-radius: 50%;
-                margin-left: 10px;
+                margin-left: 8px;
               }
             }
             .content-circle {
@@ -493,6 +468,7 @@
               .hide-button {
                 border: none;
                 background-color: transparent;
+                display: flex;
                 img {
                   width: 20px;
                   transform: rotate(180deg);
@@ -638,60 +614,22 @@
         }
         .bottom-panel {
           margin-top: 10px;
-          background: rgba(237, 242, 247, 0.35);
           padding: 15px 0px;
           display: flex;
           align-items: center;
-          justify-content: center;
-
-          .next-button {
-            display: flex;
-            align-items: center;
-            width: fit-content;
-            padding: 5px 10px;
-            border-radius: 20px;
-            border: 1px solid;
-            color: #34a6ff;
-            cursor: pointer;
-
-            p {
-              margin-bottom: 0px;
-              padding-right: 5px;
-            }
-            &:hover {
-              background-color: $yellow-highlight;
-            }
-          }
-          .back-button {
-            display: flex;
-            align-items: center;
-            width: fit-content;
-            padding: 5px 10px;
-            border-radius: 20px;
-            border: 1px solid;
-            color: #34a6ff;
-            cursor: pointer;
-
-            p {
-              margin-bottom: 0px;
-              padding-left: 5px;
-            }
-            &:hover {
-              background-color: $yellow-highlight;
-            }
-          }
+          justify-content: space-between;
           .center-content {
             margin-right: 40px;
             margin-left: 40px;
             p {
               margin-bottom: 0px;
-              color: #3176ae;
+              color: $primaryDarkBlue;
               font-weight: 400;
             }
             h6 {
               text-align: center;
               font-size: 18px;
-              color: #3176ae;
+              color: $primaryDarkBlue;
               font-weight: 700;
             }
           }
