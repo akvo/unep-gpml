@@ -214,8 +214,9 @@
       text-align: left;
       .legend-transnational-title {
         display: block;
-        color: #036799;
+        color: $primaryDarkBlue;
         margin-top: 24px;
+        font-family: var(--font-archia), sans-serif;
       }
     }
   }
@@ -230,6 +231,7 @@
       display: flex;
       justify-content: space-between;
       text-align: left;
+      font-family: var(--font-dm-sans), sans-serif;
     }
   }
   :global {
@@ -588,13 +590,13 @@
       }
 
       .tooltip-counts {
-        color: #005c93;
+        color: $primaryDarkBlue;
         text-align: right;
       }
 
       .tooltip-topic {
         margin-right: 10px;
-        color: #7db0cb;
+        color: $primaryDarkBlue;
       }
 
       .entity-type {
@@ -609,8 +611,9 @@
 
       h3 {
         font-size: 16px;
+        line-height: 20px;
         font-weight: 600;
-        color: #005c93;
+        color: $primaryDarkBlue;
         max-width: 150px;
         width: 100%;
         margin-left: auto;
@@ -646,7 +649,7 @@
 
         b {
           margin-left: auto;
-          color: #005c93;
+          color: $primaryDarkBlue;
         }
       }
     }
