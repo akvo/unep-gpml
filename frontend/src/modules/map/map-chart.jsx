@@ -416,7 +416,7 @@ const MapChart = ({
                       cursor={!isLake ? 'pointer' : ''}
                       style={{
                         default: { outline: 'none' },
-                        hover: { outline: 'none' },
+                        hover: { outline: 'none', fill: '#020A5B' },
                         pressed: { outline: 'none' },
                       }}
                       fill={
