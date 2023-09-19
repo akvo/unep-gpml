@@ -414,31 +414,30 @@
         li {
           // background-color: #dce7f3;
           border-radius: 5px;
-          margin-right: 15px;
-          padding: 10px 15px;
+          margin-right: 10px;
+          padding: 10px 10px;
           display: flex;
           flex-direction: column;
           cursor: pointer;
           text-align: center;
-          font-weight: 500;
-          font-size: 15px;
-          letter-spacing: -0.5px;
-          border: 2px solid white;
+          font-weight: 700;
+          font-size: 12px;
+          // letter-spacing: -0.5px;
+          border: 1.5px solid white;
           color: white;
           font-family: var(--font-archia), sans-serif;
+          text-transform: uppercase;
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+          }
           &.selected {
+            background-color: #fff;
+            color: $primaryDarkBlue;
+            border-color: white;
             svg {
               path {
                 transition: fill 0.15s ease-out;
-                fill: white;
-              }
-            }
-
-            &:hover {
-              color: white;
-              border-color: #fff;
-              & > div svg path {
-                fill: #06496c;
+                fill: $primaryDarkBlue;
               }
             }
           }
@@ -468,13 +467,6 @@
           &:nth-child(1) {
             & > div svg {
               transform: translateY(4px);
-            }
-          }
-          &:hover {
-            color: $primaryGreen;
-            border-color: $primaryGreen;
-            & > div svg path {
-              fill: $primaryGreen;
             }
           }
         }
