@@ -279,7 +279,7 @@ function MyApp({ Component, pageProps }) {
           typeof window !== 'undefined' ? window.location.origin : ''
         }
       >
-        {router.pathname !== '/landing' ? (
+        {!newRoutes.some((route) => router.pathname.startsWith(route)) ? (
           <Layout {...pageProps} {...componentProps} />
         ) : (
           <NewLayout {...pageProps} {...componentProps} />
