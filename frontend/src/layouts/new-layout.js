@@ -61,7 +61,7 @@ const NewLayout = ({
       `}</style>
       <div>
         <div className="top-bar">
-          <div className="container">
+          <div className={`${isIndexPage ? 'container' : 'container-fluid'}`}>
             <div className="logo-container">
               <Image
                 className="gpml-white"
@@ -87,7 +87,8 @@ const NewLayout = ({
 export const withNewLayout = (Component) => {
   const WithLayoutComponent = (props) => {
     const router = useRouter()
-    const isIndexPage = router.pathname === '/'
+    const isIndexPage =
+      router.pathname === '/' || router.pathname === '/landing'
     const { isAuthenticated, auth0Client, profile, setLoginVisible } = props
 
     return (
