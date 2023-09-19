@@ -1,0 +1,32 @@
+.ant-input-affix-wrapper {
+  background-color: $primaryGrey;
+  height: auto;
+  border-radius: 8px;
+  width: 100%;
+  border: none;
+  font-family: var(--font-dm-sans), sans-serif;
+  &:focus,
+  &.ant-input-affix-wrapper-focused {
+    box-shadow: 0px 0px 0px 2px #1d90f5;
+  }
+  &:hover {
+    .ant-input {
+      &::placeholder {
+        color: $primaryDarkBlue !important;
+      }
+    }
+  }
+  .ant-input {
+    background-color: inherit;
+    color: $primaryDarkBlue;
+    font-size: $fzXS;
+    line-height: $lhXS;
+    font-weight: 400;
+    &::placeholder {
+      color: $primaryDarkBlue4 !important;
+    }
+  }
+}
+.ant-input-affix-wrapper-sm {
+  padding: 11px;
+}

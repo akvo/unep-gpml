@@ -36,33 +36,23 @@
       }
       .search-input {
         width: 100%;
-        .input-search {
-          background-color: #edf2f6;
-          border: none !important;
-          height: 34px;
-          input {
-            font-weight: 500;
-            color: #a5b0c9;
-            font-size: 16px;
-            &::placeholder {
-              font-weight: 500;
-              color: #a5b0c9;
-            }
-          }
-          .anticon-search {
-            color: #a5b0c9;
-          }
-        }
-      }
-      :global {
-        input {
-          font-weight: 500;
-          color: #a5b0c9;
-          &::placeholder {
-            font-weight: 500;
-            color: #a5b0c9;
-          }
-        }
+        // .input-search {
+        //   background-color: #edf2f6;
+        //   border: none !important;
+        //   height: 34px;
+        //   input {
+        //     font-weight: 500;
+        //     color: #a5b0c9;
+        //     font-size: 16px;
+        //     &::placeholder {
+        //       font-weight: 500;
+        //       color: #a5b0c9;
+        //     }
+        //   }
+        //   .anticon-search {
+        //     color: #a5b0c9;
+        //   }
+        // }
       }
       :global {
         .date-picker-container {
