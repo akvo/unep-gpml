@@ -84,6 +84,11 @@
   #{:private
     :public})
 
+(def ^:const chat-account-statuses
+  #{:pending-activation
+    :active
+    :inactive})
+
 (def ^:const enum-types
   {:review-status review-statuses
    :reviewer-status reviewer-review-statuses
@@ -93,7 +98,8 @@
    :topic-entity-table topic-entity-tables
    :topic-type topic-types
    :resource-type resources-types
-   :file-visibility file-visibility})
+   :file-visibility file-visibility
+   :chat-account-status chat-account-statuses})
 
 (defn get-type-schema
   [type-name]
