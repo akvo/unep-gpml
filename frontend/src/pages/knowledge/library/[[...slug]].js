@@ -20,7 +20,6 @@ function KnowledgeLibrary({ isAuthenticated }) {
 
   useEffect(() => {
     if (typeof window !== 'undefined' && Object.keys(landing).length === 0) {
-      console.log(Object.keys(landing).length)
       fetchMapData()
     }
   }, [])
@@ -28,4 +27,4 @@ function KnowledgeLibrary({ isAuthenticated }) {
   return <KnowledgeLib isAuthenticated={isAuthenticated} />
 }
 
-export default KnowledgeLibrary
+export default React.memo(KnowledgeLibrary)

@@ -1,7 +1,6 @@
 import humps from 'humps'
 import auth0 from 'auth0-js'
 import ReactGA from 'react-ga4'
-import { useLocation } from 'react-router-dom'
 import { useRouter } from 'next/router'
 
 export const tTypes = [
@@ -178,15 +177,15 @@ export const toTitleCase = (phrase) => {
     .join(' ')
 }
 
-const domain = 'https://unep-gpml-test.eu.auth0.com/'.replace(
-  /(https:\/\/|\/)/gi,
-  ''
-)
+const domain =
+  typeof window !== 'undefined'
+    ? window.__ENV__.auth0.domain.replace(/(https:\/\/|\/)/gi, '')
+    : ''
 
 export const auth0Client = new auth0.WebAuth({
   domain: domain,
-  clientID: 'dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J',
-  audience: 'https://unep-gpml-test.eu.auth0.com/api/v2/',
+  clientID: typeof window !== 'undefined' ? window.__ENV__.auth0.clientId : '',
+  audience: typeof window !== 'undefined' ? window.__ENV__.auth0.audience : '',
   redirectUri: typeof window !== 'undefined' ? window.location.origin : '',
   scope: 'openid profile email',
   responseType: 'token id_token',

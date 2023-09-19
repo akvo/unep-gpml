@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { Auth0Provider } from '@auth0/auth0-react'
 import Head from 'next/head'
 // import '../main.scss'
@@ -37,6 +37,9 @@ function MyApp({ Component, pageProps }) {
   const [authResult, setAuthResult] = useState(null)
   const [loginVisible, setLoginVisible] = useState(false)
 
+  const LayoutRef = useRef(null)
+  const NewLayoutRef = useRef(null)
+
   const isAuthenticated = new Date().getTime() < _expiresAt
 
   const setSession = (authResult) => {
@@ -45,6 +48,8 @@ function MyApp({ Component, pageProps }) {
     setAuthResult(authResult)
     scheduleTokenRenewal()
   }
+
+  console.log(new Date().getTime() < _expiresAt)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -217,13 +222,45 @@ function MyApp({ Component, pageProps }) {
     })()
   }, [idToken, authResult])
 
-  const Layout = withLayout(Component)
-  const NewLayout = withNewLayout(Component)
+  const domain =
+    typeof window !== 'undefined'
+      ? window.__ENV__.auth0.domain.replace(/(https:\/\/|\/)/gi, '')
+      : ''
 
-  const domain = 'https://unep-gpml-test.eu.auth0.com/'.replace(
-    /(https:\/\/|\/)/gi,
-    ''
+  const componentProps = useMemo(
+    () => ({
+      isAuthenticated,
+      auth0Client,
+      profile,
+      loginVisible,
+      setLoginVisible,
+      loadingProfile,
+    }),
+    [
+      isAuthenticated,
+      auth0Client,
+      profile,
+      loginVisible,
+      setLoginVisible,
+      loadingProfile,
+    ]
   )
+
+  if (router.pathname.startsWith('/knowledge/library/')) {
+    if (!LayoutRef.current) {
+      LayoutRef.current = withLayout(Component)
+    }
+
+    if (!NewLayoutRef.current) {
+      NewLayoutRef.current = withNewLayout(Component)
+    }
+  } else {
+    LayoutRef.current = null
+    NewLayoutRef.current = null
+  }
+
+  const Layout = LayoutRef.current || withLayout(Component)
+  const NewLayout = NewLayoutRef.current || withNewLayout(Component)
 
   return (
     <div id="root">
@@ -235,36 +272,17 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <Auth0Provider
         domain={domain}
-        clientId="dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J"
+        clientId={
+          typeof window !== 'undefined' ? window.__ENV__.auth0.clientId : ''
+        }
         redirectUri={
           typeof window !== 'undefined' ? window.location.origin : ''
         }
       >
-        {!newRoutes.some((route) => router.pathname.startsWith(route)) && (
-          <Layout
-            {...pageProps}
-            {...{
-              isAuthenticated,
-              auth0Client,
-              profile,
-              loginVisible,
-              setLoginVisible,
-              loadingProfile,
-            }}
-          />
-        )}
-        {newRoutes.some((route) => router.pathname.startsWith(route)) && (
-          <NewLayout
-            {...pageProps}
-            {...{
-              isAuthenticated,
-              auth0Client,
-              profile,
-              loginVisible,
-              setLoginVisible,
-              loadingProfile,
-            }}
-          />
+        {router.pathname !== '/landing' ? (
+          <Layout {...pageProps} {...componentProps} />
+        ) : (
+          <NewLayout {...pageProps} {...componentProps} />
         )}
       </Auth0Provider>
     </div>

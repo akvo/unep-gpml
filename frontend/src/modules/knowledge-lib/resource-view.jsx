@@ -176,7 +176,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   }
 
   useMemo(() => {
-    // if ((pathname || search) && !loading) updateQuery("replace");
+    if ((pathname || search) && !loading) updateQuery('replace')
   }, [pathname, search])
 
   useEffect(() => {

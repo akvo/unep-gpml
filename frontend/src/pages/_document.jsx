@@ -1,9 +1,9 @@
-import Document, { Html, Head, Main, NextScript } from "next/document";
+import Document, { Html, Head, Main, NextScript } from 'next/document'
 
 class MyDocument extends Document {
   static async getInitialProps(ctx) {
-    const initialProps = await Document.getInitialProps(ctx);
-    return { ...initialProps };
+    const initialProps = await Document.getInitialProps(ctx)
+    return { ...initialProps }
   }
 
   render() {
@@ -35,7 +35,7 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <script src="https://digital.gpmarinelitter.org/env.js"></script>
+          <script src="/env.js"></script>
           <script
             dangerouslySetInnerHTML={{
               __html: `
@@ -55,13 +55,13 @@ class MyDocument extends Document {
               src="https://analytics.akvo.org/containers/1331070d-ea07-4a42-8b50-07e5e6e303b5/noscript.html"
               height="0"
               width="0"
-              style={{ display: "none", visibility: "hidden" }}
+              style={{ display: 'none', visibility: 'hidden' }}
             ></iframe>
           </noscript>
         </body>
       </Html>
-    );
+    )
   }
 }
 
-export default MyDocument;
+export default MyDocument
