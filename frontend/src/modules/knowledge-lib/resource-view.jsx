@@ -1,164 +1,163 @@
-import React, { Fragment, useEffect, useState, useMemo } from "react";
-import classNames from "classnames";
-import { CSSTransition } from "react-transition-group";
-import api from "../../utils/api";
-import FilterBar from "./filter-bar";
-import { resourceTypes } from "./filter-bar";
-import FilterModal from "./filter-modal";
+import React, { Fragment, useEffect, useState, useMemo } from 'react'
+import classNames from 'classnames'
+import { CSSTransition } from 'react-transition-group'
+import api from '../../utils/api'
+import FilterBar from './filter-bar'
+import { resourceTypes } from './filter-bar'
+import FilterModal from './filter-modal'
 import ResourceCards, {
   ResourceCard,
-} from "../../components/resource-cards/resource-cards";
-import { LoadingOutlined, DownOutlined } from "@ant-design/icons";
-import SortIcon from "../../images/knowledge-library/sort-icon.svg";
-import SearchIcon from "../../images/search-icon.svg";
-import { Button } from "antd";
-import Maps from "../map/map";
-import { isEmpty } from "lodash";
-import { useQuery, topicNames } from "../../utils/misc";
-import TopicView from "./topic-view";
+} from '../../components/resource-cards/resource-cards'
+import { LoadingOutlined, DownOutlined } from '@ant-design/icons'
+import SortIcon from '../../images/knowledge-library/sort-icon.svg'
+import SearchIcon from '../../images/search-icon.svg'
+import { Button } from 'antd'
+import Maps from '../map/map'
+import { isEmpty } from 'lodash'
+import { useQuery, topicNames } from '../../utils/misc'
+import TopicView from './topic-view'
 
 const resourceTopic = [
-  "action_plan",
-  "initiative",
-  "policy",
-  "technical_resource",
-  "technology",
-  "event",
-  "financing_resource",
-];
+  'action_plan',
+  'initiative',
+  'policy',
+  'technical_resource',
+  'technology',
+  'event',
+  'financing_resource',
+]
 
 function ResourceView({ history, popularTags, landing, box, showModal }) {
-  const query = useQuery();
+  const query = useQuery()
 
-  const [isAscending, setIsAscending] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
-  const [countData, setCountData] = useState([]);
+  const [isAscending, setIsAscending] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [data, setData] = useState([])
+  const [countData, setCountData] = useState([])
   const [totalCount, setTotalCount] = useState(
     history.query.totalCount ? JSON.parse(history.query.totalCount) : []
-  );
-  const [filterCountries, setFilterCountries] = useState([]);
-  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
-  const [catData, setCatData] = useState([]);
-  const [gridItems, setGridItems] = useState([]);
-  const [pageNumber, setPageNumber] = useState(false);
-  const [view, type] = history.query.slug || [];
-  const { slug, ...queryParams } = history.query;
-  const { pathname, asPath } = history;
-  const search = new URLSearchParams(history.query).toString();
-  const [showFilterModal, setShowFilterModal] = useState(false);
+  )
+  const [filterCountries, setFilterCountries] = useState([])
+  const [multiCountryCountries, setMultiCountryCountries] = useState([])
+  const [catData, setCatData] = useState([])
+  const [gridItems, setGridItems] = useState([])
+  const [pageNumber, setPageNumber] = useState(false)
+  const [view, type] = history.query.slug || []
+  const { slug, ...queryParams } = history.query
+  const { pathname, asPath } = history
+  const search = new URLSearchParams(history.query).toString()
+  const [showFilterModal, setShowFilterModal] = useState(false)
 
-  const limit = 30;
+  const limit = 30
   const totalItems = resourceTopic.reduce(
     (acc, topic) =>
       acc + (countData?.find((it) => it.topic === topic)?.count || 0),
     0
-  );
+  )
 
   const allResources = totalCount
     ?.filter((array) =>
       resourceTypes.some(
         (filter) =>
-          array.topic === filter.title && filter.title !== "capacity building"
+          array.topic === filter.title && filter.title !== 'capacity building'
       )
     )
     ?.reduce(function (acc, obj) {
-      return acc + obj.count;
-    }, 0);
+      return acc + obj.count
+    }, 0)
 
   const uniqueArrayByKey = (array) => [
-    ...new Map(array.map((item) => [item["id"], item])).values(),
-  ];
+    ...new Map(array.map((item) => [item['id'], item])).values(),
+  ]
 
   const fetchData = (searchParams) => {
-    setLoading(true);
-    const queryParams = new URLSearchParams(searchParams);
-    queryParams.delete("slug");
+    setLoading(true)
+    const queryParams = new URLSearchParams(searchParams)
+    queryParams.delete('slug')
     if (type || history?.location?.state?.type)
       queryParams.set(
-        "topic",
+        'topic',
         history?.location?.state?.type
-          ? history?.location?.state?.type.replace(/-/g, "_")
-          : type.replace(/-/g, "_")
-      );
+          ? history?.location?.state?.type.replace(/-/g, '_')
+          : type.replace(/-/g, '_')
+      )
 
     if (
-      type === "capacity-building" ||
-      history?.location?.state?.type === "capacity-building"
+      type === 'capacity-building' ||
+      history?.location?.state?.type === 'capacity-building'
     ) {
-      queryParams.set("capacity_building", ["true"]);
-      queryParams.delete("topic");
+      queryParams.set('capacity_building', ['true'])
+      queryParams.delete('topic')
     }
-    queryParams.set("incCountsForTags", popularTags);
-    queryParams.set("limit", limit);
-    queryParams.delete("totalCount");
-    const url = `/browse?${String(queryParams)}`;
+    queryParams.set('incCountsForTags', popularTags)
+    queryParams.set('limit', limit)
+    queryParams.delete('totalCount')
+    const url = `/browse?${String(queryParams)}`
 
     api
       .get(url)
       .then((resp) => {
-        setLoading(false);
-        setData(resp?.data);
+        setLoading(false)
+        setData(resp?.data)
         if (totalCount.length === 0) {
           setTotalCount(
             history.query.totalCount
               ? JSON.parse(history.query.totalCount)
               : resp?.data?.counts
-          );
+          )
         }
-        setCountData(resp?.data?.counts);
+        setCountData(resp?.data?.counts)
         setGridItems((prevItems) => {
-          return uniqueArrayByKey([...prevItems, ...resp?.data?.results]);
-        });
+          return uniqueArrayByKey([...prevItems, ...resp?.data?.results])
+        })
       })
       .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
-  };
+        console.error(err)
+        setLoading(false)
+      })
+  }
 
   const updateQuery = (param, value, reset, fetch = true) => {
     if (!reset) {
-      setPageNumber(null);
-      setGridItems([]);
+      setPageNumber(null)
+      setGridItems([])
     }
-    const newQuery = { ...query };
-    newQuery[param] = value;
+    const newQuery = { ...query }
+    newQuery[param] = value
 
-    if (param === "descending" || query.hasOwnProperty("descending")) {
-      newQuery["orderBy"] = "title";
+    if (param === 'descending' || query.hasOwnProperty('descending')) {
+      newQuery['orderBy'] = 'title'
     }
 
-    if (newQuery.hasOwnProperty("country"))
-      setFilterCountries(newQuery.country);
+    if (newQuery.hasOwnProperty('country')) setFilterCountries(newQuery.country)
 
     // Remove empty query
     const arrayOfQuery = Object.entries(newQuery)?.filter(
-      (item) => item[1]?.length !== 0 && typeof item[1] !== "undefined"
-    );
+      (item) => item[1]?.length !== 0 && typeof item[1] !== 'undefined'
+    )
 
-    const pureQuery = Object.fromEntries(arrayOfQuery);
+    const pureQuery = Object.fromEntries(arrayOfQuery)
 
-    const newParams = new URLSearchParams(pureQuery);
+    const newParams = new URLSearchParams(pureQuery)
 
-    newParams.delete("offset");
+    newParams.delete('offset')
 
-    if (fetch && view !== "category") fetchData(pureQuery);
+    if (fetch && view !== 'category') fetchData(pureQuery)
 
-    if (view === "category") loadAllCat(pureQuery);
+    if (view === 'category') loadAllCat(pureQuery)
 
-    if (param === "country") {
-      setFilterCountries(value);
+    if (param === 'country') {
+      setFilterCountries(value)
     }
-  };
+  }
 
   const loadAllCat = async (filter) => {
-    setLoading(true);
+    setLoading(true)
 
-    const queryParams = new URLSearchParams(filter);
+    const queryParams = new URLSearchParams(filter)
     const promiseArray = resourceTopic.map((url) =>
       api.get(`/browse?topic=${url}&${String(queryParams)}`)
-    );
+    )
 
     Promise.all(promiseArray)
       .then((data) => {
@@ -166,57 +165,57 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           categories,
           data: data[idx].data.results,
           count: data[idx]?.data?.counts[0]?.count || 0,
-        }));
-        setCatData(newData);
-        setLoading(false);
+        }))
+        setCatData(newData)
+        setLoading(false)
       })
       .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-  };
+        console.log(err)
+        setLoading(false)
+      })
+  }
 
   useMemo(() => {
     // if ((pathname || search) && !loading) updateQuery("replace");
-  }, [pathname, search]);
+  }, [pathname, search])
 
   useEffect(() => {
-    if (data.length === 0) updateQuery();
-  }, []);
+    if (data.length === 0) updateQuery()
+  }, [])
 
   const clickCountry = (name) => {
-    const val = query["country"];
-    let updateVal = [];
+    const val = query['country']
+    let updateVal = []
 
     if (isEmpty(val)) {
-      updateVal = [name];
+      updateVal = [name]
     } else if (val.includes(name)) {
-      updateVal = val.filter((x) => x !== name);
+      updateVal = val.filter((x) => x !== name)
     } else {
-      updateVal = [...val, name];
+      updateVal = [...val, name]
     }
-    updateQuery("country", updateVal, true);
-  };
+    updateQuery('country', updateVal, true)
+  }
 
   const handleCategoryFilter = (key) => {
     history.push({
       pathname: `/knowledge/library/${
-        view ? (view === "category" ? "grid" : view) : "map"
-      }/${key.replace(/_/g, "-")}/`,
+        view ? (view === 'category' ? 'grid' : view) : 'map'
+      }/${key.replace(/_/g, '-')}/`,
       search: search,
-      state: { type: key.replace(/-/g, "_") },
-    });
-  };
+      state: { type: key.replace(/-/g, '_') },
+    })
+  }
 
   const sortResults = (ascending) => {
-    setPageNumber(null);
+    setPageNumber(null)
     if (!ascending) {
-      updateQuery("descending", "false", true);
+      updateQuery('descending', 'false', true)
     } else {
-      updateQuery("descending", "true", true);
+      updateQuery('descending', 'true', true)
     }
-    setIsAscending(ascending);
-  };
+    setIsAscending(ascending)
+  }
 
   return (
     <Fragment>
@@ -241,14 +240,14 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         <div className="list-toolbar">
           <div className="quick-search">
             <div className="count">
-              {view === "grid"
+              {view === 'grid'
                 ? `Showing ${gridItems?.length} of ${totalItems}`
-                : view === "category"
+                : view === 'category'
                 ? `${catData?.reduce(
                     (count, current) => count + current?.count,
                     0
                   )}`
-                : `Showing ${!loading ? data?.results?.length : ""}`}
+                : `Showing ${!loading ? data?.results?.length : ''}`}
             </div>
             <div className="search-icon">
               <SearchIcon />
@@ -258,37 +257,39 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           <button
             className="sort-by-button"
             onClick={() => {
-              if (view === "grid") setGridItems([]);
-              sortResults(!isAscending);
+              if (view === 'grid') setGridItems([])
+              sortResults(!isAscending)
             }}
           >
-            <SortIcon
-              style={{
-                transform:
-                  !isAscending || isAscending === null
-                    ? "initial"
-                    : "rotate(180deg)",
-              }}
-            />
+            <div className="sort-icon">
+              <SortIcon
+                style={{
+                  transform:
+                    !isAscending || isAscending === null
+                      ? 'initial'
+                      : 'rotate(180deg)',
+                }}
+              />
+            </div>
             <div className="sort-button-text">
               <span>Sort by:</span>
-              <b>{!isAscending ? `A>Z` : "Z>A"}</b>
+              <b>{!isAscending ? `A>Z` : 'Z>A'}</b>
             </div>
           </button>
         </div>
-        {(view === "map" || !view || view === "topic") && (
-          <div style={{ position: "relative" }}>
+        {(view === 'map' || !view || view === 'topic') && (
+          <div style={{ position: 'relative' }}>
             <ResourceCards
               items={data?.results}
               showMoreCardAfter={20}
               showMoreCardClick={() => {
                 history.push(
                   {
-                    pathname: `/knowledge/library/grid/${type ? type : ""}`,
+                    pathname: `/knowledge/library/grid/${type ? type : ''}`,
                     query: queryParams,
                   },
-                  `/knowledge/library/grid/${type ? type : ""}`
-                );
+                  `/knowledge/library/grid/${type ? type : ''}`
+                )
               }}
               showModal={(e) =>
                 showModal({
@@ -305,7 +306,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             )}
           </div>
         )}
-        {(view === "map" || !view) && (
+        {(view === 'map' || !view) && (
           <Maps
             query={query}
             box={box}
@@ -322,7 +323,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             zoom={1.1}
           />
         )}
-        {view === "grid" && (
+        {view === 'grid' && (
           <GridView
             {...{
               gridItems,
@@ -337,7 +338,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           />
         )}
 
-        {view === "category" && (
+        {view === 'category' && (
           <div className="cat-view">
             {loading && (
               <div className="loading">
@@ -364,7 +365,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
                         type="link"
                         block
                         onClick={() => {
-                          handleCategoryFilter(d.categories);
+                          handleCategoryFilter(d.categories)
                         }}
                       >
                         See all {`>`}
@@ -374,7 +375,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
                       items={d?.data}
                       showMoreCardAfter={20}
                       showMoreCardClick={() => {
-                        handleCategoryFilter(d.categories);
+                        handleCategoryFilter(d.categories)
                       }}
                       showModal={(e) =>
                         showModal({
@@ -407,7 +408,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         }}
       />
     </Fragment>
-  );
+  )
 }
 
 const GridView = ({
@@ -430,7 +431,7 @@ const GridView = ({
             showModal={(e) =>
               showModal({
                 e,
-                type: item?.type.replace("_", "-"),
+                type: item?.type.replace('_', '-'),
                 id: item?.id,
               })
             }
@@ -442,28 +443,28 @@ const GridView = ({
           className="load-more"
           loading={loading}
           onClick={() => {
-            setPageNumber((prevNumber) => prevNumber + limit);
-            updateQuery("offset", [pageNumber + limit], true);
+            setPageNumber((prevNumber) => prevNumber + limit)
+            updateQuery('offset', [pageNumber + limit], true)
           }}
         >
           Load More
         </Button>
       )}
     </div>
-  );
-};
+  )
+}
 
 const ViewSwitch = ({ type, view, history, queryParams }) => {
-  const viewOptions = ["map", "grid", "category"];
-  const [visible, setVisible] = useState(false);
-  view = !view ? "map" : view;
+  const viewOptions = ['map', 'grid', 'category']
+  const [visible, setVisible] = useState(false)
+  view = !view ? 'map' : view
 
   return (
     <div className="view-switch-container">
       <div
-        className={classNames("switch-btn", { active: visible })}
+        className={classNames('switch-btn', { active: visible })}
         onClick={() => {
-          setVisible(!visible);
+          setVisible(!visible)
         }}
       >
         <DownOutlined />
@@ -483,18 +484,18 @@ const ViewSwitch = ({ type, view, history, queryParams }) => {
                 <li
                   key={viewOption}
                   onClick={() => {
-                    setVisible(!visible);
+                    setVisible(!visible)
                     history.push(
                       {
                         pathname: `/knowledge/library/${viewOption}/${
-                          type && viewOption !== "category" ? type : ""
+                          type && viewOption !== 'category' ? type : ''
                         }`,
                         query: queryParams,
                       },
                       `/knowledge/library/${viewOption}/${
-                        type && viewOption !== "category" ? type : ""
+                        type && viewOption !== 'category' ? type : ''
                       }`
-                    );
+                    )
                   }}
                 >
                   {viewOption} view
@@ -504,7 +505,7 @@ const ViewSwitch = ({ type, view, history, queryParams }) => {
         </div>
       </CSSTransition>
     </div>
-  );
-};
+  )
+}
 
-export default ResourceView;
+export default ResourceView
