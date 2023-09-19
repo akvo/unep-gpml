@@ -225,6 +225,35 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
+(defn- get-all-channels*
+  [{:keys [logger api-url api-key api-user-id]} opts]
+  (try
+    (let [query-params (cond-> {}
+                         (:name opts)
+                         (assoc :filter (:name opts))
+
+                         (:types opts)
+                         (assoc :types (:types opts)))
+          {:keys [status body]}
+          (http-client/do-request logger
+                                  {:url (str api-url "/rooms.adminRooms")
+                                   :method :get
+                                   :query-params (cske/transform-keys ->camelCaseString query-params)
+                                   :headers (get-auth-headers api-key api-user-id)
+                                   :as :json-keyword-keys})]
+      (if (<= 200 status 299)
+        {:success? true
+         :channels (cske/transform-keys ->kebab-case (:rooms body))}
+        {:success? false
+         :reason :failed-to-get-all-channels
+         :error-details body}))
+    (catch Throwable t
+      (log logger :error :failed-to-get-all-channels {:exception-message (ex-message t)
+                                                      :stack-trace (map str (.getStackTrace t))})
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
+
 (defn- get-user-joined-channels*
   [adapter user-id]
   (let [result (get-user-info* adapter user-id {:fields {:user-rooms 1}})]
@@ -278,6 +307,8 @@
     (get-public-channels* this opts))
   (get-private-channels [this opts]
     (get-private-channels* this opts))
+  (get-all-channels [this opts]
+    (get-all-channels* this opts))
   (get-user-info [this user-id]
     (get-user-info* this user-id {}))
   (get-user-info [this user-id opts]

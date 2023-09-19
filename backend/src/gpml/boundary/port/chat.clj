@@ -8,6 +8,7 @@
     [this user-id opts])
   (get-public-channels [this opts])
   (get-private-channels [this opts])
+  (get-all-channels [this opts])
   (set-user-account-active-status
     [this user-id active?]
     [this user-id active? opts])
