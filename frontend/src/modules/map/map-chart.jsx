@@ -27,7 +27,7 @@ import VerticalLegend from './vertical-legend'
 import { useDeviceSize } from '../landing/landing'
 
 const geoUrl = '/unep-gpml.topo.json'
-const colorRange = ['#00C199', '#00F1BF', '#33F4CC', '#66F7D9', '#99F9E5']
+const colorRange = ['#bbedda', '#a7e1cb', '#92d5bd', '#7dcaaf', '#67bea1']
 
 const unsettledTerritoryIsoCode = [
   'xJL',
@@ -40,7 +40,7 @@ const unsettledTerritoryIsoCode = [
   'xxx',
 ]
 
-const higlightColor = '#66F7D9'
+const higlightColor = '#020A5B'
 
 const KNOWLEDGE_LIBRARY = 'knowledge'
 const STAKEHOLDER_OVERVIEW = 'community'
@@ -424,7 +424,7 @@ const MapChart = ({
                           : geo.properties.M49Code === selected
                           ? 'rgba(255, 184, 0, 0.65)'
                           : selectionCondition()
-                          ? '#000647'
+                          ? '#020A5B'
                           : fillColor(
                               curr(findData?.counts, path, existingData)
                                 ? curr(findData?.counts, path, existingData)

@@ -250,6 +250,7 @@
     .legend-heading {
       display: block;
       text-align: left;
+      font-family: var(--font-archia), sans-serif;
     }
   }
 
@@ -328,7 +329,7 @@
       justify-content: space-between;
       position: absolute;
       top: 10px;
-      right: 10px;
+      right: 20px;
       @media (max-width: 719px) {
         .map-buttons button {
           width: 30px;
@@ -371,8 +372,7 @@
           line-height: 1.3em;
         }
         .ant-typography {
-          font-family: 'Avenir Next', 'Helvetica Neue', Helvetica, Arial,
-            sans-serif;
+          font-family: var(--font-archia), sans-serif;
         }
         .legend {
           width: 20px;
