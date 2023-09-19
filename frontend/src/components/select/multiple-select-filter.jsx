@@ -1,7 +1,7 @@
-import React from "react";
-import { Col, Space, Tag, Select } from "antd";
-import isEmpty from "lodash/isEmpty";
-import styles from "./style.module.scss";
+import React from 'react'
+import { Col, Space, Tag, Select } from 'antd'
+import isEmpty from 'lodash/isEmpty'
+import styles from './style.module.scss'
 
 const MultipleSelectFilter = ({
   title,
@@ -27,11 +27,12 @@ const MultipleSelectFilter = ({
             Clear Selection
           </Tag>
         ) : (
-          ""
+          ''
         )}
       </Space>
       <div>
         <Select
+          size="small"
           dropdownClassName="multiselection-dropdown"
           showSearch
           allowClear
@@ -49,7 +50,7 @@ const MultipleSelectFilter = ({
         />
       </div>
     </Col>
-  );
-};
+  )
+}
 
-export default MultipleSelectFilter;
+export default MultipleSelectFilter

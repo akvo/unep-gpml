@@ -215,3 +215,10 @@ export const useQuery = () => {
 
   return ret
 }
+
+export const pagination = {
+  clickable: true,
+  renderBullet: function (index, className) {
+    return '<div class="' + className + '">' + '<span/>' + '</div>'
+  },
+}
