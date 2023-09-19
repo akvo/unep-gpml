@@ -80,7 +80,7 @@
         (r/server-error (dissoc result :success?))))))
 
 (defn- get-all-channels
-  [config {:keys [user parameters] :as req}]
+  [config {:keys [user parameters]}]
   (if-not (h.r.permission/super-admin? config (:id user))
     (r/forbidden {:message "Unauthorized"})
     (let [search-opts (:query parameters)
