@@ -146,8 +146,10 @@ const FilterBar = ({
             }}
           >
             <div>
-              {/* <Icon name={`all`} fill={`${!view ? '#06496c' : '#fff'}`} /> */}
-              <img src="/all.svg" />
+              <DynamicSVG
+                type="all"
+                fillColor={`${!view ? '#06496c' : '#fff'}`}
+              />
               <b>{allResources}</b>
             </div>
             <span>All Resources</span>
@@ -174,8 +176,10 @@ const FilterBar = ({
               }}
             >
               <div>
-                {/* <Icon name={`resource-types/${t.key}`} fill="#000" /> */}
-                <img src={`/resource-types/${t.key}.svg`} />
+                <DynamicSVG
+                  type={`${t.key}`}
+                  fillColor={`${!view ? '#06496c' : '#fff'}`}
+                />
                 <b>
                   {totalCount.find((item) => t.title === item.topic)?.count ||
                     'XX'}
@@ -235,6 +239,25 @@ const FilterBar = ({
       </div>
     </div>
   )
+}
+
+function DynamicSVG({ type, fillColor }) {
+  const [svgContent, setSvgContent] = useState(null)
+
+  useEffect(() => {
+    fetch(`/resource-types/${type}.svg`)
+      .then((response) => response.text())
+      .then((content) => setSvgContent(content))
+  }, [type])
+
+  if (!svgContent) return null
+
+  const updatedContent = svgContent.replace(
+    'fill="#06496c"',
+    `fill="${fillColor}"`
+  )
+
+  return <div dangerouslySetInnerHTML={{ __html: updatedContent }} />
 }
 
 export default FilterBar
