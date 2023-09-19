@@ -606,8 +606,8 @@
                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
                                                                #ig/ref :gpml.auth/auth-required]
                                                   :swagger {:tags ["chat"]}
-                                                  :handler #ig/ref :gpml.handler.chat/get-private-channels}}
-                                           {:post {:summary "Send private channel invitation request"
+                                                  :handler #ig/ref :gpml.handler.chat/get-private-channels}
+                                            :post {:summary "Send private channel invitation request"
                                                    :middleware [#ig/ref :gpml.auth/auth-middleware
                                                                 #ig/ref :gpml.auth/auth-required]
                                                    :swagger {:tags ["chat"]}
