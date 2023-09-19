@@ -1,122 +1,119 @@
-import { useState, useEffect } from "react";
-import moment from "moment";
-import capitalize from "lodash/capitalize";
-import { Link } from "react-router-dom";
-import values from "lodash/values";
-import { UIStore } from "../../store";
-import imageNotFound from "../../images/image-not-found.png";
-import { languages } from "countries-list";
-import { topicNames, resourceSubTypes, toTitleCase } from "../../utils/misc";
-import { Input, Button, notification, Checkbox } from "antd";
-import api from "../../utils/api";
-import { fetchSubmissionData } from "./utils";
-import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
+import { useState, useEffect } from 'react'
+import moment from 'moment'
+import capitalize from 'lodash/capitalize'
+import values from 'lodash/values'
+import { UIStore } from '../../store'
+import imageNotFound from '../../images/image-not-found.png'
+import { languages } from 'countries-list'
+import { topicNames, resourceSubTypes, toTitleCase } from '../../utils/misc'
+import { Input, Button, notification, Checkbox } from 'antd'
+import api from '../../utils/api'
+import { fetchSubmissionData } from './utils'
+import CatTagSelect from '../../components/cat-tag-select/cat-tag-select'
+import Link from 'next/link'
 
 const currencyFormat = (cur) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: cur });
+  new Intl.NumberFormat('en-US', { style: 'currency', currency: cur })
 
 const findCountries = (
   { countries, regionOptions, meaOptions, transnationalOptions },
   item
 ) => {
-  const {
-    country,
-    geoCoverageType,
-    geoCoverageValue,
-    geoCoverageValues,
-  } = item;
+  const { country, geoCoverageType, geoCoverageValue, geoCoverageValues } = item
 
   if (
-    (geoCoverageType === "regional" ||
-      geoCoverageType === "global with elements in specific areas") &&
+    (geoCoverageType === 'regional' ||
+      geoCoverageType === 'global with elements in specific areas') &&
     (geoCoverageValue !== null || geoCoverageValues !== null)
   ) {
-    const values = geoCoverageValues || geoCoverageValue;
+    const values = geoCoverageValues || geoCoverageValue
     const data =
-      geoCoverageType === "regional"
+      geoCoverageType === 'regional'
         ? []
-        : geoCoverageType === "global with elements in specific areas"
+        : geoCoverageType === 'global with elements in specific areas'
         ? meaOptions
-        : null;
+        : null
     if (values === null || data === null) {
-      return "-";
+      return '-'
     }
     return values
       ?.map((v) => {
-        return data?.find((x) => x.id === v)?.name;
+        return data?.find((x) => x.id === v)?.name
       })
-      .join(", ");
+      .join(', ')
   }
 
   if (
-    geoCoverageType === "global" &&
+    geoCoverageType === 'global' &&
     (geoCoverageValue === null || geoCoverageValues === null)
   ) {
     return (
       <div className="scrollable">
         {values(countries)
           ?.map((c) => c.name)
-          .join(", ")}
+          .join(', ')}
       </div>
-    );
+    )
   }
 
   if (
-    (geoCoverageType === "national" || geoCoverageType === "sub-national") &&
+    (geoCoverageType === 'national' || geoCoverageType === 'sub-national') &&
     (geoCoverageValue !== null || geoCoverageValues !== null)
   ) {
-    const values = geoCoverageValues || geoCoverageValue;
-    if (values === null || typeof values === "undefined") {
-      return "-";
+    const values = geoCoverageValues || geoCoverageValue
+    if (values === null || typeof values === 'undefined') {
+      return '-'
     }
-    const newArray = [...new Set([...transnationalOptions, ...countries])];
+    const newArray = [...new Set([...transnationalOptions, ...countries])]
     return (
       <div className="scrollable">
         {values
           .map((v) => {
-            return newArray.find((x) => x.id === v)?.name;
+            return newArray.find((x) => x.id === v)?.name
           })
-          .join(", ")}
+          .join(', ')}
       </div>
-    );
+    )
   }
 
   if (
-    geoCoverageType === "transnational" &&
+    geoCoverageType === 'transnational' &&
     (geoCoverageValue !== null || geoCoverageValues !== null)
   ) {
-    const values = geoCoverageValues || geoCoverageValue;
-    if (values === null || typeof values === "undefined") {
-      return "-";
+    const values = geoCoverageValues || geoCoverageValue
+    if (values === null || typeof values === 'undefined') {
+      return '-'
     }
     return (
       <div className="scrollable">
         {values
           .map((v) => {
-            return transnationalOptions.find((x) => x.id === v)?.name;
+            return transnationalOptions.find((x) => x.id === v)?.name
           })
-          .join(", ")}
+          .join(', ')}
       </div>
-    );
+    )
   }
-  return "-";
-};
+  return '-'
+}
 
 const GpmlLinkLi = ({ item }) => {
   return (
     <li className="has-border">
       <Link
-        to={`/${item.type.replace("_", "-")}/${
-          item.reviewStatus === "PENDING" ? item.topicId : item.id
+        href={`/${item.type.replace('_', '-')}/${
+          item.reviewStatus === 'PENDING' ? item.topicId : item.id
         }`}
-        className="browse-card"
+        legacyBehavior
       >
-        GPML LINK: /{item.type.replace("_", "-")}/
-        {item.reviewStatus === "PENDING" ? item.topicId : item.id}{" "}
+        <a className="browse-card">
+          GPML LINK: /{item.type.replace('_', '-')}/
+          {item.reviewStatus === 'PENDING' ? item.topicId : item.id}{' '}
+        </a>
       </Link>
     </li>
-  );
-};
+  )
+}
 
 export const GeneralPreview = ({ item, featuredSelect }) => {
   const {
@@ -131,8 +128,8 @@ export const GeneralPreview = ({ item, featuredSelect }) => {
     meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
     tags: s.tags,
-  }));
-  const country = countries.find((x) => x.id === item.country)?.name || "-";
+  }))
+  const country = countries.find((x) => x.id === item.country)?.name || '-'
   return (
     <div className="general-info">
       <div className="info-img">
@@ -152,33 +149,33 @@ export const GeneralPreview = ({ item, featuredSelect }) => {
             <b>{item.title}</b>
           </div>
         </li>
-        {item.type === "policy" && (
+        {item.type === 'policy' && (
           <>
             <li>
               <div className="detail-title">Original Title</div>:
-              <div className="detail-content">{item.originalTitle || "-"}</div>
+              <div className="detail-content">{item.originalTitle || '-'}</div>
             </li>
             <li>
               <div className="detail-title">Status</div>:
-              <div className="detail-content">{item.status || "-"}</div>
+              <div className="detail-content">{item.status || '-'}</div>
             </li>
             <li>
               <div className="detail-title">First Publication</div>:
               <div className="detail-content">
-                {moment(item.firstPublicationDate).format("DD MMM YYYY") || "-"}
+                {moment(item.firstPublicationDate).format('DD MMM YYYY') || '-'}
               </div>
             </li>
             <li>
               <div className="detail-title">Lastest Amandment</div>:
               <div className="detail-content">
-                {moment(item.latestAmendmentDate).format("DD MMM YYYY") || "-"}
+                {moment(item.latestAmendmentDate).format('DD MMM YYYY') || '-'}
               </div>
             </li>
             <li>
               <div className="detail-title">Implementing MEA</div>:
               <div className="detail-content">
                 {meaOptions.find((x) => x.id === item.implementingMea)?.name ||
-                  "-"}
+                  '-'}
               </div>
             </li>
           </>
@@ -188,10 +185,10 @@ export const GeneralPreview = ({ item, featuredSelect }) => {
           <div className="detail-content">{country}</div>
         </li>
         <li>
-          {["event", "technology"].includes(item.type) && (
+          {['event', 'technology'].includes(item.type) && (
             <div className="detail-title">Description</div>
           )}
-          {item.type === "policy" && (
+          {item.type === 'policy' && (
             <div className="detail-title">Abstract</div>
           )}
           {resourceSubTypes.has(item.type) && (
@@ -199,7 +196,7 @@ export const GeneralPreview = ({ item, featuredSelect }) => {
           )}
           :
           <div className="detail-content">
-            {item.description || item.summary || item.abstract || "-"}
+            {item.description || item.summary || item.abstract || '-'}
           </div>
         </li>
         {item?.publishYear && (
@@ -208,42 +205,42 @@ export const GeneralPreview = ({ item, featuredSelect }) => {
             <div className="detail-content">{item.publishYear}</div>
           </li>
         )}
-        {item.type === "technology" && (
+        {item.type === 'technology' && (
           <>
             <li>
               <div className="detail-title">Development Stage</div>:
               <div className="detail-content">
-                {item?.developmentStage || "-"}
+                {item?.developmentStage || '-'}
               </div>
             </li>
           </>
         )}
-        {item.type === "financing_resource" && (
+        {item.type === 'financing_resource' && (
           <>
             <li>
               <div className="detail-title">Value</div>:
               <div className="detail-content">
                 {(item.value &&
                   currencyFormat(item.valueCurrency).format(item.value)) ||
-                  "-"}
+                  '-'}
               </div>
             </li>
             <li>
               <div className="detail-title">Value Remarks</div>:
-              <div className="detail-content">{item?.valueRemarks || "-"}</div>
+              <div className="detail-content">{item?.valueRemarks || '-'}</div>
             </li>
           </>
         )}
-        {["financing_resource", "action_plan"].includes(item.type) &&
+        {['financing_resource', 'action_plan'].includes(item.type) &&
           [item.validFrom, item.validTo].map((x, i) => (
-            <li key={"valid" + i}>
+            <li key={'valid' + i}>
               <div className="detail-title">
-                Valid {i === 0 ? "from" : "to"}
+                Valid {i === 0 ? 'from' : 'to'}
               </div>
               :
               <div className="detail-content">
-                {moment(x, "YYYY-MM-DD", true).isValid()
-                  ? moment(x).format("DD MMM YYYY")
+                {moment(x, 'YYYY-MM-DD', true).isValid()
+                  ? moment(x).format('DD MMM YYYY')
                   : x}
               </div>
             </li>
@@ -252,28 +249,28 @@ export const GeneralPreview = ({ item, featuredSelect }) => {
           <li>
             <div className="detail-title">Organisation</div>:
             <div className="detail-content">
-              {item?.organisations?.map((x) => x.name).join(",")}
+              {item?.organisations?.map((x) => x.name).join(',')}
             </div>
           </li>
         )}
-        {item.type === "event" && (
+        {item.type === 'event' && (
           <li>
             <div className="detail-title">Event Date</div>:
             <div className="detail-content">
-              {moment(item.startDate).format("DD MMM YYYY")} {"- "}
-              {moment(item.endDate).format("DD MMM YYYY")}
+              {moment(item.startDate).format('DD MMM YYYY')} {'- '}
+              {moment(item.endDate).format('DD MMM YYYY')}
             </div>
           </li>
         )}
-        {item.type === "event" && (
+        {item.type === 'event' && (
           <li>
             <div className="detail-title">City</div>:
-            <div className="detail-content">{item.city || "-"}</div>
+            <div className="detail-content">{item.city || '-'}</div>
           </li>
         )}
         <li>
           <div className="detail-title">Remarks</div>:
-          <div className="detail-content">{item.remarks || "-"}</div>
+          <div className="detail-content">{item.remarks || '-'}</div>
         </li>
         <li>
           <div className="detail-title">Submitted at</div>:
@@ -288,7 +285,7 @@ export const GeneralPreview = ({ item, featuredSelect }) => {
         <li>
           <div className="detail-title">Published at</div>:
           <div className="detail-content">
-            {item.reviewedAt && moment(item.reviewedAt).format("DD MMM YYYY")}
+            {item.reviewedAt && moment(item.reviewedAt).format('DD MMM YYYY')}
           </div>
         </li>
         <li className="has-border">
@@ -297,10 +294,10 @@ export const GeneralPreview = ({ item, featuredSelect }) => {
         <li>
           <div className="detail-title">Geo coverage type</div>:
           <div className="detail-content">
-            {capitalize(item.geoCoverageType) || "-"}
+            {capitalize(item.geoCoverageType) || '-'}
           </div>
         </li>
-        {item.geoCoverageType !== "global" && (
+        {item.geoCoverageType !== 'global' && (
           <li>
             <div className="detail-title">Geo coverage</div>:
             <div className="detail-content">
@@ -318,16 +315,16 @@ export const GeneralPreview = ({ item, featuredSelect }) => {
           <div className="detail-title">Urls</div>:
           <div className="detail-content">
             {item?.languages && (
-              <ul className={"ul-children"}>
+              <ul className={'ul-children'}>
                 {item.languages.map((x, i) => (
                   <li key={`url-${i}`}>
                     <a
-                      href={`https://${x.url.replace(/^.*:\/\//i, "")}`}
+                      href={`https://${x.url.replace(/^.*:\/\//i, '')}`}
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {`https://${x.url.replace(/^.*:\/\//i, "")}`}
-                    </a>{" "}
+                      {`https://${x.url.replace(/^.*:\/\//i, '')}`}
+                    </a>{' '}
                     <span className="lang">{languages[x.isoCode].name}</span>
                   </li>
                 ))}
@@ -339,11 +336,11 @@ export const GeneralPreview = ({ item, featuredSelect }) => {
           <div className="detail-title">Tags</div>:
           <div className="detail-content">
             {(item.tags &&
-              item.tags.map((x) => Object.values(x)[0]).join(", ")) ||
-              "-"}
+              item.tags.map((x) => Object.values(x)[0]).join(', ')) ||
+              '-'}
           </div>
         </li>
-        {item.type !== "organisation" && (
+        {item.type !== 'organisation' && (
           <>
             <li className="has-border">
               <p className="section-title">Actions</p>
@@ -351,7 +348,7 @@ export const GeneralPreview = ({ item, featuredSelect }) => {
             {featuredSelect}
           </>
         )}
-        {item.reviewStatus === "APPROVED" && item.type === "organisation" && (
+        {item.reviewStatus === 'APPROVED' && item.type === 'organisation' && (
           <>
             <li className="has-border">
               <p className="section-title">Actions</p>
@@ -368,31 +365,31 @@ export const GeneralPreview = ({ item, featuredSelect }) => {
         )}
       </ul>
     </div>
-  );
-};
+  )
+}
 
 export const TagPreview = ({ item }) => {
   const [detail, setDetail] = useState({
-    definition: "",
-    ontologyRefLink: "",
-  });
-  const [edit, setEdit] = useState(false);
+    definition: '',
+    ontologyRefLink: '',
+  })
+  const [edit, setEdit] = useState(false)
 
   useEffect(() => {
     setDetail({
-      definition: item.definition ? item.definition : "",
-      ontologyRefLink: item.ontologyRefLink ? item.ontologyRefLink : "",
-    });
-  }, [item]);
+      definition: item.definition ? item.definition : '',
+      ontologyRefLink: item.ontologyRefLink ? item.ontologyRefLink : '',
+    })
+  }, [item])
 
   const handleInputChange = (e) => {
     let newDetail = {
       ...detail,
       [e.target.name]: e.target.value,
-    };
+    }
 
-    setDetail(newDetail);
-  };
+    setDetail(newDetail)
+  }
 
   const updateTag = () => {
     if (
@@ -400,27 +397,27 @@ export const TagPreview = ({ item }) => {
       detail.ontologyRefLink !== item.ontologyRefLink
     ) {
       api
-        .put("tag", {
+        .put('tag', {
           id: item.id,
           definition: detail.definition,
           ontologyRefLink: detail.ontologyRefLink,
         })
         .then((d) => {
-          notification.success({ message: "Tag updated" });
-          setEdit(false);
+          notification.success({ message: 'Tag updated' })
+          setEdit(false)
           setTimeout(
             () => item.getPreviewContent([`/submission/tag/${item.id}`], true),
             1000
-          );
+          )
         })
         .catch((err) => {
-          console.log(err);
-          notification.error({ message: "An error occured" });
-        });
+          console.log(err)
+          notification.error({ message: 'An error occured' })
+        })
     } else {
-      setEdit(false);
+      setEdit(false)
     }
-  };
+  }
 
   return (
     <div className="general-info">
@@ -485,8 +482,8 @@ export const TagPreview = ({ item }) => {
         </li>
       </ul>
     </div>
-  );
-};
+  )
+}
 
 export const ProfilePreview = ({ item }) => {
   const {
@@ -501,10 +498,10 @@ export const ProfilePreview = ({ item }) => {
     meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
     tags: s.tags,
-  }));
-  const country = countries.find((x) => x.id === item.country)?.name || "-";
-  const [expertise, setExpertise] = useState([]);
-  const [error, setError] = useState("");
+  }))
+  const country = countries.find((x) => x.id === item.country)?.name || '-'
+  const [expertise, setExpertise] = useState([])
+  const [error, setError] = useState('')
 
   const handleExpertise = (value) => {
     expertise.indexOf(value) === -1 &&
@@ -514,32 +511,32 @@ export const ProfilePreview = ({ item }) => {
           .flat()
           .find((o) => o.tag.toLowerCase() === value.toLowerCase())?.tag ||
           value,
-      ]);
-  };
+      ])
+  }
 
   const handleRemove = (v) => {
-    setExpertise(expertise.filter((item) => item !== v));
-  };
+    setExpertise(expertise.filter((item) => item !== v))
+  }
 
   const updateStakeholderExpertise = () => {
     let vals = {
       expertise: expertise,
-    };
+    }
     api
       .put(`/stakeholder/${item.id}`, vals)
       .then(() => {
-        notification.success({ message: "Profile updated" });
+        notification.success({ message: 'Profile updated' })
       })
       .catch(() => {
-        notification.error({ message: "An error occured" });
-      });
-  };
+        notification.error({ message: 'An error occured' })
+      })
+  }
 
   useEffect(() => {
     if (item.expertise) {
-      setExpertise(item.expertise.map((item) => item));
+      setExpertise(item.expertise.map((item) => item))
     }
-  }, [item]);
+  }, [item])
 
   return (
     <div className="stakeholder-info">
@@ -571,15 +568,15 @@ export const ProfilePreview = ({ item }) => {
           </li>
           <li>
             <div className="detail-title">Linkedin</div>:
-            <div className="detail-content">{item.linkedIn || "-"}</div>
+            <div className="detail-content">{item.linkedIn || '-'}</div>
           </li>
           <li>
             <div className="detail-title">Twitter</div>:
-            <div className="detail-content">{item.twitter || "-"}</div>
+            <div className="detail-content">{item.twitter || '-'}</div>
           </li>
           <li>
             <div className="detail-title">Representative sector</div>:
-            <div className="detail-content">{item.representation || "-"}</div>
+            <div className="detail-content">{item.representation || '-'}</div>
           </li>
           <li>
             <div className="detail-title">Country</div>:
@@ -588,10 +585,10 @@ export const ProfilePreview = ({ item }) => {
           <li>
             <div className="detail-title">Geo coverage type</div>:
             <div className="detail-content">
-              {capitalize(item.geoCoverageType) || "-"}
+              {capitalize(item.geoCoverageType) || '-'}
             </div>
           </li>
-          {item.geoCoverageType !== "global" && (
+          {item.geoCoverageType !== 'global' && (
             <li>
               <div className="detail-title">Geo coverage</div>:
               <div className="detail-content">
@@ -618,17 +615,17 @@ export const ProfilePreview = ({ item }) => {
           </li>
           <li>
             <div className="detail-title">Organisation Role</div>:
-            <div className="detail-content">{item.organisationRole || "-"}</div>
+            <div className="detail-content">{item.organisationRole || '-'}</div>
           </li>
           <li className="has-border">
             <p className="section-title">Expertise and Activities</p>
           </li>
           <li>
             <div className="detail-title">Expertise</div>:
-            <div className="detail-content" style={{ width: "100%" }}>
+            <div className="detail-content" style={{ width: '100%' }}>
               <CatTagSelect
                 handleChange={(value) => handleExpertise(value)}
-                meta={"meta"}
+                meta={'meta'}
                 value={expertise ? expertise : undefined}
                 handleRemove={(v) => handleRemove(v)}
               />
@@ -636,19 +633,19 @@ export const ProfilePreview = ({ item }) => {
           </li>
           <li>
             <div className="detail-title">Seeking</div>:
-            <div className="detail-content">{item.seeking || "-"}</div>
+            <div className="detail-content">{item.seeking || '-'}</div>
           </li>
           <li>
             <div className="detail-title">Offering</div>:
-            <div className="detail-content">{item.offering || "-"}</div>
+            <div className="detail-content">{item.offering || '-'}</div>
           </li>
           <li>
             <div className="detail-title">About yourself</div>:
-            <div className="detail-content">{item.about || "-"}</div>
+            <div className="detail-content">{item.about || '-'}</div>
           </li>
           <li>
             <div className="detail-title">Tags</div>:
-            <div className="detail-content">{item.general || "-"}</div>
+            <div className="detail-content">{item.general || '-'}</div>
           </li>
           <li className="update-button-group">
             <Button
@@ -663,8 +660,8 @@ export const ProfilePreview = ({ item }) => {
         </ul>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export const InitiativePreview = ({ item, featuredSelect }) => {
   return (
@@ -690,12 +687,12 @@ export const InitiativePreview = ({ item, featuredSelect }) => {
         </li>
         <li>
           <div className="detail-title">Country</div>:
-          <div className="detail-content">{item?.country || "-"}</div>
+          <div className="detail-content">{item?.country || '-'}</div>
         </li>
         <li>
           <div className="detail-title">Submitted at</div>:
           <div className="detail-content">
-            {moment(item.createdAt).format("DD MMM YYYY")}
+            {moment(item.createdAt).format('DD MMM YYYY')}
           </div>
         </li>
         <li>
@@ -706,16 +703,16 @@ export const InitiativePreview = ({ item, featuredSelect }) => {
         </li>
         <li>
           <div className="detail-title">Submitted</div>:
-          <div className="detail-content">{item?.submitted || "-"}</div>
+          <div className="detail-content">{item?.submitted || '-'}</div>
         </li>
-        {item?.submitted === "On behalf of an entity" && (
+        {item?.submitted === 'On behalf of an entity' && (
           <li>
             <div className="detail-title">Organisation</div>:
             <div className="detail-content">
               {item?.organisation ? (
                 <a href={item?.organisation?.url}>{item?.organisation?.name}</a>
               ) : (
-                "-"
+                '-'
               )}
             </div>
           </li>
@@ -725,13 +722,13 @@ export const InitiativePreview = ({ item, featuredSelect }) => {
         </li>
         <li>
           <div className="detail-title">Geo coverage type</div>:
-          <div className="detail-content">{item?.geoCoverageType || "-"}</div>
+          <div className="detail-content">{item?.geoCoverageType || '-'}</div>
         </li>
-        {item?.geoCoverageType && item?.geoCoverageType !== "Global" && (
+        {item?.geoCoverageType && item?.geoCoverageType !== 'Global' && (
           <li>
             <div className="detail-title">Geo coverage</div>:
             <div className="detail-content">
-              {item?.geoCoverageValues?.join(", ") || "-"}
+              {item?.geoCoverageValues?.join(', ') || '-'}
             </div>
           </li>
         )}
@@ -741,18 +738,18 @@ export const InitiativePreview = ({ item, featuredSelect }) => {
         <li>
           <div className="detail-title">URL</div>:
           <div className="detail-content">
-            <ul className={"ul-children"}>
+            <ul className={'ul-children'}>
               {item?.links?.map((x, i) => (
                 <li key={`url-${i}`}>
                   <a
-                    href={`https://${x.replace(/^.*:\/\//i, "")}`}
+                    href={`https://${x.replace(/^.*:\/\//i, '')}`}
                     target="_blank"
                     rel="noreferrer"
                   >
-                    {`https://${x.replace(/^.*:\/\//i, "")}`}
-                  </a>{" "}
+                    {`https://${x.replace(/^.*:\/\//i, '')}`}
+                  </a>{' '}
                 </li>
-              )) || "-"}
+              )) || '-'}
             </ul>
           </div>
         </li>
@@ -761,26 +758,26 @@ export const InitiativePreview = ({ item, featuredSelect }) => {
         </li>
         <li>
           <div className="detail-title">Entities</div>:
-          <ul className={"ul-children"}>
+          <ul className={'ul-children'}>
             {item?.entities?.map((x, i) => <li key={`url-${i}`}>{x}</li>) ||
-              "-"}
+              '-'}
           </ul>
         </li>
         <li>
           <div className="detail-title">Partner</div>:
           <div className="detail-content">
-            <ul className={"ul-children"}>
+            <ul className={'ul-children'}>
               {item?.partners?.map((x, i) => <li key={`url-${i}`}>{x}</li>) ||
-                "-"}
+                '-'}
             </ul>
           </div>
         </li>
         <li>
           <div className="detail-title">Donor</div>:
           <div className="detail-content">
-            <ul className={"ul-children"}>
+            <ul className={'ul-children'}>
               {item?.donors?.map((x, i) => <li key={`url-${i}`}>{x}</li>) ||
-                "-"}
+                '-'}
             </ul>
           </div>
         </li>
@@ -790,8 +787,8 @@ export const InitiativePreview = ({ item, featuredSelect }) => {
         {featuredSelect}
       </ul>
     </div>
-  );
-};
+  )
+}
 
 export const DetailCollapse = ({
   data,
@@ -801,7 +798,7 @@ export const DetailCollapse = ({
   focalPoint,
   ownerSelect,
 }) => {
-  const [featuredFlag, setFeaturedFlag] = useState(false);
+  const [featuredFlag, setFeaturedFlag] = useState(false)
 
   const updateFeaturedResource = () => {
     api
@@ -809,16 +806,16 @@ export const DetailCollapse = ({
         featured: featuredFlag,
       })
       .then(() => {
-        notification.success({ message: "Resource updated" });
+        notification.success({ message: 'Resource updated' })
       })
       .catch((e) => {
         notification.error({
           message: e.response.data.reason
-            ? e.response.data.reason.replace(/-/g, " ")
-            : "An error occured",
-        });
-      });
-  };
+            ? e.response.data.reason.replace(/-/g, ' ')
+            : 'An error occured',
+        })
+      })
+  }
 
   const FeaturedSelect = () => {
     return (
@@ -831,7 +828,7 @@ export const DetailCollapse = ({
               defaultChecked={item.featured}
               checked={featuredFlag}
               onChange={(e) => {
-                setFeaturedFlag(e.target.checked);
+                setFeaturedFlag(e.target.checked)
               }}
             />
           </div>
@@ -849,21 +846,21 @@ export const DetailCollapse = ({
           </div>
         </li>
       </>
-    );
-  };
+    )
+  }
 
   switch (item.type) {
-    case "stakeholder":
-      return <ProfilePreview item={{ ...data, ...item, unpublishButton }} />;
-    case "initiative":
+    case 'stakeholder':
+      return <ProfilePreview item={{ ...data, ...item, unpublishButton }} />
+    case 'initiative':
       return (
         <InitiativePreview
           item={{ ...data, ...item, featuredFlag }}
           featuredSelect={<FeaturedSelect />}
         />
-      );
-    case "tag":
-      return <TagPreview item={{ ...data, ...item, getPreviewContent }} />;
+      )
+    case 'tag':
+      return <TagPreview item={{ ...data, ...item, getPreviewContent }} />
     default:
       return (
         <GeneralPreview
@@ -876,6 +873,6 @@ export const DetailCollapse = ({
           }}
           featuredSelect={<FeaturedSelect />}
         />
-      );
+      )
   }
-};
+}
