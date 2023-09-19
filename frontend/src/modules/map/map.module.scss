@@ -1,4 +1,4 @@
-@import "../../vars.scss";
+@import '../../styles/vars.scss';
 
 .map-main-wrapper {
   max-width: 100%;
@@ -22,23 +22,45 @@
   overflow: hidden;
   background-color: #eaf6fd;
   width: 100%;
-  .legend-button {
-    display: flex;
-    place-items: center;
-    justify-content: center;
-    width: 35px;
-    height: 32px;
 
-    &:hover {
-      background-color: $yellow-highlight;
-      color: rgba(0, 0, 0, 0.85);
-      border: #d9d9d9 solid 1px;
-    }
-    @media (max-width: 719px) {
-      width: 30px !important;
-      height: 30px !important;
-      min-width: unset;
-      padding: 0 0 !important;
+  :global {
+    .legend-button {
+      display: flex;
+      place-items: center;
+      justify-content: center;
+      width: 35px !important;
+      height: 32px !important;
+      margin-right: 0 !important;
+      margin-left: 0 !important;
+      border-radius: 4px !important;
+      margin-bottom: 2px !important;
+      padding: 0px !important;
+      svg {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        padding: 0px !important;
+        transform: translate(-50%, -50%);
+      }
+      &:hover {
+        background-color: $primaryDarkBlue !important;
+        color: rgba(0, 0, 0, 0.85);
+        border: 1px solid $primaryDarkBlue !important;
+        span {
+          color: white;
+        }
+        svg {
+          path {
+            stroke: white !important;
+          }
+        }
+      }
+      @media (max-width: 719px) {
+        width: 30px !important;
+        height: 30px !important;
+        min-width: unset;
+        padding: 0 0 !important;
+      }
     }
   }
 
@@ -265,17 +287,34 @@
       display: flex;
       flex-direction: column;
       align-self: flex-end;
-      margin-bottom: 10px;
 
       button {
-        width: 35px;
-        height: 32px;
-        margin-right: 0;
-        margin-left: 0;
+        width: 35px !important;
+        height: 32px !important;
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+        border-radius: 4px !important;
+        margin-bottom: 2px !important;
+        padding: 0px !important;
+        svg {
+          position: absolute !important;
+          top: 50% !important;
+          left: 50% !important;
+          padding: 0px !important;
+          transform: translate(-50%, -50%);
+        }
         &:hover {
-          background-color: $yellow-highlight;
+          background-color: $primaryDarkBlue !important;
           color: rgba(0, 0, 0, 0.85);
-          border: 1px solid #d9d9d9;
+          border: 1px solid $primaryDarkBlue !important;
+          span {
+            color: white;
+          }
+          svg {
+            path {
+              stroke: white !important;
+            }
+          }
         }
       }
     }
@@ -330,7 +369,7 @@
           line-height: 1.3em;
         }
         .ant-typography {
-          font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial,
+          font-family: 'Avenir Next', 'Helvetica Neue', Helvetica, Arial,
             sans-serif;
         }
         .legend {
@@ -348,7 +387,7 @@
               &::before {
                 right: 100%;
                 display: block;
-                content: "";
+                content: '';
                 width: 0;
                 height: 0;
                 border-style: solid;
@@ -453,7 +492,7 @@
         padding: 10px;
 
         .inner {
-          border-top: 3px solid $primaryColor;
+          border-top: 3px solid #00aaf1;
           background-color: rgba(255, 255, 255, 0.85);
           border-radius: 2px;
           padding: 15px;
@@ -492,7 +531,7 @@
           }
 
           .ant-btn {
-            color: $primaryColor;
+            color: #00aaf1;
             padding-left: 0;
             padding-right: 0;
             margin-bottom: 0;

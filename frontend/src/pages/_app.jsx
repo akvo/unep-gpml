@@ -15,9 +15,11 @@ import { updateStatusProfile } from '../utils/profile'
 import { uniqBy, sortBy } from 'lodash'
 import { withNewLayout } from '../layouts/new-layout'
 
+const newRoutes = ['/landing', '/knowledge/library']
+
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
-  if (router.pathname !== '/landing') {
+  if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
     import('../main.scss')
     import('../buttons.scss')
   } else {
@@ -238,7 +240,7 @@ function MyApp({ Component, pageProps }) {
           typeof window !== 'undefined' ? window.location.origin : ''
         }
       >
-        {router.pathname !== '/landing' && (
+        {!newRoutes.some((route) => router.pathname.startsWith(route)) && (
           <Layout
             {...pageProps}
             {...{
@@ -251,7 +253,7 @@ function MyApp({ Component, pageProps }) {
             }}
           />
         )}
-        {router.pathname === '/landing' && (
+        {newRoutes.some((route) => router.pathname.startsWith(route)) && (
           <NewLayout
             {...pageProps}
             {...{
