@@ -1,151 +1,151 @@
-import humps from "humps";
-import auth0 from "auth0-js";
-import ReactGA from "react-ga4";
-import { useLocation } from "react-router-dom";
-import { useRouter } from "next/router";
+import humps from 'humps'
+import auth0 from 'auth0-js'
+import ReactGA from 'react-ga4'
+import { useLocation } from 'react-router-dom'
+import { useRouter } from 'next/router'
 
 export const tTypes = [
-  "project",
-  "actionPlan",
-  "policy",
-  "technicalResource",
-  "financingResource",
-  "event",
-  "technology",
-  "organisation",
-  "stakeholder",
-];
+  'project',
+  'actionPlan',
+  'policy',
+  'technicalResource',
+  'financingResource',
+  'event',
+  'technology',
+  'organisation',
+  'stakeholder',
+]
 
 export const topicTypes = [
-  "project",
-  "actionPlan",
-  "policy",
-  "technicalResource",
-  "financingResource",
-  "event",
-  "technology",
-  "capacityBuilding",
-];
+  'project',
+  'actionPlan',
+  'policy',
+  'technicalResource',
+  'financingResource',
+  'event',
+  'technology',
+  'capacityBuilding',
+]
 
-export const networkTypes = ["organisation", "stakeholder"];
+export const networkTypes = ['organisation', 'stakeholder']
 
 export const networkNames = (network) => {
   const names = {
-    organisation: "Entity",
-    stakeholder: "Individual",
-  };
-  return names[humps.camelize(network)];
-};
+    organisation: 'Entity',
+    stakeholder: 'Individual',
+  }
+  return names[humps.camelize(network)]
+}
 
-export const topicTypesIncludingOrg = topicTypes.concat(["organisation"]);
+export const topicTypesIncludingOrg = topicTypes.concat(['organisation'])
 
 export const topicTypesApprovedUser = topicTypes.concat([
-  "organisation",
-  "stakeholder",
-]);
+  'organisation',
+  'stakeholder',
+])
 
 export const topicNames = (topic) => {
   const names = {
-    initiative: "Initiative",
-    actionPlan: "Action Plan",
-    policy: "Policy",
-    technicalResource: "Technical Resource",
-    financingResource: "Financing Resource",
-    event: "Event",
-    technology: "Technology",
-    organisation: "Entity",
-    stakeholder: "Individual",
-    capacityBuilding: "Capacity Building",
-  };
-  return names[humps.camelize(topic)];
-};
+    initiative: 'Initiative',
+    actionPlan: 'Action Plan',
+    policy: 'Policy',
+    technicalResource: 'Technical Resource',
+    financingResource: 'Financing Resource',
+    event: 'Event',
+    technology: 'Technology',
+    organisation: 'Entity',
+    stakeholder: 'Individual',
+    capacityBuilding: 'Capacity Building',
+  }
+  return names[humps.camelize(topic)]
+}
 
 export const resourceSubTypes = new Set([
-  "financing_resource",
-  "technical_resource",
-  "action_plan",
-]);
+  'financing_resource',
+  'technical_resource',
+  'action_plan',
+])
 export const resourceTypeToTopicType = (type) =>
-  resourceSubTypes.has(type) ? "resource" : type;
+  resourceSubTypes.has(type) ? 'resource' : type
 
 export const relationsByTopicType = {
-  resource: ["interested in"],
-  technology: ["interested in"],
-  event: ["interested in"],
-  project: ["interested in"],
-  policy: ["interested in"],
-  stakeholder: ["interested in", "other"],
-  organisation: ["interested in", "other"],
-};
+  resource: ['interested in'],
+  technology: ['interested in'],
+  event: ['interested in'],
+  project: ['interested in'],
+  policy: ['interested in'],
+  stakeholder: ['interested in', 'other'],
+  organisation: ['interested in', 'other'],
+}
 
 export const entityName = (entity) => {
   const names = {
-    partner: "Partner",
-    owner: "GPML Members",
-    implementor: "Center of excellence",
-    donor: "Sponsor",
-  };
-  return names[humps.camelize(entity)];
-};
+    partner: 'Partner',
+    owner: 'GPML Members',
+    implementor: 'Center of excellence',
+    donor: 'Sponsor',
+  }
+  return names[humps.camelize(entity)]
+}
 
-export const userRoles = ["USER", "REVIEWER", "ADMIN"];
+export const userRoles = ['USER', 'REVIEWER', 'ADMIN']
 
 export const reviewStatusUIText = {
-  PENDING: "Awaiting Review",
-  ACCEPTED: "Approved",
-  REJECTED: "Declined",
-  ACCEPT: "Approve",
-  APPROVED: "Approved",
-  REJECT: "Decline",
-};
+  PENDING: 'Awaiting Review',
+  ACCEPTED: 'Approved',
+  REJECTED: 'Declined',
+  ACCEPT: 'Approve',
+  APPROVED: 'Approved',
+  REJECT: 'Decline',
+}
 
 export const submissionReviewStatusUIText = {
-  SUBMITTED: "Submitted",
-  APPROVED: "Published",
-  REJECTED: "Declined",
-};
+  SUBMITTED: 'Submitted',
+  APPROVED: 'Published',
+  REJECTED: 'Declined',
+}
 
 export const reviewCommentModalTitle = {
-  ACCEPTED: "Approving",
-  REJECTED: "Declining",
-};
+  ACCEPTED: 'Approving',
+  REJECTED: 'Declining',
+}
 
 export const reviewCommentPlaceholder = {
-  ACCEPTED: "Reason for approving this",
-  REJECTED: "Reason for declining this",
-};
+  ACCEPTED: 'Reason for approving this',
+  REJECTED: 'Reason for declining this',
+}
 
 export const publishStatusUIText = {
-  APPROVED: "Approved",
-  APPROVE: "Approve",
-  REJECTED: "Declined",
-  REJECT: "Decline",
-  UNAPPROVED: "Unapproved",
-  UNAPPROVE: "Unapprove",
-};
+  APPROVED: 'Approved',
+  APPROVE: 'Approve',
+  REJECTED: 'Declined',
+  REJECT: 'Decline',
+  UNAPPROVED: 'Unapproved',
+  UNAPPROVE: 'Unapprove',
+}
 
 export const randomColor = (string) => {
   const colors = [
-    "#FFB800",
-    "#98B527",
-    "#38A259",
-    "#008776",
-    "#006776",
-    "#2F4858",
-    "#FFC1B4",
-    "#FE8A7F",
-    "#C1554E",
-  ];
+    '#FFB800',
+    '#98B527',
+    '#38A259',
+    '#008776',
+    '#006776',
+    '#2F4858',
+    '#FFC1B4',
+    '#FE8A7F',
+    '#C1554E',
+  ]
 
-  let hash = 0;
-  if (string?.length === 0) return hash;
+  let hash = 0
+  if (string?.length === 0) return hash
   for (let i = 0; i < string?.length; i++) {
-    hash = string?.charCodeAt(i) + ((hash << 5) - hash);
-    hash = hash & hash;
+    hash = string?.charCodeAt(i) + ((hash << 5) - hash)
+    hash = hash & hash
   }
-  hash = ((hash % colors.length) + colors.length) % colors.length;
-  return colors[hash];
-};
+  hash = ((hash % colors.length) + colors.length) % colors.length
+  return colors[hash]
+}
 
 export const tagsMap = (array, category, tags) => {
   return array.map((x) => {
@@ -153,9 +153,9 @@ export const tagsMap = (array, category, tags) => {
       Object.values(tags)
         .flat()
         .find((o) => o.id === parseInt(x))?.tag || x
-    );
-  });
-};
+    )
+  })
+}
 
 export const tagsMapExpertise = (array, category, tags) => {
   return array.map((x) => {
@@ -166,53 +166,60 @@ export const tagsMapExpertise = (array, category, tags) => {
           .flat()
           .find((o) => o.id === parseInt(x))?.tag || x?.toLowerCase(),
       tag_category: category,
-    };
-  });
-};
+    }
+  })
+}
 
 export const toTitleCase = (phrase) => {
   return phrase
     ?.toLowerCase()
-    .split(" ")
+    .split(' ')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-};
+    .join(' ')
+}
 
-const domain = "https://unep-gpml-test.eu.auth0.com/".replace(
+const domain = 'https://unep-gpml-test.eu.auth0.com/'.replace(
   /(https:\/\/|\/)/gi,
-  ""
-);
+  ''
+)
 
 export const auth0Client = new auth0.WebAuth({
   domain: domain,
-  clientID: "dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J",
-  audience: "https://unep-gpml-test.eu.auth0.com/api/v2/",
-  redirectUri: typeof window !== "undefined" ? window.location.origin : "",
-  scope: "openid profile email",
-  responseType: "token id_token",
-});
+  clientID: 'dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J',
+  audience: 'https://unep-gpml-test.eu.auth0.com/api/v2/',
+  redirectUri: typeof window !== 'undefined' ? window.location.origin : '',
+  scope: 'openid profile email',
+  responseType: 'token id_token',
+})
 
 export const eventTrack = (category, action, label) => {
-  console.log("GA event:", category, ":", action, ":", label);
+  console.log('GA event:', category, ':', action, ':', label)
   ReactGA.event({
     category: category,
     action: action,
     label: label,
-  });
-};
+  })
+}
 
 export const useQuery = () => {
-  const { query } = useRouter();
+  const { query } = useRouter()
 
-  const ret = {};
+  const ret = {}
 
   for (let key in query) {
-    if (typeof query[key] === "string") {
-      ret[key] = query[key].split(",").filter((it) => it !== "");
+    if (typeof query[key] === 'string') {
+      ret[key] = query[key].split(',').filter((it) => it !== '')
     } else {
-      ret[key] = query[key];
+      ret[key] = query[key]
     }
   }
 
-  return ret;
-};
+  return ret
+}
+
+export const pagination = {
+  clickable: true,
+  renderBullet: function (index, className) {
+    return '<div class="' + className + '">' + '<span/>' + '</div>'
+  },
+}
