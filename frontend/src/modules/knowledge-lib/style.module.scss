@@ -430,7 +430,7 @@
             svg {
               path {
                 transition: fill 0.15s ease-out;
-                fill: #06496c;
+                fill: white;
               }
             }
 
@@ -474,7 +474,7 @@
             color: $primaryGreen;
             border-color: $primaryGreen;
             & > div svg path {
-              fill: #ffb800;
+              fill: $primaryGreen;
             }
           }
         }

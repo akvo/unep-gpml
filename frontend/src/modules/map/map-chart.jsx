@@ -414,6 +414,11 @@ const MapChart = ({
                       strokeWidth="0.2"
                       strokeOpacity="0.8"
                       cursor={!isLake ? 'pointer' : ''}
+                      style={{
+                        default: { outline: 'none' },
+                        hover: { outline: 'none' },
+                        pressed: { outline: 'none' },
+                      }}
                       fill={
                         isLake
                           ? '#eaf6fd'

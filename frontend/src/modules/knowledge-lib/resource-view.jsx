@@ -194,7 +194,21 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
     } else {
       updateVal = [...val, name]
     }
-    updateQuery('country', updateVal, true)
+
+    setFilterCountries(updateVal)
+    let updatedQuery = { ...history.query }
+    delete updatedQuery.totalCount
+
+    if (updateVal && updateVal.length > 0) {
+      updatedQuery.country = updateVal.toString()
+    } else {
+      delete updatedQuery.country
+    }
+
+    history.push({
+      pathname: history.pathname,
+      query: updatedQuery,
+    })
   }
 
   const handleCategoryFilter = (key) => {

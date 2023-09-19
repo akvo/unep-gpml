@@ -49,7 +49,6 @@ const NewLayout = ({
   auth0Client,
   profile,
 }) => {
-  console.log(isIndexPage)
   const [loginVisible, setLoginVisible] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   return (
