@@ -20,8 +20,7 @@
             [duct.logger :refer [log]]
             [gpml.boundary.port.chat :as port]
             [gpml.util.http-client :as http-client]
-            [gpml.util.json :as json]
-            [clojure.string :as str]))
+            [gpml.util.json :as json]))
 
 (defn- get-auth-headers
   [api-key api-user-id]
@@ -130,7 +129,7 @@
        :error-details {:msg (ex-message t)}})))
 
 (defn- delete-user-account*
-  [{:keys [logger api-url api-key api-user-id] :as adapter} user-id opts]
+  [{:keys [logger api-key api-user-id] :as adapter} user-id opts]
   (try
     (let [req-body (cond-> {:user-id user-id}
                      (contains? opts :confirm-relinquish)
