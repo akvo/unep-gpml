@@ -146,6 +146,13 @@
   [{:keys [chat-adapter]}]
   (chat/get-public-channels chat-adapter {}))
 
+(defn get-all-channels
+  [{:keys [chat-adapter]} opts]
+  ;; We always ask only for the Public `c` and Private `p`
+  ;; channels. Because RocketChat has other channel types that are not
+  ;; used by GPML.
+  (chat/get-all-channels chat-adapter (merge {:types ["c" "p"]} opts)))
+
 (defn send-private-channel-invitation-request
   [{:keys [db mailjet-config]} user channel-name]
   (let [super-admins (db.rbac-util/get-super-admins-details (:spec db) {})]

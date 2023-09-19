@@ -33,6 +33,21 @@
                :allowEmptyValue false}}
     [:string {:min 1}]]])
 
+(def ^:private get-all-channels-params-schema
+  [:map
+   [:name
+    {:optional true
+     :swagger {:description "The channel name"
+               :type "string"
+               :allowEmptyValue false}}
+    [:string {:min 1}]]
+   [:types
+    {:optional true
+     :swagger {:description "The channel types: c = public, p = private"}}
+    [:vector
+     {:decode/string (fn [x] (if (string? x) [x] x))}
+     [:enum "c" "p"]]]])
+
 (defn- create-user-account
   [config {:keys [user]}]
   (let [result (srv.chat/create-user-account config (:id user))]
@@ -60,6 +75,16 @@
   (if-not (h.r.permission/super-admin? config (:id user))
     (r/forbidden {:message "Unauthorized"})
     (let [result (srv.chat/get-private-channels config)]
+      (if (:success? result)
+        (r/ok (cske/transform-keys ->snake_case (:channels result)))
+        (r/server-error (dissoc result :success?))))))
+
+(defn- get-all-channels
+  [config {:keys [user parameters] :as req}]
+  (if-not (h.r.permission/super-admin? config (:id user))
+    (r/forbidden {:message "Unauthorized"})
+    (let [search-opts (:query parameters)
+          result (srv.chat/get-all-channels config search-opts)]
       (if (:success? result)
         (r/ok (cske/transform-keys ->snake_case (:channels result)))
         (r/server-error (dissoc result :success?))))))
@@ -109,6 +134,15 @@
   [_ config]
   (fn [req]
     (get-public-channels config req)))
+
+(defmethod ig/init-key :gpml.handler.chat/get-all-channels
+  [_ config]
+  (fn [req]
+    (get-all-channels config req)))
+
+(defmethod ig/init-key :gpml.handler.chat/get-all-channels-params
+  [_ _]
+  {:query get-all-channels-params-schema})
 
 (defmethod ig/init-key :gpml.handler.chat/get-user-joined-channels
   [_ config]
