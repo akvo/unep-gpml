@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import styles from "./filter.module.scss";
+import React, { useEffect, useState } from 'react'
+import styles from './filter.module.scss'
 import {
   Row,
   Col,
@@ -9,16 +9,16 @@ import {
   Button,
   DatePicker,
   Modal,
-} from "antd";
-import moment from "moment";
-import { useAuth0 } from "@auth0/auth0-react";
-import isEmpty from "lodash/isEmpty";
-import values from "lodash/values";
-import flatten from "lodash/flatten";
-import { eventTrack } from "../../utils/misc";
-import { UIStore } from "../../store";
-import { SearchOutlined } from "@ant-design/icons";
-import MultipleSelectFilter from "../../components/select/multiple-select-filter";
+} from 'antd'
+import moment from 'moment'
+import { useAuth0 } from '@auth0/auth0-react'
+import isEmpty from 'lodash/isEmpty'
+import values from 'lodash/values'
+import flatten from 'lodash/flatten'
+import { eventTrack } from '../../utils/misc'
+import { UIStore } from '../../store'
+import { SearchOutlined } from '@ant-design/icons'
+import MultipleSelectFilter from '../../components/select/multiple-select-filter'
 
 const FilterModal = ({
   query,
@@ -40,66 +40,66 @@ const FilterModal = ({
     mainContentType: s.mainContentType,
     representativeGroup: s.representativeGroup,
     organisations: s.organisations,
-  }));
-  const { isAuthenticated } = useAuth0();
+  }))
+  const { isAuthenticated } = useAuth0()
   const [
     tagsExcludingCapacityBuilding,
     setTagsExcludingCapacityBuilding,
-  ] = useState([]);
+  ] = useState([])
 
-  const [isClearFilter, setIsClearFilter] = useState(false);
-  const [filter, setFilter] = useState({});
+  const [isClearFilter, setIsClearFilter] = useState(false)
+  const [filter, setFilter] = useState({})
 
   const updateQuery = (param, value) => {
-    const newQuery = { ...filter };
-    newQuery[param] = value;
+    const newQuery = { ...filter }
+    newQuery[param] = value
     // Remove empty query
     const arrayOfQuery = Object.entries(newQuery)?.filter(
       (item) =>
         item[1]?.length !== 0 &&
-        typeof item[1] !== "undefined" &&
+        typeof item[1] !== 'undefined' &&
         item[1] !== null
-    );
+    )
 
-    const pureQuery = Object.fromEntries(arrayOfQuery);
+    const pureQuery = Object.fromEntries(arrayOfQuery)
 
-    setFilter(pureQuery);
-  };
+    setFilter(pureQuery)
+  }
 
   useEffect(() => {
-    if (Object.keys(query).length > 0) setFilter(query);
-  }, [query]);
+    if (Object.keys(query).length > 0) setFilter(query)
+  }, [query])
 
   const filteredMainContentOptions = !isEmpty(mainContentType)
     ? mainContentType
         .filter((content) => {
           const resourceName = (name) => {
-            if (name === "initiative") {
-              return "initiative";
-            } else if (name === "event_flexible") {
-              return "event";
-            } else if (name === "financing") {
-              return "financing_resource";
-            } else if (name === "technical") {
-              return "technical_resource";
-            } else if (name === "action") {
-              return "action_plan";
+            if (name === 'initiative') {
+              return 'initiative'
+            } else if (name === 'event_flexible') {
+              return 'event'
+            } else if (name === 'financing') {
+              return 'financing_resource'
+            } else if (name === 'technical') {
+              return 'technical_resource'
+            } else if (name === 'action') {
+              return 'action_plan'
             } else {
-              return name;
+              return name
             }
-          };
-          return query?.topic?.includes(resourceName(content?.code));
+          }
+          return query?.topic?.includes(resourceName(content?.code))
         })
         .sort((a, b) => a?.code.localeCompare(b?.code))
-    : [];
+    : []
 
   const mainContentOption = () => {
     if (query?.topic?.length > 0) {
-      return filteredMainContentOptions;
+      return filteredMainContentOptions
     } else if (query?.topic?.length === 0 || !query?.topic) {
-      return mainContentType;
+      return mainContentType
     }
-  };
+  }
 
   // populate options for tags dropdown
   const tagsWithoutSpace =
@@ -107,45 +107,45 @@ const FilterModal = ({
     flatten(values(tags)).map((it) => ({
       value: it?.tag?.trim(),
       label: it?.tag?.trim(),
-    }));
+    }))
 
   const tagOpts = !isEmpty(tags)
     ? [...new Set(tagsWithoutSpace.map((s) => JSON.stringify(s)))]
         .map((s) => JSON.parse(s))
         ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
-    : [];
+    : []
 
   // populate options for representative group options
   const representativeOpts = !isEmpty(representativeGroup)
-    ? [...representativeGroup, { code: "other", name: "Other" }].map((x) => ({
+    ? [...representativeGroup, { code: 'other', name: 'Other' }].map((x) => ({
         label: x?.name,
         value: x?.name,
       }))
-    : [];
+    : []
 
   useEffect(() => {
     if (isClearFilter) {
-      updateQuery("tag", tagsExcludingCapacityBuilding);
+      updateQuery('tag', tagsExcludingCapacityBuilding)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tagsExcludingCapacityBuilding]);
+  }, [tagsExcludingCapacityBuilding])
 
   const handleApplyFilter = () => {
-    setGridItems([]);
-    setShowFilterModal(false);
+    setGridItems([])
+    setShowFilterModal(false)
 
     const newQuery = {
       ...filter,
-    };
+    }
 
-    const newParams = new URLSearchParams(newQuery);
-    newParams.delete("totalCount");
-    newParams.delete("slug");
+    const newParams = new URLSearchParams(newQuery)
+    newParams.delete('totalCount')
+    newParams.delete('slug')
     history.push({
       pathname: asPath,
       query: newParams.toString(),
-    });
-  };
+    })
+  }
 
   return (
     <Modal
@@ -178,9 +178,9 @@ const FilterModal = ({
             <Space align="middle">
               <Checkbox
                 className="favorites-checkbox"
-                checked={query?.favorites?.indexOf("true") > -1}
+                checked={query?.favorites?.indexOf('true') > -1}
                 onChange={({ target: { checked } }) =>
-                  updateQuery("favorites", checked)
+                  updateQuery('favorites', checked)
                 }
               >
                 My Bookmarks
@@ -198,9 +198,9 @@ const FilterModal = ({
             !isEmpty(mainContentType)
               ? mainContentOption().map((content) => {
                   const label =
-                    content?.name?.toLowerCase() === "capacity building"
-                      ? "Capacity Development"
-                      : content?.name;
+                    content?.name?.toLowerCase() === 'capacity building'
+                      ? 'Capacity Development'
+                      : content?.name
                   return {
                     label: label,
                     options: content?.childs
@@ -212,7 +212,7 @@ const FilterModal = ({
                       .sort((a, b) =>
                         a?.label?.trim().localeCompare(b?.label?.trim())
                       ),
-                  };
+                  }
                 })
               : []
           }
@@ -275,7 +275,7 @@ const FilterModal = ({
           className="date-picker-container"
           style={{ paddingTop: 5, paddingBottom: 5 }}
         >
-          <Row type="flex" style={{ width: "100%" }} gutter={[10, 10]}>
+          <Row type="flex" style={{ width: '100%' }} gutter={[10, 10]}>
             {/* Start date */}
             <DatePickerFilter
               title="Start Date"
@@ -306,8 +306,8 @@ const FilterModal = ({
         </Col>
       </Row>
     </Modal>
-  );
-};
+  )
+}
 
 const DatePickerFilter = ({
   title,
@@ -326,46 +326,47 @@ const DatePickerFilter = ({
       <div>
         <DatePicker
           placeholder="YYYY"
-          picker={"year"}
+          picker={'year'}
           value={
             !isEmpty(value)
-              ? flag.toLowerCase() === "startdate"
-                ? moment(value).startOf("year")
-                : moment(value).endOf("year")
-              : ""
+              ? flag.toLowerCase() === 'startdate'
+                ? moment(value).startOf('year')
+                : moment(value).endOf('year')
+              : ''
           }
           onChange={(val) =>
-            updateQuery(flag, val ? moment(val).format("YYYY-MM-DD") : null)
+            updateQuery(flag, val ? moment(val).format('YYYY-MM-DD') : null)
           }
           disabledDate={(current) => {
             // Can not select days past start date
             if (startDate) {
-              return current <= startDate;
+              return current <= startDate
             }
-            return null;
+            return null
           }}
         />
       </div>
     </Col>
-  );
-};
+  )
+}
 
 const KnowledgeLibrarySearch = ({ updateQuery, filter }) => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('')
   const handleSearch = (src) => {
-    eventTrack("Communities", "Search", "Button");
+    eventTrack('Communities', 'Search', 'Button')
     if (src) {
-      updateQuery("q", src);
+      updateQuery('q', src)
     } else {
-      updateQuery("q", "");
+      updateQuery('q', '')
     }
-    setSearch(src);
-  };
+    setSearch(src)
+  }
 
   return (
     <>
       <div className="search-input">
         <Input
+          size="small"
           className="input-search"
           placeholder="Search resources"
           value={filter?.q}
@@ -375,7 +376,7 @@ const KnowledgeLibrarySearch = ({ updateQuery, filter }) => {
         />
       </div>
     </>
-  );
-};
+  )
+}
 
-export default FilterModal;
+export default FilterModal
