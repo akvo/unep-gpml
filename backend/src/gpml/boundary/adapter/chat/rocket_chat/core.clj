@@ -20,7 +20,8 @@
             [duct.logger :refer [log]]
             [gpml.boundary.port.chat :as port]
             [gpml.util.http-client :as http-client]
-            [gpml.util.json :as json]))
+            [gpml.util.json :as json]
+            [clojure.string :as str]))
 
 (defn- get-auth-headers
   [api-key api-user-id]
@@ -40,18 +41,26 @@
     fields
     (assoc :fields (json/->json (cske/transform-keys kebab-case->camel-case-string fields)))))
 
+(defn- add-channel-avatar-url
+  [api-domain-url {:keys [id] :as channel}]
+  (assoc channel :avatar-url (format "%s/avatar/room/%s" api-domain-url id)))
+
+(defn- build-api-endpoint-url
+  [{:keys [api-domain-url api-url-path]} endpoint-url-path]
+  (str api-domain-url api-url-path endpoint-url-path))
+
 (defn- get-user-info*
   "Gets the RocketChat user information. User joined rooms can also be
   included in the response if `:user-rooms` is set to `1` in the
   `:fields` map in `opts`."
-  [{:keys [logger api-url api-key api-user-id]} user-id opts]
+  [{:keys [logger api-key api-user-id] :as adapter} user-id opts]
   (try
     (let [query-params (-> opts
                            (parse-query-and-fields-opts)
                            (assoc :user-id user-id))
           {:keys [status body]}
           (http-client/do-request logger
-                                  {:url (str api-url "/users.info")
+                                  {:url (build-api-endpoint-url adapter "/users.info")
                                    :method :get
                                    :query-params (cske/transform-keys ->camelCaseString query-params)
                                    :content-type :json
@@ -71,11 +80,11 @@
        :error-details {:msg (ex-message t)}})))
 
 (defn- create-user-account*
-  [{:keys [logger api-url api-key api-user-id]} user]
+  [{:keys [logger api-key api-user-id] :as adapter} user]
   (try
     (let [{:keys [status body]}
           (http-client/do-request logger
-                                  {:url (str api-url "/users.create")
+                                  {:url (build-api-endpoint-url adapter "/users.create")
                                    :method :post
                                    :body (json/->json (cske/transform-keys ->camelCaseString user))
                                    :content-type :json
@@ -95,13 +104,13 @@
        :error-details {:msg (ex-message t)}})))
 
 (defn- update-user-account*
-  [{:keys [logger api-url api-key api-user-id]} user-id updates]
+  [{:keys [logger api-key api-user-id] :as adapter} user-id updates]
   (try
     (let [req-body (cske/transform-keys ->camelCaseString {:user-id user-id
                                                            :data updates})
           {:keys [status body]}
           (http-client/do-request logger
-                                  {:url (str api-url "/users.update")
+                                  {:url (build-api-endpoint-url adapter "/users.update")
                                    :method :post
                                    :body (json/->json req-body)
                                    :content-type :json
@@ -121,14 +130,14 @@
        :error-details {:msg (ex-message t)}})))
 
 (defn- delete-user-account*
-  [{:keys [logger api-url api-key api-user-id]} user-id opts]
+  [{:keys [logger api-url api-key api-user-id] :as adapter} user-id opts]
   (try
     (let [req-body (cond-> {:user-id user-id}
                      (contains? opts :confirm-relinquish)
                      (assoc :confirm-relinquish (:confirm-relinquish opts)))
           {:keys [status body]}
           (http-client/do-request logger
-                                  {:url (str api-url "/users.delete")
+                                  {:url (build-api-endpoint-url adapter "/users.delete")
                                    :method :post
                                    :body (json/->json (cske/transform-keys ->camelCaseString req-body))
                                    :content-type :json
@@ -152,14 +161,14 @@
   be deactivated even if it is the last owner of a room[1].
 
   [1] - https://developer.rocket.chat/reference/api/rest-api/endpoints/user-management/users-endpoints/set-users-status-active#payload"
-  [{:keys [logger api-url api-key api-user-id]} user-id active? opts]
+  [{:keys [logger api-key api-user-id] :as adapter} user-id active? opts]
   (try
     (let [req-body (cond-> {:user-id user-id :active-status active?}
                      (contains? opts :confirm-relinquish)
                      (assoc :confirm-relinquish (:confirm-relinquish opts)))
           {:keys [status body]}
           (http-client/do-request logger
-                                  {:url (str api-url "/users.setActiveStatus")
+                                  {:url (build-api-endpoint-url adapter "/users.setActiveStatus")
                                    :method :post
                                    :body (json/->json (cske/transform-keys ->camelCaseString req-body))
                                    :headers (get-auth-headers api-key api-user-id)
@@ -178,19 +187,21 @@
        :error-details {:msg (ex-message t)}})))
 
 (defn- get-public-channels*
-  [{:keys [logger api-url api-key api-user-id]} opts]
+  [{:keys [logger api-domain-url api-key api-user-id] :as adapter} opts]
   (try
     (let [query-params (parse-query-and-fields-opts opts)
           {:keys [status body]}
           (http-client/do-request logger
-                                  {:url (str api-url "/channels.list")
+                                  {:url (build-api-endpoint-url adapter "/channels.list")
                                    :method :get
                                    :query-params (cske/transform-keys ->camelCaseString query-params)
                                    :headers (get-auth-headers api-key api-user-id)
                                    :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true
-         :channels (cske/transform-keys ->kebab-case (:channels body))}
+         :channels (->> (:channels body)
+                        (cske/transform-keys ->kebab-case)
+                        (map (partial add-channel-avatar-url api-domain-url)))}
         {:success? false
          :reason :failed-to-get-public-channels
          :error-details body}))
@@ -202,19 +213,21 @@
        :error-details {:msg (ex-message t)}})))
 
 (defn- get-private-channels*
-  [{:keys [logger api-url api-key api-user-id]} opts]
+  [{:keys [logger api-domain-url api-key api-user-id] :as adapter} opts]
   (try
     (let [query-params (parse-query-and-fields-opts opts)
           {:keys [status body]}
           (http-client/do-request logger
-                                  {:url (str api-url "/groups.listAll")
+                                  {:url (build-api-endpoint-url adapter "/groups.listAll")
                                    :method :get
                                    :query-params (cske/transform-keys ->camelCaseString query-params)
                                    :headers (get-auth-headers api-key api-user-id)
                                    :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true
-         :channels (cske/transform-keys ->kebab-case (:groups body))}
+         :channels (->> (:groups body)
+                        (cske/transform-keys ->kebab-case)
+                        (map (partial add-channel-avatar-url api-domain-url)))}
         {:success? false
          :reason :failed-to-get-private-channels
          :error-details body}))
@@ -226,7 +239,7 @@
        :error-details {:msg (ex-message t)}})))
 
 (defn- get-all-channels*
-  [{:keys [logger api-url api-key api-user-id]} opts]
+  [{:keys [logger api-domain-url api-key api-user-id] :as adapter} opts]
   (try
     (let [query-params (cond-> {}
                          (:name opts)
@@ -236,14 +249,16 @@
                          (assoc :types (:types opts)))
           {:keys [status body]}
           (http-client/do-request logger
-                                  {:url (str api-url "/rooms.adminRooms")
+                                  {:url (build-api-endpoint-url adapter "/rooms.adminRooms")
                                    :method :get
                                    :query-params (cske/transform-keys ->camelCaseString query-params)
                                    :headers (get-auth-headers api-key api-user-id)
                                    :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true
-         :channels (cske/transform-keys ->kebab-case (:rooms body))}
+         :channels (->> (:rooms body)
+                        (cske/transform-keys ->kebab-case)
+                        (map (partial add-channel-avatar-url api-domain-url)))}
         {:success? false
          :reason :failed-to-get-all-channels
          :error-details body}))

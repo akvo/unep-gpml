@@ -888,7 +888,8 @@
   :clj-gcp.storage/client {}
 
   :gpml.boundary.adapter.chat/rocket-chat
-  {:api-url #duct/env ["CHAT_API_URL" Str]
+  {:api-domain-url #duct/env ["CHAT_API_DOMAIN_URL" Str]
+   :api-url-path #duct/env ["CHAT_API_URL_PATH" Str]
    :api-key #duct/env ["CHAT_API_KEY" Str]
    :api-user-id #duct/env ["CHAT_API_USER_ID" Str]
    :logger #ig/ref :duct/logger}
