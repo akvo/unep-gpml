@@ -19,7 +19,7 @@ import { eventTrack } from '../../utils/misc'
 import { UIStore } from '../../store'
 import { SearchOutlined } from '@ant-design/icons'
 import MultipleSelectFilter from '../../components/select/multiple-select-filter'
-
+import { SearchIcon } from '../../components/icons'
 const FilterModal = ({
   query,
   setShowFilterModal,
@@ -157,7 +157,6 @@ const FilterModal = ({
       footer={[
         <Button
           key="submit"
-          type="primary"
           className="apply-button"
           onClick={() => handleApplyFilter()}
         >
@@ -166,6 +165,7 @@ const FilterModal = ({
         <Button
           className="clear-button"
           onClick={() => setShowFilterModal(false)}
+          type="link"
         >
           Cancel
         </Button>,
@@ -325,6 +325,7 @@ const DatePickerFilter = ({
       </Space>
       <div>
         <DatePicker
+          size="small"
           placeholder="YYYY"
           picker={'year'}
           value={
@@ -370,7 +371,7 @@ const KnowledgeLibrarySearch = ({ updateQuery, filter }) => {
           className="input-search"
           placeholder="Search resources"
           value={filter?.q}
-          suffix={<SearchOutlined />}
+          prefix={<SearchIcon />}
           onPressEnter={(e) => handleSearch(e.target.value)}
           onChange={(e) => handleSearch(e.target.value)}
         />
