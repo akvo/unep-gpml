@@ -14,6 +14,12 @@ module.exports = {
           ? 'https://unep-gpml.akvotest.org/image/:path*'
           : 'http://backend:3000/image/:path*',
       },
+      {
+        source: '/env.js',
+        destination: process.env.REACT_APP_FEENV
+          ? 'https://unep-gpml.akvotest.org/env.js'
+          : 'http://backend:3000/env.js',
+      },
     ]
   },
   webpack(config) {

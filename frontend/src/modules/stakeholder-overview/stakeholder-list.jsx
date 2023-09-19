@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { Card, Row, Col, Pagination, Avatar } from "antd";
-import { TrimText } from "../../utils/string";
-import { isEmpty } from "lodash";
-import styles from "./stakeholder-list.module.scss";
-import { LoadingOutlined } from "@ant-design/icons";
-import Link from "next/link";
+import React, { useState } from 'react'
+import { Card, Row, Col, Pagination, Avatar } from 'antd'
+import { TrimText } from '../../utils/string'
+import { isEmpty } from 'lodash'
+import { LoadingOutlined } from '@ant-design/icons'
+import Link from 'next/link'
 
 const StakeholderList = ({
   view,
@@ -18,17 +17,17 @@ const StakeholderList = ({
   resultCount,
   resultCounts,
 }) => {
-  const [listVisible, setListVisible] = useState(true);
+  const [listVisible, setListVisible] = useState(true)
 
-  const viewport = window.innerWidth;
+  const viewport = window.innerWidth
 
-  const pageNumber = query?.page?.map((count) => Number(count))[0];
+  const pageNumber = query?.page?.map((count) => Number(count))[0]
 
   return (
-    <div className={`${styles.stakeholderList} stakeholder-list`}>
+    <div className={`stakeholder-list`}>
       <Row>
         {listVisible && (
-          <div style={{ width: "100%" }}>
+          <div style={{ width: '100%' }}>
             <Col
               span={24}
               className="resource-list"
@@ -36,8 +35,8 @@ const StakeholderList = ({
                 isLoaded() &&
                 !loading &&
                 !isEmpty(results) && {
-                  overflowY: "auto",
-                  display: viewport > 950 ? "flex" : "grid",
+                  overflowY: 'auto',
+                  display: viewport > 950 ? 'flex' : 'grid',
                 }
               }
             >
@@ -62,19 +61,19 @@ const StakeholderList = ({
                   total={resultCount}
                   showSizeChanger={false}
                   onChange={(n) => {
-                    updateQuery("page", n - 1);
+                    updateQuery('page', n - 1)
                   }}
                 />
 
                 <div
                   className="result-number"
-                  style={{ opacity: loading && "0" }}
+                  style={{ opacity: loading && '0' }}
                 >
                   {resultCount > pageSize + pageNumber
                     ? resultCounts
-                    : itemCount}{" "}
+                    : itemCount}{' '}
                   of {resultCount || 0} result
-                  {resultCount > 1 ? "s" : ""}
+                  {resultCount > 1 ? 's' : ''}
                 </div>
               </div>
             )}
@@ -82,17 +81,17 @@ const StakeholderList = ({
         )}
       </Row>
     </div>
-  );
-};
+  )
+}
 
 const ResourceItem = ({ results, view }) => {
   return results.map((result) => {
-    const { id, type } = result;
+    const { id, type } = result
 
     const stakeholderName =
-      result?.name || `${result?.firstName} ${result?.lastName}`;
+      result?.name || `${result?.firstName} ${result?.lastName}`
 
-    const linkTo = `/${type}/${id}`;
+    const linkTo = `/${type}/${id}`
 
     return (
       <Link key={`${type}-${id}`} href={linkTo} legacyBehavior>
@@ -112,7 +111,7 @@ const ResourceItem = ({ results, view }) => {
                     <Avatar
                       size={32}
                       style={{
-                        border: "none",
+                        border: 'none',
                       }}
                       src={
                         result?.affiliation?.logo ? (
@@ -120,9 +119,9 @@ const ResourceItem = ({ results, view }) => {
                         ) : (
                           <Avatar
                             style={{
-                              backgroundColor: "#006776",
-                              verticalAlign: "middle",
-                              border: "none",
+                              backgroundColor: '#006776',
+                              verticalAlign: 'middle',
+                              border: 'none',
                             }}
                             size={32}
                           >
@@ -139,21 +138,21 @@ const ResourceItem = ({ results, view }) => {
                   <TrimText text={stakeholderName} max={64} />
                 </b>
                 <div>
-                  {result?.type === "stakeholder"
+                  {result?.type === 'stakeholder'
                     ? result?.jobTitle && (
                         <span className="entity-name">
                           <TrimText text={result?.jobTitle} max={40} />
                         </span>
                       )
-                    : ""}
+                    : ''}
                 </div>
               </div>
             </div>
           </Card>
         </a>
       </Link>
-    );
-  });
-};
+    )
+  })
+}
 
-export default StakeholderList;
+export default StakeholderList

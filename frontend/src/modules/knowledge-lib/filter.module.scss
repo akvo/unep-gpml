@@ -1,9 +1,11 @@
-@import "../../vars.scss";
+@import '../../vars.scss';
 .filterModal {
   width: 100% !important;
 
-  @media screen and (min-width: 840px) {
-    max-width: 823px;
+  :global {
+    @media screen and (min-width: 840px) {
+      max-width: 823px !important;
+    }
   }
   :global {
     .ant-modal-header {
