@@ -261,14 +261,16 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
               sortResults(!isAscending)
             }}
           >
-            <SortIcon
-              style={{
-                transform:
-                  !isAscending || isAscending === null
-                    ? 'initial'
-                    : 'rotate(180deg)',
-              }}
-            />
+            <div className="sort-icon">
+              <SortIcon
+                style={{
+                  transform:
+                    !isAscending || isAscending === null
+                      ? 'initial'
+                      : 'rotate(180deg)',
+                }}
+              />
+            </div>
             <div className="sort-button-text">
               <span>Sort by:</span>
               <b>{!isAscending ? `A>Z` : 'Z>A'}</b>
