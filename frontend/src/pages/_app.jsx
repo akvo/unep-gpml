@@ -15,9 +15,11 @@ import { updateStatusProfile } from '../utils/profile'
 import { uniqBy, sortBy } from 'lodash'
 import { withNewLayout } from '../layouts/new-layout'
 
+const newRoutes = ['/landing', '/knowledge/library']
+
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
-  if (router.pathname !== '/landing') {
+  if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
     import('../main.scss')
     import('../buttons.scss')
   } else {
@@ -46,8 +48,6 @@ function MyApp({ Component, pageProps }) {
     setAuthResult(authResult)
     scheduleTokenRenewal()
   }
-
-  console.log(new Date().getTime() < _expiresAt)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -160,7 +160,6 @@ function MyApp({ Component, pageProps }) {
                 emailVerified: authResult?.idTokenPayload?.email_verified,
               }
             })
-            console.log(authResult?.idTokenPayload, authResult)
             router.push(
               {
                 pathname: '/onboarding',
@@ -199,7 +198,6 @@ function MyApp({ Component, pageProps }) {
         let resp = await api.get('/profile')
         setLoadingProfile(false)
         if (resp.data && Object.keys(resp.data).length === 0) {
-          console.log(authResult, 'authResult')
           router.push(
             {
               pathname: '/onboarding',
@@ -277,7 +275,7 @@ function MyApp({ Component, pageProps }) {
           typeof window !== 'undefined' ? window.location.origin : ''
         }
       >
-        {router.pathname !== '/landing' ? (
+        {!newRoutes.some((route) => router.pathname.startsWith(route)) ? (
           <Layout {...pageProps} {...componentProps} />
         ) : (
           <NewLayout {...pageProps} {...componentProps} />
