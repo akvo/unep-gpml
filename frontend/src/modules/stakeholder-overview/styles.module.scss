@@ -1,4 +1,4 @@
-@import "../../vars.scss";
+@import '../../vars.scss';
 
 .blur {
   filter: blur(13px);
@@ -179,7 +179,7 @@
         bottom: 5px;
         -webkit-box-shadow: 0 0 120px #cfcfcf;
         box-shadow: 0 0 120px #cfcfcf;
-        content: " ";
+        content: ' ';
         position: absolute;
         z-index: -1;
       }
@@ -191,7 +191,7 @@
         top: 0;
         background-color: #fff;
         border-radius: 15px;
-        content: " ";
+        content: ' ';
         position: absolute;
         z-index: -1;
       }
@@ -279,11 +279,11 @@
                 padding-left: 20px;
 
                 &::before {
-                  content: " ";
+                  content: ' ';
                   display: block;
                   width: 13px;
                   height: 18px;
-                  background-image: url("/stakeholder-overview/location-icon.svg");
+                  background-image: url('/stakeholder-overview/location-icon.svg');
                   position: absolute;
                   left: 0;
                 }
@@ -323,10 +323,10 @@
                 text-indent: -9999px;
               }
               .linkedin {
-                background-image: url("/stakeholder-overview/linkedin-icon.svg");
+                background-image: url('/stakeholder-overview/linkedin-icon.svg');
               }
               .twitter {
-                background-image: url("/stakeholder-overview/twitter-icon.svg");
+                background-image: url('/stakeholder-overview/twitter-icon.svg');
               }
             }
           }
@@ -459,7 +459,7 @@
         }
       }
       .ant-pagination-next {
-        background-image: url("/knowledge-library/chevron-right.svg");
+        background-image: url('/knowledge-library/chevron-right.svg');
         background-repeat: no-repeat;
         background-position: center;
         background-size: 8px;
@@ -501,7 +501,7 @@
       min-width: calc(100% - 100px);
       overflow: hidden;
       .ant-drawer {
-        z-index: 9;
+        z-index: 99;
       }
       @media (max-width: 510px) {
         width: 100%;
