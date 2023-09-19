@@ -1,0 +1,137 @@
+.ant-input-affix-wrapper,
+.ant-picker {
+  background-color: $primaryGrey;
+  height: auto;
+  border-radius: 8px;
+  width: 100%;
+  border: none;
+  font-family: var(--font-dm-sans), sans-serif;
+  &:focus,
+  &.ant-input-affix-wrapper-focused {
+    box-shadow: 0px 0px 0px 2px #1d90f5;
+  }
+  &:hover {
+    .ant-input {
+      &::placeholder {
+        color: $primaryDarkBlue !important;
+      }
+    }
+    svg {
+      path {
+        fill: $primaryDarkBlue;
+      }
+    }
+  }
+  svg {
+    path {
+      fill: $primaryDarkBlue4;
+    }
+  }
+  .ant-input-prefix {
+    margin-right: 8px;
+  }
+  .ant-input {
+    background-color: inherit;
+    color: $primaryDarkBlue;
+    font-size: $fzXS;
+    line-height: $lhXS;
+    font-weight: 400;
+    &::placeholder {
+      color: $primaryDarkBlue4 !important;
+    }
+  }
+}
+.ant-input-affix-wrapper-sm {
+  padding: 11px;
+}
+
+.ant-picker-small {
+  padding: 11px;
+  input {
+    font-size: $fzXS;
+    line-height: $lhXS;
+    color: $primaryDarkBlue;
+    &::placeholder {
+      color: $primaryDarkBlue4 !important;
+    }
+  }
+}
+.ant-picker-cell-selected {
+  .ant-picker-cell-inner {
+    background-color: $primaryPurple !important;
+  }
+}
+
+.ant-picker-cell-inner {
+  font-size: $fzXS;
+  line-height: $lhXS;
+  font-weight: 500;
+  font-family: var(--font-dm-sans), sans-serif;
+  color: $primaryDarkBlue;
+}
+
+.ant-select {
+  color: $primaryDarkBlue;
+  &:not(.ant-select-customize-input) {
+    .ant-select-selector {
+      background-color: $primaryGrey;
+      height: auto;
+      border-radius: 8px;
+      width: 100%;
+      border: none;
+    }
+  }
+  &.ant-select-sm {
+    &:not(.ant-select-customize-input) {
+      .ant-select-selector {
+        padding: 4px 11px;
+        .ant-select-selection-placeholder {
+          left: 14px;
+          color: $primaryDarkBlue4;
+        }
+      }
+    }
+    .ant-select-selection-overflow {
+      height: 36px;
+      line-height: 20px;
+      .ant-select-selection-item {
+        background-color: $primaryDarkBlue;
+        color: white;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        height: 28px;
+        line-height: 26px;
+        border-radius: 8px;
+      }
+      .ant-select-selection-item-remove {
+        color: white;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+.ant-select-item-option-selected {
+  background-color: #f5f7ff !important;
+}
+
+.ant-select-item {
+  color: $primaryDarkBlue3;
+  font-family: var(--font-dm-sans), sans-serif;
+  &.ant-select-item-group {
+    color: $primaryDarkBlue3;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 12px;
+  }
+}
+
+.ant-select-focused {
+  &:not(.ant-select-disabled) {
+    &.ant-select:not(.ant-select-customize-input) {
+      .ant-select-selector {
+        box-shadow: 0px 0px 0px 2px #1d90f5;
+      }
+    }
+  }
+}
