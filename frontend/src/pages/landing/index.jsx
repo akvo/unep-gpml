@@ -29,7 +29,7 @@ const pagination = {
 
 const Landing = () => (
   <div id="landing" className={styles.landing}>
-    <Hero />
+    {/* <Hero /> */}
     <ShowcasingAndStats />
     <WhoAreWe />
     <ActNow />

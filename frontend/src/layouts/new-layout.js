@@ -6,6 +6,7 @@ import localFont from 'next/font/local'
 import { DM_Sans } from 'next/font/google'
 import { UIStore } from '../store'
 import Image from 'next/image'
+import classNames from 'classnames'
 import Footer from '../footer'
 import Login from '../modules/login/view'
 import { DownArrow } from '../components/icons'
@@ -14,6 +15,7 @@ import { motion, AnimatePresence, useCycle } from 'framer-motion'
 import { useDeviceSize } from '../modules/landing/landing'
 
 import { MenuToggle, NavMobile, NavDesktop } from '../components/nav'
+import GpmlCircle from '../components/gpml-circle'
 
 const archia = localFont({
   src: [
@@ -60,7 +62,7 @@ const NewLayout = ({
     menuList: s.menuList,
   }))
   const [loginVisible, setLoginVisible] = useState(false)
-  const [hoveredItemKey, setHoveredItemKey] = useState(null)
+  const [openedItemKey, setOpenedItemKey] = useState(null)
   const [showMenu, setShowMenu] = useState(false)
   const [width] = useDeviceSize()
   const [isOpen, toggleOpen] = useCycle(false, true)
@@ -73,56 +75,65 @@ const NewLayout = ({
           --font-archia: ${archia.style.fontFamily};
         }
       `}</style>
-      <div className="">
+      <div>
         <div
-          className="top-bar"
+          className={classNames('top-bar', { opened: openedItemKey != null })}
           style={{
             zIndex: isOpen ? 9 : 99,
           }}
         >
           <div className="container">
             <div className="logo-container">
-              <Image
+              <div className="circle">
+                <GpmlCircle />
+              </div>
+              <h5>
+                Global Partnership
+                <br />
+                on Plastic Pollution1
+                <br />
+                and Marine Litter
+              </h5>
+              {/* <Image
                 className="gpml-white"
                 src="/GPML-White-logo.svg"
                 alt="GPML Digital Platform"
                 width={244}
                 height={74}
-              />
+              /> */}
             </div>
             {width >= 768 && (
-              <ul
-                className="ant-menu"
-                // onMouseLeave={() => {
-                //   setHoveredItemKey(null)
-                //   setShowMenu(false)
-                // }}
-              >
+              <ul className="ant-menu">
                 {menuList.map((item) => (
                   <li
                     key={item.key}
-                    onMouseEnter={() => {
-                      setHoveredItemKey(item.key)
-                      setShowMenu(true)
+                    onClick={() => {
+                      if (item.key === openedItemKey) {
+                        setOpenedItemKey(null)
+                        setShowMenu(false)
+                      } else {
+                        setOpenedItemKey(item.key)
+                        setShowMenu(true)
+                      }
                     }}
                     className={`${
-                      hoveredItemKey === item.key ? 'selected' : ''
+                      openedItemKey === item.key ? 'selected' : ''
                     }`}
                   >
-                    <Link href={'/'} legacyBehavior>
-                      <a>
-                        {item.key}
-                        <span>
-                          <DownArrow />
-                        </span>
-                      </a>
-                    </Link>
+                    <a>
+                      <span>{item.key}</span>
+                      <DownArrow />
+                    </a>
                   </li>
                 ))}
               </ul>
             )}
             <nav>
-              <Button type="primary" size="small" className="noicon">
+              <Button
+                type="primary"
+                size="small"
+                className="noicon hide-mobile"
+              >
                 Join Now
               </Button>
               {width <= 768 && (
@@ -138,10 +149,10 @@ const NewLayout = ({
 
           <NavDesktop
             isOpen={showMenu}
-            contentKey={hoveredItemKey}
+            contentKey={openedItemKey}
             toggle={() => {
               setShowMenu(!showMenu)
-              setHoveredItemKey(null)
+              setOpenedItemKey(null)
             }}
           />
         </div>

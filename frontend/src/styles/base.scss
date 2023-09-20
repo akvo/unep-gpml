@@ -115,9 +115,29 @@ h6,
   position: sticky;
   z-index: 20;
   top: 0;
+  transition: background 0.27s ease-out;
   .logo-container {
     margin-left: -15px;
     margin-top: -14px;
+    display: flex;
+    position: absolute;
+    .circle {
+      svg path {
+        transition: fill 0.27s ease-out;
+      }
+    }
+    h5 {
+      white-space: nowrap;
+      font-size: 14px;
+      line-height: 1.2;
+      font-weight: 500;
+      font-family: var(--font-dm-sans), sans-serif;
+      color: #fff;
+      margin-left: 7px;
+      margin-top: 10px;
+      transition: color 0.27s ease-out;
+      // font-family: ;
+    }
   }
   @media screen and (max-width: $bpMobile) {
     height: 70px;
@@ -125,14 +145,22 @@ h6,
     .logo-container {
       margin-top: -3px;
       margin-left: -5px;
-      img {
-        height: 50px;
-        object-fit: contain;
-        object-position: 0 0;
-        // width: 50px;
+      svg {
+        height: auto;
+        width: 53px;
       }
-      width: 150px;
-      overflow: hidden;
+      h5 {
+        font-size: 12px;
+        margin-top: 6px;
+      }
+      // img {
+      //   height: 50px;
+      //   object-fit: contain;
+      //   object-position: 0 0;
+      //   // width: 50px;
+      // }
+      // width: 150px;
+      // overflow: hidden;
     }
   }
   .container {
@@ -153,7 +181,10 @@ h6,
 
       .toggle-button {
         width: 23px;
-        height: 23px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         svg {
           path {
             stroke: white;
@@ -171,7 +202,7 @@ h6,
     line-height: normal;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     gap: 53px;
     box-shadow: none;
     li {
@@ -180,8 +211,11 @@ h6,
 
       &.selected {
         a {
-          &::after {
+          span::after {
             width: 100%;
+          }
+          svg {
+            transform: rotate(180deg);
           }
         }
       }
@@ -194,18 +228,40 @@ h6,
         color: white;
         cursor: pointer;
         display: inline-block;
+        display: flex;
         span {
-          padding-left: 12px;
+          &::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 3px;
+            background: $primaryGreen5;
+            transform: translateY(3px);
+            transition: width 0.3s;
+          }
         }
-
-        &::after {
-          content: '';
-          display: block;
-          width: 0;
-          height: 2px;
-          background: white;
-          transition: width 0.3s;
+        svg {
+          margin-left: 12px;
+          margin-top: 7px;
+          transition: all 0.3s ease-out;
         }
+      }
+    }
+  }
+  &.opened {
+    background-color: #fff;
+    color: $primaryDarkBlue;
+    .logo-container {
+      .circle {
+        color: $primaryGreen7;
+      }
+      h5 {
+        color: $primaryDarkBlue;
+      }
+    }
+    ul {
+      li a {
+        color: $primaryDarkBlue;
       }
     }
   }
