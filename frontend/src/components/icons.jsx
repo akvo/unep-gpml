@@ -244,7 +244,11 @@ export const DownArrow = () => (
     viewBox="0 0 15 9"
     fill="none"
   >
-    <path d="M1.5 0.999999L7.5 7L13.5 1" stroke="white" stroke-width="2" />
+    <path
+      d="M1.5 0.999999L7.5 7L13.5 1"
+      stroke="currentColor"
+      stroke-width="2"
+    />
   </svg>
 )
 

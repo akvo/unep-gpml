@@ -16,8 +16,8 @@ const menuItemVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      delay: 0.2 + i * 0.1,
-      duration: 0.6,
+      delay: i * 0.03,
+      duration: 0.45,
       ease: [0.42, 0, 0.58, 1],
     },
   }),
@@ -25,7 +25,7 @@ const menuItemVariants = {
     opacity: 0,
     y: 50,
     transition: {
-      duration: 0.5,
+      duration: 0.4,
       ease: 'anticipate',
     },
   },
@@ -93,7 +93,7 @@ const NavDesktop = ({ isOpen, toggle, contentKey }) => {
           animate="open"
           exit="closed"
           variants={navVariants}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.25 }}
           className="fullscreen-nav"
         >
           <button onClick={toggle}>
