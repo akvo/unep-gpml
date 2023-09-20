@@ -48,7 +48,10 @@ export async function getServerSideProps(context) {
   const { type, id } = context.query
 
   const { req } = context
-  const protocol = req.headers['x-forwarded-proto'] || 'http'
+
+  const forwardedProtos = (req.headers['x-forwarded-proto'] || '').split(',')
+
+  const protocol = forwardedProtos[0] || 'http'
 
   const baseUrl = `${protocol}://${req.headers.host}/`
 
