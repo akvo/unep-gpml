@@ -1,61 +1,61 @@
-import React, { useEffect, useState } from "react";
-import styles from "./style.module.scss";
-import api from "../../utils/api";
-import Overview from "./overview";
-import ResourceView from "./resource-view";
-import { useQuery } from "../../utils/misc";
-import { UIStore } from "../../store";
-import { useHistory } from "react-router-dom";
-import bodyScrollLock from "../details-page/scroll-utils";
-import DetailModal from "../details-page/modal";
-import { useRouter } from "next/router";
+import React, { useEffect, useState } from 'react'
+import styles from './style.module.scss'
+import api from '../../utils/api'
+import Overview from './overview'
+import ResourceView from './resource-view'
+import { useQuery } from '../../utils/misc'
+import { UIStore } from '../../store'
+import { useHistory } from 'react-router-dom'
+import bodyScrollLock from '../details-page/scroll-utils'
+import DetailModal from '../details-page/modal'
+import { useRouter } from 'next/router'
 
 const popularTags = [
-  "plastics",
-  "waste management",
-  "marine litter",
-  "capacity building",
-  "product by design",
-  "source to sea",
-];
+  'plastics',
+  'waste management',
+  'marine litter',
+  'capacity building',
+  'product by design',
+  'source to sea',
+]
 
 function Library({ setLoginVisible, isAuthenticated }) {
-  const router = useRouter();
+  const router = useRouter()
 
   const box =
-    typeof window !== "undefined"
-      ? document.getElementsByClassName("knowledge-lib")
-      : null;
-  const [params, setParams] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
+    typeof window !== 'undefined'
+      ? document.getElementsByClassName('knowledge-lib')
+      : null
+  const [params, setParams] = useState(null)
+  const [modalVisible, setModalVisible] = useState(false)
 
   const { landing } = UIStore.useState((s) => ({
     landing: s.landing,
-  }));
+  }))
 
   useEffect(() => {
     if (!modalVisible) {
-      const previousHref = router.asPath;
+      const previousHref = router.asPath
       window.history.pushState(
         { urlPath: `/${previousHref}` },
-        "",
+        '',
         `${previousHref}`
-      );
+      )
     }
-  }, [modalVisible]);
+  }, [modalVisible])
 
   const showModal = ({ e, type, id }) => {
-    console.log("setModalVisible");
-    e.preventDefault();
+    console.log('setModalVisible')
+    e.preventDefault()
     if (type && id) {
-      e.preventDefault();
-      const detailUrl = `/${type}/${id}`;
-      setParams({ type, id });
-      window.history.pushState({}, "", detailUrl);
-      setModalVisible(true);
-      bodyScrollLock.enable();
+      e.preventDefault()
+      const detailUrl = `/${type}/${id}`
+      setParams({ type, id })
+      window.history.pushState({}, '', detailUrl)
+      setModalVisible(true)
+      bodyScrollLock.enable()
     }
-  };
+  }
 
   return (
     <div className={styles.knowledgeLib}>
@@ -72,13 +72,14 @@ function Library({ setLoginVisible, isAuthenticated }) {
         match={{ params }}
         visible={modalVisible}
         setVisible={setModalVisible}
+        isServer={false}
         {...{
           setLoginVisible,
           isAuthenticated,
         }}
       />
     </div>
-  );
+  )
 }
 
-export default Library;
+export default Library
