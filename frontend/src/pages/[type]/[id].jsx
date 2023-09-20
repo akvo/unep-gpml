@@ -41,7 +41,7 @@ export async function getServerSideProps(context) {
 
   const API_ENDPOINT = process.env.REACT_APP_FEENV
     ? 'https://unep-gpml.akvotest.org/api/'
-    : 'http://backend:3000/api/'
+    : '/api/'
 
   if (!VALID_TYPES.includes(type)) {
     return {
