@@ -14,7 +14,15 @@ const VALID_TYPES = [
   'case-study',
 ]
 
-const Details = ({ data, translations, setLoginVisible, isAuthenticated }) => {
+const Details = ({
+  data,
+  translations,
+  error,
+  url,
+  setLoginVisible,
+  isAuthenticated,
+}) => {
+  console.log(error, url)
   const router = useRouter()
   const { type, id } = router.query
   if (!VALID_TYPES.includes(type)) {
@@ -69,7 +77,8 @@ export async function getServerSideProps(context) {
   } catch (error) {
     return {
       props: {
-        error: 'Failed to fetch data.',
+        error: error,
+        url: `${API_ENDPOINT}/detail/${type.replace('-', '_')}/${id}`,
       },
     }
   }

@@ -9,13 +9,11 @@ function KnowledgeLibrary({ isAuthenticated }) {
   }))
 
   const fetchMapData = () => {
-    api
-      .get(`https://digital.gpmarinelitter.org/api/landing?entityGroup=topic`)
-      .then((resp) => {
-        UIStore.update((e) => {
-          e.landing = resp.data
-        })
+    api.get(`/landing?entityGroup=topic`).then((resp) => {
+      UIStore.update((e) => {
+        e.landing = resp.data
       })
+    })
   }
 
   useEffect(() => {
