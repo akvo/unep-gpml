@@ -22,7 +22,6 @@ const Details = ({
   setLoginVisible,
   isAuthenticated,
 }) => {
-  console.log(error, url)
   const router = useRouter()
   const { type, id } = router.query
   if (!VALID_TYPES.includes(type)) {
@@ -47,9 +46,14 @@ export default Details
 export async function getServerSideProps(context) {
   const { type, id } = context.query
 
+  const { req } = context
+  const protocol = req.headers['x-forwarded-proto'] || 'http'
+
+  const baseUrl = `${protocol}://${req.headers.host}/`
+
   const API_ENDPOINT = process.env.REACT_APP_FEENV
     ? 'https://unep-gpml.akvotest.org/api/'
-    : '/api/'
+    : `${baseUrl}/api/`
 
   if (!VALID_TYPES.includes(type)) {
     return {
@@ -72,6 +76,7 @@ export async function getServerSideProps(context) {
       props: {
         data: dataRes.data,
         translations: translationsRes.data,
+        url: baseUrl,
       },
     }
   } catch (error) {
