@@ -22,6 +22,7 @@ const Details = ({
   setLoginVisible,
   isAuthenticated,
 }) => {
+  console.log(error, url)
   const router = useRouter()
   const { type, id } = router.query
   if (!VALID_TYPES.includes(type)) {
