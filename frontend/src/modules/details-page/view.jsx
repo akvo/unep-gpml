@@ -281,16 +281,16 @@ const DetailsView = ({
         })
     } else {
       setData(serverData)
-      setTranslations({
-        ...serverTranslations,
-        summary: serverTranslations.abstract
-          ? serverTranslations.abstract
-          : serverTranslations.remarks
-          ? serverTranslations.remarks
-          : serverTranslations.description
-          ? serverTranslations.description
-          : serverTranslations.summary,
-      })
+      // setTranslations({
+      //   ...serverTranslations,
+      //   summary: serverTranslations.abstract
+      //     ? serverTranslations.abstract
+      //     : serverTranslations.remarks
+      //     ? serverTranslations.remarks
+      //     : serverTranslations.description
+      //     ? serverTranslations.description
+      //     : serverTranslations.summary,
+      // })
       getComment(id, type.replace('-', '_'))
     }
 
