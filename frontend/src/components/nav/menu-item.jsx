@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CirclePointer } from '../components/icons'
-import { Item } from './new-layout'
+import { CirclePointer } from '../icons'
+import Item from './item'
 
 const variants = {
   open: {

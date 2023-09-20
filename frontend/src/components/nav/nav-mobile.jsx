@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MenuItem } from './MenuItem'
-import { MenuToggle } from './MenuToggle'
+import { MenuItem } from './menu-item'
+import { MenuToggle } from './menu-toggle'
 import {
   CirclePointer,
   FacebookIcon,
   TwitterIcon,
   LinkedinIcon,
-} from '../components/icons'
+} from '../icons'
 import { Button } from 'antd'
-import { UIStore } from '../store'
+import { UIStore } from '../../store'
 
 const SOCIAL_LINKS = [
   { icon: FacebookIcon, url: 'https://facebook.com/' },
@@ -64,19 +64,56 @@ const socialLinksVariants = {
   },
 }
 
-export const Navigation = ({ isOpen, toggleOpen }) => {
+const sidebar = {
+  open: (height = 1000) => ({
+    clipPath: `circle(${height * 2 + 200}px at 100% 0%)`,
+    transition: {
+      type: 'tween',
+      duration: 0.5,
+      ease: 'easeInOut',
+    },
+  }),
+  closed: {
+    clipPath: 'circle(0px at 100% 0px)',
+    transition: {
+      type: 'tween',
+      duration: 0.5,
+      ease: 'easeInOut',
+    },
+  },
+  exit: {
+    clipPath: 'circle(0px at 100% 0px)',
+    transition: {
+      type: 'tween',
+      duration: 0.5,
+      ease: 'easeInOut',
+    },
+  },
+}
+
+const NavMobile = ({ isOpen, toggleOpen }) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState(null)
   const { menuList } = UIStore.useState((s) => ({ menuList: s.menuList }))
 
   const handleMenuItemClick = (item) => setSelectedMenuItem(item)
 
   return (
-    <AnimatePresence mode="wait">
-      {selectedMenuItem ? (
-        <SubMenuContent key="sub-menu" />
-      ) : (
-        isOpen && <MainMenuContent key="main-menu" />
-      )}
+    <AnimatePresence>
+      <motion.div
+        initial="closed"
+        animate={isOpen ? 'open' : 'closed'}
+        exit="exit"
+        className="animation-container"
+      >
+        <motion.div className="mobile-menu-background" variants={sidebar} />
+        <AnimatePresence mode="wait">
+          {selectedMenuItem ? (
+            <SubMenuContent key="sub-menu" />
+          ) : (
+            isOpen && <MainMenuContent key="main-menu" />
+          )}
+        </AnimatePresence>
+      </motion.div>
     </AnimatePresence>
   )
 
@@ -190,3 +227,5 @@ export const Navigation = ({ isOpen, toggleOpen }) => {
     setSelectedMenuItem(null)
   }
 }
+
+export default NavMobile

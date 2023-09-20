@@ -4,6 +4,7 @@ import { isEmpty } from 'lodash'
 import { Button } from 'antd'
 import localFont from 'next/font/local'
 import { DM_Sans } from 'next/font/google'
+import { UIStore } from '../store'
 import Image from 'next/image'
 import Footer from '../footer'
 import Login from '../modules/login/view'
@@ -11,9 +12,8 @@ import { DownArrow } from '../components/icons'
 import Link from 'next/link'
 import { motion, AnimatePresence, useCycle } from 'framer-motion'
 import { useDeviceSize } from '../modules/landing/landing'
-import { MenuToggle } from './MenuToggle'
-import { Navigation } from './Navigation'
-import { FullscreenNav } from './FullScreenNavigation'
+
+import { MenuToggle, NavMobile, NavDesktop } from '../components/nav'
 
 const archia = localFont({
   src: [
@@ -49,38 +49,6 @@ const dmSans = DM_Sans({
   weight: ['400', '500', '700'],
 })
 
-const menuItems = ['Plastic', 'Tools', 'Countries', 'About'].map((key) => ({
-  key,
-  label: key,
-}))
-
-const sidebar = {
-  open: (height = 1000) => ({
-    clipPath: `circle(${height * 2 + 200}px at 100% 0%)`,
-    transition: {
-      type: 'tween',
-      duration: 0.5,
-      ease: 'easeInOut',
-    },
-  }),
-  closed: {
-    clipPath: 'circle(0px at 100% 0px)',
-    transition: {
-      type: 'tween',
-      duration: 0.5,
-      ease: 'easeInOut',
-    },
-  },
-  exit: {
-    clipPath: 'circle(0px at 100% 0px)',
-    transition: {
-      type: 'tween',
-      duration: 0.5,
-      ease: 'easeInOut',
-    },
-  },
-}
-
 const NewLayout = ({
   children,
   isIndexPage,
@@ -88,6 +56,9 @@ const NewLayout = ({
   auth0Client,
   profile,
 }) => {
+  const { menuList } = UIStore.useState((s) => ({
+    menuList: s.menuList,
+  }))
   const [loginVisible, setLoginVisible] = useState(false)
   const [hoveredItemKey, setHoveredItemKey] = useState(null)
   const [showMenu, setShowMenu] = useState(false)
@@ -127,20 +98,20 @@ const NewLayout = ({
                 //   setShowMenu(false)
                 // }}
               >
-                {menuItems.map((item) => (
+                {menuList.map((item) => (
                   <li
                     key={item.key}
                     onMouseEnter={() => {
-                      setHoveredItemKey(item.label)
+                      setHoveredItemKey(item.key)
                       setShowMenu(true)
                     }}
                     className={`${
-                      hoveredItemKey === item.label ? 'selected' : ''
+                      hoveredItemKey === item.key ? 'selected' : ''
                     }`}
                   >
                     <Link href={'/'} legacyBehavior>
                       <a>
-                        {item.label}
+                        {item.key}
                         <span>
                           <DownArrow />
                         </span>
@@ -163,22 +134,9 @@ const NewLayout = ({
           </div>
         </div>
         <div className="navigation">
-          <AnimatePresence>
-            <motion.div
-              initial="closed"
-              animate={isOpen ? 'open' : 'closed'}
-              exit="exit"
-              className="animation-container"
-            >
-              <motion.div
-                className="mobile-menu-background"
-                variants={sidebar}
-              />
-              <Navigation isOpen={isOpen} toggleOpen={toggleOpen} />
-            </motion.div>
-          </AnimatePresence>
+          <NavMobile {...{ isOpen, toggleOpen }} />
 
-          <FullscreenNav
+          <NavDesktop
             isOpen={showMenu}
             contentKey={hoveredItemKey}
             toggle={() => {
