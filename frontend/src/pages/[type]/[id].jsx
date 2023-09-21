@@ -1,3 +1,4 @@
+import React, { memo } from 'react'
 import { useRouter } from 'next/router'
 import NewDetailsView from '../../modules/details-page/view'
 import api from '../../utils/api'
@@ -14,15 +15,7 @@ const VALID_TYPES = [
   'case-study',
 ]
 
-const Details = ({
-  data,
-  translations,
-  error,
-  url,
-  setLoginVisible,
-  isAuthenticated,
-}) => {
-  console.log(error, url)
+const Details = ({ data, translations, setLoginVisible, isAuthenticated }) => {
   const router = useRouter()
   const { type, id } = router.query
   if (!VALID_TYPES.includes(type)) {
@@ -42,7 +35,7 @@ const Details = ({
   )
 }
 
-export default Details
+export default memo(Details)
 
 export async function getServerSideProps(context) {
   const { type, id } = context.query

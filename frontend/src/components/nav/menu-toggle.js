@@ -1,4 +1,3 @@
-'use client'
 import { motion } from 'framer-motion'
 
 const Path = (props) => (
