@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { UIStore } from "../../store";
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import { UIStore } from '../../store'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import {
   Row,
   Col,
@@ -15,8 +15,8 @@ import {
   Collapse,
   Form,
   Input,
-} from "antd";
-const { Panel } = Collapse;
+} from 'antd'
+const { Panel } = Collapse
 import {
   LeftOutlined,
   RightOutlined,
@@ -25,135 +25,135 @@ import {
   CheckOutlined,
   DownOutlined,
   DeleteOutlined,
-} from "@ant-design/icons";
-import StickyBox from "react-sticky-box";
-import styles from "./style.module.scss";
-import common from "./common";
-import FlexibleForm from "./form";
-import isEmpty from "lodash/isEmpty";
-import api from "../../utils/api";
-import { useQuery } from "../../utils/misc";
-import moment from "moment";
-const { Step } = Steps;
-import dynamic from "next/dynamic";
-const RichTextEditor = dynamic(() => import("react-rte"), { ssr: false });
-import { useRouter } from "next/router";
-import Link from "next/link";
+} from '@ant-design/icons'
+import StickyBox from 'react-sticky-box'
+import styles from './style.module.scss'
+import common from './common'
+import FlexibleForm from './form'
+import isEmpty from 'lodash/isEmpty'
+import api from '../../utils/api'
+import { useQuery } from '../../utils/misc'
+import moment from 'moment'
+const { Step } = Steps
+import dynamic from 'next/dynamic'
+const RichTextEditor = dynamic(() => import('react-rte'), { ssr: false })
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 export const getTypeByResource = (type) => {
-  let t = "";
-  let name = "";
-  let translations = "";
+  let t = ''
+  let name = ''
+  let translations = ''
   switch (type) {
-    case "action_plan":
-      t = "action";
-      name = "Action Plan";
-      translations = "resource";
-      break;
-    case "event":
-      t = "event_flexible";
-      name = "Event";
-      translations = "event";
-      break;
-    case "initiative":
-      t = "initiative";
-      name = "Initiative";
-      translations = "initiative";
-      break;
-    case "policy":
-      t = "policy";
-      name = "Policy";
-      translations = "policy";
-      break;
-    case "financing_resource":
-      t = "financing";
-      name = "Financing Resource";
-      translations = "resource";
-      break;
-    case "technical_resource":
-      t = "technical";
-      name = "Technical Resource";
-      translations = "resource";
-      break;
-    case "case_study":
-      t = "case_study";
-      name = "Case Study";
-      translations = "resource";
-      break;
-    case "technology":
-      t = "technology";
-      name = "Technology";
-      translations = "technology";
-      break;
+    case 'action_plan':
+      t = 'action'
+      name = 'Action Plan'
+      translations = 'resource'
+      break
+    case 'event':
+      t = 'event_flexible'
+      name = 'Event'
+      translations = 'event'
+      break
+    case 'initiative':
+      t = 'initiative'
+      name = 'Initiative'
+      translations = 'initiative'
+      break
+    case 'policy':
+      t = 'policy'
+      name = 'Policy'
+      translations = 'policy'
+      break
+    case 'financing_resource':
+      t = 'financing'
+      name = 'Financing Resource'
+      translations = 'resource'
+      break
+    case 'technical_resource':
+      t = 'technical'
+      name = 'Technical Resource'
+      translations = 'resource'
+      break
+    case 'case_study':
+      t = 'case_study'
+      name = 'Case Study'
+      translations = 'resource'
+      break
+    case 'technology':
+      t = 'technology'
+      name = 'Technology'
+      translations = 'technology'
+      break
   }
-  return { type: t, name: name, translations: translations };
-};
+  return { type: t, name: name, translations: translations }
+}
 
 export const languageOptions = [
   {
-    label: "Arabic",
-    key: "0",
-    value: "ar",
-    dbValue: "ar",
+    label: 'Arabic',
+    key: '0',
+    value: 'ar',
+    dbValue: 'ar',
   },
   {
-    label: "Chinese",
-    key: "1",
-    value: "cn",
-    dbValue: "zh",
+    label: 'Chinese',
+    key: '1',
+    value: 'cn',
+    dbValue: 'zh',
   },
   {
-    label: "French",
-    key: "3",
-    value: "fr",
-    dbValue: "fr",
+    label: 'French',
+    key: '3',
+    value: 'fr',
+    dbValue: 'fr',
   },
   {
-    label: "Russian",
-    key: "4",
-    value: "ru",
-    dbValue: "ru",
+    label: 'Russian',
+    key: '4',
+    value: 'ru',
+    dbValue: 'ru',
   },
   {
-    label: "Spanish",
-    key: "5",
-    value: "es",
-    dbValue: "es",
+    label: 'Spanish',
+    key: '5',
+    value: 'es',
+    dbValue: 'es',
   },
   {
-    label: "English",
-    key: "6",
-    value: "en",
-    dbValue: "en",
+    label: 'English',
+    key: '6',
+    value: 'en',
+    dbValue: 'en',
   },
-];
+]
 
 const toolbarConfig = {
   // Optionally specify the groups to display (displayed in the order listed).
   display: [
-    "INLINE_STYLE_BUTTONS",
-    "BLOCK_TYPE_BUTTONS",
-    "LINK_BUTTONS",
-    "BLOCK_TYPE_DROPDOWN",
-    "HISTORY_BUTTONS",
+    'INLINE_STYLE_BUTTONS',
+    'BLOCK_TYPE_BUTTONS',
+    'LINK_BUTTONS',
+    'BLOCK_TYPE_DROPDOWN',
+    'HISTORY_BUTTONS',
   ],
   INLINE_STYLE_BUTTONS: [
-    { label: "Bold", style: "BOLD", className: "custom-css-class" },
-    { label: "Italic", style: "ITALIC" },
-    { label: "Underline", style: "UNDERLINE" },
-    { label: "Code", style: "CODE" },
+    { label: 'Bold', style: 'BOLD', className: 'custom-css-class' },
+    { label: 'Italic', style: 'ITALIC' },
+    { label: 'Underline', style: 'UNDERLINE' },
+    { label: 'Code', style: 'CODE' },
   ],
   BLOCK_TYPE_DROPDOWN: [
-    { label: "Normal", style: "unstyled" },
-    { label: "Heading Large", style: "header-one" },
-    { label: "Heading Medium", style: "header-two" },
-    { label: "Heading Small", style: "header-three" },
+    { label: 'Normal', style: 'unstyled' },
+    { label: 'Heading Large', style: 'header-one' },
+    { label: 'Heading Medium', style: 'header-two' },
+    { label: 'Heading Small', style: 'header-three' },
   ],
   BLOCK_TYPE_BUTTONS: [
-    { label: "UL", style: "unordered-list-item" },
-    { label: "OL", style: "ordered-list-item" },
+    { label: 'UL', style: 'unordered-list-item' },
+    { label: 'OL', style: 'ordered-list-item' },
   ],
-};
+}
 
 const FlexibleForms = ({
   isAuthenticated,
@@ -172,16 +172,17 @@ const FlexibleForms = ({
     initialDataEdit,
     formDataMapping,
     getTranslationForm,
-  } = common;
-  const query = useQuery();
+    prevFormData,
+  } = common
+  const query = useQuery()
 
   const caseStudy = {
-    code: "case_study",
-    name: "Case Study",
+    code: 'case_study',
+    name: 'Case Study',
     examples: [],
     childs: [],
-    desc: "",
-  };
+    desc: '',
+  }
 
   const storeData = UIStore.useState((s) => ({
     stakeholders: s.stakeholders?.stakeholders,
@@ -190,7 +191,7 @@ const FlexibleForms = ({
     regionOptions: s.regionOptions,
     transnationalOptions: [
       ...s.transnationalOptions,
-      { id: -1, type: "transnational", name: "Other", countries: [] },
+      { id: -1, type: 'transnational', name: 'Other', countries: [] },
     ],
     sectorOptions: s.sectorOptions,
     organisationType: s.organisationType,
@@ -205,7 +206,7 @@ const FlexibleForms = ({
     selectedMainContentType: s.selectedMainContentType,
     currencies: s.currencies,
     relatedResource: s.relatedResource,
-  }));
+  }))
 
   const {
     stakeholders,
@@ -222,37 +223,37 @@ const FlexibleForms = ({
     formEdit,
     profile,
     selectedMainContentType,
-  } = storeData;
+  } = storeData
 
-  const tabsData = tabs;
-  const router = useRouter();
-  const { pathname, query: state } = router;
+  const tabsData = tabs
+  const router = useRouter()
+  const { pathname, query: state } = router
 
-  const formData = initialFormData.useState();
-  const { editId, data } = formData;
-  const { status } = formEdit.flexible;
-  const btnSubmit = useRef();
-  const [displayModal, setDisplayModal] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [highlight, setHighlight] = useState(false);
-  const [capacityBuilding, setCapacityBuilding] = useState(false);
-  const [mainType, setMainType] = useState("initiative");
-  const [label, setLabel] = useState("Initiative");
-  const [subType, setSubType] = useState("");
-  const [subContentType, setSubContentType] = useState([]);
-  const [languages, setLanguages] = useState([]);
-  const [translations, setTranslations] = useState([]);
-  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const formData = initialFormData.useState()
+  const { editId, data } = formData
+  const { status } = formEdit.flexible
+  const btnSubmit = useRef()
+  const [displayModal, setDisplayModal] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [highlight, setHighlight] = useState(false)
+  const [capacityBuilding, setCapacityBuilding] = useState(false)
+  const [mainType, setMainType] = useState('initiative')
+  const [label, setLabel] = useState('Initiative')
+  const [subType, setSubType] = useState('')
+  const [subContentType, setSubContentType] = useState([])
+  const [languages, setLanguages] = useState([])
+  const [translations, setTranslations] = useState([])
+  const [dropdownVisible, setDropdownVisible] = useState(false)
   const [disabledBtn, setDisabledBtn] = useState({
     disabled: true,
-    type: "default",
-  });
-  const [value, setValue] = useState();
+    type: 'default',
+  })
+  const [value, setValue] = useState()
   const [formSchema, setFormSchema] = useState({
     schema: schema[selectedMainContentType],
-  });
+  })
 
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
 
   const isLoaded = useCallback(() => {
     return Boolean(
@@ -267,7 +268,7 @@ const FlexibleForms = ({
         !isEmpty(meaOptions) &&
         !isEmpty(stakeholders) &&
         !isEmpty(representativeGroup)
-    );
+    )
   }, [
     countries,
     tags,
@@ -280,73 +281,73 @@ const FlexibleForms = ({
     meaOptions,
     stakeholders,
     representativeGroup,
-  ]);
+  ])
 
   useEffect(() => {
     const importModule = async () => {
-      const module = await import("react-rte");
-      setValue(module.createEmptyValue());
-    };
-    importModule();
-  }, []);
+      const module = await import('react-rte')
+      setValue(module.createEmptyValue())
+    }
+    importModule()
+  }, [])
 
   useEffect(() => {
-    if (type && status !== "edit") {
-      setMainType(type);
+    if (type && status !== 'edit') {
+      setMainType(type)
       // setLabel(state?.state?.label);
     }
-  }, [type]);
+  }, [type])
 
   useEffect(() => {
     if (!isAuthenticated && loadingProfile) {
-      setLoginVisible(true);
+      setLoginVisible(true)
     }
-  }, [isAuthenticated, loadingProfile]);
+  }, [isAuthenticated, loadingProfile])
 
   useEffect(() => {
-    if (profile && profile.role === "ADMIN") {
+    if (profile && profile.role === 'ADMIN') {
       UIStore.update((e) => {
-        e.mainContentType = [...e.mainContentType, caseStudy];
-      });
+        e.mainContentType = [...e.mainContentType, caseStudy]
+      })
     }
-  }, [profile]);
+  }, [profile])
 
   const getRevertValue = (type, value, name) => {
-    let res = value;
-    const isObject = typeof value === "object";
-    const isArray = Array.isArray(value);
-    if (type === "number") {
-      res = Number(value);
+    let res = value
+    const isObject = typeof value === 'object'
+    const isArray = Array.isArray(value)
+    if (type === 'number') {
+      res = Number(value)
     }
-    if (type === "option" && isObject && !isArray) {
-      res = Object.keys(value)[0];
+    if (type === 'option' && isObject && !isArray) {
+      res = Object.keys(value)[0]
       // case for geocoveragetype
-      if (name === "q24") {
+      if (name === 'q24') {
         res =
-          Object.values(value)?.[0] === "Subnational"
-            ? "sub-national"
-            : Object.values(value)?.[0]?.toLowerCase();
+          Object.values(value)?.[0] === 'Subnational'
+            ? 'sub-national'
+            : Object.values(value)?.[0]?.toLowerCase()
       }
-      res = isNaN(Number(res)) ? res : Number(res);
+      res = isNaN(Number(res)) ? res : Number(res)
       // case for currency code
-      if (name === "q36_1" || name === "q37_1") {
-        res = res.split("_").join("");
-        res = String(res).toUpperCase();
+      if (name === 'q36_1' || name === 'q37_1') {
+        res = res.split('_').join('')
+        res = String(res).toUpperCase()
       }
     }
-    if (name === "tags") {
-      res = value ? value.map((x) => x.tag) : "";
+    if (name === 'tags') {
+      res = value ? value.map((x) => x.tag) : ''
     }
 
-    if (name === "infoDocs" || name === "info_docs") {
-      res = value ? value : "";
+    if (name === 'infoDocs' || name === 'info_docs') {
+      res = value ? value : ''
     }
 
-    if (name === "relatedContent" || name === "related_content") {
+    if (name === 'relatedContent' || name === 'related_content') {
       if (value && value.length > 0) {
         UIStore.update((e) => {
-          e.relatedResource = value;
-        });
+          e.relatedResource = value
+        })
       }
       res =
         value && value.length > 0 && value[0].id !== null
@@ -354,15 +355,15 @@ const FlexibleForms = ({
               id: value.map((x) => x.id),
               type: value.map((x) => ({
                 value: x.id,
-                key: x.id + "-" + x.type,
+                key: x.id + '-' + x.type,
                 label: x.type,
                 children: x.title,
               })),
             }
-          : "";
+          : ''
     }
 
-    if (name === "stakeholderConnections") {
+    if (name === 'stakeholderConnections') {
       res =
         value.length > 0
           ? value.map((x) => ({
@@ -370,9 +371,9 @@ const FlexibleForms = ({
               stakeholder: x.stakeholderId,
               id: x.id,
             }))
-          : [{}];
+          : [{}]
     }
-    if (name === "stakeholder_connections") {
+    if (name === 'stakeholder_connections') {
       res =
         value.length > 0
           ? value.map((x) => ({
@@ -380,119 +381,118 @@ const FlexibleForms = ({
               stakeholder: x.stakeholder_id,
               id: x.id,
             }))
-          : [{}];
+          : [{}]
     }
 
-    if (name === "entityConnections") {
+    if (name === 'entityConnections') {
       res =
         value.length > 0
           ? value.map((x) => ({ role: x.role, entity: x.entityId, id: x.id }))
-          : [{}];
+          : [{}]
     }
-    if (name === "entity_connections") {
+    if (name === 'entity_connections') {
       res =
         value.length > 0
           ? value.map((x) => ({ role: x.role, entity: x.entity_id, id: x.id }))
-          : [{}];
+          : [{}]
     }
 
-    if (type === "date") {
-      if (name === "validTo" || name === "firstPublicationDate") {
+    if (type === 'date') {
+      if (name === 'validTo' || name === 'firstPublicationDate') {
         res =
-          !value || value === "Ongoing"
-            ? ""
-            : moment(value).format("YYYY-MM-DD");
+          !value || value === 'Ongoing'
+            ? ''
+            : moment(value).format('YYYY-MM-DD')
       } else {
         res = value
           ? moment(value).isValid()
-            ? moment(value).format("YYYY-MM-DD")
-            : ""
-          : "";
+            ? moment(value).format('YYYY-MM-DD')
+            : ''
+          : ''
       }
     }
 
-    if (name === "publishYear") {
-      res = moment(value, "YYYY").format("YYYY-MM-DD");
+    if (name === 'publishYear') {
+      res = moment(value, 'YYYY').format('YYYY-MM-DD')
     }
 
-    if (type === "integer") {
+    if (type === 'integer') {
       res =
-        value !== "Not  Specified" && value !== "Not Specified"
+        value !== 'Not  Specified' && value !== 'Not Specified'
           ? parseInt(value)
-          : value;
+          : value
     }
 
-    if (type === "year") {
-      res = String(value);
+    if (type === 'year') {
+      res = String(value)
     }
 
-    if (name === "implementingMea") {
+    if (name === 'implementingMea') {
       const mea = meaOptions.find(
         (x) => x.name.toLowerCase() === value.toLowerCase()
-      );
-      res = mea ? mea.id : null;
+      )
+      res = mea ? mea.id : null
     }
 
     // Geo Transnational handle
     // case for transnational geo value
 
-    if (type === "option" && isArray && name === "q24_4") {
+    if (type === 'option' && isArray && name === 'q24_4') {
       const transnationalValue = isArray
         ? value.map((item) => {
-            const enumKey = Object.keys(item)[0];
-            return enumKey;
+            const enumKey = Object.keys(item)[0]
+            return enumKey
           })
-        : Object.keys(value);
-      res = transnationalValue.map((x) => x);
+        : Object.keys(value)
+      res = transnationalValue.map((x) => x)
     }
-    if (type === "option" && isArray && name === "q24_2") {
+    if (type === 'option' && isArray && name === 'q24_2') {
       const transnationalValue = isArray
         ? value.map((item) => {
-            const enumKey = Object.keys(item)[0];
-            return enumKey;
+            const enumKey = Object.keys(item)[0]
+            return enumKey
           })
-        : Object.keys(value);
-      res = transnationalValue.map((x) => x);
+        : Object.keys(value)
+      res = transnationalValue.map((x) => x)
     }
-    if (type === "option" && isArray && name === "q24_3") {
+    if (type === 'option' && isArray && name === 'q24_3') {
       const transnationalValue = isArray
         ? value.map((item) => {
-            const enumKey = Object.keys(item)[0];
-            return enumKey;
+            const enumKey = Object.keys(item)[0]
+            return enumKey
           })
-        : Object.keys(value);
-      res = transnationalValue.map((x) => x);
+        : Object.keys(value)
+      res = transnationalValue.map((x) => x)
     }
     // EOL Geo Transnational handle
 
-    if (type === "multiple-option" && isObject && isArray) {
+    if (type === 'multiple-option' && isObject && isArray) {
       res = value.map((item) => {
-        const enumKey =
-          typeof item === "object" ? Object.keys(item)?.[0] : item;
-        return enumKey;
-      });
+        const enumKey = typeof item === 'object' ? Object.keys(item)?.[0] : item
+        return enumKey
+      })
     }
-    if (type === "item-array" && isObject && isArray) {
-      res = value;
+    if (type === 'item-array' && isObject && isArray) {
+      res = value
     }
-    return res;
-  };
+    return res
+  }
 
   const revertFormData = (data) => {
-    let formData = initialDataEdit;
+    let formData = initialDataEdit
     formDataMapping.forEach((item) => {
-      const { name, section, group, question, type } = item;
-      const value = data?.[name];
-      if (!group && value && value !== "Ongoing") {
+      const { name, section, group, question, type } = item
+      const value = data?.[name]
+      if (!group && value && value !== 'Ongoing') {
         formData = {
           ...formData,
           [section]: {
             ...formData[section],
             [question]: getRevertValue(type, value, name),
           },
-        };
+        }
       }
-      if (group && value && value !== "Ongoing") {
+      if (group && value && value !== 'Ongoing') {
         formData = {
           ...formData,
           [section]: {
@@ -502,92 +502,97 @@ const FlexibleForms = ({
               [question]: getRevertValue(type, value, name),
             },
           },
-        };
+        }
       }
-    });
-    return formData;
-  };
+    })
+    return formData
+  }
 
   useEffect(() => {
     if (type) {
-      handleOnTabChange("S3");
+      handleOnTabChange('S3')
     }
-  }, [type]);
+  }, [type])
 
   useEffect(() => {
-    if (status === "edit" || id) {
-      const dataId = Number(id);
-      setMainType(getTypeByResource(type).type);
-      setLabel(getTypeByResource(type).name);
+    if (status === 'edit' || id) {
+      const dataId = Number(id)
+      setMainType(getTypeByResource(type).type)
+      setLabel(getTypeByResource(type).name)
       setFormSchema({
         schema: schema[getTypeByResource(type).type],
-      });
+      })
       UIStore.update((event) => {
-        event.selectedMainContentType = getTypeByResource(type).type;
-      });
+        event.selectedMainContentType = getTypeByResource(type).type
+      })
       api
         .get(
           `/translations/${
-            getTypeByResource(type?.replace("-", "_")).translations
+            getTypeByResource(type?.replace('-', '_')).translations
           }/${id}`
         )
         .then((resp) => {
-          setLanguages(Object.keys(resp?.data?.title));
-          let editTranslations = [];
-          let infoValue = [];
+          setLanguages(Object.keys(resp?.data?.title))
+          let editTranslations = []
+          let infoValue = []
           Object.keys(resp?.data).map((key) => {
             Object.keys(resp?.data[key]).map((item) => {
-              if (key === "infoDocs") {
+              if (key === 'infoDocs') {
                 infoValue.push({
                   lang: item,
                   // value: RichTextEditor.createValueFromString(
                   //   resp?.data[key][item],
                   //   "html"
                   // ),
-                });
+                })
               }
-              if (key !== "infoDocs")
+              if (key !== 'infoDocs')
                 editTranslations.push({
                   language: item,
                   value: resp?.data[key][item],
                   translatable_field: key,
-                });
-            });
-          });
-          setTranslations(editTranslations);
-          setValue(infoValue);
+                })
+            })
+          })
+          setTranslations(editTranslations)
+          setValue(infoValue)
         })
-        .catch((e) => console.log(e));
+        .catch((e) => console.log(e))
 
-      if (type === "initiative") {
+      if (type === 'initiative') {
         api.getRaw(`/initiative/${dataId}`).then((d) => {
-          let data = JSON.parse(d.data);
-          setSubType(data.sub_content_type);
-          if (JSON.parse(d?.data).q24.hasOwnProperty("transnational")) {
+          let data = JSON.parse(d.data)
+          setSubType(data.sub_content_type)
+          if (JSON.parse(d?.data).q24.hasOwnProperty('transnational')) {
             data = {
               ...data,
               q24_3: data.q24_2,
               q24_2: null,
-            };
+            }
           }
           initialFormData.update((e) => {
-            e.data = revertFormData(data);
-            e.editId = true;
-            e.type = "initiative";
-          });
-          setSubType(data.sub_content_type);
-        });
+            e.data = revertFormData(data)
+            e.editId = true
+            e.type = 'initiative'
+          })
+          prevFormData.update((e) => {
+            e.data = revertFormData(data)
+            e.editId = true
+            e.type = 'initiative'
+          })
+          setSubType(data.sub_content_type)
+        })
       } else {
         api.get(`/detail/${type}/${dataId}`).then((d) => {
-          setSubType(d?.subContentType);
-          let newData = [];
+          setSubType(d?.subContentType)
+          let newData = []
           if (d.data.organisations) {
             newData = d.data.organisations.map((item) => {
               return {
-                role: "owner",
+                role: 'owner',
                 entityId: item.id,
-              };
-            });
+              }
+            })
           }
           d.data = {
             ...d.data,
@@ -596,18 +601,23 @@ const FlexibleForms = ({
                 ? d.data.languages[0].url
                 : d.data.url,
             entityConnections: [...d.data.entityConnections, ...newData],
-          };
+          }
 
           initialFormData.update((e) => {
-            e.data = revertFormData(d.data);
-            e.editId = true;
-            e.type = type;
-          });
-          setSubType(d?.data.subContentType);
-        });
+            e.data = revertFormData(d.data)
+            e.editId = true
+            e.type = type
+          })
+          prevFormData.update((e) => {
+            e.data = revertFormData(d.data)
+            e.editId = true
+            e.type = type
+          })
+          setSubType(d?.data.subContentType)
+        })
       }
     }
-  }, [status, schema, initialFormData, type]);
+  }, [status, schema, initialFormData, type])
 
   // useEffect(() => {
   //   UIStore.update((e) => {
@@ -624,20 +634,20 @@ const FlexibleForms = ({
 
   useEffect(() => {
     const search = mainContentType.find((element) => element.code === mainType)
-      ?.childs;
-    setSubContentType(search);
-  }, [mainContentType, mainType]);
+      ?.childs
+    setSubContentType(search)
+  }, [mainContentType, mainType])
 
   useEffect(() => {
     UIStore.update((e) => {
-      e.highlight = highlight;
-    });
-    setFormSchema({ schema: schema[selectedMainContentType] });
-  }, [schema, highlight, selectedMainContentType]);
+      e.highlight = highlight
+    })
+    setFormSchema({ schema: schema[selectedMainContentType] })
+  }, [schema, highlight, selectedMainContentType])
 
   useEffect(() => {
     if (isLoaded()) {
-      setFormSchema(getSchema(storeData));
+      setFormSchema(getSchema(storeData))
     }
   }, [
     initialFormData,
@@ -649,33 +659,33 @@ const FlexibleForms = ({
     editId,
     isLoaded,
     profile,
-  ]);
+  ])
 
   useEffect(() => {
     if (isLoaded()) {
       if (subType) {
         let obj = mainContentType.find(
           (o) => o.code === selectedMainContentType
-        );
+        )
         let array = Object.keys(tags)
           .map((k) => tags[k])
-          .flat();
-        let find = obj?.childs.find((o) => o.title === subType)?.tags;
+          .flat()
+        let find = obj?.childs.find((o) => o.title === subType)?.tags
         if (find) {
-          let res = array.filter((item) => find.includes(item.tag));
-          let newArray = find;
+          let res = array.filter((item) => find.includes(item.tag))
+          let newArray = find
           res.map((item) => {
             if (find.includes(item.tag)) {
-              newArray = newArray.filter((x) => x !== item.tag);
+              newArray = newArray.filter((x) => x !== item.tag)
               newArray = [
                 ...newArray,
                 item.tag,
                 ...(formData?.data?.S4?.S4_G3?.tags
                   ? formData?.data?.S4?.S4_G3?.tags
                   : []),
-              ];
+              ]
             }
-          });
+          })
           initialFormData.update((e) => {
             e.data = {
               ...e.data,
@@ -686,28 +696,28 @@ const FlexibleForms = ({
                   tags: [...new Set(newArray)],
                 },
               },
-            };
-          });
+            }
+          })
         }
       }
     }
-  }, [initialFormData, isLoaded, subType]);
+  }, [initialFormData, isLoaded, subType])
 
   const renderSteps = (parentTitle, section, steps, index) => {
-    const totalRequiredFields = data?.required?.[section]?.length || 0;
+    const totalRequiredFields = data?.required?.[section]?.length || 0
     const customTitle = (status) => {
-      const color = totalRequiredFields === 0 ? "#fff" : "#255B87";
-      const background = totalRequiredFields === 0 ? "#1CA585" : "#fff";
+      const color = totalRequiredFields === 0 ? '#fff' : '#255B87'
+      const background = totalRequiredFields === 0 ? '#1CA585' : '#fff'
       const display =
-        status === "active"
-          ? "unset"
+        status === 'active'
+          ? 'unset'
           : totalRequiredFields === 0
-          ? "unset"
-          : "inline";
+          ? 'unset'
+          : 'inline'
       return (
         <div className="custom-step-title">
           <span>{parentTitle}</span>
-          {parentTitle === "Basic info" ? (
+          {parentTitle === 'Basic info' ? (
             <Button
               type="ghost"
               size="small"
@@ -715,19 +725,19 @@ const FlexibleForms = ({
               icon={
                 totalRequiredFields === 0 &&
                 ((data?.S4?.S4_G5.individual?.length > 0 &&
-                  data?.S4?.S4_G5.individual[0].hasOwnProperty("role")) ||
+                  data?.S4?.S4_G5.individual[0].hasOwnProperty('role')) ||
                   (data?.S4?.S4_G5.entity?.length > 0 &&
-                    data?.S4?.S4_G5.entity[0].hasOwnProperty("role"))) ? (
+                    data?.S4?.S4_G5.entity[0].hasOwnProperty('role'))) ? (
                   <CheckOutlined />
                 ) : (
                   <EditOutlined />
                 )
               }
               style={{
-                right: "0",
-                position: "absolute",
+                right: '0',
+                position: 'absolute',
                 color: color,
-                borderColor: "#1CA585",
+                borderColor: '#1CA585',
                 backgroundColor: background,
                 display: display,
               }}
@@ -741,56 +751,56 @@ const FlexibleForms = ({
                 totalRequiredFields === 0 ? <CheckOutlined /> : <EditOutlined />
               }
               style={{
-                right: "0",
-                position: "absolute",
+                right: '0',
+                position: 'absolute',
                 color: color,
-                borderColor: "#1CA585",
+                borderColor: '#1CA585',
                 backgroundColor: background,
                 display: display,
               }}
             />
           )}
         </div>
-      );
-    };
+      )
+    }
     const customIcon = () => {
-      index += 1;
+      index += 1
       return (
         <Button className="custom-step-icon" shape="circle">
           {index}
         </Button>
-      );
-    };
+      )
+    }
     if (section !== data.tabs[0]) {
       return (
         <Step
           key={section}
-          title={customTitle("waiting")}
+          title={customTitle('waiting')}
           className={
             totalRequiredFields === 0
-              ? "step-section step-section-finish"
-              : "step-section"
+              ? 'step-section step-section-finish'
+              : 'step-section'
           }
-          status={totalRequiredFields === 0 ? "finish" : "wait"}
-          icon={customIcon("waiting")}
+          status={totalRequiredFields === 0 ? 'finish' : 'wait'}
+          icon={customIcon('waiting')}
         />
-      );
+      )
     }
     const childs = steps.map(({ group, key, title, desc }) => {
-      const requiredFields = data?.[section]?.required?.[group]?.length || 0;
+      const requiredFields = data?.[section]?.required?.[group]?.length || 0
       const customChildTitle = (status) => {
-        const color = requiredFields === 0 ? "#255B87" : "#fff";
-        const background = requiredFields === 0 ? "#fff" : "#fff";
+        const color = requiredFields === 0 ? '#255B87' : '#fff'
+        const background = requiredFields === 0 ? '#fff' : '#fff'
         const display =
-          status === "active"
-            ? "unset"
+          status === 'active'
+            ? 'unset'
             : requiredFields === 0
-            ? "unset"
-            : "none";
+            ? 'unset'
+            : 'none'
         return (
           <div className="custom-child-title">
             <span>{title}</span>
-            {title === "Stakeholders connections" ? (
+            {title === 'Stakeholders connections' ? (
               <Button
                 type="ghost"
                 size="small"
@@ -798,10 +808,10 @@ const FlexibleForms = ({
                 icon={
                   data?.[section]?.S4_G5.individual.length > 0 &&
                   (data?.[section]?.S4_G5.individual[0].hasOwnProperty(
-                    "role"
+                    'role'
                   ) ||
                     data?.[section]?.S4_G5?.entity[0]?.hasOwnProperty(
-                      "role"
+                      'role'
                     )) ? (
                     <CheckOutlined />
                   ) : (
@@ -809,17 +819,17 @@ const FlexibleForms = ({
                   )
                 }
                 style={{
-                  right: "0",
-                  position: "absolute",
+                  right: '0',
+                  position: 'absolute',
                   color:
                     data?.[section]?.S4_G5?.individual &&
                     (data?.[section]?.S4_G5?.individual[0]?.hasOwnProperty(
-                      "role"
+                      'role'
                     ) ||
-                      data?.[section]?.S4_G5?.entity[0]?.hasOwnProperty("role"))
-                      ? "#255B87"
-                      : "#fff",
-                  borderColor: "#255B87",
+                      data?.[section]?.S4_G5?.entity[0]?.hasOwnProperty('role'))
+                      ? '#255B87'
+                      : '#fff',
+                  borderColor: '#255B87',
                   backgroundColor: background,
                   display: display,
                 }}
@@ -833,54 +843,54 @@ const FlexibleForms = ({
                   requiredFields === 0 ? <CheckOutlined /> : <EditOutlined />
                 }
                 style={{
-                  right: "0",
-                  position: "absolute",
+                  right: '0',
+                  position: 'absolute',
                   color: color,
-                  borderColor: "#255B87",
+                  borderColor: '#255B87',
                   backgroundColor: background,
                   display: display,
                 }}
               />
             )}
           </div>
-        );
-      };
+        )
+      }
       return (
         <Step
           key={section + key}
-          title={customChildTitle("active")}
-          className={"child-item"}
-          status={requiredFields === 0 ? "finish" : "process"}
+          title={customChildTitle('active')}
+          className={'child-item'}
+          status={requiredFields === 0 ? 'finish' : 'process'}
         />
-      );
-    });
+      )
+    })
     return [
       <Step
         key={section}
-        title={customTitle("active")}
+        title={customTitle('active')}
         className={
           totalRequiredFields === 0
-            ? "step-section step-section-finish parent-item"
-            : "step-section parent-item"
+            ? 'step-section step-section-finish parent-item'
+            : 'step-section parent-item'
         }
-        status={totalRequiredFields === 0 ? "finish" : "process"}
-        icon={customIcon("active")}
+        status={totalRequiredFields === 0 ? 'finish' : 'process'}
+        icon={customIcon('active')}
       />,
       ...childs,
-    ];
-  };
+    ]
+  }
 
   const handleOnTabChange = (key) => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    const tabActive = tabsData.filter((x) => x.key === key);
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    const tabActive = tabsData.filter((x) => x.key === key)
     initialFormData.update((e) => {
       e.data = {
         ...e.data,
         tabs: [key],
         steps: tabActive[0].steps,
-      };
-    });
-  };
+      }
+    })
+  }
 
   const handleOnStepClick = (current, section) => {
     initialFormData.update((e) => {
@@ -890,130 +900,130 @@ const FlexibleForms = ({
           ...e.data[section],
           steps: current,
         },
-      };
-    });
-  };
+      }
+    })
+  }
 
   const getTabStepIndex = () => {
-    const section = data.tabs[0];
-    const stepIndex = data[section].steps;
-    const tabIndex = tabsData.findIndex((tab) => tab.key === section);
-    const steps = tabsData[tabIndex]?.steps || [];
-    return { tabIndex, stepIndex, steps };
-  };
+    const section = data.tabs[0]
+    const stepIndex = data[section].steps
+    const tabIndex = tabsData.findIndex((tab) => tab.key === section)
+    const steps = tabsData[tabIndex]?.steps || []
+    return { tabIndex, stepIndex, steps }
+  }
 
   const isLastStep = () => {
-    const { tabIndex } = getTabStepIndex();
-    return tabsData.length === tabIndex + 1;
-  };
+    const { tabIndex } = getTabStepIndex()
+    return tabsData.length === tabIndex + 1
+  }
 
   const isFirstStep = () => {
-    const { tabIndex } = getTabStepIndex();
-    return tabIndex === 0;
-  };
+    const { tabIndex } = getTabStepIndex()
+    return tabIndex === 0
+  }
 
   const handleOnClickBtnNext = (e) => {
-    window.scrollTo(0, 0);
-    const { tabIndex, stepIndex, steps } = getTabStepIndex();
+    window.scrollTo(0, 0)
+    const { tabIndex, stepIndex, steps } = getTabStepIndex()
     if (stepIndex < steps.length - 1) {
       // Next step, same section
-      handleOnStepClick(stepIndex + 1, tabsData[tabIndex].key);
+      handleOnStepClick(stepIndex + 1, tabsData[tabIndex].key)
     } else if (tabIndex < tabsData.length - 1) {
       // Next section, first step
-      handleOnTabChange(tabsData[tabIndex + 1].key);
+      handleOnTabChange(tabsData[tabIndex + 1].key)
     } else {
       // We shouldn't get here, since the button should be hidden
-      console.error("Last step:", tabIndex, stepIndex);
+      console.error('Last step:', tabIndex, stepIndex)
     }
-  };
+  }
 
   const handleOnClickBtnBack = (e) => {
-    window.scrollTo(0, 0);
-    const { tabIndex, stepIndex, steps } = getTabStepIndex();
+    window.scrollTo(0, 0)
+    const { tabIndex, stepIndex, steps } = getTabStepIndex()
     if (stepIndex > 0 && steps.length > 0) {
       // Prev step, same section
-      handleOnStepClick(stepIndex - 1, tabsData[tabIndex].key);
+      handleOnStepClick(stepIndex - 1, tabsData[tabIndex].key)
     } else if (tabIndex > 0) {
       // Prev section, first step
-      handleOnTabChange(tabsData[tabIndex - 1].key);
+      handleOnTabChange(tabsData[tabIndex - 1].key)
     } else {
       // We shouldn't get here, since the button should be hidden
-      console.error("Last step:", tabIndex, stepIndex);
+      console.error('Last step:', tabIndex, stepIndex)
     }
-  };
+  }
 
   const handleOnClickBtnSubmit = (e) => {
-    setHighlight(true);
-    btnSubmit.current.click();
-  };
+    setHighlight(true)
+    btnSubmit.current.click()
+  }
 
   const handleMainContentType = (e) => {
-    setCapacityBuilding(false);
-    if (e.target.value === "capacity_building") {
-      setMainType(e.target.value);
+    setCapacityBuilding(false)
+    if (e.target.value === 'capacity_building') {
+      setMainType(e.target.value)
       const search = mainContentType.find(
         (element) => element.code === e.target.value
-      ).childs;
-      setSubContentType(search);
-      return;
+      ).childs
+      setSubContentType(search)
+      return
     }
-    setMainType(e.target.value);
+    setMainType(e.target.value)
     const search = mainContentType.find(
       (element) => element.code === e.target.value
-    ).childs;
-    setSubContentType(search);
+    ).childs
+    setSubContentType(search)
     setLabel(
       mainContentType.find((element) => element.code === e.target.value).name
-    );
-    setFormSchema({ schema: schema[selectedMainContentType] });
+    )
+    setFormSchema({ schema: schema[selectedMainContentType] })
     UIStore.update((event) => {
-      event.selectedMainContentType = e.target.value;
-    });
-  };
+      event.selectedMainContentType = e.target.value
+    })
+  }
 
   const handleSubContentType = (e) => {
-    setSubType(e);
+    setSubType(e)
     if (
-      mainType === "capacity_building" &&
-      (e === "Guidance Documents" ||
-        e === "Tools & toolkits" ||
-        e === "Courses & Trainings" ||
-        e === "Educational & Outreach resources" ||
-        e === "Case studies")
+      mainType === 'capacity_building' &&
+      (e === 'Guidance Documents' ||
+        e === 'Tools & toolkits' ||
+        e === 'Courses & Trainings' ||
+        e === 'Educational & Outreach resources' ||
+        e === 'Case studies')
     ) {
-      setLabel("Technical Resource");
-      setFormSchema({ schema: schema["technical"] });
-      setCapacityBuilding(true);
+      setLabel('Technical Resource')
+      setFormSchema({ schema: schema['technical'] })
+      setCapacityBuilding(true)
       UIStore.update((event) => {
-        event.selectedMainContentType = "technical";
-      });
+        event.selectedMainContentType = 'technical'
+      })
     }
-    if (mainType === "capacity_building" && e === "Financing Resources") {
-      setLabel("Financing Resource");
-      setFormSchema({ schema: schema["financing"] });
-      setCapacityBuilding(true);
+    if (mainType === 'capacity_building' && e === 'Financing Resources') {
+      setLabel('Financing Resource')
+      setFormSchema({ schema: schema['financing'] })
+      setCapacityBuilding(true)
       UIStore.update((event) => {
-        event.selectedMainContentType = "financing";
-      });
+        event.selectedMainContentType = 'financing'
+      })
     }
-    if (mainType === "capacity_building" && e === "Events") {
-      setLabel("Event");
-      setFormSchema({ schema: schema["event_flexible"] });
-      setCapacityBuilding(true);
+    if (mainType === 'capacity_building' && e === 'Events') {
+      setLabel('Event')
+      setFormSchema({ schema: schema['event_flexible'] })
+      setCapacityBuilding(true)
       UIStore.update((event) => {
-        event.selectedMainContentType = "event_flexible";
-      });
+        event.selectedMainContentType = 'event_flexible'
+      })
     }
-    if (mainType === "capacity_building" && e === "Initiatives") {
-      setLabel("Initiatives");
-      setFormSchema({ schema: schema["initiative"] });
-      setCapacityBuilding(true);
+    if (mainType === 'capacity_building' && e === 'Initiatives') {
+      setLabel('Initiatives')
+      setFormSchema({ schema: schema['initiative'] })
+      setCapacityBuilding(true)
       UIStore.update((event) => {
-        event.selectedMainContentType = "initiative";
-      });
+        event.selectedMainContentType = 'initiative'
+      })
     }
-    if (mainType === "initiative") {
-      if (e === "Working with people") {
+    if (mainType === 'initiative') {
+      if (e === 'Working with people') {
         initialFormData.update((e) => {
           e.data = {
             ...e.data,
@@ -1021,13 +1031,13 @@ const FlexibleForms = ({
               ...e.data.S5,
               S5_G1: {
                 ...e.data.S5.S5_G1,
-                S5_G1_4: ["4-1"],
+                S5_G1_4: ['4-1'],
               },
             },
-          };
-        });
+          }
+        })
       }
-      if (e === "Legislation, standards, rules") {
+      if (e === 'Legislation, standards, rules') {
         initialFormData.update((e) => {
           e.data = {
             ...e.data,
@@ -1035,13 +1045,13 @@ const FlexibleForms = ({
               ...e.data.S5,
               S5_G1: {
                 ...e.data.S5.S5_G1,
-                S5_G1_4: ["4-0"],
+                S5_G1_4: ['4-0'],
               },
             },
-          };
-        });
+          }
+        })
       }
-      if (e === "Technology and Processes") {
+      if (e === 'Technology and Processes') {
         initialFormData.update((e) => {
           e.data = {
             ...e.data,
@@ -1049,13 +1059,13 @@ const FlexibleForms = ({
               ...e.data.S5,
               S5_G1: {
                 ...e.data.S5.S5_G1,
-                S5_G1_4: ["4-2"],
+                S5_G1_4: ['4-2'],
               },
             },
-          };
-        });
+          }
+        })
       }
-      if (e === "Monitoring and Analysis") {
+      if (e === 'Monitoring and Analysis') {
         initialFormData.update((e) => {
           e.data = {
             ...e.data,
@@ -1063,39 +1073,39 @@ const FlexibleForms = ({
               ...e.data.S5,
               S5_G1: {
                 ...e.data.S5.S5_G1,
-                S5_G1_4: ["4-3"],
+                S5_G1_4: ['4-3'],
               },
             },
-          };
-        });
+          }
+        })
       }
     }
-  };
+  }
 
   const handleSelectLanguage = (val) => {
-    setLanguages(languages.concat(val));
-  };
+    setLanguages(languages.concat(val))
+  }
 
   const handleRemoveLanguage = (val) => {
-    const newLanaguage = languages.filter((lang) => lang !== val);
+    const newLanaguage = languages.filter((lang) => lang !== val)
     const findInTranslations = translations.find(
       ({ language }) => language === val
-    );
+    )
     if (findInTranslations)
-      setTranslations(translations.filter(({ language }) => language !== val));
-    setLanguages(newLanaguage);
-  };
+      setTranslations(translations.filter(({ language }) => language !== val))
+    setLanguages(newLanaguage)
+  }
 
   const handleTranslationChange = (name, lang, value) => {
-    const newTranslations = [...translations];
+    const newTranslations = [...translations]
     const index = translations.findIndex(
       (x) => x.language === lang && x.translatable_field === name
-    );
+    )
     if (index !== -1) {
-      newTranslations[index].language = lang;
-      newTranslations[index].translatable_field = name;
-      newTranslations[index].value = value;
-      setTranslations(newTranslations);
+      newTranslations[index].language = lang
+      newTranslations[index].translatable_field = name
+      newTranslations[index].value = value
+      setTranslations(newTranslations)
     } else
       setTranslations([
         ...translations,
@@ -1104,16 +1114,16 @@ const FlexibleForms = ({
           translatable_field: name,
           value: value,
         },
-      ]);
-  };
+      ])
+  }
 
   const handleChange = (v, lang) => {
-    const newValue = [...value];
-    const index = value.findIndex((x) => x.lang === lang);
+    const newValue = [...value]
+    const index = value.findIndex((x) => x.lang === lang)
     if (index !== -1) {
-      newValue[index].lang = lang;
-      newValue[index].value = v;
-      setValue(newValue);
+      newValue[index].lang = lang
+      newValue[index].value = v
+      setValue(newValue)
     } else
       setValue([
         ...value,
@@ -1121,9 +1131,9 @@ const FlexibleForms = ({
           lang: lang,
           value: v,
         },
-      ]);
-    handleTranslationChange("info_docs", lang, v.toString("html"));
-  };
+      ])
+    handleTranslationChange('info_docs', lang, v.toString('html'))
+  }
 
   return (
     <div className={styles.flexibleForms}>
@@ -1156,10 +1166,10 @@ const FlexibleForms = ({
                       checked={highlight}
                       size="small"
                       onChange={(status) => setHighlight(status)}
-                    />{" "}
+                    />{' '}
                     {highlight
-                      ? "Required fields highlighted"
-                      : "Highlight required fields"}
+                      ? 'Required fields highlighted'
+                      : 'Highlight required fields'}
                   </div>
                 </div>
               </Col>
@@ -1177,7 +1187,7 @@ const FlexibleForms = ({
               xs={24}
               lg={6}
               style={{
-                minHeight: "100%",
+                minHeight: '100%',
               }}
             >
               <StickyBox style={{ zIndex: 9 }} offsetTop={60}>
@@ -1187,11 +1197,11 @@ const FlexibleForms = ({
                     current={data[key]?.steps}
                     initial={-1}
                     direction="vertical"
-                    className={key === data.tabs[0] ? "current-tabs" : ""}
+                    className={key === data.tabs[0] ? 'current-tabs' : ''}
                     onChange={(e) => {
                       e === -1
                         ? handleOnTabChange(key)
-                        : handleOnStepClick(e, data.tabs[0]);
+                        : handleOnStepClick(e, data.tabs[0])
                     }}
                   >
                     {renderSteps(title, key, steps, i)}
@@ -1210,7 +1220,7 @@ const FlexibleForms = ({
                 xs={24}
                 lg={18}
                 style={{
-                  minHeight: "100%",
+                  minHeight: '100%',
                 }}
               >
                 {getTabStepIndex().tabIndex === 0 ? (
@@ -1229,7 +1239,7 @@ const FlexibleForms = ({
                         Learn more about each category and sub-categories
                         definitions in the “Content Type” section of this form.
                         A quick summary sheet with categories and sub-categories
-                        can be downloaded{" "}
+                        can be downloaded{' '}
                         <a
                           href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37512/Categories%20and%20Sub%20Categories%20for%20the%20forms.pdf?sequence=3&isAllowed=y"
                           target="_blank"
@@ -1242,13 +1252,13 @@ const FlexibleForms = ({
                         Once submitted resources go through a review process
                         which is being fine-tuned via consultations to assess
                         content accuracy and quality. The current validation
-                        mechanism draft can be found under{" "}
+                        mechanism draft can be found under{' '}
                         <a href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf">
                           Annex C of the Concept Document.
                         </a>
                       </p>
                       <p>
-                        You can access existing content via the{" "}
+                        You can access existing content via the{' '}
                         <Link href="/knowledge/library" legacyBehavior>
                           <a>Knowledge Exchange Library.</a>
                         </Link>
@@ -1263,8 +1273,8 @@ const FlexibleForms = ({
                       className="main-content"
                       style={{
                         position:
-                          getTabStepIndex().tabIndex === 1 && "relative",
-                        overflow: getTabStepIndex().tabIndex === 1 && "hidden",
+                          getTabStepIndex().tabIndex === 1 && 'relative',
+                        overflow: getTabStepIndex().tabIndex === 1 && 'hidden',
                       }}
                     >
                       <div className="button-wrapper">
@@ -1280,7 +1290,7 @@ const FlexibleForms = ({
                         </Button>
                       </div>
                       <div className="example-container">
-                        <div className={`Modal ${displayModal ? "Show" : ""}`}>
+                        <div className={`Modal ${displayModal ? 'Show' : ''}`}>
                           <Button
                             icon={
                               <img src="/examples.png" alt="Example button" />
@@ -1314,18 +1324,18 @@ const FlexibleForms = ({
                         className="ant-row"
                         onChange={handleMainContentType}
                         value={mainType}
-                        style={{ width: displayModal ? "50%" : "100%" }}
+                        style={{ width: displayModal ? '50%' : '100%' }}
                       >
                         {mainContentType.map((item) => {
-                          const img = `/${item?.code?.replace(/_/g, "-")}.svg`;
+                          const img = `/${item?.code?.replace(/_/g, '-')}.svg`
                           const imgSelected = `/${item?.code?.replace(
                             /_/g,
-                            "-"
-                          )}-selected.svg`;
+                            '-'
+                          )}-selected.svg`
                           const name =
-                            item?.name?.toLowerCase() === "capacity building"
-                              ? "Capacity Development"
-                              : item?.name;
+                            item?.name?.toLowerCase() === 'capacity building'
+                              ? 'Capacity Development'
+                              : item?.name
 
                           return (
                             <Col
@@ -1362,7 +1372,7 @@ const FlexibleForms = ({
                                 </div>
                               </Radio.Button>
                             </Col>
-                          );
+                          )
                         })}
                       </Radio.Group>
                     </div>
@@ -1385,14 +1395,14 @@ const FlexibleForms = ({
                               >
                                 <div
                                   className={`ant-radio-button-wrapper ${
-                                    item.title === subType ? "selected" : ""
+                                    item.title === subType ? 'selected' : ''
                                   }`}
                                   key={index}
                                   onClick={() => {
                                     if (item.title === subType) {
-                                      setSubType("");
+                                      setSubType('')
                                     } else {
-                                      handleSubContentType(item.title);
+                                      handleSubContentType(item.title)
                                     }
                                   }}
                                 >
@@ -1431,7 +1441,7 @@ const FlexibleForms = ({
                               }
                               key={item}
                               extra={
-                                <div style={{ marginLeft: "auto" }}>
+                                <div style={{ marginLeft: 'auto' }}>
                                   <DeleteOutlined
                                     onClick={() => handleRemoveLanguage(item)}
                                   />
@@ -1461,14 +1471,14 @@ const FlexibleForms = ({
                                 .filter(
                                   (ln) =>
                                     !languages.includes(ln.value) &&
-                                    ln.value !== "en"
+                                    ln.value !== 'en'
                                 )
                                 .map((item) => (
                                   <li
                                     key={item.value}
                                     onClick={() => {
-                                      handleSelectLanguage(item.dbValue);
-                                      setDropdownVisible(!dropdownVisible);
+                                      handleSelectLanguage(item.dbValue)
+                                      setDropdownVisible(!dropdownVisible)
                                     }}
                                   >
                                     <span>{item.value}</span>
@@ -1476,10 +1486,10 @@ const FlexibleForms = ({
                                 ))}
                             </ul>
                           }
-                          trigger={["click"]}
+                          trigger={['click']}
                           visible={dropdownVisible}
                           onVisibleChange={(visible) => {
-                            setDropdownVisible(visible);
+                            setDropdownVisible(visible)
                           }}
                         >
                           <Button type="default" className="translation-button">
@@ -1497,7 +1507,7 @@ const FlexibleForms = ({
                     getTabStepIndex().tabIndex !== 0 &&
                     getTabStepIndex().tabIndex !== 1 &&
                     getTabStepIndex().tabIndex !== 4
-                      ? "main-content"
+                      ? 'main-content'
                       : null
                   }`}
                 >
@@ -1514,10 +1524,10 @@ const FlexibleForms = ({
                     mainType={label && label}
                     subContentType={subType && subType}
                     capacityBuilding={capacityBuilding && capacityBuilding}
-                    type={type ? type : ""}
+                    type={type ? type : ''}
                     translations={translations}
                     source={
-                      query?.source?.toString() === "cobsea" ? "cobsea" : ""
+                      query?.source?.toString() === 'cobsea' ? 'cobsea' : ''
                     }
                   />
                 </Row>
@@ -1600,7 +1610,7 @@ const FlexibleForms = ({
       </div>
       {/* </StickyBox> */}
     </div>
-  );
-};
+  )
+}
 
-export default FlexibleForms;
+export default FlexibleForms
