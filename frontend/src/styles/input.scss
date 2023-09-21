@@ -45,6 +45,14 @@
   padding: 11px;
 }
 
+.ant-picker-header-view {
+  button {
+    color: $primaryDarkBlue;
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
 .ant-picker-small {
   padding: 11px;
   input {
@@ -116,7 +124,7 @@
 }
 
 .ant-select-item {
-  color: $primaryDarkBlue3;
+  color: $primaryDarkBlue;
   font-family: var(--font-dm-sans), sans-serif;
   &.ant-select-item-group {
     color: $primaryDarkBlue3;

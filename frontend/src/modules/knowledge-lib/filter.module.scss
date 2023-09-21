@@ -24,7 +24,8 @@
       padding: 17px 20px 20px 20px;
       .filter-title {
         color: $primaryDarkBlue;
-        font-size: 16px;
+        font-size: $fzXXS;
+        line-height: $lhXXS;
         font-weight: 500;
         margin-bottom: 5px;
         font-family: var(--font-dm-sans), sans-serif;
