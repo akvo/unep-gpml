@@ -216,7 +216,17 @@ SELECT
 -- :doc Get all members belonging to a particular organisation
 WITH org_members AS(
   SELECT
-    id, concat_ws(' ', s.first_name, s.last_name) as name, picture, email, linked_in, twitter, url, about
+    s.id,
+    concat_ws(' ', s.first_name, s.last_name) as name,
+    s.email,
+    s.linked_in,
+    s.twitter,
+    s.url,
+    s.about,
+    s.picture_id,
+    f.object_key AS picture_object_key,
+    f.visibility AS picture_visibility
   FROM stakeholder s
+  LEFT JOIN file f ON s.picture_id = f.id
   WHERE affiliation = :id)
 --~(if (:count-only? params) "SELECT COUNT(*) FROM org_members;" "SELECT * FROM org_members LIMIT :limit OFFSET :offset;")
