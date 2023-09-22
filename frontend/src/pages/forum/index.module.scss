@@ -1,0 +1,82 @@
+@import '../../styles/vars.scss';
+
+.forumHome {
+  padding-top: 27px;
+  color: $primaryDarkBlue;
+  :global {
+    * {
+      color: $primaryDarkBlue;
+    }
+    .header,
+    .header .jumbotron {
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      gap: 20px;
+      margin-bottom: 32px;
+      h6 {
+        color: $primaryPurple;
+      }
+      .jumbotron {
+        gap: 18px;
+      }
+    }
+    section {
+      h5 {
+        font-weight: 700;
+        margin-bottom: 18px;
+      }
+      .ant-list {
+        .ant-card {
+          width: 359px;
+          padding: 0 21px 12px;
+          border-radius: 10px;
+          .ant-card-body {
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            .channel h6,
+            .flex .count,
+            .flex .ant-avatar-string {
+              font-family: var(--font-archia);
+            }
+            .flex {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              .last_message {
+                text-align: right;
+              }
+              .participants {
+                h6 {
+                  font-weight: 700;
+                }
+              }
+              .ant-btn.ant-btn-background-ghost {
+                &:hover {
+                  span {
+                    color: $primaryWhite;
+                  }
+                }
+              }
+              .ant-avatar {
+                background-color: $primaryPurple7;
+                .ant-avatar-string {
+                  font-weight: 600;
+                  color: $primaryWhite;
+                }
+              }
+            }
+            .channel {
+              h6 {
+                font-weight: 600;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
