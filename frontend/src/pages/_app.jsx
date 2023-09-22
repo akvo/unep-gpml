@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { Auth0Provider } from '@auth0/auth0-react'
 import Head from 'next/head'
 // import '../main.scss'
@@ -15,9 +15,11 @@ import { updateStatusProfile } from '../utils/profile'
 import { uniqBy, sortBy } from 'lodash'
 import { withNewLayout } from '../layouts/new-layout'
 
+const newRoutes = ['/landing', '/knowledge/library', '/forum']
+
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
-  if (router.pathname !== '/landing') {
+  if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
     import('../main.scss')
     import('../buttons.scss')
   } else {
@@ -34,6 +36,9 @@ function MyApp({ Component, pageProps }) {
   const [idToken, setIdToken] = useState(null)
   const [authResult, setAuthResult] = useState(null)
   const [loginVisible, setLoginVisible] = useState(false)
+
+  const LayoutRef = useRef(null)
+  const NewLayoutRef = useRef(null)
 
   const isAuthenticated = new Date().getTime() < _expiresAt
 
@@ -155,7 +160,6 @@ function MyApp({ Component, pageProps }) {
                 emailVerified: authResult?.idTokenPayload?.email_verified,
               }
             })
-            console.log(authResult?.idTokenPayload, authResult)
             router.push(
               {
                 pathname: '/onboarding',
@@ -194,7 +198,6 @@ function MyApp({ Component, pageProps }) {
         let resp = await api.get('/profile')
         setLoadingProfile(false)
         if (resp.data && Object.keys(resp.data).length === 0) {
-          console.log(authResult, 'authResult')
           router.push(
             {
               pathname: '/onboarding',
@@ -215,13 +218,45 @@ function MyApp({ Component, pageProps }) {
     })()
   }, [idToken, authResult])
 
-  const Layout = withLayout(Component)
-  const NewLayout = withNewLayout(Component)
+  const domain =
+    typeof window !== 'undefined'
+      ? window.__ENV__.auth0.domain.replace(/(https:\/\/|\/)/gi, '')
+      : ''
 
-  const domain = 'https://unep-gpml-test.eu.auth0.com/'.replace(
-    /(https:\/\/|\/)/gi,
-    ''
+  const componentProps = useMemo(
+    () => ({
+      isAuthenticated,
+      auth0Client,
+      profile,
+      loginVisible,
+      setLoginVisible,
+      loadingProfile,
+    }),
+    [
+      isAuthenticated,
+      auth0Client,
+      profile,
+      loginVisible,
+      setLoginVisible,
+      loadingProfile,
+    ]
   )
+
+  if (router.pathname.startsWith('/knowledge/library/')) {
+    if (!LayoutRef.current) {
+      LayoutRef.current = withLayout(Component)
+    }
+
+    if (!NewLayoutRef.current) {
+      NewLayoutRef.current = withNewLayout(Component)
+    }
+  } else {
+    LayoutRef.current = null
+    NewLayoutRef.current = null
+  }
+
+  const Layout = LayoutRef.current || withLayout(Component)
+  const NewLayout = NewLayoutRef.current || withNewLayout(Component)
 
   return (
     <div id="root">
@@ -233,36 +268,17 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <Auth0Provider
         domain={domain}
-        clientId="dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J"
+        clientId={
+          typeof window !== 'undefined' ? window.__ENV__.auth0.clientId : ''
+        }
         redirectUri={
           typeof window !== 'undefined' ? window.location.origin : ''
         }
       >
-        {router.pathname !== '/landing' && (
-          <Layout
-            {...pageProps}
-            {...{
-              isAuthenticated,
-              auth0Client,
-              profile,
-              loginVisible,
-              setLoginVisible,
-              loadingProfile,
-            }}
-          />
-        )}
-        {router.pathname === '/landing' && (
-          <NewLayout
-            {...pageProps}
-            {...{
-              isAuthenticated,
-              auth0Client,
-              profile,
-              loginVisible,
-              setLoginVisible,
-              loadingProfile,
-            }}
-          />
+        {!newRoutes.some((route) => router.pathname.startsWith(route)) ? (
+          <Layout {...pageProps} {...componentProps} />
+        ) : (
+          <NewLayout {...pageProps} {...componentProps} />
         )}
       </Auth0Provider>
     </div>
