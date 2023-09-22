@@ -1,16 +1,16 @@
-import React from "react";
-import { Select, Tabs, Popover } from "antd";
-import { DownOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import isEmpty from "lodash/isEmpty";
-import { UIStore } from "../../store";
-import { TrimText } from "../../utils/string";
-import { multicountryGroups } from "../../modules/knowledge-library/multicountry";
-import { OptGroup } from "rc-select";
-import "./style.module.scss";
-import api from "../../utils/api";
+import React from 'react'
+import { Select, Tabs, Popover } from 'antd'
+import { DownOutlined, InfoCircleOutlined } from '@ant-design/icons'
+import isEmpty from 'lodash/isEmpty'
+import { UIStore } from '../../store'
+import { TrimText } from '../../utils/string'
+import { multicountryGroups } from '../../modules/knowledge-library/multicountry'
+import { OptGroup } from 'rc-select'
+import './style.module.scss'
+import api from '../../utils/api'
 
-const { TabPane } = Tabs;
-const { Option } = Select;
+const { TabPane } = Tabs
+const { Option } = Select
 
 const CountryTransnationalFilter = ({
   query,
@@ -34,79 +34,80 @@ const CountryTransnationalFilter = ({
       transnationalOptions: s.transnationalOptions,
       landing: s.landing,
     })
-  );
+  )
 
-  const isLoaded = () => !isEmpty(countries) && !isEmpty(transnationalOptions);
+  const isLoaded = () => !isEmpty(countries) && !isEmpty(transnationalOptions)
 
   const countryOpts = isLoaded()
     ? countries
         .filter(
-          (country) => country.description.toLowerCase() === "member state"
+          (country) => country.description.toLowerCase() === 'member state'
         )
         .map((it) => ({ value: it.id, label: it.name }))
         .sort((a, b) => a.label.localeCompare(b.label))
-    : [];
+    : []
 
   const handleChangeLocationTab = (key) => {
-    const param = key === "country" ? "transnational" : "country";
-  };
+    const param = key === 'country' ? 'transnational' : 'country'
+  }
 
   const handleChangeCountry = (val) => {
     if (isExpert) {
-      updateQuery("country", val);
-      return;
+      updateQuery('country', val)
+      return
     }
     if (setDisable) {
       setDisable({
         ...disable,
         ...(val.length > 0 ? { multiCountry: true } : { multiCountry: false }),
-      });
+      })
     }
-    let updatedQuery = { ...history.query };
-    delete updatedQuery.totalCount;
+    let updatedQuery = { ...history.query }
+    delete updatedQuery.totalCount
 
     if (val && val.length > 0) {
-      updatedQuery.country = val.toString();
+      updatedQuery.country = val.toString()
     } else {
-      delete updatedQuery.country;
+      delete updatedQuery.country
     }
+    console.log(updatedQuery)
     history.push({
       pathname: history.pathname,
       query: updatedQuery,
-    });
-  };
+    })
+  }
 
   const handleChangeMultiCountry = (val) => {
     if (isExpert) {
-      updateQuery("transnational", val);
-      return;
+      updateQuery('transnational', val)
+      return
     }
 
     if (setDisable) {
       setDisable({
         ...disable,
         ...(val.length > 0 ? { country: true } : { country: false }),
-      });
+      })
     }
 
-    updateQuery("transnational", val, fetch);
+    updateQuery('transnational', val, fetch)
 
     // Fetch transnational countries
     val.forEach((id) => {
-      const check = multiCountryCountries.find((x) => x.id === id);
+      const check = multiCountryCountries.find((x) => x.id === id)
       !check &&
         api.get(`/country-group/${id}`).then((resp) => {
           setMultiCountryCountries([
             ...multiCountryCountries,
             { id: id, countries: resp.data?.[0]?.countries },
-          ]);
-        });
-    });
-  };
+          ])
+        })
+    })
+  }
 
   const countryInfoData = multicountryGroups
     .map((transnationalGroup) => transnationalGroup.item)
-    .flat();
+    .flat()
 
   return (
     <Tabs
@@ -124,7 +125,7 @@ const CountryTransnationalFilter = ({
           showSearch
           allowClear
           dropdownClassName="multiselection-dropdown"
-          mode={countrySelectMode || ""}
+          mode={countrySelectMode || ''}
           placeholder="Countries"
           options={countryOpts}
           optionFilterProp="children"
@@ -141,7 +142,7 @@ const CountryTransnationalFilter = ({
         tab="Multi-Country"
         key="multi-country"
         className={`country-filter-tab-pane ${
-          multiCountry ? "multi-country-info" : "multi-country"
+          multiCountry ? 'multi-country-info' : 'multi-country'
         }`}
         disabled={disable?.multiCountry}
       >
@@ -150,13 +151,13 @@ const CountryTransnationalFilter = ({
           showSearch
           allowClear
           virtual={false}
-          mode={multiCountrySelectMode || ""}
+          mode={multiCountrySelectMode || ''}
           placeholder="Multi-Country"
           optionFilterProp="children"
           filterOption={(input, option) => {
             return (
               option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            );
+            )
           }}
           value={multiCountry}
           onChange={handleChangeMultiCountry}
@@ -206,15 +207,15 @@ const CountryTransnationalFilter = ({
                           />
                         </div>
                       </Option>
-                    );
+                    )
                   })}
               </OptGroup>
             ))}
         </Select>
       </TabPane>
     </Tabs>
-  );
-};
+  )
+}
 
 const MultiCountryInfo = ({ data, multiCountryCountries }) => {
   const renderContent = () => {
@@ -222,7 +223,7 @@ const MultiCountryInfo = ({ data, multiCountryCountries }) => {
       <div className="popover-content-wrapper">
         {multiCountryCountries &&
           multiCountryCountries.map(({ id, name }) => {
-            const curr = data?.map?.find((i) => i?.countryId === id);
+            const curr = data?.map?.find((i) => i?.countryId === id)
 
             return (
               <div
@@ -231,27 +232,27 @@ const MultiCountryInfo = ({ data, multiCountryCountries }) => {
               >
                 {name}
               </div>
-            );
+            )
           })}
       </div>
-    );
-  };
+    )
+  }
 
   if (!multiCountryCountries || isEmpty(multiCountryCountries)) {
-    return "";
+    return ''
   }
   return (
     <Popover
       overlayClassName="country-info-popover"
       className="popover-multi-country"
-      title={""}
+      title={''}
       content={renderContent}
       placement="right"
       arrowPointAtCenter
     >
       <InfoCircleOutlined />
     </Popover>
-  );
-};
+  )
+}
 
-export default CountryTransnationalFilter;
+export default CountryTransnationalFilter

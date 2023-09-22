@@ -1,30 +1,34 @@
-@import "../../vars.scss";
+@import '../../styles/vars.scss';
 .filterModal {
   width: 100% !important;
 
-  @media screen and (min-width: 840px) {
-    max-width: 823px;
+  :global {
+    @media screen and (min-width: 840px) {
+      max-width: 700px !important;
+    }
   }
   :global {
     .ant-modal-header {
+      padding-bottom: 0px;
       .ant-modal-title {
-        font-weight: 600;
-        font-size: 18px;
-        line-height: 26px;
-        color: #a5b0c9;
-        text-transform: uppercase;
+        font-weight: 700;
+        font-size: $fzS;
+        line-height: $lhS;
+        color: $primaryDarkBlue;
+        font-family: var(--font-archia), sans-serif;
       }
     }
   }
   :global {
     .ant-modal-body {
-      padding: 17px 40px 50px 40px;
+      padding: 17px 20px 20px 20px;
       .filter-title {
-        color: #000;
-        font-size: 18px;
+        color: $primaryDarkBlue;
+        font-size: $fzXXS;
+        line-height: $lhXXS;
         font-weight: 500;
         margin-bottom: 5px;
-
+        font-family: var(--font-dm-sans), sans-serif;
         @media (max-width: 540px) {
           font-size: 16px;
         }
@@ -34,33 +38,23 @@
       }
       .search-input {
         width: 100%;
-        .input-search {
-          background-color: #edf2f6;
-          border: none !important;
-          height: 34px;
-          input {
-            font-weight: 500;
-            color: #a5b0c9;
-            font-size: 16px;
-            &::placeholder {
-              font-weight: 500;
-              color: #a5b0c9;
-            }
-          }
-          .anticon-search {
-            color: #a5b0c9;
-          }
-        }
-      }
-      :global {
-        input {
-          font-weight: 500;
-          color: #a5b0c9;
-          &::placeholder {
-            font-weight: 500;
-            color: #a5b0c9;
-          }
-        }
+        // .input-search {
+        //   background-color: #edf2f6;
+        //   border: none !important;
+        //   height: 34px;
+        //   input {
+        //     font-weight: 500;
+        //     color: #a5b0c9;
+        //     font-size: 16px;
+        //     &::placeholder {
+        //       font-weight: 500;
+        //       color: #a5b0c9;
+        //     }
+        //   }
+        //   .anticon-search {
+        //     color: #a5b0c9;
+        //   }
+        // }
       }
       :global {
         .date-picker-container {
@@ -70,14 +64,6 @@
           .ant-picker {
             width: 100%;
             border: none;
-            input {
-              font-size: 16px;
-              color: #a5b0c9;
-              &::placeholder {
-                font-size: 16px;
-                color: #a5b0c9;
-              }
-            }
           }
         }
       }
@@ -86,35 +72,32 @@
   :global {
     .ant-modal-footer {
       background: #ffffff;
-      box-shadow: 0px -2px 2px rgba(24, 22, 47, 0.3);
       border-radius: 0px 0px 10px 10px;
-      padding: 20px;
+      padding: 0px 20px 20px;
       text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-direction: row-reverse;
       button {
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 17px;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 16px;
         text-align: center;
         text-transform: uppercase;
-        background-color: transparent;
-        color: #265d89;
-      }
-      .apply-button {
-        border: 1px solid #265d89;
-        border-radius: 30px;
-        background-color: transparent;
-        padding: 5px 30px;
       }
       .clear-button {
         background-color: transparent;
         border: none;
+        margin-right: 12px;
+        text-decoration-line: none;
       }
     }
   }
 
   @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
     .ant-modal-body {
-      padding: 17px 20px 30px 20px;
+      padding: 17px 20px 20px 20px;
     }
 
     .invite-expert-buttons {
