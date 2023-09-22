@@ -33,7 +33,7 @@
       :else
       content)))
 
-(defmethod ig/init-key ::get-content
+(defmethod ig/init-key :gpml.handler.organisation-detail/get-content
   [_ {:keys [db]}]
   (fn [{:keys [parameters]}]
     (let [conn (:spec db)
@@ -48,7 +48,8 @@
       (resp/response {:results api-associated-content
                       :count (-> associated-content-count first :count)}))))
 
-(defmethod ig/init-key ::get-content-params [_ _]
+(defmethod ig/init-key :gpml.handler.organisation-detail/get-content-params
+  [_ _]
   {:path [:map [:id pos-int?]]
    :query [:map
            [:page {:optional true
@@ -58,7 +59,7 @@
                     :default "3"}
             string?]]})
 
-(defmethod ig/init-key ::get-members
+(defmethod ig/init-key :gpml.handler.organisation-detail/get-members
   [_ {:keys [db] :as config}]
   (fn [{:keys [parameters user]}]
     (if (h.r.permission/operation-allowed?
@@ -79,7 +80,8 @@
                         :count (-> members-count first :count)}))
       (r/forbidden {:message "Unauthorized"}))))
 
-(defmethod ig/init-key ::get-members-params [_ _]
+(defmethod ig/init-key :gpml.handler.organisation-detail/get-members-params
+  [_ _]
   {:path [:map [:id pos-int?]]
    :query [:map
            [:page {:optional true
