@@ -742,7 +742,7 @@
 
   :gpml.handler.organisation-detail/get-content {:db #ig/ref :duct.database/sql}
   :gpml.handler.organisation-detail/get-content-params {}
-  :gpml.handler.organisation-detail/get-members {:db #ig/ref :duct.database/sql}
+  :gpml.handler.organisation-detail/get-members #ig/ref :gpml.config/common
   :gpml.handler.organisation-detail/get-members-params {}
 
   :gpml.handler.activity/get-recent #ig/ref :gpml.config/common

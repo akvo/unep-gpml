@@ -2,6 +2,7 @@
   (:require [gpml.db.organisation-detail :as db.organisation-detail]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
+            [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
             [integrant.core :as ig]
@@ -59,6 +60,16 @@
                     :default "3"}
             string?]]})
 
+(defn- add-member-picture-url
+  [config member]
+  (if-not (:picture_id member)
+    (assoc member :picture nil)
+    (let [file {:id (:picture_id member)
+                :object-key (:picture_object_key member)
+                :visibility (keyword (:picture_visibility member))}
+          result (srv.file/get-file-url config file)]
+      (assoc member :picture (:url result)))))
+
 (defmethod ig/init-key :gpml.handler.organisation-detail/get-members
   [_ {:keys [db] :as config}]
   (fn [{:keys [parameters user]}]
@@ -76,7 +87,7 @@
                     :offset (* limit page)}
             members (db.organisation-detail/get-org-members conn params)
             members-count (db.organisation-detail/get-org-members conn (assoc params :count-only? true))]
-        (resp/response {:members members
+        (resp/response {:members (map (partial add-member-picture-url config) members)
                         :count (-> members-count first :count)}))
       (r/forbidden {:message "Unauthorized"}))))
 
