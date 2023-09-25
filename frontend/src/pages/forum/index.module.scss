@@ -1,7 +1,7 @@
 @import '../../styles/vars.scss';
 
 .forumHome {
-  padding-top: 27px;
+  padding-top: 62px;
   color: $primaryDarkBlue;
   :global {
     * {
@@ -13,13 +13,20 @@
       flex-direction: column;
     }
     .header {
-      gap: 20px;
+      gap: 12px;
       margin-bottom: 32px;
-      h6 {
+      span.h-xs {
         color: $primaryPurple;
+        font-family: var(--font-archia), sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
       }
       .jumbotron {
-        gap: 18px;
+        width: 841px;
+        gap: 20px;
+        h2 {
+          font-weight: 700;
+        }
       }
     }
     section {
@@ -30,14 +37,15 @@
       .ant-list {
         .ant-card {
           width: 359px;
-          padding: 0 21px 12px;
+          padding: 8px 19px 8px;
           border-radius: 10px;
+          box-shadow: 0px 24px 40px 0px rgba(0, 0, 0, 0.07);
           .ant-card-body {
             padding: 0;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            .channel h6,
+            .channel h5,
             .flex .count,
             .flex .ant-avatar-string {
               font-family: var(--font-archia);
@@ -46,9 +54,6 @@
               display: flex;
               align-items: center;
               justify-content: space-between;
-              .last_message {
-                text-align: right;
-              }
               .participants {
                 h6 {
                   font-weight: 700;
@@ -61,17 +66,24 @@
                   }
                 }
               }
-              .ant-avatar {
-                background-color: $primaryPurple7;
-                .ant-avatar-string {
-                  font-weight: 600;
-                  color: $primaryWhite;
-                }
-              }
             }
             .channel {
-              h6 {
+              margin-bottom: 20px;
+              .h-xs {
+                font-family: var(--font-archia), sans-serif;
+                font-weight: 700;
+                letter-spacing: 0.24px;
+                text-transform: uppercase;
+                color: $primaryPurple;
+              }
+              h5 {
                 font-weight: 600;
+              }
+              .description {
+                color: $primaryDarkBlue4;
+                font-size: $fzXS;
+                line-height: $lhXS;
+                font-weight: 400;
               }
             }
           }

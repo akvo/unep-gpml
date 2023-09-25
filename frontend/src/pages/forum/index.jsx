@@ -1,21 +1,43 @@
 import React from 'react'
 import styles from './index.module.scss'
-import { Avatar, Button, Card, Form, Input, List } from 'antd'
+import { Card, Form, Input, List } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
+import Button from '../../components/button'
 
 const Forum = () => {
+  /**
+   * TODO
+   * will be replaced with the response from API soon.
+   */
   const data = [
     {
-      title: 'Title 1',
+      title: 'Issue Briefs',
+      isPrivate: false,
     },
     {
-      title: 'Title 2',
+      title: 'AFRIPAC',
+      isPrivate: true,
     },
     {
-      title: 'Title 3',
+      title: 'Data Harmonization CoP',
+      isPrivate: true,
     },
     {
-      title: 'Title 4',
+      title: 'LAC Forum',
+      isPrivate: true,
+    },
+    {
+      title: 'Ontology CoP',
+      isPrivate: true,
+    },
+    {
+      title: 'CoP on the Harmonization of Plastic Flow',
+      isPrivate: true,
+    },
+    {
+      title:
+        'CoP to harmonize approaches for informing and enabling action on plastic pollution and marine litter',
+      isPrivate: true,
     },
   ]
   return (
@@ -23,10 +45,10 @@ const Forum = () => {
       <div className={styles.forumHome}>
         <div className="header">
           <div>
-            <h6 className="h-xs">FORUM CHAT</h6>
+            <span className="h-xs">Forums</span>
           </div>
           <div className="jumbotron">
-            <h2>Forum Home</h2>
+            <h2>All Forums</h2>
             <p className="h-xs">
               Engage in forums across a wide variety of subjects and sectors
               currently ongoing. Join the public channels or request to join the
@@ -46,35 +68,38 @@ const Forum = () => {
           </div>
         </div>
         <section>
-          <h5>GPML Forums</h5>
           <List
-            grid={{ gutter: 8, column: 3 }}
+            grid={{ column: 3 }}
             dataSource={data}
             renderItem={(item) => (
               <List.Item>
                 <Card>
-                  <div className="flex">
-                    <div>
-                      <Avatar size="large">KS</Avatar>
-                    </div>
-                    <div>
-                      <Button size="small" ghost>
-                        Request to join
-                      </Button>
-                    </div>
-                  </div>
                   <div className="channel">
-                    <h6>{item.title}</h6>
-                    <p className="h-xs">Public</p>
+                    <span className="h-xs">
+                      {item.isPrivate ? 'private' : 'public'}
+                    </span>
+                    <h5>{item.title}</h5>
+                    <p className="description">
+                      Description of the forum goes here and on and on
+                      describing what it is about in a sentence or two. Which
+                      should be enough.
+                    </p>
                   </div>
                   <div className="flex">
                     <div className="participants">
+                      <h6 className="count">32</h6>
                       <span className="h-xxs">Participants</span>
-                      <h6 className="count">+ 32</h6>
                     </div>
                     <div className="last_message">
-                      <span className="h-xxs">Last Message On</span>
-                      <p className="h-xxs">Oct 10th, 2023, 1:23pm</p>
+                      {item.isPrivate ? (
+                        <Button size="small" ghost>
+                          Request to Join
+                        </Button>
+                      ) : (
+                        <Button size="small" withArrow="link" ghost>
+                          View Channel
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </Card>
