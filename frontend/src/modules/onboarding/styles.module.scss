@@ -1,8 +1,8 @@
-@import "../../vars.scss";
+@import '../../styles/vars.scss';
 
 .onboarding {
   padding: 60px 0px;
-  background: url("/auth/auth-background.png");
+  background-color: #e7f3ff6b;
   background-repeat: no-repeat;
   background-size: 100% 100%;
   :global {
@@ -25,6 +25,30 @@
         }
         position: relative;
         z-index: 1;
+        .ant-select {
+          width: 100%;
+        }
+        .ant-form-item-label {
+          padding-bottom: 5px;
+          width: 100%;
+          label {
+            width: 100%;
+            .input-label {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              width: 100%;
+              margin-bottom: 0px;
+              span {
+                color: $primaryDarkBlue4;
+                font-weight: 400;
+              }
+            }
+          }
+        }
+        .ant-typography {
+          color: $primaryDarkBlue;
+        }
       }
     }
     .wave {
@@ -53,9 +77,9 @@
         display: flex;
         h2 {
           font-weight: 500;
-          font-size: 36px;
-          line-height: 52px;
-          color: #18162f;
+          font-size: $fzXL;
+          line-height: $lhXL;
+          color: $primaryDarkBlue;
         }
       }
       .image-wrapper {
@@ -69,26 +93,6 @@
       }
       .button-bottom-panel {
         padding: 40px 0px;
-        .step-button {
-          border: 2px solid #18162f;
-          border-radius: 23.5px;
-          font-weight: 700;
-          font-size: 16px;
-          line-height: 22px;
-          display: flex;
-          align-items: center;
-          text-align: center;
-          color: #18162f;
-          margin: 0 auto;
-          justify-content: center;
-          padding: 20px 45px;
-          background: transparent;
-          &:hover {
-            border-color: $blue12;
-            color: #fff;
-            background: $blue12;
-          }
-        }
       }
       .button-bottom-panel {
         position: absolute;
@@ -130,8 +134,6 @@
       .waveboard .slide {
         padding: 0 30px 60px;
       }
-      .getting-started.slide {
-      }
     }
 
     .button-bottom-panel {
@@ -142,16 +144,6 @@
       justify-content: space-between;
     }
     .step-button-back {
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 22px;
-      display: flex;
-      align-items: center;
-      text-align: center;
-      color: #18162f;
-      background: transparent;
-      border: none;
-      box-shadow: none;
       position: absolute;
       bottom: 0;
       left: 25px;
@@ -159,35 +151,14 @@
       z-index: 3;
     }
     .step-button-next {
-      border: 2px solid #18162f;
-      border-radius: 23.5px;
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 22px;
-      display: flex;
-      align-items: center;
-      text-align: center;
-      color: #18162f;
-      padding: 20px 45px;
-      background: transparent;
       &.abs {
         position: absolute;
         right: 30px;
         bottom: 26px;
         z-index: 3;
       }
-      &:hover {
-        border-color: $blue12;
-        color: #fff;
-        background: $blue12;
-      }
     }
-
     label {
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 20px;
-      color: #000000;
       p {
         margin-bottom: 0px;
         span {
@@ -199,93 +170,11 @@
         }
       }
     }
-    .ant-input,
-    .ant-input-number-input,
-    .ant-picker,
-    .ant-select,
-    .ant-select-selector,
-    .ant-input-affix-wrapper {
-      background-color: #edf2f6;
-      border: none;
-      border-radius: 5px;
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 38px;
-      color: #6e6e6e;
-      width: 100%;
-      &::placeholder {
-        color: #a5b0c9;
-        font-size: 16px;
-        font-weight: 500;
-      }
-      .ant-select,
-      .ant-select-selector {
-        height: 100%;
-        background-color: #edf2f6;
-        border: none;
-        border-radius: 5px;
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 38px;
-        color: #6e6e6e;
-        width: 100%;
-        &::placeholder {
-          color: #a5b0c9;
-          font-size: 16px;
-          font-weight: 500;
-        }
-        .ant-select-selection-overflow {
-          height: 100%;
-          .ant-select-selection-overflow-item {
-            height: 100%;
-            .ant-select-selection-search {
-              height: 100%;
-            }
-            .ant-select-selection-item {
-              height: 100%;
-              margin: 0px 5px;
-              background: #3176ae;
-              color: #fff;
-
-              background-color: #3176ae;
-              border-radius: 4px;
-              line-height: 34px !important;
-              margin: 3px 2px !important;
-              padding: 0 10px;
-              .ant-select-selection-item-remove {
-                color: rgba(255, 255, 255, 0.5);
-              }
-              svg {
-                path {
-                  fill: #fff;
-                }
-              }
-            }
-          }
-        }
-      }
-      .ant-select-selection-placeholder {
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 42px;
-        color: #a5b0c9;
-      }
-      .ant-select-selection-item {
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 42px;
-      }
-      &.ant-input-status-error {
-        border: 1px solid #ff4d4f;
-      }
-    }
 
     textarea {
       line-height: 20px !important;
       font-size: 16px;
       padding: 10px;
-    }
-    .ant-select-selection-item {
     }
     .ant-input-status-error {
       .ant-checkbox-inner {
@@ -295,7 +184,7 @@
     .step-form {
       .ant-upload {
         background: transparent;
-        padding: 15px 0px;
+        padding: 0px 0px 15px;
         .ant-upload-text {
           font-weight: 500;
           font-size: 18px !important;
@@ -339,10 +228,10 @@
             p {
               padding-left: 25px;
               font-weight: 400;
-              font-size: 14px;
-              line-height: 20px;
+              font-size: $fzXXS;
+              line-height: $lhXXS;
               margin-top: -20px;
-              color: #384e85;
+              color: $primaryDarkBlue;
             }
           }
         }
@@ -415,7 +304,7 @@
               background: #3176ae;
               border-radius: 10px;
               box-shadow: inset 0 1px rgb(0 0 0 / 25%);
-              content: "";
+              content: '';
               position: absolute;
               height: 12px;
               width: 12px;
@@ -431,26 +320,10 @@
         justify-content: center;
 
         button {
-          border: 2px solid #18162f;
-          border-radius: 23.5px;
-          font-weight: 700;
-          font-size: 16px;
-          line-height: 22px;
-          display: flex;
-          align-items: center;
-          text-align: center;
-          color: #18162f;
-          margin: 0 auto;
-          justify-content: center;
-          padding: 20px 45px;
-          background: transparent;
           width: 150px;
-          &:hover {
-            border-color: $blue12;
-            color: #fff;
-            background: $blue12;
-          }
+          justify-content: center;
         }
+
         div {
           text-align: center;
           h5 {
@@ -569,48 +442,6 @@
             line-height: 26px;
           }
         }
-        .auth-buttons {
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          padding: 40px 0px;
-          button {
-            font-weight: 500;
-            font-size: 18px;
-            line-height: 36px;
-            height: 46px;
-            width: 315px;
-            background-color: transparent;
-            margin-bottom: 20px;
-            border: 3px solid #18162f;
-            color: #18162f;
-            display: flex;
-            align-items: center;
-            &:hover {
-              border-color: $blue12;
-              color: #fff;
-              background: $blue12;
-              path {
-                fill: #fff;
-                stroke: #fff;
-              }
-            }
-            span {
-              padding-left: 20px;
-            }
-          }
-          .separator {
-            margin-bottom: 10px;
-            h4 {
-              font-weight: 500;
-              font-size: 20px;
-              line-height: 29px;
-              color: #09689a;
-            }
-          }
-        }
       }
       .login-wrapper {
         .connect-button {
@@ -648,29 +479,6 @@
             border-radius: 5px;
             .ant-form-item-has-success {
               border: none;
-            }
-          }
-          .login-button {
-            font-weight: 500;
-            font-size: 18px;
-            line-height: 36px;
-            height: 46px;
-            width: 230px;
-            background-color: transparent;
-            margin: 0 auto;
-            border: 3px solid #18162f;
-            color: #18162f;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            &:hover {
-              border-color: $blue12;
-              color: #fff;
-              background: $blue12;
-              path {
-                fill: #fff;
-                stroke: #fff;
-              }
             }
           }
           .forgot-password {
