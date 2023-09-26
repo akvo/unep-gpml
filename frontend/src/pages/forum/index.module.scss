@@ -7,6 +7,12 @@
     * {
       color: $primaryDarkBlue;
     }
+    .h-xs.title {
+      color: $primaryPurple;
+      font-family: var(--font-archia), sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
     .header,
     .header .jumbotron {
       display: flex;
@@ -17,12 +23,6 @@
       margin-bottom: 62px;
       &.my-forums {
         margin-bottom: 49px;
-      }
-      span.h-xs {
-        color: $primaryPurple;
-        font-family: var(--font-archia), sans-serif;
-        font-weight: 700;
-        text-transform: uppercase;
       }
       .jumbotron {
         width: 841px;
