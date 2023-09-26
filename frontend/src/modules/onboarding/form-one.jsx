@@ -6,6 +6,7 @@ import { Field } from 'react-final-form'
 const { Title, Link } = Typography
 import ModalAddEntity from '../flexible-forms/entity-modal/add-entity-modal'
 import { SearchIcon } from '../../components/icons'
+import FormLabel from '../../components/form-label'
 
 function FormOne({ validate, error, setEntity }) {
   const [showModal, setShowModal] = useState(false)
@@ -35,8 +36,12 @@ function FormOne({ validate, error, setEntity }) {
         <div className="field-wrapper">
           <Field name="jobTitle" validate={validate}>
             {({ input, meta }) => {
+              const hasError = error && !meta.valid
+              const validVal = input?.value && meta.valid ? 'success' : null
+              const validateStatus = hasError ? 'error' : validVal
+
               return (
-                <>
+                <FormLabel for="jobTitle" validateStatus={validateStatus}>
                   <Input
                     size="small"
                     onChange={(e) => input.onChange(e.target.value)}
@@ -45,15 +50,19 @@ function FormOne({ validate, error, setEntity }) {
                       error && !meta.valid ? 'ant-input-status-error' : ''
                     }`}
                   />
-                </>
+                </FormLabel>
               )
             }}
           </Field>
         </div>
         <Field name="orgName" style={{ width: '100%' }} validate={validate}>
           {({ input, meta }) => {
+            const hasError = error && !meta.valid
+            const validVal = input?.value && meta.valid ? 'success' : null
+            const validateStatus = hasError ? 'error' : validVal
+
             return (
-              <>
+              <FormLabel for="orgName" validateStatus={validateStatus}>
                 <Select
                   size="small"
                   placeholder="Enter the name of your entity"
@@ -97,7 +106,7 @@ function FormOne({ validate, error, setEntity }) {
                     </Select.Option>
                   ))}
                 </Select>
-              </>
+              </FormLabel>
             )
           }}
         </Field>
