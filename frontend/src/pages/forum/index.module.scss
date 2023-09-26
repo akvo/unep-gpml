@@ -1,0 +1,159 @@
+@import '../../styles/vars.scss';
+
+.forumHome {
+  padding-top: 62px;
+  color: $primaryDarkBlue;
+  :global {
+    * {
+      color: $primaryDarkBlue;
+    }
+    .h-xs.title {
+      color: $primaryPurple;
+      font-family: var(--font-archia), sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .header,
+    .header .jumbotron {
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      gap: 12px;
+      margin-bottom: 62px;
+      &.my-forums {
+        margin-bottom: 49px;
+      }
+      .jumbotron {
+        width: 841px;
+        gap: 20px;
+        h2 {
+          font-weight: 700;
+        }
+      }
+    }
+    section {
+      &.my-forums {
+        margin-bottom: 100px;
+      }
+      .ant-list {
+        &.ant-list-grid .ant-col > .ant-list-item {
+          margin-bottom: 25px;
+        }
+        .ant-card {
+          width: 359px;
+          padding: 8px 19px 8px;
+          border-radius: 10px;
+          box-shadow: 0px 24px 40px 0px rgba(0, 0, 0, 0.07);
+          .ant-card-body {
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            .channel h5,
+            .flex .count,
+            .flex .ant-avatar-string {
+              font-family: var(--font-archia);
+            }
+            .flex {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              .participants {
+                h6 {
+                  font-weight: 700;
+                }
+              }
+              .ant-btn.ant-btn-background-ghost {
+                &:hover {
+                  span {
+                    color: $primaryWhite;
+                  }
+                }
+                .anticon.anticon-loading > svg {
+                  fill: $primaryWhite;
+                }
+              }
+              &.my-forums {
+                min-height: 79px;
+                align-items: flex-start;
+              }
+            }
+            .channel {
+              &:not(.my-forums) {
+                margin-bottom: 20px;
+              }
+              .h-xs {
+                font-family: var(--font-archia), sans-serif;
+                font-weight: 700;
+                letter-spacing: 0.24px;
+                text-transform: uppercase;
+                color: $primaryPurple;
+              }
+              h5 {
+                font-weight: 600;
+                margin-bottom: 18px;
+              }
+              .description {
+                color: $primaryDarkBlue4;
+                font-size: $fzXS;
+                line-height: $lhXS;
+                font-weight: 400;
+              }
+              &.my-forums {
+                h5 {
+                  margin-bottom: 0;
+                }
+              }
+            }
+            .new-messages {
+              width: 50%;
+              display: flex;
+              align-items: flex-end;
+              flex-direction: column;
+              gap: 8px;
+              .label {
+                font-family: var(--font-archia), sans-serif;
+                font-size: 12px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 14px;
+                letter-spacing: 0.24px;
+                text-transform: uppercase;
+                text-align: right;
+                color: #000;
+                &.empty {
+                  color: rgba(0, 0, 0, 0.5);
+                }
+              }
+              .value {
+                width: fit-content;
+                display: inline-flex;
+                padding: 3px 9px;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                border-radius: 6px;
+                background-color: $systemWarning5;
+                font-family: var(--font-archia), sans-serif;
+                font-weight: 700;
+                color: $primaryWhite;
+              }
+            }
+            .last-message {
+              .label {
+                font-family: var(--font-archia), sans-serif;
+                font-size: 12px;
+                font-weight: 700;
+                line-height: 14px;
+                letter-spacing: 0.24px;
+                text-transform: uppercase;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
