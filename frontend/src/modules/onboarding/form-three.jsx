@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { UIStore } from "../../store";
-import { Col, Row, Typography, Select, List } from "antd";
-import { Field } from "react-final-form";
-const { Title, Link } = Typography;
-import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
+import React, { useState } from 'react'
+import { UIStore } from '../../store'
+import { Col, Row, Typography, Select, List } from 'antd'
+import { Field } from 'react-final-form'
+const { Title, Link } = Typography
+import CatTagSelect from '../../components/cat-tag-select/cat-tag-select'
+import { SearchIcon } from '../../components/icons'
 
 function FormThree({
   handleSeekingSuggestedTag,
@@ -11,18 +12,18 @@ function FormThree({
   error,
   handleRemove,
 }) {
-  const [filteredOptions, setFilteredOptions] = useState([]);
-  const [tagMode, setTagMode] = useState("tags");
+  const [filteredOptions, setFilteredOptions] = useState([])
+  const [tagMode, setTagMode] = useState('tags')
   const storeData = UIStore.useState((s) => ({
     tags: s.tags,
-  }));
+  }))
 
-  const { tags } = storeData;
+  const { tags } = storeData
 
   const allOptions = Object.keys(tags)
     .map((k) => tags[k])
     .flat()
-    .map((it) => it.tag);
+    .map((it) => it.tag)
 
   return (
     <>
@@ -30,7 +31,7 @@ function FormThree({
         <Title level={2}>What are the expertises you are looking for?</Title>
       </div>
       <div className="ant-form ant-form-vertical">
-        <Field name="seeking" style={{ width: "100%" }}>
+        <Field name="seeking" style={{ width: '100%' }}>
           {({ input, meta }) => {
             return (
               <>
@@ -42,44 +43,47 @@ function FormThree({
                   handleRemove={handleRemove}
                 />
               </>
-            );
+            )
           }}
         </Field>
-        <Field name="seekingSuggested" style={{ width: "100%" }}>
+        <Field name="seekingSuggested" style={{ width: '100%' }}>
           {({ input, meta }) => {
             const handleSearch = (value) => {
               const find = filteredOptions.find(
                 (tag) => value.toLowerCase() == tag?.toLowerCase()
-              );
-              if (find) setTagMode("multiple");
-              else setTagMode("tags");
+              )
+              if (find) setTagMode('multiple')
+              else setTagMode('tags')
               if (value.length < 2) {
-                setFilteredOptions([]);
+                setFilteredOptions([])
               } else {
                 const filtered = allOptions.filter(
                   (item) => item.toLowerCase().indexOf(value.toLowerCase()) > -1
-                );
+                )
                 setFilteredOptions(
                   filtered.filter((it, index) => filtered.indexOf(it) === index)
-                );
+                )
               }
-            };
+            }
             return (
               <>
-                <div style={{ marginTop: 20, color: "#A5B0C9" }}>
+                <div className="input-label" style={{ marginTop: 20 }}>
                   Can't see what you're looking for?
                 </div>
                 <Select
+                  size="small"
                   placeholder="Suggest categories"
                   allowClear
                   showSearch
                   mode={tagMode}
+                  showArrow
+                  suffixIcon={<SearchIcon />}
                   notFoundContent={null}
                   onChange={(value) => input.onChange(value)}
                   onSearch={handleSearch}
                   value={input.value ? input.value : undefined}
                   className={`dont-show ${
-                    error && !meta.valid ? "ant-input-status-error" : ""
+                    error && !meta.valid ? 'ant-input-status-error' : ''
                   }`}
                 >
                   {filteredOptions?.map((item) => (
@@ -89,12 +93,12 @@ function FormThree({
                   ))}
                 </Select>
               </>
-            );
+            )
           }}
         </Field>
       </div>
     </>
-  );
+  )
 }
 
-export default FormThree;
+export default FormThree

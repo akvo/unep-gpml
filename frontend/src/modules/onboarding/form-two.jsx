@@ -1,28 +1,28 @@
-import React, { useState } from "react";
-import { UIStore } from "../../store";
-import { Typography, Select } from "antd";
-import { Field } from "react-final-form";
-import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
-const { Title } = Typography;
-
+import React, { useState } from 'react'
+import { UIStore } from '../../store'
+import { Typography, Select } from 'antd'
+import { Field } from 'react-final-form'
+import CatTagSelect from '../../components/cat-tag-select/cat-tag-select'
+import { SearchIcon } from '../../components/icons'
+const { Title } = Typography
 function FormTwo({
   handleOfferingSuggestedTag,
   validate,
   error,
   handleRemove,
 }) {
-  const [filteredOptions, setFilteredOptions] = useState([]);
-  const [tagMode, setTagMode] = useState("tags");
+  const [filteredOptions, setFilteredOptions] = useState([])
+  const [tagMode, setTagMode] = useState('tags')
   const storeData = UIStore.useState((s) => ({
     tags: s.tags,
-  }));
+  }))
 
-  const { tags } = storeData;
+  const { tags } = storeData
 
   const allOptions = Object.keys(tags)
     .map((k) => tags[k])
     .flat()
-    .map((it) => it.tag);
+    .map((it) => it.tag)
 
   return (
     <>
@@ -30,7 +30,7 @@ function FormTwo({
         <Title level={2}>What are the expertises you can provide?</Title>
       </div>
       <div className="ant-form ant-form-vertical">
-        <Field name="offering" style={{ width: "100%" }}>
+        <Field name="offering" style={{ width: '100%' }}>
           {({ input, meta }) => {
             return (
               <>
@@ -42,44 +42,48 @@ function FormTwo({
                   handleRemove={handleRemove}
                 />
               </>
-            );
+            )
           }}
         </Field>
-        <Field name="offeringSuggested" style={{ width: "100%" }}>
+        <Field name="offeringSuggested" style={{ width: '100%' }}>
           {({ input, meta }) => {
             const handleSearch = (value) => {
               const find = filteredOptions.find(
                 (tag) => value.toLowerCase() == tag?.toLowerCase()
-              );
-              if (find) setTagMode("multiple");
-              else setTagMode("tags");
+              )
+              if (find) setTagMode('multiple')
+              else setTagMode('tags')
               if (value.length < 2) {
-                setFilteredOptions([]);
+                setFilteredOptions([])
               } else {
                 const filtered = allOptions.filter(
                   (item) => item.toLowerCase().indexOf(value.toLowerCase()) > -1
-                );
+                )
                 setFilteredOptions(
                   filtered.filter((it, index) => filtered.indexOf(it) === index)
-                );
+                )
               }
-            };
+            }
             return (
               <>
-                <div style={{ marginTop: 20, color: "#A5B0C9" }}>
+                <div className="input-label" style={{ marginTop: 20 }}>
                   Can't see what you're looking for?
                 </div>
                 <Select
+                  size="small"
                   placeholder="Suggest categories"
                   allowClear
                   showSearch
+                  virtual={false}
+                  showArrow
                   mode={tagMode}
+                  suffixIcon={<SearchIcon />}
                   notFoundContent={null}
                   onChange={(value) => input.onChange(value)}
                   onSearch={handleSearch}
                   value={input.value ? input.value : undefined}
                   className={`dont-show ${
-                    error && !meta.valid ? "ant-input-status-error" : ""
+                    error && !meta.valid ? 'ant-input-status-error' : ''
                   }`}
                 >
                   {filteredOptions?.map((item) => (
@@ -89,12 +93,12 @@ function FormTwo({
                   ))}
                 </Select>
               </>
-            );
+            )
           }}
         </Field>
       </div>
     </>
-  );
+  )
 }
 
-export default FormTwo;
+export default FormTwo
