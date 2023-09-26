@@ -1,4 +1,4 @@
-@import "../../vars.scss";
+@import '../../styles/vars.scss';
 .popover-share {
   width: 100% !important;
   max-width: 300px;
@@ -25,17 +25,18 @@
       }
       .content-heading,
       .related-content-title {
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 23px;
+        font-weight: 700;
+        font-size: $fzXS;
+        line-height: $lhXS;
         text-transform: uppercase;
-        color: rgba(0, 0, 0, 0.4);
+        color: $primaryPurple;
         margin-bottom: 16px;
+        letter-spacing: 3.2px;
       }
       .content-paragraph,
       .ant-comment-content-detail {
-        font-size: 14px;
-        line-height: 24px;
+        font-size: $fzXS;
+        line-height: $lhXS;
         overflow-wrap: break-word;
       }
 
@@ -115,38 +116,18 @@
             overflow: scroll;
             overflow-y: hidden;
           }
-          button,
+          button {
+            margin: 0 10px 10px 0;
+          }
           a {
             display: flex;
             align-items: center;
-            color: $blue02;
-            font-weight: 500;
-            margin: 0 10px 10px 0;
-            border: 2px solid $blue02 !important;
             svg {
               width: 22px;
               height: 20px;
             }
-            &:hover {
-              transition: all 0.15s ease-out;
-              background: #ffb400;
-            }
-          }
-          .view-button {
-            border: unset !important;
-            background-color: $green01;
-            padding-top: 4px !important;
-            span {
-              display: flex;
-              min-height: 32px;
-              align-items: center;
-            }
           }
 
-          .two-tone-button,
-          .filled-heart-button {
-            background-color: #fff !important;
-          }
           .two-tone-button,
           .filled-heart-button,
           .two-tone-button:hover .filled-heart-button:hover {
@@ -163,11 +144,6 @@
             display: flex;
             align-items: center;
             margin-left: -4px;
-          }
-          .two-tone-button:hover {
-            background-color: #09689a !important;
-            border: 2px solid #09689a;
-            color: #fff;
           }
           .recording-button:hover svg path:nth-of-type(2),
           .share-button:hover svg path:nth-of-type(1),
@@ -217,19 +193,21 @@
         }
 
         .detail-resource-type {
-          font-size: 16px;
-          line-height: 23px;
+          font-size: $fzXS;
+          line-height: $lhXS;
           text-transform: uppercase;
-          color: rgba(0, 0, 0, 0.4);
-          margin-bottom: 0;
+          color: $primaryPurple;
+          margin-bottom: 10px;
+          font-weight: 700;
         }
         .detail-resource-title {
           font-size: 22px;
           line-height: 32px;
-          margin-bottom: 0;
+          margin-bottom: 10px;
+          color: $primaryDarkBlue;
           @media (min-width: 900px) {
-            font-size: 26px;
-            line-height: 38px;
+            font-size: $fzL;
+            line-height: $lhL;
           }
         }
       }
@@ -351,10 +329,16 @@
           .record-row {
             display: flex;
             align-items: center;
-
+            .record-name {
+              font-weight: 600;
+            }
             .record-name,
             .record-value {
               padding: 9px 0;
+              font-size: $fzXS;
+              line-height: $lhXS;
+              font-family: var(--font-dm-sans), sans-serif;
+              color: $primaryDarkBlue;
             }
             .record-name {
               align-self: flex-start;
@@ -368,10 +352,9 @@
             }
 
             .record-value {
-              font-weight: 600;
+              font-weight: 500;
               font-size: 14px;
               line-height: 20px;
-              color: #181818;
               @media (max-width: 600px) {
                 max-width: 50%;
               }
@@ -492,33 +475,9 @@
         margin-bottom: 0;
         .tag-list-item {
           margin: 0 12px 12px 0;
-          .resource-tag {
-            display: flex;
-            align-items: center;
-            position: relative;
-            padding-left: calc(24px + 14px);
-            font-weight: 500;
-            font-size: 16px;
-            color: #3176ae;
-            min-height: 35px;
-            line-height: 24px;
-            background-color: unset;
-            border: 2px solid #3176ae;
-            border-top-left-radius: 30px;
-            border-bottom-left-radius: 30px;
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
-            margin-right: 0;
-            &::before {
-              content: "";
-              display: block;
-              position: absolute;
-              left: 12px;
-              background: #3176ae;
-              width: 14px;
-              height: 14px;
-              border-radius: 50%;
-            }
+          .label-s {
+            background-color: $primaryGreen;
+            color: $primaryDarkBlue;
           }
         }
       }
@@ -633,17 +592,20 @@
           margin-bottom: 0 !important;
         }
         .ant-comment-actions {
+          li {
+            .ant-btn {
+              text-decoration: none;
+              display: inline;
+            }
+          }
           .ant-input {
             min-height: 35px;
             background: hsl(199deg, 100%, 95%);
-            border: 1px solid #339cfe;
+            border: 1px solid $primaryDarkBlue;
             padding-right: 25px;
           }
-          span {
-            color: #339cfe;
-          }
           .active {
-            color: rgb(255, 184, 0);
+            color: $primaryGreen;
           }
           .ant-form-item {
             position: relative;
@@ -660,7 +622,7 @@
 
       .edit-input {
         background: hsl(199deg, 100%, 95%);
-        border: 1px solid #339cfe;
+        border: 1px solid $primaryDarkBlue;
         input {
           background: hsl(199deg, 100%, 95%);
         }
@@ -711,7 +673,7 @@
             width: 24px;
             height: 24px;
             svg {
-              color: #339cfe;
+              color: $primaryDarkBlue;
               width: 100%;
               height: 100%;
             }
@@ -719,9 +681,13 @@
           .comment-input {
             padding-top: 15px;
             padding-bottom: 15px;
-            background: hsl(199, 100%, 95%);
-            border: 1px solid #339cfe;
+            background: transparent;
+            border: 2px solid $primaryDarkBlue;
             border-radius: 5px;
+            color: $primaryDarkBlue;
+            &::placeholder {
+              color: $primaryDarkBlue4;
+            }
             .ant-input {
               background: hsl(199, 100%, 95%);
               padding-right: 50px;
@@ -730,7 +696,7 @@
         }
 
         .message-icon {
-          color: #339cfe;
+          color: $primaryDarkBlue;
           width: 43px;
           height: 43px;
           margin-right: 27px;
@@ -751,7 +717,7 @@
             width: 24px;
             height: 24px;
             path {
-              fill: #339cfe;
+              fill: $primaryDarkBlue;
             }
           }
         }
