@@ -14,7 +14,10 @@
     }
     .header {
       gap: 12px;
-      margin-bottom: 32px;
+      margin-bottom: 62px;
+      &.my-forums {
+        margin-bottom: 49px;
+      }
       span.h-xs {
         color: $primaryPurple;
         font-family: var(--font-archia), sans-serif;
@@ -30,11 +33,13 @@
       }
     }
     section {
-      h5 {
-        font-weight: 700;
-        margin-bottom: 18px;
+      &.my-forums {
+        margin-bottom: 100px;
       }
       .ant-list {
+        &.ant-list-grid .ant-col > .ant-list-item {
+          margin-bottom: 25px;
+        }
         .ant-card {
           width: 359px;
           padding: 8px 19px 8px;
@@ -66,9 +71,15 @@
                   }
                 }
               }
+              &.my-forums {
+                min-height: 79px;
+                align-items: flex-start;
+              }
             }
             .channel {
-              margin-bottom: 20px;
+              &:not(.my-forums) {
+                margin-bottom: 20px;
+              }
               .h-xs {
                 font-family: var(--font-archia), sans-serif;
                 font-weight: 700;
@@ -78,12 +89,63 @@
               }
               h5 {
                 font-weight: 600;
+                margin-bottom: 18px;
               }
               .description {
                 color: $primaryDarkBlue4;
                 font-size: $fzXS;
                 line-height: $lhXS;
                 font-weight: 400;
+              }
+              &.my-forums {
+                h5 {
+                  margin-bottom: 0;
+                }
+              }
+            }
+            .new-messages {
+              width: 50%;
+              display: flex;
+              align-items: flex-end;
+              flex-direction: column;
+              gap: 8px;
+              .label {
+                font-family: var(--font-archia), sans-serif;
+                font-size: 12px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 14px;
+                letter-spacing: 0.24px;
+                text-transform: uppercase;
+                text-align: right;
+                color: #000;
+                &.empty {
+                  color: rgba(0, 0, 0, 0.5);
+                }
+              }
+              .value {
+                width: fit-content;
+                display: inline-flex;
+                padding: 3px 9px;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                border-radius: 6px;
+                background-color: $systemWarning5;
+                font-family: var(--font-archia), sans-serif;
+                font-weight: 700;
+                color: $primaryWhite;
+              }
+            }
+            .last-message {
+              .label {
+                font-family: var(--font-archia), sans-serif;
+                font-size: 12px;
+                font-weight: 700;
+                line-height: 14px;
+                letter-spacing: 0.24px;
+                text-transform: uppercase;
               }
             }
           }
