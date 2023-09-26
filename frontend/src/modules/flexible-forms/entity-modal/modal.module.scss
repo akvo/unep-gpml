@@ -19,17 +19,6 @@
         margin-bottom: 0;
         margin-right: 8px;
       }
-      .ant-input,
-      .ant-input-number-input,
-      .ant-picker,
-      .ant-select,
-      .ant-select-selector {
-        background-color: #edf2f6;
-      }
-
-      .ant-select-selector {
-        background-color: #edf2f6 !important;
-      }
     }
     .ant-modal-footer {
       background: #ffffff;
@@ -40,6 +29,9 @@
       align-items: center;
       justify-content: flex-start;
       flex-direction: row-reverse;
+    }
+    .ant-form-item-label {
+      padding-bottom: 0px !important;
     }
   }
 }
