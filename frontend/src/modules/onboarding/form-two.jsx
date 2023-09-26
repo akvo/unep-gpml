@@ -4,7 +4,10 @@ import { Typography, Select } from 'antd'
 import { Field } from 'react-final-form'
 import CatTagSelect from '../../components/cat-tag-select/cat-tag-select'
 import { SearchIcon } from '../../components/icons'
+import FormItem from '../../components/form-label'
+
 const { Title } = Typography
+
 function FormTwo({
   handleOfferingSuggestedTag,
   validate,
@@ -32,8 +35,11 @@ function FormTwo({
       <div className="ant-form ant-form-vertical">
         <Field name="offering" style={{ width: '100%' }}>
           {({ input, meta }) => {
+            const hasError = error && !meta.valid
+            const validVal = input?.value && meta.valid ? 'success' : null
+            const validateStatus = hasError ? 'error' : validVal
             return (
-              <>
+              <FormItem for="offering" validateStatus={validateStatus}>
                 <CatTagSelect
                   handleChange={handleOfferingSuggestedTag}
                   meta={meta}
@@ -41,7 +47,7 @@ function FormTwo({
                   value={input.value ? input.value : undefined}
                   handleRemove={handleRemove}
                 />
-              </>
+              </FormItem>
             )
           }}
         </Field>
@@ -64,11 +70,16 @@ function FormTwo({
                 )
               }
             }
+            const hasError = error && !meta.valid
+            const validVal = input?.value && meta.valid ? 'success' : null
+            const validateStatus = hasError ? 'error' : validVal
             return (
-              <>
-                <div className="input-label" style={{ marginTop: 20 }}>
-                  Can't see what you're looking for?
-                </div>
+              <FormItem
+                for="offeringSuggested"
+                className="label-text"
+                label="Can't see what you're looking for?"
+                validateStatus={validateStatus}
+              >
                 <Select
                   size="small"
                   placeholder="Suggest categories"
@@ -92,7 +103,7 @@ function FormTwo({
                     </Select.Option>
                   ))}
                 </Select>
-              </>
+              </FormItem>
             )
           }}
         </Field>

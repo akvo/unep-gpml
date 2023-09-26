@@ -20,6 +20,7 @@ import {
 } from '@ant-design/icons'
 import { Field } from 'react-final-form'
 import Button from '../../components/button'
+import FormLabel from '../../components/form-label'
 
 function FormFour({ validate }) {
   return (
@@ -31,19 +32,16 @@ function FormFour({ validate }) {
         <Field name="about" validate={validate}>
           {({ input, meta }) => (
             <div className="field-wrapper">
-              <div class="ant-col" style={{ paddingBottom: '4px' }}>
-                <label for="about" class="input-label" title="">
-                  Short Bio
-                </label>
-              </div>
-              <TextArea
-                onChange={(e) => input.onChange(e.target.value)}
-                placeholder="Max 500 letters"
-                maxLength={500}
-                className={`${
-                  meta.touched && meta.error ? 'ant-input-status-error' : ''
-                }`}
-              />
+              <FormLabel label="Short Bio" for="about" meta={meta}>
+                <TextArea
+                  onChange={(e) => input.onChange(e.target.value)}
+                  placeholder="Max 500 letters"
+                  maxLength={500}
+                  className={`${
+                    meta.touched && meta.error ? 'ant-input-status-error' : ''
+                  }`}
+                />
+              </FormLabel>
             </div>
           )}
         </Field>
@@ -51,42 +49,33 @@ function FormFour({ validate }) {
           <Col sm={24} md={12}>
             <Field name="linkedin">
               {({ input, meta }) => (
-                <div className="field-wrapper">
-                  <div class="ant-col ant-form-item-label">
-                    <label for="bio" class="" title="">
-                      <div className="input-label">
-                        <p>Linkedin</p> <span>(OPTIONAL)</span>
-                      </div>
-                    </label>
-                  </div>
+                <FormLabel
+                  for="linkedin"
+                  label="Linkedin"
+                  meta={meta}
+                  isOptional
+                >
                   <Input
                     size="small"
                     onChange={(e) => input.onChange(e.target.value)}
                     placeholder="Username"
                     prefix={<LinkedinOutlined />}
-                  />
-                </div>
+                  />{' '}
+                </FormLabel>
               )}
             </Field>
           </Col>
           <Col sm={24} md={12}>
             <Field name="twitter">
               {({ input, meta }) => (
-                <div className="field-wrapper">
-                  <div class="ant-col ant-form-item-label">
-                    <label for="twitter" class="" title="">
-                      <div className="input-label">
-                        <p>Twitter</p> <span>(OPTIONAL)</span>
-                      </div>
-                    </label>
-                  </div>
+                <FormLabel for="twitter" label="Twitter" meta={meta} isOptional>
                   <Input
                     size="small"
                     onChange={(e) => input.onChange(e.target.value)}
                     placeholder="Username"
                     prefix={<TwitterOutlined />}
                   />
-                </div>
+                </FormLabel>
               )}
             </Field>
           </Col>

@@ -1,28 +1,45 @@
-.ant-modal-content {
-  .custom-button {
-    border-radius: 50px;
-    line-height: 16px;
-    font-weight: 700;
-    background: #05f081;
-    color: #fff;
-    border: 1px solid #05f081;
-    &:disabled {
-      opacity: 0.4;
-    }
-  }
-  .close-button {
-    border-radius: 50px;
-    line-height: 16px;
-  }
-  .ant-input,
-  .ant-input-number-input,
-  .ant-picker,
-  .ant-select,
-  .ant-select-selector {
-    background-color: #edf2f6;
-  }
+@import '../../../styles/vars.scss';
 
-  .ant-select-selector {
-    background-color: #edf2f6 !important;
+.addEntityModal {
+  :global {
+    .ant-modal-header {
+      padding-bottom: 0px;
+      .ant-modal-title {
+        font-weight: 700;
+        font-size: $fzS;
+        line-height: $lhS;
+        color: $primaryDarkBlue;
+        font-family: var(--font-archia), sans-serif;
+      }
+    }
+    .ant-modal-content {
+      .close-button {
+        font-weight: 700;
+        text-decoration: none;
+        margin-bottom: 0;
+        margin-right: 8px;
+      }
+      .ant-input,
+      .ant-input-number-input,
+      .ant-picker,
+      .ant-select,
+      .ant-select-selector {
+        background-color: #edf2f6;
+      }
+
+      .ant-select-selector {
+        background-color: #edf2f6 !important;
+      }
+    }
+    .ant-modal-footer {
+      background: #ffffff;
+      border-radius: 0px 0px 10px 10px;
+      padding: 0px 20px 20px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-direction: row-reverse;
+    }
   }
 }

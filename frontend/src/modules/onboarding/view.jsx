@@ -286,6 +286,7 @@ function Authentication() {
                   </div>
                   <div className="button-bottom-panel">
                     <Button
+                      size="small"
                       className="step-button-next"
                       withArrow={<LongArrowRight />}
                       onClick={() => next()}

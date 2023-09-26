@@ -5,6 +5,7 @@ import { Field } from 'react-final-form'
 const { Title, Link } = Typography
 import CatTagSelect from '../../components/cat-tag-select/cat-tag-select'
 import { SearchIcon } from '../../components/icons'
+import FormItem from '../../components/form-label'
 
 function FormThree({
   handleSeekingSuggestedTag,
@@ -33,8 +34,11 @@ function FormThree({
       <div className="ant-form ant-form-vertical">
         <Field name="seeking" style={{ width: '100%' }}>
           {({ input, meta }) => {
+            const hasError = error && !meta.valid
+            const validVal = input?.value && meta.valid ? 'success' : null
+            const validateStatus = hasError ? 'error' : validVal
             return (
-              <>
+              <FormItem for="offering" validateStatus={validateStatus}>
                 <CatTagSelect
                   handleChange={handleSeekingSuggestedTag}
                   meta={meta}
@@ -42,7 +46,7 @@ function FormThree({
                   value={input.value ? input.value : undefined}
                   handleRemove={handleRemove}
                 />
-              </>
+              </FormItem>
             )
           }}
         </Field>
@@ -65,11 +69,16 @@ function FormThree({
                 )
               }
             }
+            const hasError = error && !meta.valid
+            const validVal = input?.value && meta.valid ? 'success' : null
+            const validateStatus = hasError ? 'error' : validVal
             return (
-              <>
-                <div className="input-label" style={{ marginTop: 20 }}>
-                  Can't see what you're looking for?
-                </div>
+              <FormItem
+                for="offeringSuggested"
+                className="label-text"
+                label="Can't see what you're looking for?"
+                validateStatus={validateStatus}
+              >
                 <Select
                   size="small"
                   placeholder="Suggest categories"
@@ -92,7 +101,7 @@ function FormThree({
                     </Select.Option>
                   ))}
                 </Select>
-              </>
+              </FormItem>
             )
           }}
         </Field>

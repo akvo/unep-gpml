@@ -80,11 +80,8 @@
       justify-content: flex-start;
       flex-direction: row-reverse;
       button {
-        font-size: 16px;
         font-weight: 700;
-        line-height: 16px;
-        text-align: center;
-        text-transform: uppercase;
+        text-transform: capitalize;
       }
       .clear-button {
         background-color: transparent;
