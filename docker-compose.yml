@@ -44,6 +44,10 @@ services:
       - BRS_API_PROJECTS_ENDPOINT
       - SUBSCRIPTIONS_MANAGEMENT_EMAIL
       - CORS_ALLOWED_ORIGINS
+      - CHAT_API_DOMAIN_URL
+      - CHAT_API_URL_PATH
+      - CHAT_API_KEY
+      - CHAT_API_USER_ID
   frontend:
     environment:
       - PORT=3001
