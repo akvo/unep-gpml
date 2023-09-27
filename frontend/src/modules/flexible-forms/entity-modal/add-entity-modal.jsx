@@ -298,6 +298,9 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
       title="Create New Entity"
       className={`${styles.addEntityModal} add-entity-modal`}
       footer={[
+        <Button className="close-button" onClick={(e) => close()} type="link">
+          Cancel
+        </Button>,
         <Button
           size="small"
           key="submit"
@@ -306,9 +309,6 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
           disabled={disabledBtn.disabled}
         >
           Submit
-        </Button>,
-        <Button className="close-button" onClick={(e) => close()} type="link">
-          Cancel
         </Button>,
       ]}
       closable={false}
