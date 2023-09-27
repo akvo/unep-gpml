@@ -63,7 +63,7 @@ const Forum = () => {
         </div>
         <section>
           <List
-            grid={{ column: 3 }}
+            grid={{ column: 3, gutter: 20 }}
             dataSource={allForums}
             renderItem={(item) => (
               <List.Item>
@@ -90,7 +90,7 @@ const Forum = () => {
                           Request to Join
                         </Button>
                       ) : (
-                        <Button size="small" withArrow="link" ghost>
+                        <Button size="small" withArrow="link">
                           View Channel
                         </Button>
                       )}

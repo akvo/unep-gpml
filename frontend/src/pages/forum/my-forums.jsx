@@ -49,7 +49,7 @@ const MyForums = () => {
       <section className="my-forums">
         <List
           loading={loading}
-          grid={{ column: 3 }}
+          grid={{ column: 3, gutter: 20 }}
           dataSource={myForums}
           renderItem={(item) => (
             <List.Item>
