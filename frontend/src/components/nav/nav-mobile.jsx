@@ -2,19 +2,19 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MenuItem } from './menu-item'
 import { MenuToggle } from './menu-toggle'
-import {
-  CirclePointer,
-  FacebookIcon,
-  TwitterIcon,
-  LinkedinIcon,
-} from '../icons'
+import { CirclePointer, LinkedinIcon, YoutubeIcon } from '../icons'
 import { Button } from 'antd'
 import { UIStore } from '../../store'
 
 const SOCIAL_LINKS = [
-  { icon: FacebookIcon, url: 'https://facebook.com/' },
-  { icon: TwitterIcon, url: 'http://twitter.com/' },
-  { icon: LinkedinIcon, url: 'https://linkedin.com/' },
+  {
+    Icon: LinkedinIcon,
+    url: 'https://ke.linkedin.com/company/global-partnership-on-marine-litter',
+  },
+  {
+    Icon: YoutubeIcon,
+    url: 'https://www.youtube.com/channel/UCoWXFwDeoD4c9GoXzFdm9Bg',
+  },
 ]
 
 const menuVariants = {
@@ -99,21 +99,23 @@ const NavMobile = ({ isOpen, toggleOpen }) => {
 
   return (
     <AnimatePresence>
-      <motion.div
-        initial="closed"
-        animate={isOpen ? 'open' : 'closed'}
-        exit="exit"
-        className="animation-container"
-      >
-        <motion.div className="mobile-menu-background" variants={sidebar} />
-        <AnimatePresence mode="wait">
-          {selectedMenuItem ? (
-            <SubMenuContent key="sub-menu" />
-          ) : (
-            isOpen && <MainMenuContent key="main-menu" />
-          )}
-        </AnimatePresence>
-      </motion.div>
+      {isOpen && (
+        <motion.div
+          initial="closed"
+          animate={isOpen ? 'open' : 'closed'}
+          exit="exit"
+          className="animation-container"
+        >
+          <motion.div className="mobile-menu-background" variants={sidebar} />
+          <AnimatePresence mode="wait">
+            {selectedMenuItem ? (
+              <SubMenuContent key="sub-menu" />
+            ) : (
+              isOpen && <MainMenuContent key="main-menu" />
+            )}
+          </AnimatePresence>
+        </motion.div>
+      )}
     </AnimatePresence>
   )
 
@@ -142,7 +144,24 @@ const NavMobile = ({ isOpen, toggleOpen }) => {
         <MenuHeader />
         <div className="navigation-container" style={{ height: '100%' }}>
           <MainMenuItems />
-          <SocialLinks />
+          <motion.div
+            className="social-links-container"
+            variants={socialLinksVariants}
+            initial="closed"
+            animate="open"
+            exit="closed"
+          >
+            <h6>Follow Us</h6>
+            <ul className="social-links">
+              {SOCIAL_LINKS.map(({ Icon, url }) => (
+                <li key={url}>
+                  <a href={url} target="_blank" rel="noopener noreferrer">
+                    <Icon />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
         </div>
       </>
     )
@@ -196,29 +215,6 @@ const NavMobile = ({ isOpen, toggleOpen }) => {
           <MenuItem key={i.key} i={i.key} item={i} collapseMenu />
         ))}
       </motion.ul>
-    )
-  }
-
-  function SocialLinks() {
-    return (
-      <motion.div
-        className="social-links-container"
-        variants={socialLinksVariants}
-        initial="closed"
-        animate="open"
-        exit="closed"
-      >
-        <h6>Follow Us</h6>
-        <ul className="social-links">
-          {SOCIAL_LINKS.map(({ icon: Icon, url }) => (
-            <li key={url}>
-              <a href={url} target="_blank" rel="noopener noreferrer">
-                <Icon />
-              </a>
-            </li>
-          ))}
-        </ul>
-      </motion.div>
     )
   }
 
