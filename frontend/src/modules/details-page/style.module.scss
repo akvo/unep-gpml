@@ -525,6 +525,121 @@
               padding-bottom: 20px !important;
             }
           }
+
+          .resource-card {
+            transition: all ease-out 0.2s;
+            position: relative;
+            width: 150px;
+            height: 192px;
+            margin-left: 19px;
+            margin-bottom: 0;
+            padding: 0 !important;
+            .description-holder {
+              transition: all ease-out 0.2s;
+              position: absolute;
+              display: flex;
+              opacity: 0;
+              flex-direction: column;
+              justify-content: space-between;
+              padding: 13px;
+              background-color: #fff;
+              height: 100%;
+              min-height: 192px;
+              border-radius: 5px;
+              width: 100%;
+
+              h3 {
+                font-style: normal;
+                font-weight: 600;
+                font-size: 12px;
+                max-height: 70px;
+                overflow: hidden;
+              }
+              h4 {
+                color: #bbbbbb;
+                font-weight: 400;
+                font-size: 10px;
+                line-height: 17px;
+                text-transform: uppercase;
+              }
+
+              .ant-avatar-circle {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+              .bottom-panel {
+                .read-more {
+                  font-weight: 500;
+                  font-size: 10px;
+                  color: #34a6ff;
+                }
+              }
+            }
+            .thumb-container {
+              height: 100%;
+              background-color: #fff !important;
+              border-radius: 0 !important;
+              img {
+                width: 100%;
+                height: fit-content;
+                align-self: center;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 5px;
+              }
+            }
+            // box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.12);
+            border-radius: 4px;
+            overflow: hidden;
+            z-index: 1;
+            &:hover {
+              box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.25);
+              z-index: 9999;
+              transform: scale(1.23) translateY(-5px);
+              .description-holder {
+                opacity: 1;
+              }
+            }
+          }
+          .resource-card.nothumb {
+            background-color: #fff;
+            .nothumb-container {
+              padding: 10px;
+              display: block;
+              .read-more {
+                display: none;
+              }
+              display: flex;
+              flex-direction: column;
+              height: 100%;
+              h3 {
+                font-size: 1em;
+                line-height: 1.2;
+                font-weight: 500;
+                max-height: 155px;
+                overflow-y: hidden;
+              }
+              .bottom-panel {
+                margin-top: auto;
+                .connections {
+                  margin-bottom: 5px;
+                  .ant-avatar {
+                    border: 1px solid #ccc !important;
+                  }
+                }
+              }
+              h4 {
+                margin-top: auto;
+                font-size: 0.7em;
+                line-height: 1;
+                opacity: 0.6;
+                text-transform: uppercase;
+                margin-bottom: 0;
+              }
+            }
+          }
         }
         .slider-card {
           display: flex;
