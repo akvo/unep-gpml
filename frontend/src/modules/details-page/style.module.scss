@@ -79,9 +79,7 @@
           transition: all 0.15s ease-out;
           .view-button {
             svg {
-              transform: rotate(-45deg);
-              width: 24px;
-              height: 24px;
+              transform: translateY(2px) rotate(-45deg);
             }
           }
           .language-select {
@@ -169,7 +167,10 @@
             svg {
               width: 16px;
               height: 16px;
-              margin-top: -4px;
+              margin-top: -2px;
+              path:first-child {
+                stroke: $primaryDarkBlue !important;
+              }
             }
             &.bookmarked {
               svg {

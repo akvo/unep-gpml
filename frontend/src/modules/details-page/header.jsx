@@ -59,7 +59,6 @@ export const HeaderButtons = ({
       {data?.url && (
         <Button
           size="small"
-          ghost
           className="view-button"
           onClick={(e) => {
             e.preventDefault()
