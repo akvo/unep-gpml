@@ -112,6 +112,22 @@ again, please visit this URL: %s/edit-%s/%s
           (util/get-display-topic-type topic-type topic-item)
           (str/lower-case review-status)))
 
+(defn notify-private-channel-invitation-request-subject
+  [app-name channel-name]
+  (format "[%s] Invitation request for private channel %s" app-name channel-name))
+
+(defn notify-private-channel-invitation-request-text
+  [admin-name user-name user-email channel-name]
+  (format "Dear %s
+
+%s user with email %s, is requesting access to the private channel %s.
+
+- UNEP GPML Digital Platform"
+          admin-name
+          user-name
+          user-email
+          channel-name))
+
 (defn notify-user-invitation-text [inviter-name app-domain entity-name]
   (format "Dear user,
 
@@ -179,6 +195,30 @@ again, please visit this URL: %s/edit-%s/%s
         texts [msg-body]
         htmls (repeat nil)]
     (send-email mailjet-config sender subject receivers texts htmls)))
+
+(defn notify-admins-new-chat-private-channel-invitation-request
+  [mailjet-config admins user channel-name]
+  (let [sender unep-sender
+        subject (notify-private-channel-invitation-request-subject
+                 (:app-name mailjet-config)
+                 channel-name)
+        receivers (map
+                   (fn [admin] {:Name (get-user-full-name admin)
+                                :Email (:email admin)})
+                   admins)
+        texts (map (fn [receiver]
+                     (notify-private-channel-invitation-request-text (:Name receiver)
+                                                                     (get-user-full-name user)
+                                                                     (:email user)
+                                                                     channel-name))
+                   receivers)
+        htmls (repeat nil)
+        {:keys [status body]}(send-email mailjet-config sender subject receivers texts htmls)]
+    (if (<= 200 status 299)
+      {:success? true}
+      {:success? false
+       :reason :failed-to-send-email
+       :error-details body})))
 
 (comment
   (require 'dev)
