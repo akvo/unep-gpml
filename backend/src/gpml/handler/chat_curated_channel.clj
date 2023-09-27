@@ -23,13 +23,20 @@
     [:string {:min 1}]]])
 
 (defn- get-chat-curated-channels
-  [config _req]
-  (let [result (srv.cc-channel/get-chat-curated-channels config
-                                                         {})]
-    (if (:success? result)
-      (r/ok {:success? true
-             :chat_curated_channels (:chat-curated-channels result)})
-      (r/server-error result))))
+  [config {:keys [user]}]
+  (if-not (h.r.permission/operation-allowed?
+           config
+           {:user-id (:id user)
+            :entity-type :application
+            :custom-permission :list-chat-curated-channels
+            :root-context? true})
+    (r/forbidden {:message "Unauthorized"})
+    (let [result (srv.cc-channel/get-chat-curated-channels config
+                                                           {})]
+      (if (:success? result)
+        (r/ok {:success? true
+               :chat_curated_channels (:chat-curated-channels result)})
+        (r/server-error result)))))
 
 (defn- create-chat-curated-channel
   [config {:keys [user] :as req}]
