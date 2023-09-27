@@ -71,23 +71,19 @@
       (r/server-error (dissoc result :success?)))))
 
 (defn- get-private-channels
-  [config {:keys [user]}]
-  (if-not (h.r.permission/super-admin? config (:id user))
-    (r/forbidden {:message "Unauthorized"})
-    (let [result (srv.chat/get-private-channels config)]
-      (if (:success? result)
-        (r/ok (cske/transform-keys ->snake_case (:channels result)))
-        (r/server-error (dissoc result :success?))))))
+  [config _req]
+  (let [result (srv.chat/get-private-channels config)]
+    (if (:success? result)
+      (r/ok (cske/transform-keys ->snake_case (:channels result)))
+      (r/server-error (dissoc result :success?)))))
 
 (defn- get-all-channels
-  [config {:keys [user parameters]}]
-  (if-not (h.r.permission/super-admin? config (:id user))
-    (r/forbidden {:message "Unauthorized"})
-    (let [search-opts (:query parameters)
-          result (srv.chat/get-all-channels config search-opts)]
-      (if (:success? result)
-        (r/ok (cske/transform-keys ->snake_case (:channels result)))
-        (r/server-error (dissoc result :success?))))))
+  [config {:keys [parameters]}]
+  (let [search-opts (:query parameters)
+        result (srv.chat/get-all-channels config search-opts)]
+    (if (:success? result)
+      (r/ok (cske/transform-keys ->snake_case (:channels result)))
+      (r/server-error (dissoc result :success?)))))
 
 (defn- get-public-channels
   [config _req]
