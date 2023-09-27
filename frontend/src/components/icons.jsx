@@ -215,27 +215,6 @@ export const SearchIcon = () => (
   </svg>
 )
 
-export const ViewIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="30"
-    height="30"
-    viewBox="0 0 30 30"
-    fill="none"
-  >
-    <path
-      d="M19.7836 18.5424V10.0571H11.2983"
-      stroke="#020A5B"
-      stroke-width="2"
-    />
-    <path
-      d="M9.9707 19.7339L19.1631 10.5415"
-      stroke="#020A5B"
-      stroke-width="2"
-    />
-  </svg>
-)
-
 export const BookmarkIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

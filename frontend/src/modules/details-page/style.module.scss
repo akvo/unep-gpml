@@ -39,6 +39,7 @@
         font-size: $fzXS;
         line-height: $lhXS;
         overflow-wrap: break-word;
+        color: $primaryDarkBlue;
       }
 
       .section {
@@ -78,6 +79,7 @@
           transition: all 0.15s ease-out;
           .view-button {
             svg {
+              transform: rotate(-45deg);
               width: 24px;
               height: 24px;
             }
@@ -440,6 +442,12 @@
         font-weight: 500;
         font-size: 16px;
         line-height: 33px;
+        color: $primaryDarkBlue;
+        svg {
+          path {
+            stroke: $primaryDarkBlue;
+          }
+        }
         & .ant-row:last-of-type {
           margin-bottom: 0;
         }

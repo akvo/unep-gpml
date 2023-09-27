@@ -13,7 +13,7 @@ import { resourceTypeToTopicType, topicNames } from '../../utils/misc'
 import { languageOptions } from '../flexible-forms/view'
 import classNames from 'classnames'
 import Button from '../../components/button'
-import { ViewIcon, BookmarkIcon } from '../../components/icons'
+import { BookmarkIcon, ArrowRight } from '../../components/icons'
 
 export const HeaderButtons = ({
   data,
@@ -79,7 +79,7 @@ export const HeaderButtons = ({
           }}
         >
           View Source
-          <ViewIcon />
+          <ArrowRight />
         </Button>
       )}
       {data?.recording && (
@@ -100,6 +100,20 @@ export const HeaderButtons = ({
           Recording
         </Button>
       )}
+      <Button
+        className={classNames('bookmark-button two-tone-button', {
+          bookmarked,
+        })}
+        size="small"
+        ghost
+        onClick={() => {
+          eventTrack('Resource view', 'Bookmark', 'Button')
+          handleChangeRelation('interested in')
+        }}
+      >
+        {bookmarked ? 'Bookmarked' : 'Bookmark'}
+        <BookmarkIcon />
+      </Button>
       {data?.url && (
         <Popover
           placement="top"
@@ -169,20 +183,6 @@ export const HeaderButtons = ({
           </div>
         </Popover>
       )}
-      <Button
-        className={classNames('bookmark-button two-tone-button', {
-          bookmarked,
-        })}
-        size="small"
-        ghost
-        onClick={() => {
-          eventTrack('Resource view', 'Bookmark', 'Button')
-          handleChangeRelation('interested in')
-        }}
-      >
-        {bookmarked ? 'Bookmarked' : 'Bookmark'}
-        <BookmarkIcon />
-      </Button>
       {canEdit() && (
         <Button
           className="edit-button two-tone-button"
