@@ -579,8 +579,7 @@
                                                    :middleware [#ig/ref :gpml.auth/auth-middleware
                                                                 #ig/ref :gpml.auth/auth-required]
                                                    :swagger {:tags ["chat"]}
-                                                   :handler #ig/ref :gpml.handler.chat/post
-                                                   :parameters #ig/ref :gpml.handler.chat/post-params}
+                                                   :handler #ig/ref :gpml.handler.chat/post}
                                             :put {:summary "Update chat user account status"
                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
                                                                #ig/ref :gpml.auth/auth-required]
@@ -874,7 +873,6 @@
   :gpml.handler.chat-curated-channel/delete-params {}
 
   :gpml.handler.chat/post #ig/ref :gpml.config/common
-  :gpml.handler.chat/post-params {}
   :gpml.handler.chat/put #ig/ref :gpml.config/common
   :gpml.handler.chat/put-params {}
   :gpml.handler.chat/get-private-channels #ig/ref :gpml.config/common

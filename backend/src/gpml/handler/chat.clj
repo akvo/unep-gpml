@@ -7,14 +7,6 @@
             [gpml.service.chat :as srv.chat]
             [integrant.core :as ig]))
 
-(def ^:private create-user-account-params-schema
-  [:map
-   [:user_id
-    {:optional false
-     :swagger {:description "The user ID used to create the account"
-               :type "integer"}}
-    [:int {:min 1}]]])
-
 (def ^:private set-user-account-active-status-params-schema
   [:map
    [:chat_account_status
@@ -107,10 +99,6 @@
   [_ config]
   (fn [req]
     (create-user-account config req)))
-
-(defmethod ig/init-key :gpml.handler.chat/post-params
-  [_ _]
-  {:body create-user-account-params-schema})
 
 (defmethod ig/init-key :gpml.handler.chat/put
   [_ config]
