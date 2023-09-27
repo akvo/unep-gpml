@@ -295,11 +295,13 @@ const DetailsView = ({
       className: 'popup-delete',
       centered: true,
       closable: true,
-      icon: <DeleteOutlined />,
+      icon: false,
       title: 'Are you sure you want to delete this resource?',
       content: 'Please be aware this action cannot be undone.',
       okText: 'Delete',
       okType: 'danger',
+      cancelText: 'Cancel',
+      okButtonProps: { size: 'small' },
       onOk() {
         return api
           .delete(`/detail/${type.replace('-', '_')}/${id}`)
