@@ -91,6 +91,7 @@ export const uiSchema = {
     'ui:widget': 'select',
     'ui:options': {
       size: 'small',
+      icon: true,
     },
   },
   country: {
@@ -101,6 +102,7 @@ export const uiSchema = {
       type: 'single',
       size: 'small',
       icon: true,
+      search: true,
     },
   },
   url: {
@@ -114,6 +116,7 @@ export const uiSchema = {
     'ui:options': {
       type: 'single',
       size: 'small',
+      icon: true,
     },
   },
   geoCoverageValueRegional: {

@@ -116,6 +116,7 @@
         padding: 4px 11px;
         height: 44px;
         line-height: 20px;
+        overflow: auto;
         .ant-select-selection-placeholder {
           font-family: var(--font-dm-sans), sans-serif;
           color: $primaryDarkBlue;
@@ -200,6 +201,15 @@
       }
     }
   }
+}
+
+.ant-input-group-addon {
+  background-color: $primaryGrey;
+  border: none;
+  color: $primaryDarkBlue4;
+  font-size: $fzXS;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
 
 .ant-form-item-label {

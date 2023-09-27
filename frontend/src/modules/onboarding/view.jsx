@@ -338,6 +338,7 @@ function Authentication() {
                   <Button
                     size="small"
                     className="step-button-back"
+                    ghost
                     back
                     onClick={previous}
                   >
@@ -350,6 +351,7 @@ function Authentication() {
                     size="small"
                     className="step-button-next abs"
                     onClick={() => next()}
+                    withArrow
                   >
                     Next
                   </Button>

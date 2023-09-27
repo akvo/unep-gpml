@@ -5,7 +5,7 @@ import { Select, Divider, Input, List } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 
 import ModalAddEntity from '../../modules/flexible-forms/entity-modal/add-entity-modal'
-import { SearchIcon } from '../../components/icons'
+import { SearchIcon, DropDownIcon } from '../../components/icons'
 
 const { asNumber, guessType } = utils
 
@@ -76,6 +76,7 @@ const SelectWidget = ({
   const showTag = uiSchema?.['ui:options']?.['ui:showTag']
   const size = uiSchema?.['ui:options']?.['size']
   const icon = uiSchema?.['ui:options']?.['icon']
+  const search = uiSchema?.['ui:options']?.['search']
 
   const [showModal, setShowModal] = useState(false)
   const [tagMode, setTagMode] = useState(
@@ -106,7 +107,7 @@ const SelectWidget = ({
         onChange={!readonly ? handleChange : undefined}
         onFocus={!readonly ? handleFocus : undefined}
         showArrow={icon ? true : false}
-        suffixIcon={<SearchIcon />}
+        suffixIcon={search ? <SearchIcon /> : <DropDownIcon />}
         onSearch={(v) => {
           if (uiSchema?.['ui:options']?.['type'] === 'single') {
             return false
