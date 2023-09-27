@@ -38,6 +38,11 @@ VALUES (
     '3661e240-97ba-4c05-8a94-1b86b2091f0d',
     'application/list-chat-curated-channels',
     'Allows listing all chat server curated channels',
+    'application'),
+(
+    '2b72ff47-ccd8-4748-b14c-b36dd8854e2a',
+    'application/send-private-chat-invitation-request',
+    'Allows requesting an invitation to a private chat channel',
     'application');
 --;;
 INSERT INTO rbac_role_permission (
@@ -59,6 +64,10 @@ VALUES (
 (
     '2ecb82a5-5aff-47ba-8889-5cfdc3199550',
     '3661e240-97ba-4c05-8a94-1b86b2091f0d',
+    1),
+(
+    '2ecb82a5-5aff-47ba-8889-5cfdc3199550',
+    '2b72ff47-ccd8-4748-b14c-b36dd8854e2a',
     1);
 --;;
 COMMIT;

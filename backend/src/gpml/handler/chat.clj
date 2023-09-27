@@ -107,14 +107,21 @@
 
 (defn- send-private-channel-invitation-request
   [config {:keys [user parameters]}]
-  (let [channel-name (get-in parameters [:body :channel_name])
-        result (srv.chat/send-private-channel-invitation-request
-                config
-                user
-                channel-name)]
-    (if (:success? result)
-      (r/ok {})
-      (r/server-error (dissoc result :success?)))))
+  (if-not (h.r.permission/operation-allowed?
+           config
+           {:user-id (:id user)
+            :entity-type :application
+            :custom-permission :send-private-chat-invitation-request
+            :root-context? true})
+    (r/forbidden {:message "Unauthorized"})
+    (let [channel-name (get-in parameters [:body :channel_name])
+          result (srv.chat/send-private-channel-invitation-request
+                  config
+                  user
+                  channel-name)]
+      (if (:success? result)
+        (r/ok {})
+        (r/server-error (dissoc result :success?))))))
 
 (defmethod ig/init-key :gpml.handler.chat/post
   [_ config]
