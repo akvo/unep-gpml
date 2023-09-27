@@ -1,26 +1,16 @@
 import { Button as AntButton } from 'antd'
-import { CirclePointer, ArrowRight } from './icons'
+import { CirclePointer, ArrowRight, LongArrowRight } from './icons'
 import classNames from 'classnames'
 
-const Button = ({ withArrow, back, children, className, ...props }) => {
+const Button = ({ withArrow, children, className, ...props }) => {
   let arrowIcon = null
-  let backIcon = null
-  if (withArrow && !back) {
+  if (withArrow) {
     if (props.type === 'primary') arrowIcon = <CirclePointer />
     else if (props.type === 'link') arrowIcon = <ArrowRight />
-    else arrowIcon = withArrow
-  }
-  if (back) {
-    if (props.type === 'primary') backIcon = <CirclePointer />
-    else if (props.type === 'link') backIcon = <ArrowRight />
-    else backIcon = withArrow
+    else arrowIcon = <LongArrowRight />
   }
   return (
-    <AntButton
-      {...props}
-      className={classNames(className, { withArrow, back })}
-    >
-      {backIcon}
+    <AntButton {...props} className={classNames(className, { withArrow })}>
       {children}
       {withArrow && ' '}
       {arrowIcon}

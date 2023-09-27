@@ -77,16 +77,6 @@
         }
       }
     }
-    &.back {
-      svg {
-        transform: rotate(180deg);
-      }
-      &:hover {
-        svg {
-          transform: translateX(-8px) rotate(180deg);
-        }
-      }
-    }
     &:active {
       background-color: $primaryDarkBlue5;
       border-color: $primaryDarkBlue5;

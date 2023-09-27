@@ -338,10 +338,10 @@ function Authentication() {
                   <Button
                     size="small"
                     className="step-button-back"
-                    withArrow={<LongArrowRight />}
                     back
                     onClick={previous}
                   >
+                    <LongArrowRight />
                     Back
                   </Button>
                 )}

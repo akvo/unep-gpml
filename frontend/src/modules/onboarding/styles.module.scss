@@ -149,6 +149,15 @@
       left: 25px;
       bottom: 30px;
       z-index: 3;
+      svg {
+        transform: rotate(180deg);
+      }
+      &:hover {
+        padding-left: 28px;
+        svg {
+          transform: translateX(-8px) rotate(180deg);
+        }
+      }
     }
     .step-button-next {
       &.abs {
