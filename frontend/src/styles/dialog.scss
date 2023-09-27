@@ -53,3 +53,11 @@
     }
   }
 }
+
+.ant-popover {
+  &.popover-share {
+    .ant-input-group {
+      display: flex;
+    }
+  }
+}

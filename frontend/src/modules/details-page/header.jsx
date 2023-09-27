@@ -124,6 +124,7 @@ export const HeaderButtons = ({
           content={
             <Input.Group compact>
               <Input
+                size="small"
                 style={{ width: 'calc(100% - 20%)' }}
                 defaultValue={`${
                   data?.url && data?.url?.includes('https://')
@@ -139,8 +140,7 @@ export const HeaderButtons = ({
                 disabled
               />
               <Button
-                style={{ width: '20%' }}
-                type="primary"
+                size="small"
                 disabled={!data?.url}
                 onClick={() => {
                   navigator.clipboard.writeText(
