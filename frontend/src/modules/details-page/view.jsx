@@ -5,74 +5,65 @@ import React, {
   useEffect,
   useCallback,
   useRef,
-} from "react";
-import styles from "./style.module.scss";
-import {
-  Row,
-  Col,
-  List,
-  Avatar,
-  Popover,
-  Tag,
-  Modal,
-  notification,
-} from "antd";
+} from 'react'
+import styles from './style.module.scss'
+import { Row, Col, List, Avatar, Popover, Tag, Modal, notification } from 'antd'
 
 import {
   InfoCircleOutlined,
   LoadingOutlined,
   DeleteOutlined,
-} from "@ant-design/icons";
+} from '@ant-design/icons'
 
-import api from "../../utils/api";
-import { UIStore } from "../../store";
-import { titleCase } from "../../utils/string";
-import { eventTrack } from "../../utils/misc";
-import LeftImage from "../../images/sea-dark.jpg";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useHistory, useLocation } from "react-router-dom";
-import uniqBy from "lodash/uniqBy";
-import isEmpty from "lodash/isEmpty";
-import { redirectError } from "../error/error-util";
-import { detailMaps } from "./mapping";
-import moment from "moment";
-import { resourceTypeToTopicType } from "../../utils/misc";
-import { multicountryGroups } from "../knowledge-library/multicountry";
-import ResourceCards from "../../components/resource-cards/resource-cards";
-import Comments from "./comment";
-import Header from "./header";
-import StakeholderCarousel from "./stakeholder-carousel";
-import LocationImage from "../../images/location.svg";
-import TransnationalImage from "../../images/transnational.svg";
-import CityImage from "../../images/city-icn.svg";
-import { getTypeByResource, languageOptions } from "../flexible-forms/view";
-import { useRouter } from "next/router";
+import api from '../../utils/api'
+import { UIStore } from '../../store'
+import { titleCase } from '../../utils/string'
+import { eventTrack } from '../../utils/misc'
+import LeftImage from '../../images/sea-dark.jpg'
+import { useAuth0 } from '@auth0/auth0-react'
+import { useHistory, useLocation } from 'react-router-dom'
+import uniqBy from 'lodash/uniqBy'
+import isEmpty from 'lodash/isEmpty'
+import { redirectError } from '../error/error-util'
+import { detailMaps } from './mapping'
+import moment from 'moment'
+import { resourceTypeToTopicType } from '../../utils/misc'
+import { multicountryGroups } from '../knowledge-library/multicountry'
+import ResourceCards from '../../components/resource-cards/resource-cards'
+import Comments from './comment'
+import Header from './header'
+import StakeholderCarousel from './stakeholder-carousel'
+import LocationImage from '../../images/location.svg'
+import TransnationalImage from '../../images/transnational.svg'
+import CityImage from '../../images/city-icn.svg'
+import { getTypeByResource, languageOptions } from '../flexible-forms/view'
+import { useRouter } from 'next/router'
 
-const currencyFormat = (curr) => Intl.NumberFormat().format(curr);
+const currencyFormat = (curr) => Intl.NumberFormat().format(curr)
 
 const renderGeoCoverageCountryGroups = (data, countries) => {
-  let dataCountries = null;
+  let dataCountries = null
   const subItems = [].concat(
     ...multicountryGroups.map(({ item }) => item || [])
-  );
-  const newArray = [...new Set([...subItems, ...countries])];
-  dataCountries = data["geoCoverageCountryGroups"]?.map((x) => {
+  )
+  const newArray = [...new Set([...subItems, ...countries])]
+  dataCountries = data['geoCoverageCountryGroups']?.map((x) => {
     return {
       name: newArray.find((it) => it.id === x)?.name,
       countries: newArray.find((it) => it.id === x)?.countries
         ? newArray.find((it) => it.id === x)?.countries
         : [],
-    };
-  });
+    }
+  })
   return (
     <>
       {dataCountries.map((item, index) => (
         <span id={index}>
-          {(index ? ", " : " ") + item.name}{" "}
+          {(index ? ', ' : ' ') + item.name}{' '}
           {item.countries && item.countries.length > 0 && (
             <Popover
               overlayClassName="popover-multi-country"
-              title={""}
+              title={''}
               content={
                 <ul className="list-country-group">
                   {item.countries.map((name) => (
@@ -89,16 +80,16 @@ const renderGeoCoverageCountryGroups = (data, countries) => {
         </span>
       ))}
     </>
-  );
-};
+  )
+}
 const renderCountries = (data, countries) => {
-  let dataCountries = null;
-  const newArray = [...new Set([...countries])];
-  dataCountries = data["geoCoverageCountries"]
+  let dataCountries = null
+  const newArray = [...new Set([...countries])]
+  dataCountries = data['geoCoverageCountries']
     ?.map((x) => newArray.find((it) => it.id === x)?.name)
-    .join(", ");
-  return dataCountries;
-};
+    .join(', ')
+  return dataCountries
+}
 
 const DetailsView = ({
   type,
@@ -107,7 +98,7 @@ const DetailsView = ({
   setFilterMenu,
   isAuthenticated,
 }) => {
-  const [showLess, setShowLess] = useState(true);
+  const [showLess, setShowLess] = useState(true)
   const {
     profile,
     countries,
@@ -121,65 +112,65 @@ const DetailsView = ({
     transnationalOptions: s.transnationalOptions,
     icons: s.icons,
     placeholder: s.placeholder,
-  }));
-  const router = useRouter();
-  const [data, setData] = useState(null);
-  const [relations, setRelations] = useState([]);
-  const [comments, setComments] = useState([]);
+  }))
+  const router = useRouter()
+  const [data, setData] = useState(null)
+  const [relations, setRelations] = useState([])
+  const [comments, setComments] = useState([])
   // const { loginWithPopup } = useAuth0();
-  const [warningVisible, setWarningVisible] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const [showReplyBox, setShowReplyBox] = useState("");
-  const [editComment, setEditComment] = useState("");
-  const [translations, setTranslations] = useState({});
-  const [selectedLanguage, setLanguage] = useState("");
+  const [warningVisible, setWarningVisible] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const [showReplyBox, setShowReplyBox] = useState('')
+  const [editComment, setEditComment] = useState('')
+  const [translations, setTranslations] = useState({})
+  const [selectedLanguage, setLanguage] = useState('')
 
   const relation = relations.find(
     (it) =>
       it.topicId === parseInt(id) &&
-      it.topic === resourceTypeToTopicType(type.replace("-", "_"))
-  );
+      it.topic === resourceTypeToTopicType(type.replace('-', '_'))
+  )
 
-  const isConnectStakeholders = ["organisation", "stakeholder"].includes(type);
+  const isConnectStakeholders = ['organisation', 'stakeholder'].includes(type)
 
-  const allowBookmark = type !== "stakeholder" || profile.id !== id;
+  const allowBookmark = type !== 'stakeholder' || profile.id !== id
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
-      setLoginVisible(true);
+      setLoginVisible(true)
     }
 
     if (isAuthenticated && profile.reviewStatus === undefined) {
-      setLoginVisible(true);
+      setLoginVisible(true)
     }
-    if (profile.reviewStatus === "APPROVED") {
-      api.post("/favorite", relation).then((res) => {
+    if (profile.reviewStatus === 'APPROVED') {
+      api.post('/favorite', relation).then((res) => {
         const relationIndex = relations.findIndex(
           (it) => it.topicId === relation.topicId
-        );
+        )
         if (relationIndex !== -1) {
           setRelations([
             ...relations.slice(0, relationIndex),
             relation,
             ...relations.slice(relationIndex + 1),
-          ]);
+          ])
         } else {
-          setRelations([...relations, relation]);
+          setRelations([...relations, relation])
         }
-      });
+      })
     }
-  };
+  }
 
   useEffect(() => {
     type &&
       id &&
       api
-        .get(`/detail/${type.replace("-", "_")}/${id}`)
+        .get(`/detail/${type.replace('-', '_')}/${id}`)
         .then((d) => {
           api
             .get(
               `/translations/${
-                getTypeByResource(type.replace("-", "_")).translations
+                getTypeByResource(type.replace('-', '_')).translations
               }/${id}`
             )
             .then((resp) => {
@@ -192,147 +183,149 @@ const DetailsView = ({
                   : resp.data.description
                   ? resp.data.description
                   : resp.data.summary,
-              });
+              })
             })
-            .catch((e) => console.log(e));
-          setData(d.data);
-          getComment(id, type.replace("-", "_"));
+            .catch((e) => console.log(e))
+          setData(d.data)
+          getComment(id, type.replace('-', '_'))
         })
         .catch((err) => {
-          console.error(err);
+          console.error(err)
           // redirectError(err, history);
-        });
-    if (profile.reviewStatus === "APPROVED") {
+        })
+    if (profile.reviewStatus === 'APPROVED') {
       setTimeout(() => {
-        api.get(`/favorite/${type?.replace("-", "_")}/${id}`).then((resp) => {
-          setRelations(resp.data);
-        });
-      }, 100);
+        api.get(`/favorite/${type?.replace('-', '_')}/${id}`).then((resp) => {
+          setRelations(resp.data)
+        })
+      }, 100)
     }
     UIStore.update((e) => {
-      e.disclaimer = null;
-    });
-    window.scrollTo({ top: 0 });
-  }, [router]);
+      e.disclaimer = null
+    })
+    window.scrollTo({ top: 0 })
+  }, [router])
 
   const getComment = async (id, type) => {
     let res = await api.get(
       `/comment?resource_id=${id}&resource_type=${
-        type.replace("-", "_") === "initiative" ? "initiative" : type
+        type.replace('-', '_') === 'initiative' ? 'initiative' : type
       }`
-    );
+    )
     if (res && res?.data) {
-      setComments(res.data?.comments);
+      setComments(res.data?.comments)
     }
-  };
+  }
 
   const handleEditBtn = (type = null) => {
-    eventTrack("Resource view", "Update", "Button");
-    let form = null;
-    let link = null;
+    eventTrack('Resource view', 'Update', 'Button')
+    let form = null
+    let link = null
     switch (type) {
-      case "initiative":
-        form = "initiative";
-        link = "edit/initiative";
-        type = "initiative";
-        break;
-      case "action-plan":
-        form = "actionPlan";
-        link = "edit/action-plan";
-        type = "action_plan";
-        break;
-      case "policy":
-        form = "policy";
-        link = "edit/policy";
-        type = "policy";
-        break;
-      case "technical-resource":
-        form = "technicalResource";
-        link = "edit/technical-resource";
-        type = "technical_resource";
-        break;
-      case "financing-resource":
-        form = "financingResource";
-        link = "edit/financing-resource";
-        type = "financing_resource";
-        break;
-      case "technology":
-        form = "technology";
-        link = "edit/technology";
-        type = "technology";
-        break;
-      case "event":
-        form = "event";
-        link = "edit/event";
-        type = "event";
-        break;
-      case "case-study":
-        form = "caseStudy";
-        link = "edit/case-study";
-        type = "case_study";
-        break;
+      case 'initiative':
+        form = 'initiative'
+        link = 'edit/initiative'
+        type = 'initiative'
+        break
+      case 'action-plan':
+        form = 'actionPlan'
+        link = 'edit/action-plan'
+        type = 'action_plan'
+        break
+      case 'policy':
+        form = 'policy'
+        link = 'edit/policy'
+        type = 'policy'
+        break
+      case 'technical-resource':
+        form = 'technicalResource'
+        link = 'edit/technical-resource'
+        type = 'technical_resource'
+        break
+      case 'financing-resource':
+        form = 'financingResource'
+        link = 'edit/financing-resource'
+        type = 'financing_resource'
+        break
+      case 'technology':
+        form = 'technology'
+        link = 'edit/technology'
+        type = 'technology'
+        break
+      case 'event':
+        form = 'event'
+        link = 'edit/event'
+        type = 'event'
+        break
+      case 'case-study':
+        form = 'caseStudy'
+        link = 'edit/case-study'
+        type = 'case_study'
+        break
       default:
-        form = "entity";
-        link = "edit/entity";
-        type = "initiative";
-        break;
+        form = 'entity'
+        link = 'edit/entity'
+        type = 'initiative'
+        break
     }
     UIStore.update((e) => {
       e.formEdit = {
         ...e.formEdit,
         flexible: {
-          status: "edit",
+          status: 'edit',
           id: id,
         },
-      };
+      }
       e.formStep = {
         ...e.formStep,
         flexible: 1,
-      };
-    });
+      }
+    })
     router.push(
       {
         pathname: `/${link}/${id}`,
         query: { type: type },
       },
       `/${link}/${id}`
-    );
-  };
+    )
+  }
 
   const handleDeleteBtn = () => {
     Modal.error({
-      className: "popup-delete",
+      className: 'popup-delete',
       centered: true,
       closable: true,
-      icon: <DeleteOutlined />,
-      title: "Are you sure you want to delete this resource?",
-      content: "Please be aware this action cannot be undone.",
-      okText: "Delete",
-      okType: "danger",
+      icon: false,
+      title: 'Are you sure you want to delete this resource?',
+      content: 'Please be aware this action cannot be undone.',
+      okText: 'Delete',
+      okType: 'danger',
+      cancelText: 'Cancel',
+      okButtonProps: { size: 'small' },
       onOk() {
         return api
-          .delete(`/detail/${type.replace("-", "_")}/${id}`)
+          .delete(`/detail/${type.replace('-', '_')}/${id}`)
           .then((res) => {
             notification.success({
-              message: "Resource deleted successfully",
-            });
+              message: 'Resource deleted successfully',
+            })
           })
           .catch((err) => {
-            console.error(err);
+            console.error(err)
             notification.error({
-              message: "Oops, something went wrong",
-            });
-          });
+              message: 'Oops, something went wrong',
+            })
+          })
       },
-    });
-  };
+    })
+  }
 
   const handleVisible = () => {
-    setVisible(!visible);
-  };
+    setVisible(!visible)
+  }
 
-  const [comment, setComment] = useState("");
-  const [newComment, setNewComment] = useState("");
+  const [comment, setComment] = useState('')
+  const [newComment, setNewComment] = useState('')
 
   if (!data) {
     return (
@@ -342,10 +335,10 @@ const DetailsView = ({
           <i>Loading...</i>
         </div>
       </div>
-    );
+    )
   }
 
-  const description = data?.description ? data?.description : data?.summary;
+  const description = data?.description ? data?.description : data?.summary
 
   const entityConnections = data?.entityConnections?.map((entity) => {
     return {
@@ -354,10 +347,10 @@ const DetailsView = ({
       country: entity?.country || null,
       id: entity?.entityId,
       image: entity?.image,
-      type: "entity",
+      type: 'entity',
       role: entity?.role,
-    };
-  });
+    }
+  })
 
   const stakeholderConnections = data?.stakeholderConnections
     ?.filter(
@@ -367,22 +360,22 @@ const DetailsView = ({
         ) === ind
     ) // filter out diplicates
     .sort((a, b) => {
-      if (a?.role?.toLowerCase() === "owner") {
-        return -1;
+      if (a?.role?.toLowerCase() === 'owner') {
+        return -1
       }
     })
     .map((stakeholder) => {
       return {
         ...stakeholder,
         name: stakeholder?.stakeholder,
-      };
-    });
+      }
+    })
 
   return (
     <div className={`${styles.detailViewWrapper} detail-view-wrapper`}>
       <div
         className="detail-view"
-        style={!isAuthenticated ? { paddingBottom: "1px" } : { padding: 0 }}
+        style={!isAuthenticated ? { paddingBottom: '1px' } : { padding: 0 }}
       >
         <Header
           {...{
@@ -417,13 +410,13 @@ const DetailsView = ({
             <a
               className="resource-image-wrapper"
               href={`${
-                data?.url && data?.url?.includes("https://")
+                data?.url && data?.url?.includes('https://')
                   ? data?.url
                   : data.languages
                   ? data?.languages[0].url
-                  : data?.url?.includes("http://")
+                  : data?.url?.includes('http://')
                   ? data?.url
-                  : "https://" + data?.url
+                  : 'https://' + data?.url
               }`}
               target="_blank"
             >
@@ -455,20 +448,20 @@ const DetailsView = ({
                     <h3 className="content-heading">Location & Geocoverage</h3>
                     <div
                       style={{
-                        marginBottom: data?.geoCoverageType === "global" && 0,
+                        marginBottom: data?.geoCoverageType === 'global' && 0,
                       }}
                       className="detail-item geocoverage-item"
                     >
                       <div className="transnational-icon detail-item-icon">
                         <TransnationalImage />
                       </div>
-                      <span>{titleCase(data?.geoCoverageType || "")}</span>
+                      <span>{titleCase(data?.geoCoverageType || '')}</span>
                     </div>
 
-                    {data?.geoCoverageType !== "global" && (
+                    {data?.geoCoverageType !== 'global' && (
                       <>
-                        {data?.geoCoverageType !== "sub-national" &&
-                          data?.geoCoverageType !== "national" &&
+                        {data?.geoCoverageType !== 'sub-national' &&
+                          data?.geoCoverageType !== 'national' &&
                           (data?.geoCoverageCountryGroups?.length > 0 ||
                             data.geoCoverageCountries.length > 0) &&
                           renderGeoCoverageCountryGroups(
@@ -497,8 +490,8 @@ const DetailsView = ({
                             </div>
                           )}
 
-                        {(data?.geoCoverageType === "sub-national" ||
-                          data?.geoCoverageType === "national") &&
+                        {(data?.geoCoverageType === 'sub-national' ||
+                          data?.geoCoverageType === 'national') &&
                           data?.geoCoverageValues &&
                           data?.geoCoverageValues.length > 0 &&
                           renderCountries(
@@ -546,10 +539,10 @@ const DetailsView = ({
                           .map((language) => {
                             const langs =
                               !isEmpty(languages) &&
-                              languages[language?.isoCode]?.name;
-                            return langs || "";
+                              languages[language?.isoCode]?.name
+                            return langs || ''
                           })
-                          .join(", ")}
+                          .join(', ')}
                       </span>
                     )}
                   </div>
@@ -571,9 +564,9 @@ const DetailsView = ({
                         {data?.tags &&
                           data?.tags.map((tag) => (
                             <li className="tag-list-item" key={tag?.tag}>
-                              <Tag className="resource-tag">
-                                {tag?.tag || ""}
-                              </Tag>
+                              <div className="label">
+                                <span>{tag?.tag || ''}</span>
+                              </div>
                             </li>
                           ))}
                       </ul>
@@ -588,7 +581,7 @@ const DetailsView = ({
         {/* CONNECTION */}
         {(data?.entityConnections?.length > 0 ||
           data?.stakeholderConnections.filter(
-            (x) => x.stakeholderRole !== "ADMIN" || x.role === "interested in"
+            (x) => x.stakeholderRole !== 'ADMIN' || x.role === 'interested in'
           )?.length > 0) && (
           <Col className="section section-connection-stakeholder">
             <div className="extra-wrapper">
@@ -633,7 +626,7 @@ const DetailsView = ({
                   <ResourceCards
                     items={data?.relatedContent}
                     showMoreCardAfter={20}
-                    showMoreCardHref={"/knowledge/library"}
+                    showMoreCardHref={'/knowledge/library'}
                   />
                 </div>
               </div>
@@ -662,13 +655,13 @@ const DetailsView = ({
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
 const Records = ({ countries, languages, type, data }) => {
-  const mapping = detailMaps[type.replace("-", "_")];
+  const mapping = detailMaps[type.replace('-', '_')]
   if (!mapping) {
-    return;
+    return
   }
   const renderRow = (item, index) => {
     const {
@@ -679,36 +672,36 @@ const Records = ({ countries, languages, type, data }) => {
       customValue,
       arrayCustomValue,
       currencyObject,
-    } = item;
+    } = item
     // Set to true to display all country list for global
-    const showAllCountryList = false;
+    const showAllCountryList = false
     const displayEntry =
       data[key] ||
       data[key] === false ||
       data[key] === true ||
       data[key] === 0 ||
-      key === null;
+      key === null
     // Calculate custom currency value to display
     const [currency, amount, remarks] =
-      arrayCustomValue?.map((it) => data[it]) || [];
+      arrayCustomValue?.map((it) => data[it]) || []
 
     const customCurrency =
-      value === "custom" &&
-      type === "currency" &&
+      value === 'custom' &&
+      type === 'currency' &&
       (remarks
         ? currency
           ? `${currency} ${currencyFormat(amount)} - ${remarks}`
           : `${currencyFormat(amount)} - ${remarks}`
         : currency
         ? `${currency} ${currencyFormat(amount)}`
-        : `${amount}`);
+        : `${amount}`)
 
     if (
-      (key === "lifecyclePhase" && data[key]?.length === 0) ||
-      (key === "sector" && data[key]?.length === 0) ||
-      (key === "focusArea" && data[key]?.length === 0)
+      (key === 'lifecyclePhase' && data[key]?.length === 0) ||
+      (key === 'sector' && data[key]?.length === 0) ||
+      (key === 'focusArea' && data[key]?.length === 0)
     ) {
-      return false;
+      return false
     }
 
     return (
@@ -717,87 +710,87 @@ const Records = ({ countries, languages, type, data }) => {
           <div key={name + index} className="record-row">
             <div className="record-name">{name}</div>
             <div className="record-value">
-              {key === null && type === "static" && value}
-              {value === key && type === "name" && data[key] === false && "No"}
-              {value === key && type === "name" && data[key] === true && "Yes"}
+              {key === null && type === 'static' && value}
+              {value === key && type === 'name' && data[key] === false && 'No'}
+              {value === key && type === 'name' && data[key] === true && 'Yes'}
               {value === key &&
-                (type === "name" ||
-                  type === "string" ||
-                  type === "number" ||
-                  type === "object") &&
+                (type === 'name' ||
+                  type === 'string' ||
+                  type === 'number' ||
+                  type === 'object') &&
                 (data[value].name || data[value])}
               {currencyObject && data[currencyObject.name]
                 ? `${data[currencyObject.name]?.[0]?.name?.toUpperCase()} `
-                : ""}
+                : ''}
               {value === key &&
-                type === "currency" &&
+                type === 'currency' &&
                 currencyFormat(data[value])}
               {value === key &&
-                type === "date" &&
-                data[key] !== "Ongoing" &&
-                moment(data[key]).format("DD MMM YYYY")}
+                type === 'date' &&
+                data[key] !== 'Ongoing' &&
+                moment(data[key]).format('DD MMM YYYY')}
               {value === key &&
-                type === "date" &&
-                data[key] === "Ongoing" &&
+                type === 'date' &&
+                data[key] === 'Ongoing' &&
                 data[key]}
               {value === key &&
-                type === "array" &&
-                data[key].map((x) => x.name).join(", ")}
+                type === 'array' &&
+                data[key].map((x) => x.name).join(', ')}
               {value === key &&
-                type === "country" &&
+                type === 'country' &&
                 countries.find((it) => it.id === data[key]).name}
-              {value === "custom" &&
-                type === "object" &&
+              {value === 'custom' &&
+                type === 'object' &&
                 data[key][customValue]}
-              {value === "custom" &&
-                type === "startDate" &&
-                moment.utc(data[arrayCustomValue[0]]).format("DD MMM YYYY")}
-              {value === "custom" &&
-                type === "endDate" &&
-                moment.utc(data[arrayCustomValue[0]]).format("DD MMM YYYY")}
+              {value === 'custom' &&
+                type === 'startDate' &&
+                moment.utc(data[arrayCustomValue[0]]).format('DD MMM YYYY')}
+              {value === 'custom' &&
+                type === 'endDate' &&
+                moment.utc(data[arrayCustomValue[0]]).format('DD MMM YYYY')}
 
               {data[key] &&
-                value === "isoCode" &&
-                type === "array" &&
-                uniqBy(data[key], "isoCode")
+                value === 'isoCode' &&
+                type === 'array' &&
+                uniqBy(data[key], 'isoCode')
                   .map((x, i) => languages[x.isoCode].name)
-                  .join(", ")}
-              {key === "tags" &&
+                  .join(', ')}
+              {key === 'tags' &&
                 data[key] &&
-                value === "join" &&
-                type === "array" &&
-                data[key].map((tag) => Object.values(tag)[0]).join(", ")}
-              {key !== "tags" &&
-                type === "initiative" &&
+                value === 'join' &&
+                type === 'array' &&
+                data[key].map((tag) => Object.values(tag)[0]).join(', ')}
+              {key !== 'tags' &&
+                type === 'initiative' &&
                 data[key] &&
-                value === "join" &&
-                type === "array" &&
+                value === 'join' &&
+                type === 'array' &&
                 data[key]?.length !== 0 &&
-                data[key]?.map((x) => x.name).join(", ")}
-              {key !== "tags" &&
-                type !== "initiative" &&
+                data[key]?.map((x) => x.name).join(', ')}
+              {key !== 'tags' &&
+                type !== 'initiative' &&
                 data[key] &&
-                value === "join" &&
-                type === "array" &&
-                data[key].join(", ")}
-              {type === "initiative" &&
-                value === "custom" &&
-                type === "array" &&
+                value === 'join' &&
+                type === 'array' &&
+                data[key].join(', ')}
+              {type === 'initiative' &&
+                value === 'custom' &&
+                type === 'array' &&
                 data[key][customValue] &&
-                data[key][customValue]?.map((x) => x.name).join(", ")}
-              {type !== "initiative" &&
-                value === "custom" &&
-                type === "array" &&
+                data[key][customValue]?.map((x) => x.name).join(', ')}
+              {type !== 'initiative' &&
+                value === 'custom' &&
+                type === 'array' &&
                 data[key][customValue] &&
-                data[key][customValue].join(", ")}
+                data[key][customValue].join(', ')}
 
               {customCurrency}
             </div>
           </div>
         )}
       </Fragment>
-    );
-  };
+    )
+  }
   return (
     <Col className="record-section section">
       <h3 className="content-heading">Records</h3>
@@ -807,7 +800,7 @@ const Records = ({ countries, languages, type, data }) => {
         </div>
       </div>
     </Col>
-  );
-};
+  )
+}
 
-export default DetailsView;
+export default DetailsView
