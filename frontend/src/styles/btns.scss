@@ -59,7 +59,7 @@
         stroke: white;
       }
     }
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: transparent;
       border-color: $primaryDarkBlue;
       color: $primaryDarkBlue;
@@ -219,6 +219,11 @@
       path {
         stroke: #ccd0db;
       }
+    }
+    &:hover {
+      border-color: #f5f7ff;
+      background: #f5f7ff;
+      color: #ccd0db;
     }
   }
 }

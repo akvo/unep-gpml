@@ -15,7 +15,12 @@ import { updateStatusProfile } from '../utils/profile'
 import { uniqBy, sortBy } from 'lodash'
 import { withNewLayout } from '../layouts/new-layout'
 
-const newRoutes = ['/landing', '/knowledge/library', '/[type]/[id]']
+const newRoutes = [
+  '/landing',
+  '/knowledge/library',
+  '/[type]/[id]',
+  '/onboarding',
+]
 const dynamicRoutePattern = /^\/\w+\/\d+$/
 
 function MyApp({ Component, pageProps }) {
