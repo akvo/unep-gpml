@@ -358,7 +358,6 @@ function Authentication() {
                 {currentStep === 5 && (
                   <Button
                     size="small"
-                    withArrow={<LongArrowRight />}
                     className="step-button-next abs"
                     onClick={handleSubmit}
                     loading={loading}
