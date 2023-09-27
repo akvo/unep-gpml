@@ -93,8 +93,9 @@ function FormFour({ validate }) {
               </div>
               <br />
               <Upload>
-                <Button size="small" withArrow={<UploadOutlined />}>
+                <Button size="small">
                   Click to Upload
+                  <UploadOutlined />
                 </Button>
               </Upload>
             </div>
