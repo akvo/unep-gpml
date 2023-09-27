@@ -1,11 +1,11 @@
-import { UIStore } from "../../store";
-import React from "react";
-import Form from "antd/lib/form";
-import WrapIfAdditional from "./wrap-if-additional";
+import { UIStore } from '../../store'
+import React from 'react'
+import Form from 'antd/lib/form'
+import WrapIfAdditional from './wrap-if-additional'
 
-const VERTICAL_LABEL_COL = { span: 24 };
-const VERTICAL_WRAPPER_COL = { span: 24 };
-const LABEL_STYLE = { marginBottom: "-3px" };
+const VERTICAL_LABEL_COL = { span: 24 }
+const VERTICAL_WRAPPER_COL = { span: 24 }
+const LABEL_STYLE = { marginBottom: '-3px' }
 
 const FieldTemplate = ({
   children,
@@ -35,21 +35,21 @@ const FieldTemplate = ({
     labelCol = VERTICAL_LABEL_COL,
     wrapperCol = VERTICAL_WRAPPER_COL,
     wrapperStyle,
-  } = formContext;
+  } = formContext
 
   // custom
-  const highlight = UIStore.useState((s) => s.highlight);
+  const highlight = UIStore.useState((s) => s.highlight)
 
   if (hidden) {
-    return <div className="field-hidden">{children}</div>;
+    return <div className="field-hidden">{children}</div>
   }
 
-  const subTitle = schema?.subTitle;
+  const subTitle = schema?.subTitle
 
   const renderFieldErrors = () =>
     [...new Set(rawErrors)].map((error) => (
       <div key={`field-${id}-error-${error}`}>{error}</div>
-    ));
+    ))
 
   // custom
   const handleCustomLabel = () => {
@@ -60,26 +60,26 @@ const FieldTemplate = ({
             {label}
             <span
               style={{
-                color: "#c2c2c2",
-                fontStyle: "italic",
-                fontWeight: "normal",
-                marginLeft: "3px",
+                color: '#c2c2c2',
+                fontStyle: 'italic',
+                fontWeight: 'normal',
+                marginLeft: '3px',
               }}
             >
-              {" "}
+              {' '}
               - Optional
             </span>
           </p>
-        );
+        )
       }
       return (
         <p className="field-label" style={LABEL_STYLE}>
           {label}
         </p>
-      );
+      )
     }
-    return "";
-  };
+    return ''
+  }
 
   return (
     <WrapIfAdditional
@@ -94,7 +94,7 @@ const FieldTemplate = ({
       required={required}
       schema={schema}
     >
-      {id === "root" ? (
+      {id === 'root' ? (
         children
       ) : (
         <>
@@ -114,15 +114,15 @@ const FieldTemplate = ({
               (!!rawErrors && !required) ||
               (!!rawErrors &&
                 required &&
-                schema.type !== "array" &&
-                schema.type !== "object")
-                ? "error"
+                schema.type !== 'array' &&
+                schema.type !== 'object')
+                ? 'error'
                 : highlight &&
                   required &&
-                  schema.type !== "array" &&
-                  schema.type !== "object" &&
+                  schema.type !== 'array' &&
+                  schema.type !== 'object' &&
                   !!rawErrors === false
-                ? "success"
+                ? 'success'
                 : undefined
             }
             wrapperCol={wrapperCol}
@@ -132,7 +132,7 @@ const FieldTemplate = ({
         </>
       )}
     </WrapIfAdditional>
-  );
-};
+  )
+}
 
-export default FieldTemplate;
+export default FieldTemplate
