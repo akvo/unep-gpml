@@ -1,25 +1,26 @@
-import React from "react";
+import React from 'react'
 import {
   Col,
   Row,
-  Button,
   Typography,
   Form,
   Input,
   Select,
   Upload,
   Checkbox,
-} from "antd";
-const { Title, Link } = Typography;
-const { Dragger } = Upload;
-const { TextArea } = Input;
+} from 'antd'
+const { Title, Link } = Typography
+const { Dragger } = Upload
+const { TextArea } = Input
 import {
   LinkedinOutlined,
   TwitterOutlined,
   FileTextOutlined,
   UploadOutlined,
-} from "@ant-design/icons";
-import { Field } from "react-final-form";
+} from '@ant-design/icons'
+import { Field } from 'react-final-form'
+import Button from '../../components/button'
+import FormLabel from '../../components/form-label'
 
 function FormFour({ validate }) {
   return (
@@ -31,19 +32,16 @@ function FormFour({ validate }) {
         <Field name="about" validate={validate}>
           {({ input, meta }) => (
             <div className="field-wrapper">
-              <div class="ant-col ant-form-item-label">
-                <label for="about" class="" title="">
-                  Short Bio
-                </label>
-              </div>
-              <TextArea
-                onChange={(e) => input.onChange(e.target.value)}
-                placeholder="Max 500 letters"
-                maxLength={500}
-                className={`${
-                  meta.touched && meta.error ? "ant-input-status-error" : ""
-                }`}
-              />
+              <FormLabel label="Short Bio" for="about" meta={meta}>
+                <TextArea
+                  onChange={(e) => input.onChange(e.target.value)}
+                  placeholder="Max 500 letters"
+                  maxLength={500}
+                  className={`${
+                    meta.touched && meta.error ? 'ant-input-status-error' : ''
+                  }`}
+                />
+              </FormLabel>
             </div>
           )}
         </Field>
@@ -51,40 +49,33 @@ function FormFour({ validate }) {
           <Col sm={24} md={12}>
             <Field name="linkedin">
               {({ input, meta }) => (
-                <div className="field-wrapper">
-                  <div class="ant-col ant-form-item-label">
-                    <label for="bio" class="" title="">
-                      <p>
-                        Linkedin <span>OPTIONAL</span>
-                      </p>
-                    </label>
-                  </div>
+                <FormLabel
+                  for="linkedin"
+                  label="Linkedin"
+                  meta={meta}
+                  isOptional
+                >
                   <Input
+                    size="small"
                     onChange={(e) => input.onChange(e.target.value)}
                     placeholder="Username"
                     prefix={<LinkedinOutlined />}
-                  />
-                </div>
+                  />{' '}
+                </FormLabel>
               )}
             </Field>
           </Col>
           <Col sm={24} md={12}>
             <Field name="twitter">
               {({ input, meta }) => (
-                <div className="field-wrapper">
-                  <div class="ant-col ant-form-item-label">
-                    <label for="twitter" class="" title="">
-                      <p>
-                        Twitter <span>OPTIONAL</span>
-                      </p>
-                    </label>
-                  </div>
+                <FormLabel for="twitter" label="Twitter" meta={meta} isOptional>
                   <Input
+                    size="small"
                     onChange={(e) => input.onChange(e.target.value)}
                     placeholder="Username"
                     prefix={<TwitterOutlined />}
                   />
-                </div>
+                </FormLabel>
               )}
             </Field>
           </Col>
@@ -93,15 +84,19 @@ function FormFour({ validate }) {
           {({ input, meta }) => (
             <div className="field-wrapper">
               <div class="ant-col ant-form-item-label">
-                <label for="cv" class="" title="">
-                  <p>
-                    CV / Portfolio <span>OPTIONAL</span>
-                  </p>
+                <label for="twitter" class="" title="">
+                  <div className="input-label" style={{ width: 'auto' }}>
+                    <p>CV / Portfolio</p>{' '}
+                    <span style={{ paddingLeft: '20px' }}>(OPTIONAL)</span>
+                  </div>
                 </label>
               </div>
               <br />
               <Upload>
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                <Button size="small">
+                  Click to Upload
+                  <UploadOutlined />
+                </Button>
               </Upload>
             </div>
           )}
@@ -112,7 +107,7 @@ function FormFour({ validate }) {
               <Checkbox
                 onChange={(checked) => input.onChange(checked)}
                 className={`${
-                  meta.touched && meta.error ? "ant-input-status-error" : ""
+                  meta.touched && meta.error ? 'ant-input-status-error' : ''
                 }`}
               >
                 <p>
@@ -128,7 +123,7 @@ function FormFour({ validate }) {
         </Field>
       </div>
     </>
-  );
+  )
 }
 
-export default FormFour;
+export default FormFour
