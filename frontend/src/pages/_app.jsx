@@ -15,7 +15,7 @@ import { updateStatusProfile } from '../utils/profile'
 import { uniqBy, sortBy } from 'lodash'
 import { withNewLayout } from '../layouts/new-layout'
 
-const newRoutes = ['/landing', '/knowledge/library']
+const newRoutes = ['/landing', '/knowledge/library', '/forum']
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
