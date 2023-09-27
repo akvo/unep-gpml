@@ -113,9 +113,17 @@
         }
       }
     }
+    &:focus {
+      background-color: transparent;
+      border-color: $primaryDarkBlue;
+      color: $primaryDarkBlue;
+    }
   }
   &.ant-btn-sm {
     padding: 8px 18px;
+    svg {
+      top: 4px;
+    }
   }
   &.ant-btn-link {
     font-size: 16px;

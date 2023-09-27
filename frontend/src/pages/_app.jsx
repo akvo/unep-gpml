@@ -15,10 +15,12 @@ import { updateStatusProfile } from '../utils/profile'
 import { uniqBy, sortBy } from 'lodash'
 import { withNewLayout } from '../layouts/new-layout'
 
-const newRoutes = ['/landing', '/knowledge/library']
+const newRoutes = ['/landing', '/knowledge/library', '/[type]/[id]']
+const dynamicRoutePattern = /^\/\w+\/\d+$/
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
+  console.log(dynamicRoutePattern.test(router.pathname), router.pathname)
   if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
     import('../main.scss')
     import('../buttons.scss')
