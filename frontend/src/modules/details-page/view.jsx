@@ -562,7 +562,7 @@ const DetailsView = ({
                         {data?.tags &&
                           data?.tags.map((tag) => (
                             <li className="tag-list-item" key={tag?.tag}>
-                              <div className="label-s">
+                              <div className="label">
                                 <span>{tag?.tag || ''}</span>
                               </div>
                             </li>

@@ -20,6 +20,7 @@
       margin: 0 5%;
       background-color: #fff;
       padding: 0;
+      border-radius: 10px;
       @media (max-width: 600px) {
         margin: 0;
       }
@@ -58,14 +59,12 @@
       .detail-header {
         position: sticky;
         top: 0;
-        border-bottom: unset;
-        padding: 20px 40px calc(20px - 14px) 40px !important;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        padding: 40px 40px 15px 40px !important;
         background-color: #fff;
         z-index: 10;
-        border-radius: 5px 5px 0 0;
+        border-radius: 10px 10px 0 0;
         font-weight: 500;
-        border: 1px solid rgba(24, 22, 47, 0.03);
-        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
         @media (max-width: 600px) {
           padding: 30px 30px calc(30px - 14px) 30px !important;
         }
@@ -77,6 +76,12 @@
           flex-wrap: wrap;
           margin-top: 13px;
           transition: all 0.15s ease-out;
+          .view-button {
+            svg {
+              width: 24px;
+              height: 24px;
+            }
+          }
           .language-select {
             margin-left: auto;
             .ant-select {
@@ -160,27 +165,14 @@
 
           .bookmark-button {
             svg {
-              path {
-                transition: fill 0.25s ease-out;
-              }
-              path:first-of-type {
-                fill: #0c689a;
-              }
-            }
-            &:hover {
-              svg {
-                path:first-of-type {
-                  fill: #e6f7ff;
-                }
-                path:last-of-type {
-                  fill: #0c689a;
-                }
-              }
+              width: 16px;
+              height: 16px;
+              margin-top: -4px;
             }
             &.bookmarked {
               svg {
                 path:last-of-type {
-                  fill: #0c689a;
+                  fill: $primaryDarkBlue;
                 }
               }
               &:hover {
@@ -206,8 +198,9 @@
           margin-bottom: 10px;
           color: $primaryDarkBlue;
           @media (min-width: 900px) {
-            font-size: $fzL;
-            line-height: $lhL;
+            font-size: $fzXL;
+            line-height: $lhXL;
+            font-weight: 700;
           }
         }
       }
@@ -251,7 +244,7 @@
             max-width: 100% !important;
           }
           @media (min-width: 601px) {
-            margin-top: 20px;
+            margin-top: 40px;
           }
         }
         .resource-image {
@@ -329,9 +322,6 @@
           .record-row {
             display: flex;
             align-items: center;
-            .record-name {
-              font-weight: 600;
-            }
             .record-name,
             .record-value {
               padding: 9px 0;
@@ -352,9 +342,7 @@
             }
 
             .record-value {
-              font-weight: 500;
-              font-size: 14px;
-              line-height: 20px;
+              font-weight: 600;
               @media (max-width: 600px) {
                 max-width: 50%;
               }
@@ -474,10 +462,18 @@
         flex-wrap: wrap;
         margin-bottom: 0;
         .tag-list-item {
-          margin: 0 12px 12px 0;
-          .label-s {
-            background-color: $primaryGreen;
-            color: $primaryDarkBlue;
+          margin: 0 10px 10px 0;
+          .label {
+            border: 2px solid $primaryDarkBlue2;
+            border-radius: 100px;
+            padding: 3px 12px;
+            span {
+              font-size: $fzXXS;
+              font-style: normal;
+              font-weight: 600;
+              line-height: $lhXXS;
+              text-transform: capitalize;
+            }
           }
         }
       }
@@ -656,7 +652,7 @@
       .input-wrapper {
         display: flex;
         align-items: center;
-        background: #f3f3f3;
+        background: #e7f3ff6b;
         padding: 26px 40px;
         border-radius: 0 0 5px 5px;
         @media (max-width: 600px) {

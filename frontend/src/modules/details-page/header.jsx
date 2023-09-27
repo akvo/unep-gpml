@@ -13,6 +13,7 @@ import { resourceTypeToTopicType, topicNames } from '../../utils/misc'
 import { languageOptions } from '../flexible-forms/view'
 import classNames from 'classnames'
 import Button from '../../components/button'
+import { ViewIcon, BookmarkIcon } from '../../components/icons'
 
 export const HeaderButtons = ({
   data,
@@ -58,9 +59,8 @@ export const HeaderButtons = ({
       {data?.url && (
         <Button
           size="small"
+          ghost
           className="view-button"
-          withArrow
-          type="primary"
           onClick={(e) => {
             e.preventDefault()
             eventTrack('Resource view', 'View Url', 'Button')
@@ -78,7 +78,8 @@ export const HeaderButtons = ({
             )
           }}
         >
-          View
+          View Source
+          <ViewIcon />
         </Button>
       )}
       {data?.recording && (
@@ -164,7 +165,6 @@ export const HeaderButtons = ({
               }}
             >
               Share
-              <MailTwoTone />
             </Button>
           </div>
         </Popover>
@@ -181,7 +181,7 @@ export const HeaderButtons = ({
         }}
       >
         {bookmarked ? 'Bookmarked' : 'Bookmark'}
-        <HeartTwoTone />
+        <BookmarkIcon />
       </Button>
       {canEdit() && (
         <Button
