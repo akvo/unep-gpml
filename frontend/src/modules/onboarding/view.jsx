@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, notification } from 'react'
 import styles from './styles.module.scss'
-import { Button, Typography, Steps } from 'antd'
+import { Typography, Steps } from 'antd'
 import { Form } from 'react-final-form'
 import AffiliationOption from './affiliation-option'
 import FormOne from './form-one'
@@ -13,6 +13,8 @@ import api from '../../utils/api'
 import { setIn } from 'final-form'
 import { useRouter } from 'next/router'
 import { useDeviceSize } from '../landing/landing'
+import Button from '../../components/button'
+import { LongArrowRight } from '../../components/icons'
 
 function Authentication() {
   const formRef = useRef()
@@ -283,8 +285,13 @@ function Authentication() {
                     />
                   </div>
                   <div className="button-bottom-panel">
-                    <Button className="step-button-next" onClick={() => next()}>
-                      Next {'>'}
+                    <Button
+                      size="small"
+                      className="step-button-next"
+                      withArrow={<LongArrowRight />}
+                      onClick={() => next()}
+                    >
+                      Next
                     </Button>
                   </div>
                 </div>
@@ -328,25 +335,34 @@ function Authentication() {
                   height={height}
                 />
                 {currentStep > 0 && (
-                  <Button className="step-button-back" onClick={previous}>
-                    {'<'} Back
+                  <Button
+                    size="small"
+                    className="step-button-back"
+                    back
+                    onClick={previous}
+                  >
+                    <LongArrowRight />
+                    Back
                   </Button>
                 )}
                 {currentStep < 5 && currentStep > 1 && (
                   <Button
+                    size="small"
+                    withArrow={<LongArrowRight />}
                     className="step-button-next abs"
                     onClick={() => next()}
                   >
-                    Next {'>'}
+                    Next
                   </Button>
                 )}
                 {currentStep === 5 && (
                   <Button
+                    size="small"
                     className="step-button-next abs"
                     onClick={handleSubmit}
                     loading={loading}
                   >
-                    Submit {'>'}
+                    Submit
                   </Button>
                 )}
               </div>
