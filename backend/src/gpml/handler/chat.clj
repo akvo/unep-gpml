@@ -111,7 +111,7 @@
            config
            {:user-id (:id user)
             :entity-type :application
-            :custom-permission :send-private-chat-invitation-request
+            :custom-permission :send-private-chat-channel-invitation-request
             :root-context? true})
     (r/forbidden {:message "Unauthorized"})
     (let [channel-name (get-in parameters [:body :channel_name])

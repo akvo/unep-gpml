@@ -41,7 +41,7 @@ VALUES (
     'application'),
 (
     '2b72ff47-ccd8-4748-b14c-b36dd8854e2a',
-    'application/send-private-chat-invitation-request',
+    'application/send-private-chat-channel-invitation-request',
     'Allows requesting an invitation to a private chat channel',
     'application');
 --;;
