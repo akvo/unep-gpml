@@ -1,4 +1,4 @@
-@import '../../vars.scss';
+@import '../../styles/vars.scss';
 
 .connectionWrapper {
   margin-top: 27px;
@@ -24,7 +24,7 @@
         cursor: pointer;
 
         .connection-card {
-          height: 84px;
+          height: 88px;
           border: unset;
           .ant-card-body {
             max-height: 84px;
@@ -64,7 +64,7 @@
 
             .connection-name {
               font-weight: 700;
-              color: #255b87;
+              color: $primaryDarkBlue;
             }
 
             .connection-location {
