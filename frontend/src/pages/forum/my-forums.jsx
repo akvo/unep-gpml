@@ -1,39 +1,47 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Card, List } from 'antd'
 import moment from 'moment'
 import Button from '../../components/button'
+import api from '../../utils/api'
 
 const MyForums = () => {
-  // TODO
-  const myDummies = [
-    {
-      title: 'Issue Briefs',
-      isPrivate: false,
-      newMessages: 11,
-      lastModifiedAt: '2023-09-25T14:48:00',
-    },
-    {
-      title: 'AFRIPAC',
-      isPrivate: true,
-      newMessages: 0,
-      lastModifiedAt: '2023-09-11T09:48:00',
-    },
-    {
-      title: 'Plastic Strategy South Africa',
-      isPrivate: true,
-      newMessages: 5,
-      lastModifiedAt: '2023-09-26T09:00:00',
-    },
-  ]
-  const [myForums, setMyForums] = useState(myDummies)
+  // const myDummies = [
+  //   {
+  //     title: 'Issue Briefs',
+  //     isPrivate: false,
+  //     newMessages: 11,
+  //     lastModifiedAt: '2023-09-25T14:48:00',
+  //   },
+  //   {
+  //     title: 'AFRIPAC',
+  //     isPrivate: true,
+  //     newMessages: 0,
+  //     lastModifiedAt: '2023-09-11T09:48:00',
+  //   },
+  //   {
+  //     title: 'Plastic Strategy South Africa',
+  //     isPrivate: true,
+  //     newMessages: 5,
+  //     lastModifiedAt: '2023-09-26T09:00:00',
+  //   },
+  // ]
+  const [myForums, setMyForums] = useState([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    // TODO Dummy load channels from API
-    setTimeout(() => {
+  const getMyForums = useCallback(async () => {
+    try {
+      const { data } = await api.get('/chat/user/channel')
+      setMyForums(data)
       setLoading(false)
-    }, 2000)
+    } catch (error) {
+      console.error('myforums error:', error)
+      setLoading(false)
+    }
   }, [])
+
+  useEffect(() => {
+    getMyForums()
+  }, [getMyForums])
   return (
     <>
       <div className="header my-forums">
@@ -62,13 +70,8 @@ const MyForums = () => {
                     <h5>{item.title}</h5>
                   </div>
                   <div className="new-messages">
-                    {item.newMessages ? (
-                      <>
-                        <small className="label">New Messages</small>
-                        <span className="h-m value">{item.newMessages}</span>
-                      </>
-                    ) : (
-                      <small className="label empty">No New messages</small>
+                    {item.newMessages > 0 && (
+                      <span className="p-m value">{item.newMessages}</span>
                     )}
                   </div>
                 </div>
@@ -83,7 +86,7 @@ const MyForums = () => {
                     </p>
                   </div>
                   <div>
-                    <Button size="small" withArrow="link" ghost>
+                    <Button size="small" withArrow="link">
                       Chat
                     </Button>
                   </div>

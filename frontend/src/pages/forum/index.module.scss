@@ -106,20 +106,6 @@
               align-items: flex-end;
               flex-direction: column;
               gap: 8px;
-              .label {
-                font-family: var(--font-archia), sans-serif;
-                font-size: 12px;
-                font-style: normal;
-                font-weight: 700;
-                line-height: 14px;
-                letter-spacing: 0.24px;
-                text-transform: uppercase;
-                text-align: right;
-                color: #000;
-                &.empty {
-                  color: rgba(0, 0, 0, 0.5);
-                }
-              }
               .value {
                 width: fit-content;
                 display: inline-flex;
@@ -128,8 +114,8 @@
                 justify-content: center;
                 align-items: center;
                 gap: 10px;
-                border-radius: 6px;
-                background-color: $systemWarning5;
+                border-radius: 26px;
+                background-color: $systemError4;
                 font-family: var(--font-archia), sans-serif;
                 font-weight: 700;
                 color: $primaryWhite;
