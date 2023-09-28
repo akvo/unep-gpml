@@ -59,6 +59,7 @@
         stroke: white;
       }
     }
+
     &:hover {
       background-color: transparent;
       border-color: $primaryDarkBlue;
@@ -88,6 +89,15 @@
       }
     }
   }
+  &.ant-btn-dangerous {
+    background-color: $systemError3;
+    border-color: $systemError3;
+    &:hover {
+      background-color: transparent;
+      border-color: $systemError3;
+      color: $systemError3;
+    }
+  }
   &.ant-btn-lg {
     padding: 16px 24px;
     svg {
@@ -113,9 +123,17 @@
         }
       }
     }
+    &:focus {
+      background-color: transparent;
+      border-color: $primaryDarkBlue;
+      color: $primaryDarkBlue;
+    }
   }
   &.ant-btn-sm {
     padding: 8px 18px;
+    svg {
+      top: 4px;
+    }
   }
   &.ant-btn-link {
     font-size: 16px;
@@ -202,6 +220,11 @@
       path {
         stroke: #ccd0db;
       }
+    }
+    &:hover {
+      border-color: #f5f7ff;
+      background: #f5f7ff;
+      color: #ccd0db;
     }
   }
 }

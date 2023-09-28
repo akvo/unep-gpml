@@ -1,6 +1,6 @@
-import React from "react";
-import { Col, Row, Button, Typography } from "antd";
-const { Title, Link } = Typography;
+import React from 'react'
+import { Col, Row, Button, Typography } from 'antd'
+const { Title, Link } = Typography
 
 function AffiliationOption({ handleAffiliationChange, next }) {
   return (
@@ -11,9 +11,10 @@ function AffiliationOption({ handleAffiliationChange, next }) {
       <div className="buttons-wrapper">
         <div>
           <Button
+            size="small"
             onClick={() => {
-              handleAffiliationChange(false);
-              next();
+              handleAffiliationChange(false)
+              next()
             }}
           >
             Yes
@@ -21,9 +22,10 @@ function AffiliationOption({ handleAffiliationChange, next }) {
         </div>
         <div>
           <Button
+            size="small"
             onClick={() => {
-              handleAffiliationChange(true);
-              next(1);
+              handleAffiliationChange(true)
+              next(1)
             }}
           >
             No
@@ -32,7 +34,7 @@ function AffiliationOption({ handleAffiliationChange, next }) {
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default AffiliationOption;
+export default AffiliationOption
