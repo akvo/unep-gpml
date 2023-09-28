@@ -199,11 +199,16 @@ spec:
             secretKeyRef:
               name: unep-gpml
               key: gcs-api-host-name
-        - name: CHAT_API_URL
+        - name: CHAT_API_DOMAIN_URL
           valueFrom:
             secretKeyRef:
               name: unep-gpml
-              key: chat-api-url
+              key: chat-api-domain-url
+        - name: CHAT_API_URL_PATH
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: chat-api-url-path
         - name: CHAT_API_KEY
           valueFrom:
             secretKeyRef:
