@@ -7,7 +7,7 @@
    :event #{:title :description :info_docs}
    :resource #{:title :value_remarks :summary :info_docs}
    :technology #{:title :remarks :info_docs}
-   :initiative #{:q2 :q3 :title :info_docs :summary :other_leg_stand_rules :other_working_with_people
+   :initiative #{:title :info_docs :summary :other_leg_stand_rules :other_working_with_people
                  :other_tech_and_proc :other_monitoring :monitoring_protocol :monitored_data_access
                  :other_report_progress :other_reported_entity_progress :other_outcome_impact_eval
                  :kpis :co_benefits :other_lifecycle :other_impact_harm :other_sector

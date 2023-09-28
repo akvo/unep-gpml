@@ -1,5 +1,6 @@
 (ns gpml.scheduler.brs-api-importer
   (:require [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
             [clojure.string :as str]
             [duct.logger :refer [log]]
             [gpml.boundary.port.datasource :as datasource]
@@ -393,22 +394,38 @@
 
 (defn- get-entities-and-sub-entities-data
   "Given the entity name and a data collection from datasource, separates
-  the data into main entity and sub entities dependent on the former."
+  the data into main entity and sub entities dependent on the former.
+
+  Translations for initiatives are a bit special, since the original property
+  names do not match with the translatable field names stored.
+  The purpose was to start using more meaningful names for the initiatives properties."
   [entity-name data-coll {:keys [countries]}]
   (let [countries-by-iso-code (group-by (comp set (juxt :iso_code_a2 :iso_code_a3)) countries)]
     (reduce (fn [acc data]
               (let [domain-entity-keys (get-entity-schema-keys entity-name)
                     translation-keys (get-entity-translation-keys entity-name)
+                    translation-keys (if (= :initiative entity-name)
+                                       (-> translation-keys
+                                           (disj :title :summary)
+                                           (conj :q2 :q3))
+                                       translation-keys)
                     geo-coverage (:geo_coverage data)
                     domain-entity-data (select-keys data domain-entity-keys)
                     entity-table-data (-> domain-entity-data
                                           (default-to-en-translations translation-keys)
                                           (merge (get default-gpml-entity-values entity-name)))
-                    translations-table-data (->> translation-keys
-                                                 (select-keys domain-entity-data)
+                    translations-entity-data (cond-> (select-keys domain-entity-data translation-keys)
+                                               (= :initiative entity-name) (set/rename-keys {:q2 :title
+                                                                                             :q3 :summary}))
+                    translations-table-data (->> translations-entity-data
                                                  vals
                                                  (apply concat)
-                                                 (remove #(= (:language %) "en")))
+                                                 (remove #(= (:language %) "en"))
+                                                 (mapv (fn [{:keys [translatable_field] :as transl}]
+                                                         (condp = translatable_field
+                                                           "q2" (assoc transl :translatable_field "title")
+                                                           "q3" (assoc transl :translatable_field "summary")
+                                                           translatable_field))))
                     geo-coverage-table-data (add-country-id countries-by-iso-code geo-coverage)]
                 (-> acc
                     (update :entity-table-data conj entity-table-data)
