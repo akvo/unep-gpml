@@ -1,49 +1,37 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { Card, List } from 'antd'
 import styles from './index.module.scss'
 import Button from '../../components/button'
 import { UIStore } from '../../store'
+import api from '../../utils/api'
 
 const Forum = () => {
-  // TODO
-  const allDummies = [
-    {
-      title: 'Issue Briefs',
-      isPrivate: false,
-    },
-    {
-      title: 'AFRIPAC',
-      isPrivate: true,
-    },
-    {
-      title: 'Data Harmonization CoP',
-      isPrivate: true,
-    },
-    {
-      title: 'LAC Forum',
-      isPrivate: true,
-    },
-    {
-      title: 'Ontology CoP',
-      isPrivate: true,
-    },
-    {
-      title: 'CoP on the Harmonization of Plastic Flow',
-      isPrivate: true,
-    },
-    {
-      title:
-        'CoP to harmonize approaches for informing and enabling action on plastic pollution and marine litter',
-      isPrivate: true,
-    },
-  ]
-  const [allForums, setAllForums] = useState(allDummies)
+  const [allForums, setAllForums] = useState([])
   const profile = UIStore.useState((s) => s.profile)
 
   const DynamicMyForums = dynamic(() => import('./my-forums'), {
     ssr: false,
   })
+
+  const getAllForums = useCallback(async () => {
+    try {
+      /**
+       * Waiting for id_token ready by checking profile state
+       */
+      if (profile?.id) {
+        const { data } = await api.get('/chat/channel/all')
+        console.log('data', data)
+        setAllForums(data)
+      }
+    } catch (error) {
+      console.error('err', error)
+    }
+  }, [profile])
+
+  useEffect(() => {
+    getAllForums()
+  }, [getAllForums])
 
   return (
     <div className="container">
