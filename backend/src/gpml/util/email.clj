@@ -213,7 +213,7 @@ again, please visit this URL: %s/edit-%s/%s
                                                                      channel-name))
                    receivers)
         htmls (repeat nil)
-        {:keys [status body]}(send-email mailjet-config sender subject receivers texts htmls)]
+        {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
     (if (<= 200 status 299)
       {:success? true}
       {:success? false
