@@ -21,7 +21,6 @@ const Forum = () => {
        */
       if (profile?.id) {
         const { data } = await api.get('/chat/channel/all')
-        console.log('data', data)
         setAllForums(data)
       }
     } catch (error) {
@@ -58,22 +57,20 @@ const Forum = () => {
                 <Card>
                   <div className="channel">
                     <span className="h-xs">
-                      {item.isPrivate ? 'private' : 'public'}
+                      {item.t === 'p' ? 'private' : 'public'}
                     </span>
-                    <h5>{item.title}</h5>
+                    <h5>{item.name}</h5>
                     <p className="description">
-                      Description of the forum goes here and on and on
-                      describing what it is about in a sentence or two. Which
-                      should be enough.
+                      {item?.description}
                     </p>
                   </div>
                   <div className="flex">
                     <div className="participants">
-                      <h6 className="count">32</h6>
+                      <h6 className="count">{item?.usersCount}</h6>
                       <span className="h-xxs">Participants</span>
                     </div>
                     <div>
-                      {item.isPrivate ? (
+                      {item.t === 'p' ? (
                         <Button size="small" ghost>
                           Request to Join
                         </Button>
