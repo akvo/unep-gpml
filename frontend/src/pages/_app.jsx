@@ -20,6 +20,7 @@ const newRoutes = [
   '/knowledge/library',
   '/[type]/[id]',
   '/onboarding',
+  '/forum'
 ]
 const dynamicRoutePattern = /^\/\w+\/\d+$/
 
