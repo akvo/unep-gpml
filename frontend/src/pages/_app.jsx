@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { Auth0Provider } from '@auth0/auth0-react'
 import Head from 'next/head'
 // import '../main.scss'
@@ -29,76 +29,96 @@ function MyApp({ Component, pageProps }) {
     nav: s.nav,
     tags: s.tags,
   }))
-  const [loadingProfile, setLoadingProfile] = useState(false)
-  const [_expiresAt, setExpiresAt] = useState(null)
-  const [idToken, setIdToken] = useState(null)
-  const [authResult, setAuthResult] = useState(null)
-  const [loginVisible, setLoginVisible] = useState(false)
+  const [state, setState] = useState({
+    _expiresAt: null,
+    idToken: null,
+    authResult: null,
+    loadingProfile: false,
+    loginVisible: false,
+  })
+
+  const {
+    _expiresAt,
+    idToken,
+    authResult,
+    loadingProfile,
+    loginVisible,
+  } = state
+
+  const isMounted = useRef(true)
 
   const isAuthenticated = new Date().getTime() < _expiresAt
 
-  const setSession = (authResult) => {
-    setExpiresAt(authResult.expiresIn * 1000 + new Date().getTime())
-    setIdToken(authResult.idToken)
-    setAuthResult(authResult)
+  const setSession = useCallback((authResult) => {
+    setState((prevState) => ({
+      ...prevState,
+      _expiresAt: authResult.expiresIn * 1000 + new Date().getTime(),
+      idToken: authResult.idToken,
+      authResult,
+    }))
     scheduleTokenRenewal()
-  }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await Promise.all([
-        api.get('/tag'),
-        api.get('/currency'),
-        api.get('/country'),
-        api.get('/country-group'),
-        api.get('/organisation'),
-        api.get('/nav'),
-        api.get('/stakeholder'),
-        api.get('/non-member-organisation'),
-        api.get('/community?representativeGroup=Government'),
-      ])
-
-      const [
-        tag,
-        currency,
-        country,
-        countryGroup,
-        organisation,
-        nav,
-        stakeholder,
-        nonMemberOrganisations,
-        community,
-      ] = res
-
-      const data = {
-        tags: tag.data,
-        currencies: currency.data,
-        countries: uniqBy(country.data).sort((a, b) =>
-          a.name?.localeCompare(b.name)
-        ),
-        regionOptions: countryGroup.data.filter((x) => x.type === 'region'),
-        meaOptions: countryGroup.data.filter((x) => x.type === 'mea'),
-        transnationalOptions: countryGroup.data.filter(
-          (x) => x.type === 'transnational'
-        ),
-        organisations: uniqBy(
-          sortBy(organisation.data, ['name'])
-        ).sort((a, b) => a.name?.localeCompare(b.name)),
-        nonMemberOrganisations: uniqBy(
-          sortBy(nonMemberOrganisations.data, ['name'])
-        ).sort((a, b) => a.name?.localeCompare(b.name)),
-        nav: nav.data,
-        stakeholders: stakeholder.data,
-        community: community.data,
-      }
-      UIStore.update((s) => {
-        Object.assign(s, data)
-      })
-    }
-    fetchData()
   }, [])
 
-  const renewToken = (cb) => {
+  const fetchData = useCallback(async () => {
+    const res = await Promise.all([
+      api.get('/tag'),
+      api.get('/currency'),
+      api.get('/country'),
+      api.get('/country-group'),
+      api.get('/organisation'),
+      api.get('/nav'),
+      api.get('/stakeholder'),
+      api.get('/non-member-organisation'),
+      api.get('/community?representativeGroup=Government'),
+    ])
+
+    const [
+      tag,
+      currency,
+      country,
+      countryGroup,
+      organisation,
+      nav,
+      stakeholder,
+      nonMemberOrganisations,
+      community,
+    ] = res
+
+    const data = {
+      tags: tag.data,
+      currencies: currency.data,
+      countries: uniqBy(country.data).sort((a, b) =>
+        a.name?.localeCompare(b.name)
+      ),
+      regionOptions: countryGroup.data.filter((x) => x.type === 'region'),
+      meaOptions: countryGroup.data.filter((x) => x.type === 'mea'),
+      transnationalOptions: countryGroup.data.filter(
+        (x) => x.type === 'transnational'
+      ),
+      organisations: uniqBy(sortBy(organisation.data, ['name'])).sort((a, b) =>
+        a.name?.localeCompare(b.name)
+      ),
+      nonMemberOrganisations: uniqBy(
+        sortBy(nonMemberOrganisations.data, ['name'])
+      ).sort((a, b) => a.name?.localeCompare(b.name)),
+      nav: nav.data,
+      stakeholders: stakeholder.data,
+      community: community.data,
+    }
+    UIStore.update((s) => {
+      Object.assign(s, data)
+    })
+  }, [])
+
+  useEffect(() => {
+    if (!isMounted.current) return
+    fetchData()
+    return () => {
+      isMounted.current = false
+    }
+  }, [fetchData])
+
+  const renewToken = useCallback((cb) => {
     auth0Client.checkSession({}, (err, result) => {
       if (err) {
         console.log(`Error: ${err.error} - ${err.error_description}.`)
@@ -110,14 +130,14 @@ function MyApp({ Component, pageProps }) {
         cb(err, result)
       }
     })
-  }
+  }, [])
 
-  const scheduleTokenRenewal = () => {
+  const scheduleTokenRenewal = useCallback(() => {
     const delay = _expiresAt - Date.now()
     if (delay > 0) {
       setTimeout(() => renewToken(), delay)
     }
-  }
+  }, [])
 
   useEffect(() => {
     auth0Client.parseHash((err, authResult) => {
@@ -171,15 +191,15 @@ function MyApp({ Component, pageProps }) {
   }, [])
 
   useEffect(() => {
+    setState((prevState) => ({ ...prevState, loadingProfile: true }))
     auth0Client.checkSession({}, async (err, authResult) => {
       if (err) {
         console.log(err)
-        setLoadingProfile(true)
-        // history.push("/login");
       }
       if (authResult) {
         setSession(authResult)
       }
+      setState((prevState) => ({ ...prevState, loadingProfile: false }))
     })
   }, [])
 
@@ -192,9 +212,8 @@ function MyApp({ Component, pageProps }) {
       }
       if (isAuthenticated && idToken && authResult) {
         let resp = await api.get('/profile')
-        setLoadingProfile(false)
+        setState((prevState) => ({ ...prevState, loadingProfile: false }))
         if (resp.data && Object.keys(resp.data).length === 0) {
-          console.log(authResult, 'authResult')
           router.push(
             {
               pathname: '/onboarding',
@@ -215,13 +234,43 @@ function MyApp({ Component, pageProps }) {
     })()
   }, [idToken, authResult])
 
-  const Layout = withLayout(Component)
-  const NewLayout = withNewLayout(Component)
+  const domain =
+    typeof window !== 'undefined'
+      ? window.__ENV__.auth0.domain.replace(/(https:\/\/|\/)/gi, '')
+      : ''
 
-  const domain = 'https://unep-gpml-test.eu.auth0.com/'.replace(
-    /(https:\/\/|\/)/gi,
-    ''
+  const componentProps = useMemo(
+    () => ({
+      isAuthenticated,
+      auth0Client,
+      profile,
+      loginVisible,
+      setLoginVisible: () =>
+        setState((prevState) => ({
+          ...prevState,
+          loginVisible: !prevState.loginVisible,
+        })),
+      loadingProfile,
+    }),
+    [isAuthenticated, auth0Client, profile, loginVisible, loadingProfile]
   )
+
+  const Layout = useMemo(() => {
+    if (router.pathname !== '/landing') {
+      return withLayout(Component)
+    } else {
+      return withNewLayout(Component)
+    }
+  }, [router.pathname, Component])
+
+  const RenderedLayout = useMemo(() => {
+    if (router.pathname !== '/landing') {
+      return <Layout {...pageProps} {...componentProps} />
+    } else {
+      const NewLayout = withNewLayout(Component)
+      return <NewLayout {...pageProps} {...componentProps} />
+    }
+  }, [router.pathname, Layout, Component, pageProps, componentProps])
 
   return (
     <div id="root">
@@ -233,37 +282,14 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <Auth0Provider
         domain={domain}
-        clientId="dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J"
+        clientId={
+          typeof window !== 'undefined' ? window.__ENV__.auth0.clientId : ''
+        }
         redirectUri={
           typeof window !== 'undefined' ? window.location.origin : ''
         }
       >
-        {router.pathname !== '/landing' && (
-          <Layout
-            {...pageProps}
-            {...{
-              isAuthenticated,
-              auth0Client,
-              profile,
-              loginVisible,
-              setLoginVisible,
-              loadingProfile,
-            }}
-          />
-        )}
-        {router.pathname === '/landing' && (
-          <NewLayout
-            {...pageProps}
-            {...{
-              isAuthenticated,
-              auth0Client,
-              profile,
-              loginVisible,
-              setLoginVisible,
-              loadingProfile,
-            }}
-          />
-        )}
+        {RenderedLayout}
       </Auth0Provider>
     </div>
   )
