@@ -133,8 +133,7 @@
         data (db.initiative/new-initiative
               db (assoc submission
                         :created_by (:id admin)
-                        :version 1
-                        :q23 {(keyword (str (get-country-id db "NLD"))) "Netherlands"}))]
+                        :version 1))]
     (db.initiative/initiative-by-id db data)))
 
 (comment

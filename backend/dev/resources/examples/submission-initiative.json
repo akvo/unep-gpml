@@ -102,16 +102,6 @@
     "97": "Open University of The Netherlands"
   },
   "q21": null,
-  "q22": "Yogyakarta",
-  "q23": null,
-  "q24": {
-    "global": "Global"
-  },
-  "q24_1": null,
-  "q24_2": null,
-  "q24_3": null,
-  "q24_4": null,
-  "q24_5": null,
   "q26": [
     {
       "26-0": "Raw materials"
@@ -178,5 +168,6 @@
     "41-5": "Other"
   },
   "owners": [10001],
-  "url": "URL Initiative"
+  "url": "URL Initiative",
+  "geo_coverage_type": "global"
 }

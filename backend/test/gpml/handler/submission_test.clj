@@ -125,7 +125,7 @@
     ;; everything that the remap function is doing.
     (let [system (ig/init fixtures/*system* [::submission/get-detail])
           db (-> system :duct.database.sql/hikaricp :spec)
-          initiative {:q24 {:national "National"} :q24_2 {:73 "Spain"}}
+          duration-value "Single event"
+          initiative {:q38 {"38-0" duration-value}}
           data (submission/remap-initiative initiative db)]
-      (is (= "National" (:geo_coverage_type data)))
-      (is (= ["Spain"] (:geo_coverage_values data))))))
+      (is (= duration-value (:duration data))))))

@@ -1,7 +1,6 @@
 (ns gpml.handler.detail-test
   (:require [clojure.java.io :as io]
             [clojure.test :refer [deftest is testing use-fixtures]]
-            [gpml.db.country :as db.country]
             [gpml.db.event :as db.event]
             [gpml.db.initiative :as db.initiative]
             [gpml.db.policy :as db.policy]
@@ -11,6 +10,7 @@
             [gpml.seeder.main :as seeder]
             [gpml.service.permissions :as srv.permissions]
             [gpml.test-util :as test-util]
+            [gpml.util :as util]
             [integrant.core :as ig]
             [ring.mock.request :as mock]))
 
@@ -78,12 +78,13 @@
                                                     "john.doe.admin@mail.invalid"
                                                     "APPROVED"
                                                     "ADMIN")]
-
     (testing "Check editing allowed only if user has the rights"
-      (let [data (seeder/parse-data
-                  (slurp (io/resource "examples/initiative-national.json"))
-                  {:keywords? true
-                   :add-default-lang? true})
+      (let [data (-> (seeder/parse-data
+                      (slurp (io/resource "examples/initiative-global.json"))
+                      {:keywords? true
+                       :add-default-lang? true})
+                     (util/update-if-not-nil :geo_coverage_type keyword)
+                     db.initiative/initiative->db-initiative)
             initiative (db.initiative/new-initiative conn data)
             _ (srv.permissions/create-resource-context {:conn conn
                                                         :logger (:logger config)}
@@ -97,19 +98,15 @@
                                      :user {:id 999})))
             _ (db.initiative/initiative-by-id conn initiative)]
         (is (= 403 (:status resp)))))
-
     (testing "Initiative editing"
-      (let [country (db.country/new-country
-                     conn
-                     {:name "Indonesia"
-                      :iso_code_a3 "IND"
-                      :description "Member State"
-                      :territory "IND"})
+      (let [new-q3-data "some random string"
             data (-> (seeder/parse-data
-                      (slurp (io/resource "examples/initiative-national.json"))
+                      (slurp (io/resource "examples/initiative-global.json"))
                       {:keywords? true
                        :add-default-lang? true})
-                     (assoc :q24_2 [{(keyword (str (:id country))) "Indonesia"}]))
+                     (assoc :q3 new-q3-data)
+                     (util/update-if-not-nil :geo_coverage_type keyword)
+                     db.initiative/initiative->db-initiative)
             initiative (db.initiative/new-initiative conn data)
             _ (srv.permissions/create-resource-context {:conn conn
                                                         :logger (:logger config)}
@@ -222,10 +219,12 @@
         config (get system [:duct/const :gpml.config/common])
         conn (get-in config [:db :spec])
         handler (::detail/get system)
-        data (seeder/parse-data
-              (slurp (io/resource "examples/initiative-national.json"))
-              {:keywords? true
-               :add-default-lang? true})
+        data (-> (seeder/parse-data
+                  (slurp (io/resource "examples/initiative-global.json"))
+                  {:keywords? true
+                   :add-default-lang? true})
+                 (util/update-if-not-nil :geo_coverage_type keyword)
+                 db.initiative/initiative->db-initiative)
         creator-id (test-util/create-test-stakeholder config
                                                       "john.doe@mail.invalid"
                                                       "APPROVED"

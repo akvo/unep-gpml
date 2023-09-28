@@ -46,7 +46,6 @@
    e.created,
    e.modified,
    btrim((e.q2)::text, '\"'::text) AS title,
-   (SELECT jsonb_object_keys(e.q24)) AS geo_coverage_type,
    btrim((e.q3)::text, '\"'::text) AS summary,
    e.reviewed_at,
    e.reviewed_by,
@@ -57,12 +56,12 @@
    e.qimage,
    e.document_preview,
    btrim((e.q41_1)::text, '\"'::text) AS q41_1_url,
-   e.q24_subnational_city,
    e.qimage AS image,
    e.thumbnail,
    e.capacity_building,
    e.image_id,
-   e.thumbnail_id")
+   e.thumbnail_id,
+   e.geo_coverage_type")
 
 (def ^:const ^:private policy-cols
   "e.abstract AS summary,
@@ -137,9 +136,7 @@
         table-specific-cols (get-table-specific-cols-exp entity-name)
         search-text-fields (get search-text-fields entity-name)
         tsvector-str (generate-tsvector-str entity-name search-text-fields)
-        geo-coverage-type-cond (if (= entity-name "initiative")
-                                 "(select jsonb_object_keys(q24) from initiative where id = e.id)::geo_coverage_type"
-                                 "e.geo_coverage_type")
+        geo-coverage-type-cond "e.geo_coverage_type"
         geo-coverage-select (if (= entity-name "stakeholder")
                               ""
                               "array_remove(array_agg(DISTINCT eg.country_group), NULL) AS geo_coverage_country_groups,

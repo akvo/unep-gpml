@@ -128,30 +128,3 @@
                       (merge query option exclude-rows))]
             (swap! changed #(apply conj % (map :id rows)))))))
     (println (str "Ref country removed"))))
-
-;; initiative updater
-(defn new-initiative-object-id [[k _] mapping json-file]
-  (let [new-id (keyword (str (get mapping k)))
-        new-data (filter #(= (:id %) (Integer/parseInt (name new-id))) json-file)]
-    (assoc {} new-id (-> new-data first :name))))
-
-(defn remap-initiative-object [v mapping json-file]
-  (cond
-    (sequential? v)
-    (mapv #(new-initiative-object-id (-> % first) mapping json-file) v)
-    (map? v)
-    (new-initiative-object-id (first v) mapping json-file)
-    :else v))
-
-(defn transform-initiative-query [row mapping json-file keywords]
-  (reduce into row
-          (map #(assoc {} % (remap-initiative-object (-> row %) mapping json-file))
-               keywords)))
-
-;; initiative country updater
-(defn update-initiative-country [db mapping json-file]
-  (doseq [query (map #(transform-initiative-query % mapping json-file [:q23 :q24_2 :q24_4])
-                     (seeder.db/get-initiative-country-values db))
-          :let [initiative (db.initiative/initiative->db-initiative query)]]
-    (db.initiative/update-initiative db {:id (:id initiative)
-                                         :updates (dissoc initiative :id)})))

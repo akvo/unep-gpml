@@ -77,16 +77,6 @@
       "1015": "Aws"
     }
   ],
-  "q22": "Bangalore",
-  "q23": {
-    "108": "India"
-  },
-  "q24": {
-    "national": "National"
-  },
-  "q24_2": [{
-    "108": "India"
-  }],
   "q26": [
     {
       "26-3": "Use / consumption"
@@ -130,5 +120,6 @@
   "q38": {
     "38-2": "Ongoing activity 1-3 years"
   },
-  "version": 2
+  "version": 2,
+  "geo_coverage_type": "global"
 }

@@ -24,33 +24,16 @@
   (:import [java.sql SQLException]))
 
 (defn remap-initiative [{:keys [q1 q1_1 q16 q18
-                                q20 q23 q24 q24_1 q24_2
-                                q24_3 q24_4 q24_5 q38 q40] :as initiative}
+                                q20 q38 q40] :as initiative}
                         conn]
-  (let [geo-type (-> q24 first second)
-        geo-values (cond
-                     (= geo-type "Regional")
-                     (mapv #(-> % first second) q24_1)
-                     (= geo-type "National")
-                     [(-> q24_2 first second)]
-                     (= geo-type "Sub-national")
-                     [(-> q24_3 first second)]
-                     (= geo-type "Transnational")
-                     (mapv #(-> % first second) q24_4)
-                     (= geo-type "Global with elements in specific areas")
-                     (mapv #(-> % first second) q24_5)
-                     :else nil)
-        org (if q1_1 (db.organisation/organisation-by-id
+  (let [org (if q1_1 (db.organisation/organisation-by-id
                       conn {:id (-> q1_1 first first name Integer/parseInt)}) nil)]
     (merge (select-keys initiative [:created :created_by :created_by_email :creator :modified
                                     :review_status :reviewed_at :reviewed_by])
            {:organisation org
-            :country (-> q23 first second)
             :submitted (-> q1 first second)
             :duration (-> q38 first second)
             :links q40
-            :geo_coverage_type geo-type
-            :geo_coverage_values geo-values
             :entities (mapv #(-> % first second) q16)
             :partners (mapv #(-> % first second) q18)
             :donors (mapv #(-> % first second) q20)})))

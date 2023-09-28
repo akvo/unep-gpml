@@ -3,7 +3,8 @@
             [gpml.db.initiative :as db.initiative]
             [gpml.fixtures :as fixtures]
             [gpml.seeder.dummy :as dummy]
-            [gpml.test-util :as test-util]))
+            [gpml.test-util :as test-util]
+            [gpml.util :as util]))
 
 (use-fixtures :each fixtures/with-test-system)
 
@@ -45,14 +46,6 @@
    :q19 1
    :q20 1
    :q21 1
-   :q22 1
-   :q23 1
-   :q24 1
-   :q24_1 1
-   :q24_2 1
-   :q24_3 1
-   :q24_4 1
-   :q24_5 1
    :q26 1
    :q27 1
    :q28 1
@@ -72,17 +65,24 @@
    :q40 1
    :q41 2
    :q41_1 "test"
-   :language "en"})
+   :language "en"
+   :geo_coverage_type :global})
 
 (deftest insert-data
   (let [db (test-util/db-test-conn)
         admin (dummy/get-or-create-profile db "test@akvo.org" "John Doe" "ADMIN" "APPROVED")]
     (testing "Insert complete data"
       (let [data (db.initiative/new-initiative
-                  db (assoc initiative-data :created_by (:id admin) :version 1))
-            result (db.initiative/initiative-by-id db data)]
+                  db
+                  (-> initiative-data
+                      (assoc :created_by (:id admin) :version 1)
+                      db.initiative/initiative->db-initiative))
+            result (db.initiative/initiative-by-id db data)
+            parsed-result (-> result
+                              (util/update-if-not-nil :geo_coverage_type keyword)
+                              (util/update-if-not-nil :review_status keyword))]
         (is (= 10001 (-> data :id)))
-        (is (= "SUBMITTED" (-> result :review_status)))
-        (is (= 10001 (-> result :created_by)))
+        (is (= :SUBMITTED (-> parsed-result :review_status)))
+        (is (= 10001 (-> parsed-result :created_by)))
         (doseq [[k v] initiative-data]
-          (is (= v (get result k))))))))
+          (is (= v (get parsed-result k))))))))

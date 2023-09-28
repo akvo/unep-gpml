@@ -19,8 +19,8 @@
      [:country {:optional true} pos-int?]
      [:country_group {:optional true} pos-int?]
      [:country_state {:optional true} pos-int?]]
-    [:fn (fn [{:keys [resource event policy technology organisation]}]
-           (util/xor? resource event policy technology organisation))]]))
+    [:fn (fn [{:keys [resource event policy technology initiative organisation]}]
+           (util/xor? resource event policy technology initiative organisation))]]))
 
 (defn- initial-geo-coverage
   [entity-key]

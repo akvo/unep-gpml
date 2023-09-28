@@ -21,33 +21,13 @@
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
-(defn- add-geo-initiative
-  [conn initiative-id geo-coverage-type
-   {:keys [geo_coverage_country_groups
-           geo_coverage_countries
-           geo_coverage_country_states]}]
-  (handler.geo/create-resource-geo-coverage conn
-                                            :initiative
-                                            initiative-id
-                                            geo-coverage-type
-                                            {:countries geo_coverage_countries
-                                             :country-groups geo_coverage_country_groups
-                                             :country-states geo_coverage_country_states}))
-
-(defn extract-geo-data
-  "FIXME: we should deprecate geo coverage functions like this in favor
-  of a more generic approach for all resources. This also should be in
-  the domain layer."
-  [params]
-  {:geo_coverage_country_groups (mapv (comp #(Integer/parseInt %) name ffirst) (:q24_4 params))
-   :geo_coverage_countries (mapv (comp #(Integer/parseInt %) name ffirst) (:q24_2 params))})
-
 (defn- create-initiative
   [{:keys [logger mailjet-config] :as config}
    conn
    user
-   {:keys [q24 tags related_content created_by
-           entity_connections individual_connections qimage thumbnail capacity_building] :as initiative}]
+   {:keys [tags related_content created_by geo_coverage_countries geo_coverage_country_groups
+           geo_coverage_type geo_coverage_country_states entity_connections individual_connections
+           qimage thumbnail capacity_building] :as initiative}]
   (let [image-id (when (seq qimage)
                    (handler.file/create-file config conn qimage :initiative :images :public))
         thumbnail-id (when (seq thumbnail)
@@ -55,7 +35,8 @@
         data (cond-> (dissoc initiative
                              :tags :owners :entity_connections
                              :individual_connections :related_content
-                             :qimage :thumbnail)
+                             :qimage :thumbnail :geo_coverage_countries
+                             :geo_coverage_country_groups :geo_coverage_country_states)
                image-id
                (assoc :image_id image-id)
 
@@ -66,11 +47,19 @@
                (assoc :capacity_building capacity_building))
         initiative-id (:id (db.initiative/new-initiative
                             conn
-                            (update data :source #(sql-util/keyword->pg-enum % "resource_source"))))
+                            (-> data
+                                (update :source #(sql-util/keyword->pg-enum % "resource_source"))
+                                (update :geo_coverage_type keyword)
+                                (update :geo_coverage_type #(sql-util/keyword->pg-enum % "geo_coverage_type")))))
         api-individual-connections (util/individual-connections->api-individual-connections conn individual_connections created_by)
-        geo-coverage-type (keyword (first (keys q24)))
         org-associations (map #(set/rename-keys % {:entity :organisation}) entity_connections)]
-    (add-geo-initiative conn initiative-id geo-coverage-type (extract-geo-data data))
+    (handler.geo/create-resource-geo-coverage conn
+                                              :initiative
+                                              initiative-id
+                                              (keyword geo_coverage_type)
+                                              {:countries geo_coverage_countries
+                                               :country-groups geo_coverage_country_groups
+                                               :country-states geo_coverage_country_states})
     (when (seq related_content)
       (handler.resource.related-content/create-related-contents conn logger initiative-id "initiative" related_content))
     (srv.permissions/create-resource-context
@@ -162,11 +151,22 @@
 ;; FIXME: We should define a specific domain model for initiatives and
 ;; strip extra parameter keys from the request.
 (defmethod ig/init-key :gpml.handler.initiative/post-params [_ _]
-  [:map
-   [:version integer?]
-   [:language string?]
-   [:capacity_building {:optional true} boolean?]
-   [:source {:default dom.types/default-resource-source
-             :decode/string keyword
-             :decode/json keyword}
-    (apply conj [:enum] dom.types/resource-source-types)]])
+  (->
+   [:map
+    [:version integer?]
+    [:language string?]
+    [:capacity_building {:optional true} boolean?]
+    [:geo_coverage_type
+     {:decode/string keyword
+      :decode/json keyword
+      :swagger
+      {:description "The Initiative's geo_coverage_type."
+       :type "string"
+       :enum dom.types/geo-coverage-types
+       :allowEmptyValue false}}
+     (apply conj [:enum] (mapv keyword dom.types/geo-coverage-types))]
+    [:source {:default dom.types/default-resource-source
+              :decode/string keyword
+              :decode/json keyword}
+     (apply conj [:enum] dom.types/resource-source-types)]]
+   (into handler.geo/api-geo-coverage-schemas)))

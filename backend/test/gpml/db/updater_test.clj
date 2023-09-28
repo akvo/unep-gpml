@@ -1,9 +1,7 @@
 (ns gpml.db.updater-test
-  (:require [clojure.java.io :as io]
-            [clojure.string :as str]
+  (:require [clojure.string :as str]
             [clojure.test :refer [deftest is testing use-fixtures]]
             [gpml.db.country :as db.country]
-            [gpml.db.initiative :as db.initiative]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.fixtures :as fixtures]
             [gpml.seeder.db :as db.seeder]
@@ -70,88 +68,6 @@
         (is (.contains ^clojure.lang.PersistentVector fkey topic)))
       (testing (str "foreign " topic "_geo_coverage is available")
         (is (.contains ^clojure.lang.PersistentVector fkey (str topic "_geo_coverage")))))))
-
-(deftest update-country-test
-  (let [db (test-util/db-test-conn)]
-    (seeder/seed-languages db)
-    (testing "seed using old ids"
-      (seeder/resync-country db {:old? true})
-      (let [;; get id from database
-            old-id (first (db.country/get-countries db {:filters {:iso-codes-a3 ["CYP"]
-                                                                  :descriptions ["Member State"]}}))
-            ;; get the old country.json id
-            old-json-id (-> (filter #(= "CYP" (:iso_code %))
-                                    (seeder/get-data "countries"))
-                            first :id)]
-        (is (= old-json-id (old-id :id)))))
-
-    (let [me (dummy/get-or-create-profile
-              db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
-          country (first (db.country/get-countries db {:filters {:iso-codes-a3 ["CYP"]
-                                                                 :descriptions ["Member State"]}}))
-          _ (db.stakeholder/update-stakeholder db {:country (:id country)
-                                                   :id (:id me)})
-          me (db.stakeholder/stakeholder-by-email db me)
-          ;; transnational initiative
-          tn-initiative-data (seeder/parse-data
-                              (slurp (io/resource "examples/initiative-transnational.json"))
-                              {:keywords? true
-                               :add-default-lang? true})
-          tn-initiative-id (db.initiative/new-initiative db tn-initiative-data)
-          tn-initiative (db.initiative/initiative-by-id db tn-initiative-id)
-          ;; national initiative
-          n-initiative-data (seeder/parse-data
-                             (slurp (io/resource "examples/initiative-national.json"))
-                             {:keywords? true
-                              :add-default-lang? true})
-          n-initiative-id (db.initiative/new-initiative db n-initiative-data)
-          n-initiative (db.initiative/initiative-by-id db n-initiative-id)]
-
-      (testing "create stakeholder with old-id"
-        (is (= (:id country) (:country me))))
-
-      ;; Run the country updater!
-      (seeder/updater-country db)
-
-      (let [new-id (first (db.country/get-countries db {:filters {:iso-codes-a3 ["CYP"]
-                                                                  :descriptions ["Member State"]}}))
-            new-json-id (-> (filter #(= "CYP" (:iso_code %))
-                                    (seeder/get-data "new_countries"))
-                            first :id)
-            old-json-id (-> (filter #(= "CYP" (:iso_code %))
-                                    (seeder/get-data "countries"))
-                            first :id)
-            country-id-mapping (seeder/get-data "new_countries_mapping")
-            check-country (fn [new old]
-                            (is (= (vals new) (vals old)))
-                            (is (= (get country-id-mapping (first new)) (second new))))]
-
-        (testing "the new id in db is not equal to old id"
-          (is (= new-json-id (new-id :id)))
-          (is (not= old-json-id (new-id :id))))
-
-        (let [new-me (db.stakeholder/stakeholder-by-email db me)]
-          (testing "My new country id is changed"
-            (is (= "CYP" (:iso_code_a3
-                          (first (db.country/get-countries db {:filters {:ids [(:country new-me)]}}))))))
-
-          (testing "Transnational Initiative country ID changes correctly"
-            (let [new-tn-initiative (db.initiative/initiative-by-id db tn-initiative-id)
-                  country-new (:q23 new-tn-initiative)
-                  country-old (:q23 tn-initiative)
-                  country-tn-new (:q24_4 new-tn-initiative)
-                  country-tn-old (:q24_4 tn-initiative)]
-              (check-country country-new country-old)
-              (map check-country country-tn-new country-tn-old))))
-
-        (testing "National Initiative country ID changes correctly"
-          (let [new-n-initiative (db.initiative/initiative-by-id db n-initiative-id)
-                country-new (:q23 new-n-initiative)
-                country-old (:q23 n-initiative)
-                country-n-new (:q24_2 new-n-initiative)
-                country-n-old (:q24_2 n-initiative)]
-            (check-country country-new country-old)
-            (check-country (first country-n-new) (first country-n-old))))))))
 
 (deftest revert-update-country-test
   (let [db (test-util/db-test-conn)

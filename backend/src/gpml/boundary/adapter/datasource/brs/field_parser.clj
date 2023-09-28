@@ -36,7 +36,7 @@
              :Beneficiaries :geo_coverage
              :Implementedby :entity_connections
              :Donors :entity_connections
-             :isGlobal :q24
+             :isGlobal :geo_coverage_type
              :name :q2
              :description :q3
              :statusName :status
@@ -57,13 +57,13 @@
   [beneficiaries global?]
   (cond
     global?
-    {"global" "Global"}
+    :global
 
     (> (count beneficiaries) 1)
-    {"transnational" "Transnational"}
+    :transnational
 
     :else
-    {"national" "National"}))
+    :national))
 
 (defn- get-meeting-geo-coverage-type
   [country]

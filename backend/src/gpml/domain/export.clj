@@ -143,7 +143,6 @@
   managed by the platform (Event, Policy, Technology, Resource and
   Initiative)"
   {:entity_connections "Entity Connections"
-   :q24_2 "Q24_2",
    :q37 "Q37",
    :remarks "Remarks",
    :q32 "Q32",
@@ -188,7 +187,6 @@
    :record_number "Record number",
    :topics "Topics",
    :summary "Summary",
-   :q24_1 "Q24_1",
    :reporting_to "Reporting to",
    :q33 "Q33",
    :q41_1 "Q41_1",
@@ -228,9 +226,7 @@
    :q30 "Q30",
    :value_remarks "Value remarks",
    :event_type "Event type",
-   :q24_4 "Q24_4",
    :version "Version",
-   :q24_5 "Q24_5",
    :reviewed_at "Reviewed at",
    :capacity_building "Capacity building",
    :q36 "Q36",
@@ -238,7 +234,6 @@
    :submitting_as "Submitting as",
    :q7_1_2 "Q7_1_2",
    :q4_2_1 "Q4_2_1",
-   :q24_3 "Q24_3",
    :q15 "Q15",
    :created_by "Created by",
    :country "Country",
@@ -250,7 +245,6 @@
    :q18 "Q18",
    :repeals "Repeals",
    :q41 "Q41",
-   :q22 "Q22",
    :q4_4_4 "Q4_4_4"})
 
 (def ^:const sorted-topic-columns
@@ -340,12 +334,6 @@
    "Q19"
    "Q20"
    "Q21"
-   "Q22"
-   "Q24_1"
-   "Q24_2"
-   "Q24_3"
-   "Q24_4"
-   "Q24_5"
    "Q26"
    "Q27"
    "Q28"

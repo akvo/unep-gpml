@@ -458,14 +458,11 @@
         old-data? (is-old "country" mapping-file db)
         mapping-file (if old-data?
                        mapping-file
-                       (revert-mapping mapping-file))
-        json-file (get-data (if old-data? "new_countries" "countries"))]
+                       (revert-mapping mapping-file))]
     (println (str "Migrating Country from " (if old-data? "old to new" "new to old")))
     (db.util/country-id-updater db cache-id mapping-file)
     (jdbc/execute! db ["TRUNCATE TABLE country"])
     (seed-countries db {:old? (not old-data?)})
-    (println "Update countries in Initiative Data")
-    (db.util/update-initiative-country db mapping-file json-file)
     (db.util/revert-constraint db cache-id)))
 
 (defn seed
@@ -562,7 +559,6 @@
   ;; we might need to resync all topics when we reverting
   (updater-country db)
 
-  (jdbc/query db ["SELECT id, q24_2 FROM initiative WHERE q24_2 is not null"])
   (jdbc/query db ["SELECT id, name FROM country limit 5"])
 
   ;; get view table of topic

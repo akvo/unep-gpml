@@ -14,9 +14,8 @@
                :q7_1_0 :q7_1_1 :q7_1_2 :q7_2 :q7_3
                :q8 :q9 :q10 :q11 :q12
                :q13 :q14 :q15 :q16 :q17 :q18
-               :q19 :q20 :q21 :q22 :q23 :q24
-               :q24_1 :q24_2 :q24_3 :q24_4 :q24_5
-               :q26 :q27 :q28 :q29 :q30 :q31
+               :q19 :q20 :q21 :q26 :q27
+               :q28 :q29 :q30 :q31
                :q32 :q33 :q34 :q35 :q35_1 :q36
                :q36_1 :q37 :q37_1 :q38
                :q39 :q40 :q41 :q41_1} n))
@@ -51,9 +50,6 @@
    (for [k (keys (dissoc data :id))]
      (str (str/replace (str k) ":" "")
           (cond
-            (= :source k)
-            (format "= %s::resource_source" k)
-
             (and (is-jsonb k) (get data k))
             (format "= to_jsonb(:v%s)" k)
 

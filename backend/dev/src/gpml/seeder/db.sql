@@ -46,6 +46,3 @@ WHERE :i:col in (:v*:ids)
 
 -- :name set-sequence :!
 SELECT setval(:tbl_seq, (SELECT max(id) + 1 FROM :i:tbl));
-
--- :name get-initiative-country-values :? :*
-SELECT id, q23, q24_2, q24_4 FROM initiative;

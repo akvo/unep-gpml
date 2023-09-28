@@ -21,7 +21,6 @@
             [gpml.domain.initiative :as dom.initiative]
             [gpml.domain.resource :as dom.resource]
             [gpml.domain.types :as dom.types]
-            [gpml.handler.initiative :as handler.initiative]
             [gpml.handler.organisation :as handler.org]
             [gpml.handler.resource.geo-coverage :as handler.geo]
             [gpml.handler.resource.permission :as h.r.permission]
@@ -753,21 +752,25 @@
    initiative]
   (let [initiative (assoc initiative :id id)
         tags (remove nil? (:tags initiative))
-        geo-coverage-type (keyword (first (keys (:q24 initiative))))
-        {:keys [geo_coverage_countries
+        {:keys [geo_coverage_type
+                geo_coverage_countries
                 geo_coverage_country_groups
-                geo_coverage_country_states]}
-        (handler.initiative/extract-geo-data initiative)
+                geo_coverage_country_states]} initiative
         status (db.detail/update-initiative
                 conn
-                (dissoc initiative
-                        :related_content :tags :entity_connections
-                        :individual_connections :urls :org
-                        :geo_coverage_countries
-                        :geo_coverage_country_states
-                        :geo_coverage_country_groups
-                        :geo_coverage_value_subnational
-                        :qimage))
+                (db.initiative/initiative->db-initiative
+                 (-> initiative
+                     (dissoc
+                      :related_content :tags :entity_connections
+                      :individual_connections :urls :org
+                      :geo_coverage_countries
+                      :geo_coverage_country_states
+                      :geo_coverage_country_groups
+                      :geo_coverage_value_subnational
+                      :qimage)
+                     (util/update-if-not-nil :source keyword)
+                     (util/update-if-not-nil :review_status keyword)
+                     (util/update-if-not-nil :geo_coverage_type keyword))))
         related-contents (:related_content initiative)
         org-associations (map (fn [acs] (set/rename-keys acs {:entity :organisation})) (:entity_connections initiative))
         sth-associations (:individual_connections initiative)]
@@ -781,7 +784,7 @@
     (handler.geo/update-resource-geo-coverage conn
                                               :initiative
                                               id
-                                              geo-coverage-type
+                                              (keyword geo_coverage_type)
                                               {:countries geo_coverage_countries
                                                :country-groups geo_coverage_country_groups
                                                :country-states geo_coverage_country_states})
@@ -793,6 +796,7 @@
                                         :resource-id id})
     status))
 
+;; FIXME: `review_status` should not be editable unless an admin is doing the resource update.
 (defmethod ig/init-key :gpml.handler.detail/put
   [_ {:keys [db logger] :as config}]
   (fn [{{{:keys [topic-type topic-id] :as path} :path body :body} :parameters
