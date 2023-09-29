@@ -1,18 +1,34 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
 import { Card, List } from 'antd'
 import styles from './index.module.scss'
 import Button from '../../components/button'
 import { UIStore } from '../../store'
 import api from '../../utils/api'
+import ForumModal from './forum-modal'
+import ForumMembers from './forum-members'
+import MyForums from './my-forums'
 
 const Forum = () => {
   const [allForums, setAllForums] = useState([])
+  const [viewModal, setViewModal] = useState({
+    open: false,
+    data: {},
+  })
+
   const profile = UIStore.useState((s) => s.profile)
 
-  const DynamicMyForums = dynamic(() => import('./my-forums'), {
-    ssr: false,
-  })
+  const handleOnView = (data) => {
+    setViewModal({
+      open: true,
+      data,
+    })
+  }
+
+  const initName = (name) =>
+    name
+      ?.split(/[ ,]+/)
+      ?.slice(0, 2)
+      .map((w) => w?.slice(0, 1))
 
   const getAllForums = useCallback(async () => {
     try {
@@ -21,7 +37,8 @@ const Forum = () => {
        */
       if (profile?.id) {
         const { data } = await api.get('/chat/channel/all')
-        setAllForums(data)
+        const _allForums = data.map((d) => ({ ...d, membersFetched: false }))
+        setAllForums(_allForums)
       }
     } catch (error) {
       console.error('err', error)
@@ -36,7 +53,7 @@ const Forum = () => {
     <div className="container">
       <div className={styles.forumHome}>
         <span className="h-xs title">Forums</span>
-        {profile?.id && <DynamicMyForums />}
+        {profile?.id && <MyForums />}
 
         <div className="header">
           <div className="jumbotron">
@@ -56,29 +73,25 @@ const Forum = () => {
               <List.Item>
                 <Card>
                   <div className="channel">
-                    <span className="h-xs">
-                      {item.t === 'p' ? 'private' : 'public'}
+                    <span className={styles.forumType}>
+                      {item.t === 'p' ? 'private ' : 'public '}channel
                     </span>
                     <h5>{item.name}</h5>
-                    <p className="description">
-                      {item?.description}
-                    </p>
+                    <p className={styles.forumDesc}>{item?.description}</p>
                   </div>
                   <div className="flex">
-                    <div className="participants">
-                      <h6 className="count">{item?.usersCount}</h6>
-                      <span className="h-xxs">Participants</span>
-                    </div>
+                    <ForumMembers
+                      {...{ allForums, setAllForums, initName }}
+                      forum={item}
+                    />
                     <div>
-                      {item.t === 'p' ? (
-                        <Button size="small" ghost>
-                          Request to Join
-                        </Button>
-                      ) : (
-                        <Button size="small" withArrow="link">
-                          View Channel
-                        </Button>
-                      )}
+                      <Button
+                        size="small"
+                        onClick={() => handleOnView(item)}
+                        ghost
+                      >
+                        View
+                      </Button>
                     </div>
                   </div>
                 </Card>
@@ -86,6 +99,7 @@ const Forum = () => {
             )}
           />
         </section>
+        <ForumModal {...{ viewModal, setViewModal, initName }} />
       </div>
     </div>
   )
