@@ -593,6 +593,13 @@
                                                   :swagger {:tags ["chat"]}
                                                   :handler #ig/ref :gpml.handler.chat/get-user-joined-channels}}]]
                                          ["/channel"
+                                          ["/leave"
+                                           {:post {:summary "Remove the callee user from the channel"
+                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                #ig/ref :gpml.auth/auth-required]
+                                                   :swagger {:tags ["chat"]}
+                                                   :handler #ig/ref :gpml.handler.chat/remove-user-from-channel
+                                                   :parameters #ig/ref :gpml.handler.chat/remove-user-from-channel-params}}]
                                           ["/all"
                                            {:get {:summary "Get all channels in the server"
                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
@@ -882,6 +889,8 @@
   :gpml.handler.chat/get-user-joined-channels #ig/ref :gpml.config/common
   :gpml.handler.chat/send-private-channel-invitation-request #ig/ref :gpml.config/common
   :gpml.handler.chat/send-private-channel-invitation-request-params {}
+  :gpml.handler.chat/remove-user-from-channel #ig/ref :gpml.config/common
+  :gpml.handler.chat/remove-user-from-channel-params {}
 
   :clj-gcp.storage/client {}
 
