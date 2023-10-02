@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { Row, Col, Button, Input, Space, Select } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
-import styles from "./header.module.scss";
-import { useHistory } from "react-router-dom";
-import { KNOWLEDGE_LIBRARY } from "../map/map";
-import { eventTrack } from "../../utils/misc";
-import DownArrow from "../../images/knowledge-library/chevron-down.svg";
-import { useRouter } from "next/router";
+import React, { useState } from 'react'
+import { Row, Col, Button, Input, Space, Select } from 'antd'
+import { SearchOutlined, AppstoreOutlined } from '@ant-design/icons'
+import styles from './header.module.scss'
+import { useHistory } from 'react-router-dom'
+import { KNOWLEDGE_LIBRARY } from '../map/map'
+import { eventTrack } from '../../utils/misc'
+import DownArrow from '../../images/knowledge-library/chevron-down.svg'
+import { useRouter } from 'next/router'
+import GlobeIcon from '../../images/transnational.svg'
 
 const KnowledgeLibrarySearch = ({
   router,
@@ -14,18 +15,18 @@ const KnowledgeLibrarySearch = ({
   isShownForm,
   setIsShownForm,
 }) => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('')
   const handleSearch = (src) => {
-    eventTrack("Communities", "Search", "Button");
+    eventTrack('Communities', 'Search', 'Button')
     if (src) {
-      router.push(`?q=${src.trim()}`);
-      updateQuery("q", src.trim());
+      router.push(`?q=${src.trim()}`)
+      updateQuery('q', src.trim())
     } else {
-      updateQuery("q", "");
+      updateQuery('q', '')
     }
-    setSearch("");
-    setIsShownForm(false);
-  };
+    setSearch('')
+    setIsShownForm(false)
+  }
 
   return (
     <>
@@ -50,8 +51,8 @@ const KnowledgeLibrarySearch = ({
         />
       </div>
     </>
-  );
-};
+  )
+}
 
 const StakeholderOverviewSearch = ({
   router,
@@ -60,9 +61,9 @@ const StakeholderOverviewSearch = ({
   isShownForm,
   setIsShownForm,
 }) => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('')
   const handleSearch = (src) => {
-    eventTrack("Knowledge library", "Search", "Button");
+    eventTrack('Knowledge library', 'Search', 'Button')
     if (src) {
       // router.push(`?q=${src.trim()}`);
       router.push(
@@ -72,15 +73,15 @@ const StakeholderOverviewSearch = ({
         },
         undefined,
         { shallow: true }
-      );
+      )
 
-      updateQuery("q", src.trim());
+      updateQuery('q', src.trim())
     } else {
-      updateQuery("q", "");
+      updateQuery('q', '')
     }
-    setSearch("");
-    setIsShownForm(false);
-  };
+    setSearch('')
+    setIsShownForm(false)
+  }
 
   return (
     <>
@@ -102,13 +103,13 @@ const StakeholderOverviewSearch = ({
             suffix={<SearchOutlined />}
             onPressEnter={(e) => handleSearch(e.target.value)}
             onChange={(e) => {
-              setSearch(e.target.value);
+              setSearch(e.target.value)
               if (e.target.value.length >= 3) {
-                router.push(`?q=${e.target.value.trim()}`);
-                updateQuery("q", e.target.value.trim());
+                router.push(`?q=${e.target.value.trim()}`)
+                updateQuery('q', e.target.value.trim())
               }
               if (e.target.value.length === 0) {
-                updateQuery("q", "");
+                updateQuery('q', '')
               }
             }}
           />
@@ -122,7 +123,7 @@ const StakeholderOverviewSearch = ({
           suffix={<SearchOutlined />}
           onPressEnter={(e) => handleSearch(e.target.value)}
           onChange={(e) => {
-            setSearch(e.target.value);
+            setSearch(e.target.value)
             // if (e.target.value.length >= 3) {
             //   router.push(`?q=${e.target.value.trim()}`);
             //   updateQuery("q", e.target.value.trim());
@@ -134,8 +135,8 @@ const StakeholderOverviewSearch = ({
         />
       </div>
     </>
-  );
-};
+  )
+}
 
 const Header = ({
   setView,
@@ -146,10 +147,10 @@ const Header = ({
   updateQuery,
   view,
 }) => {
-  const router = useRouter();
-  const path = router.pathname;
+  const router = useRouter()
+  const path = router.pathname
 
-  const [isShownForm, setIsShownForm] = useState(false);
+  const [isShownForm, setIsShownForm] = useState(false)
 
   const selectionValue = (
     <>
@@ -160,7 +161,7 @@ const Header = ({
           </div>
         </button>
         <span className="label text-white">{`${view} view`}</span>
-        {view === "map" ? (
+        {view === 'map' ? (
           <img
             src="/knowledge-library/globe-outline.svg"
             alt="globe-icon"
@@ -175,7 +176,7 @@ const Header = ({
         )}
       </div>
     </>
-  );
+  )
 
   return (
     <Col span={24} className={`${styles.uiHeader} ui-header`}>
@@ -203,10 +204,10 @@ const Header = ({
                 )}
                 <Button
                   onClick={() => {
-                    setFilterVisible(!filterVisible);
+                    setFilterVisible(!filterVisible)
                     path === KNOWLEDGE_LIBRARY
-                      ? eventTrack("Knowledge library", "Filter", "Button")
-                      : eventTrack("Communities", "Filter", "Button");
+                      ? eventTrack('Knowledge library', 'Filter', 'Button')
+                      : eventTrack('Communities', 'Filter', 'Button')
                   }}
                   className="filter-icon-button"
                   type="link"
@@ -230,61 +231,23 @@ const Header = ({
             </Row>
           </Col>
           {/* Map/Topic view dropdown */}
-          <Col lg={2} md={4} sm={6} className="select-wrapper">
-            <Select
-              dropdownClassName={styles.overlayDropdown}
-              className="view-selection"
-              value={view}
-              onChange={(val) => setView(val)}
-            >
-              <Select.Option value="map">
-                {/* Map View */}
-
-                <>
-                  <div className="selection-value">
-                    <button className="select-button">
-                      <div className="selection-arrow">
-                        <DownArrow />
-                      </div>
-                    </button>
-                    <span className="label text-white">{`${view} view`}</span>
-                    <img
-                      src="/knowledge-library/globe-outline.svg"
-                      alt="globe-icon"
-                      className="filter-img"
-                    />
-                  </div>
-                  <span className="dropdown-label">Map View</span>
-                </>
-              </Select.Option>
-              <Select.Option
-                value={path === KNOWLEDGE_LIBRARY ? "topic" : "grid"}
-              >
-                <>
-                  <div className="selection-value">
-                    <button className="select-button">
-                      <div className="selection-arrow">
-                        <DownArrow />
-                      </div>
-                    </button>
-                    <span className="label text-white">{`${view} view`}</span>
-                    <img
-                      src="/knowledge-library/topic-view-icon.svg"
-                      alt="topic-icon"
-                      className="filter-img"
-                    />
-                  </div>
-                  <span className="dropdown-label">
-                    {path === KNOWLEDGE_LIBRARY ? "Topic" : "Grid"} View
-                  </span>
-                </>
-              </Select.Option>
-            </Select>
-          </Col>
+          <button
+            className="view-button"
+            shape="round"
+            size="large"
+            onClick={() => {
+              view === 'map' ? setView('grid') : setView('map')
+            }}
+          >
+            <div className="view-button-text ">
+              Switch to {`${view === 'map' ? 'grid' : 'map'}`} view
+            </div>
+            {view === 'map' ? <AppstoreOutlined /> : <GlobeIcon />}
+          </button>
         </Row>
       </div>
     </Col>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

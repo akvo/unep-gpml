@@ -1,4 +1,4 @@
-@import '../../vars.scss';
+@import '../../styles/vars.scss';
 
 .blur {
   filter: blur(13px);
@@ -8,7 +8,7 @@
   text-align: center;
   h3,
   h4 {
-    color: $blue06;
+    color: $primaryDarkBlue;
     font-size: 13px;
     font-weight: bold;
   }
@@ -25,10 +25,49 @@
   overflow: hidden;
   flex: 1;
   :global {
+    .header-filter-option {
+      .view-button {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border-radius: 30px;
+        font-weight: 500;
+        font-size: 10px;
+        line-height: 10px;
+        text-align: center;
+        color: white;
+        max-width: 98px;
+        background-color: unset;
+        border: 1px solid white;
+        min-height: 32px;
+        cursor: pointer;
+        transition: all 0.15s ease-out;
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+        .anticon {
+          width: 35px;
+          height: 35px;
+          svg {
+            width: 100%;
+            height: 100%;
+            path {
+              stroke: white;
+            }
+          }
+        }
+        svg {
+          path {
+            stroke: white;
+          }
+        }
+      }
+    }
+
     .stakeholder-item {
       background-color: rgba(255, 255, 255, 0.3);
       &:hover {
-        background-color: $yellow-highlight;
+        background-color: $primaryDarkBlue;
       }
     }
 
@@ -92,6 +131,7 @@
       padding-bottom: 34.66px;
       padding-left: 30px;
       padding-right: 30px;
+      background-color: white;
 
       .person-role {
         display: none;
@@ -101,8 +141,9 @@
         padding-bottom: 0.8em;
         max-width: max-content;
         margin: auto;
-        font-size: 12px;
+        font-size: 14px;
         text-align: center;
+        font-weight: 500;
       }
       .loading {
         font-weight: normal;
@@ -118,18 +159,20 @@
       padding: 16px 5px 34px 5px;
 
       #title {
-        font-size: 22px;
+        font-size: $fzXS;
         text-transform: uppercase;
         margin-bottom: 13px;
         text-align: center;
-        line-height: 30px;
-
+        line-height: $lhXS;
+        font-weight: 700;
+        color: $primaryPurple;
+        letter-spacing: 3.2px;
         @media (max-width: 540px) {
           font-size: 18px;
         }
       }
       &.green {
-        background-color: #45bea5;
+        background-color: $primaryGrey;
       }
 
       .profile-card {
@@ -160,6 +203,7 @@
       max-width: 345px;
       border-radius: 10px;
       min-height: 140px;
+      overflow: hidden;
       .initials-avatar {
         width: 98px;
         height: 98px;
@@ -259,13 +303,13 @@
               .profile-name,
               .location,
               .entity-name {
-                color: $blue06;
+                color: $primaryDarkBlue;
                 font-weight: bold;
               }
 
               .profile-name,
               .entity-name {
-                font-size: 0.9em;
+                font-size: $fzXXS;
               }
 
               .job-title {
@@ -290,7 +334,7 @@
               }
 
               .entity-name {
-                color: $blue06;
+                color: $primaryDarkBlue;
               }
 
               .organisation-type {
@@ -345,17 +389,15 @@
       }
 
       .person-role {
-        width: calc(100% - 6px);
+        width: 100%;
         padding: 8px 10.5px 8px 10.5px;
-        background: rgba(37, 91, 135, 0.24);
-        border-radius: 0px 0px 12px 12px;
-        margin: 0 6px 3px 2px;
+        background: $primaryDarkBlue2;
 
         .seeking-text,
         .role-name {
           margin-bottom: 0;
-          color: #18162f;
           font-size: 12px;
+          color: $primaryDarkBlue;
         }
 
         .role-name {
@@ -364,6 +406,7 @@
           display: flex;
           flex-wrap: nowrap;
           overflow-x: auto;
+          color: $primaryDarkBlue;
 
           li {
             margin-right: 10px;
@@ -373,7 +416,7 @@
       }
     }
     .sidebar {
-      background-color: $bg-dark-primary;
+      background-color: $primaryGrey;
       .item-sidebar {
         width: 100%;
         height: 100px !important;
@@ -406,7 +449,7 @@
     .page {
       text-align: center;
       margin: auto;
-      padding-top: calc(38px - 21.47px);
+      padding-top: calc(38px - 5px);
 
       .result-number,
       .ant-pagination-item a {
@@ -420,29 +463,25 @@
         margin-top: 12px;
       }
 
-      .ant-pagination-item {
-        width: 34px;
-        height: 34px;
-        margin-right: 2px;
-        border-radius: 5px;
-
+      li {
+        width: 36px;
+        height: 36px;
+        margin-right: 5px;
+        border-radius: 8px;
+        background-color: $primaryGrey;
+        border: none;
         a {
           width: 100%;
           height: 100%;
-          font-weight: 400;
-          color: #ffffff;
-          line-height: 31px;
-          border-radius: 5px;
-          background-color: $blue06;
-          &:hover {
-            background-color: $yellow-highlight;
-            border-color: $yellow-highlight;
-          }
+          color: $primaryDarkBlue;
+          line-height: 36px;
+          font-size: $fzXS;
+          font-weight: 500;
         }
       }
 
       .ant-pagination-item-ellipsis {
-        color: $blue06;
+        color: $primaryPurple;
         font-weight: bold;
         margin-left: calc(10px - 2px);
         margin-right: 10px;
@@ -450,12 +489,9 @@
 
       .ant-pagination-item-active {
         border: none;
+        background-color: $primaryPurple;
         a {
-          background-color: rgba(37, 91, 135, 0.1);
-          color: $blue06;
-          &:hover {
-            background-color: rgba(37, 91, 135, 0.1);
-          }
+          color: white;
         }
       }
       .ant-pagination-next {
@@ -538,9 +574,10 @@
 
         .specificity-title {
           width: 100%;
-          font-size: 8px;
-          margin-bottom: calc(8px - 5px);
-          text-transform: uppercase;
+          font-size: $fzXXS;
+          margin-bottom: 5px;
+          font-family: var(--font-archia), sans-serif;
+          font-weight: 500;
         }
         .drawer-card {
           height: 100px;
@@ -566,7 +603,7 @@
         width: 100% !important;
 
         .ant-drawer-header {
-          background: $blue05;
+          background: $primaryDarkBlue;
 
           .apply-button {
             width: auto;
@@ -584,7 +621,7 @@
               font-size: 12px;
             }
             &:hover {
-              background-color: $yellow-highlight;
+              background-color: $primaryPurple;
             }
           }
         }
@@ -592,6 +629,15 @@
         .ant-drawer-content {
           border-bottom-right-radius: 18px;
           box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.25);
+
+          .country-filter-tab {
+            // background: rgba(255, 255, 255, 0.05);
+            // box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+            // border-radius: 5px;
+            .ant-tabs-nav {
+              margin-bottom: 0px;
+            }
+          }
         }
 
         .ant-drawer-title,
@@ -607,16 +653,18 @@
         .drawer-close-icon {
           border-radius: 50%;
           &:hover {
-            background-color: $yellow-highlight;
+            background-color: $primaryPurple;
           }
         }
         .ant-space-item {
           margin-bottom: 0 !important;
           .filter-title {
-            color: #000;
-            font-size: 18px;
+            color: $primaryDarkBlue;
+            font-size: $fzXXS;
+            line-height: $lhXXS;
             font-weight: 500;
             margin-bottom: 5px;
+            font-family: var(--font-archia), sans-serif;
 
             @media (max-width: 540px) {
               font-size: 16px;
@@ -654,7 +702,7 @@
 
         .selection-card-type {
           border: none;
-          color: $blue06;
+          color: $primaryDarkBlue4 !important;
         }
 
         .selection-card-type,
@@ -680,16 +728,16 @@
           flex-direction: row-reverse;
           align-items: center;
           align-self: baseline;
-          color: $blue04;
-          border: 1px solid $blue04;
+          color: $primaryPurple;
+          border: 1px solid $primaryPurple;
           border-radius: 20px;
           margin-bottom: 8px;
           cursor: pointer;
           &:hover {
-            background-color: $yellow-highlight;
+            background-color: $primaryPurple;
           }
           .anticon-close {
-            color: $blue04;
+            color: $primaryPurple;
             font-weight: bold;
             padding-right: 3px;
           }
@@ -699,13 +747,13 @@
           width: 100px;
           height: 100px;
           position: relative;
-          color: $grey03;
+          color: $primaryDarkBlue;
           font-weight: bold;
           align-items: center;
           cursor: pointer;
           padding: 4px;
           text-align: center;
-          border: 1px solid $grey03;
+          border: 1px solid $primaryDarkBlue;
           border-radius: 4px;
 
           .ant-card-body {
@@ -737,8 +785,8 @@
         }
 
         .drawer-card.active {
-          color: $blue06;
-          border-color: $blue06;
+          color: $primaryPurple;
+          border-color: $primaryPurple;
           font-weight: 600;
         }
 
@@ -752,7 +800,7 @@
           width: 100%;
           height: unset;
           max-width: 292px;
-          color: #34a6ff;
+          color: $primaryDarkBlue;
           font-size: 16px;
           font-weight: bold;
           margin-bottom: 10px;
@@ -762,6 +810,9 @@
           display: flex;
           align-items: center;
           justify-content: center;
+          &:hover {
+            color: $primaryPurple;
+          }
           .anticon-close-circle {
             font-size: 20px;
             line-height: 13px;
@@ -795,13 +846,16 @@
       width: 100%;
       min-width: 250px;
       margin: auto;
+      box-shadow: 0px 20px 44px 0px rgba(101, 93, 122, 0.06),
+        0px 40px 32px 0px rgba(0, 0, 0, 0.06);
+      border-radius: 8px;
     }
 
     .card-wrapper {
       display: grid;
       grid-template-columns: repeat(1, 1fr);
       column-gap: 34px;
-      row-gap: 10px;
+      row-gap: 20px;
       max-width: fit-content;
       margin: auto;
     }
@@ -907,11 +961,6 @@
       }
     }
 
-    @media (min-width: 1700px) {
-      #title {
-        padding-left: 12px;
-      }
-    }
     @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
       .ant-btn-icon-only {
         min-width: 25px;
@@ -1027,69 +1076,83 @@
         height: 27px;
       }
     }
-
     .country-filter-tab-wrapper {
-      .country-filter-tab {
-        border: 1px solid #d7e6ee;
-        border-radius: 3px;
-        background-color: #fff;
-
+      .ant-tabs {
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: 0px 0px 4px rgb(0 0 0 / 25%);
+        border-radius: 5px;
+        .ant-tabs-nav-list {
+          .ant-tabs-tab {
+            flex: 0 0 50%;
+            margin-left: 0 !important;
+            border: none;
+            background: $primaryGrey;
+            padding: 10px 16px;
+            border-radius: 0px;
+            &:first-child {
+              border-radius: 5px 0px 0px 0px;
+            }
+            &:nth-child(2) {
+              border-radius: 0px 5px 0px 0px;
+            }
+            &.ant-tabs-tab-active {
+              background-color: #ffffff;
+            }
+            .ant-tabs-tab-btn {
+              font-weight: 600;
+              font-size: 16px;
+              line-height: 14px;
+              color: $primaryDarkBlue;
+              font-family: var(--font-dm-sans), sans-serif;
+            }
+          }
+        }
+        .ant-tabs-nav {
+          &::before {
+            border: none;
+          }
+          padding-bottom: 10px;
+          margin-bottom: 0px;
+        }
         .ant-select {
           width: 100%;
-          margin-bottom: 10px;
         }
-      }
+        .ant-tabs-content-holder {
+          padding: 10px;
+        }
+        .ant-select-selector {
+          background: $primaryGrey !important;
+          border: 0 !important;
+          border-radius: 5px !important;
+          background-image: url('/search-icon.svg'),
+            url('/chevron-down-grey.svg') !important;
+          background-repeat: no-repeat !important;
+          background-position: calc(10px) center, calc(100% - 10px) center !important;
+        }
+        .ant-select-selection-overflow {
+          padding-left: 35px;
+          padding-top: 4px;
+          padding-bottom: 4px;
 
-      .country-filter-tab {
-        margin-bottom: 1.5rem;
-        .country-filter-tab-pane {
-          padding: 0.5rem 1rem;
-        }
-        .ant-tabs-nav-list {
-          justify-content: space-evenly;
-          width: 100%;
-          align-items: center;
-        }
-        .ant-tabs-tab:not(:last-of-type) {
-          margin-right: 0 !important;
-        }
-        .ant-tabs-tab {
-          width: 50%;
-          border-radius: 0;
-          border: none;
-          background: #dae9f1;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        .ant-tabs-tab-active {
-          background: #fff;
-          .ant-tabs-tab-btn {
-            font-weight: normal;
+          .ant-select-selection-item {
+            background-color: $primaryDarkBlue;
+            border-radius: 4px;
+            span {
+              color: white;
+            }
           }
         }
-        .ant-tabs-tab-btn {
-          color: #036799;
-        }
-        .ant-tabs-nav::before,
-        .ant-tabs-nav .ant-tabs-nav-wrap::before,
-        .ant-tabs-nav .ant-tabs-nav-wrap::after {
-          content: none !important;
-        }
-        // css for select suffix
-        .multi-country-info {
-          .ant-select-arrow {
-            right: 28px;
+        .ant-select-selection-placeholder {
+          font-weight: 600;
+          padding-left: 30px;
+          font-size: 16px;
+          color: $primaryDarkBlue;
+          font-family: var(--font-dm-sans), sans-serif;
+
+          @media (max-width: 540px) {
             font-size: 14px;
-            top: 48%;
-            color: #036799;
           }
         }
-      }
-    }
-    .search-box {
-      .filter-icon-button {
-        padding: 4px 15px;
       }
     }
   }

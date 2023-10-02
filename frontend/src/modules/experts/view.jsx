@@ -1,128 +1,128 @@
-import React, { useEffect, useState } from "react";
-import { AppstoreOutlined, LoadingOutlined } from "@ant-design/icons";
-import styles from "./styles.module.scss";
-import api from "../../utils/api";
-import { UIStore } from "../../store";
-import catTags from "../../utils/cat-tags.json";
-import { isEmpty } from "lodash";
-import { useQuery } from "../../utils/misc";
-import SortIcon from "../../images/knowledge-library/sort-icon.svg";
-import GlobeIcon from "../../images/transnational.svg";
+import React, { useEffect, useState } from 'react'
+import { AppstoreOutlined, LoadingOutlined } from '@ant-design/icons'
+import styles from './styles.module.scss'
+import api from '../../utils/api'
+import { UIStore } from '../../store'
+import catTags from '../../utils/cat-tags.json'
+import { isEmpty } from 'lodash'
+import { useQuery } from '../../utils/misc'
+import SortIcon from '../../images/knowledge-library/sort-icon.svg'
+import GlobeIcon from '../../images/transnational.svg'
 
-import Maps from "../map/map";
-import ExpertCarousel from "./expert-carousel";
-import FilterBar from "./filter-bar";
-import InviteExpertModal from "./invite-expert-modal";
-import ExpertCard from "./expert-card";
-import UnathenticatedPage from "../stakeholder-overview/unathenticated-page";
-import InviteExpertCard from "./invite-expert-card";
+import Maps from '../map/map'
+import ExpertCarousel from './expert-carousel'
+import FilterBar from './filter-bar'
+import InviteExpertModal from './invite-expert-modal'
+import ExpertCard from './expert-card'
+import UnathenticatedPage from '../stakeholder-overview/unathenticated-page'
+import InviteExpertCard from './invite-expert-card'
 
 const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
   const { countries, organisations } = UIStore.useState((s) => ({
     countries: s.countries,
     organisations: s.organisations,
-  }));
+  }))
 
-  let box = "";
-  const query = useQuery();
+  let box = ''
+  const query = useQuery()
 
-  const [view, setView] = useState("map");
+  const [view, setView] = useState('map')
   const [experts, setExperts] = useState({
     experts: [],
     count: 0,
     countryGroupCounts: [],
-  });
-  const [isAscending, setIsAscending] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [filterCountries, setFilterCountries] = useState([]);
-  const [filter, setFilter] = useState([]);
-  const [isShownModal, setIsShownModal] = useState(false);
-  const [unAthenticatedModal, setUnathenticatedModal] = useState(false);
+  })
+  const [isAscending, setIsAscending] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [filterCountries, setFilterCountries] = useState([])
+  const [filter, setFilter] = useState([])
+  const [isShownModal, setIsShownModal] = useState(false)
+  const [unAthenticatedModal, setUnathenticatedModal] = useState(false)
 
   useEffect(() => {
-    const boxes = document.getElementsByClassName("experts");
+    const boxes = document.getElementsByClassName('experts')
     if (boxes && boxes.length > 0) {
-      box = boxes[0];
+      box = boxes[0]
     }
-  }, []);
+  }, [])
 
   const fetchExperts = (params) => {
-    const url = `/stakeholder/expert/list`;
+    const url = `/stakeholder/expert/list`
     api
       .get(url, { page_size: 100, page_n: 0, ...params })
       .then((resp) => {
-        const data = resp?.data;
+        const data = resp?.data
         setExperts({
           experts: data.experts,
           count: data.count,
           countryGroupCounts: data.countByCountry,
-        });
-        setLoading(false);
+        })
+        setLoading(false)
       })
       .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
-  };
+        console.error(err)
+        setLoading(false)
+      })
+  }
 
   const sortExperts = (ascending) => {
     const sortedExperts = experts?.experts?.sort((a, b) => {
       if (ascending) {
         if (a?.firstName) {
-          return a?.firstName?.trim().localeCompare(b?.firstName?.trim());
+          return a?.firstName?.trim().localeCompare(b?.firstName?.trim())
         } else {
-          return a?.name?.trim().localeCompare(b?.name?.trim());
+          return a?.name?.trim().localeCompare(b?.name?.trim())
         }
       } else {
         if (b?.firstName) {
-          return b?.firstName?.trim().localeCompare(a?.firstName?.trim());
+          return b?.firstName?.trim().localeCompare(a?.firstName?.trim())
         } else {
-          return b?.name?.trim().localeCompare(a?.name?.trim());
+          return b?.name?.trim().localeCompare(a?.name?.trim())
         }
       }
-    });
-    setIsAscending(ascending);
-    setExperts({ ...experts, experts: sortedExperts });
-  };
+    })
+    setIsAscending(ascending)
+    setExperts({ ...experts, experts: sortedExperts })
+  }
 
   useEffect(() => {
-    fetchExperts();
-  }, []);
+    fetchExperts()
+  }, [])
 
   const clickCountry = (value) => {
-    let updateVal = [];
+    let updateVal = []
     if (isEmpty(filterCountries)) {
-      updateVal = [value];
+      updateVal = [value]
     } else if (filterCountries.includes(value)) {
-      updateVal = filterCountries.filter((x) => x !== value);
+      updateVal = filterCountries.filter((x) => x !== value)
     } else {
-      updateVal = [...filterCountries, value];
+      updateVal = [...filterCountries, value]
     }
-    setFilterCountries(updateVal);
-  };
+    setFilterCountries(updateVal)
+  }
 
   useEffect(() => {
-    setLoading(true);
-    const params = {};
+    setLoading(true)
+    const params = {}
     if (filter.length > 1 && filter[1].length > 0) {
-      params.tags = filter[1].join(",");
+      params.tags = filter[1].join(',')
     } else if (
       filter.length === 1 ||
       (filter.length === 2 && filter[1].length === 0)
     ) {
-      params.tags = catTags[filter[0]].topics.join(",");
+      params.tags = catTags[filter[0]].topics.join(',')
     }
     if (filterCountries.length > 0) {
-      params.countries = filterCountries.join(",");
+      params.countries = filterCountries.join(',')
     }
-    fetchExperts(params);
-  }, [filter, filterCountries]);
+    fetchExperts(params)
+  }, [filter, filterCountries])
 
   useEffect(() => {
     if (!isAuthenticated && loadingProfile) {
-      setUnathenticatedModal(true);
+      setUnathenticatedModal(true)
     }
-  }, [isAuthenticated, loadingProfile]);
+  }, [isAuthenticated, loadingProfile])
 
   return (
     <div id="experts" className={`${styles.experts} experts`}>
@@ -137,29 +137,31 @@ const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
             shape="round"
             size="large"
             onClick={() => {
-              view === "map" ? setView("grid") : setView("map");
+              view === 'map' ? setView('grid') : setView('map')
             }}
           >
             <div className="view-button-text ">
-              Switch to {`${view === "map" ? "grid" : "map"}`} view
+              Switch to {`${view === 'map' ? 'grid' : 'map'}`} view
             </div>
-            {view === "map" ? <AppstoreOutlined /> : <GlobeIcon />}
+            {view === 'map' ? <AppstoreOutlined /> : <GlobeIcon />}
           </button>
           <button
             className="sort-by-button"
             onClick={() => sortExperts(!isAscending)}
           >
-            <SortIcon
-              style={{
-                transform:
-                  isAscending || isAscending === null
-                    ? "initial"
-                    : "rotate(180deg)",
-              }}
-            />
+            <div className="sort-icon">
+              <SortIcon
+                style={{
+                  transform:
+                    isAscending || isAscending === null
+                      ? 'initial'
+                      : 'rotate(180deg)',
+                }}
+              />
+            </div>
             <div className="sort-button-text">
               <span>Sort by:</span>
-              <b>{isAscending ? `A>Z` : "Z>A"}</b>
+              <b>{isAscending ? `A>Z` : 'Z>A'}</b>
             </div>
           </button>
         </div>
@@ -171,7 +173,7 @@ const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
         {/* {experts.experts.length === 0 && !loading && (
               <div className="noresults">No matches</div>
             )} */}
-        {view === "map" ? (
+        {view === 'map' ? (
           <ExpertCarousel
             {...{
               experts,
@@ -190,7 +192,7 @@ const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
           </div>
         )}
       </div>
-      {view === "map" && (
+      {view === 'map' && (
         <Maps
           box={box}
           query={query}
@@ -206,7 +208,7 @@ const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
                 return {
                   countryId: item.countryId,
                   counts: { experts: item.counts },
-                };
+                }
               })) ||
             []
           }
@@ -224,7 +226,7 @@ const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
         {...{ unAthenticatedModal, setLoginVisible, setUnathenticatedModal }}
       />
     </div>
-  );
-};
+  )
+}
 
-export default Experts;
+export default Experts
