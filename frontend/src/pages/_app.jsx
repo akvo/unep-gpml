@@ -194,7 +194,10 @@ function MyApp({ Component, pageProps }) {
     setState((prevState) => ({ ...prevState, loadingProfile: true }))
     auth0Client.checkSession({}, async (err, authResult) => {
       if (err) {
-        console.log(err)
+        setState((prevState) => ({
+          ...prevState,
+          loadingProfile: true,
+        }))
       }
       if (authResult) {
         setSession(authResult)
