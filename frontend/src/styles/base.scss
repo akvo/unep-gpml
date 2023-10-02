@@ -4,9 +4,12 @@
 @import 'input.scss';
 @import 'dialog.scss';
 
+$ff1: var(--font-archia), sans-serif;
+$ff2: var(--font-dm-sans), sans-serif;
+
 body {
   color: $primaryDarkBlue;
-  font-family: var(--font-dm-sans), sans-serif;
+  font-family: $ff2;
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -97,6 +100,32 @@ h6,
 .p-s {
   font-size: $pfS;
   line-height: $plhS;
+}
+.w-semi {
+  font-weight: 600;
+}
+.w-bold {
+  font-weight: 700;
+}
+.caps-heading-m {
+  font-family: $ff1;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.24px;
+  text-transform: uppercase;
+  color: $primaryPurple;
+  line-height: 1.4;
+}
+.caps-heading-s {
+  font-family: $ff1;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 16px; /* 100% */
+  letter-spacing: 0.24px;
+  text-transform: uppercase;
+  color: $primaryPurple;
 }
 .container {
   margin: 0 40px;

@@ -58,6 +58,7 @@ const NewLayout = ({
   auth0Client,
   profile,
 }) => {
+  // console.log(profile, isAuthenticated)
   const { menuList } = UIStore.useState((s) => ({
     menuList: s.menuList,
   }))
@@ -90,7 +91,7 @@ const NewLayout = ({
               <h5>
                 Global Partnership
                 <br />
-                on Plastic Pollution1
+                on Plastic Pollution
                 <br />
                 and Marine Litter
               </h5>
@@ -129,13 +130,26 @@ const NewLayout = ({
               </ul>
             )}
             <nav>
-              <Button
-                type="primary"
-                size="small"
-                className="noicon hide-mobile"
-              >
-                Join Now
-              </Button>
+              {!isAuthenticated && (
+                <Button
+                  type="primary"
+                  size="small"
+                  className="noicon hide-mobile"
+                >
+                  Join Now
+                </Button>
+              )}
+              {isAuthenticated && (
+                <Link href="/workspace">
+                  <Button
+                    type="primary"
+                    size="small"
+                    className="noicon hide-mobile"
+                  >
+                    Workspace
+                  </Button>
+                </Link>
+              )}
               {width <= 768 && (
                 <div className="toggle-button">
                   <MenuToggle toggle={() => toggleOpen()} isOpen={isOpen} />

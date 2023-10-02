@@ -1,4 +1,5 @@
-@import "../../vars.scss";
+@import '../../vars.scss';
+@import '../../styles/vars.scss';
 
 $bg-dark-primary: #005b70;
 $bg-green-primary: #10f9b7;
@@ -14,7 +15,7 @@ $bg-green-primary: #10f9b7;
   }
 
   .workspaceContentWrapper {
-    background: url("../../images/workspace/workspace-background.png");
+    // background: url("../../images/workspace/workspace-background.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     // padding: 30px 0px 0px;
@@ -141,7 +142,7 @@ $bg-green-primary: #10f9b7;
     }
     :global {
       .slider-container {
-        background: url("../../images/workspace/slider-background.png"), #eef0f2;
+        background: url('../../images/workspace/slider-background.png'), #eef0f2;
         background-repeat: no-repeat;
         background-size: 100% 100%;
         height: 100%;
@@ -261,6 +262,40 @@ $bg-green-primary: #10f9b7;
           }
         }
       }
+      .plastic-strategies-list {
+        margin-top: 30px;
+        h2 {
+          margin-bottom: 30px;
+        }
+        ul {
+          li {
+            a {
+              width: 430px;
+              display: flex;
+              border-radius: 10px;
+              background: #fff;
+              box-shadow: 0px 4px 40px 0px rgba(0, 0, 0, 0.07);
+              min-height: 320px;
+              position: relative;
+              flex-direction: column;
+              padding: 20px;
+              color: $primaryDarkBlueText;
+              .compl {
+                position: absolute;
+                right: 20px;
+                top: 36px;
+                font-size: 24px;
+                font-style: normal;
+                font-weight: 700;
+                color: $primaryDarkBlueText;
+                b {
+                  color: $primaryPurple;
+                }
+              }
+            }
+          }
+        }
+      }
     }
 
     :global {
@@ -370,7 +405,7 @@ $bg-green-primary: #10f9b7;
         gap: 21px;
         padding: 37px 36px 41px 36px;
         border-radius: 10px;
-        background: url("../../images/workspace/dark-sea-bg-small.png")
+        background: url('../../images/workspace/dark-sea-bg-small.png')
           no-repeat bottom;
         background-size: cover;
       }
@@ -565,7 +600,7 @@ $bg-green-primary: #10f9b7;
         }
         &::after,
         &::before {
-          content: " ";
+          content: ' ';
           height: 0;
           width: 0;
           position: absolute;
@@ -653,7 +688,7 @@ $bg-green-primary: #10f9b7;
   @media (min-width: 1440px) {
     :global {
       .section-download .card {
-        background: url("../../images/workspace/dark-sea-bg-large.png")
+        background: url('../../images/workspace/dark-sea-bg-large.png')
           no-repeat bottom;
       }
     }
@@ -883,7 +918,7 @@ $bg-green-primary: #10f9b7;
         &:not(:first-child) {
           position: relative;
           &:after {
-            content: " ";
+            content: ' ';
             position: absolute;
             left: -20px;
             top: 0;
