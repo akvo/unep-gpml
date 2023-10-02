@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { Avatar, List, Modal, message } from 'antd'
 import sample from 'lodash/sample'
-import styles from './index.module.scss'
 import Button from '../../components/button'
 import api from '../../utils/api'
+import styles from './forum.module.scss'
 
 const ForumModal = ({ viewModal, setViewModal, initName }) => {
   const [requesting, setRequesting] = useState(false)
@@ -47,7 +47,7 @@ const ForumModal = ({ viewModal, setViewModal, initName }) => {
         </>
       }
       width={702}
-      open={viewModal.open}
+      visible={viewModal.open}
       className={styles.forumDetailsView}
       footer={
         <>

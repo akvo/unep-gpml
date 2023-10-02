@@ -4,8 +4,8 @@ import styles from './index.module.scss'
 import Button from '../../components/button'
 import { UIStore } from '../../store'
 import api from '../../utils/api'
-import ForumModal from './forum-modal'
-import ForumMembers from './forum-members'
+import ForumModal from '../../modules/forum/forum-modal'
+import ForumMembers from '../../modules/forum/forum-members'
 import MyForums from './my-forums'
 
 const Forum = () => {

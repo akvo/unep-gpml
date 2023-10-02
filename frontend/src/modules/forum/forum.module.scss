@@ -1,0 +1,86 @@
+@import '../../styles/vars.scss';
+
+.forumType {
+  font-family: var(--font-archia), sans-serif;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.24px;
+  text-transform: uppercase;
+  color: $primaryPurple;
+}
+.forumDesc {
+  color: $primaryDarkBlue4;
+  font-size: $fzXS;
+  line-height: $lhXS;
+  font-weight: 400;
+}
+.forumDetailsView {
+  :global {
+    .ant-modal-header {
+      padding: 24px 19px 20px;
+      .ant-modal-title {
+        h5 {
+          font-weight: 600;
+        }
+      }
+    }
+    .ant-modal-body {
+      height: 527px;
+      overflow-y: auto;
+      padding: 0 19px 24px;
+      h6 {
+        margin-top: 20px;
+        margin-bottom: 13px;
+      }
+      .members {
+        max-height: 311px;
+        .ant-list-item {
+          padding: 0 0 13px;
+          border-bottom: none;
+          .ant-list-item-meta-avatar {
+            margin-right: 13px;
+            .ant-avatar {
+              width: 40px;
+              height: 40px;
+              line-height: 40px;
+              .ant-avatar-string {
+                font-family: var(--font-archia);
+                font-size: $fzXXS;
+                font-weight: 600;
+              }
+              &.purple {
+                background-color: $primaryPurple;
+              }
+              &.green {
+                background-color: $primaryGreen;
+              }
+              &.blue {
+                background-color: $primaryBlue;
+              }
+              &.dark-blue {
+                background-color: $primaryDarkBlue;
+              }
+            }
+          }
+          .ant-list-item-meta-content {
+            .ant-list-item-meta-title,
+            .ant-list-item-meta-description {
+              color: #000;
+              font-family: var(--font-archia);
+              font-size: $fzXXS;
+              line-height: $lhXXS;
+            }
+            .ant-list-item-meta-title {
+              font-weight: 600;
+            }
+          }
+        }
+      }
+    }
+    .ant-modal-footer {
+      background-color: $primaryGrey;
+      padding: 18px 20px;
+    }
+  }
+}
