@@ -21,6 +21,7 @@ const newRoutes = [
   '/[type]/[id]',
   '/onboarding',
   '/community',
+  '/experts',
 ]
 const dynamicRoutePattern = /^\/\w+\/\d+$/
 

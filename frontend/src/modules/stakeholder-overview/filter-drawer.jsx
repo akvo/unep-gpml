@@ -315,6 +315,7 @@ const FilterDrawer = ({
                 multiCountryLabelCustomIcon={true}
                 countrySelectMode="multiple"
                 multiCountrySelectMode="multiple"
+                isCommunity={true}
               />
             </div>
           </Col>

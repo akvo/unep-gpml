@@ -25,6 +25,45 @@
   overflow: hidden;
   flex: 1;
   :global {
+    .header-filter-option {
+      .view-button {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border-radius: 30px;
+        font-weight: 500;
+        font-size: 10px;
+        line-height: 10px;
+        text-align: center;
+        color: white;
+        max-width: 98px;
+        background-color: unset;
+        border: 1px solid white;
+        min-height: 32px;
+        cursor: pointer;
+        transition: all 0.15s ease-out;
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+        .anticon {
+          width: 35px;
+          height: 35px;
+          svg {
+            width: 100%;
+            height: 100%;
+            path {
+              stroke: white;
+            }
+          }
+        }
+        svg {
+          path {
+            stroke: white;
+          }
+        }
+      }
+    }
+
     .stakeholder-item {
       background-color: rgba(255, 255, 255, 0.3);
       &:hover {
@@ -1032,6 +1071,85 @@
       .ui-header .sort-btn svg {
         width: 27px;
         height: 27px;
+      }
+    }
+    .country-filter-tab-wrapper {
+      .ant-tabs {
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: 0px 0px 4px rgb(0 0 0 / 25%);
+        border-radius: 5px;
+        .ant-tabs-nav-list {
+          .ant-tabs-tab {
+            flex: 0 0 50%;
+            margin-left: 0 !important;
+            border: none;
+            background: $primaryGrey;
+            padding: 10px 16px;
+            border-radius: 0px;
+            &:first-child {
+              border-radius: 5px 0px 0px 0px;
+            }
+            &:nth-child(2) {
+              border-radius: 0px 5px 0px 0px;
+            }
+            &.ant-tabs-tab-active {
+              background-color: #ffffff;
+            }
+            .ant-tabs-tab-btn {
+              font-weight: 600;
+              font-size: 16px;
+              line-height: 14px;
+              color: $primaryDarkBlue;
+              font-family: var(--font-dm-sans), sans-serif;
+            }
+          }
+        }
+        .ant-tabs-nav {
+          &::before {
+            border: none;
+          }
+          padding-bottom: 10px;
+          margin-bottom: 0px;
+        }
+        .ant-select {
+          width: 100%;
+        }
+        .ant-tabs-content-holder {
+          padding: 10px;
+        }
+        .ant-select-selector {
+          background: $primaryGrey !important;
+          border: 0 !important;
+          border-radius: 5px !important;
+          background-image: url('/search-icon.svg'),
+            url('/chevron-down-grey.svg') !important;
+          background-repeat: no-repeat !important;
+          background-position: calc(10px) center, calc(100% - 10px) center !important;
+        }
+        .ant-select-selection-overflow {
+          padding-left: 35px;
+          padding-top: 4px;
+          padding-bottom: 4px;
+
+          .ant-select-selection-item {
+            background-color: $primaryDarkBlue;
+            border-radius: 4px;
+            span {
+              color: white;
+            }
+          }
+        }
+        .ant-select-selection-placeholder {
+          font-weight: 600;
+          padding-left: 30px;
+          font-size: 16px;
+          color: $primaryDarkBlue;
+          font-family: var(--font-dm-sans), sans-serif;
+
+          @media (max-width: 540px) {
+            font-size: 14px;
+          }
+        }
       }
     }
   }
