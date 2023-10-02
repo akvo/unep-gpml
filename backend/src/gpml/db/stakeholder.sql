@@ -63,7 +63,9 @@ select
     s.reviewed_by,
     s.review_status,
     s.picture_id,
-    s.cv_id
+    s.cv_id,
+    s.chat_account_id,
+    s.chat_account_status
 from stakeholder s
 where s.id = :id;
 
@@ -89,7 +91,9 @@ select
     s.reviewed_by,
     s.review_status,
     s.picture_id,
-    s.cv_id
+    s.cv_id,
+    s.chat_account_id,
+    s.chat_account_status
 from stakeholder s
 where s.email = :email;
 
@@ -125,6 +129,7 @@ insert into stakeholder(
 --~ (when (contains? params :id) ",id")
 --~ (when (contains? params :picture_id) ", picture_id")
 --~ (when (contains? params :cv_id) ",cv_id")
+--~ (when (contains? params :chat_account_status) ",chat_account_status")
 ) values(
     :first_name,
     :last_name,
@@ -143,6 +148,7 @@ insert into stakeholder(
 --~ (when (contains? params :id) ",:id")
 --~ (when (contains? params :picture_id) ", :picture_id")
 --~ (when (contains? params :cv_id) ",:cv_id")
+--~ (when (contains? params :chat_account_status) ",:chat_account_status::USER_CHAT_ACCOUNT_STATUS")
 ) RETURNING id;
 
 -- :name update-stakeholder-role :! :n
@@ -175,6 +181,8 @@ update stakeholder set
 --~ (when (contains? params :picture_id) "picture_id= :picture_id,")
 --~ (when (contains? params :cv_id) "cv_id= :cv_id, ")
 --~ (when (contains? params :review_status) "review_status= :review_status::review_status,")
+--~ (when (contains? params :chat_account_id) "chat_account_id= :chat_account_id,")
+--~ (when (contains? params :chat_account_status) "chat_account_status= :chat_account_status::USER_CHAT_ACCOUNT_STATUS,")
     modified = now()
 where id = :id;
 
@@ -309,16 +317,24 @@ VALUES :t*:values RETURNING id, email;
 -- :name get-stakeholders :query :many
 -- :doc Get stakeholders with filters
 SELECT s.*, json_agg(json_build_object('id', t.id, 'tag', t.tag, 'tag_relation_category', st.tag_relation_category, 'tag_category', tg.category)) FILTER (WHERE t.id IS NOT NULL) AS tags
+--~(when (get (:related-entities params) :organisation) ", row_to_json(o.*) AS org")
+--~(when (get (:related-entities params) :picture-file) ", row_to_json(f.*) AS picture_file")
 FROM stakeholder s
 LEFT JOIN stakeholder_tag st ON st.stakeholder = s.id
 LEFT JOIN tag t ON st.tag = t.id
 LEFT JOIN tag_category tg ON t.tag_category = tg.id
+--~(when (get (:related-entities params) :organisation) " LEFT JOIN organisation o ON s.affiliation = o.id")
+--~(when (get (:related-entities params) :picture-file) " LEFT JOIN file f ON s.picture_id = f.id")
 WHERE 1=1
 --~(when (seq (get-in params [:filters :review-statuses])) " AND s.review_status = ANY(ARRAY[:v*:filters.review-statuses]::review_status[])")
 --~(when (seq (get-in params [:filters :ids])) " AND s.id IN (:v*:filters.ids)")
 --~(when (seq (get-in params [:filters :roles])) " AND s.role = ANY(ARRAY[:v*:filters.roles]::stakeholder_role[])")
 --~(when (seq (get-in params [:filters :search-text])) " AND (LOWER(s.first_name) ILIKE '%' || :filters.search-text || '%' OR LOWER(s.last_name) ILIKE '%' || :filters.search-text || '%' OR LOWER(s.email) ILIKE '%' || :filters.search-text || '%')")
+--~(when (seq (get-in params [:filters :chat-accounts-ids])) " AND s.chat_account_id IN (:v*:filters.chat-accounts-ids)")
 GROUP BY s.id
+--~(when (get (:related-entities params) :organisation) ", o.id")
+--~(when (get (:related-entities params) :picture-file) ", f.id")
+;
 
 -- :name delete-stakeholder* :execute :affected
 DELETE FROM stakeholder

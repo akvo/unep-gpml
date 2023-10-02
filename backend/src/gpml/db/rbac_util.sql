@@ -23,37 +23,37 @@ WITH RECURSIVE ancestors_of_context (
     parent
 ) AS (
     SELECT
-        id,
-        parent
+	id,
+	parent
     FROM
-        rbac_context rc
+	rbac_context rc
     WHERE
-        rc.resource_id = :resource-id
+	rc.resource_id = :resource-id
     UNION ALL
     SELECT
-        rc.id,
-        rc.parent
+	rc.id,
+	rc.parent
     FROM
-        rbac_context rc
-        INNER JOIN ancestors_of_context ao ON rc.id = ao.parent
+	rbac_context rc
+	INNER JOIN ancestors_of_context ao ON rc.id = ao.parent
 ),
 users_with_permission_granted AS (
     SELECT DISTINCT
-        (rra.user_id)
+	(rra.user_id)
     FROM
-        rbac_role_assignment rra
-        INNER JOIN ancestors_of_context ao ON ao.id = rra.context_id
-        INNER JOIN rbac_role_permission rrp ON rrp.role_id = rra.role_id
-        INNER JOIN rbac_permission rp ON rp.id = rrp.permission_id
+	rbac_role_assignment rra
+	INNER JOIN ancestors_of_context ao ON ao.id = rra.context_id
+	INNER JOIN rbac_role_permission rrp ON rrp.role_id = rra.role_id
+	INNER JOIN rbac_permission rp ON rp.id = rrp.permission_id
     WHERE
-        rp.name = :permission-name
-        AND rp.context_type_name = :context-type-name
-        AND rrp.permission_value = 1
+	rp.name = :permission-name
+	AND rp.context_type_name = :context-type-name
+	AND rrp.permission_value = 1
     UNION
     SELECT
-        user_id
+	user_id
     FROM
-        rbac_super_admin
+	rbac_super_admin
 )
 SELECT
     *
@@ -63,3 +63,10 @@ FROM
 -- :name unassign-all-roles :execute :affected
 DELETE FROM rbac_role_assignment
 WHERE user_id = :user-id;
+
+-- :name get-super-admins-details
+-- :doc Get all super-admin users details
+SELECT s.*
+FROM rbac_super_admin rsa
+JOIN stakeholder s
+ON rsa.user_id = s.id;
