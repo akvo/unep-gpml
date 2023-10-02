@@ -1,32 +1,42 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Card, List } from 'antd'
+import { Card, List, Modal, Popover, message } from 'antd'
+import { MoreOutlined } from '@ant-design/icons'
 import moment from 'moment'
+import Link from 'next/link'
 import Button from '../../components/button'
 import api from '../../utils/api'
+import styles from './index.module.scss'
 
-const MyForums = () => {
-  // const myDummies = [
-  //   {
-  //     title: 'Issue Briefs',
-  //     isPrivate: false,
-  //     newMessages: 11,
-  //     lastModifiedAt: '2023-09-25T14:48:00',
-  //   },
-  //   {
-  //     title: 'AFRIPAC',
-  //     isPrivate: true,
-  //     newMessages: 0,
-  //     lastModifiedAt: '2023-09-11T09:48:00',
-  //   },
-  //   {
-  //     title: 'Plastic Strategy South Africa',
-  //     isPrivate: true,
-  //     newMessages: 5,
-  //     lastModifiedAt: '2023-09-26T09:00:00',
-  //   },
-  // ]
+const MyForums = ({ handleOnView }) => {
   const [myForums, setMyForums] = useState([])
   const [loading, setLoading] = useState(true)
+  const [openPopover, setOpenPopover] = useState(null)
+
+  const requestToLeave = async (name) => {
+    await new Promise((resolve, _) => {
+      setTimeout(() => resolve(), 2000)
+    })
+    message.success(`You have left the channel ${name}`)
+    setOpenPopover(null)
+  }
+
+  const handleOnLeave = ({ name }) => {
+    setOpenPopover(null)
+    Modal.confirm({
+      title: name,
+      content: 'Are you sure you want to leave this channel?',
+      onOk: () => requestToLeave(name),
+      cancelButtonProps: {
+        type: 'link',
+        size: 'small',
+        ghost: true,
+      },
+      okButtonProps: {
+        size: 'small',
+      },
+      okType: 'default',
+    })
+  }
 
   const getMyForums = useCallback(async () => {
     try {
@@ -35,6 +45,22 @@ const MyForums = () => {
       setLoading(false)
     } catch (error) {
       console.error('myforums error:', error)
+      /**
+       * TODO
+       * Will remove it soon once `chat_account_id` is filled automatically when the admin approved
+       * https://akvo.slack.com/archives/C05GUNBF63D/p1695906778946219?thread_ts=1695888157.201689&cid=C05GUNBF63D
+       */
+      setMyForums([
+        {
+          id: '64f9af3ba1e81db09dc1fad3',
+          description: 'This is a test public channel.',
+          usersCount: 2,
+          name: 'PublicChannelTest',
+          lm: '2023-09-28T15:29:46.960Z',
+          msgs: 11,
+          t: 'c',
+        },
+      ])
       setLoading(false)
     }
   }, [])
@@ -59,36 +85,68 @@ const MyForums = () => {
           loading={loading}
           grid={{ column: 3, gutter: 20 }}
           dataSource={myForums}
-          renderItem={(item) => (
+          renderItem={(item, index) => (
             <List.Item>
               <Card>
                 <div className="flex my-forums">
                   <div className="channel my-forums">
-                    <span className="h-xs">
-                      {item.isPrivate ? 'private' : 'public'}
+                    <span className={styles.forumType}>
+                      {item.t === 'p' ? 'private ' : 'public '}channel
                     </span>
-                    <h5>{item.title}</h5>
+                    <h5>{item.name}</h5>
                   </div>
-                  <div className="new-messages">
-                    {item.newMessages > 0 && (
-                      <span className="p-m value">{item.newMessages}</span>
-                    )}
+                  <div className="popover-container">
+                    <Popover
+                      placement="bottomLeft"
+                      visible={openPopover === index}
+                      overlayClassName={styles.forumOptions}
+                      onClick={() => setOpenPopover(index)}
+                      content={
+                        <ul>
+                          <li>
+                            <Button
+                              type="link"
+                              onClick={() => {
+                                handleOnView(item)
+                                setOpenPopover(null)
+                              }}
+                            >
+                              View Details
+                            </Button>
+                          </li>
+                          <li>
+                            <Button
+                              type="link"
+                              onClick={() => handleOnLeave(item)}
+                            >
+                              Leave
+                            </Button>
+                          </li>
+                        </ul>
+                      }
+                      trigger="click"
+                    >
+                      <MoreOutlined rotate={90} />
+                    </Popover>
                   </div>
                 </div>
                 <div className="flex">
                   <div className="last-message">
                     <span className="label">Last message</span>
                     <p className="p-m value" suppressHydrationWarning>
-                      {moment(
-                        item.lastModifiedAt,
-                        'YYYY-MM-DD HH:mm:dd'
-                      ).fromNow()}
+                      {moment(item.lm).fromNow()}
                     </p>
                   </div>
                   <div>
-                    <Button size="small" withArrow="link">
-                      Chat
-                    </Button>
+                    <Link
+                      href={`${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/channel/${item.name}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Button size="small" withArrow="link">
+                        Chat
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </Card>

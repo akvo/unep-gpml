@@ -86,25 +86,15 @@
                 }
               }
             }
-            .new-messages {
+            .popover-container {
               width: 50%;
               display: flex;
               align-items: flex-end;
               flex-direction: column;
               gap: 8px;
-              .value {
-                width: fit-content;
-                display: inline-flex;
-                padding: 3px 9px;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 10px;
-                border-radius: 26px;
-                background-color: $systemError4;
-                font-family: var(--font-archia), sans-serif;
-                font-weight: 700;
-                color: $primaryWhite;
+              .anticon.anticon-more {
+                font-size: $fzM;
+                color: #d9d9d9;
               }
             }
             .last-message {
@@ -204,6 +194,26 @@
     .ant-modal-footer {
       background-color: $primaryGrey;
       padding: 18px 20px;
+    }
+  }
+}
+.forumOptions {
+  padding-top: 0 !important;
+  border-radius: 3px;
+  border: 1px solid $primaryDarkBlue2;
+  :global {
+    .ant-popover-arrow {
+      display: none;
+    }
+    .ant-popover-inner {
+      .ant-popover-inner-content {
+        padding: 15px 19px;
+        ul {
+          display: flex;
+          flex-direction: column;
+          gap: 17px;
+        }
+      }
     }
   }
 }
