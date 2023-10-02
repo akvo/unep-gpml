@@ -256,11 +256,13 @@ function MyApp({ Component, pageProps }) {
       auth0Client,
       profile,
       loginVisible,
-      setLoginVisible: () =>
+      setLoginVisible: (value) => {
+        console.log(value)
         setState((prevState) => ({
           ...prevState,
-          loginVisible: !prevState.loginVisible,
-        })),
+          loginVisible: value,
+        }))
+      },
       loadingProfile,
     }),
     [isAuthenticated, auth0Client, profile, loginVisible, loadingProfile]
