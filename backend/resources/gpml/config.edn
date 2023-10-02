@@ -253,6 +253,7 @@
                                          [""
                                           {:get {:summary "List tags grouped by category"
                                                  :swagger {:tags ["tag"]}
+                                                 :parameters {:query #ig/ref :gpml.handler.tag/get-all-query-params}
                                                  :handler #ig/ref :gpml.handler.tag/all}
                                            :post {:summary "Create a tag"
                                                   :swagger {:tags ["tag"]}
@@ -752,6 +753,7 @@
   :gpml.handler.tag/all {:db #ig/ref :duct.database/sql}
   :gpml.handler.tag/get-popular-topics-tags {:db #ig/ref :duct.database/sql}
   :gpml.handler.tag/get-popular-topics-tags-params {}
+  :gpml.handler.tag/get-all-query-params {}
   :gpml.handler.tag/post #ig/ref :gpml.config/common
   :gpml.handler.tag/post-params {}
   :gpml.handler.tag/put {:db #ig/ref :duct.database/sql}

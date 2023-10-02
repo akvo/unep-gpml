@@ -120,11 +120,11 @@
         created-tag-ids))))
 
 (defn all-tags
-  [db]
+  [db query]
   (reduce-kv (fn [m k v]
                (assoc m k (mapv #(dissoc % :category) v)))
              {}
-             (group-by :category (db.tag/all-tags db))))
+             (group-by :category (db.tag/all-tags db query))))
 
 (defn- api-opts->opts
   [{:keys [limit tags]}]
@@ -171,8 +171,8 @@
     (resp/response (popular-tags (:spec db) (api-opts->opts query)))))
 
 (defmethod ig/init-key :gpml.handler.tag/all [_ {:keys [db]}]
-  (fn [_]
-    (resp/response (all-tags (:spec db)))))
+  (fn [{{:keys [query]} :parameters}]
+    (resp/response (all-tags (:spec db) query))))
 
 (defmethod ig/init-key :gpml.handler.tag/put
   [_ config]
@@ -220,3 +220,11 @@
   {:body (-> dom.tag/Tag
              (util.malli/dissoc [:id])
              (mu/assoc :tag_category string?))})
+
+(def ^:private get-all-query-params
+  [:map
+   [:private {:optional true}
+    boolean?]])
+
+(defmethod ig/init-key :gpml.handler.tag/get-all-query-params [_ _]
+  get-all-query-params)
