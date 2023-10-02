@@ -186,6 +186,13 @@
                  channels)]
             (assoc result :channels updated-channels)))))))
 
+(defn remove-user-from-channel
+  [{:keys [chat-adapter]} chat-account-id channel-id channel-type]
+  (chat/remove-user-from-channel chat-adapter
+                                 chat-account-id
+                                 channel-id
+                                 channel-type))
+
 (defn send-private-channel-invitation-request
   [{:keys [db mailjet-config]} user channel-name]
   (let [super-admins (db.rbac-util/get-super-admins-details (:spec db) {})]
