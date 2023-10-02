@@ -185,6 +185,54 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
+(defn- get-public-channel-users
+  [{:keys [logger api-key api-user-id] :as adapter} channel-id opts]
+  (try
+    (let [query-params (assoc opts :room-id channel-id)
+          {:keys [status body]}
+          (http-client/do-request logger
+                                  {:url (build-api-endpoint-url adapter "/channels.members")
+                                   :method :get
+                                   :query-params (cske/transform-keys ->camelCaseString query-params)
+                                   :headers (get-auth-headers api-key api-user-id)
+                                   :as :json-keyword-keys})]
+      (if (<= 200 status 299)
+        {:success? true
+         :users (cske/transform-keys ->kebab-case (:members body))}
+        {:success? false
+         :reason :failed-to-get-public-channels
+         :error-details body}))
+    (catch Throwable t
+      (log logger :error :failed-to-get-public-channels {:exception-message (ex-message t)
+                                                         :stack-trace (map str (.getStackTrace t))})
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
+
+(defn- get-private-channel-users
+  [{:keys [logger api-key api-user-id] :as adapter} channel-id opts]
+  (try
+    (let [query-params (assoc opts :room-id channel-id)
+          {:keys [status body]}
+          (http-client/do-request logger
+                                  {:url (build-api-endpoint-url adapter "/groups.members")
+                                   :method :get
+                                   :query-params (cske/transform-keys ->camelCaseString query-params)
+                                   :headers (get-auth-headers api-key api-user-id)
+                                   :as :json-keyword-keys})]
+      (if (<= 200 status 299)
+        {:success? true
+         :users (cske/transform-keys ->kebab-case (:members body))}
+        {:success? false
+         :reason :failed-to-get-public-channels
+         :error-details body}))
+    (catch Throwable t
+      (log logger :error :failed-to-get-public-channels {:exception-message (ex-message t)
+                                                         :stack-trace (map str (.getStackTrace t))})
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
+
 (defn- get-public-channels*
   [{:keys [logger api-domain-url api-key api-user-id] :as adapter} opts]
   (try
@@ -237,8 +285,19 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
+(defn- add-channel-details
+  [{:keys [logger api-domain-url] :as adapter} channel]
+  (let [result (if (= (:t channel) "c")
+                 (get-public-channel-users adapter (:id channel) {})
+                 (get-private-channel-users adapter (:id channel) {}))]
+    (if (:success? result)
+      (add-channel-avatar-url api-domain-url (assoc channel :users (:users result)))
+      (do
+        (log logger :error :failed-to-get-channel-users result)
+        (add-channel-avatar-url api-domain-url channel)))))
+
 (defn- get-all-channels*
-  [{:keys [logger api-domain-url api-key api-user-id] :as adapter} opts]
+  [{:keys [logger api-key api-user-id] :as adapter} opts]
   (try
     (let [query-params (cond-> {}
                          (:name opts)
@@ -257,7 +316,7 @@
         {:success? true
          :channels (->> (:rooms body)
                         (cske/transform-keys ->kebab-case)
-                        (map (partial add-channel-avatar-url api-domain-url)))}
+                        (map (partial add-channel-details adapter)))}
         {:success? false
          :reason :failed-to-get-all-channels
          :error-details body}))
