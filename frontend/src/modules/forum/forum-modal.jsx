@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Link from 'next/link'
 import { Avatar, List, Modal, message } from 'antd'
 import sample from 'lodash/sample'
 import Button from '../../components/button'
@@ -62,15 +61,9 @@ const ForumModal = ({ viewModal, setViewModal, initName }) => {
               Request to Join
             </Button>
           ) : (
-            <Link
-              href={`${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/channel/${viewModal?.data?.name}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button withArrow="link" size="small">
-                View channel
-              </Button>
-            </Link>
+            <Button withArrow="link" size="small">
+              View channel
+            </Button>
           )}
         </>
       }
