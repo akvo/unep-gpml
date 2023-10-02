@@ -5,7 +5,7 @@ import moment from 'moment'
 import Link from 'next/link'
 import Button from '../../components/button'
 import api from '../../utils/api'
-import styles from './index.module.scss'
+import styles from './forum.module.scss'
 
 const MyForums = ({ handleOnView }) => {
   const [myForums, setMyForums] = useState([])

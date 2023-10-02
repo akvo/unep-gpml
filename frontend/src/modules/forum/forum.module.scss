@@ -84,3 +84,23 @@
     }
   }
 }
+.forumOptions {
+  padding-top: 0 !important;
+  border-radius: 3px;
+  border: 1px solid $primaryDarkBlue2;
+  :global {
+    .ant-popover-arrow {
+      display: none;
+    }
+    .ant-popover-inner {
+      .ant-popover-inner-content {
+        padding: 15px 19px;
+        ul {
+          display: flex;
+          flex-direction: column;
+          gap: 17px;
+        }
+      }
+    }
+  }
+}
