@@ -7,6 +7,9 @@
             [gpml.service.chat :as srv.chat]
             [integrant.core :as ig]))
 
+(def ^:private channel-types
+  #{"c" "p"})
+
 (def ^:private set-user-account-active-status-params-schema
   [:map
    [:chat_account_status
@@ -39,6 +42,19 @@
     [:vector
      {:decode/string (fn [x] (if (string? x) [x] x))}
      [:enum "c" "p"]]]])
+
+(def ^:private remove-user-from-channel-params-schema
+  [:map
+   [:channel_id
+    {:swagger {:description "The channel ID"
+               :type "string"
+               :allowEmptyValue false}}
+    [:string {:min 1}]]
+   [:channel_type
+    {:swagger {:description "The channel type: c = public, p = private"
+               :type "string"
+               :enum channel-types}}
+    (apply conj [:enum] channel-types)]])
 
 (defn- create-user-account
   [config {:keys [user]}]
@@ -123,6 +139,17 @@
         (r/ok {})
         (r/server-error (dissoc result :success?))))))
 
+(defn- remove-user-from-channel
+  [config {:keys [user parameters]}]
+  (let [{:keys [channel_id channel_type]} (:body parameters)
+        result (srv.chat/remove-user-from-channel config
+                                                  (:chat_account_id user)
+                                                  channel_id
+                                                  channel_type)]
+    (if (:success? result)
+      (r/ok {})
+      (r/server-error (dissoc result :success?)))))
+
 (defmethod ig/init-key :gpml.handler.chat/post
   [_ config]
   (fn [req]
@@ -169,3 +196,12 @@
 (defmethod ig/init-key :gpml.handler.chat/send-private-channel-invitation-request-params
   [_ _]
   {:body send-private-channel-invitation-request-params-schema})
+
+(defmethod ig/init-key :gpml.handler.chat/remove-user-from-channel
+  [_ config]
+  (fn [req]
+    (remove-user-from-channel config req)))
+
+(defmethod ig/init-key :gpml.handler.chat/remove-user-from-channel-params
+  [_ _]
+  {:body remove-user-from-channel-params-schema})
