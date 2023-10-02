@@ -257,13 +257,13 @@ const Workspace = ({ profile }) => {
                 <li>
                   <a href="#">
                     <div className="caps-heading-s">plastic strategy</div>
-                    <h4 className="h-l">South Africa</h4>
-                    <div className="compl">
-                      <b>0</b>
-                      <span>/6</span>
+                    <h4 className="h-l w-semi">South Africa</h4>
+                    <div className="compl">12%</div>
+                    <div className="progress-bar">
+                      <div className="fill" style={{ width: '20%' }}></div>
                     </div>
                     <ul>
-                      <li>Project team</li>
+                      <li className="checked">Project team</li>
                       <li>Consultation process</li>
                       <li>Legislation & policy</li>
                       <li>Nation Source Inventory</li>
