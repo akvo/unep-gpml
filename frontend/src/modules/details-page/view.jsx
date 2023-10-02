@@ -92,11 +92,14 @@ const renderCountries = (data, countries) => {
 }
 
 const DetailsView = ({
+  serverData,
+  serverTranslations,
   type,
   id,
   setLoginVisible,
   setFilterMenu,
   isAuthenticated,
+  isServer,
 }) => {
   const [showLess, setShowLess] = useState(true)
   const {
@@ -162,8 +165,7 @@ const DetailsView = ({
   }
 
   useEffect(() => {
-    type &&
-      id &&
+    if (type && id && !isServer) {
       api
         .get(`/detail/${type.replace('-', '_')}/${id}`)
         .then((d) => {
@@ -193,6 +195,21 @@ const DetailsView = ({
           console.error(err)
           // redirectError(err, history);
         })
+    } else {
+      setData(serverData)
+      setTranslations({
+        ...serverTranslations,
+        summary: serverTranslations.abstract
+          ? serverTranslations.abstract
+          : serverTranslations.remarks
+          ? serverTranslations.remarks
+          : serverTranslations.description
+          ? serverTranslations.description
+          : serverTranslations.summary,
+      })
+      getComment(id, type.replace('-', '_'))
+    }
+
     if (profile.reviewStatus === 'APPROVED') {
       setTimeout(() => {
         api.get(`/favorite/${type?.replace('-', '_')}/${id}`).then((resp) => {

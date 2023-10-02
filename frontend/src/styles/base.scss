@@ -116,6 +116,7 @@ h6,
   color: white;
   z-index: 20;
   top: 0;
+  transition: background 0.27s ease-out;
   .container {
     .logo-container {
       margin-left: -15px;
@@ -127,20 +128,50 @@ h6,
       margin-top: -14px;
     }
   }
+  .logo-container {
+    margin-top: -14px;
+    display: flex;
+    position: absolute;
+    .circle {
+      svg path {
+        transition: fill 0.27s ease-out;
+      }
+    }
+    h5 {
+      white-space: nowrap;
+      font-size: 14px;
+      line-height: 1.2;
+      font-weight: 500;
+      font-family: var(--font-dm-sans), sans-serif;
+      color: #fff;
+      margin-left: 7px;
+      margin-top: 10px;
+      transition: color 0.27s ease-out;
+      // font-family: ;
+    }
+  }
   @media screen and (max-width: $bpMobile) {
     height: 70px;
     padding: 12px 0;
     .logo-container {
       margin-top: -3px;
       margin-left: -5px;
-      img {
-        height: 50px;
-        object-fit: contain;
-        object-position: 0 0;
-        // width: 50px;
+      svg {
+        height: auto;
+        width: 53px;
       }
-      width: 150px;
-      overflow: hidden;
+      h5 {
+        font-size: 12px;
+        margin-top: 6px;
+      }
+      // img {
+      //   height: 50px;
+      //   object-fit: contain;
+      //   object-position: 0 0;
+      //   // width: 50px;
+      // }
+      // width: 150px;
+      // overflow: hidden;
     }
   }
   .container,
@@ -156,6 +187,312 @@ h6,
     .ant-btn-primary {
       margin-top: 0px;
     }
+
+    @media screen and (max-width: $bpMobile) {
+      display: flex;
+      align-items: center;
+      button {
+        margin-right: 20px;
+      }
+
+      .toggle-button {
+        width: 23px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        svg {
+          path {
+            stroke: white;
+          }
+        }
+      }
+    }
+  }
+  .ant-menu {
+    background: transparent;
+    border: none;
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    line-height: normal;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 53px;
+    box-shadow: none;
+    li {
+      line-height: normal;
+      height: fit-content;
+
+      &.selected {
+        a {
+          span::after {
+            width: 100%;
+          }
+          svg {
+            transform: rotate(180deg);
+          }
+        }
+      }
+
+      a {
+        font-family: var(--font-archia), sans-serif;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        color: white;
+        cursor: pointer;
+        display: inline-block;
+        display: flex;
+        span {
+          &::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 3px;
+            background: $primaryGreen5;
+            transform: translateY(3px);
+            transition: width 0.3s;
+          }
+        }
+        svg {
+          margin-left: 12px;
+          margin-top: 7px;
+          transition: all 0.3s ease-out;
+        }
+      }
+    }
+  }
+  &.opened {
+    background-color: #fff;
+    color: $primaryDarkBlue;
+    .logo-container {
+      .circle {
+        color: $primaryGreen7;
+      }
+      h5 {
+        color: $primaryDarkBlue;
+      }
+    }
+    ul {
+      li a {
+        color: $primaryDarkBlue;
+      }
+    }
+  }
+}
+.navigation {
+  .sub-menu {
+    color: white;
+    .p-m {
+      color: white;
+      font-weight: 600;
+      display: inline-block;
+      border-bottom: 1px solid $primaryGreen;
+      padding-bottom: 8px;
+      margin-bottom: 30px;
+    }
+    ul {
+      padding: 0;
+    }
+    .sub-menu-item {
+      padding-bottom: 30px;
+      min-height: 95px;
+      a {
+        display: flex;
+        align-items: flex-start;
+      }
+      .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.12s ease-in;
+        @media screen and (max-width: $bpMobile) {
+          width: 24px;
+        }
+      }
+      .content {
+        display: flex;
+        flex-direction: column;
+        margin-left: 20px;
+        justify-content: center;
+        b {
+          font-family: var(--font-archia), sans-serif;
+          font-weight: 400;
+          color: white;
+          padding-bottom: 4px;
+        }
+        span {
+          color: rgba(255, 255, 255, 0.47);
+          font-family: var(--font-archia), sans-serif;
+          font-size: 12px;
+          font-weight: 400;
+        }
+        .p-s {
+          @media screen and (max-width: $bpMobile) {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}
+.animation-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 9;
+  overflow: hidden;
+  .slide-menu {
+    overflow-y: scroll;
+    height: 100%;
+  }
+  .toggle-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    padding: 12px 0;
+    margin: 0 25px;
+    position: relative;
+    button {
+      padding-left: 0px !important;
+      svg {
+        transform: rotate(180deg);
+      }
+    }
+    svg {
+      circle {
+        fill: rgba(127, 115, 255, 0.2);
+      }
+      path {
+        stroke: white;
+      }
+    }
+  }
+  .navigation-container {
+    padding: 40px 0px;
+    margin: 0 25px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    .sub-menu-item {
+      min-height: auto;
+      margin-bottom: 0px;
+    }
+    h2 {
+      color: white;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      text-transform: capitalize;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid $primaryGreen5;
+    }
+    .social-links-container {
+      margin-bottom: 30px;
+      h6 {
+        font-family: var(--font-dm-sans), sans-serif;
+        color: white;
+        text-align: center;
+        padding-bottom: 20px;
+      }
+      .social-links {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        a {
+          color: white;
+        }
+      }
+    }
+  }
+  ul {
+    padding: 0px;
+    width: 100%;
+    flex: 1;
+    li {
+      list-style: none;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      .sub-menu {
+        width: 100%;
+        border-radius: 25.916px;
+        border: 1.205px solid rgba(255, 255, 255, 0.19);
+        background: rgba(255, 255, 255, 0.01);
+        backdrop-filter: blur(8.136363983154297px);
+        overflow: hidden;
+        padding: 0px 14px;
+        .header {
+          display: flex;
+          width: 100%;
+          height: 45px;
+          align-items: center;
+          gap: 10px;
+          justify-content: space-between;
+          .header-icon {
+            display: inline-block;
+            transform-origin: center;
+            width: 32px;
+            height: 32px;
+            &.open {
+              circle {
+                fill: $primaryPurple;
+              }
+            }
+          }
+        }
+        .p-s {
+          font-weight: 600;
+          color: white;
+          text-transform: capitalize;
+        }
+        svg {
+          circle {
+            fill: rgba(127, 115, 255, 0.2);
+          }
+        }
+        .collapse-list {
+          padding-top: 20px;
+        }
+      }
+    }
+  }
+  .mobile-menu-background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    background: $primaryDarkBlue;
+  }
+}
+.fullscreen-nav {
+  position: fixed;
+  top: 90px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  background: url('/menu-background.png');
+  background-size: cover;
+  button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    margin-left: auto;
+    position: relative;
+    margin-top: 20px;
+    margin-right: 20px;
   }
 }
 
