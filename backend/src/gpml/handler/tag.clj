@@ -1,13 +1,13 @@
 (ns gpml.handler.tag
   (:require [clojure.string :as str]
             [gpml.db.tag :as db.tag]
+            [gpml.domain.types :as dom.types]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
             [gpml.service.permissions :as srv.permissions]
+            [gpml.util :as util]
             [integrant.core :as ig]
             [ring.util.response :as resp]))
-
-(def ^:const review-status [:APPROVED :SUBMITED :REJECTED])
 
 (def ^:const get-popular-topics-tags-params
   [:map
@@ -33,12 +33,18 @@
                :type "integer"
                :allowEmptyValue true}}
     [:fn pos-int?]]
+   [:private
+    {:optional true
+     :swagger {:description "Boolean to set if a tag is private"
+               :type "boolean"
+               :allowEmptyValue false}}
+    [:boolean]]
    [:tag_category
     {:optional true
      :swagger {:description "The tag's category. It must exist."
-               :type "string"
-               :allowEmptyValue true}}
-    [:string {:min 1}]]
+               :type "integer"
+               :allowEmptyValue false}}
+    [:fn pos-int?]]
    [:reviewed_by
     {:optional true
      :swagger {:description "The tag's reviewer ID."
@@ -47,10 +53,11 @@
     [:fn pos-int?]]
    [:review_status
     {:optional true
-     :swagger {:description (str "The tag's review status. Allowed values: " (str/join "," (map name review-status)))
-               :type "string"
-               :allowEmptyValue true}}
-    (vec (cons :enum review-status))]
+     :swagger
+     {:description "Review status of the Tag"
+      :type "string"
+      :enum dom.types/review-statuses}}
+    (apply conj [:enum] dom.types/review-statuses)]
    [:definition
     {:optional true
      :swagger {:description "Brief definition about the tag"
@@ -119,7 +126,10 @@
   [{:keys [db]} req]
   (let [body-params (get-in req [:parameters :body])]
     {:updated-tags (db.tag/update-tag (:spec db) {:id (:id body-params)
-                                                  :updates (dissoc body-params :id)})}))
+                                                  :updates (-> body-params
+                                                               (dissoc :id)
+                                                               (util/update-if-not-nil :review_status keyword)
+                                                               db.tag/tag->db-tag)})}))
 
 (defmethod ig/init-key :gpml.handler.tag/by-topic [_ {:keys [db]}]
   (fn [{{topic-type :topic-type} :path-params}]
