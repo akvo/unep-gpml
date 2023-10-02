@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
-import { Row, Col, Button, Input, Space, Select } from 'antd'
+import { Row, Col, Button, Input } from 'antd'
 import { SearchOutlined, AppstoreOutlined } from '@ant-design/icons'
 import styles from './header.module.scss'
-import { useHistory } from 'react-router-dom'
 import { KNOWLEDGE_LIBRARY } from '../map/map'
 import { eventTrack } from '../../utils/misc'
-import DownArrow from '../../images/knowledge-library/chevron-down.svg'
 import { useRouter } from 'next/router'
 import GlobeIcon from '../../images/transnational.svg'
+import { SearchIcon, FilterIcon } from '../../components/icons'
 
 const KnowledgeLibrarySearch = ({
   router,
@@ -65,7 +64,6 @@ const StakeholderOverviewSearch = ({
   const handleSearch = (src) => {
     eventTrack('Knowledge library', 'Search', 'Button')
     if (src) {
-      // router.push(`?q=${src.trim()}`);
       router.push(
         {
           pathname: router.pathname,
@@ -98,9 +96,9 @@ const StakeholderOverviewSearch = ({
         {isShownForm && (
           <Input
             className="input-src"
-            placeholder="Search the community"
+            placeholder="Search profiles"
             value={search}
-            suffix={<SearchOutlined />}
+            prefix={<SearchIcon />}
             onPressEnter={(e) => handleSearch(e.target.value)}
             onChange={(e) => {
               setSearch(e.target.value)
@@ -117,20 +115,14 @@ const StakeholderOverviewSearch = ({
       </div>
       <div className="src desktop-src">
         <Input
+          size="small"
           className="input-src"
-          placeholder="Search the community"
+          placeholder="Search profiles"
           value={search}
-          suffix={<SearchOutlined />}
+          prefix={<SearchIcon />}
           onPressEnter={(e) => handleSearch(e.target.value)}
           onChange={(e) => {
             setSearch(e.target.value)
-            // if (e.target.value.length >= 3) {
-            //   router.push(`?q=${e.target.value.trim()}`);
-            //   updateQuery("q", e.target.value.trim());
-            // }
-            // if (e.target.value.length === 0) {
-            //   updateQuery("q", "");
-            // }
           }}
         />
       </div>
@@ -151,32 +143,6 @@ const Header = ({
   const path = router.pathname
 
   const [isShownForm, setIsShownForm] = useState(false)
-
-  const selectionValue = (
-    <>
-      <div className="selection-value">
-        <button className="select-button">
-          <div className="selection-arrow">
-            <DownArrow />
-          </div>
-        </button>
-        <span className="label text-white">{`${view} view`}</span>
-        {view === 'map' ? (
-          <img
-            src="/knowledge-library/globe-outline.svg"
-            alt="globe-icon"
-            className="filter-img"
-          />
-        ) : (
-          <img
-            src="/knowledge-library/topic-view-icon.svg"
-            alt="topic-icon"
-            className="filter-img"
-          />
-        )}
-      </div>
-    </>
-  )
 
   return (
     <Col span={24} className={`${styles.uiHeader} ui-header`}>
@@ -215,12 +181,8 @@ const Header = ({
                   {filterTagValue.length > 0 && (
                     <div className="filter-status">{filterTagValue.length}</div>
                   )}
-                  <img
-                    src="/knowledge-library/filter-icon.svg"
-                    className="filter-icon"
-                    alt="config-icon"
-                  />
-                  Filter
+                  <FilterIcon />
+                  Filters
                 </Button>
               </div>
               {/* {filterTagValue.length > 0 && (

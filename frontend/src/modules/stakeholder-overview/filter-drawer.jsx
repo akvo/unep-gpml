@@ -269,7 +269,7 @@ const FilterDrawer = ({
           />
           {/* Location */}
           <Col span={24} style={{ paddingTop: 5, paddingBottom: 5 }}>
-            <Space align="middle">
+            <Space align="middle" style={{ alignItems: 'center' }}>
               <div className="filter-title">Location</div>
               {!isEmpty(query?.country) ? (
                 <Tag

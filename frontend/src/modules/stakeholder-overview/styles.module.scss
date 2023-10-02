@@ -42,8 +42,16 @@
         min-height: 32px;
         cursor: pointer;
         transition: all 0.15s ease-out;
+        background-color: $primaryDarkBlue;
         &:hover {
-          background-color: rgba(255, 255, 255, 0.2);
+          background-color: transparent;
+          color: $primaryDarkBlue;
+          border-color: $primaryDarkBlue;
+          svg {
+            path {
+              stroke: $primaryDarkBlue;
+            }
+          }
         }
         .anticon {
           width: 35px;
@@ -96,10 +104,6 @@
       align-items: center;
     }
 
-    span.ant-input-affix-wrapper.input-src {
-      border-radius: 30px;
-    }
-
     // Card
     .ant-card-body {
       padding: 0;
@@ -131,19 +135,24 @@
       padding-bottom: 34.66px;
       padding-left: 30px;
       padding-right: 30px;
-      background-color: white;
 
       .person-role {
         display: none;
       }
       .result-number {
-        padding-top: 0.8em;
-        padding-bottom: 0.8em;
-        max-width: max-content;
+        padding-top: 20px;
+        padding-bottom: 20px;
         margin: auto;
         font-size: 14px;
         text-align: center;
         font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+        span {
+          color: $primaryDarkBlue3;
+          font-size: $fzXS;
+          font-weight: 700;
+        }
       }
       .loading {
         font-weight: normal;
@@ -155,24 +164,28 @@
       }
     }
 
+    .title {
+      font-size: $fzXS;
+      text-transform: uppercase;
+      margin-bottom: 13px;
+      text-align: center;
+      line-height: $lhXS;
+      font-weight: 700;
+      color: $primaryPurple;
+      letter-spacing: 3.2px;
+      @media (max-width: 540px) {
+        font-size: 18px;
+      }
+      .ant-typography {
+        color: $primaryDarkBlue;
+        letter-spacing: 1px;
+      }
+    }
+
     .card-container {
       padding: 16px 5px 34px 5px;
-
-      #title {
-        font-size: $fzXS;
-        text-transform: uppercase;
-        margin-bottom: 13px;
-        text-align: center;
-        line-height: $lhXS;
-        font-weight: 700;
-        color: $primaryPurple;
-        letter-spacing: 3.2px;
-        @media (max-width: 540px) {
-          font-size: 18px;
-        }
-      }
       &.green {
-        background-color: $primaryGrey;
+        background-color: white;
       }
 
       .profile-card {
@@ -522,7 +535,7 @@
     }
 
     span.ant-input-affix-wrapper.input-src {
-      border-radius: 30px;
+      border-radius: 8px;
     }
 
     .site-drawer-render-in-current-wrapper,
@@ -728,16 +741,21 @@
           flex-direction: row-reverse;
           align-items: center;
           align-self: baseline;
-          color: $primaryPurple;
-          border: 1px solid $primaryPurple;
+          color: $primaryDarkBlue;
+          border: 1px solid $primaryDarkBlue;
           border-radius: 20px;
           margin-bottom: 8px;
           cursor: pointer;
           &:hover {
-            background-color: $primaryPurple;
+            background-color: $primaryDarkBlue;
+            color: white;
+
+            .anticon-close {
+              color: white;
+            }
           }
           .anticon-close {
-            color: $primaryPurple;
+            color: $primaryDarkBlue;
             font-weight: bold;
             padding-right: 3px;
           }
@@ -856,7 +874,6 @@
       grid-template-columns: repeat(1, 1fr);
       column-gap: 34px;
       row-gap: 20px;
-      max-width: fit-content;
       margin: auto;
     }
 
@@ -872,15 +889,15 @@
 
     @media (min-width: 540px) {
       .card-container {
-        padding: 16px 30px 34px 30px;
+        padding: 20px 30px 34px 30px;
       }
     }
 
     @media (min-width: 700px) {
       .card-wrapper {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
       }
-      #title {
+      .title {
         text-align: left !important;
       }
     }
@@ -889,11 +906,6 @@
       .profile-card {
         max-width: 100%;
         min-height: 155px;
-      }
-      .card-wrapper,
-      #title {
-        max-width: 1440px;
-        margin: auto;
       }
 
       .card-wrapper {
@@ -905,13 +917,8 @@
       .profile-card {
         max-width: 100%;
       }
-      .card-wrapper,
-      #title {
-        max-width: 1440px;
-        margin: auto;
-      }
 
-      #title {
+      .title {
         padding-left: 0;
       }
 
@@ -1007,7 +1014,7 @@
       }
       .card-container {
         padding: 0px 10px 15px 10px;
-        #title {
+        .title {
           margin-left: 1em !important;
           font-size: 1.2em;
           margin-bottom: 0.4em;

@@ -452,7 +452,7 @@ const StakeholderOverview = ({
                   {/* Suggested profiles */}
                   {isValidUser && !isEmpty(suggestedProfiles) && (
                     <Col className="card-container green">
-                      <h3 id="title" className="title text-white ui">
+                      <h3 className="title text-white ui">
                         Suggested profiles
                       </h3>
 
@@ -488,11 +488,14 @@ const StakeholderOverview = ({
                     ) : isLoaded() && !loading && !isEmpty(results) ? (
                       <>
                         <div className="result-number">
-                          {resultCount > pageSize + pageNumber
-                            ? resultCounts
-                            : itemCount}{' '}
-                          of {resultCount || 0} result
-                          {resultCount > 1 ? 's' : ''}
+                          <h3 className="title text-white ui">All profiles</h3>
+                          <span>
+                            {resultCount > pageSize + pageNumber
+                              ? resultCounts
+                              : itemCount}{' '}
+                            of {resultCount || 0} result
+                            {resultCount > 1 ? 's' : ''}
+                          </span>
                         </div>
                         <div className="card-wrapper ui">
                           {results.map((profile) => (

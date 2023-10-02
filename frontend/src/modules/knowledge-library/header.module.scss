@@ -10,8 +10,8 @@
 
 .uiHeader {
   // background-color: rgba(0, 91, 112, 0.8);
-  background-color: $primaryDarkBlue5;
-  padding: 5px 20px 5px;
+  background-color: $primaryGrey;
+  padding: 10px 20px 10px;
   min-height: 70px;
   display: flex;
   align-items: center;
@@ -25,6 +25,23 @@
     .desktop-src {
       display: block;
       flex: 1;
+      .ant-input-affix-wrapper {
+        background-color: white;
+        .ant-input-prefix {
+          svg {
+            path {
+              fill: $primaryDarkBlue;
+            }
+          }
+        }
+        input {
+          background-color: white;
+          color: $primaryDarkBlue;
+          &::placeholder {
+            color: $primaryDarkBlue !important;
+          }
+        }
+      }
     }
 
     .ant-space.ant-space-horizontal.ant-space-align-center
@@ -35,15 +52,27 @@
     .filter-icon-button {
       border: none;
       display: flex;
-      color: white !important;
+      color: $primaryDarkBlue !important;
+      text-decoration-line: none !important;
       font-size: 16px;
       font-weight: 600;
       padding: 4px 15px !important;
-      margin-left: 10px;
       span {
         margin-left: 5px;
         display: inline-block;
         transform: translateY(2px);
+      }
+      svg {
+        path {
+          stroke: #4147d5 !important;
+        }
+      }
+      &:hover {
+        svg {
+          path {
+            transform: none !important;
+          }
+        }
       }
     }
 
@@ -146,13 +175,14 @@
         font-weight: 700;
         height: 15px;
         border-radius: 8px;
-        top: 0;
-        left: 32px;
+        top: 10px;
+        left: 35px;
         font-size: 10px;
         line-height: 15px;
         padding: 0 2px;
         min-width: 15px;
         text-align: center;
+        z-index: 9;
       }
       .filter-icon {
         display: block;
@@ -167,16 +197,6 @@
         line-height: 30px;
       }
 
-      .ant-input-affix-wrapper {
-        padding-left: 10px;
-        padding-right: 0px;
-        padding-top: 0px;
-        padding-bottom: 0px;
-        overflow: auto;
-        .ant-input-suffix {
-          margin-right: 8px;
-        }
-      }
       @media (min-width: 471px) and (max-width: 735px) {
         max-width: 400px;
       }
@@ -322,6 +342,7 @@
         display: block;
         max-width: fit-content;
         max-width: -moz-fit-content;
+        background-color: white;
       }
       .desktop-src {
         display: none;
