@@ -29,6 +29,7 @@ const FilterDrawer = ({
   multiCountryCountries,
   setMultiCountryCountries,
   renderFilterTag,
+  history,
 }) => {
   const {
     seeking,
@@ -307,6 +308,7 @@ const FilterDrawer = ({
                   updateQuery,
                   multiCountryCountries,
                   setMultiCountryCountries,
+                  history,
                 }}
                 country={query?.country?.map((x) => parseInt(x)) || []}
                 multiCountry={

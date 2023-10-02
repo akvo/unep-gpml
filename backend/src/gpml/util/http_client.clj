@@ -3,7 +3,7 @@
             [diehard.core :as dh]
             [duct.logger :refer [log]]
             [gpml.util :as util]
-            [jsonista.core :as json]))
+            [gpml.util.json :as json]))
 
 (def ^:const default-timeout
   "Default timeout value for an connection attempt"
@@ -61,7 +61,7 @@
 
 (defmethod client/coerce-response-body :json-keyword-keys
   [_req resp]
-  (util/update-if-not-nil resp :body json/read-value json/keyword-keys-object-mapper))
+  (util/update-if-not-nil resp :body json/<-json))
 
 (defn do-request
   "Like [[clj-http.client/request]] but with retries. Optionally accepts
