@@ -3,6 +3,7 @@ import { Col, Space, Tag, Select } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import styles from './style.module.scss'
 import { SearchIcon } from '../icons'
+
 const MultipleSelectFilter = ({
   title,
   options,

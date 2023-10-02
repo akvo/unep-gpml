@@ -27,6 +27,7 @@ const CountryTransnationalFilter = ({
   setDisable,
   fetch,
   history,
+  isCommunity,
 }) => {
   const { countries, transnationalOptions, landing } = UIStore.useState(
     (s) => ({
@@ -62,6 +63,12 @@ const CountryTransnationalFilter = ({
         ...(val.length > 0 ? { multiCountry: true } : { multiCountry: false }),
       })
     }
+
+    if (isCommunity) {
+      updateQuery('country', val, false)
+      return
+    }
+
     let updatedQuery = { ...history.query }
     delete updatedQuery.totalCount
 

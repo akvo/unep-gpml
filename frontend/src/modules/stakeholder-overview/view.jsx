@@ -134,7 +134,20 @@ const StakeholderOverview = ({
   }
 
   const getResults = (query) => {
-    const searchParms = new URLSearchParams(window.location.search)
+    const queryString = Object.keys(query)
+      .filter((key) =>
+        Array.isArray(query[key])
+          ? query[key].length > 0
+          : query[key] !== null && query[key] !== undefined
+      )
+      .map((key) =>
+        Array.isArray(query[key])
+          ? `${key}=${query[key].join(',')}`
+          : `${key}=${query[key]}`
+      )
+      .join('&')
+
+    const searchParms = new URLSearchParams(queryString)
     searchParms.set('limit', pageSize)
 
     api
@@ -235,6 +248,8 @@ const StakeholderOverview = ({
   useEffect(() => {
     if (!isAuthenticated && loadingProfile) {
       setUnathenticatedModal(true)
+    } else {
+      setUnathenticatedModal(false)
     }
   }, [isAuthenticated, loadingProfile])
 
@@ -427,6 +442,7 @@ const StakeholderOverview = ({
                 setMultiCountryCountries,
                 renderFilterTag,
               }}
+              history={router}
               entities={entityRoleOptions}
             />
 
@@ -445,7 +461,7 @@ const StakeholderOverview = ({
                           <LoadingOutlined spin /> Loading
                         </h2>
                       ) : !isEmpty(suggestedProfiles) ? (
-                        <div className="card-wrapper ui container">
+                        <div className="card-wrapper">
                           {suggestedProfiles.length > 0 &&
                             suggestedProfiles
                               .slice(0, 4)
@@ -478,7 +494,7 @@ const StakeholderOverview = ({
                           of {resultCount || 0} result
                           {resultCount > 1 ? 's' : ''}
                         </div>
-                        <div className="card-wrapper ui container">
+                        <div className="card-wrapper">
                           {results.map((profile) => (
                             <ProfileCard
                               key={profile?.id}
