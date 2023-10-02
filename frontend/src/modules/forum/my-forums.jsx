@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Card, List, Modal, Popover, message } from 'antd'
 import { MoreOutlined } from '@ant-design/icons'
 import moment from 'moment'
-import Link from 'next/link'
 import Button from '../../components/button'
 import api from '../../utils/api'
 import styles from './forum.module.scss'
@@ -45,22 +44,6 @@ const MyForums = ({ handleOnView }) => {
       setLoading(false)
     } catch (error) {
       console.error('myforums error:', error)
-      /**
-       * TODO
-       * Will remove it soon once `chat_account_id` is filled automatically when the admin approved
-       * https://akvo.slack.com/archives/C05GUNBF63D/p1695906778946219?thread_ts=1695888157.201689&cid=C05GUNBF63D
-       */
-      setMyForums([
-        {
-          id: '64f9af3ba1e81db09dc1fad3',
-          description: 'This is a test public channel.',
-          usersCount: 2,
-          name: 'PublicChannelTest',
-          lm: '2023-09-28T15:29:46.960Z',
-          msgs: 11,
-          t: 'c',
-        },
-      ])
       setLoading(false)
     }
   }, [])
@@ -138,15 +121,9 @@ const MyForums = ({ handleOnView }) => {
                     </p>
                   </div>
                   <div>
-                    <Link
-                      href={`${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/channel/${item.name}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Button size="small" withArrow="link">
-                        Chat
-                      </Button>
-                    </Link>
+                    <Button size="small" withArrow="link">
+                      Chat
+                    </Button>
                   </div>
                 </div>
               </Card>
