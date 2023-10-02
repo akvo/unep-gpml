@@ -436,7 +436,7 @@ const StakeholderOverview = ({
                   {/* Suggested profiles */}
                   {isValidUser && !isEmpty(suggestedProfiles) && (
                     <Col className="card-container green">
-                      <h3 id="title" className="title text-white ui container">
+                      <h3 id="title" className="title text-white ui">
                         Suggested profiles
                       </h3>
 
@@ -445,7 +445,7 @@ const StakeholderOverview = ({
                           <LoadingOutlined spin /> Loading
                         </h2>
                       ) : !isEmpty(suggestedProfiles) ? (
-                        <div className="card-wrapper ui container">
+                        <div className="card-wrapper ui">
                           {suggestedProfiles.length > 0 &&
                             suggestedProfiles
                               .slice(0, 4)
@@ -478,7 +478,7 @@ const StakeholderOverview = ({
                           of {resultCount || 0} result
                           {resultCount > 1 ? 's' : ''}
                         </div>
-                        <div className="card-wrapper ui container">
+                        <div className="card-wrapper ui">
                           {results.map((profile) => (
                             <ProfileCard
                               key={profile?.id}

@@ -1,21 +1,21 @@
-import React from "react";
-import { Row, Col, Space, Drawer, Tag, Card, Button } from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
-import classNames from "classnames";
-import humps from "humps";
-import isEmpty from "lodash/isEmpty";
-import { UIStore } from "../../store";
-import { entityName, networkNames, networkTypes } from "../../utils/misc";
+import React from 'react'
+import { Row, Col, Space, Drawer, Tag, Card, Button } from 'antd'
+import { CloseCircleOutlined } from '@ant-design/icons'
+import classNames from 'classnames'
+import humps from 'humps'
+import isEmpty from 'lodash/isEmpty'
+import { UIStore } from '../../store'
+import { entityName, networkNames, networkTypes } from '../../utils/misc'
 
-import MultipleSelectFilter from "../../components/select/multiple-select-filter";
-import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
+import MultipleSelectFilter from '../../components/select/multiple-select-filter'
+import CountryTransnationalFilter from '../../components/select/country-transnational-filter'
 
-import BusinessIcon from "../../images/stakeholder-overview/business-icon.svg";
-import AchievementIcon from "../../images/stakeholder-overview/medal-icon.svg";
-import PartnerIcon from "../../images/stakeholder-overview/partner-icon.svg";
-import GPMLLogo from "../../images/stakeholder-overview/gpml-logo.svg";
-import CommunityIcon from "../../images/stakeholder-overview/community-outlined.svg";
-import UnionIcon from "../../images/stakeholder-overview/union-outlined.svg";
+import BusinessIcon from '../../images/stakeholder-overview/business-icon.svg'
+import AchievementIcon from '../../images/stakeholder-overview/medal-icon.svg'
+import PartnerIcon from '../../images/stakeholder-overview/partner-icon.svg'
+import GPMLLogo from '../../images/stakeholder-overview/gpml-logo.svg'
+import CommunityIcon from '../../images/stakeholder-overview/community-outlined.svg'
+import UnionIcon from '../../images/stakeholder-overview/union-outlined.svg'
 
 const FilterDrawer = ({
   query,
@@ -48,79 +48,79 @@ const FilterDrawer = ({
     transnationalOptions: s.transnationalOptions,
     geoCoverageTypeOptions: s.geoCoverageTypeOptions,
     tags: Object.values(s.tags).flat(),
-  }));
+  }))
 
   const entityIcon = (name) => {
-    if (name.toLowerCase() === "owner") {
-      return <GPMLLogo />;
+    if (name.toLowerCase() === 'owner') {
+      return <GPMLLogo />
     }
-    if (name.toLowerCase() === "implementor") {
-      return <AchievementIcon />;
+    if (name.toLowerCase() === 'implementor') {
+      return <AchievementIcon />
     }
-    if (name.toLowerCase() === "partner") {
-      return <PartnerIcon />;
+    if (name.toLowerCase() === 'partner') {
+      return <PartnerIcon />
     }
-    if (name.toLowerCase() === "donor") {
-      return <BusinessIcon />;
+    if (name.toLowerCase() === 'donor') {
+      return <BusinessIcon />
     }
-  };
+  }
 
   const networkIcon = (name) => {
-    if (name.toLowerCase() === "stakeholder") {
-      return <UnionIcon />;
+    if (name.toLowerCase() === 'stakeholder') {
+      return <UnionIcon />
     }
-    if (name.toLowerCase() === "organisation") {
-      return <CommunityIcon />;
+    if (name.toLowerCase() === 'organisation') {
+      return <CommunityIcon />
     }
-  };
+  }
 
   const filterQueries = [
-    "country",
-    "networkType",
-    "representativeGroup",
-    "geoCoverageType",
-    "seeking",
-    "offering",
-    "affiliation",
-    "isMember",
-    "transnational",
-  ];
+    'country',
+    'networkType',
+    'representativeGroup',
+    'geoCoverageType',
+    'seeking',
+    'offering',
+    'affiliation',
+    'isMember',
+    'transnational',
+  ]
 
   const handleChangeType = (flag, type) => {
-    const val = query[flag];
+    const val = query[flag]
 
-    let updateVal = [];
+    let updateVal = []
     if (isEmpty(val)) {
-      updateVal = [type];
+      updateVal = [type]
     } else if (val.includes(type)) {
-      updateVal = val.filter((x) => x !== type);
+      updateVal = val.filter((x) => x !== type)
     } else {
-      updateVal = [...val, type];
+      updateVal = [...val, type]
     }
-    updateQuery(flag, updateVal);
-  };
+    updateQuery(flag, updateVal)
+  }
 
   const queryToRefresh = Object.fromEntries(
-    Object.entries(query).filter(([key]) => key !== "page" && key !== "q")
-  );
+    Object.entries(query).filter(([key]) => key !== 'page' && key !== 'q')
+  )
 
-  const queryValues = Object.values(queryToRefresh).flat();
+  const queryValues = Object.values(queryToRefresh).flat()
 
   const representativeOpts = !isEmpty(representativeGroup)
-    ? [...representativeGroup, { code: "other", name: "Other" }].map((x) => ({
+    ? [...representativeGroup, { code: 'other', name: 'Other' }].map((x) => ({
         label: x?.name,
         value: x?.name,
       }))
-    : [];
+    : []
 
   const filterTagValue = renderFilterTag()
     .flat()
-    .filter((item) => item);
+    .filter((item) => item)
 
   return (
     <div
       className={`site-drawer-render-in-current-wrapper ${
-        view?.toLowerCase() === "map" && "map-view-drawer"
+        view?.toLowerCase() === 'map' && 'map-view-drawer'
       }`}
     >
       <Drawer
@@ -140,7 +140,7 @@ const FilterDrawer = ({
             )}
           </>
         }
-        style={{ position: "absolute" }}
+        style={{ position: 'absolute' }}
         height="100%"
         autoFocus={false}
       >
@@ -150,13 +150,15 @@ const FilterDrawer = ({
             <Space align="middle">
               <div className="filter-title">Network type</div>
               {isEmpty(query?.networkType) ? (
-                <Tag className="selection-card-type">All (default)</Tag>
+                <Tag className="selection-card-type filter-title">
+                  All (default)
+                </Tag>
               ) : (
                 <Tag
                   className="clear-selection"
                   closable={true}
-                  onClose={() => updateQuery("networkType", [])}
-                  onClick={() => updateQuery("networkType", [])}
+                  onClose={() => updateQuery('networkType', [])}
+                  onClick={() => updateQuery('networkType', [])}
                 >
                   Clear selection
                 </Tag>
@@ -173,9 +175,9 @@ const FilterDrawer = ({
                   >
                     <Card
                       onClick={() =>
-                        handleChangeType("networkType", networkType)
+                        handleChangeType('networkType', networkType)
                       }
-                      className={classNames("drawer-card", {
+                      className={classNames('drawer-card', {
                         active: query?.networkType?.includes(networkType),
                       })}
                     >
@@ -185,14 +187,14 @@ const FilterDrawer = ({
                           {networkNames(networkType)}
                         </div>
                         <div className="topic-text topic-counts">
-                          {networkType === "organisation"
+                          {networkType === 'organisation'
                             ? stakeholderCount?.entity
                             : stakeholderCount?.individual}
                         </div>
                       </Space>
                     </Card>
                   </Col>
-                );
+                )
               })}
             </Row>
           </Col>
@@ -204,26 +206,26 @@ const FilterDrawer = ({
                 <Tag
                   className="clear-selection"
                   closable={true}
-                  onClose={() => updateQuery("isMember", "")}
-                  onClick={() => updateQuery("isMember", "")}
+                  onClose={() => updateQuery('isMember', '')}
+                  onClick={() => updateQuery('isMember', '')}
                 >
                   Clear selection
                 </Tag>
               )}
             </Space>
 
-            <Row type="flex" gutter={[10, 10]}>
+            <Row type="flex" gutter={[10, 0]}>
               <p className="specificity-title">For entities</p>
               {[entities[0]].map((entity) => {
-                const name = humps.decamelize(entity);
+                const name = humps.decamelize(entity)
 
                 return (
                   name && (
                     <Col span={6} key={entity}>
                       <Card
-                        onClick={() => handleChangeType("isMember", "true")}
-                        className={classNames("drawer-card", {
-                          active: query?.isMember?.includes("true"),
+                        onClick={() => handleChangeType('isMember', 'true')}
+                        className={classNames('drawer-card', {
+                          active: query?.isMember?.includes('true'),
                         })}
                       >
                         <Space
@@ -240,7 +242,7 @@ const FilterDrawer = ({
                       </Card>
                     </Col>
                   )
-                );
+                )
               })}
             </Row>
           </Col>
@@ -273,29 +275,29 @@ const FilterDrawer = ({
                   className="clear-selection"
                   closable
                   onClick={() => {
-                    updateQuery("country", []);
+                    updateQuery('country', [])
                   }}
-                  onClose={() => updateQuery("country", [])}
+                  onClose={() => updateQuery('country', [])}
                 >
                   Clear Country Selection
                 </Tag>
               ) : (
-                ""
+                ''
               )}
               {!isEmpty(query?.transnational) ? (
                 <Tag
                   className="clear-selection"
                   closable
                   onClick={() => {
-                    updateQuery("transnational", []);
-                    setMultiCountryCountries([]);
+                    updateQuery('transnational', [])
+                    setMultiCountryCountries([])
                   }}
-                  onClose={() => updateQuery("transnational", [])}
+                  onClose={() => updateQuery('transnational', [])}
                 >
                   Clear Multi-Country Selection
                 </Tag>
               ) : (
-                ""
+                ''
               )}
             </Space>
             <div className="country-filter-tab-wrapper">
@@ -321,12 +323,12 @@ const FilterDrawer = ({
             title="Geo-coverage"
             options={
               !isEmpty(geoCoverageTypeOptions)
-                ? [...geoCoverageTypeOptions, "Sub-national"]
+                ? [...geoCoverageTypeOptions, 'Sub-national']
                     .sort((a, b) => a.localeCompare(b))
                     ?.map((x) => ({
                       value: x,
                       label:
-                        x?.toLowerCase() === "sub-national" ? "Subnational" : x,
+                        x?.toLowerCase() === 'sub-national' ? 'Subnational' : x,
                     }))
                 : []
             }
@@ -385,17 +387,17 @@ const FilterDrawer = ({
               disabled={queryValues.length === 0}
               className={
                 queryValues.length > 0
-                  ? "clear-all-btn"
-                  : "clear-all-btn disabled"
+                  ? 'clear-all-btn'
+                  : 'clear-all-btn disabled'
               }
               onClick={() => {
                 if (queryValues.length > 0) {
                   const paramValueArr = filterQueries.map((query) => ({
                     param: query,
                     value: [],
-                  }));
-                  setFilterCountries([]);
-                  updateQuery(null, null, paramValueArr);
+                  }))
+                  setFilterCountries([])
+                  updateQuery(null, null, paramValueArr)
                 }
               }}
             >
@@ -406,7 +408,7 @@ const FilterDrawer = ({
         </Row>
       </Drawer>
     </div>
-  );
-};
+  )
+}
 
-export default FilterDrawer;
+export default FilterDrawer
