@@ -385,6 +385,7 @@ const FilterDrawer = ({
 
           <Col className="drawer-button-wrapper">
             <Button
+              type="link"
               disabled={queryValues.length === 0}
               className={
                 queryValues.length > 0
