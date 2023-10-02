@@ -13,6 +13,10 @@
     "product by design"
     "source to sea"})
 
+(def ^:const default-review-status
+  "Default review status for a tag."
+  "APPROVED")
+
 (def Tag
   "The Tag entity schema."
   (m/schema
@@ -20,9 +24,15 @@
     [:id pos-int?]
     [:tag_category pos-int?]
     [:tag [string? {:min 1}]]
-    [:review_status (apply conj [:enum] dom.types/review-statuses)]
+    [:review_status
+     {:default default-review-status
+      :swagger {:description "Review status of the Tag"
+                :type "string"
+                :enum dom.types/review-statuses}}
+     (apply conj [:enum] dom.types/review-statuses)]
     [:reviewed_by {:optional true} pos-int?]
     [:reviewed_at {:optional true} inst?]
+    [:private {:optional true} boolean?]
     [:definition {:optional true} [string? {:min 1}]]
     [:ontology_ref_link {:optional true}
      [:and

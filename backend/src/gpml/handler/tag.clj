@@ -1,13 +1,18 @@
 (ns gpml.handler.tag
   (:require [clojure.string :as str]
+            [duct.logger :refer [log]]
             [gpml.db.tag :as db.tag]
+            [gpml.domain.tag :as dom.tag]
             [gpml.domain.types :as dom.types]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
+            [gpml.util.malli :as util.malli]
             [integrant.core :as ig]
-            [ring.util.response :as resp]))
+            [malli.util :as mu]
+            [ring.util.response :as resp])
+  (:import [java.sql SQLException]))
 
 (def ^:const get-popular-topics-tags-params
   [:map
@@ -83,28 +88,36 @@
   to have the following structure:
   - `[{:tag \"some tag\"} . . .]`
   In the case the tag existed beforehand we check if the related rbac context exist before trying
-  to create those contexts, so we create only the ones for the truly new tags."
+  to create those contexts, so we create only the ones for the truly new tags.
+
+  If the tag_category cannot be found we throw an exception before going forward.
+
+  `private` property is converted again to a boolean to set it to `false` default value when needed."
   [conn logger tags tag-category]
-  (let [tag-category ((comp :id first) (db.tag/get-tag-categories conn {:filters {:categories [tag-category]}}))
-        new-tags (filter (comp not :id) tags)
-        tags-to-create (map #(vector % tag-category) (map :tag new-tags))
-        tag-entity-columns ["tag" "tag_category"]
-        created-tag-ids (map :id (db.tag/new-tags conn {:tags tags-to-create
-                                                        :insert-cols tag-entity-columns}))]
-    (doseq [tag-id created-tag-ids
-            :let [{:keys [success?]} (srv.permissions/get-resource-context
-                                      {:conn conn
-                                       :logger logger}
-                                      :tag
-                                      tag-id)
-                  ctx-exists? success?]]
-      (when-not ctx-exists?
-        (srv.permissions/create-resource-context
-         {:conn conn
-          :logger logger}
-         {:context-type :tag
-          :resource-id tag-id})))
-    created-tag-ids))
+  (let [tag-category ((comp :id first) (db.tag/get-tag-categories conn {:filters {:categories [tag-category]}}))]
+    (if (nil? tag-category)
+      (throw (ex-info "Failed to find tag category for creating new tags" {:reason :failed-to-get-tags-category}))
+      (let [new-tags (filter (comp not :id) tags)
+            tags-to-create (map (fn [{:keys [tag private]}]
+                                  (vector tag tag-category (boolean private)))
+                                (map #(select-keys % [:tag :private]) new-tags))
+            tag-entity-columns ["tag" "tag_category" "private"]
+            created-tag-ids (map :id (db.tag/new-tags conn {:tags tags-to-create
+                                                            :insert-cols tag-entity-columns}))]
+        (doseq [tag-id created-tag-ids
+                :let [{:keys [success?]} (srv.permissions/get-resource-context
+                                          {:conn conn
+                                           :logger logger}
+                                          :tag
+                                          tag-id)
+                      ctx-exists? success?]]
+          (when-not ctx-exists?
+            (srv.permissions/create-resource-context
+             {:conn conn
+              :logger logger}
+             {:context-type :tag
+              :resource-id tag-id})))
+        created-tag-ids))))
 
 (defn all-tags
   [db]
@@ -179,3 +192,31 @@
 (defmethod ig/init-key :gpml.handler.tag/put-response
   [_ _]
   {200 {:body put-response}})
+
+(defn- create-tag
+  [{:keys [db logger]} tag]
+  (first (create-tags (:spec db) logger [tag] (:tag_category tag))))
+
+(defmethod ig/init-key :gpml.handler.tag/post
+  [_ {:keys [logger] :as config}]
+  (fn [{:keys [parameters user]}]
+    (try
+      (if (h.r.permission/super-admin? config (:id user))
+        (r/ok {:success? true
+               :id (create-tag config (:body parameters))})
+        (r/forbidden {:message "Unauthorized"}))
+      (catch Throwable t
+        (let [reason (or (:reason (ex-data t)) :could-not-create-tag)
+              response {:success? false
+                        :reason reason}]
+          (log logger :error ::failed-to-create-tag {:exception-message (.getMessage t)
+                                                     :reason reason})
+          (if (instance? SQLException t)
+            (r/server-error response)
+            (r/server-error (assoc-in response [:error-details :error] (.getMessage t)))))))))
+
+(defmethod ig/init-key :gpml.handler.tag/post-params
+  [_ _]
+  {:body (-> dom.tag/Tag
+             (util.malli/dissoc [:id])
+             (mu/assoc :tag_category string?))})
