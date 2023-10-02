@@ -1027,5 +1027,70 @@
         height: 27px;
       }
     }
+
+    .country-filter-tab-wrapper {
+      .country-filter-tab {
+        border: 1px solid #d7e6ee;
+        border-radius: 3px;
+        background-color: #fff;
+
+        .ant-select {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+      }
+
+      .country-filter-tab {
+        margin-bottom: 1.5rem;
+        .country-filter-tab-pane {
+          padding: 0.5rem 1rem;
+        }
+        .ant-tabs-nav-list {
+          justify-content: space-evenly;
+          width: 100%;
+          align-items: center;
+        }
+        .ant-tabs-tab:not(:last-of-type) {
+          margin-right: 0 !important;
+        }
+        .ant-tabs-tab {
+          width: 50%;
+          border-radius: 0;
+          border: none;
+          background: #dae9f1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .ant-tabs-tab-active {
+          background: #fff;
+          .ant-tabs-tab-btn {
+            font-weight: normal;
+          }
+        }
+        .ant-tabs-tab-btn {
+          color: #036799;
+        }
+        .ant-tabs-nav::before,
+        .ant-tabs-nav .ant-tabs-nav-wrap::before,
+        .ant-tabs-nav .ant-tabs-nav-wrap::after {
+          content: none !important;
+        }
+        // css for select suffix
+        .multi-country-info {
+          .ant-select-arrow {
+            right: 28px;
+            font-size: 14px;
+            top: 48%;
+            color: #036799;
+          }
+        }
+      }
+    }
+    .search-box {
+      .filter-icon-button {
+        padding: 4px 15px;
+      }
+    }
   }
 }
