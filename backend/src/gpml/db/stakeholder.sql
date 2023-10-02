@@ -318,11 +318,13 @@ VALUES :t*:values RETURNING id, email;
 -- :doc Get stakeholders with filters
 SELECT s.*, json_agg(json_build_object('id', t.id, 'tag', t.tag, 'tag_relation_category', st.tag_relation_category, 'tag_category', tg.category)) FILTER (WHERE t.id IS NOT NULL) AS tags
 --~(when (get (:related-entities params) :organisation) ", row_to_json(o.*) AS org")
+--~(when (get (:related-entities params) :picture-file) ", row_to_json(f.*) AS picture_file")
 FROM stakeholder s
 LEFT JOIN stakeholder_tag st ON st.stakeholder = s.id
 LEFT JOIN tag t ON st.tag = t.id
 LEFT JOIN tag_category tg ON t.tag_category = tg.id
 --~(when (get (:related-entities params) :organisation) " LEFT JOIN organisation o ON s.affiliation = o.id")
+--~(when (get (:related-entities params) :picture-file) " LEFT JOIN file f ON s.picture_id = f.id")
 WHERE 1=1
 --~(when (seq (get-in params [:filters :review-statuses])) " AND s.review_status = ANY(ARRAY[:v*:filters.review-statuses]::review_status[])")
 --~(when (seq (get-in params [:filters :ids])) " AND s.id IN (:v*:filters.ids)")
@@ -331,6 +333,7 @@ WHERE 1=1
 --~(when (seq (get-in params [:filters :chat-accounts-ids])) " AND s.chat_account_id IN (:v*:filters.chat-accounts-ids)")
 GROUP BY s.id
 --~(when (get (:related-entities params) :organisation) ", o.id")
+--~(when (get (:related-entities params) :picture-file) ", f.id")
 ;
 
 -- :name delete-stakeholder* :execute :affected

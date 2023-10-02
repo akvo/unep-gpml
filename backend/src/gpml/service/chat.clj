@@ -2,6 +2,7 @@
   (:require [gpml.boundary.port.chat :as chat]
             [gpml.db.rbac-util :as db.rbac-util]
             [gpml.db.stakeholder :as db.sth]
+            [gpml.service.file :as srv.file]
             [gpml.util.crypto :as util.crypto]
             [gpml.util.email :as util.email]
             [gpml.util.thread-transactions :as tht]
@@ -147,8 +148,22 @@
   [{:keys [chat-adapter]}]
   (chat/get-public-channels chat-adapter {}))
 
+(defn- add-users-pictures-urls
+  [config users]
+  (map
+   (fn [user]
+     (if-not (seq (:picture_file user))
+       user
+       (let [{object-key :object_key visibility :visibility} (:picture_file user)
+             result (srv.file/get-file-url config {:object-key object-key
+                                                   :visibility (keyword visibility)})]
+         (if (:success? result)
+           (assoc user :picture (:url result))
+           user))))
+   users))
+
 (defn get-all-channels
-  [{:keys [db chat-adapter]} opts]
+  [{:keys [db chat-adapter] :as config} opts]
   (let [;; We always ask only for the Public `c` and Private `p`
         ;; channels. Because RocketChat has other channel types that are not
         ;; used by GPML.
@@ -161,7 +176,7 @@
                                       (apply conj users-accounts-ids (map :id users)))
                                     []
                                     channels))
-            search-opts {:related-entities #{:organisation}
+            search-opts {:related-entities #{:organisation :picture-file}
                          :filters {:chat-accounts-ids chat-accounts-ids}}
             result (try
                      {:success? true
@@ -173,7 +188,9 @@
                         :error-details {:msg (ex-message t)}}))]
         (if-not (:success? result)
           result
-          (let [gpml-users (medley/index-by :chat_account_id (:stakeholders result))
+          (let [gpml-users (->> (:stakeholders result)
+                                (add-users-pictures-urls config)
+                                (medley/index-by :chat_account_id))
                 updated-channels
                 (map
                  (fn [channel]
