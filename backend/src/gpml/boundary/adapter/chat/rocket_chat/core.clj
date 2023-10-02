@@ -362,7 +362,32 @@
                :reason :failed-to-get-user-public-channels
                :error-details get-public-channels-result})))))))
 
-(defrecord RocketChat [api-url api-key api-user-id logger]
+(defn- remove-user-from-channel*
+  [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id channel-type]
+  (try
+    (let [endpoint (if (= channel-type "c")
+                     "/channels.kick"
+                     "/groups.kick")
+          {:keys [status body]}
+          (http-client/do-request logger
+                                  {:url (build-api-endpoint-url adapter endpoint)
+                                   :method :post
+                                   :body (json/->json {:roomId channel-id :userId user-id})
+                                   :headers (get-auth-headers api-key api-user-id)
+                                   :as :json-keyword-keys})]
+      (if (<= 200 status 299)
+        {:success? true}
+        {:success? false
+         :reason :failed-to-remove-user-from-channel
+         :error-details body}))
+    (catch Throwable t
+      (log logger :error :failed-to-remove-user-from-channel {:exception-message (ex-message t)
+                                                              :stack-trace (map str (.getStackTrace t))})
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
+
+(defrecord RocketChat [api-domain-url api-url-path api-key api-user-id logger]
   port/Chat
   (create-user-account [this user]
     (create-user-account* this user))
@@ -387,4 +412,6 @@
   (get-user-info [this user-id opts]
     (get-user-info* this user-id opts))
   (get-user-joined-channels [this user-id]
-    (get-user-joined-channels* this user-id)))
+    (get-user-joined-channels* this user-id))
+  (remove-user-from-channel [this user-id channel-id channel-type]
+    (remove-user-from-channel* this user-id channel-id channel-type)))
