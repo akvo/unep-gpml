@@ -6,7 +6,7 @@ import { UIStore } from '../../store'
 import api from '../../utils/api'
 import ForumModal from '../../modules/forum/forum-modal'
 import ForumMembers from '../../modules/forum/forum-members'
-import MyForums from './my-forums'
+import MyForums from '../../modules/forum/my-forums'
 
 const Forum = () => {
   const [allForums, setAllForums] = useState([])
