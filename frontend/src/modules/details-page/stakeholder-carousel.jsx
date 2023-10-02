@@ -10,10 +10,12 @@ import { Pagination, Navigation } from 'swiper'
 import { randomColor } from '../../utils/misc'
 import LocationIcon from '../../images/location.svg'
 import CircledUserIcon from '../../images/stakeholder-overview/union-outlined.svg'
+import { useDeviceSize } from '../landing/landing'
 
 const colour = () => randomColor[Math.floor(Math.random() * randomColor.length)]
 
 const StakeholderCarousel = ({ stakeholders }) => {
+  const [width] = useDeviceSize()
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
     organisations: s.organisations,
@@ -24,7 +26,7 @@ const StakeholderCarousel = ({ stakeholders }) => {
     <div className={`${styles.connectionWrapper} connection-wrapper`}>
       <Swiper
         spaceBetween={0}
-        slidesPerGroup={window.innerWidth > 1024 ? 5 : 1}
+        slidesPerGroup={width > 1024 ? 5 : 1}
         slidesPerView={'auto'}
         pagination={{
           clickable: true,
