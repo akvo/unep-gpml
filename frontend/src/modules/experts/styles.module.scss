@@ -300,7 +300,7 @@
             }
             &.selected {
               background-color: white;
-              border: 3px solid white;
+              border-color: white;
               color: $primaryDarkBlue;
               transform: scale(1.1);
               svg {
