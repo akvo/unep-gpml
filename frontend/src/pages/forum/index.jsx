@@ -8,6 +8,12 @@ import ForumModal from '../../modules/forum/forum-modal'
 import ForumMembers from '../../modules/forum/forum-members'
 import MyForums from '../../modules/forum/my-forums'
 
+// TODO
+/**
+ * get rocket chat baseURL from env variable
+ */
+const CHAT_API_DOMAIN_URL = 'https://rocket-chat.akvotest.org'
+
 const Forum = () => {
   const [allForums, setAllForums] = useState([])
   const [viewModal, setViewModal] = useState({
@@ -17,6 +23,7 @@ const Forum = () => {
   const [loading, setLoading] = useState(true)
 
   const profile = UIStore.useState((s) => s.profile)
+  const avatarUrl = `${CHAT_API_DOMAIN_URL}/avatar/`
 
   const handleOnView = (data) => {
     setViewModal({
@@ -84,7 +91,7 @@ const Forum = () => {
                     <p className={styles.forumDesc}>{item?.description}</p>
                   </div>
                   <div className="flex">
-                    <ForumMembers {...{ initName }} forum={item} />
+                    <ForumMembers {...{ initName, avatarUrl }} forum={item} />
                     <div>
                       <Button
                         size="small"
@@ -100,7 +107,7 @@ const Forum = () => {
             )}
           />
         </section>
-        <ForumModal {...{ viewModal, setViewModal, initName }} />
+        <ForumModal {...{ viewModal, setViewModal, initName, avatarUrl }} />
       </div>
     </div>
   )
