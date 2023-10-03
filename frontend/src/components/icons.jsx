@@ -22,7 +22,7 @@ export const CirclePointer = () => (
   </svg>
 )
 
-export const Pointer = () => (
+export const PointerDepr = () => (
   <svg
     width="24"
     height="14"
@@ -32,6 +32,17 @@ export const Pointer = () => (
   >
     <path d="M16 13L22 7L16 1" stroke="white" stroke-width="2" />
     <path d="M-1 7H22" stroke="white" stroke-width="2" />
+  </svg>
+)
+export const Pointer = () => (
+  <svg
+    width="14"
+    height="9"
+    viewBox="0 0 14 9"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M1 0.999999L7 7L13 1" stroke="#020A5B" stroke-width="2" />
   </svg>
 )
 

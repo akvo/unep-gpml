@@ -4,9 +4,6 @@
 @import 'input.scss';
 @import 'dialog.scss';
 
-$ff1: var(--font-archia), sans-serif;
-$ff2: var(--font-dm-sans), sans-serif;
-
 body {
   color: $primaryDarkBlue;
   font-family: $ff2;
