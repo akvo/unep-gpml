@@ -3,8 +3,6 @@
             [clojure.set :as set]
             [duct.logger :refer [log]]
             [gpml.db.initiative :as db.initiative]
-            [gpml.db.resource.connection :as db.resource.connection]
-            [gpml.db.resource.tag :as db.resource.tag]
             [gpml.domain.types :as dom.types]
             [gpml.handler.file :as handler.file]
             [gpml.handler.resource.geo-coverage :as handler.geo]
@@ -17,8 +15,7 @@
             [gpml.service.permissions :as srv.permissions]
             [gpml.util.email :as email]
             [gpml.util.sql :as sql-util]
-            [integrant.core :as ig]
-            [ring.util.response :as resp])
+            [integrant.core :as ig])
   (:import [java.sql SQLException]))
 
 (defn- create-initiative
@@ -118,35 +115,6 @@
           (if (instance? SQLException e)
             (r/server-error response)
             (r/server-error (assoc-in response [:body :error-details :error] (.getMessage e)))))))))
-
-(defn- expand-related-initiative-content
-  [conn initiative-id]
-  (let [related_content (handler.resource.related-content/get-related-contents conn initiative-id "initiative")]
-    (for [item related_content]
-      (merge item
-             {:entity_connections (db.resource.connection/get-resource-entity-connections conn {:resource-type "initiative"
-                                                                                                :resource-id (:id item)})
-              :stakeholder_connections (db.resource.connection/get-resource-stakeholder-connections conn {:resource-type "initiative"
-                                                                                                          :resource-id (:id item)})}))))
-
-(defmethod ig/init-key :gpml.handler.initiative/get [_ {:keys [db]}]
-  (fn [{{{:keys [id]} :path} :parameters}]
-    (let [conn (:spec db)
-          data (db.initiative/initiative-by-id conn {:id id})
-          entity-connections
-          (db.resource.connection/get-resource-entity-connections conn {:resource-type "initiative"
-                                                                        :resource-id id})
-          stakeholder-connections
-          (db.resource.connection/get-resource-stakeholder-connections conn {:resource-type "initiative"
-                                                                             :resource-id id})
-          extra-details {:entity_connections entity-connections
-                         :stakeholder_connections stakeholder-connections
-                         :tags (db.resource.tag/get-resource-tags conn {:table "initiative_tag"
-                                                                        :resource-col "initiative"
-                                                                        :resource-id id})
-                         :related_content (expand-related-initiative-content conn id)
-                         :type "Initiative"}]
-      (resp/response (merge data extra-details)))))
 
 ;; FIXME: We should define a specific domain model for initiatives and
 ;; strip extra parameter keys from the request.

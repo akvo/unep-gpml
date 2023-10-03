@@ -38,30 +38,12 @@
     (concat renamed-tables (remove #(some #{%} tables-to-rename) tables))))
 
 (def ^:const ^:private initiative-cols
-  "e.id,
-   NULL::text AS uuid,
-   NULL::text AS phase,
-   e.q36 AS funds,
+  "e.q36 AS funds,
    e.q37 AS contribution,
-   e.created,
-   e.modified,
    btrim((e.q2)::text, '\"'::text) AS title,
    btrim((e.q3)::text, '\"'::text) AS summary,
-   e.reviewed_at,
-   e.reviewed_by,
-   e.review_status,
-   e.url,
-   e.info_docs,
-   e.sub_content_type,
-   e.qimage,
-   e.document_preview,
    btrim((e.q41_1)::text, '\"'::text) AS q41_1_url,
-   e.qimage AS image,
-   e.thumbnail,
-   e.capacity_building,
-   e.image_id,
-   e.thumbnail_id,
-   e.geo_coverage_type")
+   e.*")
 
 (def ^:const ^:private policy-cols
   "e.abstract AS summary,

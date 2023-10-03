@@ -377,10 +377,10 @@
 
 (defmulti extra-details (fn [_ resource-type _] resource-type) :default :nothing)
 
-(defmethod extra-details "initiative" [{:keys [db] :as config} resource-type initiative]
+(defmethod extra-details "initiative" [config resource-type initiative]
   (merge
    (add-extra-details config initiative resource-type {})
-   (dom.initiative/parse-initiative-details (db.initiative/initiative-by-id (:spec db) initiative))))
+   (dom.initiative/parse-initiative-details initiative)))
 
 (defmethod extra-details "policy" [{:keys [db] :as config} resource-type policy]
   (merge

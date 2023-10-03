@@ -146,12 +146,7 @@
                                                   :swagger {:tags ["initiative"]
                                                             :security [{:id_token []}]}
                                                   :parameters {:body #ig/ref :gpml.handler.initiative/post-params}
-                                                  :handler #ig/ref :gpml.handler.initiative/post}}]
-                                         ["/:id"
-                                          {:get {:summary "Get data for a specific initiative"
-                                                 :swagger {:tags ["initiative"]}
-                                                 :parameters {:path [:map [:id int?]]}
-                                                 :handler #ig/ref :gpml.handler.initiative/get}}]]
+                                                  :handler #ig/ref :gpml.handler.initiative/post}}]]
                                         ["/technology" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                      #ig/ref :gpml.auth/auth-required]}
                                          [""
@@ -723,7 +718,6 @@
   :gpml.handler.technology/post #ig/ref :gpml.config/common
   :gpml.handler.technology/post-params {}
 
-  :gpml.handler.initiative/get {:db #ig/ref :duct.database/sql}
   :gpml.handler.initiative/post #ig/ref :gpml.config/common
   :gpml.handler.initiative/post-params {}
 
