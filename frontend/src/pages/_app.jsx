@@ -20,12 +20,12 @@ const newRoutes = [
   '/knowledge/library',
   '/[type]/[id]',
   '/onboarding',
+  '/community',
+  '/experts',
 ]
-const dynamicRoutePattern = /^\/\w+\/\d+$/
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
-  console.log(dynamicRoutePattern.test(router.pathname), router.pathname)
   if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
     import('../main.scss')
     import('../buttons.scss')
@@ -256,11 +256,13 @@ function MyApp({ Component, pageProps }) {
       auth0Client,
       profile,
       loginVisible,
-      setLoginVisible: () =>
+      setLoginVisible: (value) => {
+        console.log(value)
         setState((prevState) => ({
           ...prevState,
-          loginVisible: !prevState.loginVisible,
-        })),
+          loginVisible: value,
+        }))
+      },
       loadingProfile,
     }),
     [isAuthenticated, auth0Client, profile, loginVisible, loadingProfile]

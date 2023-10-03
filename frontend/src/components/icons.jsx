@@ -333,3 +333,31 @@ export const DropDownIcon = () => (
     />
   </svg>
 )
+
+export const FilterIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+  >
+    <g clip-path="url(#clip0_382_2112)">
+      <path
+        d="M18.6224 1.37756H1.37755L8.0102 10.6633V18.6225L11.9898 15.9694V10.6633L18.6224 1.37756Z"
+        fill="#D7E0FF"
+      />
+      <path
+        d="M18.6224 1.37756H1.37755L8.0102 10.6633V18.6225L11.9898 15.9694V10.6633L18.6224 1.37756Z"
+        stroke="#4147D5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0_382_2112">
+        <rect width="20" height="20" fill="white" />
+      </clipPath>
+    </defs>
+  </svg>
+)
