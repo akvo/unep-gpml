@@ -4,10 +4,13 @@ import sample from 'lodash/sample'
 import Button from '../../components/button'
 import api from '../../utils/api'
 import styles from './forum.module.scss'
+import useLocalStorage from '../../utils/hooks/use-storage'
 
 const ForumModal = ({ viewModal, setViewModal, initName, avatarUrl }) => {
   const [requesting, setRequesting] = useState(false)
   const colorList = ['purple', 'green', 'blue', 'dark-blue']
+  const [joins, setJoins] = useLocalStorage('joins', [])
+  const joinDisabled = requesting || joins?.includes(viewModal?.data?.id)
 
   const handleOnClose = () => {
     setViewModal({
@@ -22,12 +25,10 @@ const ForumModal = ({ viewModal, setViewModal, initName, avatarUrl }) => {
       await api.post('/chat/channel/private', {
         channel_name,
       })
-      message.success('Join request sent!')
+      if (!joinDisabled) {
+        setJoins([...joins, id])
+      }
       setRequesting(false)
-      setViewModal({
-        open: false,
-        data: {},
-      })
     } catch (error) {
       message.error(error?.response?.message)
       setRequesting(false)
@@ -57,8 +58,9 @@ const ForumModal = ({ viewModal, setViewModal, initName, avatarUrl }) => {
             <Button
               onClick={() => handleOnRequestJoin(viewModal?.data)}
               loading={requesting}
+              disabled={joinDisabled}
             >
-              Request to Join
+              {joinDisabled ? 'Requested to Join' : 'Request to Join'}
             </Button>
           ) : (
             <Button withArrow="link" size="small">
