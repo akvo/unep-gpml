@@ -15,4 +15,5 @@
   (get-user-info
     [this user-id]
     [this user-id opts])
-  (get-user-joined-channels [this user-id]))
+  (get-user-joined-channels [this user-id])
+  (remove-user-from-channel [this user-id channel-id channel-type]))
