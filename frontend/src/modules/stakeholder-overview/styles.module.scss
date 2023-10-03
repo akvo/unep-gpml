@@ -132,9 +132,7 @@
     }
 
     .all-profiles {
-      padding-bottom: 34.66px;
-      padding-left: 20px;
-      padding-right: 20px;
+      padding: 20px 20px 34.66px;
 
       .person-role {
         display: none;
@@ -180,7 +178,7 @@
     }
 
     .card-container {
-      padding: 20px 20px 40px 20px;
+      padding: 20px 20px 20px 20px;
       &.green {
         background-color: white;
       }

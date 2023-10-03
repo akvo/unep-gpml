@@ -192,14 +192,6 @@
         width: 27px;
       }
 
-      ::placeholder,
-      .ant-input::-webkit-input-placeholder,
-      .ant-input {
-        font-size: 14px;
-        color: #18162f;
-        line-height: 30px;
-      }
-
       @media (min-width: 471px) and (max-width: 735px) {
         max-width: 400px;
       }

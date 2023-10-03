@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import { Row, Col, Button, Input } from 'antd'
-import { SearchOutlined, AppstoreOutlined } from '@ant-design/icons'
+import {
+  SearchOutlined,
+  AppstoreOutlined,
+  CloseCircleOutlined,
+} from '@ant-design/icons'
 import styles from './header.module.scss'
 import { KNOWLEDGE_LIBRARY } from '../map/map'
 import { eventTrack } from '../../utils/misc'
@@ -81,6 +85,11 @@ const StakeholderOverviewSearch = ({
     setIsShownForm(false)
   }
 
+  const handleClear = () => {
+    setSearch('')
+    updateQuery('q', '')
+  }
+
   return (
     <>
       <div className="src mobile-src">
@@ -104,11 +113,12 @@ const StakeholderOverviewSearch = ({
       </div>
       <div className="src desktop-src">
         <Input
-          size="small"
+          size="large"
           className="input-src"
           placeholder="Search profiles"
           value={search}
           prefix={<SearchIcon />}
+          suffix={search && <CloseCircleOutlined onClick={handleClear} />}
           onPressEnter={(e) => handleSearch(e.target.value)}
           onChange={(e) => {
             setSearch(e.target.value)
