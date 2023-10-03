@@ -275,7 +275,6 @@ $bg-green-primary: #10f9b7;
               border-radius: 10px;
               background: #fff;
               box-shadow: 0px 4px 40px 0px rgba(0, 0, 0, 0.07);
-              // min-height: 320px;
               position: relative;
               flex-direction: column;
               padding: 20px;
@@ -296,17 +295,9 @@ $bg-green-primary: #10f9b7;
                 }
               }
               .progress-bar {
-                width: 100%;
-                height: 5px;
-                border-radius: 3px;
-                background-color: $primaryDarkBlue2;
                 margin-top: 13px;
-                overflow: hidden;
-                .fill {
-                  background-color: $primaryPurple;
-                  height: 100%;
-                }
               }
+
               ul {
                 margin-top: 15px;
                 li {

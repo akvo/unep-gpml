@@ -1,0 +1,13 @@
+@import '../../styles/vars.scss';
+
+.plasticStrategyView {
+}
+.sidebar {
+  width: 330px;
+  background-color: #ebf5ff;
+  :global {
+    .head {
+      padding: 10px;
+    }
+  }
+}

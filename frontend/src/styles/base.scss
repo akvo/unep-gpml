@@ -630,3 +630,15 @@ ul {
     border: none;
   }
 }
+
+.progress-bar {
+  width: 100%;
+  height: 5px;
+  border-radius: 3px;
+  background-color: $primaryDarkBlue2;
+  overflow: hidden;
+  .fill {
+    background-color: $primaryPurple;
+    height: 100%;
+  }
+}
