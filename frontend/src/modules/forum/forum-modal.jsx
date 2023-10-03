@@ -5,7 +5,7 @@ import Button from '../../components/button'
 import api from '../../utils/api'
 import styles from './forum.module.scss'
 
-const ForumModal = ({ viewModal, setViewModal, initName }) => {
+const ForumModal = ({ viewModal, setViewModal, initName, avatarUrl }) => {
   const [requesting, setRequesting] = useState(false)
   const colorList = ['purple', 'green', 'blue', 'dark-blue']
 
@@ -80,19 +80,24 @@ const ForumModal = ({ viewModal, setViewModal, initName }) => {
           column: 2,
         }}
         dataSource={viewModal?.data?.users}
-        renderItem={(user) => (
-          <List.Item key={user.id}>
-            <List.Item.Meta
-              avatar={
-                <Avatar src={user.image} className={sample(colorList)}>
-                  {!user.image && initName(user.name)}
-                </Avatar>
-              }
-              title={user.name}
-              description={user.nickname}
-            />
-          </List.Item>
-        )}
+        renderItem={(user) => {
+          const userImage = user?.avatarETag
+            ? `${avatarUrl}${user?.username}?etag=${user.avatarETag}`
+            : null
+          return (
+            <List.Item key={user.id}>
+              <List.Item.Meta
+                avatar={
+                  <Avatar src={userImage} className={sample(colorList)}>
+                    {!userImage && initName(user.name)}
+                  </Avatar>
+                }
+                title={user.name}
+                description={user.nickname}
+              />
+            </List.Item>
+          )
+        }}
       />
     </Modal>
   )
