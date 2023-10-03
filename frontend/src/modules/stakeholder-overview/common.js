@@ -11,6 +11,9 @@ const useQuery = () => {
     page: [],
     geoCoverageType: [],
     transnational: [],
+    representativeGroup: [],
+    seeking: [],
+    offering: [],
   }
 
   for (let key in ret) {
