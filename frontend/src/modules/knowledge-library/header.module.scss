@@ -25,23 +25,24 @@
     .desktop-src {
       display: block;
       flex: 1;
-      .ant-input-affix-wrapper {
-        background-color: white;
-        padding-left: 16px;
-        padding-right: 16px;
-        .ant-input-prefix {
-          svg {
-            path {
-              fill: $primaryDarkBlue;
-            }
+    }
+    .ant-input-affix-wrapper {
+      background-color: white;
+      padding-left: 16px;
+      padding-right: 16px;
+      .ant-input-prefix {
+        svg {
+          path {
+            fill: $primaryDarkBlue;
           }
         }
-        input {
-          background-color: white;
-          color: $primaryDarkBlue;
-          &::placeholder {
-            color: $primaryDarkBlue !important;
-          }
+      }
+      input {
+        background-color: white;
+        color: $primaryDarkBlue;
+        border-radius: 0px !important;
+        &::placeholder {
+          color: $primaryDarkBlue !important;
         }
       }
     }

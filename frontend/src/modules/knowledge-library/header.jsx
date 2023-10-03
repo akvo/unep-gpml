@@ -77,41 +77,30 @@ const StakeholderOverviewSearch = ({
     } else {
       updateQuery('q', '')
     }
-    setSearch('')
+    setSearch(src)
     setIsShownForm(false)
   }
 
   return (
     <>
       <div className="src mobile-src">
-        {!isShownForm && (
-          <Button
-            onClick={() => setIsShownForm(!isShownForm)}
-            type="primary"
-            shape="circle"
-            size="small"
-            icon={<SearchOutlined />}
-          />
-        )}
-        {isShownForm && (
-          <Input
-            className="input-src"
-            placeholder="Search profiles"
-            value={search}
-            prefix={<SearchIcon />}
-            onPressEnter={(e) => handleSearch(e.target.value)}
-            onChange={(e) => {
-              setSearch(e.target.value)
-              if (e.target.value.length >= 3) {
-                router.push(`?q=${e.target.value.trim()}`)
-                updateQuery('q', e.target.value.trim())
-              }
-              if (e.target.value.length === 0) {
-                updateQuery('q', '')
-              }
-            }}
-          />
-        )}
+        <Input
+          className="input-src"
+          placeholder="Search profiles"
+          value={search}
+          prefix={<SearchIcon />}
+          onPressEnter={(e) => handleSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value)
+            if (e.target.value.length >= 3) {
+              router.push(`?q=${e.target.value.trim()}`)
+              updateQuery('q', e.target.value.trim())
+            }
+            if (e.target.value.length === 0) {
+              updateQuery('q', '')
+            }
+          }}
+        />
       </div>
       <div className="src desktop-src">
         <Input
@@ -151,7 +140,6 @@ const Header = ({
           type="flex"
           justify="space-between"
           align="middle"
-          gutter={[10, 10]}
           className="header-filter-option"
         >
           {/* Search input & filtered by list */}

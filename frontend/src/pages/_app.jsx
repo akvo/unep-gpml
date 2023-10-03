@@ -42,7 +42,7 @@ function MyApp({ Component, pageProps }) {
     _expiresAt: null,
     idToken: null,
     authResult: null,
-    loadingProfile: false,
+    loadingProfile: true,
     loginVisible: false,
   })
 
