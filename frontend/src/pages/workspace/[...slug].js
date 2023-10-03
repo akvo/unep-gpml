@@ -43,9 +43,10 @@ const View = () => {
           {stepsState.map((step) => (
             <div
               className={classNames('step', {
-                selected: router.query.slug[1] === step.label && !step.substeps,
+                selected:
+                  router.query?.slug?.[1] === step.label && !step.substeps,
                 opened:
-                  router.query.slug[1] === step.label &&
+                  router.query?.slug?.[1] === step.label &&
                   step.substeps?.length > 0,
               })}
             >
@@ -72,10 +73,10 @@ const View = () => {
                     <Link
                       className={classNames('step substep', {
                         selected:
-                          step.label === router.query.slug[1] &&
-                          substep.label === router.query.slug[2],
+                          step.label === router.query.slug?.[1] &&
+                          substep.label === router.query.slug?.[2],
                       })}
-                      href={`${router.query.slug[0]}/${step.label}/${substep.label}`}
+                      href={`${router.query.slug?.[0]}/${step.label}/${substep.label}`}
                     >
                       <div className="stephead">
                         <div className="check"></div>
@@ -97,12 +98,12 @@ const ConditionalLink = ({ step, children }) => {
   const router = useRouter()
   if (!step.substeps) {
     return (
-      <Link href={`${router.query.slug[0]}/${step.label}`}>{children}</Link>
+      <Link href={`${router.query?.slug?.[0]}/${step.label}`}>{children}</Link>
     )
   }
   return (
     <Link
-      href={`${router.query.slug[0]}/${step.label}/${step.substeps[0].label}`}
+      href={`${router.query?.slug?.[0]}/${step.label}/${step.substeps[0].label}`}
     >
       {children}
     </Link>
