@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { Auth0Provider } from '@auth0/auth0-react'
 import Head from 'next/head'
-// import '../main.scss'
-// import '../buttons.scss'
-import { withLayout } from '../layouts/MainLayout'
+import '../styles/base.scss'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -25,13 +23,6 @@ const dynamicRoutePattern = /^\/\w+\/\d+$/
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
-  console.log(dynamicRoutePattern.test(router.pathname), router.pathname)
-  if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
-    import('../main.scss')
-    import('../buttons.scss')
-  } else {
-    import('../styles/base.scss')
-  }
   const { profile } = UIStore.useState((s) => ({
     profile: s.profile,
     disclaimer: s.disclaimer,
