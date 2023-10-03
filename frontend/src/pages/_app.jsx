@@ -268,20 +268,8 @@ function MyApp({ Component, pageProps }) {
   )
 
   const Layout = useMemo(() => {
-    if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
-      return withLayout(Component)
-    } else {
-      return withNewLayout(Component)
-    }
-  }, [router.pathname, Component])
-
-  const RenderedLayout = useMemo(() => {
-    if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
-      return <Layout {...pageProps} {...componentProps} />
-    } else {
-      return <Layout {...pageProps} {...componentProps} />
-    }
-  }, [router.pathname, Layout, Component, pageProps, componentProps])
+    return withNewLayout(Component)
+  }, [Component])
 
   return (
     <div id="root">
@@ -300,7 +288,7 @@ function MyApp({ Component, pageProps }) {
           typeof window !== 'undefined' ? window.location.origin : ''
         }
       >
-        {RenderedLayout}
+        <Layout {...pageProps} {...componentProps} />
       </Auth0Provider>
     </div>
   )
