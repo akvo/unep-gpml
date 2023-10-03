@@ -95,7 +95,7 @@ VALUES (
     '7298e9b0-8632-475b-b116-7ab26969d1a0',
     'plastic-strategy/read',
     'Allows viewing a plastic strategy',
-    'plastc-strategy'),
+    'plastic-strategy'),
 (
     'b0e1db85-96d7-440f-a374-fd76f4088cb3',
     'plastic-strategy/bookmark',
@@ -171,10 +171,10 @@ VALUES (
     1),
 (
     '982889c1-368c-489c-b8f4-234802e0781d',
-    'd7bb3d25-e8b7-4311-a6a1-c96855b35081',
+    'fe3afc8c-5db6-4ab6-9223-f74a9fee906e',
     1),
 (
-    '982889c1-368c-489c-b8f4-234802e0781d',
+    '4c953c83-bc6e-41a0-bde7-d25a6a938a3c',
     '7298e9b0-8632-475b-b116-7ab26969d1a0',
     1);
 --;;
