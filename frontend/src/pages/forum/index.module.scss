@@ -68,6 +68,7 @@
                     .ant-avatar-string {
                       font-size: $fzXXS;
                       font-weight: 600;
+                      text-transform: uppercase;
                     }
                     &:nth-of-type(1) {
                       background-color: $primaryPurple;

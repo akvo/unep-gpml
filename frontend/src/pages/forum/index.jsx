@@ -14,6 +14,7 @@ const Forum = () => {
     open: false,
     data: {},
   })
+  const [loading, setLoading] = useState(true)
 
   const profile = UIStore.useState((s) => s.profile)
 
@@ -39,9 +40,11 @@ const Forum = () => {
         const { data } = await api.get('/chat/channel/all')
         const _allForums = data.map((d) => ({ ...d, membersFetched: false }))
         setAllForums(_allForums)
+        setLoading(false)
       }
     } catch (error) {
       console.error('err', error)
+      setLoading(false)
     }
   }, [profile])
 
@@ -69,6 +72,7 @@ const Forum = () => {
           <List
             grid={{ column: 3, gutter: 20 }}
             dataSource={allForums}
+            loading={loading}
             renderItem={(item) => (
               <List.Item>
                 <Card>
@@ -80,10 +84,7 @@ const Forum = () => {
                     <p className={styles.forumDesc}>{item?.description}</p>
                   </div>
                   <div className="flex">
-                    <ForumMembers
-                      {...{ allForums, setAllForums, initName }}
-                      forum={item}
-                    />
+                    <ForumMembers {...{ initName }} forum={item} />
                     <div>
                       <Button
                         size="small"
