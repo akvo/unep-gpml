@@ -5,11 +5,13 @@ import moment from 'moment'
 import Button from '../../components/button'
 import api from '../../utils/api'
 import styles from './forum.module.scss'
+import { UIStore } from '../../store'
 
 const MyForums = ({ handleOnView }) => {
   const [myForums, setMyForums] = useState([])
   const [loading, setLoading] = useState(true)
   const [openPopover, setOpenPopover] = useState(null)
+  const profile = UIStore.useState((s) => s.profile)
 
   const requestToLeave = async (channelName, channelID, channelType) => {
     try {
@@ -48,18 +50,25 @@ const MyForums = ({ handleOnView }) => {
 
   const getMyForums = useCallback(async () => {
     try {
-      const { data } = await api.get('/chat/user/channel')
-      setMyForums(data)
-      setLoading(false)
+      if (profile?.id) {
+        const { data } = await api.get('/chat/user/channel')
+        setMyForums(data)
+        setLoading(false)
+      }
     } catch (error) {
       console.error('myforums error:', error)
       setLoading(false)
     }
-  }, [])
+  }, [profile])
 
   useEffect(() => {
     getMyForums()
   }, [getMyForums])
+
+  if (!loading && myForums.length === 0) {
+    return null
+  }
+
   return (
     <>
       <div className="header my-forums">
