@@ -11,20 +11,29 @@ const MyForums = ({ handleOnView }) => {
   const [loading, setLoading] = useState(true)
   const [openPopover, setOpenPopover] = useState(null)
 
-  const requestToLeave = async (name) => {
-    await new Promise((resolve, _) => {
-      setTimeout(() => resolve(), 2000)
-    })
-    message.success(`You have left the channel ${name}`)
-    setOpenPopover(null)
+  const requestToLeave = async (channelName, channelID, channelType) => {
+    try {
+      await api.post('/chat/channel/leave', {
+        channel_id: channelID,
+        channel_type: channelType,
+      })
+      const _myForums = myForums.filter((mf) => mf.id !== channelID)
+      setMyForums(_myForums)
+      message.success(`You have left the channel ${channelName}`)
+    } catch (error) {
+      console.error(`leave channel error: ${error}`)
+      message.error(
+        `Error: Unable to leave channel ${channelName}. Please try again later.`
+      )
+    }
   }
 
-  const handleOnLeave = ({ name }) => {
+  const handleOnLeave = ({ name, id, t }) => {
     setOpenPopover(null)
     Modal.confirm({
       title: name,
       content: 'Are you sure you want to leave this channel?',
-      onOk: () => requestToLeave(name),
+      onOk: () => requestToLeave(name, id, t),
       cancelButtonProps: {
         type: 'link',
         size: 'small',
