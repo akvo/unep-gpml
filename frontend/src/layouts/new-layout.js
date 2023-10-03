@@ -61,7 +61,6 @@ const NewLayout = ({
   const { menuList } = UIStore.useState((s) => ({
     menuList: s.menuList,
   }))
-  const [loginVisible, setLoginVisible] = useState(false)
   const [openedItemKey, setOpenedItemKey] = useState(null)
   const [showMenu, setShowMenu] = useState(false)
   const [width] = useDeviceSize()
