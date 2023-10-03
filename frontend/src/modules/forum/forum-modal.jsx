@@ -69,23 +69,27 @@ const ForumModal = ({ viewModal, setViewModal, initName }) => {
       }
     >
       <p className={styles.forumDesc}>{viewModal?.data?.description}</p>
-      <h6>Participants ({viewModal?.data?.usersCount})</h6>
+      <h6>
+        {viewModal?.data?.users?.length > 0
+          ? `Participants (${viewModal.data.users.length})`
+          : 'No participants'}
+      </h6>
       <List
         className="members"
         grid={{
           column: 2,
         }}
-        dataSource={viewModal?.data?.members}
-        renderItem={(member) => (
-          <List.Item key={member.id}>
+        dataSource={viewModal?.data?.users}
+        renderItem={(user) => (
+          <List.Item key={user.id}>
             <List.Item.Meta
               avatar={
-                <Avatar src={member.image} className={sample(colorList)}>
-                  {!member.image && initName(member.name)}
+                <Avatar src={user.image} className={sample(colorList)}>
+                  {!user.image && initName(user.name)}
                 </Avatar>
               }
-              title={member.name}
-              description={member.title}
+              title={user.name}
+              description={user.nickname}
             />
           </List.Item>
         )}
