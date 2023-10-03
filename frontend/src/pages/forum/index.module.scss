@@ -99,6 +99,7 @@
               }
               .ant-btn.ant-btn-background-ghost {
                 &:hover {
+                  background-color: $primaryDarkBlue;
                   span {
                     color: $primaryWhite;
                   }

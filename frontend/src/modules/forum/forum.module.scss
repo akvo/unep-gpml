@@ -26,7 +26,7 @@
       }
     }
     .ant-modal-body {
-      height: 527px;
+      height: auto;
       overflow-y: auto;
       padding: 0 19px 24px;
       h6 {
@@ -48,6 +48,7 @@
                 font-family: var(--font-archia);
                 font-size: $fzXXS;
                 font-weight: 600;
+                text-transform: uppercase;
               }
               &.purple {
                 background-color: $primaryPurple;
