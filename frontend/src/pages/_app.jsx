@@ -18,7 +18,6 @@ const newRoutes = [
   '/knowledge/library',
   '/[type]/[id]',
   '/onboarding',
-  '/workspace',
 ]
 const dynamicRoutePattern = /^\/\w+\/\d+$/
 
@@ -258,9 +257,17 @@ function MyApp({ Component, pageProps }) {
     [isAuthenticated, auth0Client, profile, loginVisible, loadingProfile]
   )
 
-  const Layout = useMemo(() => {
+  const DefaultLayout = useMemo(() => {
     return withNewLayout(Component)
   }, [Component])
+
+  const getLayout =
+    Component.getLayout ||
+    ((page) => (
+      <DefaultLayout {...pageProps} {...componentProps}>
+        {page}
+      </DefaultLayout>
+    ))
 
   return (
     <div id="root">
@@ -279,7 +286,7 @@ function MyApp({ Component, pageProps }) {
           typeof window !== 'undefined' ? window.location.origin : ''
         }
       >
-        <Layout {...pageProps} {...componentProps} />
+        {getLayout(<Component {...pageProps} {...componentProps} />)}
       </Auth0Provider>
     </div>
   )
