@@ -1101,33 +1101,14 @@
           background: $primaryGrey !important;
           border: 0 !important;
           border-radius: 5px !important;
-          background-image: url('/search-icon.svg'),
-            url('/chevron-down-grey.svg') !important;
-          background-repeat: no-repeat !important;
-          background-position: calc(10px) center, calc(100% - 10px) center !important;
         }
         .ant-select-selection-overflow {
-          padding-left: 35px;
-          padding-top: 4px;
-          padding-bottom: 4px;
-
           .ant-select-selection-item {
             background-color: $primaryDarkBlue;
             border-radius: 4px;
             span {
               color: white;
             }
-          }
-        }
-        .ant-select-selection-placeholder {
-          font-weight: 600;
-          padding-left: 30px;
-          font-size: 16px;
-          color: $primaryDarkBlue;
-          font-family: var(--font-dm-sans), sans-serif;
-
-          @media (max-width: 540px) {
-            font-size: 14px;
           }
         }
       }
