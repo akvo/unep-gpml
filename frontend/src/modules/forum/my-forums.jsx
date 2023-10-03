@@ -7,9 +7,10 @@ import api from '../../utils/api'
 import styles from './forum.module.scss'
 import { UIStore } from '../../store'
 
-const MyForums = ({ handleOnView }) => {
+const MyForums = ({ allForums, setAllForums, handleOnView }) => {
   const [myForums, setMyForums] = useState([])
   const [loading, setLoading] = useState(true)
+  const [isTagged, setIsTagged] = useState(true)
   const [openPopover, setOpenPopover] = useState(null)
   const profile = UIStore.useState((s) => s.profile)
 
@@ -47,6 +48,26 @@ const MyForums = ({ handleOnView }) => {
       okType: 'default',
     })
   }
+
+  useEffect(() => {
+    /**
+     * Add joined property to tag my forum in all items
+     */
+    if (myForums?.length && allForums?.length) {
+      setIsTagged(false)
+      const _allForums = allForums.map((a) => {
+        const findMyChannel = myForums.find((mf) => mf?.id === a?.id)
+        if (findMyChannel) {
+          return {
+            ...a,
+            joined: true,
+          }
+        }
+        return a
+      })
+      setAllForums(_allForums)
+    }
+  }, [isTagged, allForums, myForums])
 
   const getMyForums = useCallback(async () => {
     try {

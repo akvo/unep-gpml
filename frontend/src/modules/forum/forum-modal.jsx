@@ -11,6 +11,9 @@ const ForumModal = ({ viewModal, setViewModal, initName, avatarUrl }) => {
   const colorList = ['purple', 'green', 'blue', 'dark-blue']
   const [joins, setJoins] = useLocalStorage('joins', [])
   const joinDisabled = requesting || joins?.includes(viewModal?.data?.id)
+  const isNotAMember =
+    viewModal?.data?.t === 'p' &&
+    (viewModal?.data?.joined === undefined || !viewModal?.data?.joined)
 
   const handleOnClose = () => {
     setViewModal({
@@ -54,7 +57,7 @@ const ForumModal = ({ viewModal, setViewModal, initName, avatarUrl }) => {
           <Button type="link" size="small" onClick={handleOnClose}>
             Close
           </Button>
-          {viewModal?.data?.t === 'p' ? (
+          {isNotAMember ? (
             <Button
               onClick={() => handleOnRequestJoin(viewModal?.data)}
               loading={requesting}

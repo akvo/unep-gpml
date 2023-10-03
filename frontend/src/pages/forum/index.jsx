@@ -63,7 +63,7 @@ const Forum = () => {
     <div className="container">
       <div className={styles.forumHome}>
         <span className="h-xs title">Forums</span>
-        <MyForums {...{ handleOnView }} />
+        <MyForums {...{ allForums, setAllForums, handleOnView }} />
 
         <div className="header">
           <div className="jumbotron">
