@@ -219,7 +219,11 @@
   [_ _]
   {:body (-> dom.tag/Tag
              (util.malli/dissoc [:id])
-             (mu/assoc :tag_category string?))})
+             (mu/assoc
+              :tag_category
+              [string?
+               {:swagger {:description "The name of the Tag's category it belongs to."
+                          :type "string"}}]))})
 
 (def ^:private get-all-query-params
   [:map
