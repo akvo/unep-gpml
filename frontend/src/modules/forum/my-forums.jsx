@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Card, List, Modal, Popover, message } from 'antd'
 import { MoreOutlined } from '@ant-design/icons'
+import { useRouter } from 'next/router'
 import moment from 'moment'
 import Button from '../../components/button'
 import api from '../../utils/api'
@@ -13,6 +14,7 @@ const MyForums = ({ allForums, setAllForums, handleOnView }) => {
   const [isTagged, setIsTagged] = useState(true)
   const [openPopover, setOpenPopover] = useState(null)
   const profile = UIStore.useState((s) => s.profile)
+  const router = useRouter()
 
   const requestToLeave = async (channelName, channelID, channelType) => {
     try {
@@ -47,6 +49,10 @@ const MyForums = ({ allForums, setAllForums, handleOnView }) => {
       },
       okType: 'default',
     })
+  }
+
+  const goToChannel = ({ name }) => {
+    router.push(`/forum/${name}`)
   }
 
   useEffect(() => {
@@ -160,7 +166,11 @@ const MyForums = ({ allForums, setAllForums, handleOnView }) => {
                     </p>
                   </div>
                   <div>
-                    <Button size="small" withArrow="link">
+                    <Button
+                      size="small"
+                      withArrow="link"
+                      onClick={() => goToChannel(item)}
+                    >
                       Chat
                     </Button>
                   </div>

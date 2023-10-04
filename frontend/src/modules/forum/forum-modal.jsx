@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Avatar, List, Modal, message } from 'antd'
+import { useRouter } from 'next/router'
 import sample from 'lodash/sample'
 import Button from '../../components/button'
 import api from '../../utils/api'
@@ -14,6 +15,7 @@ const ForumModal = ({ viewModal, setViewModal, initName, avatarUrl }) => {
   const isNotAMember =
     viewModal?.data?.t === 'p' &&
     (viewModal?.data?.joined === undefined || !viewModal?.data?.joined)
+  const router = useRouter()
 
   const handleOnClose = () => {
     setViewModal({
@@ -36,6 +38,10 @@ const ForumModal = ({ viewModal, setViewModal, initName, avatarUrl }) => {
       message.error(error?.response?.message)
       setRequesting(false)
     }
+  }
+
+  const goToChannel = ({ name }) => {
+    router.push(`/forum/${name}`)
   }
 
   return (
@@ -66,7 +72,11 @@ const ForumModal = ({ viewModal, setViewModal, initName, avatarUrl }) => {
               {joinDisabled ? 'Requested to Join' : 'Request to Join'}
             </Button>
           ) : (
-            <Button withArrow="link" size="small">
+            <Button
+              withArrow="link"
+              size="small"
+              onClick={() => goToChannel(viewModal.data)}
+            >
               View channel
             </Button>
           )}
