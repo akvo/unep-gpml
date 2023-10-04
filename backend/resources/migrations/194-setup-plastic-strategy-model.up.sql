@@ -2,13 +2,9 @@ BEGIN;
 --;;
 CREATE TABLE plastic_strategy (
     id SERIAL PRIMARY KEY,
-    country_id INTEGER NOT NULL REFERENCES country (id)
-);
---;;
-CREATE TABLE plastic_strategy_step (
-    id SERIAL PRIMARY KEY,
-    display_section_id TEXT NOT NULL,
-    completed BOOLEAN DEFAULT FALSE,
+    country_id INTEGER NOT NULL REFERENCES country (id),
+    steps JSONB,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
     last_updated_at TIMESTAMP WITHOUT TIME ZONE
 );
 --;;
