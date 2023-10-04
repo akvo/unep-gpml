@@ -255,7 +255,7 @@ const Workspace = ({ profile }) => {
               <h2 className="h-xxl w-semi">Plastic Strategies</h2>
               <ul>
                 <li>
-                  <a href="#">
+                  <Link href="/workspace/ps-sa">
                     <div className="caps-heading-s">plastic strategy</div>
                     <h4 className="h-l w-semi">South Africa</h4>
                     <div className="compl">12%</div>
@@ -270,7 +270,7 @@ const Workspace = ({ profile }) => {
                       <li>Data Analysis</li>
                       <li>National Plastic Strategy</li>
                     </ul>
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

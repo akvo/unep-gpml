@@ -3,6 +3,7 @@ import { Pointer } from '../../../components/icons'
 import styles from './ps.module.scss'
 import { useRouter } from 'next/router'
 import classNames from 'classnames'
+import Button from '../../../components/button'
 
 const stepsState = [
   { label: 'Instructions', slug: '', checked: false },
@@ -29,11 +30,7 @@ const stepsState = [
 
 const NestedLayout = ({ children }) => {
   const router = useRouter()
-  // console.log(router)
   const pathSlugs = [...router.route.substring(1).split('/'), '']
-  console.log(pathSlugs)
-  console.log(pathSlugs[2])
-  console.log(pathSlugs[3])
   return (
     <div className={styles.plasticStrategyView}>
       <div className={styles.sidebar}>
@@ -93,7 +90,11 @@ const NestedLayout = ({ children }) => {
           ))}
         </div>
       </div>
-      <div className="view">{children}</div>
+      <div className={styles.view}>{children}</div>
+      <div className={styles.bottomBar}>
+        <Button type="ghost">Mark as Completed</Button>
+        <Button withArrow>Next</Button>
+      </div>
     </div>
   )
 }

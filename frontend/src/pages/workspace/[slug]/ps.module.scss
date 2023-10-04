@@ -5,7 +5,11 @@
 }
 .sidebar {
   width: 330px;
+  min-width: 330px;
   background-color: #ebf5ff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
   :global {
     .head {
       padding: 18px 10px;
@@ -94,4 +98,28 @@
   }
 }
 .view {
+  padding: 30px 50px 140px;
+}
+.bottomBar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 99;
+  padding: 10px;
+  padding-right: 30px;
+  border-top: 1px solid #000;
+  background: #f5f7ff;
+  :global {
+    .ant-btn {
+      margin-left: 10px;
+      &.ant-btn-default {
+        &:hover {
+          margin-right: -8px;
+        }
+      }
+    }
+  }
 }
