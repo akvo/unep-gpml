@@ -90,7 +90,7 @@ const NewLayout = ({
               <h5>
                 Global Partnership
                 <br />
-                on Plastic Pollution1
+                on Plastic Pollution
                 <br />
                 and Marine Litter
               </h5>
