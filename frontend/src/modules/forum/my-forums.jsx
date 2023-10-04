@@ -86,7 +86,7 @@ const MyForums = ({ allForums, setAllForums, handleOnView }) => {
     getMyForums()
   }, [getMyForums])
 
-  if (!loading && myForums.length === 0) {
+  if (myForums.length === 0) {
     return null
   }
 
