@@ -624,7 +624,28 @@
                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
                                                                #ig/ref :gpml.auth/auth-required]
                                                   :swagger {:tags ["chat"]}
-                                                  :handler #ig/ref :gpml.handler.chat/get-public-channels}}]]]]]
+                                                  :handler #ig/ref :gpml.handler.chat/get-public-channels}}]]]
+                                        ["/plastic-strategy"
+                                         [""
+                                          {:get {:summary "Get all plastic strategies"
+                                                 :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                              #ig/ref :gpml.auth/auth-required]
+                                                 :swagger {:tags ["plastic-strategy"]}
+                                                 :handler #ig/ref :gpml.handler.plastic-strategy/get-all
+                                                 :parameters #ig/ref :gpml.handler.plastic-strategy/get-all-params}}]
+                                         ["/{iso_code_a2}"
+                                          {:get {:summary "Get a plastic strategy"
+                                                 :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                              #ig/ref :gpml.auth/auth-required]
+                                                 :swagger {:tags ["plastic-strategy"]}
+                                                 :handler #ig/ref :gpml.handler.plastic-strategy/get
+                                                 :parameters #ig/ref :gpml.handler.plastic-strategy/get-params}
+                                           :put {:summary "Update a plastic strategy steps"
+                                                 :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                              #ig/ref :gpml.auth/auth-required]
+                                                 :swagger {:tags ["plastic-strategy"]}
+                                                 :handler #ig/ref :gpml.handler.plastic-strategy/update-steps
+                                                 :parameters #ig/ref :gpml.handler.plastic-strategy/update-steps-params}}]]]]
                               :logger #ig/ref :duct.logger/timbre
                               :cors-allowed-origins #ig/ref :gpml.handler.main/cors-allowed-origins}
 
@@ -891,6 +912,13 @@
   :gpml.handler.chat/send-private-channel-invitation-request-params {}
   :gpml.handler.chat/remove-user-from-channel #ig/ref :gpml.config/common
   :gpml.handler.chat/remove-user-from-channel-params {}
+
+  :gpml.handler.plastic-strategy/get-all #ig/ref :gpml.config/common
+  :gpml.handler.plastic-strategy/get-all-params {}
+  :gpml.handler.plastic-strategy/get #ig/ref :gpml.config/common
+  :gpml.handler.plastic-strategy/get-params {}
+  :gpml.handler.plastic-strategy/update-steps #ig/ref :gpml.config/common
+  :gpml.handler.plastic-strategy/update-steps-params {}
 
   :clj-gcp.storage/client {}
 
