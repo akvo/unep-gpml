@@ -79,31 +79,33 @@ const ForumModal = ({ viewModal, setViewModal, initName, avatarUrl }) => {
           ? `Participants (${viewModal.data.users.length})`
           : 'No participants'}
       </h6>
-      <List
-        className="members"
-        grid={{
-          column: 2,
-        }}
-        dataSource={viewModal?.data?.users}
-        renderItem={(user) => {
-          const userImage = user?.avatarETag
-            ? `${avatarUrl}${user?.username}?etag=${user.avatarETag}`
-            : null
-          return (
-            <List.Item key={user.id}>
-              <List.Item.Meta
-                avatar={
-                  <Avatar src={userImage} className={sample(colorList)}>
-                    {!userImage && initName(user.name)}
-                  </Avatar>
-                }
-                title={user.name}
-                description={user.nickname}
-              />
-            </List.Item>
-          )
-        }}
-      />
+      {viewModal?.data?.users?.length > 0 && (
+        <List
+          className="members"
+          grid={{
+            column: 2,
+          }}
+          dataSource={viewModal?.data?.users}
+          renderItem={(user) => {
+            const userImage = user?.avatarETag
+              ? `${avatarUrl}${user?.username}?etag=${user.avatarETag}`
+              : null
+            return (
+              <List.Item key={user.id}>
+                <List.Item.Meta
+                  avatar={
+                    <Avatar src={userImage} className={sample(colorList)}>
+                      {!userImage && initName(user.name)}
+                    </Avatar>
+                  }
+                  title={user.name}
+                  description={user.nickname}
+                />
+              </List.Item>
+            )
+          }}
+        />
+      )}
     </Modal>
   )
 }
