@@ -1,18 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Card, List } from 'antd'
+import dynamic from 'next/dynamic'
 import styles from './index.module.scss'
 import Button from '../../components/button'
 import { UIStore } from '../../store'
 import api from '../../utils/api'
-import ForumModal from '../../modules/forum/forum-modal'
 import ForumMembers from '../../modules/forum/forum-members'
 import MyForums from '../../modules/forum/my-forums'
 
-// TODO
-/**
- * get rocket chat baseURL from env variable
- */
-const CHAT_API_DOMAIN_URL = 'https://rocket-chat.akvotest.org'
+const DynamicForumModal = dynamic(
+  () => import('../../modules/forum/forum-modal'),
+  {
+    ssr: false, // modal has window object that should be run in client side
+  }
+)
 
 const Forum = () => {
   const [allForums, setAllForums] = useState([])
@@ -23,7 +24,7 @@ const Forum = () => {
   const [loading, setLoading] = useState(true)
 
   const profile = UIStore.useState((s) => s.profile)
-  const avatarUrl = `${CHAT_API_DOMAIN_URL}/avatar/`
+  const avatarUrl = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/avatar/`
 
   const handleOnView = (data) => {
     setViewModal({
@@ -107,7 +108,9 @@ const Forum = () => {
             )}
           />
         </section>
-        <ForumModal {...{ viewModal, setViewModal, initName, avatarUrl }} />
+        <DynamicForumModal
+          {...{ viewModal, setViewModal, initName, avatarUrl }}
+        />
       </div>
     </div>
   )
