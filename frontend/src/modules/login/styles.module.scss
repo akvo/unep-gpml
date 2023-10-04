@@ -12,26 +12,23 @@
   :global {
     .ant-modal-body {
       padding: 0;
+
       .register-text {
-        font-weight: 400;
-        font-size: 18px;
-        line-height: 26px;
         text-align: center;
         color: $primaryDarkBlue3;
-        padding: 0 2vw;
+        padding: 0 50px;
       }
       .terms {
-        background: $primaryPurple;
+        background: $primaryPurple2;
         padding: 6px 0px;
         h4 {
           margin-bottom: 0px;
-          font-weight: 600;
-          font-size: 16px;
+          font-weight: 500;
+          font-size: 14px;
           line-height: 23px;
-          color: white;
           text-align: center;
           a {
-            font-size: 16px;
+            text-decoration: underline;
             color: $primaryDarkBlue;
           }
         }
@@ -253,9 +250,24 @@
         button {
           margin-bottom: 20px;
           width: 315px;
+          text-align: center;
+          span {
+            flex: 1;
+            padding-left: 10px;
+          }
           svg {
             padding-left: 0px;
-            padding-right: 10px;
+            // padding-right: 10px;
+          }
+          :global {
+            .icon {
+              position: absolute;
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              left: 15px;
+            }
           }
           svg {
             path {

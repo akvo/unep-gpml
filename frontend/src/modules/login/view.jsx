@@ -188,14 +188,22 @@ function Login({ visible, close }) {
                     <div className={styles.authButtons}>
                       <Button
                         ghost
-                        icon={<LinkedinIcon />}
+                        icon={
+                          <div className="icon">
+                            <LinkedinIcon />
+                          </div>
+                        }
                         onClick={handleLinkedinLogin}
                       >
                         CONTINUE WITH LINKEDIN
                       </Button>
                       <Button
                         ghost
-                        icon={<GoogleIcon />}
+                        icon={
+                          <div className="icon">
+                            <GoogleIcon />
+                          </div>
+                        }
                         onClick={handleGoogleLogin}
                       >
                         CONTINUE WITH GOOGLE
@@ -205,13 +213,17 @@ function Login({ visible, close }) {
                       </div>
                       <Button
                         ghost
-                        icon={<EmailIcon />}
+                        icon={
+                          <div className="icon">
+                            <EmailIcon />
+                          </div>
+                        }
                         onClick={() => setSignIn(!signin)}
                       >
                         CONTINUE WITH EMAIL
                       </Button>
                     </div>
-                    <p className="register-text">
+                    <p className="register-text p-s">
                       Once you have an account you can register your
                       organisation and apply for Global Partnership on Plastic
                       Pollution and Marine Litter membership
