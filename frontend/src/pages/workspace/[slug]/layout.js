@@ -1,33 +1,39 @@
 import Link from 'next/link'
 import { Pointer } from '../../../components/icons'
-import styles from '../ps.module.scss'
+import styles from './ps.module.scss'
 import { useRouter } from 'next/router'
 import classNames from 'classnames'
 
 const stepsState = [
-  { label: 'Instructions', checked: false },
+  { label: 'Instructions', slug: '', checked: false },
   {
     label: 'National Steering Committee & Project Team',
+    slug: '1-project-team',
     substeps: [
-      { label: 'Intro', checked: false },
-      { label: 'Setup your team', checked: false },
+      { label: 'Intro', slug: '', checked: false },
+      { label: 'Setup your team', slug: 'setup-team', checked: false },
     ],
   },
   {
     label: 'Stakeholder Consultation Process',
+    slug: '2-stakeholder-consultation',
     substeps: [
-      { label: 'Intro', checked: false },
-      { label: 'Stakeholder Map', checked: false },
-      { label: 'Case Studies', checked: false },
-      { label: 'Initiatives', checked: false },
-      { label: 'Summary & Report', checked: false },
+      { label: 'Intro', slug: '', checked: false },
+      { label: 'Stakeholder Map', slug: 'stakeholder-map', checked: false },
+      { label: 'Case Studies', slug: 'case-studies', checked: false },
+      { label: 'Initiatives', slug: 'initiatives', checked: false },
+      { label: 'Summary & Report', slug: 'summary', checked: false },
     ],
   },
 ]
 
 const NestedLayout = ({ children }) => {
   const router = useRouter()
-  console.log(router)
+  // console.log(router)
+  const pathSlugs = [...router.route.substring(1).split('/'), '']
+  console.log(pathSlugs)
+  console.log(pathSlugs[2])
+  console.log(pathSlugs[3])
   return (
     <div className={styles.plasticStrategyView}>
       <div className={styles.sidebar}>
@@ -41,7 +47,12 @@ const NestedLayout = ({ children }) => {
         </div>
         <div className="steps">
           {stepsState.map((step) => (
-            <div className={classNames('step opened')}>
+            <div
+              className={classNames('step', {
+                selected: pathSlugs[2] == step.slug && !step.substeps,
+                opened: pathSlugs[2] == step.slug && step.substeps?.length > 0,
+              })}
+            >
               <ConditionalLink step={step}>
                 <div className="stephead">
                   <div className="check"></div>
@@ -63,8 +74,12 @@ const NestedLayout = ({ children }) => {
                 >
                   {step.substeps.map((substep) => (
                     <Link
-                      className={classNames('step substep')}
-                      href={`${router.query.slug}/${step.label}/${substep.label}`}
+                      className={classNames('step substep', {
+                        selected:
+                          step.slug === pathSlugs[2] &&
+                          substep.slug === pathSlugs[3],
+                      })}
+                      href={`/workspace/${router.query?.slug}/${step.slug}/${substep.slug}`}
                     >
                       <div className="stephead">
                         <div className="check"></div>
@@ -76,15 +91,9 @@ const NestedLayout = ({ children }) => {
               )}
             </div>
           ))}
-          <Link href={`/workspace/${router.query.slug}`}>step 1</Link>
-          <Link
-            href={`/workspace/${router.query.slug}/project-team/setup-team`}
-          >
-            step 2
-          </Link>
         </div>
       </div>
-      {children}
+      <div className="view">{children}</div>
     </div>
   )
 }
@@ -93,12 +102,14 @@ const ConditionalLink = ({ step, children }) => {
   const router = useRouter()
   if (!step.substeps) {
     return (
-      <Link href={`${router.query?.slug?.[0]}/${step.label}`}>{children}</Link>
+      <Link href={`/workspace/${router.query?.slug}/${step.slug}`}>
+        {children}
+      </Link>
     )
   }
   return (
     <Link
-      href={`${router.query?.slug?.[0]}/${step.label}/${step.substeps[0].label}`}
+      href={`/workspace/${router.query?.slug}/${step.slug}/${step.substeps[0].slug}`}
     >
       {children}
     </Link>

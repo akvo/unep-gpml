@@ -1,6 +1,6 @@
 import { PageLayout } from '..'
 
-const View = () => <h1>Setup team</h1>
+const View = () => <h1>Case Studies</h1>
 
 View.getLayout = PageLayout
 

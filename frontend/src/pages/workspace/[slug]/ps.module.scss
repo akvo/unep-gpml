@@ -1,6 +1,7 @@
-@import '../../styles/vars.scss';
+@import '../../../styles/vars.scss';
 
 .plasticStrategyView {
+  display: flex;
 }
 .sidebar {
   width: 330px;
@@ -91,4 +92,6 @@
       }
     }
   }
+}
+.view {
 }
