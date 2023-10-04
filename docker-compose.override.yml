@@ -50,5 +50,10 @@ services:
       dockerfile: Dockerfile
     network_mode: service:mainnetwork
 
+  strapi:
+    depends_on:
+      - db
+    network_mode: service:mainnetwork
+
 volumes:
   pg-admin-data:

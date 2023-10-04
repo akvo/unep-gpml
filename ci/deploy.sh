@@ -49,6 +49,7 @@ auth
 if [[ -z "${CI_TAG:=}" ]]; then
     push_image backend
     push_image frontend
+    push_image strapi
     push_image nginx
 fi
 
