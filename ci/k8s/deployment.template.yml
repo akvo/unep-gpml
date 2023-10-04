@@ -306,87 +306,87 @@ spec:
             cpu: "600m"
             memory: "1000Mi"
         env:
-        - name: STRAPI_DATABASE_CLIENT
+        - name: DATABASE_CLIENT
           valueFrom:
             secretKeyRef:
               name: unep-gpml
               key: strapi-database-client
-        - name: STRAPI_DATABASE_HOST
+        - name: DATABASE_HOST
           valueFrom:
             secretKeyRef:
               name: unep-gpml
               key: strapi-database-host
-        - name: STRAPI_DATABASE_NAME
+        - name: DATABASE_NAME
           valueFrom:
             secretKeyRef:
               name: unep-gpml
               key: strapi-database-name
-        - name: STRAPI_DATABASE_USERNAME
+        - name: DATABASE_USERNAME
           valueFrom:
             secretKeyRef:
               name: unep-gpml
               key: strapi-database-username
-        - name: STRAPI_DATABASE_PASSWORD
+        - name: DATABASE_PASSWORD
           valueFrom:
             secretKeyRef:
               name: unep-gpml
               key: strapi-database-password
-        - name: STRAPI_JWT_SECRET
+        - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
               name: unep-gpml
               key: strapi-jwt-secret
-        - name: STRAPI_APP_KEYS
+        - name: APP_KEYS
           valueFrom:
             secretKeyRef:
               name: unep-gpml
               key: strapi-app-keys
-        - name: STRAPI_ADMIN_JWT_SECRET
+        - name: ADMIN_JWT_SECRET
           valueFrom:
             secretKeyRef:
               name: unep-gpml
               key: strapi-admin-jwt-secret
-        - name: STRAPI_API_TOKEN_SALT
+        - name: API_TOKEN_SALT
           valueFrom:
             secretKeyRef:
               name: unep-gpml
               key: strapi-api-token-salt
-        - name: STRAPI_URL
+        - name: URL
           valueFrom:
             secretKeyRef:
               name: unep-gpml
               key: strapi-url
-        - name: STRAPI_TRANSFER_TOKEN_SALT
+        - name: TRANSFER_TOKEN_SALT
           valueFrom:
             secretKeyRef:
               name: unep-gpml
               key: strapi-transfer-token-salt
-        - name: STRAPI_GCS_SERVICE_ACCOUNT
+        - name: GCS_SERVICE_ACCOUNT
           valueFrom:
             secretKeyRef:
               name: unep-gpml
               key: strapi-gcs-service-account
-        - name: STRAPI_GCS_BUCKET_NAME
+        - name: GCS_BUCKET_NAME
           valueFrom:
             secretKeyRef:
               name: unep-gpml
               key: strapi-gcs-bucket-name
-        - name: STRAPI_GCS_BASE_PATH
+        - name: GCS_BASE_PATH
           valueFrom:
             secretKeyRef:
               name: unep-gpml
               key: strapi-gcs-base-path
-        - name: STRAPI_GCS_BASE_URL
+        - name: GCS_BASE_URL
           valueFrom:
             secretKeyRef:
               name: unep-gpml
               key: strapi-gcs-base-url
-        - name: STRAPI_GCS_PUBLIC_FILES
+        - name: GCS_PUBLIC_FILES
           valueFrom:
             secretKeyRef:
               name: unep-gpml
               key: strapi-gcs-public-files
-        - name: STRAPI_GCS_UNIFORM
+        - name: GCS_UNIFORM
           valueFrom:
             secretKeyRef:
               name: unep-gpml
