@@ -1,18 +1,26 @@
 import React, { useState, useRef } from 'react'
-import { Col, Row, Form, Input, Switch, Select, notification } from 'antd'
-import styles from './styles.module.scss'
+import {
+  Col,
+  Row,
+  Typography,
+  Button,
+  Form,
+  Input,
+  Upload,
+  Switch,
+  Select,
+  Tag,
+  notification,
+} from 'antd'
+const { Title } = Typography
+const { Dragger } = Upload
+import styles from './oldStyles.module.scss'
+import { FileTextOutlined } from '@ant-design/icons'
 import { Form as FinalForm, Field } from 'react-final-form'
 import { auth0Client } from '../../utils/misc'
 import { UIStore } from '../../store'
+import { useHistory } from 'react-router-dom'
 import { useRouter } from 'next/router'
-import Button from '../../components/button'
-import FormLabel from '../../components/form-label'
-import {
-  DropDownIcon,
-  SearchIcon,
-  PasswordVisibleIcon,
-  PasswordIcon,
-} from '../../components/icons'
 
 const mountedStyle = {
   animation: 'inAnimation 250ms ease-in',
@@ -23,6 +31,7 @@ const unmountedStyle = {
 }
 
 function EmailJoin({ setSignUp, children }) {
+  let history = useHistory()
   const router = useRouter()
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -40,15 +49,16 @@ function EmailJoin({ setSignUp, children }) {
       errors.title = 'Please select title'
     }
     if (!values.firstName?.trim()) {
-      errors.firstName = 'Please enter first name'
+      errors.firstName = 'Please select first name'
     }
     if (!values.lastName?.trim()) {
-      errors.lastName = 'Please enter last name'
+      errors.lastName = 'Please select last name'
     }
     if (!values.country) {
       errors.country = 'Please select country'
     }
     if (!values.password) {
+      console.log(values)
       const uppercaseRegExp = /(?=.*?[A-Z])/
       const lowercaseRegExp = /(?=.*?[a-z])/
       const digitsRegExp = /(?=.*?[0-9])/
@@ -180,66 +190,41 @@ function EmailJoin({ setSignUp, children }) {
               return (
                 <Form layout="vertical">
                   <Field name="email">
-                    {({ input, meta }) => {
-                      const hasError = meta.touched && !meta.valid
-                      const validVal =
-                        input?.value && meta.valid ? 'success' : null
-                      const validateStatus = hasError ? 'error' : validVal
-                      return (
-                        <FormLabel
-                          htmlFor="email"
-                          label="Email"
-                          meta={meta}
-                          validateStatus={validateStatus}
-                        >
-                          <Input
-                            {...input}
-                            size="small"
-                            placeholder="Enter your email"
+                    {({ input, meta }) => (
+                      <Form.Item label="Email">
+                        <Input {...input} placeholder="Enter your email" />
+                        {meta.touched && meta.error && (
+                          <p
+                            color="error"
+                            className="error transitionDiv"
+                            style={
+                              meta.touched && meta.error
+                                ? mountedStyle
+                                : unmountedStyle
+                            }
+                          >
+                            {meta.error}
+                          </p>
+                        )}
+                        <div className="public-email-switch">
+                          <Switch
+                            key="publicEmail"
+                            name="publicEmail"
+                            onChange={(checked) =>
+                              formRef.current?.change('publicEmail', checked)
+                            }
                           />
-                          {meta.touched && meta.error && (
-                            <p
-                              color="error"
-                              className="error transitionDiv"
-                              style={
-                                meta.touched && meta.error
-                                  ? mountedStyle
-                                  : unmountedStyle
-                              }
-                            >
-                              {meta.error}
-                            </p>
-                          )}
-                          <div className="public-email-switch">
-                            <Switch
-                              key="publicEmail"
-                              name="publicEmail"
-                              onChange={(checked) =>
-                                formRef.current?.change('publicEmail', checked)
-                              }
-                            />
-                            &nbsp;&nbsp;&nbsp;
-                            {'Show my email address on public listing'}
-                          </div>
-                        </FormLabel>
-                      )
-                    }}
+                          &nbsp;&nbsp;&nbsp;
+                          {'Show my email address on public listing'}
+                        </div>
+                      </Form.Item>
+                    )}
                   </Field>
-                  <Field name="password" validate={passwordValidation}>
-                    {({ input, meta }) => {
-                      const hasError = meta.touched && !meta.valid
-                      const validVal =
-                        input?.value && meta.valid ? 'success' : null
-                      const validateStatus = hasError ? 'error' : validVal
-                      return (
-                        <FormLabel
-                          htmlFor="password"
-                          label="Password"
-                          meta={meta}
-                          validateStatus={validateStatus}
-                        >
+                  <Form.Item label="Password" name="password">
+                    <Field name="password" validate={passwordValidation}>
+                      {({ input, meta }) => (
+                        <>
                           <Input.Password
-                            size="small"
                             {...input}
                             placeholder="Choose your password"
                           />
@@ -256,26 +241,16 @@ function EmailJoin({ setSignUp, children }) {
                               {meta.error}
                             </p>
                           )}
-                        </FormLabel>
-                      )
-                    }}
-                  </Field>
-                  <Field name="confirm">
-                    {({ input, meta }) => {
-                      const hasError = meta.touched && !meta.valid
-                      const validVal =
-                        input?.value && meta.valid ? 'success' : null
-                      const validateStatus = hasError ? 'error' : validVal
-                      return (
-                        <FormLabel
-                          htmlFor="retypePassword"
-                          label="Retype your password"
-                          meta={meta}
-                          validateStatus={validateStatus}
-                        >
+                        </>
+                      )}
+                    </Field>
+                  </Form.Item>
+                  <Form.Item label="Retype Password" name="confirm">
+                    <Field name="confirm">
+                      {({ input, meta }) => (
+                        <>
                           <Input.Password
                             {...input}
-                            size="small"
                             placeholder="Retype your password"
                           />
                           {meta.touched && meta.error && (
@@ -291,32 +266,21 @@ function EmailJoin({ setSignUp, children }) {
                               {meta.error}
                             </p>
                           )}
-                        </FormLabel>
-                      )
-                    }}
-                  </Field>
+                        </>
+                      )}
+                    </Field>
+                  </Form.Item>
                   <Input.Group compact className="title-group">
-                    <Field name="title">
-                      {({ input, meta }) => {
-                        const hasError = meta.touched && !meta.valid
-                        const validVal =
-                          input?.value && meta.valid ? 'success' : null
-                        const validateStatus = hasError ? 'error' : validVal
-                        return (
-                          <FormLabel
-                            htmlFor="title"
-                            label="Title"
-                            meta={meta}
-                            validateStatus={validateStatus}
-                          >
+                    <Form.Item label="Title" name={'title'}>
+                      <Field name="title">
+                        {({ input, meta }) => (
+                          <>
+                            {' '}
                             <Select
                               onChange={(value) => input.onChange(value)}
                               virtual={false}
                               placeholder="Title"
                               allowClear
-                              size="small"
-                              showArrow
-                              suffixIcon={<DropDownIcon />}
                             >
                               {['Mr', 'Mrs', 'Ms', 'Dr', 'Prof'].map((it) => (
                                 <Select.Option value={it} key={it}>
@@ -337,28 +301,15 @@ function EmailJoin({ setSignUp, children }) {
                                 {meta.error}
                               </p>
                             )}
-                          </FormLabel>
-                        )
-                      }}
-                    </Field>
-                    <Field name="lastName">
-                      {({ input, meta }) => {
-                        const hasError = meta.touched && !meta.valid
-                        const validVal =
-                          input?.value && meta.valid ? 'success' : null
-                        const validateStatus = hasError ? 'error' : validVal
-                        return (
-                          <FormLabel
-                            htmlFor="lastName"
-                            label="Last Name"
-                            meta={meta}
-                            validateStatus={validateStatus}
-                          >
-                            <Input
-                              {...input}
-                              size="small"
-                              placeholder="Last Name"
-                            />
+                          </>
+                        )}
+                      </Field>
+                    </Form.Item>
+                    <Form.Item label="Last Name" name="lastName">
+                      <Field name="lastName">
+                        {({ input, meta }) => (
+                          <>
+                            <Input {...input} placeholder="Last Name" />
                             {meta.touched && meta.error && (
                               <p
                                 color="error"
@@ -372,24 +323,15 @@ function EmailJoin({ setSignUp, children }) {
                                 {meta.error}
                               </p>
                             )}
-                          </FormLabel>
-                        )
-                      }}
-                    </Field>
+                          </>
+                        )}
+                      </Field>
+                    </Form.Item>
                   </Input.Group>
-                  <Field name="firstName">
-                    {({ input, meta }) => {
-                      const hasError = meta.touched && !meta.valid
-                      const validVal =
-                        input?.value && meta.valid ? 'success' : null
-                      const validateStatus = hasError ? 'error' : validVal
-                      return (
-                        <FormLabel
-                          htmlFor="firstName"
-                          label="First Name"
-                          meta={meta}
-                          validateStatus={validateStatus}
-                        >
+                  <Form.Item label="First Name" name="firstName">
+                    <Field name="firstName">
+                      {({ input, meta }) => (
+                        <>
                           <Input {...input} placeholder="First Name" />
                           {meta.touched && meta.error && (
                             <p
@@ -404,71 +346,83 @@ function EmailJoin({ setSignUp, children }) {
                               {meta.error}
                             </p>
                           )}
-                        </FormLabel>
-                      )
-                    }}
-                  </Field>
-                  <Field name="country">
-                    {({ options, input, meta, control, ...props }) => {
-                      const hasError = meta.touched && !meta.valid
-                      const validVal =
-                        input?.value && meta.valid ? 'success' : null
-                      const validateStatus = hasError ? 'error' : validVal
-                      return (
-                        <FormLabel
-                          htmlFor="country"
-                          label="Country"
-                          meta={meta}
-                          validateStatus={validateStatus}
-                        >
-                          <Select
-                            size="small"
-                            onChange={(value) => input.onChange(value)}
-                            placeholder="Search Country"
-                            allowClear
-                            showSearch
-                            virtual={false}
-                            showArrow
-                            suffixIcon={<SearchIcon />}
-                            filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .includes(input.toLowerCase())
-                            }
-                          >
-                            {countries?.map((it) => (
-                              <Select.Option value={it.id} key={it.id}>
-                                {it.name}
-                              </Select.Option>
-                            ))}
-                          </Select>
-                          {meta.touched && meta.error && (
-                            <p
-                              color="error"
-                              className="error transitionDiv"
-                              style={
-                                meta.touched && meta.error
-                                  ? mountedStyle
-                                  : unmountedStyle
+                        </>
+                      )}
+                    </Field>
+                  </Form.Item>
+                  {/* <Form.Item
+                    label={
+                      <p>
+                        Photo <span>OPTIONAL</span>
+                      </p>
+                    }
+                    name="photo"
+                  >
+                    <Dragger
+                      accept="image/png, image/jpeg"
+                      onChange={handleFileChange}
+                      onRemove={handleFileRemove}
+                      beforeUpload={() => false}
+                      maxCount={1}
+                    >
+                      <p className="ant-upload-drag-icon">
+                        <FileTextOutlined />
+                      </p>
+                      <p className="ant-upload-text">Drag file here</p>
+                      <p className="ant-upload-hint">
+                        <span>or</span> Browse your computer
+                      </p>
+                    </Dragger>
+                  </Form.Item> */}
+                  <Form.Item label="Country" name="country">
+                    <Field name="country">
+                      {({ options, input, meta, control, ...props }) => {
+                        return (
+                          <>
+                            <Select
+                              onChange={(value) => input.onChange(value)}
+                              placeholder="Search Country"
+                              allowClear
+                              showSearch
+                              virtual={false}
+                              filterOption={(input, option) =>
+                                option.children
+                                  .toLowerCase()
+                                  .includes(input.toLowerCase())
                               }
                             >
-                              {meta.error}
-                            </p>
-                          )}
-                        </FormLabel>
-                      )
-                    }}
-                  </Field>
+                              {countries?.map((it) => (
+                                <Select.Option value={it.id} key={it.id}>
+                                  {it.name}
+                                </Select.Option>
+                              ))}
+                            </Select>
+                            {meta.touched && meta.error && (
+                              <p
+                                color="error"
+                                className="error transitionDiv"
+                                style={
+                                  meta.touched && meta.error
+                                    ? mountedStyle
+                                    : unmountedStyle
+                                }
+                              >
+                                {meta.error}
+                              </p>
+                            )}
+                          </>
+                        )
+                      }}
+                    </Field>
+                  </Form.Item>
                   <Button
-                    ghost
                     disabled={submitting}
                     loading={loading}
                     htmlType="submit"
                     className="next-button"
                     onClick={() => handleSubmit()}
-                    withArrow
                   >
-                    Next
+                    Next {'>'}
                   </Button>
                 </Form>
               )
