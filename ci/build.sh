@@ -67,7 +67,7 @@ nginx_build () {
 }
 
 strapi_build () {
-    docker build -f Dockerfile.prod \
+    docker build -f strapi/Dockerfile.prod \
            --tag "${image_prefix}/strapi:latest" \
            --tag "${image_prefix}/strapi:${CI_COMMIT}" strapi
 }
