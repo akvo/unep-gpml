@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { Auth0Provider } from '@auth0/auth0-react'
 import Head from 'next/head'
-import '../styles/base.scss'
+// import '../main.scss'
+// import '../buttons.scss'
+import { withLayout } from '../layouts/MainLayout'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -23,6 +25,13 @@ const dynamicRoutePattern = /^\/\w+\/\d+$/
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
+  console.log(dynamicRoutePattern.test(router.pathname), router.pathname)
+  if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
+    import('../main.scss')
+    import('../buttons.scss')
+  } else {
+    import('../styles/base.scss')
+  }
   const { profile } = UIStore.useState((s) => ({
     profile: s.profile,
     disclaimer: s.disclaimer,
@@ -258,8 +267,20 @@ function MyApp({ Component, pageProps }) {
   )
 
   const Layout = useMemo(() => {
-    return withNewLayout(Component)
-  }, [Component])
+    if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
+      return withLayout(Component)
+    } else {
+      return withNewLayout(Component)
+    }
+  }, [router.pathname, Component])
+
+  const RenderedLayout = useMemo(() => {
+    if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
+      return <Layout {...pageProps} {...componentProps} />
+    } else {
+      return <Layout {...pageProps} {...componentProps} />
+    }
+  }, [router.pathname, Layout, Component, pageProps, componentProps])
 
   return (
     <div id="root">
@@ -278,7 +299,7 @@ function MyApp({ Component, pageProps }) {
           typeof window !== 'undefined' ? window.location.origin : ''
         }
       >
-        <Layout {...pageProps} {...componentProps} />
+        {RenderedLayout}
       </Auth0Provider>
     </div>
   )
