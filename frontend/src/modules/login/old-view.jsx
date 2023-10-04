@@ -3,6 +3,7 @@ import {
   Col,
   Row,
   Typography,
+  Button,
   Form,
   Input,
   Divider,
@@ -10,19 +11,17 @@ import {
   Modal,
 } from 'antd'
 import { CloseCircleOutlined } from '@ant-design/icons'
-import styles from './styles.module.scss'
+import styles from './oldStyles.module.scss'
 import LinkedinIcon from '../../images/auth/linkedin.svg'
 import GoogleIcon from '../../images/auth/google.svg'
 import EmailIcon from '../../images/auth/email.svg'
 const { Title } = Typography
 import { Form as FinalForm, Field } from 'react-final-form'
 import { auth0Client } from '../../utils/misc'
-import ForgotPassword from './forgot-password'
-import SignUp from '../email-signup/view'
+import ForgotPassword from './old-forgot-password'
+import SignUp from '../email-signup/old-view'
 import { eventTrack } from '../../utils/misc'
 import { useRouter } from 'next/router'
-import Button from '../../components/button'
-import FormLabel from '../../components/form-label'
 
 function Login({ visible, close }) {
   const router = useRouter()
@@ -129,13 +128,13 @@ function Login({ visible, close }) {
                 : 'CONTINUE WITH EMAIL'}
             </p>
             {!signin ? (
-              <Button type="link" onClick={close}>
-                CANCEL
+              <div onClick={close}>
+                <p>CANCEL</p>
                 <CloseCircleOutlined />
-              </Button>
+              </div>
             ) : forgotPassword ? (
               <Button
-                type="link"
+                type="text"
                 className={styles.connectBackButton}
                 onClick={() => {
                   setSignIn(true)
@@ -146,7 +145,7 @@ function Login({ visible, close }) {
               </Button>
             ) : signup ? (
               <Button
-                type="link"
+                type="text"
                 className={styles.connectBackButton}
                 onClick={() => setSignUp(!signup)}
               >
@@ -154,7 +153,7 @@ function Login({ visible, close }) {
               </Button>
             ) : (
               <Button
-                type="link"
+                type="text"
                 className={styles.connectBackButton}
                 onClick={() => setSignIn(!signin)}
               >
@@ -187,14 +186,16 @@ function Login({ visible, close }) {
                   <div className={styles.signupWrapper}>
                     <div className={styles.authButtons}>
                       <Button
-                        ghost
+                        type="primary"
+                        shape="round"
                         icon={<LinkedinIcon />}
                         onClick={handleLinkedinLogin}
                       >
                         CONTINUE WITH LINKEDIN
                       </Button>
                       <Button
-                        ghost
+                        type="primary"
+                        shape="round"
                         icon={<GoogleIcon />}
                         onClick={handleGoogleLogin}
                       >
@@ -204,7 +205,8 @@ function Login({ visible, close }) {
                         <Title level={4}>or</Title>
                       </div>
                       <Button
-                        ghost
+                        type="primary"
+                        shape="round"
                         icon={<EmailIcon />}
                         onClick={() => setSignIn(!signin)}
                       >
@@ -228,75 +230,44 @@ function Login({ visible, close }) {
                           formRef.current = form
                           return (
                             <Form layout="vertical">
-                              <Field name="email">
-                                {({ input, meta }) => {
-                                  const hasError = meta.touched && !meta.valid
-                                  const validVal =
-                                    input?.value && meta.valid
-                                      ? 'success'
-                                      : null
-                                  const validateStatus = hasError
-                                    ? 'error'
-                                    : validVal
-                                  return (
+                              <Form.Item label="Email">
+                                <Field name="email">
+                                  {({ input, meta }) => (
                                     <>
-                                      <FormLabel
-                                        htmlFor="email"
-                                        label="Email"
-                                        meta={meta}
-                                        validateStatus={validateStatus}
-                                      >
-                                        <Input
-                                          size="small"
-                                          {...input}
-                                          placeholder="Enter your email"
-                                        />
-                                        {meta.touched && meta.error && (
-                                          <p color="error" className="error">
-                                            {meta.error}
-                                          </p>
-                                        )}
-                                      </FormLabel>
+                                      <Input
+                                        {...input}
+                                        placeholder="Enter your email"
+                                      />
+                                      {meta.touched && meta.error && (
+                                        <p color="error" className="error">
+                                          {meta.error}
+                                        </p>
+                                      )}
                                     </>
-                                  )
-                                }}
-                              </Field>
-                              <Field name="password">
-                                {({ input, meta }) => {
-                                  const hasError = meta.touched && !meta.valid
-                                  const validVal =
-                                    input?.value && meta.valid
-                                      ? 'success'
-                                      : null
-                                  const validateStatus = hasError
-                                    ? 'error'
-                                    : validVal
-                                  return (
+                                  )}
+                                </Field>
+                              </Form.Item>
+                              <Form.Item label="Password">
+                                <Field name="password">
+                                  {({ input, meta }) => (
                                     <>
-                                      <FormLabel
-                                        htmlFor="password"
-                                        label="Password"
-                                        meta={meta}
-                                        validateStatus={validateStatus}
-                                      >
-                                        <Input.Password
-                                          size="small"
-                                          {...input}
-                                          placeholder="Enter your password"
-                                        />
-                                        {meta.touched && meta.error && (
-                                          <p color="error" className="error">
-                                            {meta.error}
-                                          </p>
-                                        )}
-                                      </FormLabel>
+                                      <Input.Password
+                                        {...input}
+                                        placeholder="Enter your password"
+                                      />
+                                      {meta.touched && meta.error && (
+                                        <p color="error" className="error">
+                                          {meta.error}
+                                        </p>
+                                      )}
                                     </>
-                                  )
-                                }}
-                              </Field>
+                                  )}
+                                </Field>
+                              </Form.Item>
                               <Button
                                 style={{ marginTop: 50 }}
-                                ghost
+                                type="primary"
+                                shape="round"
                                 className={styles.loginButton}
                                 loading={loading}
                                 onClick={() => handleSubmit()}
@@ -304,7 +275,7 @@ function Login({ visible, close }) {
                                 LOGIN WITH EMAIL
                               </Button>{' '}
                               <Button
-                                type="link"
+                                type="text"
                                 className={styles.forgotPassword}
                                 onClick={() =>
                                   setForgotPassword(!forgotPassword)
@@ -320,7 +291,8 @@ function Login({ visible, close }) {
                       <div className={styles.joinWrapper}>
                         <Title level={2}>Don’t have an account yet?</Title>
                         <Button
-                          ghost
+                          type="primary"
+                          shape="round"
                           className={styles.loginButton}
                           onClick={() => setSignUp(true)}
                         >
@@ -343,8 +315,9 @@ function Login({ visible, close }) {
               rel="noreferrer"
               className="copy-right"
             >
-              terms and services.
+              terms and services
             </a>
+            .
           </Title>
         </div>
       </div>
