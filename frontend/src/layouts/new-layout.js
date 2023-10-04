@@ -133,6 +133,7 @@ const NewLayout = ({
                 type="primary"
                 size="small"
                 className="noicon hide-mobile"
+                onClick={() => setLoginVisible(true)}
               >
                 Join Now
               </Button>
@@ -158,6 +159,7 @@ const NewLayout = ({
         </div>
         {children}
       </div>
+      <Login visible={loginVisible} close={() => setLoginVisible(false)} />
     </>
   )
 }
