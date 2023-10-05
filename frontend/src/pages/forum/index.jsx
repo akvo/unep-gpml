@@ -59,18 +59,15 @@ const Forum = () => {
   const activateRocketChat = useCallback(async () => {
     if (profile?.id && profile?.chatAccountStatus !== 'active') {
       UIStore.update((s) => {
-        s.chatAccountStatus = 'active'
+        s.profile = {
+          ...s.profile,
+          chatAccountStatus: 'active',
+        }
       })
-      /**
-       * TODO
-       * Move UIStore update to success response
-       * once the API fixed the HTTP status
-       */
       try {
-        const { data } = await api.post('/chat/user/account')
-        console.log('RC activated', data)
+        await api.post('/chat/user/account')
       } catch (error) {
-        console.log('RC activation failed:', error)
+        console.error('RC activation failed:', error)
       }
     }
   }, [profile?.chatAccountStatus])
