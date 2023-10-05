@@ -1,0 +1,50 @@
+@import '../../styles/vars.scss';
+
+.channelSidebar {
+  background-color: $primaryGrey !important;
+  :global {
+    h5 {
+      margin: 34px 23px 28px;
+      font-weight: 600;
+    }
+    .ant-menu {
+      background-color: $primaryGrey;
+      .ant-menu-item {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0;
+        padding: 28px 23px 24px;
+        font-family: var(--font-archia), sans-serif;
+        font-size: $fzS;
+        font-weight: 600;
+        line-height: $lhS;
+        color: $primaryDarkBlue;
+        background-color: $primaryPurple2;
+        text-transform: capitalize;
+        svg {
+          transform: rotate(270deg);
+          path {
+            stroke: $primaryDarkBlue;
+          }
+        }
+        &.ant-menu-item-selected,
+        &:hover {
+          color: $primaryWhite;
+          background-color: $primaryPurple;
+          svg path {
+            stroke: $primaryWhite;
+          }
+        }
+      }
+    }
+    .button-container {
+      padding: 22px 16px;
+      .ant-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+}
