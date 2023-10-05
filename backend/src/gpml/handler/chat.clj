@@ -59,7 +59,7 @@
 (defn- create-user-account
   [config {:keys [user]}]
   (let [result (srv.chat/create-user-account config (:id user))]
-    (if (:success? true)
+    (if (:success? result)
       (r/ok (:stakeholder result))
       (r/server-error (dissoc result :success?)))))
 
