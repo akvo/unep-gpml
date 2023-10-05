@@ -127,7 +127,10 @@ const MyForums = ({ handleOnView }) => {
                       placement="bottomLeft"
                       visible={openPopover === index}
                       overlayClassName={styles.forumOptions}
-                      onClick={() => setOpenPopover(index)}
+                      onVisibleChange={(isOpen) => {
+                        const popValue = isOpen ? index : null
+                        setOpenPopover(popValue)
+                      }}
                       content={
                         <ul>
                           <li>
