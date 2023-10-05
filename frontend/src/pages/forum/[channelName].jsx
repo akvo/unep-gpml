@@ -1,82 +1,85 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useDeviceSize } from '../../modules/landing/landing'
-import { Button, Layout } from 'antd'
+import { Button, Layout, Menu } from 'antd'
+import ForumIframe from '../../modules/forum/forum-iframe'
+import styles from './channel.module.scss'
+import { ChatStore, UIStore } from '../../store'
+import { DropDownIcon } from '../../components/icons'
+import { getMyForumsApi } from '../../modules/forum/my-forums'
 
 const { Sider } = Layout
 
 const ForumDetails = () => {
   const [preload, setPreload] = useState(true)
-  const [isReady, setIsReady] = useState(false)
-  const ifReff = useRef()
   const router = useRouter()
-  const { channelName } = router.query
-  const [_, height] = useDeviceSize()
-  const iFrameCurrent = ifReff.current
-  const channelURL = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/channel/${channelName}?layout=embedded`
+  const { channelName, t: channelType } = router.query
+  const myForums = ChatStore.useState((s) => s.myForums)
+  const profile = UIStore.useState((s) => s.profile)
 
-  const handleOnLogout = () => {
-    // To trigger logout
-    iFrameCurrent.contentWindow.postMessage(
-      {
-        externalCommand: 'logout',
+  const goToChannel = ({ name, t }) => {
+    router.push({
+      pathname: `/forum/${name}`,
+      query: {
+        t,
       },
-      '*'
-    )
+    })
   }
 
-  const handleSSO = useCallback(() => {
-    if (iFrameCurrent && !isReady) {
-      setTimeout(() => {
-        setIsReady(true)
-      }, 3000)
-    }
-    if (iFrameCurrent && preload && isReady) {
+  const goToAll = () => {
+    router.push('/forum')
+  }
+
+  const getMyForums = useCallback(async () => {
+    /**
+     * Handles direct access that allows
+     * resetting the global state of my forums
+     */
+    if (profile && preload && myForums.length === 0) {
       setPreload(false)
-      iFrameCurrent.contentWindow.postMessage(
-        {
-          externalCommand: 'call-custom-oauth-login',
-          service: 'auth0',
+      await getMyForumsApi(
+        (data) => {
+          ChatStore.update((s) => {
+            s.myForums = data
+          })
         },
-        '*'
-      )
-      iFrameCurrent.contentWindow.postMessage(
-        {
-          externalCommand: 'go',
-          path: `/channel/${channelName}?layout=embedded`,
-        },
-        '*'
+        (err) => {
+          console.error('My forums error:', err?.response)
+        }
       )
     }
-  }, [iFrameCurrent, preload, isReady])
+  }, [myForums, preload, profile])
 
   useEffect(() => {
-    handleSSO()
-  }, [handleSSO])
+    getMyForums()
+  }, [getMyForums])
 
   return (
     <Layout>
-      <Sider>
-        {/* <Button onClick={handleOnLogout} type="link">
-          Logout
-        </Button> */}
+      <Sider className={styles.channelSidebar} width={335}>
+        {myForums.length > 0 && <h5>My Forums</h5>}
+        <Menu defaultSelectedKeys={[channelName]}>
+          {myForums
+            .filter((forum) => !forum.default)
+            .map((forum) => {
+              return (
+                <Menu.Item
+                  onClick={() => goToChannel(forum)}
+                  icon={<DropDownIcon />}
+                  key={forum.name}
+                >
+                  {forum.name}
+                </Menu.Item>
+              )
+            })}
+        </Menu>
+        <div className="button-container">
+          <Button onClick={goToAll} ghost>
+            Explore All Forums
+          </Button>
+        </div>
       </Sider>
       <Layout>
-        {channelName && (
-          <iframe
-            src={channelURL}
-            frameBorder="0"
-            style={{
-              overflow: 'hidden',
-              width: '100%',
-              height,
-            }}
-            width="100%"
-            allow="camera;microphone"
-            sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-            ref={ifReff}
-          />
-        )}
+        {channelName && <ForumIframe {...{ channelName, channelType }} />}
       </Layout>
     </Layout>
   )
