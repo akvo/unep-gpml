@@ -6,12 +6,21 @@ import moment from 'moment'
 import Button from '../../components/button'
 import api from '../../utils/api'
 import styles from './forum.module.scss'
-import { UIStore } from '../../store'
+import { ChatStore, UIStore } from '../../store'
 
-const MyForums = ({ allForums, setAllForums, handleOnView }) => {
-  const [myForums, setMyForums] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [isTagged, setIsTagged] = useState(true)
+export const getMyForumsApi = async (successCallback, errorCallback) => {
+  try {
+    const { data } = await api.get('/chat/user/channel')
+    successCallback(data)
+  } catch (error) {
+    errorCallback(error)
+  }
+}
+
+const MyForums = ({ handleOnView }) => {
+  const myForums = ChatStore.useState((s) => s.myForums)
+  const initLoading = myForums.length === 0 ? true : false
+  const [loading, setLoading] = useState(initLoading)
   const [openPopover, setOpenPopover] = useState(null)
   const profile = UIStore.useState((s) => s.profile)
   const router = useRouter()
@@ -23,7 +32,9 @@ const MyForums = ({ allForums, setAllForums, handleOnView }) => {
         channel_type: channelType,
       })
       const _myForums = myForums.filter((mf) => mf.id !== channelID)
-      setMyForums(_myForums)
+      ChatStore.update((s) => {
+        s.myForums = _myForums
+      })
       message.success(`You have left the channel ${channelName}`)
     } catch (error) {
       console.error(`leave channel error: ${error}`)
@@ -51,40 +62,28 @@ const MyForums = ({ allForums, setAllForums, handleOnView }) => {
     })
   }
 
-  const goToChannel = ({ name }) => {
-    router.push(`/forum/${name}`)
+  const goToChannel = ({ name, t }) => {
+    router.push({
+      pathname: `/forum/${name}`,
+      query: {
+        t,
+      },
+    })
   }
 
-  useEffect(() => {
-    /**
-     * Add joined property to tag my forum in all items
-     */
-    if (myForums?.length && allForums?.length) {
-      setIsTagged(false)
-      const _allForums = allForums.map((a) => {
-        const findMyChannel = myForums.find((mf) => mf?.id === a?.id)
-        if (findMyChannel) {
-          return {
-            ...a,
-            joined: true,
-          }
-        }
-        return a
-      })
-      setAllForums(_allForums)
-    }
-  }, [isTagged, allForums, myForums])
-
   const getMyForums = useCallback(async () => {
-    try {
-      if (profile?.id) {
-        const { data } = await api.get('/chat/user/channel')
-        setMyForums(data)
-        setLoading(false)
-      }
-    } catch (error) {
-      console.error('myforums error:', error)
-      setLoading(false)
+    if (profile?.id) {
+      await getMyForumsApi(
+        (data) => {
+          ChatStore.update((s) => {
+            s.myForums = data
+          })
+          setLoading(false)
+        },
+        () => {
+          setLoading(false)
+        }
+      )
     }
   }, [profile])
 
