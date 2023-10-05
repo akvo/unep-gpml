@@ -24,6 +24,12 @@
 
 (def ^:private send-private-channel-invitation-request-params-schema
   [:map
+   [:channel_id
+    {:optional false
+     :swagger {:description "The channel id"
+               :type "string"
+               :allowEmptyValue false}}
+    [:string {:min 1}]]
    [:channel_name
     {:optional false
      :swagger {:description "The channel name"
@@ -157,9 +163,11 @@
             :root-context? true})
     (r/forbidden {:message "Unauthorized"})
     (let [channel-name (get-in parameters [:body :channel_name])
+          channel-id (get-in parameters [:body :channel_id])
           result (srv.chat/send-private-channel-invitation-request
                   config
                   user
+                  channel-id
                   channel-name)]
       (if (:success? result)
         (r/ok {})
