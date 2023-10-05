@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Pointer } from '../../../components/icons'
+import { Pointer, Check } from '../../../components/icons'
 import styles from './ps.module.scss'
 import { useRouter } from 'next/router'
 import classNames from 'classnames'
@@ -92,7 +92,10 @@ const NestedLayout = ({ children }) => {
       </div>
       <div className={styles.view}>{children}</div>
       <div className={styles.bottomBar}>
-        <Button type="ghost">Mark as Completed</Button>
+        <Button type="ghost" className="mark-completed">
+          <Check />
+          Mark as Completed
+        </Button>
         <Button withArrow>Next</Button>
       </div>
     </div>
