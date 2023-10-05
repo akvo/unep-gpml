@@ -7,6 +7,7 @@
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
             [gpml.service.chat :as srv.chat]
+            [gpml.util.email :as email]
             [integrant.core :as ig]))
 
 (def ^:private channel-types
@@ -35,6 +36,12 @@
    [:channel_id
     {:optional false
      :swagger {:description "The channel id"
+               :type "string"
+               :allowEmptyValue false}}
+    [:string {:min 1}]]
+   [:channel_name
+    {:optional false
+     :swagger {:description "The channel name"
                :type "string"
                :allowEmptyValue false}}
     [:string {:min 1}]]
@@ -170,15 +177,20 @@
       (r/server-error (dissoc result :success?)))))
 
 (defn- add-user-to-private-channel
-  [{:keys [db] :as config} parameters]
-  (let [{:keys [channel_id user_id]} (:body parameters)
+  [{:keys [db mailjet-config] :as config} parameters]
+  (let [{:keys [channel_id channel_name user_id]} (:body parameters)
         target-user (db.stakeholder/get-stakeholder-by-id (:spec db) {:id user_id})]
     (if (seq target-user)
       (let [result (srv.chat/add-user-to-private-channel config
                                                          (:chat_account_id target-user)
                                                          channel_id)]
         (if (:success? result)
-          (r/ok {})
+          (do
+            (email/notify-user-about-chat-private-channel-invitation-request-accepted
+             mailjet-config
+             target-user
+             channel_name)
+            (r/ok {}))
           (r/server-error (dissoc result :success?))))
       (r/server-error {:reason :user-not-found}))))
 
