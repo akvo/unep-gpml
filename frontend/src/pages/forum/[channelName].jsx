@@ -78,7 +78,7 @@ const ForumDetails = () => {
           </Button>
         </div>
       </Sider>
-      <Layout>
+      <Layout className={styles.channelContent}>
         {channelName && <ForumIframe {...{ channelName, channelType }} />}
       </Layout>
     </Layout>

@@ -1,12 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { useDeviceSize } from '../landing/landing'
 import { ChatStore } from '../../store'
 
 const ForumIframe = ({ channelName, channelType }) => {
   const [preload, setPreload] = useState(true)
   const [isReady, setIsReady] = useState(false)
   const ifReff = useRef()
-  const [_, height] = useDeviceSize()
   const iFrameCurrent = ifReff.current
   const prefixPATH = channelType === 'c' ? 'channel' : 'group'
   const channelURL = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/${prefixPATH}/${channelName}?layout=embedded`
@@ -65,7 +63,6 @@ const ForumIframe = ({ channelName, channelType }) => {
       style={{
         overflow: 'hidden',
         width: '100%',
-        height,
       }}
       width="100%"
       allow="camera;microphone"
