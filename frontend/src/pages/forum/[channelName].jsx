@@ -34,7 +34,7 @@ const ForumDetails = () => {
      * Handles direct access that allows
      * resetting the global state of my forums
      */
-    if (profile && preload && myForums.length === 0) {
+    if (profile?.id && preload && myForums.length === 0) {
       setPreload(false)
       await getMyForumsApi(
         (data) => {
