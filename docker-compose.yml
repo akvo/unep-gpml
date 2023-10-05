@@ -58,7 +58,7 @@ services:
   strapi:
     build:
       context: ./strapi/
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile
     environment:
       - DATABASE_CLIENT=${STRAPI_DATABASE_CLIENT}
       - DATABASE_HOST=${STRAPI_DATABASE_HOST}

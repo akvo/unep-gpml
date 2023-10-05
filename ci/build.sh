@@ -67,6 +67,12 @@ nginx_build () {
 }
 
 strapi_build () {
+    if [[ "${CI_TAG:=}" =~ promote.* ]]; then
+        sed -i 's|http://localhost|https://digital.gpmarinelitter.org|g' strapi/config/server.js
+    else
+        sed -i 's|http://localhost|https://unep-gpml.akvotest.org|g' strapi/config/server.js
+    fi
+
     docker build -f strapi/Dockerfile.prod \
            --tag "${image_prefix}/strapi:latest" \
            --tag "${image_prefix}/strapi:${CI_COMMIT}" strapi
