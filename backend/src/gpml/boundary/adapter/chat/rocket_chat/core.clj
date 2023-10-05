@@ -387,6 +387,28 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
+(defn- add-user-to-private-channel*
+  [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id]
+  (try
+    (let [{:keys [status body]}
+          (http-client/do-request logger
+                                  {:url (build-api-endpoint-url adapter "/groups.invite")
+                                   :method :post
+                                   :body (json/->json {:roomId channel-id :userId user-id})
+                                   :headers (get-auth-headers api-key api-user-id)
+                                   :as :json-keyword-keys})]
+      (if (<= 200 status 299)
+        {:success? true}
+        {:success? false
+         :reason :failed-to-add-user-to-private-channel
+         :error-details body}))
+    (catch Throwable t
+      (log logger :error :failed-to-add-user-to-private-channel {:exception-message (ex-message t)
+                                                                 :stack-trace (map str (.getStackTrace t))})
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
+
 (defrecord RocketChat [api-domain-url api-url-path api-key api-user-id logger]
   port/Chat
   (create-user-account [this user]
@@ -414,4 +436,6 @@
   (get-user-joined-channels [this user-id]
     (get-user-joined-channels* this user-id))
   (remove-user-from-channel [this user-id channel-id channel-type]
-    (remove-user-from-channel* this user-id channel-id channel-type)))
+    (remove-user-from-channel* this user-id channel-id channel-type))
+  (add-user-to-private-channel [this user-id channel-id]
+    (add-user-to-private-channel* this user-id channel-id)))
