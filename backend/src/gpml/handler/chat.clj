@@ -1,10 +1,13 @@
 (ns gpml.handler.chat
   (:require [camel-snake-kebab.core :refer [->snake_case]]
             [camel-snake-kebab.extras :as cske]
+            [duct.logger :refer [log]]
+            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.types :as dom.types]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
             [gpml.service.chat :as srv.chat]
+            [gpml.util.email :as email]
             [integrant.core :as ig]))
 
 (def ^:private channel-types
@@ -21,12 +24,41 @@
 
 (def ^:private send-private-channel-invitation-request-params-schema
   [:map
+   [:channel_id
+    {:optional false
+     :swagger {:description "The channel id"
+               :type "string"
+               :allowEmptyValue false}}
+    [:string {:min 1}]]
    [:channel_name
     {:optional false
      :swagger {:description "The channel name"
                :type "string"
                :allowEmptyValue false}}
     [:string {:min 1}]]])
+
+(def ^:private add-user-to-private-channel-params-schema
+  [:map
+   [:channel_id
+    {:optional false
+     :swagger {:description "The channel id"
+               :type "string"
+               :allowEmptyValue false}}
+    [:string {:min 1}]]
+   [:channel_name
+    {:optional false
+     :swagger {:description "The channel name"
+               :type "string"
+               :allowEmptyValue false}}
+    [:string {:min 1}]]
+   [:user_id
+    {:optional false
+     :swagger {:description "The user's identifier in GPML"
+               :type "integer"
+               :allowEmptyValue false}}
+    [:fn
+     {:error/message "Not a valid user identifier. It should be a positive integer."}
+     pos-int?]]])
 
 (def ^:private get-all-channels-params-schema
   [:map
@@ -131,9 +163,11 @@
             :root-context? true})
     (r/forbidden {:message "Unauthorized"})
     (let [channel-name (get-in parameters [:body :channel_name])
+          channel-id (get-in parameters [:body :channel_id])
           result (srv.chat/send-private-channel-invitation-request
                   config
                   user
+                  channel-id
                   channel-name)]
       (if (:success? result)
         (r/ok {})
@@ -149,6 +183,24 @@
     (if (:success? result)
       (r/ok {})
       (r/server-error (dissoc result :success?)))))
+
+(defn- add-user-to-private-channel
+  [{:keys [db mailjet-config] :as config} parameters]
+  (let [{:keys [channel_id channel_name user_id]} (:body parameters)
+        target-user (db.stakeholder/get-stakeholder-by-id (:spec db) {:id user_id})]
+    (if (seq target-user)
+      (let [result (srv.chat/add-user-to-private-channel config
+                                                         (:chat_account_id target-user)
+                                                         channel_id)]
+        (if (:success? result)
+          (do
+            (email/notify-user-about-chat-private-channel-invitation-request-accepted
+             mailjet-config
+             target-user
+             channel_name)
+            (r/ok {}))
+          (r/server-error (dissoc result :success?))))
+      (r/server-error {:reason :user-not-found}))))
 
 (defmethod ig/init-key :gpml.handler.chat/post
   [_ config]
@@ -196,6 +248,23 @@
 (defmethod ig/init-key :gpml.handler.chat/send-private-channel-invitation-request-params
   [_ _]
   {:body send-private-channel-invitation-request-params-schema})
+
+(defmethod ig/init-key :gpml.handler.chat/add-user-to-private-channel-params
+  [_ _]
+  {:body add-user-to-private-channel-params-schema})
+
+(defmethod ig/init-key :gpml.handler.chat/add-user-to-private-channel
+  [_ {:keys [logger] :as config}]
+  (fn [{parameters :parameters user :user}]
+    (if (h.r.permission/super-admin? config (:id user))
+      (try
+        (add-user-to-private-channel config parameters)
+        (catch Throwable t
+          (log logger :error ::failed-to-add-user-to-private-channel {:exception-message (ex-message t)})
+          (let [response {:success? false
+                          :reason :could-not-add-user-to-private-channel}]
+            (r/server-error (assoc-in response [:error-details :error] (ex-message t))))))
+      (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.chat/remove-user-from-channel
   [_ config]
