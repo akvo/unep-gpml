@@ -23,7 +23,9 @@ const ForumIframe = ({ channelName, channelType }) => {
   }
 
   const handleSSO = useCallback(() => {
-    if (iFrameCurrent && preload && isReady && !isLoggedIn) {
+    const isFunction =
+      typeof iFrameCurrent?.contentWindow?.postMessage === 'function'
+    if (iFrameCurrent && preload && isReady && !isLoggedIn && isFunction) {
       console.info('requests login with auth0')
       setPreload(false)
       iFrameCurrent.contentWindow.postMessage(
