@@ -8,23 +8,24 @@ CREATE TABLE plastic_strategy (
     last_updated_at TIMESTAMP WITHOUT TIME ZONE
 );
 --;;
-CREATE TYPE plastic_strategy_group AS ENUM (
+CREATE TYPE plastic_strategy_team_type AS ENUM (
     'steering-committee',
     'project-team'
 );
 --;;
-CREATE TYPE plastic_strategy_group_role AS ENUM (
+CREATE TYPE plastic_strategy_team_role AS ENUM (
     'admin',
     'editor',
     'viewer'
 );
 --;;
-CREATE TABLE plastic_strategy_group_assignment (
+CREATE TABLE plastic_strategy_team_member (
     plastic_strategy_id INTEGER NOT NULL REFERENCES plastic_strategy (id) ON DELETE CASCADE,
     user_id INTEGER NOT NULL REFERENCES stakeholder (id) ON DELETE CASCADE,
-    group_type PLASTIC_STRATEGY_GROUP NOT NULL,
-    ROLE PLASTIC_STRATEGY_GROUP_ROLE NOT NULL,
-    CONSTRAINT plastic_strategy_group_assignment_pkey PRIMARY KEY (plastic_strategy_id, user_id, group_type)
+    teams PLASTIC_STRATEGY_TEAM_TYPE[] NOT NULL,
+    role PLASTIC_STRATEGY_TEAM_ROLE NOT NULL,
+    last_updated_at TIMESTAMP WITHOUT TIME ZONE,
+    CONSTRAINT plastic_strategy_team_pkey PRIMARY KEY (plastic_strategy_id, user_id)
 );
 --;;
 CREATE TABLE plastic_strategy_initiative_bookmark (
@@ -66,9 +67,6 @@ CREATE TABLE plastic_strategy_organisation_bookmark (
     organisation_id INTEGER NOT NULL REFERENCES organisation (id),
     CONSTRAINT plastic_strategy_organisation_bookmark_pkey PRIMARY KEY (plastic_strategy_id, organisation_id)
 );
---;;
-ALTER TABLE tag
-    ADD COLUMN private BOOLEAN DEFAULT FALSE;
 --;;
 INSERT INTO rbac_context_type (
     name,
