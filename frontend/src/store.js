@@ -932,4 +932,9 @@ const UIStore = new Store({
   },
 })
 
-export { UIStore }
+const ChatStore = new Store({
+  myForums: [],
+  isLoggedIn: false,
+})
+
+export { UIStore, ChatStore }
