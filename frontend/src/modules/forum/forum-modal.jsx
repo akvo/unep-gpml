@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Avatar, List, Modal, message } from 'antd'
 import { useRouter } from 'next/router'
 import sample from 'lodash/sample'
@@ -8,7 +8,13 @@ import styles from './forum.module.scss'
 import useLocalStorage from '../../utils/hooks/use-storage'
 import { ChatStore } from '../../store'
 
-const ForumModal = ({ viewModal, setViewModal, initName, avatarUrl }) => {
+const ForumModal = ({
+  viewModal,
+  setViewModal,
+  initName,
+  avatarUrl,
+  allForums,
+}) => {
   const [requesting, setRequesting] = useState(false)
   const colorList = ['purple', 'green', 'blue', 'dark-blue']
   const [joins, setJoins] = useLocalStorage('joins', [])
@@ -16,6 +22,12 @@ const ForumModal = ({ viewModal, setViewModal, initName, avatarUrl }) => {
   const findMyFm = myForums?.find((f) => f?.id === viewModal?.data?.id)
   const isNotAMember = viewModal?.data?.t === 'p' && !findMyFm
   const joinDisabled = requesting || joins?.includes(viewModal?.data?.id)
+  const participants = useMemo(() => {
+    const { users } = viewModal?.data || {}
+    const { users: findUsers } =
+      allForums?.find((a) => a?.id === viewModal?.data?.id) || {}
+    return users || findUsers
+  }, [viewModal, allForums])
 
   const router = useRouter()
 
@@ -92,17 +104,17 @@ const ForumModal = ({ viewModal, setViewModal, initName, avatarUrl }) => {
     >
       <p className={styles.forumDesc}>{viewModal?.data?.description}</p>
       <h6>
-        {viewModal?.data?.users?.length > 0
-          ? `Participants (${viewModal.data.users.length})`
+        {participants?.length > 0
+          ? `Participants (${participants.length})`
           : 'No participants'}
       </h6>
-      {viewModal?.data?.users?.length > 0 && (
+      {participants?.length > 0 && (
         <List
           className="members"
           grid={{
             column: 2,
           }}
-          dataSource={viewModal?.data?.users}
+          dataSource={participants}
           renderItem={(user) => {
             const userImage = user?.avatarETag
               ? `${avatarUrl}${user?.username}?etag=${user.avatarETag}`

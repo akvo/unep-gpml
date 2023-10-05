@@ -132,7 +132,7 @@ const Forum = () => {
           />
         </section>
         <DynamicForumModal
-          {...{ viewModal, setViewModal, initName, avatarUrl }}
+          {...{ viewModal, setViewModal, initName, avatarUrl, allForums }}
         />
       </div>
     </div>
