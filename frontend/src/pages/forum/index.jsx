@@ -56,6 +56,29 @@ const Forum = () => {
     }
   }, [profile])
 
+  const activateRocketChat = useCallback(async () => {
+    if (profile?.id && profile?.chatAccountStatus !== 'active') {
+      UIStore.update((s) => {
+        s.chatAccountStatus = 'active'
+      })
+      /**
+       * TODO
+       * Move UIStore update to success response
+       * once the API fixed the HTTP status
+       */
+      try {
+        const { data } = await api.post('/chat/user/account')
+        console.log('RC activated', data)
+      } catch (error) {
+        console.log('RC activation failed:', error)
+      }
+    }
+  }, [profile?.chatAccountStatus])
+
+  useEffect(() => {
+    activateRocketChat()
+  }, [activateRocketChat])
+
   useEffect(() => {
     getAllForums()
   }, [getAllForums])
@@ -64,7 +87,7 @@ const Forum = () => {
     <div className="container">
       <div className={styles.forumHome}>
         <span className="h-xs title">Forums</span>
-        <MyForums {...{ allForums, setAllForums, handleOnView }} />
+        <MyForums {...{ handleOnView }} />
 
         <div className="header">
           <div className="jumbotron">
