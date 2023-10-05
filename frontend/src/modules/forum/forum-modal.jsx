@@ -6,15 +6,17 @@ import Button from '../../components/button'
 import api from '../../utils/api'
 import styles from './forum.module.scss'
 import useLocalStorage from '../../utils/hooks/use-storage'
+import { ChatStore } from '../../store'
 
 const ForumModal = ({ viewModal, setViewModal, initName, avatarUrl }) => {
   const [requesting, setRequesting] = useState(false)
   const colorList = ['purple', 'green', 'blue', 'dark-blue']
   const [joins, setJoins] = useLocalStorage('joins', [])
+  const myForums = ChatStore.useState((s) => s.myForums)
+  const findMyFm = myForums?.find((f) => f?.id === viewModal?.data?.id)
+  const isNotAMember = viewModal?.data?.t === 'p' && !findMyFm
   const joinDisabled = requesting || joins?.includes(viewModal?.data?.id)
-  const isNotAMember =
-    viewModal?.data?.t === 'p' &&
-    (viewModal?.data?.joined === undefined || !viewModal?.data?.joined)
+
   const router = useRouter()
 
   const handleOnClose = () => {
@@ -40,8 +42,13 @@ const ForumModal = ({ viewModal, setViewModal, initName, avatarUrl }) => {
     }
   }
 
-  const goToChannel = ({ name }) => {
-    router.push(`/forum/${name}`)
+  const goToChannel = ({ name, t }) => {
+    router.push({
+      pathname: `/forum/${name}`,
+      query: {
+        t,
+      },
+    })
   }
 
   return (
