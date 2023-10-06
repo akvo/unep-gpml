@@ -2,7 +2,7 @@ BEGIN;
 --;;
 CREATE TABLE plastic_strategy (
     id SERIAL PRIMARY KEY,
-    country_id INTEGER NOT NULL REFERENCES country (id),
+    country_id INTEGER UNIQUE NOT NULL REFERENCES country (id),
     steps JSONB,
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
     last_updated_at TIMESTAMP WITHOUT TIME ZONE
