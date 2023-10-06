@@ -228,7 +228,7 @@ View the forums in your GPML workspace:
                      (notify-private-channel-invitation-request-text
                       (get-user-full-name user)
                       channel-name
-                      (format "%s/admin/forum/add-user?user_id=%s&channel_id=%s&email=%s&channel_name=%s"
+                      (format "%s/profile/admin-section?user_id=%s&channel_id=%s&email=%s&channel_name=%s"
                               (:app-domain mailjet-config)
                               (:id user)
                               (util/encode-url-param channel-id)
