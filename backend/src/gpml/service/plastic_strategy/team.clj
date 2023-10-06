@@ -162,3 +162,13 @@
                  :country-iso-code-a2 country-iso-code-a2
                  :ps-team-member ps-team-member}]
     (tht/thread-transactions logger transactions context)))
+
+(defn get-ps-team-members
+  [{:keys [db] :as config} country-iso-code-a2]
+  (let [search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
+        {:keys [success? plastic-strategy] :as result}
+        (srv.ps/get-plastic-strategy config search-opts)]
+    (if success?
+      (db.ps.team/get-ps-team-members (:spec db)
+                                      {:filters {:plastic-strategies-ids [(:id plastic-strategy)]}})
+      result)))
