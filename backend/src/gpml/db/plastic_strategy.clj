@@ -3,7 +3,8 @@
   (:require [hugsql.core :as hugsql]))
 
 (declare get-plastic-strategies*
-         update-plastic-strategy*)
+         update-plastic-strategy*
+         create-plastic-strategies*)
 
 (hugsql/def-db-fns "gpml/db/plastic_strategy.sql")
 
@@ -43,6 +44,21 @@
         {:success? false
          :reason :unexpected-number-of-affected-rows
          :error-details {:expected-affected-rows 1
+                         :actual-affected-rows affected}}))
+    (catch Throwable t
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
+
+(defn create-plastic-strategies
+  [conn plastic-strategies]
+  (try
+    (let [affected (create-plastic-strategies* conn {:plastic-strategy plastic-strategies})]
+      (if (= affected (count plastic-strategies))
+        {:success? true}
+        {:success? false
+         :reason :unexpected-number-of-affected-rows
+         :error-details {:expected-affected-rows (count plastic-strategies)
                          :actual-affected-rows affected}}))
     (catch Throwable t
       {:success? false

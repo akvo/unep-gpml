@@ -23,3 +23,7 @@ GROUP BY ps.id, c.id;
 UPDATE plastic_strategy
 SET steps = :updates.steps::JSONB, last_updated_at = now()
 WHERE id = :id;
+
+-- :name create-plastic-strategies* :execute :affected
+INSERT INTO plastic_strategy(country_id)
+VALUES :t*:plastic-strategy;

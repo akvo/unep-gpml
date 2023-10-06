@@ -533,7 +533,12 @@
                                           {:post {:summary "Runs file migration for a given entity"
                                                   :swagger {:tags ["file migrator" "programmatic"]}
                                                   :parameters #ig/ref :gpml.handler.programmatic.files-migrator/post-params
-                                                  :handler #ig/ref :gpml.handler.programmatic.files-migrator/post}}]]
+                                                  :handler #ig/ref :gpml.handler.programmatic.files-migrator/post}}]
+                                         ["/plastic-strategy"
+                                          {:post {:summary "Create plastic strategies"
+                                                  :swagger {:tags ["plastic-strategy"] :security [{:id_token []}]}
+                                                  :handler #ig/ref :gpml.handler.programmatic.plastic-strategy/post
+                                                  :parameters #ig/ref :gpml.handler.programmatic.plastic-strategy/post-params}}]]
                                         ["/subscribe"
                                          {:post {:summary "Send an email to GPML Secretariat about a new subscription request"
                                                  :swagger {:tags ["subscribe"]}
@@ -919,6 +924,9 @@
   :gpml.handler.plastic-strategy/get-params {}
   :gpml.handler.plastic-strategy/update-steps #ig/ref :gpml.config/common
   :gpml.handler.plastic-strategy/update-steps-params {}
+
+  :gpml.handler.programmatic.plastic-strategy/post #ig/ref :gpml.config/common
+  :gpml.handler.programmatic.plastic-strategy/post-params {}
 
   :clj-gcp.storage/client {}
 
