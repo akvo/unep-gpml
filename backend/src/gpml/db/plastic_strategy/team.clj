@@ -39,7 +39,6 @@
   [conn ps-team-member-updates]
   (try
     (let [p-ps-team-member-updates (update ps-team-member-updates :updates ps-team-member->p-ps-team-member)
-          _ (prn p-ps-team-member-updates)
           affected (update-ps-team-member* conn p-ps-team-member-updates)]
       (if (= affected 1)
         {:success? true}
