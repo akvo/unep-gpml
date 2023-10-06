@@ -38,14 +38,18 @@ const ForumModal = ({
     })
   }
 
-  const handleOnRequestJoin = async ({ id, name: channel_name }) => {
+  const handleOnRequestJoin = async ({
+    id: channel_id,
+    name: channel_name,
+  }) => {
     setRequesting(true)
     try {
       await api.post('/chat/channel/private', {
+        channel_id,
         channel_name,
       })
       if (!joinDisabled) {
-        setJoins([...joins, id])
+        setJoins([...joins, channel_id])
       }
       setRequesting(false)
     } catch (error) {
