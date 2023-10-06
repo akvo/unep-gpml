@@ -123,8 +123,14 @@
          {:txn-fn
           (fn tx-update-user-role-assignment
             [{:keys [ps-team-member old-ps-team-member] :as context}]
-            (if (= (:role ps-team-member) (:role old-ps-team-member))
+            (cond
+              (not (contains? ps-team-member :role))
               (dissoc context :old-ps-team-member)
+
+              (= (:role ps-team-member) (:role old-ps-team-member))
+              (dissoc context :old-ps-team-member)
+
+              :else
               (let [old-role-name (keyword (format "plastic-strategy-%s" (name (:role old-ps-team-member))))
                     role-unassignments [{:role-name old-role-name
                                          :context-type :plastic-strategy
