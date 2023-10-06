@@ -55,6 +55,34 @@ services:
     volumes:
       - ./frontend:/app:delegated
     working_dir: /app
+  strapi:
+    build:
+      context: ./strapi/
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_CLIENT=${STRAPI_DATABASE_CLIENT}
+      - DATABASE_HOST=${STRAPI_DATABASE_HOST}
+      - DATABASE_NAME=${STRAPI_DATABASE_NAME}
+      - DATABASE_USERNAME=${STRAPI_DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${STRAPI_DATABASE_PASSWORD}
+      - JWT_SECRET=${STRAPI_JWT_SECRET}
+      - ADMIN_JWT_SECRET=${STRAPI_ADMIN_JWT_SECRET}
+      - APP_KEYS=${STRAPI_APP_KEYS}
+      - API_TOKEN_SALT=${STRAPI_API_TOKEN_SALT}
+      - URL=${STRAPI_URL}
+      - TRANSFER_TOKEN_SALT=${STRAPI_TRANSFER_TOKEN_SALT}
+      - GCS_SERVICE_ACCOUNT=${STRAPI_GCS_SERVICE_ACCOUNT}
+      - GCS_BUCKET_NAME=${STRAPI_GCS_BUCKET_NAME}
+      - GCS_BASE_PATH=${STRAPI_GCS_BASE_PATH}
+      - GCS_BASE_URL=${STRAPI_GCS_BASE_URL}
+      - GCS_PUBLIC_FILES=${STRAPI_GCS_PUBLIC_FILES}
+      - GCS_UNIFORM=${STRAPI_GCS_UNIFORM}
 
+    volumes:
+      - ./strapi/config:/opt/app/config
+      - ./strapi/src:/opt/app/src
+      - ./strapi/package.json:/opt/package.json
+      - ./strapi/yarn.lock:/opt/yarn.lock
+      - ./strapi/.env:/opt/app/.env
 volumes:
   pg-data:
