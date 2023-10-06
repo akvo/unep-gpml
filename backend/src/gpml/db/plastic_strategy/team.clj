@@ -16,11 +16,15 @@
   [ps-team-member]
   (-> ps-team-member
       (util/update-if-not-nil :role name)
-      (util/update-if-not-nil :teams util.pgsql/->JDBCArray "plastic_strategy_team_type")))
+      (util/update-if-not-nil :teams (comp
+                                      #(util.pgsql/->JDBCArray % "plastic_strategy_team_type")
+                                      #(map name %)))))
 
 (defn- p-ps-team-member->ps-team-member
   [p-ps-team-member]
-  (util/update-if-not-nil p-ps-team-member :role keyword))
+  (-> p-ps-team-member
+      (util/update-if-not-nil :role keyword)
+      (util/update-if-not-nil :teams #(map keyword %))))
 
 (defn add-ps-team-member
   [conn ps-team-member]
