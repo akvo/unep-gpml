@@ -500,7 +500,10 @@
   [{:keys [db] :as config} topic-id topic-type query]
   (let [conn (:spec db)
         resource-details (-> (get-detail* conn topic-type topic-id query)
-                             (dissoc :tags :remarks :name :abstract :description))]
+                             (dissoc :tags :remarks :abstract :description))
+        resource-details (if-not (= "organisation" topic-type)
+                           (dissoc resource-details :name)
+                           resource-details)]
     (if (seq resource-details)
       {:success? true
        :resource-details (extra-details config topic-type resource-details)}
