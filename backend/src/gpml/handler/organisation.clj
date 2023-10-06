@@ -58,8 +58,6 @@
       :resource-id org-id})
     org-id))
 
-;; TODO: This always expects a logo to provided but that doesn't make sense.
-;; We shouldn't do anything when the `logo` key is not provided.
 (defn- handle-logo-update
   [config conn org-id logo-payload]
   (let [old-org (db.organisation/organisation-by-id conn {:id org-id})
@@ -86,10 +84,14 @@
            geo_coverage_countries
            geo_coverage_country_states] :as org}]
   (let [org-id (:id org)
-        new-logo-id (handle-logo-update config conn org-id logo)
+        logo-to-update? (contains? (set (keys org)) :logo)
+        new-logo-id (when logo-to-update?
+                      (handle-logo-update config conn org-id logo))
         geo-coverage-type (keyword geo_coverage_type)
-        updates-map (-> org
-                        (assoc :logo_id new-logo-id)
+        updates-map (if logo-to-update?
+                      (assoc org :logo_id new-logo-id)
+                      org)
+        updates-map (-> updates-map
                         (dissoc :id :tags :geo_coverage_countries :geo_coverage_country_groups :logo)
                         (util/update-if-not-nil :review_status keyword)
                         (util/update-if-not-nil :geo_coverage_type keyword)
