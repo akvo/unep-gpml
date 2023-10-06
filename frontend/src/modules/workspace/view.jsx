@@ -302,7 +302,7 @@ const Workspace = ({ profile }) => {
           </div>
           <div className="action-suggestions">
             <div className="container">
-              <h2 className="h-xxl w-semi">What to do next?</h2>
+              <h2 className="h-xxl w-bold">What to do next?</h2>
               <Row gutter={[24, 16]}>
                 {suggestions.map((item) => (
                   <Col lg={8} key={item?.key}>
