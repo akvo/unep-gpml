@@ -639,18 +639,39 @@
                                                  :handler #ig/ref :gpml.handler.plastic-strategy/get-all
                                                  :parameters #ig/ref :gpml.handler.plastic-strategy/get-all-params}}]
                                          ["/{iso_code_a2}"
-                                          {:get {:summary "Get a plastic strategy"
-                                                 :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                              #ig/ref :gpml.auth/auth-required]
-                                                 :swagger {:tags ["plastic-strategy"]}
-                                                 :handler #ig/ref :gpml.handler.plastic-strategy/get
-                                                 :parameters #ig/ref :gpml.handler.plastic-strategy/get-params}
-                                           :put {:summary "Update a plastic strategy steps"
-                                                 :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                              #ig/ref :gpml.auth/auth-required]
-                                                 :swagger {:tags ["plastic-strategy"]}
-                                                 :handler #ig/ref :gpml.handler.plastic-strategy/update-steps
-                                                 :parameters #ig/ref :gpml.handler.plastic-strategy/update-steps-params}}]]]]
+                                          [""
+                                           {:get {:summary "Get a plastic strategy"
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :swagger {:tags ["plastic-strategy"]}
+                                                  :handler #ig/ref :gpml.handler.plastic-strategy/get
+                                                  :parameters #ig/ref :gpml.handler.plastic-strategy/get-params}
+                                            :put {:summary "Update a plastic strategy steps"
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :swagger {:tags ["plastic-strategy"]}
+                                                  :handler #ig/ref :gpml.handler.plastic-strategy/update-steps
+                                                  :parameters #ig/ref :gpml.handler.plastic-strategy/update-steps-params}}]
+                                          ["/team"
+                                           ["/member"
+                                            {:get {:summary "Get all team members"
+                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                #ig/ref :gpml.auth/auth-required]
+                                                   :swagger {:tags ["plastic-strategy"] :security [{:id_token []}]}
+                                                   :handler #ig/ref :gpml.handler.plastic-strategy.team/get-members
+                                                   :parameters #ig/ref :gpml.handler.plastic-strategy.team/get-members-params}
+                                             :post {:summary "Add a team member"
+                                                    :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                 #ig/ref :gpml.auth/auth-required]
+                                                    :swagger {:tags ["plastic-strategy"] :security [{:id_token []}]}
+                                                    :handler #ig/ref :gpml.handler.plastic-strategy.team/add-member
+                                                    :parameters #ig/ref :gpml.handler.plastic-strategy.team/add-member-params}
+                                             :put {:summary "Update a team member"
+                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                #ig/ref :gpml.auth/auth-required]
+                                                   :swagger {:tags ["plastic-strategy"] :security [{:id_token []}]}
+                                                   :handler #ig/ref :gpml.handler.plastic-strategy.team/update-member
+                                                   :parameters #ig/ref :gpml.handler.plastic-strategy.team/update-member-params}}]]]]]]
                               :logger #ig/ref :duct.logger/timbre
                               :cors-allowed-origins #ig/ref :gpml.handler.main/cors-allowed-origins}
 
@@ -924,6 +945,12 @@
   :gpml.handler.plastic-strategy/get-params {}
   :gpml.handler.plastic-strategy/update-steps #ig/ref :gpml.config/common
   :gpml.handler.plastic-strategy/update-steps-params {}
+  :gpml.handler.plastic-strategy.team/get-members #ig/ref :gpml.config/common
+  :gpml.handler.plastic-strategy.team/get-members-params {}
+  :gpml.handler.plastic-strategy.team/add-member #ig/ref :gpml.config/common
+  :gpml.handler.plastic-strategy.team/add-member-params {}
+  :gpml.handler.plastic-strategy.team/update-member #ig/ref :gpml.config/common
+  :gpml.handler.plastic-strategy.team/update-member-params {}
 
   :gpml.handler.programmatic.plastic-strategy/post #ig/ref :gpml.config/common
   :gpml.handler.programmatic.plastic-strategy/post-params {}
