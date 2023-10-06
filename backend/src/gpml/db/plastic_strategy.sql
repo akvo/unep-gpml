@@ -27,3 +27,11 @@ WHERE id = :id;
 -- :name create-plastic-strategies* :execute :affected
 INSERT INTO plastic_strategy(country_id)
 VALUES :t*:plastic-strategy;
+
+-- :name create-plastic-strategy* :returning-execute :one
+INSERT INTO plastic_strategy(country_id)
+VALUES (:country-id) RETURNING id;
+
+-- :name delete-plastic-strategy* :execute :affected
+DELETE FROM plastic_strategy
+WHERE id = :id;
