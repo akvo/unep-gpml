@@ -6,12 +6,18 @@ import Button from '../../components/button'
 import { UIStore } from '../../store'
 import api from '../../utils/api'
 import ForumMembers from '../../modules/forum/forum-members'
-import MyForums from '../../modules/forum/my-forums'
 
 const DynamicForumModal = dynamic(
   () => import('../../modules/forum/forum-modal'),
   {
     ssr: false, // modal has window object that should be run in client side
+  }
+)
+
+const DynamicMyForum = dynamic(
+  () => import('../../modules/forum/my-forums'),
+  {
+    ssr: false, // my forums has window object to update the joins localStorage
   }
 )
 
@@ -84,7 +90,7 @@ const Forum = () => {
     <div className="container">
       <div className={styles.forumHome}>
         <span className="h-xs title">Forums</span>
-        <MyForums {...{ handleOnView }} />
+        <DynamicMyForum {...{ handleOnView }} />
 
         <div className="header">
           <div className="jumbotron">
