@@ -7,6 +7,7 @@ import Button from '../../components/button'
 import api from '../../utils/api'
 import styles from './forum.module.scss'
 import { ChatStore, UIStore } from '../../store'
+import useLocalStorage from '../../utils/hooks/use-storage'
 
 export const getMyForumsApi = async (successCallback, errorCallback) => {
   try {
@@ -22,6 +23,7 @@ const MyForums = ({ handleOnView }) => {
   const initLoading = myForums.length === 0 ? true : false
   const [loading, setLoading] = useState(initLoading)
   const [openPopover, setOpenPopover] = useState(null)
+  const [joins, setJoins] = useLocalStorage('joins', [])
   const profile = UIStore.useState((s) => s.profile)
   const router = useRouter()
 
@@ -31,11 +33,17 @@ const MyForums = ({ handleOnView }) => {
         channel_id: channelID,
         channel_type: channelType,
       })
-      const _myForums = myForums.filter((mf) => mf.id !== channelID)
-      ChatStore.update((s) => {
-        s.myForums = _myForums
-      })
+      /**
+       * Update joins localStorage
+       */
+      const _joins = joins.filter((j) => j !== channelID)
+      setJoins(_joins)
       message.success(`You have left the channel ${channelName}`)
+      /**
+       * To load the current state of localStorage,
+       * we need to reload the page.
+       */
+      router.reload()
     } catch (error) {
       console.error(`leave channel error: ${error}`)
       message.error(
