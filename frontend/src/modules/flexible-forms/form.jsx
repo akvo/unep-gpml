@@ -36,7 +36,6 @@ function usePrevious(value) {
 const getDifferences = (oldObj, newObj) => {
   let changes = {}
 
-  // Helper function to determine if an object is plain (not an array or null)
   const isPlainObject = (obj) =>
     obj && typeof obj === 'object' && !Array.isArray(obj)
 
@@ -47,7 +46,6 @@ const getDifferences = (oldObj, newObj) => {
         changes[key] = nestedChanges
       }
     } else if (Array.isArray(newObj[key]) && Array.isArray(oldObj[key])) {
-      // If it's an array, compare the arrays (assumes order matters and items are objects)
       for (let i = 0; i < newObj[key].length; i++) {
         const arrNestedChanges = getDifferences(oldObj[key][i], newObj[key][i])
         if (Object.keys(arrNestedChanges).length) {
@@ -55,8 +53,8 @@ const getDifferences = (oldObj, newObj) => {
           changes[key][i] = arrNestedChanges
         }
       }
-    } else if (oldObj[key] !== newObj[key]) {
-      changes[key] = newObj[key]
+    } else if (oldObj?.[key] !== newObj?.[key]) {
+      changes[key] = newObj?.[key]
     }
   }
 
