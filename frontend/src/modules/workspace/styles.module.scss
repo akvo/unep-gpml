@@ -23,13 +23,6 @@ $bg-green-primary: #10f9b7;
       display: flex;
       flex-direction: column;
       :global {
-        .ant-row {
-          width: 90%;
-          margin-left: auto;
-          margin-right: auto;
-        }
-      }
-      :global {
         .pending-stripe {
           background: rgb(242 242 242 / 80%);
           box-shadow: 0px 0px 4px rgba(24, 22, 47, 0.15);
@@ -333,6 +326,65 @@ $bg-green-primary: #10f9b7;
                   }
                 }
               }
+            }
+          }
+        }
+      }
+      .action-suggestions {
+        padding: 120px 0px 80px;
+        h2 {
+          margin-bottom: 40px;
+        }
+        .ant-col {
+          width: 100%;
+        }
+        .feature-card {
+          border-radius: 15px;
+          box-sizing: border-box;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          .card-content-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 32px;
+            border: 1px solid #ccd0db;
+            border-top: none;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            button {
+              margin-top: 40px;
+              justify-content: space-between;
+            }
+            p {
+              flex: 1;
+            }
+          }
+
+          .card-title-container {
+            padding: 50px 32px 25px 32px;
+            position: relative;
+            background-color: $primaryDarkBlue;
+            .h-l {
+              color: white;
+              text-transform: capitalize;
+              font-weight: 600;
+            }
+            &.card--data-tool {
+              background-image: url('/date-tools.svg');
+            }
+
+            &.card--knowledge-library {
+              background-image: url('/workspace-feature.svg');
+              background-position: right;
+              background-repeat: no-repeat;
+            }
+            &.card--match-making {
+              background-image: url('/match-making.svg');
+              background-position: right;
+              background-repeat: no-repeat;
             }
           }
         }
@@ -761,6 +813,11 @@ $bg-green-primary: #10f9b7;
       color: #fff;
       padding-top: 30px;
       padding-bottom: 20px;
+      .ant-row {
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+      }
       h2 {
         font-weight: 500;
         font-size: 22px;
@@ -944,48 +1001,6 @@ $bg-green-primary: #10f9b7;
           line-height: 1;
           &:hover {
             color: #ffb400;
-          }
-        }
-      }
-    }
-  }
-
-  :global {
-    .action-suggestions {
-      padding: 100px 0 80px;
-      .ant-col {
-        padding-left: 120px;
-        margin-bottom: 30px;
-        &:not(:first-child) {
-          position: relative;
-          &:after {
-            content: ' ';
-            position: absolute;
-            left: -20px;
-            top: 0;
-            width: 1px;
-            height: 80px;
-            background-color: rgba(0, 0, 0, 0.2);
-          }
-        }
-        h3 {
-          font-size: 20px;
-          text-transform: uppercase;
-          line-height: 1.4;
-          padding-right: 3.35em;
-          margin-bottom: 1em;
-        }
-        position: relative;
-        svg {
-          position: absolute;
-          left: 15px;
-          max-height: 86px;
-          path {
-            stroke: #6db5b0;
-            fill: #6db5b0;
-          }
-          rect {
-            fill: #6db5b0;
           }
         }
       }

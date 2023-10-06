@@ -5,7 +5,6 @@ import {
   Carousel,
   Avatar,
   Typography,
-  Button,
   Modal,
   notification,
 } from 'antd'
@@ -22,6 +21,32 @@ import { FilePdfOutlined, DeleteOutlined } from '@ant-design/icons'
 import api from '../../utils/api'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Button from '../../components/button'
+
+const suggestions = [
+  {
+    title: 'Data tools',
+    key: 'data-tool',
+    content: 'Contribute to the DataHub Maps & Dashboard',
+    buttonText: 'Upload your data',
+    href:
+      'https://unep-gpml.eu.auth0.com/authorize?response_type=code&client_id=lmdxuDGdQjUsbLbMFpjDCulTP1w5Z4Gi&redirect_uri=https%3A//apps.unep.org/data-catalog/oauth2/callback&scope=openid+profile+email&state=eyJjYW1lX2Zyb20iOiAiL2Rhc2hib2FyZCJ9',
+  },
+  {
+    title: 'Knowledge Library',
+    key: 'knowledge-library',
+    content: 'Share Your Knowledge',
+    link: '/flexible-forms',
+    buttonText: 'Add content',
+  },
+  {
+    title: 'Match-making',
+    key: 'match-making',
+    link: '/community',
+    content: 'Match with opportunities',
+    buttonText: 'Connect',
+  },
+]
 
 const Workspace = ({ profile }) => {
   const router = useRouter()
@@ -276,58 +301,47 @@ const Workspace = ({ profile }) => {
             </div>
           </div>
           <div className="action-suggestions">
-            <Row>
-              <Col lg={8}>
-                <DataCatalogueSvg />
-                <h3>contribute to the datahub maps & dashboard</h3>
-                <Button
-                  type="ghost"
-                  disabled={
-                    profile &&
-                    (!profile?.emailVerified ||
-                      profile?.reviewStatus === 'SUBMITTED')
-                  }
-                  onClick={() => {
-                    window.open(
-                      'https://unep-gpml.eu.auth0.com/authorize?response_type=code&client_id=lmdxuDGdQjUsbLbMFpjDCulTP1w5Z4Gi&redirect_uri=https%3A//apps.unep.org/data-catalog/oauth2/callback&scope=openid+profile+email&state=eyJjYW1lX2Zyb20iOiAiL2Rhc2hib2FyZCJ9',
-                      '_blank'
-                    )
-                  }}
-                >
-                  Upload your data
-                </Button>
-              </Col>
-              <Col lg={8}>
-                <UploadSvg />
-                <h3>Share your knowledge</h3>
-                <Button
-                  type="ghost"
-                  disabled={
-                    profile &&
-                    (!profile?.emailVerified ||
-                      profile?.reviewStatus === 'SUBMITTED')
-                  }
-                  onClick={() => router.push('/flexible-forms')}
-                >
-                  Add content
-                </Button>
-              </Col>
-              <Col lg={8}>
-                <MatchSvg />
-                <h3>Match with new opportunities</h3>
-                <Button
-                  type="ghost"
-                  disabled={
-                    profile &&
-                    (!profile?.emailVerified ||
-                      profile?.reviewStatus === 'SUBMITTED')
-                  }
-                  onClick={() => router.push('/connect/community')}
-                >
-                  Connect
-                </Button>
-              </Col>
-            </Row>
+            <div className="container">
+              <h2 className="h-xxl w-semi">What to do next?</h2>
+              <Row gutter={[24, 16]}>
+                {suggestions.map((item) => (
+                  <Col lg={8} key={item?.key}>
+                    <div className="feature-card">
+                      <div
+                        className={`card-title-container card--${item?.key}`}
+                      >
+                        <h3 className="h-l">{item.title}</h3>
+                      </div>
+                      <div className="card-content-container">
+                        <p className="p-l">{item?.content}</p>
+                        <Button
+                          size="large"
+                          ghost
+                          withArrow
+                          disabled={
+                            profile &&
+                            (!profile?.emailVerified ||
+                              profile?.reviewStatus === 'SUBMITTED')
+                          }
+                          onClick={() => {
+                            if (item.href) {
+                              window.open(
+                                'https://unep-gpml.eu.auth0.com/authorize?response_type=code&client_id=lmdxuDGdQjUsbLbMFpjDCulTP1w5Z4Gi&redirect_uri=https%3A//apps.unep.org/data-catalog/oauth2/callback&scope=openid+profile+email&state=eyJjYW1lX2Zyb20iOiAiL2Rhc2hib2FyZCJ9',
+                                '_blank'
+                              )
+                            } else {
+                              router.push(`/${item.link}`)
+                            }
+                          }}
+                        >
+                          {item.buttonText}
+                        </Button>
+                      </div>
+                    </div>
+                  </Col>
+                ))}
+              </Row>
+            </div>
           </div>
           <Row className="video-panel">
             <Col lg={24} sm={24}>

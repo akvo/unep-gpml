@@ -85,23 +85,25 @@ const NewLayout = ({
         >
           <div className={`${isIndexPage ? 'container' : 'container-fluid'}`}>
             <div className="logo-container">
-              <div className="circle">
-                <GpmlCircle />
-              </div>
-              <h5>
-                Global Partnership
-                <br />
-                on Plastic Pollution
-                <br />
-                and Marine Litter
-              </h5>
-              {/* <Image
+              <Link href={'/landing'}>
+                <div className="circle">
+                  <GpmlCircle />
+                </div>
+                <h5>
+                  Global Partnership
+                  <br />
+                  on Plastic Pollution
+                  <br />
+                  and Marine Litter
+                </h5>
+                {/* <Image
                 className="gpml-white"
                 src="/GPML-White-logo.svg"
                 alt="GPML Digital Platform"
                 width={244}
                 height={74}
               /> */}
+              </Link>
             </div>
             {width >= 768 && (
               <ul className="ant-menu">
