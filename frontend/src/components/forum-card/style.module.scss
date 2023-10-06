@@ -1,0 +1,61 @@
+@import '../../styles/vars.scss';
+
+.forumClass {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  :global {
+    .ant-btn.ant-btn-background-ghost {
+      &:hover {
+        background-color: $primaryDarkBlue;
+        span {
+          color: $primaryWhite;
+        }
+      }
+    }
+  }
+}
+.forumOptions {
+  padding-top: 0 !important;
+  border-radius: 3px;
+  border: 1px solid $primaryDarkBlue2;
+  :global {
+    .ant-popover-arrow {
+      display: none;
+    }
+    .ant-popover-inner {
+      .ant-popover-inner-content {
+        padding: 15px 19px;
+        ul {
+          display: flex;
+          flex-direction: column;
+          gap: 17px;
+        }
+      }
+    }
+  }
+}
+.labelClass {
+  font-family: var(--font-archia), sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  letter-spacing: 0.24px;
+  text-transform: uppercase;
+}
+.headingClass {
+  .title {
+    font-family: var(--font-archia);
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .forumType {
+    font-family: var(--font-archia), sans-serif;
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 700;
+    letter-spacing: 0.24px;
+    text-transform: uppercase;
+    color: $primaryPurple;
+  }
+}
