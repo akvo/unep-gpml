@@ -139,11 +139,11 @@
                              :success? false
                              :reason :failed-to-assign-sth-owner-role-to-organisation
                              :error-details {:result result})
-                      (let [success? (boolean (handler.org/update-org
-                                               config
-                                               conn
-                                               {:id (:id org)
-                                                :created_by sth-id}))]
+                      (let [{:keys [success?]} (handler.org/update-org
+                                                config
+                                                conn
+                                                {:id (:id org)
+                                                 :created_by sth-id})]
                         (if success?
                           context
                           (assoc context
