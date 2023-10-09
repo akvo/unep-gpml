@@ -253,7 +253,14 @@
                                          [""
                                           {:get {:summary "List tags grouped by category"
                                                  :swagger {:tags ["tag"]}
+                                                 :parameters {:query #ig/ref :gpml.handler.tag/get-all-query-params}
                                                  :handler #ig/ref :gpml.handler.tag/all}
+                                           :post {:summary "Create a tag"
+                                                  :swagger {:tags ["tag"]}
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :parameters #ig/ref :gpml.handler.tag/post-params
+                                                  :handler #ig/ref :gpml.handler.tag/post}
                                            :put {:summary "Update a tag"
                                                  :swagger {:tags ["tag"]}
                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
@@ -533,7 +540,12 @@
                                           {:post {:summary "Runs file migration for a given entity"
                                                   :swagger {:tags ["file migrator" "programmatic"]}
                                                   :parameters #ig/ref :gpml.handler.programmatic.files-migrator/post-params
-                                                  :handler #ig/ref :gpml.handler.programmatic.files-migrator/post}}]]
+                                                  :handler #ig/ref :gpml.handler.programmatic.files-migrator/post}}]
+                                         ["/plastic-strategy"
+                                          {:post {:summary "Create plastic strategies"
+                                                  :swagger {:tags ["plastic-strategy"] :security [{:id_token []}]}
+                                                  :handler #ig/ref :gpml.handler.programmatic.plastic-strategy/post
+                                                  :parameters #ig/ref :gpml.handler.programmatic.plastic-strategy/post-params}}]]
                                         ["/subscribe"
                                          {:post {:summary "Send an email to GPML Secretariat about a new subscription request"
                                                  :swagger {:tags ["subscribe"]}
@@ -608,17 +620,25 @@
                                                   :handler #ig/ref :gpml.handler.chat/get-all-channels
                                                   :parameters #ig/ref :gpml.handler.chat/get-all-channels-params}}]
                                           ["/private"
-                                           {:get {:summary "Get all private channels in the server"
-                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                               #ig/ref :gpml.auth/auth-required]
-                                                  :swagger {:tags ["chat"]}
-                                                  :handler #ig/ref :gpml.handler.chat/get-private-channels}
-                                            :post {:summary "Send private channel invitation request"
+                                           [""
+                                            {:get {:summary "Get all private channels in the server"
                                                    :middleware [#ig/ref :gpml.auth/auth-middleware
                                                                 #ig/ref :gpml.auth/auth-required]
                                                    :swagger {:tags ["chat"]}
-                                                   :handler #ig/ref :gpml.handler.chat/send-private-channel-invitation-request
-                                                   :parameters #ig/ref :gpml.handler.chat/send-private-channel-invitation-request-params}}]
+                                                   :handler #ig/ref :gpml.handler.chat/get-private-channels}
+                                             :post {:summary "Send private channel invitation request"
+                                                    :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                 #ig/ref :gpml.auth/auth-required]
+                                                    :swagger {:tags ["chat"]}
+                                                    :handler #ig/ref :gpml.handler.chat/send-private-channel-invitation-request
+                                                    :parameters #ig/ref :gpml.handler.chat/send-private-channel-invitation-request-params}}]
+                                           ["/add-user"
+                                            {:post {:summary "Adds user to private channel"
+                                                    :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                 #ig/ref :gpml.auth/auth-required]
+                                                    :swagger {:tags ["chat"]}
+                                                    :handler #ig/ref :gpml.handler.chat/add-user-to-private-channel
+                                                    :parameters #ig/ref :gpml.handler.chat/add-user-to-private-channel-params}}]]
                                           ["/public"
                                            {:get {:summary "Get all public channels in the server"
                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
@@ -634,18 +654,39 @@
                                                  :handler #ig/ref :gpml.handler.plastic-strategy/get-all
                                                  :parameters #ig/ref :gpml.handler.plastic-strategy/get-all-params}}]
                                          ["/{iso_code_a2}"
-                                          {:get {:summary "Get a plastic strategy"
-                                                 :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                              #ig/ref :gpml.auth/auth-required]
-                                                 :swagger {:tags ["plastic-strategy"]}
-                                                 :handler #ig/ref :gpml.handler.plastic-strategy/get
-                                                 :parameters #ig/ref :gpml.handler.plastic-strategy/get-params}
-                                           :put {:summary "Update a plastic strategy steps"
-                                                 :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                              #ig/ref :gpml.auth/auth-required]
-                                                 :swagger {:tags ["plastic-strategy"]}
-                                                 :handler #ig/ref :gpml.handler.plastic-strategy/update-steps
-                                                 :parameters #ig/ref :gpml.handler.plastic-strategy/update-steps-params}}]]]]
+                                          [""
+                                           {:get {:summary "Get a plastic strategy"
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :swagger {:tags ["plastic-strategy"]}
+                                                  :handler #ig/ref :gpml.handler.plastic-strategy/get
+                                                  :parameters #ig/ref :gpml.handler.plastic-strategy/get-params}
+                                            :put {:summary "Update a plastic strategy steps"
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :swagger {:tags ["plastic-strategy"]}
+                                                  :handler #ig/ref :gpml.handler.plastic-strategy/update-steps
+                                                  :parameters #ig/ref :gpml.handler.plastic-strategy/update-steps-params}}]
+                                          ["/team"
+                                           ["/member"
+                                            {:get {:summary "Get all team members"
+                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                #ig/ref :gpml.auth/auth-required]
+                                                   :swagger {:tags ["plastic-strategy"] :security [{:id_token []}]}
+                                                   :handler #ig/ref :gpml.handler.plastic-strategy.team/get-members
+                                                   :parameters #ig/ref :gpml.handler.plastic-strategy.team/get-members-params}
+                                             :post {:summary "Add a team member"
+                                                    :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                 #ig/ref :gpml.auth/auth-required]
+                                                    :swagger {:tags ["plastic-strategy"] :security [{:id_token []}]}
+                                                    :handler #ig/ref :gpml.handler.plastic-strategy.team/add-member
+                                                    :parameters #ig/ref :gpml.handler.plastic-strategy.team/add-member-params}
+                                             :put {:summary "Update a team member"
+                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                #ig/ref :gpml.auth/auth-required]
+                                                   :swagger {:tags ["plastic-strategy"] :security [{:id_token []}]}
+                                                   :handler #ig/ref :gpml.handler.plastic-strategy.team/update-member
+                                                   :parameters #ig/ref :gpml.handler.plastic-strategy.team/update-member-params}}]]]]]]
                               :logger #ig/ref :duct.logger/timbre
                               :cors-allowed-origins #ig/ref :gpml.handler.main/cors-allowed-origins}
 
@@ -774,6 +815,9 @@
   :gpml.handler.tag/all {:db #ig/ref :duct.database/sql}
   :gpml.handler.tag/get-popular-topics-tags {:db #ig/ref :duct.database/sql}
   :gpml.handler.tag/get-popular-topics-tags-params {}
+  :gpml.handler.tag/get-all-query-params {}
+  :gpml.handler.tag/post #ig/ref :gpml.config/common
+  :gpml.handler.tag/post-params {}
   :gpml.handler.tag/put {:db #ig/ref :duct.database/sql}
   :gpml.handler.tag/put-params {}
   :gpml.handler.tag/put-response {}
@@ -910,6 +954,8 @@
   :gpml.handler.chat/get-user-joined-channels #ig/ref :gpml.config/common
   :gpml.handler.chat/send-private-channel-invitation-request #ig/ref :gpml.config/common
   :gpml.handler.chat/send-private-channel-invitation-request-params {}
+  :gpml.handler.chat/add-user-to-private-channel #ig/ref :gpml.config/common
+  :gpml.handler.chat/add-user-to-private-channel-params {}
   :gpml.handler.chat/remove-user-from-channel #ig/ref :gpml.config/common
   :gpml.handler.chat/remove-user-from-channel-params {}
 
@@ -919,6 +965,15 @@
   :gpml.handler.plastic-strategy/get-params {}
   :gpml.handler.plastic-strategy/update-steps #ig/ref :gpml.config/common
   :gpml.handler.plastic-strategy/update-steps-params {}
+  :gpml.handler.plastic-strategy.team/get-members #ig/ref :gpml.config/common
+  :gpml.handler.plastic-strategy.team/get-members-params {}
+  :gpml.handler.plastic-strategy.team/add-member #ig/ref :gpml.config/common
+  :gpml.handler.plastic-strategy.team/add-member-params {}
+  :gpml.handler.plastic-strategy.team/update-member #ig/ref :gpml.config/common
+  :gpml.handler.plastic-strategy.team/update-member-params {}
+
+  :gpml.handler.programmatic.plastic-strategy/post #ig/ref :gpml.config/common
+  :gpml.handler.programmatic.plastic-strategy/post-params {}
 
   :clj-gcp.storage/client {}
 

@@ -210,11 +210,18 @@
                                  channel-id
                                  channel-type))
 
+(defn add-user-to-private-channel
+  [{:keys [chat-adapter]} chat-account-id channel-id]
+  (chat/add-user-to-private-channel chat-adapter
+                                    chat-account-id
+                                    channel-id))
+
 (defn send-private-channel-invitation-request
-  [{:keys [db mailjet-config]} user channel-name]
+  [{:keys [db mailjet-config]} user channel-id channel-name]
   (let [super-admins (db.rbac-util/get-super-admins-details (:spec db) {})]
     (util.email/notify-admins-new-chat-private-channel-invitation-request
      mailjet-config
      super-admins
      user
+     channel-id
      channel-name)))

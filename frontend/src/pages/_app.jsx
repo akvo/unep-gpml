@@ -190,18 +190,16 @@ function MyApp({ Component, pageProps }) {
   }, [])
 
   useEffect(() => {
-    setState((prevState) => ({ ...prevState, loadingProfile: true }))
     auth0Client.checkSession({}, async (err, authResult) => {
       if (err) {
         setState((prevState) => ({
           ...prevState,
-          loadingProfile: true,
+          loadingProfile: false,
         }))
       }
       if (authResult) {
         setSession(authResult)
       }
-      setState((prevState) => ({ ...prevState, loadingProfile: false }))
     })
   }, [])
 
@@ -213,6 +211,7 @@ function MyApp({ Component, pageProps }) {
         api.setToken(null)
       }
       if (isAuthenticated && idToken && authResult) {
+        setState((prevState) => ({ ...prevState, loadingProfile: true }))
         let resp = await api.get('/profile')
         setState((prevState) => ({ ...prevState, loadingProfile: false }))
         if (resp.data && Object.keys(resp.data).length === 0) {
@@ -247,10 +246,10 @@ function MyApp({ Component, pageProps }) {
       auth0Client,
       profile,
       loginVisible,
-      setLoginVisible: () =>
+      setLoginVisible: (value) =>
         setState((prevState) => ({
           ...prevState,
-          loginVisible: !prevState.loginVisible,
+          loginVisible: value,
         })),
       loadingProfile,
     }),

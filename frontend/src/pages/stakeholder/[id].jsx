@@ -1,5 +1,5 @@
-import React from "react";
-import StakeholderDetailPage from "../../modules/stakeholder-detail/view";
+import React from 'react'
+import StakeholderDetailPage from '../../modules/stakeholder-detail/view'
 
 function StakeholderDetail({
   setLoginVisible,
@@ -8,10 +8,9 @@ function StakeholderDetail({
 }) {
   return (
     <StakeholderDetailPage
-      setLoginVisible={setLoginVisible}
-      isAuthenticated={isAuthenticated}
+      {...{ loadingProfile, setLoginVisible, isAuthenticated }}
     />
-  );
+  )
 }
 
-export default StakeholderDetail;
+export default StakeholderDetail
