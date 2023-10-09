@@ -8,7 +8,6 @@ import {
   Modal,
   notification,
   List,
-  Card,
 } from 'antd'
 const { Title } = Typography
 import styles from './styles.module.scss'
@@ -315,15 +314,15 @@ const Workspace = ({ profile }) => {
               </div>
               <List
                 grid={{ column: 3, gutter: 20 }}
-                dataSource={forums.slice(0, 3)}
+                dataSource={forums}
                 loading={loading.forums}
                 renderItem={(item) => (
                   <List.Item>
-                    <Card>
-                      <ForumCard>
+                    <ForumCard>
+                      <ForumCard.HStack>
                         <ForumCard.Title {...item} />
-                      </ForumCard>
-                      <ForumCard>
+                      </ForumCard.HStack>
+                      <ForumCard.HStack>
                         <ForumCard.LastMessage lm={item?.lm} />
                         <div>
                           <Button
@@ -334,8 +333,8 @@ const Workspace = ({ profile }) => {
                             Chat
                           </Button>
                         </div>
-                      </ForumCard>
-                    </Card>
+                      </ForumCard.HStack>
+                    </ForumCard>
                   </List.Item>
                 )}
               />
