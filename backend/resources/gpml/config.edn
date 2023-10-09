@@ -253,7 +253,14 @@
                                          [""
                                           {:get {:summary "List tags grouped by category"
                                                  :swagger {:tags ["tag"]}
+                                                 :parameters {:query #ig/ref :gpml.handler.tag/get-all-query-params}
                                                  :handler #ig/ref :gpml.handler.tag/all}
+                                           :post {:summary "Create a tag"
+                                                  :swagger {:tags ["tag"]}
+                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                               #ig/ref :gpml.auth/auth-required]
+                                                  :parameters #ig/ref :gpml.handler.tag/post-params
+                                                  :handler #ig/ref :gpml.handler.tag/post}
                                            :put {:summary "Update a tag"
                                                  :swagger {:tags ["tag"]}
                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
@@ -593,6 +600,13 @@
                                                   :swagger {:tags ["chat"]}
                                                   :handler #ig/ref :gpml.handler.chat/get-user-joined-channels}}]]
                                          ["/channel"
+                                          ["/leave"
+                                           {:post {:summary "Remove the callee user from the channel"
+                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                #ig/ref :gpml.auth/auth-required]
+                                                   :swagger {:tags ["chat"]}
+                                                   :handler #ig/ref :gpml.handler.chat/remove-user-from-channel
+                                                   :parameters #ig/ref :gpml.handler.chat/remove-user-from-channel-params}}]
                                           ["/all"
                                            {:get {:summary "Get all channels in the server"
                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
@@ -746,6 +760,9 @@
   :gpml.handler.tag/all {:db #ig/ref :duct.database/sql}
   :gpml.handler.tag/get-popular-topics-tags {:db #ig/ref :duct.database/sql}
   :gpml.handler.tag/get-popular-topics-tags-params {}
+  :gpml.handler.tag/get-all-query-params {}
+  :gpml.handler.tag/post #ig/ref :gpml.config/common
+  :gpml.handler.tag/post-params {}
   :gpml.handler.tag/put {:db #ig/ref :duct.database/sql}
   :gpml.handler.tag/put-params {}
   :gpml.handler.tag/put-response {}
@@ -882,6 +899,8 @@
   :gpml.handler.chat/get-user-joined-channels #ig/ref :gpml.config/common
   :gpml.handler.chat/send-private-channel-invitation-request #ig/ref :gpml.config/common
   :gpml.handler.chat/send-private-channel-invitation-request-params {}
+  :gpml.handler.chat/remove-user-from-channel #ig/ref :gpml.config/common
+  :gpml.handler.chat/remove-user-from-channel-params {}
 
   :clj-gcp.storage/client {}
 
