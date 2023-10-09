@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   Row,
   Col,
   Carousel,
   Avatar,
   Typography,
-  Button,
   Modal,
   notification,
+  List,
+  Card,
 } from 'antd'
 const { Title } = Typography
 import styles from './styles.module.scss'
@@ -22,11 +23,17 @@ import { FilePdfOutlined, DeleteOutlined } from '@ant-design/icons'
 import api from '../../utils/api'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import ForumCard from '../../components/forum-card/forum-card'
+import Button from '../../components/button'
 
 const Workspace = ({ profile }) => {
   const router = useRouter()
   const [isFocal, setIsFocal] = useState(false)
   const [projects, setProjects] = useState([])
+  const [forums, setForums] = useState([])
+  const [loading, setLoading] = useState({
+    forums: true,
+  })
 
   const handleFocalPoint = (id) => {
     setIsFocal(true)
@@ -83,6 +90,48 @@ const Workspace = ({ profile }) => {
       },
     })
   }
+
+  const goToChannel = ({ name, t }) => {
+    router.push({
+      pathname: `/forum/${name}`,
+      query: {
+        t,
+      },
+    })
+  }
+
+  const getAllForums = useCallback(async () => {
+    try {
+      /**
+       * Waiting for id_token ready by checking profile state
+       */
+      if (profile?.id) {
+        const endpoints = [
+          api.get('/chat/channel/all'),
+          api.get('/chat/user/channel'),
+        ]
+        const [allForums, myForums] = await Promise.all(endpoints)
+        const { data: _myForums } = myForums || {}
+        const { data: _allForums } = allForums || {}
+        const _forums = _myForums?.length
+          ? _myForums.slice(0, 3)
+          : _allForums?.slice(0, 3)
+        setForums(_forums)
+        setLoading({
+          forums: false,
+        })
+      }
+    } catch {
+      setLoading({
+        forums: false,
+      })
+    }
+  }, [profile])
+
+  useEffect(() => {
+    getAllForums()
+  }, [getAllForums])
+
   return (
     <div className={styles.workspace}>
       <div className={styles.workspaceContentWrapper}>
@@ -249,9 +298,51 @@ const Workspace = ({ profile }) => {
               </Row>
             </div>
           )}
+          <div className="workspace-title container">
+            <div className="caps-heading-m">workspace</div>
+          </div>
+          <div className={styles.forumContainer}>
+            <div className="container">
+              <div className="forum-heading">
+                <h3 className="forum-title">Forums</h3>
+                <Button
+                  withArrow="link"
+                  onClick={() => router.push('/forum')}
+                  ghost
+                >
+                  View All Forums
+                </Button>
+              </div>
+              <List
+                grid={{ column: 3, gutter: 20 }}
+                dataSource={forums.slice(0, 3)}
+                loading={loading.forums}
+                renderItem={(item) => (
+                  <List.Item>
+                    <Card>
+                      <ForumCard>
+                        <ForumCard.Title {...item} />
+                      </ForumCard>
+                      <ForumCard>
+                        <ForumCard.LastMessage lm={item?.lm} />
+                        <div>
+                          <Button
+                            size="small"
+                            withArrow="link"
+                            onClick={() => goToChannel(item)}
+                          >
+                            Chat
+                          </Button>
+                        </div>
+                      </ForumCard>
+                    </Card>
+                  </List.Item>
+                )}
+              />
+            </div>
+          </div>
           <div className="plastic-strategies-list">
             <div className="container">
-              <div className="caps-heading-m">workspace</div>
               <h2 className="h-xxl w-semi">Plastic Strategies</h2>
               <ul>
                 <li>
