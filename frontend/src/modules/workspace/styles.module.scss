@@ -268,9 +268,14 @@ $bg-green-primary: #10f9b7;
           margin-bottom: 30px;
         }
         ul {
+          &.plastic-strategies-items {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 26px;
+          }
           li {
             a {
-              width: 430px;
+              width: 100%;
               display: flex;
               border-radius: 10px;
               background: #fff;
