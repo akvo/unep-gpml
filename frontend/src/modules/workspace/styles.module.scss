@@ -263,7 +263,7 @@ $bg-green-primary: #10f9b7;
         }
       }
       .plastic-strategies-list {
-        margin-top: 30px;
+        // margin-top: 30px;
         h2 {
           margin-bottom: 30px;
         }
@@ -337,6 +337,9 @@ $bg-green-primary: #10f9b7;
           }
         }
       }
+      .workspace-title {
+        margin-top: 30px;
+      }
     }
 
     :global {
@@ -392,6 +395,23 @@ $bg-green-primary: #10f9b7;
               margin: 30px auto 0;
               display: block;
             }
+          }
+        }
+      }
+    }
+
+    .forumContainer {
+      padding: 23px 0 46px;
+      :global {
+        .forum-heading {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 30px;
+        }
+        .ant-list {
+          .ant-row {
+            width: 100%;
           }
         }
       }
