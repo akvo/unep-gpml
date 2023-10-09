@@ -22,7 +22,7 @@ DELETE FROM :i:table WHERE :i:resource-col = :resource-id;
 
 -- :name get-resource-tags :query :many
 -- :doc Get resource tags
-SELECT rt.:i:resource-col, t.id, t.tag, tg.category AS tag_category
+SELECT rt.:i:resource-col, t.id, t.tag, t.private, tg.category AS tag_category
 --~(when (= (:table params) "stakeholder_tag") ", rt.tag_relation_category")
 FROM :i:table rt
 JOIN tag t ON rt.tag = t.id
