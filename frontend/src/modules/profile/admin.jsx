@@ -1180,6 +1180,8 @@ const AdminSection = ({
                 <Link href={`/stakeholder/${user_id}`}>{email}</Link> wants to
                 join {channel_name}{' '}
                 <Button
+                  type="ghost"
+                  className="black"
                   disabled={requestLoading}
                   onClick={() => handleChatRequest()}
                 >
