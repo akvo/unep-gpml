@@ -42,7 +42,6 @@
   [config {{:keys [path body]} :parameters}]
   (let [body-params (cske/transform-keys ->kebab-case body)
         country-iso-code-a2 (:iso_code_a2 path)
-        _ (prn body-params)
         result (srv.ps.team/add-ps-team-member config
                                                country-iso-code-a2
                                                body-params)]
