@@ -234,7 +234,8 @@
         (let [{page :page limit :limit} (:query parameters)
               tags (db.resource.tag/get-resource-tags (:spec db) {:table "stakeholder_tag"
                                                                   :resource-col "stakeholder"
-                                                                  :resource-id (:id stakeholder)})
+                                                                  :resource-id (:id stakeholder)
+                                                                  :review_status "APPROVED"})
               offerings-ids (->> tags
                                  (filter #(= (:tag_relation_category %) "offering"))
                                  (mapv #(get % :id)))
