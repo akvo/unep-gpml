@@ -294,6 +294,104 @@ spec:
             mountPath: "/secrets/cloudsql/credentials.json"
             subPath: "cloud-database-service-account.json"
             readOnly: true
+      - name: strapi
+        image: eu.gcr.io/akvo-lumen/unep-gpml/strapi:${CI_COMMIT}
+        ports:
+        - containerPort: 1337
+        resources:
+          requests:
+            cpu: "300m"
+            memory: "200Mi"
+          limits:
+            cpu: "600m"
+            memory: "1000Mi"
+        env:
+        - name: DATABASE_CLIENT
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-database-client
+        - name: DATABASE_HOST
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-database-host
+        - name: DATABASE_NAME
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-database-name
+        - name: DATABASE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-database-username
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-database-password
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-jwt-secret
+        - name: APP_KEYS
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-app-keys
+        - name: ADMIN_JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-admin-jwt-secret
+        - name: API_TOKEN_SALT
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-api-token-salt
+        - name: URL
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-url
+        - name: TRANSFER_TOKEN_SALT
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-transfer-token-salt
+        - name: GCS_SERVICE_ACCOUNT
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-gcs-service-account
+        - name: GCS_BUCKET_NAME
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-gcs-bucket-name
+        - name: GCS_BASE_PATH
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-gcs-base-path
+        - name: GCS_BASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-gcs-base-url
+        - name: GCS_PUBLIC_FILES
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-gcs-public-files
+        - name: GCS_UNIFORM
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-gcs-uniform
+
       volumes:
         - name: unep-gpml-secrets
           secret:

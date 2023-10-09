@@ -4,6 +4,10 @@ import styles from './ps.module.scss'
 import { useRouter } from 'next/router'
 import classNames from 'classnames'
 import Button from '../../../components/button'
+import { useCallback, useEffect, useState } from 'react'
+import { PREFIX_SLUG, isoA2 } from '../../../modules/workspace/ps/config'
+import { UIStore } from '../../../store'
+import api from '../../../utils/api'
 
 const stepsState = [
   { label: 'Instructions', slug: '', checked: false },
@@ -29,14 +33,40 @@ const stepsState = [
 ]
 
 const NestedLayout = ({ children }) => {
+  const [psItem, setPSItem] = useState({})
   const router = useRouter()
   const pathSlugs = [...router.route.substring(1).split('/'), '']
+  const { slug } = router.query
+  const profile = UIStore.useState((s) => s.profile)
+  const handleOnMarkAsComplete = () => {}
+
+  const getPlasticStrategy = useCallback(async () => {
+    const [_, countrySlug] = slug?.split(`${PREFIX_SLUG}-`)
+    const countryISOA2 = isoA2?.[countrySlug]
+    if (countryISOA2 && profile?.id) {
+      try {
+        const { data: psData } = await api.get(
+          `/plastic-strategy/${countryISOA2}`
+        )
+        setPSItem(psData)
+      } catch (error) {
+        console.error('Unable to fetch all PS:', error)
+      }
+    }
+  }, [slug, profile])
+
+  useEffect(() => {
+    getPlasticStrategy()
+  }, [getPlasticStrategy])
+
   return (
     <div className={styles.plasticStrategyView}>
       <div className={styles.sidebar}>
         <div className="head">
           <div className="caps-heading-s">plastic strategy</div>
-          <h5 className="h-m m-semi">South Africa</h5>
+          <h5 className="h-m m-semi">
+            {psItem?.country?.name || 'Loading...'}
+          </h5>
           <div className="progress-bar">
             <div className="fill" style={{ width: '20%' }}></div>
           </div>

@@ -1,9 +1,9 @@
 (ns gpml.util
   (:require [clojure.string :as str]
             [clojure.walk :as w]
-            [gpml.util.regular-expressions :as util.regex])
+            [gpml.util.regular-expressions])
   (:import [java.io File]
-           [java.net URL]
+           [java.net URL URLEncoder]
            [java.util Base64]
            [java.util UUID]))
 
@@ -182,3 +182,7 @@
   [email]
   (and string?
        (re-matches gpml.util.regular-expressions/email-re email)))
+
+(defn encode-url-param
+  [^String param]
+  (URLEncoder/encode param "utf-8"))

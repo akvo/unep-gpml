@@ -246,9 +246,10 @@ const StakeholderOverview = ({
   }, [isValidUser])
 
   useEffect(() => {
-    if (!isAuthenticated && loadingProfile) {
+    if (!isAuthenticated && !loadingProfile) {
       setUnathenticatedModal(true)
-    } else {
+    }
+    if (isAuthenticated && !loadingProfile) {
       setUnathenticatedModal(false)
     }
   }, [isAuthenticated, loadingProfile])

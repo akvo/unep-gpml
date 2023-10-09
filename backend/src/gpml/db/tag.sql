@@ -34,10 +34,11 @@ select * from tag WHERE tag_category in
 
 -- :name all-tags :? :*
 -- :doc Get all tags
-select tg.category, t.id, t.tag
+select tg.category, t.id, t.tag, t.private
  from tag_category tg, tag t
 where tg.id = t.tag_category
 and t.review_status = 'APPROVED'
+--~ (when-not (nil? (:private params)) " AND private = (:v:private)")
 order by tg.category, t.tag
 
 -- :name get-popular-topics-tags :? :*
